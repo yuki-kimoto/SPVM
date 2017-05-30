@@ -1,0 +1,14 @@
+#ifndef SPVM_ENUMERATION_VALUE_H
+#define SPVM_ENUMERATION_VALUE_H
+
+#include "spvm_base.h"
+
+// Field information
+struct SPVM_enumeration_value {
+  SPVM_OP* op_name;
+  SPVM_OP* op_constant;
+};
+
+SPVM_ENUMERATION_VALUE* SPVM_ENUMERATION_VALUE_new(SPVM* spvm);
+
+#endif
