@@ -774,7 +774,7 @@ SPVM_OP* SPVM_OP_build_call_field(SPVM* spvm, SPVM_OP* op_var, SPVM_OP* op_name_
   
   SPVM_NAME_INFO* name_info = SPVM_NAME_INFO_new(spvm);
   
-  if (strstr(op_name_field->uv.name, ":")) {
+  if (strchr(op_name_field->uv.name, ':')) {
     SPVM_yyerror_format(spvm, "field name \"%s\" can't contain :: at %s line %d\n",
       op_name_field, op_name_field->file, op_name_field->line);
   }
