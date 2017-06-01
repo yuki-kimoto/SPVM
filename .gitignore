@@ -10,3 +10,5 @@ blib/*
 MYMETA.yml
 Makefile
 pm_to_blib
+MYMETA.json
+SPVM.c
