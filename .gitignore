@@ -1,0 +1,12 @@
+/spvm
+/libspvm.a
+core.*
+*.output
+*.tmp
+*.o
+*.bs
+blib/*
+*.old
+MYMETA.yml
+Makefile
+pm_to_blib
