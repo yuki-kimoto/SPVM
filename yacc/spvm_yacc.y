@@ -605,7 +605,7 @@ type_name
     }
 
 try_catch
-  : TRY block CATCH '(' arg ')' block
+  : TRY block CATCH '(' VAR ')' block
     {
       $$ = SPVM_OP_build_try_catch(spvm, $1, $2, $3, $5, $7);
     }

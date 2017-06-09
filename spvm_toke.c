@@ -456,10 +456,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
         else {
           _Bool finish = 0;
           while(1) {
-            warn("AAAAAAAAAA %c", *parser->bufptr);
-            
             if (*parser->bufptr == '"' && *(parser->bufptr - 1) != '\\') {
-              warn("BBBBBBBBBB");
               finish = 1;
             }
             else if (*parser->bufptr == '\0') {

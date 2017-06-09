@@ -229,6 +229,28 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
           while (1) {
             // [START]Postorder traversal position
             switch (op_cur->code) {
+              case SPVM_OP_C_CODE_STORE: {
+                SPVM_OP* op_my_var = op_cur->first;
+                SPVM_RESOLVED_TYPE* resolved_type = SPVM_OP_get_resolved_type(spvm, op_my_var);
+                int32_t my_var_address = op_my_var->uv.my_var->address;
+                
+                // Currently only use catch block argument
+                if (!SPVM_RESOLVED_TYPE_is_numeric(spvm, resolved_type)) {
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_ADDRESS);
+                  if (my_var_address > 0xFF) {
+                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (my_var_address >> 8) & 0xFF);
+                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, my_var_address);
+                  }
+                  else {
+                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, my_var_address);
+                  }
+                }
+                else {
+                  assert(0);
+                }
+                
+                break;
+              }
               case SPVM_OP_C_CODE_CATCH: {
                 if (try_stack->length > 0) {
                   SPVM_ARRAY_pop(spvm, try_stack);
@@ -648,14 +670,30 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                 // Rethrow exception
                 else {
                   SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_DIE);
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, 0);
+                  
+                  // Padding
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
                 }
                 
                 break;
               }
               case SPVM_OP_C_CODE_DIE: {
-                SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_DIE);
+                //  Goto exception handler
+                if (try_stack->length > 0) {
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
+                  
+                  int32_t* address_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
+                  *address_ptr = bytecode_array->length - 1;
+                  SPVM_ARRAY_push(spvm, goto_exception_handler_stack, address_ptr);
+                  
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, 0);
+                }
+                // Throw exception
+                else {
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_DIE);
+                }
                 break;
               }
               case SPVM_OP_C_CODE_LAST: {

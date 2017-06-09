@@ -459,43 +459,67 @@ void SPVM_RUNTIME_call_sub(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t sub_consta
     int32_t file_name_constant_pool_address = constant_pool_sub.file_name_constant_pool_address;
     const char* file_name = (char*)&constant_pool[file_name_constant_pool_address + 1];
     
-    /*
-    SPVM_SV* sv_message = SPVM_RUNTIME_API_get_string_sv(spvm, runtime, return_value);
+    // stack trace strings
+    char * exception = "Exception";
+    char* from = "\n  from ";
+    char* at = " at ";
     
-    const char* pv_message = SPVM_RUNTIME_API_get_string_value(spvm, runtime, return_value);
+    // Total string length
+    int32_t total_length = 0;
+    if (return_value == NULL) {
+      total_length = strlen(exception);
+    }
+    else {
+      total_length += SPVM_DATA_API_get_array_length(return_value);
+    }
+    total_length += strlen(from);
+    total_length += strlen(sub_name);
+    total_length += strlen(at);
+    total_length += strlen(file_name);
     
-    // Free string if need
+    // Create exception message
+    SPVM_DATA_ARRAY* new_data_array_message =  SPVM_RUNTIME_API_create_data_array_byte(spvm, runtime, total_length);
+    if (return_value == NULL) {
+      sprintf(
+        (intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE,
+        "%s%s%s%s%s",
+        exception,
+        from,
+        sub_name,
+        at,
+        file_name
+      );
+    }
+    else {
+      memcpy(
+        (intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE,
+        (intptr_t)return_value + SPVM_DATA_C_HEADER_BYTE_SIZE,
+        SPVM_DATA_API_get_array_length(return_value)
+      );
+      sprintf(
+        (intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE + SPVM_DATA_API_get_array_length(return_value),
+        "%s%s%s%s",
+        from,
+        sub_name,
+        at,
+        file_name
+      );
+    }
+    
+    // Free original string if need
     if (return_value != NULL) {
       int32_t ref_count = SPVM_DATA_API_get_ref_count(return_value);
       if (ref_count == 0) {
-        SPVM_SvREFCNT_dec(sv_message);
         SPVM_RUNTIME_ALLOCATOR_free_data(spvm, runtime->allocator, return_value);
       }
     }
-
-    // New sv
-    SPVM_SV* new_sv_message = SPVM_COMPAT_newSVpvn(pv_message, strlen(pv_message));
-    
-    */
-    
-    SPVM_DATA_ARRAY* new_message_address = SPVM_RUNTIME_API_create_data_array_byte_from_pv(spvm, runtime, "Exception");
-    
-    /*
-    
-    SPVM_COMPAT_sv_catpvn(new_sv_message, "\n from ", strlen("\n from "));
-    SPVM_COMPAT_sv_catpvn(new_sv_message, sub_name, strlen(sub_name));
-    SPVM_COMPAT_sv_catpvn(new_sv_message, " at ", strlen(" at "));
-    SPVM_COMPAT_sv_catpvn(new_sv_message, file_name, strlen(file_name));
-    
-    */
-    
     
     // Resotre vars base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top].address_value = new_message_address;
+    call_stack[operand_stack_top].address_value = new_data_array_message;
     
     // Finish call sub with exception
     if (call_stack_base == call_stack_base_start) {

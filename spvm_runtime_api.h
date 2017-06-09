@@ -4,6 +4,8 @@
 #include "spvm_base.h"
 #include "spvm_data_api.h"
 
+inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t length);
+
 int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data);
 
 void SPVM_RUNTIME_API_dec_ref_count(SPVM* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data);

@@ -13,6 +13,39 @@
 #include "spvm_constant_pool_field.h"
 #include "spvm_data_api.h"
 
+inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t length) {
+  (void)spvm;
+  (void)runtime;
+  
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
+  
+  // Allocate array
+  int32_t data_array_byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(int8_t) * length;
+  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_ALLOCATOR_malloc(spvm, allocator, data_array_byte_size);
+  
+  // Fatal memory allocation error
+  if (!data_array) {
+    fprintf(stderr, "Failed to allocate memory(create_data_array_from_pv)");
+    abort();
+  }
+  
+  // Set type
+  data_array->type = SPVM_DATA_C_TYPE_ARRAY;
+  
+  // Set sub type
+  data_array->value_type = SPVM_DATA_ARRAY_C_VALUE_TYPE_BYTE;
+  
+  // Set reference count
+  data_array->ref_count = 0;
+  
+  // Set array length
+  data_array->length = length;
+  
+  assert(data_array_byte_size == SPVM_RUNTIME_API_calcurate_data_byte_size(spvm, spvm->runtime, (SPVM_DATA*)data_array));
+  
+  return data_array;
+}
+
 inline int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
   
   int64_t byte_size;
@@ -328,34 +361,10 @@ inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM* sp
   
   int32_t length = strlen(pv);
   
-  // Allocate array
-  int32_t data_array_byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(int8_t) * length;
-  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_ALLOCATOR_malloc(spvm, allocator, data_array_byte_size);
-  
-  // Fatal memory allocation error
-  if (!data_array) {
-    fprintf(stderr, "Failed to allocate memory(create_data_array_from_pv)");
-    abort();
-  }
-  
-  // Set type
-  data_array->type = SPVM_DATA_C_TYPE_ARRAY;
-  
-  // Set sub type
-  data_array->value_type = SPVM_DATA_ARRAY_C_VALUE_TYPE_BYTE;
-  
-  // Set reference count
-  data_array->ref_count = 0;
-  
-  // Set array length
-  data_array->length = length;
+  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_create_data_array_byte(spvm, runtime, length);
   
   // Copy string
   memcpy((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE, pv, length);
-  
-  int8_t* string = SPVM_DATA_API_get_array_values_byte(data_array);
-  
-  assert(data_array_byte_size == SPVM_RUNTIME_API_calcurate_data_byte_size(spvm, spvm->runtime, (SPVM_DATA*)data_array));
   
   return data_array;
 }
