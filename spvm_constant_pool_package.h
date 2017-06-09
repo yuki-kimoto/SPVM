@@ -5,11 +5,10 @@
 
 // Array
 struct SPVM_constant_pool_package {
-  SPVM_VALUE* free_need_field_offsets_pool_address;
   int32_t name_constant_pool_address;
-  int32_t byte_size;
-  int32_t free_need_field_offsets_length;
-  int32_t ref_fields_count;
+  int32_t fields_length;
+  int32_t ref_fields_length;
+  int32_t field_name_indexes_constant_pool_address;
 };
 
 #endif

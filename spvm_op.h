@@ -192,7 +192,6 @@ void SPVM_OP_convert_and_to_if(SPVM* spvm, SPVM_OP* op);
 void SPVM_OP_convert_or_to_if(SPVM* spvm, SPVM_OP* op);
 
 void SPVM_OP_resolve_type(SPVM* spvm, SPVM_TYPE* type, int32_t name_length);
-void SPVM_OP_check(SPVM* spvm);
 
 void SPVM_OP_resolve_sub_name(SPVM* spvm, SPVM_OP* op_package, SPVM_OP* op_name);
 void SPVM_OP_resolve_field_name(SPVM* spvm, SPVM_OP* op_name);

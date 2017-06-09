@@ -4,13 +4,13 @@
 
 #include "spvm.h"
 #include "spvm_memory_pool.h"
-#include "spvm_allocator_util.h"
-#include "spvm_value.h"
+#include "spvm_util_allocator.h"
+#include "spvm_data_api.h"
 
 SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(SPVM* spvm, int32_t page_byte_size) {
   (void)spvm;
   
-  SPVM_MEMORY_POOL* memory_pool = (SPVM_MEMORY_POOL*) SPVM_ALLOCATOR_UTIL_safe_malloc_i32(1, sizeof(SPVM_MEMORY_POOL));
+  SPVM_MEMORY_POOL* memory_pool = (SPVM_MEMORY_POOL*) SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_MEMORY_POOL));
   
   if (page_byte_size == 0) {
     memory_pool->page_byte_size = 0xFFFF;
@@ -19,9 +19,9 @@ SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(SPVM* spvm, int32_t page_byte_size) {
     memory_pool->page_byte_size = page_byte_size;
   }
   
-  int8_t* page = SPVM_ALLOCATOR_UTIL_safe_malloc_i32(memory_pool->page_byte_size, sizeof(int8_t));
+  int8_t* page = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(memory_pool->page_byte_size, sizeof(int8_t));
   memory_pool->pages_length = 1;
-  memory_pool->pages = SPVM_ALLOCATOR_UTIL_safe_malloc_i32(memory_pool->pages_length, sizeof(int8_t*));
+  memory_pool->pages = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(memory_pool->pages_length, sizeof(int8_t*));
   memory_pool->pages[0] = page;
   
   memory_pool->current_page = 0;
@@ -48,9 +48,9 @@ void* SPVM_MEMORY_POOL_alloc(SPVM* spvm, SPVM_MEMORY_POOL* memory_pool, int32_t 
     if (memory_pool->current_page == memory_pool->pages_length) {
       int32_t new_memory_pool_pages_length = memory_pool->pages_length * 2;
       
-      memory_pool->pages = SPVM_ALLOCATOR_UTIL_safe_realloc_i32(memory_pool->pages, new_memory_pool_pages_length, sizeof(uint8_t*));
+      memory_pool->pages = SPVM_UTIL_ALLOCATOR_safe_realloc_i32(memory_pool->pages, new_memory_pool_pages_length, sizeof(uint8_t*));
       for (int32_t i = memory_pool->pages_length; i < new_memory_pool_pages_length; i++) {
-        memory_pool->pages[i] = SPVM_ALLOCATOR_UTIL_safe_malloc_i32(memory_pool->page_byte_size, sizeof(uint8_t));
+        memory_pool->pages[i] = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(memory_pool->page_byte_size, sizeof(uint8_t));
       }
       
       memory_pool->pages_length = new_memory_pool_pages_length;

@@ -16,19 +16,19 @@
 #include "spvm_sub.h"
 #include "spvm_var.h"
 #include "spvm_my_var.h"
-#include "spvm_allocator_parser.h"
+#include "spvm_parser_allocator.h"
 #include "spvm_package.h"
 #include "spvm_name_info.h"
 #include "spvm_hash.h"
 #include "spvm_field.h"
 #include "spvm_switch_info.h"
 #include "spvm_constant_pool.h"
-#include "spvm_type.h"
 #include "spvm_constant_pool_sub.h"
+#include "spvm_constant_pool_field.h"
+#include "spvm_type.h"
 #include "spvm_limit.h"
-#include "spvm_value.h"
-#include "spvm_ref.h"
-#include "spvm_ref_array.h"
+#include "spvm_data_api.h"
+
 
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
   
@@ -145,7 +145,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
   SPVM_PARSER* parser = spvm->parser;
   
   // Bytecode
-  SPVM_BYTECODE_ARRAY* bytecode_array = spvm->bytecode_array;
+  SPVM_BYTECODE_ARRAY* bytecode_array = parser->bytecode_array;
   
   for (int32_t package_pos = 0; package_pos < parser->op_packages->length; package_pos++) {
     SPVM_OP* op_package = SPVM_ARRAY_fetch(spvm, parser->op_packages, package_pos);
@@ -167,22 +167,22 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
       _Bool finish = 0;
       
       // IFXXX Bytecode address(except loop)
-      SPVM_ARRAY* if_address_stack = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+      SPVM_ARRAY* if_address_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
 
       // GOTO Bytecode address for last
-      SPVM_ARRAY* goto_last_address_stack = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+      SPVM_ARRAY* goto_last_address_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
 
       // GOTO Bytecode address for end of if block
-      SPVM_ARRAY* goto_if_block_end_address_stack = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+      SPVM_ARRAY* goto_if_block_end_address_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
       
       // GOTO bytecode address for loop start
-      SPVM_ARRAY* goto_loop_start_address_stack = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+      SPVM_ARRAY* goto_loop_start_address_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
       
       // GOTO exception handler address
-      SPVM_ARRAY* goto_exception_handler_stack = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+      SPVM_ARRAY* goto_exception_handler_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
 
       // try stack
-      SPVM_ARRAY* try_stack = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+      SPVM_ARRAY* try_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
       
       // Current case addresses
       int32_t cur_switch_address = -1;
@@ -201,7 +201,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
             break;
           }
           case SPVM_OP_C_CODE_SWITCH: {
-            cur_case_addresses = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+            cur_case_addresses = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
             break;
           }
           case SPVM_OP_C_CODE_BLOCK: {
@@ -209,7 +209,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
               // Add goto
               SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
               
-              int32_t* address_ptr = SPVM_ALLOCATOR_PARSER_alloc_int(spvm, parser->allocator);
+              int32_t* address_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
               *address_ptr = bytecode_array->length - 1;
               
               SPVM_ARRAY_push(spvm, goto_loop_start_address_stack, address_ptr);
@@ -442,12 +442,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                     
                     int32_t const length = (int32_t) switch_info->op_cases->length;
                     
-                    SPVM_ARRAY* ordered_op_cases = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+                    SPVM_ARRAY* ordered_op_cases = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
                     for (int32_t i = 0; i < length; i++) {
                       SPVM_OP* op_case = SPVM_ARRAY_fetch(spvm, switch_info->op_cases, i);
                       SPVM_ARRAY_push(spvm, ordered_op_cases, op_case);
                     }
-                    SPVM_ARRAY* ordered_case_addresses = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+                    SPVM_ARRAY* ordered_case_addresses = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
                     for (int32_t i = 0; i < length; i++) {
                       int32_t* case_address_ptr = SPVM_ARRAY_fetch(spvm, cur_case_addresses, i);
                       SPVM_ARRAY_push(spvm, ordered_case_addresses, case_address_ptr);
@@ -505,12 +505,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                     
                     int64_t const length = (int64_t) switch_info->op_cases->length;
                     
-                    SPVM_ARRAY* ordered_op_cases = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+                    SPVM_ARRAY* ordered_op_cases = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
                     for (int64_t i = 0; i < length; i++) {
                       SPVM_OP* op_case = SPVM_ARRAY_fetch(spvm, switch_info->op_cases, i);
                       SPVM_ARRAY_push(spvm, ordered_op_cases, op_case);
                     }
-                    SPVM_ARRAY* ordered_case_addresses = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+                    SPVM_ARRAY* ordered_case_addresses = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
                     for (int64_t i = 0; i < length; i++) {
                       int64_t* case_address_ptr = SPVM_ARRAY_fetch(spvm, cur_case_addresses, i);
                       SPVM_ARRAY_push(spvm, ordered_case_addresses, case_address_ptr);
@@ -562,7 +562,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
               }
               case SPVM_OP_C_CODE_CASE: {
                 
-                int32_t* address_ptr = SPVM_ALLOCATOR_PARSER_alloc_int(spvm, parser->allocator);
+                int32_t* address_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
                 *address_ptr = bytecode_array->length;
                 
                 SPVM_ARRAY_push(spvm, cur_case_addresses, address_ptr);
@@ -580,8 +580,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                 if (!op_cur->lvalue) {
                   SPVM_RESOLVED_TYPE* resolved_type = SPVM_OP_get_resolved_type(spvm, op_cur);
                   
-                  if (resolved_type->id == SPVM_RESOLVED_TYPE_C_ID_BYTE)
-                  {
+                  if (resolved_type->id == SPVM_RESOLVED_TYPE_C_ID_BYTE) {
                     SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE);
                   }
                   else if (resolved_type->id == SPVM_RESOLVED_TYPE_C_ID_SHORT) {
@@ -600,7 +599,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                     SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE);
                   }
                   else {
-                    assert(0);
+                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_ADDRESS);
                   }
                   
                   SPVM_NAME_INFO* name_info = op_cur->uv.name_info;
@@ -608,10 +607,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                   SPVM_OP* op_field = SPVM_HASH_search(spvm, parser->op_field_symtable, field_name, strlen(field_name));
                   SPVM_FIELD* field = op_field->uv.field;
                   
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (field->constant_pool_address >> 24) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (field->constant_pool_address >> 16) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (field->constant_pool_address >> 8) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, field->constant_pool_address & 0xFF);
+                  SPVM_CONSTANT_POOL_FIELD constant_pool_field;
+                  memcpy(&constant_pool_field, &spvm->parser->constant_pool->values[field->constant_pool_address], sizeof(SPVM_CONSTANT_POOL_FIELD));
+                  constant_pool_field.index;
+                  
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (constant_pool_field.index >> 8) & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, constant_pool_field.index & 0xFF);
                 }
                 
                 break;
@@ -637,7 +638,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                 if (try_stack->length > 0) {
                   SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
                   
-                  int32_t* address_ptr = SPVM_ALLOCATOR_PARSER_alloc_int(spvm, parser->allocator);
+                  int32_t* address_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
                   *address_ptr = bytecode_array->length - 1;
                   SPVM_ARRAY_push(spvm, goto_exception_handler_stack, address_ptr);
                   
@@ -661,7 +662,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                 // Add goto
                 SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
                 
-                int32_t* address_ptr = SPVM_ALLOCATOR_PARSER_alloc_int(spvm, parser->allocator);
+                int32_t* address_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
                 *address_ptr = bytecode_array->length - 1;
                 
                 SPVM_ARRAY_push(spvm, goto_last_address_stack, address_ptr);
@@ -693,7 +694,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                     // Prepare to jump to end of else block
                     SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
                     
-                    int32_t* address_ptr = SPVM_ALLOCATOR_PARSER_alloc_int(spvm, parser->allocator);
+                    int32_t* address_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
                     *address_ptr = bytecode_array->length - 1;
                     SPVM_ARRAY_push(spvm, goto_if_block_end_address_stack, address_ptr);
                     
@@ -996,7 +997,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                 int32_t address = bytecode_array->length - 1;
                 
                 if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_IF) {
-                  int32_t* address_ptr = SPVM_ALLOCATOR_PARSER_alloc_int(spvm, parser->allocator);
+                  int32_t* address_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
                   *address_ptr = address;
                   
                   SPVM_ARRAY_push(spvm, if_address_stack, address_ptr);
@@ -1082,34 +1083,34 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
               case SPVM_OP_C_CODE_MALLOC: {
                 SPVM_RESOLVED_TYPE* resolved_type = SPVM_OP_get_resolved_type(spvm, op_cur->first);
                 
-                if (SPVM_RESOLVED_TYPE_is_array_numeric(spvm, resolved_type)) {
+                if (SPVM_RESOLVED_TYPE_is_array(spvm, resolved_type)) {
                   SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_MALLOC_ARRAY);
-                  
-                  if (strcmp(resolved_type->name, "byte[]") == 0) {
-                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_REF_ARRAY_C_VALUE_TYPE_BYTE);
-                  }
-                  else if (strcmp(resolved_type->name, "short[]") == 0) {
-                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_REF_ARRAY_C_VALUE_TYPE_SHORT);
-                  }
-                  else if (strcmp(resolved_type->name, "int[]") == 0) {
-                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_REF_ARRAY_C_VALUE_TYPE_INT);
-                  }
-                  else if (strcmp(resolved_type->name, "long[]") == 0) {
-                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_REF_ARRAY_C_VALUE_TYPE_LONG);
-                  }
-                  else if (strcmp(resolved_type->name, "float[]") == 0) {
-                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_REF_ARRAY_C_VALUE_TYPE_FLOAT);
-                  }
-                  else if (strcmp(resolved_type->name, "double[]") == 0) {
-                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_REF_ARRAY_C_VALUE_TYPE_DOUBLE);
+                  if (SPVM_RESOLVED_TYPE_is_array_numeric(spvm, resolved_type)) {
+                    if (strcmp(resolved_type->name, "byte[]") == 0) {
+                      SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_BYTE);
+                    }
+                    else if (strcmp(resolved_type->name, "short[]") == 0) {
+                      SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_SHORT);
+                    }
+                    else if (strcmp(resolved_type->name, "int[]") == 0) {
+                      SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_INT);
+                    }
+                    else if (strcmp(resolved_type->name, "long[]") == 0) {
+                      SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_LONG);
+                    }
+                    else if (strcmp(resolved_type->name, "float[]") == 0) {
+                      SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_FLOAT);
+                    }
+                    else if (strcmp(resolved_type->name, "double[]") == 0) {
+                      SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_DOUBLE);
+                    }
+                    else {
+                      assert(0);
+                    }
                   }
                   else {
-                    assert(0);
+                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_REF);
                   }
-                }
-                else if (SPVM_RESOLVED_TYPE_is_array_string(spvm, resolved_type)) {
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_MALLOC_ARRAY);
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_REF_ARRAY_C_VALUE_TYPE_REF);
                 }
                 else {
                   SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_MALLOC_OBJECT);
@@ -1371,11 +1372,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                   const char* field_name = name_info->resolved_name;
                   SPVM_OP* op_field = SPVM_HASH_search(spvm, parser->op_field_symtable, field_name, strlen(field_name));
                   SPVM_FIELD* field = op_field->uv.field;
+
+                  SPVM_CONSTANT_POOL_FIELD constant_pool_field;
+                  memcpy(&constant_pool_field, &spvm->parser->constant_pool->values[field->constant_pool_address], sizeof(SPVM_CONSTANT_POOL_FIELD));
+                  constant_pool_field.index;
                   
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (field->constant_pool_address >> 24) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (field->constant_pool_address >> 16) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (field->constant_pool_address >> 8) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, field->constant_pool_address & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (constant_pool_field.index >> 8) & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, constant_pool_field.index & 0xFF);
                 }
                 
                 break;
@@ -1875,7 +1878,16 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
                 }
                 
                 if (!bytecode_set) {
-                  SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_CONSTANT);
+                  if (constant->code == SPVM_CONSTANT_C_CODE_INT || constant->code == SPVM_CONSTANT_C_CODE_FLOAT) {
+                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_CONSTANT);
+                  }
+                  else if (constant->code == SPVM_CONSTANT_C_CODE_LONG || constant->code == SPVM_CONSTANT_C_CODE_DOUBLE) {
+                    SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2);
+                  }
+                  else {
+                    assert(0);
+                  }
+                  
                   SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (constant->constant_pool_address >> 24) & 0xFF);
                   SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (constant->constant_pool_address >> 16) & 0xFF);
                   SPVM_BYTECODE_ARRAY_push(spvm, bytecode_array, (constant->constant_pool_address >> 8) & 0xFF);
@@ -1911,8 +1923,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
       sub->bytecode_length = bytecode_array->length - sub->bytecode_base;
       
       // Set bytecode base to sub
-      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&spvm->constant_pool->values[sub->constant_pool_address];
-      constant_pool_sub->bytecode_base = sub->bytecode_base;
+      SPVM_CONSTANT_POOL_SUB constant_pool_sub;
+      memcpy(&constant_pool_sub, &parser->constant_pool->values[sub->constant_pool_address], sizeof(SPVM_CONSTANT_POOL_SUB));
+      constant_pool_sub.bytecode_base = sub->bytecode_base;
+      memcpy(&parser->constant_pool->values[sub->constant_pool_address], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
+      
     }
   }
 }

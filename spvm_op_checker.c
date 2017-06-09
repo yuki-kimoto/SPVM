@@ -8,7 +8,7 @@
 #include "spvm_parser.h"
 #include "spvm_array.h"
 #include "spvm_hash.h"
-#include "spvm_allocator_parser.h"
+#include "spvm_parser_allocator.h"
 #include "spvm_yacc_util.h"
 #include "spvm_op.h"
 #include "spvm_sub.h"
@@ -28,14 +28,129 @@
 #include "spvm_switch_info.h"
 #include "spvm_constant_pool.h"
 #include "spvm_limit.h"
-#include "spvm_value.h"
 
 void SPVM_OP_CHECKER_check(SPVM* spvm) {
   
   SPVM_PARSER* parser = spvm->parser;
   
-  for (int32_t package_pos = 0; package_pos < parser->op_packages->length; package_pos++) {
-    SPVM_OP* op_package = SPVM_ARRAY_fetch(spvm, parser->op_packages, package_pos);
+  SPVM_ARRAY* op_types = parser->op_types;
+  
+  // Resolve types
+  for (int32_t i = 0, len = op_types->length; i < len; i++) {
+    assert(parser->resolved_types->length <= SPVM_LIMIT_C_RESOLVED_TYPES);
+    
+    SPVM_OP* op_type = SPVM_ARRAY_fetch(spvm, op_types, i);
+    
+    if (parser->resolved_types->length == SPVM_LIMIT_C_RESOLVED_TYPES) {
+      SPVM_yyerror_format(spvm, "too many types at %s line %d\n", op_type->file, op_type->line);
+      parser->fatal_error = 1;
+      return;
+    }
+    
+    _Bool success = SPVM_TYPE_resolve_type(spvm, op_type, 0);
+    
+    if (!success) {
+      parser->fatal_error = 1;
+      return;
+    }
+  }
+  
+  // Reorder fields. Reference types place before value types.
+  SPVM_ARRAY* op_packages = parser->op_packages;
+  for (int32_t package_pos = 0; package_pos < op_packages->length; package_pos++) {
+    SPVM_OP* op_package = SPVM_ARRAY_fetch(spvm, op_packages, package_pos);
+    SPVM_PACKAGE* package = op_package->uv.package;
+    SPVM_ARRAY* op_fields = package->op_fields;
+    
+    SPVM_ARRAY* op_fields_ref = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, spvm->parser->allocator, 0);
+    SPVM_ARRAY* op_fields_value = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, spvm->parser->allocator, 0);
+
+    // Separate reference type and value type
+    _Bool field_type_error = 0;
+    for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
+      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields, field_pos);
+      SPVM_FIELD* field = op_field->uv.field;
+      SPVM_RESOLVED_TYPE* field_resolved_type = field->op_type->uv.type->resolved_type;
+      
+      // Check field type
+      if (SPVM_RESOLVED_TYPE_is_array(spvm, field_resolved_type)) {
+        if (!SPVM_RESOLVED_TYPE_is_array_numeric(spvm, field_resolved_type)) {
+          SPVM_yyerror_format(spvm, "Type of field \"%s::%s\" must not be object array at %s line %d\n", package->op_name->uv.name, field->op_name->uv.name, op_field->file, op_field->line);
+          field_type_error = 1;
+        }
+      }
+      else if (!SPVM_RESOLVED_TYPE_is_numeric(spvm, field_resolved_type)) {
+          SPVM_yyerror_format(spvm, "Type of field \"%s::%s\" must not be object at %s line %d\n", package->op_name->uv.name, field->op_name->uv.name, op_field->file, op_field->line);
+        field_type_error = 1;
+      }
+    }
+    if (field_type_error) {
+      parser->fatal_error = 1;
+      return;
+    }
+    
+    // Separate reference type and value type
+    int32_t ref_fields_length = 0;
+    for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
+      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields, field_pos);
+      SPVM_FIELD* field = op_field->uv.field;
+      SPVM_RESOLVED_TYPE* field_resolved_type = field->op_type->uv.type->resolved_type;
+      
+      // Check field type
+      if (SPVM_RESOLVED_TYPE_is_array(spvm, field_resolved_type)) {
+        if (!SPVM_RESOLVED_TYPE_is_array_numeric(spvm, field_resolved_type)) {
+          SPVM_yyerror_format(spvm, "field type must be numeric or numeric array or string array at %s line %d\n", op_field->file, op_field->line);
+          parser->fatal_error = 1;
+          return;
+        }
+      }
+      else if (!SPVM_RESOLVED_TYPE_is_numeric(spvm, field_resolved_type)) {
+        SPVM_yyerror_format(spvm, "field type must be numeric or numeric array or string array at %s line %d\n", op_field->file, op_field->line);
+        parser->fatal_error = 1;
+        return;
+      }
+      
+      if (SPVM_RESOLVED_TYPE_is_numeric(spvm, field_resolved_type)) {
+        SPVM_ARRAY_push(spvm, op_fields_value, op_field);
+      }
+      else {
+        SPVM_ARRAY_push(spvm, op_fields_ref, op_field);
+        ref_fields_length++;
+      }
+    }
+    package->ref_fields_length = ref_fields_length;
+    
+    // Create ordered op fields
+    SPVM_ARRAY* ordered_op_fields = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, spvm->parser->allocator, 0);
+    for (int32_t field_pos = 0; field_pos < op_fields_ref->length; field_pos++) {
+      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields_ref, field_pos);
+      SPVM_ARRAY_push(spvm, ordered_op_fields, op_field);
+    }
+    for (int32_t field_pos = 0; field_pos < op_fields_value->length; field_pos++) {
+      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields_value, field_pos);
+      SPVM_ARRAY_push(spvm, ordered_op_fields, op_field);
+    }
+    package->op_fields = ordered_op_fields;
+  }
+  
+  // Resolve package
+  for (int32_t package_pos = 0; package_pos < op_packages->length; package_pos++) {
+    SPVM_OP* op_package = SPVM_ARRAY_fetch(spvm, op_packages, package_pos);
+    SPVM_PACKAGE* package = op_package->uv.package;
+    SPVM_ARRAY* op_fields = package->op_fields;
+    
+    // Calculate package byte size
+    int32_t package_byte_size = 0;
+    for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
+      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields, field_pos);
+      SPVM_FIELD* field = op_field->uv.field;
+      field->index = field_pos;
+    }
+    package->fields_length = op_fields->length;
+  }
+  
+  for (int32_t package_pos = 0; package_pos < op_packages->length; package_pos++) {
+    SPVM_OP* op_package = SPVM_ARRAY_fetch(spvm, op_packages, package_pos);
     SPVM_PACKAGE* package = op_package->uv.package;
     
     if (strchr(package->op_name->uv.name, '_') != NULL) {
@@ -45,7 +160,34 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
     }
     
     // Constant pool
-    SPVM_CONSTANT_POOL* constant_pool = spvm->constant_pool;
+    SPVM_CONSTANT_POOL* constant_pool = parser->constant_pool;
+    
+    // Push field information to constant pool
+    for (int32_t field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
+      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, package->op_fields, field_pos);
+      SPVM_FIELD* field = op_field->uv.field;
+      
+      // Add field abs name to constant pool
+      field->abs_name_constant_pool_address = parser->constant_pool->length;
+      SPVM_CONSTANT_POOL_push_string(spvm, parser->constant_pool, field->abs_name);
+
+      // Add field name to constant pool
+      field->name_constant_pool_address = parser->constant_pool->length;
+      SPVM_CONSTANT_POOL_push_string(spvm, parser->constant_pool, field->op_name->uv.name);
+      
+      // Add field to constant pool
+      field->constant_pool_address = parser->constant_pool->length;
+      SPVM_CONSTANT_POOL_push_field(spvm, parser->constant_pool, field);
+    }
+    
+    // Push fields name indexes to constant pool
+    package->field_name_indexes_constant_pool_address = constant_pool->length;
+    SPVM_CONSTANT_POOL_push_int(spvm, constant_pool, package->op_fields->length);
+    for (int32_t field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
+      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, package->op_fields, field_pos);
+      SPVM_FIELD* field = op_field->uv.field;
+      SPVM_CONSTANT_POOL_push_int(spvm, constant_pool, field->name_constant_pool_address);
+    }
     
     // Push package name to constant pool
     const char* package_name = package->op_name->uv.name;
@@ -56,28 +198,6 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
     package->constant_pool_address = constant_pool->length;
     SPVM_CONSTANT_POOL_push_package(spvm, constant_pool, package);
     
-    // Add constant pool sub to symbol table
-    const char* constant_pool_package_name = (char*)&spvm->constant_pool->values[package->name_constant_pool_address + 1];
-    SPVM_HASH_insert(spvm, spvm->constant_pool_package_symtable, constant_pool_package_name, strlen(constant_pool_package_name), (void*)(intptr_t)package->constant_pool_address);
-    
-    // Push field information to constant pool
-    for (int32_t field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, package->op_fields, field_pos);
-      SPVM_FIELD* field = op_field->uv.field;
-      
-      // Add field name to constant pool
-      field->abs_name_constant_pool_address = spvm->constant_pool->length;
-      SPVM_CONSTANT_POOL_push_string(spvm, spvm->constant_pool, field->abs_name);
-      
-      // Add field to constant pool
-      field->constant_pool_address = spvm->constant_pool->length;
-      SPVM_CONSTANT_POOL_push_field(spvm, spvm->constant_pool, field);
-      
-      // Add constant pool field to symbol table
-      const char* constant_pool_field_name = (char*)&spvm->constant_pool->values[field->abs_name_constant_pool_address + 1];
-      SPVM_HASH_insert(spvm, spvm->constant_pool_field_symtable, constant_pool_field_name, strlen(constant_pool_field_name), (void*)(intptr_t)field->constant_pool_address);
-    }
-    
     for (int32_t sub_pos = 0; sub_pos < package->op_subs->length; sub_pos++) {
       
       SPVM_OP* op_sub = SPVM_ARRAY_fetch(spvm, package->op_subs, sub_pos);
@@ -87,13 +207,13 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
       if (!sub->is_constant && !sub->is_native) {
         
         // my var informations
-        SPVM_ARRAY* op_my_vars = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+        SPVM_ARRAY* op_my_vars = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
         
         // my variable stack
-        SPVM_ARRAY* op_my_var_stack = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+        SPVM_ARRAY* op_my_var_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
         
         // block base position stack
-        SPVM_ARRAY* block_base_stack = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+        SPVM_ARRAY* block_base_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
         int32_t block_base = 0;
         
         // In switch statement
@@ -121,17 +241,6 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
           // [START]Preorder traversal position
           
           switch (op_cur->code) {
-            case SPVM_OP_C_CODE_FIELD: {
-              SPVM_FIELD* field = op_cur->uv.field;
-              SPVM_RESOLVED_TYPE* resolved_type = field->op_type->uv.type->resolved_type;
-              if (!SPVM_RESOLVED_TYPE_is_numeric(spvm, resolved_type) && !SPVM_RESOLVED_TYPE_is_array_numeric(spvm, resolved_type)) {
-                SPVM_yyerror_format(spvm, "filed type must be core type or core type array at %s line %d\n", op_cur->file, op_cur->line);
-                parser->fatal_error = 1;
-                return;
-              }
-              
-              break;
-            }
             case SPVM_OP_C_CODE_AND: {
               
               // Convert && to if statement
@@ -217,7 +326,7 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
               }
               
               block_base = op_my_var_stack->length;
-              int32_t* block_base_ptr = SPVM_ALLOCATOR_PARSER_alloc_int(spvm, parser->allocator);
+              int32_t* block_base_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
               *block_base_ptr = block_base;
               SPVM_ARRAY_push(spvm, block_base_stack, block_base_ptr);
               
@@ -240,7 +349,7 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                 case SPVM_OP_C_CODE_CONSTANT: {
                   SPVM_CONSTANT* constant = op_cur->uv.constant;
                   
-                  SPVM_CONSTANT_POOL* constant_pool = spvm->constant_pool;
+                  SPVM_CONSTANT_POOL* constant_pool = parser->constant_pool;
                   
                   constant->constant_pool_address = constant_pool->length;
                   
@@ -331,7 +440,7 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                 case SPVM_OP_C_CODE_CASE: {
 
                   if (!cur_case_ops) {
-                    cur_case_ops = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+                    cur_case_ops = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
                   }
                   SPVM_ARRAY_push(spvm, cur_case_ops, op_cur);
                   
@@ -679,7 +788,7 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                   SPVM_OP* op_type = op_cur->first;
                   SPVM_RESOLVED_TYPE* resolved_type = op_type->uv.type->resolved_type;
                   
-                  if (SPVM_RESOLVED_TYPE_is_array_numeric(spvm, resolved_type) || SPVM_RESOLVED_TYPE_is_array_string(spvm, resolved_type)) {
+                  if (SPVM_RESOLVED_TYPE_is_array(spvm, resolved_type)) {
                     SPVM_OP* op_index_term = op_type->last;
                     SPVM_RESOLVED_TYPE* index_resolved_type = SPVM_OP_get_resolved_type(spvm, op_index_term);
                     
@@ -687,38 +796,16 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                       SPVM_yyerror_format(spvm, "new operator can't create array which don't have length \"%s\" at %s line %d\n", resolved_type->name, op_cur->file, op_cur->line);
                       break;
                     }
-                    else if (index_resolved_type->id == SPVM_RESOLVED_TYPE_C_ID_INT) {
-                      // OK
-                    }
-                    else {
+                    else if (index_resolved_type->id != SPVM_RESOLVED_TYPE_C_ID_INT) {
                       SPVM_yyerror_format(spvm, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", resolved_type->name, op_cur->file, op_cur->line);
                       break;
                     }
-                  }
-                  else if (SPVM_RESOLVED_TYPE_is_array(spvm, resolved_type)) {
-                    SPVM_yyerror_format(spvm,
-                      "new operator can't receive object array at %s line %d\n", op_cur->file, op_cur->line);
-                    break;
                   }
                   else {
                     if (SPVM_RESOLVED_TYPE_is_numeric(spvm, resolved_type)) {
                       SPVM_yyerror_format(spvm,
                         "new operator can't receive core type at %s line %d\n", op_cur->file, op_cur->line);
                       break;
-                    }
-                    
-                    SPVM_OP* op_package = SPVM_HASH_search(spvm, parser->op_package_symtable, resolved_type->name, strlen(resolved_type->name));
-                    
-                    if (!op_package) {
-                      SPVM_yyerror_format(spvm, "new operator can't receive non package name \"%s\" at %s line %d\n", resolved_type->name, op_cur->file, op_cur->line);
-                      break;
-                    }
-                    else {
-                      SPVM_PACKAGE* package = op_package->uv.package;
-                      if (!package->op_fields->length) {
-                        SPVM_yyerror_format(spvm, "new operator can't receive package which don't have fields \"%s\" at %s line %d\n", resolved_type->name, op_cur->file, op_cur->line);
-                        break;
-                      }
                     }
                   }
                   
@@ -1443,21 +1530,17 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
       }
       
       // Push sub name to constant pool
-      sub->abs_name_constant_pool_address = spvm->constant_pool->length;
-      SPVM_CONSTANT_POOL_push_string(spvm, spvm->constant_pool, sub->abs_name);
+      sub->abs_name_constant_pool_address = parser->constant_pool->length;
+      SPVM_CONSTANT_POOL_push_string(spvm, parser->constant_pool, sub->abs_name);
       
       // Push file name to constant pool
-      sub->file_name_constant_pool_address = spvm->constant_pool->length;
+      sub->file_name_constant_pool_address = parser->constant_pool->length;
       assert(sub->file_name);
-      SPVM_CONSTANT_POOL_push_string(spvm, spvm->constant_pool, sub->file_name);
+      SPVM_CONSTANT_POOL_push_string(spvm, parser->constant_pool, sub->file_name);
       
       // Push sub information to constant pool
-      sub->constant_pool_address = spvm->constant_pool->length;
-      SPVM_CONSTANT_POOL_push_sub(spvm, spvm->constant_pool, sub);
-      
-      // Add constant pool sub to symbol table
-      const char* constant_pool_sub_name = (char*)&spvm->constant_pool->values[sub->abs_name_constant_pool_address + 1];
-      SPVM_HASH_insert(spvm, spvm->constant_pool_sub_symtable, constant_pool_sub_name, strlen(constant_pool_sub_name), (void*)(intptr_t)sub->constant_pool_address);
+      sub->constant_pool_address = parser->constant_pool->length;
+      SPVM_CONSTANT_POOL_push_sub(spvm, parser->constant_pool, sub);
     }
   }
 }

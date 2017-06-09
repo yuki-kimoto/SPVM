@@ -3,9 +3,9 @@
 #include <stdint.h>
 #include <assert.h>
 
-#include "spvm_allocator_util.h"
+#include "spvm_util_allocator.h"
 
-void* SPVM_ALLOCATOR_UTIL_safe_malloc_i32(int32_t count, int32_t size) {
+void* SPVM_UTIL_ALLOCATOR_safe_malloc_i32(int32_t count, int32_t size) {
   
   assert(count >= 0);
   assert(size >= 0);
@@ -22,7 +22,7 @@ void* SPVM_ALLOCATOR_UTIL_safe_malloc_i32(int32_t count, int32_t size) {
   return block;
 }
 
-void* SPVM_ALLOCATOR_UTIL_safe_realloc_i32(void* ptr, int32_t count, int32_t size) {
+void* SPVM_UTIL_ALLOCATOR_safe_realloc_i32(void* ptr, int32_t count, int32_t size) {
 
   assert(count >= 0);
   assert(size >= 0);
@@ -39,7 +39,7 @@ void* SPVM_ALLOCATOR_UTIL_safe_realloc_i32(void* ptr, int32_t count, int32_t siz
   return block;
 }
 
-void* SPVM_ALLOCATOR_UTIL_safe_malloc_i64(int64_t count, int64_t size) {
+void* SPVM_UTIL_ALLOCATOR_safe_malloc_i64(int64_t count, int64_t size) {
   
   assert(count >= 0);
   assert(size >= 0);

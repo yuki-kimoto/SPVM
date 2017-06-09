@@ -25,7 +25,6 @@
 #include "spvm_constant_pool.h"
 #include "spvm_bytecode.h"
 #include "spvm_bytecode_array.h"
-#include "spvm_value.h"
 
 void SPVM_DUMPER_dump_ast(SPVM* spvm, SPVM_OP* op_base) {
   int32_t depth = 0;
@@ -121,7 +120,7 @@ void SPVM_DUMPER_dump_spvm(SPVM* spvm) {
   SPVM_DUMPER_dump_resolved_types(spvm, parser->resolved_types);
   
   printf("\n[Constant pool]\n");
-  SPVM_DUMPER_dump_constant_pool(spvm, spvm->constant_pool);
+  SPVM_DUMPER_dump_constant_pool(spvm, parser->constant_pool);
   
   printf("\n[Packages]\n");
   SPVM_DUMPER_dump_packages(spvm, parser->op_packages);
@@ -148,7 +147,7 @@ void SPVM_DUMPER_dump_packages(SPVM* spvm, SPVM_ARRAY* op_packages) {
       printf("  resolved_type => \"%s\"\n", type->resolved_type->name);
     }
     
-    printf("  byte_size => %" PRId32 "\n", package->byte_size);
+    printf("  byte_size => %" PRId32 "\n", package->fields_length);
     
     // Field information
     printf("  fields\n");
@@ -160,7 +159,7 @@ void SPVM_DUMPER_dump_packages(SPVM* spvm, SPVM_ARRAY* op_packages) {
       SPVM_DUMPER_dump_field(spvm, field);
     }
     
-    printf("  ref_fields_count => \"%" PRId32 "\"\n", package->ref_fields_count);
+    printf("  ref_fields_length => \"%" PRId32 "\"\n", package->ref_fields_length);
     
     // Sub information
     printf("  subs\n");
@@ -189,7 +188,7 @@ void SPVM_DUMPER_dump_constant_pool(SPVM* spvm, SPVM_CONSTANT_POOL* constant_poo
   (void)spvm;
 
   for (int32_t i = 0; i < constant_pool->length; i++) {
-    printf("      constant_pool[%" PRId32 "] %" PRIdMAX "\n", i, constant_pool->values[i].long_value);
+    printf("      constant_pool[%" PRId32 "] %" PRId32 "\n", i, constant_pool->values[i]);
   }
 }
 
@@ -299,6 +298,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecode_a
       case SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE:
       case SPVM_BYTECODE_C_CODE_CALL_SUB:
       case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
+      case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
       case SPVM_BYTECODE_C_CODE_MALLOC_STRING:
       case SPVM_BYTECODE_C_CODE_MALLOC_OBJECT:
       {
@@ -434,6 +434,10 @@ void SPVM_DUMPER_dump_constant(SPVM* spvm, SPVM_CONSTANT* constant) {
 }
 
 void SPVM_DUMPER_dump_sub(SPVM* spvm, SPVM_SUB* sub) {
+  (void)spvm;
+  
+  SPVM_PARSER* parser = spvm->parser;
+  
   if (sub) {
     
     printf("      name => \"%s\"\n", sub->op_name->uv.name);
@@ -471,7 +475,7 @@ void SPVM_DUMPER_dump_sub(SPVM* spvm, SPVM_SUB* sub) {
       printf("      operand_stack_max => %" PRId32 "\n", sub->operand_stack_max);
       
       printf("      bytecode_array\n");
-      SPVM_DUMPER_dump_bytecode_array(spvm, spvm->bytecode_array, sub->bytecode_base, sub->bytecode_length);
+      SPVM_DUMPER_dump_bytecode_array(spvm, parser->bytecode_array, sub->bytecode_base, sub->bytecode_length);
     }
   }
   else {
@@ -485,7 +489,7 @@ void SPVM_DUMPER_dump_field(SPVM* spvm, SPVM_FIELD* field) {
   if (field) {
     printf("      name => \"%s\"\n", field->op_name->uv.name);
     
-    printf("      package_byte_offset => \"%" PRId32 "\"\n", field->package_byte_offset);
+    printf("      index => \"%" PRId32 "\"\n", field->index);
     
     SPVM_TYPE* type = field->op_type->uv.type;
     printf("      resolved_type => \"%s\"\n", type->resolved_type->name);

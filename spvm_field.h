@@ -10,7 +10,8 @@ struct SPVM_field {
   const char* abs_name;
   int32_t constant_pool_address;
   int32_t abs_name_constant_pool_address;
-  int32_t package_byte_offset;
+  int32_t name_constant_pool_address;
+  int32_t index;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM* spvm);

@@ -29,7 +29,7 @@
 #include "spvm_op_checker.h"
 #include "spvm_switch_info.h"
 #include "spvm_descriptor.h"
-#include "spvm_allocator_parser.h"
+#include "spvm_parser_allocator.h"
 #include "spvm_limit.h"
 #include "spvm_extention.h"
 #include "spvm_extention_bind.h"
@@ -234,7 +234,7 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM* spvm, SPVM_OP* op_switch, SPVM_OP*
   op_switch_condition->uv.switch_info = switch_info;
   switch_info->op_term_condition = op_term_condition;
   
-  parser->cur_op_cases = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, spvm->parser->allocator, 0);
+  parser->cur_op_cases = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, spvm->parser->allocator, 0);
   
   return op_switch;
 }
@@ -594,135 +594,6 @@ void SPVM_OP_convert_not_to_if(SPVM* spvm, SPVM_OP* op) {
   op = SPVM_OP_build_if_statement(spvm, op, op_first, op_constant_false, op_constant_true);
 }
 
-void SPVM_OP_resolve_types(SPVM* spvm) {
-  
-  SPVM_PARSER* parser = spvm->parser;
-  
-  SPVM_ARRAY* op_types = parser->op_types;
-  
-  for (int32_t i = 0, len = op_types->length; i < len; i++) {
-    assert(parser->resolved_types->length <= SPVM_LIMIT_C_RESOLVED_TYPES);
-    
-    SPVM_OP* op_type = SPVM_ARRAY_fetch(spvm, op_types, i);
-    
-    if (parser->resolved_types->length == SPVM_LIMIT_C_RESOLVED_TYPES) {
-      SPVM_yyerror_format(spvm, "too many types at %s line %d\n", op_type->file, op_type->line);
-      parser->fatal_error = 1;
-      return;
-    }
-    
-    _Bool success = SPVM_TYPE_resolve_type(spvm, op_type, 0);
-    
-    if (!success) {
-      parser->fatal_error = 1;
-      return;
-    }
-  }
-}
-
-void SPVM_OP_check(SPVM* spvm) {
-  
-  SPVM_PARSER* parser = spvm->parser;
-  
-  // Resolve types
-  SPVM_OP_resolve_types(spvm);
-  if (parser->fatal_error) {
-    return;
-  }
-  
-  // Reorder fields. Reference types place before value types.
-  SPVM_ARRAY* op_packages = spvm->parser->op_packages;
-  for (int32_t package_pos = 0; package_pos < op_packages->length; package_pos++) {
-    SPVM_OP* op_package = SPVM_ARRAY_fetch(spvm, op_packages, package_pos);
-    SPVM_PACKAGE* package = op_package->uv.package;
-    SPVM_ARRAY* op_fields = package->op_fields;
-    
-    SPVM_ARRAY* op_fields_ref = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, spvm->parser->allocator, 0);
-    SPVM_ARRAY* op_fields_value = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, spvm->parser->allocator, 0);
-    
-    // Separate reference type and value type
-    int32_t ref_fields_count = 0;
-    for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields, field_pos);
-      SPVM_FIELD* field = op_field->uv.field;
-      SPVM_RESOLVED_TYPE* field_resolved_type = field->op_type->uv.type->resolved_type;
-      
-      if (SPVM_RESOLVED_TYPE_is_numeric(spvm, field_resolved_type)) {
-        SPVM_ARRAY_push(spvm, op_fields_value, op_field);
-      }
-      else {
-        SPVM_ARRAY_push(spvm, op_fields_ref, op_field);
-        ref_fields_count++;
-      }
-    }
-    package->ref_fields_count = ref_fields_count;
-    
-    // Create ordered op fields
-    SPVM_ARRAY* ordered_op_fields = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, spvm->parser->allocator, 0);
-    for (int32_t field_pos = 0; field_pos < op_fields_ref->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields_ref, field_pos);
-      SPVM_ARRAY_push(spvm, ordered_op_fields, op_field);
-    }
-    for (int32_t field_pos = 0; field_pos < op_fields_value->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields_value, field_pos);
-      SPVM_ARRAY_push(spvm, ordered_op_fields, op_field);
-    }
-    package->op_fields = ordered_op_fields;
-  }
-  
-  // Resolve package
-  for (int32_t package_pos = 0; package_pos < op_packages->length; package_pos++) {
-    SPVM_OP* op_package = SPVM_ARRAY_fetch(spvm, op_packages, package_pos);
-    SPVM_PACKAGE* package = op_package->uv.package;
-    SPVM_ARRAY* op_fields = package->op_fields;
-    
-    // Alignment is max size of field
-    int32_t alignment = 0;
-    for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields, field_pos);
-      SPVM_FIELD* field = op_field->uv.field;
-      
-      // Alignment
-      int32_t field_byte_size = SPVM_FIELD_get_byte_size(spvm, field);
-      if (field_byte_size > alignment) {
-        alignment = field_byte_size;
-      }
-    }
-    
-    // Calculate package byte size
-    int32_t package_byte_size = 0;
-    for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields, field_pos);
-      SPVM_FIELD* field = op_field->uv.field;
-      
-      // Current byte size
-      
-      int32_t field_byte_size = SPVM_FIELD_get_byte_size(spvm, field);
-      int32_t next_alignment_base;
-      if (package_byte_size % alignment == 0) {
-        next_alignment_base = package_byte_size  + alignment;
-      }
-      else {
-        next_alignment_base = ((package_byte_size / alignment) + 1) * alignment;
-      }
-      
-      if (package_byte_size + field_byte_size > next_alignment_base) {
-        int32_t padding = alignment - (package_byte_size % alignment);
-        package_byte_size += padding;
-      }
-      field->package_byte_offset = package_byte_size;
-      package_byte_size += field_byte_size;
-    }
-    package->byte_size = package_byte_size;
-  }
-  
-  // Check types
-  SPVM_OP_CHECKER_check(spvm);
-  if (parser->fatal_error) {
-    return;
-  }
-}
-
 void SPVM_OP_resolve_sub_name(SPVM* spvm, SPVM_OP* op_package, SPVM_OP* op_name) {
   
   SPVM_NAME_INFO* name_info = op_name->uv.name_info;
@@ -808,8 +679,9 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM* spvm, SPVM_OP* op_packages) {
   
   parser->op_grammar = op_grammar;
   
-  // Resovle types, check types, and names.
-  SPVM_OP_check(spvm);
+  // Check types
+  SPVM_OP_CHECKER_check(spvm);
+
   if (parser->fatal_error) {
     return NULL;
   }
@@ -827,7 +699,7 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM* spvm, SPVM_OP* op_packages) {
 const char* SPVM_OP_create_abs_name(SPVM* spvm, const char* package_name, const char* name) {
   int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
   
-  char* abs_name = SPVM_ALLOCATOR_PARSER_alloc_string(spvm, spvm->parser->allocator, length);
+  char* abs_name = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, spvm->parser->allocator, length);
   
   sprintf(abs_name, "%s::%s", package_name, name);
   
@@ -869,8 +741,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM* spvm, SPVM_OP* op_package, SPVM_OP* op_name
     package->op_type = op_type;
     SPVM_ARRAY_push(spvm, parser->op_types, op_type);
     
-    SPVM_ARRAY* op_fields = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, spvm->parser->allocator, 0);
-    SPVM_ARRAY* op_subs = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, spvm->parser->allocator, 0);
+    SPVM_ARRAY* op_fields = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, spvm->parser->allocator, 0);
+    SPVM_ARRAY* op_subs = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, spvm->parser->allocator, 0);
     
     // Fields
     SPVM_OP* op_decls = op_block->first;
@@ -880,12 +752,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM* spvm, SPVM_OP* op_package, SPVM_OP* op_name
         SPVM_OP* op_field = op_decl;
         SPVM_FIELD* field = op_field->uv.field;
         const char* field_name = field->op_name->uv.name;
-        SPVM_OP* found_op_field = SPVM_HASH_search(spvm, parser->op_field_symtable, field_name, strlen(field_name));
+        
+        const char* field_abs_name = SPVM_OP_create_abs_name(spvm, package_name, field_name);
+        SPVM_OP* found_op_field = SPVM_HASH_search(spvm, parser->op_field_symtable, field_abs_name, strlen(field_abs_name));
         
         assert(op_fields->length <= SPVM_LIMIT_C_FIELDS);
         
         if (found_op_field) {
-          SPVM_yyerror_format(spvm, "redeclaration of has \"%s\" at %s line %d\n", field_name, op_field->file, op_field->line);
+          SPVM_yyerror_format(spvm, "redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, op_field->file, op_field->line);
         }
         else if (op_fields->length == SPVM_LIMIT_C_FIELDS) {
           SPVM_yyerror_format(spvm, "too many fields, field \"%s\" ignored at %s line %d\n", field_name, op_field->file, op_field->line);
@@ -1422,7 +1296,7 @@ SPVM_OP* SPVM_OP_new_op_list(SPVM* spvm, const char* file, int32_t line) {
 
 SPVM_OP* SPVM_OP_new_op(SPVM* spvm, int32_t code, const char* file, int32_t line) {
 
-  SPVM_OP *op = SPVM_ALLOCATOR_PARSER_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_OP));
+  SPVM_OP *op = SPVM_PARSER_ALLOCATOR_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_OP));
   
   memset(op, 0, sizeof(SPVM_OP));
   

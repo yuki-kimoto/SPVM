@@ -6,12 +6,12 @@
 #include "spvm_array.h"
 #include "spvm_hash.h"
 #include "spvm_memory_pool.h"
-#include "spvm_allocator_util.h"
-#include "spvm_allocator_parser.h"
+#include "spvm_util_allocator.h"
+#include "spvm_parser_allocator.h"
 #include "spvm_parser.h"
 
-SPVM_ALLOCATOR_PARSER* SPVM_ALLOCATOR_PARSER_new(SPVM* spvm) {
-  SPVM_ALLOCATOR_PARSER* allocator = malloc(sizeof(SPVM_ALLOCATOR_PARSER));
+SPVM_PARSER_ALLOCATOR* SPVM_PARSER_ALLOCATOR_new(SPVM* spvm) {
+  SPVM_PARSER_ALLOCATOR* allocator = malloc(sizeof(SPVM_PARSER_ALLOCATOR));
   
   // Memory pool - memory pool save short strings and object, except array and hash
   // These datas are created at compile time
@@ -26,11 +26,11 @@ SPVM_ALLOCATOR_PARSER* SPVM_ALLOCATOR_PARSER_new(SPVM* spvm) {
   return allocator;
 }
 
-void* SPVM_ALLOCATOR_PARSER_alloc_memory_pool(SPVM* spvm, SPVM_ALLOCATOR_PARSER* allocator, int32_t size) {
+void* SPVM_PARSER_ALLOCATOR_alloc_memory_pool(SPVM* spvm, SPVM_PARSER_ALLOCATOR* allocator, int32_t size) {
   return SPVM_MEMORY_POOL_alloc(spvm, allocator->memory_pool, size);
 }
 
-SPVM_ARRAY* SPVM_ALLOCATOR_PARSER_alloc_array(SPVM* spvm, SPVM_ALLOCATOR_PARSER* allocator, int32_t capacity) {
+SPVM_ARRAY* SPVM_PARSER_ALLOCATOR_alloc_array(SPVM* spvm, SPVM_PARSER_ALLOCATOR* allocator, int32_t capacity) {
   SPVM_ARRAY* array = SPVM_ARRAY_new(spvm, capacity);
   
   SPVM_ARRAY_push(spvm, allocator->arrays, array);
@@ -38,7 +38,7 @@ SPVM_ARRAY* SPVM_ALLOCATOR_PARSER_alloc_array(SPVM* spvm, SPVM_ALLOCATOR_PARSER*
   return array;
 }
 
-SPVM_HASH* SPVM_ALLOCATOR_PARSER_alloc_hash(SPVM* spvm, SPVM_ALLOCATOR_PARSER* allocator, int32_t capacity) {
+SPVM_HASH* SPVM_PARSER_ALLOCATOR_alloc_hash(SPVM* spvm, SPVM_PARSER_ALLOCATOR* allocator, int32_t capacity) {
   SPVM_HASH* hash = SPVM_HASH_new(spvm, capacity);
   
   SPVM_ARRAY_push(spvm, allocator->hashes, hash);
@@ -46,13 +46,13 @@ SPVM_HASH* SPVM_ALLOCATOR_PARSER_alloc_hash(SPVM* spvm, SPVM_ALLOCATOR_PARSER* a
   return hash;
 }
 
-int32_t* SPVM_ALLOCATOR_PARSER_alloc_int(SPVM* spvm, SPVM_ALLOCATOR_PARSER* allocator) {
+int32_t* SPVM_PARSER_ALLOCATOR_alloc_int(SPVM* spvm, SPVM_PARSER_ALLOCATOR* allocator) {
   int32_t* value = SPVM_MEMORY_POOL_alloc(spvm, allocator->memory_pool, sizeof(int32_t));
   
   return value;
 }
 
-char* SPVM_ALLOCATOR_PARSER_alloc_string(SPVM* spvm, SPVM_ALLOCATOR_PARSER* allocator, int32_t length) {
+char* SPVM_PARSER_ALLOCATOR_alloc_string(SPVM* spvm, SPVM_PARSER_ALLOCATOR* allocator, int32_t length) {
   assert(length > 0);
   assert(length <= 0xFFFF);
   
@@ -61,7 +61,7 @@ char* SPVM_ALLOCATOR_PARSER_alloc_string(SPVM* spvm, SPVM_ALLOCATOR_PARSER* allo
   return str;
 }
 
-void SPVM_ALLOCATOR_PARSER_free(SPVM* spvm, SPVM_ALLOCATOR_PARSER* allocator) {
+void SPVM_PARSER_ALLOCATOR_free(SPVM* spvm, SPVM_PARSER_ALLOCATOR* allocator) {
   // Free memory pool */
   SPVM_MEMORY_POOL_free(spvm, allocator->memory_pool);
   

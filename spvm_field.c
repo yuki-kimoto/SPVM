@@ -2,7 +2,7 @@
 
 #include "spvm_field.h"
 #include "spvm.h"
-#include "spvm_allocator_parser.h"
+#include "spvm_parser_allocator.h"
 #include "spvm_resolved_type.h"
 #include "spvm_type.h"
 #include "spvm_op.h"
@@ -11,7 +11,7 @@
 SPVM_FIELD* SPVM_FIELD_new(SPVM* spvm) {
   (void)spvm;
   
-  return SPVM_ALLOCATOR_PARSER_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_FIELD));
+  return SPVM_PARSER_ALLOCATOR_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_FIELD));
 }
 
 int32_t SPVM_FIELD_get_byte_size(SPVM* spvm, SPVM_FIELD* field) {

@@ -48,10 +48,4 @@ SPVM_EXTENTION_BIND_bind_core_extentions(SPVM* spvm, SPVM_SUB* sub, const char* 
   else if (strcmp(sub_abs_name, "std::sum_int") == 0) {
     sub->native_address = SPVM_EXTENTION_std__sum_int;
   }
-  else if (strcmp(sub_abs_name, "std::test_call1") == 0) {
-    sub->native_address = SPVM_EXTENTION_std__test_call1;
-  }
-  else if (strcmp(sub_abs_name, "std::test_call2") == 0) {
-    sub->native_address = SPVM_EXTENTION_std__test_call2;
-  }
 }

@@ -615,9 +615,17 @@ type_array
     {
       $$ = SPVM_OP_build_type_array(spvm, $1, NULL);
     }
+  | type_array '[' ']'
+    {
+      $$ = SPVM_OP_build_type_array(spvm, $1, NULL);
+    }
 
 type_array_with_length
   : type_name '[' term ']'
+    {
+      $$ = SPVM_OP_build_type_array(spvm, $1, $3);
+    }
+  | type_array '[' term ']'
     {
       $$ = SPVM_OP_build_type_array(spvm, $1, $3);
     }

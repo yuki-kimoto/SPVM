@@ -12,8 +12,8 @@
 #include "spvm_yacc_util.h"
 #include "spvm_yacc.h"
 #include "spvm_op.h"
-#include "spvm_allocator_parser.h"
-#include "spvm_allocator_util.h"
+#include "spvm_parser_allocator.h"
+#include "spvm_util_allocator.h"
 #include "spvm_constant.h"
 #include "spvm_var.h"
 #include "spvm_array.h"
@@ -71,7 +71,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
               
               // Change :: to / and add ".spvm"
               int32_t module_path_base_length = (int32_t)(strlen(package_name) + 6);
-              char* module_path_base = SPVM_ALLOCATOR_PARSER_alloc_string(spvm, parser->allocator, module_path_base_length);
+              char* module_path_base = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, module_path_base_length);
               const char* bufptr_orig = package_name;
               char* bufptr_to = module_path_base;
               while (*bufptr_orig) {
@@ -99,7 +99,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
                 
                 // File name
                 int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(module_path_base));
-                cur_module_path = SPVM_ALLOCATOR_PARSER_alloc_string(spvm, parser->allocator, file_name_length);
+                cur_module_path = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, file_name_length);
                 sprintf(cur_module_path, "%s/%s", include_path, module_path_base);
                 cur_module_path[file_name_length] = '\0';
                 
@@ -132,7 +132,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
                 exit(EXIT_FAILURE);
               }
               fseek(fh, 0, SEEK_SET);
-              char* src = SPVM_ALLOCATOR_PARSER_alloc_string(spvm, parser->allocator, file_size);
+              char* src = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, file_size);
               if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
                 if (op_use) {
                   fprintf(stderr, "Can't read file %s at %s line %" PRId32 "\n", cur_module_path, op_use->file, op_use->line);
@@ -370,15 +370,59 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
         parser->bufptr++;
         
         int8_t ch;
+        // Null string
         if (*parser->bufptr == '\'') {
           ch = '\0';
           parser->bufptr++;
         }
+        // Escape sequence
         else {
-          ch = *parser->bufptr;
-          parser->bufptr++;
+          if (*parser->bufptr == '\\') {
+            parser->bufptr++;
+            if (*parser->bufptr == '"') {
+              ch = '"';
+              parser->bufptr++;
+            }
+            else if (*parser->bufptr == '\'') {
+              ch = '\'';
+              parser->bufptr++;
+            }
+            else if (*parser->bufptr == '\\') {
+              ch = '\\';
+              parser->bufptr++;
+            }
+            else if (*parser->bufptr == 'r') {
+              ch = 0x0D;
+              parser->bufptr++;
+            }
+            else if (*parser->bufptr == 'n') {
+              ch = 0x0A;
+              parser->bufptr++;
+            }
+            else if (*parser->bufptr == 't') {
+              ch = '\t';
+              parser->bufptr++;
+            }
+            else if (*parser->bufptr == 'b') {
+              ch = '\b';
+              parser->bufptr++;
+            }
+            else if (*parser->bufptr == 'f') {
+              ch = '\f';
+              parser->bufptr++;
+            }
+            else {
+              fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %" PRId32 "\n", *(parser->bufptr -1),*parser->bufptr, parser->cur_module_path, parser->cur_line);
+              exit(EXIT_FAILURE);
+            }
+          }
+          else {
+            ch = *parser->bufptr;
+            parser->bufptr++;
+          }
+          
           if (*parser->bufptr != '\'') {
-            fprintf(stderr, "syntax error: string don't finish\n");
+            fprintf(stderr, "syntax error: character literal don't finish with '\n");
             exit(EXIT_FAILURE);
           }
           parser->bufptr++;
@@ -404,33 +448,98 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
         
         char* str;
         if (*(parser->bufptr + 1) == '"') {
-          str = SPVM_ALLOCATOR_PARSER_alloc_string(spvm, parser->allocator, 0);
+          str = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, 0);
           str[0] = '\0';
           parser->bufptr++;
           parser->bufptr++;
         }
         else {
-          while(*parser->bufptr != '"' && *parser->bufptr != '\0') {
-            parser->bufptr++;
+          _Bool finish = 0;
+          while(1) {
+            warn("AAAAAAAAAA %c", *parser->bufptr);
+            
+            if (*parser->bufptr == '"' && *(parser->bufptr - 1) != '\\') {
+              warn("BBBBBBBBBB");
+              finish = 1;
+            }
+            else if (*parser->bufptr == '\0') {
+              finish = 1;
+            }
+            if (finish) {
+              break;
+            }
+            else {
+              parser->bufptr++;
+            }
           }
           if (*parser->bufptr == '\0') {
-            fprintf(stderr, "syntax error: string don't finish\n");
+            fprintf(stderr, "syntax error: string don't finish with '\"'\n");
             exit(EXIT_FAILURE);
           }
           
-          int32_t str_len = (parser->bufptr - cur_token_ptr);
-          str = SPVM_ALLOCATOR_PARSER_alloc_string(spvm, parser->allocator, str_len);
-          memcpy(str, cur_token_ptr, str_len);
-          str[str_len] = '\0';
+          int32_t str_tmp_len = (int32_t)(parser->bufptr - cur_token_ptr);
           
+          char* str_tmp = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, str_tmp_len);
+          memcpy(str_tmp, cur_token_ptr, str_tmp_len);
+          str_tmp[str_tmp_len] = '\0';
+
           parser->bufptr++;
+          
+          str = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, str_tmp_len);
+          int32_t str_index = 0;
+          for (int32_t i = 0; i < str_tmp_len; i++) {
+            if (str_tmp[i] == '\\') {
+              i++;
+              if (str_tmp[i] == '"') {
+                str[str_index] = '"';
+                str_index++;
+              }
+              else if (str_tmp[i] == '\'') {
+                str[str_index] = '\'';
+                str_index++;
+              }
+              else if (str_tmp[i] == '\\') {
+                str[str_index] = '\\';
+                str_index++;
+              }
+              else if (str_tmp[i] == 'r') {
+                str[str_index] = 0x0D;
+                str_index++;
+              }
+              else if (str_tmp[i] == 'n') {
+                str[str_index] = 0x0A;
+                str_index++;
+              }
+              else if (str_tmp[i] == 't') {
+                str[str_index] = '\t';
+                str_index++;
+              }
+              else if (str_tmp[i] == 'b') {
+                str[str_index] = '\b';
+                str_index++;
+              }
+              else if (str_tmp[i] == 'f') {
+                str[str_index] = '\f';
+                str_index++;
+              }
+              else {
+                fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %" PRId32 "\n", *(parser->bufptr -1),*parser->bufptr, parser->cur_module_path, parser->cur_line);
+                exit(EXIT_FAILURE);
+              }
+            }
+            else {
+              str[str_index] = str_tmp[i];
+              str_index++;
+            }
+          }
+          str[str_index] = '\0';
         }
         
         SPVM_OP* op = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_CONSTANT);
         SPVM_CONSTANT* constant = SPVM_CONSTANT_new(spvm);
         constant->code = SPVM_CONSTANT_C_CODE_STRING;
         constant->uv.string_value = str;
-        constant->resolved_type = SPVM_HASH_search(spvm, parser->resolved_type_symtable, "string", strlen("string"));
+        constant->resolved_type = SPVM_HASH_search(spvm, parser->resolved_type_symtable, "byte[]", strlen("byte[]"));
         op->uv.constant = constant;
         yylvalp->opval = (SPVM_OP*)op;
         
@@ -450,7 +559,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
           }
           
           int32_t str_len = (parser->bufptr - cur_token_ptr);
-          char* var_name = SPVM_ALLOCATOR_PARSER_alloc_string(spvm, parser->allocator, str_len);
+          char* var_name = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, str_len);
           memcpy(var_name, cur_token_ptr, str_len);
           var_name[str_len] = '\0';
 
@@ -487,7 +596,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
           
           // Number literal(first is space for sign)
           int32_t str_len = (parser->bufptr - cur_token_ptr);
-          char* num_str = (char*) SPVM_ALLOCATOR_UTIL_safe_malloc_i32(str_len + 2, sizeof(char));
+          char* num_str = (char*) SPVM_UTIL_ALLOCATOR_safe_malloc_i32(str_len + 2, sizeof(char));
           memcpy(num_str, cur_token_ptr, str_len);
           num_str[str_len] = '\0';
           
@@ -609,25 +718,25 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
           
           
           int32_t str_len = (parser->bufptr - cur_token_ptr);
-          char* keyword = SPVM_ALLOCATOR_PARSER_alloc_string(spvm, parser->allocator, str_len);
+          char* keyword = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, str_len);
           
           memcpy(keyword, cur_token_ptr, str_len);
           keyword[str_len] = '\0';
-
+          
           // Keyname
-          if (memcmp(keyword, "my", str_len) == 0) {
+          if (strcmp(keyword, "my") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_MY_VAR);
             return MY;
           }
-          else if (memcmp(keyword, "has", str_len) == 0) {
+          else if (strcmp(keyword, "has") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_FIELD);
             return HAS;
           }
-          else if (memcmp(keyword, "sub", str_len) == 0) {
+          else if (strcmp(keyword, "sub") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_SUB);
             return SUB;
           }
-          else if (memcmp(keyword, "package", str_len) == 0) {
+          else if (strcmp(keyword, "package") == 0) {
             // File can contains only one package
             if (parser->current_package_count) {
               fprintf(stderr, "Can't write second package declaration in file at %s line %" PRId32 "\n", parser->cur_module_path, parser->cur_line);
@@ -638,97 +747,97 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_PACKAGE);
             return PACKAGE;
           }
-          else if (memcmp(keyword, "switch", str_len) == 0) {
+          else if (strcmp(keyword, "switch") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_SWITCH);
             return SWITCH;
           }
-          else if (memcmp(keyword, "case", str_len) == 0) {
+          else if (strcmp(keyword, "case") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_CASE);
             return CASE;
           }
-          else if (memcmp(keyword, "default", str_len) == 0) {
+          else if (strcmp(keyword, "default") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_DEFAULT);
             return DEFAULT;
           }
-          else if (memcmp(keyword, "if", str_len) == 0) {
+          else if (strcmp(keyword, "if") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_IF);
             return IF;
           }
-          else if (memcmp(keyword, "elsif", str_len) == 0) {
+          else if (strcmp(keyword, "elsif") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_ELSIF);
             return ELSIF;
           }
-          else if (memcmp(keyword, "else", str_len) == 0) {
+          else if (strcmp(keyword, "else") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_ELSE);
             return ELSE;
           }
-          else if (memcmp(keyword, "return", str_len) == 0) {
+          else if (strcmp(keyword, "return") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_RETURN);
             return RETURN;
           }
-          else if (memcmp(keyword, "for", str_len) == 0) {
+          else if (strcmp(keyword, "for") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_FOR);
             return FOR;
           }
-          else if (memcmp(keyword, "last", str_len) == 0) {
+          else if (strcmp(keyword, "last") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_LAST);
             return LAST;
           }
-          else if (memcmp(keyword, "next", str_len) == 0) {
+          else if (strcmp(keyword, "next") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_NEXT);
             return NEXT;
           }
-          else if (memcmp(keyword, "use", str_len) == 0) {
+          else if (strcmp(keyword, "use") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_USE);
             return USE;
           }
-          else if (memcmp(keyword, "undef", str_len) == 0) {
+          else if (strcmp(keyword, "undef") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_UNDEF);
             return UNDEF;
           }
-          else if (memcmp(keyword, "void", str_len) == 0) {
+          else if (strcmp(keyword, "void") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_VOID);
             return VOID;
           }
-          else if (memcmp(keyword, "while", str_len) == 0) {
+          else if (strcmp(keyword, "while") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_WHILE);
             return WHILE;
           }
-          else if (memcmp(keyword, "malloc", str_len) == 0) {
+          else if (strcmp(keyword, "malloc") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_MALLOC);
             return MALLOC;
           }
-          else if (memcmp(keyword, "enum", str_len) == 0) {
+          else if (strcmp(keyword, "enum") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_ENUM);
             return ENUM;
           }
-          else if (memcmp(keyword, "die", str_len) == 0) {
+          else if (strcmp(keyword, "die") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_DIE);
             return DIE;
           }
-          else if (memcmp(keyword, "try", str_len) == 0) {
+          else if (strcmp(keyword, "try") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_TRY);
             return TRY;
           }
-          else if (memcmp(keyword, "catch", str_len) == 0) {
+          else if (strcmp(keyword, "catch") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_CATCH);
             return CATCH;
           }
-          else if (memcmp(keyword, "native", str_len) == 0) {
+          else if (strcmp(keyword, "native") == 0) {
             SPVM_OP* op = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_DESCRIPTOR);
             op->code = SPVM_DESCRIPTOR_C_CODE_NATIVE;
             yylvalp->opval = op;
             
             return DESCRIPTOR;
           }
-          else if (memcmp(keyword, "const", str_len) == 0) {
+          else if (strcmp(keyword, "const") == 0) {
             SPVM_OP* op = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_DESCRIPTOR);
             op->code = SPVM_DESCRIPTOR_C_CODE_CONST;
             yylvalp->opval = op;
             
             return DESCRIPTOR;
           }
-          else if (memcmp(keyword, "len", str_len) == 0) {
+          else if (strcmp(keyword, "len") == 0) {
             parser->bufptr++;
             SPVM_OP* op = SPVM_TOKE_newOP(spvm, SPVM_OP_C_CODE_ARRAY_LENGTH);
             yylvalp->opval = op;

@@ -5,7 +5,7 @@
 
 // Array
 struct SPVM_constant_pool {
-  SPVM_VALUE* values;
+  int32_t* values;
   int32_t length;
   int32_t capacity;
 };
@@ -25,7 +25,5 @@ void SPVM_CONSTANT_POOL_push_sub(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, 
 void SPVM_CONSTANT_POOL_push_package(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, SPVM_PACKAGE* package);
 void SPVM_CONSTANT_POOL_push_field(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, SPVM_FIELD* field);
 void SPVM_CONSTANT_POOL_free(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool);
-
-char* SPVM_CONSTANT_POOL_get_string_value(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, int32_t address);
 
 #endif

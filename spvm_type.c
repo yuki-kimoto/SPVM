@@ -9,7 +9,7 @@
 #include "spvm_array.h"
 #include "spvm_type_part.h"
 #include "spvm_op.h"
-#include "spvm_allocator_parser.h"
+#include "spvm_parser_allocator.h"
 #include "spvm_hash.h"
 #include "spvm_resolved_type.h"
 #include "spvm_yacc_util.h"
@@ -33,9 +33,9 @@ _Bool SPVM_TYPE_resolve_type(SPVM* spvm, SPVM_OP* op_type, int32_t name_length) 
     return 1;
   }
   else {
-    SPVM_ARRAY* resolved_type_part_names = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+    SPVM_ARRAY* resolved_type_part_names = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
     
-    SPVM_ARRAY* parts = SPVM_ALLOCATOR_PARSER_alloc_array(spvm, parser->allocator, 0);
+    SPVM_ARRAY* parts = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
     SPVM_TYPE_build_parts(spvm, type, parts);
     
     for (int32_t i = 0; i < parts->length; i++) {
@@ -71,7 +71,7 @@ _Bool SPVM_TYPE_resolve_type(SPVM* spvm, SPVM_OP* op_type, int32_t name_length) 
         name_length += strlen(part_name);
       }
     }
-    char* resolved_type_name = SPVM_ALLOCATOR_PARSER_alloc_string(spvm, parser->allocator, name_length);
+    char* resolved_type_name = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, name_length);
     
     int32_t cur_pos = 0;
     for (int32_t i = 0; i < resolved_type_part_names->length; i++) {
@@ -101,7 +101,7 @@ _Bool SPVM_TYPE_resolve_type(SPVM* spvm, SPVM_OP* op_type, int32_t name_length) 
 }
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM* spvm) {
-  SPVM_TYPE* type = SPVM_ALLOCATOR_PARSER_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_TYPE));
+  SPVM_TYPE* type = SPVM_PARSER_ALLOCATOR_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_TYPE));
   
   return type;
 }
