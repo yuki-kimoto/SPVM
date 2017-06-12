@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant.h"
 #include "spvm_package.h"
@@ -16,7 +16,7 @@
 #include "spvm_op.h"
 #include "spvm_data_api.h"
 
-SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM* spvm) {
+SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM_* spvm) {
   (void)spvm;
   
   SPVM_CONSTANT_POOL* constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_CONSTANT_POOL));
@@ -32,7 +32,7 @@ SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM* spvm) {
   return constant_pool;
 }
 
-int32_t SPVM_CONSTANT_POOL_calculate_extend_length(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, int32_t byte_size) {
+int32_t SPVM_CONSTANT_POOL_calculate_extend_length(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, int32_t byte_size) {
   (void)spvm;
   (void)constant_pool;
   
@@ -41,7 +41,7 @@ int32_t SPVM_CONSTANT_POOL_calculate_extend_length(SPVM* spvm, SPVM_CONSTANT_POO
   return length;
 }
 
-void SPVM_CONSTANT_POOL_extend(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, int32_t extend) {
+void SPVM_CONSTANT_POOL_extend(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, int32_t extend) {
   (void)spvm;
   
   int32_t capacity = constant_pool->capacity;
@@ -53,7 +53,7 @@ void SPVM_CONSTANT_POOL_extend(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, in
   }
 }
 
-void SPVM_CONSTANT_POOL_push_package(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, SPVM_PACKAGE* package) {
+void SPVM_CONSTANT_POOL_push_package(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, SPVM_PACKAGE* package) {
   (void)spvm;
   
   // Extend
@@ -74,7 +74,7 @@ void SPVM_CONSTANT_POOL_push_package(SPVM* spvm, SPVM_CONSTANT_POOL* constant_po
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_sub(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, SPVM_SUB* sub) {
+void SPVM_CONSTANT_POOL_push_sub(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, SPVM_SUB* sub) {
   (void)spvm;
   
   // Extend
@@ -103,7 +103,7 @@ void SPVM_CONSTANT_POOL_push_sub(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, 
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_field(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, SPVM_FIELD* field) {
+void SPVM_CONSTANT_POOL_push_field(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, SPVM_FIELD* field) {
   (void)spvm;
   
   // Extend
@@ -121,7 +121,7 @@ void SPVM_CONSTANT_POOL_push_field(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_int(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, int32_t value) {
+void SPVM_CONSTANT_POOL_push_int(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, int32_t value) {
   (void)spvm;
   
   // Add int value
@@ -131,7 +131,7 @@ void SPVM_CONSTANT_POOL_push_int(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, 
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_long(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, int64_t value) {
+void SPVM_CONSTANT_POOL_push_long(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, int64_t value) {
   (void)spvm;
   
   // Add long value
@@ -142,7 +142,7 @@ void SPVM_CONSTANT_POOL_push_long(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool,
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_float(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, float value) {
+void SPVM_CONSTANT_POOL_push_float(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, float value) {
   (void)spvm;
 
   // Add float value
@@ -152,7 +152,7 @@ void SPVM_CONSTANT_POOL_push_float(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_double(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, double value) {
+void SPVM_CONSTANT_POOL_push_double(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, double value) {
   (void)spvm;
   
   // Add double value
@@ -162,7 +162,7 @@ void SPVM_CONSTANT_POOL_push_double(SPVM* spvm, SPVM_CONSTANT_POOL* constant_poo
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_string(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool, const char* string) {
+void SPVM_CONSTANT_POOL_push_string(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool, const char* string) {
   
   // Add string length
   int32_t string_length = (int32_t)strlen(string);
@@ -178,7 +178,7 @@ void SPVM_CONSTANT_POOL_push_string(SPVM* spvm, SPVM_CONSTANT_POOL* constant_poo
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_free(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool) {
+void SPVM_CONSTANT_POOL_free(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool) {
   (void)spvm;
   
   free(constant_pool->values);

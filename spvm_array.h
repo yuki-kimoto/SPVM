@@ -9,13 +9,13 @@ struct SPVM_array {
   int32_t capacity;
 };
 
-SPVM_ARRAY* SPVM_ARRAY_new(SPVM* spvm, int32_t capacity);
-void SPVM_ARRAY_free(SPVM* spvm, SPVM_ARRAY* array);
-void SPVM_ARRAY_maybe_extend(SPVM* spvm, SPVM_ARRAY* array);
+SPVM_ARRAY* SPVM_ARRAY_new(SPVM_* spvm, int32_t capacity);
+void SPVM_ARRAY_free(SPVM_* spvm, SPVM_ARRAY* array);
+void SPVM_ARRAY_maybe_extend(SPVM_* spvm, SPVM_ARRAY* array);
 
-void SPVM_ARRAY_push(SPVM* spvm, SPVM_ARRAY* array, void* value);
-void* SPVM_ARRAY_fetch(SPVM* spvm, SPVM_ARRAY* array, int32_t index);
-void SPVM_ARRAY_store(SPVM* spvm, SPVM_ARRAY* array, int32_t index, void* value);
-void* SPVM_ARRAY_pop(SPVM* spvm, SPVM_ARRAY* array);
+void SPVM_ARRAY_push(SPVM_* spvm, SPVM_ARRAY* array, void* value);
+void* SPVM_ARRAY_fetch(SPVM_* spvm, SPVM_ARRAY* array, int32_t index);
+void SPVM_ARRAY_store(SPVM_* spvm, SPVM_ARRAY* array, int32_t index, void* value);
+void* SPVM_ARRAY_pop(SPVM_* spvm, SPVM_ARRAY* array);
 
 #endif

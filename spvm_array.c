@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_array.h"
 #include "spvm_util_allocator.h"
 #include "spvm_parser.h"
 
-SPVM_ARRAY* SPVM_ARRAY_new(SPVM* spvm, int32_t capacity) {
+SPVM_ARRAY* SPVM_ARRAY_new(SPVM_* spvm, int32_t capacity) {
   (void)spvm;
   
   assert(capacity >= 0);
@@ -29,7 +29,7 @@ SPVM_ARRAY* SPVM_ARRAY_new(SPVM* spvm, int32_t capacity) {
   return array;
 }
 
-void SPVM_ARRAY_maybe_extend(SPVM* spvm, SPVM_ARRAY* array) {
+void SPVM_ARRAY_maybe_extend(SPVM_* spvm, SPVM_ARRAY* array) {
   (void)spvm;
   
   assert(array);
@@ -44,14 +44,14 @@ void SPVM_ARRAY_maybe_extend(SPVM* spvm, SPVM_ARRAY* array) {
   }
 }
 
-void SPVM_ARRAY_free(SPVM* spvm, SPVM_ARRAY* array) {
+void SPVM_ARRAY_free(SPVM_* spvm, SPVM_ARRAY* array) {
   (void)spvm;
   
   free(array->values);
   free(array);
 }
 
-void SPVM_ARRAY_push(SPVM* spvm, SPVM_ARRAY* array, void* value) {
+void SPVM_ARRAY_push(SPVM_* spvm, SPVM_ARRAY* array, void* value) {
   
   SPVM_ARRAY_maybe_extend(spvm, array);
   
@@ -61,7 +61,7 @@ void SPVM_ARRAY_push(SPVM* spvm, SPVM_ARRAY* array, void* value) {
   array->length++;
 }
 
-void* SPVM_ARRAY_fetch(SPVM* spvm, SPVM_ARRAY* array, int32_t index) {
+void* SPVM_ARRAY_fetch(SPVM_* spvm, SPVM_ARRAY* array, int32_t index) {
   (void)spvm;
   
   assert(array);
@@ -71,7 +71,7 @@ void* SPVM_ARRAY_fetch(SPVM* spvm, SPVM_ARRAY* array, int32_t index) {
   return *(void**)&array->values[index];
 }
 
-void SPVM_ARRAY_store(SPVM* spvm, SPVM_ARRAY* array, int32_t index, void* value) {
+void SPVM_ARRAY_store(SPVM_* spvm, SPVM_ARRAY* array, int32_t index, void* value) {
   (void)spvm;
   
   assert(array);
@@ -81,7 +81,7 @@ void SPVM_ARRAY_store(SPVM* spvm, SPVM_ARRAY* array, int32_t index, void* value)
   *(void**)&array->values[index] = value;
 }
 
-void* SPVM_ARRAY_pop(SPVM* spvm, SPVM_ARRAY* array) {
+void* SPVM_ARRAY_pop(SPVM_* spvm, SPVM_ARRAY* array) {
   (void)spvm;
   
   assert(array->length >= 0);

@@ -171,9 +171,9 @@ typedef struct SPVM_hash_entry SPVM_HASH_ENTRY;
 struct SPVM_hash;
 typedef struct SPVM_hash SPVM_HASH;
 
-/* spvm.h */
+/* spvm_.h */
 struct spvm_;
-typedef struct spvm_ SPVM;
+typedef struct spvm_ SPVM_;
 
 union SPVM_yystype;
 typedef union SPVM_yystype SPVM_YYSTYPE;

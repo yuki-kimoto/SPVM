@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_type.h"
 #include "spvm_type_component_name.h"
@@ -22,7 +22,7 @@ const char* const SPVM_TYPE_C_CODE_NAMES[] = {
 };
 
 // Resolve type and index type
-_Bool SPVM_TYPE_resolve_type(SPVM* spvm, SPVM_OP* op_type, int32_t name_length) {
+_Bool SPVM_TYPE_resolve_type(SPVM_* spvm, SPVM_OP* op_type, int32_t name_length) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -100,13 +100,13 @@ _Bool SPVM_TYPE_resolve_type(SPVM* spvm, SPVM_OP* op_type, int32_t name_length) 
   return 1;
 }
 
-SPVM_TYPE* SPVM_TYPE_new(SPVM* spvm) {
+SPVM_TYPE* SPVM_TYPE_new(SPVM_* spvm) {
   SPVM_TYPE* type = SPVM_PARSER_ALLOCATOR_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_TYPE));
   
   return type;
 }
 
-void SPVM_TYPE_build_parts(SPVM* spvm, SPVM_TYPE* type, SPVM_ARRAY* parts) {
+void SPVM_TYPE_build_parts(SPVM_* spvm, SPVM_TYPE* type, SPVM_ARRAY* parts) {
   
   if (type->code == SPVM_TYPE_C_CODE_NAME) {
     SPVM_TYPE_PART* part = SPVM_TYPE_PART_new(spvm);

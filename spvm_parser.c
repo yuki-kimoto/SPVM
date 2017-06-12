@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_resolved_type.h"
 #include "spvm_package.h"
@@ -19,7 +19,7 @@
 #include "spvm_sub.h"
 #include "spvm_constant_pool.h"
 
-SPVM_PARSER* SPVM_PARSER_new(SPVM* spvm) {
+SPVM_PARSER* SPVM_PARSER_new(SPVM_* spvm) {
   SPVM_PARSER* parser = malloc(sizeof(SPVM_PARSER));
 
   // Allocator
@@ -67,7 +67,7 @@ SPVM_PARSER* SPVM_PARSER_new(SPVM* spvm) {
   return parser;
 }
 
-int32_t SPVM_PARSER_parse(SPVM* spvm, const char* package_name) {
+int32_t SPVM_PARSER_parse(SPVM_* spvm, const char* package_name) {
   
   SPVM_PARSER* parser = spvm->parser;
 
@@ -106,7 +106,7 @@ int32_t SPVM_PARSER_parse(SPVM* spvm, const char* package_name) {
   return parse_success;
 }
 
-void SPVM_PARSER_free(SPVM* spvm, SPVM_PARSER* parser) {
+void SPVM_PARSER_free(SPVM_* spvm, SPVM_PARSER* parser) {
   
   // Free allocator
   SPVM_PARSER_ALLOCATOR_free(spvm, parser->allocator);

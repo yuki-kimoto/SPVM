@@ -17,6 +17,6 @@ struct SPVM_switch_info {
   int32_t code;
 };
 
-SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM* spvm);
+SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_* spvm);
 
 #endif

@@ -6,7 +6,7 @@
 
 #include <inttypes.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_array.h"
 #include "spvm_hash.h"
@@ -122,7 +122,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "NEXT_PROCESS",
 };
 
-SPVM_OP* SPVM_OP_new_op_constant_int(SPVM* spvm, int32_t value, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_* spvm, int32_t value, const char* file, int32_t line) {
   SPVM_OP* op_constant = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(spvm);
   
@@ -135,7 +135,7 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM* spvm, int32_t value, const char* file
   return op_constant;
 }
 
-SPVM_OP* SPVM_OP_new_op_constant_long(SPVM* spvm, int64_t value, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_* spvm, int64_t value, const char* file, int32_t line) {
   SPVM_OP* op_constant = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(spvm);
   
@@ -148,7 +148,7 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM* spvm, int64_t value, const char* fil
   return op_constant;
 }
 
-SPVM_OP* SPVM_OP_new_op_constant_float(SPVM* spvm, float value, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_* spvm, float value, const char* file, int32_t line) {
   SPVM_OP* op_constant = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(spvm);
   
@@ -161,7 +161,7 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM* spvm, float value, const char* file
   return op_constant;
 }
 
-SPVM_OP* SPVM_OP_new_op_constant_double(SPVM* spvm, double value, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_* spvm, double value, const char* file, int32_t line) {
   SPVM_OP* op_constant = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(spvm);
   
@@ -174,7 +174,7 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM* spvm, double value, const char* fi
   return op_constant;
 }
 
-SPVM_OP* SPVM_OP_new_op_var_from_op_my_var(SPVM* spvm, SPVM_OP* op_my_var) {
+SPVM_OP* SPVM_OP_new_op_var_from_op_my_var(SPVM_* spvm, SPVM_OP* op_my_var) {
   (void)spvm;
   
   SPVM_VAR* var = SPVM_VAR_new(spvm);
@@ -191,7 +191,7 @@ SPVM_OP* SPVM_OP_new_op_var_from_op_my_var(SPVM* spvm, SPVM_OP* op_my_var) {
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM* spvm, SPVM_OP* op_sub) {
+SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_* spvm, SPVM_OP* op_sub) {
   (void)spvm;
   
   SPVM_OP* op_block = op_sub->last;
@@ -204,7 +204,7 @@ SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM* spvm, SPVM_OP* op_sub) {
   }
 }
 
-SPVM_OP* SPVM_OP_build_try_catch(SPVM* spvm, SPVM_OP* op_try, SPVM_OP* op_try_block, SPVM_OP* op_catch, SPVM_OP* op_var, SPVM_OP* op_catch_block) {
+SPVM_OP* SPVM_OP_build_try_catch(SPVM_* spvm, SPVM_OP* op_try, SPVM_OP* op_try_block, SPVM_OP* op_catch, SPVM_OP* op_var, SPVM_OP* op_catch_block) {
   
   // Create op_my_var from op_var
   SPVM_OP* op_type = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
@@ -237,7 +237,7 @@ SPVM_OP* SPVM_OP_build_try_catch(SPVM* spvm, SPVM_OP* op_try, SPVM_OP* op_try_bl
   return op_try;
 }
 
-SPVM_OP* SPVM_OP_build_switch_statement(SPVM* spvm, SPVM_OP* op_switch, SPVM_OP* op_term_condition, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_switch_statement(SPVM_* spvm, SPVM_OP* op_switch, SPVM_OP* op_term_condition, SPVM_OP* op_block) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -261,7 +261,7 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM* spvm, SPVM_OP* op_switch, SPVM_OP*
   return op_switch;
 }
 
-SPVM_OP* SPVM_OP_build_case_statement(SPVM* spvm, SPVM_OP* op_case, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_case_statement(SPVM_* spvm, SPVM_OP* op_case, SPVM_OP* op_term) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -280,7 +280,7 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM* spvm, SPVM_OP* op_case, SPVM_OP* op_
   return op_case;
 }
 
-SPVM_OP* SPVM_OP_build_for_statement(SPVM* spvm, SPVM_OP* op_FOR, SPVM_OP* op_statement_init, SPVM_OP* op_term_condition, SPVM_OP* op_term_next_value, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_for_statement(SPVM_* spvm, SPVM_OP* op_FOR, SPVM_OP* op_statement_init, SPVM_OP* op_term_condition, SPVM_OP* op_term_next_value, SPVM_OP* op_block) {
   
   // Outer block for initialize loop variable
   SPVM_OP* op_block_outer = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_BLOCK, op_FOR->file, op_FOR->line);
@@ -311,7 +311,7 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM* spvm, SPVM_OP* op_FOR, SPVM_OP* op_st
   return op_block_outer;
 }
 
-SPVM_OP* SPVM_OP_build_while_statement(SPVM* spvm, SPVM_OP* op_WHILE, SPVM_OP* op_term, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_while_statement(SPVM_* spvm, SPVM_OP* op_WHILE, SPVM_OP* op_term, SPVM_OP* op_block) {
   
   // Loop
   SPVM_OP* op_loop = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_LOOP, op_WHILE->file, op_WHILE->line);
@@ -330,7 +330,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM* spvm, SPVM_OP* op_WHILE, SPVM_OP* o
   return op_loop;
 }
 
-SPVM_OP* SPVM_OP_build_if_statement(SPVM* spvm, SPVM_OP* op_if, SPVM_OP* op_term, SPVM_OP* op_block_if, SPVM_OP* op_block_else) {
+SPVM_OP* SPVM_OP_build_if_statement(SPVM_* spvm, SPVM_OP* op_if, SPVM_OP* op_term, SPVM_OP* op_block_if, SPVM_OP* op_block_else) {
   
   if (op_if->code == SPVM_OP_C_CODE_ELSIF) {
     op_if->code = SPVM_OP_C_CODE_IF;
@@ -385,21 +385,21 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM* spvm, SPVM_OP* op_if, SPVM_OP* op_term
   return op_if;
 }
 
-SPVM_OP* SPVM_OP_build_array_length(SPVM* spvm, SPVM_OP* op_array_length, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_array_length(SPVM_* spvm, SPVM_OP* op_array_length, SPVM_OP* op_term) {
   
   SPVM_OP_sibling_splice(spvm, op_array_length, NULL, 0, op_term);
   
   return op_array_length;
 }
 
-SPVM_OP* SPVM_OP_build_malloc_object(SPVM* spvm, SPVM_OP* op_malloc, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_malloc_object(SPVM_* spvm, SPVM_OP* op_malloc, SPVM_OP* op_type) {
   
   SPVM_OP_sibling_splice(spvm, op_malloc, NULL, 0, op_type);
   
   return op_malloc;
 }
 
-SPVM_RESOLVED_TYPE* SPVM_OP_get_resolved_type(SPVM* spvm, SPVM_OP* op) {
+SPVM_RESOLVED_TYPE* SPVM_OP_get_resolved_type(SPVM_* spvm, SPVM_OP* op) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -502,7 +502,7 @@ SPVM_RESOLVED_TYPE* SPVM_OP_get_resolved_type(SPVM* spvm, SPVM_OP* op) {
   return resolved_type;
 }
 
-void SPVM_OP_convert_and_to_if(SPVM* spvm, SPVM_OP* op) {
+void SPVM_OP_convert_and_to_if(SPVM_* spvm, SPVM_OP* op) {
   
   /* before
     AND
@@ -548,7 +548,7 @@ void SPVM_OP_convert_and_to_if(SPVM* spvm, SPVM_OP* op) {
   SPVM_OP_sibling_splice(spvm, op, op_if, 0, op_constant_false1);
 }
 
-void SPVM_OP_convert_or_to_if(SPVM* spvm, SPVM_OP* op) {
+void SPVM_OP_convert_or_to_if(SPVM_* spvm, SPVM_OP* op) {
   
   // before
   //  OR
@@ -590,7 +590,7 @@ void SPVM_OP_convert_or_to_if(SPVM* spvm, SPVM_OP* op) {
   SPVM_OP_sibling_splice(spvm, op, op_constant_true1, 0, op_if);
 }
 
-void SPVM_OP_convert_not_to_if(SPVM* spvm, SPVM_OP* op) {
+void SPVM_OP_convert_not_to_if(SPVM_* spvm, SPVM_OP* op) {
   
   // before
   //  NOT
@@ -616,7 +616,7 @@ void SPVM_OP_convert_not_to_if(SPVM* spvm, SPVM_OP* op) {
   op = SPVM_OP_build_if_statement(spvm, op, op_first, op_constant_false, op_constant_true);
 }
 
-void SPVM_OP_resolve_sub_name(SPVM* spvm, SPVM_OP* op_package, SPVM_OP* op_name) {
+void SPVM_OP_resolve_sub_name(SPVM_* spvm, SPVM_OP* op_package, SPVM_OP* op_name) {
   
   SPVM_NAME_INFO* name_info = op_name->uv.name_info;
   
@@ -638,7 +638,7 @@ void SPVM_OP_resolve_sub_name(SPVM* spvm, SPVM_OP* op_package, SPVM_OP* op_name)
   name_info->resolved_name = sub_abs_name;
 }
 
-void SPVM_OP_resolve_field_name(SPVM* spvm, SPVM_OP* op_field) {
+void SPVM_OP_resolve_field_name(SPVM_* spvm, SPVM_OP* op_field) {
   
   SPVM_OP* op_term_invoker = op_field->first;
   SPVM_OP* op_name = op_field->last;
@@ -651,7 +651,7 @@ void SPVM_OP_resolve_field_name(SPVM* spvm, SPVM_OP* op_field) {
   op_field->uv.name_info->resolved_name = field_abs_name;
 }
 
-SPVM_OP* SPVM_OP_build_array_elem(SPVM* spvm, SPVM_OP* op_var, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_array_elem(SPVM_* spvm, SPVM_OP* op_var, SPVM_OP* op_term) {
   
   SPVM_OP* op_array_elem = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_ARRAY_ELEM, op_var->file, op_var->line);
   SPVM_OP_sibling_splice(spvm, op_array_elem, NULL, 0, op_var);
@@ -660,7 +660,7 @@ SPVM_OP* SPVM_OP_build_array_elem(SPVM* spvm, SPVM_OP* op_var, SPVM_OP* op_term)
   return op_array_elem;
 }
 
-SPVM_OP* SPVM_OP_build_call_field(SPVM* spvm, SPVM_OP* op_var, SPVM_OP* op_name_field) {
+SPVM_OP* SPVM_OP_build_call_field(SPVM_* spvm, SPVM_OP* op_var, SPVM_OP* op_name_field) {
   SPVM_OP* op_field = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_CALL_FIELD, op_var->file, op_var->line);
   SPVM_OP_sibling_splice(spvm, op_field, NULL, 0, op_var);
   SPVM_OP_sibling_splice(spvm, op_field, op_var, 0, op_name_field);
@@ -680,7 +680,7 @@ SPVM_OP* SPVM_OP_build_call_field(SPVM* spvm, SPVM_OP* op_var, SPVM_OP* op_name_
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_convert_type(SPVM* spvm, SPVM_OP* op_type, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_convert_type(SPVM_* spvm, SPVM_OP* op_type, SPVM_OP* op_term) {
   
   SPVM_OP* op_convert_type = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_CONVERT, op_type->file, op_type->line);
   SPVM_OP_sibling_splice(spvm, op_convert_type, NULL, 0, op_term);
@@ -692,7 +692,7 @@ SPVM_OP* SPVM_OP_build_convert_type(SPVM* spvm, SPVM_OP* op_type, SPVM_OP* op_te
   return op_convert_type;
 }
 
-SPVM_OP* SPVM_OP_build_grammar(SPVM* spvm, SPVM_OP* op_packages) {
+SPVM_OP* SPVM_OP_build_grammar(SPVM_* spvm, SPVM_OP* op_packages) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -718,7 +718,7 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM* spvm, SPVM_OP* op_packages) {
   return op_grammar;
 }
 
-const char* SPVM_OP_create_abs_name(SPVM* spvm, const char* package_name, const char* name) {
+const char* SPVM_OP_create_abs_name(SPVM_* spvm, const char* package_name, const char* name) {
   int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
   
   char* abs_name = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, spvm->parser->allocator, length);
@@ -728,7 +728,7 @@ const char* SPVM_OP_create_abs_name(SPVM* spvm, const char* package_name, const 
   return abs_name;
 }
 
-SPVM_OP* SPVM_OP_build_package(SPVM* spvm, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_package(SPVM_* spvm, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block) {
   
   SPVM_PARSER* parser = spvm->parser;
 
@@ -939,7 +939,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM* spvm, SPVM_OP* op_package, SPVM_OP* op_name
   return op_package;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM* spvm, SPVM_OP* op_use, SPVM_OP* op_name_package) {
+SPVM_OP* SPVM_OP_build_use(SPVM_* spvm, SPVM_OP* op_use, SPVM_OP* op_name_package) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -956,7 +956,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM* spvm, SPVM_OP* op_use, SPVM_OP* op_name_package
   return op_use;
 }
 
-SPVM_OP* SPVM_OP_build_my_var(SPVM* spvm, SPVM_OP* op_my_var, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_my_var(SPVM_* spvm, SPVM_OP* op_my_var, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_term) {
   
   // Stab
   SPVM_OP* op_my_var_parent = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_MY_VAR_INIT, op_my_var->file, op_my_var->line);
@@ -999,7 +999,7 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM* spvm, SPVM_OP* op_my_var, SPVM_OP* op_var, S
   return op_my_var_parent;
 }
 
-SPVM_OP* SPVM_OP_build_field(SPVM* spvm, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_field(SPVM_* spvm, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_type) {
   
   // Build OP
   SPVM_OP_sibling_splice(spvm, op_field, NULL, 0, op_name_field);
@@ -1020,7 +1020,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM* spvm, SPVM_OP* op_field, SPVM_OP* op_name_fie
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_sub(SPVM* spvm, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_type_or_void, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_sub(SPVM_* spvm, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_type_or_void, SPVM_OP* op_block) {
   
   // Build OP_SUB
   SPVM_OP_sibling_splice(spvm, op_sub, NULL, 0, op_name_sub);
@@ -1087,7 +1087,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM* spvm, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SP
   return op_sub;
 }
 
-SPVM_OP* SPVM_OP_build_enumeration(SPVM* spvm, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block) {
+SPVM_OP* SPVM_OP_build_enumeration(SPVM_* spvm, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block) {
   
   // Build OP_SUB
   SPVM_OP_sibling_splice(spvm, op_enumeration, NULL, 0, op_enumeration_block);
@@ -1095,7 +1095,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM* spvm, SPVM_OP* op_enumeration, SPVM_OP*
   return op_enumeration;
 }
 
-SPVM_OP* SPVM_OP_build_call_sub(SPVM* spvm, SPVM_OP* op_invocant, SPVM_OP* op_name_sub, SPVM_OP* op_terms) {
+SPVM_OP* SPVM_OP_build_call_sub(SPVM_* spvm, SPVM_OP* op_invocant, SPVM_OP* op_name_sub, SPVM_OP* op_terms) {
   
   // Build OP_SUB
   SPVM_OP* op_call_sub = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_CALL_SUB, op_name_sub->file, op_name_sub->line);
@@ -1172,7 +1172,7 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM* spvm, SPVM_OP* op_invocant, SPVM_OP* op_na
   return op_call_sub;
 }
 
-SPVM_OP* SPVM_OP_build_unop(SPVM* spvm, SPVM_OP* op_unary, SPVM_OP* op_first) {
+SPVM_OP* SPVM_OP_build_unop(SPVM_* spvm, SPVM_OP* op_unary, SPVM_OP* op_first) {
   
   // Build op
   SPVM_OP_sibling_splice(spvm, op_unary, NULL, 0, op_first);
@@ -1180,7 +1180,7 @@ SPVM_OP* SPVM_OP_build_unop(SPVM* spvm, SPVM_OP* op_unary, SPVM_OP* op_first) {
   return op_unary;
 }
 
-SPVM_OP* SPVM_OP_build_binop(SPVM* spvm, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
+SPVM_OP* SPVM_OP_build_binop(SPVM_* spvm, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Build op
   SPVM_OP_sibling_splice(spvm, op_bin, NULL, 0, op_first);
@@ -1191,7 +1191,7 @@ SPVM_OP* SPVM_OP_build_binop(SPVM* spvm, SPVM_OP* op_bin, SPVM_OP* op_first, SPV
   return op_bin;
 }
 
-SPVM_OP* SPVM_OP_build_type_name(SPVM* spvm, SPVM_OP* op_name) {
+SPVM_OP* SPVM_OP_build_type_name(SPVM_* spvm, SPVM_OP* op_name) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -1216,7 +1216,7 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM* spvm, SPVM_OP* op_name) {
   return op_type_name;
 }
 
-SPVM_OP* SPVM_OP_build_return(SPVM* spvm, SPVM_OP* op_return, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_return(SPVM_* spvm, SPVM_OP* op_return, SPVM_OP* op_term) {
   
   SPVM_OP* op_sub_end_process = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_RETURN_PROCESS, op_return->file, op_return->line);
   
@@ -1232,7 +1232,7 @@ SPVM_OP* SPVM_OP_build_return(SPVM* spvm, SPVM_OP* op_return, SPVM_OP* op_term) 
   return op_sub_end_process;
 }
 
-SPVM_OP* SPVM_OP_build_die(SPVM* spvm, SPVM_OP* op_die, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_die(SPVM_* spvm, SPVM_OP* op_die, SPVM_OP* op_term) {
   
   SPVM_OP* op_die_process = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_DIE_PROCESS, op_die->file, op_die->line);
   
@@ -1248,7 +1248,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM* spvm, SPVM_OP* op_die, SPVM_OP* op_term) {
   return op_die_process;
 }
 
-SPVM_OP* SPVM_OP_build_last(SPVM* spvm, SPVM_OP* op_last) {
+SPVM_OP* SPVM_OP_build_last(SPVM_* spvm, SPVM_OP* op_last) {
   
   SPVM_OP* op_last_process = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_LAST_PROCESS, op_last->file, op_last->line);
   
@@ -1260,7 +1260,7 @@ SPVM_OP* SPVM_OP_build_last(SPVM* spvm, SPVM_OP* op_last) {
   return op_last_process;
 }
 
-SPVM_OP* SPVM_OP_build_next(SPVM* spvm, SPVM_OP* op_next) {
+SPVM_OP* SPVM_OP_build_next(SPVM_* spvm, SPVM_OP* op_next) {
   
   SPVM_OP* op_next_process = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_NEXT_PROCESS, op_next->file, op_next->line);
   
@@ -1272,7 +1272,7 @@ SPVM_OP* SPVM_OP_build_next(SPVM* spvm, SPVM_OP* op_next) {
   return op_next_process;
 }
 
-SPVM_OP* SPVM_OP_build_type_array(SPVM* spvm, SPVM_OP* op_type, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_type_array(SPVM_* spvm, SPVM_OP* op_type, SPVM_OP* op_term) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -1307,7 +1307,7 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM* spvm, SPVM_OP* op_type, SPVM_OP* op_term
   return op_type_array;
 }
 
-SPVM_OP* SPVM_OP_append_elem(SPVM* spvm, SPVM_OP *first, SPVM_OP *last, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_append_elem(SPVM_* spvm, SPVM_OP *first, SPVM_OP *last, const char* file, int32_t line) {
   if (!first) {
     return last;
   }
@@ -1329,7 +1329,7 @@ SPVM_OP* SPVM_OP_append_elem(SPVM* spvm, SPVM_OP *first, SPVM_OP *last, const ch
   }
 }
 
-SPVM_OP* SPVM_OP_new_op_list(SPVM* spvm, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_list(SPVM_* spvm, const char* file, int32_t line) {
   
   SPVM_OP* op_pushmark = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_PUSHMARK, file, line);
   
@@ -1340,7 +1340,7 @@ SPVM_OP* SPVM_OP_new_op_list(SPVM* spvm, const char* file, int32_t line) {
 }
 
 
-SPVM_OP* SPVM_OP_new_op(SPVM* spvm, int32_t code, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op(SPVM_* spvm, int32_t code, const char* file, int32_t line) {
 
   SPVM_OP *op = SPVM_PARSER_ALLOCATOR_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_OP));
   
@@ -1357,7 +1357,7 @@ SPVM_OP* SPVM_OP_new_op(SPVM* spvm, int32_t code, const char* file, int32_t line
   return op;
 }
 
-SPVM_OP* SPVM_OP_sibling_splice(SPVM* spvm, SPVM_OP* parent, SPVM_OP* start, int32_t del_count, SPVM_OP* insert) {
+SPVM_OP* SPVM_OP_sibling_splice(SPVM_* spvm, SPVM_OP* parent, SPVM_OP* start, int32_t del_count, SPVM_OP* insert) {
   SPVM_OP *first;
   SPVM_OP *rest;
   SPVM_OP *last_del = NULL;
@@ -1426,26 +1426,26 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM* spvm, SPVM_OP* parent, SPVM_OP* start, int
     exit(EXIT_FAILURE);
 }
 
-SPVM_OP* SPVM_OP_sibling(SPVM* spvm, SPVM_OP* op) {
+SPVM_OP* SPVM_OP_sibling(SPVM_* spvm, SPVM_OP* op) {
   (void)spvm;
   
   return op->moresib ? op->sibparent : NULL;
 }
 
-void SPVM_OP_moresib_set(SPVM* spvm, SPVM_OP* op, SPVM_OP* sib) {
+void SPVM_OP_moresib_set(SPVM_* spvm, SPVM_OP* op, SPVM_OP* sib) {
   (void)spvm;
   
   op->moresib = 1;
   op->sibparent = sib;
 }
 
-void SPVM_OP_lastsib_set(SPVM* spvm, SPVM_OP* op, SPVM_OP* parent) {
+void SPVM_OP_lastsib_set(SPVM_* spvm, SPVM_OP* op, SPVM_OP* parent) {
   (void)spvm;
   op->moresib = 0;
   op->sibparent = parent;
 }
 
-void SPVM_OP_maybesib_set(SPVM* spvm, SPVM_OP* op, SPVM_OP* sib, SPVM_OP* parent) {
+void SPVM_OP_maybesib_set(SPVM_* spvm, SPVM_OP* op, SPVM_OP* sib, SPVM_OP* parent) {
   (void)spvm;
   op->moresib = sib ? 1 : 0;
   op->sibparent = op->moresib ? sib : parent;

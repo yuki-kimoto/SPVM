@@ -15,6 +15,6 @@ struct SPVM_descriptor {
   int32_t code;
 };
 
-SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM* spvm);
+SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_* spvm);
 
 #endif

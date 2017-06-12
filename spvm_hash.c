@@ -7,9 +7,9 @@
 #include "spvm_hash_func.h"
 #include "spvm_util_allocator.h"
 #include "spvm_parser.h"
-#include "spvm.h"
+#include "spvm_.h"
 
-SPVM_HASH* SPVM_HASH_new(SPVM* spvm, int32_t table_capacity) {
+SPVM_HASH* SPVM_HASH_new(SPVM_* spvm, int32_t table_capacity) {
   (void)spvm;
   
   assert(table_capacity >= 0);
@@ -42,7 +42,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM* spvm, int32_t table_capacity) {
   return hash;
 }
 
-void SPVM_HASH_maybe_extend_entries(SPVM* spvm, SPVM_HASH* hash) {
+void SPVM_HASH_maybe_extend_entries(SPVM_* spvm, SPVM_HASH* hash) {
   (void)spvm;
   
   assert(hash);
@@ -60,7 +60,7 @@ void SPVM_HASH_maybe_extend_entries(SPVM* spvm, SPVM_HASH* hash) {
   }
 }
 
-void SPVM_HASH_maybe_extend_key_buffer(SPVM* spvm, SPVM_HASH* hash, int32_t length) {
+void SPVM_HASH_maybe_extend_key_buffer(SPVM_* spvm, SPVM_HASH* hash, int32_t length) {
   (void)spvm;
   
   assert(hash);
@@ -78,7 +78,7 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM* spvm, SPVM_HASH* hash, int32_t leng
   }
 }
 
-void SPVM_HASH_free(SPVM* spvm, SPVM_HASH* hash) {
+void SPVM_HASH_free(SPVM_* spvm, SPVM_HASH* hash) {
   (void)spvm;
   
   assert(hash);
@@ -88,7 +88,7 @@ void SPVM_HASH_free(SPVM* spvm, SPVM_HASH* hash) {
   free(hash);
 }
 
-int32_t SPVM_HASH_new_hash_entry(SPVM* spvm, SPVM_HASH* hash, const char* key, void* value) {
+int32_t SPVM_HASH_new_hash_entry(SPVM_* spvm, SPVM_HASH* hash, const char* key, void* value) {
   (void)spvm;
   
   assert(hash);
@@ -117,7 +117,7 @@ int32_t SPVM_HASH_new_hash_entry(SPVM* spvm, SPVM_HASH* hash, const char* key, v
   return index;
 }
 
-void SPVM_HASH_rehash(SPVM* spvm, SPVM_HASH* hash, int32_t new_table_capacity) {
+void SPVM_HASH_rehash(SPVM_* spvm, SPVM_HASH* hash, int32_t new_table_capacity) {
   (void)spvm;
   
   assert(hash);
@@ -155,7 +155,7 @@ void SPVM_HASH_rehash(SPVM* spvm, SPVM_HASH* hash, int32_t new_table_capacity) {
   hash->key_buffer = new_hash->key_buffer;
 }
 
-void SPVM_HASH_insert_norehash(SPVM* spvm, SPVM_HASH* hash, const char* key, int32_t length, void* value) {
+void SPVM_HASH_insert_norehash(SPVM_* spvm, SPVM_HASH* hash, const char* key, int32_t length, void* value) {
   (void)spvm;
   
   assert(hash);
@@ -190,7 +190,7 @@ void SPVM_HASH_insert_norehash(SPVM* spvm, SPVM_HASH* hash, const char* key, int
   }
 }
 
-void SPVM_HASH_insert(SPVM* spvm, SPVM_HASH* hash, const char* key, int32_t length, void* value) {
+void SPVM_HASH_insert(SPVM_* spvm, SPVM_HASH* hash, const char* key, int32_t length, void* value) {
   (void)spvm;
   
   assert(hash);
@@ -207,7 +207,7 @@ void SPVM_HASH_insert(SPVM* spvm, SPVM_HASH* hash, const char* key, int32_t leng
   SPVM_HASH_insert_norehash(spvm, hash, key, length, value);
 }
 
-void* SPVM_HASH_search(SPVM* spvm, SPVM_HASH* hash, const char* key, int32_t length) {
+void* SPVM_HASH_search(SPVM_* spvm, SPVM_HASH* hash, const char* key, int32_t length) {
   (void)spvm;
   
   assert(hash);

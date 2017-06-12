@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <assert.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_hash.h"
 #include "spvm_array.h"
@@ -17,7 +17,7 @@
 #include "spvm_sub.h"
 #include "spvm_data_api.h"
 
-void SPVM_run(SPVM* spvm, const char* package_name) {
+void SPVM_run(SPVM_* spvm, const char* package_name) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -78,8 +78,8 @@ void SPVM_run(SPVM* spvm, const char* package_name) {
 #endif
 }
 
-SPVM* SPVM_new() {
-  SPVM* spvm = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM));
+SPVM_* SPVM_new() {
+  SPVM_* spvm = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_));
   
   // Parser
   spvm->parser = SPVM_PARSER_new(spvm);
@@ -90,7 +90,7 @@ SPVM* SPVM_new() {
   return spvm;
 }
 
-void SPVM_free(SPVM* spvm) {
+void SPVM_free(SPVM_* spvm) {
   
   if (spvm->parser) {
     SPVM_PARSER_free(spvm, spvm->parser);

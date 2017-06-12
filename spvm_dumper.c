@@ -4,7 +4,7 @@
 #include <inttypes.h>
 #include <assert.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_dumper.h"
 #include "spvm_array.h"
@@ -26,7 +26,7 @@
 #include "spvm_bytecode.h"
 #include "spvm_bytecode_array.h"
 
-void SPVM_DUMPER_dump_ast(SPVM* spvm, SPVM_OP* op_base) {
+void SPVM_DUMPER_dump_ast(SPVM_* spvm, SPVM_OP* op_base) {
   int32_t depth = 0;
   
   // Run OPs
@@ -110,7 +110,7 @@ void SPVM_DUMPER_dump_ast(SPVM* spvm, SPVM_OP* op_base) {
   }
 }
 
-void SPVM_DUMPER_dump_spvm(SPVM* spvm) {
+void SPVM_DUMPER_dump_spvm(SPVM_* spvm) {
   SPVM_PARSER* parser = spvm->parser;
   
   printf("\n[Abstract Syntax Tree]\n");
@@ -126,7 +126,7 @@ void SPVM_DUMPER_dump_spvm(SPVM* spvm) {
   SPVM_DUMPER_dump_packages(spvm, parser->op_packages);
 }
 
-void SPVM_DUMPER_dump_constants(SPVM* spvm, SPVM_ARRAY* op_constants) {
+void SPVM_DUMPER_dump_constants(SPVM_* spvm, SPVM_ARRAY* op_constants) {
   for (int32_t i = 0, len = op_constants->length; i < len; i++) {
     SPVM_OP* op_constant = SPVM_ARRAY_fetch(spvm, op_constants, i);
     SPVM_CONSTANT* constant = op_constant->uv.constant;
@@ -135,7 +135,7 @@ void SPVM_DUMPER_dump_constants(SPVM* spvm, SPVM_ARRAY* op_constants) {
   }
 }
 
-void SPVM_DUMPER_dump_packages(SPVM* spvm, SPVM_ARRAY* op_packages) {
+void SPVM_DUMPER_dump_packages(SPVM_* spvm, SPVM_ARRAY* op_packages) {
   for (int32_t i = 0, len = op_packages->length; i < len; i++) {
     printf("package[%" PRId32 "]\n", i);
     SPVM_OP* op_package = SPVM_ARRAY_fetch(spvm, op_packages, i);
@@ -173,7 +173,7 @@ void SPVM_DUMPER_dump_packages(SPVM* spvm, SPVM_ARRAY* op_packages) {
   }
 }
 
-void SPVM_DUMPER_dump_resolved_types(SPVM* spvm, SPVM_ARRAY* resolved_types) {
+void SPVM_DUMPER_dump_resolved_types(SPVM_* spvm, SPVM_ARRAY* resolved_types) {
   (void)spvm;
   
   for (int32_t i = 0, len = resolved_types->length; i < len; i++) {
@@ -184,7 +184,7 @@ void SPVM_DUMPER_dump_resolved_types(SPVM* spvm, SPVM_ARRAY* resolved_types) {
   }
 }
 
-void SPVM_DUMPER_dump_constant_pool(SPVM* spvm, SPVM_CONSTANT_POOL* constant_pool) {
+void SPVM_DUMPER_dump_constant_pool(SPVM_* spvm, SPVM_CONSTANT_POOL* constant_pool) {
   (void)spvm;
 
   for (int32_t i = 0; i < constant_pool->length; i++) {
@@ -192,7 +192,7 @@ void SPVM_DUMPER_dump_constant_pool(SPVM* spvm, SPVM_CONSTANT_POOL* constant_poo
   }
 }
 
-void SPVM_DUMPER_dump_bytecode_array(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecode_array, int32_t start_pos, int32_t length) {
+void SPVM_DUMPER_dump_bytecode_array(SPVM_* spvm, SPVM_BYTECODE_ARRAY* bytecode_array, int32_t start_pos, int32_t length) {
   (void)spvm;
   
   int32_t end_pos = start_pos + length - 1;
@@ -410,7 +410,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecode_a
   }
 }
 
-void SPVM_DUMPER_dump_constant(SPVM* spvm, SPVM_CONSTANT* constant) {
+void SPVM_DUMPER_dump_constant(SPVM_* spvm, SPVM_CONSTANT* constant) {
   (void)spvm;
   
   switch(constant->code) {
@@ -433,7 +433,7 @@ void SPVM_DUMPER_dump_constant(SPVM* spvm, SPVM_CONSTANT* constant) {
   printf("      address => %" PRId32 "\n", constant->constant_pool_address);
 }
 
-void SPVM_DUMPER_dump_sub(SPVM* spvm, SPVM_SUB* sub) {
+void SPVM_DUMPER_dump_sub(SPVM_* spvm, SPVM_SUB* sub) {
   (void)spvm;
   
   SPVM_PARSER* parser = spvm->parser;
@@ -483,7 +483,7 @@ void SPVM_DUMPER_dump_sub(SPVM* spvm, SPVM_SUB* sub) {
   }
 }
 
-void SPVM_DUMPER_dump_field(SPVM* spvm, SPVM_FIELD* field) {
+void SPVM_DUMPER_dump_field(SPVM_* spvm, SPVM_FIELD* field) {
   (void)spvm;
   
   if (field) {
@@ -503,7 +503,7 @@ void SPVM_DUMPER_dump_field(SPVM* spvm, SPVM_FIELD* field) {
 }
 
 
-void SPVM_DUMPER_dump_enumeration_value(SPVM* spvm, SPVM_ENUMERATION_VALUE* enumeration_value) {
+void SPVM_DUMPER_dump_enumeration_value(SPVM_* spvm, SPVM_ENUMERATION_VALUE* enumeration_value) {
   (void)spvm;
   
   if (enumeration_value) {
@@ -515,7 +515,7 @@ void SPVM_DUMPER_dump_enumeration_value(SPVM* spvm, SPVM_ENUMERATION_VALUE* enum
   }
 }
 
-void SPVM_DUMPER_dump_my_var(SPVM* spvm, SPVM_MY_VAR* my_var) {
+void SPVM_DUMPER_dump_my_var(SPVM_* spvm, SPVM_MY_VAR* my_var) {
   (void)spvm;
 
   if (my_var) {

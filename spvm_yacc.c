@@ -176,7 +176,7 @@
 
   #include <stdio.h>
   
-  #include "spvm.h"
+  #include "spvm_.h"
   #include "spvm_parser.h"
   #include "spvm_yacc_util.h"
   #include "spvm_toke.h"
@@ -1051,14 +1051,14 @@ do {									  \
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, SPVM* spvm)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, SPVM_* spvm)
 #else
 static void
 yy_symbol_value_print (yyoutput, yytype, yyvaluep, spvm)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
-    SPVM* spvm;
+    SPVM_* spvm;
 #endif
 {
   if (!yyvaluep)
@@ -1085,14 +1085,14 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep, spvm)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, SPVM* spvm)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, SPVM_* spvm)
 #else
 static void
 yy_symbol_print (yyoutput, yytype, yyvaluep, spvm)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
-    SPVM* spvm;
+    SPVM_* spvm;
 #endif
 {
   if (yytype < YYNTOKENS)
@@ -1140,13 +1140,13 @@ do {								\
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, int yyrule, SPVM* spvm)
+yy_reduce_print (YYSTYPE *yyvsp, int yyrule, SPVM_* spvm)
 #else
 static void
 yy_reduce_print (yyvsp, yyrule, spvm)
     YYSTYPE *yyvsp;
     int yyrule;
-    SPVM* spvm;
+    SPVM_* spvm;
 #endif
 {
   int yynrhs = yyr2[yyrule];
@@ -1419,14 +1419,14 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, SPVM* spvm)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, SPVM_* spvm)
 #else
 static void
 yydestruct (yymsg, yytype, yyvaluep, spvm)
     const char *yymsg;
     int yytype;
     YYSTYPE *yyvaluep;
-    SPVM* spvm;
+    SPVM_* spvm;
 #endif
 {
   YYUSE (yyvaluep);
@@ -1455,7 +1455,7 @@ int yyparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (SPVM* spvm);
+int yyparse (SPVM_* spvm);
 #else
 int yyparse ();
 #endif
@@ -1484,11 +1484,11 @@ yyparse (YYPARSE_PARAM)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 int
-yyparse (SPVM* spvm)
+yyparse (SPVM_* spvm)
 #else
 int
 yyparse (spvm)
-    SPVM* spvm;
+    SPVM_* spvm;
 #endif
 #endif
 {

@@ -1,12 +1,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_bytecode_array.h"
 #include "spvm_util_allocator.h"
 #include "spvm_parser.h"
 
-SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM* spvm) {
+SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM_* spvm) {
   (void)spvm;
   
   SPVM_BYTECODE_ARRAY* bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_BYTECODE_ARRAY));
@@ -19,7 +19,7 @@ SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM* spvm) {
   return bytecodes;
 }
 
-void SPVM_BYTECODE_ARRAY_push(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecodes, uint8_t value) {
+void SPVM_BYTECODE_ARRAY_push(SPVM_* spvm, SPVM_BYTECODE_ARRAY* bytecodes, uint8_t value) {
   (void)spvm;
   
   int32_t length = bytecodes->length;
@@ -35,7 +35,7 @@ void SPVM_BYTECODE_ARRAY_push(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecodes, uint8_
   bytecodes->length++;
 }
 
-void SPVM_BYTECODE_ARRAY_free(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecodes) {
+void SPVM_BYTECODE_ARRAY_free(SPVM_* spvm, SPVM_BYTECODE_ARRAY* bytecodes) {
   (void)spvm;
   
   free(bytecodes->values);

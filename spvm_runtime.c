@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 #include "spvm_runtime_allocator.h"
@@ -15,7 +15,7 @@
 #include "spvm_data_api.h"
 #include "spvm_util_allocator.h"
 
-SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM* spvm) {
+SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_* spvm) {
   (void)spvm;
   
   assert(sizeof(SPVM_DATA_ARRAY) <= SPVM_DATA_C_HEADER_BYTE_SIZE);
@@ -34,7 +34,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM* spvm) {
   return runtime;
 }
 
-void SPVM_RUNTIME_init(SPVM* spvm, SPVM_RUNTIME* runtime) {
+void SPVM_RUNTIME_init(SPVM_* spvm, SPVM_RUNTIME* runtime) {
   (void)spvm;
   
   runtime->call_stack_base = -1;
@@ -42,7 +42,7 @@ void SPVM_RUNTIME_init(SPVM* spvm, SPVM_RUNTIME* runtime) {
   runtime->abort = 0;
 }
 
-void SPVM_RUNTIME_call_sub(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t sub_constant_pool_address) {
+void SPVM_RUNTIME_call_sub(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t sub_constant_pool_address) {
   (void)spvm;
   (void)runtime;
   
@@ -344,7 +344,7 @@ void SPVM_RUNTIME_call_sub(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t sub_consta
         runtime->call_stack_base = call_stack_base;
         
         // Call native sub
-        void (*native_address)(SPVM* spvm, SPVM_RUNTIME* runtime) = constant_pool_sub.native_address;
+        void (*native_address)(SPVM_* spvm, SPVM_RUNTIME* runtime) = constant_pool_sub.native_address;
         (*native_address)(spvm, runtime);
         
         // Get runtimeiromnet
@@ -2234,7 +2234,7 @@ void SPVM_RUNTIME_call_sub(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t sub_consta
   }
 }
 
-void SPVM_RUNTIME_free(SPVM* spvm, SPVM_RUNTIME* runtime) {
+void SPVM_RUNTIME_free(SPVM_* spvm, SPVM_RUNTIME* runtime) {
   (void)spvm;
   
   // Free call stack

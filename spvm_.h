@@ -15,8 +15,8 @@ struct spvm_ {
   SPVM_RUNTIME* runtime;
 };
 
-SPVM* SPVM_new();
-void SPVM_run(SPVM* spvm, const char* package_name);
-void SPVM_free(SPVM* spvm);
+SPVM_* SPVM_new();
+void SPVM_run(SPVM_* spvm, const char* package_name);
+void SPVM_free(SPVM_* spvm);
 
 #endif

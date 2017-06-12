@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_bytecode_builder.h"
 #include "spvm_bytecode.h"
@@ -30,7 +30,7 @@
 #include "spvm_data_api.h"
 
 
-void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
+void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_* spvm, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
   
   SPVM_VAR* var = op_inc->first->uv.var;
   SPVM_MY_VAR* my_var = var->op_my_var->uv.my_var;
@@ -98,7 +98,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM* spvm, SPVM_BYTECODE_ARRAY* by
   }
 }
 
-void SPVM_BYTECODE_BUILDER_push_load_bytecode(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_var) {
+void SPVM_BYTECODE_BUILDER_push_load_bytecode(SPVM_* spvm, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_var) {
   
   (void)spvm;
   
@@ -139,7 +139,7 @@ void SPVM_BYTECODE_BUILDER_push_load_bytecode(SPVM* spvm, SPVM_BYTECODE_ARRAY* b
   }
 }
 
-void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM* spvm) {
+void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_* spvm) {
   
   // Parser
   SPVM_PARSER* parser = spvm->parser;

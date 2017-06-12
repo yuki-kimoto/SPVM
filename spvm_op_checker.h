@@ -3,6 +3,6 @@
 
 #include "spvm_base.h"
 
-void SPVM_OP_CHECKER_check(SPVM* spvm);
+void SPVM_OP_CHECKER_check(SPVM_* spvm);
 
 #endif

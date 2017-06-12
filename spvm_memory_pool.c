@@ -2,12 +2,12 @@
 #include <math.h>
 #include <assert.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_memory_pool.h"
 #include "spvm_util_allocator.h"
 #include "spvm_data_api.h"
 
-SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(SPVM* spvm, int32_t page_byte_size) {
+SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(SPVM_* spvm, int32_t page_byte_size) {
   (void)spvm;
   
   SPVM_MEMORY_POOL* memory_pool = (SPVM_MEMORY_POOL*) SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_MEMORY_POOL));
@@ -30,7 +30,7 @@ SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(SPVM* spvm, int32_t page_byte_size) {
   return memory_pool;
 }
 
-void* SPVM_MEMORY_POOL_alloc(SPVM* spvm, SPVM_MEMORY_POOL* memory_pool, int32_t byte_size) {
+void* SPVM_MEMORY_POOL_alloc(SPVM_* spvm, SPVM_MEMORY_POOL* memory_pool, int32_t byte_size) {
   (void)spvm;
   
   assert(byte_size > 0);
@@ -65,7 +65,7 @@ void* SPVM_MEMORY_POOL_alloc(SPVM* spvm, SPVM_MEMORY_POOL* memory_pool, int32_t 
   return alloc_address;
 }
 
-void SPVM_MEMORY_POOL_free(SPVM* spvm, SPVM_MEMORY_POOL* memory_pool) {
+void SPVM_MEMORY_POOL_free(SPVM_* spvm, SPVM_MEMORY_POOL* memory_pool) {
   (void)spvm;
   
   for (int32_t i = 0; i < memory_pool->pages_length; i++) {

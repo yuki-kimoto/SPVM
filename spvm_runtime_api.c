@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 #include "spvm_runtime_allocator.h"
@@ -13,7 +13,7 @@
 #include "spvm_constant_pool_field.h"
 #include "spvm_data_api.h"
 
-inline int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
+inline int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
   (void)spvm;
   
   int64_t byte_size;
@@ -37,7 +37,7 @@ inline int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM* spvm, SPVM_RUNTIM
   return byte_size;
 }
 
-inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t length) {
+inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t length) {
   (void)spvm;
   (void)runtime;
   
@@ -70,7 +70,7 @@ inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM* spvm, SPVM
   return data_array;
 }
 
-inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM* spvm, SPVM_RUNTIME* runtime, const char* pv) {
+inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM_* spvm, SPVM_RUNTIME* runtime, const char* pv) {
   (void)spvm;
   (void)runtime;
   
@@ -83,7 +83,7 @@ inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM* sp
   return data_array;
 }
 
-inline void SPVM_RUNTIME_API_dec_ref_count(SPVM* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
+inline void SPVM_RUNTIME_API_dec_ref_count(SPVM_* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
   (void)spvm;
   (void)runtime;
   
@@ -132,7 +132,7 @@ inline void SPVM_RUNTIME_API_dec_ref_count(SPVM* spvm, SPVM_RUNTIME* runtime, SP
   }
 }
 
-inline void SPVM_RUNTIME_API_inc_ref_count(SPVM* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
+inline void SPVM_RUNTIME_API_inc_ref_count(SPVM_* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
   (void)spvm;
   (void)runtime;
   
@@ -143,7 +143,7 @@ inline void SPVM_RUNTIME_API_inc_ref_count(SPVM* spvm, SPVM_RUNTIME* runtime, SP
   }
 }
 
-inline void SPVM_RUNTIME_API_push_return_value_byte(SPVM* spvm, SPVM_RUNTIME* runtime, int8_t value) {
+inline void SPVM_RUNTIME_API_push_return_value_byte(SPVM_* spvm, SPVM_RUNTIME* runtime, int8_t value) {
   (void)spvm;
   (void)runtime;
   
@@ -151,7 +151,7 @@ inline void SPVM_RUNTIME_API_push_return_value_byte(SPVM* spvm, SPVM_RUNTIME* ru
   runtime->call_stack[runtime->operand_stack_top].byte_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_return_value_short(SPVM* spvm, SPVM_RUNTIME* runtime, int16_t value) {
+inline void SPVM_RUNTIME_API_push_return_value_short(SPVM_* spvm, SPVM_RUNTIME* runtime, int16_t value) {
   (void)spvm;
   (void)runtime;
   
@@ -159,7 +159,7 @@ inline void SPVM_RUNTIME_API_push_return_value_short(SPVM* spvm, SPVM_RUNTIME* r
   runtime->call_stack[runtime->operand_stack_top].short_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_return_value_int(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t value) {
+inline void SPVM_RUNTIME_API_push_return_value_int(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t value) {
   (void)spvm;
   (void)runtime;
   
@@ -167,7 +167,7 @@ inline void SPVM_RUNTIME_API_push_return_value_int(SPVM* spvm, SPVM_RUNTIME* run
   runtime->call_stack[runtime->operand_stack_top].int_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_return_value_long(SPVM* spvm, SPVM_RUNTIME* runtime, int64_t value) {
+inline void SPVM_RUNTIME_API_push_return_value_long(SPVM_* spvm, SPVM_RUNTIME* runtime, int64_t value) {
   (void)spvm;
   (void)runtime;
   
@@ -175,7 +175,7 @@ inline void SPVM_RUNTIME_API_push_return_value_long(SPVM* spvm, SPVM_RUNTIME* ru
   runtime->call_stack[runtime->operand_stack_top].long_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_return_value_float(SPVM* spvm, SPVM_RUNTIME* runtime, float value) {
+inline void SPVM_RUNTIME_API_push_return_value_float(SPVM_* spvm, SPVM_RUNTIME* runtime, float value) {
   (void)spvm;
   (void)runtime;
   
@@ -183,7 +183,7 @@ inline void SPVM_RUNTIME_API_push_return_value_float(SPVM* spvm, SPVM_RUNTIME* r
   runtime->call_stack[runtime->operand_stack_top].float_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_return_value_double(SPVM* spvm, SPVM_RUNTIME* runtime, double value) {
+inline void SPVM_RUNTIME_API_push_return_value_double(SPVM_* spvm, SPVM_RUNTIME* runtime, double value) {
   (void)spvm;
   (void)runtime;
   
@@ -191,7 +191,7 @@ inline void SPVM_RUNTIME_API_push_return_value_double(SPVM* spvm, SPVM_RUNTIME* 
   runtime->call_stack[runtime->operand_stack_top].double_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_ret(SPVM* spvm, SPVM_RUNTIME* runtime, void* value) {
+inline void SPVM_RUNTIME_API_push_ret(SPVM_* spvm, SPVM_RUNTIME* runtime, void* value) {
   (void)spvm;
   (void)runtime;
   
@@ -199,7 +199,7 @@ inline void SPVM_RUNTIME_API_push_ret(SPVM* spvm, SPVM_RUNTIME* runtime, void* v
   runtime->call_stack[runtime->operand_stack_top].address_value = value;
 }
 
-inline int8_t SPVM_RUNTIME_API_pop_return_value_byte(SPVM* spvm, SPVM_RUNTIME* runtime) {
+inline int8_t SPVM_RUNTIME_API_pop_return_value_byte(SPVM_* spvm, SPVM_RUNTIME* runtime) {
   (void)spvm;
   (void)runtime;
   
@@ -208,7 +208,7 @@ inline int8_t SPVM_RUNTIME_API_pop_return_value_byte(SPVM* spvm, SPVM_RUNTIME* r
   return ret;
 }
 
-inline int16_t SPVM_RUNTIME_API_pop_return_value_short(SPVM* spvm, SPVM_RUNTIME* runtime) {
+inline int16_t SPVM_RUNTIME_API_pop_return_value_short(SPVM_* spvm, SPVM_RUNTIME* runtime) {
   (void)spvm;
   (void)runtime;
   
@@ -217,7 +217,7 @@ inline int16_t SPVM_RUNTIME_API_pop_return_value_short(SPVM* spvm, SPVM_RUNTIME*
   return ret;
 }
 
-inline int32_t SPVM_RUNTIME_API_pop_return_value_int(SPVM* spvm, SPVM_RUNTIME* runtime) {
+inline int32_t SPVM_RUNTIME_API_pop_return_value_int(SPVM_* spvm, SPVM_RUNTIME* runtime) {
   (void)spvm;
   (void)runtime;
   
@@ -226,7 +226,7 @@ inline int32_t SPVM_RUNTIME_API_pop_return_value_int(SPVM* spvm, SPVM_RUNTIME* r
   return ret;
 }
 
-inline int64_t SPVM_RUNTIME_API_pop_return_value_long(SPVM* spvm, SPVM_RUNTIME* runtime) {
+inline int64_t SPVM_RUNTIME_API_pop_return_value_long(SPVM_* spvm, SPVM_RUNTIME* runtime) {
   (void)spvm;
   (void)runtime;
 
@@ -235,7 +235,7 @@ inline int64_t SPVM_RUNTIME_API_pop_return_value_long(SPVM* spvm, SPVM_RUNTIME* 
   return ret;
 }
 
-inline float SPVM_RUNTIME_API_pop_return_value_float(SPVM* spvm, SPVM_RUNTIME* runtime) {
+inline float SPVM_RUNTIME_API_pop_return_value_float(SPVM_* spvm, SPVM_RUNTIME* runtime) {
   (void)spvm;
   (void)runtime;
   
@@ -244,7 +244,7 @@ inline float SPVM_RUNTIME_API_pop_return_value_float(SPVM* spvm, SPVM_RUNTIME* r
   return ret;
 }
 
-inline double SPVM_RUNTIME_API_pop_return_value_double(SPVM* spvm, SPVM_RUNTIME* runtime) {
+inline double SPVM_RUNTIME_API_pop_return_value_double(SPVM_* spvm, SPVM_RUNTIME* runtime) {
   (void)spvm;
   (void)runtime;
   
@@ -253,7 +253,7 @@ inline double SPVM_RUNTIME_API_pop_return_value_double(SPVM* spvm, SPVM_RUNTIME*
   return ret;
 }
 
-inline void* SPVM_RUNTIME_API_pop_return_value_address(SPVM* spvm, SPVM_RUNTIME* runtime) {
+inline void* SPVM_RUNTIME_API_pop_return_value_address(SPVM_* spvm, SPVM_RUNTIME* runtime) {
   (void)spvm;
   (void)runtime;
   
@@ -262,56 +262,56 @@ inline void* SPVM_RUNTIME_API_pop_return_value_address(SPVM* spvm, SPVM_RUNTIME*
   return ret;
 }
 
-inline int8_t SPVM_RUNTIME_API_get_var_byte(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t index) {
+inline int8_t SPVM_RUNTIME_API_get_var_byte(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t index) {
   (void)spvm;
   (void)runtime;
   
   return runtime->call_stack[runtime->call_stack_base + (size_t)index].byte_value;
 }
 
-inline int16_t SPVM_RUNTIME_API_get_var_short(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t index) {
+inline int16_t SPVM_RUNTIME_API_get_var_short(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t index) {
   (void)spvm;
   (void)runtime;
   
   return runtime->call_stack[runtime->call_stack_base + (size_t)index].short_value;
 }
 
-inline int32_t SPVM_RUNTIME_API_get_var_int(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t index) {
+inline int32_t SPVM_RUNTIME_API_get_var_int(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t index) {
   (void)spvm;
   (void)runtime;
   
   return runtime->call_stack[runtime->call_stack_base + (size_t)index].int_value;
 }
 
-inline int64_t SPVM_RUNTIME_API_get_var_long(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t index) {
+inline int64_t SPVM_RUNTIME_API_get_var_long(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t index) {
   (void)spvm;
   (void)runtime;
   
   return runtime->call_stack[runtime->call_stack_base + (size_t)index].long_value;
 }
 
-inline float SPVM_RUNTIME_API_get_var_float(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t index) {
+inline float SPVM_RUNTIME_API_get_var_float(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t index) {
   (void)spvm;
   (void)runtime;
   
   return runtime->call_stack[runtime->call_stack_base + (size_t)index].float_value;
 }
 
-inline double SPVM_RUNTIME_API_get_var_double(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t index) {
+inline double SPVM_RUNTIME_API_get_var_double(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t index) {
   (void)spvm;
   (void)runtime;
   
   return runtime->call_stack[runtime->call_stack_base + (size_t)index].double_value;
 }
 
-inline void* SPVM_RUNTIME_API_get_var_address(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t index) {
+inline void* SPVM_RUNTIME_API_get_var_address(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t index) {
   (void)spvm;
   (void)runtime;
   
   return runtime->call_stack[runtime->call_stack_base + (size_t)index].address_value;
 }
 
-inline void SPVM_RUNTIME_API_push_var_byte(SPVM* spvm, SPVM_RUNTIME* runtime, int8_t value) {
+inline void SPVM_RUNTIME_API_push_var_byte(SPVM_* spvm, SPVM_RUNTIME* runtime, int8_t value) {
   (void)spvm;
   (void)runtime;
   
@@ -319,7 +319,7 @@ inline void SPVM_RUNTIME_API_push_var_byte(SPVM* spvm, SPVM_RUNTIME* runtime, in
   runtime->call_stack[runtime->operand_stack_top].byte_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_var_short(SPVM* spvm, SPVM_RUNTIME* runtime, int16_t value) {
+inline void SPVM_RUNTIME_API_push_var_short(SPVM_* spvm, SPVM_RUNTIME* runtime, int16_t value) {
   (void)spvm;
   (void)runtime;
   
@@ -327,7 +327,7 @@ inline void SPVM_RUNTIME_API_push_var_short(SPVM* spvm, SPVM_RUNTIME* runtime, i
   runtime->call_stack[runtime->operand_stack_top].short_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_var_int(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t value) {
+inline void SPVM_RUNTIME_API_push_var_int(SPVM_* spvm, SPVM_RUNTIME* runtime, int32_t value) {
   (void)spvm;
   (void)runtime;
   
@@ -335,7 +335,7 @@ inline void SPVM_RUNTIME_API_push_var_int(SPVM* spvm, SPVM_RUNTIME* runtime, int
   runtime->call_stack[runtime->operand_stack_top].int_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_var_long(SPVM* spvm, SPVM_RUNTIME* runtime, int64_t value) {
+inline void SPVM_RUNTIME_API_push_var_long(SPVM_* spvm, SPVM_RUNTIME* runtime, int64_t value) {
   (void)spvm;
   (void)runtime;
   
@@ -343,7 +343,7 @@ inline void SPVM_RUNTIME_API_push_var_long(SPVM* spvm, SPVM_RUNTIME* runtime, in
   runtime->call_stack[runtime->operand_stack_top].long_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_var_float(SPVM* spvm, SPVM_RUNTIME* runtime, float value) {
+inline void SPVM_RUNTIME_API_push_var_float(SPVM_* spvm, SPVM_RUNTIME* runtime, float value) {
   (void)spvm;
   (void)runtime;
   
@@ -351,7 +351,7 @@ inline void SPVM_RUNTIME_API_push_var_float(SPVM* spvm, SPVM_RUNTIME* runtime, f
   runtime->call_stack[runtime->operand_stack_top].float_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_var_double(SPVM* spvm, SPVM_RUNTIME* runtime, double value) {
+inline void SPVM_RUNTIME_API_push_var_double(SPVM_* spvm, SPVM_RUNTIME* runtime, double value) {
   (void)spvm;
   (void)runtime;
   
@@ -359,7 +359,7 @@ inline void SPVM_RUNTIME_API_push_var_double(SPVM* spvm, SPVM_RUNTIME* runtime, 
   runtime->call_stack[runtime->operand_stack_top].double_value = value;
 }
 
-inline void SPVM_RUNTIME_API_push_var_address(SPVM* spvm, SPVM_RUNTIME* runtime, void* value) {
+inline void SPVM_RUNTIME_API_push_var_address(SPVM_* spvm, SPVM_RUNTIME* runtime, void* value) {
   (void)spvm;
   (void)runtime;
   

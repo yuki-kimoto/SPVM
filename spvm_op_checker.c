@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <assert.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_array.h"
 #include "spvm_hash.h"
@@ -29,7 +29,7 @@
 #include "spvm_constant_pool.h"
 #include "spvm_limit.h"
 
-void SPVM_OP_CHECKER_build_leave_scope(SPVM* spvm, SPVM_OP* op_leave_scope, SPVM_ARRAY* op_my_var_stack, int32_t top, int32_t bottom, SPVM_OP* op_term_keep) {
+void SPVM_OP_CHECKER_build_leave_scope(SPVM_* spvm, SPVM_OP* op_leave_scope, SPVM_ARRAY* op_my_var_stack, int32_t top, int32_t bottom, SPVM_OP* op_term_keep) {
   
   for (int32_t i = top; i >= bottom; i--) {
     SPVM_OP* op_my_var = SPVM_ARRAY_fetch(spvm, op_my_var_stack, i);
@@ -65,7 +65,7 @@ void SPVM_OP_CHECKER_build_leave_scope(SPVM* spvm, SPVM_OP* op_leave_scope, SPVM
   }
 }
 
-void SPVM_OP_CHECKER_check(SPVM* spvm) {
+void SPVM_OP_CHECKER_check(SPVM_* spvm) {
   
   SPVM_PARSER* parser = spvm->parser;
   

@@ -11,8 +11,8 @@ struct SPVM_bytecode_array {
 };
 
 // Array function
-SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM* spvm);
-void SPVM_BYTECODE_ARRAY_push(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecodes, uint8_t value);
-void SPVM_BYTECODE_ARRAY_free(SPVM* spvm, SPVM_BYTECODE_ARRAY* bytecodes);
+SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM_* spvm);
+void SPVM_BYTECODE_ARRAY_push(SPVM_* spvm, SPVM_BYTECODE_ARRAY* bytecodes, uint8_t value);
+void SPVM_BYTECODE_ARRAY_free(SPVM_* spvm, SPVM_BYTECODE_ARRAY* bytecodes);
 
 #endif

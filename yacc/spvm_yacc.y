@@ -1,11 +1,11 @@
 %pure-parser
-%parse-param	{ SPVM* spvm }
-%lex-param	{ SPVM* spvm }
+%parse-param	{ SPVM_* spvm }
+%lex-param	{ SPVM_* spvm }
 
 %{
   #include <stdio.h>
   
-  #include "spvm.h"
+  #include "spvm_.h"
   #include "spvm_parser.h"
   #include "spvm_yacc_util.h"
   #include "spvm_toke.h"

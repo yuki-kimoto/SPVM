@@ -8,6 +8,6 @@ struct SPVM_type_component_array {
   SPVM_OP* op_term;
 };
 
-SPVM_TYPE_COMPONENT_ARRAY* SPVM_TYPE_COMPONENT_ARRAY_new(SPVM* spvm);
+SPVM_TYPE_COMPONENT_ARRAY* SPVM_TYPE_COMPONENT_ARRAY_new(SPVM_* spvm);
 
 #endif

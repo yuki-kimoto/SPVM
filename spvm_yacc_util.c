@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <inttypes.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_yacc_util.h"
 #include "spvm_parser_allocator.h"
@@ -13,7 +13,7 @@
 #include "spvm_var.h"
 #include "spvm_op.h"
 
-void SPVM_yyerror_format(SPVM* spvm, const char* message_template, ...) {
+void SPVM_yyerror_format(SPVM_* spvm, const char* message_template, ...) {
   
   int32_t message_length = 0;
   
@@ -70,7 +70,7 @@ void SPVM_yyerror_format(SPVM* spvm, const char* message_template, ...) {
 }
 
 // Print error
-void SPVM_yyerror(SPVM* spvm, const char* message)
+void SPVM_yyerror(SPVM_* spvm, const char* message)
 {
   SPVM_PARSER* parser = spvm->parser;
   

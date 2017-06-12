@@ -23,6 +23,6 @@ struct SPVM_sub {
   _Bool is_constant;
 };
 
-SPVM_SUB* SPVM_SUB_new(SPVM* spvm);
+SPVM_SUB* SPVM_SUB_new(SPVM_* spvm);
 
 #endif

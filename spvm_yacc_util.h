@@ -14,9 +14,9 @@ union SPVM_yystype
 
 extern int SPVM_yydebug;
 
-int SPVM_yyparse(SPVM* spvm);
-void SPVM_yyerror(SPVM* spvm, const char* s);
-void SPVM_yyerror_format(SPVM* spvm, const char* message, ...);
+int SPVM_yyparse(SPVM_* spvm);
+void SPVM_yyerror(SPVM_* spvm, const char* s);
+void SPVM_yyerror_format(SPVM_* spvm, const char* message, ...);
 void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval);
 
 #endif

@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <inttypes.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_toke.h"
 #include "spvm_yacc_util.h"
@@ -21,7 +21,7 @@
 #include "spvm_descriptor.h"
 #include "spvm_type.h"
 
-SPVM_OP* SPVM_TOKE_newOP(SPVM* spvm, int32_t type) {
+SPVM_OP* SPVM_TOKE_newOP(SPVM_* spvm, int32_t type) {
   
   SPVM_PARSER* parser = spvm->parser;
   
@@ -31,7 +31,7 @@ SPVM_OP* SPVM_TOKE_newOP(SPVM* spvm, int32_t type) {
 }
 
 // Get token
-int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
+int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_* spvm) {
   
   // Parser
   SPVM_PARSER* parser = spvm->parser;

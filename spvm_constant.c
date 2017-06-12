@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_parser.h"
 #include "spvm_constant.h"
 #include "spvm_parser_allocator.h"
@@ -16,11 +16,11 @@ const char* const SPVM_CONSTANT_C_CODE_NAMES[] = {
   "STRING",
 };
 
-SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM* spvm) {
+SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_* spvm) {
   return SPVM_PARSER_ALLOCATOR_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_CONSTANT));
 }
 
-SPVM_CONSTANT* SPVM_CONSTANT_create_int_1(SPVM* spvm) {
+SPVM_CONSTANT* SPVM_CONSTANT_create_int_1(SPVM_* spvm) {
   
   SPVM_PARSER* parser = spvm->parser;
   

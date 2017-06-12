@@ -4,7 +4,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "spvm.h"
+#include "spvm_.h"
 #include "spvm_data_api.h"
 #include "spvm_runtime_allocator.h"
 #include "spvm_runtime_api.h"
@@ -15,7 +15,7 @@
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_package.h"
 
-SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM* spvm) {
+SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_* spvm) {
   SPVM_RUNTIME_ALLOCATOR* allocator = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_RUNTIME_ALLOCATOR));
   
   // Memory pool
@@ -35,7 +35,7 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM* spvm) {
   return allocator;
 }
 
-inline int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM* spvm, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size) {
+inline int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_* spvm, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size) {
   (void)spvm;
   (void)allocator;
   
@@ -70,7 +70,7 @@ inline int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM* spvm, SPVM_RUNTIM
   return index;
 }
 
-inline void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM* spvm, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size) {
+inline void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_* spvm, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size) {
   (void) spvm;
   
   assert(size > 0);
@@ -94,7 +94,7 @@ inline void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM* spvm, SPVM_RUNTIME_ALLOCATOR* a
   return block;
 }
 
-inline void SPVM_RUNTIME_ALLOCATOR_free_data(SPVM* spvm, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_DATA* data) {
+inline void SPVM_RUNTIME_ALLOCATOR_free_data(SPVM_* spvm, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_DATA* data) {
   if (data == NULL) {
     return;
   }
@@ -117,7 +117,7 @@ inline void SPVM_RUNTIME_ALLOCATOR_free_data(SPVM* spvm, SPVM_RUNTIME_ALLOCATOR*
   }
 }
 
-void SPVM_RUNTIME_ALLOCATOR_free(SPVM* spvm, SPVM_RUNTIME_ALLOCATOR* allocator) {
+void SPVM_RUNTIME_ALLOCATOR_free(SPVM_* spvm, SPVM_RUNTIME_ALLOCATOR* allocator) {
   // Free memory pool */
   SPVM_MEMORY_POOL_free(spvm, allocator->memory_pool);
   
