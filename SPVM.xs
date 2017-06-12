@@ -5,5 +5,6 @@
 #include "ppport.h"
 
 
-MODULE = SPVM		PACKAGE = SPVM		
+MODULE = SPVM::Compiler		PACKAGE = SPVM::Compiler
 
+MODULE = SPVM		PACKAGE = SPVM
