@@ -30,7 +30,7 @@ struct SPVM_runtime {
   _Bool abort;
 };
 
-SPVM_RUNTIME* SPVM_RUNTIME_init(SPVM* spvm, SPVM_RUNTIME* runtime);
+void SPVM_RUNTIME_init(SPVM* spvm, SPVM_RUNTIME* runtime);
 SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM* spvm);
 void SPVM_RUNTIME_free(SPVM* spvm, SPVM_RUNTIME* runtime);
 

@@ -176,7 +176,6 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
     SPVM_ARRAY* op_fields = package->op_fields;
     
     // Calculate package byte size
-    int32_t package_byte_size = 0;
     for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_ARRAY_fetch(spvm, op_fields, field_pos);
       SPVM_FIELD* field = op_field->uv.field;
@@ -1305,12 +1304,12 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                   // Pop loop block my variable base
                   if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
                     assert(loop_block_my_var_base_stack->length > 0);
-                    int32_t* loop_block_my_var_base_ptr = SPVM_ARRAY_pop(spvm, loop_block_my_var_base_stack);
+                    SPVM_ARRAY_pop(spvm, loop_block_my_var_base_stack);
                   }
                   // Pop try block my variable base
                   else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_TRY) {
                     assert(try_block_my_var_base_stack->length > 0);
-                    int32_t* try_block_my_var_base_ptr = SPVM_ARRAY_pop(spvm, try_block_my_var_base_stack);
+                    SPVM_ARRAY_pop(spvm, try_block_my_var_base_stack);
                   }
                   
                   // Free my variables at end of block

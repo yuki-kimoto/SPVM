@@ -13,6 +13,30 @@
 #include "spvm_constant_pool_field.h"
 #include "spvm_data_api.h"
 
+inline int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
+  (void)spvm;
+  
+  int64_t byte_size;
+  
+  // Reference is string
+  if (data->type == SPVM_DATA_C_TYPE_ARRAY) {
+    SPVM_DATA_ARRAY* data_array = (SPVM_DATA_ARRAY*)data;
+    byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + data_array->length * SPVM_DATA_ARRAY_C_VALUE_SIZES[data_array->value_type];
+  }
+  // Reference is object
+  else if (data->type == SPVM_DATA_C_TYPE_OBJECT) {
+    SPVM_DATA_OBJECT* data_object = (SPVM_DATA_OBJECT*)data;
+    SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
+    memcpy(&constant_pool_package, &runtime->constant_pool[data_object->package_constant_pool_address], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+    byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * constant_pool_package.fields_length;
+  }
+  else {
+    assert(0);
+  }
+  
+  return byte_size;
+}
+
 inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t length) {
   (void)spvm;
   (void)runtime;
@@ -46,27 +70,17 @@ inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM* spvm, SPVM
   return data_array;
 }
 
-inline int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
+inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM* spvm, SPVM_RUNTIME* runtime, const char* pv) {
+  (void)spvm;
+  (void)runtime;
   
-  int64_t byte_size;
+  int32_t length = strlen(pv);
+  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_create_data_array_byte(spvm, runtime, length);
   
-  // Reference is string
-  if (data->type == SPVM_DATA_C_TYPE_ARRAY) {
-    SPVM_DATA_ARRAY* data_array = (SPVM_DATA_ARRAY*)data;
-    byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + data_array->length * SPVM_DATA_ARRAY_C_VALUE_SIZES[data_array->value_type];
-  }
-  // Reference is object
-  else if (data->type == SPVM_DATA_C_TYPE_OBJECT) {
-    SPVM_DATA_OBJECT* data_object = (SPVM_DATA_OBJECT*)data;
-    SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-    memcpy(&constant_pool_package, &runtime->constant_pool[data_object->package_constant_pool_address], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-    byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * constant_pool_package.fields_length;
-  }
-  else {
-    assert(0);
-  }
+  // Copy string
+  memcpy((void*)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE), pv, length);
   
-  return byte_size;
+  return data_array;
 }
 
 inline void SPVM_RUNTIME_API_dec_ref_count(SPVM* spvm, SPVM_RUNTIME* runtime, SPVM_DATA* data) {
@@ -353,18 +367,3 @@ inline void SPVM_RUNTIME_API_push_var_address(SPVM* spvm, SPVM_RUNTIME* runtime,
   runtime->call_stack[runtime->operand_stack_top].address_value = value;
 }
 
-inline SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM* spvm, SPVM_RUNTIME* runtime, const char* pv) {
-  (void)spvm;
-  (void)runtime;
-  
-  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
-  
-  int32_t length = strlen(pv);
-  
-  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_create_data_array_byte(spvm, runtime, length);
-  
-  // Copy string
-  memcpy((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE, pv, length);
-  
-  return data_array;
-}

@@ -17,6 +17,7 @@
 #include "spvm_array.h"
 #include "spvm_bytecode_array.h"
 #include "spvm_sub.h"
+#include "spvm_constant_pool.h"
 
 SPVM_PARSER* SPVM_PARSER_new(SPVM* spvm) {
   SPVM_PARSER* parser = malloc(sizeof(SPVM_PARSER));

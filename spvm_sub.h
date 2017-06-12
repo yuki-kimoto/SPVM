@@ -10,7 +10,7 @@ struct SPVM_sub {
   SPVM_OP* op_block;
   SPVM_ARRAY* op_args;
   SPVM_ARRAY* op_my_vars;
-  void (*native_address)(SPVM* spvm, SPVM_ENV* env);
+  void* native_address;
   const char* abs_name;
   const char* file_name;
   int32_t bytecode_base;

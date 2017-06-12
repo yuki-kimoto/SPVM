@@ -17,6 +17,46 @@ const int32_t SPVM_DATA_ARRAY_C_VALUE_SIZES[] = {
   sizeof(void*),
 };
 
+inline SPVM_VALUE* SPVM_DATA_API_get_object_fields(SPVM_DATA_OBJECT* data_object) {
+  return (SPVM_VALUE*)((intptr_t)data_object + SPVM_DATA_C_HEADER_BYTE_SIZE);
+}
+
+inline int32_t SPVM_DATA_API_get_object_field_index(SPVM_DATA_OBJECT* data_object, const char* name) {
+  
+  int32_t field_name_indexes_constant_pool_address = data_object->field_name_indexes_constant_pool_address;
+  int32_t* constant_pool = data_object->constant_pool;
+  int32_t length = constant_pool[field_name_indexes_constant_pool_address];
+  
+  int32_t field_index = -1;
+  _Bool found = 0;
+  for (int32_t i = 0; i < length; i++) {
+    int32_t name_index = constant_pool[field_name_indexes_constant_pool_address + i + 1];
+    char* match_name = (char*)&constant_pool[name_index + 1];
+    if (strcmp(name, match_name) == 0) {
+      found = 1;
+      field_index = i;
+    }
+  }
+  
+  if (!found) {
+    fprintf(stderr, "Can't find filed name \"%s\"\n", name);
+    abort();
+  }
+  
+  return field_index;
+}
+
+inline int32_t SPVM_DATA_API_get_object_fields_length(SPVM_DATA_OBJECT* data_object) {
+  
+  int32_t field_name_indexes_constant_pool_address = data_object->field_name_indexes_constant_pool_address;
+  
+  int32_t* constant_pool = data_object->constant_pool;
+  
+  int32_t length = constant_pool[field_name_indexes_constant_pool_address];
+  
+  return length;
+}
+
 inline void SPVM_DATA_API_set_object_field_value_byte(SPVM_DATA_OBJECT* data_object, const char* name, int8_t value) {
   
   SPVM_VALUE* fields = SPVM_DATA_API_get_object_fields(data_object);
@@ -122,35 +162,6 @@ inline SPVM_DATA* SPVM_DATA_API_get_object_field_value_ref(SPVM_DATA_OBJECT* dat
   return address_value;
 }
 
-inline SPVM_VALUE* SPVM_DATA_API_get_object_fields(SPVM_DATA_OBJECT* data_object) {
-  return (SPVM_VALUE*)((intptr_t)data_object + SPVM_DATA_C_HEADER_BYTE_SIZE);
-}
-
-inline int32_t SPVM_DATA_API_get_object_field_index(SPVM_DATA_OBJECT* data_object, const char* name) {
-  
-  int32_t field_name_indexes_constant_pool_address = data_object->field_name_indexes_constant_pool_address;
-  int32_t* constant_pool = data_object->constant_pool;
-  int32_t length = constant_pool[field_name_indexes_constant_pool_address];
-  
-  int32_t field_index;
-  _Bool found = 0;
-  for (int32_t i = 0; i < length; i++) {
-    int32_t name_index = constant_pool[field_name_indexes_constant_pool_address + i + 1];
-    char* match_name = (char*)&constant_pool[name_index + 1];
-    if (strcmp(name, match_name) == 0) {
-      found = 1;
-      field_index = i;
-    }
-  }
-  
-  if (!found) {
-    fprintf(stderr, "Can't find filed name \"%s\"\n", name);
-    abort();
-  }
-  
-  return field_index;
-}
-
 inline int32_t SPVM_DATA_API_dump_object_field_names(SPVM_DATA_OBJECT* data_object) {
   
   int32_t field_name_indexes_constant_pool_address = data_object->field_name_indexes_constant_pool_address;
@@ -164,17 +175,6 @@ inline int32_t SPVM_DATA_API_dump_object_field_names(SPVM_DATA_OBJECT* data_obje
     char* name = (char*)&constant_pool[name_index + 1];
     fprintf(stderr, "%s\n", name);
   }
-  
-  return length;
-}
-
-inline int32_t SPVM_DATA_API_get_object_fields_length(SPVM_DATA_OBJECT* data_object) {
-  
-  int32_t field_name_indexes_constant_pool_address = data_object->field_name_indexes_constant_pool_address;
-  
-  int32_t* constant_pool = data_object->constant_pool;
-  
-  int32_t length = constant_pool[field_name_indexes_constant_pool_address];
   
   return length;
 }

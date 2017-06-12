@@ -11,10 +11,11 @@
 #include "spvm_constant_pool.h"
 #include "spvm_bytecode_array.h"
 #include "spvm_runtime.h"
-#include "spvm_runtime.h"
+#include "spvm_runtime_api.h"
 #include "spvm_runtime_allocator.h"
 #include "spvm_op.h"
 #include "spvm_sub.h"
+#include "spvm_data_api.h"
 
 void SPVM_run(SPVM* spvm, const char* package_name) {
   
@@ -63,9 +64,9 @@ void SPVM_run(SPVM* spvm, const char* package_name) {
 #ifdef DEBUG
   if (runtime->abort) {
     void* message_address = SPVM_RUNTIME_API_pop_return_value_address(spvm, runtime);
-    char* message = SPVM_DATA_API_get_array_values_byte(message_address);
+    int8_t* message = SPVM_DATA_API_get_array_values_byte(message_address);
     
-    printf("%s", message);
+    printf("%s", (char*)message);
     printf("\n");
   }
   else {
