@@ -69,11 +69,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM* spvm) {
             }
             else {
               
-              // Change :: to / and add ".spvm"
-              int32_t module_path_base_length = (int32_t)(strlen(package_name) + 6);
+              // Append "SPVM/", change :: to / and add ".spvm"
+              int32_t module_path_base_length = (int32_t)(5 + strlen(package_name) + 6);
               char* module_path_base = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, parser->allocator, module_path_base_length);
               const char* bufptr_orig = package_name;
               char* bufptr_to = module_path_base;
+              strncpy(bufptr_to, "SPVM/", 5);
+              bufptr_to += 5;
               while (*bufptr_orig) {
                 if (*bufptr_orig == ':' && *(bufptr_orig + 1) == ':') {
                   *bufptr_to = '/';

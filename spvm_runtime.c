@@ -282,7 +282,7 @@ void SPVM_RUNTIME_call_sub(SPVM* spvm, SPVM_RUNTIME* runtime, int32_t sub_consta
   // Offten used variables
   int32_t index;
   SPVM_DATA_ARRAY* data_array;
-  char* data_string_error;
+  SPVM_DATA_ARRAY* data_string_error;
   SPVM_DATA_OBJECT* data_object;
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   

@@ -29,6 +29,42 @@
 #include "spvm_constant_pool.h"
 #include "spvm_limit.h"
 
+void SPVM_OP_CHECKER_build_leave_scope(SPVM* spvm, SPVM_OP* op_leave_scope, SPVM_ARRAY* op_my_var_stack, int32_t top, int32_t bottom, SPVM_OP* op_term_keep) {
+  
+  for (int32_t i = top; i >= bottom; i--) {
+    SPVM_OP* op_my_var = SPVM_ARRAY_fetch(spvm, op_my_var_stack, i);
+    assert(op_my_var);
+    
+    SPVM_RESOLVED_TYPE* resolved_type = SPVM_OP_get_resolved_type(spvm, op_my_var);
+    
+    // Decrement reference count when leaving scope
+    if (!SPVM_RESOLVED_TYPE_is_numeric(spvm, resolved_type)) {
+      // If return term is variable, don't decrement reference count
+      _Bool do_dec_ref_count = 0;
+      if (op_term_keep) {
+        if (op_term_keep->code == SPVM_OP_C_CODE_VAR) {
+          if (op_term_keep->uv.var->op_my_var->uv.my_var->address != op_my_var->uv.my_var->address) {
+            do_dec_ref_count = 1;
+          }
+        }
+        else {
+          do_dec_ref_count = 1;
+        }
+      }
+      else {
+        do_dec_ref_count = 1;
+      }
+      
+      if (do_dec_ref_count) {
+        SPVM_OP* op_dec_ref_count = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_DEC_REF_COUNT, op_leave_scope->file, op_leave_scope->line);
+        SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(spvm, op_my_var);
+        SPVM_OP_sibling_splice(spvm, op_dec_ref_count, NULL, 0, op_var);
+        SPVM_OP_sibling_splice(spvm, op_leave_scope, NULL, 0, op_dec_ref_count);
+      }
+    }
+  }
+}
+
 void SPVM_OP_CHECKER_check(SPVM* spvm) {
   
   SPVM_PARSER* parser = spvm->parser;
@@ -212,9 +248,15 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
         // my variable stack
         SPVM_ARRAY* op_my_var_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
         
-        // block base position stack
-        SPVM_ARRAY* block_base_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
-        int32_t block_base = 0;
+        // block my variable base position stack
+        SPVM_ARRAY* block_my_var_base_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
+        int32_t block_my_var_base = 0;
+
+        // try block my variable base position stack
+        SPVM_ARRAY* try_block_my_var_base_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
+        
+        // loop block my variable base position stack
+        SPVM_ARRAY* loop_block_my_var_base_stack = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, parser->allocator, 0);
         
         // In switch statement
         _Bool in_switch = 0;
@@ -316,19 +358,26 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                   }
                   
                   SPVM_OP* op_return_process = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_RETURN_PROCESS, op_return->file, op_return->line);
-                  SPVM_OP* op_before_return = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_BEFORE_RETURN, op_return->file, op_return->line);
+                  SPVM_OP* op_leave_scope = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_LEAVE_SCOPE, op_return->file, op_return->line);
                   
-                  SPVM_OP_sibling_splice(spvm, op_return_process, op_return_process->last, 0, op_before_return);
+                  SPVM_OP_sibling_splice(spvm, op_return_process, op_return_process->last, 0, op_leave_scope);
                   SPVM_OP_sibling_splice(spvm, op_return_process, op_return_process->last, 0, op_return);
                   
                   SPVM_OP_sibling_splice(spvm, op_statements, op_statements->last, 0, op_return_process);
                 }
               }
               
-              block_base = op_my_var_stack->length;
-              int32_t* block_base_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
-              *block_base_ptr = block_base;
-              SPVM_ARRAY_push(spvm, block_base_stack, block_base_ptr);
+              block_my_var_base = op_my_var_stack->length;
+              int32_t* block_my_var_base_ptr = SPVM_PARSER_ALLOCATOR_alloc_int(spvm, parser->allocator);
+              *block_my_var_base_ptr = block_my_var_base;
+              SPVM_ARRAY_push(spvm, block_my_var_base_stack, block_my_var_base_ptr);
+              
+              if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
+                SPVM_ARRAY_push(spvm, loop_block_my_var_base_stack, block_my_var_base_ptr);
+              }
+              else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_TRY) {
+                SPVM_ARRAY_push(spvm, try_block_my_var_base_stack, block_my_var_base_ptr);
+              }
               
               break;
             }
@@ -346,6 +395,59 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
             while (1) {
               // [START]Postorder traversal position
               switch (op_cur->code) {
+                case SPVM_OP_C_CODE_NEXT: {
+                  if (loop_block_my_var_base_stack->length == 0) {
+                    SPVM_yyerror_format(spvm, "next statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
+                  }
+                  break;
+                }
+                case SPVM_OP_C_CODE_LAST: {
+                  if (loop_block_my_var_base_stack->length == 0) {
+                    SPVM_yyerror_format(spvm, "last statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
+                  }
+                  break;
+                }
+                case SPVM_OP_C_CODE_NEXT_PROCESS: {
+                  SPVM_OP* op_leave_scope = op_cur->first;
+                  
+                  assert(loop_block_my_var_base_stack->length > 0);
+                  int32_t* bottom_ptr = SPVM_ARRAY_fetch(spvm, loop_block_my_var_base_stack, loop_block_my_var_base_stack->length - 1);
+                  
+                  // Build op_leave_scope
+                  SPVM_OP_CHECKER_build_leave_scope(spvm, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, NULL);
+                  
+                  break;
+                }
+                case SPVM_OP_C_CODE_LAST_PROCESS: {
+                  SPVM_OP* op_leave_scope = op_cur->first;
+                  
+                  assert(loop_block_my_var_base_stack->length > 0);
+                  int32_t* bottom_ptr = SPVM_ARRAY_fetch(spvm, loop_block_my_var_base_stack, loop_block_my_var_base_stack->length - 1);
+                  
+                  // Build op_leave_scope
+                  SPVM_OP_CHECKER_build_leave_scope(spvm, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, NULL);
+                  
+                  break;
+                }
+                case SPVM_OP_C_CODE_DIE_PROCESS: {
+                  // Add before return process
+                  SPVM_OP* op_leave_scope = op_cur->first;
+                  SPVM_OP* op_die = op_cur->last;
+                  SPVM_OP* op_term = op_die->first;
+                  
+                  if (try_block_my_var_base_stack->length > 0) {
+                    int32_t* bottom_ptr = SPVM_ARRAY_fetch(spvm, try_block_my_var_base_stack, try_block_my_var_base_stack->length - 1);
+                    
+                    // Build op_leave_scope
+                    SPVM_OP_CHECKER_build_leave_scope(spvm, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, op_term);
+                  }
+                  else {
+                    // Build op_leave_scope
+                    SPVM_OP_CHECKER_build_leave_scope(spvm, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, 0, op_term);
+                  }
+                  
+                  break;
+                }
                 case SPVM_OP_C_CODE_CONSTANT: {
                   SPVM_CONSTANT* constant = op_cur->uv.constant;
                   
@@ -975,43 +1077,16 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                       break;
                     }
                   }
+                  break;
+                }
+                case SPVM_OP_C_CODE_RETURN_PROCESS: {
                   
                   // Add before return process
-                  SPVM_OP* op_return_process = op_cur->sibparent;
-                  SPVM_OP* op_before_return = op_return_process->first;
+                  SPVM_OP* op_leave_scope = op_cur->first;
+                  SPVM_OP* op_return = op_cur->last;
+                  SPVM_OP* op_term = op_return->first;
                   
-                  for (int32_t j = op_my_var_stack->length - 1; j >= 0; j--) {
-                    SPVM_OP* op_my_var = SPVM_ARRAY_fetch(spvm, op_my_var_stack, j);
-                    
-                    SPVM_RESOLVED_TYPE* resolved_type = SPVM_OP_get_resolved_type(spvm, op_my_var);
-                    
-                    // Decrement reference count at before return
-                    if (!SPVM_RESOLVED_TYPE_is_numeric(spvm, resolved_type)) {
-                      // If return target is variable, don't decrement reference count
-                      _Bool do_dec_ref_count = 0;
-                      if (op_term) {
-                        if (op_term->code == SPVM_OP_C_CODE_VAR) {
-                          if (op_term->uv.var->op_my_var->uv.my_var->address != op_my_var->uv.my_var->address) {
-                            do_dec_ref_count = 1;
-                          }
-                        }
-                        else {
-                          do_dec_ref_count = 1;
-                        }
-                      }
-                      else {
-                        do_dec_ref_count = 1;
-                      }
-                      
-                      if (do_dec_ref_count) {
-                        SPVM_OP* op_decrefcount = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_DEC_REF_COUNT, op_cur->file, op_cur->line);
-                        SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(spvm, op_my_var);
-                        SPVM_OP_sibling_splice(spvm, op_decrefcount, NULL, 0, op_var);
-                        SPVM_OP_sibling_splice(spvm, op_before_return, NULL, 0, op_decrefcount);
-                      }
-                    }
-                    assert(op_my_var);
-                  }
+                  SPVM_OP_CHECKER_build_leave_scope(spvm, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, 0, op_term);
                   
                   break;
                 }
@@ -1222,15 +1297,26 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                   
                   SPVM_OP* op_list_statement = op_cur->first;
                   
-                  if (block_base_stack->length > 0) {
-                    int32_t* block_base_ptr = SPVM_ARRAY_pop(spvm, block_base_stack);
-                    block_base = *block_base_ptr;
+                  // Pop block my variable base
+                  assert(block_my_var_base_stack->length > 0);
+                  int32_t* block_my_var_base_ptr = SPVM_ARRAY_pop(spvm, block_my_var_base_stack);
+                  block_my_var_base = *block_my_var_base_ptr;
+
+                  // Pop loop block my variable base
+                  if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
+                    assert(loop_block_my_var_base_stack->length > 0);
+                    int32_t* loop_block_my_var_base_ptr = SPVM_ARRAY_pop(spvm, loop_block_my_var_base_stack);
+                  }
+                  // Pop try block my variable base
+                  else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_TRY) {
+                    assert(try_block_my_var_base_stack->length > 0);
+                    int32_t* try_block_my_var_base_ptr = SPVM_ARRAY_pop(spvm, try_block_my_var_base_stack);
                   }
                   
                   // Free my variables at end of block
                   SPVM_OP* op_block_end = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_BLOCK_END, op_cur->file, op_cur->line);
                   
-                  int32_t pop_count = op_my_var_stack->length - block_base;
+                  int32_t pop_count = op_my_var_stack->length - block_my_var_base;
                   for (int32_t j = 0; j < pop_count; j++) {
                     SPVM_OP* op_my_var = SPVM_ARRAY_pop(spvm, op_my_var_stack);
                     
@@ -1238,10 +1324,10 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                     
                     // Decrement reference count at end of scope
                     if (!SPVM_RESOLVED_TYPE_is_numeric(spvm, resolved_type)) {
-                      SPVM_OP* op_decrefcount = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_DEC_REF_COUNT, op_cur->file, op_cur->line);
+                      SPVM_OP* op_dec_ref_count = SPVM_OP_new_op(spvm, SPVM_OP_C_CODE_DEC_REF_COUNT, op_cur->file, op_cur->line);
                       SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(spvm, op_my_var);
-                      SPVM_OP_sibling_splice(spvm, op_decrefcount, NULL, 0, op_var);
-                      SPVM_OP_sibling_splice(spvm, op_block_end, NULL, 0, op_decrefcount);
+                      SPVM_OP_sibling_splice(spvm, op_dec_ref_count, NULL, 0, op_var);
+                      SPVM_OP_sibling_splice(spvm, op_block_end, NULL, 0, op_dec_ref_count);
                     }
                     
                     assert(op_my_var);
@@ -1251,13 +1337,13 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                     SPVM_OP_sibling_splice(spvm, op_list_statement, op_list_statement->last, 0, op_block_end);
                   }
                   
-                  if (block_base_stack->length > 0) {
-                    int32_t* before_block_base_ptr = SPVM_ARRAY_fetch(spvm, block_base_stack, block_base_stack->length - 1);
-                    int32_t before_block_base = *before_block_base_ptr;
-                    block_base = before_block_base;
+                  if (block_my_var_base_stack->length > 0) {
+                    int32_t* before_block_my_var_base_ptr = SPVM_ARRAY_fetch(spvm, block_my_var_base_stack, block_my_var_base_stack->length - 1);
+                    int32_t before_block_my_var_base = *before_block_my_var_base_ptr;
+                    block_my_var_base = before_block_my_var_base;
                   }
                   else {
-                    block_base = 0;
+                    block_my_var_base = 0;
                   }
                   
                   break;
@@ -1322,7 +1408,7 @@ void SPVM_OP_CHECKER_check(SPVM* spvm) {
                   // Search same name variable
                   _Bool found = 0;
                   
-                  for (int32_t i = op_my_var_stack->length; i-- > block_base; ) {
+                  for (int32_t i = op_my_var_stack->length; i-- > block_my_var_base; ) {
                     SPVM_OP* op_bef_my_var = SPVM_ARRAY_fetch(spvm, op_my_var_stack, i);
                     SPVM_MY_VAR* bef_my_var = op_bef_my_var->uv.my_var;
                     if (strcmp(my_var->op_name->uv.name, bef_my_var->op_name->uv.name) == 0) {

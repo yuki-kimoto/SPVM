@@ -326,7 +326,13 @@ my
 
 expression
   : LAST
+    {
+      $$ = SPVM_OP_build_last(spvm, $1);
+    }
   | NEXT
+    {
+      $$ = SPVM_OP_build_next(spvm, $1);
+    }
   | RETURN {
       $$ = SPVM_OP_build_return(spvm, $1, NULL);
     }
