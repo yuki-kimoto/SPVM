@@ -26,6 +26,17 @@ compile(...)
 {
   SV* sv_compiler = ST(0);
   
+  HV* hv_compiler = (HV*)SvRV(sv_compiler);
+  
+  // Add package
+  SV** sv_package_infos_ptr = hv_fetch(hv_compiler, "package_infos", strlen("package_infos"), 0);
+  SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
+  AV* av_package_infos = (AV*)SvRV(sv_package_infos);
+  int32_t av_package_infos_length = av_len(av_package_infos) + 1;
+  for (int32_t i = 0; i < av_package_infos_length; i++) {
+    SV* sv_package_info = av_fetch(av_package_infos, i, FALSE);
+  }
+  
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
