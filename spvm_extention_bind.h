@@ -3,6 +3,6 @@
 
 #include "spvm_base.h"
 
-void SPVM_EXTENTION_BIND_bind_core_extentions(SPVM_* spvm, SPVM_SUB* sub, const char* sub_abs_name);
+void SPVM_EXTENTION_BIND_bind_core_extentions(SPVM_PARSER* parser, SPVM_SUB* sub, const char* sub_abs_name);
 
 #endif

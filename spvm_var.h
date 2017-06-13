@@ -8,6 +8,6 @@ struct SPVM_var {
   SPVM_OP* op_my_var;
 };
 
-SPVM_VAR* SPVM_VAR_new(SPVM_* spvm);
+SPVM_VAR* SPVM_VAR_new(SPVM_PARSER* parser);
 
 #endif

@@ -2,11 +2,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "spvm_.h"
 #include "spvm_hash_func.h"
 
-int32_t SPVM_HASH_FUNC_calc_hash_for_index(SPVM_* spvm, const char* str, int32_t len) {
-  (void)spvm;
+int32_t SPVM_HASH_FUNC_calc_hash_for_index(const char* str, int32_t len) {
   
   assert(len > 0);
   

@@ -19,6 +19,6 @@ struct SPVM_type_part {
   int32_t code;
 };
 
-SPVM_TYPE_PART* SPVM_TYPE_PART_new(SPVM_* spvm);
+SPVM_TYPE_PART* SPVM_TYPE_PART_new(SPVM_PARSER* parser);
 
 #endif

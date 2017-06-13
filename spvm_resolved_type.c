@@ -1,6 +1,6 @@
 #include <string.h>
 #include "spvm_resolved_type.h"
-#include "spvm_.h"
+
 #include "spvm_parser_allocator.h"
 #include "spvm_package.h"
 #include "spvm_parser.h"
@@ -20,16 +20,16 @@ const char* const SPVM_RESOLVED_TYPE_C_CORE_NAMES[] = {
   "double[]",
 };
 
-SPVM_RESOLVED_TYPE* SPVM_RESOLVED_TYPE_new(SPVM_* spvm) {
-  SPVM_RESOLVED_TYPE* resolved_type = SPVM_PARSER_ALLOCATOR_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_RESOLVED_TYPE));
+SPVM_RESOLVED_TYPE* SPVM_RESOLVED_TYPE_new(SPVM_PARSER* parser) {
+  SPVM_RESOLVED_TYPE* resolved_type = SPVM_PARSER_ALLOCATOR_alloc_memory_pool(parser, parser->allocator, sizeof(SPVM_RESOLVED_TYPE));
   
-  resolved_type->part_names = SPVM_PARSER_ALLOCATOR_alloc_array(spvm, spvm->parser->allocator, 0);
+  resolved_type->part_names = SPVM_PARSER_ALLOCATOR_alloc_array(parser, parser->allocator, 0);
   
   return resolved_type;
 }
 
-_Bool SPVM_RESOLVED_TYPE_is_array(SPVM_* spvm, SPVM_RESOLVED_TYPE* resolved_type) {
-  (void)spvm;
+_Bool SPVM_RESOLVED_TYPE_is_array(SPVM_PARSER* parser, SPVM_RESOLVED_TYPE* resolved_type) {
+  (void)parser;
   
   int32_t length = (int32_t)strlen(resolved_type->name);
   
@@ -49,8 +49,8 @@ _Bool SPVM_RESOLVED_TYPE_is_array(SPVM_* spvm, SPVM_RESOLVED_TYPE* resolved_type
   }
 }
 
-_Bool SPVM_RESOLVED_TYPE_is_array_numeric(SPVM_* spvm, SPVM_RESOLVED_TYPE* resolved_type) {
-  (void)spvm;
+_Bool SPVM_RESOLVED_TYPE_is_array_numeric(SPVM_PARSER* parser, SPVM_RESOLVED_TYPE* resolved_type) {
+  (void)parser;
   
   const char* name = resolved_type->name;
   
@@ -64,8 +64,8 @@ _Bool SPVM_RESOLVED_TYPE_is_array_numeric(SPVM_* spvm, SPVM_RESOLVED_TYPE* resol
   }
 }
 
-_Bool SPVM_RESOLVED_TYPE_is_integral(SPVM_* spvm, SPVM_RESOLVED_TYPE* resolved_type) {
-  (void)spvm;
+_Bool SPVM_RESOLVED_TYPE_is_integral(SPVM_PARSER* parser, SPVM_RESOLVED_TYPE* resolved_type) {
+  (void)parser;
   
   if (resolved_type->id <= SPVM_RESOLVED_TYPE_C_ID_LONG) {
     return 1;
@@ -75,8 +75,8 @@ _Bool SPVM_RESOLVED_TYPE_is_integral(SPVM_* spvm, SPVM_RESOLVED_TYPE* resolved_t
   }
 }
 
-_Bool SPVM_RESOLVED_TYPE_is_numeric(SPVM_* spvm, SPVM_RESOLVED_TYPE* resolved_type) {
-  (void)spvm;
+_Bool SPVM_RESOLVED_TYPE_is_numeric(SPVM_PARSER* parser, SPVM_RESOLVED_TYPE* resolved_type) {
+  (void)parser;
   
   if (resolved_type && resolved_type->id <= SPVM_RESOLVED_TYPE_C_ID_DOUBLE) {
     return 1;

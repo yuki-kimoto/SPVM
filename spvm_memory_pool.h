@@ -11,8 +11,8 @@ struct SPVM_memory_pool {
   int32_t current_page;
 };
 
-SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(SPVM_* spvm, int32_t page_byte_size);
-void* SPVM_MEMORY_POOL_alloc(SPVM_* spvm, SPVM_MEMORY_POOL* memory_pool, int32_t block_size);
-void SPVM_MEMORY_POOL_free(SPVM_* spvm, SPVM_MEMORY_POOL* memory_pool);
+SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(int32_t page_byte_size);
+void* SPVM_MEMORY_POOL_alloc(SPVM_MEMORY_POOL* memory_pool, int32_t block_size);
+void SPVM_MEMORY_POOL_free(SPVM_MEMORY_POOL* memory_pool);
 
 #endif

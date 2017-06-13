@@ -12,6 +12,9 @@ struct SPVM_parser {
   
   // Bytecodes
   SPVM_BYTECODE_ARRAY* bytecode_array;
+
+  // Entry point package name
+  const char* entry_point_package_name;
   
   // Entry point subroutine name
   const char* entry_point_sub_name;
@@ -83,9 +86,9 @@ struct SPVM_parser {
   _Bool fatal_error;
 };
 
-SPVM_PARSER* SPVM_PARSER_new(SPVM_* spvm);
-int32_t SPVM_PARSER_parse(SPVM_* spvm, const char* package_name);
+SPVM_PARSER* SPVM_PARSER_new();
+int32_t SPVM_PARSER_parse(SPVM_PARSER* parser);
 
-void SPVM_PARSER_free(SPVM_* spvm, SPVM_PARSER* parser);
+void SPVM_PARSER_free(SPVM_PARSER* parser);
 
 #endif

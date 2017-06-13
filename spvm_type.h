@@ -22,8 +22,8 @@ struct SPVM_type {
 };
 
 
-SPVM_TYPE* SPVM_TYPE_new(SPVM_* spvm);
-void SPVM_TYPE_build_parts(SPVM_* spvm, SPVM_TYPE* type, SPVM_ARRAY* parts);
-_Bool SPVM_TYPE_resolve_type(SPVM_* spvm, SPVM_OP* op_type, int32_t name_length);
+SPVM_TYPE* SPVM_TYPE_new(SPVM_PARSER* parser);
+void SPVM_TYPE_build_parts(SPVM_PARSER* parser, SPVM_TYPE* type, SPVM_ARRAY* parts);
+_Bool SPVM_TYPE_resolve_type(SPVM_PARSER* parser, SPVM_OP* op_type, int32_t name_length);
 
 #endif

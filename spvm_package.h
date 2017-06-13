@@ -15,6 +15,6 @@ struct SPVM_package {
   int32_t field_name_indexes_constant_pool_address;
 };
 
-SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_* spvm);
+SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_PARSER* parser);
 
 #endif

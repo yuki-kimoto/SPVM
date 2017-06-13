@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <inttypes.h>
 
-#include "spvm_.h"
+
 #include "spvm_parser.h"
 #include "spvm_yacc_util.h"
 #include "spvm_parser_allocator.h"
@@ -13,7 +13,7 @@
 #include "spvm_var.h"
 #include "spvm_op.h"
 
-void SPVM_yyerror_format(SPVM_* spvm, const char* message_template, ...) {
+void SPVM_yyerror_format(SPVM_PARSER* parser, const char* message_template, ...) {
   
   int32_t message_length = 0;
   
@@ -26,7 +26,7 @@ void SPVM_yyerror_format(SPVM_* spvm, const char* message_template, ...) {
   
   // Messsage template with prefix
   int32_t message_template_with_prefix_length = prefix_length + message_template_length;
-  char* message_template_with_prefix = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, spvm->parser->allocator, message_template_with_prefix_length);
+  char* message_template_with_prefix = SPVM_PARSER_ALLOCATOR_alloc_string(parser, parser->allocator, message_template_with_prefix_length);
   strncpy(message_template_with_prefix, prefix, prefix_length);
   strncpy(message_template_with_prefix + prefix_length, message_template, message_template_length);
   message_template_with_prefix[message_template_with_prefix_length] = '\0';
@@ -60,20 +60,18 @@ void SPVM_yyerror_format(SPVM_* spvm, const char* message_template, ...) {
   }
   va_end(args);
   
-  char* message = SPVM_PARSER_ALLOCATOR_alloc_string(spvm, spvm->parser->allocator, message_length);
+  char* message = SPVM_PARSER_ALLOCATOR_alloc_string(parser, parser->allocator, message_length);
   
   va_start(args, message_template);
   vsprintf(message, message_template_with_prefix, args);
   va_end(args);
   
-  SPVM_yyerror(spvm, message);
+  SPVM_yyerror(parser, message);
 }
 
 // Print error
-void SPVM_yyerror(SPVM_* spvm, const char* message)
+void SPVM_yyerror(SPVM_PARSER* parser, const char* message)
 {
-  SPVM_PARSER* parser = spvm->parser;
-  
   parser->error_count++;
   
   if (memcmp(message, "Error:", 6) == 0) {

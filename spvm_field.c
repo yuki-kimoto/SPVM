@@ -1,21 +1,21 @@
 #include <assert.h>
 
 #include "spvm_field.h"
-#include "spvm_.h"
+
 #include "spvm_parser_allocator.h"
 #include "spvm_resolved_type.h"
 #include "spvm_type.h"
 #include "spvm_op.h"
 #include "spvm_parser.h"
 
-SPVM_FIELD* SPVM_FIELD_new(SPVM_* spvm) {
-  (void)spvm;
+SPVM_FIELD* SPVM_FIELD_new(SPVM_PARSER* parser) {
+  (void)parser;
   
-  return SPVM_PARSER_ALLOCATOR_alloc_memory_pool(spvm, spvm->parser->allocator, sizeof(SPVM_FIELD));
+  return SPVM_PARSER_ALLOCATOR_alloc_memory_pool(parser, parser->allocator, sizeof(SPVM_FIELD));
 }
 
-int32_t SPVM_FIELD_get_byte_size(SPVM_* spvm, SPVM_FIELD* field) {
-  (void)spvm;
+int32_t SPVM_FIELD_get_byte_size(SPVM_PARSER* parser, SPVM_FIELD* field) {
+  (void)parser;
   
   SPVM_RESOLVED_TYPE* field_resolved_type = field->op_type->uv.type->resolved_type;
   

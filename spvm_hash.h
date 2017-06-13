@@ -16,14 +16,14 @@ struct SPVM_hash {
 };
 
 // Hash function
-SPVM_HASH* SPVM_HASH_new(SPVM_* spvm, int32_t capacity);
-void SPVM_HASH_free(SPVM_* spvm, SPVM_HASH* hash);
-void SPVM_HASH_maybe_extend_entries(SPVM_* spvm, SPVM_HASH* hash);
+SPVM_HASH* SPVM_HASH_new(int32_t capacity);
+void SPVM_HASH_free(SPVM_HASH* hash);
+void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash);
 
-int32_t SPVM_HASH_new_hash_entry(SPVM_* spvm, SPVM_HASH* hash, const char* key, void* value);
-void SPVM_HASH_rehash(SPVM_* spvm, SPVM_HASH* hash, int32_t new_table_capacity);
-void SPVM_HASH_insert_norehash(SPVM_* spvm, SPVM_HASH* hash, const char* key, int32_t length, void* value);
-void SPVM_HASH_insert(SPVM_* spvm, SPVM_HASH* hash, const char* key, int32_t length, void* value);
-void* SPVM_HASH_search(SPVM_* spvm, SPVM_HASH* hash, const char* key, int32_t length);
+int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, void* value);
+void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity);
+void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length, void* value);
+void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* value);
+void* SPVM_HASH_search(SPVM_HASH* hash, const char* key, int32_t length);
 
 #endif

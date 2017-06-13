@@ -29,7 +29,7 @@ struct SPVM_constant {
   _Bool is_undef;
 };
 
-SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_* spvm);
-SPVM_CONSTANT* SPVM_CONSTANT_create_int_1(SPVM_* spvm);
+SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_PARSER* parser);
+SPVM_CONSTANT* SPVM_CONSTANT_create_int_1(SPVM_PARSER* parser);
 
 #endif
