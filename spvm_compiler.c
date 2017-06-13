@@ -74,17 +74,17 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   const char* entyr_point_package_name = compiler->entry_point_package_name;
   
-  /* Create use op for entry point package */
-  SPVM_OP* op_name_package = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, entyr_point_package_name, 1);
-  op_name_package->uv.name = entyr_point_package_name;
-  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_USE, entyr_point_package_name, 1);
-  SPVM_OP_sibling_splice(compiler, op_use, NULL, 0, op_name_package);
-  
-  /* Push entry point package to use stack */
-  SPVM_ARRAY_push(compiler->op_use_stack, op_use);
-  
-  // Entry point
   if (entyr_point_package_name) {
+    // Create use op for entry point package
+    SPVM_OP* op_name_package = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, entyr_point_package_name, 1);
+    op_name_package->uv.name = entyr_point_package_name;
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_USE, entyr_point_package_name, 1);
+    SPVM_OP_sibling_splice(compiler, op_use, NULL, 0, op_name_package);
+    
+    // Push entry point package to use stack
+    SPVM_ARRAY_push(compiler->op_use_stack, op_use);
+    
+    // Entry point
     int32_t entyr_point_package_name_length = (int32_t)strlen(entyr_point_package_name);
     int32_t entry_point_sub_name_length =  (int32_t)(entyr_point_package_name_length + 6);
     char* entry_point_sub_name = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(entry_point_sub_name_length + 1, sizeof(char));
