@@ -184,6 +184,7 @@ struct SPVM_op {
   _Bool lvalue;
 };
 
+SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line);
 
 SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub);
 SPVM_RESOLVED_TYPE* SPVM_OP_get_resolved_type(SPVM_COMPILER* compiler, SPVM_OP* op);
