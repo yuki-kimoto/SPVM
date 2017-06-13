@@ -8,7 +8,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 1;
+use Test::More 'no_plan';;
 BEGIN { use_ok('SPVM') };
 
 #########################
@@ -22,5 +22,8 @@ use SPVM 'Test';
 use SPVM 'std';
 
 my $compiler = SPVM::get_compiler;
+
+is_deeply($compiler->packages, ['Test', 'std']);
+
 $compiler->compile;
 

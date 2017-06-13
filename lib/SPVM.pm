@@ -11,10 +11,10 @@ my $compiler = SPVM::Compiler->new;
 our $VERSION = '0.01';
 
 sub import {
-  my ($class, $spvm_class) = @_;
+  my ($class, $package) = @_;
   
-  if (defined $spvm_class) {
-    warn "AAAAAAAAAAAAAA $spvm_class\n";
+  if (defined $package) {
+    push @{$compiler->packages}, $package;
   }
 }
 

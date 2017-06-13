@@ -57,13 +57,4 @@ compile(...)
   XSRETURN(0);
 }
 
-SV*
-add_package(...)
-  PPCODE:
-{
-  
-  
-  XSRETURN(0);
-}
-
 MODULE = SPVM		PACKAGE = SPVM
