@@ -16,8 +16,8 @@
 #include "spvm_op.h"
 #include "spvm_data_api.h"
 
-SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM_PARSER* parser) {
-  (void)parser;
+SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM_COMPILER* compiler) {
+  (void)compiler;
   
   SPVM_CONSTANT_POOL* constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_CONSTANT_POOL));
   
@@ -32,8 +32,8 @@ SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM_PARSER* parser) {
   return constant_pool;
 }
 
-int32_t SPVM_CONSTANT_POOL_calculate_extend_length(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, int32_t byte_size) {
-  (void)parser;
+int32_t SPVM_CONSTANT_POOL_calculate_extend_length(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int32_t byte_size) {
+  (void)compiler;
   (void)constant_pool;
   
   int32_t length = (byte_size + (sizeof(int32_t) - 1)) / sizeof(int32_t);
@@ -41,8 +41,8 @@ int32_t SPVM_CONSTANT_POOL_calculate_extend_length(SPVM_PARSER* parser, SPVM_CON
   return length;
 }
 
-void SPVM_CONSTANT_POOL_extend(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, int32_t extend) {
-  (void)parser;
+void SPVM_CONSTANT_POOL_extend(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int32_t extend) {
+  (void)compiler;
   
   int32_t capacity = constant_pool->capacity;
   
@@ -53,12 +53,12 @@ void SPVM_CONSTANT_POOL_extend(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant
   }
 }
 
-void SPVM_CONSTANT_POOL_push_package(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, SPVM_PACKAGE* package) {
-  (void)parser;
+void SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_PACKAGE* package) {
+  (void)compiler;
   
   // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(parser, constant_pool, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  SPVM_CONSTANT_POOL_extend(parser, constant_pool, extend_length);
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
 
   // Constant pool package information
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
@@ -74,12 +74,12 @@ void SPVM_CONSTANT_POOL_push_package(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* co
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_sub(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, SPVM_SUB* sub) {
-  (void)parser;
+void SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_SUB* sub) {
+  (void)compiler;
   
   // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(parser, constant_pool, sizeof(SPVM_CONSTANT_POOL_SUB));
-  SPVM_CONSTANT_POOL_extend(parser, constant_pool, extend_length);
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_SUB));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
 
   // Set subroutine information
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
@@ -103,12 +103,12 @@ void SPVM_CONSTANT_POOL_push_sub(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* consta
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_field(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, SPVM_FIELD* field) {
-  (void)parser;
+void SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_FIELD* field) {
+  (void)compiler;
   
   // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(parser, constant_pool, sizeof(SPVM_CONSTANT_POOL_FIELD));
-  SPVM_CONSTANT_POOL_extend(parser, constant_pool, extend_length);
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_FIELD));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   
   // Constant pool field information
   SPVM_CONSTANT_POOL_FIELD constant_pool_field;
@@ -121,65 +121,65 @@ void SPVM_CONSTANT_POOL_push_field(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* cons
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_int(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, int32_t value) {
-  (void)parser;
+void SPVM_CONSTANT_POOL_push_int(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int32_t value) {
+  (void)compiler;
   
   // Add int value
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(parser, constant_pool, sizeof(int32_t));
-  SPVM_CONSTANT_POOL_extend(parser, constant_pool, extend_length);
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(int32_t));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   memcpy(&constant_pool->values[constant_pool->length], &value, sizeof(int32_t));
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_long(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, int64_t value) {
-  (void)parser;
+void SPVM_CONSTANT_POOL_push_long(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int64_t value) {
+  (void)compiler;
   
   // Add long value
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(parser, constant_pool, sizeof(int64_t));
-  SPVM_CONSTANT_POOL_extend(parser, constant_pool, extend_length);
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(int64_t));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   memcpy(&constant_pool->values[constant_pool->length], &value, sizeof(int64_t));
   
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_float(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, float value) {
-  (void)parser;
+void SPVM_CONSTANT_POOL_push_float(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, float value) {
+  (void)compiler;
 
   // Add float value
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(parser, constant_pool, sizeof(float));
-  SPVM_CONSTANT_POOL_extend(parser, constant_pool, extend_length);
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(float));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   memcpy(&constant_pool->values[constant_pool->length], &value, sizeof(float));
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_double(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, double value) {
-  (void)parser;
+void SPVM_CONSTANT_POOL_push_double(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, double value) {
+  (void)compiler;
   
   // Add double value
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(parser, constant_pool, sizeof(double));
-  SPVM_CONSTANT_POOL_extend(parser, constant_pool, extend_length);
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(double));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   memcpy(&constant_pool->values[constant_pool->length], &value, sizeof(double));
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_push_string(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool, const char* string) {
+void SPVM_CONSTANT_POOL_push_string(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, const char* string) {
   
   // Add string length
   int32_t string_length = (int32_t)strlen(string);
-  SPVM_CONSTANT_POOL_extend(parser, constant_pool, 1);
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, 1);
   memcpy(&constant_pool->values[constant_pool->length], &string_length, sizeof(int32_t));
   constant_pool->length++;
   
   // Add string data
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(parser, constant_pool, string_length + 1);
-  SPVM_CONSTANT_POOL_extend(parser, constant_pool, extend_length);
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, string_length + 1);
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   memcpy(&constant_pool->values[constant_pool->length], string, string_length + 1);
   
   constant_pool->length += extend_length;
 }
 
-void SPVM_CONSTANT_POOL_free(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool) {
-  (void)parser;
+void SPVM_CONSTANT_POOL_free(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool) {
+  (void)compiler;
   
   free(constant_pool->values);
   free(constant_pool);

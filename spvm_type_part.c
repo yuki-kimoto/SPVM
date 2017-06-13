@@ -1,7 +1,7 @@
 #include "spvm_type_part.h"
 
-#include "spvm_parser_allocator.h"
-#include "spvm_parser.h"
+#include "spvm_compiler_allocator.h"
+#include "spvm_compiler.h"
 
 const char* const SPVM_TYPE_PART_C_CODE_NAMES[] = {
   "sub",
@@ -9,6 +9,6 @@ const char* const SPVM_TYPE_PART_C_CODE_NAMES[] = {
   "char"
 };
 
-SPVM_TYPE_PART* SPVM_TYPE_PART_new(SPVM_PARSER* parser) {
-  return SPVM_PARSER_ALLOCATOR_alloc_memory_pool(parser, parser->allocator, sizeof(SPVM_TYPE_PART));
+SPVM_TYPE_PART* SPVM_TYPE_PART_new(SPVM_COMPILER* compiler) {
+  return SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE_PART));
 }

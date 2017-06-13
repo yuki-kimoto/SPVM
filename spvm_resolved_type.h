@@ -32,10 +32,10 @@ struct SPVM_resolved_type {
   int32_t code;
 };
 
-SPVM_RESOLVED_TYPE* SPVM_RESOLVED_TYPE_new(SPVM_PARSER* parser);
-_Bool SPVM_RESOLVED_TYPE_is_integral(SPVM_PARSER* parser, SPVM_RESOLVED_TYPE* resolved_type);
-_Bool SPVM_RESOLVED_TYPE_is_numeric(SPVM_PARSER* parser, SPVM_RESOLVED_TYPE* resolved_type);
-_Bool SPVM_RESOLVED_TYPE_is_array(SPVM_PARSER* parser, SPVM_RESOLVED_TYPE* resolved_type);
-_Bool SPVM_RESOLVED_TYPE_is_array_numeric(SPVM_PARSER* parser, SPVM_RESOLVED_TYPE* resolved_type);
+SPVM_RESOLVED_TYPE* SPVM_RESOLVED_TYPE_new(SPVM_COMPILER* compiler);
+_Bool SPVM_RESOLVED_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_RESOLVED_TYPE* resolved_type);
+_Bool SPVM_RESOLVED_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_RESOLVED_TYPE* resolved_type);
+_Bool SPVM_RESOLVED_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_RESOLVED_TYPE* resolved_type);
+_Bool SPVM_RESOLVED_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_RESOLVED_TYPE* resolved_type);
 
 #endif

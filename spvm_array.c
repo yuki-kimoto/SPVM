@@ -4,7 +4,7 @@
 
 #include "spvm_array.h"
 #include "spvm_util_allocator.h"
-#include "spvm_parser.h"
+#include "spvm_compiler.h"
 
 SPVM_ARRAY* SPVM_ARRAY_new(int32_t capacity) {
   

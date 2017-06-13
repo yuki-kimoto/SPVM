@@ -185,69 +185,69 @@ struct SPVM_op {
 };
 
 
-SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_PARSER* parser, SPVM_OP* op_sub);
-SPVM_RESOLVED_TYPE* SPVM_OP_get_resolved_type(SPVM_PARSER* parser, SPVM_OP* op);
+SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub);
+SPVM_RESOLVED_TYPE* SPVM_OP_get_resolved_type(SPVM_COMPILER* compiler, SPVM_OP* op);
 
-void SPVM_OP_convert_to_op_constant_true(SPVM_PARSER* parser, SPVM_OP* op);
-void SPVM_OP_convert_to_op_constant_false(SPVM_PARSER* parser, SPVM_OP* op);
-void SPVM_OP_convert_not_to_if(SPVM_PARSER* parser, SPVM_OP* op);
-void SPVM_OP_convert_and_to_if(SPVM_PARSER* parser, SPVM_OP* op);
-void SPVM_OP_convert_or_to_if(SPVM_PARSER* parser, SPVM_OP* op);
+void SPVM_OP_convert_to_op_constant_true(SPVM_COMPILER* compiler, SPVM_OP* op);
+void SPVM_OP_convert_to_op_constant_false(SPVM_COMPILER* compiler, SPVM_OP* op);
+void SPVM_OP_convert_not_to_if(SPVM_COMPILER* compiler, SPVM_OP* op);
+void SPVM_OP_convert_and_to_if(SPVM_COMPILER* compiler, SPVM_OP* op);
+void SPVM_OP_convert_or_to_if(SPVM_COMPILER* compiler, SPVM_OP* op);
 
-void SPVM_OP_resolve_type(SPVM_PARSER* parser, SPVM_TYPE* type, int32_t name_length);
+void SPVM_OP_resolve_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, int32_t name_length);
 
-void SPVM_OP_resolve_sub_name(SPVM_PARSER* parser, SPVM_OP* op_package, SPVM_OP* op_name);
-void SPVM_OP_resolve_field_name(SPVM_PARSER* parser, SPVM_OP* op_name);
+void SPVM_OP_resolve_sub_name(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name);
+void SPVM_OP_resolve_field_name(SPVM_COMPILER* compiler, SPVM_OP* op_name);
 
-SPVM_OP* SPVM_OP_build_last(SPVM_PARSER* parser, SPVM_OP* op_last);
-SPVM_OP* SPVM_OP_build_next(SPVM_PARSER* parser, SPVM_OP* op_next);
-SPVM_OP* SPVM_OP_build_return(SPVM_PARSER* parser, SPVM_OP* op_return, SPVM_OP* op_term);
-SPVM_OP* SPVM_OP_build_die(SPVM_PARSER* parser, SPVM_OP* op_die, SPVM_OP* op_term);
-SPVM_OP* SPVM_OP_build_try_catch(SPVM_PARSER* parser, SPVM_OP* op_try, SPVM_OP* op_try_block, SPVM_OP* op_catch, SPVM_OP* op_my_var, SPVM_OP* op_catch_block);
-SPVM_OP* SPVM_OP_build_switch_statement(SPVM_PARSER* parser, SPVM_OP* op_switch, SPVM_OP* op_term, SPVM_OP* op_block);
-SPVM_OP* SPVM_OP_build_case_statement(SPVM_PARSER* parser, SPVM_OP* op_case, SPVM_OP* op_term);
-SPVM_OP* SPVM_OP_build_logical_op(SPVM_PARSER* parser, SPVM_OP* op_logical_op, SPVM_OP* op_first, SPVM_OP* op_last);
-SPVM_OP* SPVM_OP_build_for_statement(SPVM_PARSER* parser, SPVM_OP* op_for, SPVM_OP* op_term_loop_var, SPVM_OP* op_term_condition, SPVM_OP* op_term_next_value, SPVM_OP* op_block);
-SPVM_OP* SPVM_OP_build_while_statement(SPVM_PARSER* parser, SPVM_OP* op_while, SPVM_OP* op_term_condition, SPVM_OP* op_block);
-SPVM_OP* SPVM_OP_build_if_statement(SPVM_PARSER* parser, SPVM_OP* op_if, SPVM_OP* op_term, SPVM_OP* op_block, SPVM_OP* op_else_statement);
-SPVM_OP* SPVM_OP_build_array_length(SPVM_PARSER* parser, SPVM_OP* op_array_length, SPVM_OP* op_term);
-SPVM_OP* SPVM_OP_build_malloc_object(SPVM_PARSER* parser, SPVM_OP* op_malloc, SPVM_OP* op_type);
-SPVM_OP* SPVM_OP_build_array_init(SPVM_PARSER* parser, SPVM_OP* op_opt_terms);
-SPVM_OP* SPVM_OP_build_binop(SPVM_PARSER* parser, SPVM_OP* op_call_op, SPVM_OP* op_first, SPVM_OP* op_last);
-SPVM_OP* SPVM_OP_build_type_name(SPVM_PARSER* parser, SPVM_OP* op_type_name);
-SPVM_OP* SPVM_OP_build_type_array(SPVM_PARSER* parser, SPVM_OP* op_type, SPVM_OP* op_term);
-SPVM_OP* SPVM_OP_build_call_field(SPVM_PARSER* parser, SPVM_OP* op_name_package, SPVM_OP* op_name_field);
-SPVM_OP* SPVM_OP_build_package(SPVM_PARSER* parser, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block);
-SPVM_OP* SPVM_OP_build_sub(SPVM_PARSER* parser, SPVM_OP* op_sub, SPVM_OP* op_subname, SPVM_OP* op_subargs, SPVM_OP* op_descriptors, SPVM_OP* type, SPVM_OP* op_block);
-SPVM_OP* SPVM_OP_build_CONSTVALUE(SPVM_PARSER* parser, SPVM_OP* op_const);
-SPVM_OP* SPVM_OP_build_field(SPVM_PARSER* parser, SPVM_OP* op_field, SPVM_OP* op_field_base_name, SPVM_OP* type);
-SPVM_OP* SPVM_OP_build_my_var(SPVM_PARSER* parser, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_term);
-SPVM_OP* SPVM_OP_build_grammar(SPVM_PARSER* parser, SPVM_OP* op_packages);
-SPVM_OP* SPVM_OP_build_use(SPVM_PARSER* parser, SPVM_OP* op_use, SPVM_OP* op_name_package);
-SPVM_OP* SPVM_OP_build_call_sub(SPVM_PARSER* parser, SPVM_OP* op_invocant, SPVM_OP* op_subname, SPVM_OP* op_terms);
-SPVM_OP* SPVM_OP_build_convert_type(SPVM_PARSER* parser, SPVM_OP* op_type, SPVM_OP* op_term);
-SPVM_OP* SPVM_OP_build_enumeration(SPVM_PARSER* parser, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block);
-SPVM_OP* SPVM_OP_build_unop(SPVM_PARSER* parser, SPVM_OP* op_unary, SPVM_OP* op_first);
-SPVM_OP* SPVM_OP_build_array_elem(SPVM_PARSER* parser, SPVM_OP* op_var, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_last(SPVM_COMPILER* compiler, SPVM_OP* op_last);
+SPVM_OP* SPVM_OP_build_next(SPVM_COMPILER* compiler, SPVM_OP* op_next);
+SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_try_catch(SPVM_COMPILER* compiler, SPVM_OP* op_try, SPVM_OP* op_try_block, SPVM_OP* op_catch, SPVM_OP* op_my_var, SPVM_OP* op_catch_block);
+SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_switch, SPVM_OP* op_term, SPVM_OP* op_block);
+SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_logical_op(SPVM_COMPILER* compiler, SPVM_OP* op_logical_op, SPVM_OP* op_first, SPVM_OP* op_last);
+SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, SPVM_OP* op_term_loop_var, SPVM_OP* op_term_condition, SPVM_OP* op_term_next_value, SPVM_OP* op_block);
+SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_while, SPVM_OP* op_term_condition, SPVM_OP* op_block);
+SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_term, SPVM_OP* op_block, SPVM_OP* op_else_statement);
+SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_length, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_malloc_object(SPVM_COMPILER* compiler, SPVM_OP* op_malloc, SPVM_OP* op_type);
+SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_opt_terms);
+SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_call_op, SPVM_OP* op_first, SPVM_OP* op_last);
+SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_type_name);
+SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_name_package, SPVM_OP* op_name_field);
+SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block);
+SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_subname, SPVM_OP* op_subargs, SPVM_OP* op_descriptors, SPVM_OP* type, SPVM_OP* op_block);
+SPVM_OP* SPVM_OP_build_CONSTVALUE(SPVM_COMPILER* compiler, SPVM_OP* op_const);
+SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_field_base_name, SPVM_OP* type);
+SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages);
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_package);
+SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_subname, SPVM_OP* op_terms);
+SPVM_OP* SPVM_OP_build_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block);
+SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first);
+SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term);
 
-void SPVM_OP_resolve_op_convert_type(SPVM_PARSER* parser, SPVM_OP* op_convert_type);
+void SPVM_OP_resolve_op_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_convert_type);
 
-const char* SPVM_OP_create_abs_name(SPVM_PARSER* parser, const char* package_name, const char* base_name);
+const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* base_name);
 
-SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_PARSER* parser, int32_t value, const char* file, int32_t line);
-SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_PARSER* parser, int64_t value, const char* file, int32_t line);
-SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_PARSER* parser, float value, const char* file, int32_t line);
-SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_PARSER* parser, double value, const char* file, int32_t line);
-SPVM_OP* SPVM_OP_new_op_var_from_op_my_var(SPVM_PARSER* parser, SPVM_OP* op_my_var);
-SPVM_OP* SPVM_OP_new_op_list(SPVM_PARSER* parser, const char* file, int32_t line);
-SPVM_OP* SPVM_OP_new_op(SPVM_PARSER* parser, int32_t code, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_new_op_var_from_op_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var);
+SPVM_OP* SPVM_OP_new_op_list(SPVM_COMPILER* compiler, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t code, const char* file, int32_t line);
 
-SPVM_OP* SPVM_OP_sibling_splice(SPVM_PARSER* parser, SPVM_OP* parent, SPVM_OP* start, int32_t del_count, SPVM_OP *insert);
-SPVM_OP* SPVM_OP_sibling(SPVM_PARSER* parser, SPVM_OP* o);
-void SPVM_OP_moresib_set(SPVM_PARSER* parser, SPVM_OP* o, SPVM_OP* sib);
-void SPVM_OP_lastsib_set(SPVM_PARSER* parser, SPVM_OP* o, SPVM_OP* parent);
-void SPVM_OP_maybesib_set(SPVM_PARSER* parser, SPVM_OP* o, SPVM_OP* sib, SPVM_OP* parent);
-SPVM_OP* SPVM_OP_append_elem(SPVM_PARSER* parser, SPVM_OP *first, SPVM_OP *last, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, int32_t del_count, SPVM_OP *insert);
+SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* o);
+void SPVM_OP_moresib_set(SPVM_COMPILER* compiler, SPVM_OP* o, SPVM_OP* sib);
+void SPVM_OP_lastsib_set(SPVM_COMPILER* compiler, SPVM_OP* o, SPVM_OP* parent);
+void SPVM_OP_maybesib_set(SPVM_COMPILER* compiler, SPVM_OP* o, SPVM_OP* sib, SPVM_OP* parent);
+SPVM_OP* SPVM_OP_append_elem(SPVM_COMPILER* compiler, SPVM_OP *first, SPVM_OP *last, const char* file, int32_t line);
 
 
 #endif

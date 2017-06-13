@@ -5,7 +5,7 @@
 #include "ppport.h"
 
 #include <stdint.h>
-#include "spvm_parser.h"
+#include "spvm_compiler.h"
 #include "spvm_hash.h"
 #include "spvm_array.h"
 #include "spvm_util_allocator.h"

@@ -9,6 +9,6 @@ struct SPVM_enumeration_value {
   SPVM_OP* op_constant;
 };
 
-SPVM_ENUMERATION_VALUE* SPVM_ENUMERATION_VALUE_new(SPVM_PARSER* parser);
+SPVM_ENUMERATION_VALUE* SPVM_ENUMERATION_VALUE_new(SPVM_COMPILER* compiler);
 
 #endif

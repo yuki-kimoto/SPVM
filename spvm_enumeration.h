@@ -7,6 +7,6 @@ struct SPVM_enumeration {
   SPVM_ARRAY* enumeration_values;
 };
 
-SPVM_ENUMERATION* SPVM_ENUMERATION_new(SPVM_PARSER* parser);
+SPVM_ENUMERATION* SPVM_ENUMERATION_new(SPVM_COMPILER* compiler);
 
 #endif

@@ -5,7 +5,7 @@
 #include <assert.h>
 
 
-#include "spvm_parser.h"
+#include "spvm_compiler.h"
 #include "spvm_dumper.h"
 #include "spvm_array.h"
 #include "spvm_hash.h"
@@ -26,7 +26,7 @@
 #include "spvm_bytecode.h"
 #include "spvm_bytecode_array.h"
 
-void SPVM_DUMPER_dump_ast(SPVM_PARSER* parser, SPVM_OP* op_base) {
+void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   int32_t depth = 0;
   
   // Run OPs
@@ -94,7 +94,7 @@ void SPVM_DUMPER_dump_ast(SPVM_PARSER* parser, SPVM_OP* op_base) {
         
         // Next sibling
         if (op_cur->moresib) {
-          op_cur = SPVM_OP_sibling(parser, op_cur);
+          op_cur = SPVM_OP_sibling(compiler, op_cur);
           break;
         }
         // Next is parent
@@ -110,31 +110,31 @@ void SPVM_DUMPER_dump_ast(SPVM_PARSER* parser, SPVM_OP* op_base) {
   }
 }
 
-void SPVM_DUMPER_dump_spvm(SPVM_PARSER* parser) {
+void SPVM_DUMPER_dump_spvm(SPVM_COMPILER* compiler) {
   
   printf("\n[Abstract Syntax Tree]\n");
-  SPVM_DUMPER_dump_ast(parser, parser->op_grammar);
+  SPVM_DUMPER_dump_ast(compiler, compiler->op_grammar);
   
   printf("\n[Resolved types]\n");
-  SPVM_DUMPER_dump_resolved_types(parser, parser->resolved_types);
+  SPVM_DUMPER_dump_resolved_types(compiler, compiler->resolved_types);
   
   printf("\n[Constant pool]\n");
-  SPVM_DUMPER_dump_constant_pool(parser, parser->constant_pool);
+  SPVM_DUMPER_dump_constant_pool(compiler, compiler->constant_pool);
   
   printf("\n[Packages]\n");
-  SPVM_DUMPER_dump_packages(parser, parser->op_packages);
+  SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
 }
 
-void SPVM_DUMPER_dump_constants(SPVM_PARSER* parser, SPVM_ARRAY* op_constants) {
+void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_ARRAY* op_constants) {
   for (int32_t i = 0, len = op_constants->length; i < len; i++) {
     SPVM_OP* op_constant = SPVM_ARRAY_fetch(op_constants, i);
     SPVM_CONSTANT* constant = op_constant->uv.constant;
     printf("    constant[%" PRId32 "]\n", i);
-    SPVM_DUMPER_dump_constant(parser, constant);
+    SPVM_DUMPER_dump_constant(compiler, constant);
   }
 }
 
-void SPVM_DUMPER_dump_packages(SPVM_PARSER* parser, SPVM_ARRAY* op_packages) {
+void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_ARRAY* op_packages) {
   for (int32_t i = 0, len = op_packages->length; i < len; i++) {
     printf("package[%" PRId32 "]\n", i);
     SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, i);
@@ -155,7 +155,7 @@ void SPVM_DUMPER_dump_packages(SPVM_PARSER* parser, SPVM_ARRAY* op_packages) {
       SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields, j);
       SPVM_FIELD* field = op_field->uv.field;
       printf("    field%" PRId32 "\n", j);
-      SPVM_DUMPER_dump_field(parser, field);
+      SPVM_DUMPER_dump_field(compiler, field);
     }
     
     printf("  ref_fields_length => \"%" PRId32 "\"\n", package->ref_fields_length);
@@ -167,13 +167,13 @@ void SPVM_DUMPER_dump_packages(SPVM_PARSER* parser, SPVM_ARRAY* op_packages) {
       SPVM_OP* op_sub = SPVM_ARRAY_fetch(op_subs, i);
       SPVM_SUB* sub = op_sub->uv.sub;
       printf("    sub%" PRId32 "\n", i);
-      SPVM_DUMPER_dump_sub(parser, sub);
+      SPVM_DUMPER_dump_sub(compiler, sub);
     }
   }
 }
 
-void SPVM_DUMPER_dump_resolved_types(SPVM_PARSER* parser, SPVM_ARRAY* resolved_types) {
-  (void)parser;
+void SPVM_DUMPER_dump_resolved_types(SPVM_COMPILER* compiler, SPVM_ARRAY* resolved_types) {
+  (void)compiler;
   
   for (int32_t i = 0, len = resolved_types->length; i < len; i++) {
     printf("resolved_type%" PRId32 "\n", i);
@@ -183,16 +183,16 @@ void SPVM_DUMPER_dump_resolved_types(SPVM_PARSER* parser, SPVM_ARRAY* resolved_t
   }
 }
 
-void SPVM_DUMPER_dump_constant_pool(SPVM_PARSER* parser, SPVM_CONSTANT_POOL* constant_pool) {
-  (void)parser;
+void SPVM_DUMPER_dump_constant_pool(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool) {
+  (void)compiler;
 
   for (int32_t i = 0; i < constant_pool->length; i++) {
     printf("      constant_pool[%" PRId32 "] %" PRId32 "\n", i, constant_pool->values[i]);
   }
 }
 
-void SPVM_DUMPER_dump_bytecode_array(SPVM_PARSER* parser, SPVM_BYTECODE_ARRAY* bytecode_array, int32_t start_pos, int32_t length) {
-  (void)parser;
+void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, int32_t start_pos, int32_t length) {
+  (void)compiler;
   
   int32_t end_pos = start_pos + length - 1;
   
@@ -409,8 +409,8 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_PARSER* parser, SPVM_BYTECODE_ARRAY* b
   }
 }
 
-void SPVM_DUMPER_dump_constant(SPVM_PARSER* parser, SPVM_CONSTANT* constant) {
-  (void)parser;
+void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant) {
+  (void)compiler;
   
   switch(constant->code) {
     case SPVM_CONSTANT_C_CODE_INT:
@@ -432,8 +432,8 @@ void SPVM_DUMPER_dump_constant(SPVM_PARSER* parser, SPVM_CONSTANT* constant) {
   printf("      address => %" PRId32 "\n", constant->constant_pool_address);
 }
 
-void SPVM_DUMPER_dump_sub(SPVM_PARSER* parser, SPVM_SUB* sub) {
-  (void)parser;
+void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
+  (void)compiler;
   
   if (sub) {
     
@@ -456,7 +456,7 @@ void SPVM_DUMPER_dump_sub(SPVM_PARSER* parser, SPVM_SUB* sub) {
       SPVM_OP* op_arg = SPVM_ARRAY_fetch(sub->op_args, i);
       SPVM_MY_VAR* my_var = op_arg->uv.my_var;
       printf("        arg[%" PRId32 "]\n", i);
-      SPVM_DUMPER_dump_my_var(parser, my_var);
+      SPVM_DUMPER_dump_my_var(compiler, my_var);
     }
     
     if (!sub->is_native) {
@@ -466,13 +466,13 @@ void SPVM_DUMPER_dump_sub(SPVM_PARSER* parser, SPVM_SUB* sub) {
         SPVM_OP* op_my_var = SPVM_ARRAY_fetch(sub->op_my_vars, i);
         SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
         printf("        my_var[%" PRId32 "]\n", i);
-        SPVM_DUMPER_dump_my_var(parser, my_var);
+        SPVM_DUMPER_dump_my_var(compiler, my_var);
       }
       
       printf("      operand_stack_max => %" PRId32 "\n", sub->operand_stack_max);
       
       printf("      bytecode_array\n");
-      SPVM_DUMPER_dump_bytecode_array(parser, parser->bytecode_array, sub->bytecode_base, sub->bytecode_length);
+      SPVM_DUMPER_dump_bytecode_array(compiler, compiler->bytecode_array, sub->bytecode_base, sub->bytecode_length);
     }
   }
   else {
@@ -480,8 +480,8 @@ void SPVM_DUMPER_dump_sub(SPVM_PARSER* parser, SPVM_SUB* sub) {
   }
 }
 
-void SPVM_DUMPER_dump_field(SPVM_PARSER* parser, SPVM_FIELD* field) {
-  (void)parser;
+void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
+  (void)compiler;
   
   if (field) {
     printf("      name => \"%s\"\n", field->op_name->uv.name);
@@ -490,7 +490,7 @@ void SPVM_DUMPER_dump_field(SPVM_PARSER* parser, SPVM_FIELD* field) {
     
     SPVM_TYPE* type = field->op_type->uv.type;
     printf("      resolved_type => \"%s\"\n", type->resolved_type->name);
-    printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_get_byte_size(parser, field));
+    printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_get_byte_size(compiler, field));
     
     printf("      constant_pool_address => \"%" PRId32 "\"\n", field->constant_pool_address);
   }
@@ -500,8 +500,8 @@ void SPVM_DUMPER_dump_field(SPVM_PARSER* parser, SPVM_FIELD* field) {
 }
 
 
-void SPVM_DUMPER_dump_enumeration_value(SPVM_PARSER* parser, SPVM_ENUMERATION_VALUE* enumeration_value) {
-  (void)parser;
+void SPVM_DUMPER_dump_enumeration_value(SPVM_COMPILER* compiler, SPVM_ENUMERATION_VALUE* enumeration_value) {
+  (void)compiler;
   
   if (enumeration_value) {
     printf("      name => \"%s\"\n", enumeration_value->op_name->uv.name);
@@ -512,8 +512,8 @@ void SPVM_DUMPER_dump_enumeration_value(SPVM_PARSER* parser, SPVM_ENUMERATION_VA
   }
 }
 
-void SPVM_DUMPER_dump_my_var(SPVM_PARSER* parser, SPVM_MY_VAR* my_var) {
-  (void)parser;
+void SPVM_DUMPER_dump_my_var(SPVM_COMPILER* compiler, SPVM_MY_VAR* my_var) {
+  (void)compiler;
 
   if (my_var) {
     printf("          name => \"%s\"\n", my_var->op_name->uv.name);

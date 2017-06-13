@@ -3,7 +3,7 @@
 
 
 
-int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_PARSER* parser);
-SPVM_OP* SPVM_TOKE_newOP(SPVM_PARSER* parser, int32_t type);
+int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler);
+SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type);
 
 #endif

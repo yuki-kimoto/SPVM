@@ -17,6 +17,6 @@ struct SPVM_name_info {
   int32_t constant_pool_address;
 };
 
-SPVM_NAME_INFO* SPVM_NAME_INFO_new(SPVM_PARSER* parser);
+SPVM_NAME_INFO* SPVM_NAME_INFO_new(SPVM_COMPILER* compiler);
 
 #endif

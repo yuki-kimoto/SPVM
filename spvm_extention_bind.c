@@ -4,8 +4,8 @@
 #include "spvm_sub.h"
 #include "spvm_extention.h"
 
-void SPVM_EXTENTION_BIND_bind_core_extentions(SPVM_PARSER* parser, SPVM_SUB* sub, const char* sub_abs_name) {
-  (void)parser;
+void SPVM_EXTENTION_BIND_bind_core_extentions(SPVM_COMPILER* compiler, SPVM_SUB* sub, const char* sub_abs_name) {
+  (void)compiler;
   
   if (strcmp(sub_abs_name, "std::println_byte") == 0) {
     sub->native_address = SPVM_EXTENTION_std__println_byte;

@@ -1,12 +1,12 @@
-#ifndef SPVM_PARSER_H
-#define SPVM_PARSER_H
+#ifndef SPVM_COMPILER_H
+#define SPVM_COMPILER_H
 
 #include <stdio.h>
 
 #include "spvm_base.h"
 
 // Parser information
-struct SPVM_parser {
+struct SPVM_compiler {
   // Constant pool
   SPVM_CONSTANT_POOL* constant_pool;
   
@@ -20,7 +20,7 @@ struct SPVM_parser {
   const char* entry_point_sub_name;
 
   // Allocator
-  SPVM_PARSER_ALLOCATOR* allocator;
+  SPVM_COMPILER_ALLOCATOR* allocator;
   
   // Before buffer position
   const char* befbufptr;
@@ -86,9 +86,9 @@ struct SPVM_parser {
   _Bool fatal_error;
 };
 
-SPVM_PARSER* SPVM_PARSER_new();
-int32_t SPVM_PARSER_parse(SPVM_PARSER* parser);
+SPVM_COMPILER* SPVM_COMPILER_new();
+int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler);
 
-void SPVM_PARSER_free(SPVM_PARSER* parser);
+void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
 
 #endif

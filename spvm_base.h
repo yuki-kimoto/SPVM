@@ -12,9 +12,9 @@ typedef struct SPVM_runtime SPVM_RUNTIME;
 struct SPVM_runtime_allocator;
 typedef struct SPVM_runtime_allocator SPVM_RUNTIME_ALLOCATOR;
 
-/* spvm_parser_allocator.h */
-struct SPVM_parser_allocator;
-typedef struct SPVM_parser_allocator SPVM_PARSER_ALLOCATOR;
+/* spvm_compiler_allocator.h */
+struct SPVM_compiler_allocator;
+typedef struct SPVM_compiler_allocator SPVM_COMPILER_ALLOCATOR;
 
 /* spvm_env.h */
 struct SPVM_env;
@@ -24,9 +24,9 @@ typedef struct SPVM_env SPVM_ENV;
 struct SPVM_heap;
 typedef struct SPVM_heap SPVM_HEAP;
 
-/* spvm_parser.h */
-struct SPVM_parser;
-typedef struct SPVM_parser SPVM_PARSER;
+/* spvm_compiler.h */
+struct SPVM_compiler;
+typedef struct SPVM_compiler SPVM_COMPILER;
 
 /* spvm_vm.h */
 struct SPVM_vm_stack;
@@ -40,7 +40,7 @@ typedef struct SPVM_vm SPVM_VM;
 struct SPVM_switch_info;
 typedef struct SPVM_switch_info SPVM_SWITCH_INFO;
 
-/* spvm_parser_allocator.h */
+/* spvm_compiler_allocator.h */
 struct SPVM_allocator;
 typedef struct SPVM_allocator SPVM_ALLOCATOR;
 
