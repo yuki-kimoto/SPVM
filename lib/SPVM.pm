@@ -8,6 +8,14 @@ use SPVM::Compiler;
 
 our $VERSION = '0.01';
 
+sub import {
+  my ($class, $spvm_class) = @_;
+  
+  if (defined $spvm_class) {
+    warn "AAAAAAAAAAAAAA $spvm_class\n";
+  }
+}
+
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 

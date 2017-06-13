@@ -18,5 +18,8 @@ BEGIN { use_ok('SPVM') };
 
 use SPVM::Compiler;
 
+use SPVM 'Test';
+use SPVM 'std';
+
 SPVM::Compiler::compile;
 
