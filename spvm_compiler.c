@@ -41,6 +41,9 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->resolved_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->cur_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->cur_line = 0;
+  
+  // Error count
+  compiler->error_count = 0;
 
   // Constant pool
   compiler->constant_pool = SPVM_CONSTANT_POOL_new(compiler);

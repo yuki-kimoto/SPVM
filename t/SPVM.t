@@ -18,12 +18,19 @@ BEGIN { use_ok('SPVM') };
 
 use SPVM::Compiler;
 
-use SPVM 'Test';
-use SPVM 'std';
+my $file = 't/SPVM.t';
+
+use SPVM 'Test'; my $use_test_line = __LINE__;
+use SPVM 'std'; my $use_std_line = __LINE__;
 
 my $compiler = SPVM::get_compiler;
 
-is_deeply($compiler->packages, ['Test', 'std']);
+is_deeply(
+  $compiler->package_infos,
+  [
+    {name => 'Test', file => $file, line => $use_test_line},
+    {name => 'std', file => $file, line => $use_std_line}
+  ]
+);
 
 $compiler->compile;
-

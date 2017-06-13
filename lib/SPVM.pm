@@ -11,10 +11,18 @@ my $compiler = SPVM::Compiler->new;
 our $VERSION = '0.01';
 
 sub import {
-  my ($class, $package) = @_;
+  my ($class, $package_name) = @_;
   
-  if (defined $package) {
-    push @{$compiler->packages}, $package;
+  if (defined $package_name) {
+    my ($file, $line) = (caller)[1, 2];
+
+    my $package_info = {
+      name => $package_name,
+      file => $file,
+      line => $line
+    };
+    
+    push @{$compiler->package_infos}, $package_info;
   }
 }
 

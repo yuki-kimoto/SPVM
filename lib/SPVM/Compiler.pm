@@ -2,6 +2,6 @@ package SPVM::Compiler;
 
 use Object::Simple -base;
 
-has packages => sub { [] };
+has package_infos => sub { [] };
 
 1;

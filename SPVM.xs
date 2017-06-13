@@ -24,7 +24,7 @@ SV*
 compile(...)
   PPCODE:
 {
-  SV* sv_object = ST(0);
+  SV* sv_compiler = ST(0);
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
@@ -34,7 +34,7 @@ compile(...)
   SPVM_COMPILER_compile(compiler);
   
   if (compiler->error_count > 0) {
-    croak("Compile error");
+    croak("SPVM compile error %d", compiler->error_count);
   }
 
   // Create run-time
