@@ -18,7 +18,5 @@ BEGIN { use_ok('SPVM') };
 
 use SPVM::Compiler;
 
-SPVM::Compiler::bar;
-
 SPVM::Compiler::compile;
 
