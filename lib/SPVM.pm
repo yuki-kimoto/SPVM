@@ -6,6 +6,8 @@ use warnings;
 
 use SPVM::Compiler;
 
+my $compiler = SPVM::Compiler->new;
+
 our $VERSION = '0.01';
 
 sub import {
@@ -14,6 +16,10 @@ sub import {
   if (defined $spvm_class) {
     warn "AAAAAAAAAAAAAA $spvm_class\n";
   }
+}
+
+sub get_compiler {
+  return $compiler;
 }
 
 require XSLoader;

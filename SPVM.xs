@@ -24,6 +24,8 @@ SV*
 compile(...)
   PPCODE:
 {
+  SV* sv_object = ST(0);
+  
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
@@ -56,10 +58,11 @@ compile(...)
 }
 
 SV*
-bar(...)
+add_package(...)
   PPCODE:
 {
-  PerlIO_printf(PerlIO_stdout(), "bar\n");
+  
+  
   XSRETURN(0);
 }
 

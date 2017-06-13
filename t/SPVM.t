@@ -21,5 +21,6 @@ use SPVM::Compiler;
 use SPVM 'Test';
 use SPVM 'std';
 
-SPVM::Compiler::compile;
+my $compiler = SPVM::get_compiler;
+$compiler->compile;
 
