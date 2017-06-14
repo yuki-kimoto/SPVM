@@ -26,15 +26,15 @@ SV*
 compile(...)
   PPCODE:
 {
-  SV* sv_compiler = ST(0);
+  SV* sv_self = ST(0);
 
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
 
-  HV* hv_compiler = (HV*)SvRV(sv_compiler);
+  HV* hv_self = (HV*)SvRV(sv_self);
 
   // Add package
-  SV** sv_package_infos_ptr = hv_fetch(hv_compiler, "package_infos", strlen("package_infos"), 0);
+  SV** sv_package_infos_ptr = hv_fetch(hv_self, "package_infos", strlen("package_infos"), 0);
   SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
   AV* av_package_infos = (AV*)SvRV(sv_package_infos);
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
@@ -65,7 +65,7 @@ compile(...)
   }
   
   // Add include paths
-  SV** sv_include_paths_ptr = hv_fetch(hv_compiler, "include_paths", strlen("include_paths"), 0);
+  SV** sv_include_paths_ptr = hv_fetch(hv_self, "include_paths", strlen("include_paths"), 0);
   SV* sv_include_paths = sv_include_paths_ptr ? *sv_include_paths_ptr : &PL_sv_undef;
   AV* av_include_paths = (AV*)SvRV(sv_include_paths);
   int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
@@ -82,6 +82,12 @@ compile(...)
     croak("SPVM compile error %d", compiler->error_count);
   }
   
+  // Set compiler
+  size_t iv_compiler = PTR2IV(compiler);
+  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
+  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
+  hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
+  
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
   
@@ -93,13 +99,8 @@ compile(...)
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
   memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
   
-  // Free compiler
-  SPVM_COMPILER_free(compiler);
-  
   // Initialize runtime before push arguments and call subroutine
   SPVM_RUNTIME_init(runtime);
-  
-  warn("AAAAAAAAAAAAAAAAA");
   
   XSRETURN(0);
 }
@@ -108,6 +109,26 @@ SV*
 DESTROY(...)
   PPCODE:
 {
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+
+  // デリファレンス
+  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
+  
+  // SV*型をsize_t型に変換
+  size_t iv_compiler = SvIV(sviv_compiler);
+  
+  // size_t型をポインタに変換
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  
+  // Free compiler
+  SPVM_COMPILER_free(compiler);
+  
+  // Set undef to compiler
+  hv_store(hv_self, "compiler", strlen("compiler"), &PL_sv_undef, 0);
   
   XSRETURN(0);
 }
