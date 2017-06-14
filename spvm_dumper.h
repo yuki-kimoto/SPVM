@@ -3,7 +3,7 @@
 
 #include "spvm_base.h"
 
-void SPVM_DUMPER_dump_spvm(SPVM_COMPILER* compiler);
+void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler);
 void SPVM_DUMPER_dump_classs(SPVM_COMPILER* compiler, SPVM_ARRAY* classs);
 void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_ARRAY* constants);
 void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant);

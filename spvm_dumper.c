@@ -110,7 +110,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   }
 }
 
-void SPVM_DUMPER_dump_spvm(SPVM_COMPILER* compiler) {
+void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
   
   printf("\n[Abstract Syntax Tree]\n");
   SPVM_DUMPER_dump_ast(compiler, compiler->op_grammar);

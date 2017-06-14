@@ -55,12 +55,6 @@ grammar
       if (compiler->error_count) {
         YYABORT;
       }
-      else {
-#ifdef DEBUG
-        // Dump spvm information
-        SPVM_DUMPER_dump_spvm(compiler);
-#endif
-      }
     }
 
 opt_declarations_in_grammar
