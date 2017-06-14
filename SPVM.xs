@@ -34,15 +34,17 @@ compile(...)
   SV** sv_package_infos_ptr = hv_fetch(hv_compiler, "package_infos", strlen("package_infos"), 0);
   SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
   AV* av_package_infos = (AV*)SvRV(sv_package_infos);
+
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
+  
   for (int32_t i = 0; i < av_package_infos_length; i++) {
-    SV* sv_package_info = av_fetch(av_package_infos, i, 0);
+    SV** sv_package_info_ptr = av_fetch(av_package_infos, i, 0);
+    SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
     HV* hv_package_info = (HV*)SvRV(sv_package_info);
     
     // Name
     SV** sv_name_ptr = hv_fetch(hv_package_info, "name", strlen("name"), 0);
     SV* sv_name = sv_name_ptr ? *sv_name_ptr : &PL_sv_undef;
-
     const char* name = SvPV_nolen(sv_name);
     
     // File
@@ -54,8 +56,6 @@ compile(...)
     SV** sv_line_ptr = hv_fetch(hv_package_info, "line", strlen("line"), 0);
     SV* sv_line = sv_line_ptr ? *sv_line_ptr : &PL_sv_undef;
     int32_t line = (int32_t)SvIV(sv_line);
-    
-    warn("AAAAAAAAAAA %s %s %d", name, file, line);
   }
   
   // Create compiler
