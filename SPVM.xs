@@ -37,7 +37,6 @@ compile(...)
   SV** sv_package_infos_ptr = hv_fetch(hv_compiler, "package_infos", strlen("package_infos"), 0);
   SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
   AV* av_package_infos = (AV*)SvRV(sv_package_infos);
-
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
   for (int32_t i = 0; i < av_package_infos_length; i++) {
     SV** sv_package_info_ptr = av_fetch(av_package_infos, i, 0);
@@ -65,7 +64,17 @@ compile(...)
     SPVM_HASH_insert(compiler->op_use_symtable, name, strlen(name), op_use_package);
   }
   
-  SPVM_ARRAY_push(compiler->include_pathes, "lib");
+  // Add include paths
+  SV** sv_include_paths_ptr = hv_fetch(hv_compiler, "include_paths", strlen("include_paths"), 0);
+  SV* sv_include_paths = sv_include_paths_ptr ? *sv_include_paths_ptr : &PL_sv_undef;
+  AV* av_include_paths = (AV*)SvRV(sv_include_paths);
+  int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
+  for (int32_t i = 0; i < av_include_paths_length; i++) {
+    SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
+    SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
+    const char* include_path = SvPV_nolen(sv_include_path);
+    SPVM_ARRAY_push(compiler->include_pathes, include_path);
+  }
   
   SPVM_COMPILER_compile(compiler);
   
