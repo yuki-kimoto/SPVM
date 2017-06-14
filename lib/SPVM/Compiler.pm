@@ -15,4 +15,9 @@ sub new {
   return $self;
 }
 
+sub create_spvm_subs {
+  my $self = shift;
+  
+}
+
 1;

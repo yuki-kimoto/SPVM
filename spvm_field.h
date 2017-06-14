@@ -8,9 +8,9 @@ struct SPVM_field {
   SPVM_OP* op_type;
   SPVM_OP* op_name;
   const char* abs_name;
-  int32_t constant_pool_address;
-  int32_t abs_name_constant_pool_address;
-  int32_t name_constant_pool_address;
+  int32_t constant_pool_index;
+  int32_t abs_name_constant_pool_index;
+  int32_t name_constant_pool_index;
   int32_t index;
 };
 

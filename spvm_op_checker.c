@@ -43,7 +43,7 @@ void SPVM_OP_CHECKER_build_leave_scope(SPVM_COMPILER* compiler, SPVM_OP* op_leav
       _Bool do_dec_ref_count = 0;
       if (op_term_keep) {
         if (op_term_keep->code == SPVM_OP_C_CODE_VAR) {
-          if (op_term_keep->uv.var->op_my_var->uv.my_var->address != op_my_var->uv.my_var->address) {
+          if (op_term_keep->uv.var->op_my_var->uv.my_var->index != op_my_var->uv.my_var->index) {
             do_dec_ref_count = 1;
           }
         }
@@ -201,34 +201,34 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_FIELD* field = op_field->uv.field;
       
       // Add field abs name to constant pool
-      field->abs_name_constant_pool_address = compiler->constant_pool->length;
+      field->abs_name_constant_pool_index = compiler->constant_pool->length;
       SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, field->abs_name);
 
       // Add field name to constant pool
-      field->name_constant_pool_address = compiler->constant_pool->length;
+      field->name_constant_pool_index = compiler->constant_pool->length;
       SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, field->op_name->uv.name);
       
       // Add field to constant pool
-      field->constant_pool_address = compiler->constant_pool->length;
+      field->constant_pool_index = compiler->constant_pool->length;
       SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
     }
     
     // Push fields name indexes to constant pool
-    package->field_name_indexes_constant_pool_address = constant_pool->length;
+    package->field_name_indexes_constant_pool_index = constant_pool->length;
     SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, package->op_fields->length);
     for (int32_t field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_ARRAY_fetch(package->op_fields, field_pos);
       SPVM_FIELD* field = op_field->uv.field;
-      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->name_constant_pool_address);
+      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->name_constant_pool_index);
     }
     
     // Push package name to constant pool
     const char* package_name = package->op_name->uv.name;
-    package->name_constant_pool_address = constant_pool->length;
+    package->name_constant_pool_index = constant_pool->length;
     SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
     
     // Push package information to constant pool
-    package->constant_pool_address = constant_pool->length;
+    package->constant_pool_index = constant_pool->length;
     SPVM_CONSTANT_POOL_push_package(compiler, constant_pool, package);
     
     for (int32_t sub_pos = 0; sub_pos < package->op_subs->length; sub_pos++) {
@@ -450,13 +450,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
                   
-                  constant->constant_pool_address = constant_pool->length;
+                  constant->constant_pool_index = constant_pool->length;
                   
                   switch (constant->code) {
                     case SPVM_CONSTANT_C_CODE_INT: {
                       int64_t value = constant->uv.long_value;
                       if (value >= -32768 && value <= 32767) {
-                        constant->constant_pool_address = -1;
+                        constant->constant_pool_index = -1;
                         break;
                       }
                       
@@ -467,7 +467,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       int64_t value = constant->uv.long_value;
                       
                       if (value >= -32768 && value <= 32767) {
-                        constant->constant_pool_address = -1;
+                        constant->constant_pool_index = -1;
                         break;
                       }
                       
@@ -478,7 +478,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       float value = constant->uv.float_value;
                       
                       if (value == 0 || value == 1 || value == 2) {
-                        constant->constant_pool_address = -1;
+                        constant->constant_pool_index = -1;
                         break;
                       }
                       
@@ -489,7 +489,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       double value = constant->uv.double_value;
                       
                       if (value == 0 || value == 1) {
-                        constant->constant_pool_address = -1;
+                        constant->constant_pool_index = -1;
                         break;
                       }
                       
@@ -1379,7 +1379,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
                   
                   // If argument my var is object, increment reference count
-                  if (my_var->address < sub->op_args->length) {
+                  if (my_var->index < sub->op_args->length) {
                     SPVM_RESOLVED_TYPE* resolved_type = SPVM_OP_get_resolved_type(compiler, op_my_var);
                     if (!SPVM_RESOLVED_TYPE_is_numeric(compiler, resolved_type)) {
                       SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
@@ -1419,7 +1419,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     break;
                   }
                   else {
-                    my_var->address = my_var_length++;
+                    my_var->index = my_var_length++;
                     SPVM_ARRAY_push(op_my_vars, op_cur);
                     SPVM_ARRAY_push(op_my_var_stack, op_cur);
                   }
@@ -1430,7 +1430,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // Assign undef if left value is object and right value is nothing
                   if (first_resolved_type && !SPVM_RESOLVED_TYPE_is_numeric(compiler, first_resolved_type) && !SPVM_OP_sibling(compiler, op_cur)) {
                     // Only my declarations after subroutine arguments
-                    if (my_var->address >= sub->op_args->length) {
+                    if (my_var->index >= sub->op_args->length) {
                       SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
                       
                       SPVM_VAR* var = SPVM_VAR_new(compiler);
@@ -1613,16 +1613,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
       
       // Push sub name to constant pool
-      sub->abs_name_constant_pool_address = compiler->constant_pool->length;
+      sub->abs_name_constant_pool_index = compiler->constant_pool->length;
       SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, sub->abs_name);
       
       // Push file name to constant pool
-      sub->file_name_constant_pool_address = compiler->constant_pool->length;
+      sub->file_name_constant_pool_index = compiler->constant_pool->length;
       assert(sub->file_name);
       SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, sub->file_name);
       
       // Push sub information to constant pool
-      sub->constant_pool_address = compiler->constant_pool->length;
+      sub->constant_pool_index = compiler->constant_pool->length;
       SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
     }
   }

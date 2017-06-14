@@ -26,7 +26,7 @@ inline int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_RUNTIME* runtime, 
   else if (data->type == SPVM_DATA_C_TYPE_OBJECT) {
     SPVM_DATA_OBJECT* data_object = (SPVM_DATA_OBJECT*)data;
     SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-    memcpy(&constant_pool_package, &runtime->constant_pool[data_object->package_constant_pool_address], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+    memcpy(&constant_pool_package, &runtime->constant_pool[data_object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
     byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * constant_pool_package.fields_length;
   }
   else {
@@ -111,9 +111,9 @@ inline void SPVM_RUNTIME_API_dec_ref_count(SPVM_RUNTIME* runtime, SPVM_DATA* dat
       else if (data->type == SPVM_DATA_C_TYPE_OBJECT) {
         SPVM_DATA_OBJECT* data_object = (SPVM_DATA_OBJECT*)data;
         
-        int32_t package_constant_pool_address = data_object->package_constant_pool_address;
+        int32_t package_constant_pool_index = data_object->package_constant_pool_index;
         SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-        memcpy(&constant_pool_package, &data_object->constant_pool[package_constant_pool_address], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+        memcpy(&constant_pool_package, &data_object->constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
         
         int32_t ref_fields_length = constant_pool_package.ref_fields_length;
         

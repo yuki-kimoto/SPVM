@@ -7,7 +7,7 @@ struct SPVM_my_var {
   SPVM_OP* op_type;
   SPVM_OP* op_name;
   SPVM_OP* op_term_assumption;
-  int32_t address;
+  int32_t index;
 };
 
 SPVM_MY_VAR* SPVM_MY_VAR_new();

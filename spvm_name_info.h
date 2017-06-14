@@ -14,7 +14,7 @@ struct SPVM_name_info {
   SPVM_OP* op_name;
   const char* resolved_name;
   int32_t code;
-  int32_t constant_pool_address;
+  int32_t constant_pool_index;
 };
 
 SPVM_NAME_INFO* SPVM_NAME_INFO_new(SPVM_COMPILER* compiler);

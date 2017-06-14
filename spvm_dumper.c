@@ -60,12 +60,12 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
           printf(" \"%s\"", constant->uv.string_value);
           break;
       }
-      printf(" (address %" PRId32 ")", constant->constant_pool_address);
+      printf(" (index %" PRId32 ")", constant->constant_pool_index);
     }
     else if (code == SPVM_OP_C_CODE_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
       printf(" \"%s\"", var->op_name->uv.name);
-      printf(" (my_var->address:%d)", var->op_my_var->uv.my_var->address);
+      printf(" (my_var->index:%d)", var->op_my_var->uv.my_var->index);
     }
     else if (code == SPVM_OP_C_CODE_NAME) {
       printf(" \"%s\"", op_cur->uv.name);
@@ -322,7 +322,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
       
       case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
         
-        // Machine address to calculate padding
+        // Bytecode index to calculate padding
         int32_t pc = i;
         
         // Padding
@@ -369,7 +369,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
       }
       case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
         
-        // Machine address to calculate padding
+        // Bytecode index to calculate padding
         int32_t pc = i;
         
         // Padding
@@ -429,7 +429,7 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
       printf("      string \"%s\"\n", constant->uv.string_value);
       break;
   }
-  printf("      address => %" PRId32 "\n", constant->constant_pool_address);
+  printf("      address => %" PRId32 "\n", constant->constant_pool_index);
 }
 
 void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
@@ -492,7 +492,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     printf("      resolved_type => \"%s\"\n", type->resolved_type->name);
     printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_get_byte_size(compiler, field));
     
-    printf("      constant_pool_address => \"%" PRId32 "\"\n", field->constant_pool_address);
+    printf("      constant_pool_index => \"%" PRId32 "\"\n", field->constant_pool_index);
   }
   else {
     printf("        None\n");

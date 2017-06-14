@@ -66,8 +66,8 @@ struct SPVM_data_object {
   int32_t* constant_pool;
   int8_t type;
   int32_t ref_count;
-  int32_t package_constant_pool_address;
-  int32_t field_name_indexes_constant_pool_address;
+  int32_t package_constant_pool_index;
+  int32_t field_name_indexes_constant_pool_index;
 };
 
 int32_t* SPVM_DATA_API_get_constant_pool(SPVM_DATA* data);

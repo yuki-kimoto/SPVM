@@ -40,7 +40,7 @@ void SPVM_RUNTIME_init(SPVM_RUNTIME* runtime) {
   runtime->abort = 0;
 }
 
-void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_address) {
+void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_index) {
   (void)runtime;
   
   // Jump table for direct threaded code
@@ -289,11 +289,11 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_addr
   
   case_SPVM_BYTECODE_C_CODE_CALL_SUB: {
     // Get subroutine ID
-    sub_constant_pool_address
+    sub_constant_pool_index
       = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
     CALLSUB_COMMON: {
-      memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_address], sizeof(SPVM_CONSTANT_POOL_SUB));
+      memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
 
       // Extend call stack(current size + 2(return address + call stack base before) + lexical variable area + operand_stack area)
       int32_t call_stack_max = operand_stack_top + 2 + constant_pool_sub.my_vars_length + constant_pool_sub.operand_stack_max;
@@ -316,8 +316,8 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_addr
         call_stack[operand_stack_top + 1].address_value = (void*)((intptr_t)pc + 5 + 3);
       }
       
-      // Save sub_constant_pool_address
-      call_stack[operand_stack_top + 2].int_value = sub_constant_pool_address;
+      // Save sub_constant_pool_index
+      call_stack[operand_stack_top + 2].int_value = sub_constant_pool_index;
       
       // Save vars base before
       call_stack[operand_stack_top + 3].int_value = call_stack_base;
@@ -378,8 +378,8 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_addr
     // Get return address
     uint8_t* return_address = call_stack[call_stack_base - 3].address_value;
     
-    // Get sub_constant_pool_address
-    sub_constant_pool_address = call_stack[call_stack_base - 2].int_value;
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
     
     // Resotre call stack base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
@@ -411,8 +411,8 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_addr
     // Return address
     uint8_t* return_address = call_stack[call_stack_base - 3].address_value;
 
-    // Get sub_constant_pool_address
-    sub_constant_pool_address = call_stack[call_stack_base - 2].int_value;
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
 
     // Resotre vars base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
@@ -443,19 +443,19 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_addr
     // Return address
     uint8_t* return_address = call_stack[call_stack_base - 3].address_value;
 
-    // Get sub_constant_pool_address
-    sub_constant_pool_address = call_stack[call_stack_base - 2].int_value;
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
     
     // Get constant pool sub
-    memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_address], sizeof(SPVM_CONSTANT_POOL_SUB));
+    memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
     
     // Sub name
-    int32_t sub_name_constant_pool_address = constant_pool_sub.abs_name_constant_pool_address;
-    const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_address + 1];
+    int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_constant_pool_index;
+    const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
     
     // File name
-    int32_t file_name_constant_pool_address = constant_pool_sub.file_name_constant_pool_address;
-    const char* file_name = (char*)&constant_pool[file_name_constant_pool_address + 1];
+    int32_t file_name_constant_pool_index = constant_pool_sub.file_name_constant_pool_index;
+    const char* file_name = (char*)&constant_pool[file_name_constant_pool_index + 1];
     
     // stack trace strings
     const char* exception = "Exception";
@@ -1814,10 +1814,10 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_addr
   }
   case_SPVM_BYTECODE_C_CODE_MALLOC_OBJECT: {
     // Get subroutine ID
-    int32_t package_constant_pool_address
+    int32_t package_constant_pool_index
       = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-    memcpy(&constant_pool_package, &constant_pool[package_constant_pool_address], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+    memcpy(&constant_pool_package, &constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
     
     // Allocate memory
     int32_t fields_length = constant_pool_package.fields_length;
@@ -1827,12 +1827,12 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_addr
     // Memory allocation error
     if (!data_object) {
       // Sub name
-      int32_t sub_name_constant_pool_address = constant_pool_sub.abs_name_constant_pool_address;
-      const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_address + 1];
+      int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_constant_pool_index;
+      const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
       
       // File name
-      int32_t file_name_constant_pool_address = constant_pool_sub.file_name_constant_pool_address;
-      const char* file_name = (char*)&constant_pool[file_name_constant_pool_address + 1];
+      int32_t file_name_constant_pool_index = constant_pool_sub.file_name_constant_pool_index;
+      const char* file_name = (char*)&constant_pool[file_name_constant_pool_index + 1];
       
       fprintf(stderr, "Failed to allocate memory(malloc PACKAGE) from %s at %s\n", sub_name, file_name);
       abort();
@@ -1850,12 +1850,12 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_addr
     // Initialize reference fields by 0
     memset((void*)((intptr_t)data_object + SPVM_DATA_C_HEADER_BYTE_SIZE), 0, sizeof(void*) * constant_pool_package.ref_fields_length);
     
-    // Package constant pool address
-    data_object->package_constant_pool_address = package_constant_pool_address;
+    // Package constant pool index
+    data_object->package_constant_pool_index = package_constant_pool_index;
     
     data_object->constant_pool = runtime->constant_pool;
     
-    data_object->field_name_indexes_constant_pool_address = constant_pool_package.field_name_indexes_constant_pool_address;
+    data_object->field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
     
     assert(data_object_byte_size == SPVM_RUNTIME_API_calcurate_data_byte_size(runtime, (SPVM_DATA*)data_object));
     
@@ -1915,21 +1915,21 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_addr
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_MALLOC_STRING: {
-    int32_t* string_constant_pool_addresss
+    int32_t* string_constant_pool_indexs
       = &constant_pool[(*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4)];
     
-    char* pv = (char*)&string_constant_pool_addresss[1];
+    char* pv = (char*)&string_constant_pool_indexs[1];
     SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_create_data_array_byte_from_pv(runtime, pv);
 
     // Memory allocation error
     if (!data_array) {
       // Sub name
-      int32_t sub_name_constant_pool_address = constant_pool_sub.abs_name_constant_pool_address;
-      const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_address + 1];
+      int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_constant_pool_index;
+      const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
       
       // File name
-      int32_t file_name_constant_pool_address = constant_pool_sub.file_name_constant_pool_address;
-      const char* file_name = (char*)&constant_pool[file_name_constant_pool_address + 1];
+      int32_t file_name_constant_pool_index = constant_pool_sub.file_name_constant_pool_index;
+      const char* file_name = (char*)&constant_pool[file_name_constant_pool_index + 1];
       
       fprintf(stderr, "Failed to allocate memory(malloc STRING) from %s at %s\n", sub_name, file_name);
       abort();

@@ -23,14 +23,14 @@ inline SPVM_VALUE* SPVM_DATA_API_get_object_fields(SPVM_DATA_OBJECT* data_object
 
 inline int32_t SPVM_DATA_API_get_object_field_index(SPVM_DATA_OBJECT* data_object, const char* name) {
   
-  int32_t field_name_indexes_constant_pool_address = data_object->field_name_indexes_constant_pool_address;
+  int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
   int32_t* constant_pool = data_object->constant_pool;
-  int32_t length = constant_pool[field_name_indexes_constant_pool_address];
+  int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
   int32_t field_index = -1;
   _Bool found = 0;
   for (int32_t i = 0; i < length; i++) {
-    int32_t name_index = constant_pool[field_name_indexes_constant_pool_address + i + 1];
+    int32_t name_index = constant_pool[field_name_indexes_constant_pool_index + i + 1];
     char* match_name = (char*)&constant_pool[name_index + 1];
     if (strcmp(name, match_name) == 0) {
       found = 1;
@@ -48,11 +48,11 @@ inline int32_t SPVM_DATA_API_get_object_field_index(SPVM_DATA_OBJECT* data_objec
 
 inline int32_t SPVM_DATA_API_get_object_fields_length(SPVM_DATA_OBJECT* data_object) {
   
-  int32_t field_name_indexes_constant_pool_address = data_object->field_name_indexes_constant_pool_address;
+  int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
   
   int32_t* constant_pool = data_object->constant_pool;
   
-  int32_t length = constant_pool[field_name_indexes_constant_pool_address];
+  int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
   return length;
 }
@@ -164,14 +164,14 @@ inline SPVM_DATA* SPVM_DATA_API_get_object_field_value_ref(SPVM_DATA_OBJECT* dat
 
 inline int32_t SPVM_DATA_API_dump_object_field_names(SPVM_DATA_OBJECT* data_object) {
   
-  int32_t field_name_indexes_constant_pool_address = data_object->field_name_indexes_constant_pool_address;
+  int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
   
   int32_t* constant_pool = data_object->constant_pool;
   
-  int32_t length = constant_pool[field_name_indexes_constant_pool_address];
+  int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
   for (int32_t i = 0; i < length; i++) {
-    int32_t name_index = constant_pool[field_name_indexes_constant_pool_address + i + 1];
+    int32_t name_index = constant_pool[field_name_indexes_constant_pool_index + i + 1];
     char* name = (char*)&constant_pool[name_index + 1];
     fprintf(stderr, "%s\n", name);
   }

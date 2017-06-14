@@ -25,7 +25,7 @@ struct SPVM_constant {
     const char* string_value;
   } uv;
   int32_t code;
-  int32_t constant_pool_address;
+  int32_t constant_pool_index;
   _Bool is_undef;
 };
 

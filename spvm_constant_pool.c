@@ -63,9 +63,9 @@ void SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   // Constant pool package information
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
   constant_pool_package.fields_length = package->fields_length;
-  constant_pool_package.name_constant_pool_address = package->name_constant_pool_address;
+  constant_pool_package.name_constant_pool_index = package->name_constant_pool_index;
   constant_pool_package.ref_fields_length = package->ref_fields_length;
-  constant_pool_package.field_name_indexes_constant_pool_address = package->field_name_indexes_constant_pool_address;
+  constant_pool_package.field_name_indexes_constant_pool_index = package->field_name_indexes_constant_pool_index;
   memcpy(&constant_pool->values[constant_pool->length], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   
   // Add filed names indexes
@@ -89,8 +89,8 @@ void SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* co
   constant_pool_sub.operand_stack_max = sub->operand_stack_max;
   constant_pool_sub.args_length = sub->op_args->length;
   constant_pool_sub.is_native = sub->is_native;
-  constant_pool_sub.abs_name_constant_pool_address = sub->abs_name_constant_pool_address;
-  constant_pool_sub.file_name_constant_pool_address = sub->file_name_constant_pool_address;
+  constant_pool_sub.abs_name_constant_pool_index = sub->abs_name_constant_pool_index;
+  constant_pool_sub.file_name_constant_pool_index = sub->file_name_constant_pool_index;
   if (sub->op_return_type->code != SPVM_OP_C_CODE_VOID) {
     constant_pool_sub.has_return_value = 1;
   }
@@ -113,8 +113,8 @@ void SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* 
   // Constant pool field information
   SPVM_CONSTANT_POOL_FIELD constant_pool_field;
   constant_pool_field.index = field->index;
-  constant_pool_field.abs_name_constant_pool_address = field->abs_name_constant_pool_address;
-  constant_pool_field.name_constant_pool_address = field->name_constant_pool_address;
+  constant_pool_field.abs_name_constant_pool_index = field->abs_name_constant_pool_index;
+  constant_pool_field.name_constant_pool_index = field->name_constant_pool_index;
   memcpy(&constant_pool->values[constant_pool->length], &constant_pool_field, sizeof(SPVM_CONSTANT_POOL_FIELD));
   
   // Add length
