@@ -76,12 +76,12 @@ compile(...)
     SPVM_ARRAY_push(compiler->include_pathes, include_path);
   }
   
+  // Compile SPVM
   SPVM_COMPILER_compile(compiler);
-  
   if (compiler->error_count > 0) {
     croak("SPVM compile error %d", compiler->error_count);
   }
-
+  
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
   
@@ -98,7 +98,9 @@ compile(...)
   
   // Initialize runtime before push arguments and call subroutine
   SPVM_RUNTIME_init(runtime);
-
+  
+  warn("AAAAAAAAAAAAAAAAA");
+  
   XSRETURN(0);
 }
 

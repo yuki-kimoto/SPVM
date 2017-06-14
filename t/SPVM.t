@@ -32,5 +32,3 @@ is_deeply(
     {name => 'std', file => $file, line => $use_std_line}
   ]
 );
-
-$compiler->compile;

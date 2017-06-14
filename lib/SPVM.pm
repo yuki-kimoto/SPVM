@@ -4,10 +4,13 @@ use 5.008007;
 use strict;
 use warnings;
 
+our $VERSION = '0.01';
+
 use SPVM::Compiler;
 
 my $compiler;
 
+# Create SPVM compiler
 BEGIN {
   $compiler = SPVM::Compiler->new;
   
@@ -15,7 +18,10 @@ BEGIN {
   push @{$compiler->include_paths}, @INC;
 }
 
-our $VERSION = '0.01';
+# Compile SPVM source code just after compile-time of Perl
+CHECK {
+  $compiler->compile;
+}
 
 sub import {
   my ($class, $package_name) = @_;
