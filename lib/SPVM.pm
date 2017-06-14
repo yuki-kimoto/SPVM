@@ -6,13 +6,21 @@ use warnings;
 
 use SPVM::Compiler;
 
-my $compiler = SPVM::Compiler->new;
+my $compiler;
+
+BEGIN {
+  $compiler = SPVM::Compiler->new;
+  
+  # Add moduel include path
+  push @{$compiler->include_paths}, @INC;
+}
 
 our $VERSION = '0.01';
 
 sub import {
   my ($class, $package_name) = @_;
   
+  # Add package infomations
   if (defined $package_name) {
     my ($file, $line) = (caller)[1, 2];
 
@@ -21,7 +29,6 @@ sub import {
       file => $file,
       line => $line
     };
-    
     push @{$compiler->package_infos}, $package_info;
   }
 }

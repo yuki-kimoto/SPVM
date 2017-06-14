@@ -18,6 +18,9 @@ BEGIN { use_ok('SPVM') };
 
 use SPVM::Compiler;
 
+use Data::Dumper;
+warn Dumper \@INC;
+
 my $file = 't/SPVM.t';
 
 use SPVM 'Test'; my $use_test_line = __LINE__;
