@@ -5,6 +5,8 @@
 #include "ppport.h"
 
 #include <stdint.h>
+#include <assert.h>
+
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
 #include "spvm_array.h"
@@ -27,7 +29,7 @@ compile(...)
   SV* sv_compiler = ST(0);
   
   HV* hv_compiler = (HV*)SvRV(sv_compiler);
-  
+
   // Add package
   SV** sv_package_infos_ptr = hv_fetch(hv_compiler, "package_infos", strlen("package_infos"), 0);
   SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
@@ -40,6 +42,7 @@ compile(...)
     // Name
     SV** sv_name_ptr = hv_fetch(hv_package_info, "name", strlen("name"), 0);
     SV* sv_name = sv_name_ptr ? *sv_name_ptr : &PL_sv_undef;
+
     const char* name = SvPV_nolen(sv_name);
     
     // File
