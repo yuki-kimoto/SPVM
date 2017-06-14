@@ -166,17 +166,12 @@ DESTROY(...)
 {
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
+  // Get compiler
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-
-  // デリファレンス
   SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
-  
-  // SV*型をsize_t型に変換
   size_t iv_compiler = SvIV(sviv_compiler);
-  
-  // size_t型をポインタに変換
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
   // Free compiler
