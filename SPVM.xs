@@ -104,4 +104,14 @@ compile(...)
   XSRETURN(0);
 }
 
+SV*
+DESTROY(...)
+  PPCODE:
+{
+  
+  XSRETURN(0);
+}
+
+MODULE = SPVM::Runtime		PACKAGE = SPVM::Runtime
+
 MODULE = SPVM		PACKAGE = SPVM

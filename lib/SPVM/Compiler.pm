@@ -4,6 +4,7 @@ use Object::Simple -base;
 
 has 'package_infos';
 has 'include_paths';
+has 'compiler';
 
 sub new {
   my $self = shift->SUPER::new(@_);
