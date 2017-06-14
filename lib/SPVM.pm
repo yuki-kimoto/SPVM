@@ -9,6 +9,7 @@ our $VERSION = '0.01';
 use SPVM::Compiler;
 
 my $compiler;
+my $runtime;
 
 # Create SPVM compiler
 BEGIN {
@@ -21,6 +22,8 @@ BEGIN {
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
   $compiler->compile;
+  
+  $runtime = $compiler->create_runtime;
 }
 
 sub import {

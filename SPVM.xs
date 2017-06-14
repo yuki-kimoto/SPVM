@@ -106,6 +106,42 @@ compile(...)
 }
 
 SV*
+create_runtime(...)
+  PPCODE:
+{
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Get compiler
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
+  size_t iv_compiler = SvIV(sviv_compiler);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  
+  // Create run-time
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  
+  // Copy constant pool to runtime
+  runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
+  memcpy(runtime->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
+
+  // Copy bytecodes to runtime
+  runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
+  memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
+  
+  // Initialize runtime before push arguments and call subroutine
+  SPVM_RUNTIME_init(runtime);
+
+  size_t iv_runtime = PTR2IV(runtime);
+  SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
+  SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
+
+  XPUSHs(sv_runtime);
+  XSRETURN(0);
+}
+
+SV*
 DESTROY(...)
   PPCODE:
 {
