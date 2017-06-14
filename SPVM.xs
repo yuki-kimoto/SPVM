@@ -27,7 +27,10 @@ compile(...)
   PPCODE:
 {
   SV* sv_compiler = ST(0);
-  
+
+  // Create compiler
+  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+
   HV* hv_compiler = (HV*)SvRV(sv_compiler);
 
   // Add package
@@ -36,7 +39,6 @@ compile(...)
   AV* av_package_infos = (AV*)SvRV(sv_package_infos);
 
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
-  
   for (int32_t i = 0; i < av_package_infos_length; i++) {
     SV** sv_package_info_ptr = av_fetch(av_package_infos, i, 0);
     SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
@@ -56,10 +58,12 @@ compile(...)
     SV** sv_line_ptr = hv_fetch(hv_package_info, "line", strlen("line"), 0);
     SV* sv_line = sv_line_ptr ? *sv_line_ptr : &PL_sv_undef;
     int32_t line = (int32_t)SvIV(sv_line);
+    
+    // push package to compiler use stack
+    SPVM_OP* op_use_package = SPVM_OP_new_op_use_from_package_name(compiler, name, file, line);
+    SPVM_ARRAY_push(compiler->op_use_stack, op_use_package);
+    SPVM_HASH_insert(compiler->op_use_symtable, name, strlen(name), op_use_package);
   }
-  
-  // Create compiler
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
   SPVM_ARRAY_push(compiler->include_pathes, "lib");
   
