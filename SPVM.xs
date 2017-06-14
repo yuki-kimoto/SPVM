@@ -138,7 +138,7 @@ create_runtime(...)
   SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
 
   XPUSHs(sv_runtime);
-  XSRETURN(0);
+  XSRETURN(1);
 }
 
 SV*
@@ -170,5 +170,37 @@ DESTROY(...)
 }
 
 MODULE = SPVM::Runtime		PACKAGE = SPVM::Runtime
+
+SV*
+call_sub(...)
+  PPCODE:
+{
+  
+  XSRETURN(0);
+}
+
+SV*
+init(...)
+  PPCODE:
+{
+  
+  XSRETURN(0);
+}
+
+SV*
+push_var_int(...)
+  PPCODE:
+{
+  
+  XSRETURN(0);
+}
+
+SV*
+pop_return_value_int(...)
+  PPCODE:
+{
+  
+  XSRETURN(0);
+}
 
 MODULE = SPVM		PACKAGE = SPVM
