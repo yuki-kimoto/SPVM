@@ -124,15 +124,25 @@ get_sub_infos(...)
   size_t iv_compiler = SvIV(sviv_compiler);
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
+  // Subroutine information
+  AV* av_sub_infos = sv_2mortal(newAV());
+  
   // abs_name, arg_types, return_type, constant_pool_index, resolved_type_id
   SPVM_ARRAY* op_packages = compiler->op_packages;
   for (int32_t package_index = 0; package_index < op_packages->length; package_index++) {
     SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, package_index);
     SPVM_ARRAY* op_subs = op_package->uv.package->op_subs;
     for (int32_t sub_index = 0; sub_index < op_subs->length; sub_index++) {
+      // Sub information
+      HV* hv_sub_info = sv_2mortal(newHV());
+      
       SPVM_OP* op_sub = SPVM_ARRAY_fetch(op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       const char* sub_abs_name = sub->abs_name;
+      
+      SV* sv_sub_abs_name = sv_2mortal(newSVpv(sub_abs_name, 0));
+      hv_store(hv_sub_info, "abs_name", strlen("abs_name"), SvREFCNT_inc(sv_sub_abs_name), 0);
+      
       SPVM_ARRAY* op_args = sub->op_args;
       for (int32_t arg_index = 0; arg_index < op_args->length; arg_index++) {
         SPVM_OP* op_arg = SPVM_ARRAY_fetch(op_args, arg_index);
