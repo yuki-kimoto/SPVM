@@ -1,0 +1,55 @@
+use Test::EnumA;
+
+package Test::Simple {
+  has x : int;
+  has y : int;
+  has values1 : int[];
+  has values2 : long[];
+  has message : byte[];
+  # has c : Test::Simple;
+  # has d : Test::Simple[];
+  
+  has title : int;
+  
+  sub get_x ($self : Test::Simple) : int {
+    return $self{x};
+  }
+  
+  sub get2 () : int {
+    1;
+    my $var1 : int;
+    my $var2 : int;
+    
+    return 0;
+  }
+
+  sub get3 () : int { return 0; }
+  sub get4 ($foo : int) : int { return 0; }
+  sub get7 ($foo : int, $bar : int) : int { return 0; }
+
+  sub sum4 ($self : Test::Simple) : int {
+    
+    my $title : int;
+   
+    # $title->();
+    # $title->(1);
+    # $title->(1, 2);
+
+    $self{x};
+    $self->sum5();
+
+    Test::Simple::sum5($self);
+
+    $self{x} = 3;
+
+    my $char : byte = 'a';
+    
+    return 0;
+  }
+  
+  sub sum5($self : Test::Simple) : int {
+    $self{x};
+    
+    return 0;
+  }
+}

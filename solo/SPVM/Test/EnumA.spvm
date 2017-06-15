@@ -1,0 +1,8 @@
+package Test::EnumA {
+  enum {
+    ONE,
+    TWO,
+    THREE = 4L,
+    FORE = 100000L
+  }
+}

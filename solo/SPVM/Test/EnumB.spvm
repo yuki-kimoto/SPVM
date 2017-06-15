@@ -1,0 +1,5 @@
+package Test::EnumB {
+  enum {
+    ONE = 5
+  }
+}
