@@ -7,15 +7,20 @@
 
 #include "spvm_data_api.h"
 
-const int32_t SPVM_DATA_API_C_ARRAY_VALUE_SIZES[] = {
-  sizeof(int8_t),
-  sizeof(int16_t),
-  sizeof(int32_t),
-  sizeof(int64_t),
-  sizeof(float),
-  sizeof(double),
-  sizeof(void*),
-};
+inline int32_t SPVM_DATA_API_get_array_value_size(int32_t type) {
+  
+  static const int32_t array_value_sizes[] = {
+    sizeof(int8_t),
+    sizeof(int16_t),
+    sizeof(int32_t),
+    sizeof(int64_t),
+    sizeof(float),
+    sizeof(double),
+    sizeof(void*),
+  };
+  
+  return array_value_sizes[type];
+}
 
 inline SPVM_VALUE* SPVM_DATA_API_get_object_fields(SPVM_DATA_OBJECT* data_object) {
   return (SPVM_VALUE*)((intptr_t)data_object + SPVM_DATA_C_HEADER_BYTE_SIZE);

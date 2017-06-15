@@ -44,7 +44,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
   (void)runtime;
   
   // Jump table for direct threaded code
-  static void* jump[] = {
+  static const void* jump[] = {
     &&case_SPVM_BYTECODE_C_CODE_NOP,
     &&case_SPVM_BYTECODE_C_CODE_UNDEF,
     &&case_SPVM_BYTECODE_C_CODE_CONSTANT_BYTE_0,
@@ -1869,7 +1869,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
   case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY: {
     int32_t value_type = *(pc + 1);
     
-    int32_t size = SPVM_DATA_API_C_ARRAY_VALUE_SIZES[value_type];
+    int32_t size = SPVM_DATA_API_get_array_value_size(value_type);
     
     // Array length
     int32_t length = call_stack[operand_stack_top].int_value;
