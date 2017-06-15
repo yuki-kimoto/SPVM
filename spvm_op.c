@@ -453,7 +453,9 @@ SPVM_RESOLVED_TYPE* SPVM_OP_get_resolved_type(SPVM_COMPILER* compiler, SPVM_OP* 
       break;
     }
     case SPVM_OP_C_CODE_TYPE: {
-      resolved_type = op->uv.type->resolved_type;
+      if (op->uv.type) {
+        resolved_type = op->uv.type->resolved_type;
+      }
       break;
     }
     case SPVM_OP_C_CODE_SWITCH_CONDITION : {

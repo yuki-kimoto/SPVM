@@ -157,14 +157,22 @@ get_sub_infos(...)
         SV* sv_arg_resolved_type_ids = sv_2mortal(newRV_inc((SV*)av_arg_resolved_type_ids));
         hv_store(hv_sub_info, "arg_resolved_type_ids", strlen("arg_resolved_type_ids"), SvREFCNT_inc(sv_arg_resolved_type_ids), 0);
       }
+
       SPVM_OP* op_return_type = sub->op_return_type;
-      int32_t return_resolved_type_id = op_return_type->uv.type->resolved_type->id;
-      SV* sv_return_resolved_type_id = sv_2mortal(newSViv(return_resolved_type_id));
-      hv_store(hv_sub_info, "return_resolved_type_id", strlen("return_resolved_type_id"), sv_return_resolved_type_id, 0);
+      SPVM_RESOLVED_TYPE* return_type_resolved_type = SPVM_OP_get_resolved_type(compiler, op_return_type);
+      if (return_type_resolved_type) {
+        int32_t return_resolved_type_id = op_return_type->uv.type->resolved_type->id;
+        SV* sv_return_resolved_type_id = sv_2mortal(newSViv(return_resolved_type_id));
+        hv_store(hv_sub_info, "return_resolved_type_id", strlen("return_resolved_type_id"), SvREFCNT_inc(sv_return_resolved_type_id), 0);
+      }
+      else {
+        hv_store(hv_sub_info, "return_resolved_type_id", strlen("return_resolved_type_id"), &PL_sv_undef, 0);
+      }
+      
       
       int32_t constant_pool_index = sub->constant_pool_index;
       SV* sv_constant_pool_index = sv_2mortal(newSViv(constant_pool_index));
-      hv_store(hv_sub_info, "constant_pool_index", strlen("constant_pool_index"), sv_constant_pool_index, 0);
+      hv_store(hv_sub_info, "constant_pool_index", strlen("constant_pool_index"), SvREFCNT_inc(sv_constant_pool_index), 0);
       
       SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)hv_sub_info));
       av_push(av_sub_infos, sv_sub_info);

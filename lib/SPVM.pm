@@ -23,6 +23,8 @@ BEGIN {
 CHECK {
   $compiler->compile;
   
+  my $sub_infos = $compiler->get_sub_infos;
+  
   $runtime = $compiler->create_runtime;
 }
 
