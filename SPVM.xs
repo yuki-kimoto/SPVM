@@ -142,6 +142,9 @@ get_sub_infos(...)
       
       SV* sv_sub_abs_name = sv_2mortal(newSVpv(sub_abs_name, 0));
       hv_store(hv_sub_info, "abs_name", strlen("abs_name"), SvREFCNT_inc(sv_sub_abs_name), 0);
+
+      /*
+      
       
       // arg_resolved_type_ids
       AV* av_arg_resolved_type_ids = (AV*)sv_2mortal((SV*)newAV());
@@ -153,7 +156,7 @@ get_sub_infos(...)
         int32_t arg_resolved_type_id = op_arg_type->uv.type->resolved_type->id;
         
         SV* sv_arg_resolved_type_id = sv_2mortal(newSViv(arg_resolved_type_id));
-        av_push(av_arg_resolved_type_ids, sv_arg_resolved_type_id);
+        av_push(av_arg_resolved_type_ids, SvREFCNT_inc(sv_arg_resolved_type_id));
         SV* sv_arg_resolved_type_ids = sv_2mortal(newRV_inc((SV*)av_arg_resolved_type_ids));
         hv_store(hv_sub_info, "arg_resolved_type_ids", strlen("arg_resolved_type_ids"), SvREFCNT_inc(sv_arg_resolved_type_ids), 0);
       }
@@ -174,10 +177,13 @@ get_sub_infos(...)
       SV* sv_constant_pool_index = sv_2mortal(newSViv(constant_pool_index));
       hv_store(hv_sub_info, "constant_pool_index", strlen("constant_pool_index"), SvREFCNT_inc(sv_constant_pool_index), 0);
       
+      */
+      
       SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)hv_sub_info));
-      av_push(av_sub_infos, sv_sub_info);
+      av_push(av_sub_infos, SvREFCNT_inc(sv_sub_info));
     }
   }
+  
   SV* sv_sub_infos = sv_2mortal(newRV_inc(av_sub_infos));
   
   XPUSHs(sv_sub_infos);

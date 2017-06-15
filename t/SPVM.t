@@ -8,6 +8,7 @@
 use strict;
 use warnings;
 
+
 use Test::More 'no_plan';;
 BEGIN { use_ok('SPVM') };
 
@@ -32,3 +33,10 @@ is_deeply(
     {name => 'std', file => $file, line => $use_std_line}
   ]
 );
+
+
+my $sub_infos = $compiler->get_sub_infos;
+
+use Data::Dumper;
+warn Dumper $sub_infos;
+
