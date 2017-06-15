@@ -20,7 +20,7 @@ use SPVM::Compiler;
 
 my $file = 't/SPVM.t';
 
-use SPVM 'Test'; my $use_test_line = __LINE__;
+use SPVM 'XSTest'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
 
 my $compiler = SPVM::get_compiler;
@@ -28,7 +28,7 @@ my $compiler = SPVM::get_compiler;
 is_deeply(
   $compiler->package_infos,
   [
-    {name => 'Test', file => $file, line => $use_test_line},
+    {name => 'XSTest', file => $file, line => $use_test_line},
     {name => 'std', file => $file, line => $use_std_line}
   ]
 );
