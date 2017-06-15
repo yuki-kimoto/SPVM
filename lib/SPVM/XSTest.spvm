@@ -1,4 +1,4 @@
-package Test::Minimal {
+package XSTest {
   has x : int;
   has y : int;
 }
