@@ -1869,7 +1869,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
   case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY: {
     int32_t value_type = *(pc + 1);
     
-    int32_t size = SPVM_DATA_ARRAY_C_VALUE_SIZES[value_type];
+    int32_t size = SPVM_DATA_API_C_ARRAY_VALUE_SIZES[value_type];
     
     // Array length
     int32_t length = call_stack[operand_stack_top].int_value;

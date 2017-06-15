@@ -7,7 +7,7 @@
 
 #include "spvm_data_api.h"
 
-const int32_t SPVM_DATA_ARRAY_C_VALUE_SIZES[] = {
+const int32_t SPVM_DATA_API_C_ARRAY_VALUE_SIZES[] = {
   sizeof(int8_t),
   sizeof(int16_t),
   sizeof(int32_t),

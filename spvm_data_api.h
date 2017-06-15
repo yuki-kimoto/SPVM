@@ -59,7 +59,7 @@ enum {
   SPVM_DATA_ARRAY_C_VALUE_TYPE_REF = 6,
 };
 
-extern const int32_t SPVM_DATA_ARRAY_C_VALUE_SIZES[];
+extern const int32_t SPVM_DATA_API_C_ARRAY_VALUE_SIZES[];
 
 // SPVM_DATA_OBJECT
 struct SPVM_data_object {
