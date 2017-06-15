@@ -275,20 +275,56 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         continue;
       
       case '=':
-        compiler->bufptr++;
-        
-        /* == */
-        if (*compiler->bufptr == '=') {
-          compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EQ);
-          yylvalp->opval = op;
-          return REL;
+        // Pod
+        if (compiler->bufptr == compiler->cur_src || *(compiler->bufptr - 1) == '\n' || *(compiler->bufptr - 1) == '\r') {
+          while (1) {
+            compiler->bufptr++;
+            
+            if (*compiler->bufptr == '\0') {
+              break;
+            }
+            
+            warn("TOKEN1 %c", *compiler->bufptr);
+            
+            if (
+              *compiler->bufptr == '='
+              && strncmp(compiler->bufptr + 1, "cut", 3) == 0
+              && (*(compiler->bufptr + 4) == '\0' || isspace((int)*(compiler->bufptr + 4)))
+            )
+            {
+              warn("BBBBBBBBB");
+              
+              compiler->bufptr += 4;
+              
+              while (1) {
+                warn("TOKEN2 %c", *compiler->bufptr);
+                
+                if (*compiler->bufptr == '\r' || *compiler->bufptr == '\n' || *compiler->bufptr == '\0') {
+                  break;
+                }
+                compiler->bufptr++;
+              }
+              break;
+            }
+          }
+          continue;
         }
-        /* = */
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ASSIGN);
-          yylvalp->opval = op;
-          return ASSIGN;
+          compiler->bufptr++;
+          
+          /* == */
+          if (*compiler->bufptr == '=') {
+            compiler->bufptr++;
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EQ);
+            yylvalp->opval = op;
+            return REL;
+          }
+          /* = */
+          else {
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ASSIGN);
+            yylvalp->opval = op;
+            return ASSIGN;
+          }
         }
         
       case '<':

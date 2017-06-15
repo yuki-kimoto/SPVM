@@ -1,3 +1,9 @@
+=head1 NAME
+
+ABCDE
+
+=cut
+
 use Test::EnumA;
 use Test::EnumB;
 use Test::EnumC;
@@ -5,8 +11,15 @@ use Test::EnumD;
 use Test::Simple;
 use Test::Minimal;
 
+=head1 NAME
+
+SPVM::Test - SPVM test module
+
+=cut
+
 package Test {
   sub main($mvar : int) : int {
+
     
     my $obj1 = malloc Test::Minimal;
     
@@ -762,3 +775,7 @@ package Test {
   }
 
 }
+
+=head1 NAME
+
+SPVM::Test - SPVM test module
