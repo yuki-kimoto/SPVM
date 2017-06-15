@@ -77,7 +77,7 @@ compile(...)
   for (int32_t i = 0; i < av_include_paths_length; i++) {
     SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
     SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
-    const char* include_path = SvPV_nolen(sv_include_path);
+    char* include_path = SvPV_nolen(sv_include_path);
     SPVM_ARRAY_push(compiler->include_pathes, include_path);
   }
   
@@ -125,7 +125,7 @@ get_sub_infos(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
   // Subroutine information
-  AV* av_sub_infos = sv_2mortal(newAV());
+  AV* av_sub_infos = (AV*)sv_2mortal((SV*)newAV());
   
   // abs_name, arg_types, return_type, constant_pool_index, resolved_type_id
   SPVM_ARRAY* op_packages = compiler->op_packages;
@@ -134,7 +134,7 @@ get_sub_infos(...)
     SPVM_ARRAY* op_subs = op_package->uv.package->op_subs;
     for (int32_t sub_index = 0; sub_index < op_subs->length; sub_index++) {
       // Sub information
-      HV* hv_sub_info = sv_2mortal(newHV());
+      HV* hv_sub_info = (HV*)sv_2mortal((SV*)newHV());
       
       SPVM_OP* op_sub = SPVM_ARRAY_fetch(op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
@@ -143,20 +143,37 @@ get_sub_infos(...)
       SV* sv_sub_abs_name = sv_2mortal(newSVpv(sub_abs_name, 0));
       hv_store(hv_sub_info, "abs_name", strlen("abs_name"), SvREFCNT_inc(sv_sub_abs_name), 0);
       
+      // arg_resolved_type_ids
+      AV* av_arg_resolved_type_ids = (AV*)sv_2mortal((SV*)newAV());
+      
       SPVM_ARRAY* op_args = sub->op_args;
       for (int32_t arg_index = 0; arg_index < op_args->length; arg_index++) {
         SPVM_OP* op_arg = SPVM_ARRAY_fetch(op_args, arg_index);
         SPVM_OP* op_arg_type = op_arg->uv.my_var->op_type;
         int32_t arg_resolved_type_id = op_arg_type->uv.type->resolved_type->id;
+        
+        SV* sv_arg_resolved_type_id = sv_2mortal(newSViv(arg_resolved_type_id));
+        av_push(av_arg_resolved_type_ids, sv_arg_resolved_type_id);
+        SV* sv_arg_resolved_type_ids = sv_2mortal(newRV_inc((SV*)av_arg_resolved_type_ids));
+        hv_store(hv_sub_info, "arg_resolved_type_ids", strlen("arg_resolved_type_ids"), SvREFCNT_inc(sv_arg_resolved_type_ids), 0);
       }
       SPVM_OP* op_return_type = sub->op_return_type;
       int32_t return_resolved_type_id = op_return_type->uv.type->resolved_type->id;
+      SV* sv_return_resolved_type_id = sv_2mortal(newSViv(return_resolved_type_id));
+      hv_store(hv_sub_info, "return_resolved_type_id", strlen("return_resolved_type_id"), sv_return_resolved_type_id, 0);
       
       int32_t constant_pool_index = sub->constant_pool_index;
+      SV* sv_constant_pool_index = sv_2mortal(newSViv(constant_pool_index));
+      hv_store(hv_sub_info, "constant_pool_index", strlen("constant_pool_index"), sv_constant_pool_index, 0);
+      
+      SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)hv_sub_info));
+      av_push(av_sub_infos, sv_sub_info);
     }
   }
+  SV* sv_sub_infos = sv_2mortal(newRV_inc(av_sub_infos));
   
-  XSRETURN(0);
+  XPUSHs(sv_sub_infos);
+  XSRETURN(1);
 }
 
 SV*
