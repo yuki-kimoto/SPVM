@@ -25,7 +25,7 @@ CHECK {
   
   $compiler->create_spvm_subs;
   
-  $runtime = $compiler->create_runtime;
+  $runtime = $compiler->build_runtime;
 }
 
 sub import {

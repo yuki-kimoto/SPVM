@@ -172,7 +172,7 @@ get_sub_infos(...)
 }
 
 SV*
-create_runtime(...)
+build_runtime(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
