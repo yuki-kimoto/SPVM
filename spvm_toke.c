@@ -284,21 +284,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               break;
             }
             
-            warn("TOKEN1 %c", *compiler->bufptr);
-            
             if (
               *compiler->bufptr == '='
               && strncmp(compiler->bufptr + 1, "cut", 3) == 0
               && (*(compiler->bufptr + 4) == '\0' || isspace((int)*(compiler->bufptr + 4)))
             )
             {
-              warn("BBBBBBBBB");
-              
               compiler->bufptr += 4;
               
               while (1) {
-                warn("TOKEN2 %c", *compiler->bufptr);
-                
                 if (*compiler->bufptr == '\r' || *compiler->bufptr == '\n' || *compiler->bufptr == '\0') {
                   break;
                 }

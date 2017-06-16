@@ -152,6 +152,15 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
       SPVM_OP* op_sub = SPVM_ARRAY_fetch(package->op_subs, sub_pos);
       SPVM_SUB* sub = op_sub->uv.sub;
       
+      // Check sub information
+      assert(sub->constant_pool_index > -1);
+      assert(sub->file_name_constant_pool_index > -1);
+      assert(sub->abs_name_constant_pool_index > -1);
+      assert(sub->op_name);
+      assert(sub->op_return_type);
+      assert(sub->abs_name);
+      assert(sub->file_name);
+      
       if (sub->is_constant || sub->is_native) {
         continue;
       }
