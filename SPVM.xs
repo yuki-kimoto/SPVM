@@ -111,7 +111,7 @@ build_sub_infos(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
   // Subroutine information
-  HV* hv_sub_infos = (HV*)sv_2mortal((SV*)newHV());
+  HV* hv_sub_table = (HV*)sv_2mortal((SV*)newHV());
   
   // abs_name, arg_types, return_type, constant_pool_index, resolved_type_id
   SPVM_ARRAY* op_packages = compiler->op_packages;
@@ -120,18 +120,18 @@ build_sub_infos(...)
     SPVM_ARRAY* op_subs = op_package->uv.package->op_subs;
     for (int32_t sub_index = 0; sub_index < op_subs->length; sub_index++) {
       // Sub information
-      HV* hv_sub_info = (HV*)sv_2mortal((SV*)newHV());
+      AV* av_sub_info = (HV*)sv_2mortal((SV*)newAV());
       
       SPVM_OP* op_sub = SPVM_ARRAY_fetch(op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       const char* sub_abs_name = sub->abs_name;
       
+      // 1. Push subroutine name
       SV* sv_sub_abs_name = sv_2mortal(newSVpv(sub_abs_name, 0));
-      hv_store(hv_sub_info, "abs_name", strlen("abs_name"), SvREFCNT_inc(sv_sub_abs_name), 0);
-
+      av_push(av_sub_info, SvREFCNT_inc(sv_sub_abs_name));
+      
       // arg_resolved_type_ids
       AV* av_arg_resolved_type_ids = (AV*)sv_2mortal((SV*)newAV());
-      
       SPVM_ARRAY* op_args = sub->op_args;
       for (int32_t arg_index = 0; arg_index < op_args->length; arg_index++) {
         SPVM_OP* op_arg = SPVM_ARRAY_fetch(op_args, arg_index);
@@ -141,31 +141,35 @@ build_sub_infos(...)
         SV* sv_arg_resolved_type_id = sv_2mortal(newSViv(arg_resolved_type_id));
         av_push(av_arg_resolved_type_ids, SvREFCNT_inc(sv_arg_resolved_type_id));
         SV* sv_arg_resolved_type_ids = sv_2mortal(newRV_inc((SV*)av_arg_resolved_type_ids));
-        hv_store(hv_sub_info, "arg_resolved_type_ids", strlen("arg_resolved_type_ids"), SvREFCNT_inc(sv_arg_resolved_type_ids), 0);
+        
+        // 2. Push argment resolved type ids
+        av_push(av_sub_info, SvREFCNT_inc(sv_arg_resolved_type_ids));
       }
-
+      
+      // Return type
       SPVM_OP* op_return_type = sub->op_return_type;
       SPVM_RESOLVED_TYPE* return_type_resolved_type = SPVM_OP_get_resolved_type(compiler, op_return_type);
       if (return_type_resolved_type) {
         int32_t return_resolved_type_id = op_return_type->uv.type->resolved_type->id;
         SV* sv_return_resolved_type_id = sv_2mortal(newSViv(return_resolved_type_id));
-        hv_store(hv_sub_info, "return_resolved_type_id", strlen("return_resolved_type_id"), SvREFCNT_inc(sv_return_resolved_type_id), 0);
+        // 3. Push return type resolved id
+        av_push(av_sub_info, SvREFCNT_inc(sv_return_resolved_type_id));
       }
       else {
-        hv_store(hv_sub_info, "return_resolved_type_id", strlen("return_resolved_type_id"), &PL_sv_undef, 0);
+        av_push(av_sub_info, &PL_sv_undef);
       }
       
       int32_t constant_pool_index = sub->constant_pool_index;
       SV* sv_constant_pool_index = sv_2mortal(newSViv(constant_pool_index));
       
-      SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)hv_sub_info));
-      hv_store_ent(hv_sub_infos, sv_constant_pool_index, SvREFCNT_inc(sv_sub_info), 0);
+      SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)av_sub_info));
+      hv_store_ent(hv_sub_table, sv_constant_pool_index, SvREFCNT_inc(sv_sub_info), 0);
     }
   }
   
-  SV* sv_sub_infos = sv_2mortal(newRV_inc(hv_sub_infos));
+  SV* sv_sub_table = sv_2mortal(newRV_inc(hv_sub_table));
   
-  XPUSHs(sv_sub_infos);
+  XPUSHs(sv_sub_table);
   XSRETURN(1);
 }
 

@@ -9,7 +9,7 @@ has 'include_paths';
 has 'compiler';
 
 # XS subroutine
-# get_sub_infos
+# get_sub_table
 
 sub new {
   my $self = shift->SUPER::new(@_);
@@ -23,17 +23,16 @@ sub new {
 sub build_spvm_subs {
   my $self = shift;
   
-  my $sub_infos = $SPVM::SUB_TABLE;
+  my $sub_table = $SPVM::SUB_TABLE;
 
   use Data::Dumper;
-  warn Dumper $sub_infos;
+  warn Dumper $sub_table;
   
-  for my $constant_pool_index (keys %$sub_infos) {
-    my $sub_info = $sub_infos->{$constant_pool_index};
-    my $abs_name = $sub_info->{abs_name};
-    my $arg_resolved_type_ids = $sub_info->{arg_resolved_type_ids};
-    my $return_resolved_type_id = $sub_info->{return_resolved_type_id};
-
+  for my $constant_pool_index (keys %$sub_table) {
+    my $sub_info = $sub_table->{$constant_pool_index};
+    
+    my ($abs_name, $arg_resolved_type_ids, $return_resolved_type_id) = @$sub_info;
+    
     my $sub;
     $sub .= "sub SPVM::$abs_name {\n";
     $sub .= "  SPVM::Runtime::call_sub(\$SPVM::RUNTIME, $constant_pool_index, \@_);\n";
