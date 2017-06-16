@@ -34,9 +34,6 @@ is_deeply(
   ]
 );
 
-
-my $sub_infos = $compiler->get_sub_infos;
-
 {
   my $total = SPVM::XSTest::sum();
   is($total, 5);

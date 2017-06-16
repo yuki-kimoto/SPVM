@@ -10,6 +10,7 @@ use SPVM::Compiler;
 
 our $compiler;
 our $runtime;
+our $sub_table;
 
 # Create SPVM compiler
 BEGIN {
@@ -23,7 +24,9 @@ BEGIN {
 CHECK {
   $compiler->compile;
   
-  $compiler->create_spvm_subs;
+  $sub_table = $compiler->build_sub_infos;
+  
+  $compiler->build_spvm_subs;
   
   $runtime = $compiler->build_runtime;
 }
