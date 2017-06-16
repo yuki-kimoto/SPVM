@@ -2,7 +2,7 @@ package SPVM::Runtime;
 
 use Object::Simple -base;
 
-has 'runtime';
+has 'object';
 
 sub new {
   my $self = shift->SUPER::new(@_);

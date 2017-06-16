@@ -178,7 +178,10 @@ build_runtime(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
+  SV* sv_runtime = ST(1);
+
   HV* hv_self = (HV*)SvRV(sv_self);
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
   
   // Get compiler
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
@@ -198,15 +201,15 @@ build_runtime(...)
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
   memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
   
-  // Initialize runtime before push arguments and call subroutine
-  SPVM_RUNTIME_init(runtime);
-
+  // Runtime
   size_t iv_runtime = PTR2IV(runtime);
   SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
-  SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
+  SV* sv_runtime_object = sv_2mortal(newRV_inc(sviv_runtime));
+  
+  // Set runtime
+  hv_store(hv_runtime, "object", strlen("object"), SvREFCNT_inc(sv_runtime_object), 0);
 
-  XPUSHs(sv_runtime);
-  XSRETURN(1);
+  XSRETURN(0);
 }
 
 SV*
