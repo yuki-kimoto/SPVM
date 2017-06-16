@@ -241,11 +241,27 @@ SV*
 call_sub(...)
   PPCODE:
 {
-
+  SV* sv_self = ST(0);
+  SV* sv_runtime = ST(1);
+  SV* sv_sub_table = ST(2);
+  
+  HV* hv_self = (HV*)SvRV(sv_self);
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  
+  // Get runtime
+  SV** sv_runtime_object_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
+  SV* sv_runtime_object = sv_runtime_object_ptr ? *sv_runtime_object_ptr : &PL_sv_undef;
+  SV* sviv_runtime = SvROK(sv_runtime_object) ? SvRV(sv_runtime_object) : sv_runtime_object;
+  size_t iv_runtime = SvIV(sviv_runtime);
+  SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, iv_runtime);
+  
   // Initialize runtime before push arguments and call subroutine
-  // SPVM_RUNTIME_init(runtime);
-
-  XSRETURN(0);
+  SPVM_RUNTIME_init(runtime);
+  
+  SV* sv_5 = sv_2mortal(newSViv(5));
+  
+  XPUSHs(sv_5);
+  XSRETURN(1);
 }
 
 MODULE = SPVM		PACKAGE = SPVM

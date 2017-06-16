@@ -33,7 +33,6 @@ sub build_spvm_subs {
     my $sub;
     $sub .= "sub SPVM::$abs_name {\n";
     $sub .= "  SPVM::Runtime::call_sub(\$SPVM::RUNTIME, \$SPVM::SUB_TABLE, $constant_pool_index, \@_);\n";
-    $sub .= "  5;\n";
     $sub .= "}";
     
     # Define SPVM subroutine
