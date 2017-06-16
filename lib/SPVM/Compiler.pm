@@ -8,6 +8,9 @@ has 'package_infos';
 has 'include_paths';
 has 'compiler';
 
+# XS subroutine
+# get_sub_infos
+
 sub new {
   my $self = shift->SUPER::new(@_);
   
@@ -32,16 +35,28 @@ sub create_spvm_subs {
     my $constant_pool_index = $sub_info->{constant_pool_index};
     
     warn Dumper [$abs_name, $arg_resolved_type_ids, $return_resolved_type_id, $constant_pool_index];
-    
-    my $sub_define = "sub SPVM::$abs_name { 5 }";
+
+=pod
+    my $sub = "sub SPVM::$abs_name {\n";
+    $sub .= "5\n";
+    $sub .= "}";
     
     # Define SPVM subroutine
-    eval $sub_define;
+    eval $sub;
     
     if ($@) {
-      croak "Can't define SVPM subroutine \"$abs_name\"";
+      croak "Can't define SVPM subroutine \"$abs_name\"\n$sub";
     }
+=cut
+
   }
+}
+
+sub SPVM::XSTest::sum {
+  
+  SPVM::Runtime::call_sub($SPVM::runtime, 455, @_);
+  
+  5;
 }
 
 1;

@@ -8,8 +8,8 @@ our $VERSION = '0.01';
 
 use SPVM::Compiler;
 
-my $compiler;
-my $runtime;
+our $compiler;
+our $runtime;
 
 # Create SPVM compiler
 BEGIN {
@@ -42,10 +42,6 @@ sub import {
     };
     push @{$compiler->package_infos}, $package_info;
   }
-}
-
-sub get_compiler {
-  return $compiler;
 }
 
 require XSLoader;

@@ -24,7 +24,7 @@ my $file = 't/SPVM.t';
 use SPVM 'XSTest'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
 
-my $compiler = SPVM::get_compiler;
+my $compiler = $SPVM::compiler;
 
 is_deeply(
   $compiler->package_infos,

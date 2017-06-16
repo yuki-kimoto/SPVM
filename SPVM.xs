@@ -92,21 +92,7 @@ compile(...)
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
   hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
-  
-  // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
-  
-  // Copy constant pool to runtime
-  runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
-  memcpy(runtime->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
 
-  // Copy bytecodes to runtime
-  runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
-  memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
-  
-  // Initialize runtime before push arguments and call subroutine
-  SPVM_RUNTIME_init(runtime);
-  
   XSRETURN(0);
 }
 
@@ -250,31 +236,10 @@ SV*
 call_sub(...)
   PPCODE:
 {
-  
-  XSRETURN(0);
-}
 
-SV*
-init(...)
-  PPCODE:
-{
-  
-  XSRETURN(0);
-}
+  // Initialize runtime before push arguments and call subroutine
+  // SPVM_RUNTIME_init(runtime);
 
-SV*
-push_var_int(...)
-  PPCODE:
-{
-  
-  XSRETURN(0);
-}
-
-SV*
-pop_return_value_int(...)
-  PPCODE:
-{
-  
   XSRETURN(0);
 }
 
