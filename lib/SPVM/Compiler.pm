@@ -23,7 +23,7 @@ sub new {
 sub build_spvm_subs {
   my $self = shift;
   
-  my $sub_infos = $SPVM::sub_table;
+  my $sub_infos = $SPVM::SUB_TABLE;
 
   use Data::Dumper;
   warn Dumper $sub_infos;
@@ -36,7 +36,7 @@ sub build_spvm_subs {
 
     my $sub;
     $sub .= "sub SPVM::$abs_name {\n";
-    $sub .= "  SPVM::Runtime::call_sub(\$SPVM::runtime, $constant_pool_index, \@_);\n";
+    $sub .= "  SPVM::Runtime::call_sub(\$SPVM::RUNTIME, $constant_pool_index, \@_);\n";
     $sub .= "  5;\n";
     $sub .= "}";
     

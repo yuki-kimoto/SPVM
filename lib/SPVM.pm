@@ -8,31 +8,49 @@ our $VERSION = '0.01';
 
 use SPVM::Compiler;
 
-our $compiler;
-our $runtime;
-our $sub_table;
+our $COMPILER;
+our $RUNTIME;
+our $SUB_TABLE;
 
 # Create SPVM compiler
 BEGIN {
-  $compiler = SPVM::Compiler->new;
+  my $compiler = SPVM::Compiler->new;
   
   # Add moduel include path
   push @{$compiler->include_paths}, @INC;
+  
+  # Set package variable
+  $SPVM::COMPILER = $compiler;
 }
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
+  my $compiler = $SPVM::COMPILER;
+  
+  # Compile SPVM source code
   $compiler->compile;
   
-  $sub_table = $compiler->build_sub_infos;
+  # Build subroutine table
+  my $sub_table = $compiler->build_sub_infos;
   
+  # Set package variable
+  $SPVM::SUB_TABLE = $sub_table;
+  
+  # Build SPVM subroutine
   $compiler->build_spvm_subs;
   
-  $runtime = $compiler->build_runtime;
+  # Build run-time
+  my $runtime = $compiler->build_runtime;
+  
+  # Set package variable
+  $SPVM::RUNTIME = $runtime;
 }
 
 sub import {
   my ($class, $package_name) = @_;
+  
+  # Compiler
+  my $compiler = $SPVM::COMPILER;
   
   # Add package infomations
   if (defined $package_name) {
