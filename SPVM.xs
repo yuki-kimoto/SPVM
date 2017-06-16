@@ -242,11 +242,12 @@ call_sub(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
-  SV* sv_runtime = ST(1);
-  SV* sv_sub_table = ST(2);
+  SV* sv_sub_table = ST(1);
+  SV* sv_sub_constant_pool_index = ST(2);
   
   HV* hv_self = (HV*)SvRV(sv_self);
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  HV* hv_sub_table = (HV*)SvRV(sv_sub_table);
+  int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
   
   // Get runtime
   SV** sv_runtime_object_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
@@ -258,9 +259,17 @@ call_sub(...)
   // Initialize runtime before push arguments and call subroutine
   SPVM_RUNTIME_init(runtime);
   
-  SV* sv_5 = sv_2mortal(newSViv(5));
+  for (int32_t arg_index = items - 2; arg_index < items; arg_index++) {
+    SPVM_RUNTIME_API_push_var_int(runtime, (int32_t)SvIV(ST(arg_index)));
+  }
   
-  XPUSHs(sv_5);
+  SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
+  
+  int32_t ret = SPVM_RUNTIME_API_pop_return_value_int(runtime);
+  
+  SV* sv_ret = sv_2mortal(newSViv(ret));
+  
+  XPUSHs(sv_ret);
   XSRETURN(1);
 }
 
