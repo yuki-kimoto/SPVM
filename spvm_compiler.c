@@ -25,8 +25,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Allocator
   compiler->allocator = SPVM_COMPILER_ALLOCATOR_new(compiler);
   
-  compiler = compiler;
-  
   // Parser information
   compiler->op_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->op_packages = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -41,6 +39,12 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->resolved_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->cur_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->cur_line = 0;
+  
+  compiler->start_sub_name = NULL;
+  
+  compiler->fatal_error = 0;
+  
+  compiler->current_package_count = 0;
   
   // Error count
   compiler->error_count = 0;

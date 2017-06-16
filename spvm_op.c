@@ -733,7 +733,7 @@ const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package
 }
 
 SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block) {
-
+  
   SPVM_OP_sibling_splice(compiler, op_package, NULL, 0, op_name_package);
   SPVM_OP_sibling_splice(compiler, op_package, op_name_package, 0, op_block);
   
