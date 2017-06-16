@@ -23,7 +23,7 @@ BEGIN {
 CHECK {
   $compiler->compile;
   
-  my $sub_infos = $compiler->get_sub_infos;
+  $compiler->create_spvm_subs;
   
   $runtime = $compiler->create_runtime;
 }

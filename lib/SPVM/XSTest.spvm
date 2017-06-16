@@ -1,4 +1,11 @@
 package XSTest {
   has x : int;
   has y : int;
+  
+  sub sum ($a : int, $b :int) : int {
+    
+    my $total = $a + $b;
+    
+    return $total;
+  }
 }
