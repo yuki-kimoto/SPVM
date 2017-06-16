@@ -4,9 +4,9 @@ use Object::Simple -base;
 
 use Carp 'croak';
 
+has 'object';
 has 'package_infos';
 has 'include_paths';
-has 'compiler';
 
 # XS subroutine
 # get_sub_table
