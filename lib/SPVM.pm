@@ -7,7 +7,6 @@ use warnings;
 our $VERSION = '0.01';
 
 use SPVM::Compiler;
-use SPVM::Runtime;
 
 our $COMPILER;
 our $RUNTIME;
@@ -42,11 +41,8 @@ CHECK {
   # Build SPVM subroutine
   $compiler->build_spvm_subs;
   
-  # Runtime
-  my $runtime = SPVM::Runtime->new;
-  
   # Build run-time
-  $compiler->build_runtime($runtime);
+  my $runtime = $compiler->build_runtime;
   
   # Set package variable
   $SPVM::RUNTIME = $runtime;

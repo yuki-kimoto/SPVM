@@ -202,10 +202,8 @@ build_runtime(...)
   SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
   SV* sv_runtime_object = sv_2mortal(newRV_inc(sviv_runtime));
   
-  // Set runtime
-  hv_store(hv_runtime, "object", strlen("object"), SvREFCNT_inc(sv_runtime_object), 0);
-
-  XSRETURN(0);
+  XPUSHs(sv_runtime_object);
+  XSRETURN(1);
 }
 
 SV*
@@ -231,44 +229,6 @@ DESTROY(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Runtime		PACKAGE = SPVM::Runtime
-
-SV*
-call_sub(...)
-  PPCODE:
-{
-  SV* sv_self = ST(0);
-  SV* sv_sub_table = ST(1);
-  SV* sv_sub_constant_pool_index = ST(2);
-  
-  HV* hv_self = (HV*)SvRV(sv_self);
-  HV* hv_sub_table = (HV*)SvRV(sv_sub_table);
-  int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
-  
-  // Get runtime
-  SV** sv_runtime_object_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
-  SV* sv_runtime_object = sv_runtime_object_ptr ? *sv_runtime_object_ptr : &PL_sv_undef;
-  SV* sviv_runtime = SvROK(sv_runtime_object) ? SvRV(sv_runtime_object) : sv_runtime_object;
-  size_t iv_runtime = SvIV(sviv_runtime);
-  SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, iv_runtime);
-  
-  // Initialize runtime before push arguments and call subroutine
-  SPVM_RUNTIME_init(runtime);
-  
-  for (int32_t arg_index = items - 2; arg_index < items; arg_index++) {
-    SPVM_RUNTIME_API_push_var_int(runtime, (int32_t)SvIV(ST(arg_index)));
-  }
-  
-  SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
-  
-  int32_t ret = SPVM_RUNTIME_API_pop_return_value_int(runtime);
-  
-  SV* sv_ret = sv_2mortal(newSViv(ret));
-  
-  XPUSHs(sv_ret);
-  XSRETURN(1);
-}
-
 MODULE = SPVM		PACKAGE = SPVM
 
 SV*
@@ -279,5 +239,38 @@ int(...)
   
   
   XPUSHs(sv_value);
+  XSRETURN(1);
+}
+
+SV*
+call_sub(...)
+  PPCODE:
+{
+  SV* sv_sub_constant_pool_index = ST(0);
+  
+  SV* sv_sub_table = get_sv("SPVM::SUB_TABLE", 0);
+  HV* hv_sub_table = (HV*)SvRV(sv_sub_table);
+  int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
+  
+  // Get runtime
+  SV* sv_runtime = get_sv("SPVM::RUNTIME", 0);
+  SV* sviv_runtime = SvROK(sv_runtime) ? SvRV(sv_runtime) : sv_runtime;
+  size_t iv_runtime = SvIV(sviv_runtime);
+  SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, iv_runtime);
+  
+  // Initialize runtime before push arguments and call subroutine
+  SPVM_RUNTIME_init(runtime);
+  
+  for (int32_t arg_index = 1; arg_index < items; arg_index++) {
+    SPVM_RUNTIME_API_push_var_int(runtime, (int32_t)SvIV(ST(arg_index)));
+  }
+  
+  SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
+  
+  int32_t ret = SPVM_RUNTIME_API_pop_return_value_int(runtime);
+  
+  SV* sv_ret = sv_2mortal(newSViv(ret));
+  
+  XPUSHs(sv_ret);
   XSRETURN(1);
 }

@@ -27,7 +27,7 @@ sub build_spvm_subs {
     
     my $sub;
     $sub .= "sub SPVM::$abs_name {\n";
-    $sub .= "  SPVM::Runtime::call_sub(\$SPVM::RUNTIME, \$SPVM::SUB_TABLE, $constant_pool_index, \@_);\n";
+    $sub .= "  SPVM::call_sub($constant_pool_index, \@_);\n";
     $sub .= "}";
     
     # Define SPVM subroutine
