@@ -292,6 +292,7 @@ call_sub(...)
   SV** sv_arg_resolved_type_names_ptr = av_fetch(av_sub_info, 1, 0);
   SV* sv_arg_resolved_type_names = sv_arg_resolved_type_names_ptr ? *sv_arg_resolved_type_names_ptr : &PL_sv_undef;
   AV* av_arg_resolved_type_names = (AV*)SvRV(sv_arg_resolved_type_names);
+  int32_t args_length = av_len(av_arg_resolved_type_names) + 1;
   
   # Return type
   SV** sv_return_resolved_type_name_ptr = av_fetch(av_sub_info, 2, 0);
@@ -307,8 +308,9 @@ call_sub(...)
   // Initialize runtime before push arguments and call subroutine
   SPVM_RUNTIME_init(runtime);
   
-  for (int32_t arg_index = 2; arg_index < items; arg_index++) {
-    SPVM_RUNTIME_API_push_var_int(runtime, (int32_t)SvIV(ST(arg_index)));
+  // Push arguments
+  for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
+    SPVM_RUNTIME_API_push_var_int(runtime, (int32_t)SvIV(ST(arg_index + 2)));
   }
   
   SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
