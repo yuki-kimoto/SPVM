@@ -76,9 +76,6 @@ sub build_spvm_subs {
   
   my $sub_symtable = $spvm->{sub_symtable};
   
-  use Data::Dumper;
-  warn Dumper $sub_symtable;
-  
   for my $abs_name (keys %$sub_symtable) {
     
     my $sub_info = $sub_symtable->{$abs_name};

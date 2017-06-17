@@ -172,6 +172,41 @@ build_sub_symtable(...)
 }
 
 SV*
+build_resolved_type_symtable(...)
+  PPCODE:
+{
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Get compiler
+  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
+  SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
+  size_t iv_compiler = SvIV(sviv_compiler);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  
+  // Subroutine information
+  HV* hv_resolved_type_symtable = (HV*)sv_2mortal((SV*)newHV());
+  
+  // abs_name, arg_types, return_type, constant_pool_index, resolved_type_id
+  SPVM_ARRAY* resolved_types = compiler->resolved_types;
+  for (int32_t resolved_type_index = 0; resolved_type_index < resolved_types->length; resolved_type_index++) {
+    SPVM_RESOLVED_TYPE* resolved_type = SPVM_ARRAY_fetch(resolved_types, resolved_type_index);
+    
+    const char* resolved_type_name = resolved_type->name;
+    int32_t resolved_type_id = resolved_type->id;
+    SV* sv_resolved_type_id = sv_2mortal(newSViv(resolved_type_id));
+    
+    hv_store(hv_resolved_type_symtable, resolved_type_name, strlen(resolved_type_name), SvREFCNT_inc(sv_resolved_type_id), 0);
+  }
+  
+  SV* sv_resolved_type_symtable = sv_2mortal(newRV_inc(hv_resolved_type_symtable));
+  hv_store(hv_self, "resolved_type_symtable", strlen("resolved_type_symtable"), SvREFCNT_inc(sv_resolved_type_symtable), 0);
+  
+  XSRETURN(0);
+}
+
+SV*
 build_runtime(...)
   PPCODE:
 {
