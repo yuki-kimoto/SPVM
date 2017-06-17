@@ -74,10 +74,10 @@ sub import {
 sub build_spvm_subs {
   my $spvm = $SPVM;
   
-  my $sub_table = $spvm->{sub_table};
+  my $sub_symtable = $spvm->{sub_symtable};
   
-  for my $constant_pool_index (keys %$sub_table) {
-    my $sub_info = $sub_table->{$constant_pool_index};
+  for my $constant_pool_index (keys %$sub_symtable) {
+    my $sub_info = $sub_symtable->{$constant_pool_index};
     
     my ($abs_name, $arg_resolved_type_ids, $return_resolved_type_id) = @$sub_info;
     

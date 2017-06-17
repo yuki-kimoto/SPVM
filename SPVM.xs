@@ -111,7 +111,7 @@ build_sub_infos(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
   // Subroutine information
-  HV* hv_sub_table = (HV*)sv_2mortal((SV*)newHV());
+  HV* hv_sub_symtable = (HV*)sv_2mortal((SV*)newHV());
   
   // abs_name, arg_types, return_type, constant_pool_index, resolved_type_id
   SPVM_ARRAY* op_packages = compiler->op_packages;
@@ -163,12 +163,12 @@ build_sub_infos(...)
       SV* sv_constant_pool_index = sv_2mortal(newSViv(constant_pool_index));
       
       SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)av_sub_info));
-      hv_store_ent(hv_sub_table, sv_constant_pool_index, SvREFCNT_inc(sv_sub_info), 0);
+      hv_store_ent(hv_sub_symtable, sv_constant_pool_index, SvREFCNT_inc(sv_sub_info), 0);
     }
   }
   
-  SV* sv_sub_table = sv_2mortal(newRV_inc(hv_sub_table));
-  hv_store(hv_self, "sub_table", strlen("sub_table"), SvREFCNT_inc(sv_sub_table), 0);
+  SV* sv_sub_symtable = sv_2mortal(newRV_inc(hv_sub_symtable));
+  hv_store(hv_self, "sub_symtable", strlen("sub_symtable"), SvREFCNT_inc(sv_sub_symtable), 0);
   
   XSRETURN(0);
 }
@@ -251,9 +251,9 @@ call_sub(...)
 
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_sub_table_ptr = hv_fetch(hv_self, "sub_table", strlen("sub_table"), 0);
-  SV* sv_sub_table = sv_sub_table_ptr ? *sv_sub_table_ptr : &PL_sv_undef;
-  HV* hv_sub_table = (HV*)SvRV(sv_sub_table);
+  SV** sv_sub_symtable_ptr = hv_fetch(hv_self, "sub_symtable", strlen("sub_symtable"), 0);
+  SV* sv_sub_symtable = sv_sub_symtable_ptr ? *sv_sub_symtable_ptr : &PL_sv_undef;
+  HV* hv_sub_symtable = (HV*)SvRV(sv_sub_symtable);
   
   int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
   
