@@ -53,6 +53,9 @@ CHECK {
   
   # Build run-time
   $spvm->build_runtime;
+  
+  # Free compiler
+  $spvm->free_compiler;
 }
 
 sub import {
