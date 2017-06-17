@@ -325,11 +325,45 @@ call_sub(...)
       const char* resolved_type_name = SvPV_nolen(sv_resolved_type_name);
       
       
-      if (strEQ(resolved_type_name, "int")) {
+      if (strEQ(resolved_type_name, "byte")) {
+        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        int8_t value = (int8_t)SvIV(sv_value);
+        SPVM_RUNTIME_API_push_var_byte(runtime, value);
+      }
+      else if (strEQ(resolved_type_name, "short")) {
+        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        int16_t value = (int16_t)SvIV(sv_value);
+        SPVM_RUNTIME_API_push_var_short(runtime, value);
+      }
+      else if (strEQ(resolved_type_name, "int")) {
         SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
         SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
         int32_t value = (int32_t)SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_int(runtime, value);
+      }
+      else if (strEQ(resolved_type_name, "long")) {
+        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        int64_t value = (int64_t)SvIV(sv_value);
+        SPVM_RUNTIME_API_push_var_long(runtime, value);
+      }
+      else if (strEQ(resolved_type_name, "float")) {
+        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        int64_t value_int = (int64_t)SvIV(sv_value);
+        float value;
+        memcpy(&value, &value_int, sizeof(float));
+        SPVM_RUNTIME_API_push_var_float(runtime, value);
+      }
+      else if (strEQ(resolved_type_name, "double")) {
+        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        int64_t value_int = (int64_t)SvIV(sv_value);
+        double value;
+        memcpy(&value, &value_int, sizeof(double));
+        SPVM_RUNTIME_API_push_var_float(runtime, value);
       }
       else {
         assert(0);
