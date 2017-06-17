@@ -351,7 +351,88 @@ call_sub(...)
 }
 
 SV*
+byte(...)
+  PPCODE:
+{
+  SV* sv_original_value = ST(0);
+  
+  // Create object
+  HV* hv_data = sv_2mortal((SV*)newHV());
+  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_class = gv_stashpv("SPVM::Data", 0);
+  sv_bless(sv_data, hv_class);
+  
+  // byte
+  int8_t value = SvIV(sv_original_value);
+  SV* sv_value = sv_2mortal(newSViv(value));
+  
+  // Store value
+  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  
+  // Store resolved type
+  SV* sv_resolved_type = sv_2mortal(newSVpv("byte", 0));
+  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
+SV*
+short(...)
+  PPCODE:
+{
+  SV* sv_original_value = ST(0);
+  
+  // Create object
+  HV* hv_data = sv_2mortal((SV*)newHV());
+  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_class = gv_stashpv("SPVM::Data", 0);
+  sv_bless(sv_data, hv_class);
+  
+  // short
+  int16_t value = SvIV(sv_original_value);
+  SV* sv_value = sv_2mortal(newSViv(value));
+  
+  // Store value
+  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  
+  // Store resolved type
+  SV* sv_resolved_type = sv_2mortal(newSVpv("byte", 0));
+  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
+SV*
 int(...)
+  PPCODE:
+{
+  SV* sv_original_value = ST(0);
+  
+  // Create object
+  HV* hv_data = sv_2mortal((SV*)newHV());
+  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_class = gv_stashpv("SPVM::Data", 0);
+  sv_bless(sv_data, hv_class);
+  
+  // int
+  int32_t value = SvIV(sv_original_value);
+  SV* sv_value = sv_2mortal(newSViv(value));
+  
+  // Store value
+  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  
+  // Store resolved type
+  SV* sv_resolved_type = sv_2mortal(newSVpv("int", 0));
+  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
+SV*
+long(...)
   PPCODE:
 {
   SV* sv_original_value = ST(0);
@@ -365,6 +446,64 @@ int(...)
   // int
   int64_t value = SvIV(sv_original_value);
   SV* sv_value = sv_2mortal(newSViv(value));
+  
+  // Store value
+  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  
+  // Store resolved type
+  SV* sv_resolved_type = sv_2mortal(newSVpv("int", 0));
+  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
+SV*
+float(...)
+  PPCODE:
+{
+  SV* sv_original_value = ST(0);
+  
+  // Create object
+  HV* hv_data = sv_2mortal((SV*)newHV());
+  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_class = gv_stashpv("SPVM::Data", 0);
+  sv_bless(sv_data, hv_class);
+  
+  // float
+  float value = (float)SvNV(sv_original_value);
+  int64_t value_int;
+  memcpy(&value_int, &value, sizeof(float));
+  SV* sv_value = sv_2mortal(newSViv(value_int));
+  
+  // Store value
+  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  
+  // Store resolved type
+  SV* sv_resolved_type = sv_2mortal(newSVpv("int", 0));
+  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
+SV*
+double(...)
+  PPCODE:
+{
+  SV* sv_original_value = ST(0);
+  
+  // Create object
+  HV* hv_data = sv_2mortal((SV*)newHV());
+  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_class = gv_stashpv("SPVM::Data", 0);
+  sv_bless(sv_data, hv_class);
+  
+  // double
+  double value = (double)SvNV(sv_original_value);
+  int64_t value_int;
+  memcpy(&value_int, &value, sizeof(float));
+  SV* sv_value = sv_2mortal(newSViv(value_int));
   
   // Store value
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
