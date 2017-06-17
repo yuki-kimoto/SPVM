@@ -4,6 +4,8 @@ use 5.008007;
 use strict;
 use warnings;
 
+use SPVM::Data;
+
 use Carp 'croak';
 
 our $VERSION = '0.01';
