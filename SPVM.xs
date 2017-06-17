@@ -297,7 +297,7 @@ call_sub(...)
   # Return type
   SV** sv_return_resolved_type_name_ptr = av_fetch(av_sub_info, 2, 0);
   SV* sv_return_resolved_type_name = sv_return_resolved_type_name_ptr ? *sv_return_resolved_type_name_ptr : &PL_sv_undef;
-
+  
   // Get runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
@@ -331,7 +331,7 @@ call_sub(...)
       if (!strEQ(data_resolved_type_name, arg_resolved_type_name)) {
         croak("Argument data type need %s, but %s", arg_resolved_type_name, data_resolved_type_name);
       }
-
+      
       SV** sv_value_ptr = hv_fetch(hv_data, "value", strlen("value"), 0);
       SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
       
@@ -374,12 +374,50 @@ call_sub(...)
   
   SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
   
-  int32_t ret = SPVM_RUNTIME_API_pop_return_value_int(runtime);
-  
-  SV* sv_ret = sv_2mortal(newSViv(ret));
-  
-  XPUSHs(sv_ret);
-  XSRETURN(1);
+  SV* sv_return_value;
+  if (SvOK(sv_return_resolved_type_name)) {
+    // Create data
+    HV* hv_data = sv_2mortal((SV*)newHV());
+    SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+    HV* hv_class = gv_stashpv("SPVM::Data", 0);
+    sv_bless(sv_data, hv_class);
+
+    const char* return_resolved_type_name = SvPV_nolen(sv_return_resolved_type_name);
+    if (strEQ(return_resolved_type_name, "byte")) {
+      int8_t return_value = SPVM_RUNTIME_API_pop_return_value_byte(runtime);
+      sv_return_value = sv_2mortal(newSViv(return_value));
+    }
+    else if (strEQ(return_resolved_type_name, "short")) {
+      int16_t return_value = SPVM_RUNTIME_API_pop_return_value_short(runtime);
+      sv_return_value = sv_2mortal(newSViv(return_value));
+    }
+    else if (strEQ(return_resolved_type_name, "int")) {
+      int32_t return_value = SPVM_RUNTIME_API_pop_return_value_int(runtime);
+      sv_return_value = sv_2mortal(newSViv(return_value));
+    }
+    else if (strEQ(return_resolved_type_name, "long")) {
+      int64_t return_value = SPVM_RUNTIME_API_pop_return_value_long(runtime);
+      sv_return_value = sv_2mortal(newSViv(return_value));
+    }
+    else if (strEQ(return_resolved_type_name, "float")) {
+      float return_value = SPVM_RUNTIME_API_pop_return_value_float(runtime);
+      sv_return_value = sv_2mortal(newSVnv(return_value));
+    }
+    else if (strEQ(return_resolved_type_name, "double")) {
+      double return_value = SPVM_RUNTIME_API_pop_return_value_double(runtime);
+      sv_return_value = sv_2mortal(newSVnv(return_value));
+    }
+    else {
+      void* return_value = SPVM_RUNTIME_API_pop_return_value_address(runtime);
+      sv_return_value = sv_2mortal(newSViv(return_value));
+    }
+    
+    XPUSHs(sv_return_value);
+    XSRETURN(1);
+  }
+  else {
+    XSRETURN(0);
+  }
 }
 
 SV*
