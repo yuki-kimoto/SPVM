@@ -13,7 +13,6 @@ use SPVM::Compiler;
 my $SPVM;
 
 our $COMPILER;
-our $RUNTIME;
 
 sub get_spvm { $SPVM }
 
@@ -61,10 +60,7 @@ CHECK {
   SPVM::build_spvm_subs();
   
   # Build run-time
-  my $runtime = $compiler->build_runtime;
-  
-  # Set package variable
-  $SPVM::RUNTIME = $runtime;
+  $compiler->build_runtime($spvm);
 }
 
 sub import {
