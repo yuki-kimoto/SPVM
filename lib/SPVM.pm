@@ -10,29 +10,51 @@ our $VERSION = '0.01';
 
 use SPVM::Compiler;
 
+my $SPVM;
+
 our $COMPILER;
 our $RUNTIME;
 our $SUB_TABLE;
 our @PACKAGE_INFOS;
-our @INCLUDE_PATHS;
+
+sub get_spvm { $SPVM }
+
+sub new {
+  my $class = shift;
+  
+  my $self = {};
+  
+  $self->{package_infos} = [];
+  $self->{include_paths} = [];
+  
+  return bless $self, __PACKAGE__;
+}
 
 # Create SPVM compiler
 BEGIN {
   my $compiler = SPVM::Compiler->new;
   
-  # Add moduel include path
-  push @SPVM::INCLUDE_PATHS, @INC;
-  
   # Set package variable
   $SPVM::COMPILER = $compiler;
+  
+  # SPVM
+  my $spvm = SPVM->new;
+  
+  # Add moduel include path
+  push @{$spvm->{include_paths}}, @INC;
+  
+  # Save SPVM
+  $SPVM = $spvm;
 }
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
+  my $spvm = $SPVM;
+  
   my $compiler = $SPVM::COMPILER;
   
   # Compile SPVM source code
-  $compiler->compile;
+  $compiler->compile($spvm);
   
   # Build subroutine table
   $compiler->build_sub_infos;

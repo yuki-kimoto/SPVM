@@ -32,11 +32,13 @@ compile(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
+  SV* sv_spvm = ST(1);
 
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
 
   HV* hv_self = (HV*)SvRV(sv_self);
+  HV* hv_spvm = (HV*)SvRV(sv_spvm);
 
   // Add package
   AV* av_package_infos = get_av("SPVM::PACKAGE_INFOS", 0);;
@@ -68,7 +70,9 @@ compile(...)
   }
   
   // Add include paths
-  AV* av_include_paths = get_av("SPVM::INCLUDE_PATHS", 0);;
+  SV** sv_include_paths_ptr = hv_fetch(hv_spvm, "include_paths", strlen("include_paths"), 0);
+  SV* sv_include_paths = sv_include_paths_ptr ? *sv_include_paths_ptr : &PL_sv_undef;
+  AV* av_include_paths = (AV*)SvRV(sv_include_paths);
   int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
   for (int32_t i = 0; i < av_include_paths_length; i++) {
     SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);

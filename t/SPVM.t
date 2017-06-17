@@ -26,6 +26,8 @@ use SPVM 'std'; my $use_std_line = __LINE__;
 
 my $compiler = $SPVM::COMPILER;
 
+my $spvm = SPVM::get_spvm;
+
 is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
