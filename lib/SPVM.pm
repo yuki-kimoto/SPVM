@@ -14,7 +14,6 @@ my $SPVM;
 
 our $COMPILER;
 our $RUNTIME;
-our $SUB_TABLE;
 
 sub get_spvm { $SPVM }
 
@@ -94,7 +93,7 @@ sub build_spvm_subs {
   my $spvm = $SPVM;
   
   my $sub_table = $spvm->{sub_table};
-
+  
   for my $constant_pool_index (keys %$sub_table) {
     my $sub_info = $sub_table->{$constant_pool_index};
     
