@@ -103,7 +103,9 @@ build_sub_infos(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
+  SV* sv_spvm = ST(1);
   HV* hv_self = (HV*)SvRV(sv_self);
+  HV* hv_spvm = (HV*)SvRV(sv_spvm);
   
   // Get compiler
   SV** sv_compiler_object_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
@@ -170,8 +172,7 @@ build_sub_infos(...)
   }
   
   SV* sv_sub_table = sv_2mortal(newRV_inc(hv_sub_table));
-  
-  sv_setsv(get_sv("SPVM::SUB_TABLE", 0), sv_sub_table);
+  hv_store(hv_spvm, "sub_table", strlen("sub_table"), SvREFCNT_inc(sv_sub_table), 0);
   
   XSRETURN(0);
 }
@@ -253,10 +254,15 @@ SV*
 call_sub(...)
   PPCODE:
 {
-  SV* sv_sub_constant_pool_index = ST(0);
+  SV* sv_spvm = ST(0);
+  SV* sv_sub_constant_pool_index = ST(1);
+
+  HV* hv_spvm = (HV*)SvRV(sv_spvm);
   
-  SV* sv_sub_table = get_sv("SPVM::SUB_TABLE", 0);
+  SV** sv_sub_table_ptr = hv_fetch(hv_spvm, "sub_table", strlen("sub_table"), 0);
+  SV* sv_sub_table = sv_sub_table_ptr ? *sv_sub_table_ptr : &PL_sv_undef;
   HV* hv_sub_table = (HV*)SvRV(sv_sub_table);
+  
   int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
   
   // Get runtime
@@ -268,7 +274,7 @@ call_sub(...)
   // Initialize runtime before push arguments and call subroutine
   SPVM_RUNTIME_init(runtime);
   
-  for (int32_t arg_index = 1; arg_index < items; arg_index++) {
+  for (int32_t arg_index = 2; arg_index < items; arg_index++) {
     SPVM_RUNTIME_API_push_var_int(runtime, (int32_t)SvIV(ST(arg_index)));
   }
   

@@ -56,7 +56,7 @@ CHECK {
   $compiler->compile($spvm);
   
   # Build subroutine table
-  $compiler->build_sub_infos;
+  $compiler->build_sub_infos($spvm);
   
   # Build SPVM subroutine
   SPVM::build_spvm_subs();
@@ -91,7 +91,9 @@ sub import {
 }
 
 sub build_spvm_subs {
-  my $sub_table = $SPVM::SUB_TABLE;
+  my $spvm = $SPVM;
+  
+  my $sub_table = $spvm->{sub_table};
 
   for my $constant_pool_index (keys %$sub_table) {
     my $sub_info = $sub_table->{$constant_pool_index};
@@ -100,7 +102,7 @@ sub build_spvm_subs {
     
     my $sub;
     $sub .= "sub SPVM::$abs_name {\n";
-    $sub .= "  SPVM::call_sub($constant_pool_index, \@_);\n";
+    $sub .= "  SPVM::call_sub(\$spvm, $constant_pool_index, \@_);\n";
     $sub .= "}";
     
     # Define SPVM subroutine
