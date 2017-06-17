@@ -32,7 +32,7 @@ value(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
-  
+
   if (sv_isobject(sv_self) && sv_derived_from(sv_self, "SPVM::Data")) {
     HV* hv_self = (HV*)SvRV(sv_self);
     
@@ -44,6 +44,7 @@ value(...)
     SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
     
     SV* sv_return_value;
+  
     if (strEQ(resolved_type_name, "byte")) {
       int8_t value = (int8_t)SvIV(sv_value);
       sv_return_value = sv_2mortal(newSViv(value));
@@ -200,11 +201,11 @@ build_sub_symtable(...)
         
         SV* sv_arg_resolved_type_name = sv_2mortal(newSVpv(arg_resolved_type_name, 0));
         av_push(av_arg_resolved_type_names, SvREFCNT_inc(sv_arg_resolved_type_name));
-        SV* sv_arg_resolved_type_names = sv_2mortal(newRV_inc((SV*)av_arg_resolved_type_names));
-        
-        // 2. Push argment resolved type ids
-        av_push(av_sub_info, SvREFCNT_inc(sv_arg_resolved_type_names));
       }
+        
+      // 2. Push argment resolved type ids
+      SV* sv_arg_resolved_type_names = sv_2mortal(newRV_inc((SV*)av_arg_resolved_type_names));
+      av_push(av_sub_info, SvREFCNT_inc(sv_arg_resolved_type_names));
       
       // Return type
       SPVM_OP* op_return_type = sub->op_return_type;
@@ -433,7 +434,6 @@ call_sub(...)
   
   SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
   
-  SV* sv_return_value;
   if (SvOK(sv_return_resolved_type_name)) {
     // Create data
     HV* hv_data = sv_2mortal((SV*)newHV());
@@ -442,36 +442,54 @@ call_sub(...)
     sv_bless(sv_data, hv_class);
 
     const char* return_resolved_type_name = SvPV_nolen(sv_return_resolved_type_name);
+    SV* sv_value;
     if (strEQ(return_resolved_type_name, "byte")) {
       int8_t return_value = SPVM_RUNTIME_API_pop_return_value_byte(runtime);
-      sv_return_value = sv_2mortal(newSViv(return_value));
+      sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_resolved_type_name, "short")) {
       int16_t return_value = SPVM_RUNTIME_API_pop_return_value_short(runtime);
-      sv_return_value = sv_2mortal(newSViv(return_value));
+      sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_resolved_type_name, "int")) {
       int32_t return_value = SPVM_RUNTIME_API_pop_return_value_int(runtime);
-      sv_return_value = sv_2mortal(newSViv(return_value));
+      sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_resolved_type_name, "long")) {
       int64_t return_value = SPVM_RUNTIME_API_pop_return_value_long(runtime);
-      sv_return_value = sv_2mortal(newSViv(return_value));
+      sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_resolved_type_name, "float")) {
       float return_value = SPVM_RUNTIME_API_pop_return_value_float(runtime);
-      sv_return_value = sv_2mortal(newSVnv(return_value));
+      int64_t spvm_value;
+      memcpy(&spvm_value, &return_value, sizeof(float));
+      sv_value = sv_2mortal(newSViv(spvm_value));
     }
     else if (strEQ(return_resolved_type_name, "double")) {
       double return_value = SPVM_RUNTIME_API_pop_return_value_double(runtime);
-      sv_return_value = sv_2mortal(newSVnv(return_value));
+      int64_t spvm_value;
+      memcpy(&spvm_value, &return_value, sizeof(double));
+      sv_value = sv_2mortal(newSViv(spvm_value));
     }
     else {
       void* return_value = SPVM_RUNTIME_API_pop_return_value_address(runtime);
-      sv_return_value = sv_2mortal(newSViv(return_value));
+      sv_value = sv_2mortal(newSViv(return_value));
     }
     
-    XPUSHs(sv_return_value);
+    // Store value
+    hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+    
+    // Store resolved type name
+    SV* sv_return_resolved_type_name = sv_2mortal(newSVpv(return_resolved_type_name, 0));
+    hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_return_resolved_type_name), 0);
+    
+    {
+      SV** sv_resolved_type_name_ptr = hv_fetch(hv_data, "resolved_type_name", strlen("resolved_type_name"), 0);
+      SV* sv_resolved_type_name = sv_resolved_type_name_ptr ? *sv_resolved_type_name_ptr : &PL_sv_undef;
+      const char* resolved_type_name = SvPV_nolen(sv_resolved_type_name);
+    }
+    
+    XPUSHs(sv_data);
     XSRETURN(1);
   }
   else {

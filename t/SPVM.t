@@ -7,6 +7,7 @@
 
 use strict;
 use warnings;
+use Data::Dumper;
 
 
 use Test::More 'no_plan';;
@@ -35,25 +36,25 @@ is_deeply(
 # byte
 {
   my $total = SPVM::XSTest::sum_byte(SPVM::byte(8), SPVM::byte(3));
-  is($total, 11);
+  is($total->value, 11);
 }
 
 # short
 {
   my $total = SPVM::XSTest::sum_short(SPVM::short(8), SPVM::short(3));
-  is($total, 11);
+  is($total->value, 11);
 }
 
 # int
 {
   my $total = SPVM::XSTest::sum_int(SPVM::int(8), SPVM::int(3));
-  is($total, 11);
+  is($total->value, 11);
 }
 
 # long
 {
   my $total = SPVM::XSTest::sum_long(SPVM::long(8), SPVM::long(3));
-  is($total, 11);
+  is($total->value, 11);
 }
 
 =pod
@@ -61,13 +62,13 @@ is_deeply(
 # float
 {
   my $total = SPVM::XSTest::sum_float(SPVM::float(0.1), SPVM::float(0.1));
-  is($total, 0.2);
+  is($total->value, 0.2);
 }
 
 # double
 {
   my $total = SPVM::XSTest::sum_double(SPVM::double(0.1), SPVM::double(0.1));
-  is($total, 0.2);
+  is($total->value, 0.2);
 }
 
 =cut
