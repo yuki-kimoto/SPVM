@@ -166,7 +166,7 @@ build_sub_symtable(...)
     }
   }
   
-  SV* sv_sub_symtable = sv_2mortal(newRV_inc(hv_sub_symtable));
+  SV* sv_sub_symtable = sv_2mortal(newRV_inc((SV*)hv_sub_symtable));
   hv_store(hv_self, "sub_symtable", strlen("sub_symtable"), SvREFCNT_inc(sv_sub_symtable), 0);
   
   XSRETURN(0);
@@ -201,7 +201,7 @@ build_resolved_type_symtable(...)
     hv_store(hv_resolved_type_symtable, resolved_type_name, strlen(resolved_type_name), SvREFCNT_inc(sv_resolved_type_id), 0);
   }
   
-  SV* sv_resolved_type_symtable = sv_2mortal(newRV_inc(hv_resolved_type_symtable));
+  SV* sv_resolved_type_symtable = sv_2mortal(newRV_inc((SV*)hv_resolved_type_symtable));
   hv_store(hv_self, "resolved_type_symtable", strlen("resolved_type_symtable"), SvREFCNT_inc(sv_resolved_type_symtable), 0);
   
   XSRETURN(0);
@@ -308,9 +308,36 @@ call_sub(...)
   // Initialize runtime before push arguments and call subroutine
   SPVM_RUNTIME_init(runtime);
   
+  // Check argument count
+  if (items - 2 != args_length) {
+    croak("Argument count is defferent");
+  }
+  
   // Push arguments
   for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
-    SPVM_RUNTIME_API_push_var_int(runtime, (int32_t)SvIV(ST(arg_index + 2)));
+    SV* sv_arg = ST(arg_index + 2);
+    
+    if (sv_isobject(sv_arg) && sv_derived_from(sv_arg, "SPVM::Data")) {
+      HV* hv_arg = (HV*)SvRV(sv_arg);
+      
+      SV** sv_resolved_type_name_ptr = hv_fetch(hv_arg, "resolved_type_name", strlen("resolved_type_name"), 0);
+      SV* sv_resolved_type_name = sv_resolved_type_name_ptr ? *sv_resolved_type_name_ptr : &PL_sv_undef;
+      const char* resolved_type_name = SvPV_nolen(sv_resolved_type_name);
+      
+      
+      if (strEQ(resolved_type_name, "int")) {
+        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        int32_t value = (int32_t)SvIV(sv_value);
+        SPVM_RUNTIME_API_push_var_int(runtime, value);
+      }
+      else {
+        assert(0);
+      }
+    }
+    else {
+      croak("Only receive SPVM::Data");
+    }
   }
   
   SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
@@ -327,9 +354,25 @@ SV*
 int(...)
   PPCODE:
 {
-  SV* sv_value = ST(0);
+  SV* sv_original_value = ST(0);
   
+  // Create object
+  HV* hv_data = sv_2mortal((SV*)newHV());
+  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_class = gv_stashpv("SPVM::Data", 0);
+  sv_bless(sv_data, hv_class);
   
-  XPUSHs(sv_value);
+  // int
+  int64_t value = SvIV(sv_original_value);
+  SV* sv_value = sv_2mortal(newSViv(value));
+  
+  // Store value
+  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  
+  // Store resolved type
+  SV* sv_resolved_type = sv_2mortal(newSVpv("int", 0));
+  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  
+  XPUSHs(sv_data);
   XSRETURN(1);
 }
