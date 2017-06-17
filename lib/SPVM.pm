@@ -35,10 +35,7 @@ CHECK {
   $compiler->compile;
   
   # Build subroutine table
-  my $sub_table = $compiler->build_sub_infos;
-  
-  # Set package variable
-  $SPVM::SUB_TABLE = $sub_table;
+  $compiler->build_sub_infos;
   
   # Build SPVM subroutine
   SPVM::build_spvm_subs();

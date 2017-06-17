@@ -165,8 +165,9 @@ build_sub_infos(...)
   
   SV* sv_sub_table = sv_2mortal(newRV_inc(hv_sub_table));
   
-  XPUSHs(sv_sub_table);
-  XSRETURN(1);
+  sv_setsv(get_sv("SPVM::SUB_TABLE", 0), sv_sub_table);
+  
+  XSRETURN(0);
 }
 
 SV*
