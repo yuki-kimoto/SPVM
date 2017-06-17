@@ -4,6 +4,8 @@ use 5.008007;
 use strict;
 use warnings;
 
+use Carp 'croak';
+
 our $VERSION = '0.01';
 
 use SPVM::Compiler;
@@ -39,7 +41,7 @@ CHECK {
   $SPVM::SUB_TABLE = $sub_table;
   
   # Build SPVM subroutine
-  $compiler->build_spvm_subs;
+  SPVM::build_spvm_subs();
   
   # Build run-time
   my $runtime = $compiler->build_runtime;
@@ -64,6 +66,28 @@ sub import {
       line => $line
     };
     push @SPVM::PACKAGE_INFOS, $package_info;
+  }
+}
+
+sub build_spvm_subs {
+  my $sub_table = $SPVM::SUB_TABLE;
+
+  for my $constant_pool_index (keys %$sub_table) {
+    my $sub_info = $sub_table->{$constant_pool_index};
+    
+    my ($abs_name, $arg_resolved_type_ids, $return_resolved_type_id) = @$sub_info;
+    
+    my $sub;
+    $sub .= "sub SPVM::$abs_name {\n";
+    $sub .= "  SPVM::call_sub($constant_pool_index, \@_);\n";
+    $sub .= "}";
+    
+    # Define SPVM subroutine
+    eval $sub;
+    
+    if ($@) {
+      croak "Can't define SVPM subroutine \"$abs_name\"\n$sub";
+    }
   }
 }
 
