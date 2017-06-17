@@ -265,17 +265,6 @@ free_compiler(...)
 }
 
 SV*
-int(...)
-  PPCODE:
-{
-  SV* sv_value = ST(0);
-  
-  
-  XPUSHs(sv_value);
-  XSRETURN(1);
-}
-
-SV*
 call_sub(...)
   PPCODE:
 {
@@ -311,5 +300,16 @@ call_sub(...)
   SV* sv_ret = sv_2mortal(newSViv(ret));
   
   XPUSHs(sv_ret);
+  XSRETURN(1);
+}
+
+SV*
+int(...)
+  PPCODE:
+{
+  SV* sv_value = ST(0);
+  
+  
+  XPUSHs(sv_value);
   XSRETURN(1);
 }
