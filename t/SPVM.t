@@ -29,7 +29,7 @@ my $compiler = $SPVM::COMPILER;
 my $spvm = SPVM::get_spvm;
 
 is_deeply(
-  \@SPVM::PACKAGE_INFOS,
+  $spvm->{package_infos},
   [
     {name => 'XSTest', file => $file, line => $use_test_line},
     {name => 'std', file => $file, line => $use_std_line}

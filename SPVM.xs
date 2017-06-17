@@ -41,7 +41,9 @@ compile(...)
   HV* hv_spvm = (HV*)SvRV(sv_spvm);
 
   // Add package
-  AV* av_package_infos = get_av("SPVM::PACKAGE_INFOS", 0);;
+  SV** sv_package_infos_ptr = hv_fetch(hv_spvm, "package_infos", strlen("package_infos"), 0);
+  SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
+  AV* av_package_infos = (AV*)SvRV(sv_package_infos);
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
   for (int32_t i = 0; i < av_package_infos_length; i++) {
     SV** sv_package_info_ptr = av_fetch(av_package_infos, i, 0);

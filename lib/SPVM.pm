@@ -15,7 +15,6 @@ my $SPVM;
 our $COMPILER;
 our $RUNTIME;
 our $SUB_TABLE;
-our @PACKAGE_INFOS;
 
 sub get_spvm { $SPVM }
 
@@ -72,6 +71,9 @@ CHECK {
 sub import {
   my ($class, $package_name) = @_;
   
+  # SPVM
+  my $spvm = $SPVM;
+  
   # Compiler
   my $compiler = $SPVM::COMPILER;
   
@@ -84,7 +86,7 @@ sub import {
       file => $file,
       line => $line
     };
-    push @SPVM::PACKAGE_INFOS, $package_info;
+    push @{$spvm->{package_infos}}, $package_info;
   }
 }
 
