@@ -32,7 +32,18 @@ is_deeply(
   ]
 );
 
+# int
 {
-  my $total = SPVM::XSTest::sum(SPVM::int(8), SPVM::int(3));
+  my $total = SPVM::XSTest::sum_int(SPVM::int(8), SPVM::int(3));
   is($total, 11);
 }
+
+=pod
+
+# byte
+{
+  my $total = SPVM::XSTest::sum_int(SPVM::byte(8), SPVM::byte(3));
+  is($total, 11);
+}
+
+=cut

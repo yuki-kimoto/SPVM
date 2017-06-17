@@ -315,51 +315,49 @@ call_sub(...)
   
   // Push arguments
   for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
-    SV* sv_arg = ST(arg_index + 2);
+    SV* sv_data = ST(arg_index + 2);
     
-    if (sv_isobject(sv_arg) && sv_derived_from(sv_arg, "SPVM::Data")) {
-      HV* hv_arg = (HV*)SvRV(sv_arg);
+    if (sv_isobject(sv_data) && sv_derived_from(sv_data, "SPVM::Data")) {
+      HV* hv_data = (HV*)SvRV(sv_data);
       
-      SV** sv_resolved_type_name_ptr = hv_fetch(hv_arg, "resolved_type_name", strlen("resolved_type_name"), 0);
-      SV* sv_resolved_type_name = sv_resolved_type_name_ptr ? *sv_resolved_type_name_ptr : &PL_sv_undef;
-      const char* resolved_type_name = SvPV_nolen(sv_resolved_type_name);
+      SV** sv_data_resolved_type_name_ptr = hv_fetch(hv_data, "resolved_type_name", strlen("resolved_type_name"), 0);
+      SV* sv_data_resolved_type_name = sv_data_resolved_type_name_ptr ? *sv_data_resolved_type_name_ptr : &PL_sv_undef;
+      const char* data_resolved_type_name = SvPV_nolen(sv_data_resolved_type_name);
       
+      SV** sv_arg_resolved_type_name_ptr = av_fetch(av_arg_resolved_type_names, arg_index, 0);
+      SV* sv_arg_resolved_type_name = sv_arg_resolved_type_name_ptr ? *sv_arg_resolved_type_name_ptr : &PL_sv_undef;
+      const char* arg_resolved_type_name = SvPV_nolen(sv_arg_resolved_type_name);
       
-      if (strEQ(resolved_type_name, "byte")) {
-        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      if (!strEQ(data_resolved_type_name, arg_resolved_type_name)) {
+        croak("Argument data type is invalid");
+      }
+
+      SV** sv_value_ptr = hv_fetch(hv_data, "value", strlen("value"), 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      
+      if (strEQ(data_resolved_type_name, "byte")) {
         int8_t value = (int8_t)SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_byte(runtime, value);
       }
-      else if (strEQ(resolved_type_name, "short")) {
-        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      else if (strEQ(data_resolved_type_name, "short")) {
         int16_t value = (int16_t)SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_short(runtime, value);
       }
-      else if (strEQ(resolved_type_name, "int")) {
-        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      else if (strEQ(data_resolved_type_name, "int")) {
         int32_t value = (int32_t)SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_int(runtime, value);
       }
-      else if (strEQ(resolved_type_name, "long")) {
-        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      else if (strEQ(data_resolved_type_name, "long")) {
         int64_t value = (int64_t)SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_long(runtime, value);
       }
-      else if (strEQ(resolved_type_name, "float")) {
-        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      else if (strEQ(data_resolved_type_name, "float")) {
         int64_t value_int = (int64_t)SvIV(sv_value);
         float value;
         memcpy(&value, &value_int, sizeof(float));
         SPVM_RUNTIME_API_push_var_float(runtime, value);
       }
-      else if (strEQ(resolved_type_name, "double")) {
-        SV** sv_value_ptr = hv_fetch(hv_arg, "value", strlen("value"), 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      else if (strEQ(data_resolved_type_name, "double")) {
         int64_t value_int = (int64_t)SvIV(sv_value);
         double value;
         memcpy(&value, &value_int, sizeof(double));

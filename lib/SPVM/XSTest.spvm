@@ -1,8 +1,43 @@
 package XSTest {
   has x : int;
   has y : int;
-  
-  sub sum ($a : int, $b :int) : int {
+
+  sub sum_byte ($a : byte, $b :byte) : byte {
+    
+    my $total = $a + $b;
+    
+    return $total;
+  }
+
+  sub sum_short ($a : short, $b :short) : short {
+    
+    my $total = $a + $b;
+    
+    return $total;
+  }
+
+  sub sum_int ($a : int, $b :int) : int {
+    
+    my $total = $a + $b;
+    
+    return $total;
+  }
+
+  sub sum_long ($a : long, $b :long) : long {
+    
+    my $total = $a + $b;
+    
+    return $total;
+  }
+
+  sub sum_float ($a : float, $b :float) : float {
+    
+    my $total = $a + $b;
+    
+    return $total;
+  }
+
+  sub sum_double ($a : double, $b :double) : double {
     
     my $total = $a + $b;
     
