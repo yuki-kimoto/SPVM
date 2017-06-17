@@ -32,18 +32,42 @@ is_deeply(
   ]
 );
 
+# byte
+{
+  my $total = SPVM::XSTest::sum_byte(SPVM::byte(8), SPVM::byte(3));
+  is($total, 11);
+}
+
+# short
+{
+  my $total = SPVM::XSTest::sum_short(SPVM::short(8), SPVM::short(3));
+  is($total, 11);
+}
+
 # int
 {
   my $total = SPVM::XSTest::sum_int(SPVM::int(8), SPVM::int(3));
   is($total, 11);
 }
 
+# long
+{
+  my $total = SPVM::XSTest::sum_long(SPVM::long(8), SPVM::long(3));
+  is($total, 11);
+}
+
 =pod
 
-# byte
+# float
 {
-  my $total = SPVM::XSTest::sum_int(SPVM::byte(8), SPVM::byte(3));
-  is($total, 11);
+  my $total = SPVM::XSTest::sum_float(SPVM::float(0.1), SPVM::float(0.1));
+  is($total, 0.2);
+}
+
+# double
+{
+  my $total = SPVM::XSTest::sum_double(SPVM::double(0.1), SPVM::double(0.1));
+  is($total, 0.2);
 }
 
 =cut

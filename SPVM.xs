@@ -329,7 +329,7 @@ call_sub(...)
       const char* arg_resolved_type_name = SvPV_nolen(sv_arg_resolved_type_name);
       
       if (!strEQ(data_resolved_type_name, arg_resolved_type_name)) {
-        croak("Argument data type is invalid");
+        croak("Argument data type need %s, but %s", arg_resolved_type_name, data_resolved_type_name);
       }
 
       SV** sv_value_ptr = hv_fetch(hv_data, "value", strlen("value"), 0);
@@ -429,7 +429,7 @@ short(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("byte", 0));
+  SV* sv_resolved_type = sv_2mortal(newSVpv("short", 0));
   hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
   
   XPUSHs(sv_data);
@@ -483,7 +483,7 @@ long(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("int", 0));
+  SV* sv_resolved_type = sv_2mortal(newSVpv("long", 0));
   hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
   
   XPUSHs(sv_data);
@@ -512,7 +512,7 @@ float(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("int", 0));
+  SV* sv_resolved_type = sv_2mortal(newSVpv("float", 0));
   hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
   
   XPUSHs(sv_data);
@@ -541,7 +541,7 @@ double(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("int", 0));
+  SV* sv_resolved_type = sv_2mortal(newSVpv("double", 0));
   hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
   
   XPUSHs(sv_data);
