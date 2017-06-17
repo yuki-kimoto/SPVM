@@ -31,15 +31,15 @@ SV*
 compile(...)
   PPCODE:
 {
-  SV* sv_spvm = ST(0);
+  SV* sv_self = ST(0);
 
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
 
-  HV* hv_spvm = (HV*)SvRV(sv_spvm);
+  HV* hv_self = (HV*)SvRV(sv_self);
 
   // Add package
-  SV** sv_package_infos_ptr = hv_fetch(hv_spvm, "package_infos", strlen("package_infos"), 0);
+  SV** sv_package_infos_ptr = hv_fetch(hv_self, "package_infos", strlen("package_infos"), 0);
   SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
   AV* av_package_infos = (AV*)SvRV(sv_package_infos);
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
@@ -70,7 +70,7 @@ compile(...)
   }
   
   // Add include paths
-  SV** sv_include_paths_ptr = hv_fetch(hv_spvm, "include_paths", strlen("include_paths"), 0);
+  SV** sv_include_paths_ptr = hv_fetch(hv_self, "include_paths", strlen("include_paths"), 0);
   SV* sv_include_paths = sv_include_paths_ptr ? *sv_include_paths_ptr : &PL_sv_undef;
   AV* av_include_paths = (AV*)SvRV(sv_include_paths);
   int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
@@ -91,7 +91,7 @@ compile(...)
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler_object = sv_2mortal(newRV_inc(sviv_compiler));
-  hv_store(hv_spvm, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler_object), 0);
+  hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler_object), 0);
 
   XSRETURN(0);
 }
@@ -100,11 +100,11 @@ SV*
 build_sub_infos(...)
   PPCODE:
 {
-  SV* sv_spvm = ST(0);
-  HV* hv_spvm = (HV*)SvRV(sv_spvm);
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_spvm, "compiler", strlen("compiler"), 0);
+  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
   SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
   size_t iv_compiler = SvIV(sviv_compiler);
@@ -168,7 +168,7 @@ build_sub_infos(...)
   }
   
   SV* sv_sub_table = sv_2mortal(newRV_inc(hv_sub_table));
-  hv_store(hv_spvm, "sub_table", strlen("sub_table"), SvREFCNT_inc(sv_sub_table), 0);
+  hv_store(hv_self, "sub_table", strlen("sub_table"), SvREFCNT_inc(sv_sub_table), 0);
   
   XSRETURN(0);
 }
@@ -177,11 +177,11 @@ SV*
 build_runtime(...)
   PPCODE:
 {
-  SV* sv_spvm = ST(0);
-  HV* hv_spvm = (HV*)SvRV(sv_spvm);
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_spvm, "compiler", strlen("compiler"), 0);
+  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
   SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
   size_t iv_compiler = SvIV(sviv_compiler);
@@ -203,7 +203,7 @@ build_runtime(...)
   SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
   SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
   
-  hv_store(hv_spvm, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+  hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   
   XSRETURN(0);
 }
@@ -212,11 +212,11 @@ SV*
 free_compiler(...)
   PPCODE:
 {
-  SV* sv_spvm = ST(0);
-  HV* hv_spvm = (HV*)SvRV(sv_spvm);
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_spvm, "compiler", strlen("compiler"), 0);
+  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
   SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
   size_t iv_compiler = SvIV(sviv_compiler);
@@ -226,7 +226,7 @@ free_compiler(...)
   SPVM_COMPILER_free(compiler);
   
   // Set undef to compiler
-  hv_store(hv_spvm, "compiler", strlen("compiler"), &PL_sv_undef, 0);
+  hv_store(hv_self, "compiler", strlen("compiler"), &PL_sv_undef, 0);
   
   XSRETURN(0);
 }
@@ -246,19 +246,19 @@ SV*
 call_sub(...)
   PPCODE:
 {
-  SV* sv_spvm = ST(0);
+  SV* sv_self = ST(0);
   SV* sv_sub_constant_pool_index = ST(1);
 
-  HV* hv_spvm = (HV*)SvRV(sv_spvm);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_sub_table_ptr = hv_fetch(hv_spvm, "sub_table", strlen("sub_table"), 0);
+  SV** sv_sub_table_ptr = hv_fetch(hv_self, "sub_table", strlen("sub_table"), 0);
   SV* sv_sub_table = sv_sub_table_ptr ? *sv_sub_table_ptr : &PL_sv_undef;
   HV* hv_sub_table = (HV*)SvRV(sv_sub_table);
   
   int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
   
   // Get runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_spvm, "runtime", strlen("runtime"), 0);
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   SV* sviv_runtime = SvROK(sv_runtime) ? SvRV(sv_runtime) : sv_runtime;
   size_t iv_runtime = SvIV(sviv_runtime);
