@@ -118,23 +118,35 @@ B<SPVM is under developing! I will change implementation and specification witho
 =head1 SYNOPSIS
   
   use FindBin;
-  use lib "$FindBin::lib";
+  use lib "$FindBin::Bin/lib";
+
+  use SPVM 'MyModule2';
   
-  use SPVM 'MyModule';
-  
-  my $total = SPVM::MyModule::foo(SPVM::int(3), SPVM::int(5));
-  print $total->value;
+  my $total = SPVM::MyModule2::foo(SPVM::int(3), SPVM::int(5));
+  print $total->value . "\n";
   
 Module file
 
-  # lib/SPVM/MyModule.spvm
-  package MyModule {
+  # lib/SPVM/MyModule1.spvm
+  package MyModule1 {
     has x : int;
     has y : int;
     
-    sub foo ($a : int, $b : int) : int {
+    sub sum ($a : int, $b : int) : int {
       
       my $total = $a + $b;
+      
+      return $total;
+    }
+  }
+  
+  # lib/SPVM/MyModule2.spvm
+  use MyModule1;
+  package MyModule2 {
+    
+    sub foo ($a : int, $b : int) : int {
+      
+      my $total = ($a * $b) + MyModule1::sum(2, 4);
       
       return $total;
     }
