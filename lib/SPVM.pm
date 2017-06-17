@@ -8,11 +8,7 @@ use Carp 'croak';
 
 our $VERSION = '0.01';
 
-use SPVM::Compiler;
-
 my $SPVM;
-
-our $COMPILER;
 
 sub get_spvm { $SPVM }
 
@@ -27,13 +23,7 @@ sub new {
   return bless $self, __PACKAGE__;
 }
 
-# Create SPVM compiler
 BEGIN {
-  my $compiler = SPVM::Compiler->new;
-  
-  # Set package variable
-  $SPVM::COMPILER = $compiler;
-  
   # SPVM
   my $spvm = SPVM->new;
   
@@ -46,21 +36,20 @@ BEGIN {
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
+  # SPVM
   my $spvm = $SPVM;
   
-  my $compiler = $SPVM::COMPILER;
-  
   # Compile SPVM source code
-  $compiler->compile($spvm);
+  $spvm->compile;
   
   # Build subroutine table
-  $compiler->build_sub_infos($spvm);
+  $spvm->build_sub_infos;
   
   # Build SPVM subroutine
-  SPVM::build_spvm_subs();
+  $spvm->build_spvm_subs;
   
   # Build run-time
-  $compiler->build_runtime($spvm);
+  $spvm->build_runtime;
 }
 
 sub import {
@@ -68,9 +57,6 @@ sub import {
   
   # SPVM
   my $spvm = $SPVM;
-  
-  # Compiler
-  my $compiler = $SPVM::COMPILER;
   
   # Add package infomations
   if (defined $package_name) {

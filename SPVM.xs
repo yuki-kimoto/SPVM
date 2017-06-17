@@ -25,19 +25,17 @@
 #include "spvm_type.h"
 #include "spvm_resolved_type.h"
 
-MODULE = SPVM::Compiler		PACKAGE = SPVM::Compiler
+MODULE = SPVM		PACKAGE = SPVM
 
 SV*
 compile(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-  SV* sv_spvm = ST(1);
+  SV* sv_spvm = ST(0);
 
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
 
-  HV* hv_self = (HV*)SvRV(sv_self);
   HV* hv_spvm = (HV*)SvRV(sv_spvm);
 
   // Add package
@@ -93,7 +91,7 @@ compile(...)
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler_object = sv_2mortal(newRV_inc(sviv_compiler));
-  hv_store(hv_self, "object", strlen("object"), SvREFCNT_inc(sv_compiler_object), 0);
+  hv_store(hv_spvm, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler_object), 0);
 
   XSRETURN(0);
 }
@@ -102,13 +100,11 @@ SV*
 build_sub_infos(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-  SV* sv_spvm = ST(1);
-  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_spvm = ST(0);
   HV* hv_spvm = (HV*)SvRV(sv_spvm);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
+  SV** sv_compiler_object_ptr = hv_fetch(hv_spvm, "compiler", strlen("compiler"), 0);
   SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
   SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
   size_t iv_compiler = SvIV(sviv_compiler);
@@ -181,14 +177,11 @@ SV*
 build_runtime(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-  SV* sv_spvm = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_spvm = ST(0);
   HV* hv_spvm = (HV*)SvRV(sv_spvm);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
+  SV** sv_compiler_object_ptr = hv_fetch(hv_spvm, "compiler", strlen("compiler"), 0);
   SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
   SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
   size_t iv_compiler = SvIV(sviv_compiler);
@@ -216,14 +209,14 @@ build_runtime(...)
 }
 
 SV*
-DESTROY(...)
+free_compiler(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_spvm = ST(0);
+  HV* hv_spvm = (HV*)SvRV(sv_spvm);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
+  SV** sv_compiler_object_ptr = hv_fetch(hv_spvm, "compiler", strlen("compiler"), 0);
   SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
   SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
   size_t iv_compiler = SvIV(sviv_compiler);
@@ -233,12 +226,10 @@ DESTROY(...)
   SPVM_COMPILER_free(compiler);
   
   // Set undef to compiler
-  hv_store(hv_self, "object", strlen("object"), &PL_sv_undef, 0);
+  hv_store(hv_spvm, "compiler", strlen("compiler"), &PL_sv_undef, 0);
   
   XSRETURN(0);
 }
-
-MODULE = SPVM		PACKAGE = SPVM
 
 SV*
 int(...)

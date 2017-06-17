@@ -17,14 +17,10 @@ BEGIN { use_ok('SPVM') };
 # Insert your test code below, the Test::More module is use()ed here so read
 # its man page ( perldoc Test::More ) for help writing this test script.
 
-use SPVM::Compiler;
-
 my $file = 't/SPVM.t';
 
 use SPVM 'XSTest'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
-
-my $compiler = $SPVM::COMPILER;
 
 my $spvm = SPVM::get_spvm;
 
