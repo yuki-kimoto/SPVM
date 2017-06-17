@@ -57,18 +57,14 @@ is_deeply(
   is($total->value, 11);
 }
 
-=pod
-
 # float
 {
   my $total = SPVM::XSTest::sum_float(SPVM::float(0.1), SPVM::float(0.1));
-  is($total->value, 0.2);
+  is(sprintf("%.5f", $total->value), "0.20000");
 }
 
 # double
 {
   my $total = SPVM::XSTest::sum_double(SPVM::double(0.1), SPVM::double(0.1));
-  is($total->value, 0.2);
+  is(sprintf("%.5f", $total->value), "0.20000");
 }
-
-=cut
