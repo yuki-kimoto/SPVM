@@ -35,6 +35,6 @@ is_deeply(
 );
 
 {
-  my $total = SPVM::XSTest::sum(8, 3);
+  my $total = SPVM::XSTest::sum(SPVM::int(8), SPVM::int(3));
   is($total, 11);
 }

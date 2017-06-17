@@ -274,3 +274,14 @@ call_sub(...)
 }
 
 MODULE = SPVM		PACKAGE = SPVM
+
+SV*
+int(...)
+  PPCODE:
+{
+  SV* sv_value = ST(0);
+  
+  
+  XPUSHs(sv_value);
+  XSRETURN(1);
+}
