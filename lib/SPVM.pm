@@ -84,12 +84,9 @@ sub build_spvm_subs {
   
   for my $abs_name (keys %$sub_symtable) {
     
-    my $sub_info = $sub_symtable->{$abs_name};
-    my ($constant_pool_index, $arg_resolved_type_ids, $return_resolved_type_id) = @$sub_info;
-    
     my $sub;
     $sub .= "sub SPVM::$abs_name {\n";
-    $sub .= "  SPVM::call_sub(\$spvm, $constant_pool_index, \@_);\n";
+    $sub .= "  SPVM::call_sub(\$spvm, \"$abs_name\", \@_);\n";
     $sub .= "}";
     
     # Define SPVM subroutine

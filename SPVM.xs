@@ -132,29 +132,30 @@ build_sub_symtable(...)
       av_push(av_sub_info, SvREFCNT_inc(sv_constant_pool_index));
       
       // arg_resolved_type_ids
-      AV* av_arg_resolved_type_ids = (AV*)sv_2mortal((SV*)newAV());
+      AV* av_arg_resolved_type_names = (AV*)sv_2mortal((SV*)newAV());
       SPVM_ARRAY* op_args = sub->op_args;
       for (int32_t arg_index = 0; arg_index < op_args->length; arg_index++) {
         SPVM_OP* op_arg = SPVM_ARRAY_fetch(op_args, arg_index);
         SPVM_OP* op_arg_type = op_arg->uv.my_var->op_type;
-        int32_t arg_resolved_type_id = op_arg_type->uv.type->resolved_type->id;
+        const char* arg_resolved_type_name = op_arg_type->uv.type->resolved_type->name;
         
-        SV* sv_arg_resolved_type_id = sv_2mortal(newSViv(arg_resolved_type_id));
-        av_push(av_arg_resolved_type_ids, SvREFCNT_inc(sv_arg_resolved_type_id));
-        SV* sv_arg_resolved_type_ids = sv_2mortal(newRV_inc((SV*)av_arg_resolved_type_ids));
+        SV* sv_arg_resolved_type_name = sv_2mortal(newSVpv(arg_resolved_type_name, 0));
+        av_push(av_arg_resolved_type_names, SvREFCNT_inc(sv_arg_resolved_type_name));
+        SV* sv_arg_resolved_type_names = sv_2mortal(newRV_inc((SV*)av_arg_resolved_type_names));
         
         // 2. Push argment resolved type ids
-        av_push(av_sub_info, SvREFCNT_inc(sv_arg_resolved_type_ids));
+        av_push(av_sub_info, SvREFCNT_inc(sv_arg_resolved_type_names));
       }
       
       // Return type
       SPVM_OP* op_return_type = sub->op_return_type;
-      SPVM_RESOLVED_TYPE* return_type_resolved_type = SPVM_OP_get_resolved_type(compiler, op_return_type);
-      if (return_type_resolved_type) {
-        int32_t return_resolved_type_id = op_return_type->uv.type->resolved_type->id;
-        SV* sv_return_resolved_type_id = sv_2mortal(newSViv(return_resolved_type_id));
+      SPVM_RESOLVED_TYPE* return_resolved_type = SPVM_OP_get_resolved_type(compiler, op_return_type);
+      if (return_resolved_type) {
+        const char* return_resolved_type_name = op_return_type->uv.type->resolved_type->name;
+        SV* sv_return_resolved_type_name = sv_2mortal(newSVpv(return_resolved_type_name, 0));
+        
         // 3. Push return type resolved id
-        av_push(av_sub_info, SvREFCNT_inc(sv_return_resolved_type_id));
+        av_push(av_sub_info, SvREFCNT_inc(sv_return_resolved_type_name));
       }
       else {
         av_push(av_sub_info, &PL_sv_undef);
@@ -269,13 +270,21 @@ call_sub(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
-  SV* sv_sub_constant_pool_index = ST(1);
+  SV* sv_sub_abs_name = ST(1);
 
   HV* hv_self = (HV*)SvRV(sv_self);
   
   SV** sv_sub_symtable_ptr = hv_fetch(hv_self, "sub_symtable", strlen("sub_symtable"), 0);
   SV* sv_sub_symtable = sv_sub_symtable_ptr ? *sv_sub_symtable_ptr : &PL_sv_undef;
   HV* hv_sub_symtable = (HV*)SvRV(sv_sub_symtable);
+  
+  const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
+  SV** sv_sub_info_ptr = hv_fetch(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), 0);
+  SV* sv_sub_info = sv_sub_info_ptr ? *sv_sub_info_ptr : &PL_sv_undef;
+  AV* av_sub_info = (AV*)SvRV(sv_sub_info);
+  
+  SV** sv_sub_constant_pool_index_ptr = av_fetch(av_sub_info, 0, 0);
+  SV* sv_sub_constant_pool_index = sv_sub_constant_pool_index_ptr ? *sv_sub_constant_pool_index_ptr : &PL_sv_undef;
   
   int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
   
