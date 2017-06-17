@@ -42,7 +42,10 @@ CHECK {
   # Compile SPVM source code
   $spvm->compile;
   
-  # Build subroutine table
+  # Build resolved type symbol table
+  $spvm->build_resolved_type_symtable;
+  
+  # Build subroutine symbole table
   $spvm->build_sub_symtable;
   
   # Build SPVM subroutine
