@@ -43,7 +43,7 @@ CHECK {
   $spvm->compile;
   
   # Build subroutine table
-  $spvm->build_sub_infos;
+  $spvm->build_sub_symtable;
   
   # Build SPVM subroutine
   $spvm->build_spvm_subs;
@@ -76,10 +76,13 @@ sub build_spvm_subs {
   
   my $sub_symtable = $spvm->{sub_symtable};
   
-  for my $constant_pool_index (keys %$sub_symtable) {
-    my $sub_info = $sub_symtable->{$constant_pool_index};
+  use Data::Dumper;
+  warn Dumper $sub_symtable;
+  
+  for my $abs_name (keys %$sub_symtable) {
     
-    my ($abs_name, $arg_resolved_type_ids, $return_resolved_type_id) = @$sub_info;
+    my $sub_info = $sub_symtable->{$abs_name};
+    my ($constant_pool_index, $arg_resolved_type_ids, $return_resolved_type_id) = @$sub_info;
     
     my $sub;
     $sub .= "sub SPVM::$abs_name {\n";
