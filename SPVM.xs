@@ -25,6 +25,65 @@
 #include "spvm_type.h"
 #include "spvm_resolved_type.h"
 
+MODULE = SPVM::Data		PACKAGE = SPVM::Data
+
+SV*
+value(...)
+  PPCODE:
+{
+  SV* sv_self = ST(0);
+  
+  if (sv_isobject(sv_self) && sv_derived_from(sv_self, "SPVM::Data")) {
+    HV* hv_self = (HV*)SvRV(sv_self);
+    
+    SV** sv_resolved_type_name_ptr = hv_fetch(hv_self, "resolved_type_name", strlen("resolved_type_name"), 0);
+    SV* sv_resolved_type_name = sv_resolved_type_name_ptr ? *sv_resolved_type_name_ptr : &PL_sv_undef;
+    const char* resolved_type_name = SvPV_nolen(sv_resolved_type_name);
+    
+    SV** sv_value_ptr = hv_fetch(hv_self, "value", strlen("value"), 0);
+    SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+    
+    SV* sv_return_value;
+    if (strEQ(resolved_type_name, "byte")) {
+      int8_t value = (int8_t)SvIV(sv_value);
+      sv_return_value = sv_2mortal(newSViv(value));
+    }
+    else if (strEQ(resolved_type_name, "short")) {
+      int16_t value = (int16_t)SvIV(sv_value);
+      sv_return_value = sv_2mortal(newSViv(value));
+    }
+    else if (strEQ(resolved_type_name, "int")) {
+      int32_t value = (int32_t)SvIV(sv_value);
+      sv_return_value = sv_2mortal(newSViv(value));
+    }
+    else if (strEQ(resolved_type_name, "long")) {
+      int64_t value = (int64_t)SvIV(sv_value);
+      sv_return_value = sv_2mortal(newSViv(value));
+    }
+    else if (strEQ(resolved_type_name, "float")) {
+      int64_t value_int = (int64_t)SvIV(sv_value);
+      float value;
+      memcpy(&value, &value_int, sizeof(float));
+      sv_return_value = sv_2mortal(newSVnv(value));
+    }
+    else if (strEQ(resolved_type_name, "double")) {
+      int64_t value_int = (int64_t)SvIV(sv_value);
+      double value;
+      memcpy(&value, &value_int, sizeof(double));
+      sv_return_value = sv_2mortal(newSVnv(value));
+    }
+    else {
+      croak("Can't get reference value");
+    }
+    
+    XPUSHs(sv_return_value);
+    XSRETURN(1);
+  }
+  else {
+    croak("Not SPVM::Datg object");
+  }
+}
+
 MODULE = SPVM		PACKAGE = SPVM
 
 SV*
