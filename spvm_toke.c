@@ -110,7 +110,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               if (!fh) {
                 if (op_use) {
-                  fprintf(stderr, "[SPVM COMPILE ERROR]Can't find package \"%s\" at %s line %" PRId32 "\n", op_name_package->uv.name, op_use->file, op_use->line);
+                  fprintf(stderr, "[SPVM COMPILE ERROR]Can't locate SVPM/\"%s\".spvm @INC (@INC contains:", op_name_package->uv.name);
+                  for (int32_t i = 0; i < include_pathes_length; i++) {
+                    const char* include_path = (const char*) SPVM_ARRAY_fetch(compiler->include_pathes, i);
+                    fprintf(stderr, " %s", include_path);
+                  }
+                  fprintf(") at %s line %" PRId32 "\n", op_use->file, op_use->line);
                 }
                 else {
                   fprintf(stderr, "[SPVM COMPILE ERROR]Can't find file %s\n", cur_module_path);
