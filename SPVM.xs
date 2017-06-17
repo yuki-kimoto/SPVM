@@ -39,9 +39,7 @@ compile(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // Add package
-  SV** sv_package_infos_ptr = hv_fetch(hv_self, "package_infos", strlen("package_infos"), 0);
-  SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
-  AV* av_package_infos = (AV*)SvRV(sv_package_infos);
+  AV* av_package_infos = get_av("SPVM::PACKAGE_INFOS", 0);;
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
   for (int32_t i = 0; i < av_package_infos_length; i++) {
     SV** sv_package_info_ptr = av_fetch(av_package_infos, i, 0);
@@ -70,9 +68,7 @@ compile(...)
   }
   
   // Add include paths
-  SV** sv_include_paths_ptr = hv_fetch(hv_self, "include_paths", strlen("include_paths"), 0);
-  SV* sv_include_paths = sv_include_paths_ptr ? *sv_include_paths_ptr : &PL_sv_undef;
-  AV* av_include_paths = (AV*)SvRV(sv_include_paths);
+  AV* av_include_paths = get_av("SPVM::INCLUDE_PATHS", 0);;
   int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
   for (int32_t i = 0; i < av_include_paths_length; i++) {
     SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);

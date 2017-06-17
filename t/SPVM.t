@@ -27,7 +27,7 @@ use SPVM 'std'; my $use_std_line = __LINE__;
 my $compiler = $SPVM::COMPILER;
 
 is_deeply(
-  $compiler->package_infos,
+  \@SPVM::PACKAGE_INFOS,
   [
     {name => 'XSTest', file => $file, line => $use_test_line},
     {name => 'std', file => $file, line => $use_std_line}

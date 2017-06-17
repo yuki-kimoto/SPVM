@@ -12,13 +12,15 @@ use SPVM::Runtime;
 our $COMPILER;
 our $RUNTIME;
 our $SUB_TABLE;
+our @PACKAGE_INFOS;
+our @INCLUDE_PATHS;
 
 # Create SPVM compiler
 BEGIN {
   my $compiler = SPVM::Compiler->new;
   
   # Add moduel include path
-  push @{$compiler->include_paths}, @INC;
+  push @SPVM::INCLUDE_PATHS, @INC;
   
   # Set package variable
   $SPVM::COMPILER = $compiler;
@@ -65,7 +67,7 @@ sub import {
       file => $file,
       line => $line
     };
-    push @{$compiler->package_infos}, $package_info;
+    push @SPVM::PACKAGE_INFOS, $package_info;
   }
 }
 

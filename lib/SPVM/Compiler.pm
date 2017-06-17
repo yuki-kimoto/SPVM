@@ -5,17 +5,12 @@ use Object::Simple -base;
 use Carp 'croak';
 
 has 'object';
-has 'package_infos';
-has 'include_paths';
 
 # XS subroutine
 # get_sub_table
 
 sub new {
   my $self = shift->SUPER::new(@_);
-  
-  $self->package_infos([]);
-  $self->include_paths([]);
   
   return $self;
 }
