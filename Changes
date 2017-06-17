@@ -1,6 +1,2 @@
-Revision history for Perl extension SPVM.
-
-0.01  Tue May 30 13:50:26 2017
-	- original version; created by h2xs 1.23 with options
-		-A -n SPVM
-
+0.01 2017-06-07
+	- Fisrt development release

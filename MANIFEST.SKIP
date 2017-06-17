@@ -15,3 +15,5 @@
 ^cover_db/
 ^MYMETA.yml$
 ^MYMETA.json$
+^spvm$
+^solo/objs/

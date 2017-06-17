@@ -111,49 +111,81 @@ __END__
 
 =head1 NAME
 
-SPVM - Perl extension for blah blah blah
+SPVM - Fast calculation, GC, static typing, VM with perlish syntax
+
+B<SPVM is under developing! I will change implementation and specification without warnings.>
 
 =head1 SYNOPSIS
+  
+  use FindBin;
+  use lib "$FindBin::lib";
+  
+  use SPVM 'MyModule';
+  
+  my $total = SPVM::MyModule::foo(SPVM::int(3), SPVM::int(5));
+  print $total->value;
+  
+Module file
 
-  use SPVM;
-  blah blah blah
+  # lib/SPVM/MyModule.spvm
+  package MyModule {
+    has x : int;
+    has y : int;
+    
+    sub foo ($a : int, $b : int) : int {
+      
+      my $total = $a + $b;
+      
+      return $total;
+    }
+  }
+
+If you want to know more syntax, see C<solo/SPVM/Test.spvm>.
+
+If you want to know SPVM language, see C<solo/README.md>
 
 =head1 DESCRIPTION
 
-Stub documentation for SPVM, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
+Do you need B<faster Perl>? SPVM provides fast calculation to Perl.
 
-Blah blah blah.
+=over 4
 
-=head2 EXPORT
+=item *
 
-None by default.
+B<Fast calculation> - The Perl's biggest weak point is the calculation performance. SPVM provides fast calculations.
 
+=item *
 
+B<GC> - You don't need to care about freeing memory
 
-=head1 SEE ALSO
+=item *
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
+B<Static typing> - Static typing for performance
 
-If you have a mailing list set up for your module, mention it here.
+=item *
 
-If you have a web site set up for your module, mention it here.
+B<VM> - Byte codes are generated so that you can run them on SPVM language
+
+=item *
+
+B<Perlish syntax> - SPVM syntax is very similar to Perl
+
+=item *
+
+B<Perl module> - SPVM function can be called from Perl itself (Not yet implemented).
+
+=back;
 
 =head1 AUTHOR
 
-A. U. Thor, E<lt>kimoto@sakura.ne.jpE<gt>
+Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2017 by A. U. Thor
+Copyright (C) 2017 by Yuki Kimoto
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.16.3 or,
 at your option, any later version of Perl 5 you may have available.
-
 
 =cut
