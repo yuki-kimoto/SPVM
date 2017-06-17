@@ -283,11 +283,20 @@ call_sub(...)
   SV* sv_sub_info = sv_sub_info_ptr ? *sv_sub_info_ptr : &PL_sv_undef;
   AV* av_sub_info = (AV*)SvRV(sv_sub_info);
   
+  # Constant poll index
   SV** sv_sub_constant_pool_index_ptr = av_fetch(av_sub_info, 0, 0);
   SV* sv_sub_constant_pool_index = sv_sub_constant_pool_index_ptr ? *sv_sub_constant_pool_index_ptr : &PL_sv_undef;
-  
   int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
   
+  # Argument return types
+  SV** sv_arg_resolved_type_names_ptr = av_fetch(av_sub_info, 1, 0);
+  SV* sv_arg_resolved_type_names = sv_arg_resolved_type_names_ptr ? *sv_arg_resolved_type_names_ptr : &PL_sv_undef;
+  AV* av_arg_resolved_type_names = (AV*)SvRV(sv_arg_resolved_type_names);
+  
+  # Return type
+  SV** sv_return_resolved_type_name_ptr = av_fetch(av_sub_info, 2, 0);
+  SV* sv_return_resolved_type_name = sv_return_resolved_type_name_ptr ? *sv_return_resolved_type_name_ptr : &PL_sv_undef;
+
   // Get runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
