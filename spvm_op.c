@@ -996,6 +996,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_enumeration_value->file, op_enumeration_value->line);
           SPVM_TYPE* return_type = SPVM_TYPE_new(compiler);
           return_type->resolved_type = op_constant->uv.constant->resolved_type;
+          return_type->type = op_constant->uv.constant->type;
           op_return_type->uv.type = return_type;
 
           // Name
