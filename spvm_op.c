@@ -1270,12 +1270,11 @@ SPVM_OP* SPVM_OP_build_next(SPVM_COMPILER* compiler, SPVM_OP* op_next) {
   return op_next_process;
 }
 
-SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term_length) {
   
   // Type array
   SPVM_TYPE_COMPONENT_ARRAY* type_component_array = SPVM_TYPE_COMPONENT_ARRAY_new(compiler);
   type_component_array->type = op_type->uv.type;
-  type_component_array->op_term = op_term;
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
@@ -1286,8 +1285,8 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPV
   SPVM_OP* op_type_array = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);
   SPVM_OP_sibling_splice(compiler, op_type_array, NULL, 0, op_type);
   
-  if (op_term) {
-    SPVM_OP_sibling_splice(compiler, op_type_array, op_type_array->last, 0, op_term);
+  if (op_term_length) {
+    SPVM_OP_sibling_splice(compiler, op_type_array, op_type_array->last, 0, op_term_length);
   }
   else {
     SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_type->file, op_type->line);

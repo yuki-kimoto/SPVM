@@ -603,12 +603,6 @@ type_name
       $$ = SPVM_OP_build_type_name(compiler, $1);
     }
 
-try_catch
-  : TRY block CATCH '(' VAR ')' block
-    {
-      $$ = SPVM_OP_build_try_catch(compiler, $1, $2, $3, $5, $7);
-    }
-
 type_array
   : type_name '[' ']'
     {
@@ -636,6 +630,12 @@ type_or_void
 field_name : NAME
 sub_name : NAME
 package_name : NAME
+
+try_catch
+  : TRY block CATCH '(' VAR ')' block
+    {
+      $$ = SPVM_OP_build_try_catch(compiler, $1, $2, $3, $5, $7);
+    }
 
 %%
 

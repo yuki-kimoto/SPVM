@@ -29,7 +29,6 @@ struct SPVM_resolved_type {
   const char* name;
   int32_t name_length;
   int32_t id;
-  int32_t code;
 };
 
 SPVM_RESOLVED_TYPE* SPVM_RESOLVED_TYPE_new(SPVM_COMPILER* compiler);
