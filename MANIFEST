@@ -5,6 +5,7 @@ lib/SPVM/std.spvm
 lib/SPVM/XSTest.spvm
 Makefile.PL
 MANIFEST			This list of files
+op_type
 ppport.h
 README.md
 solo/Main.spvm
@@ -75,8 +76,6 @@ spvm_op_checker.c
 spvm_op_checker.h
 spvm_package.c
 spvm_package.h
-spvm_resolved_type.c
-spvm_resolved_type.h
 spvm_runtime.c
 spvm_runtime.h
 spvm_runtime_allocator.c
@@ -90,12 +89,6 @@ spvm_toke.c
 spvm_toke.h
 spvm_type.c
 spvm_type.h
-spvm_type_component_array.c
-spvm_type_component_array.h
-spvm_type_component_name.c
-spvm_type_component_name.h
-spvm_type_part.c
-spvm_type_part.h
 spvm_util_allocator.c
 spvm_util_allocator.h
 spvm_var.c
