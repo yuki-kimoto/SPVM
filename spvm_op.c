@@ -137,6 +137,7 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
   constant->code = SPVM_CONSTANT_C_CODE_INT;
   constant->uv.long_value = value;
   constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "int", strlen("int"));
+  constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
   
   op_constant->uv.constant = constant;
   
@@ -150,6 +151,7 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
   constant->code = SPVM_CONSTANT_C_CODE_LONG;
   constant->uv.long_value = value;
   constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "long", strlen("long"));
+  constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
   
   op_constant->uv.constant = constant;
   
@@ -163,6 +165,7 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
   constant->code = SPVM_CONSTANT_C_CODE_FLOAT;
   constant->uv.float_value = value;
   constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "float", strlen("float"));
+  constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
   
   op_constant->uv.constant = constant;
   
@@ -176,6 +179,7 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   constant->code = SPVM_CONSTANT_C_CODE_DOUBLE;
   constant->uv.double_value = value;
   constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "double", strlen("double"));
+  constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
   
   op_constant->uv.constant = constant;
   
@@ -218,6 +222,8 @@ SPVM_OP* SPVM_OP_build_try_catch(SPVM_COMPILER* compiler, SPVM_OP* op_try, SPVM_
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "byte[]", strlen("byte[]"));
+  type->type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
+  
   op_type->uv.type = type;
   SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_var->file, op_var->line);
@@ -504,6 +510,109 @@ SPVM_RESOLVED_TYPE* SPVM_OP_get_resolved_type(SPVM_COMPILER* compiler, SPVM_OP* 
   }
   
   return resolved_type;
+}
+
+SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  
+  SPVM_TYPE*  type = NULL;
+  
+  switch (op->code) {
+    case SPVM_OP_C_CODE_ARRAY_LENGTH:
+      type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+      break;
+    case SPVM_OP_C_CODE_ARRAY_ELEM: {
+      SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
+      type = SPVM_HASH_search(compiler->type_symtable, first_type->name, strlen(first_type->name) - 2);
+      break;
+    }
+    case SPVM_OP_C_CODE_ADD:
+    case SPVM_OP_C_CODE_SUBTRACT:
+    case SPVM_OP_C_CODE_MULTIPLY:
+    case SPVM_OP_C_CODE_DIVIDE:
+    case SPVM_OP_C_CODE_REMAINDER:
+    case SPVM_OP_C_CODE_PRE_INC:
+    case SPVM_OP_C_CODE_POST_INC:
+    case SPVM_OP_C_CODE_PRE_DEC:
+    case SPVM_OP_C_CODE_POST_DEC:
+    case SPVM_OP_C_CODE_LEFT_SHIFT:
+    case SPVM_OP_C_CODE_RIGHT_SHIFT:
+    case SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED:
+    case SPVM_OP_C_CODE_BIT_XOR:
+    case SPVM_OP_C_CODE_BIT_OR:
+    case SPVM_OP_C_CODE_BIT_AND:
+    case SPVM_OP_C_CODE_PLUS:
+    case SPVM_OP_C_CODE_NEGATE:
+    case SPVM_OP_C_CODE_ASSIGN:
+    case SPVM_OP_C_CODE_MALLOC:
+    {
+      type = SPVM_OP_get_type(compiler, op->first);
+      break;
+    }
+    case SPVM_OP_C_CODE_RETURN: {
+      if (op->first) {
+        type = SPVM_OP_get_type(compiler, op->first);
+      }
+      break;
+    }
+    case SPVM_OP_C_CODE_CONVERT: {
+      SPVM_OP* op_type = op->last;
+      type = SPVM_OP_get_type(compiler, op_type);
+      break;
+    }
+    case SPVM_OP_C_CODE_TYPE: {
+      if (op->uv.type) {
+        type = op->uv.type->type;
+      }
+      break;
+    }
+    case SPVM_OP_C_CODE_SWITCH_CONDITION : {
+      type = SPVM_OP_get_type(compiler, op->first);
+      break;
+    }
+    case SPVM_OP_C_CODE_UNDEF : {
+      type = NULL;
+      break;
+    }
+    case SPVM_OP_C_CODE_CONSTANT: {
+      SPVM_CONSTANT* constant = op->uv.constant;
+      type = constant->type;
+      break;
+    }
+    case SPVM_OP_C_CODE_VAR: {
+      SPVM_VAR* var = op->uv.var;
+      if (var->op_my_var->uv.my_var->op_type) {
+        type = var->op_my_var->uv.my_var->op_type->uv.type->type;
+      }
+      break;
+    }
+    case SPVM_OP_C_CODE_MY_VAR: {
+      SPVM_MY_VAR* my_var = op->uv.my_var;
+      if ( my_var->op_type) {
+        type = my_var->op_type->uv.type->type;
+      }
+      break;
+    }
+    case SPVM_OP_C_CODE_CALL_SUB: {
+      SPVM_NAME_INFO* name_info = op->uv.name_info;
+      const char* abs_name = name_info->resolved_name;
+      SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, abs_name, strlen(abs_name));
+      SPVM_SUB* sub = op_sub->uv.sub;
+      if (sub->op_return_type->code != SPVM_OP_C_CODE_VOID) {
+        type = sub->op_return_type->uv.type->type;
+      }
+      break;
+    }
+    case SPVM_OP_C_CODE_CALL_FIELD: {
+      SPVM_NAME_INFO* name_info = op->uv.name_info;
+      const char* abs_name = name_info->resolved_name;
+      SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, abs_name, strlen(abs_name));
+      SPVM_FIELD* field = op_field->uv.field;
+      type = field->op_type->uv.type->type;
+      break;
+    }
+  }
+  
+  return type;
 }
 
 void SPVM_OP_convert_and_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {

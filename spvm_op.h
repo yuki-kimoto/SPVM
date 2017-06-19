@@ -188,6 +188,7 @@ SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const cha
 
 SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub);
 SPVM_RESOLVED_TYPE* SPVM_OP_get_resolved_type(SPVM_COMPILER* compiler, SPVM_OP* op);
+SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 void SPVM_OP_convert_to_op_constant_true(SPVM_COMPILER* compiler, SPVM_OP* op);
 void SPVM_OP_convert_to_op_constant_false(SPVM_COMPILER* compiler, SPVM_OP* op);

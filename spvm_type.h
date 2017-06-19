@@ -14,6 +14,7 @@ extern const char* const SPVM_TYPE_C_CODE_NAMES[];
 
 struct SPVM_type {
   SPVM_RESOLVED_TYPE* resolved_type;
+  SPVM_TYPE* type;
   const char* name;
   int32_t id;
   int32_t name_length;
