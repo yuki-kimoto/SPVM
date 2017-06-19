@@ -16,7 +16,7 @@ struct SPVM_type {
   SPVM_RESOLVED_TYPE* resolved_type;
   union {
     SPVM_OP* op_name;
-    SPVM_TYPE* type;
+    SPVM_OP* op_type;
   } uv;
   int32_t code;
 };

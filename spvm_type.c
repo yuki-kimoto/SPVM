@@ -113,7 +113,7 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY*
     SPVM_ARRAY_push(parts, part);
   }
   else if (type->code == SPVM_TYPE_C_CODE_ARRAY) {
-    SPVM_TYPE_build_parts(compiler, type->uv.type, parts);
+    SPVM_TYPE_build_parts(compiler, type->uv.op_type->uv.type, parts);
     
     SPVM_TYPE_PART* type_part_openbracket = SPVM_TYPE_PART_new(compiler);
     type_part_openbracket->code = SPVM_TYPE_PART_C_CODE_CHAR;
