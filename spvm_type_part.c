@@ -4,7 +4,6 @@
 #include "spvm_compiler.h"
 
 const char* const SPVM_TYPE_PART_C_CODE_NAMES[] = {
-  "sub",
   "name",
   "char"
 };
