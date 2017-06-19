@@ -115,6 +115,9 @@ void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
   
   printf("\n[Resolved types]\n");
   SPVM_DUMPER_dump_resolved_types(compiler, compiler->resolved_types);
+
+  printf("\n[Types]\n");
+  SPVM_DUMPER_dump_types(compiler, compiler->types);
   
   printf("\n[Constant pool]\n");
   SPVM_DUMPER_dump_constant_pool(compiler, compiler->constant_pool);
@@ -174,10 +177,21 @@ void SPVM_DUMPER_dump_resolved_types(SPVM_COMPILER* compiler, SPVM_ARRAY* resolv
   (void)compiler;
   
   for (int32_t i = 0, len = resolved_types->length; i < len; i++) {
-    printf("resolved_type%" PRId32 "\n", i);
+    printf("resolved_type[%" PRId32 "]\n", i);
     SPVM_RESOLVED_TYPE* resolved_type = SPVM_ARRAY_fetch(resolved_types, i);
     printf("    name => \"%s\"\n", resolved_type->name);
     printf("    id => \"%" PRId32 "\"\n", resolved_type->id);
+  }
+}
+
+void SPVM_DUMPER_dump_types(SPVM_COMPILER* compiler, SPVM_ARRAY* types) {
+  (void)compiler;
+  
+  for (int32_t i = 0, len = types->length; i < len; i++) {
+    printf("type[%" PRId32 "]\n", i);
+    SPVM_TYPE* type = SPVM_ARRAY_fetch(types, i);
+    printf("    name => \"%s\"\n", type->name);
+    printf("    id => \"%" PRId32 "\"\n", type->id);
   }
 }
 
