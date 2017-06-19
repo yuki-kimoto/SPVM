@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-
+#include <assert.h>
 
 #include "spvm_compiler.h"
 #include "spvm_type.h"
@@ -51,7 +51,7 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
         name_length++;
         SPVM_ARRAY_push(resolved_type_part_names, (void*)part->uv.char_name);
       }
-      else {
+      else if (part->code == SPVM_TYPE_PART_C_CODE_NAME) {
         const char* part_name = part->uv.op_name->uv.name;
         
         // Core type
@@ -72,6 +72,9 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
           }
         }
         name_length += strlen(part_name);
+      }
+      else {
+        assert(0);
       }
     }
     char* resolved_type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, name_length);
