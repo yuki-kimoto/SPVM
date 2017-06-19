@@ -49,10 +49,10 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
       SPVM_TYPE_PART* part = SPVM_ARRAY_fetch(parts, i);
       if (part->code == SPVM_TYPE_PART_C_CODE_CHAR) {
         name_length++;
-        SPVM_ARRAY_push(resolved_type_part_names, (void*)part->uv.char_name);
+        SPVM_ARRAY_push(resolved_type_part_names, (void*)part->value);
       }
       else if (part->code == SPVM_TYPE_PART_C_CODE_NAME) {
-        const char* part_name = part->uv.char_name;
+        const char* part_name = part->value;
         
         // Core type
         if (strcmp(part_name, "boolean") == 0 || strcmp(part_name, "byte") == 0 || strcmp(part_name, "short") == 0 || strcmp(part_name, "int") == 0
@@ -111,7 +111,7 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY*
   if (type->code == SPVM_TYPE_C_CODE_NAME) {
     SPVM_TYPE_PART* part = SPVM_TYPE_PART_new(compiler);
     part->code = SPVM_TYPE_PART_C_CODE_NAME;
-    part->uv.char_name = type->uv.op_name->uv.name;
+    part->value = type->uv.op_name->uv.name;
     SPVM_ARRAY_push(parts, part);
   }
   else if (type->code == SPVM_TYPE_C_CODE_ARRAY) {
@@ -119,7 +119,7 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY*
     
     SPVM_TYPE_PART* type_part_openbracket = SPVM_TYPE_PART_new(compiler);
     type_part_openbracket->code = SPVM_TYPE_PART_C_CODE_CHAR;
-    type_part_openbracket->uv.char_name = "[]";
+    type_part_openbracket->value = "[]";
     SPVM_ARRAY_push(parts, type_part_openbracket);
   }
 }

@@ -11,9 +11,7 @@ enum {
 extern const char* const SPVM_TYPE_PART_C_CODE_NAMES[];
 
 struct SPVM_type_part {
-  union {
-    const char* char_name;
-  } uv;
+  const char* value;
   int32_t code;
 };
 
