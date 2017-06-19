@@ -466,6 +466,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         constant->code = SPVM_CONSTANT_C_CODE_INT;
         constant->uv.long_value = ch;
         constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "byte", strlen("byte"));
+        constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
         
         op->uv.constant = constant;
         yylvalp->opval = op;
@@ -569,6 +570,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         constant->code = SPVM_CONSTANT_C_CODE_STRING;
         constant->uv.string_value = str;
         constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "byte[]", strlen("byte[]"));
+        constant->type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
         op->uv.constant = constant;
         yylvalp->opval = (SPVM_OP*)op;
         
@@ -667,6 +669,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             constant->uv.float_value = num;
             constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "float", strlen("float"));
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
           }
           // double
           else if (constant->code == SPVM_CONSTANT_C_CODE_DOUBLE) {
@@ -677,6 +680,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             constant->uv.double_value = num;
             constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "double", strlen("double"));
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
           }
           // int
           else if (constant->code == SPVM_CONSTANT_C_CODE_INT) {
@@ -719,6 +723,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             constant->uv.long_value = num;
             constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "long", strlen("long"));
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
           }
           
           op->uv.constant = constant;
