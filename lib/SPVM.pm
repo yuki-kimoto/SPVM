@@ -45,7 +45,7 @@ CHECK {
   $spvm->compile;
   
   # Build resolved type symbol table
-  $spvm->build_resolved_type_symtable;
+  $spvm->build_type_symtable;
   
   # Build subroutine symbole table
   $spvm->build_sub_symtable;

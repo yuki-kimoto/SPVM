@@ -23,7 +23,6 @@
 #include "spvm_sub.h"
 #include "spvm_my_var.h"
 #include "spvm_type.h"
-#include "spvm_resolved_type.h"
 
 MODULE = SPVM::Data		PACKAGE = SPVM::Data
 
@@ -36,38 +35,38 @@ value(...)
   if (sv_isobject(sv_self) && sv_derived_from(sv_self, "SPVM::Data")) {
     HV* hv_self = (HV*)SvRV(sv_self);
     
-    SV** sv_resolved_type_name_ptr = hv_fetch(hv_self, "resolved_type_name", strlen("resolved_type_name"), 0);
-    SV* sv_resolved_type_name = sv_resolved_type_name_ptr ? *sv_resolved_type_name_ptr : &PL_sv_undef;
-    const char* resolved_type_name = SvPV_nolen(sv_resolved_type_name);
+    SV** sv_type_name_ptr = hv_fetch(hv_self, "type_name", strlen("type_name"), 0);
+    SV* sv_type_name = sv_type_name_ptr ? *sv_type_name_ptr : &PL_sv_undef;
+    const char* type_name = SvPV_nolen(sv_type_name);
     
     SV** sv_value_ptr = hv_fetch(hv_self, "value", strlen("value"), 0);
     SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
     
     SV* sv_return_value;
   
-    if (strEQ(resolved_type_name, "byte")) {
+    if (strEQ(type_name, "byte")) {
       int8_t value = (int8_t)SvIV(sv_value);
       sv_return_value = sv_2mortal(newSViv(value));
     }
-    else if (strEQ(resolved_type_name, "short")) {
+    else if (strEQ(type_name, "short")) {
       int16_t value = (int16_t)SvIV(sv_value);
       sv_return_value = sv_2mortal(newSViv(value));
     }
-    else if (strEQ(resolved_type_name, "int")) {
+    else if (strEQ(type_name, "int")) {
       int32_t value = (int32_t)SvIV(sv_value);
       sv_return_value = sv_2mortal(newSViv(value));
     }
-    else if (strEQ(resolved_type_name, "long")) {
+    else if (strEQ(type_name, "long")) {
       int64_t value = (int64_t)SvIV(sv_value);
       sv_return_value = sv_2mortal(newSViv(value));
     }
-    else if (strEQ(resolved_type_name, "float")) {
+    else if (strEQ(type_name, "float")) {
       int64_t value_int = (int64_t)SvIV(sv_value);
       float value;
       memcpy(&value, &value_int, sizeof(float));
       sv_return_value = sv_2mortal(newSVnv(value));
     }
-    else if (strEQ(resolved_type_name, "double")) {
+    else if (strEQ(type_name, "double")) {
       int64_t value_int = (int64_t)SvIV(sv_value);
       double value;
       memcpy(&value, &value_int, sizeof(double));
@@ -173,7 +172,7 @@ build_sub_symtable(...)
   // Subroutine information
   HV* hv_sub_symtable = (HV*)sv_2mortal((SV*)newHV());
   
-  // abs_name, arg_types, return_type, constant_pool_index, resolved_type_id
+  // abs_name, arg_types, return_type, constant_pool_index, type_id
   SPVM_ARRAY* op_packages = compiler->op_packages;
   for (int32_t package_index = 0; package_index < op_packages->length; package_index++) {
     SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, package_index);
@@ -191,31 +190,31 @@ build_sub_symtable(...)
       SV* sv_constant_pool_index = sv_2mortal(newSViv(constant_pool_index));
       av_push(av_sub_info, SvREFCNT_inc(sv_constant_pool_index));
       
-      // arg_resolved_type_ids
-      AV* av_arg_resolved_type_names = (AV*)sv_2mortal((SV*)newAV());
+      // arg_type_ids
+      AV* av_arg_type_names = (AV*)sv_2mortal((SV*)newAV());
       SPVM_ARRAY* op_args = sub->op_args;
       for (int32_t arg_index = 0; arg_index < op_args->length; arg_index++) {
         SPVM_OP* op_arg = SPVM_ARRAY_fetch(op_args, arg_index);
         SPVM_OP* op_arg_type = op_arg->uv.my_var->op_type;
-        const char* arg_resolved_type_name = op_arg_type->uv.type->resolved_type->name;
+        const char* arg_type_name = op_arg_type->uv.type->type->name;
         
-        SV* sv_arg_resolved_type_name = sv_2mortal(newSVpv(arg_resolved_type_name, 0));
-        av_push(av_arg_resolved_type_names, SvREFCNT_inc(sv_arg_resolved_type_name));
+        SV* sv_arg_type_name = sv_2mortal(newSVpv(arg_type_name, 0));
+        av_push(av_arg_type_names, SvREFCNT_inc(sv_arg_type_name));
       }
         
       // 2. Push argment resolved type ids
-      SV* sv_arg_resolved_type_names = sv_2mortal(newRV_inc((SV*)av_arg_resolved_type_names));
-      av_push(av_sub_info, SvREFCNT_inc(sv_arg_resolved_type_names));
+      SV* sv_arg_type_names = sv_2mortal(newRV_inc((SV*)av_arg_type_names));
+      av_push(av_sub_info, SvREFCNT_inc(sv_arg_type_names));
       
       // Return type
       SPVM_OP* op_return_type = sub->op_return_type;
-      SPVM_RESOLVED_TYPE* return_resolved_type = SPVM_OP_get_resolved_type(compiler, op_return_type);
-      if (return_resolved_type) {
-        const char* return_resolved_type_name = op_return_type->uv.type->resolved_type->name;
-        SV* sv_return_resolved_type_name = sv_2mortal(newSVpv(return_resolved_type_name, 0));
+      SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, op_return_type);
+      if (return_type) {
+        const char* return_type_name = op_return_type->uv.type->type->name;
+        SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
         
         // 3. Push return type resolved id
-        av_push(av_sub_info, SvREFCNT_inc(sv_return_resolved_type_name));
+        av_push(av_sub_info, SvREFCNT_inc(sv_return_type_name));
       }
       else {
         av_push(av_sub_info, &PL_sv_undef);
@@ -233,7 +232,7 @@ build_sub_symtable(...)
 }
 
 SV*
-build_resolved_type_symtable(...)
+build_type_symtable(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
@@ -247,22 +246,22 @@ build_resolved_type_symtable(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
   // Subroutine information
-  HV* hv_resolved_type_symtable = (HV*)sv_2mortal((SV*)newHV());
+  HV* hv_type_symtable = (HV*)sv_2mortal((SV*)newHV());
   
-  // abs_name, arg_types, return_type, constant_pool_index, resolved_type_id
-  SPVM_ARRAY* resolved_types = compiler->resolved_types;
-  for (int32_t resolved_type_index = 0; resolved_type_index < resolved_types->length; resolved_type_index++) {
-    SPVM_RESOLVED_TYPE* resolved_type = SPVM_ARRAY_fetch(resolved_types, resolved_type_index);
+  // abs_name, arg_types, return_type, constant_pool_index, type_id
+  SPVM_ARRAY* types = compiler->types;
+  for (int32_t type_index = 0; type_index < types->length; type_index++) {
+    SPVM_TYPE* type = SPVM_ARRAY_fetch(types, type_index);
     
-    const char* resolved_type_name = resolved_type->name;
-    int32_t resolved_type_id = resolved_type->id;
-    SV* sv_resolved_type_id = sv_2mortal(newSViv(resolved_type_id));
+    const char* type_name = type->name;
+    int32_t type_id = type->id;
+    SV* sv_type_id = sv_2mortal(newSViv(type_id));
     
-    hv_store(hv_resolved_type_symtable, resolved_type_name, strlen(resolved_type_name), SvREFCNT_inc(sv_resolved_type_id), 0);
+    hv_store(hv_type_symtable, type_name, strlen(type_name), SvREFCNT_inc(sv_type_id), 0);
   }
   
-  SV* sv_resolved_type_symtable = sv_2mortal(newRV_inc((SV*)hv_resolved_type_symtable));
-  hv_store(hv_self, "resolved_type_symtable", strlen("resolved_type_symtable"), SvREFCNT_inc(sv_resolved_type_symtable), 0);
+  SV* sv_type_symtable = sv_2mortal(newRV_inc((SV*)hv_type_symtable));
+  hv_store(hv_self, "type_symtable", strlen("type_symtable"), SvREFCNT_inc(sv_type_symtable), 0);
   
   XSRETURN(0);
 }
@@ -349,14 +348,14 @@ call_sub(...)
   int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
   
   # Argument return types
-  SV** sv_arg_resolved_type_names_ptr = av_fetch(av_sub_info, 1, 0);
-  SV* sv_arg_resolved_type_names = sv_arg_resolved_type_names_ptr ? *sv_arg_resolved_type_names_ptr : &PL_sv_undef;
-  AV* av_arg_resolved_type_names = (AV*)SvRV(sv_arg_resolved_type_names);
-  int32_t args_length = av_len(av_arg_resolved_type_names) + 1;
+  SV** sv_arg_type_names_ptr = av_fetch(av_sub_info, 1, 0);
+  SV* sv_arg_type_names = sv_arg_type_names_ptr ? *sv_arg_type_names_ptr : &PL_sv_undef;
+  AV* av_arg_type_names = (AV*)SvRV(sv_arg_type_names);
+  int32_t args_length = av_len(av_arg_type_names) + 1;
   
   # Return type
-  SV** sv_return_resolved_type_name_ptr = av_fetch(av_sub_info, 2, 0);
-  SV* sv_return_resolved_type_name = sv_return_resolved_type_name_ptr ? *sv_return_resolved_type_name_ptr : &PL_sv_undef;
+  SV** sv_return_type_name_ptr = av_fetch(av_sub_info, 2, 0);
+  SV* sv_return_type_name = sv_return_type_name_ptr ? *sv_return_type_name_ptr : &PL_sv_undef;
   
   // Get runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
@@ -380,44 +379,44 @@ call_sub(...)
     if (sv_isobject(sv_data) && sv_derived_from(sv_data, "SPVM::Data")) {
       HV* hv_data = (HV*)SvRV(sv_data);
       
-      SV** sv_data_resolved_type_name_ptr = hv_fetch(hv_data, "resolved_type_name", strlen("resolved_type_name"), 0);
-      SV* sv_data_resolved_type_name = sv_data_resolved_type_name_ptr ? *sv_data_resolved_type_name_ptr : &PL_sv_undef;
-      const char* data_resolved_type_name = SvPV_nolen(sv_data_resolved_type_name);
+      SV** sv_data_type_name_ptr = hv_fetch(hv_data, "type_name", strlen("type_name"), 0);
+      SV* sv_data_type_name = sv_data_type_name_ptr ? *sv_data_type_name_ptr : &PL_sv_undef;
+      const char* data_type_name = SvPV_nolen(sv_data_type_name);
       
-      SV** sv_arg_resolved_type_name_ptr = av_fetch(av_arg_resolved_type_names, arg_index, 0);
-      SV* sv_arg_resolved_type_name = sv_arg_resolved_type_name_ptr ? *sv_arg_resolved_type_name_ptr : &PL_sv_undef;
-      const char* arg_resolved_type_name = SvPV_nolen(sv_arg_resolved_type_name);
+      SV** sv_arg_type_name_ptr = av_fetch(av_arg_type_names, arg_index, 0);
+      SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
+      const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
       
-      if (!strEQ(data_resolved_type_name, arg_resolved_type_name)) {
-        croak("Argument data type need %s, but %s", arg_resolved_type_name, data_resolved_type_name);
+      if (!strEQ(data_type_name, arg_type_name)) {
+        croak("Argument data type need %s, but %s", arg_type_name, data_type_name);
       }
       
       SV** sv_value_ptr = hv_fetch(hv_data, "value", strlen("value"), 0);
       SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
       
-      if (strEQ(data_resolved_type_name, "byte")) {
+      if (strEQ(data_type_name, "byte")) {
         int8_t value = (int8_t)SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_byte(runtime, value);
       }
-      else if (strEQ(data_resolved_type_name, "short")) {
+      else if (strEQ(data_type_name, "short")) {
         int16_t value = (int16_t)SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_short(runtime, value);
       }
-      else if (strEQ(data_resolved_type_name, "int")) {
+      else if (strEQ(data_type_name, "int")) {
         int32_t value = (int32_t)SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_int(runtime, value);
       }
-      else if (strEQ(data_resolved_type_name, "long")) {
+      else if (strEQ(data_type_name, "long")) {
         int64_t value = (int64_t)SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_long(runtime, value);
       }
-      else if (strEQ(data_resolved_type_name, "float")) {
+      else if (strEQ(data_type_name, "float")) {
         int64_t value_int = (int64_t)SvIV(sv_value);
         float value;
         memcpy(&value, &value_int, sizeof(float));
         SPVM_RUNTIME_API_push_var_float(runtime, value);
       }
-      else if (strEQ(data_resolved_type_name, "double")) {
+      else if (strEQ(data_type_name, "double")) {
         int64_t spvm_value = (int64_t)SvIV(sv_value);
         double value;
         memcpy(&value, &spvm_value, sizeof(double));
@@ -434,38 +433,38 @@ call_sub(...)
   
   SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
   
-  if (SvOK(sv_return_resolved_type_name)) {
+  if (SvOK(sv_return_type_name)) {
     // Create data
     HV* hv_data = sv_2mortal((SV*)newHV());
     SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
     HV* hv_class = gv_stashpv("SPVM::Data", 0);
     sv_bless(sv_data, hv_class);
 
-    const char* return_resolved_type_name = SvPV_nolen(sv_return_resolved_type_name);
+    const char* return_type_name = SvPV_nolen(sv_return_type_name);
     SV* sv_value;
-    if (strEQ(return_resolved_type_name, "byte")) {
+    if (strEQ(return_type_name, "byte")) {
       int8_t return_value = SPVM_RUNTIME_API_pop_return_value_byte(runtime);
       sv_value = sv_2mortal(newSViv(return_value));
     }
-    else if (strEQ(return_resolved_type_name, "short")) {
+    else if (strEQ(return_type_name, "short")) {
       int16_t return_value = SPVM_RUNTIME_API_pop_return_value_short(runtime);
       sv_value = sv_2mortal(newSViv(return_value));
     }
-    else if (strEQ(return_resolved_type_name, "int")) {
+    else if (strEQ(return_type_name, "int")) {
       int32_t return_value = SPVM_RUNTIME_API_pop_return_value_int(runtime);
       sv_value = sv_2mortal(newSViv(return_value));
     }
-    else if (strEQ(return_resolved_type_name, "long")) {
+    else if (strEQ(return_type_name, "long")) {
       int64_t return_value = SPVM_RUNTIME_API_pop_return_value_long(runtime);
       sv_value = sv_2mortal(newSViv(return_value));
     }
-    else if (strEQ(return_resolved_type_name, "float")) {
+    else if (strEQ(return_type_name, "float")) {
       float return_value = SPVM_RUNTIME_API_pop_return_value_float(runtime);
       int64_t spvm_value;
       memcpy(&spvm_value, &return_value, sizeof(float));
       sv_value = sv_2mortal(newSViv(spvm_value));
     }
-    else if (strEQ(return_resolved_type_name, "double")) {
+    else if (strEQ(return_type_name, "double")) {
       double return_value = SPVM_RUNTIME_API_pop_return_value_double(runtime);
       int64_t spvm_value;
       memcpy(&spvm_value, &return_value, sizeof(double));
@@ -480,13 +479,13 @@ call_sub(...)
     hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
     
     // Store resolved type name
-    SV* sv_return_resolved_type_name = sv_2mortal(newSVpv(return_resolved_type_name, 0));
-    hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_return_resolved_type_name), 0);
+    SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
+    hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_return_type_name), 0);
     
     {
-      SV** sv_resolved_type_name_ptr = hv_fetch(hv_data, "resolved_type_name", strlen("resolved_type_name"), 0);
-      SV* sv_resolved_type_name = sv_resolved_type_name_ptr ? *sv_resolved_type_name_ptr : &PL_sv_undef;
-      const char* resolved_type_name = SvPV_nolen(sv_resolved_type_name);
+      SV** sv_type_name_ptr = hv_fetch(hv_data, "type_name", strlen("type_name"), 0);
+      SV* sv_type_name = sv_type_name_ptr ? *sv_type_name_ptr : &PL_sv_undef;
+      const char* type_name = SvPV_nolen(sv_type_name);
     }
     
     XPUSHs(sv_data);
@@ -517,8 +516,8 @@ byte(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("byte", 0));
-  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  SV* sv_type = sv_2mortal(newSVpv("byte", 0));
+  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -544,8 +543,8 @@ short(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("short", 0));
-  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  SV* sv_type = sv_2mortal(newSVpv("short", 0));
+  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -571,8 +570,8 @@ int(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("int", 0));
-  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  SV* sv_type = sv_2mortal(newSVpv("int", 0));
+  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -598,8 +597,8 @@ long(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("long", 0));
-  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  SV* sv_type = sv_2mortal(newSVpv("long", 0));
+  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -627,8 +626,8 @@ float(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("float", 0));
-  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  SV* sv_type = sv_2mortal(newSVpv("float", 0));
+  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -656,8 +655,8 @@ double(...)
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
-  SV* sv_resolved_type = sv_2mortal(newSVpv("double", 0));
-  hv_store(hv_data, "resolved_type_name", strlen("resolved_type_name"), SvREFCNT_inc(sv_resolved_type), 0);
+  SV* sv_type = sv_2mortal(newSVpv("double", 0));
+  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
   XPUSHs(sv_data);
   XSRETURN(1);

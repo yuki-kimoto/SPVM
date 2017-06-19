@@ -12,7 +12,6 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub);
 void SPVM_DUMPER_dump_my_var(SPVM_COMPILER* compiler, SPVM_MY_VAR* my_var);
 void SPVM_DUMPER_dump_enumeration_value(SPVM_COMPILER* compiler, SPVM_ENUMERATION_VALUE* enumeration_value);
 void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_ARRAY* packages);
-void SPVM_DUMPER_dump_resolved_types(SPVM_COMPILER* compiler, SPVM_ARRAY* resolved_types);
 void SPVM_DUMPER_dump_types(SPVM_COMPILER* compiler, SPVM_ARRAY* types);
 void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op);
 void SPVM_DUMPER_dump_constant_pool(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool);
