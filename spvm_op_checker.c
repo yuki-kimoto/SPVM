@@ -78,7 +78,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       return;
     }
     
-    _Bool success = SPVM_TYPE_resolve_type_v2(compiler, op_type, 0);
+    _Bool success = SPVM_TYPE_resolve_type(compiler, op_type, 0);
     
     if (!success) {
       compiler->fatal_error = 1;

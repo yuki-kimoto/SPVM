@@ -30,7 +30,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
 }
 
 // Resolve type and index type
-_Bool SPVM_TYPE_resolve_type_v2(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length) {
+_Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length) {
   
   SPVM_TYPE* type = op_type->uv.type;
   

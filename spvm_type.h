@@ -10,45 +10,6 @@ enum {
   SPVM_TYPE_C_CODE_ARRAY,
 };
 
-extern const char* const SPVM_TYPE_C_CODE_NAMES[];
-
-struct SPVM_type {
-  SPVM_TYPE* type;
-  const char* name;
-  int32_t id;
-  int32_t name_length;
-  union {
-    SPVM_OP* op_name;
-    SPVM_OP* op_type;
-  } uv;
-  int32_t code;
-};
-
-
-SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
-void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY* parts);
-_Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length);
-_Bool SPVM_TYPE_resolve_type_v2(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 enum {
   SPVM_TYPE_C_CORE_LENGTH = 12
 };
@@ -68,7 +29,25 @@ enum {
   SPVM_TYPE_C_ID_ARRAY_DOUBLE,
 };
 
+extern const char* const SPVM_TYPE_C_CODE_NAMES[];
 extern const char* const SPVM_TYPE_C_CORE_NAMES[];
+
+struct SPVM_type {
+  SPVM_TYPE* type;
+  const char* name;
+  int32_t id;
+  int32_t name_length;
+  union {
+    SPVM_OP* op_name;
+    SPVM_OP* op_type;
+  } uv;
+  int32_t code;
+};
+
+
+SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
+void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY* parts);
+_Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length);
 
 _Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type);
