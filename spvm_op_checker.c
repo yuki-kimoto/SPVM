@@ -18,7 +18,6 @@
 #include "spvm_var.h"
 #include "spvm_enumeration_value.h"
 #include "spvm_type.h"
-#include "spvm_type_part.h"
 #include "spvm_enumeration.h"
 #include "spvm_package.h"
 #include "spvm_name_info.h"

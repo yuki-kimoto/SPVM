@@ -5,7 +5,6 @@
 #include "spvm_compiler.h"
 #include "spvm_type.h"
 #include "spvm_array.h"
-#include "spvm_type_part.h"
 #include "spvm_op.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_hash.h"
@@ -46,8 +45,7 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
     SPVM_TYPE_build_parts(compiler, type, parts);
     
     for (int32_t i = 0; i < parts->length; i++) {
-      SPVM_TYPE_PART* part = SPVM_ARRAY_fetch(parts, i);
-      const char* part_name = part->value;
+      const char* part_name = SPVM_ARRAY_fetch(parts, i);
         
       // Core type or array
       if (strcmp(part_name, "boolean") == 0 || strcmp(part_name, "byte") == 0 || strcmp(part_name, "short") == 0 || strcmp(part_name, "int") == 0
@@ -100,15 +98,13 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
 void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY* parts) {
   
   if (type->code == SPVM_TYPE_C_CODE_NAME) {
-    SPVM_TYPE_PART* part = SPVM_TYPE_PART_new(compiler);
-    part->value = type->uv.op_name->uv.name;
+    const char* part = type->uv.op_name->uv.name;
     SPVM_ARRAY_push(parts, part);
   }
   else if (type->code == SPVM_TYPE_C_CODE_ARRAY) {
     SPVM_TYPE_build_parts(compiler, type->uv.op_type->uv.type, parts);
-    SPVM_TYPE_PART* type_part_openbracket = SPVM_TYPE_PART_new(compiler);
-    type_part_openbracket->value = "[]";
-    SPVM_ARRAY_push(parts, type_part_openbracket);
+    const char* part = "[]";
+    SPVM_ARRAY_push(parts, part);
   }
 }
 
