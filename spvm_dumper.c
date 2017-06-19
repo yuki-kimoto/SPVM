@@ -69,7 +69,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       printf(" \"%s\"", op_cur->uv.name);
     }
     else if (code == SPVM_OP_C_CODE_TYPE) {
-      printf(" \"%s\"", op_cur->uv.type->type->name);
+      printf(" \"%s\"", op_cur->uv.type->name);
     }
     printf("\n");
     
@@ -144,7 +144,7 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_ARRAY* op_packages)
     
     if (package->op_type) {
       SPVM_TYPE* type = package->op_type->uv.type;
-      printf("  type => \"%s\"\n", type->type->name);
+      printf("  type => \"%s\"\n", type->name);
     }
     
     printf("  byte_size => %" PRId32 "\n", package->fields_length);
@@ -445,7 +445,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       printf("      type => void\n");
     }
     else {
-      printf("      type => \"%s\"\n", sub->op_return_type->uv.type->type->name);
+      printf("      type => \"%s\"\n", sub->op_return_type->uv.type->name);
     }
     
     printf("      is_constant => %d\n", sub->is_constant);
@@ -490,7 +490,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     printf("      index => \"%" PRId32 "\"\n", field->index);
     
     SPVM_TYPE* type = field->op_type->uv.type;
-    printf("      type => \"%s\"\n", type->type->name);
+    printf("      type => \"%s\"\n", type->name);
     printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_get_byte_size(compiler, field));
     
     printf("      constant_pool_index => \"%" PRId32 "\"\n", field->constant_pool_index);
@@ -520,7 +520,7 @@ void SPVM_DUMPER_dump_my_var(SPVM_COMPILER* compiler, SPVM_MY_VAR* my_var) {
     printf("          name => \"%s\"\n", my_var->op_name->uv.name);
     
     SPVM_TYPE* type = my_var->op_type->uv.type;
-    printf("          type => \"%s\"\n", type->type->name);
+    printf("          type => \"%s\"\n", type->name);
     
   }
   else {

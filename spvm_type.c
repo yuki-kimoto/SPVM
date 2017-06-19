@@ -20,7 +20,6 @@ const char* const SPVM_TYPE_C_CODE_NAMES[] = {
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
   
-  type->type = NULL;
   type->code = 0;
   type->id = -1;
   type->name = NULL;
@@ -34,7 +33,7 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
   
   SPVM_TYPE* type = op_type->uv.type;
   
-  if (type->type) {
+  if (type->id >= 0) {
     return 1;
   }
   else {
@@ -80,15 +79,18 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
     // Create resolved type id
     SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type_name, strlen(type_name));
     if (found_type) {
-      type->type = found_type;
+      type->id = found_type->id;
+      type->name = found_type->name;
     }
     else {
-      SPVM_TYPE* type_tmp = SPVM_TYPE_new(compiler);
-      type_tmp->id = compiler->types->length;
-      type_tmp->name = type_name;
-      SPVM_ARRAY_push(compiler->types, type_tmp);
-      SPVM_HASH_insert(compiler->type_symtable, type_name, strlen(type_name), type_tmp);
-      type->type = type_tmp;
+      SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
+      new_type->id = compiler->types->length;
+      new_type->name = type_name;
+      SPVM_ARRAY_push(compiler->types, new_type);
+      SPVM_HASH_insert(compiler->type_symtable, type_name, strlen(type_name), new_type);
+      
+      type->id = new_type->id;
+      type->name = new_type->name;
     }
   }
   

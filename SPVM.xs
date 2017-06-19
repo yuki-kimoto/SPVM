@@ -196,7 +196,7 @@ build_sub_symtable(...)
       for (int32_t arg_index = 0; arg_index < op_args->length; arg_index++) {
         SPVM_OP* op_arg = SPVM_ARRAY_fetch(op_args, arg_index);
         SPVM_OP* op_arg_type = op_arg->uv.my_var->op_type;
-        const char* arg_type_name = op_arg_type->uv.type->type->name;
+        const char* arg_type_name = op_arg_type->uv.type->name;
         
         SV* sv_arg_type_name = sv_2mortal(newSVpv(arg_type_name, 0));
         av_push(av_arg_type_names, SvREFCNT_inc(sv_arg_type_name));
@@ -210,7 +210,7 @@ build_sub_symtable(...)
       SPVM_OP* op_return_type = sub->op_return_type;
       SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, op_return_type);
       if (return_type) {
-        const char* return_type_name = op_return_type->uv.type->type->name;
+        const char* return_type_name = op_return_type->uv.type->name;
         SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
         
         // 3. Push return type resolved id

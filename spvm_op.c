@@ -220,11 +220,7 @@ SPVM_OP* SPVM_OP_build_try_catch(SPVM_COMPILER* compiler, SPVM_OP* op_try, SPVM_
   
   // Create op_my_var from op_var
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
-  type->type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
-  
-  op_type->uv.type = type;
+  op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
   SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_var->file, op_var->line);
   op_name->uv.name = op_var->uv.var->op_name->uv.name;
@@ -458,7 +454,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_CODE_TYPE: {
       if (op->uv.type) {
-        type = op->uv.type->type;
+        type = op->uv.type;
       }
       break;
     }
@@ -478,14 +474,14 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_CODE_VAR: {
       SPVM_VAR* var = op->uv.var;
       if (var->op_my_var->uv.my_var->op_type) {
-        type = var->op_my_var->uv.my_var->op_type->uv.type->type;
+        type = var->op_my_var->uv.my_var->op_type->uv.type;
       }
       break;
     }
     case SPVM_OP_C_CODE_MY_VAR: {
       SPVM_MY_VAR* my_var = op->uv.my_var;
       if ( my_var->op_type) {
-        type = my_var->op_type->uv.type->type;
+        type = my_var->op_type->uv.type;
       }
       break;
     }
@@ -495,7 +491,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, abs_name, strlen(abs_name));
       SPVM_SUB* sub = op_sub->uv.sub;
       if (sub->op_return_type->code != SPVM_OP_C_CODE_VOID) {
-        type = sub->op_return_type->uv.type->type;
+        type = sub->op_return_type->uv.type;
       }
       break;
     }
@@ -504,7 +500,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       const char* abs_name = name_info->resolved_name;
       SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, abs_name, strlen(abs_name));
       SPVM_FIELD* field = op_field->uv.field;
-      type = field->op_type->uv.type->type;
+      type = field->op_type->uv.type;
       break;
     }
   }
@@ -632,7 +628,7 @@ void SPVM_OP_resolve_sub_name(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM
   
   const char* sub_abs_name = NULL;
   if (name_info->code == SPVM_NAME_INFO_C_CODE_VARBASENAME) {
-    const char* package_name = name_info->op_var->uv.var->op_my_var->uv.my_var->op_type->uv.type->type->name;
+    const char* package_name = name_info->op_var->uv.var->op_my_var->uv.my_var->op_type->uv.type->name;
     const char* sub_name = name_info->op_name->uv.name;
     sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
   }
@@ -891,10 +887,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           // Type
           SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_enumeration_value->file, op_enumeration_value->line);
-          SPVM_TYPE* return_type = SPVM_TYPE_new(compiler);
-          return_type->type = op_constant->uv.constant->type;
-          return_type->type = op_constant->uv.constant->type;
-          op_return_type->uv.type = return_type;
+          op_return_type->uv.type = op_constant->uv.constant->type;
 
           // Name
           SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_enumeration_value->file, op_enumeration_value->line);

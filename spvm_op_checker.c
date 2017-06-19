@@ -101,7 +101,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields, field_pos);
       SPVM_FIELD* field = op_field->uv.field;
-      SPVM_TYPE* field_type = field->op_type->uv.type->type;
+      SPVM_TYPE* field_type = field->op_type->uv.type;
       
       // Check field type
       if (SPVM_TYPE_is_array(compiler, field_type)) {
@@ -125,7 +125,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields, field_pos);
       SPVM_FIELD* field = op_field->uv.field;
-      SPVM_TYPE* field_type = field->op_type->uv.type->type;
+      SPVM_TYPE* field_type = field->op_type->uv.type;
       
       // Check field type
       if (SPVM_TYPE_is_array(compiler, field_type)) {
@@ -882,7 +882,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 case SPVM_OP_C_CODE_MALLOC: {
                   SPVM_OP* op_type = op_cur->first;
-                  SPVM_TYPE* type = op_type->uv.type->type;
+                  SPVM_TYPE* type = op_type->uv.type;
                   
                   if (SPVM_TYPE_is_array(compiler, type)) {
                     SPVM_OP* op_index_term = op_type->last;
@@ -990,9 +990,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     if (first_type) {
                       SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
-                      SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-                      type->type = first_type;
-                      op_type->uv.type = type;
+                      op_type->uv.type = first_type;
                       my_var->op_type = op_type;
                     }
                     else {
