@@ -576,6 +576,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_CODE_CONSTANT: {
       SPVM_CONSTANT* constant = op->uv.constant;
       type = constant->type;
+      assert(type);
       break;
     }
     case SPVM_OP_C_CODE_VAR: {

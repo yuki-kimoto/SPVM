@@ -702,6 +702,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             constant->uv.long_value = (int32_t)num;
             constant->resolved_type = SPVM_HASH_search(compiler->resolved_type_symtable, "int", strlen("int"));
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
           }
           // long
           else if (constant->code == SPVM_CONSTANT_C_CODE_LONG) {
