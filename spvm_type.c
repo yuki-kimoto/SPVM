@@ -24,6 +24,8 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   
   type->resolved_type = NULL;
   type->code = 0;
+  type->id = -1;
+  type->name = NULL;
   
   return type;
 }
