@@ -15,6 +15,9 @@ enum {
   
   /* Resolved types count limit */
   SPVM_LIMIT_C_RESOLVED_TYPES = INT32_MAX, 
+
+  /* Types count limit */
+  SPVM_LIMIT_C_TYPES = INT32_MAX, 
   
   /* Case statements count limit */
   SPVM_LIMIT_C_CASES = INT32_MAX,

@@ -29,6 +29,7 @@ struct SPVM_type {
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY* parts);
 _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length);
+_Bool SPVM_TYPE_resolve_type_v2(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length);
 
 
 

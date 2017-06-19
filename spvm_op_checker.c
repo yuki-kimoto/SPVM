@@ -85,7 +85,27 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       return;
     }
   }
-  
+
+  // Types
+  for (int32_t i = 0, len = op_types->length; i < len; i++) {
+    assert(compiler->types->length <= SPVM_LIMIT_C_TYPES);
+    
+    SPVM_OP* op_type = SPVM_ARRAY_fetch(op_types, i);
+    
+    if (compiler->types->length == SPVM_LIMIT_C_TYPES) {
+      SPVM_yyerror_format(compiler, "too many types at %s line %d\n", op_type->file, op_type->line);
+      compiler->fatal_error = 1;
+      return;
+    }
+    
+    _Bool success = SPVM_TYPE_resolve_type_v2(compiler, op_type, 0);
+    
+    if (!success) {
+      compiler->fatal_error = 1;
+      return;
+    }
+  }
+
   // Reorder fields. Reference types place before value types.
   SPVM_ARRAY* op_packages = compiler->op_packages;
   for (int32_t package_pos = 0; package_pos < op_packages->length; package_pos++) {
