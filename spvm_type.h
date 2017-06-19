@@ -16,6 +16,7 @@ struct SPVM_type {
   SPVM_RESOLVED_TYPE* resolved_type;
   const char* name;
   int32_t id;
+  int32_t name_length;
   union {
     SPVM_OP* op_name;
     SPVM_OP* op_type;

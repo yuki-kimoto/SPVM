@@ -25,6 +25,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   type->code = 0;
   type->id = -1;
   type->name = NULL;
+  type->name_length = 0;
   
   return type;
 }
@@ -32,7 +33,6 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
 // Resolve type and index type
 _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length) {
   
-  SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
   SPVM_TYPE* type = op_type->uv.type;
   
   if (type->resolved_type) {
@@ -55,6 +55,7 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
       }
       else {
         // Package
+        SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
         SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, part_name, strlen(part_name));
         if (op_found_package) {
           SPVM_ARRAY_push(resolved_type_part_names, (void*)part_name);
