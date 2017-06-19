@@ -16,7 +16,6 @@ enum {
 extern const char* const SPVM_CONSTANT_C_CODE_NAMES[];
 
 struct SPVM_constant {
-  SPVM_RESOLVED_TYPE* resolved_type;
   SPVM_TYPE* type;
   union {
     // byte, short, int value is saved to long_value

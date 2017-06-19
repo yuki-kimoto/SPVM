@@ -80,10 +80,6 @@ typedef struct SPVM_constant_pool SPVM_CONSTANT_POOL;
 struct SPVM_vmcode;
 typedef struct SPVM_vmcode SPVM_VMCODE;
 
-/* spvm_resolved_type.h */
-struct SPVM_resolved_type;
-typedef struct SPVM_resolved_type SPVM_RESOLVED_TYPE;
-
 /* spvm_assign.h */
 struct SPVM_assign;
 typedef struct SPVM_assign SPVM_ASSIGN;

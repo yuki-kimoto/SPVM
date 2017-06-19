@@ -62,12 +62,6 @@ struct SPVM_compiler {
   SPVM_ARRAY* op_types;
   
   // Resovled types
-  SPVM_ARRAY* resolved_types;
-  
-  // Resolved type symbol table
-  SPVM_HASH* resolved_type_symtable;
-
-  // Resovled types
   SPVM_ARRAY* types;
   
   // Resolved type symbol table
