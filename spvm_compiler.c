@@ -4,6 +4,7 @@
 
 #include "spvm_compiler.h"
 #include "spvm_resolved_type.h"
+#include "spvm_type.h"
 #include "spvm_package.h"
 #include "spvm_type.h"
 #include "spvm_op.h"
@@ -36,8 +37,11 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->bufptr = "";
   compiler->resolved_types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->resolved_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  compiler->type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->cur_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->cur_line = 0;
+
   
   compiler->start_sub_name = NULL;
   
@@ -62,14 +66,25 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   // Add core types
   for (int32_t i = 0; i < SPVM_TYPE_C_CORE_LENGTH; i++) {
-    // Resolved type
-    SPVM_RESOLVED_TYPE* resolved_type = SPVM_RESOLVED_TYPE_new(compiler);
+    {
+      // Resolved type
+      SPVM_RESOLVED_TYPE* resolved_type = SPVM_RESOLVED_TYPE_new(compiler);
+      const char* name = SPVM_TYPE_C_CORE_NAMES[i];
+      resolved_type->name = name;
+      resolved_type->name_length = strlen(name);
+      resolved_type->id = i;
+      SPVM_ARRAY_push(compiler->resolved_types, resolved_type);
+      SPVM_HASH_insert(compiler->resolved_type_symtable, name, strlen(name), resolved_type);
+    }
+    
+    // Type
+    SPVM_TYPE* type = SPVM_TYPE_new(compiler);
     const char* name = SPVM_TYPE_C_CORE_NAMES[i];
-    resolved_type->name = name;
-    resolved_type->name_length = strlen(name);
-    resolved_type->id = i;
-    SPVM_ARRAY_push(compiler->resolved_types, resolved_type);
-    SPVM_HASH_insert(compiler->resolved_type_symtable, name, strlen(name), resolved_type);
+    type->name = name;
+    type->name_length = strlen(name);
+    type->id = i;
+    SPVM_ARRAY_push(compiler->types, type);
+    SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
   }
   
   return compiler;

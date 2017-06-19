@@ -66,6 +66,12 @@ struct SPVM_compiler {
   
   // Resolved type symbol table
   SPVM_HASH* resolved_type_symtable;
+
+  // Resovled types
+  SPVM_ARRAY* types;
+  
+  // Resolved type symbol table
+  SPVM_HASH* type_symtable;
   
   // Current case statements in switch statement
   SPVM_ARRAY* cur_op_cases;
