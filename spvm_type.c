@@ -119,13 +119,8 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY*
     
     SPVM_TYPE_PART* type_part_openbracket = SPVM_TYPE_PART_new(compiler);
     type_part_openbracket->code = SPVM_TYPE_PART_C_CODE_CHAR;
-    type_part_openbracket->uv.char_name = "[";
+    type_part_openbracket->uv.char_name = "[]";
     SPVM_ARRAY_push(parts, type_part_openbracket);
-    
-    SPVM_TYPE_PART* type_part_closebracket = SPVM_TYPE_PART_new(compiler);
-    type_part_closebracket->code = SPVM_TYPE_PART_C_CODE_CHAR;
-    type_part_closebracket->uv.char_name = "]";
-    SPVM_ARRAY_push(parts, type_part_closebracket);
   }
 }
 
