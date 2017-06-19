@@ -47,35 +47,26 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
     
     for (int32_t i = 0; i < parts->length; i++) {
       SPVM_TYPE_PART* part = SPVM_ARRAY_fetch(parts, i);
-      if (part->code == SPVM_TYPE_PART_C_CODE_CHAR) {
-        name_length++;
-        SPVM_ARRAY_push(resolved_type_part_names, (void*)part->value);
-      }
-      else if (part->code == SPVM_TYPE_PART_C_CODE_NAME) {
-        const char* part_name = part->value;
+      const char* part_name = part->value;
         
-        // Core type
-        if (strcmp(part_name, "boolean") == 0 || strcmp(part_name, "byte") == 0 || strcmp(part_name, "short") == 0 || strcmp(part_name, "int") == 0
-          || strcmp(part_name, "long") == 0 || strcmp(part_name, "float") == 0 || strcmp(part_name, "double") == 0)
-        {
+      // Core type or array
+      if (strcmp(part_name, "boolean") == 0 || strcmp(part_name, "byte") == 0 || strcmp(part_name, "short") == 0 || strcmp(part_name, "int") == 0
+        || strcmp(part_name, "long") == 0 || strcmp(part_name, "float") == 0 || strcmp(part_name, "double") == 0 || strcmp(part_name, "[]") == 0)
+      {
+        SPVM_ARRAY_push(resolved_type_part_names, (void*)part_name);
+      }
+      else {
+        // Package
+        SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, part_name, strlen(part_name));
+        if (op_found_package) {
           SPVM_ARRAY_push(resolved_type_part_names, (void*)part_name);
         }
         else {
-          // Package
-          SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, part_name, strlen(part_name));
-          if (op_found_package) {
-            SPVM_ARRAY_push(resolved_type_part_names, (void*)part_name);
-          }
-          else {
-            SPVM_yyerror_format(compiler, "unknown package \"%s\" at %s line %d\n", part_name, op_type->file, op_type->line);
-            return 0;
-          }
+          SPVM_yyerror_format(compiler, "unknown package \"%s\" at %s line %d\n", part_name, op_type->file, op_type->line);
+          return 0;
         }
-        name_length += strlen(part_name);
       }
-      else {
-        assert(0);
-      }
+      name_length += strlen(part_name);
     }
     char* resolved_type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, name_length);
     
@@ -110,15 +101,12 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY*
   
   if (type->code == SPVM_TYPE_C_CODE_NAME) {
     SPVM_TYPE_PART* part = SPVM_TYPE_PART_new(compiler);
-    part->code = SPVM_TYPE_PART_C_CODE_NAME;
     part->value = type->uv.op_name->uv.name;
     SPVM_ARRAY_push(parts, part);
   }
   else if (type->code == SPVM_TYPE_C_CODE_ARRAY) {
     SPVM_TYPE_build_parts(compiler, type->uv.op_type->uv.type, parts);
-    
     SPVM_TYPE_PART* type_part_openbracket = SPVM_TYPE_PART_new(compiler);
-    type_part_openbracket->code = SPVM_TYPE_PART_C_CODE_CHAR;
     type_part_openbracket->value = "[]";
     SPVM_ARRAY_push(parts, type_part_openbracket);
   }

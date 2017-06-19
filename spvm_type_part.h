@@ -3,16 +3,10 @@
 
 #include "spvm_base.h"
 
-enum {
-  SPVM_TYPE_PART_C_CODE_NAME,
-  SPVM_TYPE_PART_C_CODE_CHAR
-};
-
 extern const char* const SPVM_TYPE_PART_C_CODE_NAMES[];
 
 struct SPVM_type_part {
   const char* value;
-  int32_t code;
 };
 
 SPVM_TYPE_PART* SPVM_TYPE_PART_new(SPVM_COMPILER* compiler);
