@@ -1,0 +1,12 @@
+./SPVM.xs:        SPVM_OP* op_arg_type = op_arg->uv.my_var->op_type;
+./spvm_dumper.c:      printf(" (my_var->index:%d)", var->op_my_var->uv.my_var->index);
+./spvm_bytecode_builder.c:  int32_t my_var_index = var->op_my_var->uv.my_var->index;
+./spvm_bytecode_builder.c:                int32_t my_var_index = op_my_var->uv.my_var->index;
+./spvm_bytecode_builder.c:                  int32_t my_var_index = op_var->uv.var->op_my_var->uv.my_var->index;
+./spvm_op.c:      if (var->op_my_var->uv.my_var->op_type) {
+./spvm_op.c:        resolved_type = var->op_my_var->uv.my_var->op_type->uv.type->resolved_type;
+./spvm_op.c:      if (var->op_my_var->uv.my_var->op_type) {
+./spvm_op.c:        type = var->op_my_var->uv.my_var->op_type->uv.type->type;
+./spvm_op.c:    const char* package_name = name_info->op_var->uv.var->op_my_var->uv.my_var->op_type->uv.type->resolved_type->name;
+./spvm_op_checker.c:          if (op_term_keep->uv.var->op_my_var->uv.my_var->index != op_my_var->uv.my_var->index) {
+./spvm_op_checker.c:                      op_name_var->uv.name = op_cur->uv.my_var->op_name->uv.name;
