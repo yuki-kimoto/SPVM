@@ -17,8 +17,6 @@
 #include "spvm_op.h"
 #include "spvm_enumeration_value.h"
 #include "spvm_type.h"
-#include "spvm_type_component_name.h"
-#include "spvm_type_component_array.h"
 #include "spvm_enumeration.h"
 #include "spvm_package.h"
 #include "spvm_resolved_type.h"

@@ -4,8 +4,6 @@
 
 #include "spvm_compiler.h"
 #include "spvm_type.h"
-#include "spvm_type_component_name.h"
-#include "spvm_type_component_array.h"
 #include "spvm_array.h"
 #include "spvm_type_part.h"
 #include "spvm_op.h"
@@ -111,13 +109,11 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY*
   if (type->code == SPVM_TYPE_C_CODE_NAME) {
     SPVM_TYPE_PART* part = SPVM_TYPE_PART_new(compiler);
     part->code = SPVM_TYPE_PART_C_CODE_NAME;
-    part->uv.op_name = type->uv.type_component_name->op_name;
+    part->uv.op_name = type->uv.op_name;
     SPVM_ARRAY_push(parts, part);
   }
   else if (type->code == SPVM_TYPE_C_CODE_ARRAY) {
-    SPVM_TYPE_COMPONENT_ARRAY* type_component_array = type->uv.type_component_array;
-    
-    SPVM_TYPE_build_parts(compiler, type_component_array->type, parts);
+    SPVM_TYPE_build_parts(compiler, type->uv.type, parts);
     
     SPVM_TYPE_PART* type_part_openbracket = SPVM_TYPE_PART_new(compiler);
     type_part_openbracket->code = SPVM_TYPE_PART_C_CODE_CHAR;

@@ -19,8 +19,6 @@
 #include "spvm_var.h"
 #include "spvm_enumeration_value.h"
 #include "spvm_type.h"
-#include "spvm_type_component_name.h"
-#include "spvm_type_component_array.h"
 #include "spvm_enumeration.h"
 #include "spvm_package.h"
 #include "spvm_name_info.h"
@@ -753,9 +751,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Type(type is same as package name)
     SPVM_TYPE* type = SPVM_TYPE_new(compiler);
     type->code = SPVM_TYPE_C_CODE_NAME;
-    SPVM_TYPE_COMPONENT_NAME* type_component_name = SPVM_TYPE_COMPONENT_NAME_new(compiler);
-    type_component_name->op_name = op_name_package;
-    type->uv.type_component_name = type_component_name;
+    type->uv.op_name = op_name_package;
     
     // Type OP
     SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name_package->file, op_name_package->line);
@@ -1193,14 +1189,10 @@ SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* 
 
 SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
-  // Type component name
-  SPVM_TYPE_COMPONENT_NAME* type_component_name = SPVM_TYPE_COMPONENT_NAME_new(compiler);
-  type_component_name->op_name = op_name;
-  
   // 
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->code = SPVM_TYPE_C_CODE_NAME;
-  type->uv.type_component_name = type_component_name;
+  type->uv.op_name = op_name;
 
   SPVM_OP* op_type_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name->file, op_name->line);
   SPVM_OP_sibling_splice(compiler, op_type_name, NULL, 0, op_name);
@@ -1272,14 +1264,10 @@ SPVM_OP* SPVM_OP_build_next(SPVM_COMPILER* compiler, SPVM_OP* op_next) {
 
 SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term_length) {
   
-  // Type array
-  SPVM_TYPE_COMPONENT_ARRAY* type_component_array = SPVM_TYPE_COMPONENT_ARRAY_new(compiler);
-  type_component_array->type = op_type->uv.type;
-  
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->code = SPVM_TYPE_C_CODE_ARRAY;
-  type->uv.type_component_array = type_component_array;
+  type->uv.type = op_type->uv.type;
   
   // Type OP
   SPVM_OP* op_type_array = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);

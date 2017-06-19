@@ -15,8 +15,8 @@ extern const char* const SPVM_TYPE_C_CODE_NAMES[];
 struct SPVM_type {
   SPVM_RESOLVED_TYPE* resolved_type;
   union {
-    SPVM_TYPE_COMPONENT_NAME* type_component_name;
-    SPVM_TYPE_COMPONENT_ARRAY* type_component_array;
+    SPVM_OP* op_name;
+    SPVM_TYPE* type;
   } uv;
   int32_t code;
 };
