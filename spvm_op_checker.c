@@ -324,16 +324,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     if (op_return_resolved_type) {
                       if (SPVM_RESOLVED_TYPE_is_numeric(compiler, op_return_resolved_type)) {
                         SPVM_OP* op_constant;
-                        if (op_return_resolved_type->id <= SPVM_RESOLVED_TYPE_C_ID_INT) {
+                        if (op_return_resolved_type->id <= SPVM_TYPE_C_ID_INT) {
                           op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
                         }
-                        else if (op_return_resolved_type->id == SPVM_RESOLVED_TYPE_C_ID_LONG) {
+                        else if (op_return_resolved_type->id == SPVM_TYPE_C_ID_LONG) {
                           op_constant = SPVM_OP_new_op_constant_long(compiler, 0, op_cur->file, op_cur->line);
                         }
-                        else if (op_return_resolved_type->id == SPVM_RESOLVED_TYPE_C_ID_FLOAT) {
+                        else if (op_return_resolved_type->id == SPVM_TYPE_C_ID_FLOAT) {
                           op_constant = SPVM_OP_new_op_constant_float(compiler, 0, op_cur->file, op_cur->line);
                         }
-                        else if (op_return_resolved_type->id == SPVM_RESOLVED_TYPE_C_ID_DOUBLE) {
+                        else if (op_return_resolved_type->id == SPVM_TYPE_C_ID_DOUBLE) {
                           op_constant = SPVM_OP_new_op_constant_double(compiler, 0, op_cur->file, op_cur->line);
                         }
                         else {
@@ -549,7 +549,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_RESOLVED_TYPE* term_resolved_type = SPVM_OP_get_resolved_type(compiler, op_switch_condition->first);
                   
                   // Check type
-                  if (!term_resolved_type || !(term_resolved_type->id == SPVM_RESOLVED_TYPE_C_ID_INT)) {
+                  if (!term_resolved_type || !(term_resolved_type->id == SPVM_TYPE_C_ID_INT)) {
                     SPVM_yyerror_format(compiler, "Switch condition need int value at %s line %d\n", op_cur->file, op_cur->line);
                     break;
                   }
@@ -841,7 +841,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_yyerror_format(compiler, "<< operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
                     break;
                   }
-                  if (last_resolved_type->id != SPVM_RESOLVED_TYPE_C_ID_INT) {
+                  if (last_resolved_type->id != SPVM_TYPE_C_ID_INT) {
                     SPVM_yyerror_format(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                     break;
                   }
@@ -857,7 +857,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_yyerror_format(compiler, ">> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
                     break;
                   }
-                  if (last_resolved_type->id != SPVM_RESOLVED_TYPE_C_ID_INT) {
+                  if (last_resolved_type->id != SPVM_TYPE_C_ID_INT) {
                     SPVM_yyerror_format(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                     break;
                   }
@@ -873,7 +873,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_yyerror_format(compiler, ">>> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
                     break;
                   }
-                  if (last_resolved_type->id > SPVM_RESOLVED_TYPE_C_ID_INT) {
+                  if (last_resolved_type->id > SPVM_TYPE_C_ID_INT) {
                     SPVM_yyerror_format(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                     break;
                   }
@@ -892,7 +892,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_yyerror_format(compiler, "new operator can't create array which don't have length \"%s\" at %s line %d\n", resolved_type->name, op_cur->file, op_cur->line);
                       break;
                     }
-                    else if (index_resolved_type->id != SPVM_RESOLVED_TYPE_C_ID_INT) {
+                    else if (index_resolved_type->id != SPVM_TYPE_C_ID_INT) {
                       SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", resolved_type->name, op_cur->file, op_cur->line);
                       break;
                     }
@@ -912,7 +912,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_RESOLVED_TYPE* last_resolved_type = SPVM_OP_get_resolved_type(compiler, op_cur->last);
                   
                   // Can receive only core type
-                  if (first_resolved_type->id >= SPVM_RESOLVED_TYPE_C_ID_FLOAT || last_resolved_type->id >= SPVM_RESOLVED_TYPE_C_ID_FLOAT) {
+                  if (first_resolved_type->id >= SPVM_TYPE_C_ID_FLOAT || last_resolved_type->id >= SPVM_TYPE_C_ID_FLOAT) {
                     SPVM_yyerror_format(compiler,
                       "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                     break;
@@ -925,7 +925,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_RESOLVED_TYPE* last_resolved_type = SPVM_OP_get_resolved_type(compiler, op_cur->last);
                   
                   // Can receive only core type
-                  if (first_resolved_type->id >= SPVM_RESOLVED_TYPE_C_ID_FLOAT || last_resolved_type->id >= SPVM_RESOLVED_TYPE_C_ID_FLOAT) {
+                  if (first_resolved_type->id >= SPVM_TYPE_C_ID_FLOAT || last_resolved_type->id >= SPVM_TYPE_C_ID_FLOAT) {
                     SPVM_yyerror_format(compiler,
                       "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                     break;
@@ -938,7 +938,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_RESOLVED_TYPE* last_resolved_type = SPVM_OP_get_resolved_type(compiler, op_cur->last);
                   
                   // Can receive only core type
-                  if (first_resolved_type->id >= SPVM_RESOLVED_TYPE_C_ID_FLOAT || last_resolved_type->id >= SPVM_RESOLVED_TYPE_C_ID_FLOAT) {
+                  if (first_resolved_type->id >= SPVM_TYPE_C_ID_FLOAT || last_resolved_type->id >= SPVM_TYPE_C_ID_FLOAT) {
                     SPVM_yyerror_format(compiler,
                       "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                     break;
@@ -970,7 +970,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Last value must be integer
-                  if (last_resolved_type->id != SPVM_RESOLVED_TYPE_C_ID_INT) {
+                  if (last_resolved_type->id != SPVM_TYPE_C_ID_INT) {
                     SPVM_yyerror_format(compiler, "array index must be int at %s line %d\n", op_cur->file, op_cur->line);
                     break;
                   }
@@ -1277,7 +1277,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_RESOLVED_TYPE* first_resolved_type = SPVM_OP_get_resolved_type(compiler, op_first);
                   
                   // Only int or long
-                  if (first_resolved_type->id > SPVM_RESOLVED_TYPE_C_ID_LONG) {
+                  if (first_resolved_type->id > SPVM_TYPE_C_ID_LONG) {
                     SPVM_yyerror_format(compiler, "Type of increment or decrement target must be integral at %s line %d\n", op_cur->file, op_cur->line);
                     break;
                   }

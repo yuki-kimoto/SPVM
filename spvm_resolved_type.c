@@ -4,21 +4,7 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_package.h"
 #include "spvm_compiler.h"
-
-const char* const SPVM_RESOLVED_TYPE_C_CORE_NAMES[] = {
-  "byte",
-  "short",
-  "int",
-  "long",
-  "float",
-  "double",
-  "byte[]",
-  "short[]",
-  "int[]",
-  "long[]",
-  "float[]",
-  "double[]",
-};
+#include "spvm_type.h"
 
 SPVM_RESOLVED_TYPE* SPVM_RESOLVED_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_RESOLVED_TYPE* resolved_type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_RESOLVED_TYPE));
@@ -65,7 +51,7 @@ _Bool SPVM_RESOLVED_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_RESOLVED
 _Bool SPVM_RESOLVED_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_RESOLVED_TYPE* resolved_type) {
   (void)compiler;
   
-  if (resolved_type->id <= SPVM_RESOLVED_TYPE_C_ID_LONG) {
+  if (resolved_type->id <= SPVM_TYPE_C_ID_LONG) {
     return 1;
   }
   else {
@@ -76,7 +62,7 @@ _Bool SPVM_RESOLVED_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_RESOLVED_TYPE
 _Bool SPVM_RESOLVED_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_RESOLVED_TYPE* resolved_type) {
   (void)compiler;
   
-  if (resolved_type && resolved_type->id <= SPVM_RESOLVED_TYPE_C_ID_DOUBLE) {
+  if (resolved_type && resolved_type->id <= SPVM_TYPE_C_ID_DOUBLE) {
     return 1;
   }
   else {

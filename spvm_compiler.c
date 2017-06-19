@@ -61,10 +61,10 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->entry_point_sub_name = NULL;
 
   // Add core types
-  for (int32_t i = 0; i < SPVM_RESOLVED_TYPE_C_CORE_LENGTH; i++) {
+  for (int32_t i = 0; i < SPVM_TYPE_C_CORE_LENGTH; i++) {
     // Resolved type
     SPVM_RESOLVED_TYPE* resolved_type = SPVM_RESOLVED_TYPE_new(compiler);
-    const char* name = SPVM_RESOLVED_TYPE_C_CORE_NAMES[i];
+    const char* name = SPVM_TYPE_C_CORE_NAMES[i];
     resolved_type->name = name;
     resolved_type->name_length = strlen(name);
     resolved_type->id = i;
