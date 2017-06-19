@@ -4,9 +4,8 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_TYPE_PART_C_CODE_SUB,
   SPVM_TYPE_PART_C_CODE_NAME,
-  SPVM_TYPE_PART_C_CODE_BYTE
+  SPVM_TYPE_PART_C_CODE_CHAR
 };
 
 extern const char* const SPVM_TYPE_PART_C_CODE_NAMES[];
