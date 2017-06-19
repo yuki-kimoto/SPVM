@@ -66,7 +66,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
     // Resolved type
     SPVM_RESOLVED_TYPE* resolved_type = SPVM_RESOLVED_TYPE_new(compiler);
     const char* name = SPVM_RESOLVED_TYPE_C_CORE_NAMES[i];
-    SPVM_ARRAY_push(resolved_type->part_names, (char*)name);
     resolved_type->name = name;
     resolved_type->name_length = strlen(name);
     resolved_type->id = i;

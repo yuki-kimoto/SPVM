@@ -25,7 +25,6 @@ enum {
 extern const char* const SPVM_RESOLVED_TYPE_C_CORE_NAMES[];
 
 struct SPVM_resolved_type {
-  SPVM_ARRAY* part_names;
   const char* name;
   int32_t name_length;
   int32_t id;

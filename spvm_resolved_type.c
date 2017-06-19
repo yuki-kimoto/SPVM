@@ -23,8 +23,6 @@ const char* const SPVM_RESOLVED_TYPE_C_CORE_NAMES[] = {
 SPVM_RESOLVED_TYPE* SPVM_RESOLVED_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_RESOLVED_TYPE* resolved_type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_RESOLVED_TYPE));
   
-  resolved_type->part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  
   return resolved_type;
 }
 
