@@ -52,7 +52,7 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
         SPVM_ARRAY_push(resolved_type_part_names, (void*)part->uv.char_name);
       }
       else if (part->code == SPVM_TYPE_PART_C_CODE_NAME) {
-        const char* part_name = part->uv.op_name->uv.name;
+        const char* part_name = part->uv.char_name;
         
         // Core type
         if (strcmp(part_name, "boolean") == 0 || strcmp(part_name, "byte") == 0 || strcmp(part_name, "short") == 0 || strcmp(part_name, "int") == 0
@@ -111,7 +111,7 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY*
   if (type->code == SPVM_TYPE_C_CODE_NAME) {
     SPVM_TYPE_PART* part = SPVM_TYPE_PART_new(compiler);
     part->code = SPVM_TYPE_PART_C_CODE_NAME;
-    part->uv.op_name = type->uv.op_name;
+    part->uv.char_name = type->uv.op_name->uv.name;
     SPVM_ARRAY_push(parts, part);
   }
   else if (type->code == SPVM_TYPE_C_CODE_ARRAY) {
