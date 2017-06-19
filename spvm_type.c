@@ -209,14 +209,14 @@ const char* const SPVM_TYPE_C_CORE_NAMES[] = {
   "double[]",
 };
 
-_Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type) {
+_Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  int32_t length = (int32_t)strlen(resolved_type->name);
+  int32_t length = (int32_t)strlen(type->name);
   
-  if (strlen(resolved_type->name) >= 2) {
-    char char1 = resolved_type->name[length - 2];
-    char char2 = resolved_type->name[length - 1];
+  if (strlen(type->name) >= 2) {
+    char char1 = type->name[length - 2];
+    char char2 = type->name[length - 1];
     
     if (char1 == '[' && char2 == ']') {
       return 1;
@@ -230,10 +230,10 @@ _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type) {
   }
 }
 
-_Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type) {
+_Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  const char* name = resolved_type->name;
+  const char* name = type->name;
   
   if (strcmp(name, "char[]") == 0 || strcmp(name, "byte[]") == 0 || strcmp(name, "short[]") == 0
     || strcmp(name, "int[]") == 0 || strcmp(name, "long[]") == 0 || strcmp(name, "float[]") == 0 || strcmp(name, "double[]") == 0)
@@ -245,10 +245,10 @@ _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_ty
   }
 }
 
-_Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type) {
+_Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  if (resolved_type->id <= SPVM_TYPE_C_ID_LONG) {
+  if (type->id <= SPVM_TYPE_C_ID_LONG) {
     return 1;
   }
   else {
@@ -256,10 +256,10 @@ _Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type) {
   }
 }
 
-_Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type) {
+_Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  if (resolved_type && resolved_type->id <= SPVM_TYPE_C_ID_DOUBLE) {
+  if (type && type->id <= SPVM_TYPE_C_ID_DOUBLE) {
     return 1;
   }
   else {

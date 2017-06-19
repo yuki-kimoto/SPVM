@@ -71,10 +71,10 @@ enum {
 
 extern const char* const SPVM_TYPE_C_CORE_NAMES[];
 
-_Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type);
-_Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type);
-_Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type);
-_Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* resolved_type);
+_Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 
 
 #endif
