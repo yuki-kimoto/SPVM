@@ -8,7 +8,7 @@ core.*
 blib/*
 *.old
 MYMETA.yml
-Makefile
+/Makefile
 pm_to_blib
 MYMETA.json
 SPVM.c
