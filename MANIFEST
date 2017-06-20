@@ -23,6 +23,7 @@ solo/t/spvm_t_array.c
 solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
 SPVM.xs
+spvm_api.h
 spvm_array.c
 spvm_array.h
 spvm_base.h
@@ -40,10 +41,6 @@ spvm_constant.c
 spvm_constant.h
 spvm_constant_pool.c
 spvm_constant_pool.h
-spvm_constant_pool_field.h
-spvm_constant_pool_package.h
-spvm_constant_pool_sub.h
-spvm_data_api.h
 spvm_descriptor.c
 spvm_descriptor.h
 spvm_dumper.c
