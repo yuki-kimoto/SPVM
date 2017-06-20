@@ -23,6 +23,9 @@ typedef struct SPVM_data_object SPVM_DATA_OBJECT;
 struct SPVM_constant_pool_package;
 typedef struct SPVM_constant_pool_package SPVM_CONSTANT_POOL_PACKAGE;
 
+struct SPVM_constant_pool_field;
+typedef struct SPVM_constant_pool_field SPVM_CONSTANT_POOL_FIELD;
+
 // SPVM_VALUE
 union SPVM_value {
   int8_t byte_value;
@@ -84,6 +87,13 @@ struct SPVM_constant_pool_package {
   int32_t fields_length;
   int32_t ref_fields_length;
   int32_t field_name_indexes_constant_pool_index;
+};
+
+// Array
+struct SPVM_constant_pool_field {
+  int32_t abs_name_constant_pool_index;
+  int32_t name_constant_pool_index;
+  int32_t index;
 };
 
 static inline int32_t SPVM_DATA_API_get_array_value_size(int32_t type) {

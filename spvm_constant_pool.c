@@ -8,7 +8,6 @@
 #include "spvm_package.h"
 #include "spvm_field.h"
 #include "spvm_sub.h"
-#include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_sub.h"
 #include "spvm_util_allocator.h"
 #include "spvm_array.h"

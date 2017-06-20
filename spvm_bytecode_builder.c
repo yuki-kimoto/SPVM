@@ -25,7 +25,6 @@
 #include "spvm_switch_info.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
-#include "spvm_constant_pool_field.h"
 #include "spvm_type.h"
 #include "spvm_limit.h"
 #include "spvm_data_api.h"
