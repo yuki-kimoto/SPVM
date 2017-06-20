@@ -18,7 +18,7 @@
 #include "spvm_runtime_allocator.h"
 #include "spvm_op.h"
 #include "spvm_sub.h"
-#include "spvm_data_api.h"
+#include "spvm_api.h"
 #include "spvm_package.h"
 #include "spvm_sub.h"
 #include "spvm_my_var.h"
@@ -284,8 +284,8 @@ build_runtime(...)
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
   
   // Copy constant pool to runtime
-  runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
-  memcpy(runtime->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
+  runtime->env->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
+  memcpy(runtime->env->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
 
   // Copy bytecodes to runtime
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));

@@ -25,6 +25,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   runtime->call_stack_capacity = 0xFF;
   runtime->call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(runtime->call_stack_capacity, sizeof(SPVM_VALUE));
   
+  runtime->env = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_ENV));
+  
   SPVM_RUNTIME_init(runtime);
   
   return runtime;
@@ -250,8 +252,11 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
   };
   
+  // Environment
+  SPVM_ENV* env = runtime->env;
+  
   // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
+  int32_t* constant_pool = env->constant_pool;
   
   // Bytecode
   uint8_t* bytecodes = runtime->bytecodes;
@@ -1836,7 +1841,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
     }
     
     // Set constant pool
-    data_object->constant_pool = runtime->constant_pool;
+    data_object->constant_pool = runtime->env->constant_pool;
     
     // Set type
     data_object->type = SPVM_DATA_C_TYPE_OBJECT;
@@ -1850,7 +1855,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
     // Package constant pool index
     data_object->package_constant_pool_index = package_constant_pool_index;
     
-    data_object->constant_pool = runtime->constant_pool;
+    data_object->constant_pool = runtime->env->constant_pool;
     
     data_object->field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
     

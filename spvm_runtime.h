@@ -20,9 +20,9 @@ struct SPVM_runtime {
   
   // Operand stack top
   int32_t operand_stack_top;
-
-  // Constant pool
-  int32_t* constant_pool;
+  
+  // Env
+  SPVM_ENV* env;
   
   // Bytecodes
   uint8_t* bytecodes;
