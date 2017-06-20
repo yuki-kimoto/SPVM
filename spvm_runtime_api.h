@@ -12,7 +12,7 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 #include "spvm_runtime_allocator.h"
-#include "spvm_data_api.h"
+#include "spvm_api.h"
 
 static inline int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_RUNTIME* runtime, SPVM_DATA* data) {
   

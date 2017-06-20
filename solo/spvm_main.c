@@ -13,7 +13,7 @@
 #include "../spvm_runtime_allocator.h"
 #include "../spvm_op.h"
 #include "../spvm_sub.h"
-#include "../spvm_data_api.h"
+#include "../spvm_api.h"
 
 int main(int argc, char *argv[])
 {

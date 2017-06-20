@@ -26,7 +26,7 @@
 #include "spvm_constant_pool.h"
 #include "spvm_type.h"
 #include "spvm_limit.h"
-#include "spvm_data_api.h"
+#include "spvm_api.h"
 
 
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {

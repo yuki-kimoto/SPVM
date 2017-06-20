@@ -9,7 +9,7 @@
 #include "spvm_runtime_api.h"
 #include "spvm_runtime_allocator.h"
 #include "spvm_bytecode.h"
-#include "spvm_data_api.h"
+#include "spvm_api.h"
 #include "spvm_util_allocator.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {

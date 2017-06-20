@@ -1,5 +1,5 @@
-#ifndef SPVM_DATA_API_H
-#define SPVM_DATA_API_H
+#ifndef SPVM_API_H
+#define SPVM_API_H
 
 #include <stdint.h>
 #include <assert.h>

@@ -11,7 +11,7 @@
 #include "spvm_util_allocator.h"
 #include "spvm_array.h"
 #include "spvm_op.h"
-#include "spvm_data_api.h"
+#include "spvm_api.h"
 
 SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM_COMPILER* compiler) {
   (void)compiler;
