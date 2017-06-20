@@ -29,6 +29,9 @@ typedef struct SPVM_constant_pool_field SPVM_CONSTANT_POOL_FIELD;
 struct SPVM_constant_pool_sub;
 typedef struct SPVM_constant_pool_sub SPVM_CONSTANT_POOL_SUB;
 
+struct SPVM_env;
+typedef struct SPVM_env SPVM_ENV;
+
 // SPVM_VALUE
 union SPVM_value {
   int8_t byte_value;
@@ -54,6 +57,10 @@ struct SPVM_data {
   int32_t* constant_pool;
   int8_t type;
   int32_t ref_count;
+};
+
+struct SPVM_env {
+  int32_t* constant_pool;
 };
 
 // SPVM_DATA_ARRAY

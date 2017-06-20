@@ -16,10 +16,6 @@ typedef struct SPVM_runtime_allocator SPVM_RUNTIME_ALLOCATOR;
 struct SPVM_compiler_allocator;
 typedef struct SPVM_compiler_allocator SPVM_COMPILER_ALLOCATOR;
 
-/* spvm_env.h */
-struct SPVM_env;
-typedef struct SPVM_env SPVM_ENV;
-
 /* spvm_heap.h */
 struct SPVM_heap;
 typedef struct SPVM_heap SPVM_HEAP;
