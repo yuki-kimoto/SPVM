@@ -21,7 +21,7 @@ static inline int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_RUNTIME* ru
   // Reference is string
   if (data->type == SPVM_DATA_C_TYPE_ARRAY) {
     SPVM_DATA_ARRAY* data_array = (SPVM_DATA_ARRAY*)data;
-    byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + data_array->length * SPVM_DATA_API_get_array_value_size(data_array->value_type);
+    byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + data_array->length * SPVM_API_get_array_value_size(runtime->env, data_array->value_type);
   }
   // Reference is object
   else if (data->type == SPVM_DATA_C_TYPE_OBJECT) {

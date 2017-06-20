@@ -13,9 +13,9 @@ void SPVM_EXTENTION_std__sum_int(SPVM_RUNTIME* runtime) {
   
   SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(runtime, 0);
   
-  int32_t length = SPVM_DATA_API_get_array_length(data_array);
+  int32_t length = SPVM_API_get_array_length(runtime->env, data_array);
   
-  int32_t* values = SPVM_DATA_API_get_array_values_int(data_array);
+  int32_t* values = SPVM_API_get_array_values_int(runtime->env, data_array);
   
   int64_t total = 0;
   for (int32_t i = 0; i < length; i++) {
@@ -30,8 +30,8 @@ void SPVM_EXTENTION_std__print(SPVM_RUNTIME* runtime) {
   
   SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(runtime, 0);
 
-  int32_t length = SPVM_DATA_API_get_array_length(data_array);
-  int8_t* string = SPVM_DATA_API_get_array_values_byte(data_array);
+  int32_t length = SPVM_API_get_array_length(runtime->env, data_array);
+  int8_t* string = SPVM_API_get_array_values_byte(runtime->env, data_array);
   
   for (int32_t i = 0; i < length; i++) {
     putchar((int)string[i]);
@@ -43,9 +43,9 @@ void SPVM_EXTENTION_std__println(SPVM_RUNTIME* runtime) {
   
   SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(runtime, 0);
 
-  int32_t length = SPVM_DATA_API_get_array_length(data_array);
+  int32_t length = SPVM_API_get_array_length(runtime->env, data_array);
   
-  int8_t* string = SPVM_DATA_API_get_array_values_byte(data_array);
+  int8_t* string = SPVM_API_get_array_values_byte(runtime->env, data_array);
   
   for (int32_t i = 0; i < length; i++) {
     putchar((int)string[i]);

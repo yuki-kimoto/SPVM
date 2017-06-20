@@ -470,7 +470,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
       total_length = strlen(exception);
     }
     else {
-      total_length += SPVM_DATA_API_get_array_length(return_value);
+      total_length += SPVM_API_get_array_length(env, return_value);
     }
     total_length += strlen(from);
     total_length += strlen(sub_name);
@@ -494,10 +494,10 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
       memcpy(
         (void*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE),
         (void*)((intptr_t)return_value + SPVM_DATA_C_HEADER_BYTE_SIZE),
-        SPVM_DATA_API_get_array_length(return_value)
+        SPVM_API_get_array_length(env, return_value)
       );
       sprintf(
-        (char*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE + SPVM_DATA_API_get_array_length(return_value)),
+        (char*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE + SPVM_API_get_array_length(env, return_value)),
         "%s%s%s%s",
         from,
         sub_name,
@@ -508,7 +508,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
     
     // Free original string if need
     if (return_value != NULL) {
-      int32_t ref_count = SPVM_DATA_API_get_ref_count(return_value);
+      int32_t ref_count = SPVM_API_get_ref_count(env, return_value);
       if (ref_count == 0) {
         SPVM_RUNTIME_ALLOCATOR_free_data(runtime, runtime->allocator, return_value);
       }
@@ -1871,7 +1871,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
   case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY: {
     int32_t value_type = *(pc + 1);
     
-    int32_t size = SPVM_DATA_API_get_array_value_size(value_type);
+    int32_t size = SPVM_API_get_array_value_size(env, value_type);
     
     // Array length
     int32_t length = call_stack[operand_stack_top].int_value;
