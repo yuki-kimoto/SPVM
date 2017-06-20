@@ -1840,9 +1840,6 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
       abort();
     }
     
-    // Set constant pool
-    data_object->constant_pool = runtime->env->constant_pool;
-    
     // Set type
     data_object->type = SPVM_DATA_C_TYPE_OBJECT;
     
@@ -1854,8 +1851,6 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
     
     // Package constant pool index
     data_object->package_constant_pool_index = package_constant_pool_index;
-    
-    data_object->constant_pool = runtime->env->constant_pool;
     
     data_object->field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
     

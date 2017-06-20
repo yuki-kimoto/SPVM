@@ -53,19 +53,19 @@ enum {
   SPVM_DATA_C_TYPE_ARRAY = 1,
 };
 
+// SPVM_DATA
 struct SPVM_data {
-  int32_t* constant_pool;
   int8_t type;
   int32_t ref_count;
 };
 
+// SPVM_ENV
 struct SPVM_env {
   int32_t* constant_pool;
 };
 
 // SPVM_DATA_ARRAY
 struct SPVM_data_array {
-  int32_t* constant_pool;
   int8_t type;
   int8_t value_type;
   int32_t ref_count;
@@ -84,14 +84,13 @@ enum {
 
 // SPVM_DATA_OBJECT
 struct SPVM_data_object {
-  int32_t* constant_pool;
   int8_t type;
   int32_t ref_count;
   int32_t package_constant_pool_index;
   int32_t field_name_indexes_constant_pool_index;
 };
 
-// CONSTANT_POOL_PACKAGE
+// SPVM_CONSTANT_POOL_PACKAGE
 struct SPVM_constant_pool_package {
   int32_t name_constant_pool_index;
   int32_t fields_length;
@@ -99,14 +98,14 @@ struct SPVM_constant_pool_package {
   int32_t field_name_indexes_constant_pool_index;
 };
 
-// CONSTANT_POOL_FIELD
+// SPVM_CONSTANT_POOL_FIELD
 struct SPVM_constant_pool_field {
   int32_t abs_name_constant_pool_index;
   int32_t name_constant_pool_index;
   int32_t index;
 };
 
-// CONSTANT_POOL_SUB
+// SPVM_CONSTANT_POOL_SUB
 struct SPVM_constant_pool_sub {
   void* native_address;
   int32_t bytecode_base;
@@ -145,7 +144,7 @@ static inline int32_t SPVM_API_get_object_field_index(SPVM_ENV* env, SPVM_DATA_O
   (void)env;
   
   int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
-  int32_t* constant_pool = data_object->constant_pool;
+  int32_t* constant_pool = env->constant_pool;
   int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
   int32_t field_index = -1;
@@ -172,7 +171,7 @@ static inline int32_t SPVM_API_get_object_fields_length(SPVM_ENV* env, SPVM_DATA
   
   int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
   
-  int32_t* constant_pool = data_object->constant_pool;
+  int32_t* constant_pool = env->constant_pool;
   
   int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
@@ -299,7 +298,7 @@ static inline int32_t SPVM_API_dump_object_field_names(SPVM_ENV* env, SPVM_DATA_
   
   int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
   
-  int32_t* constant_pool = data_object->constant_pool;
+  int32_t* constant_pool = env->constant_pool;
   
   int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
@@ -312,10 +311,10 @@ static inline int32_t SPVM_API_dump_object_field_names(SPVM_ENV* env, SPVM_DATA_
   return length;
 }
 
-static inline int32_t* SPVM_API_get_constant_pool(SPVM_ENV* env, SPVM_DATA* data) {
+static inline int32_t* SPVM_API_get_constant_pool(SPVM_ENV* env) {
   (void)env;
   
-  return data->constant_pool;
+  return env->constant_pool;
 }
 
 static inline int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_DATA* data) {
