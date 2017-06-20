@@ -60,10 +60,6 @@ typedef struct SPVM_bytecode SPVM_BYTECODE;
 struct SPVM_vmcodes;
 typedef struct SPVM_vmcodes SPVM_VMCODES;
 
-/* spvm_constant_pool_sub.h */
-struct SPVM_constant_pool_sub;
-typedef struct SPVM_constant_pool_sub SPVM_CONSTANT_POOL_SUB;
-
 /* spvm_constant_pool.h */
 struct SPVM_constant_pool;
 typedef struct SPVM_constant_pool SPVM_CONSTANT_POOL;
