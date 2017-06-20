@@ -199,9 +199,11 @@ Absolute name is combination of package name and subroutine name, or package nam
 
 # Development
 
+For compile, bison command is needed.
+
 ## Run
     
-    make -f solo/Makefile DEFINE=-DDEBUG  && ./spvm Test
+   yacc/bison.sh && make -f solo/Makefile DEFINE=-DDEBUG && ./spvm Test
 
 ## Test
     
