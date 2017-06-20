@@ -61,15 +61,15 @@ value(...)
       sv_return_value = sv_2mortal(newSViv(value));
     }
     else if (strEQ(type_name, "float")) {
-      int64_t value_int = (int64_t)SvIV(sv_value);
+      IV iv_value = SvIV(sv_value);
       float value;
-      memcpy(&value, &value_int, sizeof(float));
+      memcpy(&value, &iv_value, sizeof(float));
       sv_return_value = sv_2mortal(newSVnv(value));
     }
     else if (strEQ(type_name, "double")) {
-      int64_t value_int = (int64_t)SvIV(sv_value);
+      IV iv_value = SvIV(sv_value);
       double value;
-      memcpy(&value, &value_int, sizeof(double));
+      memcpy(&value, &iv_value, sizeof(double));
       sv_return_value = sv_2mortal(newSVnv(value));
     }
     else {
@@ -399,7 +399,7 @@ call_sub(...)
         SPVM_RUNTIME_API_push_var_byte(runtime, value);
       }
       else if (strEQ(data_type_name, "short")) {
-        int16_t value = (int16_t)SvIV(sv_value);
+        IV value = SvIV(sv_value);
         SPVM_RUNTIME_API_push_var_short(runtime, value);
       }
       else if (strEQ(data_type_name, "int")) {
@@ -411,15 +411,15 @@ call_sub(...)
         SPVM_RUNTIME_API_push_var_long(runtime, value);
       }
       else if (strEQ(data_type_name, "float")) {
-        int64_t value_int = (int64_t)SvIV(sv_value);
+        IV iv_value = SvIV(sv_value);
         float value;
-        memcpy(&value, &value_int, sizeof(float));
+        memcpy(&value, &iv_value, sizeof(float));
         SPVM_RUNTIME_API_push_var_float(runtime, value);
       }
       else if (strEQ(data_type_name, "double")) {
-        int64_t spvm_value = (int64_t)SvIV(sv_value);
+        IV iv_value = SvIV(sv_value);
         double value;
-        memcpy(&value, &spvm_value, sizeof(double));
+        memcpy(&value, &iv_value, sizeof(double));
         SPVM_RUNTIME_API_push_var_double(runtime, value);
       }
       else {

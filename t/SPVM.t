@@ -59,12 +59,12 @@ is_deeply(
 
 # float
 {
-  my $total = SPVM::XSTest::sum_float(SPVM::float(0.1), SPVM::float(0.1));
-  is(sprintf("%.5f", $total->value), "0.20000");
+  my $total = SPVM::XSTest::sum_float(SPVM::float(0.25), SPVM::float(0.25));
+  cmp_ok($total->value, '==', 0.5);
 }
 
 # double
 {
-  my $total = SPVM::XSTest::sum_double(SPVM::double(0.1), SPVM::double(0.1));
-  is(sprintf("%.5f", $total->value), "0.20000");
+  my $total = SPVM::XSTest::sum_double(SPVM::double(0.25), SPVM::double(0.25));
+  cmp_ok($total->value, '==', 0.5);
 }
