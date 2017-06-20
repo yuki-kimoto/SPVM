@@ -8,7 +8,7 @@ use SPVM::Data;
 
 use Carp 'croak';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 my $SPVM;
 
