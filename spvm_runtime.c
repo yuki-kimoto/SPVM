@@ -328,7 +328,9 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
       call_stack_base = operand_stack_top + 4;
       
       // Initialize my variables
-      memset(&call_stack[call_stack_base + constant_pool_sub.args_length], 0, (constant_pool_sub.my_vars_length - constant_pool_sub.args_length) * sizeof(SPVM_VALUE));
+      if (constant_pool_sub.my_vars_length > 0) {
+        memset(&call_stack[call_stack_base + constant_pool_sub.args_length], 0, (constant_pool_sub.my_vars_length - constant_pool_sub.args_length) * sizeof(SPVM_VALUE));
+      }
       
       // Set variables to local variable
       vars = &call_stack[call_stack_base];
