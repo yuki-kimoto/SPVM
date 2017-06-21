@@ -910,6 +910,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                   }
                   
+                  // If malloc op is not assinged value, create my var and assing op
+                  if (!op_cur->rvalue) {
+                    warn("AAAAAAAAAAAA");
+                  }
+                  
                   break;
                 }
                 case SPVM_OP_C_CODE_BIT_XOR: {
@@ -1373,7 +1378,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   break;
                 }
-                case SPVM_OP_C_CODE_MY_VAR_INIT: {
+                case SPVM_OP_C_CODE_MY_VAR_PROCESS: {
                   
                   SPVM_OP* op_my_var = op_cur->first;
                   SPVM_MY_VAR* my_var = op_my_var->uv.my_var;

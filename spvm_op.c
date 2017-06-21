@@ -45,7 +45,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "NAME",
   "PACKAGE",
   "MY_VAR",
-  "MY_VAR_INIT",
+  "MY_VAR_PROCESS",
   "FIELD",
   "SUB",
   "ENUM",
@@ -960,7 +960,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_term) {
   
   // Stab
-  SPVM_OP* op_my_var_parent = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR_INIT, op_my_var->file, op_my_var->line);
+  SPVM_OP* op_my_var_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR_PROCESS, op_my_var->file, op_my_var->line);
   
   // Create my var information
   SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
@@ -975,7 +975,7 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_
   op_my_var->uv.my_var = my_var;
   
   // Add my_var op
-  SPVM_OP_sibling_splice(compiler, op_my_var_parent, NULL, 0, op_my_var);
+  SPVM_OP_sibling_splice(compiler, op_my_var_process, NULL, 0, op_my_var);
   
   // Assign
   if (op_term) {
@@ -986,7 +986,7 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_
     SPVM_OP_sibling_splice(compiler, op_assign, NULL, 0, op_var);
     SPVM_OP_sibling_splice(compiler, op_assign, op_var, 0, op_term);
     
-    SPVM_OP_sibling_splice(compiler, op_my_var_parent, op_my_var, 0, op_assign);
+    SPVM_OP_sibling_splice(compiler, op_my_var_process, op_my_var, 0, op_assign);
     
     // Type assumption
     my_var->op_term_assumption = op_term;
@@ -997,7 +997,7 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_
     SPVM_yyerror_format(compiler, "\"my %s\" can't detect type at %s line %d\n", my_var->op_name->uv.name, op_my_var->file, op_my_var->line);
   }
   
-  return op_my_var_parent;
+  return op_my_var_process;
 }
 
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_type) {
@@ -1069,7 +1069,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       SPVM_OP* op_arg = SPVM_ARRAY_fetch(sub->op_args, i);
       SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, op_arg->file, op_arg->line);
       op_my_var->uv.my_var = op_arg->uv.my_var;
-      SPVM_OP* op_my_var_parent = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR_INIT, op_arg->file, op_arg->line);
+      SPVM_OP* op_my_var_parent = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR_PROCESS, op_arg->file, op_arg->line);
       SPVM_OP_sibling_splice(compiler, op_my_var_parent, op_my_var_parent->last, 0, op_my_var);
       
       SPVM_OP_sibling_splice(compiler, op_formal_args, op_formal_args->first, 0, op_my_var_parent);
