@@ -377,6 +377,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
             case SPVM_OP_C_CODE_ASSIGN: {
               op_cur->first->lvalue = 1;
+              op_cur->last->rvalue = 1;
               break;
             }
           }

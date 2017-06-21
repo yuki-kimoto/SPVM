@@ -183,6 +183,7 @@ struct SPVM_op {
   int32_t line;
   _Bool moresib;
   _Bool lvalue;
+  _Bool rvalue;
 };
 
 SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line);
