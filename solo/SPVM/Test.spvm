@@ -261,13 +261,7 @@ package Test {
       std::println_int($m{x});
       std::println_int($m{y});
     }
-    
-    
-    # get field - various
-    {
-      (malloc Test::Minimal){x};
-    }
-    
+
     # Free when assignment
     {
       my $m = malloc Test::Minimal;
