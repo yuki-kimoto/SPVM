@@ -98,6 +98,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "POP",
   "UNDEF",
   "MALLOC",
+  "MALLOC_PROCESS",
   "ARRAY_LENGTH",
   "CONDITION",
   "DIE",
@@ -400,9 +401,12 @@ SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_l
 
 SPVM_OP* SPVM_OP_build_malloc_object(SPVM_COMPILER* compiler, SPVM_OP* op_malloc, SPVM_OP* op_type) {
   
-  SPVM_OP_sibling_splice(compiler, op_malloc, NULL, 0, op_type);
+  SPVM_OP* op_malloc_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MALLOC_PROCESS, op_malloc->file, op_malloc->line);
   
-  return op_malloc;
+  SPVM_OP_sibling_splice(compiler, op_malloc, op_malloc->last, 0, op_type);
+  SPVM_OP_sibling_splice(compiler, op_malloc_process, op_malloc_process->last, 0, op_malloc);
+  
+  return op_malloc_process;
 }
 
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
@@ -437,6 +441,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_CODE_NEGATE:
     case SPVM_OP_C_CODE_ASSIGN:
     case SPVM_OP_C_CODE_MALLOC:
+    case SPVM_OP_C_CODE_MALLOC_PROCESS:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
