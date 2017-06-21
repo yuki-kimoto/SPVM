@@ -1530,7 +1530,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (op_term->code != SPVM_OP_C_CODE_VAR
                     && op_term->code != SPVM_OP_C_CODE_ARRAY_ELEM
                     && op_term->code != SPVM_OP_C_CODE_CALL_FIELD
-                    && op_term->code != SPVM_OP_C_CODE_CALL_SUB)
+                    && op_term->code != SPVM_OP_C_CODE_CALL_SUB
+                    && op_term->code != SPVM_OP_C_CODE_MALLOC)
                   {
                     SPVM_yyerror_format(compiler, "field invoker is invalid \"%s\" at %s line %d\n",
                       op_name->uv.name, op_cur->file, op_cur->line);
