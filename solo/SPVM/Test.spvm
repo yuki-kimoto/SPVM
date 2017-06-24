@@ -19,7 +19,13 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
-
+    
+    # Create temporary varialbe for malloc
+    {
+      malloc Test::Minimal;
+      malloc Test::Minimal;
+      (malloc Test::Minimal){x};
+    }
     
     my $obj1 = malloc Test::Minimal;
     

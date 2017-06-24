@@ -433,11 +433,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 // Type parent is malloc
                 op_type->moresib = 0;
                 op_type->sibparent = op_malloc;
+
+                // Assing op
+                SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
+                op_assign->first = op_var;
+                op_assign->last = op_malloc;
+                op_assign->moresib = 0;
+                op_assign->sibparent = op_cur;
                 
-                // Convert cur malloc op to assing op
-                op_cur->code = SPVM_OP_C_CODE_ASSIGN;
-                op_cur->first = op_var;
-                op_cur->last = op_malloc;
+                // Convert cur malloc op to var
+                op_cur->code = SPVM_OP_C_CODE_VAR;
+                op_cur->uv.var = op_var->uv.var;
+                op_cur->first = op_assign;
+                op_cur->last = op_assign;
                 
                 // Var op has sibling
                 op_var->moresib = 1;
@@ -447,11 +455,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 op_malloc->first = op_type;
                 op_malloc->last = op_type;
                 op_malloc->moresib = 0;
-                op_malloc->sibparent = op_cur;
+                op_malloc->sibparent = op_assign;
                 
                 // Set lvalue and rvalue
-                op_cur->first->lvalue = 1;
-                op_cur->last->rvalue = 1;
+                op_assign->first->lvalue = 1;
+                op_assign->last->rvalue = 1;
                 
               }
               break;
@@ -1607,7 +1615,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (op_term->code != SPVM_OP_C_CODE_VAR
                     && op_term->code != SPVM_OP_C_CODE_ARRAY_ELEM
                     && op_term->code != SPVM_OP_C_CODE_CALL_FIELD
-                    && op_term->code != SPVM_OP_C_CODE_CALL_SUB)
+                    && op_term->code != SPVM_OP_C_CODE_CALL_SUB
+                    && op_term->code != SPVM_OP_C_CODE_MALLOC)
                   {
                     SPVM_yyerror_format(compiler, "field invoker is invalid \"%s\" at %s line %d\n",
                       op_name->uv.name, op_cur->file, op_cur->line);
