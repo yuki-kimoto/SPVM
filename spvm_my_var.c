@@ -10,7 +10,6 @@ SPVM_MY_VAR* SPVM_MY_VAR_new(SPVM_COMPILER* compiler) {
   my_var->op_name = NULL;
   my_var->op_term_assumption = NULL;
   my_var->index = -1;
-  my_var->is_tmp = 0;
   
   return my_var;
 }
