@@ -376,8 +376,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               break;
             }
             case SPVM_OP_C_CODE_ASSIGN: {
+              // Left side of "=" is lvalue
               op_cur->first->lvalue = 1;
+              
+              // Right side of "=" is rvalue
               op_cur->last->rvalue = 1;
+              break;
+            }
+            case SPVM_OP_C_CODE_MALLOC: {
+              // If MALLOC is not rvalue, temparary variable is created, and assinged.
+              if (!op_cur->rvalue) {
+                
+              }
               break;
             }
           }
