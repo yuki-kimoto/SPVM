@@ -397,6 +397,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 
+                // Create temporary variable
                 // my_var
                 SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
                 
@@ -421,6 +422,37 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 // Add my var
                 SPVM_ARRAY_push(op_my_vars, op_my_var);
                 SPVM_ARRAY_push(op_my_var_stack, op_my_var);
+                
+                // Convert malloc op to assing op
+                // Var op
+                SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
+                
+                // Malloc op
+                SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MALLOC, op_cur->file, op_cur->line);
+                
+                // Type parent is malloc
+                op_type->moresib = 0;
+                op_type->sibparent = op_malloc;
+                
+                // Convert cur malloc op to assing op
+                op_cur->code = SPVM_OP_C_CODE_ASSIGN;
+                op_cur->first = op_var;
+                op_cur->last = op_malloc;
+                
+                // Var op has sibling
+                op_var->moresib = 1;
+                op_var->sibparent = op_malloc;
+                
+                // Malloc op parent is assign op
+                op_malloc->first = op_type;
+                op_malloc->last = op_type;
+                op_malloc->moresib = 0;
+                op_malloc->sibparent = op_cur;
+                
+                // Set lvalue and rvalue
+                op_cur->first->lvalue = 1;
+                op_cur->last->rvalue = 1;
+                
               }
               break;
             }
