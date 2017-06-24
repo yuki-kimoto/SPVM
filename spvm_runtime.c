@@ -508,12 +508,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
     }
     
     // Free original string if need
-    if (return_value != NULL) {
-      int32_t ref_count = SPVM_API_get_ref_count(env, return_value);
-      if (ref_count == 0) {
-        SPVM_RUNTIME_ALLOCATOR_free_data(runtime, runtime->allocator, return_value);
-      }
-    }
+    SPVM_RUNTIME_API_dec_ref_count(runtime, return_value);
     
     // Resotre vars base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
