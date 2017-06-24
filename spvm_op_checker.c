@@ -380,10 +380,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               op_cur->last->rvalue = 1;
               break;
             }
-            case SPVM_OP_C_CODE_MALLOC_PROCESS: {
-              op_cur->first->rvalue = op_cur->rvalue;
-              break;
-            }
           }
           
           // [END]Preorder traversal position
