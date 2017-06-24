@@ -147,7 +147,6 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "STORE_3",
   "STORE_ADDRESS",
   "POP",
-  "POP_ADDRESS",
   "MALLOC_OBJECT",
   "MALLOC_STRING",
   "MALLOC_ARRAY",

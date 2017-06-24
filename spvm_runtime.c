@@ -184,7 +184,6 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
     &&case_SPVM_BYTECODE_C_CODE_STORE_3,
     &&case_SPVM_BYTECODE_C_CODE_STORE_ADDRESS,
     &&case_SPVM_BYTECODE_C_CODE_POP,
-    &&case_SPVM_BYTECODE_C_CODE_POP_ADDRESS,
     &&case_SPVM_BYTECODE_C_CODE_MALLOC_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_MALLOC_STRING,
     &&case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY,
@@ -1133,22 +1132,6 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_POP_ADDRESS: {
-    
-    SPVM_DATA* data = call_stack[operand_stack_top].address_value;
-    
-    // Free object
-    if (data != NULL) {
-      int32_t ref_count = data->ref_count;
-      if (ref_count == 0) {
-        SPVM_RUNTIME_ALLOCATOR_free_data(runtime, runtime->allocator, call_stack[operand_stack_top].address_value);
-      }
-    }
-    
-    operand_stack_top--;
-    pc++;
-    goto *jump[*pc];
-  }
   case_SPVM_BYTECODE_C_CODE_ADD_BYTE:
     call_stack[operand_stack_top - 1].byte_value += call_stack[operand_stack_top].byte_value;
     operand_stack_top--;
