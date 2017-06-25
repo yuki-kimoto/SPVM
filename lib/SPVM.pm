@@ -192,6 +192,28 @@ B<Perl module> - SPVM function can be called from Perl itself (Not yet implement
 
 Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
+=head1 CONTRIBUTERS
+
+=over 4
+
+=item *
+
+[akinomyoga](https://github.com/akinomyoga) (Koichi Murase)
+
+=item *
+
+[NAGAYASU Shinya](https://github.com/nagayasu-shinya)
+
+=item *
+
+[Reini Urban](https://github.com/rurban)
+
+=item *
+
+[chromatic](https://github.com/chromatic)
+
+=back
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2017 by Yuki Kimoto
