@@ -583,7 +583,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           compiler->bufptr++;
           
           /* Next is graph */
-          while(isalnum(*compiler->bufptr) || (*compiler->bufptr) == '_' || (*compiler->bufptr) == ':') {
+          while(isalnum(*compiler->bufptr) || (*compiler->bufptr) == '_') {
             compiler->bufptr++;
           }
           
