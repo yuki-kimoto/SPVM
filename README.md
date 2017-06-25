@@ -18,3 +18,5 @@ See [SPVM](https://metacpan.org/pod/SPVM) on CPAN if you need document.
 * [akinomyoga](https://github.com/akinomyoga) (Koichi Murase)
 * [NAGAYASU Shinya](https://github.com/nagayasu-shinya)
 * [Reini Urban](https://github.com/rurban)
+* [chromatic](https://github.com/chromatic)
+* [Kazutake Hiramatsu](https://github.com/kazhiramatsu)
