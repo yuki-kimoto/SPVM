@@ -212,6 +212,9 @@ Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
 [chromatic](https://github.com/chromatic)
 
+=item *
+[Kazutake Hiramatsu](https://github.com/kazhiramatsu)
+
 =back
 
 =head1 COPYRIGHT AND LICENSE
