@@ -148,7 +148,7 @@ Type of constant is specified by type specifier.
 
 ### Package name
 
-Package name is a conbination of alphabets, numbers, and `::`. Numbers should not appear as the first character. `_` can't be used in class name.
+Package name is a combination of alphabets, numbers, and `::`. Numbers should not appear as the first character. `_` can't be used in class name.
     
     # OK
     Foo
@@ -162,7 +162,7 @@ Package name is a conbination of alphabets, numbers, and `::`. Numbers should no
 
 ### Subroutine name
 
-Subroutine name is a conbination of alphabets, numbers, and `_` separaters. continual `_`(For example `__`) can't be used in subroutine name.
+Subroutine name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in subroutine name.
 
     # OK
     foo
@@ -175,7 +175,7 @@ Subroutine name is a conbination of alphabets, numbers, and `_` separaters. cont
 
 ### Field name
 
-Field name is a conbination of alphabets, numbers, and `_` separaters. continual `_`(For example `__`) can't be used in field name.
+Field name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in field name.
 
     # OK
     foo
@@ -195,7 +195,7 @@ Absolute name is combination of package name and subroutine name, or package nam
 
 ## Limitation
 
-- Object can't have object and array of object
+- Object can't have object and array of object.
 
 # Development
 
