@@ -11,6 +11,8 @@ Do you need **faster Perl**? SPVM provides fast calculation to Perl.
 
 This is now under **developing**.
 
+See [SPVM](https://metacpan.org/pod/SPVM) on CPAN if you need document.
+
 # Contributors
 
 * [akinomyoga](https://github.com/akinomyoga) (Koichi Murase)
