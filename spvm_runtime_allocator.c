@@ -24,8 +24,11 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   allocator->freelists = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(16, sizeof(SPVM_ARRAY));
   
   // Initialize free list
-  for (int32_t i = 0; i < 16; i++) {
-    allocator->freelists[i] = SPVM_ARRAY_new(0);
+  {
+    int32_t i;
+    for (i = 0; i < 16; i++) {
+      allocator->freelists[i] = SPVM_ARRAY_new(0);
+    }
   }
   
   // use memory pool max reference byte size

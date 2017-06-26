@@ -1,3 +1,5 @@
+0.0202 2017-06-25
+  - use same CCFLAG in Makefile.PL
 0.0201 2017-06-20
   - fix memset 0 bug
 0.02 2017-06-20

@@ -102,30 +102,33 @@ compile(...)
   SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
   AV* av_package_infos = (AV*)SvRV(sv_package_infos);
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
-  for (int32_t i = 0; i < av_package_infos_length; i++) {
-    SV** sv_package_info_ptr = av_fetch(av_package_infos, i, 0);
-    SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
-    HV* hv_package_info = (HV*)SvRV(sv_package_info);
-    
-    // Name
-    SV** sv_name_ptr = hv_fetch(hv_package_info, "name", strlen("name"), 0);
-    SV* sv_name = sv_name_ptr ? *sv_name_ptr : &PL_sv_undef;
-    const char* name = SvPV_nolen(sv_name);
-    
-    // File
-    SV** sv_file_ptr = hv_fetch(hv_package_info, "file", strlen("file"), 0);
-    SV* sv_file = sv_file_ptr ? *sv_file_ptr : &PL_sv_undef;
-    const char* file = SvPV_nolen(sv_file);
-    
-    // Line
-    SV** sv_line_ptr = hv_fetch(hv_package_info, "line", strlen("line"), 0);
-    SV* sv_line = sv_line_ptr ? *sv_line_ptr : &PL_sv_undef;
-    int32_t line = (int32_t)SvIV(sv_line);
-    
-    // push package to compiler use stack
-    SPVM_OP* op_use_package = SPVM_OP_new_op_use_from_package_name(compiler, name, file, line);
-    SPVM_ARRAY_push(compiler->op_use_stack, op_use_package);
-    SPVM_HASH_insert(compiler->op_use_symtable, name, strlen(name), op_use_package);
+  {
+    int32_t i;
+    for (i = 0; i < av_package_infos_length; i++) {
+      SV** sv_package_info_ptr = av_fetch(av_package_infos, i, 0);
+      SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
+      HV* hv_package_info = (HV*)SvRV(sv_package_info);
+      
+      // Name
+      SV** sv_name_ptr = hv_fetch(hv_package_info, "name", strlen("name"), 0);
+      SV* sv_name = sv_name_ptr ? *sv_name_ptr : &PL_sv_undef;
+      const char* name = SvPV_nolen(sv_name);
+      
+      // File
+      SV** sv_file_ptr = hv_fetch(hv_package_info, "file", strlen("file"), 0);
+      SV* sv_file = sv_file_ptr ? *sv_file_ptr : &PL_sv_undef;
+      const char* file = SvPV_nolen(sv_file);
+      
+      // Line
+      SV** sv_line_ptr = hv_fetch(hv_package_info, "line", strlen("line"), 0);
+      SV* sv_line = sv_line_ptr ? *sv_line_ptr : &PL_sv_undef;
+      int32_t line = (int32_t)SvIV(sv_line);
+      
+      // push package to compiler use stack
+      SPVM_OP* op_use_package = SPVM_OP_new_op_use_from_package_name(compiler, name, file, line);
+      SPVM_ARRAY_push(compiler->op_use_stack, op_use_package);
+      SPVM_HASH_insert(compiler->op_use_symtable, name, strlen(name), op_use_package);
+    }
   }
   
   // Add include paths
@@ -133,11 +136,14 @@ compile(...)
   SV* sv_include_paths = sv_include_paths_ptr ? *sv_include_paths_ptr : &PL_sv_undef;
   AV* av_include_paths = (AV*)SvRV(sv_include_paths);
   int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
-  for (int32_t i = 0; i < av_include_paths_length; i++) {
-    SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
-    SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
-    char* include_path = SvPV_nolen(sv_include_path);
-    SPVM_ARRAY_push(compiler->include_pathes, include_path);
+  {
+    int32_t i;
+    for (i = 0; i < av_include_paths_length; i++) {
+      SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
+      SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
+      char* include_path = SvPV_nolen(sv_include_path);
+      SPVM_ARRAY_push(compiler->include_pathes, include_path);
+    }
   }
   
   // Compile SPVM
@@ -174,54 +180,63 @@ build_sub_symtable(...)
   
   // abs_name, arg_types, return_type, constant_pool_index, type_id
   SPVM_ARRAY* op_packages = compiler->op_packages;
-  for (int32_t package_index = 0; package_index < op_packages->length; package_index++) {
-    SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, package_index);
-    SPVM_ARRAY* op_subs = op_package->uv.package->op_subs;
-    for (int32_t sub_index = 0; sub_index < op_subs->length; sub_index++) {
-      // Sub information
-      AV* av_sub_info = (HV*)sv_2mortal((SV*)newAV());
-      
-      SPVM_OP* op_sub = SPVM_ARRAY_fetch(op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      const char* sub_abs_name = sub->abs_name;
-      
-      // 1. Constant pool index
-      int32_t constant_pool_index = sub->constant_pool_index;
-      SV* sv_constant_pool_index = sv_2mortal(newSViv(constant_pool_index));
-      av_push(av_sub_info, SvREFCNT_inc(sv_constant_pool_index));
-      
-      // arg_type_ids
-      AV* av_arg_type_names = (AV*)sv_2mortal((SV*)newAV());
-      SPVM_ARRAY* op_args = sub->op_args;
-      for (int32_t arg_index = 0; arg_index < op_args->length; arg_index++) {
-        SPVM_OP* op_arg = SPVM_ARRAY_fetch(op_args, arg_index);
-        SPVM_OP* op_arg_type = op_arg->uv.my_var->op_type;
-        const char* arg_type_name = op_arg_type->uv.type->name;
-        
-        SV* sv_arg_type_name = sv_2mortal(newSVpv(arg_type_name, 0));
-        av_push(av_arg_type_names, SvREFCNT_inc(sv_arg_type_name));
+  {
+    int32_t package_index;
+    for (package_index = 0; package_index < op_packages->length; package_index++) {
+      SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, package_index);
+      SPVM_ARRAY* op_subs = op_package->uv.package->op_subs;
+      {
+        int32_t sub_index;
+        for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
+          // Sub information
+          AV* av_sub_info = (HV*)sv_2mortal((SV*)newAV());
+          
+          SPVM_OP* op_sub = SPVM_ARRAY_fetch(op_subs, sub_index);
+          SPVM_SUB* sub = op_sub->uv.sub;
+          const char* sub_abs_name = sub->abs_name;
+          
+          // 1. Constant pool index
+          int32_t constant_pool_index = sub->constant_pool_index;
+          SV* sv_constant_pool_index = sv_2mortal(newSViv(constant_pool_index));
+          av_push(av_sub_info, SvREFCNT_inc(sv_constant_pool_index));
+          
+          // arg_type_ids
+          AV* av_arg_type_names = (AV*)sv_2mortal((SV*)newAV());
+          SPVM_ARRAY* op_args = sub->op_args;
+          {
+            int32_t arg_index;
+            for (arg_index = 0; arg_index < op_args->length; arg_index++) {
+              SPVM_OP* op_arg = SPVM_ARRAY_fetch(op_args, arg_index);
+              SPVM_OP* op_arg_type = op_arg->uv.my_var->op_type;
+              const char* arg_type_name = op_arg_type->uv.type->name;
+              
+              SV* sv_arg_type_name = sv_2mortal(newSVpv(arg_type_name, 0));
+              av_push(av_arg_type_names, SvREFCNT_inc(sv_arg_type_name));
+            }
+          }
+          
+          // 2. Push argment resolved type ids
+          SV* sv_arg_type_names = sv_2mortal(newRV_inc((SV*)av_arg_type_names));
+          av_push(av_sub_info, SvREFCNT_inc(sv_arg_type_names));
+          
+          // Return type
+          SPVM_OP* op_return_type = sub->op_return_type;
+          SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, op_return_type);
+          if (return_type) {
+            const char* return_type_name = op_return_type->uv.type->name;
+            SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
+            
+            // 3. Push return type resolved id
+            av_push(av_sub_info, SvREFCNT_inc(sv_return_type_name));
+          }
+          else {
+            av_push(av_sub_info, &PL_sv_undef);
+          }
+          
+          SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)av_sub_info));
+          hv_store(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), SvREFCNT_inc(sv_sub_info), 0);
+        }
       }
-        
-      // 2. Push argment resolved type ids
-      SV* sv_arg_type_names = sv_2mortal(newRV_inc((SV*)av_arg_type_names));
-      av_push(av_sub_info, SvREFCNT_inc(sv_arg_type_names));
-      
-      // Return type
-      SPVM_OP* op_return_type = sub->op_return_type;
-      SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, op_return_type);
-      if (return_type) {
-        const char* return_type_name = op_return_type->uv.type->name;
-        SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
-        
-        // 3. Push return type resolved id
-        av_push(av_sub_info, SvREFCNT_inc(sv_return_type_name));
-      }
-      else {
-        av_push(av_sub_info, &PL_sv_undef);
-      }
-      
-      SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)av_sub_info));
-      hv_store(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), SvREFCNT_inc(sv_sub_info), 0);
     }
   }
   

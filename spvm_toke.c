@@ -91,29 +91,35 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               char* cur_module_path = NULL;
               FILE* fh = NULL;
               int32_t include_pathes_length = compiler->include_pathes->length;
-              for (int32_t i = 0; i < include_pathes_length; i++) {
-                const char* include_path = (const char*) SPVM_ARRAY_fetch(compiler->include_pathes, i);
-                
-                // File name
-                int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(module_path_base));
-                cur_module_path = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, file_name_length);
-                sprintf(cur_module_path, "%s/%s", include_path, module_path_base);
-                cur_module_path[file_name_length] = '\0';
-                
-                // Open source file
-                fh = fopen(cur_module_path, "r");
-                if (fh) {
-                  compiler->cur_module_path = cur_module_path;
-                  break;
+              {
+                int32_t i;
+                for (i = 0; i < include_pathes_length; i++) {
+                  const char* include_path = (const char*) SPVM_ARRAY_fetch(compiler->include_pathes, i);
+                  
+                  // File name
+                  int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(module_path_base));
+                  cur_module_path = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, file_name_length);
+                  sprintf(cur_module_path, "%s/%s", include_path, module_path_base);
+                  cur_module_path[file_name_length] = '\0';
+                  
+                  // Open source file
+                  fh = fopen(cur_module_path, "r");
+                  if (fh) {
+                    compiler->cur_module_path = cur_module_path;
+                    break;
+                  }
+                  errno = 0;
                 }
-                errno = 0;
               }
               if (!fh) {
                 if (op_use) {
                   fprintf(stderr, "[SPVM COMPILE ERROR]Can't locate SVPM/%s.spvm @INC (@INC contains:", op_name_package->uv.name);
-                  for (int32_t i = 0; i < include_pathes_length; i++) {
-                    const char* include_path = (const char*) SPVM_ARRAY_fetch(compiler->include_pathes, i);
-                    fprintf(stderr, " %s", include_path);
+                  {
+                    int32_t i;
+                    for (i = 0; i < include_pathes_length; i++) {
+                      const char* include_path = (const char*) SPVM_ARRAY_fetch(compiler->include_pathes, i);
+                      fprintf(stderr, " %s", include_path);
+                    }
                   }
                   fprintf(") at %s line %" PRId32 "\n", op_use->file, op_use->line);
                 }
@@ -516,49 +522,52 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, str_tmp_len);
           int32_t str_index = 0;
-          for (int32_t i = 0; i < str_tmp_len; i++) {
-            if (str_tmp[i] == '\\') {
-              i++;
-              if (str_tmp[i] == '"') {
-                str[str_index] = '"';
-                str_index++;
-              }
-              else if (str_tmp[i] == '\'') {
-                str[str_index] = '\'';
-                str_index++;
-              }
-              else if (str_tmp[i] == '\\') {
-                str[str_index] = '\\';
-                str_index++;
-              }
-              else if (str_tmp[i] == 'r') {
-                str[str_index] = 0x0D;
-                str_index++;
-              }
-              else if (str_tmp[i] == 'n') {
-                str[str_index] = 0x0A;
-                str_index++;
-              }
-              else if (str_tmp[i] == 't') {
-                str[str_index] = '\t';
-                str_index++;
-              }
-              else if (str_tmp[i] == 'b') {
-                str[str_index] = '\b';
-                str_index++;
-              }
-              else if (str_tmp[i] == 'f') {
-                str[str_index] = '\f';
-                str_index++;
+          {
+            int32_t i;
+            for (i = 0; i < str_tmp_len; i++) {
+              if (str_tmp[i] == '\\') {
+                i++;
+                if (str_tmp[i] == '"') {
+                  str[str_index] = '"';
+                  str_index++;
+                }
+                else if (str_tmp[i] == '\'') {
+                  str[str_index] = '\'';
+                  str_index++;
+                }
+                else if (str_tmp[i] == '\\') {
+                  str[str_index] = '\\';
+                  str_index++;
+                }
+                else if (str_tmp[i] == 'r') {
+                  str[str_index] = 0x0D;
+                  str_index++;
+                }
+                else if (str_tmp[i] == 'n') {
+                  str[str_index] = 0x0A;
+                  str_index++;
+                }
+                else if (str_tmp[i] == 't') {
+                  str[str_index] = '\t';
+                  str_index++;
+                }
+                else if (str_tmp[i] == 'b') {
+                  str[str_index] = '\b';
+                  str_index++;
+                }
+                else if (str_tmp[i] == 'f') {
+                  str[str_index] = '\f';
+                  str_index++;
+                }
+                else {
+                  fprintf(stderr, "[SPVM COMPILE ERROR]Invalid escape character \"%c%c\" at %s line %" PRId32 "\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_module_path, compiler->cur_line);
+                  exit(EXIT_FAILURE);
+                }
               }
               else {
-                fprintf(stderr, "[SPVM COMPILE ERROR]Invalid escape character \"%c%c\" at %s line %" PRId32 "\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_module_path, compiler->cur_line);
-                exit(EXIT_FAILURE);
+                str[str_index] = str_tmp[i];
+                str_index++;
               }
-            }
-            else {
-              str[str_index] = str_tmp[i];
-              str_index++;
             }
           }
           str[str_index] = '\0';

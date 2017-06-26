@@ -101,9 +101,12 @@ static inline void SPVM_RUNTIME_API_dec_ref_count(SPVM_RUNTIME* runtime, SPVM_DA
           // Array length
           int32_t length = data_array->length;
           
-          for (int32_t i = 0; i < length; i++) {
-            SPVM_DATA* data_element = *(SPVM_DATA**)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(void*) * i);
-            SPVM_RUNTIME_API_dec_ref_count(runtime, data_element);
+          {
+            int32_t i;
+            for (i = 0; i < length; i++) {
+              SPVM_DATA* data_element = *(SPVM_DATA**)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(void*) * i);
+              SPVM_RUNTIME_API_dec_ref_count(runtime, data_element);
+            }
           }
         }
         SPVM_RUNTIME_ALLOCATOR_free_data(runtime, runtime->allocator, data);

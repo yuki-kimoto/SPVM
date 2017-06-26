@@ -42,37 +42,43 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
     SPVM_ARRAY* parts = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
     SPVM_TYPE_build_parts(compiler, type, parts);
     
-    for (int32_t i = 0; i < parts->length; i++) {
-      const char* part_name = SPVM_ARRAY_fetch(parts, i);
-        
-      // Core type or array
-      if (strcmp(part_name, "boolean") == 0 || strcmp(part_name, "byte") == 0 || strcmp(part_name, "short") == 0 || strcmp(part_name, "int") == 0
-        || strcmp(part_name, "long") == 0 || strcmp(part_name, "float") == 0 || strcmp(part_name, "double") == 0 || strcmp(part_name, "[]") == 0)
-      {
-        SPVM_ARRAY_push(type_part_names, (void*)part_name);
-      }
-      else {
-        // Package
-        SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
-        SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, part_name, strlen(part_name));
-        if (op_found_package) {
+    {
+      int32_t i;
+      for (i = 0; i < parts->length; i++) {
+        const char* part_name = SPVM_ARRAY_fetch(parts, i);
+          
+        // Core type or array
+        if (strcmp(part_name, "boolean") == 0 || strcmp(part_name, "byte") == 0 || strcmp(part_name, "short") == 0 || strcmp(part_name, "int") == 0
+          || strcmp(part_name, "long") == 0 || strcmp(part_name, "float") == 0 || strcmp(part_name, "double") == 0 || strcmp(part_name, "[]") == 0)
+        {
           SPVM_ARRAY_push(type_part_names, (void*)part_name);
         }
         else {
-          SPVM_yyerror_format(compiler, "unknown package \"%s\" at %s line %d\n", part_name, op_type->file, op_type->line);
-          return 0;
+          // Package
+          SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
+          SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, part_name, strlen(part_name));
+          if (op_found_package) {
+            SPVM_ARRAY_push(type_part_names, (void*)part_name);
+          }
+          else {
+            SPVM_yyerror_format(compiler, "unknown package \"%s\" at %s line %d\n", part_name, op_type->file, op_type->line);
+            return 0;
+          }
         }
+        name_length += strlen(part_name);
       }
-      name_length += strlen(part_name);
     }
     char* type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, name_length);
     
     int32_t cur_pos = 0;
-    for (int32_t i = 0; i < type_part_names->length; i++) {
-      const char* type_part_name = (const char*) SPVM_ARRAY_fetch(type_part_names, i);
-      int32_t type_part_name_length = (int32_t)strlen(type_part_name);
-      memcpy(type_name + cur_pos, type_part_name, type_part_name_length);
-      cur_pos += type_part_name_length;
+    {
+      int32_t i;
+      for (i = 0; i < type_part_names->length; i++) {
+        const char* type_part_name = (const char*) SPVM_ARRAY_fetch(type_part_names, i);
+        int32_t type_part_name_length = (int32_t)strlen(type_part_name);
+        memcpy(type_name + cur_pos, type_part_name, type_part_name_length);
+        cur_pos += type_part_name_length;
+      }
     }
     type_name[cur_pos] = '\0';
     

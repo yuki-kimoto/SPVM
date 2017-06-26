@@ -149,12 +149,15 @@ static inline int32_t SPVM_API_get_object_field_index(SPVM_ENV* env, SPVM_DATA_O
   
   int32_t field_index = -1;
   _Bool found = 0;
-  for (int32_t i = 0; i < length; i++) {
-    int32_t name_index = constant_pool[field_name_indexes_constant_pool_index + i + 1];
-    char* match_name = (char*)&constant_pool[name_index + 1];
-    if (strcmp(name, match_name) == 0) {
-      found = 1;
-      field_index = i;
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      int32_t name_index = constant_pool[field_name_indexes_constant_pool_index + i + 1];
+      char* match_name = (char*)&constant_pool[name_index + 1];
+      if (strcmp(name, match_name) == 0) {
+        found = 1;
+        field_index = i;
+      }
     }
   }
   
