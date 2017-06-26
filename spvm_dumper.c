@@ -33,8 +33,11 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   while (op_cur) {
     // [START]Preorder traversal position
     
-    for (int32_t i = 0; i < depth; i++) {
-      printf(" ");
+    {
+      int32_t i;
+      for (i = 0; i < depth; i++) {
+        printf(" ");
+      }
     }
     int32_t code = op_cur->code;
     printf("%s", SPVM_OP_C_CODE_NAMES[code]);
@@ -127,48 +130,63 @@ void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_ARRAY* op_constants) {
-  for (int32_t i = 0, len = op_constants->length; i < len; i++) {
-    SPVM_OP* op_constant = SPVM_ARRAY_fetch(op_constants, i);
-    SPVM_CONSTANT* constant = op_constant->uv.constant;
-    printf("    constant[%" PRId32 "]\n", i);
-    SPVM_DUMPER_dump_constant(compiler, constant);
+  {
+    int32_t i;
+    int32_t len;
+    for (i = 0, len = op_constants->length; i < len; i++) {
+      SPVM_OP* op_constant = SPVM_ARRAY_fetch(op_constants, i);
+      SPVM_CONSTANT* constant = op_constant->uv.constant;
+      printf("    constant[%" PRId32 "]\n", i);
+      SPVM_DUMPER_dump_constant(compiler, constant);
+    }
   }
 }
 
 void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_ARRAY* op_packages) {
-  for (int32_t i = 0, len = op_packages->length; i < len; i++) {
-    printf("package[%" PRId32 "]\n", i);
-    SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, i);
-    SPVM_PACKAGE* package = op_package->uv.package;
-    printf("  name => \"%s\"\n", package->op_name->uv.name);
-    
-    if (package->op_type) {
-      SPVM_TYPE* type = package->op_type->uv.type;
-      printf("  type => \"%s\"\n", type->name);
-    }
-    
-    printf("  byte_size => %" PRId32 "\n", package->fields_length);
-    
-    // Field information
-    printf("  fields\n");
-    SPVM_ARRAY* op_fields = package->op_fields;
-    for (int32_t j = 0, len2 = op_fields->length; j < len2; j++) {
-      SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields, j);
-      SPVM_FIELD* field = op_field->uv.field;
-      printf("    field%" PRId32 "\n", j);
-      SPVM_DUMPER_dump_field(compiler, field);
-    }
-    
-    printf("  ref_fields_length => \"%" PRId32 "\"\n", package->ref_fields_length);
-    
-    // Sub information
-    printf("  subs\n");
-    SPVM_ARRAY* op_subs = package->op_subs;
-    for (int32_t i = 0, len = op_subs->length; i < len; i++) {
-      SPVM_OP* op_sub = SPVM_ARRAY_fetch(op_subs, i);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      printf("    sub%" PRId32 "\n", i);
-      SPVM_DUMPER_dump_sub(compiler, sub);
+  {
+    int32_t i;
+    int32_t len;
+    for (i = 0, len = op_packages->length; i < len; i++) {
+      printf("package[%" PRId32 "]\n", i);
+      SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, i);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      printf("  name => \"%s\"\n", package->op_name->uv.name);
+      
+      if (package->op_type) {
+        SPVM_TYPE* type = package->op_type->uv.type;
+        printf("  type => \"%s\"\n", type->name);
+      }
+      
+      printf("  byte_size => %" PRId32 "\n", package->fields_length);
+      
+      // Field information
+      printf("  fields\n");
+      SPVM_ARRAY* op_fields = package->op_fields;
+      {
+        int32_t j;
+        int32_t len2;
+        for (j = 0, len2 = op_fields->length; j < len2; j++) {
+          SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields, j);
+          SPVM_FIELD* field = op_field->uv.field;
+          printf("    field%" PRId32 "\n", j);
+          SPVM_DUMPER_dump_field(compiler, field);
+        }
+      }
+      
+      printf("  ref_fields_length => \"%" PRId32 "\"\n", package->ref_fields_length);
+      
+      // Sub information
+      printf("  subs\n");
+      SPVM_ARRAY* op_subs = package->op_subs;
+      {
+        int32_t i;
+        for (i = 0, len = op_subs->length; i < len; i++) {
+          SPVM_OP* op_sub = SPVM_ARRAY_fetch(op_subs, i);
+          SPVM_SUB* sub = op_sub->uv.sub;
+          printf("    sub%" PRId32 "\n", i);
+          SPVM_DUMPER_dump_sub(compiler, sub);
+        }
+      }
     }
   }
 }
@@ -176,19 +194,26 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_ARRAY* op_packages)
 void SPVM_DUMPER_dump_types(SPVM_COMPILER* compiler, SPVM_ARRAY* types) {
   (void)compiler;
   
-  for (int32_t i = 0, len = types->length; i < len; i++) {
-    printf("type[%" PRId32 "]\n", i);
-    SPVM_TYPE* type = SPVM_ARRAY_fetch(types, i);
-    printf("    name => \"%s\"\n", type->name);
-    printf("    id => \"%" PRId32 "\"\n", type->id);
+  {
+    int32_t i;
+    int32_t len;
+    for (i = 0, len = types->length; i < len; i++) {
+      printf("type[%" PRId32 "]\n", i);
+      SPVM_TYPE* type = SPVM_ARRAY_fetch(types, i);
+      printf("    name => \"%s\"\n", type->name);
+      printf("    id => \"%" PRId32 "\"\n", type->id);
+    }
   }
 }
 
 void SPVM_DUMPER_dump_constant_pool(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool) {
   (void)compiler;
-
-  for (int32_t i = 0; i < constant_pool->length; i++) {
-    printf("      constant_pool[%" PRId32 "] %" PRId32 "\n", i, constant_pool->values[i]);
+  
+  {
+    int32_t i;
+    for (i = 0; i < constant_pool->length; i++) {
+      printf("      constant_pool[%" PRId32 "] %" PRId32 "\n", i, constant_pool->values[i]);
+    }
   }
 }
 
@@ -197,214 +222,244 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
   
   int32_t end_pos = start_pos + length - 1;
   
-  for (int32_t i = start_pos; i <= end_pos; i++) {
-    
-    uint8_t bytecode = bytecode_array->values[i];
-    printf("        [%" PRId32 "] %s\n", i, SPVM_BYTECODE_C_CODE_NAMES[bytecode]);
-    
-    // Operand
-    switch (bytecode) {
-      case SPVM_BYTECODE_C_CODE_WIDE: {
-        i++;
-        bytecode = bytecode_array->values[i];
-        
-        switch (bytecode) {
-          // Have tow operand]
-          case SPVM_BYTECODE_C_CODE_STORE:
-          case SPVM_BYTECODE_C_CODE_STORE_ADDRESS:
-          case SPVM_BYTECODE_C_CODE_LOAD:
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-            
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-            
-            break;
+  {
+    int32_t i;
+    for (i = start_pos; i <= end_pos; i++) {
+      
+      uint8_t bytecode = bytecode_array->values[i];
+      printf("        [%" PRId32 "] %s\n", i, SPVM_BYTECODE_C_CODE_NAMES[bytecode]);
+      
+      // Operand
+      switch (bytecode) {
+        case SPVM_BYTECODE_C_CODE_WIDE: {
+          i++;
+          bytecode = bytecode_array->values[i];
+          
+          switch (bytecode) {
+            // Have tow operand]
+            case SPVM_BYTECODE_C_CODE_STORE:
+            case SPVM_BYTECODE_C_CODE_STORE_ADDRESS:
+            case SPVM_BYTECODE_C_CODE_LOAD:
+            {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+              
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+              
+              break;
+            }
           }
+          
+          break;
         }
         
-        break;
-      }
-      
-      // Have one operand
-      case SPVM_BYTECODE_C_CODE_PUSH_BYTE:
-      case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_SHORT:
-      case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_INT:
-      case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_LONG:
-      case SPVM_BYTECODE_C_CODE_STORE:
-      case SPVM_BYTECODE_C_CODE_STORE_ADDRESS:
-      case SPVM_BYTECODE_C_CODE_LOAD:
-      case SPVM_BYTECODE_C_CODE_MALLOC_ARRAY:
-      {
-        i++;
-        bytecode = bytecode_array->values[i];
-        printf("        [%" PRId32 "] %d\n", i, bytecode);
-        
-        break;
-      }
-      
-      // Have tow operands
-      case SPVM_BYTECODE_C_CODE_INC_BYTE:
-      case SPVM_BYTECODE_C_CODE_INC_SHORT:
-      case SPVM_BYTECODE_C_CODE_INC_INT:
-      case SPVM_BYTECODE_C_CODE_INC_LONG:
-      case SPVM_BYTECODE_C_CODE_PUSH_SHORT:
-      case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_INT:
-      case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_LONG:
-      case SPVM_BYTECODE_C_CODE_IF_EQ_CMP:
-      case SPVM_BYTECODE_C_CODE_IF_NE_CMP:
-      case SPVM_BYTECODE_C_CODE_IF_LT_CMP:
-      case SPVM_BYTECODE_C_CODE_IF_GE_CMP:
-      case SPVM_BYTECODE_C_CODE_IF_GT_CMP:
-      case SPVM_BYTECODE_C_CODE_IF_LE_CMP:
-      case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
-      case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
-      case SPVM_BYTECODE_C_CODE_IF_LT_ZERO:
-      case SPVM_BYTECODE_C_CODE_IF_GE_ZERO:
-      case SPVM_BYTECODE_C_CODE_IF_GT_ZERO:
-      case SPVM_BYTECODE_C_CODE_IF_LE_ZERO:
-      case SPVM_BYTECODE_C_CODE_IF_EQ_CMP_ADDRESS:
-      case SPVM_BYTECODE_C_CODE_IF_NE_CMP_ADDRESS:
-      case SPVM_BYTECODE_C_CODE_IF_NON_NULL:
-      case SPVM_BYTECODE_C_CODE_IF_NULL:
-      case SPVM_BYTECODE_C_CODE_GOTO:
-      case SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE:
-      case SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT:
-      case SPVM_BYTECODE_C_CODE_GET_FIELD_INT:
-      case SPVM_BYTECODE_C_CODE_GET_FIELD_LONG:
-      case SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT:
-      case SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE:
-      case SPVM_BYTECODE_C_CODE_SET_FIELD_BYTE:
-      case SPVM_BYTECODE_C_CODE_SET_FIELD_SHORT:
-      case SPVM_BYTECODE_C_CODE_SET_FIELD_INT:
-      case SPVM_BYTECODE_C_CODE_SET_FIELD_LONG:
-      case SPVM_BYTECODE_C_CODE_SET_FIELD_FLOAT:
-      case SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE:
-      {
-        i++;
-        bytecode = bytecode_array->values[i];
-        printf("        [%" PRId32 "] %d\n", i, bytecode);
-        
-        i++;
-        bytecode = bytecode_array->values[i];
-        printf("        [%" PRId32 "] %d\n", i, bytecode);
-        
-        break;
-      }
-      
-      // Have four operands
-      case SPVM_BYTECODE_C_CODE_CALL_SUB:
-      case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
-      case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
-      case SPVM_BYTECODE_C_CODE_MALLOC_STRING:
-      case SPVM_BYTECODE_C_CODE_MALLOC_OBJECT:
-      {
-        i++;
-        bytecode = bytecode_array->values[i];
-        printf("        [%" PRId32 "] %d\n", i, bytecode);
-        
-        i++;
-        bytecode = bytecode_array->values[i];
-        printf("        [%" PRId32 "] %d\n", i, bytecode);
-        
-        i++;
-        bytecode = bytecode_array->values[i];
-        printf("        [%" PRId32 "] %d\n", i, bytecode);
-        
-        i++;
-        bytecode = bytecode_array->values[i];
-        printf("        [%" PRId32 "] %d\n", i, bytecode);
-        
-        break;
-      }
-      
-      case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
-        
-        // Bytecode index to calculate padding
-        int32_t pc = i;
-        
-        // Padding
-        int32_t padding = (sizeof(int32_t) - 1) - (pc % sizeof(int32_t));
-        
-        for (int32_t j = 0; j < padding; j++) {
+        // Have one operand
+        case SPVM_BYTECODE_C_CODE_PUSH_BYTE:
+        case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_SHORT:
+        case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_INT:
+        case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_LONG:
+        case SPVM_BYTECODE_C_CODE_STORE:
+        case SPVM_BYTECODE_C_CODE_STORE_ADDRESS:
+        case SPVM_BYTECODE_C_CODE_LOAD:
+        case SPVM_BYTECODE_C_CODE_MALLOC_ARRAY:
+        {
           i++;
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
+          
+          break;
         }
         
-        // Default
-        for (int32_t j = 0; j < (int32_t)sizeof(int32_t); j++) {
+        // Have tow operands
+        case SPVM_BYTECODE_C_CODE_INC_BYTE:
+        case SPVM_BYTECODE_C_CODE_INC_SHORT:
+        case SPVM_BYTECODE_C_CODE_INC_INT:
+        case SPVM_BYTECODE_C_CODE_INC_LONG:
+        case SPVM_BYTECODE_C_CODE_PUSH_SHORT:
+        case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_INT:
+        case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_LONG:
+        case SPVM_BYTECODE_C_CODE_IF_EQ_CMP:
+        case SPVM_BYTECODE_C_CODE_IF_NE_CMP:
+        case SPVM_BYTECODE_C_CODE_IF_LT_CMP:
+        case SPVM_BYTECODE_C_CODE_IF_GE_CMP:
+        case SPVM_BYTECODE_C_CODE_IF_GT_CMP:
+        case SPVM_BYTECODE_C_CODE_IF_LE_CMP:
+        case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
+        case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
+        case SPVM_BYTECODE_C_CODE_IF_LT_ZERO:
+        case SPVM_BYTECODE_C_CODE_IF_GE_ZERO:
+        case SPVM_BYTECODE_C_CODE_IF_GT_ZERO:
+        case SPVM_BYTECODE_C_CODE_IF_LE_ZERO:
+        case SPVM_BYTECODE_C_CODE_IF_EQ_CMP_ADDRESS:
+        case SPVM_BYTECODE_C_CODE_IF_NE_CMP_ADDRESS:
+        case SPVM_BYTECODE_C_CODE_IF_NON_NULL:
+        case SPVM_BYTECODE_C_CODE_IF_NULL:
+        case SPVM_BYTECODE_C_CODE_GOTO:
+        case SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE:
+        case SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT:
+        case SPVM_BYTECODE_C_CODE_GET_FIELD_INT:
+        case SPVM_BYTECODE_C_CODE_GET_FIELD_LONG:
+        case SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT:
+        case SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE:
+        case SPVM_BYTECODE_C_CODE_SET_FIELD_BYTE:
+        case SPVM_BYTECODE_C_CODE_SET_FIELD_SHORT:
+        case SPVM_BYTECODE_C_CODE_SET_FIELD_INT:
+        case SPVM_BYTECODE_C_CODE_SET_FIELD_LONG:
+        case SPVM_BYTECODE_C_CODE_SET_FIELD_FLOAT:
+        case SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE:
+        {
           i++;
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
-        }
-        
-        // Low
-        int32_t min = *(int32_t*)&bytecode_array->values[i + 1];
-        for (int32_t j = 0; j < (int32_t)sizeof(int32_t); j++) {
+          
           i++;
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
+          
+          break;
         }
         
-        // High
-        int32_t max = *(int32_t*)&bytecode_array->values[i + 1];
-        for (int32_t j = 0; j < (int32_t)sizeof(int32_t); j++) {
+        // Have four operands
+        case SPVM_BYTECODE_C_CODE_CALL_SUB:
+        case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
+        case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
+        case SPVM_BYTECODE_C_CODE_MALLOC_STRING:
+        case SPVM_BYTECODE_C_CODE_MALLOC_OBJECT:
+        {
           i++;
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
-        }
-        
-        // Addresses
-        int32_t length = max - min + 1;
-        for (int32_t j = 0; j < length * (int32_t)sizeof(int32_t); j++) {
+          
           i++;
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
-        }
-        
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
-        
-        // Bytecode index to calculate padding
-        int32_t pc = i;
-        
-        // Padding
-        int32_t padding = (sizeof(int32_t) - 1) - (pc % sizeof(int32_t));
-        
-        for (int32_t j = 0; j < padding; j++) {
+          
           i++;
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
-        }
-        
-        // Default
-        for (int32_t j = 0; j < (int32_t)sizeof(int32_t); j++) {
+          
           i++;
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
+          
+          break;
         }
         
-        // Count
-        int32_t length = *(int32_t*)&bytecode_array->values[i + 1];
-        for (int32_t j = 0; j < (int32_t)sizeof(int32_t); j++) {
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
+        case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
+          
+          // Bytecode index to calculate padding
+          int32_t pc = i;
+          
+          // Padding
+          int32_t padding = (sizeof(int32_t) - 1) - (pc % sizeof(int32_t));
+          
+          {
+            int32_t j;
+            for (j = 0; j < padding; j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          // Default
+          {
+            int32_t j;
+            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          // Low
+          int32_t min = *(int32_t*)&bytecode_array->values[i + 1];
+          {
+            int32_t j;
+            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          // High
+          int32_t max = *(int32_t*)&bytecode_array->values[i + 1];
+          {
+            int32_t j;
+            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          // Addresses
+          int32_t length = max - min + 1;
+          {
+            int32_t j;
+            for (j = 0; j < length * (int32_t)sizeof(int32_t); j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          break;
         }
-        
-        // Addresses
-        for (int32_t j = 0; j < length * (int32_t)sizeof(int32_t) * 2; j++) {
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
+        case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
+          
+          // Bytecode index to calculate padding
+          int32_t pc = i;
+          
+          // Padding
+          int32_t padding = (sizeof(int32_t) - 1) - (pc % sizeof(int32_t));
+          
+          {
+            int32_t j;
+            for (j = 0; j < padding; j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          // Default
+          {
+            int32_t j;
+            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          // Count
+          int32_t length = *(int32_t*)&bytecode_array->values[i + 1];
+          {
+            int32_t j;
+            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          // Addresses
+          {
+            int32_t j;
+            for (j = 0; j < length * (int32_t)sizeof(int32_t) * 2; j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          break;
         }
-        
-        break;
       }
     }
   }
@@ -453,21 +508,29 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     
     printf("      args\n");
     SPVM_ARRAY* op_args = sub->op_args;
-    for (int32_t i = 0, len = op_args->length; i < len; i++) {
-      SPVM_OP* op_arg = SPVM_ARRAY_fetch(sub->op_args, i);
-      SPVM_MY_VAR* my_var = op_arg->uv.my_var;
-      printf("        arg[%" PRId32 "]\n", i);
-      SPVM_DUMPER_dump_my_var(compiler, my_var);
+    {
+      int32_t i;
+      int32_t len;
+      for (i = 0, len = op_args->length; i < len; i++) {
+        SPVM_OP* op_arg = SPVM_ARRAY_fetch(sub->op_args, i);
+        SPVM_MY_VAR* my_var = op_arg->uv.my_var;
+        printf("        arg[%" PRId32 "]\n", i);
+        SPVM_DUMPER_dump_my_var(compiler, my_var);
+      }
     }
     
     if (!sub->is_native) {
       printf("      my_vars\n");
       SPVM_ARRAY* op_my_vars = sub->op_my_vars;
-      for (int32_t i = 0, len = op_my_vars->length; i < len; i++) {
-        SPVM_OP* op_my_var = SPVM_ARRAY_fetch(sub->op_my_vars, i);
-        SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
-        printf("        my_var[%" PRId32 "]\n", i);
-        SPVM_DUMPER_dump_my_var(compiler, my_var);
+      {
+        int32_t i;
+        int32_t len;
+        for (i = 0, len = op_my_vars->length; i < len; i++) {
+          SPVM_OP* op_my_var = SPVM_ARRAY_fetch(sub->op_my_vars, i);
+          SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
+          printf("        my_var[%" PRId32 "]\n", i);
+          SPVM_DUMPER_dump_my_var(compiler, my_var);
+        }
       }
       
       printf("      operand_stack_max => %" PRId32 "\n", sub->operand_stack_max);

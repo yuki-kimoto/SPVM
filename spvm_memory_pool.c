@@ -46,8 +46,11 @@ void* SPVM_MEMORY_POOL_alloc(SPVM_MEMORY_POOL* memory_pool, int32_t byte_size) {
       int32_t new_memory_pool_pages_length = memory_pool->pages_length * 2;
       
       memory_pool->pages = SPVM_UTIL_ALLOCATOR_safe_realloc_i32(memory_pool->pages, new_memory_pool_pages_length, sizeof(uint8_t*));
-      for (int32_t i = memory_pool->pages_length; i < new_memory_pool_pages_length; i++) {
-        memory_pool->pages[i] = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(memory_pool->page_byte_size, sizeof(uint8_t));
+      {
+        int32_t i;
+        for (i = memory_pool->pages_length; i < new_memory_pool_pages_length; i++) {
+          memory_pool->pages[i] = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(memory_pool->page_byte_size, sizeof(uint8_t));
+        }
       }
       
       memory_pool->pages_length = new_memory_pool_pages_length;
@@ -64,8 +67,11 @@ void* SPVM_MEMORY_POOL_alloc(SPVM_MEMORY_POOL* memory_pool, int32_t byte_size) {
 
 void SPVM_MEMORY_POOL_free(SPVM_MEMORY_POOL* memory_pool) {
   
-  for (int32_t i = 0; i < memory_pool->pages_length; i++) {
-    free(memory_pool->pages[i]);
+  {
+    int32_t i;
+    for (i = 0; i < memory_pool->pages_length; i++) {
+      free(memory_pool->pages[i]);
+    }
   }
   
   free(memory_pool->pages);

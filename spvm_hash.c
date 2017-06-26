@@ -119,18 +119,20 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   SPVM_HASH* new_hash = SPVM_HASH_new(new_table_capacity);
   
   // Rehash
-  for (int32_t i = 0; i < hash->entries_length; i++) {
-    SPVM_HASH_ENTRY* entry = &hash->entries[i];
-    
-    const char* key = &hash->key_buffer[entry->key_index];
-    
-    assert(key);
-    
-    void* value = *(void**)&entry->value;
-    
-    SPVM_HASH_insert_norehash(new_hash, key, strlen(key), value);
+  {
+    int32_t i;
+    for (i = 0; i < hash->entries_length; i++) {
+      SPVM_HASH_ENTRY* entry = &hash->entries[i];
+      
+      const char* key = &hash->key_buffer[entry->key_index];
+      
+      assert(key);
+      
+      void* value = *(void**)&entry->value;
+      
+      SPVM_HASH_insert_norehash(new_hash, key, strlen(key), value);
+    }
   }
-  
   
   // Replace hash fields
   free(hash->table);
