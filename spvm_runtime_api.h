@@ -121,9 +121,12 @@ static inline void SPVM_RUNTIME_API_dec_ref_count(SPVM_RUNTIME* runtime, SPVM_DA
         
         int32_t ref_fields_length = constant_pool_package.ref_fields_length;
         
-        for (int i = 0; i < ref_fields_length; i++) {
-          SPVM_DATA* data_field = *(SPVM_DATA**)((intptr_t)data_object + SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(void*) * i);
-          SPVM_RUNTIME_API_dec_ref_count(runtime, data_field);
+        {
+          int32_t i;
+          for (i = 0; i < ref_fields_length; i++) {
+            SPVM_DATA* data_field = *(SPVM_DATA**)((intptr_t)data_object + SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(void*) * i);
+            SPVM_RUNTIME_API_dec_ref_count(runtime, data_field);
+          }
         }
         
         SPVM_RUNTIME_ALLOCATOR_free_data(runtime, runtime->allocator, (SPVM_DATA*)data_object);

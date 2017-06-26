@@ -95,90 +95,96 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
   // Reorder fields. Reference types place before value types.
   SPVM_ARRAY* op_packages = compiler->op_packages;
-  for (int32_t package_pos = 0; package_pos < op_packages->length; package_pos++) {
-    SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, package_pos);
-    SPVM_PACKAGE* package = op_package->uv.package;
-    SPVM_ARRAY* op_fields = package->op_fields;
-    
-    SPVM_ARRAY* op_fields_ref = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-    SPVM_ARRAY* op_fields_value = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-
-    // Separate reference type and value type
-    _Bool field_type_error = 0;
-    for (int32_t field_pos = 0; field_pos < op_fields->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields, field_pos);
-      SPVM_FIELD* field = op_field->uv.field;
-      SPVM_TYPE* field_type = field->op_type->uv.type;
+  {
+    int32_t package_pos;
+    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
+      SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, package_pos);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      SPVM_ARRAY* op_fields = package->op_fields;
       
-      // Check field type
-      if (SPVM_TYPE_is_array(compiler, field_type)) {
-        if (!SPVM_TYPE_is_array_numeric(compiler, field_type)) {
-          SPVM_yyerror_format(compiler, "Type of field \"%s::%s\" must not be object array at %s line %d\n", package->op_name->uv.name, field->op_name->uv.name, op_field->file, op_field->line);
-          field_type_error = 1;
+      SPVM_ARRAY* op_fields_ref = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_ARRAY* op_fields_value = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+
+      // Separate reference type and value type
+      _Bool field_type_error = 0;
+      int32_t field_pos;
+      {
+        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields, field_pos);
+          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_TYPE* field_type = field->op_type->uv.type;
+          
+          // Check field type
+          if (SPVM_TYPE_is_array(compiler, field_type)) {
+            if (!SPVM_TYPE_is_array_numeric(compiler, field_type)) {
+              SPVM_yyerror_format(compiler, "Type of field \"%s::%s\" must not be object array at %s line %d\n", package->op_name->uv.name, field->op_name->uv.name, op_field->file, op_field->line);
+              field_type_error = 1;
+            }
+          }
+          else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {
+              SPVM_yyerror_format(compiler, "Type of field \"%s::%s\" must not be object at %s line %d\n", package->op_name->uv.name, field->op_name->uv.name, op_field->file, op_field->line);
+            field_type_error = 1;
+          }
         }
       }
-      else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {
-          SPVM_yyerror_format(compiler, "Type of field \"%s::%s\" must not be object at %s line %d\n", package->op_name->uv.name, field->op_name->uv.name, op_field->file, op_field->line);
-        field_type_error = 1;
+      if (field_type_error) {
+        compiler->fatal_error = 1;
+        return;
       }
-    }
-    if (field_type_error) {
-      compiler->fatal_error = 1;
-      return;
-    }
-    
-    // Separate reference type and value type
-    int32_t ref_fields_length = 0;
-    {
-      int32_t field_pos;
-      for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
-        SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields, field_pos);
-        SPVM_FIELD* field = op_field->uv.field;
-        SPVM_TYPE* field_type = field->op_type->uv.type;
-        
-        // Check field type
-        if (SPVM_TYPE_is_array(compiler, field_type)) {
-          if (!SPVM_TYPE_is_array_numeric(compiler, field_type)) {
+      
+      // Separate reference type and value type
+      int32_t ref_fields_length = 0;
+      {
+        int32_t field_pos;
+        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields, field_pos);
+          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_TYPE* field_type = field->op_type->uv.type;
+          
+          // Check field type
+          if (SPVM_TYPE_is_array(compiler, field_type)) {
+            if (!SPVM_TYPE_is_array_numeric(compiler, field_type)) {
+              SPVM_yyerror_format(compiler, "field type must be numeric or numeric array or string array at %s line %d\n", op_field->file, op_field->line);
+              compiler->fatal_error = 1;
+              return;
+            }
+          }
+          else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {
             SPVM_yyerror_format(compiler, "field type must be numeric or numeric array or string array at %s line %d\n", op_field->file, op_field->line);
             compiler->fatal_error = 1;
             return;
           }
-        }
-        else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {
-          SPVM_yyerror_format(compiler, "field type must be numeric or numeric array or string array at %s line %d\n", op_field->file, op_field->line);
-          compiler->fatal_error = 1;
-          return;
-        }
-        
-        if (SPVM_TYPE_is_numeric(compiler, field_type)) {
-          SPVM_ARRAY_push(op_fields_value, op_field);
-        }
-        else {
-          SPVM_ARRAY_push(op_fields_ref, op_field);
-          ref_fields_length++;
+          
+          if (SPVM_TYPE_is_numeric(compiler, field_type)) {
+            SPVM_ARRAY_push(op_fields_value, op_field);
+          }
+          else {
+            SPVM_ARRAY_push(op_fields_ref, op_field);
+            ref_fields_length++;
+          }
         }
       }
-    }
-    package->ref_fields_length = ref_fields_length;
-    
-    // Create ordered op fields
-    SPVM_ARRAY* ordered_op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-    {
-      int32_t field_pos;
-      for (field_pos = 0; field_pos < op_fields_ref->length; field_pos++) {
-        SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields_ref, field_pos);
-        SPVM_ARRAY_push(ordered_op_fields, op_field);
+      package->ref_fields_length = ref_fields_length;
+      
+      // Create ordered op fields
+      SPVM_ARRAY* ordered_op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      {
+        int32_t field_pos;
+        for (field_pos = 0; field_pos < op_fields_ref->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields_ref, field_pos);
+          SPVM_ARRAY_push(ordered_op_fields, op_field);
+        }
       }
-    }
-    
-    {
-      int32_t field_pos;
-      for (field_pos = 0; field_pos < op_fields_value->length; field_pos++) {
-        SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields_value, field_pos);
-        SPVM_ARRAY_push(ordered_op_fields, op_field);
+      
+      {
+        int32_t field_pos;
+        for (field_pos = 0; field_pos < op_fields_value->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_ARRAY_fetch(op_fields_value, field_pos);
+          SPVM_ARRAY_push(ordered_op_fields, op_field);
+        }
       }
+      package->op_fields = ordered_op_fields;
     }
-    package->op_fields = ordered_op_fields;
   }
   
   // Resolve package

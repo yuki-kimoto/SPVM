@@ -305,10 +305,13 @@ static inline int32_t SPVM_API_dump_object_field_names(SPVM_ENV* env, SPVM_DATA_
   
   int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
-  for (int32_t i = 0; i < length; i++) {
-    int32_t name_index = constant_pool[field_name_indexes_constant_pool_index + i + 1];
-    char* name = (char*)&constant_pool[name_index + 1];
-    fprintf(stderr, "%s\n", name);
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      int32_t name_index = constant_pool[field_name_indexes_constant_pool_index + i + 1];
+      char* name = (char*)&constant_pool[name_index + 1];
+      fprintf(stderr, "%s\n", name);
+    }
   }
   
   return length;

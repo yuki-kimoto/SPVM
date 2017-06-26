@@ -265,14 +265,17 @@ build_type_symtable(...)
   
   // abs_name, arg_types, return_type, constant_pool_index, type_id
   SPVM_ARRAY* types = compiler->types;
-  for (int32_t type_index = 0; type_index < types->length; type_index++) {
-    SPVM_TYPE* type = SPVM_ARRAY_fetch(types, type_index);
-    
-    const char* type_name = type->name;
-    int32_t type_id = type->id;
-    SV* sv_type_id = sv_2mortal(newSViv(type_id));
-    
-    hv_store(hv_type_symtable, type_name, strlen(type_name), SvREFCNT_inc(sv_type_id), 0);
+  {
+    int32_t type_index;
+    for (type_index = 0; type_index < types->length; type_index++) {
+      SPVM_TYPE* type = SPVM_ARRAY_fetch(types, type_index);
+      
+      const char* type_name = type->name;
+      int32_t type_id = type->id;
+      SV* sv_type_id = sv_2mortal(newSViv(type_id));
+      
+      hv_store(hv_type_symtable, type_name, strlen(type_name), SvREFCNT_inc(sv_type_id), 0);
+    }
   }
   
   SV* sv_type_symtable = sv_2mortal(newRV_inc((SV*)hv_type_symtable));
@@ -388,61 +391,64 @@ call_sub(...)
   }
   
   // Push arguments
-  for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
-    SV* sv_data = ST(arg_index + 2);
-    
-    if (sv_isobject(sv_data) && sv_derived_from(sv_data, "SPVM::Data")) {
-      HV* hv_data = (HV*)SvRV(sv_data);
+  {
+    int32_t arg_index;
+    for (arg_index = 0; arg_index < args_length; arg_index++) {
+      SV* sv_data = ST(arg_index + 2);
       
-      SV** sv_data_type_name_ptr = hv_fetch(hv_data, "type_name", strlen("type_name"), 0);
-      SV* sv_data_type_name = sv_data_type_name_ptr ? *sv_data_type_name_ptr : &PL_sv_undef;
-      const char* data_type_name = SvPV_nolen(sv_data_type_name);
-      
-      SV** sv_arg_type_name_ptr = av_fetch(av_arg_type_names, arg_index, 0);
-      SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
-      const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
-      
-      if (!strEQ(data_type_name, arg_type_name)) {
-        croak("Argument data type need %s, but %s", arg_type_name, data_type_name);
-      }
-      
-      SV** sv_value_ptr = hv_fetch(hv_data, "value", strlen("value"), 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      
-      if (strEQ(data_type_name, "byte")) {
-        int8_t value = (int8_t)SvIV(sv_value);
-        SPVM_RUNTIME_API_push_var_byte(runtime, value);
-      }
-      else if (strEQ(data_type_name, "short")) {
-        IV value = SvIV(sv_value);
-        SPVM_RUNTIME_API_push_var_short(runtime, value);
-      }
-      else if (strEQ(data_type_name, "int")) {
-        int32_t value = (int32_t)SvIV(sv_value);
-        SPVM_RUNTIME_API_push_var_int(runtime, value);
-      }
-      else if (strEQ(data_type_name, "long")) {
-        int64_t value = (int64_t)SvIV(sv_value);
-        SPVM_RUNTIME_API_push_var_long(runtime, value);
-      }
-      else if (strEQ(data_type_name, "float")) {
-        IV iv_value = SvIV(sv_value);
-        float value;
-        memcpy(&value, &iv_value, sizeof(float));
-        SPVM_RUNTIME_API_push_var_float(runtime, value);
-      }
-      else if (strEQ(data_type_name, "double")) {
-        IV iv_value = SvIV(sv_value);
-        double value;
-        memcpy(&value, &iv_value, sizeof(double));
-        SPVM_RUNTIME_API_push_var_double(runtime, value);
+      if (sv_isobject(sv_data) && sv_derived_from(sv_data, "SPVM::Data")) {
+        HV* hv_data = (HV*)SvRV(sv_data);
+        
+        SV** sv_data_type_name_ptr = hv_fetch(hv_data, "type_name", strlen("type_name"), 0);
+        SV* sv_data_type_name = sv_data_type_name_ptr ? *sv_data_type_name_ptr : &PL_sv_undef;
+        const char* data_type_name = SvPV_nolen(sv_data_type_name);
+        
+        SV** sv_arg_type_name_ptr = av_fetch(av_arg_type_names, arg_index, 0);
+        SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
+        const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
+        
+        if (!strEQ(data_type_name, arg_type_name)) {
+          croak("Argument data type need %s, but %s", arg_type_name, data_type_name);
+        }
+        
+        SV** sv_value_ptr = hv_fetch(hv_data, "value", strlen("value"), 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        
+        if (strEQ(data_type_name, "byte")) {
+          int8_t value = (int8_t)SvIV(sv_value);
+          SPVM_RUNTIME_API_push_var_byte(runtime, value);
+        }
+        else if (strEQ(data_type_name, "short")) {
+          IV value = SvIV(sv_value);
+          SPVM_RUNTIME_API_push_var_short(runtime, value);
+        }
+        else if (strEQ(data_type_name, "int")) {
+          int32_t value = (int32_t)SvIV(sv_value);
+          SPVM_RUNTIME_API_push_var_int(runtime, value);
+        }
+        else if (strEQ(data_type_name, "long")) {
+          int64_t value = (int64_t)SvIV(sv_value);
+          SPVM_RUNTIME_API_push_var_long(runtime, value);
+        }
+        else if (strEQ(data_type_name, "float")) {
+          IV iv_value = SvIV(sv_value);
+          float value;
+          memcpy(&value, &iv_value, sizeof(float));
+          SPVM_RUNTIME_API_push_var_float(runtime, value);
+        }
+        else if (strEQ(data_type_name, "double")) {
+          IV iv_value = SvIV(sv_value);
+          double value;
+          memcpy(&value, &iv_value, sizeof(double));
+          SPVM_RUNTIME_API_push_var_double(runtime, value);
+        }
+        else {
+          assert(0);
+        }
       }
       else {
-        assert(0);
+        croak("Only receive SPVM::Data");
       }
-    }
-    else {
-      croak("Only receive SPVM::Data");
     }
   }
   
