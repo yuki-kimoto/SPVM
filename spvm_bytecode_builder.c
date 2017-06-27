@@ -26,7 +26,10 @@
 #include "spvm_constant_pool.h"
 #include "spvm_type.h"
 #include "spvm_limit.h"
-#include "spvm_api.h"
+#include "spvm_constant_pool_sub.h"
+#include "spvm_constant_pool_field.h"
+#include "spvm_constant_pool_package.h"
+#include "spvm_data_array.h"
 
 
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
@@ -1688,8 +1691,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_first = op_cur->first;
                     
                     if (op_first->code != SPVM_OP_C_CODE_ASSIGN && op_first->code != SPVM_OP_C_CODE_RETURN && !op_first->lvalue) {
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_first);
-                      
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_POP);
                     }
                     

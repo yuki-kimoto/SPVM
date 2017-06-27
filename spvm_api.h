@@ -8,60 +8,21 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "spvm_constant_pool_package.h"
+#include "spvm_constant_pool_field.h"
+#include "spvm_constant_pool_sub.h"
 #include "spvm_value.h"
 #include "spvm_data.h"
 #include "spvm_data_array.h"
 #include "spvm_data_object.h"
 #include "spvm_base.h"
 
-struct SPVM_constant_pool_package;
-typedef struct SPVM_constant_pool_package SPVM_CONSTANT_POOL_PACKAGE;
-
-struct SPVM_constant_pool_field;
-typedef struct SPVM_constant_pool_field SPVM_CONSTANT_POOL_FIELD;
-
-struct SPVM_constant_pool_sub;
-typedef struct SPVM_constant_pool_sub SPVM_CONSTANT_POOL_SUB;
-
 struct SPVM_env;
 typedef struct SPVM_env SPVM_ENV;
-
-enum {
-  SPVM_DATA_C_TYPE_OBJECT = 0,
-  SPVM_DATA_C_TYPE_ARRAY = 1,
-};
 
 // SPVM_ENV
 struct SPVM_env {
   int32_t* constant_pool;
-};
-
-// SPVM_CONSTANT_POOL_PACKAGE
-struct SPVM_constant_pool_package {
-  int32_t name_constant_pool_index;
-  int32_t fields_length;
-  int32_t ref_fields_length;
-  int32_t field_name_indexes_constant_pool_index;
-};
-
-// SPVM_CONSTANT_POOL_FIELD
-struct SPVM_constant_pool_field {
-  int32_t abs_name_constant_pool_index;
-  int32_t name_constant_pool_index;
-  int32_t index;
-};
-
-// SPVM_CONSTANT_POOL_SUB
-struct SPVM_constant_pool_sub {
-  void* native_address;
-  int32_t bytecode_base;
-  int32_t file_name_constant_pool_index;
-  int32_t abs_name_constant_pool_index;
-  int32_t operand_stack_max;
-  int32_t my_vars_length;
-  int32_t args_length;
-  _Bool is_native;
-  _Bool has_return_value;
 };
 
 static inline int32_t SPVM_API_get_array_value_size(SPVM_ENV* env, int32_t type) {
