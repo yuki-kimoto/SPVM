@@ -9,4 +9,9 @@ struct SPVM_data {
   int32_t ref_count;
 };
 
+// SPVM_DATA
+enum {
+  SPVM_DATA_C_HEADER_BYTE_SIZE = 32
+};
+
 #endif

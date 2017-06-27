@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_data_object.h
+struct SPVM_data_object;
+typedef struct SPVM_data_object SPVM_DATA_OBJECT;
+
 // spvm_data_array.h
 struct SPVM_data_array;
 typedef struct SPVM_data_array SPVM_DATA_ARRAY;

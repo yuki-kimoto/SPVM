@@ -11,10 +11,8 @@
 #include "spvm_value.h"
 #include "spvm_data.h"
 #include "spvm_data_array.h"
+#include "spvm_data_object.h"
 #include "spvm_base.h"
-
-struct SPVM_data_object;
-typedef struct SPVM_data_object SPVM_DATA_OBJECT;
 
 struct SPVM_constant_pool_package;
 typedef struct SPVM_constant_pool_package SPVM_CONSTANT_POOL_PACKAGE;
@@ -28,11 +26,6 @@ typedef struct SPVM_constant_pool_sub SPVM_CONSTANT_POOL_SUB;
 struct SPVM_env;
 typedef struct SPVM_env SPVM_ENV;
 
-// SPVM_DATA
-enum {
-  SPVM_DATA_C_HEADER_BYTE_SIZE = 32
-};
-
 enum {
   SPVM_DATA_C_TYPE_OBJECT = 0,
   SPVM_DATA_C_TYPE_ARRAY = 1,
@@ -41,14 +34,6 @@ enum {
 // SPVM_ENV
 struct SPVM_env {
   int32_t* constant_pool;
-};
-
-// SPVM_DATA_OBJECT
-struct SPVM_data_object {
-  int8_t type;
-  int32_t ref_count;
-  int32_t package_constant_pool_index;
-  int32_t field_name_indexes_constant_pool_index;
 };
 
 // SPVM_CONSTANT_POOL_PACKAGE
