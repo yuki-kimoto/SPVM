@@ -17,7 +17,6 @@
 #include "spvm_data_object.h"
 #include "spvm_util_allocator.h"
 #include "spvm_value.h"
-#include "spvm_env.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
@@ -25,6 +24,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   assert(sizeof(SPVM_DATA_OBJECT) <= SPVM_DATA_C_HEADER_BYTE_SIZE);
   
   SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_RUNTIME));
+
+  runtime->constant_pool = NULL;
+  runtime->bytecodes = NULL;
   
   // Runtime memory allocator
   runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
@@ -32,7 +34,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   runtime->call_stack_capacity = 0xFF;
   runtime->call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(runtime->call_stack_capacity, sizeof(SPVM_VALUE));
   
-  runtime->env = SPVM_ENV_new();;
+  runtime->env = SPVM_ENV_new();
   
   SPVM_RUNTIME_init(runtime);
   
@@ -258,11 +260,8 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
   };
   
-  // Environment
-  SPVM_ENV* env = runtime->env;
-  
   // Constant pool
-  int32_t* constant_pool = env->constant_pool;
+  int32_t* constant_pool = runtime->constant_pool;
   
   // Bytecode
   uint8_t* bytecodes = runtime->bytecodes;
@@ -478,7 +477,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
       total_length = strlen(exception);
     }
     else {
-      total_length += SPVM_API_get_array_length(env, return_value);
+      total_length += SPVM_API_get_array_length(runtime, return_value);
     }
     total_length += strlen(from);
     total_length += strlen(sub_name);
@@ -502,10 +501,10 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
       memcpy(
         (void*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE),
         (void*)((intptr_t)return_value + SPVM_DATA_C_HEADER_BYTE_SIZE),
-        SPVM_API_get_array_length(env, return_value)
+        SPVM_API_get_array_length(runtime, return_value)
       );
       sprintf(
-        (char*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE + SPVM_API_get_array_length(env, return_value)),
+        (char*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE + SPVM_API_get_array_length(runtime, return_value)),
         "%s%s%s%s",
         from,
         sub_name,
@@ -1853,7 +1852,7 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, int32_t sub_constant_pool_inde
   case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY: {
     int32_t value_type = *(pc + 1);
     
-    int32_t size = SPVM_API_get_array_value_size(env, value_type);
+    int32_t size = SPVM_API_get_array_value_size(runtime, value_type);
     
     // Array length
     int32_t length = call_stack[operand_stack_top].int_value;

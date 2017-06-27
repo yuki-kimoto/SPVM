@@ -5,7 +5,6 @@
 
 // SPVM_ENV
 struct SPVM_env {
-  int32_t* constant_pool;
   void** functions;
 };
 

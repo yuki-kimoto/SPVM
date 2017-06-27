@@ -26,6 +26,9 @@ struct SPVM_runtime {
   // Bytecodes
   uint8_t* bytecodes;
   
+  // Constant pool
+  int32_t* constant_pool;
+  
   // Exception
   _Bool abort;
 };

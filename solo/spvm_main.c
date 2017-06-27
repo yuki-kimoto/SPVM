@@ -13,7 +13,6 @@
 #include "../spvm_runtime_allocator.h"
 #include "../spvm_op.h"
 #include "../spvm_sub.h"
-#include "../spvm_env.h"
 
 int main(int argc, char *argv[])
 {
@@ -50,8 +49,8 @@ int main(int argc, char *argv[])
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
   
   // Copy constant pool to runtime
-  runtime->env->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
-  memcpy(runtime->env->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
+  runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
+  memcpy(runtime->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
 
   // Copy bytecodes to runtime
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
@@ -91,7 +90,7 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
   if (runtime->abort) {
     void* message_address = SPVM_RUNTIME_API_pop_return_value_address(runtime);
-    int8_t* message = SPVM_API_get_array_values_byte(runtime->env, message_address);
+    int8_t* message = SPVM_API_get_array_values_byte(runtime, message_address);
     
     printf("%s", (char*)message);
     printf("\n");
