@@ -6,7 +6,6 @@
 #include "spvm_extention.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
-#include "spvm_api.h"
 
 void SPVM_EXTENTION_std__sum_int(SPVM_RUNTIME* runtime) {
   (void)runtime;

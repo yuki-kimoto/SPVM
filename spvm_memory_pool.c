@@ -4,7 +4,6 @@
 
 #include "spvm_memory_pool.h"
 #include "spvm_util_allocator.h"
-#include "spvm_api.h"
 #include "spvm_value.h"
 
 SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(int32_t page_byte_size) {

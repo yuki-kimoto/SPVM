@@ -1,8 +1,8 @@
 #ifndef SPVM_RUNTIME_ALLOCATOR_H
 #define SPVM_RUNTIME_ALLOCATOR_H
 #include <stddef.h>
+
 #include "spvm_base.h"
-#include "spvm_api.h"
 
 // Parser information
 struct SPVM_runtime_allocator {

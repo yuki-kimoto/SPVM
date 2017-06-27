@@ -2,7 +2,6 @@
 #define SPVM_RUNTIME_H
 
 #include "spvm_base.h"
-#include "spvm_api.h"
 
 struct SPVM_runtime {
   

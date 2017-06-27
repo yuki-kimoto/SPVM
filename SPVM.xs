@@ -18,7 +18,6 @@
 #include "spvm_runtime_allocator.h"
 #include "spvm_op.h"
 #include "spvm_sub.h"
-#include "spvm_api.h"
 #include "spvm_package.h"
 #include "spvm_sub.h"
 #include "spvm_my_var.h"

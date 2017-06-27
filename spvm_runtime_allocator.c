@@ -5,7 +5,6 @@
 #include <math.h>
 #include <stdint.h>
 
-#include "spvm_api.h"
 #include "spvm_runtime_allocator.h"
 #include "spvm_runtime_api.h"
 #include "spvm_util_allocator.h"
