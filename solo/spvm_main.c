@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
   if (runtime->abort) {
     void* message_address = SPVM_RUNTIME_API_pop_return_value_address(runtime);
-    int8_t* message = SPVM_API_get_array_values_byte(runtime, message_address);
+    int8_t* message = SPVM_RUNTIME_API_get_array_values_byte(runtime, message_address);
     
     printf("%s", (char*)message);
     printf("\n");
