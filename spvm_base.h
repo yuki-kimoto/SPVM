@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_value.h
+union SPVM_value;
+typedef union SPVM_value SPVM_VALUE;
+
 /* spvm_runtime.h */
 struct SPVM_runtime;
 typedef struct SPVM_runtime SPVM_RUNTIME;

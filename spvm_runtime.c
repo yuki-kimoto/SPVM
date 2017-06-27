@@ -11,6 +11,7 @@
 #include "spvm_bytecode.h"
 #include "spvm_api.h"
 #include "spvm_util_allocator.h"
+#include "spvm_value.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   

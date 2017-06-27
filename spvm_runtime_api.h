@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "spvm_value.h"
 #include "spvm_base.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"

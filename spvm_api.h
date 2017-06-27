@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-union SPVM_value;
-typedef union SPVM_value SPVM_VALUE;
+#include "spvm_value.h"
+#include "spvm_base.h"
 
 struct SPVM_data;
 typedef struct SPVM_data SPVM_DATA;
@@ -31,17 +31,6 @@ typedef struct SPVM_constant_pool_sub SPVM_CONSTANT_POOL_SUB;
 
 struct SPVM_env;
 typedef struct SPVM_env SPVM_ENV;
-
-// SPVM_VALUE
-union SPVM_value {
-  int8_t byte_value;
-  int16_t short_value;
-  int32_t int_value;
-  int64_t long_value;
-  float float_value;
-  double double_value;
-  void* address_value;
-};
 
 // SPVM_DATA
 enum {
