@@ -23,6 +23,7 @@
 #include "spvm_sub.h"
 #include "spvm_my_var.h"
 #include "spvm_type.h"
+#include "spvm_env.h"
 
 MODULE = SPVM::Data		PACKAGE = SPVM::Data
 
