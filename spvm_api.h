@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "spvm_env.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_sub.h"
@@ -16,14 +17,6 @@
 #include "spvm_data_array.h"
 #include "spvm_data_object.h"
 #include "spvm_base.h"
-
-struct SPVM_env;
-typedef struct SPVM_env SPVM_ENV;
-
-// SPVM_ENV
-struct SPVM_env {
-  int32_t* constant_pool;
-};
 
 static inline int32_t SPVM_API_get_array_value_size(SPVM_ENV* env, int32_t type) {
   (void)env;
