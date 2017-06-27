@@ -7,7 +7,7 @@ SPVM_ENV* SPVM_ENV_new() {
   
   env->constant_pool = NULL;
   
-  void** functions = {
+  static void** functions = {
     &SPVM_API_get_array_length
   };
   
