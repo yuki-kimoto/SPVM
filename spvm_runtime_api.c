@@ -18,22 +18,6 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_allocator.h"
 
-#include <stdint.h>
-#include <assert.h>
-#include <string.h>
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "spvm_env.h"
-#include "spvm_constant_pool_package.h"
-#include "spvm_constant_pool_field.h"
-#include "spvm_constant_pool_sub.h"
-#include "spvm_value.h"
-#include "spvm_data.h"
-#include "spvm_data_array.h"
-#include "spvm_data_object.h"
-
 int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_RUNTIME* runtime, SPVM_DATA* data) {
   
   int64_t byte_size;
