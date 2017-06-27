@@ -34,7 +34,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   runtime->call_stack_capacity = 0xFF;
   runtime->call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(runtime->call_stack_capacity, sizeof(SPVM_VALUE));
   
-  runtime->env = SPVM_ENV_new();
+  runtime->api = SPVM_API_new();
   
   SPVM_RUNTIME_init(runtime);
   

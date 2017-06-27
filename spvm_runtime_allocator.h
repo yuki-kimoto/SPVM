@@ -4,7 +4,6 @@
 
 #include "spvm_base.h"
 
-// Parser information
 struct SPVM_runtime_allocator {
   // Memory_pool
   SPVM_MEMORY_POOL* memory_pool;

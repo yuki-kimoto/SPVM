@@ -5,8 +5,8 @@
 #include <stdlib.h>
 
 // spvm_env.h
-struct SPVM_env;
-typedef struct SPVM_env SPVM_ENV;
+struct SPVM_api;
+typedef struct SPVM_api SPVM_API;
 
 // spvm_constant_pool_sub.h
 struct SPVM_constant_pool_sub;
