@@ -5,7 +5,7 @@ all:
 
 DEFINE :=
 CC     	 := gcc
-CFLAGS 	 := -std=c99 -g -O -Wall -Wextra $(DEFINE)
+CFLAGS 	 := -g -O -Wall -Wextra $(DEFINE)
 LIBS   	 := -lm
 DIRS     :=
 CPPFLAGS  = -MD -MF $(@:%.o=%.Po)
