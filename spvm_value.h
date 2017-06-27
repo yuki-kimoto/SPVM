@@ -1,6 +1,8 @@
 #ifndef SPVM_VALUE_H
 #define SPVM_VALUE_H
 
+#include "spvm_base.h"
+
 // SPVM_VALUE
 union SPVM_value {
   int8_t byte_value;

@@ -9,10 +9,8 @@
 #include <stdio.h>
 
 #include "spvm_value.h"
+#include "spvm_data.h"
 #include "spvm_base.h"
-
-struct SPVM_data;
-typedef struct SPVM_data SPVM_DATA;
 
 struct SPVM_data_array;
 typedef struct SPVM_data_array SPVM_DATA_ARRAY;
@@ -40,12 +38,6 @@ enum {
 enum {
   SPVM_DATA_C_TYPE_OBJECT = 0,
   SPVM_DATA_C_TYPE_ARRAY = 1,
-};
-
-// SPVM_DATA
-struct SPVM_data {
-  int8_t type;
-  int32_t ref_count;
 };
 
 // SPVM_ENV
