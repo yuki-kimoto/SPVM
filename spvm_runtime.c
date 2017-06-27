@@ -9,9 +9,16 @@
 #include "spvm_runtime_api.h"
 #include "spvm_runtime_allocator.h"
 #include "spvm_bytecode.h"
-#include "spvm_api.h"
+#include "spvm_constant_pool_sub.h"
+#include "spvm_constant_pool_field.h"
+#include "spvm_constant_pool_package.h"
+#include "spvm_data.h"
+#include "spvm_data_array.h"
+#include "spvm_data_object.h"
 #include "spvm_util_allocator.h"
 #include "spvm_value.h"
+#include "spvm_api.h"
+#include "spvm_env.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
