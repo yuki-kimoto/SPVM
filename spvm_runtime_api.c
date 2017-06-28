@@ -75,8 +75,8 @@ SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM_ENV* env, int32_t 
   return data_array;
 }
 
-SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM_RUNTIME* runtime, SPVM_ENV* env, const char* pv) {
-  (void)runtime;
+SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM_ENV* env, const char* pv) {
+  (void)env;
   
   int32_t length = strlen(pv);
   SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_create_data_array_byte(env, length);
