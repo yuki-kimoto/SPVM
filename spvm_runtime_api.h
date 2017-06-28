@@ -38,10 +38,10 @@ void SPVM_RUNTIME_API_push_var_double(SPVM_ENV* env, double value);
 void SPVM_RUNTIME_API_push_var_address(SPVM_ENV* env, void* value);
 
 
-int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_RUNTIME* runtime, SPVM_ENV* env, int32_t type);
-SPVM_VALUE* SPVM_RUNTIME_API_get_object_fields(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_OBJECT* data_object);
-int32_t SPVM_RUNTIME_API_get_object_field_index(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name);
-int32_t SPVM_RUNTIME_API_get_object_fields_length(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_OBJECT* data_object);
+int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_ENV* env, int32_t type);
+SPVM_VALUE* SPVM_RUNTIME_API_get_object_fields(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object);
+int32_t SPVM_RUNTIME_API_get_object_field_index(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name);
+int32_t SPVM_RUNTIME_API_get_object_fields_length(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object);
 void SPVM_RUNTIME_API_set_object_field_value_byte(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name, int8_t value);
 void SPVM_RUNTIME_API_set_object_field_value_short(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name, int16_t value);
 void SPVM_RUNTIME_API_set_object_field_value_int(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name, int32_t value);
