@@ -23,8 +23,6 @@ sub new {
   
   my $self = {};
   
-  $self->{include_paths} = [];
-  
   return bless $self, __PACKAGE__;
 }
 
@@ -33,7 +31,7 @@ BEGIN {
   my $spvm = SPVM->new;
   
   # Add moduel include path
-  push @{$spvm->{include_paths}}, @INC;
+  push @INCLUDE_PATHS, @INC;
   
   # Save SPVM
   $SPVM = $spvm;

@@ -128,9 +128,7 @@ compile(...)
   }
   
   // Add include paths
-  SV** sv_include_paths_ptr = hv_fetch(hv_self, "include_paths", strlen("include_paths"), 0);
-  SV* sv_include_paths = sv_include_paths_ptr ? *sv_include_paths_ptr : &PL_sv_undef;
-  AV* av_include_paths = (AV*)SvRV(sv_include_paths);
+  AV* av_include_paths = get_av("SPVM::INCLUDE_PATHS", 0);;
   int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
   {
     int32_t i;
