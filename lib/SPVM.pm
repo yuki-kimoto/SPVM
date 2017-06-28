@@ -14,6 +14,7 @@ our $SPVM;
 our @PACKAGE_INFOS;
 our @INCLUDE_PATHS;
 our @SUB_SYMTABLE;
+our $ENV;
 
 sub get_spvm { $SPVM }
 
