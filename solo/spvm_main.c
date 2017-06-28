@@ -83,14 +83,14 @@ int main(int argc, char *argv[])
   SPVM_RUNTIME_init(runtime);
   
   // Push argument
-  SPVM_RUNTIME_API_push_var_long(runtime, env, 2);
+  SPVM_RUNTIME_API_push_var_long(env, 2);
 
   // Run
   SPVM_RUNTIME_call_sub(env, sub_constant_pool_index);
   
 #ifdef DEBUG
   if (runtime->abort) {
-    void* message_address = SPVM_RUNTIME_API_pop_return_value_address(runtime, env);
+    void* message_address = SPVM_RUNTIME_API_pop_return_value_address(env);
     int8_t* message = SPVM_RUNTIME_API_get_array_values_byte(env, message_address);
     
     printf("%s", (char*)message);
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
   }
   else {
     // Get return value
-    int64_t return_value = SPVM_RUNTIME_API_pop_return_value_long(runtime, env);
+    int64_t return_value = SPVM_RUNTIME_API_pop_return_value_long(env);
     
     printf("TEST return_value: %ld\n", return_value);
   }

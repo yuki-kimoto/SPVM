@@ -12,7 +12,7 @@
 void SPVM_EXTENTION_std__sum_int(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(runtime, env, 0);
+  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(env, 0);
   
   int32_t length = SPVM_RUNTIME_API_get_array_length(env, data_array);
   
@@ -26,13 +26,13 @@ void SPVM_EXTENTION_std__sum_int(SPVM_ENV* env) {
     }
   }
   
-  SPVM_RUNTIME_API_push_return_value_int(runtime, env, total);
+  SPVM_RUNTIME_API_push_return_value_int(env, total);
 }
 
 void SPVM_EXTENTION_std__print(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(runtime, env, 0);
+  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(env, 0);
 
   int32_t length = SPVM_RUNTIME_API_get_array_length(env, data_array);
   int8_t* string = SPVM_RUNTIME_API_get_array_values_byte(env, data_array);
@@ -48,7 +48,7 @@ void SPVM_EXTENTION_std__print(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__println(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(runtime, env, 0);
+  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(env, 0);
 
   int32_t length = SPVM_RUNTIME_API_get_array_length(env, data_array);
   
@@ -67,7 +67,7 @@ void SPVM_EXTENTION_std__println(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__println_byte(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int8_t value = SPVM_RUNTIME_API_get_var_byte(runtime, env, 0);
+  int8_t value = SPVM_RUNTIME_API_get_var_byte(env, 0);
   
   printf("%" PRId8 "\n", value);
 }
@@ -75,7 +75,7 @@ void SPVM_EXTENTION_std__println_byte(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__println_short(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int16_t value = SPVM_RUNTIME_API_get_var_short(runtime, env, 0);
+  int16_t value = SPVM_RUNTIME_API_get_var_short(env, 0);
   
   printf("%" PRId16 "\n", value);
 }
@@ -83,7 +83,7 @@ void SPVM_EXTENTION_std__println_short(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__println_int(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int32_t value = SPVM_RUNTIME_API_get_var_int(runtime, env, 0);
+  int32_t value = SPVM_RUNTIME_API_get_var_int(env, 0);
   
   printf("%" PRId32 "\n", value);
 }
@@ -91,7 +91,7 @@ void SPVM_EXTENTION_std__println_int(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__println_long(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int64_t value = SPVM_RUNTIME_API_get_var_long(runtime, env, 0);
+  int64_t value = SPVM_RUNTIME_API_get_var_long(env, 0);
   
   printf("%" PRId64 "\n", value);
 }
@@ -99,7 +99,7 @@ void SPVM_EXTENTION_std__println_long(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__println_float(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  float value = SPVM_RUNTIME_API_get_var_float(runtime, env, 0);
+  float value = SPVM_RUNTIME_API_get_var_float(env, 0);
   
   printf("%f\n", value);
 }
@@ -107,7 +107,7 @@ void SPVM_EXTENTION_std__println_float(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__println_double(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  double value = SPVM_RUNTIME_API_get_var_double(runtime, env, 0);
+  double value = SPVM_RUNTIME_API_get_var_double(env, 0);
   
   printf("%f\n", value);
 }
@@ -115,7 +115,7 @@ void SPVM_EXTENTION_std__println_double(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__print_byte(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int8_t value = SPVM_RUNTIME_API_get_var_byte(runtime, env, 0);
+  int8_t value = SPVM_RUNTIME_API_get_var_byte(env, 0);
   
   printf("%" PRId8, value);
 }
@@ -123,7 +123,7 @@ void SPVM_EXTENTION_std__print_byte(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__print_short(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int16_t value = SPVM_RUNTIME_API_get_var_short(runtime, env, 0);
+  int16_t value = SPVM_RUNTIME_API_get_var_short(env, 0);
   
   printf("%" PRId16, value);
 }
@@ -131,7 +131,7 @@ void SPVM_EXTENTION_std__print_short(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__print_int(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int32_t value = SPVM_RUNTIME_API_get_var_int(runtime, env, 0);
+  int32_t value = SPVM_RUNTIME_API_get_var_int(env, 0);
   
   printf("%" PRId32, value);
 }
@@ -139,7 +139,7 @@ void SPVM_EXTENTION_std__print_int(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__print_long(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int64_t value = SPVM_RUNTIME_API_get_var_long(runtime, env, 0);
+  int64_t value = SPVM_RUNTIME_API_get_var_long(env, 0);
   
   printf("%" PRId64, value);
 }
@@ -147,7 +147,7 @@ void SPVM_EXTENTION_std__print_long(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__print_float(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  float value = SPVM_RUNTIME_API_get_var_float(runtime, env, 0);
+  float value = SPVM_RUNTIME_API_get_var_float(env, 0);
   
   printf("%f", value);
 }
@@ -155,7 +155,7 @@ void SPVM_EXTENTION_std__print_float(SPVM_ENV* env) {
 void SPVM_EXTENTION_std__print_double(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  double value = SPVM_RUNTIME_API_get_var_double(runtime, env, 0);
+  double value = SPVM_RUNTIME_API_get_var_double(env, 0);
   
   printf("%f", value);
 }
