@@ -57,14 +57,14 @@ double SPVM_RUNTIME_API_get_object_field_value_double(SPVM_RUNTIME* runtime, SPV
 SPVM_DATA* SPVM_RUNTIME_API_get_object_field_value_ref(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name);
 int32_t SPVM_RUNTIME_API_dump_object_field_names(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object);
 int32_t* SPVM_RUNTIME_API_get_constant_pool(SPVM_RUNTIME* runtime, SPVM_ENV* env);
-int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA* data);
-int32_t SPVM_RUNTIME_API_get_array_length(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
-int8_t* SPVM_RUNTIME_API_get_array_values_byte(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
-int16_t* SPVM_RUNTIME_API_get_array_values_short(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
-int32_t* SPVM_RUNTIME_API_get_array_values_int(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
-int64_t* SPVM_RUNTIME_API_get_array_values_long(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
-float* SPVM_RUNTIME_API_get_array_values_float(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
-double* SPVM_RUNTIME_API_get_array_values_double(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
-SPVM_DATA** SPVM_RUNTIME_API_get_array_values_ref(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
+int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_DATA* data);
+int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
+int8_t* SPVM_RUNTIME_API_get_array_values_byte(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
+int16_t* SPVM_RUNTIME_API_get_array_values_short(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
+int32_t* SPVM_RUNTIME_API_get_array_values_int(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
+int64_t* SPVM_RUNTIME_API_get_array_values_long(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
+float* SPVM_RUNTIME_API_get_array_values_float(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
+double* SPVM_RUNTIME_API_get_array_values_double(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
+SPVM_DATA** SPVM_RUNTIME_API_get_array_values_ref(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
 
 #endif

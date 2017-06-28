@@ -483,7 +483,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
       total_length = strlen(exception);
     }
     else {
-      total_length += SPVM_RUNTIME_API_get_array_length(runtime, env, return_value);
+      total_length += SPVM_RUNTIME_API_get_array_length(env, return_value);
     }
     total_length += strlen(from);
     total_length += strlen(sub_name);
@@ -507,10 +507,10 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
       memcpy(
         (void*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE),
         (void*)((intptr_t)return_value + SPVM_DATA_C_HEADER_BYTE_SIZE),
-        SPVM_RUNTIME_API_get_array_length(runtime, env, return_value)
+        SPVM_RUNTIME_API_get_array_length(env, return_value)
       );
       sprintf(
-        (char*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE + SPVM_RUNTIME_API_get_array_length(runtime, env, return_value)),
+        (char*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE + SPVM_RUNTIME_API_get_array_length(env, return_value)),
         "%s%s%s%s",
         from,
         sub_name,
