@@ -491,7 +491,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     total_length += strlen(file_name);
     
     // Create exception message
-    SPVM_DATA_ARRAY* new_data_array_message =  SPVM_RUNTIME_API_create_data_array_byte(runtime, env, total_length);
+    SPVM_DATA_ARRAY* new_data_array_message =  SPVM_RUNTIME_API_create_data_array_byte(env, total_length);
     if (return_value == NULL) {
       sprintf(
         (char*)((intptr_t)new_data_array_message + SPVM_DATA_C_HEADER_BYTE_SIZE),
