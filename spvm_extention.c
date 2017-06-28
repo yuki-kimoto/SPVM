@@ -3,8 +3,6 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-#include "spvm_extention.h"
-#include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 
 #include "spvm_env.h"
