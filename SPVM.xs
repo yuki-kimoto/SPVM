@@ -170,7 +170,7 @@ build_sub_symtable(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
   // Subroutine information
-  HV* hv_sub_symtable = (HV*)sv_2mortal((SV*)newHV());
+  HV* hv_sub_symtable = get_hv("SPVM::SUB_SYMTABLE", 0);
   
   // abs_name, arg_types, return_type, constant_pool_index, type_id
   SPVM_ARRAY* op_packages = compiler->op_packages;
@@ -233,9 +233,6 @@ build_sub_symtable(...)
       }
     }
   }
-  
-  SV* sv_sub_symtable = sv_2mortal(newRV_inc((SV*)hv_sub_symtable));
-  hv_store(hv_self, "sub_symtable", strlen("sub_symtable"), SvREFCNT_inc(sv_sub_symtable), 0);
   
   XSRETURN(0);
 }
@@ -345,9 +342,7 @@ call_sub(...)
 
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_sub_symtable_ptr = hv_fetch(hv_self, "sub_symtable", strlen("sub_symtable"), 0);
-  SV* sv_sub_symtable = sv_sub_symtable_ptr ? *sv_sub_symtable_ptr : &PL_sv_undef;
-  HV* hv_sub_symtable = (HV*)SvRV(sv_sub_symtable);
+  HV* hv_sub_symtable = get_hv("SPVM::SUB_SYMTABLE", 0);
   
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   SV** sv_sub_info_ptr = hv_fetch(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), 0);

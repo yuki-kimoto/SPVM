@@ -13,7 +13,7 @@ our $VERSION = '0.0204';
 our $SPVM;
 our @PACKAGE_INFOS;
 our @INCLUDE_PATHS;
-our @SUB_SYMTABLE;
+our %SUB_SYMTABLE;
 our $ENV;
 
 sub get_spvm { $SPVM }
@@ -83,9 +83,7 @@ sub import {
 sub build_spvm_subs {
   my $spvm = $SPVM;
   
-  my $sub_symtable = $spvm->{sub_symtable};
-  
-  for my $abs_name (keys %$sub_symtable) {
+  for my $abs_name (keys %SUB_SYMTABLE) {
     
     my $sub;
     $sub .= "sub SPVM::$abs_name {\n";
