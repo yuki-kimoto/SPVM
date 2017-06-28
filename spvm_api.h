@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 struct SPVM_api {
+  void* runtime;
   int32_t (*get_array_length)(void*, void*);
 };
 
