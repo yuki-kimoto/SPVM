@@ -356,8 +356,8 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
         runtime->call_stack_base = call_stack_base;
         
         // Call native sub
-        void (*native_address)(SPVM_RUNTIME* runtime) = constant_pool_sub.native_address;
-        (*native_address)(runtime);
+        void (*native_address)(SPVM_ENV* env) = constant_pool_sub.native_address;
+        (*native_address)(env);
         
         // Get runtimeiromnet
         operand_stack_top = runtime->operand_stack_top;
