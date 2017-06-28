@@ -9,7 +9,6 @@
 #include "../spvm_constant_pool.h"
 #include "../spvm_bytecode_array.h"
 #include "../spvm_runtime.h"
-#include "../spvm_runtime_api.h"
 #include "../spvm_runtime_allocator.h"
 #include "../spvm_op.h"
 #include "../spvm_sub.h"
@@ -86,7 +85,7 @@ int main(int argc, char *argv[])
   SPVM_RUNTIME_API_push_var_long(env, 2);
 
   // Run
-  SPVM_RUNTIME_call_sub(env, sub_constant_pool_index);
+  env->call_sub(env, sub_constant_pool_index);
   
 #ifdef DEBUG
   if (runtime->abort) {

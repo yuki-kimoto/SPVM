@@ -14,8 +14,6 @@
 #include "spvm_constant_pool.h"
 #include "spvm_bytecode_array.h"
 #include "spvm_runtime.h"
-#include "spvm_runtime_api.h"
-#include "spvm_runtime_allocator.h"
 #include "spvm_op.h"
 #include "spvm_sub.h"
 #include "spvm_package.h"
@@ -453,7 +451,7 @@ call_sub(...)
     }
   }
   
-  SPVM_RUNTIME_call_sub(env, sub_constant_pool_index);
+  env->call_sub(env, sub_constant_pool_index);
   
   if (SvOK(sv_return_type_name)) {
     // Create data

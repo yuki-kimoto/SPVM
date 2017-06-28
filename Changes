@@ -1,4 +1,6 @@
-0.0203 2017-0626
+0.0204 2017-06-28
+  - add env interface. This is similar as JAVA JNI
+0.0203 2017-06-26
   - build SPVM using same CCFLAG as Perl itself
 0.0202 2017-06-25
   - use same CCFLAG in Makefile.PL

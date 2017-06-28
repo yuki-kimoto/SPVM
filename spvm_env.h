@@ -69,6 +69,7 @@ struct SPVM_env {
   float* (*get_array_values_float)(void*, void*);
   double* (*get_array_values_double)(void*, void*);
   void** (*get_array_values_ref)(void*, void*);
+  void** (*call_sub)(void*, void*);
 };
 
 #endif

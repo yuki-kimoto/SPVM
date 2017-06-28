@@ -23,7 +23,6 @@ solo/t/spvm_t_array.c
 solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
 SPVM.xs
-spvm_api.h
 spvm_array.c
 spvm_array.h
 spvm_base.h
@@ -41,6 +40,12 @@ spvm_constant.c
 spvm_constant.h
 spvm_constant_pool.c
 spvm_constant_pool.h
+spvm_constant_pool_field.h
+spvm_constant_pool_package.h
+spvm_constant_pool_sub.h
+spvm_data.h
+spvm_data_array.h
+spvm_data_object.h
 spvm_descriptor.c
 spvm_descriptor.h
 spvm_dumper.c
@@ -49,6 +54,8 @@ spvm_enumeration.c
 spvm_enumeration.h
 spvm_enumeration_value.c
 spvm_enumeration_value.h
+spvm_env.c
+spvm_env.h
 spvm_extention.c
 spvm_extention.h
 spvm_extention_bind.c
@@ -77,6 +84,7 @@ spvm_runtime.c
 spvm_runtime.h
 spvm_runtime_allocator.c
 spvm_runtime_allocator.h
+spvm_runtime_api.c
 spvm_runtime_api.h
 spvm_sub.c
 spvm_sub.h
@@ -88,6 +96,7 @@ spvm_type.c
 spvm_type.h
 spvm_util_allocator.c
 spvm_util_allocator.h
+spvm_value.h
 spvm_var.c
 spvm_var.h
 spvm_yacc.c
