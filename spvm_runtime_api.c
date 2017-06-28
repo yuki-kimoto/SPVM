@@ -546,12 +546,6 @@ int32_t SPVM_RUNTIME_API_dump_object_field_names(SPVM_ENV* env, SPVM_DATA_OBJECT
   return length;
 }
 
-int32_t* SPVM_RUNTIME_API_get_constant_pool(SPVM_RUNTIME* runtime, SPVM_ENV* env) {
-  (void)runtime;
-  
-  return runtime->constant_pool;
-}
-
 int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_DATA* data) {
   (void)env;
   

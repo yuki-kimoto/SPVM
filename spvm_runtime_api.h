@@ -56,7 +56,6 @@ float SPVM_RUNTIME_API_get_object_field_value_float(SPVM_RUNTIME* runtime, SPVM_
 double SPVM_RUNTIME_API_get_object_field_value_double(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name);
 SPVM_DATA* SPVM_RUNTIME_API_get_object_field_value_ref(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name);
 int32_t SPVM_RUNTIME_API_dump_object_field_names(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object);
-int32_t* SPVM_RUNTIME_API_get_constant_pool(SPVM_RUNTIME* runtime, SPVM_ENV* env);
 int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_DATA* data);
 int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
 int8_t* SPVM_RUNTIME_API_get_array_values_byte(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array);
