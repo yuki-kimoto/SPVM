@@ -332,10 +332,7 @@ SV*
 call_sub(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-  SV* sv_sub_abs_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_sub_abs_name = ST(0);
   
   HV* hv_sub_symtable = get_hv("SPVM::SUB_SYMTABLE", 0);
   
@@ -370,7 +367,7 @@ call_sub(...)
   SPVM_RUNTIME_init(env);
   
   // Check argument count
-  if (items - 2 != args_length) {
+  if (items - 1 != args_length) {
     croak("Argument count is defferent");
   }
   
@@ -378,7 +375,7 @@ call_sub(...)
   {
     int32_t arg_index;
     for (arg_index = 0; arg_index < args_length; arg_index++) {
-      SV* sv_data = ST(arg_index + 2);
+      SV* sv_data = ST(arg_index + 1);
       
       if (sv_isobject(sv_data) && sv_derived_from(sv_data, "SPVM::Data")) {
         HV* hv_data = (HV*)SvRV(sv_data);
