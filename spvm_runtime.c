@@ -1062,7 +1062,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
         SPVM_DATA** data_address = (SPVM_DATA**)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(void*) * index);
         
         // Increment reference count
-        SPVM_RUNTIME_API_inc_ref_count(runtime, env, call_stack[operand_stack_top].address_value);
+        SPVM_RUNTIME_API_inc_ref_count(env, call_stack[operand_stack_top].address_value);
         
         // Decrement reference count
         SPVM_RUNTIME_API_dec_ref_count(env, *data_address);
@@ -1105,7 +1105,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     int32_t vars_index = *(pc + 1);
     
     // Increment reference count
-    SPVM_RUNTIME_API_inc_ref_count(runtime, env, call_stack[operand_stack_top].address_value);
+    SPVM_RUNTIME_API_inc_ref_count(env, call_stack[operand_stack_top].address_value);
     
     // Decrement reference count
     SPVM_RUNTIME_API_dec_ref_count(env, vars[vars_index].address_value);
@@ -1130,7 +1130,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     void* address = call_stack[operand_stack_top].address_value;
     
     // Increment reference count
-    SPVM_RUNTIME_API_inc_ref_count(runtime, env, address);
+    SPVM_RUNTIME_API_inc_ref_count(env, address);
     
     pc += 1;
     goto *jump[*pc];
@@ -1952,7 +1952,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
       int32_t var_index = (*(pc + 2) << 8) + *(pc + 3);
 
       // Increment reference count
-      SPVM_RUNTIME_API_inc_ref_count(runtime, env, call_stack[operand_stack_top].address_value);
+      SPVM_RUNTIME_API_inc_ref_count(env, call_stack[operand_stack_top].address_value);
       
       // Decrement reference count if original object is not null
       SPVM_RUNTIME_API_dec_ref_count(env, vars[var_index].address_value);
@@ -2205,7 +2205,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
       SPVM_DATA** data_address = (SPVM_DATA**)((intptr_t)data_object + sizeof(SPVM_VALUE) * index);
 
       // Increment reference count
-      SPVM_RUNTIME_API_inc_ref_count(runtime, env, call_stack[operand_stack_top].address_value);
+      SPVM_RUNTIME_API_inc_ref_count(env, call_stack[operand_stack_top].address_value);
       
       // Decrement reference count
       SPVM_RUNTIME_API_dec_ref_count(env, *data_address);

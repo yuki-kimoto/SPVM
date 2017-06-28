@@ -141,8 +141,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_DATA* data) {
   }
 }
 
-void SPVM_RUNTIME_API_inc_ref_count(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA* data) {
-  (void)runtime;
+void SPVM_RUNTIME_API_inc_ref_count(SPVM_ENV* env, SPVM_DATA* data) {
+  (void)env;
   
   if (data != NULL) {
     assert(data->ref_count >= 0);
