@@ -525,8 +525,8 @@ SPVM_DATA* SPVM_RUNTIME_API_get_object_field_value_ref(SPVM_RUNTIME* runtime, SP
   return address_value;
 }
 
-int32_t SPVM_RUNTIME_API_dump_object_field_names(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA_OBJECT* data_object) {
-  (void)runtime;
+int32_t SPVM_RUNTIME_API_dump_object_field_names(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object) {
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
   int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
   
