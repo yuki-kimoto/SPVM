@@ -50,7 +50,7 @@ SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM_ENV* env, int32_t 
   
   // Allocate array
   int32_t data_array_byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(int8_t) * length;
-  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_ALLOCATOR_malloc(runtime, env, allocator, data_array_byte_size);
+  SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_ALLOCATOR_malloc(env, allocator, data_array_byte_size);
   
   // Fatal memory allocation error
   if (!data_array) {
@@ -115,7 +115,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_DATA* data) {
             }
           }
         }
-        SPVM_RUNTIME_ALLOCATOR_free_data(runtime, env, runtime->allocator, data);
+        SPVM_RUNTIME_ALLOCATOR_free_data(env, runtime->allocator, data);
       }
       // Reference is object
       else if (data->type == SPVM_DATA_C_TYPE_OBJECT) {
@@ -135,7 +135,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_DATA* data) {
           }
         }
         
-        SPVM_RUNTIME_ALLOCATOR_free_data(runtime, env, runtime->allocator, (SPVM_DATA*)data_object);
+        SPVM_RUNTIME_ALLOCATOR_free_data(env, runtime->allocator, (SPVM_DATA*)data_object);
       }
     }
   }

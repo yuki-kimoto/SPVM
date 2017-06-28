@@ -1816,7 +1816,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     // Allocate memory
     int32_t fields_length = constant_pool_package.fields_length;
     int32_t data_object_byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * fields_length;
-    SPVM_DATA_OBJECT* data_object = SPVM_RUNTIME_ALLOCATOR_malloc(runtime, env, allocator, data_object_byte_size);
+    SPVM_DATA_OBJECT* data_object = SPVM_RUNTIME_ALLOCATOR_malloc(env, allocator, data_object_byte_size);
     
     // Memory allocation error
     if (!data_object) {
@@ -1865,7 +1865,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     
     // Allocate array
     int32_t data_array_byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + size * length;
-    SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_ALLOCATOR_malloc(runtime, env, allocator, data_array_byte_size);
+    SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_ALLOCATOR_malloc(env, allocator, data_array_byte_size);
     
     // Memory allocation error
     if (!data_array) {
