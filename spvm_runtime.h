@@ -21,7 +21,7 @@ struct SPVM_runtime {
   int32_t operand_stack_top;
   
   // Env
-  SPVM_API* api;
+  SPVM_ENV* env;
   
   // Bytecodes
   uint8_t* bytecodes;

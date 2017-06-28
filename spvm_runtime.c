@@ -17,7 +17,7 @@
 #include "spvm_data_object.h"
 #include "spvm_util_allocator.h"
 #include "spvm_value.h"
-#include "spvm_api.h"
+#include "spvm_env.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
@@ -35,9 +35,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   runtime->call_stack_capacity = 0xFF;
   runtime->call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(runtime->call_stack_capacity, sizeof(SPVM_VALUE));
   
-  SPVM_API* api = SPVM_API_new();
-  api->runtime = runtime;
-  runtime->api = api;
+  SPVM_ENV* env = SPVM_ENV_new();
+  env->runtime = runtime;
+  runtime->env = env;
   
   SPVM_RUNTIME_init(runtime);
   

@@ -7,14 +7,14 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 
-#include "spvm_api.h"
+#include "spvm_env.h"
 
 void SPVM_EXTENTION_std__sum_int(SPVM_RUNTIME* runtime) {
   (void)runtime;
   
   SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(runtime, 0);
   
-  int32_t length = runtime->api->get_array_length(runtime, data_array);
+  int32_t length = runtime->env->get_array_length(runtime, data_array);
   
   int32_t* values = SPVM_RUNTIME_API_get_array_values_int(runtime, data_array);
   
