@@ -10,7 +10,10 @@ use Carp 'croak';
 
 our $VERSION = '0.0204';
 
-my $SPVM;
+our $SPVM;
+our @PACKAGE_INFOS;
+our @INCLUDE_PATHS;
+our @SUB_SYMTABLE;
 
 sub get_spvm { $SPVM }
 
