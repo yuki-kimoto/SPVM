@@ -302,8 +302,8 @@ build_runtime(...)
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
   
   // Copy constant pool to runtime
-  runtime->env->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
-  memcpy(runtime->env->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
+  runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
+  memcpy(runtime->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
 
   // Copy bytecodes to runtime
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
@@ -381,9 +381,10 @@ call_sub(...)
   SV* sviv_runtime = SvROK(sv_runtime) ? SvRV(sv_runtime) : sv_runtime;
   size_t iv_runtime = SvIV(sviv_runtime);
   SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, iv_runtime);
+  SPVM_ENV* env = runtime->env;
   
   // Initialize runtime before push arguments and call subroutine
-  SPVM_RUNTIME_init(runtime);
+  SPVM_RUNTIME_init(env);
   
   // Check argument count
   if (items - 2 != args_length) {
@@ -416,31 +417,31 @@ call_sub(...)
         
         if (strEQ(data_type_name, "byte")) {
           int8_t value = (int8_t)SvIV(sv_value);
-          SPVM_RUNTIME_API_push_var_byte(runtime, value);
+          env->push_var_byte(env, value);
         }
         else if (strEQ(data_type_name, "short")) {
           IV value = SvIV(sv_value);
-          SPVM_RUNTIME_API_push_var_short(runtime, value);
+          env->push_var_short(env, value);
         }
         else if (strEQ(data_type_name, "int")) {
           int32_t value = (int32_t)SvIV(sv_value);
-          SPVM_RUNTIME_API_push_var_int(runtime, value);
+          env->push_var_int(env, value);
         }
         else if (strEQ(data_type_name, "long")) {
           int64_t value = (int64_t)SvIV(sv_value);
-          SPVM_RUNTIME_API_push_var_long(runtime, value);
+          env->push_var_long(env, value);
         }
         else if (strEQ(data_type_name, "float")) {
           IV iv_value = SvIV(sv_value);
           float value;
           memcpy(&value, &iv_value, sizeof(float));
-          SPVM_RUNTIME_API_push_var_float(runtime, value);
+          env->push_var_float(env, value);
         }
         else if (strEQ(data_type_name, "double")) {
           IV iv_value = SvIV(sv_value);
           double value;
           memcpy(&value, &iv_value, sizeof(double));
-          SPVM_RUNTIME_API_push_var_double(runtime, value);
+          env->push_var_double(env, value);
         }
         else {
           assert(0);
@@ -452,7 +453,7 @@ call_sub(...)
     }
   }
   
-  SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
+  SPVM_RUNTIME_call_sub(env, sub_constant_pool_index);
   
   if (SvOK(sv_return_type_name)) {
     // Create data
@@ -464,35 +465,35 @@ call_sub(...)
     const char* return_type_name = SvPV_nolen(sv_return_type_name);
     SV* sv_value;
     if (strEQ(return_type_name, "byte")) {
-      int8_t return_value = SPVM_RUNTIME_API_pop_return_value_byte(runtime);
+      int8_t return_value = env->pop_return_value_byte(env);
       sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type_name, "short")) {
-      int16_t return_value = SPVM_RUNTIME_API_pop_return_value_short(runtime);
+      int16_t return_value = env->pop_return_value_short(env);
       sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type_name, "int")) {
-      int32_t return_value = SPVM_RUNTIME_API_pop_return_value_int(runtime);
+      int32_t return_value = env->pop_return_value_int(env);
       sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type_name, "long")) {
-      int64_t return_value = SPVM_RUNTIME_API_pop_return_value_long(runtime);
+      int64_t return_value = env->pop_return_value_long(env);
       sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type_name, "float")) {
-      float return_value = SPVM_RUNTIME_API_pop_return_value_float(runtime);
+      float return_value = env->pop_return_value_float(env);
       int64_t spvm_value;
       memcpy(&spvm_value, &return_value, sizeof(float));
       sv_value = sv_2mortal(newSViv(spvm_value));
     }
     else if (strEQ(return_type_name, "double")) {
-      double return_value = SPVM_RUNTIME_API_pop_return_value_double(runtime);
+      double return_value = env->pop_return_value_double(env);
       int64_t spvm_value;
       memcpy(&spvm_value, &return_value, sizeof(double));
       sv_value = sv_2mortal(newSViv(spvm_value));
     }
     else {
-      void* return_value = SPVM_RUNTIME_API_pop_return_value_address(runtime);
+      void* return_value = env->pop_return_value_address(env);
       sv_value = sv_2mortal(newSViv(return_value));
     }
     
