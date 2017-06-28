@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
   SPVM_RUNTIME_API_push_var_long(runtime, env, 2);
 
   // Run
-  SPVM_RUNTIME_call_sub(runtime, env, sub_constant_pool_index);
+  SPVM_RUNTIME_call_sub(env, sub_constant_pool_index);
   
 #ifdef DEBUG
   if (runtime->abort) {

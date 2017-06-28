@@ -51,8 +51,8 @@ void SPVM_RUNTIME_init(SPVM_RUNTIME* runtime) {
   runtime->abort = 0;
 }
 
-void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, SPVM_ENV* env, int32_t sub_constant_pool_index) {
-  (void)runtime;
+void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
+  (void)env;
   
   // Jump table for direct threaded code
   static const void* jump[] = {
@@ -262,6 +262,9 @@ void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, SPVM_ENV* env, int32_t sub_con
     &&case_SPVM_BYTECODE_C_CODE_DEC_REF_COUNT,
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
   };
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
   
   // Constant pool
   int32_t* constant_pool = runtime->constant_pool;

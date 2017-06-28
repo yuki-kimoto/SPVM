@@ -37,6 +37,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_new();
 void SPVM_RUNTIME_init(SPVM_RUNTIME* runtime);
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
 
-void SPVM_RUNTIME_call_sub(SPVM_RUNTIME* runtime, SPVM_ENV* env, int32_t sub_constant_pool_index);
+void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index);
 
 #endif
