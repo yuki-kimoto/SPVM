@@ -149,9 +149,9 @@ compile(...)
   // Set compiler
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
-  SV* sv_compiler_object = sv_2mortal(newRV_inc(sviv_compiler));
-  hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler_object), 0);
-
+  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
+  sv_setsv(get_sv("SPVM::COMPILER", 0), sv_compiler);
+  
   XSRETURN(0);
 }
 
@@ -163,9 +163,8 @@ build_sub_symtable(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
-  SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
+  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
+  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
   size_t iv_compiler = SvIV(sviv_compiler);
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
@@ -245,9 +244,8 @@ build_type_symtable(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
-  SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
+  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
+  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
   size_t iv_compiler = SvIV(sviv_compiler);
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
@@ -283,9 +281,8 @@ build_runtime(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
-  SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
+  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
+  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
   size_t iv_compiler = SvIV(sviv_compiler);
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
@@ -318,9 +315,8 @@ free_compiler(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   // Get compiler
-  SV** sv_compiler_object_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler_object = sv_compiler_object_ptr ? *sv_compiler_object_ptr : &PL_sv_undef;
-  SV* sviv_compiler = SvROK(sv_compiler_object) ? SvRV(sv_compiler_object) : sv_compiler_object;
+  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
+  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
   size_t iv_compiler = SvIV(sviv_compiler);
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
@@ -328,7 +324,7 @@ free_compiler(...)
   SPVM_COMPILER_free(compiler);
   
   // Set undef to compiler
-  hv_store(hv_self, "compiler", strlen("compiler"), &PL_sv_undef, 0);
+  sv_setsv(get_sv("SPVM::COMPILER", 0), &PL_sv_undef);
   
   XSRETURN(0);
 }
