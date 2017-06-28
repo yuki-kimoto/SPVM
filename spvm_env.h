@@ -5,7 +5,7 @@
 
 struct SPVM_env {
   void* runtime;
-  int32_t (*get_array_length)(void*, void*, void*);
+  int32_t (*get_array_length)(void*, void*);
 };
 
 #endif

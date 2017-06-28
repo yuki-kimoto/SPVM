@@ -14,7 +14,7 @@ void SPVM_EXTENTION_std__sum_int(SPVM_ENV* env) {
   
   SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_get_var_address(env, 0);
   
-  int32_t length = SPVM_RUNTIME_API_get_array_length(env, data_array);
+  int32_t length = env->get_array_length(env, data_array);
   
   int32_t* values = SPVM_RUNTIME_API_get_array_values_int(env, data_array);
   
