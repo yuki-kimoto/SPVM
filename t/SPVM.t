@@ -26,12 +26,13 @@ use SPVM 'std'; my $use_std_line = __LINE__;
 my $spvm = SPVM::get_spvm;
 
 is_deeply(
-  $spvm->{package_infos},
+  \@SPVM::PACKAGE_INFOS,
   [
     {name => 'XSTest', file => $file, line => $use_test_line},
     {name => 'std', file => $file, line => $use_std_line}
   ]
 );
+$DB::single = 1;
 
 # byte
 {

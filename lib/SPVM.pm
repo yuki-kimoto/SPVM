@@ -23,7 +23,6 @@ sub new {
   
   my $self = {};
   
-  $self->{package_infos} = [];
   $self->{include_paths} = [];
   
   return bless $self, __PACKAGE__;
@@ -79,7 +78,7 @@ sub import {
       file => $file,
       line => $line
     };
-    push @{$spvm->{package_infos}}, $package_info;
+    push @PACKAGE_INFOS, $package_info;
   }
 }
 
