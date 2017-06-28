@@ -87,8 +87,8 @@ SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM_RUNTIME* r
   return data_array;
 }
 
-void SPVM_RUNTIME_API_dec_ref_count(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA* data) {
-  (void)runtime;
+void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_DATA* data) {
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
   if (data != NULL) {
     
@@ -111,7 +111,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_D
             int32_t i;
             for (i = 0; i < length; i++) {
               SPVM_DATA* data_element = *(SPVM_DATA**)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(void*) * i);
-              SPVM_RUNTIME_API_dec_ref_count(runtime, env, data_element);
+              SPVM_RUNTIME_API_dec_ref_count(env, data_element);
             }
           }
         }
@@ -131,7 +131,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_D
           int32_t i;
           for (i = 0; i < ref_fields_length; i++) {
             SPVM_DATA* data_field = *(SPVM_DATA**)((intptr_t)data_object + SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(void*) * i);
-            SPVM_RUNTIME_API_dec_ref_count(runtime, env, data_field);
+            SPVM_RUNTIME_API_dec_ref_count(env, data_field);
           }
         }
         

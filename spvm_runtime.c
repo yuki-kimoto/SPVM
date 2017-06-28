@@ -520,7 +520,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     }
     
     // Free original string if need
-    SPVM_RUNTIME_API_dec_ref_count(runtime, env, return_value);
+    SPVM_RUNTIME_API_dec_ref_count(env, return_value);
     
     // Resotre vars base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
@@ -1065,7 +1065,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
         SPVM_RUNTIME_API_inc_ref_count(runtime, env, call_stack[operand_stack_top].address_value);
         
         // Decrement reference count
-        SPVM_RUNTIME_API_dec_ref_count(runtime, env, *data_address);
+        SPVM_RUNTIME_API_dec_ref_count(env, *data_address);
         
         // Store address
         *data_address = call_stack[operand_stack_top].address_value;
@@ -1108,7 +1108,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     SPVM_RUNTIME_API_inc_ref_count(runtime, env, call_stack[operand_stack_top].address_value);
     
     // Decrement reference count
-    SPVM_RUNTIME_API_dec_ref_count(runtime, env, vars[vars_index].address_value);
+    SPVM_RUNTIME_API_dec_ref_count(env, vars[vars_index].address_value);
     
     // Store address
     vars[vars_index] = call_stack[operand_stack_top];
@@ -1121,7 +1121,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     void* address = call_stack[operand_stack_top].address_value;
     
     // Decrement reference count
-    SPVM_RUNTIME_API_dec_ref_count(runtime, env, address);
+    SPVM_RUNTIME_API_dec_ref_count(env, address);
     
     pc += 1;
     goto *jump[*pc];
@@ -1955,7 +1955,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
       SPVM_RUNTIME_API_inc_ref_count(runtime, env, call_stack[operand_stack_top].address_value);
       
       // Decrement reference count if original object is not null
-      SPVM_RUNTIME_API_dec_ref_count(runtime, env, vars[var_index].address_value);
+      SPVM_RUNTIME_API_dec_ref_count(env, vars[var_index].address_value);
       
       // Store address
       vars[var_index] = call_stack[operand_stack_top];
@@ -2208,7 +2208,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
       SPVM_RUNTIME_API_inc_ref_count(runtime, env, call_stack[operand_stack_top].address_value);
       
       // Decrement reference count
-      SPVM_RUNTIME_API_dec_ref_count(runtime, env, *data_address);
+      SPVM_RUNTIME_API_dec_ref_count(env, *data_address);
       
       // Store object
       *data_address = call_stack[operand_stack_top].address_value;
