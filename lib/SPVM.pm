@@ -10,64 +10,42 @@ use Carp 'croak';
 
 our $VERSION = '0.0204';
 
-our $SPVM;
 our $COMPILER;
 our $RUNTIME;
 our @PACKAGE_INFOS;
 our @INCLUDE_PATHS;
 our %SUB_SYMTABLE;
+our %TYPE_SYMTABLE;
 our $ENV;
 
-sub get_spvm { $SPVM }
-
-sub new {
-  my $class = shift;
-  
-  my $self = {};
-  
-  return bless $self, __PACKAGE__;
-}
-
 BEGIN {
-  # SPVM
-  my $spvm = SPVM->new;
-  
   # Add moduel include path
   push @INCLUDE_PATHS, @INC;
-  
-  # Save SPVM
-  $SPVM = $spvm;
 }
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
-  # SPVM
-  my $spvm = $SPVM;
-  
   # Compile SPVM source code
-  $spvm->compile;
+  compile();
   
   # Build resolved type symbol table
-  $spvm->build_type_symtable;
+  build_type_symtable();
   
   # Build subroutine symbole table
-  $spvm->build_sub_symtable;
+  build_sub_symtable();
   
   # Build SPVM subroutine
-  $spvm->build_spvm_subs;
+  build_spvm_subs();
   
   # Build run-time
-  $spvm->build_runtime;
+  build_runtime();
   
   # Free compiler
-  $spvm->free_compiler;
+  free_compiler();
 }
 
 sub import {
   my ($class, $package_name) = @_;
-  
-  # SPVM
-  my $spvm = $SPVM;
   
   # Add package infomations
   if (defined $package_name) {
@@ -83,8 +61,6 @@ sub import {
 }
 
 sub build_spvm_subs {
-  my $spvm = $SPVM;
-  
   for my $abs_name (keys %SUB_SYMTABLE) {
     
     my $sub;

@@ -88,12 +88,8 @@ SV*
 compile(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
-
-  HV* hv_self = (HV*)SvRV(sv_self);
 
   // Add package
   AV* av_package_infos = get_av("SPVM::PACKAGE_INFOS", 0);
@@ -159,9 +155,6 @@ SV*
 build_sub_symtable(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
   // Get compiler
   SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
   SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
@@ -240,9 +233,6 @@ SV*
 build_type_symtable(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
   // Get compiler
   SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
   SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
@@ -250,7 +240,7 @@ build_type_symtable(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
   // Subroutine information
-  HV* hv_type_symtable = (HV*)sv_2mortal((SV*)newHV());
+  HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
   
   // abs_name, arg_types, return_type, constant_pool_index, type_id
   SPVM_ARRAY* types = compiler->types;
@@ -267,9 +257,6 @@ build_type_symtable(...)
     }
   }
   
-  SV* sv_type_symtable = sv_2mortal(newRV_inc((SV*)hv_type_symtable));
-  hv_store(hv_self, "type_symtable", strlen("type_symtable"), SvREFCNT_inc(sv_type_symtable), 0);
-  
   XSRETURN(0);
 }
 
@@ -277,9 +264,6 @@ SV*
 build_runtime(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
   // Get compiler
   SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
   SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
@@ -310,9 +294,6 @@ SV*
 free_compiler(...)
   PPCODE:
 {
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
   // Get compiler
   SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
   SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
