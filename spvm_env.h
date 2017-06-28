@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+// spvm_env.h
+struct SPVM_env;
+typedef struct SPVM_env SPVM_ENV;
+
 struct SPVM_env {
   void* runtime;
   int32_t (*get_array_length)(void*, void*);

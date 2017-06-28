@@ -2,6 +2,7 @@
 #define SPVM_EXTENTION_H
 
 #include "spvm_base.h"
+#include "spvm_env.h"
 
 void SPVM_EXTENTION_std__sum_int(SPVM_ENV* env);
 

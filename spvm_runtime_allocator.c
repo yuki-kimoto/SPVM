@@ -12,6 +12,7 @@
 #include "spvm_array.h"
 #include "spvm_runtime.h"
 #include "spvm_constant_pool.h"
+#include "spvm_env.h"
 
 SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   SPVM_RUNTIME_ALLOCATOR* allocator = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_RUNTIME_ALLOCATOR));

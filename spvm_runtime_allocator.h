@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 #include "spvm_base.h"
+#include "spvm_env.h"
 
 struct SPVM_runtime_allocator {
   // Memory_pool
