@@ -301,8 +301,7 @@ build_runtime(...)
   size_t iv_runtime = PTR2IV(runtime);
   SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
   SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
-  
-  hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+  sv_setsv(get_sv("SPVM::RUNTIME", 0), sv_runtime);
   
   XSRETURN(0);
 }
@@ -361,8 +360,7 @@ call_sub(...)
   SV* sv_return_type_name = sv_return_type_name_ptr ? *sv_return_type_name_ptr : &PL_sv_undef;
   
   // Get runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  SV* sv_runtime = get_sv("SPVM::RUNTIME", 0);
   SV* sviv_runtime = SvROK(sv_runtime) ? SvRV(sv_runtime) : sv_runtime;
   size_t iv_runtime = SvIV(sviv_runtime);
   SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, iv_runtime);

@@ -12,6 +12,7 @@ our $VERSION = '0.0204';
 
 our $SPVM;
 our $COMPILER;
+our $RUNTIME;
 our @PACKAGE_INFOS;
 our @INCLUDE_PATHS;
 our %SUB_SYMTABLE;
