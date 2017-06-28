@@ -1846,7 +1846,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     
     data_object->field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
     
-    assert(data_object_byte_size == SPVM_RUNTIME_API_calcurate_data_byte_size(runtime, env, (SPVM_DATA*)data_object));
+    assert(data_object_byte_size == SPVM_RUNTIME_API_calcurate_data_byte_size(env, (SPVM_DATA*)data_object));
     
     // Push object
     operand_stack_top++;
@@ -1895,7 +1895,7 @@ void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index) {
     // Set array length
     data_array->length = length;
 
-    assert(data_array_byte_size == SPVM_RUNTIME_API_calcurate_data_byte_size(runtime, env, (SPVM_DATA*)data_array));
+    assert(data_array_byte_size == SPVM_RUNTIME_API_calcurate_data_byte_size(env, (SPVM_DATA*)data_array));
     
     // Set array
     call_stack[operand_stack_top].address_value = data_array;

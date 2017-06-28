@@ -18,7 +18,9 @@
 #include "spvm_runtime_allocator.h"
 #include "spvm_env.h"
 
-int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA* data) {
+int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_ENV* env, SPVM_DATA* data) {
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
   int64_t byte_size;
   
@@ -68,7 +70,7 @@ SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM_ENV* env, int32_t 
   // Set array length
   data_array->length = length;
   
-  assert(data_array_byte_size == SPVM_RUNTIME_API_calcurate_data_byte_size(runtime, env, (SPVM_DATA*)data_array));
+  assert(data_array_byte_size == SPVM_RUNTIME_API_calcurate_data_byte_size(env, (SPVM_DATA*)data_array));
   
   return data_array;
 }

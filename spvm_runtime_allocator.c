@@ -99,7 +99,7 @@ inline void SPVM_RUNTIME_ALLOCATOR_free_data(SPVM_RUNTIME* runtime, SPVM_ENV* en
   }
   else {
     // Byte size
-    int64_t byte_size = SPVM_RUNTIME_API_calcurate_data_byte_size(runtime, env, data);
+    int64_t byte_size = SPVM_RUNTIME_API_calcurate_data_byte_size(env, data);
     
     assert(byte_size > 0);
     

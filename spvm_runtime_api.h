@@ -3,7 +3,7 @@
 
 #include "spvm_base.h"
 
-int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA* data);
+int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_ENV* env, SPVM_DATA* data);
 SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM_ENV* env, int32_t length);
 SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM_RUNTIME* runtime, SPVM_ENV* env, const char* pv);
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_RUNTIME* runtime, SPVM_ENV* env, SPVM_DATA* data);
