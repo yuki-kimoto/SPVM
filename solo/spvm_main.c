@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  SPVM_ENV* env = runtime->env;
   
   // Copy constant pool to runtime
   runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
@@ -82,22 +83,22 @@ int main(int argc, char *argv[])
   SPVM_RUNTIME_init(runtime);
   
   // Push argument
-  SPVM_RUNTIME_API_push_var_long(runtime, 2);
+  SPVM_RUNTIME_API_push_var_long(runtime, env, 2);
 
   // Run
-  SPVM_RUNTIME_call_sub(runtime, sub_constant_pool_index);
+  SPVM_RUNTIME_call_sub(runtime, env, sub_constant_pool_index);
   
 #ifdef DEBUG
   if (runtime->abort) {
-    void* message_address = SPVM_RUNTIME_API_pop_return_value_address(runtime);
-    int8_t* message = SPVM_RUNTIME_API_get_array_values_byte(runtime, message_address);
+    void* message_address = SPVM_RUNTIME_API_pop_return_value_address(runtime, env);
+    int8_t* message = SPVM_RUNTIME_API_get_array_values_byte(runtime, env, message_address);
     
     printf("%s", (char*)message);
     printf("\n");
   }
   else {
     // Get return value
-    int64_t return_value = SPVM_RUNTIME_API_pop_return_value_long(runtime);
+    int64_t return_value = SPVM_RUNTIME_API_pop_return_value_long(runtime, env);
     
     printf("TEST return_value: %ld\n", return_value);
   }
