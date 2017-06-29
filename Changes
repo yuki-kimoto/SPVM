@@ -1,3 +1,6 @@
+0.0205 2017-06-29
+  - Only support 64 bit Perl.
+    In 32 bit Perl, 64 bit integer is not supported. This means that Perl can not express 64 bit integers on source code.
 0.0204 2017-06-28
   - add env interface. This is similar as JAVA JNI
 0.0203 2017-06-26

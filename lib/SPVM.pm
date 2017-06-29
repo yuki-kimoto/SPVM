@@ -8,20 +8,14 @@ use SPVM::Data;
 
 use Carp 'croak';
 
-our $VERSION = '0.0204';
+our $VERSION = '0.0205';
 
 our $COMPILER;
 our $RUNTIME;
 our @PACKAGE_INFOS;
-our @INCLUDE_PATHS;
 our %SUB_SYMTABLE;
 our %TYPE_SYMTABLE;
 our $ENV;
-
-BEGIN {
-  # Add moduel include path
-  push @INCLUDE_PATHS, @INC;
-}
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
@@ -164,6 +158,24 @@ B<Perlish syntax> - SPVM syntax is very similar to Perl
 B<Perl module> - SPVM function can be called from Perl itself (Not yet implemented).
 
 =back;
+
+If you install SPVM, Perl support B<64 bit integer>.
+
+=head2 FAQ
+
+=over 4
+
+=item * B<Why SPVM don't support 32 bit Perl>
+
+In 32 bit Perl, 64 bit integer is not supported. This means that Perl can not express 64 bit integers on source code.
+
+See the following code.
+
+    my $value = 9223372036854775807;
+
+In 32 bit Perl, 64bit integer value is converted to double automatically. The double value can't express long value accurately.
+
+=back
 
 =head1 AUTHOR
 

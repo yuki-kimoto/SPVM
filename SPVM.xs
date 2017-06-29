@@ -124,7 +124,7 @@ compile(...)
   }
   
   // Add include paths
-  AV* av_include_paths = get_av("SPVM::INCLUDE_PATHS", 0);;
+  AV* av_include_paths = get_av("main::INC", 0);;
   int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
   {
     int32_t i;

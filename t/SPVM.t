@@ -30,7 +30,6 @@ is_deeply(
     {name => 'std', file => $file, line => $use_std_line}
   ]
 );
-$DB::single = 1;
 
 # byte
 {
