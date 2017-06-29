@@ -43,39 +43,31 @@ value(...)
     SV* sv_return_value;
   
     if (strEQ(type_name, "byte")) {
-      NV perl_value = SvNV(sv_value);
-      int8_t value;
-      memcpy(&value, &perl_value, sizeof(int8_t));
-      sv_return_value = sv_2mortal(newSVnv(value));
+      int8_t value = (int8_t)SvIV(sv_value);
+      sv_return_value = sv_2mortal(newSViv(value));
     }
     else if (strEQ(type_name, "short")) {
-      NV perl_value = SvNV(sv_value);
-      int16_t value;
-      memcpy(&value, &perl_value, sizeof(int16_t));
-      sv_return_value = sv_2mortal(newSVnv(value));
+      int16_t value = (int16_t)SvIV(sv_value);
+      sv_return_value = sv_2mortal(newSViv(value));
     }
     else if (strEQ(type_name, "int")) {
-      NV perl_value = SvNV(sv_value);
-      int32_t value;
-      memcpy(&value, &perl_value, sizeof(int32_t));
-      sv_return_value = sv_2mortal(newSVnv(value));
+      int32_t value = (int32_t)SvIV(sv_value);
+      sv_return_value = sv_2mortal(newSViv(value));
     }
     else if (strEQ(type_name, "long")) {
-      NV perl_value = SvNV(sv_value);
-      int64_t value;
-      memcpy(&value, &perl_value, sizeof(int64_t));
-      sv_return_value = sv_2mortal(newSVnv(value));
+      int64_t value = (int64_t)SvIV(sv_value);
+      sv_return_value = sv_2mortal(newSViv(value));
     }
     else if (strEQ(type_name, "float")) {
-      NV perl_value = SvNV(sv_value);
+      IV iv_value = SvIV(sv_value);
       float value;
-      memcpy(&value, &perl_value, sizeof(float));
+      memcpy(&value, &iv_value, sizeof(float));
       sv_return_value = sv_2mortal(newSVnv(value));
     }
     else if (strEQ(type_name, "double")) {
-      NV perl_value = SvNV(sv_value);
+      IV iv_value = SvIV(sv_value);
       double value;
-      memcpy(&value, &perl_value, sizeof(double));
+      memcpy(&value, &iv_value, sizeof(double));
       sv_return_value = sv_2mortal(newSVnv(value));
     }
     else {
@@ -385,39 +377,31 @@ call_sub(...)
         SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
         
         if (strEQ(data_type_name, "byte")) {
-          NV perl_value = SvNVX(sv_value);
-          int8_t value;
-          memcpy(&value, &perl_value, sizeof(int8_t));
+          int8_t value = (int8_t)SvIV(sv_value);
           env->push_var_byte(env, value);
         }
         else if (strEQ(data_type_name, "short")) {
-          NV perl_value = SvNVX(sv_value);
-          int16_t value;
-          memcpy(&value, &perl_value, sizeof(int16_t));
+          IV value = SvIV(sv_value);
           env->push_var_short(env, value);
         }
         else if (strEQ(data_type_name, "int")) {
-          NV perl_value = SvNVX(sv_value);
-          int32_t value;
-          memcpy(&value, &perl_value, sizeof(int32_t));
+          int32_t value = (int32_t)SvIV(sv_value);
           env->push_var_int(env, value);
         }
         else if (strEQ(data_type_name, "long")) {
-          NV perl_value = SvNVX(sv_value);
-          int64_t value;
-          memcpy(&value, &perl_value, sizeof(int64_t));
+          int64_t value = (int64_t)SvIV(sv_value);
           env->push_var_long(env, value);
         }
         else if (strEQ(data_type_name, "float")) {
-          NV perl_value = SvNVX(sv_value);
+          IV iv_value = SvIV(sv_value);
           float value;
-          memcpy(&value, &perl_value, sizeof(float));
+          memcpy(&value, &iv_value, sizeof(float));
           env->push_var_float(env, value);
         }
         else if (strEQ(data_type_name, "double")) {
-          NV perl_value = SvNVX(sv_value);
+          IV iv_value = SvIV(sv_value);
           double value;
-          memcpy(&value, &perl_value, sizeof(double));
+          memcpy(&value, &iv_value, sizeof(double));
           env->push_var_double(env, value);
         }
         else {
@@ -443,39 +427,31 @@ call_sub(...)
     SV* sv_value;
     if (strEQ(return_type_name, "byte")) {
       int8_t return_value = env->pop_return_value_byte(env);
-      NV perl_value;
-      memcpy(&perl_value, &return_value, sizeof(int8_t));
-      sv_value = sv_2mortal(newSVnv(perl_value));
+      sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type_name, "short")) {
       int16_t return_value = env->pop_return_value_short(env);
-      NV perl_value;
-      memcpy(&perl_value, &return_value, sizeof(int16_t));
-      sv_value = sv_2mortal(newSVnv(perl_value));
+      sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type_name, "int")) {
       int32_t return_value = env->pop_return_value_int(env);
-      NV perl_value;
-      memcpy(&perl_value, &return_value, sizeof(int32_t));
-      sv_value = sv_2mortal(newSVnv(perl_value));
+      sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type_name, "long")) {
       int64_t return_value = env->pop_return_value_long(env);
-      NV perl_value;
-      memcpy(&perl_value, &return_value, sizeof(int64_t));
-      sv_value = sv_2mortal(newSVnv(perl_value));
+      sv_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type_name, "float")) {
       float return_value = env->pop_return_value_float(env);
-      NV perl_value;
-      memcpy(&perl_value, &return_value, sizeof(float));
-      sv_value = sv_2mortal(newSVnv(perl_value));
+      int64_t spvm_value;
+      memcpy(&spvm_value, &return_value, sizeof(float));
+      sv_value = sv_2mortal(newSViv(spvm_value));
     }
     else if (strEQ(return_type_name, "double")) {
       double return_value = env->pop_return_value_double(env);
-      NV perl_value;
-      memcpy(&perl_value, &return_value, sizeof(double));
-      sv_value = sv_2mortal(newSVnv(perl_value));
+      int64_t spvm_value;
+      memcpy(&spvm_value, &return_value, sizeof(double));
+      sv_value = sv_2mortal(newSViv(spvm_value));
     }
     else {
       void* return_value = env->pop_return_value_address(env);
@@ -514,13 +490,10 @@ byte(...)
   SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
   HV* hv_class = gv_stashpv("SPVM::Data", 0);
   sv_bless(sv_data, hv_class);
-
-  // byte
-  int8_t value = (int8_t)SvNV(sv_original_value);
   
-  NV perl_value;
-  memcpy(&perl_value, &value, sizeof(int8_t));
-  SV* sv_value = sv_2mortal(newSVnv(perl_value));
+  // byte
+  int8_t value = SvIV(sv_original_value);
+  SV* sv_value = sv_2mortal(newSViv(value));
   
   // Store value
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
@@ -546,10 +519,8 @@ short(...)
   sv_bless(sv_data, hv_class);
   
   // short
-  int16_t value = (int16_t)SvNV(sv_original_value);
-  NV perl_value;
-  memcpy(&perl_value, &value, sizeof(int16_t));
-  SV* sv_value = sv_2mortal(newSVnv(perl_value));
+  int16_t value = SvIV(sv_original_value);
+  SV* sv_value = sv_2mortal(newSViv(value));
   
   // Store value
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
@@ -575,10 +546,8 @@ int(...)
   sv_bless(sv_data, hv_class);
   
   // int
-  int32_t value = (int32_t)SvNV(sv_original_value);
-  NV perl_value;
-  memcpy(&perl_value, &value, sizeof(int32_t));
-  SV* sv_value = sv_2mortal(newSVnv(perl_value));
+  int32_t value = SvIV(sv_original_value);
+  SV* sv_value = sv_2mortal(newSViv(value));
   
   // Store value
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
@@ -603,11 +572,9 @@ long(...)
   HV* hv_class = gv_stashpv("SPVM::Data", 0);
   sv_bless(sv_data, hv_class);
   
-  // long
-  int64_t value = (int64_t)SvNV(sv_original_value);
-  NV perl_value;
-  memcpy(&perl_value, &value, sizeof(int64_t));
-  SV* sv_value = sv_2mortal(newSVnv(perl_value));
+  // int
+  int64_t value = SvIV(sv_original_value);
+  SV* sv_value = sv_2mortal(newSViv(value));
   
   // Store value
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
@@ -634,9 +601,9 @@ float(...)
   
   // float
   float value = (float)SvNV(sv_original_value);
-  NV perl_value;
-  memcpy(&perl_value, &value, sizeof(float));
-  SV* sv_value = sv_2mortal(newSVnv(perl_value));
+  int64_t spvm_value;
+  memcpy(&spvm_value, &value, sizeof(float));
+  SV* sv_value = sv_2mortal(newSViv(spvm_value));
   
   // Store value
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
@@ -663,9 +630,9 @@ double(...)
   
   // double
   double value = (double)SvNV(sv_original_value);
-  NV perl_value;
-  memcpy(&perl_value, &value, sizeof(double));
-  SV* sv_value = sv_2mortal(newSVnv(perl_value));
+  int64_t spvm_value;
+  memcpy(&spvm_value, &value, sizeof(double));
+  SV* sv_value = sv_2mortal(newSViv(spvm_value));
   
   // Store value
   hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
