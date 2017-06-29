@@ -3,6 +3,9 @@ use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 
+# SPVM only support the environment 64bit integer is supported
+
+
 WriteMakefile(
     NAME              => 'SPVM',
     VERSION_FROM      => 'lib/SPVM.pm', # finds $VERSION

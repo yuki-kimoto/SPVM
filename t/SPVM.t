@@ -55,6 +55,10 @@ $DB::single = 1;
   my $total = SPVM::XSTest::sum_long(SPVM::long(8), SPVM::long(3));
   is($total->value, 11);
 }
+{
+  my $total = SPVM::XSTest::sum_long(SPVM::long(9223372036854775806), SPVM::long(1));
+  is($total->value, 9223372036854775807);
+}
 
 # float
 {
