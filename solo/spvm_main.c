@@ -12,6 +12,8 @@
 #include "../spvm_runtime_allocator.h"
 #include "../spvm_op.h"
 #include "../spvm_sub.h"
+#include "../spvm_dumper.h"
+#include "../spvm_env.h"
 
 int main(int argc, char *argv[])
 {
@@ -34,7 +36,7 @@ int main(int argc, char *argv[])
   SPVM_COMPILER_compile(compiler);
   
   if (compiler->error_count > 0) {
-    return;
+    return 1;
   }
   else {
 #ifdef DEBUG
