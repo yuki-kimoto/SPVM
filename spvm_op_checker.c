@@ -441,7 +441,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
                     
                     // Temparary variable name
-                    const char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
+                    char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
                     sprintf(name, "@tmp%d", my_var_tmp_index++);
                     SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_cur->file, op_cur->line);
                     op_name->uv.name = name;
