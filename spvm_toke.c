@@ -121,7 +121,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       fprintf(stderr, " %s", include_path);
                     }
                   }
-                  fprintf(") at %s line %" PRId32 "\n", op_use->file, op_use->line);
+                  fprintf(stderr, ") at %s line %" PRId32 "\n", op_use->file, op_use->line);
                 }
                 else {
                   fprintf(stderr, "[SPVM COMPILE ERROR]Can't find file %s\n", cur_module_path);

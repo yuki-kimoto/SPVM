@@ -106,12 +106,12 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
 void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY* parts) {
   
   if (type->code == SPVM_TYPE_C_CODE_NAME) {
-    const char* part = type->uv.op_name->uv.name;
+    char* part = type->uv.op_name->uv.name;
     SPVM_ARRAY_push(parts, part);
   }
   else if (type->code == SPVM_TYPE_C_CODE_ARRAY) {
     SPVM_TYPE_build_parts(compiler, type->uv.op_type->uv.type, parts);
-    const char* part = "[]";
+    char* part = "[]";
     SPVM_ARRAY_push(parts, part);
   }
 }
