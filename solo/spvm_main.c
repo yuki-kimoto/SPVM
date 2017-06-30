@@ -82,22 +82,22 @@ int main(int argc, char *argv[])
   SPVM_RUNTIME_init(runtime);
   
   // Push argument
-  SPVM_RUNTIME_API_push_var_long(env, 2);
+  env->push_var_long(env, 2);
 
   // Run
   env->call_sub(env, sub_constant_pool_index);
   
 #ifdef DEBUG
   if (runtime->abort) {
-    void* message_address = SPVM_RUNTIME_API_pop_return_value_address(env);
-    int8_t* message = SPVM_RUNTIME_API_get_array_values_byte(env, message_address);
+    void* message_address = env->pop_return_value_address(env);
+    int8_t* message = env->get_array_values_byte(env, message_address);
     
     printf("%s", (char*)message);
     printf("\n");
   }
   else {
     // Get return value
-    int64_t return_value = SPVM_RUNTIME_API_pop_return_value_long(env);
+    int64_t return_value = env->pop_return_value_long(env);
     
     printf("TEST return_value: %ld\n", return_value);
   }
