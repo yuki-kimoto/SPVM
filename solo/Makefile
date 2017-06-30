@@ -19,7 +19,6 @@ $(OBJDIR)/%.o: %.c | $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
 libspvm_SRCS := $(wildcard *.c) spvm_yacc.c
 libspvm_OBJS := $(libspvm_SRCS:%.c=$(OBJDIR)/%.o)
 -include $(libspvm_OBJS:%.o=%.Po)
-generated_sources += spvm_yacc.c spvm_yacc.h
 $(OBJDIR)/spvm_toke.o: spvm_toke.c spvm_yacc.h
 $(OBJDIR)/spvm_yacc_util.o: spvm_yacc_util.c spvm_yacc.h
 libspvm.a: $(libspvm_OBJS)
