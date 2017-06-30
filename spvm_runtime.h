@@ -37,6 +37,7 @@ struct SPVM_runtime {
 SPVM_RUNTIME* SPVM_RUNTIME_new();
 void SPVM_RUNTIME_init(SPVM_RUNTIME* runtime);
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
+SPVM_ENV* SPVM_RUNTIME_new_env(SPVM_RUNTIME* runtime);
 
 void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index);
 
