@@ -8,7 +8,7 @@ use SPVM::Data;
 
 use Carp 'croak';
 
-our $VERSION = '0.0206';
+our $VERSION = '0.0207';
 
 our $COMPILER;
 our $RUNTIME;
