@@ -15,6 +15,8 @@
 #include "spvm_env.h"
 
 SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
+  (void)runtime;
+  
   SPVM_RUNTIME_ALLOCATOR* allocator = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_RUNTIME_ALLOCATOR));
   
   // Memory pool
@@ -38,6 +40,7 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
 }
 
 inline int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_ENV* env, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size) {
+  (void)env;
   (void)allocator;
   
   assert(size > 0);
@@ -118,6 +121,8 @@ inline void SPVM_RUNTIME_ALLOCATOR_free_data(SPVM_ENV* env, SPVM_RUNTIME_ALLOCAT
 }
 
 void SPVM_RUNTIME_ALLOCATOR_free(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ALLOCATOR* allocator) {
+  (void)runtime;
+  
   // Free memory pool */
   SPVM_MEMORY_POOL_free(allocator->memory_pool);
   
