@@ -33,40 +33,40 @@ is_deeply(
 
 # byte
 {
-  my $total = SPVM::XSTest::sum_byte(SPVM::byte(8), SPVM::byte(3));
-  is($total->value, 11);
+  my $total = SPVM::XSTest::sum_byte(8, 3);
+  is($total, 11);
 }
 
 # short
 {
-  my $total = SPVM::XSTest::sum_short(SPVM::short(8), SPVM::short(3));
-  is($total->value, 11);
+  my $total = SPVM::XSTest::sum_short(8, 3);
+  is($total, 11);
 }
 
 # int
 {
-  my $total = SPVM::XSTest::sum_int(SPVM::int(8), SPVM::int(3));
-  is($total->value, 11);
+  my $total = SPVM::XSTest::sum_int(8, 3);
+  is($total, 11);
 }
 
 # long
 {
-  my $total = SPVM::XSTest::sum_long(SPVM::long(8), SPVM::long(3));
-  is($total->value, 11);
+  my $total = SPVM::XSTest::sum_long(8, 3);
+  is($total, 11);
 }
 {
-  my $total = SPVM::XSTest::sum_long(SPVM::long(9223372036854775806), SPVM::long(1));
-  is($total->value, 9223372036854775807);
+  my $total = SPVM::XSTest::sum_long(9223372036854775806, 1);
+  is($total, 9223372036854775807);
 }
 
 # float
 {
-  my $total = SPVM::XSTest::sum_float(SPVM::float(0.25), SPVM::float(0.25));
-  cmp_ok($total->value, '==', 0.5);
+  my $total = SPVM::XSTest::sum_float(0.25, 0.25);
+  cmp_ok($total, '==', 0.5);
 }
 
 # double
 {
-  my $total = SPVM::XSTest::sum_double(SPVM::double(0.25), SPVM::double(0.25));
-  cmp_ok($total->value, '==', 0.5);
+  my $total = SPVM::XSTest::sum_double(0.25, 0.25);
+  cmp_ok($total, '==', 0.5);
 }

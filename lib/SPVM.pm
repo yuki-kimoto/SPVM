@@ -8,7 +8,7 @@ use SPVM::Data;
 
 use Carp 'croak';
 
-our $VERSION = '0.0205';
+our $VERSION = '0.0206';
 
 our $COMPILER;
 our $RUNTIME;
@@ -93,8 +93,8 @@ B<SPVM is under developing! I will change implementation and specification witho
 
   use SPVM 'MyModule2';
   
-  my $total = SPVM::MyModule2::foo(SPVM::int(3), SPVM::int(5));
-  print $total->value . "\n";
+  my $total = SPVM::MyModule2::foo(3, 5);
+  print $total . "\n";
   
 Module file
 
@@ -159,7 +159,7 @@ B<Perl module> - SPVM function can be called from Perl itself (Not yet implement
 
 =back;
 
-If you install SPVM, Perl support B<64 bit integer>.
+SPVM only work on the Perl which support 64 bit integer.
 
 =head2 FAQ
 
@@ -167,7 +167,7 @@ If you install SPVM, Perl support B<64 bit integer>.
 
 =item * B<Why SPVM don't support 32 bit Perl>
 
-In 32 bit Perl, 64 bit integer is not supported. This means that Perl can not express 64 bit integers on source code.
+In many 32 bit Perl, 64 bit integer is not supported. This means that Perl can not express 64 bit integers on source code.
 
 See the following code.
 
