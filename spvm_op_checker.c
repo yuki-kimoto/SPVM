@@ -25,6 +25,7 @@
 #include "spvm_switch_info.h"
 #include "spvm_constant_pool.h"
 #include "spvm_limit.h"
+#include "spvm_constant_pool_package.h"
 
 void SPVM_OP_CHECKER_build_leave_scope(SPVM_COMPILER* compiler, SPVM_OP* op_leave_scope, SPVM_ARRAY* op_my_var_stack, int32_t top, int32_t bottom, SPVM_OP* op_term_keep) {
   
@@ -250,14 +251,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
+      // Push package information to constant pool
+      package->constant_pool_index = SPVM_CONSTANT_POOL_push_package(compiler, constant_pool, package);
+      
       // Push package name to constant pool
       const char* package_name = package->op_name->uv.name;
-      package->name_constant_pool_index = constant_pool->length;
-      SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
+      int32_t package_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
       
-      // Push package information to constant pool
-      package->constant_pool_index = constant_pool->length;
-      SPVM_CONSTANT_POOL_push_package(compiler, constant_pool, package);
+      // Set package name constant pool index
+      SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
+      memcpy(&constant_pool_package, &constant_pool->values[package->constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+      constant_pool_package.name_constant_pool_index = package_name_constant_pool_index;
+      memcpy(&constant_pool->values[package->constant_pool_index], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
       
       {
         int32_t sub_pos;
