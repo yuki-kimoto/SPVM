@@ -232,16 +232,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
-      // Push fields name indexes to constant pool
-      {
-        int32_t field_pos;
-        for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_ARRAY_fetch(package->op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
-          SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->name_constant_pool_index);
-        }
-      }
-      
       // Push package information to constant pool
       package->constant_pool_index = SPVM_CONSTANT_POOL_push_package(compiler, constant_pool, package);
       
