@@ -371,9 +371,11 @@ SPVM_VALUE* SPVM_RUNTIME_API_get_object_fields(SPVM_ENV* env, SPVM_DATA_OBJECT* 
 
 int32_t SPVM_RUNTIME_API_get_object_field_index(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
-  
-  int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
+
   int32_t* constant_pool = runtime->constant_pool;
+  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
+  memcpy(&constant_pool_package, &constant_pool[data_object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  int32_t field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
   int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
   int32_t field_index = -1;
@@ -401,10 +403,10 @@ int32_t SPVM_RUNTIME_API_get_object_field_index(SPVM_ENV* env, SPVM_DATA_OBJECT*
 int32_t SPVM_RUNTIME_API_get_object_fields_length(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
-  
   int32_t* constant_pool = runtime->constant_pool;
-  
+  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
+  memcpy(&constant_pool_package, &constant_pool[data_object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  int32_t field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
   int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
   return length;
@@ -505,10 +507,10 @@ SPVM_DATA* SPVM_RUNTIME_API_get_object_field_value_ref(SPVM_ENV* env, SPVM_DATA_
 int32_t SPVM_RUNTIME_API_dump_object_field_names(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  int32_t field_name_indexes_constant_pool_index = data_object->field_name_indexes_constant_pool_index;
-  
   int32_t* constant_pool = runtime->constant_pool;
-  
+  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
+  memcpy(&constant_pool_package, &constant_pool[data_object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  int32_t field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
   int32_t length = constant_pool[field_name_indexes_constant_pool_index];
   
   {
