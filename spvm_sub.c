@@ -24,8 +24,6 @@ SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {
   sub->bytecode_base = -1;
   sub->bytecode_length = 0;
   sub->operand_stack_max = 0;
-  sub->abs_name_constant_pool_index = -1;
-  sub->file_name_constant_pool_index = -1;
   sub->is_native = 0;
   sub->is_constant = 0;
   

@@ -92,18 +92,23 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   constant_pool_sub.operand_stack_max = sub->operand_stack_max;
   constant_pool_sub.args_length = sub->op_args->length;
   constant_pool_sub.is_native = sub->is_native;
-  constant_pool_sub.abs_name_constant_pool_index = sub->abs_name_constant_pool_index;
-  constant_pool_sub.file_name_constant_pool_index = sub->file_name_constant_pool_index;
   if (sub->op_return_type->code != SPVM_OP_C_CODE_VOID) {
     constant_pool_sub.has_return_value = 1;
   }
   else {
     constant_pool_sub.has_return_value = 0;
   }
-  memcpy(&constant_pool->values[constant_pool->length], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
-  
+
   // Add length
   constant_pool->length += extend_length;
+
+  // Push sub name to constant pool
+  constant_pool_sub.abs_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->abs_name);
+  
+  // Push file name to constant pool
+  constant_pool_sub.file_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->file_name);
+
+  memcpy(&constant_pool->values[start_index], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
   
   return start_index;
 }

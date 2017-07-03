@@ -1742,15 +1742,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Operand stack max
             sub->operand_stack_max = op_count * 2;
           }
-          
-          // Push sub name to constant pool
-          sub->abs_name_constant_pool_index = compiler->constant_pool->length;
-          SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, sub->abs_name);
-          
-          // Push file name to constant pool
-          sub->file_name_constant_pool_index = compiler->constant_pool->length;
+
           assert(sub->file_name);
-          SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, sub->file_name);
           
           // Push sub information to constant pool
           sub->constant_pool_index = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
