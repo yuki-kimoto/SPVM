@@ -27,14 +27,14 @@ int64_t SPVM_RUNTIME_API_calcurate_data_byte_size(SPVM_ENV* env, SPVM_DATA* data
   // Reference is string
   if (data->type == SPVM_DATA_C_TYPE_ARRAY) {
     SPVM_DATA_ARRAY* data_array = (SPVM_DATA_ARRAY*)data;
-    byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + data_array->length * SPVM_RUNTIME_API_get_array_value_size(env, data_array->value_type);
+    byte_size = sizeof(SPVM_DATA_ARRAY) + data_array->length * SPVM_RUNTIME_API_get_array_value_size(env, data_array->value_type);
   }
   // Reference is object
   else if (data->type == SPVM_DATA_C_TYPE_OBJECT) {
     SPVM_DATA_OBJECT* data_object = (SPVM_DATA_OBJECT*)data;
     SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
     memcpy(&constant_pool_package, &runtime->constant_pool[data_object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-    byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * constant_pool_package.fields_length;
+    byte_size = sizeof(SPVM_DATA_OBJECT) + sizeof(SPVM_VALUE) * constant_pool_package.fields_length;
   }
   else {
     assert(0);
@@ -49,7 +49,7 @@ SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM_ENV* env, int32_t 
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   // Allocate array
-  int32_t data_array_byte_size = SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(int8_t) * length;
+  int32_t data_array_byte_size = sizeof(SPVM_DATA_ARRAY) + sizeof(int8_t) * length;
   SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_ALLOCATOR_malloc(env, allocator, data_array_byte_size);
   
   // Fatal memory allocation error
@@ -82,7 +82,7 @@ SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM_ENV* env, 
   SPVM_DATA_ARRAY* data_array = SPVM_RUNTIME_API_create_data_array_byte(env, length);
   
   // Copy string
-  memcpy((void*)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE), pv, length);
+  memcpy((void*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY)), pv, length);
   
   return data_array;
 }
@@ -110,7 +110,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_DATA* data) {
           {
             int32_t i;
             for (i = 0; i < length; i++) {
-              SPVM_DATA* data_element = *(SPVM_DATA**)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(void*) * i);
+              SPVM_DATA* data_element = *(SPVM_DATA**)((intptr_t)data_array + sizeof(SPVM_DATA_OBJECT) + sizeof(void*) * i);
               SPVM_RUNTIME_API_dec_ref_count(env, data_element);
             }
           }
@@ -130,7 +130,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_DATA* data) {
         {
           int32_t i;
           for (i = 0; i < ref_fields_length; i++) {
-            SPVM_DATA* data_field = *(SPVM_DATA**)((intptr_t)data_object + SPVM_DATA_C_HEADER_BYTE_SIZE + sizeof(void*) * i);
+            SPVM_DATA* data_field = *(SPVM_DATA**)((intptr_t)data_object + sizeof(SPVM_DATA_OBJECT) + sizeof(void*) * i);
             SPVM_RUNTIME_API_dec_ref_count(env, data_field);
           }
         }
@@ -366,7 +366,7 @@ int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_ENV* env, int32_t type) {
 SPVM_VALUE* SPVM_RUNTIME_API_get_object_fields(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object) {
   (void)env;
   
-  return (SPVM_VALUE*)((intptr_t)data_object + SPVM_DATA_C_HEADER_BYTE_SIZE);
+  return (SPVM_VALUE*)((intptr_t)data_object + sizeof(SPVM_DATA_OBJECT));
 }
 
 int32_t SPVM_RUNTIME_API_get_object_field_index(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name) {
@@ -539,41 +539,41 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_DATA_ARRAY* data_a
 int8_t* SPVM_RUNTIME_API_get_array_values_byte(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array) {
   (void)env;
 
-  return (int8_t*)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE);
+  return (int8_t*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
 int16_t* SPVM_RUNTIME_API_get_array_values_short(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array) {
   (void)env;
   
-  return (int16_t*)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE);
+  return (int16_t*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
 int32_t* SPVM_RUNTIME_API_get_array_values_int(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array) {
   (void)env;
   
-  return (int32_t*)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE);
+  return (int32_t*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
 int64_t* SPVM_RUNTIME_API_get_array_values_long(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array) {
   (void)env;
   
-  return (int64_t*)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE);
+  return (int64_t*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
 float* SPVM_RUNTIME_API_get_array_values_float(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array) {
   (void)env;
   
-  return (float*)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE);
+  return (float*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
 double* SPVM_RUNTIME_API_get_array_values_double(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array) {
   (void)env;
   
-  return (double*)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE);
+  return (double*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
 SPVM_DATA** SPVM_RUNTIME_API_get_array_values_ref(SPVM_ENV* env, SPVM_DATA_ARRAY* data_array) {
   (void)env;
   
-  return (SPVM_DATA**)((intptr_t)data_array + SPVM_DATA_C_HEADER_BYTE_SIZE);
+  return (SPVM_DATA**)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
