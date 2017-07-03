@@ -133,7 +133,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
       
       // Separate reference type and value type
-      int32_t ref_fields_length = 0;
       {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
@@ -160,11 +159,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
           else {
             SPVM_ARRAY_push(op_fields_ref, op_field);
-            ref_fields_length++;
           }
         }
       }
-      package->ref_fields_length = ref_fields_length;
       
       // Create ordered op fields
       SPVM_ARRAY* ordered_op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);

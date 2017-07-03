@@ -173,8 +173,6 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_ARRAY* op_packages)
         }
       }
       
-      printf("  ref_fields_length => \"%" PRId32 "\"\n", package->ref_fields_length);
-      
       // Sub information
       printf("  subs\n");
       SPVM_ARRAY* op_subs = package->op_subs;
