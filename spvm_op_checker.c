@@ -253,16 +253,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       // Push package information to constant pool
       package->constant_pool_index = SPVM_CONSTANT_POOL_push_package(compiler, constant_pool, package);
       
-      // Push package name to constant pool
-      const char* package_name = package->op_name->uv.name;
-      int32_t package_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
-      
-      // Set package name constant pool index
-      SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-      memcpy(&constant_pool_package, &constant_pool->values[package->constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-      constant_pool_package.name_constant_pool_index = package_name_constant_pool_index;
-      memcpy(&constant_pool->values[package->constant_pool_index], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-      
       {
         int32_t sub_pos;
         for (sub_pos = 0; sub_pos < package->op_subs->length; sub_pos++) {

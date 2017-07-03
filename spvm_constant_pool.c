@@ -67,10 +67,14 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   constant_pool_package.fields_length = package->op_fields->length;
   constant_pool_package.ref_fields_length = SPVM_PACKAGE_get_ref_fields_length(compiler, package);
   
-  memcpy(&constant_pool->values[constant_pool->length], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  
   // Add length
   constant_pool->length += extend_length;
+  
+  // Push package name to constant pool
+  const char* package_name = package->op_name->uv.name;
+  constant_pool_package.name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
+  
+  memcpy(&constant_pool->values[start_index], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   
   return start_index;
 }
