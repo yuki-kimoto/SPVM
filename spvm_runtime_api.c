@@ -372,22 +372,33 @@ SPVM_VALUE* SPVM_RUNTIME_API_get_object_fields(SPVM_ENV* env, SPVM_DATA_OBJECT* 
 int32_t SPVM_RUNTIME_API_get_object_field_index(SPVM_ENV* env, SPVM_DATA_OBJECT* data_object, const char* name) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
 
+  warn("AAAAAAAAAAAAA");
+  assert(0);
+  
   int32_t* constant_pool = runtime->constant_pool;
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
   memcpy(&constant_pool_package, &constant_pool[data_object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  int32_t field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
+  
   int32_t length = constant_pool_package.fields_length;
+  int32_t field_indexes_constant_pool_index = constant_pool_package.field_indexes_constant_pool_index;
   
   int32_t field_index = -1;
   _Bool found = 0;
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      int32_t name_index = constant_pool[field_name_indexes_constant_pool_index + i];
-      char* match_name = (char*)&constant_pool[name_index + 1];
+      
+      int32_t field_constant_pool_index = constant_pool[field_indexes_constant_pool_index + i];
+      SPVM_CONSTANT_POOL_FIELD constant_pool_field;
+      memcpy(&constant_pool_field, &constant_pool[field_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_FIELD));
+      
+      int32_t field_name_constant_pool_index = constant_pool_field.name_constant_pool_index;
+      
+      char* match_name = (char*)&constant_pool[field_name_constant_pool_index];
       if (strcmp(name, match_name) == 0) {
         found = 1;
         field_index = i;
+        break;
       }
     }
   }
