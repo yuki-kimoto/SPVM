@@ -131,10 +131,17 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   constant_pool_field.index = field->index;
   constant_pool_field.abs_name_constant_pool_index = field->abs_name_constant_pool_index;
   constant_pool_field.name_constant_pool_index = field->name_constant_pool_index;
-  memcpy(&constant_pool->values[constant_pool->length], &constant_pool_field, sizeof(SPVM_CONSTANT_POOL_FIELD));
   
   // Add length
   constant_pool->length += extend_length;
+  
+  // Add field abs name to constant pool
+  constant_pool_field.abs_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->abs_name);
+  
+  // Add field name to constant pool
+  constant_pool_field.name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->op_name->uv.name);
+  
+  memcpy(&constant_pool->values[start_index], &constant_pool_field, sizeof(SPVM_CONSTANT_POOL_FIELD));
   
   return start_index;
 }

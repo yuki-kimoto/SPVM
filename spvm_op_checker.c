@@ -227,14 +227,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_OP* op_field = SPVM_ARRAY_fetch(package->op_fields, field_pos);
           SPVM_FIELD* field = op_field->uv.field;
           
-          // Add field abs name to constant pool
-          field->abs_name_constant_pool_index = compiler->constant_pool->length;
-          SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, field->abs_name);
-
-          // Add field name to constant pool
-          field->name_constant_pool_index = compiler->constant_pool->length;
-          SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, field->op_name->uv.name);
-          
           // Add field to constant pool
           field->constant_pool_index = SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
         }
