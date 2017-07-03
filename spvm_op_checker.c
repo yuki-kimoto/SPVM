@@ -204,7 +204,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           field->index = field_pos;
         }
       }
-      package->fields_length = op_fields->length;
     }
   }
   

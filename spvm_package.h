@@ -10,9 +10,7 @@ struct SPVM_package {
   SPVM_ARRAY* op_subs;
   int32_t constant_pool_index;
   int32_t name_constant_pool_index;
-  int32_t fields_length;
   int32_t ref_fields_length;
-  int32_t field_name_indexes_constant_pool_index;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
