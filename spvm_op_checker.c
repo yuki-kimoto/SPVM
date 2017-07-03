@@ -236,8 +236,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, field->op_name->uv.name);
           
           // Add field to constant pool
-          field->constant_pool_index = compiler->constant_pool->length;
-          SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
+          field->constant_pool_index = SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
         }
       }
       
@@ -1754,8 +1753,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, sub->file_name);
           
           // Push sub information to constant pool
-          sub->constant_pool_index = compiler->constant_pool->length;
-          SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
+          sub->constant_pool_index = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
         }
       }
     }
