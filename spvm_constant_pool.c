@@ -186,7 +186,7 @@ int32_t SPVM_CONSTANT_POOL_push_long(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
 
 int32_t SPVM_CONSTANT_POOL_push_float(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, float value) {
   (void)compiler;
-
+  
   int32_t start_index = constant_pool->length;
 
   // Add float value

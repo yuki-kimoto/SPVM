@@ -669,12 +669,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // float
           char *end;
           if (constant->code == SPVM_CONSTANT_C_CODE_FLOAT) {
-            float num = strtof(num_str, &end);
+            double num = strtod(num_str, &end);
+            
             if (*end != '\0') {
               fprintf(stderr, "[SPVM COMPILE ERROR]Invalid float literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_module_path, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->uv.float_value = num;
+            constant->uv.float_value = (float)num;
             constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
           }
           // double

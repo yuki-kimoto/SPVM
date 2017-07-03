@@ -80,7 +80,7 @@ void SPVM_EXTENTION_std__println_long(SPVM_ENV* env) {
 
 void SPVM_EXTENTION_std__println_float(SPVM_ENV* env) {
   float value = env->get_var_float(env, 0);
-  
+
   printf("%f\n", value);
 }
 
