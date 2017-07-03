@@ -570,8 +570,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
                       
-                      constant->constant_pool_index = constant_pool->length;
-                      
                       switch (constant->code) {
                         case SPVM_CONSTANT_C_CODE_INT: {
                           int64_t value = constant->uv.long_value;
@@ -580,7 +578,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             break;
                           }
                           
-                          SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, (int32_t)value);
+                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, (int32_t)value);
                           break;
                         }
                         case SPVM_CONSTANT_C_CODE_LONG: {
@@ -591,7 +589,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             break;
                           }
                           
-                          SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
+                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
                           break;
                         }
                         case SPVM_CONSTANT_C_CODE_FLOAT: {
@@ -602,7 +600,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             break;
                           }
                           
-                          SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
+                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
                           break;
                         }
                         case SPVM_CONSTANT_C_CODE_DOUBLE: {
@@ -613,13 +611,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             break;
                           }
                           
-                          SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
+                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
                           break;
                         }
                         case SPVM_CONSTANT_C_CODE_STRING: {
                           const char* value = constant->uv.string_value;
                           
-                          SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
+                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
                           break;
                         }
                       }
