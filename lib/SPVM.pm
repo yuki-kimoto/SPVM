@@ -11,11 +11,10 @@ use Carp 'croak';
 our $VERSION = '0.0207';
 
 our $COMPILER;
-our $RUNTIME;
 our @PACKAGE_INFOS;
 our %SUB_SYMTABLE;
 our %TYPE_SYMTABLE;
-our $ENV;
+our $API;
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {

@@ -281,11 +281,12 @@ build_runtime(...)
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
   memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
   
-  // Runtime
-  size_t iv_runtime = PTR2IV(runtime);
-  SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
-  SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
-  sv_setsv(get_sv("SPVM::RUNTIME", 0), sv_runtime);
+  // SPVM API
+  SPVM_API* api = runtime->api;
+  size_t iv_api = PTR2IV(api);
+  SV* sviv_api = sv_2mortal(newSViv(iv_api));
+  SV* sv_api = sv_2mortal(newRV_inc(sviv_api));
+  sv_setsv(get_sv("SPVM::API", 0), sv_api);
   
   XSRETURN(0);
 }
@@ -337,15 +338,14 @@ call_sub(...)
   SV** sv_return_type_name_ptr = av_fetch(av_sub_info, 2, 0);
   SV* sv_return_type_name = sv_return_type_name_ptr ? *sv_return_type_name_ptr : &PL_sv_undef;
   
-  // Get runtime
-  SV* sv_runtime = get_sv("SPVM::RUNTIME", 0);
-  SV* sviv_runtime = SvROK(sv_runtime) ? SvRV(sv_runtime) : sv_runtime;
-  size_t iv_runtime = SvIV(sviv_runtime);
-  SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, iv_runtime);
-  SPVM_API* api = runtime->api;
+  // Get API
+  SV* sv_api = get_sv("SPVM::API", 0);
+  SV* sviv_api = SvROK(sv_api) ? SvRV(sv_api) : sv_api;
+  size_t iv_api = SvIV(sviv_api);
+  SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
   
   // Initialize runtime before push arguments and call subroutine
-  SPVM_RUNTIME_init(api);
+  SPVM_RUNTIME_init((SPVM_RUNTIME*)api->runtime);
   
   // Check argument count
   if (items - 1 != args_length) {
