@@ -2,7 +2,7 @@
 #define SPVM_RUNTIME_H
 
 #include "spvm_base.h"
-#include "spvm_env.h"
+#include "spvm_api.h"
 
 struct SPVM_runtime {
   
@@ -22,7 +22,7 @@ struct SPVM_runtime {
   int32_t operand_stack_top;
   
   // Env
-  SPVM_ENV* env;
+  SPVM_API* api;
   
   // Bytecodes
   uint8_t* bytecodes;
@@ -37,8 +37,8 @@ struct SPVM_runtime {
 SPVM_RUNTIME* SPVM_RUNTIME_new();
 void SPVM_RUNTIME_init(SPVM_RUNTIME* runtime);
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
-SPVM_ENV* SPVM_RUNTIME_new_env(SPVM_RUNTIME* runtime);
+SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime);
 
-void SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_constant_pool_index);
+void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index);
 
 #endif

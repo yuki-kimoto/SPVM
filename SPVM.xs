@@ -20,7 +20,7 @@
 #include "spvm_sub.h"
 #include "spvm_my_var.h"
 #include "spvm_type.h"
-#include "spvm_env.h"
+#include "spvm_api.h"
 
 MODULE = SPVM::Data		PACKAGE = SPVM::Data
 
@@ -342,10 +342,10 @@ call_sub(...)
   SV* sviv_runtime = SvROK(sv_runtime) ? SvRV(sv_runtime) : sv_runtime;
   size_t iv_runtime = SvIV(sviv_runtime);
   SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, iv_runtime);
-  SPVM_ENV* env = runtime->env;
+  SPVM_API* api = runtime->api;
   
   // Initialize runtime before push arguments and call subroutine
-  SPVM_RUNTIME_init(env);
+  SPVM_RUNTIME_init(api);
   
   // Check argument count
   if (items - 1 != args_length) {
@@ -382,27 +382,27 @@ call_sub(...)
         SV* sv_value = sv_data;
         if (strEQ(arg_type_name, "byte")) {
           int8_t value = (int8_t)SvIV(sv_value);
-          env->push_var_byte(env, value);
+          api->push_var_byte(api, value);
         }
         else if (strEQ(arg_type_name, "short")) {
           int16_t value = (int16_t)SvIV(sv_value);
-          env->push_var_short(env, value);
+          api->push_var_short(api, value);
         }
         else if (strEQ(arg_type_name, "int")) {
           int32_t value = (int32_t)SvIV(sv_value);
-          env->push_var_int(env, value);
+          api->push_var_int(api, value);
         }
         else if (strEQ(arg_type_name, "long")) {
           int64_t value = (int64_t)SvIV(sv_value);
-          env->push_var_long(env, value);
+          api->push_var_long(api, value);
         }
         else if (strEQ(arg_type_name, "float")) {
           float value = (float)SvNV(sv_value);
-          env->push_var_float(env, value);
+          api->push_var_float(api, value);
         }
         else if (strEQ(arg_type_name, "double")) {
           double value = (double)SvNV(sv_value);
-          env->push_var_double(env, value);
+          api->push_var_double(api, value);
         }
         else {
           assert(0);
@@ -411,7 +411,7 @@ call_sub(...)
     }
   }
   
-  env->call_sub(env, sub_constant_pool_index);
+  api->call_sub(api, sub_constant_pool_index);
   
   if (SvOK(sv_return_type_name)) {
     // Create data
@@ -423,38 +423,38 @@ call_sub(...)
     const char* return_type_name = SvPV_nolen(sv_return_type_name);
     SV* sv_value;
     if (strEQ(return_type_name, "byte")) {
-      int8_t return_value = env->pop_return_value_byte(env);
+      int8_t return_value = api->pop_return_value_byte(api);
       sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "short")) {
-      int16_t return_value = env->pop_return_value_short(env);
+      int16_t return_value = api->pop_return_value_short(api);
       sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "int")) {
-      int32_t return_value = env->pop_return_value_int(env);
+      int32_t return_value = api->pop_return_value_int(api);
       sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "long")) {
-      int64_t return_value = env->pop_return_value_long(env);
+      int64_t return_value = api->pop_return_value_long(api);
       sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "float")) {
-      float return_value = env->pop_return_value_float(env);
+      float return_value = api->pop_return_value_float(api);
       sv_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "double")) {
-      double return_value = env->pop_return_value_double(env);
+      double return_value = api->pop_return_value_double(api);
       sv_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_value);
     }
     else {
       assert(0);
-      void* return_value = env->pop_return_value_address(env);
+      void* return_value = api->pop_return_value_address(api);
       sv_value = sv_2mortal(newSViv(return_value));
       
       // Store value

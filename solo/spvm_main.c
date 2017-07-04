@@ -13,7 +13,7 @@
 #include "../spvm_op.h"
 #include "../spvm_sub.h"
 #include "../spvm_dumper.h"
-#include "../spvm_env.h"
+#include "../spvm_api.h"
 
 int main(int argc, char *argv[])
 {
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
-  SPVM_ENV* env = runtime->env;
+  SPVM_API* api = runtime->api;
   
   // Copy constant pool to runtime
   runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
@@ -84,22 +84,22 @@ int main(int argc, char *argv[])
   SPVM_RUNTIME_init(runtime);
   
   // Push argument
-  env->push_var_long(env, 2);
+  api->push_var_long(api, 2);
 
   // Run
-  env->call_sub(env, sub_constant_pool_index);
+  api->call_sub(api, sub_constant_pool_index);
   
 #ifdef DEBUG
   if (runtime->abort) {
-    void* message_address = env->pop_return_value_address(env);
-    int8_t* message = env->get_array_values_byte(env, message_address);
+    void* message_address = api->pop_return_value_address(api);
+    int8_t* message = api->get_array_values_byte(api, message_address);
     
     printf("%s", (char*)message);
     printf("\n");
   }
   else {
     // Get return value
-    int64_t return_value = env->pop_return_value_long(env);
+    int64_t return_value = api->pop_return_value_long(api);
     
     printf("TEST return_value: %ld\n", return_value);
   }

@@ -4,7 +4,7 @@
 #include <stddef.h>
 
 #include "spvm_base.h"
-#include "spvm_env.h"
+#include "spvm_api.h"
 
 struct SPVM_runtime_allocator {
   // Memory_pool
@@ -19,9 +19,9 @@ struct SPVM_runtime_allocator {
 
 SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime);
 
-void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_ENV* env, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size);
-void SPVM_RUNTIME_ALLOCATOR_free_data(SPVM_ENV* env, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_DATA* data);
-int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_ENV* env, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size);
+void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size);
+void SPVM_RUNTIME_ALLOCATOR_free_data(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_DATA* data);
+int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size);
 
 void SPVM_RUNTIME_ALLOCATOR_free(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ALLOCATOR* allocator);
 
