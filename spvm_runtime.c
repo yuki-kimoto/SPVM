@@ -98,13 +98,13 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_ref_field = SPVM_RUNTIME_API_get_ref_field;
   api->dump_field_names = SPVM_RUNTIME_API_dump_field_names;
   api->get_ref_count = SPVM_RUNTIME_API_get_ref_count;
-  api->get_array_values_byte = SPVM_RUNTIME_API_get_array_values_byte;
-  api->get_array_values_short = SPVM_RUNTIME_API_get_array_values_short;
-  api->get_array_values_int = SPVM_RUNTIME_API_get_array_values_int;
-  api->get_array_values_long = SPVM_RUNTIME_API_get_array_values_long;
-  api->get_array_values_float = SPVM_RUNTIME_API_get_array_values_float;
-  api->get_array_values_double = SPVM_RUNTIME_API_get_array_values_double;
-  api->get_array_values_ref = SPVM_RUNTIME_API_get_array_values_ref;
+  api->get_byte_array_elements = SPVM_RUNTIME_API_get_byte_array_elements;
+  api->get_short_array_elements = SPVM_RUNTIME_API_get_short_array_elements;
+  api->get_int_array_elements = SPVM_RUNTIME_API_get_int_array_elements;
+  api->get_long_array_elements = SPVM_RUNTIME_API_get_long_array_elements;
+  api->get_float_array_elements = SPVM_RUNTIME_API_get_float_array_elements;
+  api->get_double_array_elements = SPVM_RUNTIME_API_get_double_array_elements;
+  api->get_ref_array_elements = SPVM_RUNTIME_API_get_ref_array_elements;
   
   api->call_sub = SPVM_RUNTIME_call_sub;
 

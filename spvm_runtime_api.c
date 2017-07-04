@@ -531,43 +531,43 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_DATA_ARRAY* data_a
   return data_array->length;
 }
 
-int8_t* SPVM_RUNTIME_API_get_array_values_byte(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
+int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
   (void)api;
 
   return (int8_t*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
-int16_t* SPVM_RUNTIME_API_get_array_values_short(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
+int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
   (void)api;
   
   return (int16_t*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
-int32_t* SPVM_RUNTIME_API_get_array_values_int(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
+int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
   (void)api;
   
   return (int32_t*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
-int64_t* SPVM_RUNTIME_API_get_array_values_long(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
+int64_t* SPVM_RUNTIME_API_get_long_array_elements(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
   (void)api;
   
   return (int64_t*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
-float* SPVM_RUNTIME_API_get_array_values_float(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
+float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
   (void)api;
   
   return (float*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
-double* SPVM_RUNTIME_API_get_array_values_double(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
+double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
   (void)api;
   
   return (double*)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));
 }
 
-SPVM_DATA** SPVM_RUNTIME_API_get_array_values_ref(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
+SPVM_DATA** SPVM_RUNTIME_API_get_ref_array_elements(SPVM_API* api, SPVM_DATA_ARRAY* data_array) {
   (void)api;
   
   return (SPVM_DATA**)((intptr_t)data_array + sizeof(SPVM_DATA_ARRAY));

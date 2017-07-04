@@ -65,13 +65,13 @@ struct SPVM_api {
   void* (*get_ref_field)(SPVM_API*, SPVM_API_DATA_OBJECT*, int32_t);
   int32_t (*dump_field_names)(SPVM_API*, SPVM_API_DATA_OBJECT*);
   int32_t (*get_ref_count)(SPVM_API*, SPVM_API_DATA*);
-  int8_t* (*get_array_values_byte)(SPVM_API*, SPVM_API_DATA_ARRAY*);
-  int16_t* (*get_array_values_short)(SPVM_API*, SPVM_API_DATA_ARRAY*);
-  int32_t* (*get_array_values_int)(SPVM_API*, SPVM_API_DATA_ARRAY*);
-  int64_t* (*get_array_values_long)(SPVM_API*, SPVM_API_DATA_ARRAY*);
-  float* (*get_array_values_float)(SPVM_API*, SPVM_API_DATA_ARRAY*);
-  double* (*get_array_values_double)(SPVM_API*, SPVM_API_DATA_ARRAY*);
-  void** (*get_array_values_ref)(SPVM_API*, SPVM_API_DATA_ARRAY*);
+  int8_t* (*get_byte_array_elements)(SPVM_API*, SPVM_API_DATA_ARRAY*);
+  int16_t* (*get_short_array_elements)(SPVM_API*, SPVM_API_DATA_ARRAY*);
+  int32_t* (*get_int_array_elements)(SPVM_API*, SPVM_API_DATA_ARRAY*);
+  int64_t* (*get_long_array_elements)(SPVM_API*, SPVM_API_DATA_ARRAY*);
+  float* (*get_float_array_elements)(SPVM_API*, SPVM_API_DATA_ARRAY*);
+  double* (*get_double_array_elements)(SPVM_API*, SPVM_API_DATA_ARRAY*);
+  void** (*get_ref_array_elements)(SPVM_API*, SPVM_API_DATA_ARRAY*);
   void** (*call_sub)(SPVM_API*, int32_t);
 };
 
