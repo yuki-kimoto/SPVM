@@ -363,13 +363,13 @@ int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_API* api, int32_t type) {
   return array_value_sizes[type];
 }
 
-SPVM_VALUE* SPVM_RUNTIME_API_get_object_fields(SPVM_API* api, SPVM_DATA_OBJECT* data_object) {
+SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_DATA_OBJECT* data_object) {
   (void)api;
   
   return (SPVM_VALUE*)((intptr_t)data_object + sizeof(SPVM_DATA_OBJECT));
 }
 
-int32_t SPVM_RUNTIME_API_get_object_field_index(SPVM_API* api, SPVM_DATA_OBJECT* data_object, const char* name) {
+int32_t SPVM_RUNTIME_API_get_field_index(SPVM_API* api, SPVM_DATA_OBJECT* data_object, const char* name) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   int32_t* constant_pool = runtime->constant_pool;
@@ -408,7 +408,7 @@ int32_t SPVM_RUNTIME_API_get_object_field_index(SPVM_API* api, SPVM_DATA_OBJECT*
   return field_index;
 }
 
-int32_t SPVM_RUNTIME_API_get_object_fields_length(SPVM_API* api, SPVM_DATA_OBJECT* data_object) {
+int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_DATA_OBJECT* data_object) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   int32_t* constant_pool = runtime->constant_pool;
@@ -419,86 +419,86 @@ int32_t SPVM_RUNTIME_API_get_object_fields_length(SPVM_API* api, SPVM_DATA_OBJEC
   return length;
 }
 
-void SPVM_RUNTIME_API_set_object_field_value_byte(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, int8_t value) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+void SPVM_RUNTIME_API_set_byte_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, int8_t value) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   fields[field_index].byte_value = value;
 }
 
-void SPVM_RUNTIME_API_set_object_field_value_short(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, int16_t value) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+void SPVM_RUNTIME_API_set_short_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, int16_t value) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   fields[field_index].short_value = value;
 }
 
-void SPVM_RUNTIME_API_set_object_field_value_int(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, int32_t value) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+void SPVM_RUNTIME_API_set_int_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, int32_t value) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   fields[field_index].int_value = value;
 }
 
-void SPVM_RUNTIME_API_set_object_field_value_long(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, int64_t value) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+void SPVM_RUNTIME_API_set_long_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, int64_t value) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   fields[field_index].long_value = value;
 }
 
-void SPVM_RUNTIME_API_set_object_field_value_float(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, float value) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+void SPVM_RUNTIME_API_set_float_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, float value) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   fields[field_index].float_value = value;
 }
 
-void SPVM_RUNTIME_API_set_object_field_value_double(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, double value) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index, double value) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   fields[field_index].double_value = value;
 }
 
-int8_t SPVM_RUNTIME_API_get_object_field_value_byte(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   int8_t byte_value = fields[field_index].byte_value;
   
   return byte_value;
 }
 
-int16_t SPVM_RUNTIME_API_get_object_field_value_short(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+int16_t SPVM_RUNTIME_API_get_short_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   int16_t short_value = fields[field_index].short_value;
   
   return short_value;
 }
 
-int32_t SPVM_RUNTIME_API_get_object_field_value_int(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+int32_t SPVM_RUNTIME_API_get_int_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   int32_t int_value = fields[field_index].int_value;
   
   return int_value;
 }
 
-int64_t SPVM_RUNTIME_API_get_object_field_value_long(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+int64_t SPVM_RUNTIME_API_get_long_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   int64_t long_value = fields[field_index].long_value;
   
   return long_value;
 }
 
-float SPVM_RUNTIME_API_get_object_field_value_float(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+float SPVM_RUNTIME_API_get_float_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   float float_value = fields[field_index].float_value;
   
   return float_value;
 }
 
-double SPVM_RUNTIME_API_get_object_field_value_double(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   double double_value = fields[field_index].double_value;
   
   return double_value;
 }
 
-SPVM_DATA* SPVM_RUNTIME_API_get_object_field_value_ref(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
-  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_object_fields(api, data_object);
+SPVM_DATA* SPVM_RUNTIME_API_get_ref_field(SPVM_API* api, SPVM_DATA_OBJECT* data_object, int32_t field_index) {
+  SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, data_object);
   SPVM_DATA* address_value = fields[field_index].address_value;
   
   return address_value;
 }
 
-int32_t SPVM_RUNTIME_API_dump_object_field_names(SPVM_API* api, SPVM_DATA_OBJECT* data_object) {
+int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_DATA_OBJECT* data_object) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   int32_t* constant_pool = runtime->constant_pool;
