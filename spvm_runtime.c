@@ -2224,46 +2224,49 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_WIDE:
     // iload, fload, aload, lload, dload, istore, fstore, astore, lstore, dstore, or iinc
     
-    if (*(pc + 1) == SPVM_BYTECODE_C_CODE_LOAD) {
-      operand_stack_top++;
-      call_stack[operand_stack_top] = vars[(*(pc + 2) << 8) + *(pc + 3)];
-      pc +=4;
-    }
-    else if (*(pc + 1) == SPVM_BYTECODE_C_CODE_STORE) {
-      vars[(*(pc + 2) << 8) + *(pc + 3)] = call_stack[operand_stack_top];
-      operand_stack_top--;
-      pc +=4;
-    }
-    else if (*(pc + 1) == SPVM_BYTECODE_C_CODE_STORE_OBJECT) {
-      int32_t var_index = (*(pc + 2) << 8) + *(pc + 3);
-
-      // Increment reference count
-      SPVM_RUNTIME_API_inc_ref_count(api, call_stack[operand_stack_top].object_value);
-      
-      // Decrement reference count if original object is not null
-      SPVM_RUNTIME_API_dec_ref_count(api, vars[var_index].object_value);
-      
-      // Store address
-      vars[var_index] = call_stack[operand_stack_top];
-      
-      operand_stack_top--;
-      pc +=4;
-    }
-    else if (*(pc + 1) == SPVM_BYTECODE_C_CODE_INC_BYTE) {
-      vars[(*(pc + 2) << 8) + *(pc + 3)].byte_value += (int8_t)((*(pc + 4) << 8) + *(pc + 5));
-      pc += 6;
-    }
-    else if (*(pc + 1) == SPVM_BYTECODE_C_CODE_INC_SHORT) {
-      vars[(*(pc + 2) << 8) + *(pc + 3)].short_value += (int16_t)((*(pc + 4) << 8) + *(pc + 5));
-      pc += 6;
-    }
-    else if (*(pc + 1) == SPVM_BYTECODE_C_CODE_INC_INT) {
-      vars[(*(pc + 2) << 8) + *(pc + 3)].int_value += (int32_t)((*(pc + 4) << 8) + *(pc + 5));
-      pc += 6;
-    }
-    else if (*(pc + 1) == SPVM_BYTECODE_C_CODE_INC_LONG) {
-      vars[(*(pc + 2) << 8) + *(pc + 3)].long_value += (int64_t)((*(pc + 4) << 8) + *(pc + 5));
-      pc += 6;
+    switch(*(pc + 1)) {
+      case SPVM_BYTECODE_C_CODE_LOAD:
+        operand_stack_top++;
+        call_stack[operand_stack_top] = vars[(*(pc + 2) << 8) + *(pc + 3)];
+        pc +=4;
+        break;
+      case SPVM_BYTECODE_C_CODE_STORE:
+        vars[(*(pc + 2) << 8) + *(pc + 3)] = call_stack[operand_stack_top];
+        operand_stack_top--;
+        pc +=4;
+        break;
+      case SPVM_BYTECODE_C_CODE_STORE_OBJECT: {
+        int32_t var_index = (*(pc + 2) << 8) + *(pc + 3);
+        
+        // Increment reference count
+        SPVM_RUNTIME_API_inc_ref_count(api, call_stack[operand_stack_top].object_value);
+        
+        // Decrement reference count if original object is not null
+        SPVM_RUNTIME_API_dec_ref_count(api, vars[var_index].object_value);
+        
+        // Store address
+        vars[var_index] = call_stack[operand_stack_top];
+        
+        operand_stack_top--;
+        pc +=4;
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_INC_BYTE:
+        vars[(*(pc + 2) << 8) + *(pc + 3)].byte_value += (int8_t)((*(pc + 4) << 8) + *(pc + 5));
+        pc += 6;
+        break;
+      case SPVM_BYTECODE_C_CODE_INC_SHORT:
+        vars[(*(pc + 2) << 8) + *(pc + 3)].short_value += (int16_t)((*(pc + 4) << 8) + *(pc + 5));
+        pc += 6;
+        break;
+      case SPVM_BYTECODE_C_CODE_INC_INT:
+        vars[(*(pc + 2) << 8) + *(pc + 3)].int_value += (int32_t)((*(pc + 4) << 8) + *(pc + 5));
+        pc += 6;
+        break;
+      case SPVM_BYTECODE_C_CODE_INC_LONG:
+        vars[(*(pc + 2) << 8) + *(pc + 3)].long_value += (int64_t)((*(pc + 4) << 8) + *(pc + 5));
+        pc += 6;
+        break;
     }
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_IF_NULL:
