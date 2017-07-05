@@ -29,7 +29,7 @@
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
-#include "spvm_data_array.h"
+#include "spvm_array_object.h"
 
 
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
@@ -1200,29 +1200,29 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MALLOC_ARRAY);
                       if (SPVM_TYPE_is_array_numeric(compiler, type)) {
                         if (strcmp(type->name, "byte[]") == 0) {
-                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_BYTE);
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_BYTE);
                         }
                         else if (strcmp(type->name, "short[]") == 0) {
-                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_SHORT);
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_SHORT);
                         }
                         else if (strcmp(type->name, "int[]") == 0) {
-                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_INT);
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_INT);
                         }
                         else if (strcmp(type->name, "long[]") == 0) {
-                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_LONG);
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_LONG);
                         }
                         else if (strcmp(type->name, "float[]") == 0) {
-                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_FLOAT);
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_FLOAT);
                         }
                         else if (strcmp(type->name, "double[]") == 0) {
-                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_DOUBLE);
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_DOUBLE);
                         }
                         else {
                           assert(0);
                         }
                       }
                       else {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_DATA_ARRAY_C_VALUE_TYPE_REF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_REF);
                       }
                     }
                     else {

@@ -222,7 +222,7 @@ int32_t SPVM_CONSTANT_POOL_push_string(SPVM_COMPILER* compiler, SPVM_CONSTANT_PO
   memcpy(&constant_pool->values[constant_pool->length], &string_length, sizeof(int32_t));
   constant_pool->length++;
   
-  // Add string data
+  // Add string base_object
   int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, string_length + 1);
   SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   memcpy(&constant_pool->values[constant_pool->length], string, string_length + 1);

@@ -356,30 +356,30 @@ call_sub(...)
   {
     int32_t arg_index;
     for (arg_index = 0; arg_index < args_length; arg_index++) {
-      SV* sv_data = ST(arg_index + 1);
+      SV* sv_base_object = ST(arg_index + 1);
       
       SV** sv_arg_type_name_ptr = av_fetch(av_arg_type_names, arg_index, 0);
       SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
       const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
       
-      if (sv_isobject(sv_data) && sv_derived_from(sv_data, "SPVM::Data")) {
+      if (sv_isobject(sv_base_object) && sv_derived_from(sv_base_object, "SPVM::Data")) {
         assert(0);
         
-        HV* hv_data = (HV*)SvRV(sv_data);
+        HV* hv_base_object = (HV*)SvRV(sv_base_object);
         
-        SV** sv_data_type_name_ptr = hv_fetch(hv_data, "type_name", strlen("type_name"), 0);
-        SV* sv_data_type_name = sv_data_type_name_ptr ? *sv_data_type_name_ptr : &PL_sv_undef;
-        const char* data_type_name = SvPV_nolen(sv_data_type_name);
+        SV** sv_base_object_type_name_ptr = hv_fetch(hv_base_object, "type_name", strlen("type_name"), 0);
+        SV* sv_base_object_type_name = sv_base_object_type_name_ptr ? *sv_base_object_type_name_ptr : &PL_sv_undef;
+        const char* base_object_type_name = SvPV_nolen(sv_base_object_type_name);
         
-        if (!strEQ(data_type_name, arg_type_name)) {
-          croak("Argument data type need %s, but %s", arg_type_name, data_type_name);
+        if (!strEQ(base_object_type_name, arg_type_name)) {
+          croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
         }
         
-        // SV** sv_value_ptr = hv_fetch(hv_data, "value", strlen("value"), 0);
+        // SV** sv_value_ptr = hv_fetch(hv_base_object, "value", strlen("value"), 0);
         // SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
       }
       else {
-        SV* sv_value = sv_data;
+        SV* sv_value = sv_base_object;
         if (strEQ(arg_type_name, "byte")) {
           int8_t value = (int8_t)SvIV(sv_value);
           api->push_stack_byte(api, value);
@@ -414,11 +414,11 @@ call_sub(...)
   api->call_sub(api, sub_constant_pool_index);
   
   if (SvOK(sv_return_type_name)) {
-    // Create data
-    HV* hv_data = sv_2mortal((SV*)newHV());
-    SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+    // Create base_object
+    HV* hv_base_object = sv_2mortal((SV*)newHV());
+    SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
     HV* hv_class = gv_stashpv("SPVM::Data", 0);
-    sv_bless(sv_data, hv_class);
+    sv_bless(sv_base_object, hv_class);
 
     const char* return_type_name = SvPV_nolen(sv_return_type_name);
     SV* sv_value;
@@ -458,18 +458,18 @@ call_sub(...)
       sv_value = sv_2mortal(newSViv(return_value));
       
       // Store value
-      hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+      hv_store(hv_base_object, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
       
       // Store resolved type name
       SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
-      hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_return_type_name), 0);
+      hv_store(hv_base_object, "type_name", strlen("type_name"), SvREFCNT_inc(sv_return_type_name), 0);
       
       {
-        SV** sv_type_name_ptr = hv_fetch(hv_data, "type_name", strlen("type_name"), 0);
+        SV** sv_type_name_ptr = hv_fetch(hv_base_object, "type_name", strlen("type_name"), 0);
         SV* sv_type_name = sv_type_name_ptr ? *sv_type_name_ptr : &PL_sv_undef;
         const char* type_name = SvPV_nolen(sv_type_name);
       }
-      XPUSHs(sv_data);
+      XPUSHs(sv_base_object);
     }
     
     XSRETURN(1);
@@ -486,23 +486,23 @@ byte(...)
   SV* sv_original_value = ST(0);
   
   // Create object
-  HV* hv_data = sv_2mortal((SV*)newHV());
-  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_base_object = sv_2mortal((SV*)newHV());
+  SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
   HV* hv_class = gv_stashpv("SPVM::Data", 0);
-  sv_bless(sv_data, hv_class);
+  sv_bless(sv_base_object, hv_class);
   
   // byte
   int8_t value = SvIV(sv_original_value);
   SV* sv_value = sv_2mortal(newSViv(value));
   
   // Store value
-  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  hv_store(hv_base_object, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
   SV* sv_type = sv_2mortal(newSVpv("byte", 0));
-  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
+  hv_store(hv_base_object, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_base_object);
   XSRETURN(1);
 }
 
@@ -513,23 +513,23 @@ short(...)
   SV* sv_original_value = ST(0);
   
   // Create object
-  HV* hv_data = sv_2mortal((SV*)newHV());
-  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_base_object = sv_2mortal((SV*)newHV());
+  SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
   HV* hv_class = gv_stashpv("SPVM::Data", 0);
-  sv_bless(sv_data, hv_class);
+  sv_bless(sv_base_object, hv_class);
   
   // short
   int16_t value = SvIV(sv_original_value);
   SV* sv_value = sv_2mortal(newSViv(value));
   
   // Store value
-  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  hv_store(hv_base_object, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
   SV* sv_type = sv_2mortal(newSVpv("short", 0));
-  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
+  hv_store(hv_base_object, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_base_object);
   XSRETURN(1);
 }
 
@@ -540,23 +540,23 @@ int(...)
   SV* sv_original_value = ST(0);
   
   // Create object
-  HV* hv_data = sv_2mortal((SV*)newHV());
-  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_base_object = sv_2mortal((SV*)newHV());
+  SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
   HV* hv_class = gv_stashpv("SPVM::Data", 0);
-  sv_bless(sv_data, hv_class);
+  sv_bless(sv_base_object, hv_class);
   
   // int
   int32_t value = SvIV(sv_original_value);
   SV* sv_value = sv_2mortal(newSViv(value));
   
   // Store value
-  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  hv_store(hv_base_object, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
   SV* sv_type = sv_2mortal(newSVpv("int", 0));
-  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
+  hv_store(hv_base_object, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_base_object);
   XSRETURN(1);
 }
 
@@ -567,23 +567,23 @@ long(...)
   SV* sv_original_value = ST(0);
   
   // Create object
-  HV* hv_data = sv_2mortal((SV*)newHV());
-  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_base_object = sv_2mortal((SV*)newHV());
+  SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
   HV* hv_class = gv_stashpv("SPVM::Data", 0);
-  sv_bless(sv_data, hv_class);
+  sv_bless(sv_base_object, hv_class);
   
   // int
   int64_t value = SvIV(sv_original_value);
   SV* sv_value = sv_2mortal(newSViv(value));
   
   // Store value
-  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  hv_store(hv_base_object, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
   SV* sv_type = sv_2mortal(newSVpv("long", 0));
-  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
+  hv_store(hv_base_object, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_base_object);
   XSRETURN(1);
 }
 
@@ -594,10 +594,10 @@ float(...)
   SV* sv_original_value = ST(0);
   
   // Create object
-  HV* hv_data = sv_2mortal((SV*)newHV());
-  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_base_object = sv_2mortal((SV*)newHV());
+  SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
   HV* hv_class = gv_stashpv("SPVM::Data", 0);
-  sv_bless(sv_data, hv_class);
+  sv_bless(sv_base_object, hv_class);
   
   // float
   float value = (float)SvNV(sv_original_value);
@@ -606,13 +606,13 @@ float(...)
   SV* sv_value = sv_2mortal(newSViv(spvm_value));
   
   // Store value
-  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  hv_store(hv_base_object, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
   SV* sv_type = sv_2mortal(newSVpv("float", 0));
-  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
+  hv_store(hv_base_object, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_base_object);
   XSRETURN(1);
 }
 
@@ -623,10 +623,10 @@ double(...)
   SV* sv_original_value = ST(0);
   
   // Create object
-  HV* hv_data = sv_2mortal((SV*)newHV());
-  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_base_object = sv_2mortal((SV*)newHV());
+  SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
   HV* hv_class = gv_stashpv("SPVM::Data", 0);
-  sv_bless(sv_data, hv_class);
+  sv_bless(sv_base_object, hv_class);
   
   // double
   double value = (double)SvNV(sv_original_value);
@@ -635,12 +635,12 @@ double(...)
   SV* sv_value = sv_2mortal(newSViv(spvm_value));
   
   // Store value
-  hv_store(hv_data, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+  hv_store(hv_base_object, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
   
   // Store resolved type
   SV* sv_type = sv_2mortal(newSVpv("double", 0));
-  hv_store(hv_data, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
+  hv_store(hv_base_object, "type_name", strlen("type_name"), SvREFCNT_inc(sv_type), 0);
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_base_object);
   XSRETURN(1);
 }

@@ -16,7 +16,7 @@ SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_ALLOCATOR* allocator = malloc(sizeof(SPVM_COMPILER_ALLOCATOR));
   
   // Memory pool - memory pool save short strings and object, except array and hash
-  // These datas are created at compile time
+  // These base_objects are created at compile time
   allocator->memory_pool = SPVM_MEMORY_POOL_new(0);
   
   // Arrays - these arrays are created at compile time

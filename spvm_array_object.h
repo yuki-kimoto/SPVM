@@ -1,0 +1,24 @@
+#ifndef SPVM_ARRAY_OBJECT_H
+#define SPVM_ARRAY_OBJECT_H
+
+#include "spvm_base.h"
+
+// SPVM_ARRAY_OBJECT
+struct SPVM_array_object {
+  int8_t type;
+  int8_t value_type;
+  int32_t ref_count;
+  int32_t length;
+};
+
+enum {
+  SPVM_ARRAY_OBJECT_C_VALUE_TYPE_BYTE = 0,
+  SPVM_ARRAY_OBJECT_C_VALUE_TYPE_SHORT = 1,
+  SPVM_ARRAY_OBJECT_C_VALUE_TYPE_INT = 2,
+  SPVM_ARRAY_OBJECT_C_VALUE_TYPE_LONG = 3,
+  SPVM_ARRAY_OBJECT_C_VALUE_TYPE_FLOAT = 4,
+  SPVM_ARRAY_OBJECT_C_VALUE_TYPE_DOUBLE = 5,
+  SPVM_ARRAY_OBJECT_C_VALUE_TYPE_REF = 6,
+};
+
+#endif

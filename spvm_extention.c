@@ -6,11 +6,11 @@
 #include "spvm_api.h"
 
 void SPVM_EXTENTION_std__sum_int(SPVM_API* api) {
-  void* data_array = api->get_var_address(api, 0);
+  void* array_object = api->get_var_address(api, 0);
   
-  int32_t length = api->get_array_length(api, data_array);
+  int32_t length = api->get_array_length(api, array_object);
   
-  int32_t* values = api->get_int_array_elements(api, data_array);
+  int32_t* values = api->get_int_array_elements(api, array_object);
   
   int64_t total = 0;
   {
@@ -24,10 +24,10 @@ void SPVM_EXTENTION_std__sum_int(SPVM_API* api) {
 }
 
 void SPVM_EXTENTION_std__print(SPVM_API* api) {
-  void* data_array = api->get_var_address(api, 0);
+  void* array_object = api->get_var_address(api, 0);
 
-  int32_t length = api->get_array_length(api, data_array);
-  int8_t* string = api->get_byte_array_elements(api, data_array);
+  int32_t length = api->get_array_length(api, array_object);
+  int8_t* string = api->get_byte_array_elements(api, array_object);
   
   {
     int32_t i;
@@ -38,11 +38,11 @@ void SPVM_EXTENTION_std__print(SPVM_API* api) {
 }
 
 void SPVM_EXTENTION_std__println(SPVM_API* api) {
-  void* data_array = api->get_var_address(api, 0);
+  void* array_object = api->get_var_address(api, 0);
 
-  int32_t length = api->get_array_length(api, data_array);
+  int32_t length = api->get_array_length(api, array_object);
   
-  int8_t* string = api->get_byte_array_elements(api, data_array);
+  int8_t* string = api->get_byte_array_elements(api, array_object);
   
   {
     int32_t i;

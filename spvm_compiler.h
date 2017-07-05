@@ -31,7 +31,7 @@ struct SPVM_compiler {
   // Current file name
   const char* cur_module_path;
   
-  // Source data
+  // Source base_object
   const char* cur_src;
   
   // AST grammar

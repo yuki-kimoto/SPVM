@@ -34,7 +34,7 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   }
   
   // use memory pool max reference byte size
-  allocator->data_max_byte_size_use_memory_pool = 0xFFFF;
+  allocator->base_object_max_byte_size_use_memory_pool = 0xFFFF;
   
   return allocator;
 }
@@ -79,7 +79,7 @@ inline void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR
   assert(size > 0);
   
   void* block;
-  if (size > allocator->data_max_byte_size_use_memory_pool) {
+  if (size > allocator->base_object_max_byte_size_use_memory_pool) {
     block = SPVM_UTIL_ALLOCATOR_safe_malloc_i64(1, size);
   }
   else {
@@ -97,25 +97,25 @@ inline void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR
   return block;
 }
 
-inline void SPVM_RUNTIME_ALLOCATOR_free_data(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_DATA* data) {
-  if (data == NULL) {
+inline void SPVM_RUNTIME_ALLOCATOR_free_base_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_BASE_OBJECT* base_object) {
+  if (base_object == NULL) {
     return;
   }
   else {
     // Byte size
-    int64_t byte_size = SPVM_RUNTIME_API_calcurate_data_byte_size(api, data);
+    int64_t byte_size = SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, base_object);
     
     assert(byte_size > 0);
     
-    if (byte_size > allocator->data_max_byte_size_use_memory_pool) {
-      free(data);
+    if (byte_size > allocator->base_object_max_byte_size_use_memory_pool) {
+      free(base_object);
     }
     else {
       // Freelist index
       int32_t freelist_index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(api, allocator, byte_size);
       
       // Push free address
-      SPVM_ARRAY_push(allocator->freelists[freelist_index], data);
+      SPVM_ARRAY_push(allocator->freelists[freelist_index], base_object);
     }
   }
 }

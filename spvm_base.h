@@ -16,17 +16,17 @@ typedef struct SPVM_constant_pool_field SPVM_CONSTANT_POOL_FIELD;
 struct SPVM_constant_pool_package;
 typedef struct SPVM_constant_pool_package SPVM_CONSTANT_POOL_PACKAGE;
 
-// spvm_data_object.h
-struct SPVM_data_object;
-typedef struct SPVM_data_object SPVM_DATA_OBJECT;
+// spvm_object.h
+struct SPVM_object;
+typedef struct SPVM_object SPVM_OBJECT;
 
-// spvm_data_array.h
-struct SPVM_data_array;
-typedef struct SPVM_data_array SPVM_DATA_ARRAY;
+// spvm_array_object.h
+struct SPVM_array_object;
+typedef struct SPVM_array_object SPVM_ARRAY_OBJECT;
 
-// spvm_data.h
-struct SPVM_data;
-typedef struct SPVM_data SPVM_DATA;
+// spvm_base_object.h
+struct SPVM_base_object;
+typedef struct SPVM_base_object SPVM_BASE_OBJECT;
 
 // spvm_value.h
 union SPVM_value;
