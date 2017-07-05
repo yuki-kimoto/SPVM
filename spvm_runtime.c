@@ -77,7 +77,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->inc_ref_count = SPVM_RUNTIME_API_inc_ref_count;
   api->get_ref_count = SPVM_RUNTIME_API_get_ref_count;
   
-  // Subroutine fucntions
+  // Call subroutine fucntions
   api->push_var_byte = SPVM_RUNTIME_API_push_var_byte;
   api->push_var_short = SPVM_RUNTIME_API_push_var_short;
   api->push_var_int = SPVM_RUNTIME_API_push_var_int;
@@ -85,15 +85,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->push_var_float = SPVM_RUNTIME_API_push_var_float;
   api->push_var_double = SPVM_RUNTIME_API_push_var_double;
   api->push_var_object = SPVM_RUNTIME_API_push_var_object;
-
-  api->push_retval_byte = SPVM_RUNTIME_API_push_retval_byte;
-  api->push_retval_short = SPVM_RUNTIME_API_push_retval_short;
-  api->push_retval_int = SPVM_RUNTIME_API_push_retval_int;
-  api->push_retval_long = SPVM_RUNTIME_API_push_retval_long;
-  api->push_retval_float = SPVM_RUNTIME_API_push_retval_float;
-  api->push_retval_double = SPVM_RUNTIME_API_push_retval_double;
-  api->push_retval_object = SPVM_RUNTIME_API_push_retval_object;
-  
+  api->call_sub = SPVM_RUNTIME_call_sub;
   api->pop_retval_byte = SPVM_RUNTIME_API_pop_retval_byte;
   api->pop_retval_short = SPVM_RUNTIME_API_pop_retval_short;
   api->pop_retval_int = SPVM_RUNTIME_API_pop_retval_int;
@@ -101,6 +93,8 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->pop_retval_float = SPVM_RUNTIME_API_pop_retval_float;
   api->pop_retval_double = SPVM_RUNTIME_API_pop_retval_double;
   api->pop_retval_object = SPVM_RUNTIME_API_pop_retval_object;
+  
+  // Function used in subroutine
   api->get_var_byte = SPVM_RUNTIME_API_get_var_byte;
   api->get_var_short = SPVM_RUNTIME_API_get_var_short;
   api->get_var_int = SPVM_RUNTIME_API_get_var_int;
@@ -108,7 +102,13 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_var_float = SPVM_RUNTIME_API_get_var_float;
   api->get_var_double = SPVM_RUNTIME_API_get_var_double;
   api->get_var_object = SPVM_RUNTIME_API_get_var_object;
-  api->call_sub = SPVM_RUNTIME_call_sub;
+  api->push_retval_byte = SPVM_RUNTIME_API_push_retval_byte;
+  api->push_retval_short = SPVM_RUNTIME_API_push_retval_short;
+  api->push_retval_int = SPVM_RUNTIME_API_push_retval_int;
+  api->push_retval_long = SPVM_RUNTIME_API_push_retval_long;
+  api->push_retval_float = SPVM_RUNTIME_API_push_retval_float;
+  api->push_retval_double = SPVM_RUNTIME_API_push_retval_double;
+  api->push_retval_object = SPVM_RUNTIME_API_push_retval_object;
   
   return api;
 }

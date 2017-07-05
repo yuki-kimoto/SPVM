@@ -36,7 +36,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
 void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 
-// Subroutine functions
+// Call ubroutine functions
 void SPVM_RUNTIME_API_push_var_byte(SPVM_API* api, int8_t value);
 void SPVM_RUNTIME_API_push_var_short(SPVM_API* api, int16_t value);
 void SPVM_RUNTIME_API_push_var_int(SPVM_API* api, int32_t value);
@@ -51,6 +51,8 @@ int64_t SPVM_RUNTIME_API_pop_retval_long(SPVM_API* api);
 float SPVM_RUNTIME_API_pop_retval_float(SPVM_API* api);
 double SPVM_RUNTIME_API_pop_retval_double(SPVM_API* api);
 void* SPVM_RUNTIME_API_pop_retval_object(SPVM_API* api);
+
+// Functions used in subroutine
 int8_t SPVM_RUNTIME_API_get_var_byte(SPVM_API* api, int32_t index);
 int16_t SPVM_RUNTIME_API_get_var_short(SPVM_API* api, int32_t index);
 int32_t SPVM_RUNTIME_API_get_var_int(SPVM_API* api, int32_t index);
@@ -58,7 +60,6 @@ int64_t SPVM_RUNTIME_API_get_var_long(SPVM_API* api, int32_t index);
 float SPVM_RUNTIME_API_get_var_float(SPVM_API* api, int32_t index);
 double SPVM_RUNTIME_API_get_var_double(SPVM_API* api, int32_t index);
 void* SPVM_RUNTIME_API_get_var_object(SPVM_API* api, int32_t index);
-
 void SPVM_RUNTIME_API_push_retval_byte(SPVM_API* api, int8_t value);
 void SPVM_RUNTIME_API_push_retval_short(SPVM_API* api, int16_t value);
 void SPVM_RUNTIME_API_push_retval_int(SPVM_API* api, int32_t value);
