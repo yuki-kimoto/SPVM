@@ -14,7 +14,7 @@
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
-
+#include "spvm_type.h"
 
 SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM_COMPILER* compiler) {
   (void)compiler;
@@ -92,13 +92,13 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
 
 int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_SUB* sub) {
   (void)compiler;
-
+  
   int32_t start_index = constant_pool->length;
-
+  
   // Extend
   int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_SUB));
   SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-
+  
   // Set subroutine information
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   constant_pool_sub.native_address = sub->native_address;
@@ -107,22 +107,24 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   constant_pool_sub.operand_stack_max = sub->operand_stack_max;
   constant_pool_sub.args_length = sub->op_args->length;
   constant_pool_sub.is_native = sub->is_native;
-  if (sub->op_return_type->code != SPVM_OP_C_CODE_VOID) {
-    constant_pool_sub.has_return_value = 1;
+  if (sub->op_return_type->code == SPVM_OP_C_CODE_VOID) {
+    constant_pool_sub.has_return_value = 0;
+    constant_pool_sub.return_type_id = -1;
   }
   else {
-    constant_pool_sub.has_return_value = 0;
+    constant_pool_sub.has_return_value = 1;
+    constant_pool_sub.return_type_id = sub->op_return_type->uv.type->id;
   }
-
+  
   // Add length
   constant_pool->length += extend_length;
-
+  
   // Push sub name to constant pool
   constant_pool_sub.abs_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->abs_name);
   
   // Push file name to constant pool
   constant_pool_sub.file_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->file_name);
-
+  
   memcpy(&constant_pool->values[start_index], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
   
   return start_index;
