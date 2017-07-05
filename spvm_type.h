@@ -15,6 +15,10 @@ enum {
 };
 
 enum {
+  SPVM_TYPE_C_ID_VOID = -1
+};
+
+enum {
   SPVM_TYPE_C_ID_BYTE,
   SPVM_TYPE_C_ID_SHORT,
   SPVM_TYPE_C_ID_INT,

@@ -429,16 +429,22 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         operand_stack_top = runtime->operand_stack_top;
         call_stack_base = runtime->call_stack_base;
         
-        if (runtime->abort) {
+        if (__builtin_expect(runtime->abort, 0)) {
           goto case_SPVM_BYTECODE_C_CODE_DIE;
         }
         else {
-          if (constant_pool_sub.has_return_value) {
-            goto case_SPVM_BYTECODE_C_CODE_RETURN_INT;
-          }
-          else {
-            goto case_SPVM_BYTECODE_C_CODE_RETURN_VOID;
-          }
+          static const void* return_jump[] = {
+            &&case_SPVM_BYTECODE_C_CODE_RETURN_VOID,
+            &&case_SPVM_BYTECODE_C_CODE_RETURN_BYTE,
+            &&case_SPVM_BYTECODE_C_CODE_RETURN_SHORT,
+            &&case_SPVM_BYTECODE_C_CODE_RETURN_INT,
+            &&case_SPVM_BYTECODE_C_CODE_RETURN_LONG,
+            &&case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT,
+            &&case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE,
+            &&case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT,
+          };
+          
+          goto *return_jump[constant_pool_sub.return_type_id + 1];
         }
       }
       // Call normal sub
@@ -470,7 +476,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     call_stack[operand_stack_top] = return_value;
     
     // Finish call sub
-    if (call_stack_base == call_stack_base_start) {
+    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       runtime->abort = 0;
@@ -506,7 +512,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     call_stack[operand_stack_top] = return_value;
     
     // Finish call sub
-    if (call_stack_base == call_stack_base_start) {
+    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       runtime->abort = 0;
@@ -542,7 +548,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     call_stack[operand_stack_top] = return_value;
     
     // Finish call sub
-    if (call_stack_base == call_stack_base_start) {
+    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       runtime->abort = 0;
@@ -578,7 +584,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     call_stack[operand_stack_top] = return_value;
     
     // Finish call sub
-    if (call_stack_base == call_stack_base_start) {
+    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       runtime->abort = 0;
@@ -614,7 +620,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     call_stack[operand_stack_top] = return_value;
     
     // Finish call sub
-    if (call_stack_base == call_stack_base_start) {
+    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       runtime->abort = 0;
@@ -650,7 +656,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     call_stack[operand_stack_top] = return_value;
     
     // Finish call sub
-    if (call_stack_base == call_stack_base_start) {
+    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       runtime->abort = 0;
@@ -686,7 +692,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     call_stack[operand_stack_top] = return_value;
     
     // Finish call sub
-    if (call_stack_base == call_stack_base_start) {
+    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       runtime->abort = 0;
@@ -715,7 +721,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
     // Finish call sub
-    if (call_stack_base == call_stack_base_start) {
+    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       runtime->abort = 0;
