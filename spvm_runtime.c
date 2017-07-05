@@ -45,6 +45,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   SPVM_API* api = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_API));
   
+  // Array functions
   api->get_array_length = SPVM_RUNTIME_API_get_array_length;
   api->get_byte_array_elements = SPVM_RUNTIME_API_get_byte_array_elements;
   api->get_short_array_elements = SPVM_RUNTIME_API_get_short_array_elements;
@@ -54,6 +55,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_double_array_elements = SPVM_RUNTIME_API_get_double_array_elements;
   api->get_object_array_elements = SPVM_RUNTIME_API_get_object_array_elements;
   
+  // Object functions
   api->get_field_index = SPVM_RUNTIME_API_get_field_index;
   api->set_byte_field = SPVM_RUNTIME_API_set_byte_field;
   api->set_short_field = SPVM_RUNTIME_API_set_short_field;
@@ -69,6 +71,12 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_double_field = SPVM_RUNTIME_API_get_double_field;
   api->get_object_field = SPVM_RUNTIME_API_get_object_field;
 
+  // Reference count functions
+  api->dec_ref_count = SPVM_RUNTIME_API_dec_ref_count;
+  api->inc_ref_count = SPVM_RUNTIME_API_inc_ref_count;
+  api->get_ref_count = SPVM_RUNTIME_API_get_ref_count;
+  
+  // Subroutine fucntions
   api->push_stack_byte = SPVM_RUNTIME_API_push_stack_byte;
   api->push_stack_short = SPVM_RUNTIME_API_push_stack_short;
   api->push_stack_int = SPVM_RUNTIME_API_push_stack_int;
@@ -91,20 +99,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_var_double = SPVM_RUNTIME_API_get_var_double;
   api->get_var_object = SPVM_RUNTIME_API_get_var_object;
   api->call_sub = SPVM_RUNTIME_call_sub;
-
-  api->dec_ref_count = SPVM_RUNTIME_API_dec_ref_count;
-  api->inc_ref_count = SPVM_RUNTIME_API_inc_ref_count;
-  api->get_ref_count = SPVM_RUNTIME_API_get_ref_count;
-
-  api->get_array_value_size = SPVM_RUNTIME_API_get_array_value_size;
-  api->get_fields = SPVM_RUNTIME_API_get_fields;
-  api->get_fields_length = SPVM_RUNTIME_API_get_fields_length;
-  api->dump_field_names = SPVM_RUNTIME_API_dump_field_names;
   
-  api->calcurate_base_object_byte_size = SPVM_RUNTIME_API_calcurate_base_object_byte_size;
-  api->create_array_object_byte = SPVM_RUNTIME_API_create_array_object_byte;
-  api->create_array_object_byte_from_pv = SPVM_RUNTIME_API_create_array_object_byte_from_pv;
-
   return api;
 }
 
