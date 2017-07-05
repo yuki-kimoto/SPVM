@@ -20,7 +20,7 @@ void SPVM_EXTENTION_std__sum_int(SPVM_API* api) {
     }
   }
   
-  api->push_int(api, total);
+  api->push_stack_int(api, total);
 }
 
 void SPVM_EXTENTION_std__print(SPVM_API* api) {

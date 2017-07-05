@@ -151,49 +151,49 @@ void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_DATA* data) {
   }
 }
 
-void SPVM_RUNTIME_API_push_byte(SPVM_API* api, int8_t value) {
+void SPVM_RUNTIME_API_push_stack_byte(SPVM_API* api, int8_t value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   runtime->operand_stack_top++;
   runtime->call_stack[runtime->operand_stack_top].byte_value = value;
 }
 
-void SPVM_RUNTIME_API_push_short(SPVM_API* api, int16_t value) {
+void SPVM_RUNTIME_API_push_stack_short(SPVM_API* api, int16_t value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   runtime->operand_stack_top++;
   runtime->call_stack[runtime->operand_stack_top].short_value = value;
 }
 
-void SPVM_RUNTIME_API_push_int(SPVM_API* api, int32_t value) {
+void SPVM_RUNTIME_API_push_stack_int(SPVM_API* api, int32_t value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   runtime->operand_stack_top++;
   runtime->call_stack[runtime->operand_stack_top].int_value = value;
 }
 
-void SPVM_RUNTIME_API_push_long(SPVM_API* api, int64_t value) {
+void SPVM_RUNTIME_API_push_stack_long(SPVM_API* api, int64_t value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   runtime->operand_stack_top++;
   runtime->call_stack[runtime->operand_stack_top].long_value = value;
 }
 
-void SPVM_RUNTIME_API_push_float(SPVM_API* api, float value) {
+void SPVM_RUNTIME_API_push_stack_float(SPVM_API* api, float value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   runtime->operand_stack_top++;
   runtime->call_stack[runtime->operand_stack_top].float_value = value;
 }
 
-void SPVM_RUNTIME_API_push_double(SPVM_API* api, double value) {
+void SPVM_RUNTIME_API_push_stack_double(SPVM_API* api, double value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   runtime->operand_stack_top++;
   runtime->call_stack[runtime->operand_stack_top].double_value = value;
 }
 
-void SPVM_RUNTIME_API_push_ref(SPVM_API* api, void* value) {
+void SPVM_RUNTIME_API_push_stack_ref(SPVM_API* api, void* value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   runtime->operand_stack_top++;
