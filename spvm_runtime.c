@@ -2188,34 +2188,31 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc += 2;
     goto *jump[*pc];
   }
-  case_SPVM_BYTECODE_C_CODE_MALLOC_STRING: {
-    int32_t* string_constant_pool_indexs
-      = &constant_pool[(*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4)];
+  case_SPVM_BYTECODE_C_CODE_MALLOC_STRING:
+    index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
-    char* pv = (char*)&string_constant_pool_indexs[1];
-    SPVM_ARRAY_OBJECT* array_object = SPVM_RUNTIME_API_create_array_object_byte_from_pv(api, pv);
-
+    array_object = SPVM_RUNTIME_API_create_array_object_byte_from_pv(api, (char*)&constant_pool[index + 1]);
+    if (__builtin_expect(array_object, 1)) {
+      // Set string
+      operand_stack_top++;
+      call_stack[operand_stack_top].object_value = array_object;
+      
+      pc += 5;
+      goto *jump[*pc];
+    }
     // Memory allocation error
-    if (!array_object) {
+    else {
       // Sub name
-      int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_constant_pool_index;
-      const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
+      index = constant_pool_sub.abs_name_constant_pool_index;
+      const char* sub_name = (char*)&constant_pool[index + 1];
       
       // File name
-      int32_t file_name_constant_pool_index = constant_pool_sub.file_name_constant_pool_index;
-      const char* file_name = (char*)&constant_pool[file_name_constant_pool_index + 1];
+      index = constant_pool_sub.file_name_constant_pool_index;
+      const char* file_name = (char*)&constant_pool[index + 1];
       
       fprintf(stderr, "Failed to allocate memory(malloc STRING) from %s at %s\n", sub_name, file_name);
       abort();
     }
-    
-    // Set string
-    operand_stack_top++;
-    call_stack[operand_stack_top].object_value = array_object;
-    
-    pc += 5;
-    goto *jump[*pc];
-  }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LENGTH:
     call_stack[operand_stack_top].int_value = (int32_t)((SPVM_ARRAY_OBJECT*)call_stack[operand_stack_top].object_value)->length;
     pc++;
