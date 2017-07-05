@@ -34,7 +34,7 @@ struct SPVM_api {
   int64_t (*get_long_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t);
   float (*get_float_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t);
   double (*get_double_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t);
-  void* (*get_object_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t);
+  SPVM_API_BASE_OBJECT* (*get_object_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t);
   void (*set_byte_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int8_t);
   void (*set_short_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int16_t);
   void (*set_int_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int32_t);
@@ -55,22 +55,22 @@ struct SPVM_api {
   void (*push_stack_long)(SPVM_API*, int64_t);
   void (*push_stack_float)(SPVM_API*, float);
   void (*push_stack_double)(SPVM_API*, double);
-  void (*push_stack_object)(SPVM_API*, void*);
+  void (*push_stack_object)(SPVM_API*, SPVM_API_BASE_OBJECT*);
   int8_t (*pop_stack_byte)(SPVM_API*);
   int16_t (*pop_stack_short)(SPVM_API*);
   int32_t (*pop_stack_int)(SPVM_API*);
   int64_t (*pop_stack_long)(SPVM_API*);
   float (*pop_stack_float)(SPVM_API*);
   double (*pop_stack_double)(SPVM_API*);
-  void* (*pop_stack_object)(SPVM_API*);
+  SPVM_API_BASE_OBJECT* (*pop_stack_object)(SPVM_API*);
   int8_t (*get_var_byte)(SPVM_API*, int32_t);
   int16_t (*get_var_short)(SPVM_API*, int32_t);
   int32_t (*get_var_int)(SPVM_API*, int32_t);
   int64_t (*get_var_long)(SPVM_API*, int32_t);
   float (*get_var_float)(SPVM_API*, int32_t);
   double (*get_var_double)(SPVM_API*, int32_t);
-  void* (*get_var_object)(SPVM_API*, int32_t);
-  void** (*call_sub)(SPVM_API*, int32_t);
+  SPVM_API_BASE_OBJECT* (*get_var_object)(SPVM_API*, int32_t);
+  void (*call_sub)(SPVM_API*, int32_t);
 };
 
 #endif
