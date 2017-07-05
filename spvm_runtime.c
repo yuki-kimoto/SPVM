@@ -316,7 +316,13 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_GOTO,
     &&case_SPVM_BYTECODE_C_CODE_CALL_SUB,
     &&case_SPVM_BYTECODE_C_CODE_RETURN_VOID,
-    &&case_SPVM_BYTECODE_C_CODE_RETURN,
+    &&case_SPVM_BYTECODE_C_CODE_RETURN_BYTE,
+    &&case_SPVM_BYTECODE_C_CODE_RETURN_SHORT,
+    &&case_SPVM_BYTECODE_C_CODE_RETURN_INT,
+    &&case_SPVM_BYTECODE_C_CODE_RETURN_LONG,
+    &&case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT,
+    &&case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE,
+    &&case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_DIE,
     &&case_SPVM_BYTECODE_C_CODE_INC_REF_COUNT,
     &&case_SPVM_BYTECODE_C_CODE_DEC_REF_COUNT,
@@ -428,7 +434,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         }
         else {
           if (constant_pool_sub.has_return_value) {
-            goto case_SPVM_BYTECODE_C_CODE_RETURN;
+            goto case_SPVM_BYTECODE_C_CODE_RETURN_INT;
           }
           else {
             goto case_SPVM_BYTECODE_C_CODE_RETURN_VOID;
@@ -442,7 +448,223 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       goto *jump[*pc];
     }
   }
-  case_SPVM_BYTECODE_C_CODE_RETURN: {
+  case_SPVM_BYTECODE_C_CODE_RETURN_BYTE: {
+    
+    // Get return value
+    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    
+    // Restore operand stack top
+    operand_stack_top = call_stack_base - 4;
+    
+    // Get return address
+    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
+    
+    // Resotre call stack base
+    call_stack_base = call_stack[call_stack_base - 1].int_value;
+    
+    // Push return value
+    operand_stack_top++;
+    call_stack[operand_stack_top] = return_value;
+    
+    // Finish call sub
+    if (call_stack_base == call_stack_base_start) {
+      runtime->call_stack_base = call_stack_base;
+      runtime->operand_stack_top = operand_stack_top;
+      runtime->abort = 0;
+      return;
+    }
+    else {
+      // Restore vars
+      vars = &call_stack[call_stack_base];
+      
+      pc = return_address;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_RETURN_SHORT: {
+    
+    // Get return value
+    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    
+    // Restore operand stack top
+    operand_stack_top = call_stack_base - 4;
+    
+    // Get return address
+    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
+    
+    // Resotre call stack base
+    call_stack_base = call_stack[call_stack_base - 1].int_value;
+    
+    // Push return value
+    operand_stack_top++;
+    call_stack[operand_stack_top] = return_value;
+    
+    // Finish call sub
+    if (call_stack_base == call_stack_base_start) {
+      runtime->call_stack_base = call_stack_base;
+      runtime->operand_stack_top = operand_stack_top;
+      runtime->abort = 0;
+      return;
+    }
+    else {
+      // Restore vars
+      vars = &call_stack[call_stack_base];
+      
+      pc = return_address;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_RETURN_INT: {
+    
+    // Get return value
+    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    
+    // Restore operand stack top
+    operand_stack_top = call_stack_base - 4;
+    
+    // Get return address
+    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
+    
+    // Resotre call stack base
+    call_stack_base = call_stack[call_stack_base - 1].int_value;
+    
+    // Push return value
+    operand_stack_top++;
+    call_stack[operand_stack_top] = return_value;
+    
+    // Finish call sub
+    if (call_stack_base == call_stack_base_start) {
+      runtime->call_stack_base = call_stack_base;
+      runtime->operand_stack_top = operand_stack_top;
+      runtime->abort = 0;
+      return;
+    }
+    else {
+      // Restore vars
+      vars = &call_stack[call_stack_base];
+      
+      pc = return_address;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_RETURN_LONG: {
+    
+    // Get return value
+    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    
+    // Restore operand stack top
+    operand_stack_top = call_stack_base - 4;
+    
+    // Get return address
+    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
+    
+    // Resotre call stack base
+    call_stack_base = call_stack[call_stack_base - 1].int_value;
+    
+    // Push return value
+    operand_stack_top++;
+    call_stack[operand_stack_top] = return_value;
+    
+    // Finish call sub
+    if (call_stack_base == call_stack_base_start) {
+      runtime->call_stack_base = call_stack_base;
+      runtime->operand_stack_top = operand_stack_top;
+      runtime->abort = 0;
+      return;
+    }
+    else {
+      // Restore vars
+      vars = &call_stack[call_stack_base];
+      
+      pc = return_address;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT: {
+    
+    // Get return value
+    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    
+    // Restore operand stack top
+    operand_stack_top = call_stack_base - 4;
+    
+    // Get return address
+    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
+    
+    // Resotre call stack base
+    call_stack_base = call_stack[call_stack_base - 1].int_value;
+    
+    // Push return value
+    operand_stack_top++;
+    call_stack[operand_stack_top] = return_value;
+    
+    // Finish call sub
+    if (call_stack_base == call_stack_base_start) {
+      runtime->call_stack_base = call_stack_base;
+      runtime->operand_stack_top = operand_stack_top;
+      runtime->abort = 0;
+      return;
+    }
+    else {
+      // Restore vars
+      vars = &call_stack[call_stack_base];
+      
+      pc = return_address;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE: {
+    
+    // Get return value
+    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    
+    // Restore operand stack top
+    operand_stack_top = call_stack_base - 4;
+    
+    // Get return address
+    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
+    
+    // Resotre call stack base
+    call_stack_base = call_stack[call_stack_base - 1].int_value;
+    
+    // Push return value
+    operand_stack_top++;
+    call_stack[operand_stack_top] = return_value;
+    
+    // Finish call sub
+    if (call_stack_base == call_stack_base_start) {
+      runtime->call_stack_base = call_stack_base;
+      runtime->operand_stack_top = operand_stack_top;
+      runtime->abort = 0;
+      return;
+    }
+    else {
+      // Restore vars
+      vars = &call_stack[call_stack_base];
+      
+      pc = return_address;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
     
     // Get return value
     SPVM_VALUE return_value = call_stack[operand_stack_top];
