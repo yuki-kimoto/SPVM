@@ -254,7 +254,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_STORE_1,
     &&case_SPVM_BYTECODE_C_CODE_STORE_2,
     &&case_SPVM_BYTECODE_C_CODE_STORE_3,
-    &&case_SPVM_BYTECODE_C_CODE_STORE_ADDRESS,
+    &&case_SPVM_BYTECODE_C_CODE_STORE_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_POP,
     &&case_SPVM_BYTECODE_C_CODE_MALLOC_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_MALLOC_STRING,
@@ -265,14 +265,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_LONG,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_FLOAT,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_DOUBLE,
-    &&case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_ADDRESS,
+    &&case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_BYTE,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_SHORT,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_INT,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_LONG,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_FLOAT,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_DOUBLE,
-    &&case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_ADDRESS,
+    &&case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_LENGTH,
     &&case_SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE,
     &&case_SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT,
@@ -280,14 +280,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_GET_FIELD_LONG,
     &&case_SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT,
     &&case_SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE,
-    &&case_SPVM_BYTECODE_C_CODE_GET_FIELD_ADDRESS,
+    &&case_SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_SET_FIELD_BYTE,
     &&case_SPVM_BYTECODE_C_CODE_SET_FIELD_SHORT,
     &&case_SPVM_BYTECODE_C_CODE_SET_FIELD_INT,
     &&case_SPVM_BYTECODE_C_CODE_SET_FIELD_LONG,
     &&case_SPVM_BYTECODE_C_CODE_SET_FIELD_FLOAT,
     &&case_SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE,
-    &&case_SPVM_BYTECODE_C_CODE_SET_FIELD_ADDRESS,
+    &&case_SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_CMP_BYTE,
     &&case_SPVM_BYTECODE_C_CODE_CMP_SHORT,
     &&case_SPVM_BYTECODE_C_CODE_CMP_LONG,
@@ -307,8 +307,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_IF_GE_CMP,
     &&case_SPVM_BYTECODE_C_CODE_IF_GT_CMP,
     &&case_SPVM_BYTECODE_C_CODE_IF_LE_CMP,
-    &&case_SPVM_BYTECODE_C_CODE_IF_EQ_CMP_ADDRESS,
-    &&case_SPVM_BYTECODE_C_CODE_IF_NE_CMP_ADDRESS,
+    &&case_SPVM_BYTECODE_C_CODE_IF_EQ_CMP_OBJECT,
+    &&case_SPVM_BYTECODE_C_CODE_IF_NE_CMP_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_IF_NULL,
     &&case_SPVM_BYTECODE_C_CODE_IF_NON_NULL,
     &&case_SPVM_BYTECODE_C_CODE_TABLE_SWITCH,
@@ -1160,7 +1160,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto *jump[*pc];
       }
     }
-  case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_ADDRESS:
+  case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_OBJECT:
     array_object = (SPVM_ARRAY_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array_object, 0)) {
@@ -1324,7 +1324,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto *jump[*pc];
       }
     }
-  case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_ADDRESS: {
+  case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT: {
     array_object = (SPVM_ARRAY_OBJECT*)call_stack[operand_stack_top - 2].object_value;
     index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array_object, 0)) {
@@ -1383,7 +1383,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_STORE_ADDRESS: {
+  case_SPVM_BYTECODE_C_CODE_STORE_OBJECT: {
     int32_t vars_index = *(pc + 1);
     
     // Increment reference count
@@ -1994,12 +1994,12 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc += success * (int16_t)((*(pc + 1) << 8) +  *(pc + 2)) + (~success & 1) * 3;
     operand_stack_top -= 2;
     goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_IF_EQ_CMP_ADDRESS:
+  case_SPVM_BYTECODE_C_CODE_IF_EQ_CMP_OBJECT:
     success = call_stack[operand_stack_top - 1].object_value == call_stack[operand_stack_top].object_value;
     pc += success * (int16_t)((*(pc + 1) << 8) +  *(pc + 2)) + (~success & 1) * 3;
     operand_stack_top -= 2;
     goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_IF_NE_CMP_ADDRESS:
+  case_SPVM_BYTECODE_C_CODE_IF_NE_CMP_OBJECT:
     success = call_stack[operand_stack_top - 1].object_value != call_stack[operand_stack_top].object_value;
     pc += success * (int16_t)((*(pc + 1) << 8) +  *(pc + 2)) + (~success & 1) * 3;
     operand_stack_top -= 2;
@@ -2228,7 +2228,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       operand_stack_top--;
       pc +=4;
     }
-    else if (*(pc + 1) == SPVM_BYTECODE_C_CODE_STORE_ADDRESS) {
+    else if (*(pc + 1) == SPVM_BYTECODE_C_CODE_STORE_OBJECT) {
       int32_t var_index = (*(pc + 2) << 8) + *(pc + 3);
 
       // Increment reference count
@@ -2360,7 +2360,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_GET_FIELD_ADDRESS:
+  case_SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       base_object_string_error = SPVM_RUNTIME_API_create_array_object_byte_from_pv(api, "The object to get an reference field must not be undefined.");
@@ -2472,7 +2472,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_SET_FIELD_ADDRESS: {
+  case_SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT: {
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
       base_object_string_error = SPVM_RUNTIME_API_create_array_object_byte_from_pv(api, "The object to set an reference field must not be undefined.");

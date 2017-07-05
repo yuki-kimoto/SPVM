@@ -236,7 +236,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
           switch (bytecode) {
             // Have tow operand]
             case SPVM_BYTECODE_C_CODE_STORE:
-            case SPVM_BYTECODE_C_CODE_STORE_ADDRESS:
+            case SPVM_BYTECODE_C_CODE_STORE_OBJECT:
             case SPVM_BYTECODE_C_CODE_LOAD:
             {
               i++;
@@ -260,7 +260,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_INT:
         case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_LONG:
         case SPVM_BYTECODE_C_CODE_STORE:
-        case SPVM_BYTECODE_C_CODE_STORE_ADDRESS:
+        case SPVM_BYTECODE_C_CODE_STORE_OBJECT:
         case SPVM_BYTECODE_C_CODE_LOAD:
         case SPVM_BYTECODE_C_CODE_MALLOC_ARRAY:
         {
@@ -291,8 +291,8 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_IF_GE_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_GT_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_LE_ZERO:
-        case SPVM_BYTECODE_C_CODE_IF_EQ_CMP_ADDRESS:
-        case SPVM_BYTECODE_C_CODE_IF_NE_CMP_ADDRESS:
+        case SPVM_BYTECODE_C_CODE_IF_EQ_CMP_OBJECT:
+        case SPVM_BYTECODE_C_CODE_IF_NE_CMP_OBJECT:
         case SPVM_BYTECODE_C_CODE_IF_NON_NULL:
         case SPVM_BYTECODE_C_CODE_IF_NULL:
         case SPVM_BYTECODE_C_CODE_GOTO:
