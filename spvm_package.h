@@ -13,6 +13,6 @@ struct SPVM_package {
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
 
-int32_t SPVM_PACKAGE_get_ref_fields_length(SPVM_COMPILER* compiler, SPVM_PACKAGE* package);
+int32_t SPVM_PACKAGE_get_object_fields_length(SPVM_COMPILER* compiler, SPVM_PACKAGE* package);
 
 #endif

@@ -65,7 +65,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   // Constant pool package information
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
   constant_pool_package.fields_length = package->op_fields->length;
-  constant_pool_package.ref_fields_length = SPVM_PACKAGE_get_ref_fields_length(compiler, package);
+  constant_pool_package.object_fields_length = SPVM_PACKAGE_get_object_fields_length(compiler, package);
   
   // Add length
   constant_pool->length += extend_length;

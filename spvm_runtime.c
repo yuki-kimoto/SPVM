@@ -1899,7 +1899,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     object->ref_count = 0;
     
     // Initialize reference fields by 0
-    memset((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), 0, sizeof(void*) * constant_pool_package.ref_fields_length);
+    memset((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), 0, sizeof(void*) * constant_pool_package.object_fields_length);
     
     // Package constant pool index
     object->package_constant_pool_index = package_constant_pool_index;

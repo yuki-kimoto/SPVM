@@ -125,11 +125,11 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
         SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
         memcpy(&constant_pool_package, &runtime->constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
         
-        int32_t ref_fields_length = constant_pool_package.ref_fields_length;
+        int32_t object_fields_length = constant_pool_package.object_fields_length;
         
         {
           int32_t i;
-          for (i = 0; i < ref_fields_length; i++) {
+          for (i = 0; i < object_fields_length; i++) {
             SPVM_BASE_OBJECT* base_object_field = *(SPVM_BASE_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(void*) * i);
             SPVM_RUNTIME_API_dec_ref_count(api, base_object_field);
           }
