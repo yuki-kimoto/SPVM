@@ -463,7 +463,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_RETURN_BYTE: {
     
     // Get return value
-    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    int8_t return_value = call_stack[operand_stack_top].byte_value;
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -479,7 +479,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top] = return_value;
+    call_stack[operand_stack_top].byte_value = return_value;
     
     // Finish call sub
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
@@ -499,7 +499,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_RETURN_SHORT: {
     
     // Get return value
-    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    int16_t return_value = call_stack[operand_stack_top].short_value;
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -515,7 +515,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top] = return_value;
+    call_stack[operand_stack_top].short_value = return_value;
     
     // Finish call sub
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
@@ -535,7 +535,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_RETURN_INT: {
     
     // Get return value
-    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    int32_t return_value = call_stack[operand_stack_top].int_value;
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -551,7 +551,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top] = return_value;
+    call_stack[operand_stack_top].int_value = return_value;
     
     // Finish call sub
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
@@ -571,7 +571,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_RETURN_LONG: {
     
     // Get return value
-    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    int32_t return_value = call_stack[operand_stack_top].int_value;
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -587,7 +587,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top] = return_value;
+    call_stack[operand_stack_top].int_value = return_value;
     
     // Finish call sub
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
@@ -607,7 +607,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT: {
     
     // Get return value
-    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    float return_value = call_stack[operand_stack_top].float_value;
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -623,7 +623,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top] = return_value;
+    call_stack[operand_stack_top].float_value = return_value;
     
     // Finish call sub
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
@@ -643,7 +643,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE: {
     
     // Get return value
-    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    double return_value = call_stack[operand_stack_top].double_value;
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -659,7 +659,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top] = return_value;
+    call_stack[operand_stack_top].double_value = return_value;
     
     // Finish call sub
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
@@ -679,7 +679,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
     
     // Get return value
-    SPVM_VALUE return_value = call_stack[operand_stack_top];
+    SPVM_BASE_OBJECT* return_value = call_stack[operand_stack_top].object_value;
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -695,7 +695,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top] = return_value;
+    call_stack[operand_stack_top].object_value = return_value;
     
     // Finish call sub
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
