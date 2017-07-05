@@ -2235,22 +2235,21 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         operand_stack_top--;
         pc +=4;
         break;
-      case SPVM_BYTECODE_C_CODE_STORE_OBJECT: {
-        int32_t var_index = (*(pc + 2) << 8) + *(pc + 3);
+      case SPVM_BYTECODE_C_CODE_STORE_OBJECT:
+        index = (*(pc + 2) << 8) + *(pc + 3);
         
         // Increment reference count
         SPVM_RUNTIME_API_inc_ref_count(api, call_stack[operand_stack_top].object_value);
         
         // Decrement reference count if original object is not null
-        SPVM_RUNTIME_API_dec_ref_count(api, vars[var_index].object_value);
+        SPVM_RUNTIME_API_dec_ref_count(api, vars[index].object_value);
         
         // Store address
-        vars[var_index] = call_stack[operand_stack_top];
+        vars[index] = call_stack[operand_stack_top];
         
         operand_stack_top--;
         pc +=4;
         break;
-      }
       case SPVM_BYTECODE_C_CODE_INC_BYTE:
         vars[(*(pc + 2) << 8) + *(pc + 3)].byte_value += (int8_t)((*(pc + 4) << 8) + *(pc + 5));
         pc += 6;
