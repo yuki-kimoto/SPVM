@@ -371,7 +371,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     sub_constant_pool_index
       = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
-    CALLSUB_COMMON: {
+    CALLSUB_COMMON:
       memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
 
       // Extend call stack(current size + 2(return address + call stack base before) + lexical variable area + operand_stack area)
@@ -452,7 +452,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         pc = &bytecodes[constant_pool_sub.bytecode_base];
       }
       goto *jump[*pc];
-    }
   }
   case_SPVM_BYTECODE_C_CODE_RETURN_BYTE: {
     
@@ -2480,7 +2479,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT: {
+  case_SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
       base_object_string_error = SPVM_RUNTIME_API_create_array_object_byte_from_pv(api, "The object to set an reference field must not be undefined.");
@@ -2505,7 +2504,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       pc += 3;
       goto *jump[*pc];
     }
-  }
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
