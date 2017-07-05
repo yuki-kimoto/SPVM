@@ -72,11 +72,6 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->set_double_field = SPVM_RUNTIME_API_set_double_field;
   api->set_object_field = SPVM_RUNTIME_API_set_object_field;
 
-  // Reference count functions
-  api->dec_ref_count = SPVM_RUNTIME_API_dec_ref_count;
-  api->inc_ref_count = SPVM_RUNTIME_API_inc_ref_count;
-  api->get_ref_count = SPVM_RUNTIME_API_get_ref_count;
-  
   // Call subroutine fucntions
   api->push_var_byte = SPVM_RUNTIME_API_push_var_byte;
   api->push_var_short = SPVM_RUNTIME_API_push_var_short;

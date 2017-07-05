@@ -43,11 +43,6 @@ struct SPVM_api {
   void (*set_double_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, double);
   void (*set_object_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, SPVM_API_BASE_OBJECT*);
   
-  // Reference count
-  void (*dec_ref_count)(SPVM_API*, SPVM_API_BASE_OBJECT*);
-  void (*inc_ref_count)(SPVM_API*, SPVM_API_BASE_OBJECT*);
-  int32_t (*get_ref_count)(SPVM_API*, SPVM_API_BASE_OBJECT*);
-  
   // Call subroutine fucntions
   void (*push_var_byte)(SPVM_API*, int8_t);
   void (*push_var_short)(SPVM_API*, int16_t);
