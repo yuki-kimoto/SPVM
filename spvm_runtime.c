@@ -329,6 +329,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
   };
   
+  // Program counter
+  register uint8_t* pc = NULL;
+  
   // Runtime
   SPVM_RUNTIME* runtime = api->runtime;
   
@@ -341,27 +344,27 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   // Variables
   SPVM_VALUE* vars = &runtime->call_stack[runtime->call_stack_base];
   
+  // Call stack
   SPVM_VALUE* call_stack = runtime->call_stack;
-  
-  // Program counter
-  register uint8_t* pc = NULL;
+
+  // Allocator
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   // Top position of operand stack
   register int32_t operand_stack_top = runtime->operand_stack_top;
   
-  register int32_t success;
-  
   int32_t call_stack_base = runtime->call_stack_base;
   int32_t call_stack_base_start = call_stack_base;
-
-  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   // Offten used variables
-  int32_t index;
   SPVM_ARRAY_OBJECT* array_object;
   SPVM_ARRAY_OBJECT* base_object_string_error;
   SPVM_OBJECT* object;
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
+  int32_t index;
+  int32_t length;
+  int32_t success;
+  int32_t byte_size;
   
   // Goto subroutine
   goto CALLSUB_COMMON;
@@ -2093,53 +2096,52 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     goto *jump[*pc];
   }
-  case_SPVM_BYTECODE_C_CODE_MALLOC_OBJECT: {
+  case_SPVM_BYTECODE_C_CODE_MALLOC_OBJECT:
     // Get subroutine ID
-    int32_t package_constant_pool_index
-      = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-    memcpy(&constant_pool_package, &constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+    memcpy(&constant_pool_package, &constant_pool[index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
     
     // Allocate memory
-    int32_t fields_length = constant_pool_package.fields_length;
-    int32_t object_byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * fields_length;
-    SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, object_byte_size);
+    length = constant_pool_package.fields_length;
+    byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * length;
+    object = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, byte_size);
     
     // Memory allocation error
-    if (!object) {
+    if (__builtin_expect(object, 1)) {
+      // Set type
+      object->type = SPVM_BASE_OBJECT_C_TYPE_OBJECT;
+      
+      // Set reference count
+      object->ref_count = 0;
+      
+      // Initialize reference fields by 0
+      memset((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), 0, sizeof(void*) * constant_pool_package.object_fields_length);
+      
+      // Package constant pool index
+      object->package_constant_pool_index = index;
+      
+      assert(byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)object));
+      
+      // Push object
+      operand_stack_top++;
+      call_stack[operand_stack_top].object_value = object;
+      
+      pc += 5;
+      goto *jump[*pc];
+    }
+    else {
       // Sub name
-      int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_constant_pool_index;
-      const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
+      index = constant_pool_sub.abs_name_constant_pool_index;
+      const char* sub_name = (char*)&constant_pool[index + 1];
       
       // File name
-      int32_t file_name_constant_pool_index = constant_pool_sub.file_name_constant_pool_index;
-      const char* file_name = (char*)&constant_pool[file_name_constant_pool_index + 1];
+      index = constant_pool_sub.file_name_constant_pool_index;
+      const char* file_name = (char*)&constant_pool[index + 1];
       
       fprintf(stderr, "Failed to allocate memory(malloc PACKAGE) from %s at %s\n", sub_name, file_name);
       abort();
     }
-    
-    // Set type
-    object->type = SPVM_BASE_OBJECT_C_TYPE_OBJECT;
-    
-    // Set reference count
-    object->ref_count = 0;
-    
-    // Initialize reference fields by 0
-    memset((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), 0, sizeof(void*) * constant_pool_package.object_fields_length);
-    
-    // Package constant pool index
-    object->package_constant_pool_index = package_constant_pool_index;
-    
-    assert(object_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)object));
-    
-    // Push object
-    operand_stack_top++;
-    call_stack[operand_stack_top].object_value = object;
-    
-    pc += 5;
-    goto *jump[*pc];
-  }
   case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY: {
     int32_t value_type = *(pc + 1);
     
