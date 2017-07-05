@@ -24,8 +24,8 @@ struct SPVM_api {
   int64_t* (*get_long_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
   float* (*get_float_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
   double* (*get_double_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
-  void** (*get_object_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
-
+  SPVM_API_BASE_OBJECT** (*get_object_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
+  
   // Object functions
   int32_t (*get_field_index)(SPVM_API*, SPVM_API_OBJECT*, const char*);
   int8_t (*get_byte_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t);
@@ -41,6 +41,7 @@ struct SPVM_api {
   void (*set_long_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int64_t);
   void (*set_float_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, float);
   void (*set_double_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, double);
+  void (*set_object_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, SPVM_API_BASE_OBJECT*);
   
   // Reference count
   void (*dec_ref_count)(SPVM_API*, SPVM_API_BASE_OBJECT*);

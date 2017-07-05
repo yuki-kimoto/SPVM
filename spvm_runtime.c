@@ -57,12 +57,6 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   
   // Object functions
   api->get_field_index = SPVM_RUNTIME_API_get_field_index;
-  api->set_byte_field = SPVM_RUNTIME_API_set_byte_field;
-  api->set_short_field = SPVM_RUNTIME_API_set_short_field;
-  api->set_int_field = SPVM_RUNTIME_API_set_int_field;
-  api->set_long_field = SPVM_RUNTIME_API_set_long_field;
-  api->set_float_field = SPVM_RUNTIME_API_set_float_field;
-  api->set_double_field = SPVM_RUNTIME_API_set_double_field;
   api->get_byte_field = SPVM_RUNTIME_API_get_byte_field;
   api->get_short_field = SPVM_RUNTIME_API_get_short_field;
   api->get_int_field = SPVM_RUNTIME_API_get_int_field;
@@ -70,6 +64,13 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_float_field = SPVM_RUNTIME_API_get_float_field;
   api->get_double_field = SPVM_RUNTIME_API_get_double_field;
   api->get_object_field = SPVM_RUNTIME_API_get_object_field;
+  api->set_byte_field = SPVM_RUNTIME_API_set_byte_field;
+  api->set_short_field = SPVM_RUNTIME_API_set_short_field;
+  api->set_int_field = SPVM_RUNTIME_API_set_int_field;
+  api->set_long_field = SPVM_RUNTIME_API_set_long_field;
+  api->set_float_field = SPVM_RUNTIME_API_set_float_field;
+  api->set_double_field = SPVM_RUNTIME_API_set_double_field;
+  api->set_object_field = SPVM_RUNTIME_API_set_object_field;
 
   // Reference count functions
   api->dec_ref_count = SPVM_RUNTIME_API_dec_ref_count;
