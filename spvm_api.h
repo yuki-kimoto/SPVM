@@ -9,9 +9,10 @@ typedef struct SPVM_api SPVM_API;
 typedef void SPVM_API_BASE_OBJECT;
 typedef void SPVM_API_OBJECT;
 typedef void SPVM_API_ARRAY_OBJECT;
+typedef void SPVM_API_RUNTIME;
 
 struct SPVM_api {
-  void* runtime;
+  SPVM_API_RUNTIME* runtime;
   int32_t (*get_array_length)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
   int64_t (*calcurate_base_object_byte_size)(SPVM_API*, SPVM_API_BASE_OBJECT*);
   void* (*create_array_object_byte)(SPVM_API*, int32_t);
