@@ -382,27 +382,27 @@ call_sub(...)
         SV* sv_value = sv_data;
         if (strEQ(arg_type_name, "byte")) {
           int8_t value = (int8_t)SvIV(sv_value);
-          api->push_var_byte(api, value);
+          api->push_stack_byte(api, value);
         }
         else if (strEQ(arg_type_name, "short")) {
           int16_t value = (int16_t)SvIV(sv_value);
-          api->push_var_short(api, value);
+          api->push_stack_short(api, value);
         }
         else if (strEQ(arg_type_name, "int")) {
           int32_t value = (int32_t)SvIV(sv_value);
-          api->push_var_int(api, value);
+          api->push_stack_int(api, value);
         }
         else if (strEQ(arg_type_name, "long")) {
           int64_t value = (int64_t)SvIV(sv_value);
-          api->push_var_long(api, value);
+          api->push_stack_long(api, value);
         }
         else if (strEQ(arg_type_name, "float")) {
           float value = (float)SvNV(sv_value);
-          api->push_var_float(api, value);
+          api->push_stack_float(api, value);
         }
         else if (strEQ(arg_type_name, "double")) {
           double value = (double)SvNV(sv_value);
-          api->push_var_double(api, value);
+          api->push_stack_double(api, value);
         }
         else {
           assert(0);
