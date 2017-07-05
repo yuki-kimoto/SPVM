@@ -37,20 +37,20 @@ void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
 int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 
 // Subroutine functions
-void SPVM_RUNTIME_API_push_stack_byte(SPVM_API* api, int8_t value);
-void SPVM_RUNTIME_API_push_stack_short(SPVM_API* api, int16_t value);
-void SPVM_RUNTIME_API_push_stack_int(SPVM_API* api, int32_t value);
-void SPVM_RUNTIME_API_push_stack_long(SPVM_API* api, int64_t value);
-void SPVM_RUNTIME_API_push_stack_float(SPVM_API* api, float value);
-void SPVM_RUNTIME_API_push_stack_double(SPVM_API* api, double value);
-void SPVM_RUNTIME_API_push_stack_object(SPVM_API* api, void* value);
-int8_t SPVM_RUNTIME_API_pop_stack_byte(SPVM_API* api);
-int16_t SPVM_RUNTIME_API_pop_stack_short(SPVM_API* api);
-int32_t SPVM_RUNTIME_API_pop_stack_int(SPVM_API* api);
-int64_t SPVM_RUNTIME_API_pop_stack_long(SPVM_API* api);
-float SPVM_RUNTIME_API_pop_stack_float(SPVM_API* api);
-double SPVM_RUNTIME_API_pop_stack_double(SPVM_API* api);
-void* SPVM_RUNTIME_API_pop_stack_object(SPVM_API* api);
+void SPVM_RUNTIME_API_push_var_byte(SPVM_API* api, int8_t value);
+void SPVM_RUNTIME_API_push_var_short(SPVM_API* api, int16_t value);
+void SPVM_RUNTIME_API_push_var_int(SPVM_API* api, int32_t value);
+void SPVM_RUNTIME_API_push_var_long(SPVM_API* api, int64_t value);
+void SPVM_RUNTIME_API_push_var_float(SPVM_API* api, float value);
+void SPVM_RUNTIME_API_push_var_double(SPVM_API* api, double value);
+void SPVM_RUNTIME_API_push_var_object(SPVM_API* api, void* value);
+int8_t SPVM_RUNTIME_API_pop_retval_byte(SPVM_API* api);
+int16_t SPVM_RUNTIME_API_pop_retval_short(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_pop_retval_int(SPVM_API* api);
+int64_t SPVM_RUNTIME_API_pop_retval_long(SPVM_API* api);
+float SPVM_RUNTIME_API_pop_retval_float(SPVM_API* api);
+double SPVM_RUNTIME_API_pop_retval_double(SPVM_API* api);
+void* SPVM_RUNTIME_API_pop_retval_object(SPVM_API* api);
 int8_t SPVM_RUNTIME_API_get_var_byte(SPVM_API* api, int32_t index);
 int16_t SPVM_RUNTIME_API_get_var_short(SPVM_API* api, int32_t index);
 int32_t SPVM_RUNTIME_API_get_var_int(SPVM_API* api, int32_t index);
@@ -58,6 +58,14 @@ int64_t SPVM_RUNTIME_API_get_var_long(SPVM_API* api, int32_t index);
 float SPVM_RUNTIME_API_get_var_float(SPVM_API* api, int32_t index);
 double SPVM_RUNTIME_API_get_var_double(SPVM_API* api, int32_t index);
 void* SPVM_RUNTIME_API_get_var_object(SPVM_API* api, int32_t index);
+
+void SPVM_RUNTIME_API_push_retval_byte(SPVM_API* api, int8_t value);
+void SPVM_RUNTIME_API_push_retval_short(SPVM_API* api, int16_t value);
+void SPVM_RUNTIME_API_push_retval_int(SPVM_API* api, int32_t value);
+void SPVM_RUNTIME_API_push_retval_long(SPVM_API* api, int64_t value);
+void SPVM_RUNTIME_API_push_retval_float(SPVM_API* api, float value);
+void SPVM_RUNTIME_API_push_retval_double(SPVM_API* api, double value);
+void SPVM_RUNTIME_API_push_retval_object(SPVM_API* api, void* value);
 
 // Internal functions
 int64_t SPVM_RUNTIME_API_calcurate_base_object_byte_size(SPVM_API* api, SPVM_BASE_OBJECT* base_object);

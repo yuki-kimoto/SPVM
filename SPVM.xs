@@ -382,27 +382,27 @@ call_sub(...)
         SV* sv_value = sv_base_object;
         if (strEQ(arg_type_name, "byte")) {
           int8_t value = (int8_t)SvIV(sv_value);
-          api->push_stack_byte(api, value);
+          api->push_var_byte(api, value);
         }
         else if (strEQ(arg_type_name, "short")) {
           int16_t value = (int16_t)SvIV(sv_value);
-          api->push_stack_short(api, value);
+          api->push_var_short(api, value);
         }
         else if (strEQ(arg_type_name, "int")) {
           int32_t value = (int32_t)SvIV(sv_value);
-          api->push_stack_int(api, value);
+          api->push_var_int(api, value);
         }
         else if (strEQ(arg_type_name, "long")) {
           int64_t value = (int64_t)SvIV(sv_value);
-          api->push_stack_long(api, value);
+          api->push_var_long(api, value);
         }
         else if (strEQ(arg_type_name, "float")) {
           float value = (float)SvNV(sv_value);
-          api->push_stack_float(api, value);
+          api->push_var_float(api, value);
         }
         else if (strEQ(arg_type_name, "double")) {
           double value = (double)SvNV(sv_value);
-          api->push_stack_double(api, value);
+          api->push_var_double(api, value);
         }
         else {
           assert(0);
@@ -423,38 +423,38 @@ call_sub(...)
     const char* return_type_name = SvPV_nolen(sv_return_type_name);
     SV* sv_value;
     if (strEQ(return_type_name, "byte")) {
-      int8_t return_value = api->pop_stack_byte(api);
+      int8_t return_value = api->pop_retval_byte(api);
       sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "short")) {
-      int16_t return_value = api->pop_stack_short(api);
+      int16_t return_value = api->pop_retval_short(api);
       sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "int")) {
-      int32_t return_value = api->pop_stack_int(api);
+      int32_t return_value = api->pop_retval_int(api);
       sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "long")) {
-      int64_t return_value = api->pop_stack_long(api);
+      int64_t return_value = api->pop_retval_long(api);
       sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "float")) {
-      float return_value = api->pop_stack_float(api);
+      float return_value = api->pop_retval_float(api);
       sv_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "double")) {
-      double return_value = api->pop_stack_double(api);
+      double return_value = api->pop_retval_double(api);
       sv_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_value);
     }
     else {
       assert(0);
-      void* return_value = api->pop_stack_object(api);
+      void* return_value = api->pop_retval_object(api);
       sv_value = sv_2mortal(newSViv(return_value));
       
       // Store value

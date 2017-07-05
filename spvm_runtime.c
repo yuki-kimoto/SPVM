@@ -78,20 +78,29 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_ref_count = SPVM_RUNTIME_API_get_ref_count;
   
   // Subroutine fucntions
-  api->push_stack_byte = SPVM_RUNTIME_API_push_stack_byte;
-  api->push_stack_short = SPVM_RUNTIME_API_push_stack_short;
-  api->push_stack_int = SPVM_RUNTIME_API_push_stack_int;
-  api->push_stack_long = SPVM_RUNTIME_API_push_stack_long;
-  api->push_stack_float = SPVM_RUNTIME_API_push_stack_float;
-  api->push_stack_double = SPVM_RUNTIME_API_push_stack_double;
-  api->push_stack_object = SPVM_RUNTIME_API_push_stack_object;
-  api->pop_stack_byte = SPVM_RUNTIME_API_pop_stack_byte;
-  api->pop_stack_short = SPVM_RUNTIME_API_pop_stack_short;
-  api->pop_stack_int = SPVM_RUNTIME_API_pop_stack_int;
-  api->pop_stack_long = SPVM_RUNTIME_API_pop_stack_long;
-  api->pop_stack_float = SPVM_RUNTIME_API_pop_stack_float;
-  api->pop_stack_double = SPVM_RUNTIME_API_pop_stack_double;
-  api->pop_stack_object = SPVM_RUNTIME_API_pop_stack_object;
+  api->push_var_byte = SPVM_RUNTIME_API_push_var_byte;
+  api->push_var_short = SPVM_RUNTIME_API_push_var_short;
+  api->push_var_int = SPVM_RUNTIME_API_push_var_int;
+  api->push_var_long = SPVM_RUNTIME_API_push_var_long;
+  api->push_var_float = SPVM_RUNTIME_API_push_var_float;
+  api->push_var_double = SPVM_RUNTIME_API_push_var_double;
+  api->push_var_object = SPVM_RUNTIME_API_push_var_object;
+
+  api->push_retval_byte = SPVM_RUNTIME_API_push_retval_byte;
+  api->push_retval_short = SPVM_RUNTIME_API_push_retval_short;
+  api->push_retval_int = SPVM_RUNTIME_API_push_retval_int;
+  api->push_retval_long = SPVM_RUNTIME_API_push_retval_long;
+  api->push_retval_float = SPVM_RUNTIME_API_push_retval_float;
+  api->push_retval_double = SPVM_RUNTIME_API_push_retval_double;
+  api->push_retval_object = SPVM_RUNTIME_API_push_retval_object;
+  
+  api->pop_retval_byte = SPVM_RUNTIME_API_pop_retval_byte;
+  api->pop_retval_short = SPVM_RUNTIME_API_pop_retval_short;
+  api->pop_retval_int = SPVM_RUNTIME_API_pop_retval_int;
+  api->pop_retval_long = SPVM_RUNTIME_API_pop_retval_long;
+  api->pop_retval_float = SPVM_RUNTIME_API_pop_retval_float;
+  api->pop_retval_double = SPVM_RUNTIME_API_pop_retval_double;
+  api->pop_retval_object = SPVM_RUNTIME_API_pop_retval_object;
   api->get_var_byte = SPVM_RUNTIME_API_get_var_byte;
   api->get_var_short = SPVM_RUNTIME_API_get_var_short;
   api->get_var_int = SPVM_RUNTIME_API_get_var_int;
