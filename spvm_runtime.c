@@ -51,13 +51,14 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->create_array_object_byte_from_pv = SPVM_RUNTIME_API_create_array_object_byte_from_pv;
   api->dec_ref_count = SPVM_RUNTIME_API_dec_ref_count;
   api->inc_ref_count = SPVM_RUNTIME_API_inc_ref_count;
+  api->get_ref_count = SPVM_RUNTIME_API_get_ref_count;
   api->push_stack_byte = SPVM_RUNTIME_API_push_stack_byte;
   api->push_stack_short = SPVM_RUNTIME_API_push_stack_short;
   api->push_stack_int = SPVM_RUNTIME_API_push_stack_int;
   api->push_stack_long = SPVM_RUNTIME_API_push_stack_long;
   api->push_stack_float = SPVM_RUNTIME_API_push_stack_float;
   api->push_stack_double = SPVM_RUNTIME_API_push_stack_double;
-  api->push_stack_ref = SPVM_RUNTIME_API_push_stack_ref;
+  api->push_stack_object = SPVM_RUNTIME_API_push_stack_object;
   api->pop_stack_byte = SPVM_RUNTIME_API_pop_stack_byte;
   api->pop_stack_short = SPVM_RUNTIME_API_pop_stack_short;
   api->pop_stack_int = SPVM_RUNTIME_API_pop_stack_int;
@@ -88,16 +89,15 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_long_field = SPVM_RUNTIME_API_get_long_field;
   api->get_float_field = SPVM_RUNTIME_API_get_float_field;
   api->get_double_field = SPVM_RUNTIME_API_get_double_field;
-  api->get_ref_field = SPVM_RUNTIME_API_get_ref_field;
+  api->get_object_field = SPVM_RUNTIME_API_get_object_field;
   api->dump_field_names = SPVM_RUNTIME_API_dump_field_names;
-  api->get_ref_count = SPVM_RUNTIME_API_get_ref_count;
   api->get_byte_array_elements = SPVM_RUNTIME_API_get_byte_array_elements;
   api->get_short_array_elements = SPVM_RUNTIME_API_get_short_array_elements;
   api->get_int_array_elements = SPVM_RUNTIME_API_get_int_array_elements;
   api->get_long_array_elements = SPVM_RUNTIME_API_get_long_array_elements;
   api->get_float_array_elements = SPVM_RUNTIME_API_get_float_array_elements;
   api->get_double_array_elements = SPVM_RUNTIME_API_get_double_array_elements;
-  api->get_ref_array_elements = SPVM_RUNTIME_API_get_ref_array_elements;
+  api->get_object_array_elements = SPVM_RUNTIME_API_get_object_array_elements;
   
   api->call_sub = SPVM_RUNTIME_call_sub;
 

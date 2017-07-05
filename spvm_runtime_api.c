@@ -151,6 +151,12 @@ void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
   }
 }
 
+int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
+  (void)api;
+  
+  return base_object->ref_count;
+}
+
 void SPVM_RUNTIME_API_push_stack_byte(SPVM_API* api, int8_t value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
@@ -193,7 +199,7 @@ void SPVM_RUNTIME_API_push_stack_double(SPVM_API* api, double value) {
   runtime->call_stack[runtime->operand_stack_top].double_value = value;
 }
 
-void SPVM_RUNTIME_API_push_stack_ref(SPVM_API* api, void* value) {
+void SPVM_RUNTIME_API_push_stack_object(SPVM_API* api, void* value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   runtime->operand_stack_top++;
@@ -442,7 +448,7 @@ double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_OBJECT* object, int
   return double_value;
 }
 
-SPVM_BASE_OBJECT* SPVM_RUNTIME_API_get_ref_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index) {
+SPVM_BASE_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index) {
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   SPVM_BASE_OBJECT* address_value = fields[field_index].address_value;
   
@@ -468,12 +474,6 @@ int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object) {
   }
   
   return length;
-}
-
-int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
-  (void)api;
-  
-  return base_object->ref_count;
 }
 
 int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object) {
@@ -518,7 +518,7 @@ double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_ARRAY_OBJ
   return (double*)((intptr_t)array_object + sizeof(SPVM_ARRAY_OBJECT));
 }
 
-SPVM_BASE_OBJECT** SPVM_RUNTIME_API_get_ref_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object) {
+SPVM_BASE_OBJECT** SPVM_RUNTIME_API_get_object_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object) {
   (void)api;
   
   return (SPVM_BASE_OBJECT**)((intptr_t)array_object + sizeof(SPVM_ARRAY_OBJECT));

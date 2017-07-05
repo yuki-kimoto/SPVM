@@ -10,13 +10,14 @@ SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_create_array_object_byte(SPVM_API* api, int3
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_create_array_object_byte_from_pv(SPVM_API* api, const char* pv);
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
+int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 void SPVM_RUNTIME_API_push_stack_byte(SPVM_API* api, int8_t value);
 void SPVM_RUNTIME_API_push_stack_short(SPVM_API* api, int16_t value);
 void SPVM_RUNTIME_API_push_stack_int(SPVM_API* api, int32_t value);
 void SPVM_RUNTIME_API_push_stack_long(SPVM_API* api, int64_t value);
 void SPVM_RUNTIME_API_push_stack_float(SPVM_API* api, float value);
 void SPVM_RUNTIME_API_push_stack_double(SPVM_API* api, double value);
-void SPVM_RUNTIME_API_push_stack_ref(SPVM_API* api, void* value);
+void SPVM_RUNTIME_API_push_stack_object(SPVM_API* api, void* value);
 int8_t SPVM_RUNTIME_API_pop_stack_byte(SPVM_API* api);
 int16_t SPVM_RUNTIME_API_pop_stack_short(SPVM_API* api);
 int32_t SPVM_RUNTIME_API_pop_stack_int(SPVM_API* api);
@@ -48,15 +49,14 @@ int32_t SPVM_RUNTIME_API_get_int_field(SPVM_API* api, SPVM_OBJECT* object, int32
 int64_t SPVM_RUNTIME_API_get_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index);
 float SPVM_RUNTIME_API_get_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index);
 double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index);
-SPVM_BASE_OBJECT* SPVM_RUNTIME_API_get_ref_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index);
+SPVM_BASE_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index);
 int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object);
-int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object);
 int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object);
 int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object);
 int64_t* SPVM_RUNTIME_API_get_long_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object);
 float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object);
 double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object);
-SPVM_BASE_OBJECT** SPVM_RUNTIME_API_get_ref_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object);
+SPVM_BASE_OBJECT** SPVM_RUNTIME_API_get_object_array_elements(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object);
 
 #endif
