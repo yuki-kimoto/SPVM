@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
   SPVM_RUNTIME_init(runtime);
   
   // Push argument
-  api->push_var_long(api, 2);
+  api->push_long(api, 2);
 
   // Run
   api->call_sub(api, sub_constant_pool_index);

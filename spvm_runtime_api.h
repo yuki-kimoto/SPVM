@@ -10,13 +10,13 @@ SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte(SPVM_API* api, int32_t 
 SPVM_DATA_ARRAY* SPVM_RUNTIME_API_create_data_array_byte_from_pv(SPVM_API* api, const char* pv);
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_DATA* data);
 void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_DATA* data);
-void SPVM_RUNTIME_API_push_return_value_byte(SPVM_API* api, int8_t value);
-void SPVM_RUNTIME_API_push_return_value_short(SPVM_API* api, int16_t value);
-void SPVM_RUNTIME_API_push_return_value_int(SPVM_API* api, int32_t value);
-void SPVM_RUNTIME_API_push_return_value_long(SPVM_API* api, int64_t value);
-void SPVM_RUNTIME_API_push_return_value_float(SPVM_API* api, float value);
-void SPVM_RUNTIME_API_push_return_value_double(SPVM_API* api, double value);
-void SPVM_RUNTIME_API_push_ret(SPVM_API* api, void* value);
+void SPVM_RUNTIME_API_push_byte(SPVM_API* api, int8_t value);
+void SPVM_RUNTIME_API_push_short(SPVM_API* api, int16_t value);
+void SPVM_RUNTIME_API_push_int(SPVM_API* api, int32_t value);
+void SPVM_RUNTIME_API_push_long(SPVM_API* api, int64_t value);
+void SPVM_RUNTIME_API_push_float(SPVM_API* api, float value);
+void SPVM_RUNTIME_API_push_double(SPVM_API* api, double value);
+void SPVM_RUNTIME_API_push_ref(SPVM_API* api, void* value);
 int8_t SPVM_RUNTIME_API_pop_return_value_byte(SPVM_API* api);
 int16_t SPVM_RUNTIME_API_pop_return_value_short(SPVM_API* api);
 int32_t SPVM_RUNTIME_API_pop_return_value_int(SPVM_API* api);
@@ -31,14 +31,6 @@ int64_t SPVM_RUNTIME_API_get_var_long(SPVM_API* api, int32_t index);
 float SPVM_RUNTIME_API_get_var_float(SPVM_API* api, int32_t index);
 double SPVM_RUNTIME_API_get_var_double(SPVM_API* api, int32_t index);
 void* SPVM_RUNTIME_API_get_var_address(SPVM_API* api, int32_t index);
-void SPVM_RUNTIME_API_push_var_byte(SPVM_API* api, int8_t value);
-void SPVM_RUNTIME_API_push_var_short(SPVM_API* api, int16_t value);
-void SPVM_RUNTIME_API_push_var_int(SPVM_API* api, int32_t value);
-void SPVM_RUNTIME_API_push_var_long(SPVM_API* api, int64_t value);
-void SPVM_RUNTIME_API_push_var_float(SPVM_API* api, float value);
-void SPVM_RUNTIME_API_push_var_double(SPVM_API* api, double value);
-void SPVM_RUNTIME_API_push_var_address(SPVM_API* api, void* value);
-
 
 int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_API* api, int32_t type);
 SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_DATA_OBJECT* data_object);
