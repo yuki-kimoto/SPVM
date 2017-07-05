@@ -91,8 +91,8 @@ int main(int argc, char *argv[])
   
 #ifdef DEBUG
   if (runtime->abort) {
-    void* message_address = api->pop_stack_address(api);
-    int8_t* message = api->get_byte_array_elements(api, message_address);
+    void* message_object = api->pop_stack_object(api);
+    int8_t* message = api->get_byte_array_elements(api, message_object);
     
     printf("%s", (char*)message);
     printf("\n");

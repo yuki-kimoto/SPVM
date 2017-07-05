@@ -24,14 +24,14 @@ int32_t SPVM_RUNTIME_API_pop_stack_int(SPVM_API* api);
 int64_t SPVM_RUNTIME_API_pop_stack_long(SPVM_API* api);
 float SPVM_RUNTIME_API_pop_stack_float(SPVM_API* api);
 double SPVM_RUNTIME_API_pop_stack_double(SPVM_API* api);
-void* SPVM_RUNTIME_API_pop_stack_address(SPVM_API* api);
+void* SPVM_RUNTIME_API_pop_stack_object(SPVM_API* api);
 int8_t SPVM_RUNTIME_API_get_var_byte(SPVM_API* api, int32_t index);
 int16_t SPVM_RUNTIME_API_get_var_short(SPVM_API* api, int32_t index);
 int32_t SPVM_RUNTIME_API_get_var_int(SPVM_API* api, int32_t index);
 int64_t SPVM_RUNTIME_API_get_var_long(SPVM_API* api, int32_t index);
 float SPVM_RUNTIME_API_get_var_float(SPVM_API* api, int32_t index);
 double SPVM_RUNTIME_API_get_var_double(SPVM_API* api, int32_t index);
-void* SPVM_RUNTIME_API_get_var_address(SPVM_API* api, int32_t index);
+void* SPVM_RUNTIME_API_get_var_object(SPVM_API* api, int32_t index);
 
 int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_API* api, int32_t type);
 SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_OBJECT* object);

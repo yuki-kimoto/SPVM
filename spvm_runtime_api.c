@@ -203,7 +203,7 @@ void SPVM_RUNTIME_API_push_stack_object(SPVM_API* api, void* value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   runtime->operand_stack_top++;
-  runtime->call_stack[runtime->operand_stack_top].address_value = value;
+  runtime->call_stack[runtime->operand_stack_top].object_value = value;
 }
 
 int8_t SPVM_RUNTIME_API_pop_stack_byte(SPVM_API* api) {
@@ -254,10 +254,10 @@ double SPVM_RUNTIME_API_pop_stack_double(SPVM_API* api) {
   return ret;
 }
 
-void* SPVM_RUNTIME_API_pop_stack_address(SPVM_API* api) {
+void* SPVM_RUNTIME_API_pop_stack_object(SPVM_API* api) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
-  void* ret = runtime->call_stack[runtime->operand_stack_top].address_value;
+  void* ret = runtime->call_stack[runtime->operand_stack_top].object_value;
   runtime->operand_stack_top--;
   return ret;
 }
@@ -298,10 +298,10 @@ double SPVM_RUNTIME_API_get_var_double(SPVM_API* api, int32_t index) {
   return runtime->call_stack[runtime->call_stack_base + (size_t)index].double_value;
 }
 
-void* SPVM_RUNTIME_API_get_var_address(SPVM_API* api, int32_t index) {
+void* SPVM_RUNTIME_API_get_var_object(SPVM_API* api, int32_t index) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
-  return runtime->call_stack[runtime->call_stack_base + (size_t)index].address_value;
+  return runtime->call_stack[runtime->call_stack_base + (size_t)index].object_value;
 }
 
 int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_API* api, int32_t type) {
@@ -450,9 +450,9 @@ double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_OBJECT* object, int
 
 SPVM_BASE_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index) {
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  SPVM_BASE_OBJECT* address_value = fields[field_index].address_value;
+  SPVM_BASE_OBJECT* object_value = fields[field_index].object_value;
   
-  return address_value;
+  return object_value;
 }
 
 int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object) {

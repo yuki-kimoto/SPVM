@@ -11,7 +11,7 @@ union SPVM_value {
   int64_t long_value;
   float float_value;
   double double_value;
-  void* address_value;
+  void* object_value;
 };
 
 #endif

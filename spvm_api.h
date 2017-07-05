@@ -32,14 +32,14 @@ struct SPVM_api {
   int64_t (*pop_stack_long)(SPVM_API*);
   float (*pop_stack_float)(SPVM_API*);
   double (*pop_stack_double)(SPVM_API*);
-  void* (*pop_stack_address)(SPVM_API*);
+  void* (*pop_stack_object)(SPVM_API*);
   int8_t (*get_var_byte)(SPVM_API*, int32_t);
   int16_t (*get_var_short)(SPVM_API*, int32_t);
   int32_t (*get_var_int)(SPVM_API*, int32_t);
   int64_t (*get_var_long)(SPVM_API*, int32_t);
   float (*get_var_float)(SPVM_API*, int32_t);
   double (*get_var_double)(SPVM_API*, int32_t);
-  void* (*get_var_address)(SPVM_API*, int32_t);
+  void* (*get_var_object)(SPVM_API*, int32_t);
   int32_t (*get_array_value_size)(SPVM_API*, int32_t);
   void* (*get_fields)(SPVM_API*, SPVM_API_OBJECT*);
   int32_t (*get_field_index)(SPVM_API*, SPVM_API_OBJECT*, const char*);

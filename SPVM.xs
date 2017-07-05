@@ -454,7 +454,7 @@ call_sub(...)
     }
     else {
       assert(0);
-      void* return_value = api->pop_stack_address(api);
+      void* return_value = api->pop_stack_object(api);
       sv_value = sv_2mortal(newSViv(return_value));
       
       // Store value
