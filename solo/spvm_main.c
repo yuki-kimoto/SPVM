@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
   SPVM_RUNTIME_init(runtime);
   
   // Push argument
-  api->push_var_long(api, 2);
+  api->push_var_int(api, 2);
   
   // Run
   api->call_sub(api, sub_constant_pool_index);
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
   }
   else {
     // Get return value
-    int64_t return_value = api->pop_retval_long(api);
+    int64_t return_value = api->pop_retval_int(api);
     
     printf("TEST return_value: %ld\n", return_value);
   }
