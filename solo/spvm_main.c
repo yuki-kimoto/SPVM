@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
   
 #ifdef DEBUG
   if (runtime->abort) {
-    void* message_address = api->pop_return_value_address(api);
+    void* message_address = api->pop_stack_address(api);
     int8_t* message = api->get_byte_array_elements(api, message_address);
     
     printf("%s", (char*)message);
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
   }
   else {
     // Get return value
-    int64_t return_value = api->pop_return_value_long(api);
+    int64_t return_value = api->pop_stack_long(api);
     
     printf("TEST return_value: %ld\n", return_value);
   }
