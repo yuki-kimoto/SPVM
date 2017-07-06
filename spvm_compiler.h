@@ -82,6 +82,9 @@ struct SPVM_compiler {
   // Current package count
   int32_t current_package_count;
   
+  // Package indexes constant pool index
+  int32_t package_indexes_constant_pool_index;
+  
   // Error is fatal
   _Bool fatal_error;
 };
