@@ -18,6 +18,39 @@
 #include "spvm_runtime_allocator.h"
 #include "spvm_api.h"
 
+SPVM_OBJECT* SPVM_RUNTIME_API_malloc_object_noinc(SPVM_API* api, int32_t package_constant_pool_index) {
+  
+  SPVM_RUNTIME* runtime = api->runtime;
+  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
+  memcpy(&constant_pool_package, &constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  
+  // Allocate memory
+  int32_t length = constant_pool_package.fields_length;
+  int32_t byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * length;
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, byte_size);
+  
+  if (__builtin_expect(object, 1)) {
+    // Set type
+    object->type = SPVM_BASE_OBJECT_C_TYPE_OBJECT;
+    
+    // Set reference count
+    object->ref_count = 0;
+    
+    // Initialize reference fields by 0
+    memset((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), 0, sizeof(void*) * constant_pool_package.object_fields_length);
+    
+    // Package constant pool index
+    object->package_constant_pool_index = package_constant_pool_index;
+    
+    assert(byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)object));
+  }
+  
+  return object;
+}
+
 int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_ARRAY_OBJECT* array_object) {
   (void)api;
   

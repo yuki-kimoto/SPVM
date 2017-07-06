@@ -78,4 +78,6 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_obj
 int32_t SPVM_RUNTIME_API_get_sub_index(SPVM_API* api, const char* name);
 int32_t SPVM_RUNTIME_API_get_package_index(SPVM_API* api, const char* name);
 
+SPVM_OBJECT* SPVM_RUNTIME_API_malloc_object_noinc(SPVM_API* api, int32_t package_constant_pool_index);
+
 #endif

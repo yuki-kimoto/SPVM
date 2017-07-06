@@ -2120,38 +2120,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_MALLOC_OBJECT:
     // Get subroutine ID
     index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
-    SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-    memcpy(&constant_pool_package, &constant_pool[index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
     
-    // Allocate memory
-    length = constant_pool_package.fields_length;
-    byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * length;
-    object = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, byte_size);
-    
+    object = SPVM_RUNTIME_API_malloc_object_noinc(api, index);
+
     // Memory allocation error
-    if (__builtin_expect(object, 1)) {
-      // Set type
-      object->type = SPVM_BASE_OBJECT_C_TYPE_OBJECT;
-      
-      // Set reference count
-      object->ref_count = 0;
-      
-      // Initialize reference fields by 0
-      memset((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), 0, sizeof(void*) * constant_pool_package.object_fields_length);
-      
-      // Package constant pool index
-      object->package_constant_pool_index = index;
-      
-      assert(byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)object));
-      
-      // Push object
-      operand_stack_top++;
-      call_stack[operand_stack_top].object_value = object;
-      
-      pc += 5;
-      goto *jump[*pc];
-    }
-    else {
+    if (__builtin_expect(!object, 0)) {
       // Sub name
       index = constant_pool_sub.abs_name_constant_pool_index;
       const char* sub_name = (char*)&constant_pool[index + 1];
@@ -2163,6 +2136,13 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       fprintf(stderr, "Failed to allocate memory(malloc PACKAGE) from %s at %s\n", sub_name, file_name);
       abort();
     }
+    
+    // Push object
+    operand_stack_top++;
+    call_stack[operand_stack_top].object_value = object;
+    
+    pc += 5;
+    goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY: {
     int32_t value_type = *(pc + 1);
     
