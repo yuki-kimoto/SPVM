@@ -24,64 +24,6 @@
 
 MODULE = SPVM::Data		PACKAGE = SPVM::Data
 
-SV*
-value(...)
-  PPCODE:
-{
-  SV* sv_self = ST(0);
-
-  if (sv_isobject(sv_self) && sv_derived_from(sv_self, "SPVM::Data")) {
-    HV* hv_self = (HV*)SvRV(sv_self);
-    
-    SV** sv_type_name_ptr = hv_fetch(hv_self, "type_name", strlen("type_name"), 0);
-    SV* sv_type_name = sv_type_name_ptr ? *sv_type_name_ptr : &PL_sv_undef;
-    const char* type_name = SvPV_nolen(sv_type_name);
-    
-    SV** sv_value_ptr = hv_fetch(hv_self, "value", strlen("value"), 0);
-    SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-    
-    SV* sv_return_value;
-  
-    if (strEQ(type_name, "byte")) {
-      int8_t value = (int8_t)SvIV(sv_value);
-      sv_return_value = sv_2mortal(newSViv(value));
-    }
-    else if (strEQ(type_name, "short")) {
-      int16_t value = (int16_t)SvIV(sv_value);
-      sv_return_value = sv_2mortal(newSViv(value));
-    }
-    else if (strEQ(type_name, "int")) {
-      int32_t value = (int32_t)SvIV(sv_value);
-      sv_return_value = sv_2mortal(newSViv(value));
-    }
-    else if (strEQ(type_name, "long")) {
-      int64_t value = (int64_t)SvIV(sv_value);
-      sv_return_value = sv_2mortal(newSViv(value));
-    }
-    else if (strEQ(type_name, "float")) {
-      IV iv_value = SvIV(sv_value);
-      float value;
-      memcpy(&value, &iv_value, sizeof(float));
-      sv_return_value = sv_2mortal(newSVnv(value));
-    }
-    else if (strEQ(type_name, "double")) {
-      IV iv_value = SvIV(sv_value);
-      double value;
-      memcpy(&value, &iv_value, sizeof(double));
-      sv_return_value = sv_2mortal(newSVnv(value));
-    }
-    else {
-      croak("Can't get reference value");
-    }
-    
-    XPUSHs(sv_return_value);
-    XSRETURN(1);
-  }
-  else {
-    croak("Not SPVM::Datg object");
-  }
-}
-
 MODULE = SPVM		PACKAGE = SPVM
 
 SV*
