@@ -426,6 +426,42 @@ int32_t SPVM_RUNTIME_API_get_sub_index(SPVM_API* api, const char* name) {
   return found_sub_constant_pool_index;
 }
 
+int32_t SPVM_RUNTIME_API_get_package_index(SPVM_API* api, const char* name) {
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  int32_t length = runtime->packages_length;
+  int32_t package_indexes_constant_pool_index = runtime-> package_indexes_constant_pool_index;
+  
+  int32_t found_package_constant_pool_index = -1;
+  _Bool found = 0;
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      int32_t package_constant_pool_index = constant_pool[package_indexes_constant_pool_index + i];
+      SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
+      memcpy(&constant_pool_package, &constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+      
+      int32_t package_name_constant_pool_index = constant_pool_package.name_constant_pool_index;
+      
+      char* match_name = (char*)&constant_pool[package_name_constant_pool_index];
+      if (strcmp(name, match_name) == 0) {
+        found = 1;
+        found_package_constant_pool_index = package_constant_pool_index;
+        break;
+      }
+    }
+  }
+  
+  if (!found) {
+    fprintf(stderr, "Can't find packageroutine name \"%s\"\n", name);
+    abort();
+  }
+  
+  return found_package_constant_pool_index;
+}
+
+
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index) {
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   int8_t byte_value = fields[field_index].byte_value;
