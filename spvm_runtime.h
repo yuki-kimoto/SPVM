@@ -44,7 +44,6 @@ struct SPVM_runtime {
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
-void SPVM_RUNTIME_init(SPVM_RUNTIME* runtime);
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
 SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime);
 

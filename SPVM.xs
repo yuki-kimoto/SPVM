@@ -344,9 +344,6 @@ call_sub(...)
   size_t iv_api = SvIV(sviv_api);
   SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
   
-  // Initialize runtime before push arguments and call subroutine
-  SPVM_RUNTIME_init((SPVM_RUNTIME*)api->runtime);
-  
   // Check argument count
   if (items - 1 != args_length) {
     croak("Argument count is defferent");

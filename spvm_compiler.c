@@ -17,6 +17,7 @@
 #include "spvm_bytecode_array.h"
 #include "spvm_sub.h"
 #include "spvm_constant_pool.h"
+#include "spvm_runtime.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = malloc(sizeof(SPVM_COMPILER));

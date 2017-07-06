@@ -80,9 +80,6 @@ int main(int argc, char *argv[])
   // Free compiler
   SPVM_COMPILER_free(compiler);
   
-  // Initialize runtime before push arguments and call subroutine
-  SPVM_RUNTIME_init(runtime);
-  
   // Push argument
   api->push_var_int(api, 2);
   

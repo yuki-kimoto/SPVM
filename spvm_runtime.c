@@ -33,11 +33,13 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   runtime->call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(runtime->call_stack_capacity, sizeof(SPVM_VALUE));
   
   SPVM_API* api = SPVM_RUNTIME_new_api(runtime);
-
+  
   api->runtime = runtime;
   runtime->api = api;
   
-  SPVM_RUNTIME_init(runtime);
+  runtime->call_stack_base = -1;
+  runtime->operand_stack_top = -1;
+  runtime->abort = 0;
   
   return runtime;
 }
@@ -106,13 +108,6 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->push_retval_object = SPVM_RUNTIME_API_push_retval_object;
   
   return api;
-}
-
-void SPVM_RUNTIME_init(SPVM_RUNTIME* runtime) {
-  
-  runtime->call_stack_base = -1;
-  runtime->operand_stack_top = -1;
-  runtime->abort = 0;
 }
 
 void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
