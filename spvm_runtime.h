@@ -35,6 +35,9 @@ struct SPVM_runtime {
   
   // Indexes of package
   int32_t package_indexes_constant_pool_index;
+
+  // Indexes of package
+  int32_t sub_indexes_constant_pool_index;
   
   // Exception
   _Bool abort;

@@ -1735,4 +1735,25 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_constant_pool_index);
     }
   }
+  
+  // Create subroutine indexes
+  compiler->sub_indexes_constant_pool_index = compiler->constant_pool->length;
+  {
+    int32_t package_pos;
+    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
+      SPVM_OP* op_package = SPVM_ARRAY_fetch(op_packages, package_pos);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      
+      {
+        int32_t sub_pos;
+        for (sub_pos = 0; sub_pos < package->op_subs->length; sub_pos++) {
+          
+          SPVM_OP* op_sub = SPVM_ARRAY_fetch(package->op_subs, sub_pos);
+          SPVM_SUB* sub = op_sub->uv.sub;
+          int32_t sub_constant_pool_index = sub->constant_pool_index;
+          SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_constant_pool_index);
+        }
+      }
+    }
+  }
 }
