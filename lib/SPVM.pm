@@ -8,7 +8,7 @@ use SPVM::Data;
 
 use Carp 'croak';
 
-our $VERSION = '0.0207';
+our $VERSION = '0.0208';
 
 our $COMPILER;
 our @PACKAGE_INFOS;

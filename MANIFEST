@@ -3,7 +3,6 @@ lib/SPVM.pm
 lib/SPVM/Data.pm
 lib/SPVM/std.spvm
 lib/SPVM/XSTest.spvm
-libspvm.a
 Makefile.PL
 MANIFEST			This list of files
 op_type

@@ -4,7 +4,11 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 
 # SPVM only support the environment 64bit integer is supported
-
+use Config;
+my $ivsize = $Config{ivsize};
+if ($ivsize < 8) {
+  die "SPVM don't support 32bit Perl";
+}
 
 WriteMakefile(
     NAME              => 'SPVM',
