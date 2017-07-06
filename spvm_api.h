@@ -63,6 +63,14 @@ struct SPVM_api {
   
   // Malloc funtctions
   int32_t (*get_package_index)(SPVM_API*, const char*);
+  SPVM_API_OBJECT* (*malloc_object_noinc)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY_OBJECT* (*malloc_byte_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY_OBJECT* (*malloc_short_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY_OBJECT* (*malloc_int_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY_OBJECT* (*malloc_long_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY_OBJECT* (*malloc_float_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY_OBJECT* (*malloc_double_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY_OBJECT* (*malloc_object_array_noinc)(SPVM_API*, int32_t);
   
   // Functions used in subroutine
   int8_t (*get_var_byte)(SPVM_API*, int32_t);

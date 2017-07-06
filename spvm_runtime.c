@@ -106,6 +106,14 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   
   // Malloc funtctions
   api->get_package_index = SPVM_RUNTIME_API_get_package_index;
+  api->malloc_object_noinc = SPVM_RUNTIME_API_malloc_object_noinc;
+  api->malloc_byte_array_noinc = SPVM_RUNTIME_API_malloc_byte_array_noinc;
+  api->malloc_short_array_noinc = SPVM_RUNTIME_API_malloc_short_array_noinc;
+  api->malloc_int_array_noinc = SPVM_RUNTIME_API_malloc_int_array_noinc;
+  api->malloc_long_array_noinc = SPVM_RUNTIME_API_malloc_long_array_noinc;
+  api->malloc_float_array_noinc = SPVM_RUNTIME_API_malloc_float_array_noinc;
+  api->malloc_double_array_noinc = SPVM_RUNTIME_API_malloc_double_array_noinc;
+  api->malloc_object_array_noinc = SPVM_RUNTIME_API_malloc_object_array_noinc;
   
   // Function used in subroutine
   api->get_var_byte = SPVM_RUNTIME_API_get_var_byte;
@@ -2146,15 +2154,33 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY: {
     int32_t value_type = *(pc + 1);
     
-    int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, value_type);
-    
-    // Array length
+    // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    // Allocate array
-    int32_t array_object_byte_size = sizeof(SPVM_ARRAY_OBJECT) + size * length;
-    SPVM_ARRAY_OBJECT* array_object = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, array_object_byte_size);
-    
+    SPVM_ARRAY_OBJECT* array;
+    switch(value_type) {
+      case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_BYTE:
+        array = SPVM_RUNTIME_API_malloc_byte_array_noinc(api, length);
+        break;
+      case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_SHORT:
+        array = SPVM_RUNTIME_API_malloc_short_array_noinc(api, length);
+        break;
+      case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_INT:
+        array = SPVM_RUNTIME_API_malloc_int_array_noinc(api, length);
+        break;
+      case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_LONG:
+        array = SPVM_RUNTIME_API_malloc_long_array_noinc(api, length);
+        break;
+      case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_FLOAT:
+        array = SPVM_RUNTIME_API_malloc_float_array_noinc(api, length);
+        break;
+      case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_DOUBLE:
+        array = SPVM_RUNTIME_API_malloc_double_array_noinc(api, length);
+        break;
+      case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_OBJECT:
+        array = SPVM_RUNTIME_API_malloc_object_array_noinc(api, length);
+        break;
+    }
     // Memory allocation error
     if (!array_object) {
       // Error message
@@ -2166,27 +2192,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
     
-    // Init null if sub type is array of reference
-    if (value_type == SPVM_ARRAY_OBJECT_C_VALUE_TYPE_OBJECT) {
-      memset((void*)((intptr_t)array_object + sizeof(SPVM_ARRAY_OBJECT)), 0, size * length);
-    }
-    
-    // Set type
-    array_object->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
-    
-    // Set sub type
-    array_object->value_type = value_type;
-    
-    // Set reference count
-    array_object->ref_count = 0;
-    
-    // Set array length
-    array_object->length = length;
-
-    assert(array_object_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array_object));
-    
     // Set array
-    call_stack[operand_stack_top].object_value = array_object;
+    call_stack[operand_stack_top].object_value = array;
     
     pc += 2;
     goto *jump[*pc];
