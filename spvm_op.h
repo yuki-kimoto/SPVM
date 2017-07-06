@@ -158,6 +158,11 @@ enum {
   SPVM_OP_C_FLAG_CONSTANT_CASE = 1,
 };
 
+enum {
+  // Assign flag
+  SPVM_OP_C_FLAG_ASSIGN_TMP_VAR = 1
+};
+
 /* Binary operation */
 struct SPVM_op {
   SPVM_OP* first;
