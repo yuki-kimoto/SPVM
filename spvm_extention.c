@@ -27,7 +27,14 @@ void SPVM_EXTENTION_std__test1(SPVM_API* api) {
   int32_t num1 = api->get_var_int(api, 0);
   int32_t num2 = api->get_var_int(api, 1);
   
-  int32_t num3 = num1 + num2;
+  int32_t sub_index = api->get_sub_index(api, "std::test2");
+  
+  api->push_var_int(api, 5);
+  api->push_var_int(api, 3);
+  api->call_sub(api, sub_index);
+  int32_t ret = api->pop_retval_int(api);
+  
+  int32_t num3 = num1 + num2 + ret;
   
   api->push_retval_int(api, num3);
 }

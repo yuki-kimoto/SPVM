@@ -409,7 +409,7 @@ int32_t SPVM_RUNTIME_API_get_sub_index(SPVM_API* api, const char* name) {
       
       int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_constant_pool_index;
       
-      char* match_name = (char*)&constant_pool[sub_name_constant_pool_index];
+      char* match_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
       if (strcmp(name, match_name) == 0) {
         found = 1;
         found_sub_constant_pool_index = sub_constant_pool_index;
@@ -444,7 +444,7 @@ int32_t SPVM_RUNTIME_API_get_package_index(SPVM_API* api, const char* name) {
       
       int32_t package_name_constant_pool_index = constant_pool_package.name_constant_pool_index;
       
-      char* match_name = (char*)&constant_pool[package_name_constant_pool_index];
+      char* match_name = (char*)&constant_pool[package_name_constant_pool_index + 1];
       if (strcmp(name, match_name) == 0) {
         found = 1;
         found_package_constant_pool_index = package_constant_pool_index;
