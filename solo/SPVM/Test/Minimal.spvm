@@ -1,5 +1,9 @@
 package Test::Minimal {
   has x : int;
   has y : int;
-  # has y : int;
+  
+  sub new() : Test::Minimal {
+    
+    return malloc Test::Minimal;
+  }
 }
