@@ -20,6 +20,12 @@ SPVM::Test - SPVM test module
 package Test {
   sub main($mvar : int) : int {
     
+    # Subroutine call from native
+    {
+      my $total = std::test1(3, 11);
+      std::println_int($total);
+    }
+    
     # Create temporary varialbe for malloc
     {
       malloc Test::Minimal;

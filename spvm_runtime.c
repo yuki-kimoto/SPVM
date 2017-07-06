@@ -94,6 +94,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->push_var_float = SPVM_RUNTIME_API_push_var_float;
   api->push_var_double = SPVM_RUNTIME_API_push_var_double;
   api->push_var_object = SPVM_RUNTIME_API_push_var_object;
+  api->get_sub_index = SPVM_RUNTIME_API_get_sub_index;
   api->call_sub = SPVM_RUNTIME_call_sub;
   api->pop_retval_byte = SPVM_RUNTIME_API_pop_retval_byte;
   api->pop_retval_short = SPVM_RUNTIME_API_pop_retval_short;
@@ -102,6 +103,9 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->pop_retval_float = SPVM_RUNTIME_API_pop_retval_float;
   api->pop_retval_double = SPVM_RUNTIME_API_pop_retval_double;
   api->pop_retval_object = SPVM_RUNTIME_API_pop_retval_object;
+  
+  // Malloc funtctions
+  api->get_package_index = SPVM_RUNTIME_API_get_package_index;
   
   // Function used in subroutine
   api->get_var_byte = SPVM_RUNTIME_API_get_var_byte;

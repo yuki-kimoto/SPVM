@@ -51,6 +51,7 @@ struct SPVM_api {
   void (*push_var_float)(SPVM_API*, float);
   void (*push_var_double)(SPVM_API*, double);
   void (*push_var_object)(SPVM_API*, SPVM_API_BASE_OBJECT*);
+  int32_t (*get_sub_index)(SPVM_API*, const char*);
   void (*call_sub)(SPVM_API*, int32_t);
   int8_t (*pop_retval_byte)(SPVM_API*);
   int16_t (*pop_retval_short)(SPVM_API*);
@@ -59,6 +60,9 @@ struct SPVM_api {
   float (*pop_retval_float)(SPVM_API*);
   double (*pop_retval_double)(SPVM_API*);
   SPVM_API_BASE_OBJECT* (*pop_retval_object)(SPVM_API*);
+  
+  // Malloc funtctions
+  int32_t (*get_package_index)(SPVM_API*, const char*);
   
   // Functions used in subroutine
   int8_t (*get_var_byte)(SPVM_API*, int32_t);
