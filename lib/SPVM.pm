@@ -160,6 +160,176 @@ B<Perl module> - SPVM function can be called from Perl itself (Not yet implement
 
 SPVM only work on the Perl which support 64 bit integer.
 
+=head1 SPVM SYNTAX
+
+=head2 Type
+
+=head3 Numeric type
+
+Numeric types are byte, short, int, long, float, double.
+
+  byte    signed integer          1byte
+  short   signed integer          2byte
+  int     signed integer          4byte
+  long    signed integer          8byte
+  float   floating-point number   4byte
+  double  floating-point number   8byte
+
+Declaration
+
+  my $value : byte;
+  my $value : short;
+  my $value : int;
+  my $value : long;
+  my $value : float;
+  my $value : double;
+
+=head3 Reference type
+
+Reference types are `array` and `object`.
+
+B<Object type>
+
+    PackageName
+
+Declaration
+
+    my $object : PackageName;
+
+B<Array type>
+
+  byte[]   byte array
+  short[]  short array
+  int[]    int array array
+  long[]   long array
+  float[]  float array
+  doube[]  double array
+  PackageName[] object array
+
+Declaration
+
+  my $values : byte[];
+  my $values : short[];
+  my $values : int[];
+  my $values : long[];
+  my $values : float[];
+  my $values : double[];
+  my $values : PackageName[];
+
+B<Multiple array type>
+
+  my $values : byte[][];
+  my $values : short[][];
+  my $values : int[][];
+  my $values : long[][];
+  my $values : float[][];
+  my $values : double[][];
+  my $values : PackageName[][];
+
+  my $values : byte[][][];
+  my $values : short[][][];
+  my $values : int[][][];
+  my $values : long[][][];
+  my $values : float[][][];
+  my $values : double[][][];
+  my $values : PackageName[][][];
+
+=head2 Type inference
+
+If the type of right value is known, the type of left value is automatically decided.
+    
+  # Type of $value2 is byte.
+  my $value1 : byte;
+  my $value2 = $value1;
+  
+  # Type of $values2 is int[]
+  my $values1 = malloc int[3];
+  my $values2 = $values1;
+  
+  # Type of $object2 is PackageName
+  my $object1 = malloc PackageName
+  my $object2 = $object1;
+
+=head2 Constant
+
+=head3 Constant type
+
+Type of constant default integral value is `int`.
+    
+    # int type
+    1;
+    3;
+
+Type of constant default floating-point value is `double`.
+
+    # double
+    1.2
+    5.3
+    
+Type of constant is specified by type specifier.
+    
+    # long
+    3L
+    
+    # float
+    3.2f
+    
+    # double
+    3.2d
+
+=head2 Name
+
+=head3 Package name
+
+Package name is a combination of alphabets, numbers, and `::`. Numbers should not appear as the first character. `_` can't be used in class name.
+    
+    # OK
+    Foo
+    Foo::Bar
+    Foo1::Bar1
+    
+    # Not OK
+    1Foo
+    Foo::2Bar
+    Foo_Bar;
+
+=head3 Subroutine name
+
+Subroutine name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in subroutine name.
+
+    # OK
+    foo
+    foo1
+    foo_bar
+    
+    # Not OK
+    1foo
+    foo__bar
+
+=head3 Field name
+
+Field name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in field name.
+
+    # OK
+    foo
+    foo1
+    foo_bar
+    
+    # Not OK
+    1foo
+    foo__bar
+
+=head3 Absolute name
+
+Absolute name is combination of package name and subroutine name, or package name and field name.
+
+    PackageName1::foo
+    PackageName1::PackageName2::foo_bar
+
+=head2 Limitation
+
+Object can't have object and array of object.
+
 =head2 FAQ
 
 =over 4

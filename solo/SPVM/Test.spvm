@@ -785,7 +785,6 @@ package Test {
       die $obj_error2;
     }
   }
-
 }
 
 =head1 NAME
