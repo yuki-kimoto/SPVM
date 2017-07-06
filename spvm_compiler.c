@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #include "spvm_compiler.h"
 #include "spvm_type.h"
 #include "spvm_package.h"
@@ -18,6 +17,13 @@
 #include "spvm_sub.h"
 #include "spvm_constant_pool.h"
 #include "spvm_runtime.h"
+
+SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  
+  return runtime;
+}
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = malloc(sizeof(SPVM_COMPILER));

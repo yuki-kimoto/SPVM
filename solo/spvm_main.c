@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
   
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
   SPVM_API* api = runtime->api;
   
   // Copy constant pool to runtime

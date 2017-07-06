@@ -271,7 +271,7 @@ build_runtime(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
   
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
   
   // Copy constant pool to runtime
   runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
