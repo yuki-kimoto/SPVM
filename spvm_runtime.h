@@ -32,9 +32,12 @@ struct SPVM_runtime {
   
   // Packages length
   int32_t packages_length;
-  
+
   // Indexes of package
   int32_t package_indexes_constant_pool_index;
+
+  // Subroutines length
+  int32_t subs_length;
 
   // Indexes of package
   int32_t sub_indexes_constant_pool_index;

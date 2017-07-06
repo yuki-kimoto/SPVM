@@ -30,6 +30,16 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
   memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
   
+  SPVM_ARRAY* op_packages = compiler->op_packages;
+  
+  runtime->packages_length = op_packages->length;
+  
+  runtime->package_indexes_constant_pool_index = compiler->package_indexes_constant_pool_index;
+  
+  runtime->sub_indexes_constant_pool_index = compiler->sub_indexes_constant_pool_index;
+  
+  runtime->subs_length = compiler->subs_length;
+  
   return runtime;
 }
 
@@ -90,6 +100,15 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
     }
   }
+  
+  // Package indexes constant pool index
+  compiler->package_indexes_constant_pool_index = -1;
+  
+  // Subroutine indexes constant pool index
+  compiler->sub_indexes_constant_pool_index = -1;
+  
+  // Subroutine length
+  compiler->subs_length = 0;
   
   return compiler;
 }

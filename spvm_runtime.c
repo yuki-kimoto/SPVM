@@ -41,6 +41,18 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   runtime->operand_stack_top = -1;
   runtime->abort = 0;
   
+  // Packages length
+  runtime->packages_length = 0;
+  
+  // Indexes of package
+  runtime->package_indexes_constant_pool_index = -1;
+  
+  // Subroutines length
+  runtime->subs_length = 0;
+  
+  // Indexes of package
+  runtime->sub_indexes_constant_pool_index = -1;
+  
   return runtime;
 }
 

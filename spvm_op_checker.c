@@ -1738,6 +1738,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Create subroutine indexes
   compiler->sub_indexes_constant_pool_index = compiler->constant_pool->length;
+  compiler->subs_length = 0;
   {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
@@ -1745,6 +1746,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_PACKAGE* package = op_package->uv.package;
       
       {
+        compiler->subs_length += package->op_subs->length;
         int32_t sub_pos;
         for (sub_pos = 0; sub_pos < package->op_subs->length; sub_pos++) {
           

@@ -88,6 +88,9 @@ struct SPVM_compiler {
   // Subroutine indexes constant pool index
   int32_t sub_indexes_constant_pool_index;
   
+  // Subroutine length
+  int32_t subs_length;
+  
   // Error is fatal
   _Bool fatal_error;
 };
