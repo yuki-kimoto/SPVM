@@ -571,7 +571,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_RETURN_LONG: {
     
     // Get return value
-    int32_t return_value = call_stack[operand_stack_top].int_value;
+    int64_t return_value = call_stack[operand_stack_top].long_value;
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -587,7 +587,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top].int_value = return_value;
+    call_stack[operand_stack_top].long_value = return_value;
     
     // Finish call sub
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
