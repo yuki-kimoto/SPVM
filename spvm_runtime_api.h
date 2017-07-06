@@ -80,4 +80,12 @@ int32_t SPVM_RUNTIME_API_get_package_index(SPVM_API* api, const char* name);
 
 SPVM_OBJECT* SPVM_RUNTIME_API_malloc_object_noinc(SPVM_API* api, int32_t package_constant_pool_index);
 
+SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_byte_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_short_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_int_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_long_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_float_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_double_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_object_array_noinc(SPVM_API* api, int32_t length);
+
 #endif

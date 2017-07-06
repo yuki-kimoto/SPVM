@@ -1222,7 +1222,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         }
                       }
                       else {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_REF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_OBJECT);
                       }
                     }
                     else {

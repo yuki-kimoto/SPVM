@@ -2167,7 +2167,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     
     // Init null if sub type is array of reference
-    if (value_type == SPVM_ARRAY_OBJECT_C_VALUE_TYPE_REF) {
+    if (value_type == SPVM_ARRAY_OBJECT_C_VALUE_TYPE_OBJECT) {
       memset((void*)((intptr_t)array_object + sizeof(SPVM_ARRAY_OBJECT)), 0, size * length);
     }
     
