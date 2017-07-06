@@ -23,6 +23,24 @@ void SPVM_EXTENTION_std__sum_int(SPVM_API* api) {
   api->push_retval_int(api, total);
 }
 
+void SPVM_EXTENTION_std__test1(SPVM_API* api) {
+  int32_t num1 = api->get_var_int(api, 0);
+  int32_t num2 = api->get_var_int(api, 1);
+  
+  int32_t num3 = num1 + num2;
+  
+  api->push_retval_int(api, num3);
+}
+
+void SPVM_EXTENTION_std__test2(SPVM_API* api) {
+  int32_t num1 = api->get_var_int(api, 0);
+  int32_t num2 = api->get_var_int(api, 1);
+  
+  int32_t num3 = num1 + num2;
+  
+  api->push_retval_int(api, num3);
+}
+
 void SPVM_EXTENTION_std__print(SPVM_API* api) {
   void* array_object = api->get_var_object(api, 0);
 
