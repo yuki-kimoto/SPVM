@@ -247,7 +247,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_malloc_object_noinc(SPVM_API* api, int32_t package
     object->ref_count = 0;
     
     // Initialize reference fields by 0
-    memset((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), 0, sizeof(void*) * constant_pool_package.object_fields_length);
+    memset((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), 0, sizeof(SPVM_VALUE) * constant_pool_package.object_fields_length);
     
     // Package constant pool index
     object->package_constant_pool_index = package_constant_pool_index;

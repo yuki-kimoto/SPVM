@@ -2496,8 +2496,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     else {
       index = (*(pc + 1) << 8) + *(pc + 2);
-      SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)object + sizeof(SPVM_VALUE) * index);
-
+      SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)object +  + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+      
       // Increment reference count
       SPVM_RUNTIME_API_inc_ref_count(api, call_stack[operand_stack_top].object_value);
       

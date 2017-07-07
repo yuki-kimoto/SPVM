@@ -20,6 +20,14 @@ SPVM::Test - SPVM test module
 package Test {
   sub main($mvar : int) : int {
 
+    # $obj->[0]{x}
+    {
+      my $obj = malloc Test::Simple;
+      $obj->{values1} = malloc int[5];
+      $obj->{values1}[0] = 221;
+      std::println_int($obj->{values1}[0]);
+    }
+    
     # Call new subroutine without variable
     {
       Test::Minimal::new();
