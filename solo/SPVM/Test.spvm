@@ -131,7 +131,7 @@ package Test {
         $nums->[$i] = $i;
       }
 
-      for (my $i = 0; $i < $len; $i++) {
+      for (my $i = 0; $i < @$nums; $i++) {
         $nums->[$i] = $i;
       }
     }
