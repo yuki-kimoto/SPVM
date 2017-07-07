@@ -19,7 +19,7 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
-  
+
     # Call new subroutine without variable
     {
       Test::Minimal::new();

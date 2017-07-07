@@ -416,6 +416,10 @@ call_field
     {
       $$ = SPVM_OP_build_call_field(compiler, $1, $3);
     }
+  | array_elem '{' field_name '}'
+    {
+      $$ = SPVM_OP_build_call_field(compiler, $1, $3);
+    }
 
 unop
   : '+' term %prec UMINUS
@@ -523,6 +527,10 @@ array_elem
       $$ = SPVM_OP_build_array_elem(compiler, $1, $4);
     }
   | array_elem '[' term ']'
+    {
+      $$ = SPVM_OP_build_array_elem(compiler, $1, $3);
+    }
+  | call_field '[' term ']'
     {
       $$ = SPVM_OP_build_array_elem(compiler, $1, $3);
     }
