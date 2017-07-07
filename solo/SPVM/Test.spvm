@@ -119,6 +119,12 @@ package Test {
       }
     }
     
+    # length with {}
+    {
+      my $nums = malloc int[2000000];
+      my $len = len { $nums };
+    }
+    
     {
       my $nums = malloc int[2000000];
       my $len = len $nums;

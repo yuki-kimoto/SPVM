@@ -367,7 +367,10 @@ array_length
     {
       $$ = SPVM_OP_build_array_length(compiler, $1, $2);
     }
-
+  | ARRAY_LENGTH '{' term '}'
+    {
+      $$ = SPVM_OP_build_array_length(compiler, $1, $3);
+    }
 opt_term
   : /* NULL */
     {
