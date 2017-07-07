@@ -712,11 +712,13 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Resotre call stack base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
+    /*
     // Decrement reference count
     if (return_value != NULL) {
       return_value->ref_count--;
       assert(return_value->ref_count >= 0);
     }
+    */
     
     // Push return value
     operand_stack_top++;
