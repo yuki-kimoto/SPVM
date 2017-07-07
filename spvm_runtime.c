@@ -394,8 +394,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   
   case_SPVM_BYTECODE_C_CODE_CALL_SUB: {
     // Get subroutine ID
-    sub_constant_pool_index
-      = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    sub_constant_pool_index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
     CALLSUB_COMMON:
       memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
@@ -499,6 +498,22 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Get return value
     int8_t return_value = call_stack[operand_stack_top].byte_value;
+
+    // Decrement object my vars reference count
+    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
+    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    if (object_my_vars_length) {
+      {
+        int32_t i;
+        for (i = 0; i < object_my_vars_length; i++) {
+          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          if (object != NULL) {
+            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+          }
+        }
+      }
+    }
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -535,6 +550,22 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Get return value
     int16_t return_value = call_stack[operand_stack_top].short_value;
+
+    // Decrement object my vars reference count
+    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
+    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    if (object_my_vars_length) {
+      {
+        int32_t i;
+        for (i = 0; i < object_my_vars_length; i++) {
+          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          if (object != NULL) {
+            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+          }
+        }
+      }
+    }
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -571,6 +602,22 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Get return value
     int32_t return_value = call_stack[operand_stack_top].int_value;
+
+    // Decrement object my vars reference count
+    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
+    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    if (object_my_vars_length) {
+      {
+        int32_t i;
+        for (i = 0; i < object_my_vars_length; i++) {
+          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          if (object != NULL) {
+            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+          }
+        }
+      }
+    }
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -607,6 +654,22 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Get return value
     int64_t return_value = call_stack[operand_stack_top].long_value;
+
+    // Decrement object my vars reference count
+    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
+    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    if (object_my_vars_length) {
+      {
+        int32_t i;
+        for (i = 0; i < object_my_vars_length; i++) {
+          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          if (object != NULL) {
+            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+          }
+        }
+      }
+    }
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -643,6 +706,22 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Get return value
     float return_value = call_stack[operand_stack_top].float_value;
+
+    // Decrement object my vars reference count
+    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
+    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    if (object_my_vars_length) {
+      {
+        int32_t i;
+        for (i = 0; i < object_my_vars_length; i++) {
+          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          if (object != NULL) {
+            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+          }
+        }
+      }
+    }
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -679,6 +758,22 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Get return value
     double return_value = call_stack[operand_stack_top].double_value;
+
+    // Decrement object my vars reference count
+    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
+    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    if (object_my_vars_length) {
+      {
+        int32_t i;
+        for (i = 0; i < object_my_vars_length; i++) {
+          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          if (object != NULL) {
+            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+          }
+        }
+      }
+    }
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -715,6 +810,32 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Get return value
     SPVM_BASE_OBJECT* return_value = call_stack[operand_stack_top].object_value;
+    
+    // Increment ref count of return value not to release by decrement
+    if (return_value != NULL) {
+      return_value->ref_count++;
+    }
+    
+    // Decrement object my vars reference count
+    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
+    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    if (object_my_vars_length) {
+      {
+        int32_t i;
+        for (i = 0; i < object_my_vars_length; i++) {
+          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          if (object != NULL) {
+            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+          }
+        }
+      }
+    }
+
+    // Increment ref count of return value not to release by decrement
+    if (return_value != NULL) {
+      return_value->ref_count--;
+    }
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -787,7 +908,33 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_DIE: {
     
     // Return value
-    void* return_value = call_stack[operand_stack_top].object_value;
+    SPVM_BASE_OBJECT* return_value = call_stack[operand_stack_top].object_value;
+
+    // Increment ref count of return value not to release by decrement
+    if (return_value != NULL) {
+      return_value->ref_count++;
+    }
+    
+    // Decrement object my vars reference count
+    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
+    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    if (object_my_vars_length) {
+      {
+        int32_t i;
+        for (i = 0; i < object_my_vars_length; i++) {
+          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          if (object != NULL) {
+            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+          }
+        }
+      }
+    }
+
+    // Increment ref count of return value not to release by decrement
+    if (return_value != NULL) {
+      return_value->ref_count--;
+    }
     
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
