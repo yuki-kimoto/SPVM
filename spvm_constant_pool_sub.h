@@ -13,7 +13,6 @@ struct SPVM_constant_pool_sub {
   int32_t args_length;
   int32_t return_type_id;
   _Bool is_native;
-  _Bool has_return_value;
 };
 
 #endif

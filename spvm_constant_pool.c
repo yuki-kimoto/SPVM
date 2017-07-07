@@ -108,11 +108,9 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   constant_pool_sub.args_length = sub->op_args->length;
   constant_pool_sub.is_native = sub->is_native;
   if (sub->op_return_type->code == SPVM_OP_C_CODE_VOID) {
-    constant_pool_sub.has_return_value = 0;
     constant_pool_sub.return_type_id = -1;
   }
   else {
-    constant_pool_sub.has_return_value = 1;
     constant_pool_sub.return_type_id = sub->op_return_type->uv.type->id;
   }
   
