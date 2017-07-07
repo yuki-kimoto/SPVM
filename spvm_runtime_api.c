@@ -421,10 +421,6 @@ void SPVM_RUNTIME_API_push_var_double(SPVM_API* api, double value) {
 void SPVM_RUNTIME_API_push_var_object(SPVM_API* api, SPVM_BASE_OBJECT* value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
-  if (value != NULL) {
-    value->ref_count++;
-  }
-  
   runtime->operand_stack_top++;
   runtime->call_stack[runtime->operand_stack_top].object_value = value;
 }
@@ -473,10 +469,6 @@ void SPVM_RUNTIME_API_push_retval_double(SPVM_API* api, double value) {
 
 void SPVM_RUNTIME_API_push_retval_object(SPVM_API* api, SPVM_BASE_OBJECT* value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
-  
-  if (value != NULL) {
-    value->ref_count++;
-  }
   
   runtime->operand_stack_top++;
   runtime->call_stack[runtime->operand_stack_top].object_value = value;
@@ -539,11 +531,6 @@ void* SPVM_RUNTIME_API_pop_retval_object(SPVM_API* api) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   SPVM_BASE_OBJECT* value = runtime->call_stack[runtime->operand_stack_top].object_value;
-  
-  if (value != NULL) {
-    value->ref_count++;
-    // Do mortal
-  }
   
   runtime->operand_stack_top--;
   
