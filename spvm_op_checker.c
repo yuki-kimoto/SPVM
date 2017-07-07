@@ -394,85 +394,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   op_cur->last->rvalue = 1;
                   break;
                 }
-                case SPVM_OP_C_CODE_MALLOC: {
-                  SPVM_OP* op_type = op_cur->first;
-                  
-                  // If MALLOC is not rvalue, temparary variable is created, and assinged.
-                  if (!op_cur->rvalue) {
-                    assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
-                    if (my_var_length == SPVM_LIMIT_C_MY_VARS) {
-                      SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created in malloc) at %s line %d\n", op_cur->file, op_cur->line);
-                      compiler->fatal_error = 1;
-                      break;
-                    }
-                    
-                    // Create temporary variable
-                    // my_var
-                    SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
-                    
-                    // Temparary variable name
-                    char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
-                    sprintf(name, "@tmp%d", my_var_tmp_index++);
-                    SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_cur->file, op_cur->line);
-                    op_name->uv.name = name;
-                    my_var->op_name = op_name;
-                    
-                    // Set type to my var
-                    my_var->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
-                    my_var->op_type->uv.type = op_type->uv.type;
-                    
-                    // Index
-                    my_var->index = my_var_length++;
-                    
-                    // op my_var
-                    SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, op_cur->file, op_cur->line);
-                    op_my_var->uv.my_var = my_var;
-                    
-                    // Add my var
-                    SPVM_ARRAY_push(op_my_vars, op_my_var);
-                    SPVM_ARRAY_push(op_my_var_stack, op_my_var);
-                    
-                    // Convert malloc op to assing op
-                    // Var op
-                    SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
-                    
-                    // Malloc op
-                    SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MALLOC, op_cur->file, op_cur->line);
-                    
-                    // Type parent is malloc
-                    op_type->moresib = 0;
-                    op_type->sibparent = op_malloc;
-
-                    // Assing op
-                    SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                    op_assign->first = op_var;
-                    op_assign->last = op_malloc;
-                    op_assign->moresib = 0;
-                    op_assign->sibparent = op_cur;
-                    
-                    // Convert cur malloc op to var
-                    op_cur->code = SPVM_OP_C_CODE_VAR;
-                    op_cur->uv.var = op_var->uv.var;
-                    op_cur->first = op_assign;
-                    op_cur->last = op_assign;
-                    
-                    // Var op has sibling
-                    op_var->moresib = 1;
-                    op_var->sibparent = op_malloc;
-                    
-                    // Malloc op parent is assign op
-                    op_malloc->first = op_type;
-                    op_malloc->last = op_type;
-                    op_malloc->moresib = 0;
-                    op_malloc->sibparent = op_assign;
-                    
-                    // Set lvalue and rvalue
-                    op_assign->first->lvalue = 1;
-                    op_assign->last->rvalue = 1;
-                    
-                  }
-                  break;
-                }
               }
               
               // [END]Preorder traversal position
@@ -1003,6 +924,82 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       
+                      // If MALLOC is not rvalue, temparary variable is created, and assinged.
+                      if (!op_cur->rvalue) {
+                        assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
+                        if (my_var_length == SPVM_LIMIT_C_MY_VARS) {
+                          SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created in malloc) at %s line %d\n", op_cur->file, op_cur->line);
+                          compiler->fatal_error = 1;
+                          break;
+                        }
+                        
+                        // Create temporary variable
+                        // my_var
+                        SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
+                        
+                        // Temparary variable name
+                        char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
+                        sprintf(name, "@tmp%d", my_var_tmp_index++);
+                        SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_cur->file, op_cur->line);
+                        op_name->uv.name = name;
+                        my_var->op_name = op_name;
+                        
+                        // Set type to my var
+                        my_var->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
+                        my_var->op_type->uv.type = op_type->uv.type;
+                        
+                        // Index
+                        my_var->index = my_var_length++;
+                        
+                        // op my_var
+                        SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, op_cur->file, op_cur->line);
+                        op_my_var->uv.my_var = my_var;
+                        
+                        // Add my var
+                        SPVM_ARRAY_push(op_my_vars, op_my_var);
+                        SPVM_ARRAY_push(op_my_var_stack, op_my_var);
+                        
+                        // Convert malloc op to assing op
+                        // Var op
+                        SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
+                        
+                        // Malloc op
+                        SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MALLOC, op_cur->file, op_cur->line);
+                        
+                        // Type parent is malloc
+                        op_type->moresib = 0;
+                        op_type->sibparent = op_malloc;
+
+                        // Assing op
+                        SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
+                        op_assign->first = op_var;
+                        op_assign->last = op_malloc;
+                        op_assign->moresib = 0;
+                        op_assign->sibparent = op_cur;
+                        
+                        // Convert cur malloc op to var
+                        op_cur->code = SPVM_OP_C_CODE_VAR;
+                        op_cur->uv.var = op_var->uv.var;
+                        op_cur->first = op_assign;
+                        op_cur->last = op_assign;
+                        
+                        // Var op has sibling
+                        op_var->moresib = 1;
+                        op_var->sibparent = op_malloc;
+                        
+                        // Malloc op parent is assign op
+                        op_malloc->first = op_type;
+                        op_malloc->last = op_type;
+                        op_malloc->moresib = 0;
+                        op_malloc->sibparent = op_assign;
+                        
+                        // Set lvalue and rvalue
+                        op_assign->first->lvalue = 1;
+                        op_assign->last->rvalue = 1;
+                        
+                        op_cur = op_malloc;
+                      }
+
                       break;
                     }
                     case SPVM_OP_C_CODE_BIT_XOR: {
