@@ -408,7 +408,11 @@ convert_type
     }
 
 call_field
-  : term '{' field_name '}'
+  : term ARROW '{' field_name '}'
+    {
+      $$ = SPVM_OP_build_call_field(compiler, $1, $4);
+    }
+  | call_field '{' field_name '}'
     {
       $$ = SPVM_OP_build_call_field(compiler, $1, $3);
     }

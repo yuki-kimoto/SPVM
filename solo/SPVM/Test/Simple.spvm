@@ -12,7 +12,7 @@ package Test::Simple {
   has title : int;
   
   sub get_x ($self : Test::Simple) : int {
-    return $self{x};
+    return $self->{x};
   }
   
   sub get2 () : int {
@@ -35,12 +35,12 @@ package Test::Simple {
     # $title->(1);
     # $title->(1, 2);
 
-    $self{x};
+    $self->{x};
     $self->sum5();
 
     Test::Simple::sum5($self);
 
-    $self{x} = 3;
+    $self->{x} = 3;
 
     my $char : byte = 'a';
     
@@ -48,7 +48,7 @@ package Test::Simple {
   }
   
   sub sum5($self : Test::Simple) : int {
-    $self{x};
+    $self->{x};
     
     return 0;
   }

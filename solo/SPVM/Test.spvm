@@ -36,7 +36,7 @@ package Test {
     {
       malloc Test::Minimal;
       malloc Test::Minimal;
-      (malloc Test::Minimal){x};
+      (malloc Test::Minimal)->{x};
     }
     
     my $obj1 = malloc Test::Minimal;
@@ -281,11 +281,11 @@ package Test {
     {
       my $m = malloc Test::Minimal;
       
-      $m{x} = 99;
-      $m{y} = 100;
+      $m->{x} = 99;
+      $m->{y} = 100;
       
-      std::println_int($m{x});
-      std::println_int($m{y});
+      std::println_int($m->{x});
+      std::println_int($m->{y});
     }
 
     # Free when assignment
@@ -445,9 +445,9 @@ package Test {
     std::println_int($simple3->get_x());
     $simple3->get_x;
     
-    $simple3{y} = 2;
-    $simple3{x};
-    $simple3{y};
+    $simple3->{y} = 2;
+    $simple3->{x};
+    $simple3->{y};
 
     my $simple2 : Test::Simple = malloc Test::Simple;
     
