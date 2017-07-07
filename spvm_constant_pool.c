@@ -114,6 +114,40 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
     constant_pool_sub.return_type_id = sub->op_return_type->uv.type->id;
   }
   
+  // Object args length
+  int32_t object_args_length = 0;
+  constant_pool_sub.object_arg_indexes_constant_pool_index = constant_pool->length;
+  {
+    int32_t i;
+    for (i = 0; i < sub->op_args->length; i++) {
+      SPVM_OP* op_arg = SPVM_ARRAY_fetch(sub->op_args, i);
+      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+      assert(arg_type);
+      if (!SPVM_TYPE_is_numeric(compiler, arg_type)) {
+        SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, i);
+        object_args_length++;
+      }
+    }
+    constant_pool_sub.object_args_length = object_args_length;
+  }
+
+  // Object my_vars length
+  int32_t object_my_vars_length = 0;
+  constant_pool_sub.object_my_var_indexes_constant_pool_index = constant_pool->length;
+  {
+    int32_t i;
+    for (i = 0; i < sub->op_my_vars->length; i++) {
+      SPVM_OP* op_my_var = SPVM_ARRAY_fetch(sub->op_my_vars, i);
+      SPVM_TYPE* my_var_type = SPVM_OP_get_type(compiler, op_my_var);
+      assert(my_var_type);
+      if (!SPVM_TYPE_is_numeric(compiler, my_var_type)) {
+        SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, i);
+        object_my_vars_length++;
+      }
+    }
+    constant_pool_sub.object_my_vars_length = object_my_vars_length;
+  }
+  
   // Add length
   constant_pool->length += extend_length;
   
