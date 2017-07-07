@@ -514,7 +514,11 @@ binop
     }
 
 array_elem
-  : term '[' term ']'
+  : term ARROW '[' term ']'
+    {
+      $$ = SPVM_OP_build_array_elem(compiler, $1, $4);
+    }
+  | array_elem '[' term ']'
     {
       $$ = SPVM_OP_build_array_elem(compiler, $1, $3);
     }

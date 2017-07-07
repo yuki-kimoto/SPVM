@@ -85,7 +85,9 @@ package Test {
     # Malloc mutil array
     {
       my $nums : int[][] = malloc int[][3];
-      $nums[0] = malloc int[1];
+      $nums->[0] = malloc int[1];
+      $nums->[0][0] = 178;
+      std::println_int($nums->[0][0]);
     }
     
     # Declare mutil array
@@ -111,11 +113,11 @@ package Test {
       my $nums = malloc int[258];
       my $len = @$nums;
       for (my $i = 0; $i < $len; $i++) {
-        $nums[$i] = $i;
+        $nums->[$i] = $i;
       }
 
       for (my $i = 0; $i < $len; $i++) {
-        $nums[$i] = $i;
+        $nums->[$i] = $i;
       }
     }
     
@@ -130,10 +132,10 @@ package Test {
       my $len = @$nums;
       my $i = 0;
       for ($i = 0; $i < $len; $i = $i + 1) {
-        $nums[$i] = $i;
+        $nums->[$i] = $i;
       }
       std::println_int($i);
-      std::println_int($nums[$i - 1]);
+      std::println_int($nums->[$i - 1]);
     }
     
     # Object to get long field is undef
@@ -151,37 +153,37 @@ package Test {
     # Index is out of range
     #{
     #  my $nums = malloc int[3];
-    #  $nums[3] = 1;
+    #  $nums->[3] = 1;
     #}
     
     # Index is out of range
     #{
     #  my $nums = malloc int[3];
-    #  $nums[-1] = 3;
+    #  $nums->[-1] = 3;
     #}
 
     # Array is undef
     #{
     #  my $nums : int[];
-    #  $nums[0] = 1;
+    #  $nums->[0] = 1;
     #}
 
     # Index is out of range
     #{
     #  my $nums = malloc int[3];
-    #  $nums[3];
+    #  $nums->[3];
     #}
     
     # Index is out of range
     #{
     #  my $nums = malloc int[3];
-    #  $nums[-1];
+    #  $nums->[-1];
     #}
     
     # Array is undef
     #{
     #  my $nums : int[];
-    #  $nums[0];
+    #  $nums->[0];
     #}
     
     {
@@ -246,9 +248,9 @@ package Test {
     
     {
       my $nums = malloc int[3];
-      $nums[0] = 1;
-      $nums[1] = 2;
-      $nums[2] = 3;
+      $nums->[0] = 1;
+      $nums->[1] = 2;
+      $nums->[2] = 3;
       
       my $total = std::sum_int($nums);
       std::println_int($total);
@@ -535,18 +537,18 @@ package Test {
 
     {
       my $nums = malloc int[3];
-      $nums[0] = 13;
-      $nums[1] = 14;
-      std::println_int($nums[0]);
-      std::println_int($nums[1]);
+      $nums->[0] = 13;
+      $nums->[1] = 14;
+      std::println_int($nums->[0]);
+      std::println_int($nums->[1]);
     }
     
     {
       my $nums : long[] = malloc long[3];
-      $nums[0] = 11L;
-      $nums[1] = 12L;
-      std::println_long($nums[0]);
-      std::println_long($nums[1]);
+      $nums->[0] = 11L;
+      $nums->[1] = 12L;
+      std::println_long($nums->[0]);
+      std::println_long($nums->[1]);
       std::println_int(@$nums);
       my $nums_length : int = @$nums;
     }
