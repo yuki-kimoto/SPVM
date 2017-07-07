@@ -11,6 +11,12 @@ use Test::EnumD;
 use Test::Simple;
 use Test::Minimal;
 
+=head1 NAME
+
+SPVM::Test - SPVM test module
+
+=cut
+
 package Test {
   sub main($mvar : int) : int {
   
