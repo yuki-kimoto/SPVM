@@ -509,7 +509,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
           int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
           SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+            SPVM_RUNTIME_API_dec_ref_count(api, object);
           }
         }
       }
@@ -561,7 +561,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
           int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
           SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+            SPVM_RUNTIME_API_dec_ref_count(api, object);
           }
         }
       }
@@ -606,14 +606,16 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Decrement object my vars reference count
     int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
     int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+
     if (object_my_vars_length) {
       {
         int32_t i;
         for (i = 0; i < object_my_vars_length; i++) {
           int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
           SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          
           if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+            SPVM_RUNTIME_API_dec_ref_count(api, object);
           }
         }
       }
@@ -665,7 +667,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
           int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
           SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+            SPVM_RUNTIME_API_dec_ref_count(api, object);
           }
         }
       }
@@ -717,7 +719,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
           int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
           SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+            SPVM_RUNTIME_API_dec_ref_count(api, object);
           }
         }
       }
@@ -769,7 +771,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
           int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
           SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+            SPVM_RUNTIME_API_dec_ref_count(api, object);
           }
         }
       }
@@ -826,7 +828,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
           int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
           SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+            SPVM_RUNTIME_API_dec_ref_count(api, object);
           }
         }
       }
@@ -925,7 +927,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
           int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
           SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(runtime, object);
+            SPVM_RUNTIME_API_dec_ref_count(api, object);
           }
         }
       }

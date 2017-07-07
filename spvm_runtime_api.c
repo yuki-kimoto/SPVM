@@ -227,6 +227,7 @@ SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_object_array_noinc(SPVM_API* api, int
 
 SPVM_OBJECT* SPVM_RUNTIME_API_malloc_object_noinc(SPVM_API* api, int32_t package_constant_pool_index) {
   
+  
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_ALLOCATOR* allocator = runtime->allocator;
   int32_t* constant_pool = runtime->constant_pool;
@@ -314,7 +315,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
     assert(base_object->ref_count > 0);
     
     // Decrement reference count
-    base_object->ref_count -= 1;
+    base_object->ref_count--;
     
     // If reference count is zero, free address.
     if (base_object->ref_count == 0) {
@@ -338,11 +339,14 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
       }
       // Reference is object
       else if (base_object->type == SPVM_BASE_OBJECT_C_TYPE_OBJECT) {
+        int32_t* constant_pool = runtime->constant_pool;
+        
         SPVM_OBJECT* object = (SPVM_OBJECT*)base_object;
         
         int32_t package_constant_pool_index = object->package_constant_pool_index;
         SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-        memcpy(&constant_pool_package, &runtime->constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+        
+        memcpy(&constant_pool_package, &constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
         
         int32_t object_fields_length = constant_pool_package.object_fields_length;
         
