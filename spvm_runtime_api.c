@@ -370,7 +370,7 @@ void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
   if (base_object != NULL) {
     assert(base_object->ref_count >= 0);
     // Increment reference count
-    base_object->ref_count += 1;
+    base_object->ref_count++;
   }
 }
 

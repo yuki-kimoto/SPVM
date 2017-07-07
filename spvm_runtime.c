@@ -351,8 +351,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE,
     &&case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_DIE,
-    &&case_SPVM_BYTECODE_C_CODE_INC_REF_COUNT,
-    &&case_SPVM_BYTECODE_C_CODE_DEC_REF_COUNT,
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
   };
   
@@ -1311,7 +1309,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)array_object + sizeof(SPVM_ARRAY_OBJECT) + sizeof(void*) * index);
         
         // Increment reference count
-        SPVM_RUNTIME_API_inc_ref_count(api, call_stack[operand_stack_top].object_value);
+        if (call_stack[operand_stack_top].object_value != NULL) {
+          call_stack[operand_stack_top].object_value->ref_count++;
+        }
         
         // Decrement reference count
         SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
@@ -1354,7 +1354,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     int32_t vars_index = *(pc + 1);
     
     // Increment reference count
-    SPVM_RUNTIME_API_inc_ref_count(api, call_stack[operand_stack_top].object_value);
+    if (call_stack[operand_stack_top].object_value != NULL) {
+      call_stack[operand_stack_top].object_value->ref_count++;
+    }
     
     // Decrement reference count
     SPVM_RUNTIME_API_dec_ref_count(api, vars[vars_index].object_value);
@@ -1364,24 +1366,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     operand_stack_top--;
     pc += 2;
-    goto *jump[*pc];
-  }
-  case_SPVM_BYTECODE_C_CODE_DEC_REF_COUNT: {
-    void* address = call_stack[operand_stack_top].object_value;
-    
-    // Decrement reference count
-    SPVM_RUNTIME_API_dec_ref_count(api, address);
-    
-    pc += 1;
-    goto *jump[*pc];
-  }
-  case_SPVM_BYTECODE_C_CODE_INC_REF_COUNT: {
-    void* address = call_stack[operand_stack_top].object_value;
-    
-    // Increment reference count
-    SPVM_RUNTIME_API_inc_ref_count(api, address);
-    
-    pc += 1;
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_POP:
@@ -2175,7 +2159,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         index = (*(pc + 2) << 8) + *(pc + 3);
         
         // Increment reference count
-        SPVM_RUNTIME_API_inc_ref_count(api, call_stack[operand_stack_top].object_value);
+        if (call_stack[operand_stack_top].object_value != NULL) {
+          call_stack[operand_stack_top].object_value->ref_count++;
+        }
         
         // Decrement reference count if original object is not null
         SPVM_RUNTIME_API_dec_ref_count(api, vars[index].object_value);
@@ -2429,7 +2415,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       
       // Increment reference count
-      SPVM_RUNTIME_API_inc_ref_count(api, call_stack[operand_stack_top].object_value);
+      if (call_stack[operand_stack_top].object_value != NULL) {
+        call_stack[operand_stack_top].object_value->ref_count++;
+      }
       
       // Decrement reference count
       SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
