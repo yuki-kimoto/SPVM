@@ -498,10 +498,15 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
       goto *jump[*pc];
   }
-  case_SPVM_BYTECODE_C_CODE_RETURN_BYTE: {
-    
+  case_SPVM_BYTECODE_C_CODE_RETURN_BYTE:
+  case_SPVM_BYTECODE_C_CODE_RETURN_SHORT:
+  case_SPVM_BYTECODE_C_CODE_RETURN_INT:
+  case_SPVM_BYTECODE_C_CODE_RETURN_LONG:
+  case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
+  case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
+  {
     // Get return value
-    int8_t return_value = call_stack[operand_stack_top].byte_value;
+    SPVM_VALUE return_value = call_stack[operand_stack_top];
 
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
@@ -535,277 +540,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push return value
     operand_stack_top++;
-    call_stack[operand_stack_top].byte_value = return_value;
-    
-    // Finish call sub
-    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
-      runtime->call_stack_base = call_stack_base;
-      runtime->operand_stack_top = operand_stack_top;
-      runtime->abort = 0;
-      return;
-    }
-    else {
-      // Restore vars
-      vars = &call_stack[call_stack_base];
-      
-      pc = return_address;
-      goto *jump[*pc];
-    }
-  }
-  case_SPVM_BYTECODE_C_CODE_RETURN_SHORT: {
-    
-    // Get return value
-    int16_t return_value = call_stack[operand_stack_top].short_value;
-
-    // Restore operand stack top
-    operand_stack_top = call_stack_base - 4;
-    
-    // Get return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
-    
-    // Get sub_constant_pool_index
-    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
-
-    // Decrement object my vars reference count
-    memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
-    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
-    if (object_my_vars_length) {
-      {
-        int32_t i;
-        for (i = 0; i < object_my_vars_length; i++) {
-          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
-          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
-          
-          if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(api, object);
-          }
-        }
-      }
-    }
-    
-    // Resotre call stack base
-    call_stack_base = call_stack[call_stack_base - 1].int_value;
-    
-    // Push return value
-    operand_stack_top++;
-    call_stack[operand_stack_top].short_value = return_value;
-    
-    // Finish call sub
-    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
-      runtime->call_stack_base = call_stack_base;
-      runtime->operand_stack_top = operand_stack_top;
-      runtime->abort = 0;
-      return;
-    }
-    else {
-      // Restore vars
-      vars = &call_stack[call_stack_base];
-      
-      pc = return_address;
-      goto *jump[*pc];
-    }
-  }
-  case_SPVM_BYTECODE_C_CODE_RETURN_INT: {
-    
-    // Get return value
-    int32_t return_value = call_stack[operand_stack_top].int_value;
-
-    // Restore operand stack top
-    operand_stack_top = call_stack_base - 4;
-    
-    // Get return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
-    
-    // Get sub_constant_pool_index
-    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
-    
-    // Decrement object my vars reference count
-    memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
-    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
-    if (object_my_vars_length) {
-      {
-        int32_t i;
-        for (i = 0; i < object_my_vars_length; i++) {
-          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
-          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
-          
-          if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(api, object);
-          }
-        }
-      }
-    }
-    
-    // Resotre call stack base
-    call_stack_base = call_stack[call_stack_base - 1].int_value;
-    
-    // Push return value
-    operand_stack_top++;
-    call_stack[operand_stack_top].int_value = return_value;
-    
-    // Finish call sub
-    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
-      runtime->call_stack_base = call_stack_base;
-      runtime->operand_stack_top = operand_stack_top;
-      runtime->abort = 0;
-      return;
-    }
-    else {
-      // Restore vars
-      vars = &call_stack[call_stack_base];
-      
-      pc = return_address;
-      goto *jump[*pc];
-    }
-  }
-  case_SPVM_BYTECODE_C_CODE_RETURN_LONG: {
-    
-    // Get return value
-    int64_t return_value = call_stack[operand_stack_top].long_value;
-
-    // Restore operand stack top
-    operand_stack_top = call_stack_base - 4;
-    
-    // Get return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
-    
-    // Get sub_constant_pool_index
-    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
-
-    // Decrement object my vars reference count
-    memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
-    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
-    if (object_my_vars_length) {
-      {
-        int32_t i;
-        for (i = 0; i < object_my_vars_length; i++) {
-          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
-          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
-          
-          if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(api, object);
-          }
-        }
-      }
-    }
-    
-    // Resotre call stack base
-    call_stack_base = call_stack[call_stack_base - 1].int_value;
-    
-    // Push return value
-    operand_stack_top++;
-    call_stack[operand_stack_top].long_value = return_value;
-    
-    // Finish call sub
-    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
-      runtime->call_stack_base = call_stack_base;
-      runtime->operand_stack_top = operand_stack_top;
-      runtime->abort = 0;
-      return;
-    }
-    else {
-      // Restore vars
-      vars = &call_stack[call_stack_base];
-      
-      pc = return_address;
-      goto *jump[*pc];
-    }
-  }
-  case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT: {
-    
-    // Get return value
-    float return_value = call_stack[operand_stack_top].float_value;
-
-    // Restore operand stack top
-    operand_stack_top = call_stack_base - 4;
-    
-    // Get return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
-    
-    // Get sub_constant_pool_index
-    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
-
-    // Decrement object my vars reference count
-    memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
-    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
-    if (object_my_vars_length) {
-      {
-        int32_t i;
-        for (i = 0; i < object_my_vars_length; i++) {
-          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
-          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
-          
-          if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(api, object);
-          }
-        }
-      }
-    }
-    
-    // Resotre call stack base
-    call_stack_base = call_stack[call_stack_base - 1].int_value;
-    
-    // Push return value
-    operand_stack_top++;
-    call_stack[operand_stack_top].float_value = return_value;
-    
-    // Finish call sub
-    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
-      runtime->call_stack_base = call_stack_base;
-      runtime->operand_stack_top = operand_stack_top;
-      runtime->abort = 0;
-      return;
-    }
-    else {
-      // Restore vars
-      vars = &call_stack[call_stack_base];
-      
-      pc = return_address;
-      goto *jump[*pc];
-    }
-  }
-  case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE: {
-    
-    // Get return value
-    double return_value = call_stack[operand_stack_top].double_value;
-
-    // Restore operand stack top
-    operand_stack_top = call_stack_base - 4;
-    
-    // Get return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
-    
-    // Get sub_constant_pool_index
-    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
-
-    // Decrement object my vars reference count
-    memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
-    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
-    if (object_my_vars_length) {
-      {
-        int32_t i;
-        for (i = 0; i < object_my_vars_length; i++) {
-          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
-          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
-          
-          if (object != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(api, object);
-          }
-        }
-      }
-    }
-    
-    // Resotre call stack base
-    call_stack_base = call_stack[call_stack_base - 1].int_value;
-    
-    // Push return value
-    operand_stack_top++;
-    call_stack[operand_stack_top].double_value = return_value;
+    call_stack[operand_stack_top] = return_value;
     
     // Finish call sub
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
@@ -867,14 +602,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Resotre call stack base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
-    /*
-    // Decrement reference count
-    if (return_value != NULL) {
-      return_value->ref_count--;
-      assert(return_value->ref_count >= 0);
-    }
-    */
-    
     // Push return value
     operand_stack_top++;
     call_stack[operand_stack_top].object_value = return_value;
@@ -905,6 +632,24 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Get sub_constant_pool_index
     sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
 
+    // Decrement object my vars reference count
+    memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
+    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
+    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    if (object_my_vars_length) {
+      {
+        int32_t i;
+        for (i = 0; i < object_my_vars_length; i++) {
+          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          
+          if (object != NULL) {
+            SPVM_RUNTIME_API_dec_ref_count(api, object);
+          }
+        }
+      }
+    }
+    
     // Resotre vars base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
@@ -927,13 +672,23 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Return value
     SPVM_BASE_OBJECT* return_value = call_stack[operand_stack_top].object_value;
-
+    
+    // Restore operand stack top
+    operand_stack_top = call_stack_base - 4;
+    
+    // Return address
+    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    
+    // Get sub_constant_pool_index
+    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
+    
     // Increment ref count of return value not to release by decrement
     if (return_value != NULL) {
       return_value->ref_count++;
     }
     
     // Decrement object my vars reference count
+    memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
     int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
     int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
     if (object_my_vars_length) {
@@ -942,6 +697,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         for (i = 0; i < object_my_vars_length; i++) {
           int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
           SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
+          
           if (object != NULL) {
             SPVM_RUNTIME_API_dec_ref_count(api, object);
           }
@@ -953,15 +709,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     if (return_value != NULL) {
       return_value->ref_count--;
     }
-    
-    // Restore operand stack top
-    operand_stack_top = call_stack_base - 4;
-    
-    // Return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
-
-    // Get sub_constant_pool_index
-    sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
     
     // Get constant pool sub
     memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));

@@ -99,7 +99,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
   if (block != NULL) {
     runtime->object_count++;
   }
-  warn("OBJECT_COUNT UP %d", runtime->object_count);
+  warn("MALLOC OBJECT COUNT %d", runtime->object_count);
 #endif
   
   return block;
@@ -119,7 +119,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_base_object(SPVM_API* api, SPVM_RUNTIME_ALLOCAT
     
 #ifdef DEBUG
     runtime->object_count--;
-    warn("OBJECT_COUNT DOWN %d", runtime->object_count);
+    warn("FREE OBJECT COUNT %d", runtime->object_count);
 #endif
     
     if (byte_size > allocator->base_object_max_byte_size_use_memory_pool) {
