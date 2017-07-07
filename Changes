@@ -1,3 +1,5 @@
+0.0209 2017-07-07
+  - len $nums is replaced with @$nums
 0.0208 2017-07-06
   - add die logic when 32 bit Perl
   - add several SPVM internal functions

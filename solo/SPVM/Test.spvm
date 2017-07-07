@@ -109,7 +109,7 @@ package Test {
 
     {
       my $nums = malloc int[258];
-      my $len = len $nums;
+      my $len = @$nums;
       for (my $i = 0; $i < $len; $i++) {
         $nums[$i] = $i;
       }
@@ -122,12 +122,12 @@ package Test {
     # length with {}
     {
       my $nums = malloc int[2000000];
-      my $len = len { $nums };
+      my $len = @{$nums};
     }
     
     {
       my $nums = malloc int[2000000];
-      my $len = len $nums;
+      my $len = @$nums;
       my $i = 0;
       for ($i = 0; $i < $len; $i = $i + 1) {
         $nums[$i] = $i;
@@ -547,8 +547,8 @@ package Test {
       $nums[1] = 12L;
       std::println_long($nums[0]);
       std::println_long($nums[1]);
-      std::println_int(len $nums);
-      my $nums_length : int = len $nums;
+      std::println_int(@$nums);
+      my $nums_length : int = @$nums;
     }
     
     my $simple : Test::Simple = malloc Test::Simple;
