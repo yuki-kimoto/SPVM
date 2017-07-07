@@ -1055,6 +1055,14 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       SPVM_ARRAY_push(sub->op_args, op_arg->first);
     }
   }
+
+  // Native my vars is same as arguments
+  if (sub->is_native) {
+    SPVM_OP* op_arg = op_args->first;
+    while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+      SPVM_ARRAY_push(sub->op_my_vars, op_arg->first);
+    }
+  }
   
   // Add my declaration to top of block
   if (op_block) {
