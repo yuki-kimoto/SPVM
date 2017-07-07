@@ -290,6 +290,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         if (compiler->bufptr == compiler->cur_src || *(compiler->bufptr - 1) == '\n' || *(compiler->bufptr - 1) == '\r') {
           while (1) {
             compiler->bufptr++;
+            if (*compiler->bufptr == '\n') {
+              compiler->cur_line++;
+            }
             
             if (*compiler->bufptr == '\0') {
               break;
