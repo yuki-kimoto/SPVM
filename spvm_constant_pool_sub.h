@@ -16,8 +16,6 @@ struct SPVM_constant_pool_sub {
   int32_t object_my_vars_length;
   int32_t object_my_var_indexes_constant_pool_index;
   int32_t return_type_id;
-  _Bool has_object_arg;
-  _Bool has_object_my_var;
   _Bool is_native;
 };
 

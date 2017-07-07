@@ -412,7 +412,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
 
       // Prepare arguments
       memmove(&call_stack[operand_stack_top + 4], &call_stack[operand_stack_top + 1], constant_pool_sub.args_length * sizeof(SPVM_VALUE));
-
+      
       // Save return address(operand + (throw or goto exception handler))
       if (call_stack_base == call_stack_base_start) {
         call_stack[operand_stack_top + 1].object_value = (void*)-1;
@@ -429,6 +429,22 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       
       // Set vars base
       call_stack_base = operand_stack_top + 4;
+
+      // If arg is object, increment reference count
+      if (constant_pool_sub.object_args_length) {
+        int32_t object_arg_indexes_constant_pool_index = constant_pool_sub.object_arg_indexes_constant_pool_index;
+        int32_t object_args_length = constant_pool_sub.object_args_length;
+        {
+          int32_t i;
+          for (i = 0; i < object_args_length; i++) {
+            int32_t arg_index = constant_pool[object_arg_indexes_constant_pool_index + i];
+            SPVM_BASE_OBJECT* object = (SPVM_BASE_OBJECT*)call_stack[call_stack_base + arg_index].object_value;
+            if (object != NULL) {
+              object->ref_count++;
+            }
+          }
+        }
+      }
       
       // Initialize my variables
       if (constant_pool_sub.my_vars_length > 0) {

@@ -113,6 +113,9 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   else {
     constant_pool_sub.return_type_id = sub->op_return_type->uv.type->id;
   }
+
+  // Add length
+  constant_pool->length += extend_length;
   
   // Object args length
   int32_t object_args_length = 0;
@@ -129,6 +132,9 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
       }
     }
     constant_pool_sub.object_args_length = object_args_length;
+  }
+  if (object_args_length == 0) {
+    constant_pool_sub.object_arg_indexes_constant_pool_index = -1;
   }
 
   // Object my_vars length
@@ -148,9 +154,10 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
     constant_pool_sub.object_my_vars_length = object_my_vars_length;
   }
   
-  // Add length
-  constant_pool->length += extend_length;
-  
+  if (object_my_vars_length == 0) {
+    constant_pool_sub.object_my_var_indexes_constant_pool_index = -1;
+  }
+
   // Push sub name to constant pool
   constant_pool_sub.abs_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->abs_name);
   
