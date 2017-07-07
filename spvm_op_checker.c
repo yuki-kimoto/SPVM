@@ -1557,7 +1557,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       // Check sub name
                       SPVM_OP_resolve_sub_name(compiler, op_package, op_cur);
                       
-                      const char* sub_abs_name = op_cur->uv.name_info->resolved_name;
+                      SPVM_OP* op_name_sub = op_cur->first;
+                      SPVM_OP* op_list_args = op_cur->last;
+                      
+                      SPVM_NAME_INFO* name_info = op_cur->uv.name_info;
+                      
+                      const char* sub_abs_name = name_info->resolved_name;
                       
                       SPVM_OP* found_op_sub= SPVM_HASH_search(
                         compiler->op_sub_symtable,
@@ -1574,7 +1579,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_SUB* found_sub = found_op_sub->uv.sub;
 
                       int32_t sub_args_count = found_sub->op_args->length;
-                      SPVM_OP* op_list_args = op_cur->last;
                       SPVM_OP* op_term = op_list_args->first;
                       int32_t call_sub_args_count = 0;
                       while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
@@ -1623,6 +1627,84 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         op_cur->first = NULL;
                         op_cur->last = NULL;
+                      }
+                      
+                      SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, found_op_sub->uv.sub->op_return_type);
+                      
+                      // If CALL_SUB is is not rvalue and return type is object, temparary variable is created, and assinged.
+                      if (!op_cur->rvalue && (return_type && !SPVM_TYPE_is_numeric(compiler, return_type))) {
+                        assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
+                        if (my_var_length == SPVM_LIMIT_C_MY_VARS) {
+                          SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created for return value) at %s line %d\n", op_cur->file, op_cur->line);
+                          compiler->fatal_error = 1;
+                          break;
+                        }
+                        
+                        // Create temporary variable
+                        // my_var
+                        SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
+                        
+                        // Temparary variable name
+                        char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
+                        sprintf(name, "@tmp%d", my_var_tmp_index++);
+                        SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_cur->file, op_cur->line);
+                        op_name->uv.name = name;
+                        my_var->op_name = op_name;
+                        
+                        // Set type to my var
+                        my_var->op_type = found_sub->op_return_type;
+                        
+                        // Index
+                        my_var->index = my_var_length++;
+                        
+                        // op my_var
+                        SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, op_cur->file, op_cur->line);
+                        op_my_var->uv.my_var = my_var;
+                        
+                        // Add my var
+                        SPVM_ARRAY_push(op_my_vars, op_my_var);
+                        SPVM_ARRAY_push(op_my_var_stack, op_my_var);
+                        
+                        // Convert call_sub op to assing op
+                        // Var op
+                        SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
+                        
+                        // Malloc op
+                        SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_SUB, op_cur->file, op_cur->line);
+                        
+                        // List args parent is call_sub
+                        op_list_args->moresib = 0;
+                        op_list_args->sibparent = op_call_sub;
+
+                        // Assing op
+                        SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
+                        op_assign->first = op_var;
+                        op_assign->last = op_call_sub;
+                        op_assign->moresib = 0;
+                        op_assign->sibparent = op_cur;
+                        
+                        // Convert cur call_sub op to var
+                        op_cur->code = SPVM_OP_C_CODE_VAR;
+                        op_cur->uv.var = op_var->uv.var;
+                        op_cur->first = op_assign;
+                        op_cur->last = op_assign;
+                        
+                        // Var op has sibling
+                        op_var->moresib = 1;
+                        op_var->sibparent = op_call_sub;
+                        
+                        // Malloc op parent is assign op
+                        op_call_sub->first = op_name_sub;
+                        op_call_sub->last = op_list_args;
+                        op_call_sub->moresib = 0;
+                        op_call_sub->sibparent = op_assign;
+                        op_call_sub->uv.name_info = name_info;
+                        
+                        // Set lvalue and rvalue
+                        op_assign->first->lvalue = 1;
+                        op_assign->last->rvalue = 1;
+                        
+                        op_cur = op_call_sub;
                       }
                       
                       break;
