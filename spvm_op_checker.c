@@ -423,7 +423,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       int32_t* bottom_ptr = SPVM_ARRAY_fetch(loop_block_my_var_base_stack, loop_block_my_var_base_stack->length - 1);
                       
                       // Build op_leave_scope
-                      SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, NULL);
+                      // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, NULL);
                       
                       break;
                     }
@@ -434,7 +434,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       int32_t* bottom_ptr = SPVM_ARRAY_fetch(loop_block_my_var_base_stack, loop_block_my_var_base_stack->length - 1);
                       
                       // Build op_leave_scope
-                      SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, NULL);
+                      // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, NULL);
                       
                       break;
                     }
@@ -448,11 +448,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         int32_t* bottom_ptr = SPVM_ARRAY_fetch(try_block_my_var_base_stack, try_block_my_var_base_stack->length - 1);
                         
                         // Build op_leave_scope
-                        SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, op_term);
+                        // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, op_term);
                       }
                       else {
                         // Build op_leave_scope
-                        SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, 0, op_term);
+                        // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, 0, op_term);
                       }
                       
                       break;
@@ -1173,7 +1173,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_return = op_cur->last;
                       SPVM_OP* op_term = op_return->first;
                       
-                      SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, 0, op_term);
+                      // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, 0, op_term);
                       
                       break;
                     }
@@ -1403,6 +1403,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       // Free my variables at end of block
                       SPVM_OP* op_block_end = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK_END, op_cur->file, op_cur->line);
                       
+                      /*
                       int32_t pop_count = op_my_var_stack->length - block_my_var_base;
                       {
                         int32_t j;
@@ -1422,6 +1423,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           assert(op_my_var);
                         }
                       }
+                      */
                       
                       if (!(op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SUB)) {
                         SPVM_OP_sibling_splice(compiler, op_list_statement, op_list_statement->last, 0, op_block_end);
@@ -1474,6 +1476,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_my_var = op_cur->first;
                       SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
                       
+                      /*
                       // If argument is object, increment reference count
                       if (my_var->index < sub->op_args->length) {
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my_var);
@@ -1485,6 +1488,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_OP_sibling_splice(compiler, op_cur, op_cur->last, 0, op_increfcount);
                         }
                       }
+                      */
                       
                       break;
                     }
