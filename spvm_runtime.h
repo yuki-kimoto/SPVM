@@ -44,6 +44,11 @@ struct SPVM_runtime {
   
   // Exception
   _Bool abort;
+
+#ifdef DEBUG
+  int32_t object_count;
+#endif
+
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
