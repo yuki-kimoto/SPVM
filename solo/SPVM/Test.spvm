@@ -19,8 +19,15 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
-
-    # $obj->[0]{x}
+    # $array->[0]{x}
+    {
+      my $objs = malloc Test::Minimal[3];
+      $objs->[0] = malloc Test::Minimal;
+      $objs->[0]{x} = 111;
+      std::println_int($objs->[0]{x});
+    }
+    
+    # $obj->{x}[0]
     {
       my $obj = malloc Test::Simple;
       $obj->{values1} = malloc int[5];
