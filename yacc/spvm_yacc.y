@@ -60,7 +60,7 @@ grammar
 opt_declarations_in_grammar
   :	/* Empty */
     {
-      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_module_path, compiler->cur_line);
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
   |	declarations_in_grammar
     {
@@ -102,7 +102,7 @@ package
 opt_declarations_in_package
   :	/* Empty */
     {
-      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_module_path, compiler->cur_line);
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
   |	declarations_in_package
     {
@@ -144,7 +144,7 @@ enumeration_block
 opt_enumeration_values
   :	/* Empty */
     {
-      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_module_path, compiler->cur_line);
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
   |	enumeration_values
     {
@@ -180,7 +180,7 @@ enumeration_value
 opt_statements
   :	/* Empty */
     {
-      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_module_path, compiler->cur_line);
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
   |	statements
     {
@@ -266,7 +266,7 @@ if_statement
 else_statement
   : /* NULL */
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, compiler->cur_module_path, compiler->cur_line);
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, compiler->cur_file, compiler->cur_line);
     };
   | ELSE block
     {
@@ -336,7 +336,7 @@ expression
 opt_terms
   :	/* Empty */
     {
-      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_module_path, compiler->cur_line);
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
   |	terms
     {
@@ -368,7 +368,7 @@ array_length
 opt_term
   : /* NULL */
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, compiler->cur_module_path, compiler->cur_line);
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, compiler->cur_file, compiler->cur_line);
     }
   | term
 
@@ -556,7 +556,7 @@ call_sub
 opt_args
   :	/* Empty */
     {
-      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_module_path, compiler->cur_line);
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
   |	args
     {
@@ -585,7 +585,7 @@ arg
 opt_descriptors
   :	/* Empty */
     {
-      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_module_path, compiler->cur_line);
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
   |	descriptors
     {

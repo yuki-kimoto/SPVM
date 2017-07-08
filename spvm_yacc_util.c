@@ -97,7 +97,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message)
     memcpy(token, compiler->befbufptr + empty_count, length);
     token[length] = '\0';
     
-    fprintf(stderr, "Error: unexpected token \"%s\" at %s line %" PRId32 "\n", token, compiler->cur_module_path, compiler->cur_line);
+    fprintf(stderr, "Error: unexpected token \"%s\" at %s line %" PRId32 "\n", token, compiler->cur_file, compiler->cur_line);
     free(token);
   }
 }

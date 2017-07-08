@@ -63,7 +63,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->cur_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->cur_line = 0;
-
+  compiler->cur_file = NULL;
   
   compiler->start_sub_name = NULL;
   
