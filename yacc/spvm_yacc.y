@@ -15,7 +15,7 @@
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE MALLOC
 %token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF DIE
-%token <opval> SWITCH CASE DEFAULT VOID EVAL CATCH EXCEPTION_VAR
+%token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR
 
 %type <opval> grammar opt_statements statements statement my field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
@@ -25,7 +25,7 @@
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar opt_term
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement type_array_with_length
-%type <opval> ';' opt_descriptors descriptors type_or_void normal_statement try_catch
+%type <opval> ';' opt_descriptors descriptors type_or_void normal_statement eval_block
 
 
 %right <opval> ASSIGN
@@ -209,7 +209,7 @@ statement
   | switch_statement
   | case_statement
   | default_statement
-  | try_catch
+  | eval_block
 
 block 
   : '{' opt_statements '}'
@@ -645,10 +645,10 @@ field_name : NAME
 sub_name : NAME
 package_name : NAME
 
-try_catch
-  : EVAL block CATCH '(' VAR ')' block
+eval_block
+  : EVAL block
     {
-      $$ = SPVM_OP_build_try_catch(compiler, $1, $2, $3, $5, $7);
+      $$ = SPVM_OP_build_eval(compiler, $1, $2);
     }
 
 %%

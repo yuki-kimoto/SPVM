@@ -111,9 +111,7 @@ enum {
   SPVM_OP_C_CODE_SWITCH_CONDITION,
   SPVM_OP_C_CODE_VOID,
   SPVM_OP_C_CODE_EVAL,
-  SPVM_OP_C_CODE_CATCH,
   SPVM_OP_C_CODE_BLOCK_END,
-  SPVM_OP_C_CODE_STORE,
   SPVM_OP_C_CODE_EXCEPTION_VAR,
 };
 
@@ -191,7 +189,7 @@ void SPVM_OP_resolve_field_name(SPVM_COMPILER* compiler, SPVM_OP* op_name);
 
 SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_OP* op_term);
 SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_term);
-SPVM_OP* SPVM_OP_build_try_catch(SPVM_COMPILER* compiler, SPVM_OP* op_try, SPVM_OP* op_try_block, SPVM_OP* op_catch, SPVM_OP* op_my_var, SPVM_OP* op_catch_block);
+SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* op_block);
 SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_switch, SPVM_OP* op_term, SPVM_OP* op_block);
 SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case, SPVM_OP* op_term);
 SPVM_OP* SPVM_OP_build_logical_op(SPVM_COMPILER* compiler, SPVM_OP* op_logical_op, SPVM_OP* op_first, SPVM_OP* op_last);

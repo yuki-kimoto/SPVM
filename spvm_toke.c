@@ -882,10 +882,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EVAL);
             return EVAL;
           }
-          else if (strcmp(keyword, "catch") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CATCH);
-            return CATCH;
-          }
           else if (strcmp(keyword, "native") == 0) {
             SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DESCRIPTOR);
             op->code = SPVM_DESCRIPTOR_C_CODE_NATIVE;

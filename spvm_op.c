@@ -111,9 +111,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "SWITCH_CONDITION",
   "VOID",
   "EVAL",
-  "CATCH",
   "BLOCK_END",
-  "STORE",
   "EXCEPTION_VAR",
 };
 
@@ -213,35 +211,14 @@ SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_s
   }
 }
 
-SPVM_OP* SPVM_OP_build_try_catch(SPVM_COMPILER* compiler, SPVM_OP* op_try, SPVM_OP* op_try_block, SPVM_OP* op_catch, SPVM_OP* op_var, SPVM_OP* op_catch_block) {
+SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* op_eval_block) {
   
-  // Create op_my_var from op_var
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
-  op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
-  SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_var->file, op_var->line);
-  op_name->uv.name = op_var->uv.var->op_name->uv.name;
-  my_var->op_name = op_name;
-  my_var->op_type = op_type;
-  SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, op_var->file, op_var->line);
-  op_my_var->uv.my_var = my_var;
+  SPVM_OP_sibling_splice(compiler, op_eval, op_eval->last, 0, op_eval_block);
   
-  // Create op store
-  SPVM_OP* op_store = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_STORE, op_var->file, op_var->line);
-  SPVM_OP_sibling_splice(compiler, op_store, op_store->last, 0, op_my_var);
+  // eval block
+  op_eval_block->flag |= SPVM_OP_C_FLAG_BLOCK_EVAL;
   
-  // insert var declaration into catch block top
-  SPVM_OP_sibling_splice(compiler, op_catch_block->first, op_catch_block->first->first, 0, op_store);
-  
-  // try block
-  op_try_block->flag |= SPVM_OP_C_FLAG_BLOCK_EVAL;
-  
-  // Add block
-  SPVM_OP_sibling_splice(compiler, op_try, op_try->last, 0, op_try_block);
-  SPVM_OP_sibling_splice(compiler, op_try, op_try->last, 0, op_catch);
-  SPVM_OP_sibling_splice(compiler, op_try, op_try->last, 0, op_catch_block);
-  
-  return op_try;
+  return op_eval;
 }
 
 SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_switch, SPVM_OP* op_term_condition, SPVM_OP* op_block) {

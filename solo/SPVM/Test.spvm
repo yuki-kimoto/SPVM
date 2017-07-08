@@ -262,10 +262,12 @@ package Test {
       die "Catch error";
       
       1;
-    } catch ($error) {
+    };
+    
+    {
       sum0(5, 6);
       2;
-      std::println($error);
+      std::println("Error");
     }
     
     {
@@ -790,7 +792,7 @@ package Test {
     }
   }
 
-  sub eval_catch() : void {
+  sub eval_block() : void {
     my $obj0 = malloc Test::Minimal;
     
     eval {
@@ -803,12 +805,8 @@ package Test {
       my $obj_error1 = "Error1";
       
       die $obj_error1;
-      
-    }
-    catch ($error) {
-      
-    }
-
+    };
+    
     {
       my $obj4 = malloc Test::Minimal;
       
