@@ -35,16 +35,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 /* Operation code */
 enum {
   SPVM_OP_C_CODE_IF,
@@ -124,7 +114,6 @@ enum {
   SPVM_OP_C_CODE_CATCH,
   SPVM_OP_C_CODE_FORMAL_ARGS,
   SPVM_OP_C_CODE_BLOCK_END,
-  SPVM_OP_C_CODE_LEAVE_SCOPE,
   SPVM_OP_C_CODE_STORE,
 };
 

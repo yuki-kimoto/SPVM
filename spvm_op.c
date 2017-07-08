@@ -3,9 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <assert.h>
-
 #include <inttypes.h>
-
 
 #include "spvm_compiler.h"
 #include "spvm_array.h"
@@ -31,6 +29,12 @@
 #include "spvm_limit.h"
 #include "spvm_extention.h"
 #include "spvm_extention_bind.h"
+
+
+
+
+
+
 
 const char* const SPVM_OP_C_CODE_NAMES[] = {
   "IF",
@@ -108,12 +112,8 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "VOID",
   "TRY",
   "CATCH",
-  "DEC_REF_COUNT",
-  "INC_REF_COUNT",
   "FORMAL_ARGS",
   "BLOCK_END",
-  "LEAVE_SCOPE",
-  "DIE_PROCESS",
   "STORE",
 };
 

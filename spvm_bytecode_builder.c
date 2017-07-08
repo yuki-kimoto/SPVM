@@ -1196,9 +1196,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_CODE_MALLOC: {
                     if (op_cur->first->code == SPVM_OP_C_CODE_CONSTANT) {
                       SPVM_CONSTANT* constant = op_cur->first->uv.constant;
-
-                      warn("AAAAAAAAAAAA %d", constant->constant_pool_index);
-                      
                       
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MALLOC_STRING);
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 24) & 0xFF);
