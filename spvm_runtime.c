@@ -767,7 +767,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     
     // Free original string if need
-    SPVM_RUNTIME_API_dec_ref_count(api, return_value);
+    if (return_value != NULL) {
+      SPVM_RUNTIME_API_dec_ref_count(api, return_value);
+    }
     
     // Resotre vars base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
@@ -1314,7 +1316,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         }
         
         // Decrement reference count
-        SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
+        if (*base_object_address != NULL) {
+          SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
+        }
         
         // Store address
         *base_object_address = call_stack[operand_stack_top].object_value;
@@ -1359,7 +1363,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     
     // Decrement reference count
-    SPVM_RUNTIME_API_dec_ref_count(api, vars[vars_index].object_value);
+    if (vars[vars_index].object_value != NULL) {
+      SPVM_RUNTIME_API_dec_ref_count(api, vars[vars_index].object_value);
+    }
     
     // Store address
     vars[vars_index] = call_stack[operand_stack_top];
@@ -2164,7 +2170,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         }
         
         // Decrement reference count if original object is not null
-        SPVM_RUNTIME_API_dec_ref_count(api, vars[index].object_value);
+        if (vars[index].object_value != NULL) {
+          SPVM_RUNTIME_API_dec_ref_count(api, vars[index].object_value);
+        }
         
         // Store address
         vars[index] = call_stack[operand_stack_top];
@@ -2420,7 +2428,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
       
       // Decrement reference count
-      SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
+      if (*base_object_address != NULL) {
+        SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
+      }
       
       // Store object
       *base_object_address = call_stack[operand_stack_top].object_value;
