@@ -978,7 +978,7 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_
     SPVM_OP_sibling_splice(compiler, op_assign, NULL, 0, op_var);
     SPVM_OP_sibling_splice(compiler, op_assign, op_var, 0, op_term);
     
-    SPVM_OP_sibling_splice(compiler, op_my_var_process, op_my_var, 0, op_assign);
+    SPVM_OP_sibling_splice(compiler, op_my_var_process, op_my_var_process->last, 0, op_assign);
     
     // Type inference
     my_var->op_term_type_inference = op_term;
