@@ -510,6 +510,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           const char* value = constant->uv.string_value;
                           
                           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
+                          
+                          SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_cur->line, op_cur->file);
+                          op_constant->uv.constant = op_cur->uv.constant;
+                          
+                          op_cur->code = SPVM_OP_C_CODE_MALLOC;
+                          op_cur->first = op_constant;
+                          op_cur->last = op_constant;
+                          
+                          op_constant->moresib = 0;
+                          op_constant->sibparent = op_cur;
+                          
+                          op_cur = op_constant;
+                          
                           break;
                         }
                       }
@@ -900,28 +913,38 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       break;
                     }
                     case SPVM_OP_C_CODE_MALLOC: {
-                      SPVM_OP* op_type = op_cur->first;
-                      SPVM_TYPE* type = op_type->uv.type;
+                      SPVM_OP* op_type_or_constant = op_cur->first;
                       
-                      if (SPVM_TYPE_is_array(compiler, type)) {
-                        SPVM_OP* op_index_term = op_type->last;
-                        SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
+                      if (op_cur->first->code == SPVM_OP_C_CODE_TYPE) {
+                        SPVM_OP* op_type = op_cur->first;
+                        SPVM_TYPE* type = op_type->uv.type;
                         
-                        if (!index_type) {
-                          SPVM_yyerror_format(compiler, "new operator can't create array which don't have length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
-                          break;
+                        if (SPVM_TYPE_is_array(compiler, type)) {
+                          SPVM_OP* op_index_term = op_type->last;
+                          SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
+                          
+                          if (!index_type) {
+                            SPVM_yyerror_format(compiler, "new operator can't create array which don't have length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
+                            break;
+                          }
+                          else if (index_type->id != SPVM_TYPE_C_ID_INT) {
+                            SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
+                            break;
+                          }
                         }
-                        else if (index_type->id != SPVM_TYPE_C_ID_INT) {
-                          SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
-                          break;
+                        else {
+                          if (SPVM_TYPE_is_numeric(compiler, type)) {
+                            SPVM_yyerror_format(compiler,
+                              "new operator can't receive core type at %s line %d\n", op_cur->file, op_cur->line);
+                            break;
+                          }
                         }
                       }
+                      else if (op_cur->first->code == SPVM_OP_C_CODE_CONSTANT) {
+                        // Constant string
+                      }
                       else {
-                        if (SPVM_TYPE_is_numeric(compiler, type)) {
-                          SPVM_yyerror_format(compiler,
-                            "new operator can't receive core type at %s line %d\n", op_cur->file, op_cur->line);
-                          break;
-                        }
+                        assert(0);
                       }
                       
                       // If MALLOC is not rvalue, temparary variable is created, and assinged.
@@ -946,7 +969,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Set type to my var
                         my_var->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
-                        my_var->op_type->uv.type = op_type->uv.type;
+                        my_var->op_type->uv.type = SPVM_OP_get_type(compiler, op_cur->first);
                         
                         // Index
                         my_var->index = my_var_length++;
@@ -967,8 +990,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MALLOC, op_cur->file, op_cur->line);
                         
                         // Type parent is malloc
-                        op_type->moresib = 0;
-                        op_type->sibparent = op_malloc;
+                        op_type_or_constant->moresib = 0;
+                        op_type_or_constant->sibparent = op_malloc;
 
                         // Assing op
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
@@ -988,8 +1011,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_var->sibparent = op_malloc;
                         
                         // Malloc op parent is assign op
-                        op_malloc->first = op_type;
-                        op_malloc->last = op_type;
+                        op_malloc->first = op_type_or_constant;
+                        op_malloc->last = op_type_or_constant;
                         op_malloc->moresib = 0;
                         op_malloc->sibparent = op_assign;
                         

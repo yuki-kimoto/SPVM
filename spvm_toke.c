@@ -583,13 +583,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           str[str_index] = '\0';
         }
         
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
+        SPVM_OP* op_constant = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
         SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
         constant->code = SPVM_CONSTANT_C_CODE_STRING;
         constant->uv.string_value = str;
         constant->type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
-        op->uv.constant = constant;
-        yylvalp->opval = (SPVM_OP*)op;
+        op_constant->uv.constant = constant;
+        
+        yylvalp->opval = op_constant;
         
         return CONSTANT;
       }
