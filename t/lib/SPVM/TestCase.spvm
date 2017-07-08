@@ -1,4 +1,4 @@
-package Test {
+package TestCase {
   has x : int;
   has y : int;
 
