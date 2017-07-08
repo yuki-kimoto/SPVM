@@ -52,6 +52,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   // Indexes of package
   runtime->sub_indexes_constant_pool_index = -1;
+  
+  // Exception
+  runtime->exception = NULL;
 
 #ifdef DEBUG
   runtime->object_count = 0;
