@@ -865,9 +865,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DIE);
             return DIE;
           }
-          else if (strcmp(keyword, "try") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_TRY);
-            return TRY;
+          else if (strcmp(keyword, "eval") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EVAL);
+            return EVAL;
           }
           else if (strcmp(keyword, "catch") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CATCH);

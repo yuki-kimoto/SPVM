@@ -100,7 +100,7 @@
      CASE = 281,
      DEFAULT = 282,
      VOID = 283,
-     TRY = 284,
+     EVAL = 284,
      CATCH = 285,
      ASSIGN = 286,
      OR = 287,
@@ -148,7 +148,7 @@
 #define CASE 281
 #define DEFAULT 282
 #define VOID 283
-#define TRY 284
+#define EVAL 284
 #define CATCH 285
 #define ASSIGN 286
 #define OR 287
@@ -587,7 +587,7 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "MY", "HAS", "SUB", "PACKAGE", "IF",
   "ELSIF", "ELSE", "RETURN", "FOR", "WHILE", "USE", "MALLOC", "LAST",
   "NEXT", "NAME", "VAR", "CONSTANT", "ENUM", "DESCRIPTOR", "CORETYPE",
-  "UNDEF", "DIE", "SWITCH", "CASE", "DEFAULT", "VOID", "TRY", "CATCH",
+  "UNDEF", "DIE", "SWITCH", "CASE", "DEFAULT", "VOID", "EVAL", "CATCH",
   "';'", "ASSIGN", "OR", "AND", "BIT_XOR", "BIT_OR", "BIT_AND", "REL",
   "SHIFT", "'+'", "'-'", "REMAINDER", "DIVIDE", "MULTIPLY", "'~'",
   "UMINUS", "ARRAY_LENGTH", "NOT", "DEC", "INC", "ARROW", "')'", "'('",

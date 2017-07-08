@@ -245,7 +245,7 @@ package Test {
       ++$var;
     }
     
-    try {
+    eval {
       sum0(1, 2);
       
       3;
@@ -783,10 +783,10 @@ package Test {
     }
   }
 
-  sub try_catch() : void {
+  sub eval_catch() : void {
     my $obj0 = malloc Test::Minimal;
     
-    try {
+    eval {
       my $obj1 = malloc Test::Minimal;
       
       my $obj2 : Test::Minimal;

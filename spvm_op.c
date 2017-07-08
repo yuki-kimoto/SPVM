@@ -110,7 +110,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "DEFAULT",
   "SWITCH_CONDITION",
   "VOID",
-  "TRY",
+  "EVAL",
   "CATCH",
   "BLOCK_END",
   "STORE",
@@ -233,7 +233,7 @@ SPVM_OP* SPVM_OP_build_try_catch(SPVM_COMPILER* compiler, SPVM_OP* op_try, SPVM_
   SPVM_OP_sibling_splice(compiler, op_catch_block->first, op_catch_block->first->first, 0, op_store);
   
   // try block
-  op_try_block->flag |= SPVM_OP_C_FLAG_BLOCK_TRY;
+  op_try_block->flag |= SPVM_OP_C_FLAG_BLOCK_EVAL;
   
   // Add block
   SPVM_OP_sibling_splice(compiler, op_try, op_try->last, 0, op_try_block);

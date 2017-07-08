@@ -204,7 +204,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
             // [START]Preorder traversal position
             
             switch (op_cur->code) {
-              case SPVM_OP_C_CODE_TRY: {
+              case SPVM_OP_C_CODE_EVAL: {
                 
                 SPVM_ARRAY_push(try_stack, op_cur);
                 
