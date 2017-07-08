@@ -679,18 +679,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   }
   case_SPVM_BYTECODE_C_CODE_STORE_EXCEPTION: {
     
-    // Decrement reference count
-    if (runtime->exception != NULL) {
-      SPVM_RUNTIME_API_dec_ref_count(api, runtime->exception);
-    }
-    
-    // Store object
-    runtime->exception = call_stack[operand_stack_top].object_value;
-    
-    // Increment new value reference count
-    if (runtime->exception != NULL) {
-      runtime->exception->ref_count++;
-    }
+    SPVM_RUNTIME_API_set_exception(api, call_stack[operand_stack_top].object_value);
     
     operand_stack_top--;
 
@@ -750,7 +739,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     total_length += strlen(file_name);
     
     // Create exception message
-    SPVM_ARRAY_OBJECT* new_array_object_exception =  runtime->exception;
+    SPVM_ARRAY_OBJECT* new_array_object_exception = SPVM_RUNTIME_API_malloc_byte_array_noinc(api, total_length);
     memcpy(
       (void*)((intptr_t)new_array_object_exception + sizeof(SPVM_ARRAY_OBJECT)),
       (void*)((intptr_t)runtime->exception + sizeof(SPVM_ARRAY_OBJECT)),
