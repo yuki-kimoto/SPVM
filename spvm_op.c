@@ -132,7 +132,6 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
   constant->code = SPVM_CONSTANT_C_CODE_INT;
   constant->uv.long_value = value;
   constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
   
   op_constant->uv.constant = constant;
   
@@ -145,7 +144,6 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
   
   constant->code = SPVM_CONSTANT_C_CODE_LONG;
   constant->uv.long_value = value;
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
   constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
   
   op_constant->uv.constant = constant;
@@ -160,7 +158,6 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
   constant->code = SPVM_CONSTANT_C_CODE_FLOAT;
   constant->uv.float_value = value;
   constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
   
   op_constant->uv.constant = constant;
   
@@ -173,7 +170,6 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   
   constant->code = SPVM_CONSTANT_C_CODE_DOUBLE;
   constant->uv.double_value = value;
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
   constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
   
   op_constant->uv.constant = constant;
@@ -1204,9 +1200,18 @@ SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_
 
 SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_term) {
   
-  if (op_term) {
-    SPVM_OP_sibling_splice(compiler, op_die, NULL, 0, op_term);
+  if (!op_term) {
+    // Default error message
+    SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_die->file, op_die->line);
+    SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+    constant->code = SPVM_CONSTANT_C_CODE_STRING;
+    constant->uv.string_value = "Error";
+    constant->type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
+    op_constant->uv.constant = constant;
+    
+    op_term = op_constant;
   }
+  SPVM_OP_sibling_splice(compiler, op_die, NULL, 0, op_term);
   
   return op_die;
 }

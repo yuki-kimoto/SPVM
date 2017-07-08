@@ -327,6 +327,10 @@ expression
     {
       $$ = SPVM_OP_build_return(compiler, $1, $2);
     }
+  | DIE
+    {
+      $$ = SPVM_OP_build_die(compiler, $1, NULL);
+    }
   | DIE term
     {
       $$ = SPVM_OP_build_die(compiler, $1, $2);
