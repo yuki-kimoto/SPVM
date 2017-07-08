@@ -63,6 +63,11 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       }
       printf(" (index %" PRId32 ")", constant->constant_pool_index);
     }
+    else if (code == SPVM_OP_C_CODE_MY_VAR) {
+      SPVM_MY_VAR* my_var = op_cur->uv.my_var;
+      printf(" \"%s\"", my_var->op_name->uv.name);
+      printf(" (my_var->index:%d)", my_var->index);
+    }
     else if (code == SPVM_OP_C_CODE_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
       printf(" \"%s\"", var->op_name->uv.name);

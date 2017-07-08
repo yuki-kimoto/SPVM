@@ -112,7 +112,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "VOID",
   "TRY",
   "CATCH",
-  "FORMAL_ARGS",
   "BLOCK_END",
   "STORE",
 };
@@ -1061,23 +1060,21 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     }
   }
   
-  // Add my declaration to top of block
+  // Add my declaration to first of block
   if (op_block) {
     SPVM_OP* op_list_statement = op_block->first;
-    SPVM_OP* op_formal_args = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_FORMAL_ARGS, op_list_statement->file, op_list_statement->line);
     {
       int32_t i;
-      for (i = 0; i < sub->op_args->length; i++) {
+      for (i = sub->op_args->length - 1; i >= 0; i--) {
         SPVM_OP* op_arg = SPVM_ARRAY_fetch(sub->op_args, i);
         SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, op_arg->file, op_arg->line);
         op_my_var->uv.my_var = op_arg->uv.my_var;
         SPVM_OP* op_my_var_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR_ASSIGN, op_arg->file, op_arg->line);
         SPVM_OP_sibling_splice(compiler, op_my_var_assign, op_my_var_assign->last, 0, op_my_var);
         
-        SPVM_OP_sibling_splice(compiler, op_formal_args, op_formal_args->first, 0, op_my_var_assign);
+        SPVM_OP_sibling_splice(compiler, op_list_statement, op_list_statement->first, 0, op_my_var_assign);
       }
     }
-    SPVM_OP_sibling_splice(compiler, op_list_statement, op_list_statement->first, 0, op_formal_args);
   }
   
   // return type
