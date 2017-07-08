@@ -78,3 +78,24 @@ is_deeply(
   my $total = SPVM::XSTest::test_for();
   cmp_ok($total, '==', 6);
 }
+
+# if
+{
+  # if gt int left big
+  { 
+    my $success = SPVM::XSTest::test_if_gt_int_left_big();
+    ok($success);
+  }
+
+  # if gt int same
+  { 
+    my $success = SPVM::XSTest::test_if_gt_int_same();
+    ok(!$success);
+  }
+
+  # if gt int right big
+  { 
+    my $success = SPVM::XSTest::test_if_gt_int_right_big();
+    ok(!$success);
+  }
+}

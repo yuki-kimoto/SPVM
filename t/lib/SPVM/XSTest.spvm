@@ -53,4 +53,38 @@ package XSTest {
     
     return $total;
   }
+  
+  # if gt int left big
+  sub test_if_gt_int_left_big () : int {
+    
+    if (3 > 1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  # if gt int same
+  sub test_if_gt_int_same () : int {
+    
+    if (3 > 3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  # if gt int right big
+  sub test_if_gt_int_right_big () : int {
+    
+    if (3 > 4) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
 }
