@@ -475,6 +475,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
+    case SPVM_OP_C_CODE_EXCEPTION_VAR: {
+      type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
+      break;
+    }
     case SPVM_OP_C_CODE_MY_VAR: {
       SPVM_MY_VAR* my_var = op->uv.my_var;
       if ( my_var->op_type) {

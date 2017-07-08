@@ -22,6 +22,8 @@ package Test {
     # Exception variable
     {
       $@;
+      
+      $@ = "abs";
     }
     
     # $array->[0]{x}
