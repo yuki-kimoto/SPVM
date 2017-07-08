@@ -63,6 +63,8 @@ package XSTest {
     else {
       return 0;
     }
+    
+    return -1;
   }
 
   # if gt int same
@@ -74,6 +76,8 @@ package XSTest {
     else {
       return 0;
     }
+
+    return -1;
   }
 
   # if gt int right big
@@ -85,6 +89,8 @@ package XSTest {
     else {
       return 0;
     }
+
+    return -1;
   }
 
 }
