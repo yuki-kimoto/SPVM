@@ -8,7 +8,7 @@ use SPVM::Data;
 
 use Carp 'croak';
 
-our $VERSION = '0.0209';
+our $VERSION = '0.0210';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
@@ -249,6 +249,61 @@ If the type of right value is known, the type of left value is automatically dec
   # Type of $object2 is PackageName
   my $object1 = malloc PackageName
   my $object2 = $object1;
+
+=head2 Array
+
+=head3 Create array
+
+Array is created by malloc. Elements values is not initialized.
+
+  my $nums = malloc byte[3];
+  my $nums = malloc short[3];
+  my $nums = malloc int[3];
+  my $nums = malloc long[3];
+  my $nums = malloc float[3];
+  my $nums = malloc double[3];
+
+=head3 Get array length
+
+  my $len = @$nums;
+  my $len = @{$nums};
+
+=head3 Get and set array element
+  
+  # Get
+  my $num = $nums->[0];
+  
+  # Set
+  $nums->[0] = 5;
+
+=head2 Condition branch
+
+  if (1) {
+    
+  }
+  elsif (2) {
+    
+  }
+  else {
+    
+  }
+
+=head2 Loop
+
+=head3 for
+  
+  my $nums = malloc int[10];
+  for (my $i = 0; $i < @$nums; $i++) {
+    $nums->[$i] = 0;
+  }
+
+=head3 while
+  
+  my $nums = malloc int[10];
+  my $i = 0;
+  while ($i < @$nums) {
+    $nums->[$i] = 0;
+  }
 
 =head2 Constant
 
