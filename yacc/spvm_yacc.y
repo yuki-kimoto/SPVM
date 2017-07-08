@@ -15,7 +15,7 @@
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE MALLOC
 %token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF DIE
-%token <opval> SWITCH CASE DEFAULT VOID EVAL CATCH
+%token <opval> SWITCH CASE DEFAULT VOID EVAL CATCH EXCEPTION_VAR
 
 %type <opval> grammar opt_statements statements statement my field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
@@ -374,6 +374,7 @@ opt_term
 
 term
   : VAR
+  | EXCEPTION_VAR
   | CONSTANT
   | UNDEF
   | call_sub

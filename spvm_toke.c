@@ -602,30 +602,43 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           compiler->bufptr++;
           
-          /* Next is graph */
-          while(isalnum(*compiler->bufptr) || (*compiler->bufptr) == '_') {
+          // Exception
+          if (*compiler->bufptr == '@') {
             compiler->bufptr++;
+            
+            // Exception variable
+            SPVM_OP* op_exception_var = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EXCEPTION_VAR);
+            yylvalp->opval = op_exception_var;
+            
+            return EXCEPTION_VAR;
           }
-          
-          int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          char* var_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, str_len);
-          memcpy(var_name, cur_token_ptr, str_len);
-          var_name[str_len] = '\0';
+          // Lexical variable
+          else {
+            /* Next is graph */
+            while(isalnum(*compiler->bufptr) || (*compiler->bufptr) == '_') {
+              compiler->bufptr++;
+            }
+            
+            int32_t str_len = (compiler->bufptr - cur_token_ptr);
+            char* var_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, str_len);
+            memcpy(var_name, cur_token_ptr, str_len);
+            var_name[str_len] = '\0';
 
-          // 
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_VAR);
-          SPVM_VAR* var = SPVM_VAR_new(compiler);
-          
-          // Name OP
-          SPVM_OP* op_name = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
-          op_name->uv.name = var_name;
-          
-          var->op_name = op_name;
-          
-          op->uv.var = var;
-          yylvalp->opval = op;
-          
-          return VAR;
+            // 
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_VAR);
+            SPVM_VAR* var = SPVM_VAR_new(compiler);
+            
+            // Name OP
+            SPVM_OP* op_name = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
+            op_name->uv.name = var_name;
+            
+            var->op_name = op_name;
+            
+            op->uv.var = var;
+            yylvalp->opval = op;
+            
+            return VAR;
+          }
         }
         /* Number literal */
         else if (isdigit(c)) {

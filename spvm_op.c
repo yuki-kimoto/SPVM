@@ -114,6 +114,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "CATCH",
   "BLOCK_END",
   "STORE",
+  "EXCEPTION_VAR",
 };
 
 SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line) {

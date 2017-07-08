@@ -19,6 +19,11 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
+    # Exception variable
+    {
+      $@;
+    }
+    
     # $array->[0]{x}
     {
       my $objs = malloc Test::Minimal[3];
