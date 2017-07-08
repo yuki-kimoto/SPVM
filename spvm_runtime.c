@@ -672,10 +672,28 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
   }
   case_SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION: {
+    operand_stack_top++;
+    call_stack[operand_stack_top].object_value = runtime->exception;
     pc++;
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_STORE_EXCEPTION: {
+    
+    // Decrement reference count
+    if (runtime->exception != NULL) {
+      SPVM_RUNTIME_API_dec_ref_count(api, runtime->exception);
+    }
+    
+    // Store object
+    runtime->exception = call_stack[operand_stack_top].object_value;
+    
+    // Increment new value reference count
+    if (runtime->exception != NULL) {
+      runtime->exception->ref_count++;
+    }
+    
+    operand_stack_top--;
+
     pc++;
     goto *jump[*pc];
   }

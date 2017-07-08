@@ -21,9 +21,8 @@ package Test {
   sub main($mvar : int) : int {
     # Exception variable
     {
-      $@;
-      
-      $@ = "abs";
+      $@ = "Exception";
+      std::println($@);
     }
     
     # $array->[0]{x}
