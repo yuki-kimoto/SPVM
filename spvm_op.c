@@ -116,8 +116,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "LEAVE_SCOPE",
   "DIE_PROCESS",
   "STORE",
-  "LAST_PROCESS",
-  "NEXT_PROCESS",
 };
 
 SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line) {
@@ -1247,30 +1245,6 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   SPVM_OP_sibling_splice(compiler, op_die_process, op_die_process->last, 0, op_die);
   
   return op_die_process;
-}
-
-SPVM_OP* SPVM_OP_build_last(SPVM_COMPILER* compiler, SPVM_OP* op_last) {
-  
-  SPVM_OP* op_last_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LAST_PROCESS, op_last->file, op_last->line);
-  
-  SPVM_OP* op_leave_scope = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LEAVE_SCOPE, op_last->file, op_last->line);
-  
-  SPVM_OP_sibling_splice(compiler, op_last_process, op_last_process->last, 0, op_leave_scope);
-  SPVM_OP_sibling_splice(compiler, op_last_process, op_last_process->last, 0, op_last);
-  
-  return op_last_process;
-}
-
-SPVM_OP* SPVM_OP_build_next(SPVM_COMPILER* compiler, SPVM_OP* op_next) {
-  
-  SPVM_OP* op_next_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEXT_PROCESS, op_next->file, op_next->line);
-  
-  SPVM_OP* op_leave_scope = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LEAVE_SCOPE, op_next->file, op_next->line);
-  
-  SPVM_OP_sibling_splice(compiler, op_next_process, op_next_process->last, 0, op_leave_scope);
-  SPVM_OP_sibling_splice(compiler, op_next_process, op_next_process->last, 0, op_next);
-  
-  return op_next_process;
 }
 
 SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term_length) {

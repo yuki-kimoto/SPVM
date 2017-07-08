@@ -377,28 +377,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_CODE_NEXT_PROCESS: {
-                      SPVM_OP* op_leave_scope = op_cur->first;
-                      
-                      assert(loop_block_my_var_base_stack->length > 0);
-                      int32_t* bottom_ptr = SPVM_ARRAY_fetch(loop_block_my_var_base_stack, loop_block_my_var_base_stack->length - 1);
-                      
-                      // Build op_leave_scope
-                      // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, NULL);
-                      
-                      break;
-                    }
-                    case SPVM_OP_C_CODE_LAST_PROCESS: {
-                      SPVM_OP* op_leave_scope = op_cur->first;
-                      
-                      assert(loop_block_my_var_base_stack->length > 0);
-                      int32_t* bottom_ptr = SPVM_ARRAY_fetch(loop_block_my_var_base_stack, loop_block_my_var_base_stack->length - 1);
-                      
-                      // Build op_leave_scope
-                      // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, NULL);
-                      
-                      break;
-                    }
                     case SPVM_OP_C_CODE_DIE_PROCESS: {
                       // Add before return process
                       SPVM_OP* op_leave_scope = op_cur->first;

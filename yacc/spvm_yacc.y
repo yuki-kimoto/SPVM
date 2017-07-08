@@ -319,13 +319,7 @@ my
 
 expression
   : LAST
-    {
-      $$ = SPVM_OP_build_last(compiler, $1);
-    }
   | NEXT
-    {
-      $$ = SPVM_OP_build_next(compiler, $1);
-    }
   | RETURN {
       $$ = SPVM_OP_build_return(compiler, $1, NULL);
     }
