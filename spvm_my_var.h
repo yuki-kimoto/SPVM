@@ -6,7 +6,7 @@
 struct SPVM_my_var {
   SPVM_OP* op_type;
   SPVM_OP* op_name;
-  SPVM_OP* op_term_assumption;
+  SPVM_OP* op_term_type_inference;
   int32_t index;
 };
 
