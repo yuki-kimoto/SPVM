@@ -1,21 +1,8 @@
-# Before 'make install' is performed this script should be runnable with
-# 'make test'. After 'make install' it should work as 'perl SPVM.t'
-
-#########################
-
-# change 'tests => 1' to 'tests => last_test_to_print';
-
 use strict;
 use warnings;
 use Data::Dumper;
 
-
 use Test::More 'no_plan';;
-
-#########################
-
-# Insert your test code below, the Test::More module is use()ed here so read
-# its man page ( perldoc Test::More ) for help writing this test script.
 
 my $file = 't/SPVM.t';
 
@@ -37,7 +24,7 @@ is_deeply(
 {
   # int array and get length
   {
-    my $len = SPVM::Test::test_array_malloc_int_array_and_length();
+    my $len = SPVM::Test::array_malloc_int_array_and_length();
     is($len, 3);
   }
 }
@@ -84,7 +71,7 @@ is_deeply(
 
 # for
 {
-  my $total = SPVM::Test::test_for();
+  my $total = SPVM::Test::for_basic();
   cmp_ok($total, '==', 6);
 }
 
@@ -92,19 +79,19 @@ is_deeply(
 {
   # if gt int left big
   { 
-    my $success = SPVM::Test::test_if_gt_int_left_big();
+    my $success = SPVM::Test::if_gt_int_left_big();
     ok($success == 1);
   }
 
   # if gt int same
   { 
-    my $success = SPVM::Test::test_if_gt_int_same();
+    my $success = SPVM::Test::if_gt_int_same();
     ok($success == 0);
   }
 
   # if gt int right big
   { 
-    my $success = SPVM::Test::test_if_gt_int_right_big();
+    my $success = SPVM::Test::if_gt_int_right_big();
     ok($success == 0);
   }
 }

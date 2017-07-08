@@ -344,6 +344,8 @@ call_sub(...)
   
   api->call_sub(api, sub_constant_pool_index);
   
+  
+  
   if (SvOK(sv_return_type_name)) {
     // Create base_object
     HV* hv_base_object = sv_2mortal((SV*)newHV());
