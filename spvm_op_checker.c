@@ -371,25 +371,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_CODE_DIE_PROCESS: {
-                      // Add before return process
-                      SPVM_OP* op_leave_scope = op_cur->first;
-                      SPVM_OP* op_die = op_cur->last;
-                      SPVM_OP* op_term = op_die->first;
-                      
-                      if (try_block_my_var_base_stack->length > 0) {
-                        int32_t* bottom_ptr = SPVM_ARRAY_fetch(try_block_my_var_base_stack, try_block_my_var_base_stack->length - 1);
-                        
-                        // Build op_leave_scope
-                        // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, *bottom_ptr, op_term);
-                      }
-                      else {
-                        // Build op_leave_scope
-                        // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, 0, op_term);
-                      }
-                      
-                      break;
-                    }
                     case SPVM_OP_C_CODE_CONSTANT: {
                       SPVM_CONSTANT* constant = op_cur->uv.constant;
                       

@@ -1225,18 +1225,11 @@ SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_
 
 SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_term) {
   
-  SPVM_OP* op_die_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_DIE_PROCESS, op_die->file, op_die->line);
-  
-  SPVM_OP* op_leave_scope = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LEAVE_SCOPE, op_die->file, op_die->line);
-  
   if (op_term) {
     SPVM_OP_sibling_splice(compiler, op_die, NULL, 0, op_term);
   }
   
-  SPVM_OP_sibling_splice(compiler, op_die_process, op_die_process->last, 0, op_leave_scope);
-  SPVM_OP_sibling_splice(compiler, op_die_process, op_die_process->last, 0, op_die);
-  
-  return op_die_process;
+  return op_die;
 }
 
 SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term_length) {
