@@ -24,9 +24,28 @@ is_deeply(
 {
   # int array and get length
   {
-    my $len = SPVM::TestCase::array_malloc_int_array_and_length();
+    my $len = SPVM::TestCase::array_malloc_int_array_and_get_length();
     is($len, 3);
   }
+
+  # array - set and get array element, first element
+  {
+    my $element = SPVM::TestCase::array_set_and_get_array_element_first();
+    is($element, 345);
+  }
+  
+  # array - set and get array element, last element
+  {
+    my $element = SPVM::TestCase::array_set_and_get_array_element_last();
+    is($element, 298);
+  }
+
+  # array - culcurate sum by for
+  {
+    my $total = SPVM::TestCase::array_culcurate_sum_by_for();
+    is($total, 6);
+  }
+
 }
 
 # byte

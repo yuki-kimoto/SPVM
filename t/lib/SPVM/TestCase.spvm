@@ -2,8 +2,8 @@ package TestCase {
   has x : int;
   has y : int;
 
-  # array - malloc int array and array length
-  sub array_malloc_int_array_and_length() : int {
+  # array - malloc int array and get length
+  sub array_malloc_int_array_and_get_length() : int {
     
     my $nums = malloc int[3];
     my $len = @$nums;
@@ -11,6 +11,40 @@ package TestCase {
     return $len;
   }
 
+  # array - set and get array element, first element
+  sub array_set_and_get_array_element_first() : int {
+    
+    my $nums = malloc int[3];
+    $nums->[0] = 345;
+
+    return $nums->[0];
+  }
+
+  # array - set and get array element, last element
+  sub array_set_and_get_array_element_last() : int {
+    
+    my $nums = malloc int[3];
+    $nums->[2] = 298;
+
+    return $nums->[2];
+  }
+
+  # array - culcurate sum by for
+  sub array_culcurate_sum_by_for() : int {
+    
+    my $nums = malloc int[3];
+    $nums->[0] = 1;
+    $nums->[1] = 2;
+    $nums->[2] = 3;
+    
+    my $total = 0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total = $total + $nums->[$i];
+    }
+
+    return $total;
+  }
+  
   sub sum_byte ($a : byte, $b :byte) : byte {
     
     my $total = $a + $b;
