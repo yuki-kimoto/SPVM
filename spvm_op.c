@@ -209,6 +209,16 @@ SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_s
 
 SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* op_eval_block) {
   
+  // Set exception to undef at first of eval block
+  SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_EXCEPTION_VAR, op_eval_block->file, op_eval_block->line);
+  SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, op_eval_block->file, op_eval_block->line);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_eval_block->file, op_eval_block->line);
+  SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_exception_var);
+  SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_undef);
+  
+  SPVM_OP* op_list_statement = op_eval_block->first;
+  SPVM_OP_sibling_splice(compiler, op_list_statement, op_list_statement->first, 0, op_assign);
+  
   SPVM_OP_sibling_splice(compiler, op_eval, op_eval->last, 0, op_eval_block);
   
   // eval block
