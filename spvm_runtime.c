@@ -354,6 +354,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE,
     &&case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_DIE,
+    &&case_SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION,
+    &&case_SPVM_BYTECODE_C_CODE_STORE_EXCEPTION,
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
   };
   
@@ -668,6 +670,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       pc = return_address;
       goto *jump[*pc];
     }
+  }
+  case_SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION: {
+    pc++;
+    goto *jump[*pc];
+  }
+  case_SPVM_BYTECODE_C_CODE_STORE_EXCEPTION: {
+    pc++;
+    goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_DIE: {
     
