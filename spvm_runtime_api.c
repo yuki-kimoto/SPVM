@@ -18,6 +18,18 @@
 #include "spvm_runtime_allocator.h"
 #include "spvm_api.h"
 
+void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY_OBJECT* exception) {
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
+  
+  if (runtime->exception != NULL) {
+    SPVM_RUNTIME_API_dec_ref_count(api, runtime->exception);
+  }
+  
+  runtime->exception = exception;
+  
+  runtime->exception->ref_count++;
+}
+
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_byte_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_ALLOCATOR* allocator = runtime->allocator;

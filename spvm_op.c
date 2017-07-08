@@ -1211,7 +1211,16 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
     
     op_term = op_constant;
   }
-  SPVM_OP_sibling_splice(compiler, op_die, NULL, 0, op_term);
+  
+  // Exception variable
+  SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_EXCEPTION_VAR, op_term->file, op_term->line);
+  
+  // Assign
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_term->file, op_term->line);
+  SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_exception_var);
+  SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_term);
+  
+  SPVM_OP_sibling_splice(compiler, op_die, NULL, 0, op_assign);
   
   return op_die;
 }

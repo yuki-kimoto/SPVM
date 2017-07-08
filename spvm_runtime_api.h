@@ -88,4 +88,6 @@ SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_float_array_noinc(SPVM_API* api, int3
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_double_array_noinc(SPVM_API* api, int32_t length);
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_object_array_noinc(SPVM_API* api, int32_t length);
 
+void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY_OBJECT* exception);
+
 #endif
