@@ -1,6 +1,15 @@
-package XSTest {
+package Test {
   has x : int;
   has y : int;
+
+  # array - malloc int array and array length
+  sub test_array_malloc_int_array_and_length() : int {
+    
+    my $nums = malloc int[3];
+    my $len = @$nums;
+
+    return $len;
+  }
 
   sub sum_byte ($a : byte, $b :byte) : byte {
     
@@ -92,5 +101,6 @@ package XSTest {
 
     return -1;
   }
-
+  
+  
 }

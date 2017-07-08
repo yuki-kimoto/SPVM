@@ -2055,7 +2055,10 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_OBJECT:
         array = SPVM_RUNTIME_API_malloc_object_array_noinc(api, length);
         break;
+      default:
+        assert(0);
     }
+    
     // Memory allocation error
     if (!array_object) {
       // Error message
