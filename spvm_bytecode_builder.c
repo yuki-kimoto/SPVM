@@ -1382,18 +1382,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-                  case SPVM_OP_C_CODE_INC_REF_COUNT: {
-                    
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_REF_COUNT);
-                    
-                    break;
-                  }
-                  case SPVM_OP_C_CODE_DEC_REF_COUNT: {
-                    
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_DEC_REF_COUNT);
-                    
-                    break;
-                  }
                   case SPVM_OP_C_CODE_ASSIGN: {
                     
                     if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {

@@ -215,7 +215,5 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "RETURN_DOUBLE",
   "RETURN_OBJECT",
   "DIE",
-  "INC_REF_COUNT",
-  "DEC_REF_COUNT",
   "WIDE",
 };

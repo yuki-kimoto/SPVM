@@ -27,45 +27,6 @@
 #include "spvm_limit.h"
 #include "spvm_constant_pool_package.h"
 
-void SPVM_OP_CHECKER_build_leave_scope(SPVM_COMPILER* compiler, SPVM_OP* op_leave_scope, SPVM_ARRAY* op_my_var_stack, int32_t top, int32_t bottom, SPVM_OP* op_term_keep) {
-  
-  {
-    int32_t i;
-    for (i = top; i >= bottom; i--) {
-      SPVM_OP* op_my_var = SPVM_ARRAY_fetch(op_my_var_stack, i);
-      assert(op_my_var);
-      
-      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my_var);
-      
-      // Decrement reference count when leaving scope
-      if (!SPVM_TYPE_is_numeric(compiler, type)) {
-        // If return term is variable, don't decrement reference count
-        _Bool do_dec_ref_count = 0;
-        if (op_term_keep) {
-          if (op_term_keep->code == SPVM_OP_C_CODE_VAR) {
-            if (op_term_keep->uv.var->op_my_var->uv.my_var->index != op_my_var->uv.my_var->index) {
-              do_dec_ref_count = 1;
-            }
-          }
-          else {
-            do_dec_ref_count = 1;
-          }
-        }
-        else {
-          do_dec_ref_count = 1;
-        }
-        
-        if (do_dec_ref_count) {
-          SPVM_OP* op_dec_ref_count = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_DEC_REF_COUNT, op_leave_scope->file, op_leave_scope->line);
-          SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
-          SPVM_OP_sibling_splice(compiler, op_dec_ref_count, NULL, 0, op_var);
-          SPVM_OP_sibling_splice(compiler, op_leave_scope, NULL, 0, op_dec_ref_count);
-        }
-      }
-    }
-  }
-}
-
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   SPVM_ARRAY* op_types = compiler->op_types;
@@ -1426,28 +1387,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       // Free my variables at end of block
                       SPVM_OP* op_block_end = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK_END, op_cur->file, op_cur->line);
                       
-                      /*
-                      int32_t pop_count = op_my_var_stack->length - block_my_var_base;
-                      {
-                        int32_t j;
-                        for (j = 0; j < pop_count; j++) {
-                          SPVM_OP* op_my_var = SPVM_ARRAY_pop(op_my_var_stack);
-                          
-                          SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my_var);
-                          
-                          // Decrement reference count at end of scope
-                          if (!SPVM_TYPE_is_numeric(compiler, type)) {
-                            SPVM_OP* op_dec_ref_count = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_DEC_REF_COUNT, op_cur->file, op_cur->line);
-                            SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
-                            SPVM_OP_sibling_splice(compiler, op_dec_ref_count, NULL, 0, op_var);
-                            SPVM_OP_sibling_splice(compiler, op_block_end, NULL, 0, op_dec_ref_count);
-                          }
-                          
-                          assert(op_my_var);
-                        }
-                      }
-                      */
-                      
                       if (!(op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SUB)) {
                         SPVM_OP_sibling_splice(compiler, op_list_statement, op_list_statement->last, 0, op_block_end);
                       }
@@ -1498,20 +1437,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       SPVM_OP* op_my_var = op_cur->first;
                       SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
-                      
-                      /*
-                      // If argument is object, increment reference count
-                      if (my_var->index < sub->op_args->length) {
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my_var);
-                        if (!SPVM_TYPE_is_numeric(compiler, type)) {
-                          SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
-                          
-                          SPVM_OP* op_increfcount = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_INC_REF_COUNT, op_my_var->file, op_my_var->line);
-                          SPVM_OP_sibling_splice(compiler, op_increfcount, NULL, 0, op_var);
-                          SPVM_OP_sibling_splice(compiler, op_cur, op_cur->last, 0, op_increfcount);
-                        }
-                      }
-                      */
                       
                       break;
                     }
