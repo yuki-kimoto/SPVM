@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
   
 #ifdef DEBUG
   if (runtime->abort) {
-    void* message_object = api->pop_retval_object(api);
+    void* message_object = runtime->exception;;
     int8_t* message = api->get_byte_array_elements(api, message_object);
     
     printf("%s", (char*)message);
@@ -93,6 +93,8 @@ int main(int argc, char *argv[])
     printf("TEST return_value: %ld\n", return_value);
   }
 #endif
+  
+  SPVM_RUNTIME_free(runtime);
   
   return 0;
 }

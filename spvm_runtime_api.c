@@ -27,7 +27,9 @@ void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY_OBJECT* exception)
   
   runtime->exception = exception;
   
-  runtime->exception->ref_count++;
+  if (runtime->exception != NULL) {
+    runtime->exception->ref_count++;
+  }
 }
 
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_byte_array_noinc(SPVM_API* api, int32_t length) {

@@ -2391,9 +2391,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
+
+  // Free exception
+  SPVM_RUNTIME_API_set_exception(runtime->api, NULL);
   
   // Free call stack
   free(runtime->call_stack);
+  
+  free(runtime->api);
   
   // Free runtime allocator
   SPVM_RUNTIME_ALLOCATOR_free(runtime, runtime->allocator);
