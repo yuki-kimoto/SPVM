@@ -288,7 +288,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SUB) {
                     SPVM_OP* op_statements = op_cur->first;
                     
-                    if (op_statements->last->code != SPVM_OP_C_CODE_RETURN_PROCESS) {
+                    if (op_statements->last->code != SPVM_OP_C_CODE_RETURN) {
                       
                       SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_cur->file, op_cur->line);
                       if (sub->op_return_type->code != SPVM_OP_C_CODE_VOID) {
@@ -323,13 +323,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      SPVM_OP* op_return_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN_PROCESS, op_return->file, op_return->line);
-                      SPVM_OP* op_leave_scope = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LEAVE_SCOPE, op_return->file, op_return->line);
-                      
-                      SPVM_OP_sibling_splice(compiler, op_return_process, op_return_process->last, 0, op_leave_scope);
-                      SPVM_OP_sibling_splice(compiler, op_return_process, op_return_process->last, 0, op_return);
-                      
-                      SPVM_OP_sibling_splice(compiler, op_statements, op_statements->last, 0, op_return_process);
+                      SPVM_OP_sibling_splice(compiler, op_statements, op_statements->last, 0, op_return);
                     }
                   }
                   
@@ -1126,17 +1120,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           break;
                         }
                       }
-                      break;
-                    }
-                    case SPVM_OP_C_CODE_RETURN_PROCESS: {
-                      
-                      // Add before return process
-                      SPVM_OP* op_leave_scope = op_cur->first;
-                      SPVM_OP* op_return = op_cur->last;
-                      SPVM_OP* op_term = op_return->first;
-                      
-                      // SPVM_OP_CHECKER_build_leave_scope(compiler, op_leave_scope, op_my_var_stack, op_my_var_stack->length - 1, 0, op_term);
-                      
                       break;
                     }
                     case SPVM_OP_C_CODE_NEGATE: {

@@ -112,7 +112,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "INC_REF_COUNT",
   "FORMAL_ARGS",
   "BLOCK_END",
-  "RETURN_PROCESS",
   "LEAVE_SCOPE",
   "DIE_PROCESS",
   "STORE",
@@ -1217,18 +1216,11 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
 
 SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_OP* op_term) {
   
-  SPVM_OP* op_sub_end_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN_PROCESS, op_return->file, op_return->line);
-  
-  SPVM_OP* op_leave_scope = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LEAVE_SCOPE, op_return->file, op_return->line);
-  
   if (op_term) {
     SPVM_OP_sibling_splice(compiler, op_return, NULL, 0, op_term);
   }
   
-  SPVM_OP_sibling_splice(compiler, op_sub_end_process, op_sub_end_process->last, 0, op_leave_scope);
-  SPVM_OP_sibling_splice(compiler, op_sub_end_process, op_sub_end_process->last, 0, op_return);
-  
-  return op_sub_end_process;
+  return op_return;
 }
 
 SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_term) {
