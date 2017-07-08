@@ -88,7 +88,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
     
     void* free_address = SPVM_ARRAY_pop(allocator->freelists[index]);
     if (free_address) {
-      return free_address;
+      block = free_address;
     }
     else {
       block = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, size);
@@ -120,6 +120,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_base_object(SPVM_API* api, SPVM_RUNTIME_ALLOCAT
 #ifdef DEBUG
     runtime->object_count--;
     warn("FREE OBJECT COUNT %d", runtime->object_count);
+    assert(runtime->object_count >= 0);
 #endif
     
     if (byte_size > allocator->base_object_max_byte_size_use_memory_pool) {

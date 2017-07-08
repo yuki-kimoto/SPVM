@@ -1354,26 +1354,25 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_STORE_OBJECT: {
-    int32_t vars_index = *(pc + 1);
-    
-    // Increment reference count
-    if (call_stack[operand_stack_top].object_value != NULL) {
-      call_stack[operand_stack_top].object_value->ref_count++;
-    }
+  case_SPVM_BYTECODE_C_CODE_STORE_OBJECT:
+    index = *(pc + 1);
     
     // Decrement reference count
-    if (vars[vars_index].object_value != NULL) {
-      SPVM_RUNTIME_API_dec_ref_count(api, vars[vars_index].object_value);
+    if (vars[index].object_value != NULL) {
+      SPVM_RUNTIME_API_dec_ref_count(api, vars[index].object_value);
     }
     
-    // Store address
-    vars[vars_index] = call_stack[operand_stack_top];
+    // Store object
+    vars[index].object_value = call_stack[operand_stack_top].object_value;
+    
+    // Increment new value reference count
+    if (vars[index].object_value != NULL) {
+      vars[index].object_value->ref_count++;
+    }
     
     operand_stack_top--;
     pc += 2;
     goto *jump[*pc];
-  }
   case_SPVM_BYTECODE_C_CODE_POP:
     operand_stack_top--;
     pc++;
@@ -2164,18 +2163,18 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       case SPVM_BYTECODE_C_CODE_STORE_OBJECT:
         index = (*(pc + 2) << 8) + *(pc + 3);
         
-        // Increment reference count
-        if (call_stack[operand_stack_top].object_value != NULL) {
-          call_stack[operand_stack_top].object_value->ref_count++;
-        }
-        
-        // Decrement reference count if original object is not null
+        // Decrement reference count
         if (vars[index].object_value != NULL) {
           SPVM_RUNTIME_API_dec_ref_count(api, vars[index].object_value);
         }
         
-        // Store address
-        vars[index] = call_stack[operand_stack_top];
+        // Store object
+        vars[index].object_value = call_stack[operand_stack_top].object_value;
+        
+        // Increment new value reference count
+        if (vars[index].object_value != NULL) {
+          vars[index].object_value->ref_count++;
+        }
         
         operand_stack_top--;
         pc +=4;
