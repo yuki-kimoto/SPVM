@@ -11,7 +11,6 @@ use Data::Dumper;
 
 
 use Test::More 'no_plan';;
-BEGIN { use_ok('SPVM') };
 
 #########################
 
@@ -19,6 +18,9 @@ BEGIN { use_ok('SPVM') };
 # its man page ( perldoc Test::More ) for help writing this test script.
 
 my $file = 't/SPVM.t';
+
+use FindBin;
+use lib "$FindBin::Bin/lib";
 
 use SPVM 'XSTest'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
@@ -69,4 +71,10 @@ is_deeply(
 {
   my $total = SPVM::XSTest::sum_double(0.25, 0.25);
   cmp_ok($total, '==', 0.5);
+}
+
+# for
+{
+  my $total = SPVM::XSTest::test_for();
+  cmp_ok($total, '==', 6);
 }

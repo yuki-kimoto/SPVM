@@ -43,4 +43,14 @@ package XSTest {
     
     return $total;
   }
+  
+  # for
+  sub test_for () : int {
+    my $total = 0;
+    for (my $i = 1; $i <= 3; $i++) {
+      $total = $total + $i;
+    }
+    
+    return $total;
+  }
 }
