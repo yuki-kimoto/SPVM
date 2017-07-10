@@ -8,7 +8,6 @@ SPVM_MY_VAR* SPVM_MY_VAR_new(SPVM_COMPILER* compiler) {
 
   my_var->op_type = NULL;
   my_var->op_name = NULL;
-  my_var->op_term_type_inference = NULL;
   my_var->index = -1;
   
   return my_var;

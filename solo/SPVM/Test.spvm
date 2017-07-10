@@ -583,7 +583,7 @@ package Test {
     my $v2 : int;
     my $v3 : int;
     
-    $v3 = $v2 = $v1 = 5;
+    # $v3 = $v2 = $v1 = 5;
     
     100;
     1000;

@@ -17,7 +17,7 @@
 %token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF DIE
 %token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR
 
-%type <opval> grammar opt_statements statements statement my field if_statement else_statement
+%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
 %type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package
 %type <opval> enumeration_values enumeration_value
@@ -299,22 +299,14 @@ enumeration
       $$ = SPVM_OP_build_enumeration(compiler, $1, $2);
     }
 
-my
+my_var
   : MY VAR ':' type
     {
-      $$ = SPVM_OP_build_my_var(compiler, $1, $2, $4, NULL);
+      $$ = SPVM_OP_build_my_var(compiler, $1, $2, $4);
     }
   | MY VAR
     {
-      $$ = SPVM_OP_build_my_var(compiler, $1, $2, NULL, NULL);
-    }
-  | MY VAR ':' type ASSIGN term
-    {
-      $$ = SPVM_OP_build_my_var(compiler, $1, $2, $4, $6);
-    }
-  | MY VAR ASSIGN term
-    {
-      $$ = SPVM_OP_build_my_var(compiler, $1, $2, NULL, $4);
+      $$ = SPVM_OP_build_my_var(compiler, $1, $2, NULL);
     }
 
 expression
@@ -335,7 +327,6 @@ expression
     {
       $$ = SPVM_OP_build_die(compiler, $1, $2);
     }
-  | my
 
 opt_terms
   :	/* Empty */
@@ -389,6 +380,7 @@ term
   | convert_type
   | new_object
   | array_length
+  | my_var
 
 new_object
   : MALLOC type_name
@@ -584,7 +576,8 @@ args
 arg
   : VAR ':' type
     {
-      $$ = SPVM_OP_build_my_var(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, $1->file, $1->line), $1, $3, NULL);
+      SPVM_OP* op_my_var = 
+      $$ = SPVM_OP_build_my_var(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, $1->file, $1->line), $1, $3);
     }
 
 opt_descriptors

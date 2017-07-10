@@ -463,6 +463,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_CODE_MY_VAR: {
+      
       SPVM_MY_VAR* my_var = op->uv.my_var;
       if ( my_var->op_type) {
         type = my_var->op_type->uv.type;
@@ -936,10 +937,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   return op_use;
 }
 
-SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_term) {
-  
-  // Stab
-  SPVM_OP* op_my_var_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR_ASSIGN, op_my_var->file, op_my_var->line);
+SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_OP* op_var, SPVM_OP* op_type) {
   
   // Create my var information
   SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
@@ -953,30 +951,13 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_
   // Add my_var information to op
   op_my_var->uv.my_var = my_var;
   
-  // Add my_var op
-  SPVM_OP_sibling_splice(compiler, op_my_var_assign, NULL, 0, op_my_var);
+  op_var->uv.var->op_my_var = op_my_var;
   
-  // Assign
-  if (op_term) {
-    SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_my_var->file, op_my_var->line);
-    
-    op_var->uv.var->op_my_var = op_my_var;
-    
-    SPVM_OP_sibling_splice(compiler, op_assign, NULL, 0, op_var);
-    SPVM_OP_sibling_splice(compiler, op_assign, op_var, 0, op_term);
-    
-    SPVM_OP_sibling_splice(compiler, op_my_var_assign, op_my_var_assign->last, 0, op_assign);
-    
-    // Type inference
-    my_var->op_term_type_inference = op_term;
-  }
+  SPVM_OP_sibling_splice(compiler, op_var, op_var->last, 0, op_my_var);
   
-  // Type is none
-  if (!op_type && (!op_term || op_term->code == SPVM_OP_C_CODE_UNDEF)) {
-    SPVM_yyerror_format(compiler, "\"my %s\" can't detect type at %s line %d\n", my_var->op_name->uv.name, op_my_var->file, op_my_var->line);
-  }
+  assert(op_var->first);
   
-  return op_my_var_assign;
+  return op_var;
 }
 
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_type) {
@@ -1172,10 +1153,8 @@ SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP*
 SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Build op
-  SPVM_OP_sibling_splice(compiler, op_bin, NULL, 0, op_first);
-  if (op_last) {
-    SPVM_OP_sibling_splice(compiler, op_bin, op_first, 0, op_last);
-  }
+  SPVM_OP_sibling_splice(compiler, op_bin, op_bin->last, 0, op_first);
+  SPVM_OP_sibling_splice(compiler, op_bin, op_bin->last, 0, op_last);
   
   return op_bin;
 }

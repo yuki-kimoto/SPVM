@@ -101,7 +101,6 @@ spvm_yacc.h
 spvm_yacc_util.c
 spvm_yacc_util.h
 t/lib/SPVM/TestCase.spvm
-t/lib/SPVM/XSTest.spvm
 t/SPVM.t
 yacc/bison.sh
 yacc/spvm_yacc.y
