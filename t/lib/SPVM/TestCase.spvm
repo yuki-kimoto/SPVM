@@ -2,7 +2,7 @@ package TestCase {
   has x : int;
   has y : int;
   
-  # Number literal - number literal hex
+  # Number literal
   sub number_literal_hex_int() : int {
     my $value = 0xFF;
     
@@ -13,12 +13,11 @@ package TestCase {
       return 0;
     }
   }
-
-  # Number literal - number literal hex max
+  
   sub number_literal_hex_int_max() : int {
     # 11111111 11111111 11111111 11111111
     my $value = 0xFFFFFFFF;
-
+    
     if ($value == -1) {
       return 1;
     }
@@ -27,7 +26,7 @@ package TestCase {
     }
   }
   
-  # bit shift - bit shift left byte
+  # Bit shift
   sub bit_shift_left_byte() : int {
     # 0000 0011 << 2
     my $value = (byte)0x3 << 2;
@@ -41,7 +40,6 @@ package TestCase {
     }
   }
   
-  # bit shift - bit shift left byte max
   sub bit_shift_left_byte_max() : int {
     
     # 0100 0000 << 1
@@ -56,7 +54,6 @@ package TestCase {
     }
   }
   
-  # bit shift - bit shift left byte overflow
   sub bit_shift_left_byte_overflow() : int {
     
     # 1000 0000 << 1
@@ -71,7 +68,6 @@ package TestCase {
     }
   }
   
-  # bit shift - bit shift left short
   sub bit_shift_left_short() : int {
     
     # 0000 0011 0000 0000 << 2
@@ -86,7 +82,6 @@ package TestCase {
     }
   }
   
-  # bit shift - bit shift left short max
   sub bit_shift_left_short_max() : int {
     
     # 0100 0000 0000 0000 << 1
@@ -101,7 +96,6 @@ package TestCase {
     }
   }
   
-  # bit shift - bit shift left short overflow
   sub bit_shift_left_short_overflow() : int {
     
     # 1000 0000 0000 0000 << 1
@@ -116,7 +110,7 @@ package TestCase {
     }
   }
   
-  # array - malloc int array and get length
+  # Array
   sub array_malloc_int_array_and_get_length() : int {
     
     my $nums = malloc int[3];
@@ -125,7 +119,6 @@ package TestCase {
     return $len;
   }
 
-  # array - set and get array element, first element
   sub array_set_and_get_array_element_first() : int {
     
     my $nums = malloc int[3];
@@ -134,7 +127,6 @@ package TestCase {
     return $nums->[0];
   }
 
-  # array - set and get array element, last element
   sub array_set_and_get_array_element_last() : int {
     
     my $nums = malloc int[3];
@@ -143,7 +135,6 @@ package TestCase {
     return $nums->[2];
   }
 
-  # array - culcurate sum by for
   sub array_culcurate_sum_by_for() : int {
     
     my $nums = malloc int[3];
@@ -159,6 +150,7 @@ package TestCase {
     return $total;
   }
   
+  # Sum
   sub sum_byte ($a : byte, $b :byte) : byte {
     
     my $total = $a + $b;
@@ -201,7 +193,7 @@ package TestCase {
     return $total;
   }
   
-  # for
+  # For
   sub for_basic() : int {
     my $total = 0;
     for (my $i = 1; $i <= 3; $i++) {
@@ -211,7 +203,7 @@ package TestCase {
     return $total;
   }
   
-  # if gt int left big
+  # If
   sub if_gt_int_left_big () : int {
     
     if (3 > 1) {
@@ -220,33 +212,25 @@ package TestCase {
     else {
       return 0;
     }
-    
-    return -1;
   }
 
-  # if gt int same
   sub if_gt_int_same () : int {
     
     if (3 > 3) {
-      return 1;
-    }
-    else {
       return 0;
     }
-
-    return -1;
+    else {
+      return 1;
+    }
   }
 
-  # if gt int right big
   sub if_gt_int_right_big () : int {
     
     if (3 > 4) {
-      return 1;
-    }
-    else {
       return 0;
     }
-
-    return -1;
+    else {
+      return 1;
+    }
   }
 }

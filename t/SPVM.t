@@ -22,56 +22,26 @@ is_deeply(
 
 # Number literal
 {
-  # Number literal - number literal hex
-  {
-    my $success = SPVM::TestCase::number_literal_hex_int();
-    ok($success);
-  }
-  
-  # Number literal - number literal hex
-  {
-    my $success = SPVM::TestCase::number_literal_hex_int_max();
-    ok($success);
-  }
+  ok(SPVM::TestCase::number_literal_hex_int());
+  ok(SPVM::TestCase::number_literal_hex_int_max());
 }
+
+# if
+{
+  ok(SPVM::TestCase::if_gt_int_left_big());
+  ok(SPVM::TestCase::if_gt_int_same());
+  ok(SPVM::TestCase::if_gt_int_right_big());
+}
+
 
 # Bit shift
 {
-  # bit shift - bit shift left byte
-  {
-    my $success = SPVM::TestCase::bit_shift_left_byte();
-    ok($success);
-  }
-  
-  # bit shift - bit shift left byte max
-  {
-    my $success = SPVM::TestCase::bit_shift_left_byte_max();
-    ok($success);
-  }
-  
-  # bit shift - bit shift left byte overflow
-  {
-    my $success = SPVM::TestCase::bit_shift_left_byte_overflow();
-    ok($success);
-  }
-
-  # bit shift - bit shift left short
-  {
-    my $success = SPVM::TestCase::bit_shift_left_short();
-    ok($success);
-  }
-  
-  # bit shift - bit shift left short max
-  {
-    my $success = SPVM::TestCase::bit_shift_left_short_max();
-    ok($success);
-  }
-  
-  # bit shift - bit shift left short overflow
-  {
-    my $success = SPVM::TestCase::bit_shift_left_short_overflow();
-    ok($success);
-  }
+  ok(SPVM::TestCase::bit_shift_left_byte());
+  ok(SPVM::TestCase::bit_shift_left_byte_max());
+  ok(SPVM::TestCase::bit_shift_left_byte_overflow());
+  ok(SPVM::TestCase::bit_shift_left_short());
+  ok(SPVM::TestCase::bit_shift_left_short_max());
+  ok(SPVM::TestCase::bit_shift_left_short_overflow());
 }
 
 # Array
@@ -146,25 +116,3 @@ is_deeply(
   my $total = SPVM::TestCase::for_basic();
   cmp_ok($total, '==', 6);
 }
-
-# if
-{
-  # if gt int left big
-  { 
-    my $success = SPVM::TestCase::if_gt_int_left_big();
-    ok($success == 1);
-  }
-
-  # if gt int same
-  { 
-    my $success = SPVM::TestCase::if_gt_int_same();
-    ok($success == 0);
-  }
-
-  # if gt int right big
-  { 
-    my $success = SPVM::TestCase::if_gt_int_right_big();
-    ok($success == 0);
-  }
-}
-
