@@ -3,10 +3,23 @@ package TestCase {
   has y : int;
   
   # Number literal - number literal hex
-  sub number_literal_hex() : int {
+  sub number_literal_hex_int() : int {
     my $value = 0xFF;
     
     if ($value == 255) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  # Number literal - number literal hex max
+  sub number_literal_hex_int_max() : int {
+    # 11111111 11111111 11111111 11111111
+    my $value = 0xFFFFFFFF;
+
+    if ($value == -1) {
       return 1;
     }
     else {

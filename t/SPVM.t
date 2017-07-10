@@ -23,8 +23,16 @@ is_deeply(
 # Number literal
 {
   # Number literal - number literal hex
-  my $success = SPVM::TestCase::number_literal_hex();
-  ok($success);
+  {
+    my $success = SPVM::TestCase::number_literal_hex_int();
+    ok($success);
+  }
+  
+  # Number literal - number literal hex
+  {
+    my $success = SPVM::TestCase::number_literal_hex_int_max();
+    ok($success);
+  }
 }
 
 # Bit shift
