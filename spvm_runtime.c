@@ -1556,25 +1556,25 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_BYTE:
     call_stack[operand_stack_top - 1].byte_value
-      = (call_stack[operand_stack_top - 1].byte_value >> call_stack[operand_stack_top].int_value) & 0xFF;
+      = (int8_t)(((uint8_t)call_stack[operand_stack_top - 1].byte_value) >> call_stack[operand_stack_top].int_value);
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_SHORT:
     call_stack[operand_stack_top - 1].byte_value
-      = (call_stack[operand_stack_top - 1].short_value >> call_stack[operand_stack_top].int_value) & 0xFFFF;
+      = (int16_t)(((uint16_t)call_stack[operand_stack_top - 1].short_value) >> call_stack[operand_stack_top].int_value);
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_INT:
     call_stack[operand_stack_top - 1].int_value
-      = (call_stack[operand_stack_top - 1].int_value >> call_stack[operand_stack_top].int_value) & 0xFFFFFFFF;
+      = (int32_t)(((uint32_t)call_stack[operand_stack_top - 1].int_value) >> call_stack[operand_stack_top].int_value);
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_LONG:
     call_stack[operand_stack_top - 1].long_value
-      = (call_stack[operand_stack_top - 1].long_value >> call_stack[operand_stack_top].int_value) & 0xFFFFFFFFFFFFFFFF;
+      = (int64_t)(((uint64_t)call_stack[operand_stack_top - 1].long_value) >> call_stack[operand_stack_top].int_value);
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
