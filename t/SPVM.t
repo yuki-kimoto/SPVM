@@ -47,6 +47,9 @@ is_deeply(
   ok(SPVM::TestCase::bit_shift_left_int());
   ok(SPVM::TestCase::bit_shift_left_int_max());
   ok(SPVM::TestCase::bit_shift_left_int_overflow());
+  ok(SPVM::TestCase::bit_shift_left_long());
+  ok(SPVM::TestCase::bit_shift_left_long_max());
+  ok(SPVM::TestCase::bit_shift_left_long_overflow());
 }
 
 # Array
