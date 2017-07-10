@@ -55,22 +55,58 @@ package TestCase {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  # Bit shift right logical
+  sub bit_shift_right_byte() : int {
+    # 11000001 >> 2
+    my $value = (byte)0xC1 >> 2;
+    
+    # 11110000
+    if ($value == (byte)0xF0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  sub bit_shift_right_short() : int {
+    # 11000000 00000001 >> 2
+    my $value = (short)0xC001 >> 2;
+    
+    # 11110000 00000000
+    if ($value == (short)0xF000) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  sub bit_shift_right_int() : int {
+    # 11000000 00000000 00000000 00000001 >> 2
+    my $value = 0xC0000001 >> 2;
+    
+    # 11110000 00000000 00000000 00000000
+    if ($value == 0xF0000000) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  sub bit_shift_right_long() : int {
+    # 11000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 >> 2
+    my $value = 0xC000000000000001L >> 2;
+    
+    # 11110000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+    if ($value == 0xF000000000000000L) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
 
   # Number literal
   sub number_literal_hex_int() : int {

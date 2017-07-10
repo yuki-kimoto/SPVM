@@ -60,6 +60,15 @@ is_deeply(
   ok(SPVM::TestCase::bit_shift_right_logical_long());
 }
 
+# Bit shift right
+{
+  ok(SPVM::TestCase::bit_shift_right_byte());
+  ok(SPVM::TestCase::bit_shift_right_short());
+  ok(SPVM::TestCase::bit_shift_right_int());
+  ok(SPVM::TestCase::bit_shift_right_long());
+}
+
+
 # Array
 {
   # int array and get length
