@@ -1561,7 +1561,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_SHORT:
-    call_stack[operand_stack_top - 1].byte_value
+    call_stack[operand_stack_top - 1].short_value
       = (int16_t)(((uint16_t)call_stack[operand_stack_top - 1].short_value) >> call_stack[operand_stack_top].int_value);
     operand_stack_top--;
     pc++;

@@ -36,7 +36,7 @@ is_deeply(
 }
 
 
-# Bit shift
+# Bit shift left
 {
   ok(SPVM::TestCase::bit_shift_left_byte());
   ok(SPVM::TestCase::bit_shift_left_byte_max());
@@ -50,6 +50,14 @@ is_deeply(
   ok(SPVM::TestCase::bit_shift_left_long());
   ok(SPVM::TestCase::bit_shift_left_long_max());
   ok(SPVM::TestCase::bit_shift_left_long_overflow());
+}
+
+# Bit shift right logical
+{
+  ok(SPVM::TestCase::bit_shift_right_logical_byte());
+  ok(SPVM::TestCase::bit_shift_right_logical_short());
+  ok(SPVM::TestCase::bit_shift_right_logical_int());
+  ok(SPVM::TestCase::bit_shift_right_logical_long());
 }
 
 # Array
