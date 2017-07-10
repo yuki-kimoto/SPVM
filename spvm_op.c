@@ -1159,6 +1159,16 @@ SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* 
   return op_bin;
 }
 
+SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last) {
+  
+  // Build op
+  SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_first);
+  SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_last);
+  
+  return op_assign;
+}
+
+
 SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
   // 

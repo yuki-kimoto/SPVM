@@ -329,11 +329,11 @@ expression
     }
   | call_field ASSIGN term
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
     }
   | array_elem ASSIGN term
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
     }
 
 opt_terms
@@ -505,11 +505,11 @@ binop
     }
   | my_var ASSIGN term
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
     }
   | VAR ASSIGN term
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
     }
   | EXCEPTION_VAR ASSIGN term
     {
