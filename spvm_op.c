@@ -1164,7 +1164,17 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
   // Build op
   SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_first);
   SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_last);
-  
+
+  // Check left term
+  if (!(op_first->code == SPVM_OP_C_CODE_VAR
+    || op_first->code == SPVM_OP_C_CODE_ARRAY_ELEM
+    || op_first->code == SPVM_OP_C_CODE_CALL_FIELD
+    || op_first->code == SPVM_OP_C_CODE_EXCEPTION_VAR)
+  )
+  {
+    SPVM_yyerror_format(compiler, "Can't assign to left at %s line %d\n", op_first->file, op_first->line);
+  }
+
   return op_assign;
 }
 

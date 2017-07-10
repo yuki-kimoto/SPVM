@@ -1011,48 +1011,36 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     case SPVM_OP_C_CODE_ASSIGN: {
                       
-                      // Check left term
-                      if (op_cur->first->code == SPVM_OP_C_CODE_VAR
-                        || op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM
-                        || op_cur->first->code == SPVM_OP_C_CODE_CALL_FIELD
-                        || op_cur->first->code == SPVM_OP_C_CODE_EXCEPTION_VAR
-                      )
-                      {
-                        SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                        SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                      SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                      SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                      
+                      // Type inference
+                      if (!first_type) {
+                        SPVM_OP* op_var = op_cur->first;
+                        SPVM_MY_VAR* my_var = op_var->uv.var->op_my_var->uv.my_var;
+                        first_type = last_type;
                         
-                        // Type inference
-                        if (!first_type) {
-                          SPVM_OP* op_var = op_cur->first;
-                          SPVM_MY_VAR* my_var = op_var->uv.var->op_my_var->uv.my_var;
-                          first_type = last_type;
-                          
-                          if (last_type) {
-                            SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
-                            op_type->uv.type = last_type;
-                            my_var->op_type = op_type;
-                          }
-                          else {
-                            SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_cur->first->file, op_cur->first->line);
-                            compiler->fatal_error = 1;
-                            return;
-                          }
+                        if (last_type) {
+                          SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
+                          op_type->uv.type = last_type;
+                          my_var->op_type = op_type;
                         }
-                        
-                        // It is OK that left type is object and right is undef
-                        if (!SPVM_TYPE_is_numeric(compiler, first_type) && !last_type) {
-                          // OK
-                        }
-                        // Invalid type
-                        else if (first_type->id != last_type->id) {
-                          SPVM_yyerror_format(compiler, "Invalid type value is assigned at %s line %d\n", op_cur->file, op_cur->line);
+                        else {
+                          SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_cur->first->file, op_cur->first->line);
                           compiler->fatal_error = 1;
                           return;
                         }
                       }
-                      else {
-                        SPVM_yyerror_format(compiler, "Can't assign to left at %s line %d\n", op_cur->file, op_cur->line);
-                        break;
+                      
+                      // It is OK that left type is object and right is undef
+                      if (!SPVM_TYPE_is_numeric(compiler, first_type) && !last_type) {
+                        // OK
+                      }
+                      // Invalid type
+                      else if (first_type->id != last_type->id) {
+                        SPVM_yyerror_format(compiler, "Invalid type value is assigned at %s line %d\n", op_cur->file, op_cur->line);
+                        compiler->fatal_error = 1;
+                        return;
                       }
                       
                       break;
