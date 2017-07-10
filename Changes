@@ -1,5 +1,5 @@
 0.0212 2017-07-09
-  - Fix hex literal bug. 0xFFFFFFFFFFFFFFFF is OK.
+  - Fix hex literal bug. 0xFFFFFFFFFFFFFFFFL is OK.
 0.0211 2017-07-08
   - Fix if statement condition not working bugs
   - try {  } catch () { } syntax is replaced with eval { }; if ($@) { ... } syntax.
