@@ -19,6 +19,7 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
+    
     # Exception variable
     {
       $@ = "Exception";

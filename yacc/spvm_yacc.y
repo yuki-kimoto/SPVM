@@ -497,7 +497,7 @@ binop
     }
   | term ASSIGN term
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
     }
   | '(' term ')'
     {
