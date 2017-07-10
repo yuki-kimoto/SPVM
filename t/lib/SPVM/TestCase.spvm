@@ -15,7 +15,7 @@ package TestCase {
       return 0;
     }
   }
-
+  
   # bit shift - bit shift left byte max
   sub bit_shift_left_byte_max() : int {
     
@@ -45,32 +45,50 @@ package TestCase {
       return 0;
     }
   }
-
+  
   # bit shift - bit shift left short
-  sub bit_shift_left_short() : short {
+  sub bit_shift_left_short() : int {
     
     # 0000 0011 0000 0000 << 2
     my $value = (short)0x300 << 2;
     
-    return $value;
+    # 0000 1100 0000 0000
+    if ($value == (short)0xC00) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
-
+  
   # bit shift - bit shift left short max
-  sub bit_shift_left_short_max() : short {
+  sub bit_shift_left_short_max() : int {
     
     # 0100 0000 0000 0000 << 1
     my $value = (short)0x4000 << 1;
     
-    return $value;
+    # 1000 0000 0000 0000
+    if ($value == (short)0x8000) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
-
+  
   # bit shift - bit shift left short overflow
-  sub bit_shift_left_short_overflow() : short {
+  sub bit_shift_left_short_overflow() : int {
     
     # 1000 0000 0000 0000 << 1
     my $value = (short)0x8000 << 1;
     
-    return $value;
+    # 0000 0000 0000 0000
+    if ($value == (short)0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
   
   # array - malloc int array and get length

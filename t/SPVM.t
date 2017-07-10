@@ -39,6 +39,24 @@ is_deeply(
     my $success = SPVM::TestCase::bit_shift_left_byte_overflow();
     ok($success);
   }
+
+  # bit shift - bit shift left short
+  {
+    my $success = SPVM::TestCase::bit_shift_left_short();
+    ok($success);
+  }
+  
+  # bit shift - bit shift left short max
+  {
+    my $success = SPVM::TestCase::bit_shift_left_short_max();
+    ok($success);
+  }
+  
+  # bit shift - bit shift left short overflow
+  {
+    my $success = SPVM::TestCase::bit_shift_left_short_overflow();
+    ok($success);
+  }
 }
 
 # Array
