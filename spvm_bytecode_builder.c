@@ -1693,7 +1693,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OP* op_first = op_cur->first;
                     
-                    if (op_first->code != SPVM_OP_C_CODE_ASSIGN && op_first->code != SPVM_OP_C_CODE_RETURN && !op_first->lvalue) {
+                    if (op_first->code != SPVM_OP_C_CODE_ASSIGN && !op_first->lvalue) {
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_POP);
                     }
                     
