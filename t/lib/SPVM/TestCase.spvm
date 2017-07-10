@@ -2,6 +2,18 @@ package TestCase {
   has x : int;
   has y : int;
   
+  # Number literal - number literal hex
+  sub number_literal_hex() : int {
+    my $value = 0xFF;
+    
+    if ($value == 255) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
   # bit shift - bit shift left byte
   sub bit_shift_left_byte() : int {
     # 0000 0011 << 2

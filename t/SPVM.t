@@ -20,6 +20,13 @@ is_deeply(
   ]
 );
 
+# Number literal
+{
+  # Number literal - number literal hex
+  my $success = SPVM::TestCase::number_literal_hex();
+  ok($success);
+}
+
 # Bit shift
 {
   # bit shift - bit shift left byte
