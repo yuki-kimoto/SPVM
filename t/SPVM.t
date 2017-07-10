@@ -20,6 +20,27 @@ is_deeply(
   ]
 );
 
+# Bit shift
+{
+  # bit shift - bit shift left byte
+  {
+    my $value = SPVM::TestCase::bit_shift_left_byte();
+    is($value, 12);
+  }
+  
+  # bit shift - bit shift left byte max
+  {
+    my $value = SPVM::TestCase::bit_shift_left_byte_max();
+    is($value, -128); # 1000 0000
+  }
+  
+  # bit shift - bit shift left byte overflow
+  {
+    my $value = SPVM::TestCase::bit_shift_left_byte_overflow();
+    is($value, 0);
+  }
+}
+
 # Array
 {
   # int array and get length

@@ -1,6 +1,32 @@
 package TestCase {
   has x : int;
   has y : int;
+  
+  # bit shift - bit shift left byte
+  sub bit_shift_left_byte() : byte {
+    
+    my $value = (byte)3 << 2;
+    
+    return $value;
+  }
+
+  # bit shift - bit shift left byte max
+  sub bit_shift_left_byte_max() : byte {
+    
+    # 0100 0000 << 1
+    my $value = (byte)0x40 << 1;
+    
+    return $value;
+  }
+
+  # bit shift - bit shift left byte overflow
+  sub bit_shift_left_byte_overflow() : byte {
+    
+    # 1000 0000 << 1
+    my $value = (byte)0x80 << 1;
+    
+    return $value;
+  }
 
   # array - malloc int array and get length
   sub array_malloc_int_array_and_get_length() : int {
