@@ -788,7 +788,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Keyname
           if (strcmp(keyword, "my") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MY_VAR);
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MY);
             return MY;
           }
           else if (strcmp(keyword, "has") == 0) {

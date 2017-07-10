@@ -48,7 +48,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "GRAMMAR",
   "NAME",
   "PACKAGE",
-  "MY_VAR",
+  "MY",
   "MY_VAR_ASSIGN",
   "FIELD",
   "SUB",
@@ -462,7 +462,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
       break;
     }
-    case SPVM_OP_C_CODE_MY_VAR: {
+    case SPVM_OP_C_CODE_MY: {
       
       SPVM_MY_VAR* my_var = op->uv.my_var;
       if ( my_var->op_type) {
@@ -1036,7 +1036,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       int32_t i;
       for (i = sub->op_args->length - 1; i >= 0; i--) {
         SPVM_OP* op_arg = SPVM_ARRAY_fetch(sub->op_args, i);
-        SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, op_arg->file, op_arg->line);
+        SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_arg->file, op_arg->line);
         op_my_var->uv.my_var = op_arg->uv.my_var;
         SPVM_OP* op_my_var_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR_ASSIGN, op_arg->file, op_arg->line);
         SPVM_OP_sibling_splice(compiler, op_my_var_assign, op_my_var_assign->last, 0, op_my_var);

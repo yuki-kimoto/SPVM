@@ -889,7 +889,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         my_var->index = my_var_length++;
                         
                         // op my_var
-                        SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, op_cur->file, op_cur->line);
+                        SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_cur->file, op_cur->line);
                         op_my_var->uv.my_var = my_var;
                         
                         // Add my var
@@ -1358,7 +1358,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_CODE_MY_VAR: {
+                    case SPVM_OP_C_CODE_MY: {
                       SPVM_MY_VAR* my_var = op_cur->uv.my_var;
                       
                       assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
@@ -1528,7 +1528,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         my_var->index = my_var_length++;
                         
                         // op my_var
-                        SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR, op_cur->file, op_cur->line);
+                        SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_cur->file, op_cur->line);
                         op_my_var->uv.my_var = my_var;
                         
                         // Add my var
