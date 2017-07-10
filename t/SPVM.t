@@ -24,20 +24,20 @@ is_deeply(
 {
   # bit shift - bit shift left byte
   {
-    my $value = SPVM::TestCase::bit_shift_left_byte();
-    is($value, 12);
+    my $success = SPVM::TestCase::bit_shift_left_byte();
+    ok($success);
   }
   
   # bit shift - bit shift left byte max
   {
-    my $value = SPVM::TestCase::bit_shift_left_byte_max();
-    is($value, -128); # 1000 0000
+    my $success = SPVM::TestCase::bit_shift_left_byte_max();
+    ok($success);
   }
   
   # bit shift - bit shift left byte overflow
   {
-    my $value = SPVM::TestCase::bit_shift_left_byte_overflow();
-    is($value, 0);
+    my $success = SPVM::TestCase::bit_shift_left_byte_overflow();
+    ok($success);
   }
 }
 
@@ -66,7 +66,6 @@ is_deeply(
     my $total = SPVM::TestCase::array_culcurate_sum_by_for();
     is($total, 6);
   }
-
 }
 
 # byte

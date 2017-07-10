@@ -3,31 +3,76 @@ package TestCase {
   has y : int;
   
   # bit shift - bit shift left byte
-  sub bit_shift_left_byte() : byte {
+  sub bit_shift_left_byte() : int {
+    # 0000 0011 << 2
+    my $value = (byte)0x3 << 2;
     
-    my $value = (byte)3 << 2;
-    
-    return $value;
+    # 0000 1100
+    if ($value == (byte)0xC) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
 
   # bit shift - bit shift left byte max
-  sub bit_shift_left_byte_max() : byte {
+  sub bit_shift_left_byte_max() : int {
     
     # 0100 0000 << 1
     my $value = (byte)0x40 << 1;
     
-    return $value;
+    # 1000 0000
+    if ($value == (byte)0x80) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
-
+  
   # bit shift - bit shift left byte overflow
-  sub bit_shift_left_byte_overflow() : byte {
+  sub bit_shift_left_byte_overflow() : int {
     
     # 1000 0000 << 1
     my $value = (byte)0x80 << 1;
     
+    # 0000 0000
+    if ($value == (byte)0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  # bit shift - bit shift left short
+  sub bit_shift_left_short() : short {
+    
+    # 0000 0011 0000 0000 << 2
+    my $value = (short)0x300 << 2;
+    
     return $value;
   }
 
+  # bit shift - bit shift left short max
+  sub bit_shift_left_short_max() : short {
+    
+    # 0100 0000 0000 0000 << 1
+    my $value = (short)0x4000 << 1;
+    
+    return $value;
+  }
+
+  # bit shift - bit shift left short overflow
+  sub bit_shift_left_short_overflow() : short {
+    
+    # 1000 0000 0000 0000 << 1
+    my $value = (short)0x8000 << 1;
+    
+    return $value;
+  }
+  
   # array - malloc int array and get length
   sub array_malloc_int_array_and_get_length() : int {
     
@@ -161,6 +206,4 @@ package TestCase {
 
     return -1;
   }
-  
-  
 }
