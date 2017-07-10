@@ -141,8 +141,7 @@ enum {
 
 enum {
   // Assign flag
-  SPVM_OP_C_FLAG_ASSIGN_TMP_VAR = 1,
-  SPVM_OP_C_FLAG_ASSIGN_POPED = 2,
+  SPVM_OP_C_FLAG_ASSIGN_TMP_VAR = 1
 };
 
 /* Binary operation */

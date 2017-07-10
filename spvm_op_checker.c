@@ -460,9 +460,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           op_cur->code = SPVM_OP_C_CODE_NULL;
                         }
                       }
-                      else if (op_cur->first->code == SPVM_OP_C_CODE_ASSIGN) {
-                        op_cur->first->flag |= SPVM_OP_C_FLAG_ASSIGN_POPED;
-                      }
                       break;
                     }
                     case SPVM_OP_C_CODE_DEFAULT: {
