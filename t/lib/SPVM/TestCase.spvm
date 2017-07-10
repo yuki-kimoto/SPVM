@@ -25,6 +25,29 @@ package TestCase {
       return 0;
     }
   }
+
+  sub number_literal_hex_long() : int {
+    my $value = 0xFFL;
+    
+    if ($value == 255L) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  sub number_literal_hex_long_max() : int {
+    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
+    my $value = 0xFFFFFFFFFFFFFFFFL;
+    
+    if ($value == -1L) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
   
   # Bit shift
   sub bit_shift_left_byte() : int {
