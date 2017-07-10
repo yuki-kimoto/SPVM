@@ -335,6 +335,10 @@ expression
     {
       $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
     }
+  | EXCEPTION_VAR ASSIGN term
+    {
+      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
+    }
 
 opt_terms
   :	/* Empty */
@@ -510,10 +514,6 @@ binop
   | VAR ASSIGN term
     {
       $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
-    }
-  | EXCEPTION_VAR ASSIGN term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
   | '(' term ')'
     {
