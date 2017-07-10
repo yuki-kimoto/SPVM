@@ -19,7 +19,6 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
-    1 = 1;
     
     # Exception variable
     {
