@@ -449,7 +449,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
                           
-                          SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_cur->line, op_cur->file);
+                          SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_cur->file, op_cur->line);
                           op_constant->uv.constant = op_cur->uv.constant;
                           
                           op_cur->code = SPVM_OP_C_CODE_MALLOC;
