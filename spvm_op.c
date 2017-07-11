@@ -367,11 +367,6 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     op_block_true->flag |= SPVM_OP_C_FLAG_BLOCK_HAS_ELSE;
   }
   
-  // if is wraped with block to allow the following syntax
-  // if (my $var = 3) { ... }
-  // SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_if->file, op_if->line);
-  // SPVM_OP_sibling_splice(compiler, op_block_outer, op_block_outer->last, 0, op_if);
-  
   return op_if;
 }
 

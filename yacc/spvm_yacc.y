@@ -268,7 +268,14 @@ default_statement
 if_statement
   : IF '(' term ')' block else_statement
     {
-      $$ = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
+      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
+      
+      // if is wraped with block to allow the following syntax
+      //  if (my $var = 3) { ... }
+      SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, $1->file, $1->line);
+      SPVM_OP_sibling_splice(compiler, op_block, op_block->last, 0, op_if);
+      
+      $$ = op_block;
     }
 
 else_statement

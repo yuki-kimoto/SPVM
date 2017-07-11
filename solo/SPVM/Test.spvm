@@ -19,9 +19,12 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
-    
-    if (my $error = $@) {
-      
+    {
+      my $error = "First";
+      $@ = "Error";
+      if (my $error = $@) {
+        std::println($error);
+      }
     }
     
     # Check for third part bug
