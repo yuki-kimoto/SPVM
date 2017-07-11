@@ -69,14 +69,14 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   SPVM_API* api = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_API));
   
   // Array functions
-  api->get_array_length = SPVM_RUNTIME_API_get_array_length;
-  api->get_byte_array_elements = SPVM_RUNTIME_API_get_byte_array_elements;
-  api->get_short_array_elements = SPVM_RUNTIME_API_get_short_array_elements;
-  api->get_int_array_elements = SPVM_RUNTIME_API_get_int_array_elements;
-  api->get_long_array_elements = SPVM_RUNTIME_API_get_long_array_elements;
-  api->get_float_array_elements = SPVM_RUNTIME_API_get_float_array_elements;
-  api->get_double_array_elements = SPVM_RUNTIME_API_get_double_array_elements;
-  api->get_object_array_elements = SPVM_RUNTIME_API_get_object_array_elements;
+  api->get_array_length = (int32_t (*)(SPVM_API*, SPVM_API_ARRAY_OBJECT*))SPVM_RUNTIME_API_get_array_length;
+  api->get_byte_array_elements = (int8_t* (*)(SPVM_API*, SPVM_API_ARRAY_OBJECT*))SPVM_RUNTIME_API_get_byte_array_elements;
+  api->get_short_array_elements = (int16_t* (*)(SPVM_API*, SPVM_API_ARRAY_OBJECT*))SPVM_RUNTIME_API_get_short_array_elements;
+  api->get_int_array_elements = (int32_t* (*)(SPVM_API*, SPVM_API_ARRAY_OBJECT*))SPVM_RUNTIME_API_get_int_array_elements;
+  api->get_long_array_elements = (int64_t* (*)(SPVM_API*, SPVM_API_ARRAY_OBJECT*))SPVM_RUNTIME_API_get_long_array_elements;
+  api->get_float_array_elements = (float* (*)(SPVM_API*, SPVM_API_ARRAY_OBJECT*))SPVM_RUNTIME_API_get_float_array_elements;
+  api->get_double_array_elements = (double* (*)(SPVM_API*, SPVM_API_ARRAY_OBJECT*))SPVM_RUNTIME_API_get_double_array_elements;
+  api->get_object_array_elements = (SPVM_API_BASE_OBJECT** (*)(SPVM_API*, SPVM_API_ARRAY_OBJECT*))SPVM_RUNTIME_API_get_object_array_elements;
   
   // Object functions
   api->get_field_index = SPVM_RUNTIME_API_get_field_index;
@@ -670,7 +670,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   }
   case_SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION: {
     operand_stack_top++;
-    call_stack[operand_stack_top].object_value = runtime->exception;
+    call_stack[operand_stack_top].object_value = (SPVM_BASE_OBJECT*)runtime->exception;
     pc++;
     goto *jump[*pc];
   }
