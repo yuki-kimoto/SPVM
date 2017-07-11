@@ -287,9 +287,9 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   if (op_term_next_value->code != SPVM_OP_C_CODE_NULL) {
     SPVM_OP_sibling_splice(compiler, op_statements, op_statements->last, 0, op_term_next_value);
   }
-
-  SPVM_OP_sibling_splice(compiler, op_loop, op_loop->last, 0, op_block);
+  
   SPVM_OP_sibling_splice(compiler, op_loop, op_loop->last, 0, op_condition);
+  SPVM_OP_sibling_splice(compiler, op_loop, op_loop->last, 0, op_block);
   
   SPVM_OP_sibling_splice(compiler, op_block_outer, op_block_outer->last, 0, op_loop);
   
@@ -309,8 +309,8 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   // Set block flag
   op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
   
-  SPVM_OP_sibling_splice(compiler, op_loop, op_loop->last, 0, op_block);
   SPVM_OP_sibling_splice(compiler, op_loop, op_loop->last, 0, op_condition);
+  SPVM_OP_sibling_splice(compiler, op_loop, op_loop->last, 0, op_block);
   
   // while is wraped with block to allow the following syntax
   // while (my $var = 3) { ... }

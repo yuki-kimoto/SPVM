@@ -1307,6 +1307,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
+                    case SPVM_OP_C_CODE_LOOP: {
+                      // Exchange condition and loop block to move condition to end of block
+                      SPVM_OP* op_condition = op_cur->first;
+                      SPVM_OP* op_block_loop = op_cur->last;
+                      op_cur->first = op_block_loop;
+                      op_cur->last = op_condition;
+                      op_block_loop->moresib = 1;
+                      op_block_loop->sibparent = op_condition;
+                      op_condition->moresib = 0;
+                      op_condition->sibparent = op_cur;
+                      break;
+                    }
                     // End of scope
                     case SPVM_OP_C_CODE_BLOCK: {
                       
