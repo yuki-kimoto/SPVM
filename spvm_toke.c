@@ -717,10 +717,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             uint64_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
-              num = strtoul(num_str, &end, 16);
+              num = strtoull(num_str, &end, 16);
             }
             else {
-              num = strtoul(num_str, &end, 10);
+              num = strtoull(num_str, &end, 10);
             }
             if (*end != '\0') {
               fprintf(stderr, "Invalid int literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
@@ -738,10 +738,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             uint64_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
-              num = strtoul(num_str, &end, 16);
+              num = strtoull(num_str, &end, 16);
             }
             else {
-              num = strtoul(num_str, &end, 10);
+              num = strtoull(num_str, &end, 10);
             }
             if (*end != '\0') {
               fprintf(stderr, "Invalid long literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
