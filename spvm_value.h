@@ -12,6 +12,7 @@ union SPVM_value {
   float float_value;
   double double_value;
   SPVM_BASE_OBJECT* object_value;
+  uint8_t* address_value;
 };
 
 #endif

@@ -512,7 +512,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     operand_stack_top = call_stack_base - 4;
     
     // Get return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    uint8_t* return_address = call_stack[call_stack_base - 3].address_value;
     
     // Get sub_constant_pool_index
     sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
@@ -566,7 +566,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     operand_stack_top = call_stack_base - 4;
     
     // Get return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    uint8_t* return_address = call_stack[call_stack_base - 3].address_value;
     
     // Get sub_constant_pool_index
     sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
@@ -627,7 +627,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     operand_stack_top = call_stack_base - 4;
     
     // Return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    uint8_t* return_address = call_stack[call_stack_base - 3].address_value;
 
     // Get sub_constant_pool_index
     sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
