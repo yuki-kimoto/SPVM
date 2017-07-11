@@ -49,7 +49,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "NAME",
   "PACKAGE",
   "MY",
-  "MY_VAR_ASSIGN",
   "FIELD",
   "SUB",
   "ENUM",
@@ -1038,10 +1037,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
         SPVM_OP* op_arg = SPVM_ARRAY_fetch(sub->op_args, i);
         SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_arg->file, op_arg->line);
         op_my_var->uv.my_var = op_arg->uv.my_var;
-        SPVM_OP* op_my_var_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY_VAR_ASSIGN, op_arg->file, op_arg->line);
-        SPVM_OP_sibling_splice(compiler, op_my_var_assign, op_my_var_assign->last, 0, op_my_var);
-        
-        SPVM_OP_sibling_splice(compiler, op_list_statement, op_list_statement->first, 0, op_my_var_assign);
+        SPVM_OP_sibling_splice(compiler, op_list_statement, op_list_statement->first, 0, op_my_var);
       }
     }
   }
