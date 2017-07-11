@@ -19,6 +19,11 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
+    # Check for third part bug
+    {
+      for (my $i = 0; $i < 260; $i++) {
+      }
+    }
     
     # Exception variable
     {

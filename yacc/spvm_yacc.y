@@ -25,7 +25,7 @@
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar opt_term
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement type_array_with_length
-%type <opval> ';' opt_descriptors descriptors type_or_void normal_statement eval_block
+%type <opval> ';' opt_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
 
 
 %right <opval> ASSIGN
@@ -230,8 +230,16 @@ normal_statement
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, $1->file, $1->line);
     }
 
+normal_statement_for_end
+  : term
+    {
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POP, $1->file, $1->line);
+      SPVM_OP_sibling_splice(compiler, $$, NULL, 0, $1);
+    }
+  | expression
+
 for_statement
-  : FOR '(' normal_statement term ';' opt_term ')' block
+  : FOR '(' normal_statement term ';' normal_statement_for_end ')' block
     {
       $$ = SPVM_OP_build_for_statement(compiler, $1, $3, $4, $6, $8);
     }
