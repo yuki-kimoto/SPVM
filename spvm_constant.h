@@ -24,9 +24,11 @@ struct SPVM_constant {
     double double_value;
     const char* string_value;
   } uv;
+  uint64_t tmp_ulong_value;
   int32_t code;
   int32_t constant_pool_index;
   _Bool is_undef;
+  _Bool sign;
 };
 
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler);
