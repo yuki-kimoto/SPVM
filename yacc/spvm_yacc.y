@@ -278,7 +278,6 @@ else_statement
     };
   | ELSE block
     {
-      $2->flag |= SPVM_OP_C_FLAG_BLOCK_ELSE;
       $$ = $2;
     }
   | ELSIF '(' term ')' block else_statement

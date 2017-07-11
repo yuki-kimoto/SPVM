@@ -1,7 +1,7 @@
 0.0214 2017-07-11
   - Fix for statement segmentaion fault bug
   - VAR = TERM return VAR. For example, allow the syntax "if (my $error = $@) { ... }
-  - Fix if condition (byte, short, long) bugs.
+  - Fix if condition (byte, short, long, float) bugs.
 0.0213 2017-07-10
   - Fix MANIFEST
 0.0212 2017-07-10

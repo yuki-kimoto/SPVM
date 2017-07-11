@@ -353,10 +353,10 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION, op_term->file, op_term->line);
   SPVM_OP_sibling_splice(compiler, op_condition, op_condition->last, 0, op_term);
   
-  op_block_true->flag |= SPVM_OP_C_FLAG_BLOCK_IF;
+  op_block_true->flag |= SPVM_OP_C_FLAG_BLOCK_IF_TURE;
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
   if (op_block_false->code == SPVM_OP_C_CODE_BLOCK) {
-    op_block_false->flag |= SPVM_OP_C_FLAG_BLOCK_ELSE;
+    op_block_false->flag |= SPVM_OP_C_FLAG_BLOCK_IF_FALSE;
   }
   
   SPVM_OP_sibling_splice(compiler, op_if, op_if->last, 0, op_condition);

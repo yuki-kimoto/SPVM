@@ -1805,8 +1805,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_FLOAT_L:
     call_stack[operand_stack_top - 1].int_value
-      = (call_stack[operand_stack_top - 1].float_value > call_stack[operand_stack_top - 1].float_value)
-      + (call_stack[operand_stack_top - 1].float_value < call_stack[operand_stack_top - 1].float_value) * -1
+      = (call_stack[operand_stack_top - 1].float_value > call_stack[operand_stack_top].float_value)
+      + (call_stack[operand_stack_top - 1].float_value < call_stack[operand_stack_top].float_value) * -1
       + -!!(
         isnan(call_stack[operand_stack_top - 1].float_value)
         | isnan(call_stack[operand_stack_top - 1].float_value)
@@ -1816,8 +1816,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_FLOAT_G:
     call_stack[operand_stack_top - 1].int_value
-      = (call_stack[operand_stack_top - 1].float_value > call_stack[operand_stack_top - 1].float_value)
-      + (call_stack[operand_stack_top - 1].float_value < call_stack[operand_stack_top - 1].float_value) * -1
+      = (call_stack[operand_stack_top - 1].float_value > call_stack[operand_stack_top].float_value)
+      + (call_stack[operand_stack_top - 1].float_value < call_stack[operand_stack_top].float_value) * -1
       + !!(
         isnan(call_stack[operand_stack_top - 1].float_value)
         | isnan(call_stack[operand_stack_top - 1].float_value)

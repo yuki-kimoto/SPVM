@@ -56,6 +56,15 @@ is_deeply(
   ok(SPVM::TestCase::if_gt_int_left_big());
   ok(SPVM::TestCase::if_gt_int_same());
   ok(SPVM::TestCase::if_gt_int_right_big());
+  ok(SPVM::TestCase::if_gt_long_left_big());
+  ok(SPVM::TestCase::if_gt_long_same());
+  ok(SPVM::TestCase::if_gt_long_right_big());
+  ok(SPVM::TestCase::if_gt_float_left_big());
+  ok(SPVM::TestCase::if_gt_float_same());
+  ok(SPVM::TestCase::if_gt_float_right_big());
+  ok(SPVM::TestCase::if_gt_double_left_big());
+  ok(SPVM::TestCase::if_gt_double_same());
+  ok(SPVM::TestCase::if_gt_double_right_big());
 }
 
 # Number literal
