@@ -28,8 +28,15 @@ is_deeply(
   ok(SPVM::TestCase::if_true_long());
   ok(SPVM::TestCase::if_true_float());
   ok(SPVM::TestCase::if_true_double());
+  ok(SPVM::TestCase::if_true_object());
 
+  ok(SPVM::TestCase::if_false_byte());
+  ok(SPVM::TestCase::if_false_short());
   ok(SPVM::TestCase::if_false_int());
+  ok(SPVM::TestCase::if_false_long());
+  ok(SPVM::TestCase::if_false_float());
+  ok(SPVM::TestCase::if_false_double());
+  ok(SPVM::TestCase::if_false_object());
   
   ok(SPVM::TestCase::if_gt_int_left_big());
   ok(SPVM::TestCase::if_gt_int_same());
