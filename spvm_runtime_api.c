@@ -254,7 +254,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_malloc_object_noinc(SPVM_API* api, int32_t package
   int32_t byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * length;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, byte_size);
   
-  if (__builtin_expect(object, 1)) {
+  if (__builtin_expect(object != NULL, 1)) {
     // Set type
     object->type = SPVM_BASE_OBJECT_C_TYPE_OBJECT;
     
