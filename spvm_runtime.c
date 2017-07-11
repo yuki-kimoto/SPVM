@@ -2075,7 +2075,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
     array_object = SPVM_RUNTIME_API_create_array_object_byte_from_pv(api, (char*)&constant_pool[index + 1]);
-    if (__builtin_expect(array_object, 1)) {
+    if (__builtin_expect(array_object != NULL, 1)) {
       // Set string
       operand_stack_top++;
       call_stack[operand_stack_top].object_value = array_object;
