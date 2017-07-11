@@ -64,6 +64,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 }
 
 SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
+  (void)runtime;
+  
   SPVM_API* api = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_API));
   
   // Array functions
@@ -376,9 +378,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   
   // Call stack
   SPVM_VALUE* call_stack = runtime->call_stack;
-
-  // Allocator
-  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   // Top position of operand stack
   register int32_t operand_stack_top = runtime->operand_stack_top;
@@ -392,9 +391,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   SPVM_OBJECT* object;
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   int32_t index;
-  int32_t length;
   int32_t success;
-  int32_t byte_size;
   
   // Goto subroutine
   goto CALLSUB_COMMON;
@@ -679,10 +676,10 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   }
   case_SPVM_BYTECODE_C_CODE_STORE_EXCEPTION: {
     
-    SPVM_RUNTIME_API_set_exception(api, call_stack[operand_stack_top].object_value);
+    SPVM_RUNTIME_API_set_exception(api, (SPVM_ARRAY_OBJECT*)call_stack[operand_stack_top].object_value);
     
     operand_stack_top--;
-
+    
     pc++;
     goto *jump[*pc];
   }

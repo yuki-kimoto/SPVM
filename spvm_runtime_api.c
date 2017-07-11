@@ -22,7 +22,7 @@ void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY_OBJECT* exception)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   if (runtime->exception != NULL) {
-    SPVM_RUNTIME_API_dec_ref_count(api, runtime->exception);
+    SPVM_RUNTIME_API_dec_ref_count(api, (SPVM_BASE_OBJECT*)runtime->exception);
   }
   
   runtime->exception = exception;
@@ -34,7 +34,7 @@ void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY_OBJECT* exception)
 
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_byte_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_BYTE);
   
@@ -64,7 +64,7 @@ SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_byte_array_noinc(SPVM_API* api, int32
 
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_short_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_SHORT);
   
@@ -93,7 +93,7 @@ SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_short_array_noinc(SPVM_API* api, int3
 
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_int_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_INT);
   
@@ -122,7 +122,7 @@ SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_int_array_noinc(SPVM_API* api, int32_
 
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_long_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_LONG);
   
@@ -151,7 +151,7 @@ SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_long_array_noinc(SPVM_API* api, int32
 
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_float_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_FLOAT);
   
@@ -180,7 +180,7 @@ SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_float_array_noinc(SPVM_API* api, int3
 
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_double_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_DOUBLE);
   
@@ -209,7 +209,7 @@ SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_double_array_noinc(SPVM_API* api, int
 
 SPVM_ARRAY_OBJECT* SPVM_RUNTIME_API_malloc_object_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_OBJECT_C_VALUE_TYPE_OBJECT);
   
@@ -243,7 +243,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_malloc_object_noinc(SPVM_API* api, int32_t package
   
   
   SPVM_RUNTIME* runtime = api->runtime;
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   int32_t* constant_pool = runtime->constant_pool;
   
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;

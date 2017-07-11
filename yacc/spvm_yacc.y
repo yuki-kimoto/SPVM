@@ -616,7 +616,6 @@ args
 arg
   : VAR ':' type
     {
-      SPVM_OP* op_my_var = 
       $$ = SPVM_OP_build_my_var(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, $1->file, $1->line), $1, $3);
     }
 
