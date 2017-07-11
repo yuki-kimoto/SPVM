@@ -1,7 +1,63 @@
 package TestCase {
   has x : int;
   has y : int;
+  
+  # If
+  sub if_true_int() : int {
+    if (1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub if_false_int() : int {
+    if (0) {
+      return 0;
+    }
+    
+    return 1;
+  }
 
+  sub if_true_byte() : int {
+    if ((byte)1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub if_true_short() : int {
+    if ((short)1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub if_true_long() : int {
+    if (1L) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub if_true_float() : int {
+    if (1.0f) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub if_true_double() : int {
+    if (1.0) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   # Bit shift right logical
   sub bit_shift_right_logical_byte() : int {
     # 11000001 >>> 2

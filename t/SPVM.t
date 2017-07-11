@@ -20,6 +20,22 @@ is_deeply(
   ]
 );
 
+# If
+{
+  ok(SPVM::TestCase::if_true_byte());
+  ok(SPVM::TestCase::if_true_short());
+  ok(SPVM::TestCase::if_true_int());
+  ok(SPVM::TestCase::if_true_long());
+  ok(SPVM::TestCase::if_true_float());
+  ok(SPVM::TestCase::if_true_double());
+
+  ok(SPVM::TestCase::if_false_int());
+  
+  ok(SPVM::TestCase::if_gt_int_left_big());
+  ok(SPVM::TestCase::if_gt_int_same());
+  ok(SPVM::TestCase::if_gt_int_right_big());
+}
+
 # Number literal
 {
   ok(SPVM::TestCase::number_literal_hex_int());
@@ -27,14 +43,6 @@ is_deeply(
   ok(SPVM::TestCase::number_literal_hex_long());
   ok(SPVM::TestCase::number_literal_hex_long_max());
 }
-
-# if
-{
-  ok(SPVM::TestCase::if_gt_int_left_big());
-  ok(SPVM::TestCase::if_gt_int_same());
-  ok(SPVM::TestCase::if_gt_int_right_big());
-}
-
 
 # Bit shift left
 {
