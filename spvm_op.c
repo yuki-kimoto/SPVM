@@ -324,11 +324,11 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   if (op_block_if->code != SPVM_OP_C_CODE_BLOCK) {
     SPVM_OP* op_term = op_block_if;
     op_block_if = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_term->file, op_term->line);
-
+    
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_term->file, op_term->line);
     SPVM_OP_sibling_splice(compiler, op_list, op_list->first, 0, op_term);
-
-    SPVM_OP_sibling_splice(compiler, op_block_if, NULL, 0, op_list);
+    
+    SPVM_OP_sibling_splice(compiler, op_block_if, op_block_if->last, 0, op_list);
   }
   
   if (op_block_else->code == SPVM_OP_C_CODE_IF) {
@@ -338,7 +338,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_term->file, op_term->line);
     SPVM_OP_sibling_splice(compiler, op_list, op_list->first, 0, op_if);
     
-    SPVM_OP_sibling_splice(compiler, op_block_else, NULL, 0, op_list);
+    SPVM_OP_sibling_splice(compiler, op_block_else, op_block_else->last, 0, op_list);
   }
   else if (op_block_else->code != SPVM_OP_C_CODE_BLOCK && op_block_else->code != SPVM_OP_C_CODE_NULL) {
     SPVM_OP* op_term = op_block_else;
@@ -346,12 +346,12 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_term->file, op_term->line);
     SPVM_OP_sibling_splice(compiler, op_list, op_list->first, 0, op_term);
-    
-    SPVM_OP_sibling_splice(compiler, op_block_else, NULL, 0, op_list);
+
+    SPVM_OP_sibling_splice(compiler, op_block_else, op_block_else->last, 0, op_list);
   }
   
   SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION, op_term->file, op_term->line);
-  SPVM_OP_sibling_splice(compiler, op_condition, NULL, 0, op_term);
+  SPVM_OP_sibling_splice(compiler, op_condition, op_condition->last, 0, op_term);
   
   op_block_if->flag |= SPVM_OP_C_FLAG_BLOCK_IF;
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
@@ -359,13 +359,18 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     op_block_else->flag |= SPVM_OP_C_FLAG_BLOCK_ELSE;
   }
   
-  SPVM_OP_sibling_splice(compiler, op_if, NULL, 0, op_condition);
-  SPVM_OP_sibling_splice(compiler, op_if, op_condition, 0, op_block_if);
-  SPVM_OP_sibling_splice(compiler, op_if, op_block_if, 0, op_block_else);
+  SPVM_OP_sibling_splice(compiler, op_if, op_if->last, 0, op_condition);
+  SPVM_OP_sibling_splice(compiler, op_if, op_if->last, 0, op_block_if);
+  SPVM_OP_sibling_splice(compiler, op_if, op_if->last, 0, op_block_else);
   
   if (op_block_else->code == SPVM_OP_C_CODE_BLOCK) {
     op_block_if->flag |= SPVM_OP_C_FLAG_BLOCK_HAS_ELSE;
   }
+  
+  // if is wraped with block to allow the following syntax
+  // if (my $var = 3) { ... }
+  // SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_if->file, op_if->line);
+  // SPVM_OP_sibling_splice(compiler, op_block_outer, op_block_outer->last, 0, op_if);
   
   return op_if;
 }
