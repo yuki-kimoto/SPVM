@@ -1691,8 +1691,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                   case SPVM_OP_C_CODE_POP: {
                     
-                    SPVM_OP* op_first = op_cur->first;
-                    
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_POP);
                     
                     break;
