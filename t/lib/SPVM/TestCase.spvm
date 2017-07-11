@@ -174,7 +174,68 @@ package TestCase {
       return 0;
     }
   }
+  
+  # If a > b
+  sub if_gt_byte_left_big () : int {
+    
+    if ((byte)3 > (byte)1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
 
+  sub if_gt_byte_same () : int {
+    
+    if ((byte)3 > (byte)3) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_gt_byte_right_big () : int {
+    
+    if ((byte)3 > (byte)4) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_gt_short_left_big () : int {
+    
+    if ((short)3 > (short)1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_gt_short_same () : int {
+    
+    if ((short)3 > (short)3) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_gt_short_right_big () : int {
+    
+    if ((short)3 > (short)4) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+  
   sub if_gt_int_left_big () : int {
     
     if (3 > 1) {

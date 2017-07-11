@@ -1780,15 +1780,16 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_BYTE:
     // z = (x > y) + (x < y) * -1
-    call_stack[operand_stack_top - 1].byte_value
+    call_stack[operand_stack_top - 1].int_value
       = (call_stack[operand_stack_top - 1].byte_value > call_stack[operand_stack_top].byte_value)
       + (call_stack[operand_stack_top - 1].byte_value < call_stack[operand_stack_top].byte_value) * -1;
+    
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_SHORT:
     // z = (x > y) + (x < y) * -1
-    call_stack[operand_stack_top - 1].short_value
+    call_stack[operand_stack_top - 1].int_value
       = (call_stack[operand_stack_top - 1].short_value > call_stack[operand_stack_top].short_value)
       + (call_stack[operand_stack_top - 1].short_value < call_stack[operand_stack_top].short_value) * -1;
     operand_stack_top--;
@@ -1796,7 +1797,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_LONG:
     // z = (x > y) + (x < y) * -1
-    call_stack[operand_stack_top - 1].long_value
+    call_stack[operand_stack_top - 1].int_value
       = (call_stack[operand_stack_top - 1].long_value > call_stack[operand_stack_top].long_value)
       + (call_stack[operand_stack_top - 1].long_value < call_stack[operand_stack_top].long_value) * -1;
     operand_stack_top--;

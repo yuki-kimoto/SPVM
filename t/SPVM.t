@@ -43,6 +43,16 @@ is_deeply(
   ok(SPVM::TestCase::if_elsif_2());
   ok(SPVM::TestCase::if_duplicate());
   
+}
+
+# If a > b
+{
+  ok(SPVM::TestCase::if_gt_byte_left_big());
+  ok(SPVM::TestCase::if_gt_byte_same());
+  ok(SPVM::TestCase::if_gt_byte_right_big());
+  ok(SPVM::TestCase::if_gt_short_left_big());
+  ok(SPVM::TestCase::if_gt_short_same());
+  ok(SPVM::TestCase::if_gt_short_right_big());
   ok(SPVM::TestCase::if_gt_int_left_big());
   ok(SPVM::TestCase::if_gt_int_same());
   ok(SPVM::TestCase::if_gt_int_right_big());
