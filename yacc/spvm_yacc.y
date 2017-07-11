@@ -449,8 +449,21 @@ unop
     }
   | '-' term %prec UMINUS
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, $1->file, $1->line);
-      $$ = SPVM_OP_build_unop(compiler, op, $2);
+      if ($2->code == SPVM_OP_C_CODE_CONSTANT) {
+        SPVM_CONSTANT* constant = $2->uv.constant;
+        if (constant->code == SPVM_CONSTANT_C_CODE_INT || constant->code == SPVM_CONSTANT_C_CODE_LONG) {
+          constant->sign = 1;
+          $$ = $2;
+        }
+        else {
+          SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, $1->file, $1->line);
+          $$ = SPVM_OP_build_unop(compiler, op, $2);
+        }
+      }
+      else {
+        SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, $1->file, $1->line);
+        $$ = SPVM_OP_build_unop(compiler, op, $2);
+      }
     }
   | INC term
     {

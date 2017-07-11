@@ -2,6 +2,19 @@ package TestCase {
   has x : int;
   has y : int;
   
+  # call_sub
+  sub call_sub_args_int($var1 : int, $var2 : int, $var3 : int) : int {
+    if ($var1 == 1) {
+      if ($var2 == 2147483647) {
+        if ($var3 == -2147483647) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   # If
   sub if_true_byte() : int {
     if ((byte)1) {

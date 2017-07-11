@@ -20,6 +20,11 @@ is_deeply(
   ]
 );
 
+# call_sub
+{
+  ok(SPVM::TestCase::call_sub_args_int(1, 2147483647, -2147483647));
+}
+
 # If
 {
   ok(SPVM::TestCase::if_true_byte());

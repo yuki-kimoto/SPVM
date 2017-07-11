@@ -19,7 +19,11 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
-  
+    # MIN long constant;
+    {
+      my $num = -9223372036854775808L;
+      std::println_long($num);
+    }
     {
       my $var = 3;
       while (my $var = 964) {
