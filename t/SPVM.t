@@ -37,6 +37,11 @@ is_deeply(
   ok(SPVM::TestCase::if_false_float());
   ok(SPVM::TestCase::if_false_double());
   ok(SPVM::TestCase::if_false_object());
+
+  ok(SPVM::TestCase::if_else());
+  ok(SPVM::TestCase::if_elsif());
+  ok(SPVM::TestCase::if_elsif_2());
+  ok(SPVM::TestCase::if_duplicate());
   
   ok(SPVM::TestCase::if_gt_int_left_big());
   ok(SPVM::TestCase::if_gt_int_same());

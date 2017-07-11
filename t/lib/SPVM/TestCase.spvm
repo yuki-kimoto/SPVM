@@ -115,6 +115,96 @@ package TestCase {
     return 1;
   }
   
+  sub if_else() : int {
+    if (0) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub if_elsif() : int {
+    if (0) {
+      return 0;
+    }
+    elsif(1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+    
+    return 0;
+  }
+
+  sub if_elsif_2() : int {
+    if (0) {
+      return 0;
+    }
+    elsif(0) {
+      return 0;
+    }
+    elsif(1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+    
+    return 0;
+  }
+  
+  sub if_duplicate() : int {
+    
+    if (1) {
+      if (0) {
+        return 0;
+      }
+      elsif (1) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_gt_int_left_big () : int {
+    
+    if (3 > 1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_gt_int_same () : int {
+    
+    if (3 > 3) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_gt_int_right_big () : int {
+    
+    if (3 > 4) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
   # Bit shift right logical
   sub bit_shift_right_logical_byte() : int {
     # 11000001 >>> 2
@@ -527,36 +617,5 @@ package TestCase {
     }
     
     return $total;
-  }
-  
-  # If
-  sub if_gt_int_left_big () : int {
-    
-    if (3 > 1) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-
-  sub if_gt_int_same () : int {
-    
-    if (3 > 3) {
-      return 0;
-    }
-    else {
-      return 1;
-    }
-  }
-
-  sub if_gt_int_right_big () : int {
-    
-    if (3 > 4) {
-      return 0;
-    }
-    else {
-      return 1;
-    }
   }
 }
