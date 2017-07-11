@@ -22,7 +22,7 @@
 %type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package
 %type <opval> enumeration_values enumeration_value
 %type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
-%type <opval> for_statement while_statement expression opt_declarations_in_grammar opt_term
+%type <opval> for_statement while_statement expression opt_declarations_in_grammar
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement type_array_with_length
 %type <opval> ';' opt_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
@@ -386,12 +386,6 @@ array_length
     {
       $$ = SPVM_OP_build_array_length(compiler, $1, $3);
     }
-opt_term
-  : /* NULL */
-    {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, compiler->cur_file, compiler->cur_line);
-    }
-  | term
 
 term
   : VAR
