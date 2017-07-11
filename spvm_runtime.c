@@ -2020,7 +2020,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Push object
     operand_stack_top++;
-    call_stack[operand_stack_top].object_value = object;
+    call_stack[operand_stack_top].object_value = (SPVM_BASE_OBJECT*)object;
     
     pc += 5;
     goto *jump[*pc];
@@ -2066,7 +2066,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     
     // Set array
-    call_stack[operand_stack_top].object_value = array;
+    call_stack[operand_stack_top].object_value = (SPVM_BASE_OBJECT*)array;
     
     pc += 2;
     goto *jump[*pc];
@@ -2078,7 +2078,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     if (__builtin_expect(array_object != NULL, 1)) {
       // Set string
       operand_stack_top++;
-      call_stack[operand_stack_top].object_value = array_object;
+      call_stack[operand_stack_top].object_value = (SPVM_BASE_OBJECT*)array_object;
       
       pc += 5;
       goto *jump[*pc];
