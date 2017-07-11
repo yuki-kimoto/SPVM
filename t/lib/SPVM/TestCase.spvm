@@ -707,7 +707,7 @@ package TestCase {
     
     my $nums = malloc int[3];
     my $len = @$nums;
-
+    
     return $len;
   }
 

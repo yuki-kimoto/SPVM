@@ -774,7 +774,9 @@ package Test {
     else {
       
     }
-
+    
+    array_malloc();
+    
     return 2;
   }
   
@@ -846,6 +848,13 @@ package Test {
       die $obj_error2;
     }
   }
+  sub array_malloc() : int {
+    
+    my $nums = malloc int[3];
+    
+    return @$nums;
+  }
+
 }
 
 =head1 NAME

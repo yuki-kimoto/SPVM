@@ -386,9 +386,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   int32_t call_stack_base_start = call_stack_base;
   
   // Offten used variables
-  SPVM_ARRAY_OBJECT* array_object;
-  SPVM_ARRAY_OBJECT* array_object_exception;
-  SPVM_OBJECT* object;
+  SPVM_ARRAY_OBJECT* array_object = NULL;
+  SPVM_ARRAY_OBJECT* array_object_exception = NULL;
+  SPVM_OBJECT* object = NULL;
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   int32_t index;
   int32_t success;
@@ -2030,28 +2030,27 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    SPVM_ARRAY_OBJECT* array;
     switch(value_type) {
       case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_BYTE:
-        array = SPVM_RUNTIME_API_malloc_byte_array_noinc(api, length);
+        array_object = SPVM_RUNTIME_API_malloc_byte_array_noinc(api, length);
         break;
       case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_SHORT:
-        array = SPVM_RUNTIME_API_malloc_short_array_noinc(api, length);
+        array_object = SPVM_RUNTIME_API_malloc_short_array_noinc(api, length);
         break;
       case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_INT:
-        array = SPVM_RUNTIME_API_malloc_int_array_noinc(api, length);
+        array_object = SPVM_RUNTIME_API_malloc_int_array_noinc(api, length);
         break;
       case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_LONG:
-        array = SPVM_RUNTIME_API_malloc_long_array_noinc(api, length);
+        array_object = SPVM_RUNTIME_API_malloc_long_array_noinc(api, length);
         break;
       case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_FLOAT:
-        array = SPVM_RUNTIME_API_malloc_float_array_noinc(api, length);
+        array_object = SPVM_RUNTIME_API_malloc_float_array_noinc(api, length);
         break;
       case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_DOUBLE:
-        array = SPVM_RUNTIME_API_malloc_double_array_noinc(api, length);
+        array_object = SPVM_RUNTIME_API_malloc_double_array_noinc(api, length);
         break;
       case SPVM_ARRAY_OBJECT_C_VALUE_TYPE_OBJECT:
-        array = SPVM_RUNTIME_API_malloc_object_array_noinc(api, length);
+        array_object = SPVM_RUNTIME_API_malloc_object_array_noinc(api, length);
         break;
       default:
         assert(0);
@@ -2060,13 +2059,13 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Memory allocation error
     if (!array_object) {
       // Error message
-      array_object_exception = SPVM_RUNTIME_API_create_array_object_byte_from_pv(api, "Failed to allocate memory(MALLOC_ARRAY)");
+      array_object_exception = SPVM_RUNTIME_API_create_array_object_byte_from_pv(api, "Failed to allocate memory(malloc ARRAY)");
       SPVM_RUNTIME_API_set_exception(api, array_object_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
     
     // Set array
-    call_stack[operand_stack_top].object_value = (SPVM_BASE_OBJECT*)array;
+    call_stack[operand_stack_top].object_value = (SPVM_BASE_OBJECT*)array_object;
     
     pc += 2;
     goto *jump[*pc];

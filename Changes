@@ -1,6 +1,7 @@
 0.0215 2017-07-11
   - Support while (my $var = 3) { ... }
   - Support long min constant -9223372036854775808
+  - Fix array malloc bug
 0.0214 2017-07-11
   - Fix for statement segmentaion fault bug
   - VAR = TERM return VAR. For example, allow the syntax "if (my $error = $@) { ... }
