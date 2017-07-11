@@ -114,6 +114,13 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "EXCEPTION_VAR",
 };
 
+SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
+  
+  SPVM_ARRAY_push(compiler->op_constants, op_constant);
+  
+  return op_constant;
+}
+
 SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line) {
 
   SPVM_OP* op_name_package = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);

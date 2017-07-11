@@ -397,6 +397,9 @@ term
   : VAR
   | EXCEPTION_VAR
   | CONSTANT
+    {
+      $$ = SPVM_OP_build_constant(compiler, $1);
+    }
   | UNDEF
   | call_sub
   | call_field

@@ -37,6 +37,9 @@ struct SPVM_compiler {
   // AST grammar
   SPVM_OP* op_grammar;
   
+  // Constants
+  SPVM_ARRAY* op_constants;
+  
   // Packages
   SPVM_ARRAY* op_packages;
   
