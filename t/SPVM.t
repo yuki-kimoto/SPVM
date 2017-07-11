@@ -23,6 +23,7 @@ is_deeply(
 # call_sub
 {
   ok(SPVM::TestCase::call_sub_args_int(1, 2147483647, -2147483647));
+  ok(SPVM::TestCase::call_sub_args_long(1, 9223372036854775807, -9223372036854775808));
 }
 
 # If
