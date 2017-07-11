@@ -19,6 +19,11 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
+    
+    if (my $error = $@) {
+      
+    }
+    
     # Check for third part bug
     {
       for (my $i = 0; $i < 260; $i++) {
@@ -589,7 +594,8 @@ package Test {
     my $v2 : int;
     my $v3 : int;
     
-    # $v3 = $v2 = $v1 = 5;
+    $v3 = $v2 = $v1 = 543;
+    std::println_int($v3);
     
     100;
     1000;

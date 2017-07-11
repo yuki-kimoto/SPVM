@@ -1161,7 +1161,17 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
   SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_first);
   SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_last);
   
-  return op_assign;
+  // Return variable if first children is var
+  if (op_first->code == SPVM_OP_C_CODE_VAR) {
+    SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
+    op_var->uv.var = op_first->uv.var;
+    SPVM_OP_sibling_splice(compiler, op_var, op_var->last, 0, op_assign);
+    
+    return op_var;
+  }
+  else {
+    return op_assign;
+  }
 }
 
 
