@@ -1,3 +1,5 @@
+0.0214 2017-07-11
+  - Fix for statement segmentaion fault bug
 0.0213 2017-07-10
   - Fix MANIFEST
 0.0212 2017-07-10
