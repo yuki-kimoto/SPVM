@@ -94,51 +94,51 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->set_float_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, float))SPVM_RUNTIME_API_set_float_field;
   api->set_double_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, double))SPVM_RUNTIME_API_set_double_field;
   api->set_object_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, SPVM_API_BASE_OBJECT*))SPVM_RUNTIME_API_set_object_field;
-
+  
   // Call subroutine fucntions
-  api->push_var_byte = SPVM_RUNTIME_API_push_var_byte;
-  api->push_var_short = SPVM_RUNTIME_API_push_var_short;
-  api->push_var_int = SPVM_RUNTIME_API_push_var_int;
-  api->push_var_long = SPVM_RUNTIME_API_push_var_long;
-  api->push_var_float = SPVM_RUNTIME_API_push_var_float;
-  api->push_var_double = SPVM_RUNTIME_API_push_var_double;
-  api->push_var_object = SPVM_RUNTIME_API_push_var_object;
-  api->get_sub_index = SPVM_RUNTIME_API_get_sub_index;
-  api->call_sub = SPVM_RUNTIME_call_sub;
-  api->pop_retval_byte = SPVM_RUNTIME_API_pop_retval_byte;
-  api->pop_retval_short = SPVM_RUNTIME_API_pop_retval_short;
-  api->pop_retval_int = SPVM_RUNTIME_API_pop_retval_int;
-  api->pop_retval_long = SPVM_RUNTIME_API_pop_retval_long;
-  api->pop_retval_float = SPVM_RUNTIME_API_pop_retval_float;
-  api->pop_retval_double = SPVM_RUNTIME_API_pop_retval_double;
-  api->pop_retval_object = SPVM_RUNTIME_API_pop_retval_object;
+  api->push_var_byte = (void (*)(SPVM_API*, int8_t))SPVM_RUNTIME_API_push_var_byte;
+  api->push_var_short = (void (*)(SPVM_API*, int16_t))SPVM_RUNTIME_API_push_var_short;
+  api->push_var_int = (void (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_push_var_int;
+  api->push_var_long = (void (*)(SPVM_API*, int64_t))SPVM_RUNTIME_API_push_var_long;
+  api->push_var_float = (void (*)(SPVM_API*, float))SPVM_RUNTIME_API_push_var_float;
+  api->push_var_double = (void (*)(SPVM_API*, double))SPVM_RUNTIME_API_push_var_double;
+  api->push_var_object = (void (*)(SPVM_API*, SPVM_API_BASE_OBJECT*))SPVM_RUNTIME_API_push_var_object;
+  api->get_sub_index = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_sub_index;
+  api->call_sub = (void (*)(SPVM_API*, int32_t))SPVM_RUNTIME_call_sub;
+  api->pop_retval_byte = (int8_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_byte;
+  api->pop_retval_short = (int16_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_short;
+  api->pop_retval_int = (int32_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_int;
+  api->pop_retval_long = (int64_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_long;
+  api->pop_retval_float = (float (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_float;
+  api->pop_retval_double = (double (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_double;
+  api->pop_retval_object = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_object;
   
   // Malloc funtctions
-  api->get_package_index = SPVM_RUNTIME_API_get_package_index;
-  api->malloc_object_noinc = SPVM_RUNTIME_API_malloc_object_noinc;
-  api->malloc_byte_array_noinc = SPVM_RUNTIME_API_malloc_byte_array_noinc;
-  api->malloc_short_array_noinc = SPVM_RUNTIME_API_malloc_short_array_noinc;
-  api->malloc_int_array_noinc = SPVM_RUNTIME_API_malloc_int_array_noinc;
-  api->malloc_long_array_noinc = SPVM_RUNTIME_API_malloc_long_array_noinc;
-  api->malloc_float_array_noinc = SPVM_RUNTIME_API_malloc_float_array_noinc;
-  api->malloc_double_array_noinc = SPVM_RUNTIME_API_malloc_double_array_noinc;
-  api->malloc_object_array_noinc = SPVM_RUNTIME_API_malloc_object_array_noinc;
+  api->get_package_index = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_package_index;
+  api->malloc_object_noinc = (SPVM_API_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_object_noinc;
+  api->malloc_byte_array_noinc = (SPVM_API_ARRAY_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_byte_array_noinc;
+  api->malloc_short_array_noinc = (SPVM_API_ARRAY_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_short_array_noinc;
+  api->malloc_int_array_noinc = (SPVM_API_ARRAY_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_int_array_noinc;
+  api->malloc_long_array_noinc = (SPVM_API_ARRAY_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_long_array_noinc;
+  api->malloc_float_array_noinc = (SPVM_API_ARRAY_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_float_array_noinc;
+  api->malloc_double_array_noinc = (SPVM_API_ARRAY_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_double_array_noinc;
+  api->malloc_object_array_noinc = (SPVM_API_ARRAY_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_object_array_noinc;
   
-  // Function used in subroutine
-  api->get_var_byte = SPVM_RUNTIME_API_get_var_byte;
-  api->get_var_short = SPVM_RUNTIME_API_get_var_short;
-  api->get_var_int = SPVM_RUNTIME_API_get_var_int;
-  api->get_var_long = SPVM_RUNTIME_API_get_var_long;
-  api->get_var_float = SPVM_RUNTIME_API_get_var_float;
-  api->get_var_double = SPVM_RUNTIME_API_get_var_double;
-  api->get_var_object = SPVM_RUNTIME_API_get_var_object;
-  api->push_retval_byte = SPVM_RUNTIME_API_push_retval_byte;
-  api->push_retval_short = SPVM_RUNTIME_API_push_retval_short;
-  api->push_retval_int = SPVM_RUNTIME_API_push_retval_int;
-  api->push_retval_long = SPVM_RUNTIME_API_push_retval_long;
-  api->push_retval_float = SPVM_RUNTIME_API_push_retval_float;
-  api->push_retval_double = SPVM_RUNTIME_API_push_retval_double;
-  api->push_retval_object = SPVM_RUNTIME_API_push_retval_object;
+  // Functions used in subroutine
+  api->get_var_byte = (int8_t (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_byte;
+  api->get_var_short = (int16_t (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_short;
+  api->get_var_int = (int32_t (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_int;
+  api->get_var_long = (int64_t (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_long;
+  api->get_var_float = (float (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_float;
+  api->get_var_double = (double (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_double;
+  api->get_var_object = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_object;
+  api->push_retval_byte = (void (*)(SPVM_API*, int8_t))SPVM_RUNTIME_API_push_retval_byte;
+  api->push_retval_short = (void (*)(SPVM_API*, int16_t))SPVM_RUNTIME_API_push_retval_short;
+  api->push_retval_int = (void (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_push_retval_int;
+  api->push_retval_long = (void (*)(SPVM_API*, int64_t))SPVM_RUNTIME_API_push_retval_long;
+  api->push_retval_float = (void (*)(SPVM_API*, float))SPVM_RUNTIME_API_push_retval_float;
+  api->push_retval_double = (void (*)(SPVM_API*, double))SPVM_RUNTIME_API_push_retval_double;
+  api->push_retval_object = (void (*)(SPVM_API*, SPVM_API_BASE_OBJECT*))SPVM_RUNTIME_API_push_retval_object;
   
   return api;
 }
