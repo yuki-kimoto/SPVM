@@ -418,10 +418,10 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       
       // Save return address(operand + (throw or goto exception handler))
       if (call_stack_base == call_stack_base_start) {
-        call_stack[operand_stack_top + 1].object_value = (void*)-1;
+        call_stack[operand_stack_top + 1].address_value = (uint8_t*)-1;
       }
       else {
-        call_stack[operand_stack_top + 1].object_value = (void*)((intptr_t)pc + 5 + 3);
+        call_stack[operand_stack_top + 1].address_value = (uint8_t*)((intptr_t)pc + 5 + 3);
       }
       
       // Save sub_constant_pool_index
@@ -689,7 +689,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     operand_stack_top = call_stack_base - 4;
     
     // Return address
-    uint8_t* return_address = call_stack[call_stack_base - 3].object_value;
+    uint8_t* return_address = call_stack[call_stack_base - 3].address_value;
     
     // Get sub_constant_pool_index
     sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
@@ -770,7 +770,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       // Restore vars
       vars = &call_stack[call_stack_base];
       
-      pc = (uint8_t*)(return_address - 3);
+      pc = (uint8_t*)((intptr_t)return_address - 3);
       goto *jump[*pc];
     }
   }
