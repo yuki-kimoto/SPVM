@@ -79,21 +79,21 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_object_array_elements = (SPVM_API_BASE_OBJECT** (*)(SPVM_API*, SPVM_API_ARRAY_OBJECT*))SPVM_RUNTIME_API_get_object_array_elements;
   
   // Object functions
-  api->get_field_index = SPVM_RUNTIME_API_get_field_index;
-  api->get_byte_field = SPVM_RUNTIME_API_get_byte_field;
-  api->get_short_field = SPVM_RUNTIME_API_get_short_field;
-  api->get_int_field = SPVM_RUNTIME_API_get_int_field;
-  api->get_long_field = SPVM_RUNTIME_API_get_long_field;
-  api->get_float_field = SPVM_RUNTIME_API_get_float_field;
-  api->get_double_field = SPVM_RUNTIME_API_get_double_field;
-  api->get_object_field = SPVM_RUNTIME_API_get_object_field;
-  api->set_byte_field = SPVM_RUNTIME_API_set_byte_field;
-  api->set_short_field = SPVM_RUNTIME_API_set_short_field;
-  api->set_int_field = SPVM_RUNTIME_API_set_int_field;
-  api->set_long_field = SPVM_RUNTIME_API_set_long_field;
-  api->set_float_field = SPVM_RUNTIME_API_set_float_field;
-  api->set_double_field = SPVM_RUNTIME_API_set_double_field;
-  api->set_object_field = SPVM_RUNTIME_API_set_object_field;
+  api->get_field_index = (int32_t (*)(SPVM_API*, SPVM_API_OBJECT*, const char*))SPVM_RUNTIME_API_get_field_index;
+  api->get_byte_field = (int8_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_byte_field;
+  api->get_short_field = (int16_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_short_field;
+  api->get_int_field = (int32_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_int_field;
+  api->get_long_field = (int64_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_long_field;
+  api->get_float_field = (int64_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_float_field;
+  api->get_double_field = (double (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_double_field;
+  api->get_object_field = (double (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_object_field;
+  api->set_byte_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int8_t))SPVM_RUNTIME_API_set_byte_field;
+  api->set_short_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int16_t))SPVM_RUNTIME_API_set_short_field;
+  api->set_int_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int32_t))SPVM_RUNTIME_API_set_int_field;
+  api->set_long_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int64_t))SPVM_RUNTIME_API_set_long_field;
+  api->set_float_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, float))SPVM_RUNTIME_API_set_float_field;
+  api->set_double_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, double))SPVM_RUNTIME_API_set_double_field;
+  api->set_object_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, SPVM_API_BASE_OBJECT*))SPVM_RUNTIME_API_set_object_field;
 
   // Call subroutine fucntions
   api->push_var_byte = SPVM_RUNTIME_API_push_var_byte;
