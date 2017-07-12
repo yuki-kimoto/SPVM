@@ -1674,13 +1674,28 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term = op_cur->first;
                       SPVM_OP* op_type = op_cur->last;
                       
-                      SPVM_TYPE* op_term_type = SPVM_OP_get_type(compiler, op_term);
-                      SPVM_TYPE* op_type_type = SPVM_OP_get_type(compiler, op_type);;
+                      SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
+                      SPVM_TYPE* type_type = SPVM_OP_get_type(compiler, op_type);
                       
-                      // Can receive only core type
-                      if (!SPVM_TYPE_is_numeric(compiler, op_term_type)) {
+                      warn("AAAAAAAAAAAAAA %s %s", term_type->name, type_type->name);
+                      
+                      _Bool can_convert = 0;
+                      // Can convert byte[] to string
+                      if (
+                        (strcmp(term_type->name, "byte[]") == 0 || strcmp(term_type->name, "string") == 0)
+                         && (strcmp(type_type->name, "byte[]") == 0 || strcmp(type_type->name, "string") == 0)
+                      )
+                      {
+                        can_convert = 1;
+                      }
+                      // Can convert each core types
+                      else if (SPVM_TYPE_is_numeric(compiler, term_type) && SPVM_TYPE_is_numeric(compiler, type_type)) {
+                        can_convert = 1;
+                      }
+                      
+                      if (!can_convert) {
                         SPVM_yyerror_format(compiler, "can't convert type %s to %s at %s line %d\n",
-                          op_term_type->name, op_type_type->name, op_cur->file, op_cur->line);
+                        term_type->name, type_type->name, op_cur->file, op_cur->line);
                         break;
                       }
                     }

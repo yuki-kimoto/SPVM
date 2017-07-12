@@ -1684,7 +1684,16 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else {
-                      assert(0);
+                      if (
+                        (src_type->id == SPVM_TYPE_C_ID_STRING || src_type->id == SPVM_TYPE_C_ID_ARRAY_BYTE)
+                        || (dist_type->id == SPVM_TYPE_C_ID_STRING || dist_type->id == SPVM_TYPE_C_ID_ARRAY_BYTE)
+                      )
+                      {
+                        // OK
+                      }
+                      else {
+                        assert(0);
+                      }
                     }
                     
                     break;

@@ -19,6 +19,12 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
+    # Convert to string to byte[]
+    {
+      my $string = "abc";
+      my $bytes = (byte[])$string;
+      $string = (string)$bytes;
+    }
     # MIN long constant;
     {
       my $num = -9223372036854775808L;
