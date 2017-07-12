@@ -143,6 +143,8 @@ is_deeply(
   ok(SPVM::TestCase::if_eq_float_different());
   ok(SPVM::TestCase::if_eq_double_same());
   ok(SPVM::TestCase::if_eq_double_different());
+  ok(SPVM::TestCase::if_eq_object_same());
+  ok(SPVM::TestCase::if_eq_object_different());
 }
 
 # If a != b
@@ -159,6 +161,8 @@ is_deeply(
   ok(SPVM::TestCase::if_ne_float_different());
   ok(SPVM::TestCase::if_ne_double_same());
   ok(SPVM::TestCase::if_ne_double_different());
+  ok(SPVM::TestCase::if_ne_object_same());
+  ok(SPVM::TestCase::if_ne_object_different());
 }
 
 # Number literal
