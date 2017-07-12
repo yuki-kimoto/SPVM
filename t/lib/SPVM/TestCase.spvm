@@ -854,6 +854,187 @@ package TestCase {
       return 1;
     }
   }
+
+  # If a >= b
+  sub if_ge_byte_left_big () : int {
+    
+    if ((byte)3 >= (byte)1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_byte_same () : int {
+    
+    if ((byte)3 >= (byte)3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_byte_right_big () : int {
+    
+    if ((byte)3 >= (byte)4) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_ge_short_left_big () : int {
+    
+    if ((short)3 >= (short)1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_short_same () : int {
+    
+    if ((short)3 >= (short)3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_short_right_big () : int {
+    
+    if ((short)3 >= (short)4) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+  
+  sub if_ge_int_left_big () : int {
+    
+    if (3 >= 1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_int_same () : int {
+    
+    if (3 >= 3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_int_right_big () : int {
+    
+    if (3 >= 4) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_ge_long_left_big () : int {
+    
+    if ((long)3 >= (long)1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_long_same () : int {
+    
+    if ((long)3 >= (long)3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_long_right_big () : int {
+    
+    if ((long)3 >= (long)4) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_ge_float_left_big () : int {
+    
+    if ((float)3 >= (float)1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_float_same () : int {
+    
+    if ((float)3 >= (float)3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_float_right_big () : int {
+    
+    if ((float)3 >= (float)4) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_ge_double_left_big () : int {
+    
+    if ((double)3 >= (double)1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_double_same () : int {
+    
+    if ((double)3 >= (double)3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_ge_double_right_big () : int {
+    
+    if ((double)3 >= (double)4) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
   
   # Bit shift right logical
   sub bit_shift_right_logical_byte() : int {
