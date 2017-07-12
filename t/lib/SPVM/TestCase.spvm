@@ -2,7 +2,7 @@ package TestCase {
   has x : int;
   has y : int;
   
-  # constant
+  # constant int
   sub load_constant_int_min() : int {
    # LOAD_CONSTANT
     return -2147483647;
@@ -80,7 +80,7 @@ package TestCase {
     return 2147483647;
   }
 
-  # constant
+  # constant long
   sub load_constant_long_min() : long {
    # LOAD_CONSTANT
     return -9223372036854775808L;
@@ -150,14 +150,42 @@ package TestCase {
     return 32767L;
   }
   sub load_constant_long_32768() : long {
-    # LOAD_CONSTANT
+    # LOAD_CONSTANT2
     return 32768L;
   }
   sub load_constant_long_max() : long {
-    # LOAD_CONSTANT
+    # LOAD_CONSTANT2
     return 9223372036854775807L;
   }
-
+  
+  # constant float
+  sub load_constant_float_0() : float {
+    # CONSTANT_FLOAT_0
+    return 0.0f;
+  }
+  sub load_constant_float_1() : float {
+    # CONSTANT_FLOAT_1
+    return 1.0f;
+  }
+  sub load_constant_float_0_5() : float {
+    # LOAD_CONSTANT
+    return 0.5f;
+  }
+  
+  # constant double
+  sub load_constant_double_0() : double {
+    # CONSTANT_DOUBLE_0
+    return 0.0;
+  }
+  sub load_constant_double_1() : double {
+    # CONSTANT_DOUBLE_1
+    return 1.0;
+  }
+  sub load_constant_double_0_5() : double {
+    # LOAD_CONSTANT2
+    return 0.5;
+  }
+  
   # call_sub
   sub call_sub_args_int($var1 : int, $var2 : int, $var3 : int) : int {
     if ($var1 == 1) {

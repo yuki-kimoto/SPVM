@@ -62,6 +62,13 @@ is_deeply(
   is(SPVM::TestCase::load_constant_long_max(), 9223372036854775807);
 }
 
+# constant float
+{
+  is(SPVM::TestCase::load_constant_float_0(), 0.0);
+  is(SPVM::TestCase::load_constant_float_1(), 1.0);
+  is(SPVM::TestCase::load_constant_float_0_5(), 0.5);
+}
+
 # call_sub
 {
   ok(SPVM::TestCase::call_sub_args_int(1, 2147483647, -2147483647));
