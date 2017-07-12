@@ -4,7 +4,7 @@ use 5.008007;
 use strict;
 use warnings;
 
-use SPVM::Data;
+use SPVM::Object;
 
 use Carp 'croak';
 

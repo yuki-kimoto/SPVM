@@ -12,7 +12,7 @@ use lib "$FindBin::Bin/lib";
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
 
-use SPVM::Data;
+use SPVM::Object;
 
 is_deeply(
   \@SPVM::PACKAGE_INFOS,
@@ -22,9 +22,9 @@ is_deeply(
   ]
 );
 
-# SPVM::Data
+# SPVM::Object
 {
-  my $data_nums = SPVM::Data->new_int_array([1, 2, 3, 4, 5]);
+  my $data_nums = SPVM::Object->new_int_array([1, 2, 3, 4, 5]);
   
 }
 # constant int

@@ -22,7 +22,7 @@
 #include "spvm_type.h"
 #include "spvm_api.h"
 
-MODULE = SPVM::Data		PACKAGE = SPVM::Data
+MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
 SV*
 malloc(...)
@@ -391,7 +391,7 @@ call_sub(...)
       SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
       const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
       
-      if (sv_isobject(sv_base_object) && sv_derived_from(sv_base_object, "SPVM::Data")) {
+      if (sv_isobject(sv_base_object) && sv_derived_from(sv_base_object, "SPVM::Object")) {
         assert(0);
         
         HV* hv_base_object = (HV*)SvRV(sv_base_object);
@@ -448,7 +448,7 @@ call_sub(...)
     // Create base_object
     HV* hv_base_object = sv_2mortal((SV*)newHV());
     SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
-    HV* hv_class = gv_stashpv("SPVM::Data", 0);
+    HV* hv_class = gv_stashpv("SPVM::Object", 0);
     sv_bless(sv_base_object, hv_class);
 
     const char* return_type_name = SvPV_nolen(sv_return_type_name);
