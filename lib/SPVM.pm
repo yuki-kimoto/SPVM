@@ -39,100 +39,28 @@ CHECK {
   free_compiler();
 }
 
-sub malloc {
-  my ($class, $type, $data) = @_;
+sub int_array {
+  my $elements = shift;
   
-  my $has_data;
-  if (@_ > 2) {
-    $has_data = 1;
-  }
-  
-  my $type_original = $type;
-  
-  unless (defined $type) {
-    croak "type must be specified(SPVM::Data::malloc)";
-  }
-  my $type_id = $TYPE_SYMTABLE{$type};
-  unless (defined $type_id) {
-    croak "Unknowntype \"$type\"(SPVM::Data::malloc)";
+  if (ref $elements ne 'ARRAY') {
+    croak "Argument must be array reference";
   }
   
-  my $length;
-  my $length_in_type = $type =~ s/[(0-9+)]$/[]/;
-  if (defined $length_in_type) {
-    if ($has_data) {
-      croak "You can't specify both length in type and data(SPVM::Data::malloc)";
-    }
-    $length = $length_in_type;
-  }
+  my $length = @$elements;
   
-  if (ref $data eq 'ARRAY') {
-    $length = @$data;
-  }
-  elsif (ref $data eq 'HASH') {
-    # None
-  }
-  else {
-    croak "Data must be array or hash refernce(SPVM::Data::malloc)";
-  }
+  my $array_object = SPVM::Object->malloc_int_array($length);
   
-  # malloc array object
-  if (defined $length) {
-    my $array_object;
-    if ($type eq 'byte[]') {
-      $array_object = Data::Object->malloc_byte_array($length);
-      if ($has_data) {
-        $array_object->set_byte_array_elements($data);
-      }
-    }
-    elsif ($type eq 'short[]') {
-      $array_object = Data::Object->malloc_short_array($length);
-      if ($has_data) {
-        $array_object->set_short_array_elements($data);
-      }
-    }
-    elsif ($type eq 'int[]') {
-      $array_object = Data::Object->malloc_int_array($length);
-      if ($has_data) {
-        $array_object->set_int_array_elements($data);
-      }
-    }
-    elsif ($type eq 'long[]') {
-      $array_object = Data::Object->malloc_long_array($length);
-      if ($has_data) {
-        $array_object->set_long_array_elements($data);
-      }
-    }
-    elsif ($type eq 'float[]') {
-      $array_object = Data::Object->malloc_float_array($length);
-      if ($has_data) {
-        $array_object->set_float_array_elements($data);
-      }
-    }
-    elsif ($type eq 'double[]') {
-      $array_object = Data::Object->malloc_double_array($length);
-      if ($has_data) {
-        $array_object->set_double_array_elements($data);
-      }
-    }
-    else {
-      $array_object = Data::Object->malloc_object_array($length);
-      if ($has_data) {
-        $array_object->set_object_array_elements($data);
-      }
-    }
-    
-    return $array_object;
-  }
-  # malloc object
-  else {
-    croak "Not yet implemented";
-    my $object = SPVM::Object->malloc_object_type_id($type_id);
-    if ($has_data) {
-      $object->set($data);
-    }
-    return $object;
-  }
+  $array_object->set_int_array_elements($elements);
+  
+  return $array_object;
+}
+
+sub int_array_len {
+  my $length = shift;
+  
+  my $array_object = SPVM::Object->malloc_int_array($length);
+  
+  return $array_object;
 }
 
 sub import {
