@@ -70,6 +70,16 @@ new_int_array(...)
   
   SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_int_array_noinc(api, length);
   
+  int32_t* elements = api->get_int_array_elements(api, array_object);
+  
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
+      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
+      elements[i] = (int32_t)SvIV(sv_num);
+    }
+  }
   
   XSRETURN(0);
 }
