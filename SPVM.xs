@@ -59,10 +59,16 @@ new_int_array(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
+  SV* sv_nums = ST(1);
   
-  // Get API
+  AV* av_nums = SvRV(sv_nums);
+  int32_t length = (int32_t)av_len(av_nums) + 1;
+  
+  // Set API
   SPVM_API* api;
   SPVM_API_SET_API(api);
+  
+  SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_int_array_noinc(api, length);
   
   
   XSRETURN(0);

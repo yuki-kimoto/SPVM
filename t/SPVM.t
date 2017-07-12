@@ -12,6 +12,8 @@ use lib "$FindBin::Bin/lib";
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
 
+use SPVM::Data;
+
 is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
@@ -20,6 +22,11 @@ is_deeply(
   ]
 );
 
+# SPVM::Data
+{
+  my $data_nums = SPVM::Data->new_int_array([1, 2, 3, 4, 5]);
+  
+}
 # constant int
 {
   is(SPVM::TestCase::load_constant_int_min(), -2147483647);
