@@ -435,7 +435,6 @@ call_sub(...)
       const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
       
       if (sv_isobject(sv_base_object) && sv_derived_from(sv_base_object, "SPVM::Object")) {
-        assert(0);
         
         HV* hv_base_object = (HV*)SvRV(sv_base_object);
         
@@ -446,9 +445,15 @@ call_sub(...)
         if (!strEQ(base_object_type_name, arg_type_name)) {
           croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
         }
+
+        // Get content
+        SV** sv_content_ptr = hv_fetch(hv_base_object, "content", strlen("content"), 0);
+        SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
+        SV* sviv_content = SvRV(sv_content);
+        size_t iv_content = SvIV(sviv_content);
+        SPVM_API_BASE_OBJECT* base_object = INT2PTR(SPVM_API_BASE_OBJECT*, iv_content);
         
-        // SV** sv_value_ptr = hv_fetch(hv_base_object, "content", strlen("content"), 0);
-        // SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        api->push_var_object(api, base_object);
       }
       else {
         SV* sv_value = sv_base_object;
