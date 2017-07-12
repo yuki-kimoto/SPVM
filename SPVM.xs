@@ -81,6 +81,12 @@ new_int_array(...)
     }
   }
   
+  // Create base_object
+  HV* hv_object = sv_2mortal((SV*)newHV());
+  SV* sv_object = sv_2mortal(newRV_inc((SV*)hv_object));
+  HV* hv_class = gv_stashpv("SPVM::Object", 0);
+  sv_bless(sv_object, hv_class);
+
   XSRETURN(0);
 }
 
