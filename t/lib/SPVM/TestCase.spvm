@@ -79,7 +79,85 @@ package TestCase {
     # LOAD_CONSTANT
     return 2147483647;
   }
-  
+
+  # constant
+  sub load_constant_long_min() : long {
+   # LOAD_CONSTANT
+    return -9223372036854775808L;
+  }
+  sub load_constant_long_m32769() : long {
+    # LOAD_CONSTANT
+    return -32769L;
+  }
+  sub load_constant_long_m32768() : long {
+    # PUSH_SHORT_TO_LONG
+    return -32768L;
+  }
+  sub load_constant_long_m129() : long {
+    # PUSH_SHORT_TO_LONG
+    return -129L;
+  }
+  sub load_constant_long_m128() : long {
+    # PUSH_BYTE_TO_LONG
+    return -128L;
+  }
+  sub load_constant_long_m2() : long {
+    # PUSH_BYTE_TO_LONG
+    return -2L;
+  }
+  sub load_constant_long_m1() : long {
+    # CONSTANT_LONG_M1
+    return -1L;
+  }
+  sub load_constant_long_0() : long {
+    # CONSTANT_LONG_0
+    return 0L;
+  }
+  sub load_constant_long_1() : long {
+    # CONSTANT_LONG_1
+    return 1L;
+  }
+  sub load_constant_long_2() : long {
+    # CONSTANT_LONG_2
+    return 2L;
+  }
+  sub load_constant_long_3() : long {
+    # CONSTANT_LONG_3
+    return 3L;
+  }
+  sub load_constant_long_4() : long {
+    # CONSTANT_LONG_4
+    return 4L;
+  }
+  sub load_constant_long_5() : long {
+    # CONSTANT_LONG_5
+    return 5L;
+  }
+  sub load_constant_long_6() : long {
+    # PUSH_BYTE_TO_LONG
+    return 6L;
+  }
+  sub load_constant_long_127() : long {
+    # PUSH_BYTE_TO_LONG
+    return 127L;
+  }
+  sub load_constant_long_128() : long {
+    # PUSH_SHORT_TO_LONG
+    return 128L;
+  }
+  sub load_constant_long_32767() : long {
+    # PUSH_SHORT_TO_LONG
+    return 32767L;
+  }
+  sub load_constant_long_32768() : long {
+    # LOAD_CONSTANT
+    return 32768L;
+  }
+  sub load_constant_long_max() : long {
+    # LOAD_CONSTANT
+    return 9223372036854775807L;
+  }
+
   # call_sub
   sub call_sub_args_int($var1 : int, $var2 : int, $var3 : int) : int {
     if ($var1 == 1) {

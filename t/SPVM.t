@@ -39,6 +39,29 @@ is_deeply(
   is(SPVM::TestCase::load_constant_int_max(), 2147483647);
 }
 
+# constant long
+{
+  is(SPVM::TestCase::load_constant_long_min(), -9223372036854775808);
+  is(SPVM::TestCase::load_constant_long_m32769(), -32769);
+  is(SPVM::TestCase::load_constant_long_m32768(), -32768);
+  is(SPVM::TestCase::load_constant_long_m129(), -129);
+  is(SPVM::TestCase::load_constant_long_m128(), -128);
+  is(SPVM::TestCase::load_constant_long_m2(), -2);
+  is(SPVM::TestCase::load_constant_long_m1(), -1);
+  is(SPVM::TestCase::load_constant_long_0(), 0);
+  is(SPVM::TestCase::load_constant_long_1(), 1);
+  is(SPVM::TestCase::load_constant_long_2(), 2);
+  is(SPVM::TestCase::load_constant_long_3(), 3);
+  is(SPVM::TestCase::load_constant_long_4(), 4);
+  is(SPVM::TestCase::load_constant_long_5(), 5);
+  is(SPVM::TestCase::load_constant_long_6(), 6);
+  is(SPVM::TestCase::load_constant_long_127(), 127);
+  is(SPVM::TestCase::load_constant_long_128(), 128);
+  is(SPVM::TestCase::load_constant_long_32767(), 32767);
+  is(SPVM::TestCase::load_constant_long_32768(), 32768);
+  is(SPVM::TestCase::load_constant_long_max(), 9223372036854775807);
+}
+
 # call_sub
 {
   ok(SPVM::TestCase::call_sub_args_int(1, 2147483647, -2147483647));
