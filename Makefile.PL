@@ -7,7 +7,7 @@ use ExtUtils::MakeMaker;
 use Config;
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
-  die "SPVM don't support 32bit Perl";
+  die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
 }
 
 WriteMakefile(
