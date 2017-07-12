@@ -173,6 +173,28 @@ is_deeply(
   ok(SPVM::TestCase::if_lt_double_right_big());
 }
 
+# If a <= b
+{
+  ok(SPVM::TestCase::if_le_byte_left_big());
+  ok(SPVM::TestCase::if_le_byte_same());
+  ok(SPVM::TestCase::if_le_byte_right_big());
+  ok(SPVM::TestCase::if_le_short_left_big());
+  ok(SPVM::TestCase::if_le_short_same());
+  ok(SPVM::TestCase::if_le_short_right_big());
+  ok(SPVM::TestCase::if_le_int_left_big());
+  ok(SPVM::TestCase::if_le_int_same());
+  ok(SPVM::TestCase::if_le_int_right_big());
+  ok(SPVM::TestCase::if_le_long_left_big());
+  ok(SPVM::TestCase::if_le_long_same());
+  ok(SPVM::TestCase::if_le_long_right_big());
+  ok(SPVM::TestCase::if_le_float_left_big());
+  ok(SPVM::TestCase::if_le_float_same());
+  ok(SPVM::TestCase::if_le_float_right_big());
+  ok(SPVM::TestCase::if_le_double_left_big());
+  ok(SPVM::TestCase::if_le_double_same());
+  ok(SPVM::TestCase::if_le_double_right_big());
+}
+
 # If a == b
 {
   ok(SPVM::TestCase::if_eq_byte_same());
