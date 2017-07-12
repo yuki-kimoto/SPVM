@@ -103,7 +103,7 @@ package Test {
     }
     # String escape character
     {
-      my $string : byte[] = "abc\"\'\\\n\t\b\r\fdef";
+      my $string : string = "abc\"\'\\\n\t\b\r\fdef";
      
       std::println($string);
     }
@@ -313,7 +313,7 @@ package Test {
     }
 
     {
-      my $string : byte[] = "ace";
+      my $string : string = "ace";
      
       std::println($string);
     }

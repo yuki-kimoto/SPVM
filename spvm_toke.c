@@ -587,7 +587,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
         constant->code = SPVM_CONSTANT_C_CODE_STRING;
         constant->uv.string_value = str;
-        constant->type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
+        constant->type = SPVM_HASH_search(compiler->type_symtable, "string", strlen("string"));
         op_constant->uv.constant = constant;
         
         yylvalp->opval = op_constant;

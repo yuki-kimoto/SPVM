@@ -11,6 +11,23 @@
 #include "spvm_yacc_util.h"
 #include "spvm_package.h"
 #include "spvm_limit.h"
+#include "spvm_package.h"
+
+const char* const SPVM_TYPE_C_CORE_NAMES[] = {
+  "byte",
+  "short",
+  "int",
+  "long",
+  "float",
+  "double",
+  "string",
+  "byte[]",
+  "short[]",
+  "int[]",
+  "long[]",
+  "float[]",
+  "double[]",
+};
 
 const char* const SPVM_TYPE_C_CODE_NAMES[] = {
   "name",
@@ -49,7 +66,8 @@ _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
           
         // Core type or array
         if (strcmp(part_name, "boolean") == 0 || strcmp(part_name, "byte") == 0 || strcmp(part_name, "short") == 0 || strcmp(part_name, "int") == 0
-          || strcmp(part_name, "long") == 0 || strcmp(part_name, "float") == 0 || strcmp(part_name, "double") == 0 || strcmp(part_name, "[]") == 0)
+          || strcmp(part_name, "long") == 0 || strcmp(part_name, "float") == 0 || strcmp(part_name, "double") == 0
+          || strcmp(part_name, "string") == 0 || strcmp(part_name, "[]") == 0)
         {
           SPVM_ARRAY_push(type_part_names, (void*)part_name);
         }
@@ -115,39 +133,6 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_ARRAY*
     SPVM_ARRAY_push(parts, (void*)part);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#include "spvm_compiler_allocator.h"
-#include "spvm_package.h"
-#include "spvm_compiler.h"
-
-const char* const SPVM_TYPE_C_CORE_NAMES[] = {
-  "byte",
-  "short",
-  "int",
-  "long",
-  "float",
-  "double",
-  "byte[]",
-  "short[]",
-  "int[]",
-  "long[]",
-  "float[]",
-  "double[]",
-};
 
 _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
