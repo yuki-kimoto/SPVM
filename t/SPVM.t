@@ -20,6 +20,21 @@ is_deeply(
   ]
 );
 
+# constant
+{
+  is(SPVM::TestCase::load_constant_int_min(), -2147483647);
+  is(SPVM::TestCase::load_constant_int_m2(), -2);
+  is(SPVM::TestCase::load_constant_int_m1(), -1);
+  is(SPVM::TestCase::load_constant_int_0(), 0);
+  is(SPVM::TestCase::load_constant_int_1(), 1);
+  is(SPVM::TestCase::load_constant_int_2(), 2);
+  is(SPVM::TestCase::load_constant_int_3(), 3);
+  is(SPVM::TestCase::load_constant_int_4(), 4);
+  is(SPVM::TestCase::load_constant_int_5(), 5);
+  is(SPVM::TestCase::load_constant_int_6(), 6);
+  is(SPVM::TestCase::load_constant_int_max(), 2147483647);
+}
+
 # call_sub
 {
   ok(SPVM::TestCase::call_sub_args_int(1, 2147483647, -2147483647));

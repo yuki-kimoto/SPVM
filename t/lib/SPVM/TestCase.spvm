@@ -2,6 +2,52 @@ package TestCase {
   has x : int;
   has y : int;
   
+  # constant
+  sub load_constant_int_min() : int {
+   # LOAD_CONSTANT
+    return -2147483647;
+  }
+  sub load_constant_int_m2() : int {
+    # PUSH_BYTE_TO_INT
+    return -2;
+  }
+  sub load_constant_int_m1() : int {
+    # CONSTANT_INT_M1
+    return -1;
+  }
+  sub load_constant_int_0() : int {
+    # CONSTANT_INT_0
+    return 0;
+  }
+  sub load_constant_int_1() : int {
+    # CONSTANT_INT_1
+    return 1;
+  }
+  sub load_constant_int_2() : int {
+    # CONSTANT_INT_2
+    return 2;
+  }
+  sub load_constant_int_3() : int {
+    # CONSTANT_INT_3
+    return 3;
+  }
+  sub load_constant_int_4() : int {
+    # CONSTANT_INT_4
+    return 4;
+  }
+  sub load_constant_int_5() : int {
+    # CONSTANT_INT_5
+    return 5;
+  }
+  sub load_constant_int_6() : int {
+    # PUSH_BYTE_TO_INT
+    return 6;
+  }
+  sub load_constant_int_max() : int {
+    # LOAD_CONSTANT
+    return 2147483647;
+  }
+  
   # call_sub
   sub call_sub_args_int($var1 : int, $var2 : int, $var3 : int) : int {
     if ($var1 == 1) {

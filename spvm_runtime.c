@@ -900,37 +900,37 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_BYTE:
     operand_stack_top++;
-    call_stack[operand_stack_top].byte_value = *(pc + 1);
+    call_stack[operand_stack_top].byte_value = (int8_t)*(pc + 1);
     pc += 2;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_SHORT:
     operand_stack_top++;
-    call_stack[operand_stack_top].short_value = *(pc + 1);
+    call_stack[operand_stack_top].short_value = (int16_t)(int8_t)*(pc + 1);
     pc += 2;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_SHORT:
     operand_stack_top++;
-    call_stack[operand_stack_top].short_value = (*(pc + 1) << 8) +  *(pc + 2);
+    call_stack[operand_stack_top].short_value = (int16_t)((*(pc + 1) << 8) +  *(pc + 2));
     pc += 3;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_INT:
     operand_stack_top++;
-    call_stack[operand_stack_top].int_value = *(pc + 1);
+    call_stack[operand_stack_top].int_value = (int32_t)(int8_t)*(pc + 1);
     pc += 2;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_LONG:
     operand_stack_top++;
-    call_stack[operand_stack_top].long_value = (*(pc + 1) << 8) +  *(pc + 2);
+    call_stack[operand_stack_top].long_value = (int64_t)(int16_t)((*(pc + 1) << 8) +  *(pc + 2));
     pc += 3;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_LONG:
     operand_stack_top++;
-    call_stack[operand_stack_top].long_value = *(pc + 1);
+    call_stack[operand_stack_top].long_value = (int64_t)(int8_t)*(pc + 1);
     pc += 2;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_INT:
     operand_stack_top++;
-    call_stack[operand_stack_top].int_value = (*(pc + 1) << 8) +  *(pc + 2);
+    call_stack[operand_stack_top].int_value = (int32_t)(int16_t)((*(pc + 1) << 8) +  *(pc + 2));
     pc += 3;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
