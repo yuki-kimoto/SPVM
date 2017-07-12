@@ -20,7 +20,7 @@ is_deeply(
   ]
 );
 
-# constant
+# constant int
 {
   is(SPVM::TestCase::load_constant_int_min(), -2147483647);
   is(SPVM::TestCase::load_constant_int_m2(), -2);
