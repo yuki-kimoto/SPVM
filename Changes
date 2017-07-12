@@ -1,3 +1,6 @@
+0.0217 2017-07-12
+  - Support SPVM::int_array([1, 2, 3]) function
+    This values can be passed to SPVM function.
 0.0216 2017-07-12
   - Fix constant sign is not initialized bug
 0.0215 2017-07-11

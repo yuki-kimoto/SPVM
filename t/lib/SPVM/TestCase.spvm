@@ -2,6 +2,17 @@ package TestCase {
   has x : int;
   has y : int;
   
+  # int array argument
+  sub call_sub_int_array($nums : int[]) : int {
+    
+    my $total = 0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total = $total + $nums->[$i];
+    }
+    
+    return $total;
+  }
+  
   # constant int
   sub load_constant_int_min() : int {
    # LOAD_CONSTANT
