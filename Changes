@@ -1,3 +1,5 @@
+0.0216 2017-07-12
+  - Fix constant sign is not initialized bug
 0.0215 2017-07-11
   - Support while (my $var = 3) { ... }
   - Support long min constant -9223372036854775808
