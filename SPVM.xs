@@ -402,7 +402,7 @@ call_sub(...)
         
         HV* hv_base_object = (HV*)SvRV(sv_base_object);
         
-        SV** sv_base_object_type_name_ptr = hv_fetch(hv_base_object, "type_name", strlen("type_name"), 0);
+        SV** sv_base_object_type_name_ptr = hv_fetch(hv_base_object, "type", strlen("type"), 0);
         SV* sv_base_object_type_name = sv_base_object_type_name_ptr ? *sv_base_object_type_name_ptr : &PL_sv_undef;
         const char* base_object_type_name = SvPV_nolen(sv_base_object_type_name);
         
@@ -499,10 +499,10 @@ call_sub(...)
       
       // Store resolved type name
       SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
-      hv_store(hv_base_object, "type_name", strlen("type_name"), SvREFCNT_inc(sv_return_type_name), 0);
+      hv_store(hv_base_object, "type", strlen("type"), SvREFCNT_inc(sv_return_type_name), 0);
       
       {
-        SV** sv_type_name_ptr = hv_fetch(hv_base_object, "type_name", strlen("type_name"), 0);
+        SV** sv_type_name_ptr = hv_fetch(hv_base_object, "type", strlen("type"), 0);
         SV* sv_type_name = sv_type_name_ptr ? *sv_type_name_ptr : &PL_sv_undef;
         const char* type_name = SvPV_nolen(sv_type_name);
       }
