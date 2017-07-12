@@ -145,6 +145,22 @@ is_deeply(
   ok(SPVM::TestCase::if_eq_double_different());
 }
 
+# If a != b
+{
+  ok(SPVM::TestCase::if_ne_byte_same());
+  ok(SPVM::TestCase::if_ne_byte_different());
+  ok(SPVM::TestCase::if_ne_short_same());
+  ok(SPVM::TestCase::if_ne_short_different());
+  ok(SPVM::TestCase::if_ne_int_same());
+  ok(SPVM::TestCase::if_ne_int_different());
+  ok(SPVM::TestCase::if_ne_long_same());
+  ok(SPVM::TestCase::if_ne_long_different());
+  ok(SPVM::TestCase::if_ne_float_same());
+  ok(SPVM::TestCase::if_ne_float_different());
+  ok(SPVM::TestCase::if_ne_double_same());
+  ok(SPVM::TestCase::if_ne_double_different());
+}
+
 # Number literal
 {
   ok(SPVM::TestCase::number_literal_hex_int());
