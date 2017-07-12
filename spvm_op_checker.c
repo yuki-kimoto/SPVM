@@ -1677,8 +1677,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
                       SPVM_TYPE* type_type = SPVM_OP_get_type(compiler, op_type);
                       
-                      warn("AAAAAAAAAAAAAA %s %s", term_type->name, type_type->name);
-                      
                       _Bool can_convert = 0;
                       // Can convert byte[] to string
                       if (

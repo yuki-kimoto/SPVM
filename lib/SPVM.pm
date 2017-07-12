@@ -184,6 +184,16 @@ Declaration
   my $value : float;
   my $value : double;
 
+=head3 String type
+
+String type is string.
+
+This is same as byte[] at internal data structure.
+
+Declaration
+
+  my $string : string;
+
 =head3 Reference type
 
 Reference types are `array` and `object`.
