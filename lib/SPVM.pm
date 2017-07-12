@@ -52,6 +52,10 @@ sub malloc {
   unless (defined $type) {
     croak "type must be specified(SPVM::Data::malloc)";
   }
+  my $type_id = $TYPE_SYMTABLE{$type};
+  unless (defined $type_id) {
+    croak "Unknowntype \"$type\"(SPVM::Data::malloc)";
+  }
   
   my $length;
   my $length_in_type = $type =~ s/[(0-9+)]$/[]/;
@@ -74,15 +78,56 @@ sub malloc {
   
   # malloc array object
   if (defined $length) {
-    my $array_object = SPVM::Object->malloc_array_no_check($type, $length);
-    if ($has_data) {
-      $array_object->set($data);
+    my $array_object;
+    if ($type eq 'byte[]') {
+      $array_object = Data::Object->malloc_byte_array($length);
+      if ($has_data) {
+        $array_object->set_byte_array_elements($data);
+      }
     }
+    elsif ($type eq 'short[]') {
+      $array_object = Data::Object->malloc_short_array($length);
+      if ($has_data) {
+        $array_object->set_short_array_elements($data);
+      }
+    }
+    elsif ($type eq 'int[]') {
+      $array_object = Data::Object->malloc_int_array($length);
+      if ($has_data) {
+        $array_object->set_int_array_elements($data);
+      }
+    }
+    elsif ($type eq 'long[]') {
+      $array_object = Data::Object->malloc_long_array($length);
+      if ($has_data) {
+        $array_object->set_long_array_elements($data);
+      }
+    }
+    elsif ($type eq 'float[]') {
+      $array_object = Data::Object->malloc_float_array($length);
+      if ($has_data) {
+        $array_object->set_float_array_elements($data);
+      }
+    }
+    elsif ($type eq 'double[]') {
+      $array_object = Data::Object->malloc_double_array($length);
+      if ($has_data) {
+        $array_object->set_double_array_elements($data);
+      }
+    }
+    else {
+      $array_object = Data::Object->malloc_object_array($length);
+      if ($has_data) {
+        $array_object->set_object_array_elements($data);
+      }
+    }
+    
     return $array_object;
   }
   # malloc object
   else {
-    my $object = SPVM::Object->malloc_object_no_check($type);
+    croak "Not yet implemented";
+    my $object = SPVM::Object->malloc_object_type_id($type_id);
     if ($has_data) {
       $object->set($data);
     }

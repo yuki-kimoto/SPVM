@@ -24,7 +24,8 @@ is_deeply(
 
 # SPVM::Object
 {
-  my $data_nums = SPVM::Object->new_int_array([1, 2, 3, 4, 5]);
+  my $data_nums = SPVM::Object->malloc_int_array(3);
+  $data_nums->set_int_array_elements([1, 2, 3]);
   
 }
 # constant int

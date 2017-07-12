@@ -55,31 +55,19 @@ new_short_array(...)
 }
 
 SV*
-new_int_array(...)
+malloc_int_array(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
-  SV* sv_nums = ST(1);
+  SV* sv_length = ST(1);
   
-  AV* av_nums = SvRV(sv_nums);
-  int32_t length = (int32_t)av_len(av_nums) + 1;
+  int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
   SPVM_API* api;
   SPVM_API_SET_API(api);
   
   SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_int_array_noinc(api, length);
-  
-  int32_t* elements = api->get_int_array_elements(api, array_object);
-  
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
-      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
-      elements[i] = (int32_t)SvIV(sv_num);
-    }
-  }
   
   // Create object
   HV* hv_object = sv_2mortal((SV*)newHV());
@@ -93,7 +81,7 @@ new_int_array(...)
   SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
   
   // Set content
-  // hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
+  hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type
   SV* sv_type = sv_2mortal(newSVpv("int[]", 0));
@@ -101,6 +89,42 @@ new_int_array(...)
   
   XPUSHs(sv_object);
   XSRETURN(1);
+}
+
+SV*
+set_int_array_elements(...)
+  PPCODE:
+{
+  SV* sv_data = ST(0);
+  HV* hv_data = (HV*)SvRV(sv_data);
+  SV* sv_nums = ST(1);
+  AV* av_nums = SvRV(sv_nums);
+
+  // Set API
+  SPVM_API* api;
+  SPVM_API_SET_API(api);
+
+  // Get content
+  SV** sv_content_ptr = hv_fetch(hv_data, "content", strlen("content"), 0);
+  SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
+  SV* sviv_content = SvRV(sv_content);
+  size_t iv_content = SvIV(sviv_content);
+  SPVM_API_ARRAY_OBJECT* array_object = INT2PTR(SPVM_API_ARRAY_OBJECT*, iv_content);
+  
+  int32_t length = api->get_array_length(api, array_object);
+  
+  int32_t* elements = api->get_int_array_elements(api, array_object);
+  
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
+      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
+      elements[i] = (int32_t)SvIV(sv_num);
+    }
+  }
+  
+  XSRETURN(0);
 }
 
 SV*
