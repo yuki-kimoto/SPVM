@@ -87,7 +87,15 @@ new_int_array(...)
   HV* hv_class = gv_stashpv("SPVM::Object", 0);
   sv_bless(sv_object, hv_class);
 
-  XSRETURN(0);
+  // Store value
+  // hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_value), 0);
+  
+  // Set type
+  SV* sv_type = sv_2mortal(newSVpv("int[]", 0));
+  hv_store(hv_object, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
+  
+  XPUSHs(sv_object);
+  XSRETURN(1);
 }
 
 SV*
@@ -410,7 +418,7 @@ call_sub(...)
           croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
         }
         
-        // SV** sv_value_ptr = hv_fetch(hv_base_object, "value", strlen("value"), 0);
+        // SV** sv_value_ptr = hv_fetch(hv_base_object, "content", strlen("content"), 0);
         // SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
       }
       else {
@@ -495,7 +503,7 @@ call_sub(...)
       sv_value = sv_2mortal(newSViv(return_value));
       
       // Store value
-      hv_store(hv_base_object, "value", strlen("value"), SvREFCNT_inc(sv_value), 0);
+      hv_store(hv_base_object, "content", strlen("content"), SvREFCNT_inc(sv_value), 0);
       
       // Store resolved type name
       SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
