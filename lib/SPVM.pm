@@ -385,6 +385,8 @@ Absolute name is combination of package name and subroutine name, or package nam
 
 Object can't have object and array of object.
 
+If I have idea to implement weaken reference and implement weaken reference, this limitation is removed.
+
 =head2 FAQ
 
 =over 4
