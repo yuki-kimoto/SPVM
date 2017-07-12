@@ -81,14 +81,19 @@ new_int_array(...)
     }
   }
   
-  // Create base_object
+  // Create object
   HV* hv_object = sv_2mortal((SV*)newHV());
   SV* sv_object = sv_2mortal(newRV_inc((SV*)hv_object));
   HV* hv_class = gv_stashpv("SPVM::Object", 0);
   sv_bless(sv_object, hv_class);
-
-  // Store value
-  // hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_value), 0);
+  
+  // Create content
+  size_t iv_content = PTR2IV(array_object);
+  SV* sviv_content = sv_2mortal(newSViv(iv_content));
+  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
+  
+  // Set content
+  // hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type
   SV* sv_type = sv_2mortal(newSVpv("int[]", 0));
