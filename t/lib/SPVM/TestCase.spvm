@@ -7,6 +7,22 @@ package TestCase {
    # LOAD_CONSTANT
     return -2147483647;
   }
+  sub load_constant_int_m32769() : int {
+    # LOAD_CONSTANT
+    return -32769;
+  }
+  sub load_constant_int_m32768() : int {
+    # PUSH_SHORT_TO_INT
+    return -32768;
+  }
+  sub load_constant_int_m129() : int {
+    # PUSH_SHORT_TO_INT
+    return -129;
+  }
+  sub load_constant_int_m128() : int {
+    # PUSH_BYTE_TO_INT
+    return -128;
+  }
   sub load_constant_int_m2() : int {
     # PUSH_BYTE_TO_INT
     return -2;
@@ -42,6 +58,22 @@ package TestCase {
   sub load_constant_int_6() : int {
     # PUSH_BYTE_TO_INT
     return 6;
+  }
+  sub load_constant_int_127() : int {
+    # PUSH_BYTE_TO_INT
+    return 127;
+  }
+  sub load_constant_int_128() : int {
+    # PUSH_SHORT_TO_INT
+    return 128;
+  }
+  sub load_constant_int_32767() : int {
+    # PUSH_SHORT_TO_INT
+    return 32767;
+  }
+  sub load_constant_int_32768() : int {
+    # LOAD_CONSTANT
+    return 32768;
   }
   sub load_constant_int_max() : int {
     # LOAD_CONSTANT

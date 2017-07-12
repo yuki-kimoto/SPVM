@@ -23,6 +23,10 @@ is_deeply(
 # constant int
 {
   is(SPVM::TestCase::load_constant_int_min(), -2147483647);
+  is(SPVM::TestCase::load_constant_int_m32769(), -32769);
+  is(SPVM::TestCase::load_constant_int_m32768(), -32768);
+  is(SPVM::TestCase::load_constant_int_m129(), -129);
+  is(SPVM::TestCase::load_constant_int_m128(), -128);
   is(SPVM::TestCase::load_constant_int_m2(), -2);
   is(SPVM::TestCase::load_constant_int_m1(), -1);
   is(SPVM::TestCase::load_constant_int_0(), 0);
