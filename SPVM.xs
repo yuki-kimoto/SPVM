@@ -25,7 +25,7 @@
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
 SV*
-malloc(...)
+malloc_xs(...)
   PPCODE:
 {
   SV* sv_class = ST(0);

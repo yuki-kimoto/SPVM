@@ -8,6 +8,8 @@ use SPVM::Object;
 
 use Carp 'croak';
 
+my $INT_MAX = 2147483647;
+
 our $VERSION = '0.0216';
 
 our $COMPILER;
@@ -35,6 +37,57 @@ CHECK {
   
   # Free compiler
   free_compiler();
+}
+
+sub malloc {
+  my ($class, $type, $data) = @_;
+  
+  my $has_data;
+  if (@_ > 2) {
+    $has_data = 1;
+  }
+  
+  my $type_original = $type;
+  
+  unless (defined $type) {
+    croak "type must be specified(SPVM::Data::malloc)";
+  }
+  
+  my $length;
+  my $length_in_type = $type =~ s/[(0-9+)]$/[]/;
+  if (defined $length_in_type) {
+    if ($has_data) {
+      croak "You can't specify both length in type and data(SPVM::Data::malloc)";
+    }
+    $length = $length_in_type;
+  }
+  
+  if (ref $data eq 'ARRAY') {
+    $length = @$data;
+  }
+  elsif (ref $data eq 'HASH') {
+    # None
+  }
+  else {
+    croak "Data must be array or hash refernce(SPVM::Data::malloc)";
+  }
+  
+  # malloc array object
+  if (defined $length) {
+    my $array_object = SPVM::Object->malloc_array_no_check($type, $length);
+    if ($has_data) {
+      $array_object->set($data);
+    }
+    return $array_object;
+  }
+  # malloc object
+  else {
+    my $object = SPVM::Object->malloc_object_no_check($type);
+    if ($has_data) {
+      $object->set($data);
+    }
+    return $object;
+  }
 }
 
 sub import {
