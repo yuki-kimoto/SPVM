@@ -3,6 +3,15 @@
 
 #include <stdint.h>
 
+// Get API macro
+#define SPVM_API_SET_API(api) \
+  do { \
+    SV* sv_api = get_sv("SPVM::API", 0); \
+    SV* sviv_api = SvRV(sv_api); \
+    size_t iv_api = SvIV(sviv_api); \
+    api = INT2PTR(SPVM_API*, iv_api); \
+  } while (0)
+
 // spvm_api.h
 struct SPVM_api;
 typedef struct SPVM_api SPVM_API;

@@ -24,6 +24,88 @@
 
 MODULE = SPVM::Data		PACKAGE = SPVM::Data
 
+SV*
+malloc(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  
+  
+  
+  XSRETURN(0);
+}
+
+SV*
+new_byte_array(...)
+  PPCODE:
+{
+  
+  
+  XSRETURN(0);
+}
+
+SV*
+new_short_array(...)
+  PPCODE:
+{
+  
+  
+  XSRETURN(0);
+}
+
+SV*
+new_int_array(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  // Get API
+  SPVM_API* api;
+  SPVM_API_SET_API(api);
+  
+  
+  XSRETURN(0);
+}
+
+SV*
+new_long_array(...)
+  PPCODE:
+{
+  
+  
+  XSRETURN(0);
+}
+
+SV*
+new_float_array(...)
+  PPCODE:
+{
+  
+  
+  XSRETURN(0);
+}
+
+SV*
+new_double_array(...)
+  PPCODE:
+{
+  
+  
+  XSRETURN(0);
+}
+
+SV*
+new_object(...)
+  PPCODE:
+{
+  
+  
+  XSRETURN(0);
+}
+
+
+
 MODULE = SPVM		PACKAGE = SPVM
 
 SV*
