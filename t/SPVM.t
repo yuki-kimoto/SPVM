@@ -69,6 +69,13 @@ is_deeply(
   is(SPVM::TestCase::load_constant_float_0_5(), 0.5);
 }
 
+# constant double
+{
+  is(SPVM::TestCase::load_constant_double_0(), 0.0);
+  is(SPVM::TestCase::load_constant_double_1(), 1.0);
+  is(SPVM::TestCase::load_constant_double_0_5(), 0.5);
+}
+
 # call_sub
 {
   ok(SPVM::TestCase::call_sub_args_int(1, 2147483647, -2147483647));
