@@ -30,7 +30,11 @@ SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new(SPVM_COMPILER* compiler) {
 
 void* SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, int32_t size) {
   (void)compiler;
-  return SPVM_MEMORY_POOL_alloc(allocator->memory_pool, size);
+  
+  void* block = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, size);
+  memset(block, 0, size);
+  
+  return block;
 }
 
 SPVM_ARRAY* SPVM_COMPILER_ALLOCATOR_alloc_array(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, int32_t capacity) {
