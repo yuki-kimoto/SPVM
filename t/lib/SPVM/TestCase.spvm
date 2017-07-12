@@ -383,7 +383,152 @@ package TestCase {
       return 0;
     }
   }
-  
+
+  # If a == b
+  sub if_eq_byte_same () : int {
+    
+    if ((byte)3 == (byte)3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_eq_byte_different () : int {
+    
+    if ((byte)3 == (byte)2) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_eq_short_same () : int {
+    
+    if ((short)3 == (short)3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_eq_short_different () : int {
+    
+    if ((short)3 == (short)2) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_eq_int_same () : int {
+    
+    if ((int)3 == (int)3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_eq_int_different () : int {
+    
+    if ((int)3 == (int)2) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_eq_long_same () : int {
+    
+    if ((long)3 == (long)3) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_eq_long_different () : int {
+    
+    if ((long)3 == (long)2) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_eq_float_same () : int {
+    
+    if (0.5f == 0.5f) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_eq_float_different () : int {
+    
+    if (0.5f == 0.25f) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_eq_double_same () : int {
+    
+    if (0.5 == 0.5) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_eq_double_different () : int {
+    
+    if (0.5 == 0.25) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  sub if_eq_object_same () : int {
+    
+    my $obj1 = malloc TestCase;
+    
+    if ($obj1 == $obj1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub if_eq_object_different () : int {
+    my $obj1 = malloc TestCase;
+    my $obj2 = malloc TestCase;
+    
+    if ($obj1 == $obj2) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
   # If a > b
   sub if_gt_byte_left_big () : int {
     
