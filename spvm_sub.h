@@ -8,8 +8,8 @@ struct SPVM_sub {
   SPVM_OP* op_name;
   SPVM_OP* op_return_type;
   SPVM_OP* op_block;
-  SPVM_ARRAY* op_args;
-  SPVM_ARRAY* op_my_vars;
+  SPVM_DYNAMIC_ARRAY* op_args;
+  SPVM_DYNAMIC_ARRAY* op_my_vars;
   void* native_address;
   const char* abs_name;
   const char* file_name;

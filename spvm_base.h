@@ -20,9 +20,9 @@ typedef struct SPVM_constant_pool_package SPVM_CONSTANT_POOL_PACKAGE;
 struct SPVM_object;
 typedef struct SPVM_object SPVM_OBJECT;
 
-// spvm_array_object.h
-struct SPVM_array_object;
-typedef struct SPVM_array_object SPVM_ARRAY_OBJECT;
+// spvm_array.h
+struct SPVM_array;
+typedef struct SPVM_array SPVM_SPVM_ARRAY;
 
 // spvm_base_object.h
 struct SPVM_base_object;
@@ -164,13 +164,13 @@ typedef struct SPVM_descriptor SPVM_DESCRIPTOR;
 struct SPVM_sub;
 typedef struct SPVM_sub SPVM_SUB;
 
-/* spvm_array_element.h */
+/* spvm_dynamic_array_element.h */
 struct SPVM_array_element;
-typedef struct SPVM_array_element SPVM_ARRAY_ELEMENT;
+typedef struct SPVM_array_element SPVM_DYNAMIC_ARRAY_ELEMENT;
 
-/* spvm_array.h */
-struct SPVM_array;
-typedef struct SPVM_array SPVM_ARRAY;
+/* spvm_dynamic_array.h */
+struct SPVM_dynamic_array;
+typedef struct SPVM_dynamic_array SPVM_DYNAMIC_ARRAY;
 
 /* spvm_hash.h */
 struct SPVM_hash_entry;

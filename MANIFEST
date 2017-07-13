@@ -24,9 +24,7 @@ solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
 SPVM.xs
 spvm_api.h
-spvm_array.c
 spvm_array.h
-spvm_array_object.h
 spvm_base.h
 spvm_base_object.h
 spvm_bytecode.c
@@ -50,6 +48,8 @@ spvm_descriptor.c
 spvm_descriptor.h
 spvm_dumper.c
 spvm_dumper.h
+spvm_dynamic_array.c
+spvm_dynamic_array.h
 spvm_enumeration.c
 spvm_enumeration.h
 spvm_enumeration_value.c

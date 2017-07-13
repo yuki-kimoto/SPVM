@@ -4,7 +4,7 @@
 
 #include "../spvm_compiler.h"
 #include "../spvm_hash.h"
-#include "../spvm_array.h"
+#include "../spvm_dynamic_array.h"
 #include "../spvm_util_allocator.h"
 #include "../spvm_constant_pool.h"
 #include "../spvm_bytecode_array.h"
@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
   
   compiler->entry_point_package_name = package_name;
   
-  SPVM_ARRAY_push(compiler->include_pathes, "lib");
-  SPVM_ARRAY_push(compiler->include_pathes, "solo");
+  SPVM_DYNAMIC_ARRAY_push(compiler->include_pathes, "lib");
+  SPVM_DYNAMIC_ARRAY_push(compiler->include_pathes, "solo");
   
   SPVM_COMPILER_compile(compiler);
   

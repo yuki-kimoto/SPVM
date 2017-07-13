@@ -8,7 +8,7 @@ struct SPVM_api;
 typedef struct SPVM_api SPVM_API;
 typedef void SPVM_API_BASE_OBJECT;
 typedef void SPVM_API_OBJECT;
-typedef void SPVM_API_ARRAY_OBJECT;
+typedef void SPVM_API_SPVM_ARRAY;
 typedef void SPVM_API_RUNTIME;
 
 struct SPVM_api {
@@ -16,15 +16,15 @@ struct SPVM_api {
   SPVM_API_RUNTIME* runtime;
   
   // Array functions
-  int32_t (*get_array_length)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
+  int32_t (*get_array_length)(SPVM_API*, SPVM_API_SPVM_ARRAY*);
   int32_t (*get_array_value_size)(SPVM_API*, int32_t);
-  int8_t* (*get_byte_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
-  int16_t* (*get_short_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
-  int32_t* (*get_int_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
-  int64_t* (*get_long_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
-  float* (*get_float_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
-  double* (*get_double_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
-  SPVM_API_BASE_OBJECT** (*get_object_array_elements)(SPVM_API*, SPVM_API_ARRAY_OBJECT*);
+  int8_t* (*get_byte_array_elements)(SPVM_API*, SPVM_API_SPVM_ARRAY*);
+  int16_t* (*get_short_array_elements)(SPVM_API*, SPVM_API_SPVM_ARRAY*);
+  int32_t* (*get_int_array_elements)(SPVM_API*, SPVM_API_SPVM_ARRAY*);
+  int64_t* (*get_long_array_elements)(SPVM_API*, SPVM_API_SPVM_ARRAY*);
+  float* (*get_float_array_elements)(SPVM_API*, SPVM_API_SPVM_ARRAY*);
+  double* (*get_double_array_elements)(SPVM_API*, SPVM_API_SPVM_ARRAY*);
+  SPVM_API_BASE_OBJECT** (*get_object_array_elements)(SPVM_API*, SPVM_API_SPVM_ARRAY*);
   
   // Object functions
   int32_t (*get_field_index)(SPVM_API*, SPVM_API_OBJECT*, const char*);
@@ -64,13 +64,13 @@ struct SPVM_api {
   // Malloc funtctions
   int32_t (*get_package_index)(SPVM_API*, const char*);
   SPVM_API_OBJECT* (*malloc_object_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY_OBJECT* (*malloc_byte_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY_OBJECT* (*malloc_short_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY_OBJECT* (*malloc_int_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY_OBJECT* (*malloc_long_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY_OBJECT* (*malloc_float_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY_OBJECT* (*malloc_double_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY_OBJECT* (*malloc_object_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_SPVM_ARRAY* (*malloc_byte_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_SPVM_ARRAY* (*malloc_short_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_SPVM_ARRAY* (*malloc_int_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_SPVM_ARRAY* (*malloc_long_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_SPVM_ARRAY* (*malloc_float_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_SPVM_ARRAY* (*malloc_double_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_SPVM_ARRAY* (*malloc_object_array_noinc)(SPVM_API*, int32_t);
   
   // Functions used in subroutine
   int8_t (*get_var_byte)(SPVM_API*, int32_t);

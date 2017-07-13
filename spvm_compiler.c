@@ -8,11 +8,11 @@
 #include "spvm_op.h"
 #include "spvm_memory_pool.h"
 #include "spvm_hash.h"
-#include "spvm_array.h"
+#include "spvm_dynamic_array.h"
 #include "spvm_util_allocator.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_yacc_util.h"
-#include "spvm_array.h"
+#include "spvm_dynamic_array.h"
 #include "spvm_bytecode_array.h"
 #include "spvm_sub.h"
 #include "spvm_constant_pool.h"
@@ -30,7 +30,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
   memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
   
-  SPVM_ARRAY* op_packages = compiler->op_packages;
+  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
   runtime->packages_length = op_packages->length;
   
@@ -97,7 +97,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       type->name = name;
       type->name_length = strlen(name);
       type->id = i;
-      SPVM_ARRAY_push(compiler->types, type);
+      SPVM_DYNAMIC_ARRAY_push(compiler->types, type);
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
     }
   }
@@ -121,7 +121,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   if (entyr_point_package_name) {
     // Create use op for entry point package
     SPVM_OP* op_use_entry_point = SPVM_OP_new_op_use_from_package_name(compiler, entyr_point_package_name, "main", 1);
-    SPVM_ARRAY_push(compiler->op_use_stack, op_use_entry_point);
+    SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use_entry_point);
     SPVM_HASH_insert(compiler->op_use_symtable, entyr_point_package_name, strlen(entyr_point_package_name), op_use_entry_point);
     
     // Entry point
@@ -136,7 +136,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   // use standard module
   SPVM_OP* op_use_std = SPVM_OP_new_op_use_from_package_name(compiler, "std", "CORE", 0);
-  SPVM_ARRAY_push(compiler->op_use_stack, op_use_std);
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use_std);
   SPVM_HASH_insert(compiler->op_use_symtable, "std", strlen("std"), op_use_std);
   
   /* call SPVM_yyparse */

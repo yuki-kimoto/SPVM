@@ -6,7 +6,7 @@
 #include <inttypes.h>
 
 #include "spvm_compiler.h"
-#include "spvm_array.h"
+#include "spvm_dynamic_array.h"
 #include "spvm_hash.h"
 #include "spvm_yacc_util.h"
 #include "spvm_op.h"
@@ -116,7 +116,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
 
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
-  SPVM_ARRAY_push(compiler->op_constants, op_constant);
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
   
   return op_constant;
 }
@@ -267,7 +267,7 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case,
     return NULL;
   }
 
-  SPVM_ARRAY_push(compiler->cur_op_cases, op_case);
+  SPVM_DYNAMIC_ARRAY_push(compiler->cur_op_cases, op_case);
   
   return op_case;
 }
@@ -757,10 +757,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     // Add type
     package->op_type = op_type;
-    SPVM_ARRAY_push(compiler->op_types, op_type);
+    SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type);
     
-    SPVM_ARRAY* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-    SPVM_ARRAY* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+    SPVM_DYNAMIC_ARRAY* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+    SPVM_DYNAMIC_ARRAY* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
     
     // Fields
     SPVM_OP* op_decls = op_block->first;
@@ -784,7 +784,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           compiler->fatal_error = 1;
         }
         else {
-          SPVM_ARRAY_push(op_fields, op_field);
+          SPVM_DYNAMIC_ARRAY_push(op_fields, op_field);
           
           const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
           field->abs_name = field_abs_name;
@@ -825,7 +825,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           sub->file_name = op_sub->file;
           
           SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
-          SPVM_ARRAY_push(op_subs, op_sub);
+          SPVM_DYNAMIC_ARRAY_push(op_subs, op_sub);
         }
       }
       else if (op_decl->code == SPVM_OP_C_CODE_ENUM) {
@@ -916,7 +916,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           // Unknown sub
           else {
             SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
-            SPVM_ARRAY_push(op_subs, op_sub);
+            SPVM_DYNAMIC_ARRAY_push(op_subs, op_sub);
           }
         }
       }
@@ -926,7 +926,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     // Add package
     op_package->uv.package = package;
-    SPVM_ARRAY_push(compiler->op_packages, op_package);
+    SPVM_DYNAMIC_ARRAY_push(compiler->op_packages, op_package);
     SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
   }
   
@@ -941,7 +941,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   SPVM_OP* found_op_use = SPVM_HASH_search(compiler->op_use_symtable, package_name, strlen(package_name));
   
   if (!found_op_use) {
-    SPVM_ARRAY_push(compiler->op_use_stack, op_use);
+    SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use);
     SPVM_HASH_insert(compiler->op_use_symtable, package_name, strlen(package_name), op_use);
   }
   
@@ -1028,7 +1028,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   {
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-      SPVM_ARRAY_push(sub->op_args, op_arg->first);
+      SPVM_DYNAMIC_ARRAY_push(sub->op_args, op_arg->first);
     }
   }
 
@@ -1036,7 +1036,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   if (sub->is_native) {
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-      SPVM_ARRAY_push(sub->op_my_vars, op_arg->first);
+      SPVM_DYNAMIC_ARRAY_push(sub->op_my_vars, op_arg->first);
     }
   }
   
@@ -1046,7 +1046,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     {
       int32_t i;
       for (i = sub->op_args->length - 1; i >= 0; i--) {
-        SPVM_OP* op_arg = SPVM_ARRAY_fetch(sub->op_args, i);
+        SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
         SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_arg->file, op_arg->line);
         op_my_var->uv.my_var = op_arg->uv.my_var;
         SPVM_OP_sibling_splice(compiler, op_list_statement, op_list_statement->first, 0, op_my_var);
@@ -1201,7 +1201,7 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   op_type_name->file = op_name->file;
   op_type_name->line = op_name->line;
 
-  SPVM_ARRAY_push(compiler->op_types, op_type_name);
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_name);
   
   return op_type_name;
 }
@@ -1265,7 +1265,7 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPV
   op_type_array->file = op_type->file;
   op_type_array->line = op_type->line;
   
-  SPVM_ARRAY_push(compiler->op_types, op_type_array);
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_array);
   
   return op_type_array;
 }

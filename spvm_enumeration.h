@@ -4,7 +4,7 @@
 #include "spvm_base.h"
 
 struct SPVM_enumeration {
-  SPVM_ARRAY* enumeration_values;
+  SPVM_DYNAMIC_ARRAY* enumeration_values;
 };
 
 SPVM_ENUMERATION* SPVM_ENUMERATION_new(SPVM_COMPILER* compiler);

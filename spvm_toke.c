@@ -16,7 +16,7 @@
 #include "spvm_util_allocator.h"
 #include "spvm_constant.h"
 #include "spvm_var.h"
-#include "spvm_array.h"
+#include "spvm_dynamic_array.h"
 #include "spvm_hash.h"
 #include "spvm_descriptor.h"
 #include "spvm_type.h"
@@ -45,12 +45,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->cur_src = NULL;
         
         // If there are more module, load it
-        SPVM_ARRAY* op_use_stack = compiler->op_use_stack;
+        SPVM_DYNAMIC_ARRAY* op_use_stack = compiler->op_use_stack;
         
         while (1) {
           SPVM_OP* op_use = NULL;
           if (op_use_stack->length > 0) {
-            op_use = SPVM_ARRAY_pop(op_use_stack);
+            op_use = SPVM_DYNAMIC_ARRAY_pop(op_use_stack);
           }
           
           if (op_use) {
@@ -94,7 +94,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               {
                 int32_t i;
                 for (i = 0; i < include_pathes_length; i++) {
-                  const char* include_path = (const char*) SPVM_ARRAY_fetch(compiler->include_pathes, i);
+                  const char* include_path = (const char*) SPVM_DYNAMIC_ARRAY_fetch(compiler->include_pathes, i);
                   
                   // File name
                   int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(module_path_base));
@@ -117,7 +117,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   {
                     int32_t i;
                     for (i = 0; i < include_pathes_length; i++) {
-                      const char* include_path = (const char*) SPVM_ARRAY_fetch(compiler->include_pathes, i);
+                      const char* include_path = (const char*) SPVM_DYNAMIC_ARRAY_fetch(compiler->include_pathes, i);
                       fprintf(stderr, " %s", include_path);
                     }
                   }

@@ -6,8 +6,8 @@
 struct SPVM_package {
   SPVM_OP* op_name;
   SPVM_OP* op_type;
-  SPVM_ARRAY* op_fields;
-  SPVM_ARRAY* op_subs;
+  SPVM_DYNAMIC_ARRAY* op_fields;
+  SPVM_DYNAMIC_ARRAY* op_subs;
   int32_t constant_pool_index;
 };
 

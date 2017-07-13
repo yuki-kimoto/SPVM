@@ -38,19 +38,19 @@ struct SPVM_compiler {
   SPVM_OP* op_grammar;
   
   // Constants
-  SPVM_ARRAY* op_constants;
+  SPVM_DYNAMIC_ARRAY* op_constants;
   
   // Packages
-  SPVM_ARRAY* op_packages;
+  SPVM_DYNAMIC_ARRAY* op_packages;
   
   // OP package symtable
   SPVM_HASH* op_package_symtable;
   
   // Class loading stack
-  SPVM_ARRAY* op_use_stack;
+  SPVM_DYNAMIC_ARRAY* op_use_stack;
   
   // Include pathes
-  SPVM_ARRAY* include_pathes;
+  SPVM_DYNAMIC_ARRAY* include_pathes;
   
   // Method absolute name symbol table
   SPVM_HASH* op_sub_symtable;
@@ -62,16 +62,16 @@ struct SPVM_compiler {
   SPVM_HASH* op_use_symtable;
   
   // Types
-  SPVM_ARRAY* op_types;
+  SPVM_DYNAMIC_ARRAY* op_types;
   
   // Resovled types
-  SPVM_ARRAY* types;
+  SPVM_DYNAMIC_ARRAY* types;
   
   // Resolved type symbol table
   SPVM_HASH* type_symtable;
   
   // Current case statements in switch statement
-  SPVM_ARRAY* cur_op_cases;
+  SPVM_DYNAMIC_ARRAY* cur_op_cases;
   
   // Entry point subroutine name
   const char* start_sub_name;

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "spvm_sub.h"
-#include "spvm_array.h"
+#include "spvm_dynamic_array.h"
 #include "spvm_hash.h"
 
 #include "spvm_compiler_allocator.h"

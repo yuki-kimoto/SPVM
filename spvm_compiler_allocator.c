@@ -3,7 +3,7 @@
 #include <assert.h>
 
 
-#include "spvm_array.h"
+#include "spvm_dynamic_array.h"
 #include "spvm_hash.h"
 #include "spvm_memory_pool.h"
 #include "spvm_util_allocator.h"
@@ -20,10 +20,10 @@ SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new(SPVM_COMPILER* compiler) {
   allocator->memory_pool = SPVM_MEMORY_POOL_new(0);
   
   // Arrays - these arrays are created at compile time
-  allocator->arrays = SPVM_ARRAY_new(0);
+  allocator->arrays = SPVM_DYNAMIC_ARRAY_new(0);
   
   // Hashed - these hashes are created at compile time
-  allocator->hashes = SPVM_ARRAY_new(0);
+  allocator->hashes = SPVM_DYNAMIC_ARRAY_new(0);
   
   return allocator;
 }
@@ -37,12 +37,12 @@ void* SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(SPVM_COMPILER* compiler, SPVM_CO
   return block;
 }
 
-SPVM_ARRAY* SPVM_COMPILER_ALLOCATOR_alloc_array(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, int32_t capacity) {
+SPVM_DYNAMIC_ARRAY* SPVM_COMPILER_ALLOCATOR_alloc_array(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, int32_t capacity) {
   (void)compiler;
   
-  SPVM_ARRAY* array = SPVM_ARRAY_new(capacity);
+  SPVM_DYNAMIC_ARRAY* array = SPVM_DYNAMIC_ARRAY_new(capacity);
   
-  SPVM_ARRAY_push(allocator->arrays, array);
+  SPVM_DYNAMIC_ARRAY_push(allocator->arrays, array);
   
   return array;
 }
@@ -52,7 +52,7 @@ SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, SPVM_COMP
   
   SPVM_HASH* hash = SPVM_HASH_new(capacity);
   
-  SPVM_ARRAY_push(allocator->hashes, hash);
+  SPVM_DYNAMIC_ARRAY_push(allocator->hashes, hash);
   
   return hash;
 }
@@ -87,22 +87,22 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCAT
     int32_t i;
     int32_t len;
     for (i = 0, len = allocator->arrays->length; i < len; i++) {
-      SPVM_ARRAY* array = SPVM_ARRAY_fetch(allocator->arrays, i);
-      SPVM_ARRAY_free(array);
+      SPVM_DYNAMIC_ARRAY* array = SPVM_DYNAMIC_ARRAY_fetch(allocator->arrays, i);
+      SPVM_DYNAMIC_ARRAY_free(array);
     }
   }
-  SPVM_ARRAY_free(allocator->arrays);
+  SPVM_DYNAMIC_ARRAY_free(allocator->arrays);
   
   // Free hashes
   {
     int32_t i;
     int32_t len;
     for (i = 0, len = allocator->hashes->length; i < len; i++) {
-      SPVM_HASH* hash = SPVM_ARRAY_fetch(allocator->hashes, i);
+      SPVM_HASH* hash = SPVM_DYNAMIC_ARRAY_fetch(allocator->hashes, i);
       SPVM_HASH_free(hash);
     }
   }
-  SPVM_ARRAY_free(allocator->hashes);
+  SPVM_DYNAMIC_ARRAY_free(allocator->hashes);
   
   free(allocator);
 }

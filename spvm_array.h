@@ -1,21 +1,24 @@
-#ifndef SPVM_ARRAY_H
-#define SPVM_ARRAY_H
+#ifndef SPVM_SPVM_ARRAY_H
+#define SPVM_SPVM_ARRAY_H
 
 #include "spvm_base.h"
 
+// SPVM_SPVM_ARRAY
 struct SPVM_array {
-  void** values;
+  int8_t type;
+  int8_t value_type;
+  int32_t ref_count;
   int32_t length;
-  int32_t capacity;
 };
 
-SPVM_ARRAY* SPVM_ARRAY_new(int32_t capacity);
-void SPVM_ARRAY_free(SPVM_ARRAY* array);
-void SPVM_ARRAY_maybe_extend(SPVM_ARRAY* array);
-
-void SPVM_ARRAY_push(SPVM_ARRAY* array, void* value);
-void* SPVM_ARRAY_fetch(SPVM_ARRAY* array, int32_t index);
-void SPVM_ARRAY_store(SPVM_ARRAY* array, int32_t index, void* value);
-void* SPVM_ARRAY_pop(SPVM_ARRAY* array);
+enum {
+  SPVM_SPVM_ARRAY_C_VALUE_TYPE_BYTE,
+  SPVM_SPVM_ARRAY_C_VALUE_TYPE_SHORT,
+  SPVM_SPVM_ARRAY_C_VALUE_TYPE_INT,
+  SPVM_SPVM_ARRAY_C_VALUE_TYPE_LONG,
+  SPVM_SPVM_ARRAY_C_VALUE_TYPE_FLOAT,
+  SPVM_SPVM_ARRAY_C_VALUE_TYPE_DOUBLE,
+  SPVM_SPVM_ARRAY_C_VALUE_TYPE_OBJECT,
+};
 
 #endif
