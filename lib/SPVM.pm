@@ -4,7 +4,9 @@ use 5.008007;
 use strict;
 use warnings;
 
+use SPVM::BaseObject;
 use SPVM::Object;
+use SPVM::ArrayObject;
 
 use Carp 'croak';
 
