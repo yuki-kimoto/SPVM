@@ -1,6 +1,17 @@
 package TestCase {
   has x : int;
   has y : int;
+
+  # byte array argument
+  sub call_sub_byte_array($nums : byte[]) : byte {
+    
+    my $total = (byte)0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total = $total + $nums->[$i];
+    }
+    
+    return $total;
+  }
   
   # int array argument
   sub call_sub_int_array($nums : int[]) : int {

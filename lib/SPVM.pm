@@ -41,6 +41,30 @@ CHECK {
   free_compiler();
 }
 
+sub byte_array {
+  my $elements = shift;
+  
+  if (ref $elements ne 'ARRAY') {
+    croak "Argument must be array reference";
+  }
+  
+  my $length = @$elements;
+  
+  my $array_object = SPVM::ArrayObject->malloc_byte_array($length);
+  
+  $array_object->set_byte_array_elements($elements);
+  
+  return $array_object;
+}
+
+sub byte_array_len {
+  my $length = shift;
+  
+  my $array_object = SPVM::ArrayObject->malloc_byte_array($length);
+  
+  return $array_object;
+}
+
 sub int_array {
   my $elements = shift;
   

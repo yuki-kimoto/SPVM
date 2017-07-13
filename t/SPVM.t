@@ -22,6 +22,12 @@ is_deeply(
   ]
 );
 
+# call_sub byte_array
+{
+  my $nums = SPVM::byte_array([1, 2, 3]);
+  is(SPVM::TestCase::call_sub_byte_array($nums), 6);
+}
+
 # call_sub int_array
 {
   my $nums = SPVM::int_array([1, 2, 3]);
