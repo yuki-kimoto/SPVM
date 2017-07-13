@@ -26,7 +26,35 @@
 
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
-
+SV*
+malloc_object(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  SV* sv_type = ST(1);
+  
+  if (!SvOK(sv_type)) {
+    croak("Type must be specified(SPVM::Object::malloc_object)");
+  }
+  
+  const char* type = SvPV_nolen(sv_type);
+  int32_t type_id = SPVM_XS_UTIL_search_type_id(type);
+  if (type_id < 0) {
+    croak("Unkown type \"%s\"(SPVM::Object::malloc_object", type);
+  }
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Malloc array
+  SPVM_API_OBJECT* object =  api->malloc_object_noinc(api, type_id);
+  
+  // New sv object
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(type, object);
+  
+  XPUSHs(sv_object);
+  XSRETURN(1);
+}
 
 MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
