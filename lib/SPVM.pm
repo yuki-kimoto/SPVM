@@ -12,7 +12,7 @@ use Carp 'croak';
 
 my $INT_MAX = 2147483647;
 
-our $VERSION = '0.0217';
+our $VERSION = '0.0218';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
@@ -544,6 +544,44 @@ Absolute name is combination of package name and subroutine name, or package nam
 Object can't have object and array of object.
 
 If I have idea to implement weaken reference and implement weaken reference, this limitation is removed.
+
+=head2 FUNCTIONS
+
+=head2 byte_array
+
+Create byte array object
+
+  my $array_object = SPVM::byte_array([1, 2, 3]);
+
+=head2 short_array
+
+Create short array object
+
+  my $array_object = SPVM::short_array([1, 2, 3]);
+
+=head2 int_array
+
+Create int array object
+
+  my $array_object = SPVM::int_array([1, 2, 3]);
+
+=head2 long_array
+
+Create long array object
+
+  my $array_object = SPVM::long_array([1, 2, 3]);
+
+=head2 float_array
+
+Create float array object
+
+  my $array_object = SPVM::float_array([1, 2, 3]);
+
+=head2 double_array
+
+Create double array object
+
+  my $array_object = SPVM::double_array([1, 2, 3]);
 
 =head2 FAQ
 

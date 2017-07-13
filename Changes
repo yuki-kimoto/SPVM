@@ -1,3 +1,7 @@
+0.0218 2017-07-13
+  - Fix float culcuration bugs
+  - add SPVM::byte_array, SPVM::short_array, SPVM::long_array, SPVM::float_array, SPVM::double_array function
+    to create SPVM array object.
 0.0217 2017-07-12
   - Support SPVM::int_array([1, 2, 3]) function
     This values can be passed to SPVM function.

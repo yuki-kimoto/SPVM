@@ -1,5 +1,7 @@
 Changes
 lib/SPVM.pm
+lib/SPVM/ArrayObject.pm
+lib/SPVM/BaseObject.pm
 lib/SPVM/Object.pm
 lib/SPVM/std.spvm
 Makefile.PL
@@ -96,6 +98,7 @@ spvm_util_allocator.h
 spvm_value.h
 spvm_var.c
 spvm_var.h
+spvm_xs_util.h
 spvm_yacc.c
 spvm_yacc.h
 spvm_yacc_util.c
