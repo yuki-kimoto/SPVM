@@ -345,7 +345,7 @@ malloc_string_raw(...)
   SV* sv_class = ST(0);
   SV* sv_string = ST(1);
   
-  int32_t length = (int32_t)SvCUR(sv_string);
+  int32_t length = (int32_t)sv_len(sv_string);
   
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();

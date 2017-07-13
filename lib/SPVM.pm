@@ -7,6 +7,7 @@ use warnings;
 use SPVM::BaseObject;
 use SPVM::Object;
 use SPVM::ArrayObject;
+use Encode 'encode';
 
 use Carp 'croak';
 
@@ -43,6 +44,16 @@ CHECK {
 
 sub string_raw {
   my $string = shift;
+  
+  my $array_object = SPVM::ArrayObject->malloc_string_raw($string);
+  
+  return $array_object;
+}
+
+sub string {
+  my $string = shift;
+  
+  $string = Encode::encode('UTF-8', $string);
   
   my $array_object = SPVM::ArrayObject->malloc_string_raw($string);
   
@@ -590,6 +601,19 @@ Create float array object
 Create double array object
 
   my $array_object = SPVM::double_array([1, 2, 3]);
+
+=head2 string_raw
+
+Create byte array from B<not decoded> Perl string. 
+This function is faster than C<SPVM::string> because copy is not executed.
+
+  my $array = SPVM::string_raw("AGTCAGTC");
+
+=head2 string
+
+Create byte array from B<decoded> Perl string.
+
+  my $array = SPVM::string("‚ ‚¢‚¤‚¦‚¨");
 
 =head2 FAQ
 

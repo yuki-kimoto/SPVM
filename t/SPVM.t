@@ -1,5 +1,6 @@
 use strict;
 use warnings;
+use utf8;
 use Data::Dumper;
 
 use Test::More 'no_plan';;
@@ -40,10 +41,16 @@ is_deeply(
 
 # call_sub array
 {
-  # call_sub string
+  # SPVM::string
+  {
+    my $string = SPVM::string("あ");
+    ok(SPVM::TestCase::call_sub_string($string));
+  }
+  
+  # call_sub string_raw
   {
     my $string = SPVM::string_raw("abc");
-    ok(SPVM::TestCase::call_sub_string($string));
+    ok(SPVM::TestCase::call_sub_string_raw($string));
   }
   
   # call_sub byte_array

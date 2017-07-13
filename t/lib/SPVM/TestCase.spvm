@@ -51,16 +51,28 @@ package TestCase {
     return (long)9223372036854775807L + (long)1;
   }
 
-  # string argument
+  # SPVM::string
   sub call_sub_string($string : string) : int {
     
     my $bytes = (byte[])$string;
     
-    std::println("AAAAAAAAAAAAAAAA");
+    if ($bytes->[0] == (byte)0xE3) {
+      if ($bytes->[1] == (byte)0x81) {
+        if ($bytes->[2] == (byte)0x82) {
+          if (@$bytes == 3) {
+            return 1;
+          }
+        }
+      }
+    }
     
-    std::println_byte($bytes->[0]);
-    std::println_byte($bytes->[1]);
-    std::println_byte($bytes->[2]);
+    return 0;
+  }
+
+  # SPVM::string_raw
+  sub call_sub_string_raw($string : string) : int {
+    
+    my $bytes = (byte[])$string;
     
     if ($bytes->[0] == (byte)97) {
       if ($bytes->[1] == (byte)98) {
