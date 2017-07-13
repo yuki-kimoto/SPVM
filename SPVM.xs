@@ -53,7 +53,6 @@ set_int_array_elements(...)
   PPCODE:
 {
   SV* sv_array_object = ST(0);
-  HV* hv_array_object = (HV*)SvRV(sv_array_object);
   SV* sv_nums = ST(1);
   AV* av_nums = SvRV(sv_nums);
 
@@ -61,11 +60,7 @@ set_int_array_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SV** sv_content_ptr = hv_fetch(hv_array_object, "content", strlen("content"), 0);
-  SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
-  SV* sviv_content = SvRV(sv_content);
-  size_t iv_content = SvIV(sviv_content);
-  SPVM_API_ARRAY_OBJECT* array_object = INT2PTR(SPVM_API_ARRAY_OBJECT*, iv_content);
+  SPVM_API_ARRAY_OBJECT* array_object = SPVM_XS_UTIL_get_array_object(sv_array_object);
   
   int32_t length = api->get_array_length(api, array_object);
   

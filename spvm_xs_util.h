@@ -40,8 +40,8 @@ SV* SPVM_XS_UTIL_new_sv_array_object(const char* type, SPVM_API_ARRAY_OBJECT* ar
 
 SPVM_API_ARRAY_OBJECT* SPVM_XS_UTIL_get_array_object(SV* sv_array_object) {
   
-  // Get content
-  SV** sv_content_ptr = hv_fetch(sv_array_object, "content", strlen("content"), 0);
+  HV* hv_array_object = (HV*)SvRV(sv_array_object);
+  SV** sv_content_ptr = hv_fetch(hv_array_object, "content", strlen("content"), 0);
   SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
   SV* sviv_content = SvRV(sv_content);
   size_t iv_content = SvIV(sviv_content);
