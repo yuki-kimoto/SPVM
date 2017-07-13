@@ -20,6 +20,7 @@
 #include "spvm_sub.h"
 #include "spvm_my_var.h"
 #include "spvm_type.h"
+
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
 
@@ -65,8 +66,7 @@ malloc_int_array(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
-  SPVM_API* api;
-  SPVM_XS_UTIL_SET_API(api);
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_int_array_noinc(api, length);
   
@@ -102,8 +102,7 @@ set_int_array_elements(...)
   AV* av_nums = SvRV(sv_nums);
 
   // Set API
-  SPVM_API* api;
-  SPVM_XS_UTIL_SET_API(api);
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
 
   // Get content
   SV** sv_content_ptr = hv_fetch(hv_data, "content", strlen("content"), 0);
