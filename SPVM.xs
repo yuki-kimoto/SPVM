@@ -26,32 +26,6 @@
 
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
-SV*
-malloc_object(...)
-  PPCODE:
-{
-
-  /*
-  SV* sv_class = ST(0);
-  SV* sv_type = ST(1);
-  
-  if (!SvOK(sv_type)) {
-    croak("Type must be specified(SPVM::Object::malloc_object)");
-  }
-  
-  // Set API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  // Malloc array
-  SPVM_API_SPVM_OBJECT* object =  api->malloc_object(api, type_id);
-  
-  // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object("byte[]", array);
-  
-  XPUSHs(sv_array);
-  */
-  XSRETURN(0);
-}
 
 
 MODULE = SPVM::Array		PACKAGE = SPVM::Array
