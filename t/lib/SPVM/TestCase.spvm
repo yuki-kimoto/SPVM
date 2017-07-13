@@ -39,6 +39,18 @@ package TestCase {
     return (int)2147483647 + (int)1;
   }
 
+  sub add_long_max() : long {
+    return (long)9223372036854775806L + (long)1;
+  }
+  
+  sub add_long_min() : long {
+    return (long)-9223372036854775808L + (long)1;
+  }
+  
+  sub add_long_overflow() : long {
+    return (long)9223372036854775807L + (long)1;
+  }
+
   # byte array argument
   sub call_sub_byte_array($nums : byte[]) : byte {
     

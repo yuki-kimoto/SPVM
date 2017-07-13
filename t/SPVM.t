@@ -33,6 +33,9 @@ is_deeply(
   is(SPVM::TestCase::add_int_max(), 2147483647);
   is(SPVM::TestCase::add_int_min(), -2147483647);
   is(SPVM::TestCase::add_int_overflow(), -2147483648);
+  is(SPVM::TestCase::add_long_max(), 9223372036854775807);
+  is(SPVM::TestCase::add_long_min(), -9223372036854775807);
+  is(SPVM::TestCase::add_long_overflow(), -9223372036854775808);
 }
 
 # call_sub array
