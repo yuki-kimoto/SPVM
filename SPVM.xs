@@ -21,16 +21,7 @@
 #include "spvm_my_var.h"
 #include "spvm_type.h"
 #include "spvm_api.h"
-
-// Get API macro
-#define SPVM_XS_UTIL_SET_API(api) \
-  do { \
-    SV* sv_api = get_sv("SPVM::API", 0); \
-    SV* sviv_api = SvRV(sv_api); \
-    size_t iv_api = SvIV(sviv_api); \
-    api = INT2PTR(SPVM_API*, iv_api); \
-  } while (0)
-
+#include "spvm_xs_util.h"
 
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
