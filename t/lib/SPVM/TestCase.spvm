@@ -253,11 +253,13 @@ package TestCase {
   }
   
   # call_sub
-  sub call_sub_args_int($var1 : int, $var2 : int, $var3 : int) : int {
+  sub call_sub_args_int($var1 : int, $var2 : int, $var3 : int, $var4 : int) : int {
     if ($var1 == 1) {
       if ($var2 == 2147483647) {
         if ($var3 == -2147483647) {
-          return 1;
+          if ($var4 == 0) {
+            return 1;
+          }
         }
       }
     }
@@ -265,11 +267,13 @@ package TestCase {
     return 0;
   }
   
-  sub call_sub_args_long($var1 : long, $var2 : long, $var3 : long) : int {
+  sub call_sub_args_long($var1 : long, $var2 : long, $var3 : long, $var4 : long) : int {
     if ($var1 == 1L) {
       if ($var2 == 9223372036854775807L) {
         if ($var3 == -9223372036854775808L) {
-          return 1;
+          if ($var4 == 0L) {
+            return 1;
+          }
         }
       }
     }

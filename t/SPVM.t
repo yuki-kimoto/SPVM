@@ -59,7 +59,6 @@ is_deeply(
     my $nums = SPVM::double_array([0.5, 0.5, 1.0]);
     is(SPVM::TestCase::call_sub_double_array($nums), 2.0);
   }
-
 }
 
 # SPVM::ArrayObject
@@ -126,8 +125,8 @@ is_deeply(
 
 # call_sub
 {
-  ok(SPVM::TestCase::call_sub_args_int(1, 2147483647, -2147483647));
-  ok(SPVM::TestCase::call_sub_args_long(1, 9223372036854775807, -9223372036854775808));
+  ok(SPVM::TestCase::call_sub_args_int(1, 2147483647, -2147483647, 0));
+  ok(SPVM::TestCase::call_sub_args_long(1, 9223372036854775807, -9223372036854775808, 0));
 }
 
 # If
