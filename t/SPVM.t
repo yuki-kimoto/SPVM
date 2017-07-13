@@ -90,9 +90,9 @@ is_deeply(
   }
 }
 
-# SPVM::ArrayObject
+# SPVM::Array
 {
-  my $data_nums = SPVM::ArrayObject->malloc_int_array(3);
+  my $data_nums = SPVM::Array->malloc_int_array(3);
   $data_nums->set_int_array_elements([1, 2, 3]);
 }
 

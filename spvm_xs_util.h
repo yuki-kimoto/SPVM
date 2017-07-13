@@ -20,7 +20,7 @@ SV* SPVM_XS_UTIL_new_sv_array(const char* type, SPVM_API_SPVM_ARRAY* array) {
   // Create array
   HV* hv_array = sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
-  HV* hv_class = gv_stashpv("SPVM::ArrayObject", 0);
+  HV* hv_class = gv_stashpv("SPVM::Array", 0);
   sv_bless(sv_array, hv_class);
   
   // Create content

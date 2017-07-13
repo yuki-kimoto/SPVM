@@ -1,6 +1,6 @@
 Changes
 lib/SPVM.pm
-lib/SPVM/ArrayObject.pm
+lib/SPVM/Array.pm
 lib/SPVM/BaseObject.pm
 lib/SPVM/Object.pm
 lib/SPVM/std.spvm

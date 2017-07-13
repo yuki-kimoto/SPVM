@@ -6,7 +6,7 @@ use warnings;
 
 use SPVM::BaseObject;
 use SPVM::Object;
-use SPVM::ArrayObject;
+use SPVM::Array;
 use Encode 'encode';
 
 use Carp 'croak';
@@ -45,9 +45,9 @@ CHECK {
 sub string_raw {
   my $string = shift;
   
-  my $array_object = SPVM::ArrayObject->malloc_string_raw($string);
+  my $array = SPVM::Array->malloc_string_raw($string);
   
-  return $array_object;
+  return $array;
 }
 
 sub string {
@@ -55,9 +55,9 @@ sub string {
   
   $string = Encode::encode('UTF-8', $string);
   
-  my $array_object = SPVM::ArrayObject->malloc_string_raw($string);
+  my $array = SPVM::Array->malloc_string_raw($string);
   
-  return $array_object;
+  return $array;
 }
 
 sub byte_array {
@@ -69,19 +69,19 @@ sub byte_array {
   
   my $length = @$elements;
   
-  my $array_object = SPVM::ArrayObject->malloc_byte_array($length);
+  my $array = SPVM::Array->malloc_byte_array($length);
   
-  $array_object->set_byte_array_elements($elements);
+  $array->set_byte_array_elements($elements);
   
-  return $array_object;
+  return $array;
 }
 
 sub byte_array_len {
   my $length = shift;
   
-  my $array_object = SPVM::ArrayObject->malloc_byte_array($length);
+  my $array = SPVM::Array->malloc_byte_array($length);
   
-  return $array_object;
+  return $array;
 }
 
 sub short_array {
@@ -93,19 +93,19 @@ sub short_array {
   
   my $length = @$elements;
   
-  my $array_object = SPVM::ArrayObject->malloc_short_array($length);
+  my $array = SPVM::Array->malloc_short_array($length);
   
-  $array_object->set_short_array_elements($elements);
+  $array->set_short_array_elements($elements);
   
-  return $array_object;
+  return $array;
 }
 
 sub short_array_len {
   my $length = shift;
   
-  my $array_object = SPVM::ArrayObject->malloc_short_array($length);
+  my $array = SPVM::Array->malloc_short_array($length);
   
-  return $array_object;
+  return $array;
 }
 
 sub int_array {
@@ -117,19 +117,19 @@ sub int_array {
   
   my $length = @$elements;
   
-  my $array_object = SPVM::ArrayObject->malloc_int_array($length);
+  my $array = SPVM::Array->malloc_int_array($length);
   
-  $array_object->set_int_array_elements($elements);
+  $array->set_int_array_elements($elements);
   
-  return $array_object;
+  return $array;
 }
 
 sub int_array_len {
   my $length = shift;
   
-  my $array_object = SPVM::ArrayObject->malloc_int_array($length);
+  my $array = SPVM::Array->malloc_int_array($length);
   
-  return $array_object;
+  return $array;
 }
 
 sub long_array {
@@ -141,19 +141,19 @@ sub long_array {
   
   my $length = @$elements;
   
-  my $array_object = SPVM::ArrayObject->malloc_long_array($length);
+  my $array = SPVM::Array->malloc_long_array($length);
   
-  $array_object->set_long_array_elements($elements);
+  $array->set_long_array_elements($elements);
   
-  return $array_object;
+  return $array;
 }
 
 sub long_array_len {
   my $length = shift;
   
-  my $array_object = SPVM::ArrayObject->malloc_long_array($length);
+  my $array = SPVM::Array->malloc_long_array($length);
   
-  return $array_object;
+  return $array;
 }
 
 sub float_array {
@@ -165,19 +165,19 @@ sub float_array {
   
   my $length = @$elements;
   
-  my $array_object = SPVM::ArrayObject->malloc_float_array($length);
+  my $array = SPVM::Array->malloc_float_array($length);
   
-  $array_object->set_float_array_elements($elements);
+  $array->set_float_array_elements($elements);
   
-  return $array_object;
+  return $array;
 }
 
 sub float_array_len {
   my $length = shift;
   
-  my $array_object = SPVM::ArrayObject->malloc_float_array($length);
+  my $array = SPVM::Array->malloc_float_array($length);
   
-  return $array_object;
+  return $array;
 }
 
 sub double_array {
@@ -189,19 +189,19 @@ sub double_array {
   
   my $length = @$elements;
   
-  my $array_object = SPVM::ArrayObject->malloc_double_array($length);
+  my $array = SPVM::Array->malloc_double_array($length);
   
-  $array_object->set_double_array_elements($elements);
+  $array->set_double_array_elements($elements);
   
-  return $array_object;
+  return $array;
 }
 
 sub double_array_len {
   my $length = shift;
   
-  my $array_object = SPVM::ArrayObject->malloc_double_array($length);
+  my $array = SPVM::Array->malloc_double_array($length);
   
-  return $array_object;
+  return $array;
 }
 
 sub import {
@@ -568,39 +568,39 @@ If I have idea to implement weaken reference and implement weaken reference, thi
 
 =head2 byte_array
 
-Create byte array object
+Create byte array
 
-  my $array_object = SPVM::byte_array([1, 2, 3]);
+  my $array = SPVM::byte_array([1, 2, 3]);
 
 =head2 short_array
 
-Create short array object
+Create short array
 
-  my $array_object = SPVM::short_array([1, 2, 3]);
+  my $array = SPVM::short_array([1, 2, 3]);
 
 =head2 int_array
 
-Create int array object
+Create int array
 
-  my $array_object = SPVM::int_array([1, 2, 3]);
+  my $array = SPVM::int_array([1, 2, 3]);
 
 =head2 long_array
 
-Create long array object
+Create long array
 
-  my $array_object = SPVM::long_array([1, 2, 3]);
+  my $array = SPVM::long_array([1, 2, 3]);
 
 =head2 float_array
 
-Create float array object
+Create float array
 
-  my $array_object = SPVM::float_array([1, 2, 3]);
+  my $array = SPVM::float_array([1, 2, 3]);
 
 =head2 double_array
 
-Create double array object
+Create double array
 
-  my $array_object = SPVM::double_array([1, 2, 3]);
+  my $array = SPVM::double_array([1, 2, 3]);
 
 =head2 string_raw
 

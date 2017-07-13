@@ -1,4 +1,4 @@
-package SPVM::ArrayObject;
+package SPVM::Array;
 
 use base 'SPVM::BaseObject';
 

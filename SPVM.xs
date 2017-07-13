@@ -24,7 +24,7 @@
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
 
-MODULE = SPVM::ArrayObject		PACKAGE = SPVM::ArrayObject
+MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 SV*
 malloc_byte_array(...)
