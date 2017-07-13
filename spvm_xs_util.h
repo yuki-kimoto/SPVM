@@ -6,6 +6,8 @@
 #include "XSUB.h"
 #include "spvm_api.h"
 
+#include <stdint.h>
+
 SPVM_API* SPVM_XS_UTIL_get_api() {
     SV* sv_api = get_sv("SPVM::API", 0);
     SV* sviv_api = SvRV(sv_api);
@@ -16,7 +18,7 @@ SPVM_API* SPVM_XS_UTIL_get_api() {
     return api;
 }
 
-SV* SPVM_XS_UTIL_new_sv_array(const char* type, SPVM_API_SPVM_ARRAY* array) {
+SV* SPVM_XS_UTIL_new_sv_array(const char* type, SPVM_API_ARRAY* array) {
   // Create array
   HV* hv_array = sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
@@ -38,16 +40,20 @@ SV* SPVM_XS_UTIL_new_sv_array(const char* type, SPVM_API_SPVM_ARRAY* array) {
   return sv_array;
 }
 
-SPVM_API_SPVM_ARRAY* SPVM_XS_UTIL_get_array(SV* sv_array) {
+SPVM_API_ARRAY* SPVM_XS_UTIL_get_array(SV* sv_array) {
   
   HV* hv_array = (HV*)SvRV(sv_array);
   SV** sv_content_ptr = hv_fetch(hv_array, "content", strlen("content"), 0);
   SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
   SV* sviv_content = SvRV(sv_content);
   size_t iv_content = SvIV(sviv_content);
-  SPVM_API_SPVM_ARRAY* array = INT2PTR(SPVM_API_SPVM_ARRAY*, iv_content);
+  SPVM_API_ARRAY* array = INT2PTR(SPVM_API_ARRAY*, iv_content);
   
   return array;
+}
+
+int32_t SPVM_XS_UTIL_search_type_id(SV* sv_type) {
+  
 }
 
 #endif

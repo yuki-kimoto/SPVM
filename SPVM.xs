@@ -24,6 +24,36 @@
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
 
+MODULE = SPVM::Object		PACKAGE = SPVM::Object
+
+SV*
+malloc_object(...)
+  PPCODE:
+{
+
+  /*
+  SV* sv_class = ST(0);
+  SV* sv_type = ST(1);
+  
+  if (!SvOK(sv_type)) {
+    croak("Type must be specified(SPVM::Object::malloc_object)");
+  }
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Malloc array
+  SPVM_API_SPVM_OBJECT* object =  api->malloc_object(api, type_id);
+  
+  // New sv object
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object("byte[]", array);
+  
+  XPUSHs(sv_array);
+  */
+  XSRETURN(0);
+}
+
+
 MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 SV*
@@ -38,10 +68,10 @@ malloc_byte_array(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array object
-  SPVM_API_SPVM_ARRAY* array =  api->malloc_byte_array_noinc(api, length);
+  // Malloc array
+  SPVM_API_ARRAY* array =  api->malloc_byte_array_noinc(api, length);
   
-  // New sv array object
+  // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("byte[]", array);
   
   XPUSHs(sv_array);
@@ -60,7 +90,7 @@ set_byte_array_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_SPVM_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -90,10 +120,10 @@ malloc_short_array(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array object
-  SPVM_API_SPVM_ARRAY* array =  api->malloc_short_array_noinc(api, length);
+  // Malloc array
+  SPVM_API_ARRAY* array =  api->malloc_short_array_noinc(api, length);
   
-  // New sv array object
+  // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("short[]", array);
   
   XPUSHs(sv_array);
@@ -112,7 +142,7 @@ set_short_array_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_SPVM_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -142,10 +172,10 @@ malloc_int_array(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array object
-  SPVM_API_SPVM_ARRAY* array =  api->malloc_int_array_noinc(api, length);
+  // Malloc array
+  SPVM_API_ARRAY* array =  api->malloc_int_array_noinc(api, length);
   
-  // New sv array object
+  // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("int[]", array);
   
   XPUSHs(sv_array);
@@ -164,7 +194,7 @@ set_int_array_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_SPVM_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -194,10 +224,10 @@ malloc_long_array(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array object
-  SPVM_API_SPVM_ARRAY* array =  api->malloc_long_array_noinc(api, length);
+  // Malloc array
+  SPVM_API_ARRAY* array =  api->malloc_long_array_noinc(api, length);
   
-  // New sv array object
+  // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("long[]", array);
   
   XPUSHs(sv_array);
@@ -216,7 +246,7 @@ set_long_array_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_SPVM_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -246,10 +276,10 @@ malloc_float_array(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array object
-  SPVM_API_SPVM_ARRAY* array =  api->malloc_float_array_noinc(api, length);
+  // Malloc array
+  SPVM_API_ARRAY* array =  api->malloc_float_array_noinc(api, length);
   
-  // New sv array object
+  // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("float[]", array);
   
   XPUSHs(sv_array);
@@ -268,7 +298,7 @@ set_float_array_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_SPVM_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -298,10 +328,10 @@ malloc_double_array(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array object
-  SPVM_API_SPVM_ARRAY* array =  api->malloc_double_array_noinc(api, length);
+  // Malloc array
+  SPVM_API_ARRAY* array =  api->malloc_double_array_noinc(api, length);
   
-  // New sv array object
+  // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("double[]", array);
   
   XPUSHs(sv_array);
@@ -320,7 +350,7 @@ set_double_array_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_SPVM_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -350,14 +380,14 @@ malloc_string_raw(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array object
-  SPVM_API_SPVM_ARRAY* array =  api->malloc_byte_array_noinc(api, length);
+  // Malloc array
+  SPVM_API_ARRAY* array =  api->malloc_byte_array_noinc(api, length);
   
   const char* string = SvPV_nolen(sv_string);
   int8_t* elements = api->get_byte_array_elements(api, array);
   memcpy(elements, string, length);
   
-  // New sv array object
+  // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("string", array);
   
   XPUSHs(sv_array);
