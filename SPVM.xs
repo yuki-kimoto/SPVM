@@ -22,6 +22,16 @@
 #include "spvm_type.h"
 #include "spvm_api.h"
 
+// Get API macro
+#define SPVM_XS_UTIL_SET_API(api) \
+  do { \
+    SV* sv_api = get_sv("SPVM::API", 0); \
+    SV* sviv_api = SvRV(sv_api); \
+    size_t iv_api = SvIV(sviv_api); \
+    api = INT2PTR(SPVM_API*, iv_api); \
+  } while (0)
+
+
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
 SV*
@@ -65,7 +75,7 @@ malloc_int_array(...)
   
   // Set API
   SPVM_API* api;
-  SPVM_API_SET_API(api);
+  SPVM_XS_UTIL_SET_API(api);
   
   SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_int_array_noinc(api, length);
   
@@ -102,7 +112,7 @@ set_int_array_elements(...)
 
   // Set API
   SPVM_API* api;
-  SPVM_API_SET_API(api);
+  SPVM_XS_UTIL_SET_API(api);
 
   // Get content
   SV** sv_content_ptr = hv_fetch(hv_data, "content", strlen("content"), 0);
