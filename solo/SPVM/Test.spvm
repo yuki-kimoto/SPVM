@@ -19,6 +19,17 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
+    # Constant e
+    {
+      my $num = 0.25E+3;
+      std::println_double($num);
+    }
+
+    # Constant e
+    {
+      my $num = 0.25E-3f;
+      std::println_float($num);
+    }
     # Convert to string to byte[]
     {
       my $string = "abc";

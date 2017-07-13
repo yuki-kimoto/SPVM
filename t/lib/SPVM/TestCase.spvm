@@ -286,6 +286,34 @@ package TestCase {
     # LOAD_CONSTANT
     return 0.5f;
   }
+  sub load_constant_float_exponent_E_plus() : float {
+    std::println("CCCCCCCCCCCCCCCCC");
+    std::println_float(0.5E+3f);
+    
+    return 0.5E+3f;
+  }
+  sub load_constant_float_exponent_e_plus() : float {
+    return 0.5e3f;
+  }
+  sub load_constant_float_exponent_E_minus() : float {
+    return 62.5E-3f;
+  }
+  sub load_constant_float_exponent_e_minus() : float {
+    return 62.5e-3f;
+  }
+
+  sub load_constant_double_exponent_E_plus() : double {
+    return 0.5E+3;
+  }
+  sub load_constant_double_exponent_e_plus() : double {
+    return 0.5e3;
+  }
+  sub load_constant_double_exponent_E_minus() : double {
+    return 62.5E-3;
+  }
+  sub load_constant_double_exponent_e_minus() : double {
+    return 62.5e-3;
+  }
   
   # constant double
   sub load_constant_double_0() : double {

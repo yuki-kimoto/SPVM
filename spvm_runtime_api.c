@@ -533,6 +533,7 @@ float SPVM_RUNTIME_API_pop_retval_float(SPVM_API* api) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   float value = runtime->call_stack[runtime->operand_stack_top].float_value;
+  
   runtime->operand_stack_top--;
   
   return value;

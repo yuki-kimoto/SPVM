@@ -696,7 +696,11 @@ call_sub(...)
     }
     else if (strEQ(return_type_name, "float")) {
       float return_value = api->pop_retval_float(api);
+      
       sv_value = sv_2mortal(newSVnv(return_value));
+      
+      NV value = SvNV(sv_value);
+      
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "double")) {

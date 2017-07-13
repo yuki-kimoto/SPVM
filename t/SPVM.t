@@ -130,6 +130,14 @@ is_deeply(
   is(SPVM::TestCase::load_constant_float_0(), 0.0);
   is(SPVM::TestCase::load_constant_float_1(), 1.0);
   is(SPVM::TestCase::load_constant_float_0_5(), 0.5);
+  is(SPVM::TestCase::load_constant_float_exponent_E_plus(), 0.5E+3);
+  is(SPVM::TestCase::load_constant_float_exponent_e_plus(), 0.5e+3);
+  is(SPVM::TestCase::load_constant_float_exponent_E_minus(), 62.5E-3);
+  is(SPVM::TestCase::load_constant_float_exponent_e_minus(), 62.5e-3);
+  is(SPVM::TestCase::load_constant_double_exponent_E_plus(), 0.5E+3);
+  is(SPVM::TestCase::load_constant_double_exponent_e_plus(), 0.5e+3);
+  is(SPVM::TestCase::load_constant_double_exponent_E_minus(), 62.5E-3);
+  is(SPVM::TestCase::load_constant_double_exponent_e_minus(), 62.5e-3);
 }
 
 # constant double
