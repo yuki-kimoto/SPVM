@@ -34,7 +34,40 @@ package TestCase {
     
     return $total;
   }
-  
+
+  # long array argument
+  sub call_sub_long_array($nums : long[]) : long {
+    
+    my $total = (long)0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total = $total + $nums->[$i];
+    }
+    
+    return $total;
+  }
+
+  # float array argument
+  sub call_sub_float_array($nums : float[]) : float {
+    
+    my $total = (float)0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total = $total + $nums->[$i];
+    }
+    
+    return $total;
+  }
+
+  # double array argument
+  sub call_sub_double_array($nums : double[]) : double {
+    
+    my $total = (double)0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total = $total + $nums->[$i];
+    }
+    
+    return $total;
+  }
+
   # constant int
   sub load_constant_int_min() : int {
    # LOAD_CONSTANT

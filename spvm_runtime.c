@@ -1363,7 +1363,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ADD_FLOAT:
-    call_stack[operand_stack_top -1].float_value += call_stack[operand_stack_top - 1].float_value;
+    call_stack[operand_stack_top - 1].float_value += call_stack[operand_stack_top].float_value;
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
@@ -1393,7 +1393,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_SUBTRACT_FLOAT:
-    call_stack[operand_stack_top - 1].float_value -= call_stack[operand_stack_top - 1].float_value;
+    call_stack[operand_stack_top - 1].float_value -= call_stack[operand_stack_top].float_value;
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
@@ -1423,7 +1423,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_MULTIPLY_FLOAT:
-    call_stack[operand_stack_top - 1].float_value *= call_stack[operand_stack_top - 1].float_value;
+    call_stack[operand_stack_top - 1].float_value *= call_stack[operand_stack_top].float_value;
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
@@ -1453,7 +1453,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_DIVIDE_FLOAT:
-    call_stack[operand_stack_top - 1].float_value /= call_stack[operand_stack_top - 1].float_value;
+    call_stack[operand_stack_top - 1].float_value /= call_stack[operand_stack_top].float_value;
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
@@ -1489,7 +1489,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_REMAINDER_FLOAT:
     call_stack[operand_stack_top - 1].float_value
-      = (float)fmod((double)call_stack[operand_stack_top - 1].float_value, (double)call_stack[operand_stack_top - 1].float_value);
+      = (float)fmod((double)call_stack[operand_stack_top - 1].float_value, (double)call_stack[operand_stack_top].float_value);
     operand_stack_top--;
     pc++;
     goto *jump[*pc];

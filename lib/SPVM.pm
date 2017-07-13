@@ -113,6 +113,78 @@ sub int_array_len {
   return $array_object;
 }
 
+sub long_array {
+  my $elements = shift;
+  
+  if (ref $elements ne 'ARRAY') {
+    croak "Argument must be array reference";
+  }
+  
+  my $length = @$elements;
+  
+  my $array_object = SPVM::ArrayObject->malloc_long_array($length);
+  
+  $array_object->set_long_array_elements($elements);
+  
+  return $array_object;
+}
+
+sub long_array_len {
+  my $length = shift;
+  
+  my $array_object = SPVM::ArrayObject->malloc_long_array($length);
+  
+  return $array_object;
+}
+
+sub float_array {
+  my $elements = shift;
+  
+  if (ref $elements ne 'ARRAY') {
+    croak "Argument must be array reference";
+  }
+  
+  my $length = @$elements;
+  
+  my $array_object = SPVM::ArrayObject->malloc_float_array($length);
+  
+  $array_object->set_float_array_elements($elements);
+  
+  return $array_object;
+}
+
+sub float_array_len {
+  my $length = shift;
+  
+  my $array_object = SPVM::ArrayObject->malloc_float_array($length);
+  
+  return $array_object;
+}
+
+sub double_array {
+  my $elements = shift;
+  
+  if (ref $elements ne 'ARRAY') {
+    croak "Argument must be array reference";
+  }
+  
+  my $length = @$elements;
+  
+  my $array_object = SPVM::ArrayObject->malloc_double_array($length);
+  
+  $array_object->set_double_array_elements($elements);
+  
+  return $array_object;
+}
+
+sub double_array_len {
+  my $length = shift;
+  
+  my $array_object = SPVM::ArrayObject->malloc_double_array($length);
+  
+  return $array_object;
+}
+
 sub import {
   my ($class, $package_name) = @_;
   

@@ -182,6 +182,164 @@ set_int_array_elements(...)
   XSRETURN(0);
 }
 
+SV*
+malloc_long_array(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Malloc array object
+  SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_long_array_noinc(api, length);
+  
+  // New sv array object
+  SV* sv_array_object = SPVM_XS_UTIL_new_sv_array_object("long[]", array_object);
+  
+  XPUSHs(sv_array_object);
+  XSRETURN(1);
+}
+
+SV*
+set_long_array_elements(...)
+  PPCODE:
+{
+  SV* sv_array_object = ST(0);
+  SV* sv_nums = ST(1);
+  AV* av_nums = SvRV(sv_nums);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_ARRAY_OBJECT* array_object = SPVM_XS_UTIL_get_array_object(sv_array_object);
+  
+  int32_t length = api->get_array_length(api, array_object);
+  
+  int64_t* elements = api->get_long_array_elements(api, array_object);
+  
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
+      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
+      elements[i] = (int64_t)SvIV(sv_num);
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+malloc_float_array(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Malloc array object
+  SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_float_array_noinc(api, length);
+  
+  // New sv array object
+  SV* sv_array_object = SPVM_XS_UTIL_new_sv_array_object("float[]", array_object);
+  
+  XPUSHs(sv_array_object);
+  XSRETURN(1);
+}
+
+SV*
+set_float_array_elements(...)
+  PPCODE:
+{
+  SV* sv_array_object = ST(0);
+  SV* sv_nums = ST(1);
+  AV* av_nums = SvRV(sv_nums);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_ARRAY_OBJECT* array_object = SPVM_XS_UTIL_get_array_object(sv_array_object);
+  
+  int32_t length = api->get_array_length(api, array_object);
+  
+  float* elements = api->get_float_array_elements(api, array_object);
+  
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
+      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
+      elements[i] = (float)SvNV(sv_num);
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+malloc_double_array(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Malloc array object
+  SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_double_array_noinc(api, length);
+  
+  // New sv array object
+  SV* sv_array_object = SPVM_XS_UTIL_new_sv_array_object("double[]", array_object);
+  
+  XPUSHs(sv_array_object);
+  XSRETURN(1);
+}
+
+SV*
+set_double_array_elements(...)
+  PPCODE:
+{
+  SV* sv_array_object = ST(0);
+  SV* sv_nums = ST(1);
+  AV* av_nums = SvRV(sv_nums);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_ARRAY_OBJECT* array_object = SPVM_XS_UTIL_get_array_object(sv_array_object);
+  
+  int32_t length = api->get_array_length(api, array_object);
+  
+  double* elements = api->get_double_array_elements(api, array_object);
+  
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
+      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
+      elements[i] = (double)SvNV(sv_num);
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+
+
 MODULE = SPVM		PACKAGE = SPVM
 
 SV*

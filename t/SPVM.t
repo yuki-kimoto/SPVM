@@ -41,6 +41,25 @@ is_deeply(
     my $nums = SPVM::int_array([1, 2, 3]);
     is(SPVM::TestCase::call_sub_int_array($nums), 6);
   }
+
+  # call_sub long_array
+  {
+    my $nums = SPVM::long_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_long_array($nums), 6);
+  }
+
+  # call_sub float_array
+  {
+    my $nums = SPVM::float_array([0.5, 0.5, 1.0]);
+    is(SPVM::TestCase::call_sub_float_array($nums), 2.0);
+  }
+
+  # call_sub double_array
+  {
+    my $nums = SPVM::double_array([0.5, 0.5, 1.0]);
+    is(SPVM::TestCase::call_sub_double_array($nums), 2.0);
+  }
+
 }
 
 # SPVM::ArrayObject
