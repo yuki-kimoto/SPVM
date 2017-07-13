@@ -41,6 +41,14 @@ CHECK {
   free_compiler();
 }
 
+sub string_raw {
+  my $string = shift;
+  
+  my $array_object = SPVM::ArrayObject->malloc_string_raw($string);
+  
+  return $array_object;
+}
+
 sub byte_array {
   my $elements = shift;
   

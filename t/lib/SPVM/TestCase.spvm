@@ -51,6 +51,30 @@ package TestCase {
     return (long)9223372036854775807L + (long)1;
   }
 
+  # string argument
+  sub call_sub_string($string : string) : int {
+    
+    my $bytes = (byte[])$string;
+    
+    std::println("AAAAAAAAAAAAAAAA");
+    
+    std::println_byte($bytes->[0]);
+    std::println_byte($bytes->[1]);
+    std::println_byte($bytes->[2]);
+    
+    if ($bytes->[0] == (byte)97) {
+      if ($bytes->[1] == (byte)98) {
+        if ($bytes->[2] == (byte)99) {
+           if (@$bytes == 3) {
+             return 1;
+           }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
   # byte array argument
   sub call_sub_byte_array($nums : byte[]) : byte {
     
@@ -287,9 +311,6 @@ package TestCase {
     return 0.5f;
   }
   sub load_constant_float_exponent_E_plus() : float {
-    std::println("CCCCCCCCCCCCCCCCC");
-    std::println_float(0.5E+3f);
-    
     return 0.5E+3f;
   }
   sub load_constant_float_exponent_e_plus() : float {

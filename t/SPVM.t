@@ -40,6 +40,12 @@ is_deeply(
 
 # call_sub array
 {
+  # call_sub string
+  {
+    my $string = SPVM::string_raw("abc");
+    ok(SPVM::TestCase::call_sub_string($string));
+  }
+  
   # call_sub byte_array
   {
     my $nums = SPVM::byte_array([1, 2, 3]);

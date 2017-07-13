@@ -338,7 +338,31 @@ set_double_array_elements(...)
   XSRETURN(0);
 }
 
-
+SV*
+malloc_string_raw(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  SV* sv_string = ST(1);
+  
+  int32_t length = (int32_t)SvCUR(sv_string);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Malloc array object
+  SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_byte_array_noinc(api, length);
+  
+  const char* string = SvPV_nolen(sv_string);
+  int8_t* elements = api->get_byte_array_elements(api, array_object);
+  memcpy(elements, string, length);
+  
+  // New sv array object
+  SV* sv_array_object = SPVM_XS_UTIL_new_sv_array_object("string", array_object);
+  
+  XPUSHs(sv_array_object);
+  XSRETURN(1);
+}
 
 MODULE = SPVM		PACKAGE = SPVM
 
