@@ -22,6 +22,16 @@ is_deeply(
   ]
 );
 
+# Add
+{
+  is(SPVM::TestCase::add_byte_max(), 127);
+  is(SPVM::TestCase::add_byte_min(), -127);
+  is(SPVM::TestCase::add_byte_overflow(), -128);
+  is(SPVM::TestCase::add_short_max(), 32767);
+  is(SPVM::TestCase::add_short_min(), -32767);
+  is(SPVM::TestCase::add_short_overflow(), -32768);
+}
+
 # call_sub array
 {
   # call_sub byte_array
