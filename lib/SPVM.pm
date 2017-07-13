@@ -50,7 +50,7 @@ sub int_array {
   
   my $length = @$elements;
   
-  my $array_object = SPVM::Object->malloc_int_array($length);
+  my $array_object = SPVM::ArrayObject->malloc_int_array($length);
   
   $array_object->set_int_array_elements($elements);
   
@@ -60,7 +60,7 @@ sub int_array {
 sub int_array_len {
   my $length = shift;
   
-  my $array_object = SPVM::Object->malloc_int_array($length);
+  my $array_object = SPVM::ArrayObject->malloc_int_array($length);
   
   return $array_object;
 }

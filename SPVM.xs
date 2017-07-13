@@ -24,37 +24,7 @@
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
 
-MODULE = SPVM::Object		PACKAGE = SPVM::Object
-
-SV*
-malloc_xs(...)
-  PPCODE:
-{
-  SV* sv_class = ST(0);
-  
-  
-  
-  
-  XSRETURN(0);
-}
-
-SV*
-new_byte_array(...)
-  PPCODE:
-{
-  
-  
-  XSRETURN(0);
-}
-
-SV*
-new_short_array(...)
-  PPCODE:
-{
-  
-  
-  XSRETURN(0);
-}
+MODULE = SPVM::ArrayObject		PACKAGE = SPVM::ArrayObject
 
 SV*
 malloc_int_array(...)
@@ -68,27 +38,13 @@ malloc_int_array(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
+  // Malloc array object
   SPVM_API_ARRAY_OBJECT* array_object =  api->malloc_int_array_noinc(api, length);
   
-  // Create object
-  HV* hv_object = sv_2mortal((SV*)newHV());
-  SV* sv_object = sv_2mortal(newRV_inc((SV*)hv_object));
-  HV* hv_class = gv_stashpv("SPVM::Object", 0);
-  sv_bless(sv_object, hv_class);
+  // New sv array object
+  SV* sv_array_object = SPVM_XS_UTIL_new_sv_array_object("int[]", array_object);
   
-  // Create content
-  size_t iv_content = PTR2IV(array_object);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
-  
-  // Set type
-  SV* sv_type = sv_2mortal(newSVpv("int[]", 0));
-  hv_store(hv_object, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
-  
-  XPUSHs(sv_object);
+  XPUSHs(sv_array_object);
   XSRETURN(1);
 }
 
@@ -126,44 +82,6 @@ set_int_array_elements(...)
   
   XSRETURN(0);
 }
-
-SV*
-new_long_array(...)
-  PPCODE:
-{
-  
-  
-  XSRETURN(0);
-}
-
-SV*
-new_float_array(...)
-  PPCODE:
-{
-  
-  
-  XSRETURN(0);
-}
-
-SV*
-new_double_array(...)
-  PPCODE:
-{
-  
-  
-  XSRETURN(0);
-}
-
-SV*
-new_object(...)
-  PPCODE:
-{
-  
-  
-  XSRETURN(0);
-}
-
-
 
 MODULE = SPVM		PACKAGE = SPVM
 
@@ -434,7 +352,7 @@ call_sub(...)
       SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
       const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
       
-      if (sv_isobject(sv_base_object) && sv_derived_from(sv_base_object, "SPVM::Object")) {
+      if (sv_isobject(sv_base_object) && sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
         
         HV* hv_base_object = (HV*)SvRV(sv_base_object);
         
@@ -489,8 +407,6 @@ call_sub(...)
   }
   
   api->call_sub(api, sub_constant_pool_index);
-  
-  
   
   if (SvOK(sv_return_type_name)) {
     // Create base_object

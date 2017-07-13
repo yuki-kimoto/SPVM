@@ -27,9 +27,9 @@ is_deeply(
   my $nums = SPVM::int_array([1, 2, 3]);
   is(SPVM::TestCase::call_sub_int_array($nums), 6);
 }
-# SPVM::Object
+# SPVM::ArrayObject
 {
-  my $data_nums = SPVM::Object->malloc_int_array(3);
+  my $data_nums = SPVM::ArrayObject->malloc_int_array(3);
   $data_nums->set_int_array_elements([1, 2, 3]);
   
 }
