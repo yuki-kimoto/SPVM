@@ -22,23 +22,33 @@ is_deeply(
   ]
 );
 
-# call_sub byte_array
+# call_sub array
 {
-  my $nums = SPVM::byte_array([1, 2, 3]);
-  is(SPVM::TestCase::call_sub_byte_array($nums), 6);
+  # call_sub byte_array
+  {
+    my $nums = SPVM::byte_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_byte_array($nums), 6);
+  }
+
+  # call_sub short_array
+  {
+    my $nums = SPVM::short_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_short_array($nums), 6);
+  }
+
+  # call_sub int_array
+  {
+    my $nums = SPVM::int_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_int_array($nums), 6);
+  }
 }
 
-# call_sub int_array
-{
-  my $nums = SPVM::int_array([1, 2, 3]);
-  is(SPVM::TestCase::call_sub_int_array($nums), 6);
-}
 # SPVM::ArrayObject
 {
   my $data_nums = SPVM::ArrayObject->malloc_int_array(3);
   $data_nums->set_int_array_elements([1, 2, 3]);
-  
 }
+
 # constant int
 {
   is(SPVM::TestCase::load_constant_int_min(), -2147483647);

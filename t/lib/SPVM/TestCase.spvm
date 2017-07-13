@@ -13,6 +13,17 @@ package TestCase {
     return $total;
   }
   
+  # short array argument
+  sub call_sub_short_array($nums : short[]) : short {
+    
+    my $total = (short)0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total = $total + $nums->[$i];
+    }
+    
+    return $total;
+  }
+  
   # int array argument
   sub call_sub_int_array($nums : int[]) : int {
     

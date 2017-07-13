@@ -65,6 +65,30 @@ sub byte_array_len {
   return $array_object;
 }
 
+sub short_array {
+  my $elements = shift;
+  
+  if (ref $elements ne 'ARRAY') {
+    croak "Argument must be array reference";
+  }
+  
+  my $length = @$elements;
+  
+  my $array_object = SPVM::ArrayObject->malloc_short_array($length);
+  
+  $array_object->set_short_array_elements($elements);
+  
+  return $array_object;
+}
+
+sub short_array_len {
+  my $length = shift;
+  
+  my $array_object = SPVM::ArrayObject->malloc_short_array($length);
+  
+  return $array_object;
+}
+
 sub int_array {
   my $elements = shift;
   
