@@ -1364,7 +1364,8 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     parent->last = lastop;
 
     if (lastop) {
-      SPVM_OP_lastsib_set(compiler, lastop, parent);
+      lastop->moresib = 0;
+      lastop->sibparent = parent;
     }
   }
   return NULL;
@@ -1374,17 +1375,4 @@ SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   return op->moresib ? op->sibparent : NULL;
-}
-
-void SPVM_OP_moresib_set(SPVM_COMPILER* compiler, SPVM_OP* op, SPVM_OP* sib) {
-  (void)compiler;
-  
-  op->moresib = 1;
-  op->sibparent = sib;
-}
-
-void SPVM_OP_lastsib_set(SPVM_COMPILER* compiler, SPVM_OP* op, SPVM_OP* parent) {
-  (void)compiler;
-  op->moresib = 0;
-  op->sibparent = parent;
 }
