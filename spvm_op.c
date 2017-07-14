@@ -1340,16 +1340,11 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
   
   rest = first;
   
-  if (insert) {
-    last_ins = insert;
-    while (last_ins->moresib) {
-      last_ins = SPVM_OP_sibling(compiler, last_ins);
-    }
-    SPVM_OP_maybesib_set(compiler, last_ins, rest, NULL);
+  last_ins = insert;
+  while (last_ins->moresib) {
+    last_ins = SPVM_OP_sibling(compiler, last_ins);
   }
-  else {
-    insert = rest;
-  }
+  SPVM_OP_maybesib_set(compiler, last_ins, rest, NULL);
 
   if (start) {
     SPVM_OP_maybesib_set(compiler, start, insert, NULL);
