@@ -1321,6 +1321,48 @@ SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t code, const char* file,
 }
 
 // Insert child. Child must not have sibling.
+void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, SPVM_OP* insert) {
+  
+  // del_count not used
+  assert(parent);
+  assert(insert);
+  assert(insert->moresib == 0);
+  
+  if (start) {
+    if (start->moresib) {
+      insert->moresib = 1;
+      insert->sibparent = start->sibparent;
+      
+      start->sibparent = insert;
+    }
+    else {
+      parent->last = insert;
+
+      insert->moresib = 0;
+      insert->sibparent = parent;
+      
+      start->moresib = 1;
+      start->sibparent = insert;
+    }
+  }
+  else {
+    if (parent->first) {
+      insert->moresib = 1;
+      insert->sibparent = parent->first;
+      
+      parent->first = insert;
+    }
+    else {
+      insert->moresib = 0;
+      insert->sibparent = parent;
+      
+      parent->first = insert;
+      parent->last = insert;
+    }
+  }
+}
+
+// Insert child. Child must not have sibling.
 void SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, int32_t del_count, SPVM_OP* insert) {
   
   // del_count not used
