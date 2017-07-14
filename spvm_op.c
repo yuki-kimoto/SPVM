@@ -1320,12 +1320,14 @@ SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t code, const char* file,
   return op;
 }
 
+// Insert child. Child must not have sibling.
 SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, int32_t del_count, SPVM_OP* insert) {
   
   // del_count not used
   assert(del_count == 0);
   assert(parent);
   assert(insert);
+  assert(!insert->moresib);
   
   SPVM_OP *first;
   SPVM_OP *rest;
