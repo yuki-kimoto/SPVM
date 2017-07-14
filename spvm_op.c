@@ -1348,8 +1348,19 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
       insert->sibparent = NULL;
     }
     
-    start->moresib = insert ? 1 : 0;
-    start->sibparent = start->moresib ? insert : NULL;
+    if (insert) {
+      start->moresib = 1;
+    }
+    else {
+      start->moresib = 0;
+    }
+    
+    if (start->moresib) {
+      start->sibparent = insert;
+    }
+    else {
+      start->sibparent = NULL;
+    }
 
     if (!first) {
       parent->last = insert;
