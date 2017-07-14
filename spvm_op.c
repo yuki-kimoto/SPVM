@@ -1350,9 +1350,6 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
   }
   
   if (!first) {
-    /* update last etc */
-    SPVM_OP *lastop;
-
     parent->last = insert;
 
     if (insert) {
