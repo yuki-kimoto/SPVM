@@ -1340,9 +1340,7 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     }
     else {
       insert->moresib = 0;
-      insert->sibparent = NULL;
       parent->last = insert;
-      insert->moresib = 0;
       insert->sibparent = parent;
     }
     
@@ -1358,9 +1356,7 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     }
     else {
       insert->moresib = 0;
-      insert->sibparent = NULL;
       parent->last = insert;
-      insert->moresib = 0;
       insert->sibparent = parent;
     }
     
