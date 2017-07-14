@@ -1321,9 +1321,12 @@ SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t code, const char* file,
 }
 
 SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, int32_t del_count, SPVM_OP* insert) {
+  
+  // del_count not used
+  assert(del_count == 0);
+  
   SPVM_OP *first;
   SPVM_OP *rest;
-  SPVM_OP *last_del = NULL;
   SPVM_OP *last_ins = NULL;
 
   if (start) {
@@ -1336,16 +1339,7 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     first = parent->first;
   }
   
-  if (del_count && first) {
-    last_del = first;
-    while (--del_count && last_del->moresib)
-      last_del = SPVM_OP_sibling(compiler, last_del);
-    rest = SPVM_OP_sibling(compiler, last_del);
-    SPVM_OP_lastsib_set(compiler, last_del, NULL);
-  }
-  else {
-    rest = first;
-  }
+  rest = first;
   
   if (insert) {
     last_ins = insert;
@@ -1382,10 +1376,10 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
       SPVM_OP_lastsib_set(compiler, lastop, parent);
     }
   }
-  return last_del ? first : NULL;
+  return NULL;
 
   no_parent:
-    fprintf(stderr, "panic: op_sibling_splice(): NULL parent");
+    fprintf(stderr, "panic: SPVM_OP_sibling_splice(): NULL parent");
     exit(EXIT_FAILURE);
 }
 
