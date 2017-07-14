@@ -336,18 +336,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                             
-                            SPVM_OP_sibling_splice(compiler, op_return, NULL, 0, op_constant);
+                            SPVM_OP_insert_child(compiler, op_return, NULL, op_constant);
                           }
                           // Reference
                           else {
                             // Undef
                             SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, op_cur->file, op_cur->line);
-                            SPVM_OP_sibling_splice(compiler, op_return, NULL, 0, op_undef);
+                            SPVM_OP_insert_child(compiler, op_return, NULL, op_undef);
                           }
                         }
                       }
                       
-                      SPVM_OP_sibling_splice(compiler, op_statements, op_statements->last, 0, op_return);
+                      SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
                     }
                   }
                   
@@ -1368,7 +1368,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_block_end = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK_END, op_cur->file, op_cur->line);
                       
                       if (!(op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SUB)) {
-                        SPVM_OP_sibling_splice(compiler, op_list_statement, op_list_statement->last, 0, op_block_end);
+                        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_block_end);
                       }
                       
                       if (block_my_var_base_stack->length > 0) {
@@ -1468,10 +1468,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, op_cur->file, op_cur->line);
                           
-                          SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_var);
-                          SPVM_OP_sibling_splice(compiler, op_assign, op_assign->last, 0, op_undef);
+                          SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_var);
+                          SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_undef);
                           
-                          SPVM_OP_sibling_splice(compiler, op_cur->sibparent, op_cur->sibparent->last, 0, op_assign);
+                          SPVM_OP_insert_child(compiler, op_cur->sibparent, op_cur->sibparent->last, op_assign);
                         }
                       }
                       
