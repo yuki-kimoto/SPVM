@@ -1324,6 +1324,8 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
   
   // del_count not used
   assert(del_count == 0);
+  assert(parent);
+  assert(insert);
   
   SPVM_OP *first;
   SPVM_OP *rest;
