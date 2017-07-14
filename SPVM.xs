@@ -780,7 +780,7 @@ call_sub(...)
     SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
     HV* hv_class = gv_stashpv("SPVM::Object", 0);
     sv_bless(sv_base_object, hv_class);
-
+    
     const char* return_type = SvPV_nolen(sv_return_type);
     
     if (strEQ(return_type, "byte")) {
@@ -815,24 +815,18 @@ call_sub(...)
       XPUSHs(sv_value);
     }
     else {
-      void* return_value = api->pop_retval_object(api);
-      SV* sv_content = sv_2mortal(newSViv(return_value));
+      SPVM_API_BASE_OBJECT* return_value = api->pop_retval_object(api);
       
-      // Store value
-      hv_store(hv_base_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
-      
-      // Store resolved type name
-      SV* sv_return_type = sv_2mortal(newSVpv(return_type, 0));
-      hv_store(hv_base_object, "type", strlen("type"), SvREFCNT_inc(sv_return_type), 0);
-      
-      {
-        SV** sv_type_name_ptr = hv_fetch(hv_base_object, "type", strlen("type"), 0);
-        SV* sv_type_name = sv_type_name_ptr ? *sv_type_name_ptr : &PL_sv_undef;
-        const char* type_name = SvPV_nolen(sv_type_name);
+      int32_t type_length = strlen(return_type);
+      if (return_type[type_length - 1] == ']' || strcmp(return_type, "string") == 0) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_array(return_type, (SPVM_API_ARRAY*)return_value);
+        XPUSHs(sv_array);
       }
-      XPUSHs(sv_base_object);
+      else {
+        SV* sv_object = SPVM_XS_UTIL_new_sv_object(return_type, (SPVM_API_OBJECT*)return_value);
+        XPUSHs(sv_object);
+      }
     }
-    
     XSRETURN(1);
   }
   else {

@@ -2,6 +2,151 @@ package TestCase {
   has x : int;
   has y : long;
   
+  # call_sub return value
+  sub call_sub_return_byte_array() : byte[] {
+    my $nums = malloc byte[3];
+    
+    $nums->[0] = (byte)1;
+    $nums->[1] = (byte)2;
+    $nums->[2] = (byte)3;
+    
+    return $nums;
+  }
+  sub call_sub_return_byte_array_check($nums : byte[]) : int {
+    
+    if ($nums->[0] == (byte)1) {
+      if ($nums->[1] == (byte)2) {
+        if ($nums->[2] == (byte)3) {
+          if (@$nums == 3) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub call_sub_return_short_array() : short[] {
+    my $nums = malloc short[3];
+    
+    $nums->[0] = (short)1;
+    $nums->[1] = (short)2;
+    $nums->[2] = (short)3;
+    
+    return $nums;
+  }
+  sub call_sub_return_short_array_check($nums : short[]) : int {
+    
+    if ($nums->[0] == (short)1) {
+      if ($nums->[1] == (short)2) {
+        if ($nums->[2] == (short)3) {
+          if (@$nums == 3) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub call_sub_return_int_array() : int[] {
+    my $nums = malloc int[3];
+    
+    $nums->[0] = (int)1;
+    $nums->[1] = (int)2;
+    $nums->[2] = (int)3;
+    
+    return $nums;
+  }
+  sub call_sub_return_int_array_check($nums : int[]) : int {
+    
+    if ($nums->[0] == (int)1) {
+      if ($nums->[1] == (int)2) {
+        if ($nums->[2] == (int)3) {
+          if (@$nums == 3) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub call_sub_return_long_array() : long[] {
+    my $nums = malloc long[3];
+    
+    $nums->[0] = (long)1;
+    $nums->[1] = (long)2;
+    $nums->[2] = (long)3;
+    
+    return $nums;
+  }
+  sub call_sub_return_long_array_check($nums : long[]) : int {
+    
+    if ($nums->[0] == (long)1) {
+      if ($nums->[1] == (long)2) {
+        if ($nums->[2] == (long)3) {
+          if (@$nums == 3) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub call_sub_return_float_array() : float[] {
+    my $nums = malloc float[3];
+    
+    $nums->[0] = (float)1;
+    $nums->[1] = (float)2;
+    $nums->[2] = (float)3;
+    
+    return $nums;
+  }
+  sub call_sub_return_float_array_check($nums : float[]) : int {
+    
+    if ($nums->[0] == (float)1) {
+      if ($nums->[1] == (float)2) {
+        if ($nums->[2] == (float)3) {
+          if (@$nums == 3) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub call_sub_return_double_array() : double[] {
+    my $nums = malloc double[3];
+    
+    $nums->[0] = (double)1;
+    $nums->[1] = (double)2;
+    $nums->[2] = (double)3;
+    
+    return $nums;
+  }
+  sub call_sub_return_double_array_check($nums : double[]) : int {
+    
+    if ($nums->[0] == (double)1) {
+      if ($nums->[1] == (double)2) {
+        if ($nums->[2] == (double)3) {
+          if (@$nums == 3) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   # Add
   sub add_byte_max() : byte {
     return (byte)126 + (byte)1;
