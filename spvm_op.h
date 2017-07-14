@@ -233,7 +233,6 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
 SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* o);
 void SPVM_OP_moresib_set(SPVM_COMPILER* compiler, SPVM_OP* o, SPVM_OP* sib);
 void SPVM_OP_lastsib_set(SPVM_COMPILER* compiler, SPVM_OP* o, SPVM_OP* parent);
-void SPVM_OP_maybesib_set(SPVM_COMPILER* compiler, SPVM_OP* o, SPVM_OP* sib, SPVM_OP* parent);
 SPVM_OP* SPVM_OP_append_elem(SPVM_COMPILER* compiler, SPVM_OP *first, SPVM_OP *last, const char* file, int32_t line);
 
 

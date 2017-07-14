@@ -1349,16 +1349,8 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
   last_ins->sibparent = last_ins->moresib ? rest : NULL;
   
   if (start) {
-    SPVM_OP_maybesib_set(compiler, start, insert, NULL);
-
-/*
-void SPVM_OP_maybesib_set(SPVM_COMPILER* compiler, SPVM_OP* op, SPVM_OP* sib, SPVM_OP* parent) {
-  (void)compiler;
-  op->moresib = sib ? 1 : 0;
-  op->sibparent = op->moresib ? sib : parent;
-}
-*/
-
+    start->moresib = insert ? 1 : 0;
+    start->sibparent = start->moresib ? insert : NULL;
   }
   else {
     parent->first = insert;
@@ -1395,10 +1387,4 @@ void SPVM_OP_lastsib_set(SPVM_COMPILER* compiler, SPVM_OP* op, SPVM_OP* parent) 
   (void)compiler;
   op->moresib = 0;
   op->sibparent = parent;
-}
-
-void SPVM_OP_maybesib_set(SPVM_COMPILER* compiler, SPVM_OP* op, SPVM_OP* sib, SPVM_OP* parent) {
-  (void)compiler;
-  op->moresib = sib ? 1 : 0;
-  op->sibparent = op->moresib ? sib : parent;
 }
