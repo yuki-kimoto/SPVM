@@ -1826,7 +1826,7 @@ yyreduce:
       }
       else {
         (yyval.opval) = SPVM_OP_new_op_list(compiler, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
-        SPVM_OP_sibling_splice(compiler, (yyval.opval), (yyval.opval)->first, 0, (yyvsp[(1) - (1)].opval));
+        SPVM_OP_insert_child(compiler, (yyval.opval), (yyval.opval)->first, (yyvsp[(1) - (1)].opval));
       }
     ;}
     break;
@@ -1870,7 +1870,7 @@ yyreduce:
       }
       else {
         (yyval.opval) = SPVM_OP_new_op_list(compiler, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
-        SPVM_OP_sibling_splice(compiler, (yyval.opval), (yyval.opval)->first, 0, (yyvsp[(1) - (1)].opval));
+        SPVM_OP_insert_child(compiler, (yyval.opval), (yyval.opval)->first, (yyvsp[(1) - (1)].opval));
       }
     ;}
     break;
@@ -1886,7 +1886,7 @@ yyreduce:
 #line 132 "yacc/spvm_yacc.y"
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CLASS_BLOCK, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(1) - (3)].opval)->line);
-      SPVM_OP_sibling_splice(compiler, (yyval.opval), NULL, 0, (yyvsp[(2) - (3)].opval));
+      SPVM_OP_insert_child(compiler, (yyval.opval), NULL, (yyvsp[(2) - (3)].opval));
     ;}
     break;
 
@@ -1894,7 +1894,7 @@ yyreduce:
 #line 139 "yacc/spvm_yacc.y"
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUM_BLOCK, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(1) - (3)].opval)->line);
-      SPVM_OP_sibling_splice(compiler, (yyval.opval), NULL, 0, (yyvsp[(2) - (3)].opval));
+      SPVM_OP_insert_child(compiler, (yyval.opval), NULL, (yyvsp[(2) - (3)].opval));
     ;}
     break;
 
@@ -1913,7 +1913,7 @@ yyreduce:
       }
       else {
         (yyval.opval) = SPVM_OP_new_op_list(compiler, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
-        SPVM_OP_sibling_splice(compiler, (yyval.opval), (yyval.opval)->first, 0, (yyvsp[(1) - (1)].opval));
+        SPVM_OP_insert_child(compiler, (yyval.opval), (yyval.opval)->first, (yyvsp[(1) - (1)].opval));
       }
     ;}
     break;
@@ -1929,7 +1929,7 @@ yyreduce:
 #line 169 "yacc/spvm_yacc.y"
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
-      SPVM_OP_sibling_splice(compiler, (yyval.opval), NULL, 0, (yyvsp[(1) - (1)].opval));
+      SPVM_OP_insert_child(compiler, (yyval.opval), NULL, (yyvsp[(1) - (1)].opval));
     ;}
     break;
 
@@ -1937,8 +1937,8 @@ yyreduce:
 #line 174 "yacc/spvm_yacc.y"
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(1) - (3)].opval)->line);
-      SPVM_OP_sibling_splice(compiler, (yyval.opval), NULL, 0, (yyvsp[(1) - (3)].opval));
-      SPVM_OP_sibling_splice(compiler, (yyval.opval), (yyvsp[(1) - (3)].opval), 0, (yyvsp[(3) - (3)].opval));
+      SPVM_OP_insert_child(compiler, (yyval.opval), NULL, (yyvsp[(1) - (3)].opval));
+      SPVM_OP_insert_child(compiler, (yyval.opval), (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
     ;}
     break;
 
@@ -1957,7 +1957,7 @@ yyreduce:
       }
       else {
         (yyval.opval) = SPVM_OP_new_op_list(compiler, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
-        SPVM_OP_sibling_splice(compiler, (yyval.opval), (yyval.opval)->first, 0, (yyvsp[(1) - (1)].opval));
+        SPVM_OP_insert_child(compiler, (yyval.opval), (yyval.opval)->first, (yyvsp[(1) - (1)].opval));
       }
     ;}
     break;
@@ -1973,7 +1973,7 @@ yyreduce:
 #line 216 "yacc/spvm_yacc.y"
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(1) - (3)].opval)->line);
-      SPVM_OP_sibling_splice(compiler, (yyval.opval), NULL, 0, (yyvsp[(2) - (3)].opval));
+      SPVM_OP_insert_child(compiler, (yyval.opval), NULL, (yyvsp[(2) - (3)].opval));
     ;}
     break;
 
@@ -1981,7 +1981,7 @@ yyreduce:
 #line 223 "yacc/spvm_yacc.y"
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POP, (yyvsp[(1) - (2)].opval)->file, (yyvsp[(1) - (2)].opval)->line);
-      SPVM_OP_sibling_splice(compiler, (yyval.opval), NULL, 0, (yyvsp[(1) - (2)].opval));
+      SPVM_OP_insert_child(compiler, (yyval.opval), NULL, (yyvsp[(1) - (2)].opval));
     ;}
     break;
 
@@ -1996,7 +1996,7 @@ yyreduce:
 #line 235 "yacc/spvm_yacc.y"
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POP, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
-      SPVM_OP_sibling_splice(compiler, (yyval.opval), NULL, 0, (yyvsp[(1) - (1)].opval));
+      SPVM_OP_insert_child(compiler, (yyval.opval), NULL, (yyvsp[(1) - (1)].opval));
     ;}
     break;
 
@@ -2036,7 +2036,7 @@ yyreduce:
       // if is wraped with block to allow the following syntax
       //  if (my $var = 3) { ... }
       SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, (yyvsp[(1) - (6)].opval)->file, (yyvsp[(1) - (6)].opval)->line);
-      SPVM_OP_sibling_splice(compiler, op_block, op_block->last, 0, op_if);
+      SPVM_OP_insert_child(compiler, op_block, op_block->last, op_if);
       
       (yyval.opval) = op_block;
     ;}
@@ -2169,7 +2169,7 @@ yyreduce:
       }
       else {
         (yyval.opval) = SPVM_OP_new_op_list(compiler, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
-        SPVM_OP_sibling_splice(compiler, (yyval.opval), (yyval.opval)->first, 0, (yyvsp[(1) - (1)].opval));
+        SPVM_OP_insert_child(compiler, (yyval.opval), (yyval.opval)->first, (yyvsp[(1) - (1)].opval));
       }
     ;}
     break;
@@ -2499,7 +2499,7 @@ yyreduce:
       }
       else {
         (yyval.opval) = SPVM_OP_new_op_list(compiler, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
-        SPVM_OP_sibling_splice(compiler, (yyval.opval), (yyval.opval)->first, 0, (yyvsp[(1) - (1)].opval));
+        SPVM_OP_insert_child(compiler, (yyval.opval), (yyval.opval)->first, (yyvsp[(1) - (1)].opval));
       }
     ;}
     break;
@@ -2533,7 +2533,7 @@ yyreduce:
       }
       else {
         (yyval.opval) = SPVM_OP_new_op_list(compiler, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
-        SPVM_OP_sibling_splice(compiler, (yyval.opval), (yyval.opval)->first, 0, (yyvsp[(1) - (1)].opval));
+        SPVM_OP_insert_child(compiler, (yyval.opval), (yyval.opval)->first, (yyvsp[(1) - (1)].opval));
       }
     ;}
     break;
