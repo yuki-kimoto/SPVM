@@ -1334,9 +1334,6 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
   if (start) {
     first = SPVM_OP_sibling(compiler, start);
   }
-  else if (!parent) {
-    goto no_parent;
-  }
   else {
     first = parent->first;
   }
@@ -1358,9 +1355,6 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     SPVM_OP_maybesib_set(compiler, start, insert, NULL);
   }
   else {
-    if (!parent) {
-      goto no_parent;
-    }
     parent->first = insert;
   }
   
@@ -1368,9 +1362,6 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     /* update last etc */
     SPVM_OP *lastop;
 
-    if (!parent) {
-      goto no_parent;
-    }
     lastop = last_ins ? last_ins : start ? start : NULL;
     parent->last = lastop;
 
@@ -1379,10 +1370,6 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     }
   }
   return NULL;
-
-  no_parent:
-    fprintf(stderr, "panic: SPVM_OP_sibling_splice(): NULL parent");
-    exit(EXIT_FAILURE);
 }
 
 SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
