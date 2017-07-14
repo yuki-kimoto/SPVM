@@ -504,7 +504,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return type;
 }
 
-void SPVM_OP_convert_and_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
+void SPVM_OP_convert_and_to_if(SPVM_COMPILER* compiler, SPVM_OP* op_if1) {
   
   /* before
     AND
@@ -522,32 +522,32 @@ void SPVM_OP_convert_and_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
       0
   */
   
-  SPVM_OP* op_first = op->first;
-  SPVM_OP* op_last = op->last;
+  SPVM_OP* op_first = op_if1->first;
+  SPVM_OP* op_last = op_if1->last;
   
   // Constant false 1
-  SPVM_OP* op_constant_false1 = SPVM_OP_new_op_constant_long(compiler, 0, op->file, op->line);
+  SPVM_OP* op_constant_false1 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
   
   // Constant false 2
-  SPVM_OP* op_constant_false2 = SPVM_OP_new_op_constant_long(compiler, 0, op->file, op->line);
+  SPVM_OP* op_constant_false2 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
   
   // Constant true
-  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_long(compiler, 1, op->file, op->line);
+  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if1->file, op_if1->line);
   
   // if
-  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op->file, op->line);
+  SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_if1->file, op_if1->line);
   
   // and to if
-  op->code = SPVM_OP_C_CODE_IF;
-  op->first = NULL;
+  op_if1->code = SPVM_OP_C_CODE_IF;
+  op_if1->first = NULL;
   
-  op_if = SPVM_OP_build_if_statement(compiler, op_if, op_last, op_constant_true, op_constant_false2);
+  op_if2 = SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_constant_true, op_constant_false2);
   
-  op_first->sibparent = op_if;
+  op_first->sibparent = op_if2;
   
-  op_if->sibparent = op_if;
-  
-  SPVM_OP_sibling_splice(compiler, op, op_if, 0, op_constant_false1);
+  op_if2->sibparent = op_if2;
+
+  SPVM_OP_sibling_splice(compiler, op_if1, op_if2, 0, op_constant_false1);
 }
 
 void SPVM_OP_convert_or_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
@@ -570,13 +570,13 @@ void SPVM_OP_convert_or_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_OP* op_last = op->last;
   
   // Constant true 1
-  SPVM_OP* op_constant_true1 = SPVM_OP_new_op_constant_long(compiler, 1, op->file, op->line);
+  SPVM_OP* op_constant_true1 = SPVM_OP_new_op_constant_int(compiler, 1, op->file, op->line);
   
   // Constant true 2
-  SPVM_OP* op_constant_true2 = SPVM_OP_new_op_constant_long(compiler, 1, op->file, op->line);
+  SPVM_OP* op_constant_true2 = SPVM_OP_new_op_constant_int(compiler, 1, op->file, op->line);
   
   // Constant false
-  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_long(compiler, 0, op->file, op->line);
+  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op->file, op->line);
   
   // if
   SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op->file, op->line);
@@ -607,10 +607,10 @@ void SPVM_OP_convert_not_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_OP* op_first = op->first;
   
   // Constant true 1
-  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_long(compiler, 1, op->file, op->line);
+  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op->file, op->line);
   
   // Constant false
-  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_long(compiler, 0, op->file, op->line);
+  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op->file, op->line);
   
   // If
   op->code = SPVM_OP_C_CODE_IF;

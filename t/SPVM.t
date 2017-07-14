@@ -23,6 +23,11 @@ is_deeply(
   ]
 );
 
+# logical and
+#{
+  # ok(SPVM::TestCase::logical_and_both_true());
+#}
+
 # call_sub return array
 {
   {
