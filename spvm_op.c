@@ -1353,12 +1353,11 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     /* update last etc */
     SPVM_OP *lastop;
 
-    lastop = insert ? insert : start ? start : NULL;
-    parent->last = lastop;
+    parent->last = insert;
 
-    if (lastop) {
-      lastop->moresib = 0;
-      lastop->sibparent = parent;
+    if (insert) {
+      insert->moresib = 0;
+      insert->sibparent = parent;
     }
   }
   return NULL;
