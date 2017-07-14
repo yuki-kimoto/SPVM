@@ -1331,7 +1331,6 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
   
   SPVM_OP *first;
   SPVM_OP *rest;
-  SPVM_OP *last_ins = NULL;
 
   if (start) {
     first = SPVM_OP_sibling(compiler, start);
@@ -1342,13 +1341,12 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
   
   rest = first;
   
-  last_ins = insert;
-  while (last_ins->moresib) {
-    last_ins = SPVM_OP_sibling(compiler, last_ins);
+  while (insert->moresib) {
+    insert = SPVM_OP_sibling(compiler, insert);
   }
   
-  last_ins->moresib = rest ? 1 : 0;
-  last_ins->sibparent = last_ins->moresib ? rest : NULL;
+  insert->moresib = rest ? 1 : 0;
+  insert->sibparent = insert->moresib ? rest : NULL;
   
   if (start) {
     start->moresib = insert ? 1 : 0;
@@ -1362,7 +1360,7 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     /* update last etc */
     SPVM_OP *lastop;
 
-    lastop = last_ins ? last_ins : start ? start : NULL;
+    lastop = insert ? insert : start ? start : NULL;
     parent->last = lastop;
 
     if (lastop) {
