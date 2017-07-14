@@ -19,6 +19,7 @@ our $COMPILER;
 our @PACKAGE_INFOS;
 our %SUB_SYMTABLE;
 our %TYPE_SYMTABLE;
+our %FIELD_SYMTABLE;
 our $API;
 
 # Compile SPVM source code just after compile-time of Perl
@@ -26,10 +27,10 @@ CHECK {
   # Compile SPVM source code
   compile();
   
-  # Build resolved type symbol table
+  # Build type symbol table
   build_type_symtable();
   
-  # Build subroutine symbole table
+  # Build subroutine symbol table
   build_sub_symtable();
   
   # Build SPVM subroutine

@@ -20,6 +20,7 @@
 #include "spvm_sub.h"
 #include "spvm_my_var.h"
 #include "spvm_type.h"
+#include "spvm_field.h"
 
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
@@ -533,6 +534,63 @@ build_sub_symtable(...)
           hv_store(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), SvREFCNT_inc(sv_sub_info), 0);
         }
       }
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+build_field_symtable(...)
+  PPCODE:
+{
+  // Get compiler
+  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
+  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
+  size_t iv_compiler = SvIV(sviv_compiler);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  
+  // Field symbol table
+  HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
+  
+  // name, arg_types, return_type
+  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
+  {
+    int32_t package_index;
+    for (package_index = 0; package_index < op_packages->length; package_index++) {
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
+      const char* package_name = op_package->uv.package->op_name->uv.name;
+      
+      HV* hv_package_info = (HV*)sv_2mortal((SV*)newHV());
+      
+      SPVM_DYNAMIC_ARRAY* op_fields = op_package->uv.package->op_fields;
+      {
+        int32_t field_index;
+        for (field_index = 0; field_index < op_fields->length; field_index++) {
+          
+          HV* hv_field_info = (HV*)sv_2mortal((SV*)newHV());
+          
+          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_index);
+          SPVM_FIELD* field = op_field->uv.field;
+          const char* field_name = field->op_name->uv.name;
+          
+          // Field id
+          int32_t field_id = field->index;
+          SV* sv_field_id = sv_2mortal(newSViv(field_id));
+          hv_store(hv_field_info, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
+          
+          // Field type
+          const char* field_type = field->op_type->uv.type->name;
+          SV* sv_field_type = sv_2mortal(newSVpv(field_type, 0));
+          hv_store(hv_field_info, "type", strlen("type"), SvREFCNT_inc(sv_field_type), 0);
+          
+          SV* sv_field_info = sv_2mortal(newRV_inc((SV*)hv_field_info));
+          hv_store(hv_package_info, field_name, strlen(field_name), SvREFCNT_inc(sv_field_info), 0);
+        }
+      }
+      
+      SV* sv_package_info = sv_2mortal(newRV_inc((SV*)hv_package_info));
+      hv_store(hv_field_symtable, package_name, strlen(package_name), sv_package_info, 0);
     }
   }
   
