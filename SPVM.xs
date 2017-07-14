@@ -782,48 +782,44 @@ call_sub(...)
     sv_bless(sv_base_object, hv_class);
 
     const char* return_type_name = SvPV_nolen(sv_return_type_name);
-    SV* sv_value;
+    
     if (strEQ(return_type_name, "byte")) {
       int8_t return_value = api->pop_retval_byte(api);
-      sv_value = sv_2mortal(newSViv(return_value));
+      SV* sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "short")) {
       int16_t return_value = api->pop_retval_short(api);
-      sv_value = sv_2mortal(newSViv(return_value));
+      SV* sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "int")) {
       int32_t return_value = api->pop_retval_int(api);
-      sv_value = sv_2mortal(newSViv(return_value));
+      SV* sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "long")) {
       int64_t return_value = api->pop_retval_long(api);
-      sv_value = sv_2mortal(newSViv(return_value));
+      SV* sv_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "float")) {
       float return_value = api->pop_retval_float(api);
-      
-      sv_value = sv_2mortal(newSVnv(return_value));
-      
+      SV* sv_value = sv_2mortal(newSVnv(return_value));
       NV value = SvNV(sv_value);
-      
       XPUSHs(sv_value);
     }
     else if (strEQ(return_type_name, "double")) {
       double return_value = api->pop_retval_double(api);
-      sv_value = sv_2mortal(newSVnv(return_value));
+      SV* sv_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_value);
     }
     else {
-      assert(0);
       void* return_value = api->pop_retval_object(api);
-      sv_value = sv_2mortal(newSViv(return_value));
+      SV* sv_content = sv_2mortal(newSViv(return_value));
       
       // Store value
-      hv_store(hv_base_object, "content", strlen("content"), SvREFCNT_inc(sv_value), 0);
+      hv_store(hv_base_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
       
       // Store resolved type name
       SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
