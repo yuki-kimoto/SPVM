@@ -489,7 +489,7 @@ build_sub_symtable(...)
         int32_t sub_index;
         for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
           // Sub information
-          AV* av_sub_info = (HV*)sv_2mortal((SV*)newAV());
+          HV* hv_sub_info = (HV*)sv_2mortal((SV*)newHV());
           
           SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(op_subs, sub_index);
           SPVM_SUB* sub = op_sub->uv.sub;
@@ -498,7 +498,7 @@ build_sub_symtable(...)
           // Subroutine id
           int32_t sub_id = sub->constant_pool_index;
           SV* sv_sub_id = sv_2mortal(newSViv(sub_id));
-          av_push(av_sub_info, SvREFCNT_inc(sv_sub_id));
+          hv_store(hv_sub_info, "id", strlen("id"), SvREFCNT_inc(sv_sub_id), 0);
           
           // Argument types
           AV* av_arg_type_names = (AV*)sv_2mortal((SV*)newAV());
@@ -515,7 +515,7 @@ build_sub_symtable(...)
             }
           }
           SV* sv_arg_type_names = sv_2mortal(newRV_inc((SV*)av_arg_type_names));
-          av_push(av_sub_info, SvREFCNT_inc(sv_arg_type_names));
+          hv_store(hv_sub_info, "arg_types", strlen("arg_types"), SvREFCNT_inc(sv_arg_type_names), 0);
           
           // Return type
           SPVM_OP* op_return_type = sub->op_return_type;
@@ -523,13 +523,13 @@ build_sub_symtable(...)
           if (return_type) {
             const char* return_type_name = op_return_type->uv.type->name;
             SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
-            av_push(av_sub_info, SvREFCNT_inc(sv_return_type_name));
+            hv_store(hv_sub_info, "return_type", strlen("return_type"), SvREFCNT_inc(sv_return_type_name), 0);
           }
           else {
-            av_push(av_sub_info, &PL_sv_undef);
+            hv_store(hv_sub_info, "return_type", strlen("return_type"), &PL_sv_undef, 0);
           }
           
-          SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)av_sub_info));
+          SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)hv_sub_info));
           hv_store(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), SvREFCNT_inc(sv_sub_info), 0);
         }
       }
@@ -623,21 +623,21 @@ call_sub(...)
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   SV** sv_sub_info_ptr = hv_fetch(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), 0);
   SV* sv_sub_info = sv_sub_info_ptr ? *sv_sub_info_ptr : &PL_sv_undef;
-  AV* av_sub_info = (AV*)SvRV(sv_sub_info);
+  HV* hv_sub_info = (HV*)SvRV(sv_sub_info);
   
-  # Constant poll index
-  SV** sv_sub_id_ptr = av_fetch(av_sub_info, 0, 0);
+  // Subroutine id
+  SV** sv_sub_id_ptr = hv_fetch(hv_sub_info, "id", strlen("id"), 0);
   SV* sv_sub_id = sv_sub_id_ptr ? *sv_sub_id_ptr : &PL_sv_undef;
   int32_t sub_id = (int32_t)SvIV(sv_sub_id);
   
-  # Argument return types
-  SV** sv_arg_type_names_ptr = av_fetch(av_sub_info, 1, 0);
+  // Argument types
+  SV** sv_arg_type_names_ptr = hv_fetch(hv_sub_info, "arg_types", strlen("arg_types"), 0);
   SV* sv_arg_type_names = sv_arg_type_names_ptr ? *sv_arg_type_names_ptr : &PL_sv_undef;
   AV* av_arg_type_names = (AV*)SvRV(sv_arg_type_names);
   int32_t args_length = av_len(av_arg_type_names) + 1;
   
-  # Return type
-  SV** sv_return_type_name_ptr = av_fetch(av_sub_info, 2, 0);
+  // Return type
+  SV** sv_return_type_name_ptr = hv_fetch(hv_sub_info, "return_type", strlen("return_type"), 0);
   SV* sv_return_type_name = sv_return_type_name_ptr ? *sv_return_type_name_ptr : &PL_sv_undef;
   
   // Get API
@@ -672,7 +672,7 @@ call_sub(...)
         if (!strEQ(base_object_type_name, arg_type_name)) {
           croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
         }
-
+        
         // Get content
         SV** sv_content_ptr = hv_fetch(hv_base_object, "content", strlen("content"), 0);
         SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
