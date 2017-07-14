@@ -495,12 +495,12 @@ build_sub_symtable(...)
           SPVM_SUB* sub = op_sub->uv.sub;
           const char* sub_abs_name = sub->abs_name;
           
-          // 1. Constant pool index
+          // Subroutine id
           int32_t sub_id = sub->constant_pool_index;
           SV* sv_sub_id = sv_2mortal(newSViv(sub_id));
           av_push(av_sub_info, SvREFCNT_inc(sv_sub_id));
           
-          // arg_type_ids
+          // Argument types
           AV* av_arg_type_names = (AV*)sv_2mortal((SV*)newAV());
           SPVM_DYNAMIC_ARRAY* op_args = sub->op_args;
           {
@@ -514,8 +514,6 @@ build_sub_symtable(...)
               av_push(av_arg_type_names, SvREFCNT_inc(sv_arg_type_name));
             }
           }
-          
-          // 2. Push argment resolved type ids
           SV* sv_arg_type_names = sv_2mortal(newRV_inc((SV*)av_arg_type_names));
           av_push(av_sub_info, SvREFCNT_inc(sv_arg_type_names));
           
@@ -525,8 +523,6 @@ build_sub_symtable(...)
           if (return_type) {
             const char* return_type_name = op_return_type->uv.type->name;
             SV* sv_return_type_name = sv_2mortal(newSVpv(return_type_name, 0));
-            
-            // 3. Push return type resolved id
             av_push(av_sub_info, SvREFCNT_inc(sv_return_type_name));
           }
           else {
