@@ -567,7 +567,6 @@ build_field_symtable(...)
       {
         int32_t field_index;
         for (field_index = 0; field_index < op_fields->length; field_index++) {
-          
           HV* hv_field_info = (HV*)sv_2mortal((SV*)newHV());
           
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_index);
@@ -590,7 +589,7 @@ build_field_symtable(...)
       }
       
       SV* sv_package_info = sv_2mortal(newRV_inc((SV*)hv_package_info));
-      hv_store(hv_field_symtable, package_name, strlen(package_name), sv_package_info, 0);
+      hv_store(hv_field_symtable, package_name, strlen(package_name), SvREFCNT_inc(sv_package_info), 0);
     }
   }
   

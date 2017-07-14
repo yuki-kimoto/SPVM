@@ -33,6 +33,9 @@ CHECK {
   # Build subroutine symbol table
   build_sub_symtable();
   
+  # Build field symbol table
+  build_field_symtable();
+  
   # Build SPVM subroutine
   build_spvm_subs();
   

@@ -1,6 +1,6 @@
 package TestCase {
   has x : int;
-  has y : int;
+  has y : long;
   
   # Add
   sub add_byte_max() : byte {
