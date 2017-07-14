@@ -1330,7 +1330,6 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
   assert(!insert->moresib);
   
   SPVM_OP *first;
-  SPVM_OP *rest;
 
   if (start) {
     first = SPVM_OP_sibling(compiler, start);
@@ -1339,14 +1338,12 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     first = parent->first;
   }
   
-  rest = first;
-  
   while (insert->moresib) {
     insert = SPVM_OP_sibling(compiler, insert);
   }
   
-  insert->moresib = rest ? 1 : 0;
-  insert->sibparent = insert->moresib ? rest : NULL;
+  insert->moresib = first ? 1 : 0;
+  insert->sibparent = insert->moresib ? first : NULL;
   
   if (start) {
     start->moresib = insert ? 1 : 0;
@@ -1356,7 +1353,7 @@ SPVM_OP* SPVM_OP_sibling_splice(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_O
     parent->first = insert;
   }
   
-  if (!rest) {
+  if (!first) {
     /* update last etc */
     SPVM_OP *lastop;
 
