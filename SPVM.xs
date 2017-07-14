@@ -478,7 +478,7 @@ build_sub_symtable(...)
   // Subroutine information
   HV* hv_sub_symtable = get_hv("SPVM::SUB_SYMTABLE", 0);
   
-  // abs_name, arg_types, return_type, constant_pool_index, type_id
+  // abs_name, arg_types, return_type, id, type_id
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   {
     int32_t package_index;
@@ -496,9 +496,9 @@ build_sub_symtable(...)
           const char* sub_abs_name = sub->abs_name;
           
           // 1. Constant pool index
-          int32_t sub_constant_pool_index = sub->constant_pool_index;
-          SV* sv_sub_constant_pool_index = sv_2mortal(newSViv(sub_constant_pool_index));
-          av_push(av_sub_info, SvREFCNT_inc(sv_sub_constant_pool_index));
+          int32_t sub_id = sub->constant_pool_index;
+          SV* sv_sub_id = sv_2mortal(newSViv(sub_id));
+          av_push(av_sub_info, SvREFCNT_inc(sv_sub_id));
           
           // arg_type_ids
           AV* av_arg_type_names = (AV*)sv_2mortal((SV*)newAV());
@@ -556,7 +556,7 @@ build_type_symtable(...)
   // Subroutine information
   HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
   
-  // abs_name, arg_types, return_type, constant_pool_index, type_id
+  // abs_name, arg_types, return_type, id, type_id
   SPVM_DYNAMIC_ARRAY* types = compiler->types;
   {
     int32_t type_index;
@@ -630,9 +630,9 @@ call_sub(...)
   AV* av_sub_info = (AV*)SvRV(sv_sub_info);
   
   # Constant poll index
-  SV** sv_sub_constant_pool_index_ptr = av_fetch(av_sub_info, 0, 0);
-  SV* sv_sub_constant_pool_index = sv_sub_constant_pool_index_ptr ? *sv_sub_constant_pool_index_ptr : &PL_sv_undef;
-  int32_t sub_constant_pool_index = (int32_t)SvIV(sv_sub_constant_pool_index);
+  SV** sv_sub_id_ptr = av_fetch(av_sub_info, 0, 0);
+  SV* sv_sub_id = sv_sub_id_ptr ? *sv_sub_id_ptr : &PL_sv_undef;
+  int32_t sub_id = (int32_t)SvIV(sv_sub_id);
   
   # Argument return types
   SV** sv_arg_type_names_ptr = av_fetch(av_sub_info, 1, 0);
@@ -719,7 +719,7 @@ call_sub(...)
     }
   }
   
-  api->call_sub(api, sub_constant_pool_index);
+  api->call_sub(api, sub_id);
   
   if (SvOK(sv_return_type_name)) {
     // Create base_object
