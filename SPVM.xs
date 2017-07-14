@@ -496,9 +496,9 @@ build_sub_symtable(...)
           const char* sub_abs_name = sub->abs_name;
           
           // 1. Constant pool index
-          int32_t constant_pool_index = sub->constant_pool_index;
-          SV* sv_constant_pool_index = sv_2mortal(newSViv(constant_pool_index));
-          av_push(av_sub_info, SvREFCNT_inc(sv_constant_pool_index));
+          int32_t sub_constant_pool_index = sub->constant_pool_index;
+          SV* sv_sub_constant_pool_index = sv_2mortal(newSViv(sub_constant_pool_index));
+          av_push(av_sub_info, SvREFCNT_inc(sv_sub_constant_pool_index));
           
           // arg_type_ids
           AV* av_arg_type_names = (AV*)sv_2mortal((SV*)newAV());
