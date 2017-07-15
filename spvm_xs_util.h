@@ -40,9 +40,11 @@ const char* SPVM_XS_UTIL_get_field_type(const char* package_name, const char* fi
     SV* sv_package_info = *sv_package_info_ptr;
     HV* hv_package_info = (HV*)SvRV(sv_package_info);
     
-    SV** sv_field_info_ptr = hv_fetch(hv_package_info, field_name, strlen(field_name), 0);
-    if (sv_field_info_ptr) {
-      SV* sv_field_info = (HV*)SvRV(sv_field_info);
+    SV** sv_field_name_ptr = hv_fetch(hv_package_info, field_name, strlen(field_name), 0);
+    if (sv_field_name_ptr) {
+      SV* sv_field_name = *sv_field_name_ptr;
+      
+      return SvPV_nolen(sv_field_name);
     }
     else {
       return NULL;

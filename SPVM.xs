@@ -85,7 +85,7 @@ set(...)
   // Field type
   const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
   
-  warn("BBBBBB %s %s", field_type, field_name);
+  warn("BBBBBB %s %s %s", package_name, field_name, field_type);
   
   // Field id
   int32_t field_id = api->get_field_index(api, object, field_name);
