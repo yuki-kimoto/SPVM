@@ -755,7 +755,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     break;
                   }
                   case SPVM_OP_C_CODE_BLOCK: {
-                    if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_TRUE) {
+                    if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
                       
                       // Has else block
                       if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_HAS_TRUE) {
@@ -783,7 +783,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       bytecode_array->values[bytecode_index + 1] = (jump_offset >> 8) & 0xFF;
                       bytecode_array->values[bytecode_index + 2] = jump_offset & 0xFF;
                     }
-                    else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
+                    else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_TRUE) {
                       
                       assert(goto_if_block_end_bytecode_index_stack->length > 0);
                       
