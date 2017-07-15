@@ -126,7 +126,7 @@ SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const cha
   SPVM_OP* op_name_package = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
   op_name_package->uv.name = package_name;
   SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_USE, file, line);
-  SPVM_OP_insert_child(compiler, op_use, NULL, op_name_package);
+  SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package);
   
   return op_use;
 }
@@ -257,7 +257,7 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_swi
 
 SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case, SPVM_OP* op_term) {
   
-  SPVM_OP_insert_child(compiler, op_case, NULL, op_term);
+  SPVM_OP_insert_child(compiler, op_case, op_case->last, op_term);
   
   op_term->flag = SPVM_OP_C_FLAG_CONSTANT_CASE;
   
@@ -384,7 +384,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
 
 SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_length, SPVM_OP* op_term) {
   
-  SPVM_OP_insert_child(compiler, op_array_length, NULL, op_term);
+  SPVM_OP_insert_child(compiler, op_array_length, op_array_length->last, op_term);
   
   return op_array_length;
 }
@@ -656,7 +656,7 @@ void SPVM_OP_resolve_field_name(SPVM_COMPILER* compiler, SPVM_OP* op_field) {
 SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term) {
   
   SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_ELEM, op_var->file, op_var->line);
-  SPVM_OP_insert_child(compiler, op_array_elem, NULL, op_var);
+  SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var);
   SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_term);
   
   return op_array_elem;
@@ -664,8 +664,8 @@ SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM
 
 SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_name_field) {
   SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_FIELD, op_var->file, op_var->line);
-  SPVM_OP_insert_child(compiler, op_field, NULL, op_var);
-  SPVM_OP_insert_child(compiler, op_field, op_var, op_name_field);
+  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_var);
+  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
   
   SPVM_NAME_INFO* name_info = SPVM_NAME_INFO_new(compiler);
   
@@ -685,8 +685,8 @@ SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM
 SPVM_OP* SPVM_OP_build_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term) {
   
   SPVM_OP* op_convert_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_type->file, op_type->line);
-  SPVM_OP_insert_child(compiler, op_convert_type, NULL, op_term);
-  SPVM_OP_insert_child(compiler, op_convert_type, op_term, op_type);
+  SPVM_OP_insert_child(compiler, op_convert_type, op_convert_type->last, op_term);
+  SPVM_OP_insert_child(compiler, op_convert_type, op_convert_type->last, op_type);
   
   op_convert_type->file = op_type->file;
   op_convert_type->line = op_type->line;
@@ -697,7 +697,7 @@ SPVM_OP* SPVM_OP_build_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, S
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   
   SPVM_OP* op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_GRAMMAR, op_packages->file, op_packages->line);
-  SPVM_OP_insert_child(compiler, op_grammar, NULL, op_packages);
+  SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_packages);
   
   compiler->op_grammar = op_grammar;
   
@@ -730,8 +730,8 @@ const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package
 
 SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block) {
   
-  SPVM_OP_insert_child(compiler, op_package, NULL, op_name_package);
-  SPVM_OP_insert_child(compiler, op_package, op_name_package, op_block);
+  SPVM_OP_insert_child(compiler, op_package, op_package->last, op_name_package);
+  SPVM_OP_insert_child(compiler, op_package, op_package->last, op_block);
   
   const char* package_name = op_name_package->uv.name;
   SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
@@ -891,7 +891,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           // Return
           SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_enumeration_value->file, op_enumeration_value->line);
-          SPVM_OP_insert_child(compiler, op_return, NULL, op_constant);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
           
           // Create sub information
           SPVM_SUB* sub = SPVM_SUB_new(compiler);
@@ -935,7 +935,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
 
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_package) {
   
-  SPVM_OP_insert_child(compiler, op_use, NULL, op_name_package);
+  SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package);
   
   const char* package_name = op_name_package->uv.name;
   SPVM_OP* found_op_use = SPVM_HASH_search(compiler->op_use_symtable, package_name, strlen(package_name));
@@ -974,8 +974,8 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_type) {
   
   // Build OP
-  SPVM_OP_insert_child(compiler, op_field, NULL, op_name_field);
-  SPVM_OP_insert_child(compiler, op_field, op_name_field, op_type);
+  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
+  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_type);
   
   // Create field information
   SPVM_FIELD* field = SPVM_FIELD_new(compiler);
@@ -995,13 +995,13 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
 SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_type_or_void, SPVM_OP* op_block) {
   
   // Build OP_SUB
-  SPVM_OP_insert_child(compiler, op_sub, NULL, op_name_sub);
-  SPVM_OP_insert_child(compiler, op_sub, op_name_sub, op_args);
-  SPVM_OP_insert_child(compiler, op_sub, op_args, op_descriptors);
-  SPVM_OP_insert_child(compiler, op_sub, op_descriptors, op_type_or_void);
+  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_name_sub);
+  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_args);
+  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_descriptors);
+  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_type_or_void);
   if (op_block) {
     op_block->flag = SPVM_OP_C_FLAG_BLOCK_SUB;
-    SPVM_OP_insert_child(compiler, op_sub, op_type_or_void, op_block);
+    SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_block);
   }
   
   // Create sub information
@@ -1068,7 +1068,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block) {
   
   // Build OP_SUB
-  SPVM_OP_insert_child(compiler, op_enumeration, NULL, op_enumeration_block);
+  SPVM_OP_insert_child(compiler, op_enumeration, op_enumeration->last, op_enumeration_block);
   
   return op_enumeration;
 }
@@ -1077,8 +1077,8 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
   
   // Build OP_SUB
   SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_SUB, op_name_sub->file, op_name_sub->line);
-  SPVM_OP_insert_child(compiler, op_call_sub, NULL, op_name_sub);
-  SPVM_OP_insert_child(compiler, op_call_sub, op_name_sub, op_terms);
+  SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_name_sub);
+  SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_terms);
   
   SPVM_NAME_INFO* name_info = SPVM_NAME_INFO_new(compiler);
   
@@ -1153,7 +1153,7 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
 SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first) {
   
   // Build op
-  SPVM_OP_insert_child(compiler, op_unary, NULL, op_first);
+  SPVM_OP_insert_child(compiler, op_unary, op_unary->last, op_first);
   
   return op_unary;
 }
@@ -1195,7 +1195,7 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   type->uv.op_name = op_name;
 
   SPVM_OP* op_type_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name->file, op_name->line);
-  SPVM_OP_insert_child(compiler, op_type_name, NULL, op_name);
+  SPVM_OP_insert_child(compiler, op_type_name, op_type_name->last, op_name);
   
   op_type_name->uv.type = type;
   op_type_name->file = op_name->file;
@@ -1209,7 +1209,7 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
 SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_OP* op_term) {
   
   if (op_term) {
-    SPVM_OP_insert_child(compiler, op_return, NULL, op_term);
+    SPVM_OP_insert_child(compiler, op_return, op_return->last, op_term);
   }
   
   return op_return;
@@ -1237,7 +1237,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_exception_var);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_term);
   
-  SPVM_OP_insert_child(compiler, op_die, NULL, op_assign);
+  SPVM_OP_insert_child(compiler, op_die, op_die->last, op_assign);
   
   return op_die;
 }
@@ -1251,7 +1251,7 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPV
   
   // Type OP
   SPVM_OP* op_type_array = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);
-  SPVM_OP_insert_child(compiler, op_type_array, NULL, op_type);
+  SPVM_OP_insert_child(compiler, op_type_array, op_type_array->last, op_type);
   
   if (op_term_length) {
     SPVM_OP_insert_child(compiler, op_type_array, op_type_array->last, op_term_length);
@@ -1297,7 +1297,7 @@ SPVM_OP* SPVM_OP_new_op_list(SPVM_COMPILER* compiler, const char* file, int32_t 
   SPVM_OP* op_pushmark = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PUSHMARK, file, line);
   
   SPVM_OP* op_list = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LIST, file, line);
-  SPVM_OP_insert_child(compiler, op_list, NULL, op_pushmark);
+  SPVM_OP_insert_child(compiler, op_list, op_list->last, op_pushmark);
   
   return op_list;
 }
