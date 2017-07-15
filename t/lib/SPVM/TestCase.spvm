@@ -352,15 +352,15 @@ package TestCase {
   }
   
   sub multiply_int_plus() : int {
-    return (int)8192 * (int)2;
+    return (int)536870912 * (int)2;
   }
   
   sub multiply_int_minus() : int {
-    return (int)8192 * (int)-2;
+    return (int)536870912 * (int)-2;
   }
   
   sub multiply_int_overflow() : int {
-    return (int)16384 * (int)2;
+    return (int)1073741824 * (int)2;
   }
   
   sub multiply_long_plus() : long {
