@@ -350,7 +350,31 @@ package TestCase {
   sub multiply_short_overflow() : short {
     return (short)16384 * (short)2;
   }
-
+  
+  sub multiply_int_plus() : int {
+    return (int)8192 * (int)2;
+  }
+  
+  sub multiply_int_minus() : int {
+    return (int)8192 * (int)-2;
+  }
+  
+  sub multiply_int_overflow() : int {
+    return (int)16384 * (int)2;
+  }
+  
+  sub multiply_long_plus() : long {
+    return (long)2305843009213693952L * (long)2L;
+  }
+  
+  sub multiply_long_minus() : long {
+    return (long)2305843009213693952L * (long)-2L;
+  }
+  
+  sub multiply_long_overflow() : long {
+    return (long)4611686018427387904L * (long)2L;
+  }
+  
   # SPVM::string
   sub call_sub_string($string : string) : int {
     

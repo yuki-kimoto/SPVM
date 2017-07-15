@@ -111,6 +111,11 @@ is_deeply(
   is(SPVM::TestCase::subtract_long_underflow(), 9223372036854775807);
 }
 
+# 9223372036854775808
+# 4611686018427387904
+# 2305843009213693952
+
+
 # Multiply
 {
   is(SPVM::TestCase::multiply_byte_plus(), 64);
@@ -119,6 +124,9 @@ is_deeply(
   is(SPVM::TestCase::multiply_short_plus(), 16384);
   is(SPVM::TestCase::multiply_short_minus(), -16384);
   is(SPVM::TestCase::multiply_short_overflow(), -32768);
+  is(SPVM::TestCase::multiply_long_plus(), 4611686018427387904);
+  is(SPVM::TestCase::multiply_long_minus(), -4611686018427387904);
+  is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
 }
 
 # call_sub array
