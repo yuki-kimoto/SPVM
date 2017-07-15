@@ -43,7 +43,7 @@ CHECK {
   build_runtime();
   
   use Data::Dumper;
-  warn Dumper \%TYPE_SYMTABLE;
+  warn Dumper \%FIELD_SYMTABLE;
   
   # Free compiler
   free_compiler();

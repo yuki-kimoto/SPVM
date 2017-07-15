@@ -79,39 +79,42 @@ set(...)
   // Get content
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
 
-  // Type
-  const char* type = SPVM_XS_UTIL_get_type(sv_object);
+  // Object type
+  const char* package_name = SPVM_XS_UTIL_get_type(sv_object);
   
-  warn("BBBBBB %s %s", type, field_name);
+  // Field type
+  const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
+  
+  warn("BBBBBB %s %s", field_type, field_name);
   
   // Field id
   int32_t field_id = api->get_field_index(api, object, field_name);
   if (field_id == -1) {
-    warn("CCCCC %s %s", type, field_name);
-    croak("Can't find %s \"%s\" field(SPVM::Object::set)", type, field_name);
+    warn("CCCCC %s %s", field_type, field_name);
+    croak("Can't find %s \"%s\" field(SPVM::Object::set)", field_type, field_name);
   }
 
-  if (strEQ(type, "byte")) {
+  if (strEQ(field_type, "byte")) {
     int8_t value = (int8_t)SvIV(sv_value);
     api->set_byte_field(api, object, field_id, value);
   }
-  else if (strEQ(type, "short")) {
+  else if (strEQ(field_type, "short")) {
     int16_t value = (int16_t)SvIV(sv_value);
     api->set_short_field(api, object, field_id, value);
   }
-  else if (strEQ(type, "int")) {
+  else if (strEQ(field_type, "int")) {
     int32_t value = (int32_t)SvIV(sv_value);
     api->set_int_field(api, object, field_id, value);
   }
-  else if (strEQ(type, "long")) {
+  else if (strEQ(field_type, "long")) {
     int64_t value = (int64_t)SvIV(sv_value);
     api->set_long_field(api, object, field_id, value);
   }
-  else if (strEQ(type, "float")) {
+  else if (strEQ(field_type, "float")) {
     float value = (float)SvNV(sv_value);
     api->set_float_field(api, object, field_id, value);
   }
-  else if (strEQ(type, "double")) {
+  else if (strEQ(field_type, "double")) {
     double value = (double)SvNV(sv_value);
     api->set_double_field(api, object, field_id, value);
   }

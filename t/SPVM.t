@@ -24,12 +24,13 @@ is_deeply(
 );
 
 # Create object
+=pod
 {
   my $object = SPVM::object("TestCase");
   $object->set(x => 1);
   $object->set(y => 3);
-  
 }
+=cut
 
 # logical not
 {
