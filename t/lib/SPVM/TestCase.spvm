@@ -325,7 +325,19 @@ package TestCase {
   sub subtract_long_underflow() : long {
     return (long)-9223372036854775808L - (long)1;
   }
+
+  # Multiply
+  sub multiply_byte_plus() : byte {
+    return (byte)32 * (byte)2;
+  }
+  sub multiply_byte_minus() : byte {
+    return (byte)32 * (byte)-2;
+  }
+  sub multiply_byte_overflow() : byte {
+    return (byte)64 * (byte)2;
+  }
   
+
   # SPVM::string
   sub call_sub_string($string : string) : int {
     

@@ -111,6 +111,13 @@ is_deeply(
   is(SPVM::TestCase::subtract_long_underflow(), 9223372036854775807);
 }
 
+# Multiply
+{
+  is(SPVM::TestCase::multiply_byte_plus(), 64);
+  is(SPVM::TestCase::multiply_byte_minus(), -64);
+  is(SPVM::TestCase::multiply_byte_overflow(), -128);
+}
+
 # call_sub array
 {
   # SPVM::string
