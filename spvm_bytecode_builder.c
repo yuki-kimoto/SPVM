@@ -755,7 +755,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     break;
                   }
                   case SPVM_OP_C_CODE_BLOCK: {
-                    if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_TURE) {
+                    if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_TRUE) {
                       
                       // Has else block
                       if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_HAS_ELSE) {

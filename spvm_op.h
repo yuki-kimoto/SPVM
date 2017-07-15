@@ -118,7 +118,7 @@ extern const char* const SPVM_OP_C_CODE_NAMES[];
 
 enum {
   // Block flag
-  SPVM_OP_C_FLAG_BLOCK_IF_TURE = 1,
+  SPVM_OP_C_FLAG_BLOCK_IF_TRUE = 1,
   SPVM_OP_C_FLAG_BLOCK_IF_FALSE = 2,
   SPVM_OP_C_FLAG_BLOCK_LOOP = 4,
   SPVM_OP_C_FLAG_BLOCK_SWITCH = 8,
