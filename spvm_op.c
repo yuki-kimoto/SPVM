@@ -547,7 +547,7 @@ void SPVM_OP_convert_and_to_if(SPVM_COMPILER* compiler, SPVM_OP* op_if1) {
   
   op_if2->sibparent = op_if2;
 
-  SPVM_OP_insert_child(compiler, op_if1, op_if2, op_constant_false1);
+  SPVM_OP_insert_child(compiler, op_if1, op_if1->last, op_constant_false1);
 }
 
 void SPVM_OP_convert_or_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
@@ -589,7 +589,7 @@ void SPVM_OP_convert_or_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   op_first->sibparent = op_constant_true1;
   
-  SPVM_OP_insert_child(compiler, op, op_constant_true1, op_if);
+  SPVM_OP_insert_child(compiler, op, op->last, op_if);
 }
 
 void SPVM_OP_convert_not_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
