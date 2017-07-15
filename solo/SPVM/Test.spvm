@@ -19,6 +19,13 @@ SPVM::Test - SPVM test module
 
 package Test {
   sub main($mvar : int) : int {
+    # Logical or
+    {
+      if (1 || 0) {
+        std::println("Logical or");
+      }
+    }
+
     # Logical and
     {
       if (1 && 1) {

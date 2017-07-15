@@ -1,5 +1,6 @@
 0.0221 2017-07-15
-  - fix && not warning bug
+  - fix && not working bug
+  - fix || not working bug
 0.0220 2017-07-14
   - Support array return type in SPVM::call_sub
 0.0219 2017-07-13
