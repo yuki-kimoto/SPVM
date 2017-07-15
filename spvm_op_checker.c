@@ -278,6 +278,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // Convert && to if statement
                   SPVM_OP_convert_and_to_if(compiler, op_cur);
                   
+                  assert(op_cur->first);
+                  
                   break;
                 }
                 case SPVM_OP_C_CODE_OR: {

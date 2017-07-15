@@ -1054,6 +1054,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       }
                       else {
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_condition_target);
+                        assert(type);
                         if (type->id == SPVM_TYPE_C_ID_BYTE) {
                           SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_INT);
                           SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_NE_ZERO);
