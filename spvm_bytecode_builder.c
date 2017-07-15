@@ -758,7 +758,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_TRUE) {
                       
                       // Has else block
-                      if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_HAS_ELSE) {
+                      if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_HAS_TRUE) {
                         // Prepare to jump to end of else block
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
                         
