@@ -23,6 +23,12 @@ is_deeply(
   ]
 );
 
+# logical not
+{
+  ok(SPVM::TestCase::logical_not_true());
+  ok(SPVM::TestCase::logical_not_false());
+}
+
 # logical or
 {
   ok(SPVM::TestCase::logical_or_both_true());

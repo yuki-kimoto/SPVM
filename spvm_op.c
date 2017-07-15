@@ -602,7 +602,7 @@ void SPVM_OP_convert_or_to_if(SPVM_COMPILER* compiler, SPVM_OP* op_if1) {
   SPVM_OP_build_if_statement(compiler, op_if1, op_x, op_constant_true1, op_if2);
 }
 
-void SPVM_OP_convert_not_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
+void SPVM_OP_convert_not_to_if(SPVM_COMPILER* compiler, SPVM_OP* op_if) {
   
   // before
   //  NOT
@@ -614,18 +614,25 @@ void SPVM_OP_convert_not_to_if(SPVM_COMPILER* compiler, SPVM_OP* op) {
   //    0
   //    1
   
-  SPVM_OP* op_first = op->first;
+  SPVM_OP* op_x = op_if->first;
   
-  // Constant true 1
-  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op->file, op->line);
+  // Convert to ADN to IF
+  op_if->code = SPVM_OP_C_CODE_IF;
+  
+  // Cut op
+  op_x->moresib = 0;
+  op_x->sibparent = NULL;
+  op_if->first = NULL;
+  op_if->last = NULL;
   
   // Constant false
-  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op->file, op->line);
+  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_if->file, op_if->line);
+
+  // Constant true
+  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if->file, op_if->line);
   
-  // If
-  op->code = SPVM_OP_C_CODE_IF;
-  op->first = NULL;
-  op = SPVM_OP_build_if_statement(compiler, op, op_first, op_constant_false, op_constant_true);
+  // Build if tree
+  SPVM_OP_build_if_statement(compiler, op_if, op_x, op_constant_false, op_constant_true);
 }
 
 void SPVM_OP_resolve_sub_name(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name) {
