@@ -714,18 +714,12 @@ build_field_symtable(...)
           SPVM_FIELD* field = op_field->uv.field;
           const char* field_name = field->op_name->uv.name;
           
-          // Field id
-          int32_t field_id = field->index;
-          SV* sv_field_id = sv_2mortal(newSViv(field_id));
-          hv_store(hv_field_info, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
-          
           // Field type
           const char* field_type = field->op_type->uv.type->name;
           SV* sv_field_type = sv_2mortal(newSVpv(field_type, 0));
-          hv_store(hv_field_info, "type", strlen("type"), SvREFCNT_inc(sv_field_type), 0);
           
           SV* sv_field_info = sv_2mortal(newRV_inc((SV*)hv_field_info));
-          hv_store(hv_package_info, field_name, strlen(field_name), SvREFCNT_inc(sv_field_info), 0);
+          hv_store(hv_package_info, field_name, strlen(field_name), SvREFCNT_inc(sv_field_type), 0);
         }
       }
       
