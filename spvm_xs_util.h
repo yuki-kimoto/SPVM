@@ -111,8 +111,6 @@ int32_t SPVM_XS_UTIL_search_type_id(const char* type) {
   else {
     return -1;
   }
-  
-  return 1;
 }
 
 #endif

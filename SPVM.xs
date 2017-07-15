@@ -39,8 +39,14 @@ malloc_object(...)
   }
   
   const char* type = SvPV_nolen(sv_type);
+
+  int32_t type_length = strlen(type);
+  if (type[type_length - 1] == ']' || strcmp(type, "string") == 0) {
+    croak("Type \"%s\"must be package(SPVM::Object::malloc_object)", type);
+  }
+  
   int32_t type_id = SPVM_XS_UTIL_search_type_id(type);
-  if (type_id < 0) {
+  if (type_id == -1) {
     croak("Unkown type \"%s\"(SPVM::Object::malloc_object", type);
   }
   
@@ -49,7 +55,7 @@ malloc_object(...)
   
   // Malloc array
   SPVM_API_OBJECT* object =  api->malloc_object_noinc(api, type_id);
-  
+
   // New sv object
   SV* sv_object = SPVM_XS_UTIL_new_sv_object(type, object);
   
@@ -76,10 +82,13 @@ set(...)
   // Type
   const char* type = SPVM_XS_UTIL_get_type(sv_object);
   
+  warn("BBBBBB %s %s", type, field_name);
+  
   // Field id
   int32_t field_id = api->get_field_index(api, object, field_name);
   if (field_id == -1) {
-    croak("Can't find field \"%s\" of package %s", field_name, type);
+    warn("CCCCC %s %s", type, field_name);
+    croak("Can't find %s \"%s\" field(SPVM::Object::set)", type, field_name);
   }
 
   if (strEQ(type, "byte")) {
@@ -135,7 +144,7 @@ get(...)
   // Field id
   int32_t field_id = api->get_field_index(api, object, field_name);
   if (field_id == -1) {
-    croak("Can't find field \"%s\" of package %s", field_name, type);
+    croak("Can't find %s \"%s\" field(SPVM::Object::get)", type, field_name);
   }
   
   if (strEQ(type, "byte")) {

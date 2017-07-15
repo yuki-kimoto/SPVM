@@ -23,6 +23,14 @@ is_deeply(
   ]
 );
 
+# Create object
+{
+  my $object = SPVM::object("TestCase");
+  $object->set(x => 1);
+  $object->set(y => 3);
+  
+}
+
 # logical not
 {
   ok(SPVM::TestCase::logical_not_true());

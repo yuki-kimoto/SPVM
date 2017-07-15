@@ -42,6 +42,9 @@ CHECK {
   # Build run-time
   build_runtime();
   
+  use Data::Dumper;
+  warn Dumper \%TYPE_SYMTABLE;
+  
   # Free compiler
   free_compiler();
 }
@@ -618,6 +621,17 @@ This function is faster than C<SPVM::string> because copy is not executed.
 Create byte array from B<decoded> Perl string.
 
   my $array = SPVM::string("‚ ‚¢‚¤‚¦‚¨");
+
+=head2 object
+
+Create object.
+
+  my $object = SPVM::object("Point");
+
+You can set and get value by C<set> and C<get> method.
+
+  $object->set(x => 1);
+  my $x = $object->get('x');
 
 =head2 FAQ
 

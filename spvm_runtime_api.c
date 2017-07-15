@@ -608,6 +608,9 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_API* api, SPVM_OBJECT* object, con
   memcpy(&constant_pool_package, &constant_pool[object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   
   int32_t length = constant_pool_package.fields_length;
+  
+  warn("DDDDDDDDDDD %d %d", length, object->package_constant_pool_index);
+  
   int32_t field_indexes_constant_pool_index = constant_pool_package.field_indexes_constant_pool_index;
   
   int32_t field_index = -1;
@@ -623,6 +626,8 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_API* api, SPVM_OBJECT* object, con
       int32_t field_name_constant_pool_index = constant_pool_field.name_constant_pool_index;
       
       char* match_name = (char*)&constant_pool[field_name_constant_pool_index];
+      warn("EEEEEEEEEE %s %s", name, match_name);
+      
       if (strcmp(name, match_name) == 0) {
         found = 1;
         field_index = i;
@@ -632,8 +637,7 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_API* api, SPVM_OBJECT* object, con
   }
   
   if (!found) {
-    fprintf(stderr, "Can't find field name \"%s\"\n", name);
-    abort();
+    field_index = -1;
   }
   
   return field_index;
