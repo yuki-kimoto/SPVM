@@ -333,22 +333,13 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     op_if->code = SPVM_OP_C_CODE_IF;
   }
 
-  if (op_block_false->code == SPVM_OP_C_CODE_IF) {
-    SPVM_OP* op_if = op_block_false;
-    op_block_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_term->file, op_term->line);
+  if (op_block_false->code != SPVM_OP_C_CODE_BLOCK) {
+    SPVM_OP* op_not_block = op_block_false;
     
-    SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_term->file, op_term->line);
-    SPVM_OP_insert_child(compiler, op_list, op_list->last, op_if);
-    
-    SPVM_OP_insert_child(compiler, op_block_false, op_block_false->last, op_list);
-  }
-  else if (op_block_false->code != SPVM_OP_C_CODE_BLOCK && op_block_false->code != SPVM_OP_C_CODE_NULL) {
-    SPVM_OP* op_term = op_block_false;
-    op_block_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_term->file, op_term->line);
-    
-    SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_term->file, op_term->line);
-    SPVM_OP_insert_child(compiler, op_list, op_list->last, op_term);
-    
+    // Create block and
+    op_block_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_not_block->file, op_not_block->line);
+    SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_not_block->file, op_not_block->line);
+    SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_false, op_block_false->last, op_list);
   }
   
