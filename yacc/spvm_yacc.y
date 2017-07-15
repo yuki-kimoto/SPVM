@@ -261,15 +261,17 @@ statement
 block 
   : '{' opt_statements '}'
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, $$, NULL, $2);
+      SPVM_OP* op_code_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_code_block, op_code_block->last, $2);
+      $$ = op_code_block;
     }
 
 normal_statement
   : term ';'
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POP, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, $$, NULL, $1);
+      SPVM_OP* op_pop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POP, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_pop, op_pop->last, $1);
+      $$ = op_pop;
     }
   | expression ';'
   | ';'
@@ -280,8 +282,9 @@ normal_statement
 normal_statement_for_end
   : term
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POP, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, $$, NULL, $1);
+      SPVM_OP* op_pop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POP, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_pop, op_pop->last, $1);
+      $$ = op_pop;
     }
   | expression
 
@@ -412,8 +415,9 @@ opt_terms
         $$ = $1;
       }
       else {
-        $$ = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, $$, $$->first, $1);
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+        $$ = op_list;
       }
     }
     
@@ -658,8 +662,9 @@ opt_args
         $$ = $1;
       }
       else {
-        $$ = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, $$, $$->first, $1);
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+        $$ = op_list;
       }
     }
 
@@ -697,8 +702,9 @@ opt_descriptors
         $$ = $1;
       }
       else {
-        $$ = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, $$, $$->first, $1);
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->first, $1);
+        $$ = op_list;
       }
     }
     
