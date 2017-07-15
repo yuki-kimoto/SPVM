@@ -329,10 +329,15 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
 
 SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_term, SPVM_OP* op_block_false, SPVM_OP* op_block_true) {
   
+  // ELSIF is same as IF
   if (op_if->code == SPVM_OP_C_CODE_ELSIF) {
     op_if->code = SPVM_OP_C_CODE_IF;
   }
   
+  // Condition
+  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION, op_term->file, op_term->line);
+  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term);
+
   // Create false block if needed
   if (op_block_false->code != SPVM_OP_C_CODE_BLOCK) {
     SPVM_OP* op_not_block = op_block_false;
@@ -353,9 +358,6 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_true, op_block_true->last, op_list);
   }
-  
-  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION, op_term->file, op_term->line);
-  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term);
   
   op_block_true->flag |= SPVM_OP_C_FLAG_BLOCK_IF_TURE;
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
