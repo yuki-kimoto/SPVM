@@ -68,15 +68,26 @@ opt_declarations_in_grammar
         $$ = $1;
       }
       else {
-        $$ = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, $$, $$->first, $1);
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+        $$ = op_list;
       }
     }
   
 declarations_in_grammar
   : declarations_in_grammar declaration_in_grammar
     {
-      $$ = SPVM_OP_append_elem(compiler, $1, $2, $1->file, $1->line);
+      SPVM_OP* op_list;
+      if ($1->code == SPVM_OP_C_CODE_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $2);
+      
+      $$ = op_list;
     }
   | declaration_in_grammar
 
