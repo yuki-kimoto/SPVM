@@ -122,7 +122,7 @@ opt_declarations_in_package
       }
       else {
         $$ = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, $$, $$->first, $1);
+        SPVM_OP_insert_child(compiler, $$, $$->last, $1);
       }
     }
 
@@ -151,15 +151,17 @@ declaration_in_package
 package_block
   : '{' opt_declarations_in_package '}'
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CLASS_BLOCK, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, $$, NULL, $2);
+      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CLASS_BLOCK, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, $2);
+      $$ = op_class_block;
     }
 
 enumeration_block 
   : '{' opt_enumeration_values '}'
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUM_BLOCK, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, $$, NULL, $2);
+      SPVM_OP* op_enum_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUM_BLOCK, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_enum_block, op_enum_block->last, $2);
+      $$ = op_enum_block;
     }
 
 opt_enumeration_values
@@ -173,8 +175,9 @@ opt_enumeration_values
         $$ = $1;
       }
       else {
-        $$ = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, $$, $$->first, $1);
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+        $$ = op_list;
       }
     }
     
@@ -198,14 +201,16 @@ enumeration_values
 enumeration_value
   : NAME
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, $$, NULL, $1);
+      SPVM_OP* op_enumeration_value = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, $1);
+      $$ = op_enumeration_value;
     }
   | NAME ASSIGN CONSTANT
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, $$, NULL, $1);
-      SPVM_OP_insert_child(compiler, $$, $1, $3);
+      SPVM_OP* op_enumeration_value = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, $1);
+      SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, $3);
+      $$ = op_enumeration_value;
     }
 
 opt_statements
@@ -219,8 +224,9 @@ opt_statements
         $$ = $1;
       }
       else {
-        $$ = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, $$, $$->first, $1);
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+        $$ = op_list;
       }
     }
     
