@@ -338,7 +338,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     op_block_true = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_term->file, op_term->line);
     
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_term->file, op_term->line);
-    SPVM_OP_insert_child(compiler, op_list, op_list->first, op_term);
+    SPVM_OP_insert_child(compiler, op_list, op_list->last, op_term);
     
     SPVM_OP_insert_child(compiler, op_block_true, op_block_true->last, op_list);
   }
@@ -348,7 +348,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     op_block_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_term->file, op_term->line);
     
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_term->file, op_term->line);
-    SPVM_OP_insert_child(compiler, op_list, op_list->first, op_if);
+    SPVM_OP_insert_child(compiler, op_list, op_list->last, op_if);
     
     SPVM_OP_insert_child(compiler, op_block_false, op_block_false->last, op_list);
   }
@@ -357,7 +357,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     op_block_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_term->file, op_term->line);
     
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_term->file, op_term->line);
-    SPVM_OP_insert_child(compiler, op_list, op_list->first, op_term);
+    SPVM_OP_insert_child(compiler, op_list, op_list->last, op_term);
 
     SPVM_OP_insert_child(compiler, op_block_false, op_block_false->last, op_list);
   }
@@ -1118,7 +1118,7 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
       name_info->op_var = op_invocant;
       name_info->op_name = op_name_sub;
     }
-    SPVM_OP_insert_child(compiler, op_terms, op_terms->first, op_invocant);
+    SPVM_OP_insert_child(compiler, op_terms, op_terms->last, op_invocant);
   }
   // Method call
   else if (op_invocant->code == SPVM_OP_C_CODE_NAME) {

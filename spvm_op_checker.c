@@ -336,13 +336,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                             
-                            SPVM_OP_insert_child(compiler, op_return, NULL, op_constant);
+                            SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
                           }
                           // Reference
                           else {
                             // Undef
                             SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, op_cur->file, op_cur->line);
-                            SPVM_OP_insert_child(compiler, op_return, NULL, op_undef);
+                            SPVM_OP_insert_child(compiler, op_return, op_return->last, op_undef);
                           }
                         }
                       }
