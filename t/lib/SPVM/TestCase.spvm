@@ -11,6 +11,30 @@ package TestCase {
     return 0;
   }
   
+  sub logical_and_left_true() : int {
+    if (1 && 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub logical_and_right_true() : int {
+    if (1 && 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub logical_and_both_false() : int {
+    if (0 && 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   # call_sub return value
   sub call_sub_return_byte_array() : byte[] {
     my $nums = malloc byte[3];

@@ -24,9 +24,12 @@ is_deeply(
 );
 
 # logical and
-#{
-  # ok(SPVM::TestCase::logical_and_both_true());
-#}
+{
+  ok(SPVM::TestCase::logical_and_both_true());
+  ok(SPVM::TestCase::logical_and_left_true());
+  ok(SPVM::TestCase::logical_and_right_true());
+  ok(SPVM::TestCase::logical_and_both_false());
+}
 
 # call_sub return array
 {
