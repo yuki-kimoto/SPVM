@@ -95,6 +95,22 @@ is_deeply(
   is(SPVM::TestCase::add_long_overflow(), -9223372036854775808);
 }
 
+# Subtract
+{
+  is(SPVM::TestCase::subtract_byte_max(), 126);
+  is(SPVM::TestCase::subtract_byte_min(), -128);
+  is(SPVM::TestCase::subtract_byte_underflow(), 127);
+  is(SPVM::TestCase::subtract_short_max(), 32766);
+  is(SPVM::TestCase::subtract_short_min(), -32768);
+  is(SPVM::TestCase::subtract_short_underflow(), 32767);
+  is(SPVM::TestCase::subtract_int_max(), 2147483646);
+  is(SPVM::TestCase::subtract_int_min(), -2147483648);
+  is(SPVM::TestCase::subtract_int_underflow(), 2147483647);
+  is(SPVM::TestCase::subtract_long_max(), 9223372036854775806);
+  is(SPVM::TestCase::subtract_long_min(), -9223372036854775808);
+  is(SPVM::TestCase::subtract_long_underflow(), 9223372036854775807);
+}
+
 # call_sub array
 {
   # SPVM::string
