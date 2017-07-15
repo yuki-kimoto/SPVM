@@ -116,6 +116,9 @@ is_deeply(
   is(SPVM::TestCase::multiply_byte_plus(), 64);
   is(SPVM::TestCase::multiply_byte_minus(), -64);
   is(SPVM::TestCase::multiply_byte_overflow(), -128);
+  is(SPVM::TestCase::multiply_short_plus(), 16384);
+  is(SPVM::TestCase::multiply_short_minus(), -16384);
+  is(SPVM::TestCase::multiply_short_overflow(), -32768);
 }
 
 # call_sub array

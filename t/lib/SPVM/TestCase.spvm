@@ -330,13 +330,26 @@ package TestCase {
   sub multiply_byte_plus() : byte {
     return (byte)32 * (byte)2;
   }
+  
   sub multiply_byte_minus() : byte {
     return (byte)32 * (byte)-2;
   }
+  
   sub multiply_byte_overflow() : byte {
     return (byte)64 * (byte)2;
   }
+
+  sub multiply_short_plus() : short {
+    return (short)8192 * (short)2;
+  }
   
+  sub multiply_short_minus() : short {
+    return (short)8192 * (short)-2;
+  }
+  
+  sub multiply_short_overflow() : short {
+    return (short)16384 * (short)2;
+  }
 
   # SPVM::string
   sub call_sub_string($string : string) : int {
