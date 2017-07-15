@@ -332,21 +332,22 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   if (op_if->code == SPVM_OP_C_CODE_ELSIF) {
     op_if->code = SPVM_OP_C_CODE_IF;
   }
-
+  
+  // Create false block if needed
   if (op_block_false->code != SPVM_OP_C_CODE_BLOCK) {
     SPVM_OP* op_not_block = op_block_false;
     
-    // Create block and
     op_block_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_not_block->file, op_not_block->line);
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_not_block->file, op_not_block->line);
     SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_false, op_block_false->last, op_list);
   }
   
+  // Create true block if needed
   if (op_block_true->code != SPVM_OP_C_CODE_BLOCK) {
     SPVM_OP* op_not_block = op_block_true;
     
-    // Create block and
+    // Create block
     op_block_true = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_not_block->file, op_not_block->line);
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_not_block->file, op_not_block->line);
     SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
