@@ -57,6 +57,63 @@ malloc_object(...)
   XSRETURN(1);
 }
 
+SV*
+set(...)
+  PPCODE:
+{
+  SV* sv_object = ST(0);
+  SV* sv_field_name = ST(1);
+  SV* sv_value = ST(2);
+  
+  const char* field_name = SvPV_nolen(sv_field_name);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+
+  // Type
+  const char* type = SPVM_XS_UTIL_get_type(sv_object);
+  
+  // Field id
+  int32_t field_id = api->get_field_index(api, object, field_name);
+  if (field_id == -1) {
+    croak("Can't find field \"%s\" of package %s", field_name, type);
+  }
+
+  if (strEQ(type, "byte")) {
+    int8_t value = (int8_t)SvIV(sv_value);
+    api->set_byte_field(api, object, field_id, value);
+  }
+  else if (strEQ(type, "short")) {
+    int16_t value = (int16_t)SvIV(sv_value);
+    api->set_short_field(api, object, field_id, value);
+  }
+  else if (strEQ(type, "int")) {
+    int32_t value = (int32_t)SvIV(sv_value);
+    api->set_int_field(api, object, field_id, value);
+  }
+  else if (strEQ(type, "long")) {
+    int64_t value = (int64_t)SvIV(sv_value);
+    api->set_long_field(api, object, field_id, value);
+  }
+  else if (strEQ(type, "float")) {
+    float value = (float)SvNV(sv_value);
+    api->set_float_field(api, object, field_id, value);
+  }
+  else if (strEQ(type, "double")) {
+    double value = (double)SvNV(sv_value);
+    api->set_double_field(api, object, field_id, value);
+  }
+  else {
+    SPVM_API_BASE_OBJECT* base_object = (SPVM_API_BASE_OBJECT*)SvIV(sv_value);
+    api->set_object_field(api, object, field_id, base_object);
+  }
+  
+  XSRETURN(0);
+}
+
 MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 SV*

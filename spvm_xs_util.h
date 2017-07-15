@@ -18,6 +18,19 @@ SPVM_API* SPVM_XS_UTIL_get_api() {
   return api;
 }
 
+const char* SPVM_XS_UTIL_get_type(SV* sv_object) {
+  HV* hv_object = (HV*)SvRV(sv_object);
+  SV** sv_type_ptr = hv_fetch(hv_object, "type", strlen("type"), 0);
+  SV* sv_type = sv_type_ptr ? *sv_type_ptr : &PL_sv_undef;
+  
+  if (SvOK(sv_type)) {
+    return SvPV_nolen(sv_type);
+  }
+  else {
+    return NULL;
+  }
+}
+
 SV* SPVM_XS_UTIL_new_sv_array(const char* type, SPVM_API_ARRAY* array) {
   // Create array
   HV* hv_array = sv_2mortal((SV*)newHV());
@@ -72,6 +85,18 @@ SPVM_API_ARRAY* SPVM_XS_UTIL_get_array(SV* sv_array) {
   SPVM_API_ARRAY* array = INT2PTR(SPVM_API_ARRAY*, iv_content);
   
   return array;
+}
+
+SPVM_API_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
+  
+  HV* hv_object = (HV*)SvRV(sv_object);
+  SV** sv_content_ptr = hv_fetch(hv_object, "content", strlen("content"), 0);
+  SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
+  SV* sviv_content = SvRV(sv_content);
+  size_t iv_content = SvIV(sviv_content);
+  SPVM_API_OBJECT* object = INT2PTR(SPVM_API_OBJECT*, iv_content);
+  
+  return object;
 }
 
 int32_t SPVM_XS_UTIL_search_type_id(const char* type) {
