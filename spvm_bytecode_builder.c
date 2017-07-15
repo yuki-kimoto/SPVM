@@ -831,10 +831,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     }
                     break;
                   }
-                  case SPVM_OP_C_CODE_IF: {
-                    
-                    break;
-                  }
                   case SPVM_OP_C_CODE_LOOP: {
                     
                     // Set last position
