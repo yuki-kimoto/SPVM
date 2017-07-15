@@ -353,12 +353,12 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   }
   
   if (op_block_true->code != SPVM_OP_C_CODE_BLOCK) {
-    SPVM_OP* op_term = op_block_true;
-    op_block_true = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_term->file, op_term->line);
+    SPVM_OP* op_not_block = op_block_true;
     
-    SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_term->file, op_term->line);
-    SPVM_OP_insert_child(compiler, op_list, op_list->last, op_term);
-    
+    // Create block and
+    op_block_true = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_not_block->file, op_not_block->line);
+    SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_not_block->file, op_not_block->line);
+    SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_true, op_block_true->last, op_list);
   }
   
