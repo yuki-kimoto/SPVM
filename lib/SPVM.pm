@@ -80,14 +80,6 @@ sub byte_array {
   return $array;
 }
 
-sub byte_array_len {
-  my $length = shift;
-  
-  my $array = SPVM::Array->malloc_byte_array($length);
-  
-  return $array;
-}
-
 sub short_array {
   my $elements = shift;
   
@@ -206,6 +198,14 @@ sub double_array_len {
   my $array = SPVM::Array->malloc_double_array($length);
   
   return $array;
+}
+
+sub object {
+  my $package_name = shift;
+  
+  my $object = SPVM::Object->malloc_object($package_name);
+  
+  return $object;
 }
 
 sub import {
