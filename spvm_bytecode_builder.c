@@ -757,9 +757,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_CODE_BLOCK: {
                     if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
                       
-                      // Has else block
-                      if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_HAS_TRUE) {
-                        // Prepare to jump to end of else block
+                      {
+                        // Prepare to jump to end of true block
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
                         
                         int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
