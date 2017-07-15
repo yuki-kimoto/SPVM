@@ -1270,28 +1270,6 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPV
   return op_type_array;
 }
 
-SPVM_OP* SPVM_OP_append_elem(SPVM_COMPILER* compiler, SPVM_OP *first, SPVM_OP *last, const char* file, int32_t line) {
-  if (!first) {
-    return last;
-  }
-  
-  if (!last) {
-    return first;
-  }
-  
-  if (first->code == SPVM_OP_C_CODE_LIST) {
-    SPVM_OP_insert_child(compiler, first, first->last, last);
-    return first;
-  }
-  else {
-    SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, file, line);
-    SPVM_OP_insert_child(compiler, op_list, op_list->first, first);
-    SPVM_OP_insert_child(compiler, op_list, first, last);
-    
-    return op_list;
-  }
-}
-
 SPVM_OP* SPVM_OP_new_op_list(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   
   SPVM_OP* op_pushmark = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PUSHMARK, file, line);

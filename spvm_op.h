@@ -231,7 +231,5 @@ SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t code, const char* file,
 void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, SPVM_OP* insert);
 
 SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* o);
-SPVM_OP* SPVM_OP_append_elem(SPVM_COMPILER* compiler, SPVM_OP *first, SPVM_OP *last, const char* file, int32_t line);
-
 
 #endif

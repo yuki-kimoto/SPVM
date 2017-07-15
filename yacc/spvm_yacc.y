@@ -129,7 +129,17 @@ opt_declarations_in_package
 declarations_in_package
   : declarations_in_package declaration_in_package
     {
-      $$ = SPVM_OP_append_elem(compiler, $1, $2, $1->file, $1->line);
+      SPVM_OP* op_list;
+      if ($1->code == SPVM_OP_C_CODE_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $2);
+      
+      $$ = op_list;
     }
   | declaration_in_package
 
@@ -171,7 +181,17 @@ opt_enumeration_values
 enumeration_values
   : enumeration_values ',' enumeration_value 
     {
-      $$ = SPVM_OP_append_elem(compiler, $1, $3, $1->file, $1->line);
+      SPVM_OP* op_list;
+      if ($1->code == SPVM_OP_C_CODE_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
     }
   | enumeration_value
   
@@ -207,7 +227,17 @@ opt_statements
 statements
   : statements statement 
     {
-      $$ = SPVM_OP_append_elem(compiler, $1, $2, $1->file, $1->line);
+      SPVM_OP* op_list;
+      if ($1->code == SPVM_OP_C_CODE_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $2);
+      
+      $$ = op_list;
     }
   | statement
 
@@ -384,7 +414,17 @@ opt_terms
 terms
   : terms ',' term
     {
-      $$ = SPVM_OP_append_elem(compiler, $1, $3, $1->file, $1->line);
+      SPVM_OP* op_list;
+      if ($1->code == SPVM_OP_C_CODE_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
     }
   | term
 
@@ -620,7 +660,17 @@ opt_args
 args
   : args ',' arg
     {
-      $$ = SPVM_OP_append_elem(compiler, $1, $3, $1->file, $1->line);
+      SPVM_OP* op_list;
+      if ($1->code == SPVM_OP_C_CODE_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
     }
   | arg
 
@@ -649,7 +699,17 @@ opt_descriptors
 descriptors
   : descriptors ',' DESCRIPTOR
     {
-      $$ = SPVM_OP_append_elem(compiler, $1, $3, $1->file, $1->line);
+      SPVM_OP* op_list;
+      if ($1->code == SPVM_OP_C_CODE_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
     }
   | DESCRIPTOR
 
