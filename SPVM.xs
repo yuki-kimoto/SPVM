@@ -99,7 +99,7 @@ set(...)
   warn("BBBBBB %s %s %s", package_name, field_name, field_type);
   
   // Field id
-  int32_t field_id = api->get_field_index(api, object, field_name);
+  int32_t field_id = api->get_field_id(api, object, field_name);
   if (field_id == -1) {
     warn("CCCCC %s %s", field_type, field_name);
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", field_type, field_name);
@@ -156,7 +156,7 @@ get(...)
   const char* type = SPVM_XS_UTIL_get_type(sv_object);
   
   // Field id
-  int32_t field_id = api->get_field_index(api, object, field_name);
+  int32_t field_id = api->get_field_id(api, object, field_name);
   if (field_id == -1) {
     croak("Can't find %s \"%s\" field(SPVM::Object::get)", type, field_name);
   }

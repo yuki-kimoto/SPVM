@@ -79,7 +79,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_object_array_elements = (SPVM_API_BASE_OBJECT** (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_object_array_elements;
   
   // Object functions
-  api->get_field_index = (int32_t (*)(SPVM_API*, SPVM_API_OBJECT*, const char*))SPVM_RUNTIME_API_get_field_index;
+  api->get_field_id = (int32_t (*)(SPVM_API*, SPVM_API_OBJECT*, const char*))SPVM_RUNTIME_API_get_field_id;
   api->get_byte_field = (int8_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_byte_field;
   api->get_short_field = (int16_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_short_field;
   api->get_int_field = (int32_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_int_field;
@@ -103,7 +103,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->push_var_float = (void (*)(SPVM_API*, float))SPVM_RUNTIME_API_push_var_float;
   api->push_var_double = (void (*)(SPVM_API*, double))SPVM_RUNTIME_API_push_var_double;
   api->push_var_object = (void (*)(SPVM_API*, SPVM_API_BASE_OBJECT*))SPVM_RUNTIME_API_push_var_object;
-  api->get_sub_index = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_sub_index;
+  api->get_sub_id = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_sub_id;
   api->call_sub = (void (*)(SPVM_API*, int32_t))SPVM_RUNTIME_call_sub;
   api->pop_retval_byte = (int8_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_byte;
   api->pop_retval_short = (int16_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_short;
@@ -114,7 +114,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->pop_retval_object = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_object;
   
   // Malloc funtctions
-  api->get_package_index = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_package_index;
+  api->get_package_id = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_package_id;
   api->malloc_object_noinc = (SPVM_API_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_object_noinc;
   api->malloc_byte_array_noinc = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_byte_array_noinc;
   api->malloc_short_array_noinc = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_malloc_short_array_noinc;

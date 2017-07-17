@@ -31,7 +31,7 @@ struct SPVM_api {
   SPVM_API_BASE_OBJECT** (*get_object_array_elements)(SPVM_API*, SPVM_API_ARRAY*);
   
   // Object functions
-  int32_t (*get_field_index)(SPVM_API*, SPVM_API_OBJECT*, const char*);
+  int32_t (*get_field_id)(SPVM_API*, SPVM_API_OBJECT*, const char*);
   int8_t (*get_byte_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t);
   int16_t (*get_short_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t);
   int32_t (*get_int_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t);
@@ -55,7 +55,7 @@ struct SPVM_api {
   void (*push_var_float)(SPVM_API*, float);
   void (*push_var_double)(SPVM_API*, double);
   void (*push_var_object)(SPVM_API*, SPVM_API_BASE_OBJECT*);
-  int32_t (*get_sub_index)(SPVM_API*, const char*);
+  int32_t (*get_sub_id)(SPVM_API*, const char*);
   void (*call_sub)(SPVM_API*, int32_t);
   int8_t (*pop_retval_byte)(SPVM_API*);
   int16_t (*pop_retval_short)(SPVM_API*);
@@ -66,7 +66,7 @@ struct SPVM_api {
   SPVM_API_BASE_OBJECT* (*pop_retval_object)(SPVM_API*);
   
   // Malloc funtctions
-  int32_t (*get_package_index)(SPVM_API*, const char*);
+  int32_t (*get_package_id)(SPVM_API*, const char*);
   SPVM_API_OBJECT* (*malloc_object_noinc)(SPVM_API*, int32_t);
   SPVM_API_ARRAY* (*malloc_byte_array_noinc)(SPVM_API*, int32_t);
   SPVM_API_ARRAY* (*malloc_short_array_noinc)(SPVM_API*, int32_t);

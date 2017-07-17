@@ -600,7 +600,7 @@ void* SPVM_RUNTIME_API_get_var_object(SPVM_API* api, int32_t index) {
   return runtime->call_stack[runtime->call_stack_base + (size_t)index].object_value;
 }
 
-int32_t SPVM_RUNTIME_API_get_field_index(SPVM_API* api, SPVM_OBJECT* object, const char* name) {
+int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const char* name) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   int32_t* constant_pool = runtime->constant_pool;
@@ -636,7 +636,7 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_API* api, SPVM_OBJECT* object, con
   return field_index;
 }
 
-int32_t SPVM_RUNTIME_API_get_sub_index(SPVM_API* api, const char* name) {
+int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   int32_t* constant_pool = runtime->constant_pool;
@@ -671,7 +671,7 @@ int32_t SPVM_RUNTIME_API_get_sub_index(SPVM_API* api, const char* name) {
   return found_sub_constant_pool_index;
 }
 
-int32_t SPVM_RUNTIME_API_get_package_index(SPVM_API* api, const char* name) {
+int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   int32_t* constant_pool = runtime->constant_pool;
