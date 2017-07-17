@@ -1,3 +1,15 @@
+0.0222 2017-07-16
+  - add SPVM::Object::set
+  - add SPVM::Object::get
+  - rename SPVM::byte_array to SPVM::new_byte_array
+  - rename SPVM::short_array to SPVM::new_short_array
+  - rename SPVM::int_array to SPVM::new_int_array
+  - rename SPVM::long_array to SPVM::new_long_array
+  - rename SPVM::float_array to SPVM::new_float_array
+  - rename SPVM::double_array to SPVM::new_double_array
+  - rename SPVM::string_raw to SPVM::new_string_raw
+  - rename SPVM::string to SPVM::new_string
+  - rename SPVM::object to SPVM::new_object
 0.0221 2017-07-15
   - fix && not working bug
   - fix || not working bug

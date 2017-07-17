@@ -13,7 +13,7 @@ use Carp 'croak';
 
 my $INT_MAX = 2147483647;
 
-our $VERSION = '0.0221';
+our $VERSION = '0.0222';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
@@ -50,7 +50,7 @@ CHECK {
   free_compiler();
 }
 
-sub string_raw {
+sub new_string_raw {
   my $string = shift;
   
   my $array = SPVM::Array->malloc_string_raw($string);
@@ -58,7 +58,7 @@ sub string_raw {
   return $array;
 }
 
-sub string {
+sub new_string {
   my $string = shift;
   
   $string = Encode::encode('UTF-8', $string);
@@ -68,7 +68,7 @@ sub string {
   return $array;
 }
 
-sub byte_array {
+sub new_byte_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
@@ -84,7 +84,7 @@ sub byte_array {
   return $array;
 }
 
-sub short_array {
+sub new_short_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
@@ -100,7 +100,7 @@ sub short_array {
   return $array;
 }
 
-sub short_array_len {
+sub new_short_array_len {
   my $length = shift;
   
   my $array = SPVM::Array->malloc_short_array($length);
@@ -108,7 +108,7 @@ sub short_array_len {
   return $array;
 }
 
-sub int_array {
+sub new_int_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
@@ -124,7 +124,7 @@ sub int_array {
   return $array;
 }
 
-sub int_array_len {
+sub new_int_array_len {
   my $length = shift;
   
   my $array = SPVM::Array->malloc_int_array($length);
@@ -132,7 +132,7 @@ sub int_array_len {
   return $array;
 }
 
-sub long_array {
+sub new_long_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
@@ -148,7 +148,7 @@ sub long_array {
   return $array;
 }
 
-sub long_array_len {
+sub new_long_array_len {
   my $length = shift;
   
   my $array = SPVM::Array->malloc_long_array($length);
@@ -156,7 +156,7 @@ sub long_array_len {
   return $array;
 }
 
-sub float_array {
+sub new_float_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
@@ -172,7 +172,7 @@ sub float_array {
   return $array;
 }
 
-sub float_array_len {
+sub new_float_array_len {
   my $length = shift;
   
   my $array = SPVM::Array->malloc_float_array($length);
@@ -180,7 +180,7 @@ sub float_array_len {
   return $array;
 }
 
-sub double_array {
+sub new_double_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
@@ -196,7 +196,7 @@ sub double_array {
   return $array;
 }
 
-sub double_array_len {
+sub new_double_array_len {
   my $length = shift;
   
   my $array = SPVM::Array->malloc_double_array($length);
@@ -204,7 +204,7 @@ sub double_array_len {
   return $array;
 }
 
-sub object {
+sub new_object {
   my $package_name = shift;
   
   my $object = SPVM::Object->malloc_object($package_name);
@@ -574,60 +574,60 @@ If I have idea to implement weaken reference and implement weaken reference, thi
 
 =head2 FUNCTIONS
 
-=head2 byte_array
+=head2 new_byte_array
 
-Create byte array
+Create new_byte array
 
-  my $array = SPVM::byte_array([1, 2, 3]);
+  my $array = SPVM::new_byte_array([1, 2, 3]);
 
-=head2 short_array
+=head2 new_short_array
 
 Create short array
 
-  my $array = SPVM::short_array([1, 2, 3]);
+  my $array = SPVM::new_short_array([1, 2, 3]);
 
-=head2 int_array
+=head2 new_int_array
 
 Create int array
 
-  my $array = SPVM::int_array([1, 2, 3]);
+  my $array = SPVM::new_int_array([1, 2, 3]);
 
-=head2 long_array
+=head2 new_long_array
 
 Create long array
 
-  my $array = SPVM::long_array([1, 2, 3]);
+  my $array = SPVM::new_long_array([1, 2, 3]);
 
-=head2 float_array
+=head2 new_float_array
 
 Create float array
 
-  my $array = SPVM::float_array([1, 2, 3]);
+  my $array = SPVM::new_float_array([1, 2, 3]);
 
-=head2 double_array
+=head2 new_double_array
 
 Create double array
 
-  my $array = SPVM::double_array([1, 2, 3]);
+  my $array = SPVM::new_double_array([1, 2, 3]);
 
-=head2 string_raw
+=head2 new_string_raw
 
 Create byte array from B<not decoded> Perl string. 
 This function is faster than C<SPVM::string> because copy is not executed.
 
-  my $array = SPVM::string_raw("AGTCAGTC");
+  my $array = SPVM::new_string_raw("AGTCAGTC");
 
-=head2 string
+=head2 new_string
 
 Create byte array from B<decoded> Perl string.
 
-  my $array = SPVM::string("‚ ‚¢‚¤‚¦‚¨");
+  my $array = SPVM::new_string("‚ ‚¢‚¤‚¦‚¨");
 
-=head2 object
+=head2 new_object
 
 Create object.
 
-  my $object = SPVM::object("Point");
+  my $object = SPVM::new_object("Point");
 
 You can set and get value by C<set> and C<get> method.
 

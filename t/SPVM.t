@@ -36,9 +36,9 @@ is_deeply(
 {
   # Create object
   {
-    my $object = SPVM::object("TestCase");
-    $object->set(x_int_array => SPVM::int_array([$INT_MAX, $INT_MAX]));
-    $object->set(x_string => SPVM::string_raw("abc"));
+    my $object = SPVM::new_object("TestCase");
+    $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
+    $object->set(x_string => SPVM::new_string_raw("abc"));
     
     ok(SPVM::TestCase::spvm_object_set_object($object));
     
@@ -47,13 +47,13 @@ is_deeply(
   }
   # Create object
   {
-    my $object = SPVM::object("TestCase");
+    my $object = SPVM::new_object("TestCase");
     $object->set(x_byte => $BYTE_MAX);
     $object->set(x_short => $SHORT_MAX);
     $object->set(x_int => $INT_MAX);
     $object->set(x_long => $LONG_MAX);
-    $object->set(x_int_array => SPVM::int_array([1, 2, 3, 4]));
-    $object->set(x_string => SPVM::string("Hello"));
+    $object->set(x_int_array => SPVM::new_int_array([1, 2, 3, 4]));
+    $object->set(x_string => SPVM::new_string("Hello"));
     
     ok(SPVM::TestCase::spvm_object_set($object));
     
@@ -173,51 +173,51 @@ is_deeply(
 
 # call_sub array
 {
-  # SPVM::string
+  # SPVM::new_string
   {
-    my $string = SPVM::string("あ");
+    my $string = SPVM::new_string("あ");
     ok(SPVM::TestCase::call_sub_string($string));
   }
   
   # call_sub string_raw
   {
-    my $string = SPVM::string_raw("abc");
+    my $string = SPVM::new_string_raw("abc");
     ok(SPVM::TestCase::call_sub_string_raw($string));
   }
   
   # call_sub byte_array
   {
-    my $nums = SPVM::byte_array([1, 2, 3]);
+    my $nums = SPVM::new_byte_array([1, 2, 3]);
     is(SPVM::TestCase::call_sub_byte_array($nums), 6);
   }
 
   # call_sub short_array
   {
-    my $nums = SPVM::short_array([1, 2, 3]);
+    my $nums = SPVM::new_short_array([1, 2, 3]);
     is(SPVM::TestCase::call_sub_short_array($nums), 6);
   }
 
   # call_sub int_array
   {
-    my $nums = SPVM::int_array([1, 2, 3]);
+    my $nums = SPVM::new_int_array([1, 2, 3]);
     is(SPVM::TestCase::call_sub_int_array($nums), 6);
   }
 
   # call_sub long_array
   {
-    my $nums = SPVM::long_array([1, 2, 3]);
+    my $nums = SPVM::new_long_array([1, 2, 3]);
     is(SPVM::TestCase::call_sub_long_array($nums), 6);
   }
 
   # call_sub float_array
   {
-    my $nums = SPVM::float_array([0.5, 0.5, 1.0]);
+    my $nums = SPVM::new_float_array([0.5, 0.5, 1.0]);
     is(SPVM::TestCase::call_sub_float_array($nums), 2.0);
   }
 
   # call_sub double_array
   {
-    my $nums = SPVM::double_array([0.5, 0.5, 1.0]);
+    my $nums = SPVM::new_double_array([0.5, 0.5, 1.0]);
     is(SPVM::TestCase::call_sub_double_array($nums), 2.0);
   }
 }
