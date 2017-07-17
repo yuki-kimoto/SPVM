@@ -34,22 +34,38 @@ is_deeply(
 
 # Create object
 {
-  my $object = SPVM::object("TestCase");
-  $object->set(x_byte => $BYTE_MAX);
-  $object->set(x_short => $SHORT_MAX);
-  $object->set(x_int => $INT_MAX);
-  $object->set(x_long => $LONG_MAX);
-  # $object->set(x_int_array => SPVM::int_array([$INT_MAX, $INT_MAX]));
-  # $object->set(x_string => SPVM::string("Hello"));
+  # Create object
+  {
+    my $object = SPVM::object("TestCase");
+    $object->set(x_int_array => SPVM::int_array([$INT_MAX, $INT_MAX]));
+    $object->set(x_string => SPVM::string("Hello"));
+    
+    ok(SPVM::TestCase::spvm_object_set_object($object));
+    
+    is($object->get('x_int_array')->{type}, "int[]");
+    is($object->get('x_string')->{type}, "string");
+  }
+  # Create object
+  {
+    my $object = SPVM::object("TestCase");
+    $object->set(x_byte => $BYTE_MAX);
+    $object->set(x_short => $SHORT_MAX);
+    $object->set(x_int => $INT_MAX);
+    $object->set(x_long => $LONG_MAX);
+    $object->set(x_int_array => SPVM::int_array([1, 2, 3, 4]));
+    $object->set(x_string => SPVM::string("Hello"));
+    
+    ok(SPVM::TestCase::spvm_object_set($object));
+    
+    is($object->get('x_byte'), $BYTE_MAX);
+    is($object->get('x_short'), $SHORT_MAX);
+    is($object->get('x_int'), $INT_MAX);
+    is($object->get('x_long'), $LONG_MAX);
+    is($object->get('x_int_array')->{type}, "int[]");
+    is($object->get('x_string')->{type}, "string");
+  }
   
-  ok(SPVM::TestCase::spvm_object_set($object));
-  
-  is($object->get('x_byte'), $BYTE_MAX);
-  is($object->get('x_short'), $SHORT_MAX);
-  is($object->get('x_int'), $INT_MAX);
-  is($object->get('x_long'), $LONG_MAX);
 }
-__END__
 
 # logical not
 {

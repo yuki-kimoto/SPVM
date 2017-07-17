@@ -100,6 +100,8 @@ const char* SPVM_XS_UTIL_get_field_id(const char* package_name, const char* fiel
 }
 
 SV* SPVM_XS_UTIL_new_sv_array(const char* type, SPVM_API_ARRAY* array) {
+  
+  
   // Create array
   HV* hv_array = sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
@@ -147,12 +149,17 @@ SPVM_API_ARRAY* SPVM_XS_UTIL_get_array(SV* sv_array) {
   
   HV* hv_array = (HV*)SvRV(sv_array);
   SV** sv_content_ptr = hv_fetch(hv_array, "content", strlen("content"), 0);
-  SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
-  SV* sviv_content = SvRV(sv_content);
-  size_t iv_content = SvIV(sviv_content);
-  SPVM_API_ARRAY* array = INT2PTR(SPVM_API_ARRAY*, iv_content);
-  
-  return array;
+  if (sv_content_ptr) {
+    SV* sv_content = *sv_content_ptr;
+    SV* sviv_content = SvRV(sv_content);
+    size_t iv_content = SvIV(sviv_content);
+    SPVM_API_ARRAY* array = INT2PTR(SPVM_API_ARRAY*, iv_content);
+    
+    return array;
+  }
+  else {
+    return NULL;
+  }
 }
 
 SPVM_API_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {

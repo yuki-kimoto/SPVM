@@ -135,8 +135,9 @@ set(...)
       croak("Can't set \"%s\" value to \"%s\" field", value_type, field_type);
     }
     
-    SPVM_API_BASE_OBJECT* base_object = (SPVM_API_BASE_OBJECT*)SvIV(sv_value);
-    api->set_object_field(api, object, field_id, base_object);
+    SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_value);
+    
+    api->set_object_field(api, object, field_id, array);
   }
   
   XSRETURN(0);
@@ -234,7 +235,7 @@ malloc_byte_array(...)
   SPVM_API_ARRAY* array =  api->malloc_byte_array_noinc(api, length);
   
   // Increment reference count
-  api->inc_ref_count(array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("byte[]", array);
@@ -289,7 +290,7 @@ malloc_short_array(...)
   SPVM_API_ARRAY* array =  api->malloc_short_array_noinc(api, length);
   
   // Increment reference count
-  api->inc_ref_count(array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("short[]", array);
@@ -342,9 +343,9 @@ malloc_int_array(...)
   
   // Malloc array
   SPVM_API_ARRAY* array =  api->malloc_int_array_noinc(api, length);
-  
+
   // Increment reference count
-  api->inc_ref_count(array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("int[]", array);
@@ -399,7 +400,7 @@ malloc_long_array(...)
   SPVM_API_ARRAY* array =  api->malloc_long_array_noinc(api, length);
   
   // Increment reference count
-  api->inc_ref_count(array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("long[]", array);
@@ -454,7 +455,7 @@ malloc_float_array(...)
   SPVM_API_ARRAY* array =  api->malloc_float_array_noinc(api, length);
   
   // Increment reference count
-  api->inc_ref_count(array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("float[]", array);
@@ -509,7 +510,7 @@ malloc_double_array(...)
   SPVM_API_ARRAY* array =  api->malloc_double_array_noinc(api, length);
   
   // Increment reference count
-  api->inc_ref_count(array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_array("double[]", array);
@@ -564,7 +565,7 @@ malloc_string_raw(...)
   SPVM_API_ARRAY* array =  api->malloc_byte_array_noinc(api, length);
   
   // Increment reference count
-  api->inc_ref_count(array);
+  api->inc_ref_count(api, array);
   
   const char* string = SvPV_nolen(sv_string);
   int8_t* elements = api->get_byte_array_elements(api, array);
