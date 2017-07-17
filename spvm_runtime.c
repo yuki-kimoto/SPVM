@@ -543,7 +543,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
     }
     
-    // Resotre call stack base
+    // Restore call stack base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
     // Push return value
@@ -607,7 +607,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       return_value->ref_count--;
     }
     
-    // Resotre call stack base
+    // Restore call stack base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
     // Push return value
@@ -658,7 +658,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
     }
     
-    // Resotre vars base
+    // Restore vars base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
     // Finish call sub
@@ -759,7 +759,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       file_name
     );
     
-    // Resotre vars base
+    // Restore vars base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
     // Set exception
