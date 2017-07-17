@@ -124,7 +124,7 @@ SPVM_API_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   return object;
 }
 
-int32_t SPVM_XS_UTIL_search_type_id(const char* type) {
+int32_t SPVM_XS_UTIL_get_type_id(const char* type) {
   HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
 
   SV** sv_type_ptr = hv_fetch(hv_type_symtable, type, strlen(type), 0);
@@ -134,7 +134,21 @@ int32_t SPVM_XS_UTIL_search_type_id(const char* type) {
     return type_id;
   }
   else {
-    return -1;
+    return SPVM_API_ERROR_NO_ID;
+  }
+}
+
+int32_t SPVM_XS_UTIL_get_package_id(const char* package) {
+  HV* hv_package_symtable = get_hv("SPVM::PACKAGE_SYMTABLE", 0);
+
+  SV** sv_package_ptr = hv_fetch(hv_package_symtable, package, strlen(package), 0);
+  if (sv_package_ptr) {
+    SV* sv_package = *sv_package_ptr;
+    int32_t package_id = (int32_t)SvIV(sv_package);
+    return package_id;
+  }
+  else {
+    return SPVM_API_ERROR_NO_ID;
   }
 }
 

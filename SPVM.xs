@@ -56,7 +56,7 @@ malloc_object(...)
     croak("Type \"%s\"must be package(SPVM::Object::malloc_object)", type);
   }
   
-  int32_t type_id = SPVM_XS_UTIL_search_type_id(type);
+  int32_t type_id = SPVM_XS_UTIL_get_type_id(type);
   if (type_id == -1) {
     croak("Unkown type \"%s\"(SPVM::Object::malloc_object", type);
   }
