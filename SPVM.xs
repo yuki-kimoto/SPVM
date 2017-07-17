@@ -705,7 +705,11 @@ build_package_symtable(...)
       int32_t package_id = package->constant_pool_index;
       SV* sv_package_id = sv_2mortal(newSViv(package_id));
       
-      hv_store(hv_package_symtable, package_name, strlen(package_name), SvREFCNT_inc(sv_package_id), 0);
+      HV* hv_package_info = (HV*)sv_2mortal((SV*)newHV());
+      hv_store(hv_package_info, "id", strlen("id"), SvREFCNT_inc(sv_package_id), 0);
+      SV* sv_package_info = sv_2mortal(newRV_inc((SV*)hv_package_info));
+
+      hv_store(hv_package_symtable, package_name, strlen(package_name), SvREFCNT_inc(sv_package_info), 0);
     }
   }
   
