@@ -1,7 +1,15 @@
 package TestCase {
   has x : int;
   has y : long;
-
+  
+  sub spvm_object_set($obj : TestCase) : int {
+    if ($obj->{x} == 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   sub logical_not_true() : int {
     if (!1) {
       return 0;

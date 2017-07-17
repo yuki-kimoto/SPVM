@@ -28,6 +28,7 @@ is_deeply(
   my $object = SPVM::object("TestCase");
   $object->set(x => 1);
   $object->set(y => 3);
+  ok(SPVM::TestCase::spvm_object_set($object));
 }
 
 # logical not
