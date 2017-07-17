@@ -40,22 +40,11 @@ CHECK {
   # Build field symbol table
   build_field_symtable();
   
-  use Data::Dumper;
-  warn Dumper [
-    \%TYPE_SYMTABLE,
-    \%SUB_SYMTABLE,
-    \%PACKAGE_SYMTABLE,
-    \%FIELD_SYMTABLE
-  ];
-  
   # Build SPVM subroutine
   build_spvm_subs();
   
   # Build run-time
   build_runtime();
-  
-  use Data::Dumper;
-  warn Dumper \%PACKAGE_SYMTABLE;
   
   # Free compiler
   free_compiler();

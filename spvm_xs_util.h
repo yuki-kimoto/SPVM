@@ -129,9 +129,18 @@ int32_t SPVM_XS_UTIL_get_type_id(const char* type) {
 
   SV** sv_type_ptr = hv_fetch(hv_type_symtable, type, strlen(type), 0);
   if (sv_type_ptr) {
-    SV* sv_type = *sv_type_ptr;
-    int32_t type_id = (int32_t)SvIV(sv_type);
-    return type_id;
+    SV* sv_type_info = *sv_type_ptr;
+    HV* hv_type_info = (HV*)SvRV(sv_type_info);
+    
+    SV** sv_type_id_ptr = hv_fetch(hv_type_info, "id", strlen("id"), 0);
+    if (sv_type_id_ptr) {
+      SV* sv_type_id = *sv_type_id_ptr;
+      int32_t type_id = (int32_t)SvIV(sv_type_id);
+      return type_id;
+    }
+    else {
+      return SPVM_API_ERROR_NO_ID;
+    }
   }
   else {
     return SPVM_API_ERROR_NO_ID;
