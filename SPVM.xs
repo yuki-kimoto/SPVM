@@ -623,10 +623,7 @@ build_sub_symtable(...)
   PPCODE:
 {
   // Get compiler
-  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
-  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
-  size_t iv_compiler = SvIV(sviv_compiler);
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  SPVM_COMPILER* compiler = SPVM_XS_INTERNAL_UTIL_get_compiler();
   
   // Subroutine information
   HV* hv_sub_symtable = get_hv("SPVM::SUB_SYMTABLE", 0);
@@ -697,10 +694,7 @@ build_package_symtable(...)
   PPCODE:
 {
   // Get compiler
-  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
-  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
-  size_t iv_compiler = SvIV(sviv_compiler);
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  SPVM_COMPILER* compiler = SPVM_XS_INTERNAL_UTIL_get_compiler();
   
   // Subroutine information
   HV* hv_package_symtable = get_hv("SPVM::PACKAGE_SYMTABLE", 0);
@@ -729,10 +723,7 @@ build_field_symtable(...)
   PPCODE:
 {
   // Get compiler
-  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
-  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
-  size_t iv_compiler = SvIV(sviv_compiler);
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  SPVM_COMPILER* compiler = SPVM_XS_INTERNAL_UTIL_get_compiler();
   
   // Field symbol table
   HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
@@ -779,10 +770,7 @@ build_type_symtable(...)
   PPCODE:
 {
   // Get compiler
-  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
-  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
-  size_t iv_compiler = SvIV(sviv_compiler);
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  SPVM_COMPILER* compiler = SPVM_XS_INTERNAL_UTIL_get_compiler();
   
   // Subroutine information
   HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
@@ -810,10 +798,7 @@ build_runtime(...)
   PPCODE:
 {
   // Get compiler
-  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
-  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
-  size_t iv_compiler = SvIV(sviv_compiler);
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  SPVM_COMPILER* compiler = SPVM_XS_INTERNAL_UTIL_get_compiler();
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
@@ -833,10 +818,7 @@ free_compiler(...)
   PPCODE:
 {
   // Get compiler
-  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
-  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
-  size_t iv_compiler = SvIV(sviv_compiler);
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  SPVM_COMPILER* compiler = SPVM_XS_INTERNAL_UTIL_get_compiler();
   
   // Free compiler
   SPVM_COMPILER_free(compiler);
