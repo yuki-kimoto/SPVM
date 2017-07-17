@@ -43,32 +43,27 @@ malloc_object(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
-  SV* sv_type = ST(1);
+  SV* sv_package = ST(1);
   
-  if (!SvOK(sv_type)) {
+  if (!SvOK(sv_package)) {
     croak("Type must be specified(SPVM::Object::malloc_object)");
   }
   
-  const char* type = SvPV_nolen(sv_type);
+  const char* package = SvPV_nolen(sv_package);
 
-  int32_t type_length = strlen(type);
-  if (type[type_length - 1] == ']' || strcmp(type, "string") == 0) {
-    croak("Type \"%s\"must be package(SPVM::Object::malloc_object)", type);
-  }
-  
-  int32_t type_id = SPVM_XS_UTIL_get_type_id(type);
-  if (type_id == -1) {
-    croak("Unkown type \"%s\"(SPVM::Object::malloc_object", type);
+  int32_t package_id = SPVM_XS_UTIL_get_package_id(package);
+  if (package_id == SPVM_API_ERROR_NO_ID) {
+    croak("Unkown package \"%s\"(SPVM::Object::malloc_object", package);
   }
   
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_OBJECT* object =  api->malloc_object_noinc(api, type_id);
+  SPVM_API_OBJECT* object =  api->malloc_object_noinc(api, package_id);
 
   // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object(type, object);
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(package, object);
   
   XPUSHs(sv_object);
   XSRETURN(1);
@@ -100,8 +95,7 @@ set(...)
   
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
-  if (field_id == -1) {
-    warn("CCCCC %s %s", field_type, field_name);
+  if (field_id == SPVM_API_ERROR_NO_ID) {
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", field_type, field_name);
   }
 
@@ -157,7 +151,7 @@ get(...)
   
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
-  if (field_id == -1) {
+  if (field_id == SPVM_API_ERROR_NO_ID) {
     croak("Can't find %s \"%s\" field(SPVM::Object::get)", type, field_name);
   }
   
