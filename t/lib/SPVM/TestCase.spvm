@@ -1,10 +1,29 @@
 package TestCase {
-  has x : int;
-  has y : long;
+  has x_byte : byte;
+  has x_short : short;
+  has x_int : int;
+  has x_long : long;
+  
+  enum {
+    BYTE_MAX = 127,
+    # BYTE_MIN = -128,
+    SHORT_MAX = 32767,
+    # SHORT_MIN = -32768,
+    INT_MAX = 2147483647,
+    # INT_MIN = -2147483648,
+    LONG_MAX = 9223372036854775807L
+    # LONG_MIN = -9223372036854775808L
+  }
   
   sub spvm_object_set($obj : TestCase) : int {
-    if ($obj->{x} == 1) {
-      return 1;
+    if ($obj->{x_byte} == (byte)TestCase->BYTE_MAX) {
+      if ($obj->{x_short} == (short)TestCase->SHORT_MAX) {
+        if ($obj->{x_int} == TestCase->INT_MAX) {
+          if ($obj->{x_long} == TestCase->LONG_MAX) {
+            return 1;
+          }
+        }
+      }
     }
     
     return 0;

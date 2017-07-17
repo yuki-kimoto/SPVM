@@ -95,7 +95,6 @@ set(...)
   if (field_id == SPVM_API_ERROR_NO_ID) {
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
-
   
   assert(field_type);
   
@@ -952,6 +951,8 @@ call_sub(...)
   }
   
   api->call_sub(api, sub_id);
+  
+  
   
   if (SvOK(sv_return_type)) {
     // Create base_object

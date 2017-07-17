@@ -15,6 +15,15 @@ use SPVM 'std'; my $use_std_line = __LINE__;
 
 use SPVM::Object;
 
+my $BYTE_MAX = 127;
+my $BYTE_MIN = -128;
+my $SHORT_MAX = 32767;
+my $SHORT_MIN = -32768;
+my $INT_MAX = 2147483647;
+my $INT_MIN = -2147483648;
+my $LONG_MAX = 9223372036854775807;
+my $LONG_MIN = -9223372036854775808;
+
 is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
@@ -24,12 +33,16 @@ is_deeply(
 );
 
 # Create object
+=pod
 {
   my $object = SPVM::object("TestCase");
-  $object->set(x => 1);
-  $object->set(y => 3);
+  $object->set(x_byte => $BYTE_MAX);
+  $object->set(x_short => $SHORT_MAX);
+  $object->set(x_int => $INT_MAX);
+  $object->set(x_long => $LONG_MAX);
   ok(SPVM::TestCase::spvm_object_set($object));
 }
+=cut
 
 # logical not
 {
