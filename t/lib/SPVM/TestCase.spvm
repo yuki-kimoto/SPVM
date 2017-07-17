@@ -8,11 +8,22 @@ package TestCase {
 
   sub spvm_object_set_object($obj : TestCase) : int {
     my $nums = $obj->{x_int_array};
+    my $bytes = (byte[])($obj->{x_string});
     
+    # [INT_MAX, INT_MAX]
     if (@$nums == 2) {
       if ($nums->[0] == 2147483647) {
         if ($nums->[1] == 2147483647) {
-          return 1;
+          # abc
+          if ($bytes->[0] == (byte)97) {
+            if ($bytes->[1] == (byte)98) {
+              if ($bytes->[2] == (byte)99) {
+                if (@$bytes == 3) {
+                  return 1;
+                }
+              }
+            }
+          }
         }
       }
     }

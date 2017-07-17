@@ -38,7 +38,7 @@ is_deeply(
   {
     my $object = SPVM::object("TestCase");
     $object->set(x_int_array => SPVM::int_array([$INT_MAX, $INT_MAX]));
-    $object->set(x_string => SPVM::string("Hello"));
+    $object->set(x_string => SPVM::string_raw("abc"));
     
     ok(SPVM::TestCase::spvm_object_set_object($object));
     
