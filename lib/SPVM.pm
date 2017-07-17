@@ -33,12 +33,20 @@ CHECK {
   
   # Build subroutine symbol table
   build_sub_symtable();
-
+  
   # Build package symbol table
   build_package_symtable();
   
   # Build field symbol table
   build_field_symtable();
+  
+  use Data::Dumper;
+  warn Dumper [
+    \%TYPE_SYMTABLE,
+    \%SUB_SYMTABLE,
+    \%PACKAGE_SYMTABLE,
+    \%FIELD_SYMTABLE
+  ];
   
   # Build SPVM subroutine
   build_spvm_subs();
