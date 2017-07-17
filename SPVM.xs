@@ -89,12 +89,15 @@ set(...)
   // Field type
   const char* field_name = SvPV_nolen(sv_field_name);
   const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
-  
+  warn("AAAAAAAAAAAAAAAA %s %s %s", package_name, field_type, field_name);
   // Field id
-  int32_t field_id = SPVM_XS_UTIL_get_field_id(object, field_name);
+  int32_t field_id = api->get_field_id(api, object, field_name);
   if (field_id == SPVM_API_ERROR_NO_ID) {
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
+
+  
+  assert(field_type);
   
   int32_t field_type_length = strlen(field_type);
   if (strEQ(field_type, "byte")) {

@@ -28,7 +28,7 @@ is_deeply(
 {
   my $object = SPVM::object("TestCase");
   $object->set(x => 1);
-  $object->set(y => 3);
+  # $object->set(y => 3);
 }
 =cut
 

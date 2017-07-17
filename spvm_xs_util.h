@@ -45,7 +45,7 @@ const char* SPVM_XS_UTIL_get_field_type(const char* package_name, const char* fi
       SV* sv_field_info = *sv_field_info_ptr;
       HV* hv_field_info = (HV*)SvRV(sv_field_info);
       
-      SV** sv_field_type_ptr = hv_fetch(hv_package_info, "type", strlen("type"), 0);
+      SV** sv_field_type_ptr = hv_fetch(hv_field_info, "type", strlen("type"), 0);
       if (sv_field_type_ptr) {
         SV* sv_field_type = *sv_field_type_ptr;
         const char* field_type = SvPV_nolen(sv_field_type);
