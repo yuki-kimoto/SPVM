@@ -91,6 +91,10 @@ struct SPVM_api {
   void (*push_retval_float)(SPVM_API*, float);
   void (*push_retval_double)(SPVM_API*, double);
   void (*push_retval_object)(SPVM_API*, SPVM_API_BASE_OBJECT*);
+
+  // Exception
+  void (*set_exception)(SPVM_API* api, SPVM_API_ARRAY* exception);
+  SPVM_API_ARRAY* (*get_exception)(SPVM_API* api);
 };
 
 #endif
