@@ -5,14 +5,14 @@
 #include "spvm_api.h"
 
 // Array functions
-int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_SPVM_ARRAY* array);
-int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_SPVM_ARRAY* array);
-int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_API* api, SPVM_SPVM_ARRAY* array);
-int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_API* api, SPVM_SPVM_ARRAY* array);
-int64_t* SPVM_RUNTIME_API_get_long_array_elements(SPVM_API* api, SPVM_SPVM_ARRAY* array);
-float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_API* api, SPVM_SPVM_ARRAY* array);
-double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_SPVM_ARRAY* array);
-SPVM_BASE_OBJECT** SPVM_RUNTIME_API_get_object_array_elements(SPVM_API* api, SPVM_SPVM_ARRAY* array);
+int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_ARRAY* array);
+int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_ARRAY* array);
+int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_API* api, SPVM_ARRAY* array);
+int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_API* api, SPVM_ARRAY* array);
+int64_t* SPVM_RUNTIME_API_get_long_array_elements(SPVM_API* api, SPVM_ARRAY* array);
+float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_API* api, SPVM_ARRAY* array);
+double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_ARRAY* array);
+SPVM_BASE_OBJECT** SPVM_RUNTIME_API_get_object_array_elements(SPVM_API* api, SPVM_ARRAY* array);
 
 // Object functions
 int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const char* name);
@@ -65,8 +65,8 @@ void SPVM_RUNTIME_API_push_retval_object(SPVM_API* api, SPVM_BASE_OBJECT* value)
 
 // Internal functions
 int64_t SPVM_RUNTIME_API_calcurate_base_object_byte_size(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
-SPVM_SPVM_ARRAY* SPVM_RUNTIME_API_create_array_byte(SPVM_API* api, int32_t length);
-SPVM_SPVM_ARRAY* SPVM_RUNTIME_API_create_array_byte_from_pv(SPVM_API* api, const char* pv);
+SPVM_ARRAY* SPVM_RUNTIME_API_create_array_byte(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_create_array_byte_from_pv(SPVM_API* api, const char* pv);
 int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_API* api, int32_t type);
 SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object);
@@ -80,14 +80,14 @@ int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name);
 
 SPVM_OBJECT* SPVM_RUNTIME_API_malloc_object_noinc(SPVM_API* api, int32_t package_id);
 
-SPVM_SPVM_ARRAY* SPVM_RUNTIME_API_malloc_byte_array_noinc(SPVM_API* api, int32_t length);
-SPVM_SPVM_ARRAY* SPVM_RUNTIME_API_malloc_short_array_noinc(SPVM_API* api, int32_t length);
-SPVM_SPVM_ARRAY* SPVM_RUNTIME_API_malloc_int_array_noinc(SPVM_API* api, int32_t length);
-SPVM_SPVM_ARRAY* SPVM_RUNTIME_API_malloc_long_array_noinc(SPVM_API* api, int32_t length);
-SPVM_SPVM_ARRAY* SPVM_RUNTIME_API_malloc_float_array_noinc(SPVM_API* api, int32_t length);
-SPVM_SPVM_ARRAY* SPVM_RUNTIME_API_malloc_double_array_noinc(SPVM_API* api, int32_t length);
-SPVM_SPVM_ARRAY* SPVM_RUNTIME_API_malloc_object_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_malloc_byte_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_malloc_short_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_malloc_int_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_malloc_long_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_malloc_float_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_malloc_double_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_malloc_object_array_noinc(SPVM_API* api, int32_t length);
 
-void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_SPVM_ARRAY* exception);
+void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY* exception);
 
 #endif

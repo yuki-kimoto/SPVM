@@ -386,8 +386,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   int32_t call_stack_base_start = call_stack_base;
   
   // Offten used variables
-  SPVM_SPVM_ARRAY* array = NULL;
-  SPVM_SPVM_ARRAY* array_exception = NULL;
+  SPVM_ARRAY* array = NULL;
+  SPVM_ARRAY* array_exception = NULL;
   SPVM_OBJECT* object = NULL;
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   int32_t index;
@@ -676,7 +676,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   }
   case_SPVM_BYTECODE_C_CODE_STORE_EXCEPTION: {
     
-    SPVM_RUNTIME_API_set_exception(api, (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top].object_value);
+    SPVM_RUNTIME_API_set_exception(api, (SPVM_ARRAY*)call_stack[operand_stack_top].object_value);
     
     operand_stack_top--;
     
@@ -736,14 +736,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     total_length += strlen(file_name);
     
     // Create exception message
-    SPVM_SPVM_ARRAY* new_array_exception = SPVM_RUNTIME_API_malloc_byte_array_noinc(api, total_length);
+    SPVM_ARRAY* new_array_exception = SPVM_RUNTIME_API_malloc_byte_array_noinc(api, total_length);
     memcpy(
-      (void*)((intptr_t)new_array_exception + sizeof(SPVM_SPVM_ARRAY)),
-      (void*)((intptr_t)runtime->exception + sizeof(SPVM_SPVM_ARRAY)),
+      (void*)((intptr_t)new_array_exception + sizeof(SPVM_ARRAY)),
+      (void*)((intptr_t)runtime->exception + sizeof(SPVM_ARRAY)),
       SPVM_RUNTIME_API_get_array_length(api, runtime->exception)
     );
     sprintf(
-      (char*)((intptr_t)new_array_exception + sizeof(SPVM_SPVM_ARRAY) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
+      (char*)((intptr_t)new_array_exception + sizeof(SPVM_ARRAY) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
       "%s%s%s%s",
       from,
       sub_name,
@@ -981,7 +981,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_BYTE:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
     index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of byte to get the element must not be undef");
@@ -996,14 +996,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
       else {
         call_stack[operand_stack_top - 1].byte_value
-          = *(int8_t*)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(int8_t) * index);
+          = *(int8_t*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(int8_t) * index);
         operand_stack_top--;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_SHORT:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
     index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of short to get the element must not be undef");
@@ -1018,14 +1018,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
       else {
         call_stack[operand_stack_top - 1].short_value
-          = *(int16_t*)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(int16_t) * index);
+          = *(int16_t*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(int16_t) * index);
         operand_stack_top--;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_INT:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
     index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of int to get the element must not be undef");
@@ -1039,14 +1039,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        call_stack[operand_stack_top - 1].int_value = *(int32_t*)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(int32_t) * index);
+        call_stack[operand_stack_top - 1].int_value = *(int32_t*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(int32_t) * index);
         operand_stack_top--;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_LONG:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
     index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of long to get the element must not be undef");
@@ -1060,14 +1060,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        call_stack[operand_stack_top - 1].long_value = *(int64_t*)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(int64_t) * index);
+        call_stack[operand_stack_top - 1].long_value = *(int64_t*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(int64_t) * index);
         operand_stack_top--;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_FLOAT:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
     index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of float to get the element must not be undef");
@@ -1081,14 +1081,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        call_stack[operand_stack_top - 1].float_value = *(float*)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(float) * index);
+        call_stack[operand_stack_top - 1].float_value = *(float*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(float) * index);
         operand_stack_top--;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_DOUBLE:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
     index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of double to get the element must not be undef");
@@ -1102,14 +1102,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        call_stack[operand_stack_top - 1].double_value = *(double*)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(double) * index);
+        call_stack[operand_stack_top - 1].double_value = *(double*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(double) * index);
         operand_stack_top--;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_OBJECT:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 1].object_value;
     index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of reference to get the element must not be undef");
@@ -1123,14 +1123,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        call_stack[operand_stack_top - 1].object_value = *(void**)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(void*) * index);
+        call_stack[operand_stack_top - 1].object_value = *(void**)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(void*) * index);
         operand_stack_top--;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_BYTE:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
     index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of byte to set the element must not be undef");
@@ -1144,7 +1144,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        *(int8_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + sizeof(SPVM_SPVM_ARRAY) + sizeof(int8_t) * call_stack[operand_stack_top - 1].int_value)
+        *(int8_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + sizeof(SPVM_ARRAY) + sizeof(int8_t) * call_stack[operand_stack_top - 1].int_value)
           = call_stack[operand_stack_top].byte_value;
         operand_stack_top -= 3;
         pc++;
@@ -1152,7 +1152,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_SHORT:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
     index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of short to set the element must not be undef");
@@ -1166,7 +1166,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        *(int16_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + sizeof(SPVM_SPVM_ARRAY) + sizeof(int16_t) * call_stack[operand_stack_top - 1].int_value)
+        *(int16_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + sizeof(SPVM_ARRAY) + sizeof(int16_t) * call_stack[operand_stack_top - 1].int_value)
           = call_stack[operand_stack_top].short_value;
         operand_stack_top -= 3;
         pc++;
@@ -1174,7 +1174,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_INT:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
     index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of int to set the element must not be undef");
@@ -1188,14 +1188,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        *(int32_t*)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(int32_t) * index) = call_stack[operand_stack_top].int_value;
+        *(int32_t*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(int32_t) * index) = call_stack[operand_stack_top].int_value;
         operand_stack_top -= 3;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_LONG:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
     index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of long to set the element must not be undef");
@@ -1209,14 +1209,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        *(int64_t*)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(int64_t) * index) = call_stack[operand_stack_top].long_value;
+        *(int64_t*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(int64_t) * index) = call_stack[operand_stack_top].long_value;
         operand_stack_top -= 3;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_FLOAT:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
     index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of float to set the element must not be undef");
@@ -1230,14 +1230,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        *(float*)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(float) * index) = call_stack[operand_stack_top - 1].float_value;
+        *(float*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(float) * index) = call_stack[operand_stack_top - 1].float_value;
         operand_stack_top -= 3;
         pc++;
         goto *jump[*pc];
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_DOUBLE:
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
     index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of double to set the element must not be undef");
@@ -1251,7 +1251,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        *(double*)((intptr_t)call_stack[operand_stack_top - 2].object_value + sizeof(SPVM_SPVM_ARRAY) + sizeof(double) * call_stack[operand_stack_top - 1].int_value)
+        *(double*)((intptr_t)call_stack[operand_stack_top - 2].object_value + sizeof(SPVM_ARRAY) + sizeof(double) * call_stack[operand_stack_top - 1].int_value)
           = call_stack[operand_stack_top].double_value;
         operand_stack_top -= 3;
         pc++;
@@ -1259,7 +1259,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT: {
-    array = (SPVM_SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
+    array = (SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
     index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "The array of reference to set the element must not be undef");
@@ -1273,7 +1273,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)array + sizeof(SPVM_SPVM_ARRAY) + sizeof(void*) * index);
+        SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(void*) * index);
         
         // Increment reference count
         if (call_stack[operand_stack_top].object_value != NULL) {
@@ -2043,25 +2043,25 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     int32_t length = call_stack[operand_stack_top].int_value;
     
     switch(value_type) {
-      case SPVM_SPVM_ARRAY_C_VALUE_TYPE_BYTE:
+      case SPVM_ARRAY_C_VALUE_TYPE_BYTE:
         array = SPVM_RUNTIME_API_malloc_byte_array_noinc(api, length);
         break;
-      case SPVM_SPVM_ARRAY_C_VALUE_TYPE_SHORT:
+      case SPVM_ARRAY_C_VALUE_TYPE_SHORT:
         array = SPVM_RUNTIME_API_malloc_short_array_noinc(api, length);
         break;
-      case SPVM_SPVM_ARRAY_C_VALUE_TYPE_INT:
+      case SPVM_ARRAY_C_VALUE_TYPE_INT:
         array = SPVM_RUNTIME_API_malloc_int_array_noinc(api, length);
         break;
-      case SPVM_SPVM_ARRAY_C_VALUE_TYPE_LONG:
+      case SPVM_ARRAY_C_VALUE_TYPE_LONG:
         array = SPVM_RUNTIME_API_malloc_long_array_noinc(api, length);
         break;
-      case SPVM_SPVM_ARRAY_C_VALUE_TYPE_FLOAT:
+      case SPVM_ARRAY_C_VALUE_TYPE_FLOAT:
         array = SPVM_RUNTIME_API_malloc_float_array_noinc(api, length);
         break;
-      case SPVM_SPVM_ARRAY_C_VALUE_TYPE_DOUBLE:
+      case SPVM_ARRAY_C_VALUE_TYPE_DOUBLE:
         array = SPVM_RUNTIME_API_malloc_double_array_noinc(api, length);
         break;
-      case SPVM_SPVM_ARRAY_C_VALUE_TYPE_OBJECT:
+      case SPVM_ARRAY_C_VALUE_TYPE_OBJECT:
         array = SPVM_RUNTIME_API_malloc_object_array_noinc(api, length);
         break;
       default:
@@ -2108,7 +2108,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       abort();
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LENGTH:
-    call_stack[operand_stack_top].int_value = (int32_t)((SPVM_SPVM_ARRAY*)call_stack[operand_stack_top].object_value)->length;
+    call_stack[operand_stack_top].int_value = (int32_t)((SPVM_ARRAY*)call_stack[operand_stack_top].object_value)->length;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_WIDE:

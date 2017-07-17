@@ -22,7 +22,7 @@ typedef struct SPVM_object SPVM_OBJECT;
 
 // spvm_array.h
 struct SPVM_array;
-typedef struct SPVM_array SPVM_SPVM_ARRAY;
+typedef struct SPVM_array SPVM_ARRAY;
 
 // spvm_base_object.h
 struct SPVM_base_object;
@@ -111,14 +111,6 @@ typedef struct SPVM_type SPVM_TYPE;
 /* spvm_type_component_array.h */
 struct SPVM_type_part;
 typedef struct SPVM_type_part SPVM_TYPE_PART;
-
-/* spvm_type_component_array.h */
-struct SPVM_type_component_name;
-typedef struct SPVM_type_component_name SPVM_TYPE_COMPONENT_NAME;
-
-/* spvm_type_component_array.h */
-struct SPVM_type_component_array;
-typedef struct SPVM_type_component_array SPVM_TYPE_COMPONENT_ARRAY;
 
 /* spvm_enum.h */
 struct SPVM_enumeration;
