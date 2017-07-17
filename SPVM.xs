@@ -25,6 +25,17 @@
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
 
+SPVM_COMPILER* SPVM_XS_INTERNAL_UTIL_get_compiler() {
+
+  // Get compiler
+  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
+  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
+  size_t iv_compiler = SvIV(sviv_compiler);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  
+  return compiler;
+}
+
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
 SV*
@@ -675,6 +686,38 @@ build_sub_symtable(...)
           hv_store(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), SvREFCNT_inc(sv_sub_info), 0);
         }
       }
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+build_package_symtable(...)
+  PPCODE:
+{
+  // Get compiler
+  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
+  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
+  size_t iv_compiler = SvIV(sviv_compiler);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  
+  // Subroutine information
+  HV* hv_package_symtable = get_hv("SPVM::PACKAGE_SYMTABLE", 0);
+  
+  // abs_name, arg_packages, return_package, id, package_id
+  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
+  {
+    int32_t package_index;
+    for (package_index = 0; package_index < op_packages->length; package_index++) {
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      
+      const char* package_name = package->op_name->uv.name;
+      int32_t package_id = package->constant_pool_index;
+      SV* sv_package_id = sv_2mortal(newSViv(package_id));
+      
+      hv_store(hv_package_symtable, package_name, strlen(package_name), SvREFCNT_inc(sv_package_id), 0);
     }
   }
   

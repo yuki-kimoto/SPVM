@@ -17,9 +17,10 @@ our $VERSION = '0.0221';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
+our %PACKAGE_SYMTABLE;
+our %FIELD_SYMTABLE;
 our %SUB_SYMTABLE;
 our %TYPE_SYMTABLE;
-our %FIELD_SYMTABLE;
 our $API;
 
 # Compile SPVM source code just after compile-time of Perl
@@ -32,6 +33,9 @@ CHECK {
   
   # Build subroutine symbol table
   build_sub_symtable();
+
+  # Build package symbol table
+  build_package_symtable();
   
   # Build field symbol table
   build_field_symtable();
@@ -43,7 +47,7 @@ CHECK {
   build_runtime();
   
   use Data::Dumper;
-  warn Dumper \%FIELD_SYMTABLE;
+  warn Dumper \%PACKAGE_SYMTABLE;
   
   # Free compiler
   free_compiler();
