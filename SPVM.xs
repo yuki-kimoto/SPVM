@@ -144,50 +144,52 @@ get(...)
   SV* sv_object = ST(0);
   SV* sv_field_name = ST(1);
   
-  const char* field_name = SvPV_nolen(sv_field_name);
-  
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
 
-  // Type
-  const char* type = SPVM_XS_UTIL_get_type(sv_object);
+  // Package name
+  const char* package_name = SPVM_XS_UTIL_get_type(sv_object);
+  
+  // Field type
+  const char* field_name = SvPV_nolen(sv_field_name);
+  const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
   
   // Field id
-  int32_t field_id = api->get_field_id(api, object, field_name);
+  int32_t field_id = SPVM_XS_UTIL_get_field_id(object, field_name);
   if (field_id == SPVM_API_ERROR_NO_ID) {
-    croak("Can't find %s \"%s\" field(SPVM::Object::get)", type, field_name);
+    croak("Can't find %s \"%s\" field(SPVM::Object::get)", package_name, field_name);
   }
   
-  if (strEQ(type, "byte")) {
+  if (strEQ(field_type, "byte")) {
     int8_t return_value = api->get_byte_field(api, object, field_id);
     SV* sv_value = sv_2mortal(newSViv(return_value));
     XPUSHs(sv_value);
   }
-  else if (strEQ(type, "short")) {
+  else if (strEQ(field_type, "short")) {
     int16_t return_value = api->get_short_field(api, object, field_id);
     SV* sv_value = sv_2mortal(newSViv(return_value));
     XPUSHs(sv_value);
   }
-  else if (strEQ(type, "int")) {
+  else if (strEQ(field_type, "int")) {
     int32_t return_value = api->get_int_field(api, object, field_id);
     SV* sv_value = sv_2mortal(newSViv(return_value));
     XPUSHs(sv_value);
   }
-  else if (strEQ(type, "long")) {
+  else if (strEQ(field_type, "long")) {
     int64_t return_value = api->get_long_field(api, object, field_id);
     SV* sv_value = sv_2mortal(newSViv(return_value));
     XPUSHs(sv_value);
   }
-  else if (strEQ(type, "float")) {
+  else if (strEQ(field_type, "float")) {
     float return_value = api->get_float_field(api, object, field_id);
     SV* sv_value = sv_2mortal(newSVnv(return_value));
     NV value = SvNV(sv_value);
     XPUSHs(sv_value);
   }
-  else if (strEQ(type, "double")) {
+  else if (strEQ(field_type, "double")) {
     double return_value = api->get_double_field(api, object, field_id);
     SV* sv_value = sv_2mortal(newSVnv(return_value));
     XPUSHs(sv_value);
@@ -195,13 +197,13 @@ get(...)
   else {
     SPVM_API_BASE_OBJECT* return_value = api->get_object_field(api, object, field_id);
     
-    int32_t type_length = strlen(type);
-    if (type[type_length - 1] == ']' || strcmp(type, "string") == 0) {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_array(type, (SPVM_API_ARRAY*)return_value);
+    int32_t field_type_length = strlen(field_type);
+    if (field_type[field_type_length - 1] == ']' || strcmp(field_type, "string") == 0) {
+      SV* sv_array = SPVM_XS_UTIL_new_sv_array(field_type, (SPVM_API_ARRAY*)return_value);
       XPUSHs(sv_array);
     }
     else {
-      SV* sv_object = SPVM_XS_UTIL_new_sv_object(type, (SPVM_API_OBJECT*)return_value);
+      SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type, (SPVM_API_OBJECT*)return_value);
       XPUSHs(sv_object);
     }
   }
