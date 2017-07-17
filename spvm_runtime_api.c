@@ -609,6 +609,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   
   int32_t length = constant_pool_package.fields_length;
   
+  
   int32_t field_indexes_constant_pool_index = constant_pool_package.field_indexes_constant_pool_index;
   
   int32_t field_index = SPVM_API_ERROR_NO_ID;
@@ -623,7 +624,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
       
       int32_t field_name_constant_pool_index = constant_pool_field.name_constant_pool_index;
       
-      char* match_name = (char*)&constant_pool[field_name_constant_pool_index];
+      char* match_name = (char*)&constant_pool[field_name_constant_pool_index + 1];
       
       if (strcmp(name, match_name) == 0) {
         found = 1;
