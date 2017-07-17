@@ -33,16 +33,15 @@ is_deeply(
 );
 
 # Create object
-=pod
 {
   my $object = SPVM::object("TestCase");
   $object->set(x_byte => $BYTE_MAX);
   $object->set(x_short => $SHORT_MAX);
   $object->set(x_int => $INT_MAX);
   $object->set(x_long => $LONG_MAX);
+  
   ok(SPVM::TestCase::spvm_object_set($object));
 }
-=cut
 
 # logical not
 {
