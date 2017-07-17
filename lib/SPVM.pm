@@ -252,47 +252,47 @@ XSLoader::load('SPVM', $VERSION);
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
+=encoding UTF-8
 
 =head1 NAME
 
 SPVM - Fast calculation, GC, static typing, VM with perlish syntax
 
-B<SPVM is under developing! I will change implementation and specification without warnings.>
+B<SPVM is under development! I will change implementation and specification without warnings.>
 
 =head1 SYNOPSIS
-  
+
   use FindBin;
   use lib "$FindBin::Bin/lib";
 
   use SPVM 'MyModule2';
-  
+
   my $total = SPVM::MyModule2::foo(3, 5);
   print $total . "\n";
-  
+
 Module file
 
   # lib/SPVM/MyModule1.spvm
   package MyModule1 {
     has x : int;
     has y : int;
-    
+
     sub sum ($a : int, $b : int) : int {
-      
+
       my $total = $a + $b;
-      
+
       return $total;
     }
   }
-  
+
   # lib/SPVM/MyModule2.spvm
   use MyModule1;
   package MyModule2 {
-    
+
     sub foo ($a : int, $b : int) : int {
-      
+
       my $total = ($a * $b) + MyModule1::sum(2, 4);
-      
+
       return $total;
     }
   }
@@ -331,7 +331,7 @@ B<Perlish syntax> - SPVM syntax is very similar to Perl
 
 B<Perl module> - SPVM function can be called from Perl itself (Not yet implemented).
 
-=back;
+=back
 
 SPVM only work on the Perl which support 64 bit integer.
 
@@ -422,15 +422,15 @@ B<Multiple array type>
 =head2 Type inference
 
 If the type of right value is known, the type of left value is automatically decided.
-    
+
   # Type of $value2 is byte.
   my $value1 : byte;
   my $value2 = $value1;
-  
+
   # Type of $values2 is int[]
   my $values1 = malloc int[3];
   my $values2 = $values1;
-  
+
   # Type of $object2 is PackageName
   my $object1 = malloc PackageName
   my $object2 = $object1;
@@ -454,36 +454,36 @@ Array is created by malloc. Elements values is not initialized.
   my $len = @{$nums};
 
 =head3 Get and set array element
-  
+
   # Get
   my $num = $nums->[0];
-  
+
   # Set
   $nums->[0] = 5;
 
 =head2 Condition branch
 
   if (1) {
-    
+
   }
   elsif (2) {
-    
+
   }
   else {
-    
+
   }
 
 =head2 Loop
 
 =head3 for
-  
+
   my $nums = malloc int[10];
   for (my $i = 0; $i < @$nums; $i++) {
     $nums->[$i] = 0;
   }
 
 =head3 while
-  
+
   my $nums = malloc int[10];
   my $i = 0;
   while ($i < @$nums) {
@@ -495,7 +495,7 @@ Array is created by malloc. Elements values is not initialized.
 =head3 Constant type
 
 Type of constant default integral value is `int`.
-    
+
     # int type
     1;
     3;
@@ -505,15 +505,15 @@ Type of constant default floating-point value is `double`.
     # double
     1.2
     5.3
-    
+
 Type of constant is specified by type specifier.
-    
+
     # long
     3L
-    
+
     # float
     3.2f
-    
+
     # double
     3.2d
 
@@ -522,12 +522,12 @@ Type of constant is specified by type specifier.
 =head3 Package name
 
 Package name is a combination of alphabets, numbers, and `::`. Numbers should not appear as the first character. `_` can't be used in class name.
-    
+
     # OK
     Foo
     Foo::Bar
     Foo1::Bar1
-    
+
     # Not OK
     1Foo
     Foo::2Bar
@@ -541,7 +541,7 @@ Subroutine name is a combination of alphabets, numbers, and `_` separators. Cont
     foo
     foo1
     foo_bar
-    
+
     # Not OK
     1foo
     foo__bar
@@ -554,7 +554,7 @@ Field name is a combination of alphabets, numbers, and `_` separators. Continual
     foo
     foo1
     foo_bar
-    
+
     # Not OK
     1foo
     foo__bar
@@ -572,7 +572,7 @@ Object can't have object and array of object.
 
 If I have idea to implement weaken reference and implement weaken reference, this limitation is removed.
 
-=head2 FUNCTIONS
+=head1 FUNCTIONS
 
 =head2 new_byte_array
 
@@ -612,7 +612,7 @@ Create double array
 
 =head2 new_string_raw
 
-Create byte array from B<not decoded> Perl string. 
+Create byte array from B<not decoded> Perl string.
 This function is faster than C<SPVM::string> because copy is not executed.
 
   my $array = SPVM::new_string_raw("AGTCAGTC");
@@ -621,7 +621,7 @@ This function is faster than C<SPVM::string> because copy is not executed.
 
 Create byte array from B<decoded> Perl string.
 
-  my $array = SPVM::new_string("Ç†Ç¢Ç§Ç¶Ç®");
+  my $array = SPVM::new_string("Å†Ç¢Å§Ç¶Å®");
 
 =head2 new_object
 
@@ -660,23 +660,23 @@ Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
 =item *
 
-[akinomyoga](https://github.com/akinomyoga) (Koichi Murase)
+L<akinomyoga|https://github.com/akinomyoga> (Koichi Murase)
 
 =item *
 
-[NAGAYASU Shinya](https://github.com/nagayasu-shinya)
+L<[NAGAYASU Shinya|https://github.com/nagayasu-shinya>
 
 =item *
 
-[Reini Urban](https://github.com/rurban)
+L<Reini Urban|https://github.com/rurban>
 
 =item *
 
-[chromatic](https://github.com/chromatic)
+L<chromatic|https://github.com/chromatic>
 
 =item *
 
-[Kazutake Hiramatsu](https://github.com/kazhiramatsu)
+L<Kazutake Hiramatsu|https://github.com/kazhiramatsu>
 
 =back
 
