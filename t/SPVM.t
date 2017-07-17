@@ -41,7 +41,13 @@ is_deeply(
   $object->set(x_long => $LONG_MAX);
   
   ok(SPVM::TestCase::spvm_object_set($object));
+  
+  is($object->get('x_byte'), $BYTE_MAX);
+  is($object->get('x_short'), $SHORT_MAX);
+  is($object->get('x_int'), $INT_MAX);
+  is($object->get('x_long'), $LONG_MAX);
 }
+__END__
 
 # logical not
 {

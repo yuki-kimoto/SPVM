@@ -160,9 +160,9 @@ get(...)
   const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
   
   // Field id
-  int32_t field_id = SPVM_XS_UTIL_get_field_id(object, field_name);
+  int32_t field_id = api->get_field_id(api, object, field_name);
   if (field_id == SPVM_API_ERROR_NO_ID) {
-    croak("Can't find %s \"%s\" field(SPVM::Object::get)", package_name, field_name);
+    croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   
   if (strEQ(field_type, "byte")) {
