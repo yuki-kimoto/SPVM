@@ -71,8 +71,6 @@ int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_API* api, int32_t type);
 SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object);
-void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
-void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name);
@@ -91,5 +89,9 @@ SPVM_ARRAY* SPVM_RUNTIME_API_malloc_object_array_noinc(SPVM_API* api, int32_t le
 // Exception
 void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY* exception);
 SPVM_ARRAY* SPVM_RUNTIME_API_get_exception(SPVM_API* api);
+
+// Reference count
+void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
+void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 
 #endif

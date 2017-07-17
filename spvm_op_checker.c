@@ -107,8 +107,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               field_type_error = 1;
             }
           }
+          else if (SPVM_TYPE_is_string(compiler, field_type)) {
+            // Nothing
+          }
           else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {
-              SPVM_yyerror_format(compiler, "Type of field \"%s::%s\" must not be object at %s line %d\n", package->op_name->uv.name, field->op_name->uv.name, op_field->file, op_field->line);
+              SPVM_yyerror_format(compiler, "Type of field \"%s::%s\" must not be numeric at %s line %d\n", package->op_name->uv.name, field->op_name->uv.name, op_field->file, op_field->line);
             field_type_error = 1;
           }
         }
@@ -133,6 +136,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               compiler->fatal_error = 1;
               return;
             }
+          }
+          else if (SPVM_TYPE_is_string(compiler, field_type)) {
+            // Nothing
           }
           else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {
             SPVM_yyerror_format(compiler, "field type must be numeric or numeric array or string array at %s line %d\n", op_field->file, op_field->line);

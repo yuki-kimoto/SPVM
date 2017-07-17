@@ -3,6 +3,8 @@ package TestCase {
   has x_short : short;
   has x_int : int;
   has x_long : long;
+  has x_int_array : int[];
+  has x_string : string;
   
   sub spvm_object_set($obj : TestCase) : int {
     if ($obj->{x_byte} == (byte)127) {

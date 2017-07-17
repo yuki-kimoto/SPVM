@@ -143,6 +143,10 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   // Exception
   api->set_exception = (void (*)(SPVM_API* api, SPVM_API_ARRAY* exception))SPVM_RUNTIME_API_set_exception;
   api->get_exception = (SPVM_API_ARRAY* (*)(SPVM_API* api))SPVM_RUNTIME_API_get_exception;
+  
+  // Reference count
+  api->dec_ref_count = (void (*)(SPVM_API* api, SPVM_API_BASE_OBJECT* base_object))SPVM_RUNTIME_API_dec_ref_count;
+  api->inc_ref_count = (void (*)(SPVM_API* api, SPVM_API_BASE_OBJECT* base_object))SPVM_RUNTIME_API_inc_ref_count;
 
   return api;
 }

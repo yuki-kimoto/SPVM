@@ -39,6 +39,8 @@ is_deeply(
   $object->set(x_short => $SHORT_MAX);
   $object->set(x_int => $INT_MAX);
   $object->set(x_long => $LONG_MAX);
+  # $object->set(x_int_array => SPVM::int_array([$INT_MAX, $INT_MAX]));
+  # $object->set(x_string => SPVM::string("Hello"));
   
   ok(SPVM::TestCase::spvm_object_set($object));
   

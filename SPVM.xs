@@ -124,7 +124,7 @@ set(...)
     api->set_double_field(api, object, field_id, value);
   }
   else {
-    if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BaseObject")) {
+    if (!(sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BaseObject"))) {
       croak("Can't set numeric value to \"%s\" field", field_type);
     }
     const char* value_type = SPVM_XS_UTIL_get_type(sv_value);
