@@ -172,19 +172,19 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
   
   if (hash->table[table_index]) {
     
-    SPVM_HASH_ENTRY* next_entry = hash->table[table_index];
+    SPVM_HASH_ENTRY* entry = hash->table[table_index];
     while (1) {
-      if (strncmp(key, &hash->key_buffer[next_entry->key_index], length) == 0) {
-        *(void**)&next_entry->value = value;
+      if (strncmp(key, &hash->key_buffer[entry->key_index], length) == 0) {
+        *(void**)&entry->value = value;
         break;
       }
       else {
-        if (next_entry->next_index != -1) {
-          next_entry = &hash->entries[next_entry->next_index];
+        if (entry->next_index != -1) {
+          entry = &hash->entries[entry->next_index];
         }
         else {
           int32_t new_entry_index = SPVM_HASH_new_hash_entry(hash, key, value);
-          next_entry->next_index = new_entry_index;
+          entry->next_index = new_entry_index;
           break;
         }
       }
@@ -221,19 +221,19 @@ void* SPVM_HASH_search(SPVM_HASH* hash, const char* key, int32_t length) {
   int32_t hash_value = SPVM_HASH_FUNC_calc_hash_for_index(key, length);
   int32_t table_index = hash_value % hash->table_capacity;
   
-  SPVM_HASH_ENTRY* next_entry = hash->table[table_index];
+  SPVM_HASH_ENTRY* entry = hash->table[table_index];
   while (1) {
-    if (next_entry) {
+    if (entry) {
       
-      if (strncmp(key, &hash->key_buffer[next_entry->key_index], length) == 0) {
-        return *(void**)&next_entry->value;
+      if (strncmp(key, &hash->key_buffer[entry->key_index], length) == 0) {
+        return *(void**)&entry->value;
       }
       else {
-        if (next_entry->next_index == -1) {
-          next_entry = NULL;
+        if (entry->next_index == -1) {
+          entry = NULL;
         }
         else {
-          next_entry = &hash->entries[next_entry->next_index];
+          entry = &hash->entries[entry->next_index];
         }
       }
     }
