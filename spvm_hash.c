@@ -134,13 +134,11 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   {
     int32_t i;
     for (i = 0; i < hash->entries_length; i++) {
-      SPVM_HASH_ENTRY* entry = &hash->entries[i];
-      
-      const char* key = &hash->key_buffer[entry->key_index];
+      const char* key = &hash->key_buffer[hash->entries[i].key_index];
       
       assert(key);
       
-      void* value = *(void**)&entry->value;
+      void* value = *(void**)(hash->entries[i].value);
       
       SPVM_HASH_insert_norehash(new_hash, key, strlen(key), value);
     }
