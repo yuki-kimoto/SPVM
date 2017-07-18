@@ -82,7 +82,7 @@ declarations_in_grammar
         op_list = $1;
       }
       else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
         SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
       }
       SPVM_OP_insert_child(compiler, op_list, op_list->last, $2);
@@ -134,7 +134,7 @@ declarations_in_package
         op_list = $1;
       }
       else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
         SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
       }
       SPVM_OP_insert_child(compiler, op_list, op_list->last, $2);
@@ -189,7 +189,7 @@ enumeration_values
         op_list = $1;
       }
       else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
         SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
       }
       SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
@@ -238,7 +238,7 @@ statements
         op_list = $1;
       }
       else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
         SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
       }
       SPVM_OP_insert_child(compiler, op_list, op_list->last, $2);
@@ -429,7 +429,7 @@ terms
         op_list = $1;
       }
       else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
         SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
       }
       SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
@@ -676,7 +676,7 @@ args
         op_list = $1;
       }
       else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
         SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
       }
       SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
@@ -716,7 +716,7 @@ descriptors
         op_list = $1;
       }
       else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->file);
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
         SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
       }
       SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
