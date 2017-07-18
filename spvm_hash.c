@@ -101,20 +101,19 @@ int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, void* value) 
   int32_t index = hash->entries_length;
   
   SPVM_HASH_maybe_extend_entries(hash);
-  SPVM_HASH_ENTRY* hash_entry = &hash->entries[index];
   
   int32_t key_length = strlen(key);
   SPVM_HASH_maybe_extend_key_buffer(hash, key_length);
   
-  hash_entry->key_index = hash->key_buffer_length;
+  hash->entries[index].key_index = hash->key_buffer_length;
   
   strncpy(&hash->key_buffer[hash->key_buffer_length], key, key_length);
   hash->key_buffer[hash->key_buffer_length + key_length] = '\0';
   
   hash->key_buffer_length += key_length + 1;
   
-  *(void**)&hash_entry->value = value;
-  hash_entry->next_index = -1;
+  hash->entries[index].value = value;
+  hash->entries[index].next_index = -1;
   
   hash->entries_length++;
   

@@ -87,6 +87,7 @@ int main()
     SPVM_HASH* hash = SPVM_HASH_new(5);
     
     int32_t value1 = 1;
+    warn("EEEEEEEEEE %p", &value1);
     SPVM_HASH_insert(hash, "key1", 4, &value1);
     int32_t value2 = 2;
     SPVM_HASH_insert(hash, "key2", 4, &value2);
@@ -106,9 +107,11 @@ int main()
     OK(hash->entries_length == 5);
 warn("AAAAAAAAAA");
 
-    int32_t search_value1 = *(int32_t*)SPVM_HASH_search(hash, "key1", 4);
+    int32_t* search_value1_ptr = SPVM_HASH_search(hash, "key1", 4);
+warn("BBBBBBBBB %p", search_value1_ptr);
+    int32_t* search_value1 = *search_value1_ptr;
+warn("CCCCC");
     OK(search_value1 == 1);
-warn("BBBBBBBBB");
 }
 /*    
     int32_t search_value2 = *(int32_t*)SPVM_HASH_search(hash, "key2", 4);
