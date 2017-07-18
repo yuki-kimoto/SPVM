@@ -171,23 +171,19 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
   
   if (hash->table[table_index] != -1) {
     
-    SPVM_HASH_ENTRY* entry = &hash->entries[hash->table[table_index]];
+    int32_t entry_index = hash->table[table_index];
     while (1) {
-      if (strncmp(key, &hash->key_buffer[entry->key_index], length) == 0) {
-        *(void**)&entry->value = value;
+      if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0) {
+        hash->entries[entry_index].value = value;
         break;
       }
       else {
-        if (entry->next_index != -1) {
-          entry = &hash->entries[entry->next_index];
+        if (hash->entries[entry_index].next_index != -1) {
+          entry_index = hash->entries[entry_index].next_index;
         }
         else {
           int32_t new_entry_index = SPVM_HASH_new_hash_entry(hash, key, value);
-          
-          // Assing again because SPVM_HASH_new_hash_entry maybe reallocate memory of entry
-          entry = &hash->entries[new_entry_index];
-          
-          entry->next_index = new_entry_index;
+          hash->entries[entry_index].next_index = new_entry_index;
           break;
         }
       }
