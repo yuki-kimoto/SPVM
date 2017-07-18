@@ -87,7 +87,6 @@ int main()
     SPVM_HASH* hash = SPVM_HASH_new(5);
     
     int32_t value1 = 1;
-    warn("EEEEEEEEEE %p", &value1);
     SPVM_HASH_insert(hash, "key1", 4, &value1);
     int32_t value2 = 2;
     SPVM_HASH_insert(hash, "key2", 4, &value2);
@@ -105,15 +104,11 @@ int main()
 
     OK(hash->table_capacity == 11);
     OK(hash->entries_length == 5);
-warn("AAAAAAAAAA");
 
     int32_t* search_value1_ptr = SPVM_HASH_search(hash, "key1", 4);
-warn("BBBBBBBBB %p", search_value1_ptr);
     int32_t* search_value1 = *search_value1_ptr;
-warn("CCCCC");
     OK(search_value1 == 1);
-}
-/*    
+
     int32_t search_value2 = *(int32_t*)SPVM_HASH_search(hash, "key2", 4);
     OK(search_value2 == 2);
     int32_t search_value3 = *(int32_t*)SPVM_HASH_search(hash, "key3", 4);
@@ -152,15 +147,13 @@ warn("CCCCC");
     int32_t search_value10 = *(int32_t*)SPVM_HASH_search(hash, "key10", 5);
     OK(search_value10 == 10);
   }
-*/
-/*
-  
+
   // Many insert and search
   {
     SPVM_HASH* hash = SPVM_HASH_new(0);
     
     int32_t i;
-    int32_t max = 2000;
+    int32_t max = 70000;
     
     int32_t* values = malloc(sizeof(int32_t) * max);
     for (i = 0; i < max; i++) {
@@ -221,8 +214,6 @@ warn("CCCCC");
     // free
     SPVM_HASH_free(hash);
   }
-
-*/
 
   return 0;
 }
