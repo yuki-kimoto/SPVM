@@ -55,7 +55,7 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
     SPVM_HASH_ENTRY* new_entries = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_entries_capacity, sizeof(SPVM_HASH_ENTRY));
     memcpy(new_entries, hash->entries, entries_capacity * sizeof(SPVM_HASH_ENTRY));
     // Free BSD segfault bug
-    // free(hash->entries);
+    free(hash->entries);
     hash->entries = new_entries;
     
     hash->entries_capacity = new_entries_capacity;
