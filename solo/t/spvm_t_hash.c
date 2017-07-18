@@ -44,7 +44,7 @@ int main()
     int32_t value2_ret = *(int32_t*)SPVM_HASH_search(hash, "key", 3);
     OK(value2_ret == 5);
   }
-  
+
   // Hash - insert and search
   {
     SPVM_HASH* hash = SPVM_HASH_new(101);
@@ -82,43 +82,6 @@ int main()
     OK(!value3_1);
   }
   
-  // Hash - insert link
-  {
-    SPVM_HASH* hash = SPVM_HASH_new(1);
-    int32_t value1 = 3;
-    SPVM_HASH_insert_norehash(hash, "key1", 4, &value1);
-    
-    OK(*(int32_t*)((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]])->value == 3);
-    OK(((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]]) == &hash->entries[0]);
-    OK(hash->table_capacity == 1);
-    OK(hash->entries_length == 1);
-    
-    int32_t value2 = 5;
-    SPVM_HASH_insert_norehash(hash, "key2", 4, &value2);
-    
-    OK(*(int32_t*)hash->entries[((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]])->next_index].value == 5);
-    OK(hash->table_capacity == 1);
-    OK(hash->entries_length == 2);
-    
-    int32_t value3 = 7;
-    SPVM_HASH_insert_norehash(hash, "key3", 4, &value3);
-    
-    OK(*(int32_t*)hash->entries[hash->entries[((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]])->next_index].next_index].value == 7);
-    OK(hash->table_capacity == 1);
-    OK(hash->entries_length == 3);
-
-    // Search
-    int32_t value1_1 = *(int32_t*)SPVM_HASH_search(hash, "key1", 4);
-    OK(value1_1 == 3);
-    int32_t value2_1 = *(int32_t*)SPVM_HASH_search(hash, "key2", 4);
-    OK(value2_1 == 5);
-    int32_t value3_1 = *(int32_t*)SPVM_HASH_search(hash, "key3", 4);
-    OK(value3_1 == 7);
-    
-    // free
-    SPVM_HASH_free(hash);
-  }
-  
   // Rehash
   {
     SPVM_HASH* hash = SPVM_HASH_new(5);
@@ -141,9 +104,13 @@ int main()
 
     OK(hash->table_capacity == 11);
     OK(hash->entries_length == 5);
+warn("AAAAAAAAAA");
 
     int32_t search_value1 = *(int32_t*)SPVM_HASH_search(hash, "key1", 4);
     OK(search_value1 == 1);
+warn("BBBBBBBBB");
+}
+/*    
     int32_t search_value2 = *(int32_t*)SPVM_HASH_search(hash, "key2", 4);
     OK(search_value2 == 2);
     int32_t search_value3 = *(int32_t*)SPVM_HASH_search(hash, "key3", 4);
@@ -182,6 +149,8 @@ int main()
     int32_t search_value10 = *(int32_t*)SPVM_HASH_search(hash, "key10", 5);
     OK(search_value10 == 10);
   }
+*/
+/*
   
   // Many insert and search
   {
@@ -212,6 +181,45 @@ int main()
     }
     OK(ok);
   }
-  
+
+  // Hash - insert link
+  {
+    SPVM_HASH* hash = SPVM_HASH_new(1);
+    int32_t value1 = 3;
+    SPVM_HASH_insert_norehash(hash, "key1", 4, &value1);
+    
+    OK(*(int32_t*)((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]])->value == 3);
+    OK(((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]]) == &hash->entries[0]);
+    OK(hash->table_capacity == 1);
+    OK(hash->entries_length == 1);
+    
+    int32_t value2 = 5;
+    SPVM_HASH_insert_norehash(hash, "key2", 4, &value2);
+    
+    OK(*(int32_t*)hash->entries[((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]])->next_index].value == 5);
+    OK(hash->table_capacity == 1);
+    OK(hash->entries_length == 2);
+    
+    int32_t value3 = 7;
+    SPVM_HASH_insert_norehash(hash, "key3", 4, &value3);
+    
+    OK(*(int32_t*)hash->entries[hash->entries[((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]])->next_index].next_index].value == 7);
+    OK(hash->table_capacity == 1);
+    OK(hash->entries_length == 3);
+
+    // Search
+    int32_t value1_1 = *(int32_t*)SPVM_HASH_search(hash, "key1", 4);
+    OK(value1_1 == 3);
+    int32_t value2_1 = *(int32_t*)SPVM_HASH_search(hash, "key2", 4);
+    OK(value2_1 == 5);
+    int32_t value3_1 = *(int32_t*)SPVM_HASH_search(hash, "key3", 4);
+    OK(value3_1 == 7);
+    
+    // free
+    SPVM_HASH_free(hash);
+  }
+
+*/
+
   return 0;
 }

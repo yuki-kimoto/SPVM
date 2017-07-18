@@ -54,7 +54,6 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
 
     SPVM_HASH_ENTRY* new_entries = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_entries_capacity, sizeof(SPVM_HASH_ENTRY));
     memcpy(new_entries, hash->entries, entries_capacity * sizeof(SPVM_HASH_ENTRY));
-    // Free BSD segfault bug
     free(hash->entries);
     hash->entries = new_entries;
     
@@ -184,7 +183,10 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
         }
         else {
           int32_t new_entry_index = SPVM_HASH_new_hash_entry(hash, key, value);
+          
+          // Assing again because SPVM_HASH_new_hash_entry maybe reallocate memory of entry
           entry = &hash->entries[new_entry_index];
+          
           entry->next_index = new_entry_index;
           break;
         }
@@ -218,26 +220,26 @@ void* SPVM_HASH_search(SPVM_HASH* hash, const char* key, int32_t length) {
   assert(hash);
   assert(key);
   assert(length > 0);
-
+  
   int32_t hash_value = SPVM_HASH_FUNC_calc_hash_for_index(key, length);
   int32_t table_index = hash_value % hash->table_capacity;
   
-  SPVM_HASH_ENTRY* entry = NULL;
+  int32_t entry_index = -1;
   if (hash->table[table_index] != -1) {
-    entry = &hash->entries[hash->table[table_index]];
+    entry_index = hash->table[table_index];
   }
   while (1) {
-    if (entry) {
-      
-      if (strncmp(key, &hash->key_buffer[entry->key_index], length) == 0) {
-        return *(void**)&entry->value;
+    assert(entry_index >= -1);
+    if (entry_index != -1) {
+      if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0) {
+        return hash->entries[entry_index].value;
       }
       else {
-        if (entry->next_index == -1) {
-          entry = NULL;
+        if (hash->entries[entry_index].next_index == -1) {
+          entry_index = -1;
         }
         else {
-          entry = &hash->entries[entry->next_index];
+          entry_index = hash->entries[entry_index].next_index;
         }
       }
     }
