@@ -27,6 +27,8 @@ void* SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(int32_t count, int32_t size) {
   int32_t block_size = count * size;
   void* block = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(count, size);
   memset(block, 0, block_size);
+  
+  return block;
 }
 
 void* SPVM_UTIL_ALLOCATOR_safe_realloc_i32(void* ptr, int32_t count, int32_t size) {
