@@ -415,8 +415,13 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       int32_t call_stack_max = operand_stack_top + 2 + constant_pool_sub.my_vars_length + constant_pool_sub.operand_stack_max;
       
       while (call_stack_max > runtime->call_stack_capacity) {
-        runtime->call_stack_capacity = runtime->call_stack_capacity * 2;
-        runtime->call_stack = call_stack = realloc(call_stack, sizeof(SPVM_VALUE) * runtime->call_stack_capacity);
+        int32_t new_call_stack_capacity = runtime->call_stack_capacity * 2;
+
+        SPVM_VALUE* new_call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_call_stack_capacity, sizeof(sizeof(SPVM_VALUE)));
+        memcpy(new_call_stack, runtime->call_stack, runtime->call_stack_capacity * sizeof(sizeof(SPVM_VALUE)));
+        runtime->call_stack = call_stack = new_call_stack;
+
+        runtime->call_stack_capacity = new_call_stack_capacity;
       }
 
       operand_stack_top -= constant_pool_sub.args_length;
