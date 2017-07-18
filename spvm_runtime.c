@@ -419,6 +419,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
 
         SPVM_VALUE* new_call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_call_stack_capacity, sizeof(sizeof(SPVM_VALUE)));
         memcpy(new_call_stack, runtime->call_stack, runtime->call_stack_capacity * sizeof(sizeof(SPVM_VALUE)));
+        free(runtime->call_stack);
         runtime->call_stack = call_stack = new_call_stack;
 
         runtime->call_stack_capacity = new_call_stack_capacity;

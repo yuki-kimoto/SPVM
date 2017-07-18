@@ -54,6 +54,7 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
 
     SPVM_HASH_ENTRY* new_entries = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_entries_capacity, sizeof(SPVM_HASH_ENTRY));
     memcpy(new_entries, hash->entries, entries_capacity * sizeof(SPVM_HASH_ENTRY));
+    free(hash->entries);
     hash->entries = new_entries;
     
     hash->entries_capacity = new_entries_capacity;
@@ -75,6 +76,7 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
 
     char* new_key_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_key_buffer_capacity, sizeof(SPVM_HASH_ENTRY));
     memcpy(new_key_buffer, hash->key_buffer, key_buffer_capacity);
+    free(hash->key_buffer);
     hash->key_buffer = new_key_buffer;
 
     hash->key_buffer_capacity = new_key_buffer_capacity;
