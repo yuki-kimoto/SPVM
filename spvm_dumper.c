@@ -196,8 +196,7 @@ void SPVM_DUMPER_dump_types(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* types) 
   
   {
     int32_t i;
-    int32_t len;
-    for (i = 0, len = types->length; i < len; i++) {
+    for (i = 0; i < types->length; i++) {
       printf("type[%" PRId32 "]\n", i);
       SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, i);
       printf("    name => \"%s\"\n", type->name);
@@ -510,8 +509,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     SPVM_DYNAMIC_ARRAY* op_args = sub->op_args;
     {
       int32_t i;
-      int32_t len;
-      for (i = 0, len = op_args->length; i < len; i++) {
+      for (i = 0; i < op_args->length; i++) {
         SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
         SPVM_MY_VAR* my_var = op_arg->uv.my_var;
         printf("        arg[%" PRId32 "]\n", i);
@@ -524,8 +522,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       SPVM_DYNAMIC_ARRAY* op_my_vars = sub->op_my_vars;
       {
         int32_t i;
-        int32_t len;
-        for (i = 0, len = op_my_vars->length; i < len; i++) {
+        for (i = 0; i < op_my_vars->length; i++) {
           SPVM_OP* op_my_var = SPVM_DYNAMIC_ARRAY_fetch(sub->op_my_vars, i);
           SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
           printf("        my_var[%" PRId32 "]\n", i);
