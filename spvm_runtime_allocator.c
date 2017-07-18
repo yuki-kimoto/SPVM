@@ -74,14 +74,14 @@ int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_API* api, SPVM_RUNTIME_AL
   return index;
 }
 
-void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t size) {
+void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, int32_t size) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
 
   assert(size > 0);
   
   void* block;
   if (size > allocator->base_object_max_byte_size_use_memory_pool) {
-    block = SPVM_UTIL_ALLOCATOR_safe_malloc_i64(1, size);
+    block = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, size);
   }
   else {
     int32_t index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(api, allocator, size);
