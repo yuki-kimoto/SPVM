@@ -149,8 +149,7 @@ void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_
 void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_packages) {
   {
     int32_t i;
-    int32_t len;
-    for (i = 0, len = op_packages->length; i < len; i++) {
+    for (i = 0; i < op_packages->length; i++) {
       printf("package[%" PRId32 "]\n", i);
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, i);
       SPVM_PACKAGE* package = op_package->uv.package;
@@ -168,8 +167,7 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_p
       SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
       {
         int32_t j;
-        int32_t len2;
-        for (j = 0, len2 = op_fields->length; j < len2; j++) {
+        for (j = 0; j < op_fields->length; j++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, j);
           SPVM_FIELD* field = op_field->uv.field;
           printf("    field%" PRId32 "\n", j);
@@ -181,11 +179,11 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_p
       printf("  subs\n");
       SPVM_DYNAMIC_ARRAY* op_subs = package->op_subs;
       {
-        int32_t i;
-        for (i = 0, len = op_subs->length; i < len; i++) {
-          SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(op_subs, i);
+        int32_t j;
+        for (j = 0; j < op_subs->length; j++) {
+          SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(op_subs, j);
           SPVM_SUB* sub = op_sub->uv.sub;
-          printf("    sub%" PRId32 "\n", i);
+          printf("    sub%" PRId32 "\n", j);
           SPVM_DUMPER_dump_sub(compiler, sub);
         }
       }
