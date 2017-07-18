@@ -12,7 +12,7 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
   assert(table_capacity >= 0);
 
   // Create hash
-  SPVM_HASH* hash = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_HASH));
+  SPVM_HASH* hash = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(1, sizeof(SPVM_HASH));
 
   // Default table capacity
   if (table_capacity == 0) {
@@ -23,17 +23,17 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
   }
   
   // Initialize table
-  hash->table = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(hash->table_capacity, sizeof(SPVM_HASH_ENTRY*));
+  hash->table = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(hash->table_capacity, sizeof(SPVM_HASH_ENTRY*));
   memset(hash->table, 0, hash->table_capacity * sizeof(SPVM_HASH_ENTRY*));
   
   // Initialize entries
   hash->entries_capacity = 255;
-  hash->entries = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(hash->entries_capacity, sizeof(SPVM_HASH_ENTRY));
+  hash->entries = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(hash->entries_capacity, sizeof(SPVM_HASH_ENTRY));
   hash->entries_length = 0;
   
   // Initialize key buffer
   hash->key_buffer_capacity = 0xFF;
-  hash->key_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(hash->key_buffer_capacity, sizeof(char));
+  hash->key_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(hash->key_buffer_capacity, sizeof(char));
   hash->key_buffer_length = 0;
   
   return hash;
