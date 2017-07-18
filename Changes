@@ -1,4 +1,6 @@
-0.0222 2017-07-16
+0.0223 2017-07-18
+  - fix hash segmentation fault bug when many hash is created.
+0.0222 2017-07-18
   - add SPVM::Object::set
   - add SPVM::Object::get
   - rename SPVM::byte_array to SPVM::new_byte_array
