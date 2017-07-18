@@ -53,7 +53,7 @@ int main()
     int32_t hash_value1 = SPVM_HASH_FUNC_calc_hash_for_index("key1", 4);
     int32_t index1 = hash_value1 % 101;
    
-    OK(*(int32_t*)hash->table[index1]->value == 3);
+    OK(*(int32_t*)((SPVM_HASH_ENTRY*)&hash->entries[hash->table[index1]])->value == 3);
     OK(hash->entries_length == 1);
 
     int32_t value2 = 5;
@@ -61,7 +61,7 @@ int main()
     int32_t hash_value2 = SPVM_HASH_FUNC_calc_hash_for_index("key2", 4);
     int32_t index2 = hash_value2 % 101;
     
-    OK(*(int32_t*)hash->table[index2]->value == 5);
+    OK(*(int32_t*)((SPVM_HASH_ENTRY*)&hash->entries[hash->table[index2]])->value == 5);
     OK(hash->entries_length == 2);
     
     // Replace
@@ -70,7 +70,7 @@ int main()
     int32_t hash_value3 = SPVM_HASH_FUNC_calc_hash_for_index("key1", 4);
     int32_t index3 = hash_value3 % 101;
     
-    OK(*(int32_t*)hash->table[index3]->value == 7);
+    OK(*(int32_t*)((SPVM_HASH_ENTRY*)&hash->entries[hash->table[index3]])->value == 7);
     OK(hash->entries_length == 2);
     
     // Search
@@ -88,22 +88,22 @@ int main()
     int32_t value1 = 3;
     SPVM_HASH_insert_norehash(hash, "key1", 4, &value1);
     
-    OK(*(int32_t*)hash->table[0]->value == 3);
-    OK(hash->table[0] == &hash->entries[0]);
+    OK(*(int32_t*)((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]])->value == 3);
+    OK(((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]]) == &hash->entries[0]);
     OK(hash->table_capacity == 1);
     OK(hash->entries_length == 1);
     
     int32_t value2 = 5;
     SPVM_HASH_insert_norehash(hash, "key2", 4, &value2);
     
-    OK(*(int32_t*)hash->entries[hash->table[0]->next_index].value == 5);
+    OK(*(int32_t*)hash->entries[((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]])->next_index].value == 5);
     OK(hash->table_capacity == 1);
     OK(hash->entries_length == 2);
     
     int32_t value3 = 7;
     SPVM_HASH_insert_norehash(hash, "key3", 4, &value3);
     
-    OK(*(int32_t*)hash->entries[hash->entries[hash->table[0]->next_index].next_index].value == 7);
+    OK(*(int32_t*)hash->entries[hash->entries[((SPVM_HASH_ENTRY*)&hash->entries[hash->table[0]])->next_index].next_index].value == 7);
     OK(hash->table_capacity == 1);
     OK(hash->entries_length == 3);
 
