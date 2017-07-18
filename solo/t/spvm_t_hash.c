@@ -200,6 +200,17 @@ int main()
       sprintf(key, "key%d", i);
       SPVM_HASH_insert(hash, key, strlen(key), &values[i]);
     }
+    
+    _Bool ok = 1;
+    for (i = 0; i < max; i++) {
+      char* key = malloc(10);
+      sprintf(key, "key%d", i);
+      int32_t* value_ptr = SPVM_HASH_search(hash, key, strlen(key));
+      if (*value_ptr != i * 10) {
+        ok = 0;
+      }
+    }
+    OK(ok);
   }
   
   return 0;
