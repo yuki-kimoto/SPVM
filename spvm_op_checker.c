@@ -58,8 +58,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   // Types
   {
     int32_t i;
-    int32_t len;
-    for (i = 0, len = op_types->length; i < len; i++) {
+    for (i = 0; i < op_types->length; i++) {
       assert(compiler->types->length <= SPVM_LIMIT_C_TYPES);
       
       SPVM_OP* op_type = SPVM_DYNAMIC_ARRAY_fetch(op_types, i);
