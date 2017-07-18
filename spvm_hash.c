@@ -23,8 +23,8 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
   }
   
   // Initialize table
-  hash->table = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(hash->table_capacity, sizeof(SPVM_HASH_ENTRY*));
-  memset(hash->table, 0, hash->table_capacity * sizeof(SPVM_HASH_ENTRY*));
+  hash->table = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(hash->table_capacity, sizeof(int32_t));
+  memset(hash->table, -1, hash->table_capacity * sizeof(int32_t));
   
   // Initialize entries
   hash->entries_capacity = 255;
@@ -170,9 +170,11 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
   int32_t hash_value = SPVM_HASH_FUNC_calc_hash_for_index(key, length);
   int32_t table_index = hash_value % hash->table_capacity;
   
-  if (hash->table[table_index]) {
+  assert(hash->table[table_index] >= -1);
+  
+  if (hash->table[table_index] != -1) {
     
-    SPVM_HASH_ENTRY* entry = hash->table[table_index];
+    SPVM_HASH_ENTRY* entry = &hash->entries[hash->table[table_index]];
     while (1) {
       if (strncmp(key, &hash->key_buffer[entry->key_index], length) == 0) {
         *(void**)&entry->value = value;
@@ -192,7 +194,7 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
   }
   else {
     int32_t new_entry_index = SPVM_HASH_new_hash_entry(hash, key, value);
-    hash->table[table_index] = &hash->entries[new_entry_index];
+    hash->table[table_index] = new_entry_index;
   }
 }
 
@@ -221,7 +223,10 @@ void* SPVM_HASH_search(SPVM_HASH* hash, const char* key, int32_t length) {
   int32_t hash_value = SPVM_HASH_FUNC_calc_hash_for_index(key, length);
   int32_t table_index = hash_value % hash->table_capacity;
   
-  SPVM_HASH_ENTRY* entry = hash->table[table_index];
+  SPVM_HASH_ENTRY* entry = NULL;
+  if (hash->table[table_index] != -1) {
+    entry = &hash->entries[hash->table[table_index]];
+  }
   while (1) {
     if (entry) {
       

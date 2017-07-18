@@ -5,7 +5,7 @@
 
 // Hash table
 struct SPVM_hash {
-  SPVM_HASH_ENTRY** table;
+  int32_t* table;
   SPVM_HASH_ENTRY* entries;
   int32_t table_capacity;
   int32_t entries_capacity;
