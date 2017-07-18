@@ -90,6 +90,7 @@ void SPVM_HASH_free(SPVM_HASH* hash) {
   
   free(hash->table);
   free(hash->entries);
+  free(hash->key_buffer);
   free(hash);
 }
 
