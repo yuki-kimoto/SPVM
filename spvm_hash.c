@@ -51,7 +51,11 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
   
   if (entries_length >= entries_capacity) {
     int32_t new_entries_capacity = entries_capacity * 2;
-    hash->entries = SPVM_UTIL_ALLOCATOR_safe_realloc_i32(hash->entries, new_entries_capacity, sizeof(SPVM_HASH_ENTRY));
+
+    SPVM_HASH_ENTRY* new_entries = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_entries_capacity, sizeof(SPVM_HASH_ENTRY));
+    memcpy(new_entries, hash->entries, entries_capacity * sizeof(SPVM_HASH_ENTRY));
+    hash->entries = new_entries;
+    
     hash->entries_capacity = new_entries_capacity;
   }
 }
@@ -68,7 +72,11 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
   
   if (key_buffer_length + length >= key_buffer_capacity) {
     int32_t new_key_buffer_capacity = key_buffer_capacity * 2;
-    hash->key_buffer = SPVM_UTIL_ALLOCATOR_safe_realloc_i32(hash->key_buffer, new_key_buffer_capacity, sizeof(SPVM_HASH_ENTRY));
+
+    char* new_key_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_key_buffer_capacity, sizeof(SPVM_HASH_ENTRY));
+    memcpy(new_key_buffer, hash->key_buffer, key_buffer_capacity);
+    hash->key_buffer = new_key_buffer;
+
     hash->key_buffer_capacity = new_key_buffer_capacity;
   }
 }
