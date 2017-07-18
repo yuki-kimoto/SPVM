@@ -184,6 +184,7 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
         }
         else {
           int32_t new_entry_index = SPVM_HASH_new_hash_entry(hash, key, value);
+          entry = &hash->entries[new_entry_index];
           entry->next_index = new_entry_index;
           break;
         }
