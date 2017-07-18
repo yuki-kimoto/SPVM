@@ -85,8 +85,7 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCAT
   // Free arrays
   {
     int32_t i;
-    int32_t len;
-    for (i = 0, len = allocator->arrays->length; i < len; i++) {
+    for (i = 0; i < allocator->arrays->length; i++) {
       SPVM_DYNAMIC_ARRAY* array = SPVM_DYNAMIC_ARRAY_fetch(allocator->arrays, i);
       SPVM_DYNAMIC_ARRAY_free(array);
     }
@@ -96,8 +95,7 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCAT
   // Free hashes
   {
     int32_t i;
-    int32_t len;
-    for (i = 0, len = allocator->hashes->length; i < len; i++) {
+    for (i = 0; i < allocator->hashes->length; i++) {
       SPVM_HASH* hash = SPVM_DYNAMIC_ARRAY_fetch(allocator->hashes, i);
       SPVM_HASH_free(hash);
     }
