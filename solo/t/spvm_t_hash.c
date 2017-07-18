@@ -182,5 +182,25 @@ int main()
     int32_t search_value10 = *(int32_t*)SPVM_HASH_search(hash, "key10", 5);
     OK(search_value10 == 10);
   }
+  
+  // Many insert and search
+  {
+    SPVM_HASH* hash = SPVM_HASH_new(0);
+    
+    int32_t i;
+    int32_t max = 2000;
+    
+    int32_t* values = malloc(sizeof(int32_t) * max);
+    for (i = 0; i < max; i++) {
+      values[i] = i * 10;
+    }
+    
+    for (i = 0; i < max; i++) {
+      char* key = malloc(10);
+      sprintf(key, "key%d", i);
+      SPVM_HASH_insert(hash, key, strlen(key), &values[i]);
+    }
+  }
+  
   return 0;
 }
