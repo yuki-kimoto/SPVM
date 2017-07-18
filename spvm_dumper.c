@@ -137,8 +137,7 @@ void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
 void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_constants) {
   {
     int32_t i;
-    int32_t len;
-    for (i = 0, len = op_constants->length; i < len; i++) {
+    for (i = 0; i < op_constants->length; i++) {
       SPVM_OP* op_constant = SPVM_DYNAMIC_ARRAY_fetch(op_constants, i);
       SPVM_CONSTANT* constant = op_constant->uv.constant;
       printf("    constant[%" PRId32 "]\n", i);
