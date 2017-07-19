@@ -445,11 +445,10 @@ set_elements(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Array		PACKAGE = SPVM::Array
-
+MODULE = SPVM::Array::Float		PACKAGE = SPVM::Array::Float
 
 SV*
-malloc_float_array(...)
+malloc(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -467,14 +466,14 @@ malloc_float_array(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_array("float[]", array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_float_array(array);
   
   XPUSHs(sv_array);
   XSRETURN(1);
 }
 
 SV*
-set_float_array_elements(...)
+set_elements(...)
   PPCODE:
 {
   SV* sv_array = ST(0);
@@ -502,6 +501,11 @@ set_float_array_elements(...)
   
   XSRETURN(0);
 }
+
+
+MODULE = SPVM::Array		PACKAGE = SPVM::Array
+
+
 
 SV*
 malloc_double_array(...)

@@ -181,9 +181,9 @@ sub new_float_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array->malloc_float_array($length);
+  my $array = SPVM::Array::Float->malloc($length);
   
-  $array->set_float_array_elements($elements);
+  $array->set_elements($elements);
   
   return $array;
 }
@@ -191,7 +191,7 @@ sub new_float_array {
 sub new_float_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array->malloc_float_array($length);
+  my $array = SPVM::Array::Float->malloc($length);
   
   return $array;
 }
