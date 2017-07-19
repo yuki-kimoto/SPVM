@@ -92,6 +92,14 @@ sub new_byte_array {
   return $array;
 }
 
+sub new_byte_array_len {
+  my $length = shift;
+  
+  my $array = SPVM::Array::Byte->malloc($length);
+  
+  return $array;
+}
+
 sub new_short_array {
   my $elements = shift;
   
@@ -111,7 +119,7 @@ sub new_short_array {
 sub new_short_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array->malloc_short_array($length);
+  my $array = SPVM::Array::Short->malloc($length);
   
   return $array;
 }
@@ -125,9 +133,9 @@ sub new_int_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array->malloc_int_array($length);
+  my $array = SPVM::Array::Int->malloc($length);
   
-  $array->set_int_array_elements($elements);
+  $array->set_elements($elements);
   
   return $array;
 }
@@ -135,7 +143,7 @@ sub new_int_array {
 sub new_int_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array->malloc_int_array($length);
+  my $array = SPVM::Array::Int->malloc($length);
   
   return $array;
 }

@@ -331,11 +331,10 @@ set_elements(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Array		PACKAGE = SPVM::Array
-
+MODULE = SPVM::Array::Int		PACKAGE = SPVM::Array::Int
 
 SV*
-malloc_int_array(...)
+malloc(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -353,14 +352,14 @@ malloc_int_array(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_array("int[]", array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_int_array(array);
   
   XPUSHs(sv_array);
   XSRETURN(1);
 }
 
 SV*
-set_int_array_elements(...)
+set_elements(...)
   PPCODE:
 {
   SV* sv_array = ST(0);
@@ -388,6 +387,9 @@ set_int_array_elements(...)
   
   XSRETURN(0);
 }
+
+
+MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 SV*
 malloc_long_array(...)

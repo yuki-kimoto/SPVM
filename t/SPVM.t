@@ -224,8 +224,8 @@ is_deeply(
 
 # SPVM::Array
 {
-  my $data_nums = SPVM::Array->malloc_int_array(3);
-  $data_nums->set_int_array_elements([1, 2, 3]);
+  my $data_nums = SPVM::Array::Int->malloc(3);
+  $data_nums->set_elements([1, 2, 3]);
 }
 
 # constant int
