@@ -54,10 +54,10 @@ DESTROY(...)
   // Get content
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
-  // assert(api->get_ref_count(api, object));
+  assert(api->get_ref_count(api, object));
   
   // Decrement reference count
-  // api->dec_ref_count(api, object);
+  api->dec_ref_count(api, object);
   
   XSRETURN(0);
 }
@@ -227,6 +227,10 @@ get(...)
   }
   else {
     SPVM_API_BASE_OBJECT* value = api->get_object_field(api, object, field_id);
+
+    if (value != NULL) {
+      api->inc_ref_count(api, value);
+    }
     
     int32_t field_type_length = strlen(field_type);
     if (strcmp(field_type, "byte[]") == 0) {
