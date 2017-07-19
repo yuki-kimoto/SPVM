@@ -559,10 +559,10 @@ set_elements(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Array		PACKAGE = SPVM::Array
+MODULE = SPVM::String		PACKAGE = SPVM::String
 
 SV*
-malloc_string_raw(...)
+malloc_raw(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -584,11 +584,14 @@ malloc_string_raw(...)
   memcpy(elements, string, length);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_array("string", array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_string(array);
   
   XPUSHs(sv_array);
   XSRETURN(1);
 }
+
+MODULE = SPVM::Array		PACKAGE = SPVM::Array
+
 
 MODULE = SPVM		PACKAGE = SPVM
 

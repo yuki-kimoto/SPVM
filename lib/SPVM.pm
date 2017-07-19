@@ -13,6 +13,7 @@ use SPVM::Array::Int;
 use SPVM::Array::Long;
 use SPVM::Array::Float;
 use SPVM::Array::Double;
+use SPVM::String;
 use SPVM::Array::Object;
 
 use Encode 'encode';
@@ -61,7 +62,7 @@ CHECK {
 sub new_string_raw {
   my $string = shift;
   
-  my $array = SPVM::Array->malloc_string_raw($string);
+  my $array = SPVM::String->malloc_raw($string);
   
   return $array;
 }
@@ -71,7 +72,7 @@ sub new_string {
   
   $string = Encode::encode('UTF-8', $string);
   
-  my $array = SPVM::Array->malloc_string_raw($string);
+  my $array = SPVM::String->malloc_raw($string);
   
   return $array;
 }
