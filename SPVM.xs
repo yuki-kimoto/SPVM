@@ -1048,44 +1048,47 @@ call_sub(...)
       
       if (return_value != NULL) {
         api->inc_ref_count(api, return_value);
-      }
-      
-      int32_t type_length = strlen(return_type);
-      if (strcmp(return_type, "byte[]") == 0) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)return_value);
-        XPUSHs(sv_array);
-      }
-      else if (strcmp(return_type, "short[]") == 0) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)return_value);
-        XPUSHs(sv_array);
-      }
-      else if (strcmp(return_type, "int[]") == 0) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)return_value);
-        XPUSHs(sv_array);
-      }
-      else if (strcmp(return_type, "long[]") == 0) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)return_value);
-        XPUSHs(sv_array);
-      }
-      else if (strcmp(return_type, "float[]") == 0) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)return_value);
-        XPUSHs(sv_array);
-      }
-      else if (strcmp(return_type, "double[]") == 0) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)return_value);
-        XPUSHs(sv_array);
-      }
-      else if (strcmp(return_type, "string") == 0) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
-        XPUSHs(sv_array);
-      }
-      else if (return_type[type_length -1] == ']') {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(return_type, (SPVM_API_ARRAY*)return_value);
-        XPUSHs(sv_array);
+        
+        int32_t type_length = strlen(return_type);
+        if (strcmp(return_type, "byte[]") == 0) {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)return_value);
+          XPUSHs(sv_array);
+        }
+        else if (strcmp(return_type, "short[]") == 0) {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)return_value);
+          XPUSHs(sv_array);
+        }
+        else if (strcmp(return_type, "int[]") == 0) {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)return_value);
+          XPUSHs(sv_array);
+        }
+        else if (strcmp(return_type, "long[]") == 0) {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)return_value);
+          XPUSHs(sv_array);
+        }
+        else if (strcmp(return_type, "float[]") == 0) {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)return_value);
+          XPUSHs(sv_array);
+        }
+        else if (strcmp(return_type, "double[]") == 0) {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)return_value);
+          XPUSHs(sv_array);
+        }
+        else if (strcmp(return_type, "string") == 0) {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
+          XPUSHs(sv_array);
+        }
+        else if (return_type[type_length -1] == ']') {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(return_type, (SPVM_API_ARRAY*)return_value);
+          XPUSHs(sv_array);
+        }
+        else {
+          SV* sv_object = SPVM_XS_UTIL_new_sv_object(return_type, (SPVM_API_OBJECT*)return_value);
+          XPUSHs(sv_object);
+        }
       }
       else {
-        SV* sv_object = SPVM_XS_UTIL_new_sv_object(return_type, (SPVM_API_OBJECT*)return_value);
-        XPUSHs(sv_object);
+        XPUSHs(&PL_sv_undef);
       }
     }
     XSRETURN(1);
