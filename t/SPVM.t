@@ -24,6 +24,41 @@ my $INT_MIN = -2147483648;
 my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
 
+# Create object
+{
+  # Create object
+  {
+    my $object = SPVM::new_object("TestCase");
+    $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
+    $object->set(x_string => SPVM::new_string_raw("abc"));
+    
+    ok(SPVM::TestCase::spvm_object_set_object($object));
+    
+    is($object->get('x_int_array')->{type}, "int[]");
+    is($object->get('x_string')->{type}, "string");
+  }
+  # Create object
+  {
+    my $object = SPVM::new_object("TestCase");
+    $object->set(x_byte => $BYTE_MAX);
+    $object->set(x_short => $SHORT_MAX);
+    $object->set(x_int => $INT_MAX);
+    $object->set(x_long => $LONG_MAX);
+    $object->set(x_int_array => SPVM::new_int_array([1, 2, 3, 4]));
+    $object->set(x_string => SPVM::new_string("Hello"));
+    
+    ok(SPVM::TestCase::spvm_object_set($object));
+    
+    is($object->get('x_byte'), $BYTE_MAX);
+    is($object->get('x_short'), $SHORT_MAX);
+    is($object->get('x_int'), $INT_MAX);
+    is($object->get('x_long'), $LONG_MAX);
+    is($object->get('x_int_array')->{type}, "int[]");
+    is($object->get('x_string')->{type}, "string");
+  }
+  
+}
+
 is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
@@ -66,40 +101,6 @@ is_deeply(
   }
 }
 
-# Create object
-{
-  # Create object
-  {
-    my $object = SPVM::new_object("TestCase");
-    $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    $object->set(x_string => SPVM::new_string_raw("abc"));
-    
-    ok(SPVM::TestCase::spvm_object_set_object($object));
-    
-    is($object->get('x_int_array')->{type}, "int[]");
-    is($object->get('x_string')->{type}, "string");
-  }
-  # Create object
-  {
-    my $object = SPVM::new_object("TestCase");
-    $object->set(x_byte => $BYTE_MAX);
-    $object->set(x_short => $SHORT_MAX);
-    $object->set(x_int => $INT_MAX);
-    $object->set(x_long => $LONG_MAX);
-    $object->set(x_int_array => SPVM::new_int_array([1, 2, 3, 4]));
-    $object->set(x_string => SPVM::new_string("Hello"));
-    
-    ok(SPVM::TestCase::spvm_object_set($object));
-    
-    is($object->get('x_byte'), $BYTE_MAX);
-    is($object->get('x_short'), $SHORT_MAX);
-    is($object->get('x_int'), $INT_MAX);
-    is($object->get('x_long'), $LONG_MAX);
-    is($object->get('x_int_array')->{type}, "int[]");
-    is($object->get('x_string')->{type}, "string");
-  }
-  
-}
 
 # logical not
 {
@@ -560,3 +561,4 @@ is_deeply(
   my $total = SPVM::TestCase::for_basic();
   cmp_ok($total, '==', 6);
 }
+

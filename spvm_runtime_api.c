@@ -795,7 +795,16 @@ void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_OBJECT* object, int32
 
 void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index, SPVM_BASE_OBJECT* value) {
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
+  
+  if(fields[field_index].object_value != NULL) {
+    api->dec_ref_count(api, fields[field_index].object_value);
+  }
+  
   fields[field_index].object_value = value;
+  
+  if(fields[field_index].object_value != NULL) {
+    api->inc_ref_count(api, fields[field_index].object_value);
+  }
 }
 
 int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_API* api, int32_t type) {
