@@ -1079,6 +1079,10 @@ call_sub(...)
         SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
         XPUSHs(sv_array);
       }
+      else if (return_type[type_length -1] == ']') {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(return_type, (SPVM_API_ARRAY*)return_value);
+        XPUSHs(sv_array);
+      }
       else {
         SV* sv_object = SPVM_XS_UTIL_new_sv_object(return_type, (SPVM_API_OBJECT*)return_value);
         XPUSHs(sv_object);

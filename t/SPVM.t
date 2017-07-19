@@ -36,32 +36,32 @@ is_deeply(
 {
   {
     my $nums = SPVM::TestCase::call_sub_return_byte_array();
-    is(ref $nums, 'SPVM::Array');
+    is(ref $nums, 'SPVM::Array::Byte');
     SPVM::TestCase::call_sub_return_byte_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_short_array();
-    is(ref $nums, 'SPVM::Array');
+    is(ref $nums, 'SPVM::Array::Short');
     SPVM::TestCase::call_sub_return_short_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_int_array();
-    is(ref $nums, 'SPVM::Array');
+    is(ref $nums, 'SPVM::Array::Int');
     SPVM::TestCase::call_sub_return_int_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_long_array();
-    is(ref $nums, 'SPVM::Array');
+    is(ref $nums, 'SPVM::Array::Long');
     SPVM::TestCase::call_sub_return_long_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_float_array();
-    is(ref $nums, 'SPVM::Array');
+    is(ref $nums, 'SPVM::Array::Float');
     SPVM::TestCase::call_sub_return_float_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_double_array();
-    is(ref $nums, 'SPVM::Array');
+    is(ref $nums, 'SPVM::Array::Double');
     SPVM::TestCase::call_sub_return_double_array_check($nums);
   }
 }
