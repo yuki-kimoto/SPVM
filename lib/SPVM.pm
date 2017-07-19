@@ -157,9 +157,9 @@ sub new_long_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array->malloc_long_array($length);
+  my $array = SPVM::Array::Long->malloc($length);
   
-  $array->set_long_array_elements($elements);
+  $array->set_elements($elements);
   
   return $array;
 }
@@ -167,7 +167,7 @@ sub new_long_array {
 sub new_long_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array->malloc_long_array($length);
+  my $array = SPVM::Array::Long->malloc($length);
   
   return $array;
 }

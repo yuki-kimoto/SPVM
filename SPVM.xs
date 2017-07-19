@@ -388,11 +388,10 @@ set_elements(...)
   XSRETURN(0);
 }
 
-
-MODULE = SPVM::Array		PACKAGE = SPVM::Array
+MODULE = SPVM::Array::Long		PACKAGE = SPVM::Array::Long
 
 SV*
-malloc_long_array(...)
+malloc(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -410,14 +409,14 @@ malloc_long_array(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_array("long[]", array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_long_array(array);
   
   XPUSHs(sv_array);
   XSRETURN(1);
 }
 
 SV*
-set_long_array_elements(...)
+set_elements(...)
   PPCODE:
 {
   SV* sv_array = ST(0);
@@ -445,6 +444,9 @@ set_long_array_elements(...)
   
   XSRETURN(0);
 }
+
+MODULE = SPVM::Array		PACKAGE = SPVM::Array
+
 
 SV*
 malloc_float_array(...)
