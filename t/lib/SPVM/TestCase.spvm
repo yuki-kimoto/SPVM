@@ -5,7 +5,63 @@ package TestCase {
   has x_long : long;
   has x_int_array : int[];
   has x_string : string;
-
+  
+  # Convert type - integral narrowing convertion
+  sub convert_long_to_int() : int {
+    my $value = (int)0xFFFFFFFFFFFFFFFFL;
+    
+    if ($value == 0xFFFFFFFF) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_long_to_short() : int {
+    my $value = (short)0xFFFFFFFFFFFFFFFFL;
+    
+    if ($value == (short)0xFFFF) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_long_to_byte() : int {
+    my $value = (byte)0xFFFFFFFFFFFFFFFFL;
+    
+    if ($value == (byte)0xFF) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_int_to_short() : int {
+    my $value = (short)0xFFFFFFFF;
+    
+    if ($value == (short)0xFFFF) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_int_to_byte() : int {
+    my $value = (byte)0xFFFFFFFF;
+    
+    if ($value == (byte)0xFF) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_short_to_byte() : int {
+    my $value = (byte)(short)0xFFFF;
+    
+    if ($value == (byte)0xFF) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   sub spvm_object_set_object($obj : TestCase) : int {
     my $nums = $obj->{x_int_array};
     my $bytes = (byte[])($obj->{x_string});
