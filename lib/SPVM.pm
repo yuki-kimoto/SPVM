@@ -7,6 +7,14 @@ use warnings;
 use SPVM::BaseObject;
 use SPVM::Object;
 use SPVM::Array;
+use SPVM::Array::Byte;
+use SPVM::Array::Short;
+use SPVM::Array::Int;
+use SPVM::Array::Long;
+use SPVM::Array::Float;
+use SPVM::Array::Double;
+use SPVM::Array::Object;
+
 use Encode 'encode';
 
 use Carp 'croak';
