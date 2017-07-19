@@ -66,7 +66,6 @@ is_deeply(
   }
 }
 
-__END__
 # Create object
 {
   # Create object
