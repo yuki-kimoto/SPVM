@@ -32,6 +32,8 @@ my $LONG_MIN = -9223372036854775808;
   ok(SPVM::TestCase::convert_byte_to_int_minus());
   ok(SPVM::TestCase::convert_byte_to_long_plus());
   ok(SPVM::TestCase::convert_byte_to_long_minus());
+  ok(SPVM::TestCase::convert_short_to_long_plus());
+  ok(SPVM::TestCase::convert_short_to_long_minus());
 }
 
 # Convert type - same type
