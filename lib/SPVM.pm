@@ -85,9 +85,9 @@ sub new_byte_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array->malloc_byte_array($length);
+  my $array = SPVM::Array::Byte->malloc($length);
   
-  $array->set_byte_array_elements($elements);
+  $array->set_elements($elements);
   
   return $array;
 }

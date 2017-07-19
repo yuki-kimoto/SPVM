@@ -123,6 +123,30 @@ SV* SPVM_XS_UTIL_new_sv_array(const char* type, SPVM_API_ARRAY* array) {
   return sv_array;
 }
 
+SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_ARRAY* array) {
+  
+  
+  // Create array
+  HV* hv_array = sv_2mortal((SV*)newHV());
+  SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
+  HV* hv_class = gv_stashpv("SPVM::Array::Byte", 0);
+  sv_bless(sv_array, hv_class);
+  
+  // Create content
+  size_t iv_content = PTR2IV(array);
+  SV* sviv_content = sv_2mortal(newSViv(iv_content));
+  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
+  
+  // Set content
+  hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
+  
+  // Set type
+  SV* sv_type = sv_2mortal(newSVpv("byte[]", 0));
+  hv_store(hv_array, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
+  
+  return sv_array;
+}
+
 SV* SPVM_XS_UTIL_new_sv_object(const char* type, SPVM_API_OBJECT* object) {
   // Create object
   HV* hv_object = sv_2mortal((SV*)newHV());

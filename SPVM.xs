@@ -217,6 +217,63 @@ get(...)
   XSRETURN(1);
 }
 
+MODULE = SPVM::Array::Byte		PACKAGE = SPVM::Array::Byte
+
+SV*
+malloc(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Malloc array
+  SPVM_API_ARRAY* array =  api->malloc_byte_array_noinc(api, length);
+  
+  // Increment reference count
+  api->inc_ref_count(api, array);
+  
+  // New sv array
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_byte_array(array);
+  
+  XPUSHs(sv_byte_array);
+  XSRETURN(1);
+}
+
+SV*
+set_elements(...)
+  PPCODE:
+{
+  SV* sv_array = ST(0);
+  SV* sv_nums = ST(1);
+  AV* av_nums = SvRV(sv_nums);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int8_t* elements = api->get_byte_array_elements(api, array);
+  
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
+      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
+      elements[i] = (int8_t)SvIV(sv_num);
+    }
+  }
+  
+  XSRETURN(0);
+}
+
 MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 SV*
