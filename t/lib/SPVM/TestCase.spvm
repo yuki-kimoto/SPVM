@@ -25,7 +25,6 @@ package TestCase {
     
     return 0;
   }
-
   sub convert_byte_to_int_plus() : int {
     my $value = (int)(byte)0x7F;
     

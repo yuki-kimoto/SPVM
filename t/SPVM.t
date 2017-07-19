@@ -46,7 +46,6 @@ my $LONG_MIN = -9223372036854775808;
   ok(SPVM::TestCase::convert_int_to_int());
   ok(SPVM::TestCase::convert_short_to_short());
   ok(SPVM::TestCase::convert_byte_to_byte());
-  
 }
 
 # Convert type - integral narrowing convertion
@@ -223,38 +222,38 @@ is_deeply(
   
   # call_sub byte_array
   {
-    my $nums = SPVM::new_byte_array([1, 2, 3]);
-    is(SPVM::TestCase::call_sub_byte_array($nums), 6);
+    my $array = SPVM::new_byte_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_byte_array($array), 6);
   }
 
   # call_sub short_array
   {
-    my $nums = SPVM::new_short_array([1, 2, 3]);
-    is(SPVM::TestCase::call_sub_short_array($nums), 6);
+    my $array = SPVM::new_short_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_short_array($array), 6);
   }
 
   # call_sub int_array
   {
-    my $nums = SPVM::new_int_array([1, 2, 3]);
-    is(SPVM::TestCase::call_sub_int_array($nums), 6);
+    my $array = SPVM::new_int_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_int_array($array), 6);
   }
 
   # call_sub long_array
   {
-    my $nums = SPVM::new_long_array([1, 2, 3]);
-    is(SPVM::TestCase::call_sub_long_array($nums), 6);
+    my $array = SPVM::new_long_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_long_array($array), 6);
   }
 
   # call_sub float_array
   {
-    my $nums = SPVM::new_float_array([0.5, 0.5, 1.0]);
-    is(SPVM::TestCase::call_sub_float_array($nums), 2.0);
+    my $array = SPVM::new_float_array([0.5, 0.5, 1.0]);
+    is(SPVM::TestCase::call_sub_float_array($array), 2.0);
   }
 
   # call_sub double_array
   {
-    my $nums = SPVM::new_double_array([0.5, 0.5, 1.0]);
-    is(SPVM::TestCase::call_sub_double_array($nums), 2.0);
+    my $array = SPVM::new_double_array([0.5, 0.5, 1.0]);
+    is(SPVM::TestCase::call_sub_double_array($array), 2.0);
   }
 }
 
