@@ -502,13 +502,10 @@ set_elements(...)
   XSRETURN(0);
 }
 
-
-MODULE = SPVM::Array		PACKAGE = SPVM::Array
-
-
+MODULE = SPVM::Array::Double		PACKAGE = SPVM::Array::Double
 
 SV*
-malloc_double_array(...)
+malloc(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -526,14 +523,14 @@ malloc_double_array(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_array("double[]", array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_double_array(array);
   
   XPUSHs(sv_array);
   XSRETURN(1);
 }
 
 SV*
-set_double_array_elements(...)
+set_elements(...)
   PPCODE:
 {
   SV* sv_array = ST(0);
@@ -561,6 +558,8 @@ set_double_array_elements(...)
   
   XSRETURN(0);
 }
+
+MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 SV*
 malloc_string_raw(...)

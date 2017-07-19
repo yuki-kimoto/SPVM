@@ -205,9 +205,9 @@ sub new_double_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array->malloc_double_array($length);
+  my $array = SPVM::Array::Double->malloc($length);
   
-  $array->set_double_array_elements($elements);
+  $array->set_elements($elements);
   
   return $array;
 }
@@ -215,7 +215,7 @@ sub new_double_array {
 sub new_double_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array->malloc_double_array($length);
+  my $array = SPVM::Array::Double->malloc($length);
   
   return $array;
 }
