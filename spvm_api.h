@@ -97,6 +97,7 @@ struct SPVM_api {
   SPVM_API_ARRAY* (*get_exception)(SPVM_API* api);
   
   // Reference count
+  int32_t (*get_ref_count)(SPVM_API* api, SPVM_API_BASE_OBJECT* base_object);
   void (*inc_ref_count)(SPVM_API* api, SPVM_API_BASE_OBJECT* base_object);
   void (*dec_ref_count)(SPVM_API* api, SPVM_API_BASE_OBJECT* base_object);
 };

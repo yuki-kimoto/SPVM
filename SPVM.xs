@@ -36,6 +36,26 @@ SPVM_COMPILER* SPVM_XS_INTERNAL_UTIL_get_compiler() {
   return compiler;
 }
 
+MODULE = SPVM::BaseObject		PACKAGE = SPVM::BaseObject
+
+SV*
+DESTROY(...)
+  PPCODE:
+{
+  SV* sv_object = ST(0);
+  
+  // Set API
+  // SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  // SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  
+  // Decrement reference count
+  // api->dec_ref_count(api, object);
+  
+  XSRETURN(0);
+}
+
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
 SV*

@@ -91,6 +91,7 @@ void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY* exception);
 SPVM_ARRAY* SPVM_RUNTIME_API_get_exception(SPVM_API* api);
 
 // Reference count
+int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 
