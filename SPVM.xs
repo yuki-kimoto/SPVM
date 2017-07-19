@@ -418,6 +418,36 @@ set_elements(...)
   XSRETURN(0);
 }
 
+SV*
+get_elements(...)
+  PPCODE:
+{
+  SV* sv_array = ST(0);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int16_t* elements = api->get_short_array_elements(api, array);
+  
+  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV* sv_num = sv_2mortal(newSViv(elements[i]));
+      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+    }
+  }
+  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  
+  XPUSHs(sv_nums);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Array::Int		PACKAGE = SPVM::Array::Int
 
 SV*
@@ -473,6 +503,36 @@ set_elements(...)
   }
   
   XSRETURN(0);
+}
+
+SV*
+get_elements(...)
+  PPCODE:
+{
+  SV* sv_array = ST(0);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int32_t* elements = api->get_int_array_elements(api, array);
+  
+  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV* sv_num = sv_2mortal(newSViv(elements[i]));
+      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+    }
+  }
+  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  
+  XPUSHs(sv_nums);
+  XSRETURN(1);
 }
 
 MODULE = SPVM::Array::Long		PACKAGE = SPVM::Array::Long
@@ -532,6 +592,36 @@ set_elements(...)
   XSRETURN(0);
 }
 
+SV*
+get_elements(...)
+  PPCODE:
+{
+  SV* sv_array = ST(0);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int64_t* elements = api->get_long_array_elements(api, array);
+  
+  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV* sv_num = sv_2mortal(newSViv(elements[i]));
+      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+    }
+  }
+  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  
+  XPUSHs(sv_nums);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Array::Float		PACKAGE = SPVM::Array::Float
 
 SV*
@@ -589,6 +679,36 @@ set_elements(...)
   XSRETURN(0);
 }
 
+SV*
+get_elements(...)
+  PPCODE:
+{
+  SV* sv_array = ST(0);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  float* elements = api->get_float_array_elements(api, array);
+  
+  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV* sv_num = sv_2mortal(newSVnv((NV)elements[i]));
+      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+    }
+  }
+  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  
+  XPUSHs(sv_nums);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Array::Double		PACKAGE = SPVM::Array::Double
 
 SV*
@@ -644,6 +764,36 @@ set_elements(...)
   }
   
   XSRETURN(0);
+}
+
+SV*
+get_elements(...)
+  PPCODE:
+{
+  SV* sv_array = ST(0);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  double* elements = api->get_double_array_elements(api, array);
+  
+  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV* sv_num = sv_2mortal(newSVnv((NV)elements[i]));
+      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+    }
+  }
+  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  
+  XPUSHs(sv_nums);
+  XSRETURN(1);
 }
 
 MODULE = SPVM::String		PACKAGE = SPVM::String

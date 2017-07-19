@@ -206,6 +206,38 @@ is_deeply(
   is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
 }
 
+# get_elements
+{
+  # get_elements - byte
+  {
+    my $array = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+    my $nums = $array->get_elements;
+    is_deeply($nums, [1, $BYTE_MAX, $BYTE_MIN]);
+  }
+  
+  # get_elements - short
+  {
+    my $array = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+    my $nums = $array->get_elements;
+    is_deeply($nums, [1, $SHORT_MAX, $SHORT_MIN]);
+  }
+
+  # get_elements - int
+  {
+    my $array = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
+    my $nums = $array->get_elements;
+    is_deeply($nums, [1, $INT_MAX, $INT_MIN]);
+  }
+
+  # get_elements - long
+  {
+    my $array = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
+    my $nums = $array->get_elements;
+    is_deeply($nums, [1, $LONG_MAX, $LONG_MIN]);
+  }
+
+}
+
 # call_sub array
 {
   # SPVM::new_string
@@ -224,8 +256,6 @@ is_deeply(
   {
     my $array = SPVM::new_byte_array([1, 2, 3]);
     is(SPVM::TestCase::call_sub_byte_array($array), 6);
-    my $nums = $array->get_elements;
-    is_deeply($nums, [1, 2, 3]);
   }
 
   # call_sub short_array
