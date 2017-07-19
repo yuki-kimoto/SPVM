@@ -1,3 +1,5 @@
+0.0224 2017-07-19
+  - fix memory leak bugs. fix reference count.
 0.0223 2017-07-18
   - fix hash segmentation fault bug when many hash is created.
 0.0222 2017-07-18

@@ -1,11 +1,20 @@
 Changes
 lib/SPVM.pm
 lib/SPVM/Array.pm
+lib/SPVM/Array/Byte.pm
+lib/SPVM/Array/Double.pm
+lib/SPVM/Array/Float.pm
+lib/SPVM/Array/Int.pm
+lib/SPVM/Array/Long.pm
+lib/SPVM/Array/Object.pm
+lib/SPVM/Array/Short.pm
 lib/SPVM/BaseObject.pm
 lib/SPVM/Object.pm
 lib/SPVM/std.spvm
+lib/SPVM/String.pm
 Makefile.PL
 MANIFEST			This list of files
+PL
 ppport.h
 README.md
 solo/Main.spvm
