@@ -173,46 +173,73 @@ get(...)
   }
   
   if (strEQ(field_type, "byte")) {
-    int8_t return_value = api->get_byte_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSViv(return_value));
+    int8_t value = api->get_byte_field(api, object, field_id);
+    SV* sv_value = sv_2mortal(newSViv(value));
     XPUSHs(sv_value);
   }
   else if (strEQ(field_type, "short")) {
-    int16_t return_value = api->get_short_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSViv(return_value));
+    int16_t value = api->get_short_field(api, object, field_id);
+    SV* sv_value = sv_2mortal(newSViv(value));
     XPUSHs(sv_value);
   }
   else if (strEQ(field_type, "int")) {
-    int32_t return_value = api->get_int_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSViv(return_value));
+    int32_t value = api->get_int_field(api, object, field_id);
+    SV* sv_value = sv_2mortal(newSViv(value));
     XPUSHs(sv_value);
   }
   else if (strEQ(field_type, "long")) {
-    int64_t return_value = api->get_long_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSViv(return_value));
+    int64_t value = api->get_long_field(api, object, field_id);
+    SV* sv_value = sv_2mortal(newSViv(value));
     XPUSHs(sv_value);
   }
   else if (strEQ(field_type, "float")) {
-    float return_value = api->get_float_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSVnv(return_value));
-    NV value = SvNV(sv_value);
+    float value = api->get_float_field(api, object, field_id);
+    SV* sv_value = sv_2mortal(newSVnv(value));
     XPUSHs(sv_value);
   }
   else if (strEQ(field_type, "double")) {
-    double return_value = api->get_double_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSVnv(return_value));
+    double value = api->get_double_field(api, object, field_id);
+    SV* sv_value = sv_2mortal(newSVnv(value));
     XPUSHs(sv_value);
   }
   else {
-    SPVM_API_BASE_OBJECT* return_value = api->get_object_field(api, object, field_id);
+    SPVM_API_BASE_OBJECT* value = api->get_object_field(api, object, field_id);
     
     int32_t field_type_length = strlen(field_type);
-    if (field_type[field_type_length - 1] == ']' || strcmp(field_type, "string") == 0) {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_array(field_type, (SPVM_API_ARRAY*)return_value);
+    if (strcmp(field_type, "byte[]") == 0) {
+      SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)value);
+      XPUSHs(sv_array);
+    }
+    else if (strcmp(field_type, "short[]") == 0) {
+      SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)value);
+      XPUSHs(sv_array);
+    }
+    else if (strcmp(field_type, "int[]") == 0) {
+      SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)value);
+      XPUSHs(sv_array);
+    }
+    else if (strcmp(field_type, "long[]") == 0) {
+      SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)value);
+      XPUSHs(sv_array);
+    }
+    else if (strcmp(field_type, "float[]") == 0) {
+      SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)value);
+      XPUSHs(sv_array);
+    }
+    else if (strcmp(field_type, "double[]") == 0) {
+      SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)value);
+      XPUSHs(sv_array);
+    }
+    else if (strcmp(field_type, "string") == 0) {
+      SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)value);
+      XPUSHs(sv_array);
+    }
+    else if (field_type[field_type_length - 1] == ']') {
+      SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type, (SPVM_API_ARRAY*)value);
       XPUSHs(sv_array);
     }
     else {
-      SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type, (SPVM_API_OBJECT*)return_value);
+      SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type, (SPVM_API_OBJECT*)value);
       XPUSHs(sv_object);
     }
   }
