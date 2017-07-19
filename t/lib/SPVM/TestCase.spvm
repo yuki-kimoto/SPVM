@@ -101,7 +101,7 @@ package TestCase {
   sub convert_int_to_long_plus() : int {
     my $value = (long)0x7FFFFFFF;
     
-    if ($value == 0x000000000000007FFFL) {
+    if ($value == 0x000000007FFFFFFFL) {
       return 1;
     }
     
