@@ -101,9 +101,9 @@ sub new_short_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array->malloc_short_array($length);
+  my $array = SPVM::Array::Short->malloc($length);
   
-  $array->set_short_array_elements($elements);
+  $array->set_elements($elements);
   
   return $array;
 }
