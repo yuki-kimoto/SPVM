@@ -24,6 +24,15 @@ my $INT_MIN = -2147483648;
 my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
 
+# Convert type - same type
+{
+  ok(SPVM::TestCase::convert_long_to_long());
+  ok(SPVM::TestCase::convert_int_to_int());
+  ok(SPVM::TestCase::convert_short_to_short());
+  ok(SPVM::TestCase::convert_byte_to_byte());
+  
+}
+
 # Convert type - integral narrowing convertion
 {
   ok(SPVM::TestCase::convert_long_to_int());
