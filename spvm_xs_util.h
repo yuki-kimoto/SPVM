@@ -327,7 +327,10 @@ SPVM_API_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   
   HV* hv_object = (HV*)SvRV(sv_object);
   SV** sv_content_ptr = hv_fetch(hv_object, "content", strlen("content"), 0);
-  SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
+  
+  assert(sv_content_ptr);
+  
+  SV* sv_content = *sv_content_ptr;
   SV* sviv_content = SvRV(sv_content);
   size_t iv_content = SvIV(sviv_content);
   SPVM_API_OBJECT* object = INT2PTR(SPVM_API_OBJECT*, iv_content);

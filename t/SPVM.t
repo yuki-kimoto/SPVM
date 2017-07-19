@@ -32,6 +32,41 @@ is_deeply(
   ]
 );
 
+# call_sub return array
+{
+  {
+    my $nums = SPVM::TestCase::call_sub_return_byte_array();
+    is(ref $nums, 'SPVM::Array');
+    SPVM::TestCase::call_sub_return_byte_array_check($nums);
+  }
+  {
+    my $nums = SPVM::TestCase::call_sub_return_short_array();
+    is(ref $nums, 'SPVM::Array');
+    SPVM::TestCase::call_sub_return_short_array_check($nums);
+  }
+  {
+    my $nums = SPVM::TestCase::call_sub_return_int_array();
+    is(ref $nums, 'SPVM::Array');
+    SPVM::TestCase::call_sub_return_int_array_check($nums);
+  }
+  {
+    my $nums = SPVM::TestCase::call_sub_return_long_array();
+    is(ref $nums, 'SPVM::Array');
+    SPVM::TestCase::call_sub_return_long_array_check($nums);
+  }
+  {
+    my $nums = SPVM::TestCase::call_sub_return_float_array();
+    is(ref $nums, 'SPVM::Array');
+    SPVM::TestCase::call_sub_return_float_array_check($nums);
+  }
+  {
+    my $nums = SPVM::TestCase::call_sub_return_double_array();
+    is(ref $nums, 'SPVM::Array');
+    SPVM::TestCase::call_sub_return_double_array_check($nums);
+  }
+}
+
+__END__
 # Create object
 {
   # Create object
@@ -87,40 +122,6 @@ is_deeply(
   ok(SPVM::TestCase::logical_and_left_true());
   ok(SPVM::TestCase::logical_and_right_true());
   ok(SPVM::TestCase::logical_and_both_false());
-}
-
-# call_sub return array
-{
-  {
-    my $nums = SPVM::TestCase::call_sub_return_byte_array();
-    is(ref $nums, 'SPVM::Array');
-    SPVM::TestCase::call_sub_return_byte_array_check($nums);
-  }
-  {
-    my $nums = SPVM::TestCase::call_sub_return_short_array();
-    is(ref $nums, 'SPVM::Array');
-    SPVM::TestCase::call_sub_return_short_array_check($nums);
-  }
-  {
-    my $nums = SPVM::TestCase::call_sub_return_int_array();
-    is(ref $nums, 'SPVM::Array');
-    SPVM::TestCase::call_sub_return_int_array_check($nums);
-  }
-  {
-    my $nums = SPVM::TestCase::call_sub_return_long_array();
-    is(ref $nums, 'SPVM::Array');
-    SPVM::TestCase::call_sub_return_long_array_check($nums);
-  }
-  {
-    my $nums = SPVM::TestCase::call_sub_return_float_array();
-    is(ref $nums, 'SPVM::Array');
-    SPVM::TestCase::call_sub_return_float_array_check($nums);
-  }
-  {
-    my $nums = SPVM::TestCase::call_sub_return_double_array();
-    is(ref $nums, 'SPVM::Array');
-    SPVM::TestCase::call_sub_return_double_array_check($nums);
-  }
 }
 
 # Add

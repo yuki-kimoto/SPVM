@@ -38,23 +38,6 @@ SPVM_COMPILER* SPVM_XS_INTERNAL_UTIL_get_compiler() {
 
 MODULE = SPVM::BaseObject		PACKAGE = SPVM::BaseObject
 
-SV*
-DESTROY(...)
-  PPCODE:
-{
-  SV* sv_object = ST(0);
-  
-  // Set API
-  // SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  // Get content
-  // SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
-  
-  // Decrement reference count
-  // api->dec_ref_count(api, object);
-  
-  XSRETURN(0);
-}
 
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
@@ -236,6 +219,30 @@ get(...)
   
   XSRETURN(1);
 }
+
+SV*
+DESTROY(...)
+  PPCODE:
+{
+  SV* sv_object = ST(0);
+  
+  assert(SvOK(sv_object));
+  
+  // warn("DESTROY");
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  // SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  
+  // Decrement reference count
+  // api->dec_ref_count(api, object);
+  
+  XSRETURN(0);
+}
+
+
 
 MODULE = SPVM::Array::Byte		PACKAGE = SPVM::Array::Byte
 
@@ -975,6 +982,8 @@ call_sub(...)
         size_t iv_content = SvIV(sviv_content);
         SPVM_API_BASE_OBJECT* base_object = INT2PTR(SPVM_API_BASE_OBJECT*, iv_content);
         
+        // warn("CALL_SUB_BEFORE %d", api->get_ref_count(api, base_object));
+        
         api->push_var_object(api, base_object);
       }
       else {
@@ -1060,6 +1069,10 @@ call_sub(...)
     }
     else {
       SPVM_API_BASE_OBJECT* return_value = api->pop_retval_object(api);
+      
+      if (return_value != NULL) {
+        api->inc_ref_count(api, return_value);
+      }
       
       int32_t type_length = strlen(return_type);
       if (return_type[type_length - 1] == ']' || strcmp(return_type, "string") == 0) {
