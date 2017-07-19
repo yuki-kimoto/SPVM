@@ -224,6 +224,8 @@ is_deeply(
   {
     my $array = SPVM::new_byte_array([1, 2, 3]);
     is(SPVM::TestCase::call_sub_byte_array($array), 6);
+    my $nums = $array->get_elements;
+    is_deeply($nums, [1, 2, 3]);
   }
 
   # call_sub short_array
