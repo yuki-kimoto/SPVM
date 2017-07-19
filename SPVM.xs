@@ -38,27 +38,6 @@ SPVM_COMPILER* SPVM_XS_INTERNAL_UTIL_get_compiler() {
 
 MODULE = SPVM::BaseObject		PACKAGE = SPVM::BaseObject
 
-SV*
-DESTROY(...)
-  PPCODE:
-{
-  SV* sv_object = ST(0);
-  
-  assert(SvOK(sv_object));
-  
-  // warn("DESTROY");
-  
-  // Set API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  // Get content
-  // SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
-  
-  // Decrement reference count
-  // api->dec_ref_count(api, object);
-  
-  XSRETURN(0);
-}
 
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
@@ -1072,8 +1051,32 @@ call_sub(...)
       }
       
       int32_t type_length = strlen(return_type);
-      if (return_type[type_length - 1] == ']' || strcmp(return_type, "string") == 0) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_array(return_type, (SPVM_API_ARRAY*)return_value);
+      if (strcmp(return_type, "byte[]") == 0) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)return_value);
+        XPUSHs(sv_array);
+      }
+      else if (strcmp(return_type, "short[]") == 0) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)return_value);
+        XPUSHs(sv_array);
+      }
+      else if (strcmp(return_type, "int[]") == 0) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)return_value);
+        XPUSHs(sv_array);
+      }
+      else if (strcmp(return_type, "long[]") == 0) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)return_value);
+        XPUSHs(sv_array);
+      }
+      else if (strcmp(return_type, "float[]") == 0) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)return_value);
+        XPUSHs(sv_array);
+      }
+      else if (strcmp(return_type, "double[]") == 0) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)return_value);
+        XPUSHs(sv_array);
+      }
+      else if (strcmp(return_type, "string") == 0) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
         XPUSHs(sv_array);
       }
       else {
