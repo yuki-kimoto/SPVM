@@ -1031,11 +1031,6 @@ call_sub(...)
   }
   
   if (SvOK(sv_return_type)) {
-    // Create base_object
-    HV* hv_base_object = sv_2mortal((SV*)newHV());
-    SV* sv_base_object = sv_2mortal(newRV_inc((SV*)hv_base_object));
-    HV* hv_class = gv_stashpv("SPVM::Object", 0);
-    sv_bless(sv_base_object, hv_class);
     
     const char* return_type = SvPV_nolen(sv_return_type);
     
