@@ -24,6 +24,16 @@ my $INT_MIN = -2147483648;
 my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
 
+# Convert type - widning convertion
+{
+  ok(SPVM::TestCase::convert_byte_to_short_plus());
+  ok(SPVM::TestCase::convert_byte_to_short_minus());
+  ok(SPVM::TestCase::convert_byte_to_int_plus());
+  ok(SPVM::TestCase::convert_byte_to_int_minus());
+  ok(SPVM::TestCase::convert_byte_to_long_plus());
+  ok(SPVM::TestCase::convert_byte_to_long_minus());
+}
+
 # Convert type - same type
 {
   ok(SPVM::TestCase::convert_long_to_long());
