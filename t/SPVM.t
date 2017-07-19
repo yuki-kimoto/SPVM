@@ -13,6 +13,8 @@ use lib "$FindBin::Bin/lib";
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
 
+use POSIX ();
+
 use SPVM::Object;
 
 my $BYTE_MAX = 127;
@@ -23,6 +25,10 @@ my $INT_MAX = 2147483647;
 my $INT_MIN = -2147483648;
 my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
+my $FLOAT_MAX = POSIX::FLT_MAX;
+my $FLOAT_MIN = POSIX::FLT_MIN;
+my $DOUBLE_MAX = POSIX::DBL_MAX;
+my $DOUBLE_MIN = POSIX::DBL_MIN;
 
 # Convert type - widning convertion
 {
@@ -236,6 +242,18 @@ is_deeply(
     is_deeply($nums, [1, $LONG_MAX, $LONG_MIN]);
   }
 
+  # get_elements - float
+  {
+    my $array = SPVM::new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
+    my $nums = $array->get_elements;
+    is_deeply($nums, [1, $FLOAT_MAX, $FLOAT_MIN]);
+  }
+  # get_elements - double
+  {
+    my $array = SPVM::new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
+    my $nums = $array->get_elements;
+    is_deeply($nums, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
+  }
 }
 
 # call_sub array

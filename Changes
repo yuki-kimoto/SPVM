@@ -5,7 +5,6 @@
   - add SPVM::Array::Long::get_elements method
   - add SPVM::Array::Float::get_elements method
   - add SPVM::Array::Double::get_elements method
-  
 0.0224 2017-07-19
   - fix memory leak bugs. fix reference count.
 0.0223 2017-07-18
