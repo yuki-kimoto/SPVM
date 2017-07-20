@@ -114,6 +114,11 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "EXCEPTION_VAR",
 };
 
+SPVM_OP* SPVM_OP_fold_constant(SPVM_COMPILER* compiler, SPVM_OP* op_cur) {
+  
+  return op_cur;
+}
+
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
@@ -863,6 +868,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             else {
               assert(0);
             }
+            
             start_value = op_constant->uv.constant->uv.long_value + 1;
           }
           else {

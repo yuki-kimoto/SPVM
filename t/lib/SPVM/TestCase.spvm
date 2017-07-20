@@ -15,8 +15,18 @@ package TestCase {
   }
   
   sub enumeration () : int {
+      stdout::println("AAAAAAAAAAA");
+      stdout::println_int(TestCase->THREE);
     if (TestCase->ZERO == 0) {
-      return 1;
+      if (TestCase->ONE == 1) {
+        if (TestCase->THREE == 3) {
+          if (TestCase->FOUR == 4) {
+            if (TestCase->SIX == 6) {
+              return 1;
+            }
+          }
+        }
+      }
     }
     
     return 0;
