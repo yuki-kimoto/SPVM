@@ -1747,7 +1747,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_FLOAT:
-    call_stack[operand_stack_top - 1].float_value = (float)call_stack[operand_stack_top].byte_value;
+    call_stack[operand_stack_top].float_value = (float)call_stack[operand_stack_top].byte_value;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_DOUBLE:
@@ -1763,7 +1763,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_FLOAT:
-    call_stack[operand_stack_top - 1].float_value = (float)call_stack[operand_stack_top].short_value;
+    call_stack[operand_stack_top].float_value = (float)call_stack[operand_stack_top].short_value;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_DOUBLE:
@@ -1780,12 +1780,12 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_BYTE:
     // TODO
-    call_stack[operand_stack_top].byte_value = (int8_t)call_stack[operand_stack_top - 1].float_value;
+    call_stack[operand_stack_top].byte_value = (int8_t)call_stack[operand_stack_top].float_value;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_SHORT:
     // TODO
-    call_stack[operand_stack_top].short_value = (int16_t)call_stack[operand_stack_top - 1].float_value;
+    call_stack[operand_stack_top].short_value = (int16_t)call_stack[operand_stack_top].float_value;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_BYTE:

@@ -6,6 +6,19 @@ package TestCase {
   has x_int_array : int[];
   has x_string : string;
   
+  # Convert type - floating point widning convertion
+  sub convert_byte_to_byte_to_float() : int {
+    my $value = (float)(byte)127;
+    
+    std::println_float($value);
+    
+    if ($value == 127f) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   # Convert type - widning convertion
   sub convert_byte_to_short_plus() : int {
     my $value = (short)(byte)0x7F;
