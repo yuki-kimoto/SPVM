@@ -205,7 +205,7 @@ enumeration_value
       SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, $1);
       $$ = op_enumeration_value;
     }
-  | NAME ASSIGN CONSTANT
+  | NAME ASSIGN term
     {
       SPVM_OP* op_enumeration_value = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, $1);

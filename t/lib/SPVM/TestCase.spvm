@@ -14,7 +14,10 @@ package TestCase {
     SIX = 6,
     LONG_ZERO = 0L,
     LONG_ONE,
-    LONG_THREE = 3L
+    LONG_THREE = 3L,
+    INT_MINUS_ONE = -1,
+    INT_MINUS_MAX
+    # LONG_MINUS_MAX = -9223372036854775808L
   }
   
   sub enumeration () : int {
@@ -26,7 +29,9 @@ package TestCase {
               if (TestCase->LONG_ZERO == 0L) {
                 if (TestCase->LONG_ONE == 1L) {
                   if (TestCase->LONG_THREE == 3L) {
-                    return 1;
+                    if (TestCase->INT_MINUS_ONE == -1) {
+                      return 1;
+                    }
                   }
                 }
               }
