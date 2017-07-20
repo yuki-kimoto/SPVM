@@ -36,6 +36,10 @@ my $DOUBLE_MIN = POSIX::DBL_MIN;
   ok(SPVM::TestCase::convert_float_to_short());
   ok(SPVM::TestCase::convert_float_to_int());
   ok(SPVM::TestCase::convert_float_to_long());
+  ok(SPVM::TestCase::convert_double_to_byte());
+  ok(SPVM::TestCase::convert_double_to_short());
+  ok(SPVM::TestCase::convert_double_to_int());
+  ok(SPVM::TestCase::convert_double_to_long());
 }
 
 # Convert type - floating point widening convertion

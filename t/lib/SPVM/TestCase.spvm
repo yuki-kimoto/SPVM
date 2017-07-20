@@ -43,6 +43,42 @@ package TestCase {
     
     return 0;
   }
+  sub convert_double_to_byte() : int {
+    my $value = (byte)127.1;
+    
+    if ($value == (byte)127) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_double_to_short() : int {
+    my $value = (short)32767.1;
+    
+    if ($value == (short)32767) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_double_to_int() : int {
+    my $value = (int)2147483646.1;
+    
+    if ($value == 2147483646) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_double_to_long() : int {
+    my $value = (long)2147483646.1;
+    
+    if ($value == 2147483646L) {
+      return 1;
+    }
+    
+    return 0;
+  }
   
   # Convert type - floating point widning convertion
   sub convert_byte_to_float() : int {

@@ -1795,7 +1795,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_SHORT:
     // TODO
-    call_stack[operand_stack_top].byte_value = (int16_t)call_stack[operand_stack_top].double_value;
+    call_stack[operand_stack_top].short_value = (int16_t)call_stack[operand_stack_top].double_value;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_SHORT:

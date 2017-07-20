@@ -1,5 +1,6 @@
 0.0226 2017-07-20
   - fix float convertion bugs
+  - fix convert double to short bug
 0.0225 2017-07-19
   - add SPVM::Array::Byte::get_elements method
   - add SPVM::Array::Short::get_elements method
