@@ -6,7 +6,7 @@ package Main {
     
     my $num3 = sum($num1, $num2);
     
-    std::println_int($num3);
+    stdout::println_int($num3);
     
     return 0;
   }
