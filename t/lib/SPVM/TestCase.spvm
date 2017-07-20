@@ -951,7 +951,29 @@ package TestCase {
     return 0.5;
   }
   
-  # call_sub
+  # call_sub arguments
+  sub call_sub_args_byte($var1 : byte, $var2 : byte, $var3 : byte) : int {
+    if ($var1 == (byte)0) {
+      if ($var2 == (byte)127) {
+        if ($var3 == (byte)-128) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub call_sub_args_short($var1 : short, $var2 : short, $var3 : short) : int {
+    if ($var1 == (short)0) {
+      if ($var2 == (short)32767) {
+        if ($var3 == (short)-32768) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
   sub call_sub_args_int($var1 : int, $var2 : int, $var3 : int) : int {
     if ($var1 == 0) {
       if ($var2 == 2147483647) {
