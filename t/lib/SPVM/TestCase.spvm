@@ -11,7 +11,10 @@ package TestCase {
     ONE,
     THREE = 3,
     FOUR,
-    SIX = 6
+    SIX = 6,
+    LONG_ZERO = 0L,
+    LONG_ONE,
+    LONG_THREE = 3L
   }
   
   sub enumeration () : int {
@@ -20,7 +23,13 @@ package TestCase {
         if (TestCase->THREE == 3) {
           if (TestCase->FOUR == 4) {
             if (TestCase->SIX == 6) {
-              return 1;
+              if (TestCase->LONG_ZERO == 0L) {
+                if (TestCase->LONG_ONE == 1L) {
+                  if (TestCase->LONG_THREE == 3L) {
+                    return 1;
+                  }
+                }
+              }
             }
           }
         }
