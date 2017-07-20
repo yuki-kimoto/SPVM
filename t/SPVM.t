@@ -32,7 +32,10 @@ my $DOUBLE_MIN = POSIX::DBL_MIN;
 
 # Convert type - floating point widening convertion
 {
-  ok(SPVM::TestCase::convert_byte_to_byte_to_float());
+  ok(SPVM::TestCase::convert_byte_to_float());
+  ok(SPVM::TestCase::convert_short_to_float());
+  ok(SPVM::TestCase::convert_int_to_float());
+  ok(SPVM::TestCase::convert_long_to_float());
 }
 
 # Convert type - widning convertion

@@ -7,12 +7,37 @@ package TestCase {
   has x_string : string;
   
   # Convert type - floating point widning convertion
-  sub convert_byte_to_byte_to_float() : int {
+  sub convert_byte_to_float() : int {
     my $value = (float)(byte)127;
     
-    std::println_float($value);
-    
     if ($value == 127f) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_short_to_float() : int {
+    my $value = (float)(short)32767;
+    
+    if ($value == 32767f) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_int_to_float() : int {
+    my $value = (float)32767;
+    
+    if ($value == 32767f) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_long_to_float() : int {
+    my $value = (float)32767L;
+    
+    if ($value == 32767f) {
       return 1;
     }
     
