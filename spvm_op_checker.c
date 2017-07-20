@@ -36,23 +36,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     int32_t i;
     for (i = 0; i < compiler->op_constants->length; i++) {
       SPVM_OP* op_constant = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_constants, i);
-      SPVM_CONSTANT* constant = op_constant->uv.constant;
-      if (constant->code == SPVM_CONSTANT_C_CODE_INT) {
-        if (constant->sign) {
-          constant->uv.long_value = (int32_t)-constant->tmp_ulong_value;
-        }
-        else {
-          constant->uv.long_value = (int32_t)constant->tmp_ulong_value;
-        }
-      }
-      else if (constant->code == SPVM_CONSTANT_C_CODE_LONG) {
-        if (constant->sign) {
-          constant->uv.long_value = (int64_t)-constant->tmp_ulong_value;
-        }
-        else {
-          constant->uv.long_value = (int64_t)constant->tmp_ulong_value;
-        }
-      }
+      SPVM_OP_resolve_constant(compiler, op_constant);
     }
   }
   // Types

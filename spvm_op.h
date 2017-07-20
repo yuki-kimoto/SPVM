@@ -169,6 +169,7 @@ struct SPVM_op {
   _Bool rvalue;
 };
 
+void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant);
 SPVM_OP* SPVM_OP_fold_constant(SPVM_COMPILER* compiler, SPVM_OP* op_cur);
 
 SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line);

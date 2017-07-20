@@ -114,6 +114,26 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "EXCEPTION_VAR",
 };
 
+void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
+  SPVM_CONSTANT* constant = op_constant->uv.constant;
+  if (constant->code == SPVM_CONSTANT_C_CODE_INT) {
+    if (constant->sign) {
+      constant->uv.long_value = (int32_t)-constant->tmp_ulong_value;
+    }
+    else {
+      constant->uv.long_value = (int32_t)constant->tmp_ulong_value;
+    }
+  }
+  else if (constant->code == SPVM_CONSTANT_C_CODE_LONG) {
+    if (constant->sign) {
+      constant->uv.long_value = (int64_t)-constant->tmp_ulong_value;
+    }
+    else {
+      constant->uv.long_value = (int64_t)constant->tmp_ulong_value;
+    }
+  }
+}
+
 SPVM_OP* SPVM_OP_fold_constant(SPVM_COMPILER* compiler, SPVM_OP* op_cur) {
   
   return op_cur;
