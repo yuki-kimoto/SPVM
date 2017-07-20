@@ -63,7 +63,6 @@ package TestCase {
   }
   sub convert_int_to_double() : int {
     my $value = (double)2147483647;
-    
     if ($value == 2147483647.0) {
       return 1;
     }
@@ -74,6 +73,15 @@ package TestCase {
     my $value = (double)2147483647L;
     
     if ($value == 2147483647.0) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_float_to_double() : int {
+    my $value = (double)32767.0f;
+    
+    if ($value == 32767.0) {
       return 1;
     }
     
