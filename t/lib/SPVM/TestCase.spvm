@@ -5,6 +5,44 @@ package TestCase {
   has x_long : long;
   has x_int_array : int[];
   has x_string : string;
+
+  # Convert type - floating point narrowing convertion
+  sub convert_float_to_byte() : int {
+    my $value = (byte)127.1f;
+    
+    if ($value == (byte)127) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_float_to_short() : int {
+    my $value = (short)32767.1f;
+    
+    if ($value == (short)32767) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_float_to_int() : int {
+    my $value = (int)132767.1f;
+    
+    if ($value == 132767) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub convert_float_to_long() : int {
+    my $value = (long)132767.1f;
+    
+    if ($value == 132767L) {
+      return 1;
+    }
+    
+    return 0;
+  }
   
   # Convert type - floating point widning convertion
   sub convert_byte_to_float() : int {

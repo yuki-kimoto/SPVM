@@ -30,6 +30,14 @@ my $FLOAT_MIN = POSIX::FLT_MIN;
 my $DOUBLE_MAX = POSIX::DBL_MAX;
 my $DOUBLE_MIN = POSIX::DBL_MIN;
 
+# Convert type - floating point narrowing convertion
+{
+  ok(SPVM::TestCase::convert_float_to_byte());
+  ok(SPVM::TestCase::convert_float_to_short());
+  ok(SPVM::TestCase::convert_float_to_int());
+  ok(SPVM::TestCase::convert_float_to_long());
+}
+
 # Convert type - floating point widening convertion
 {
   ok(SPVM::TestCase::convert_byte_to_float());
