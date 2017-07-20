@@ -889,6 +889,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
               assert(0);
             }
             
+            // Resolve constant
+            SPVM_OP_resolve_constant(compiler, op_constant);
+            
             start_value = op_constant->uv.constant->uv.long_value + 1;
           }
           else {

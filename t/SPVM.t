@@ -31,11 +31,9 @@ my $DOUBLE_MAX = POSIX::DBL_MAX;
 my $DOUBLE_MIN = POSIX::DBL_MIN;
 
 # Enumeration
-=pod
 {
   ok(SPVM::TestCase::enumeration());
 }
-=cut
 
 # Convert type - floating point narrowing convertion
 {
