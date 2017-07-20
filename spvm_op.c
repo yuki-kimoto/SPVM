@@ -841,7 +841,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_enumeration_values = op_enumeration_block->first;
         SPVM_OP* op_enumeration_value = op_enumeration_values->first;
         
-        int32_t constant_code = SPVM_CONSTANT_C_CODE_LONG;
+        int32_t constant_code = SPVM_CONSTANT_C_CODE_INT;
         while ((op_enumeration_value = SPVM_OP_sibling(compiler, op_enumeration_value))) {
           SPVM_ENUMERATION_VALUE* enumeration_value = SPVM_ENUMERATION_VALUE_new(compiler);
           enumeration_value->op_name = op_enumeration_value->first;

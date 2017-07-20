@@ -5,6 +5,22 @@ package TestCase {
   has x_long : long;
   has x_int_array : int[];
   has x_string : string;
+  
+  enum {
+    ZERO,
+    ONE,
+    THREE = 3,
+    FOUR,
+    SIX = 6
+  }
+  
+  sub enumeration () : int {
+    if (TestCase->ZERO == 0) {
+      return 1;
+    }
+    
+    return 0;
+  }
 
   # Convert type - floating point narrowing convertion
   sub convert_float_to_byte() : int {
