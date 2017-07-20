@@ -56,7 +56,7 @@ my $DOUBLE_MIN = POSIX::DBL_MIN;
   ok(SPVM::TestCase::convert_float_to_double());
 }
 
-# Convert type - widning convertion
+# Convert type - integral number widning convertion
 {
   ok(SPVM::TestCase::convert_byte_to_short_plus());
   ok(SPVM::TestCase::convert_byte_to_short_minus());
@@ -80,7 +80,7 @@ my $DOUBLE_MIN = POSIX::DBL_MIN;
   ok(SPVM::TestCase::convert_byte_to_byte());
 }
 
-# Convert type - integral narrowing convertion
+# Convert type - integral number narrowing convertion
 {
   ok(SPVM::TestCase::convert_long_to_int());
   ok(SPVM::TestCase::convert_long_to_short());
