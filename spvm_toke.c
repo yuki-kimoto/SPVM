@@ -644,14 +644,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else if (isdigit(c)) {
           const char* cur_token_ptr = compiler->bufptr;
           
-          int32_t point_count = 0;
+          _Bool is_floating_number = 0;
           
           compiler->bufptr++;
           
           // Scan number
           while(isdigit(*compiler->bufptr) || isalpha(*compiler->bufptr) || *compiler->bufptr == '.' || *compiler->bufptr == '-' || *compiler->bufptr == '+') {
-            if (*compiler->bufptr == '.') {
-              point_count++;
+            if (*compiler->bufptr == '.' || *compiler->bufptr == 'e' || *compiler->bufptr == 'E') {
+              is_floating_number = 1;
             }
             compiler->bufptr++;
           }
@@ -677,7 +677,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             num_str[str_len - 1] = '\0';
           }
           else {
-            if (point_count) {
+            if (is_floating_number) {
               constant_code = SPVM_CONSTANT_C_CODE_DOUBLE;
             }
             else {

@@ -1,6 +1,7 @@
 0.0226 2017-07-20
   - fix float convertion bugs
   - fix convert double to short bug
+  - fix floating number which don't have point(for example, 346638529e+38) parsing bug.
 0.0225 2017-07-19
   - add SPVM::Array::Byte::get_elements method
   - add SPVM::Array::Short::get_elements method
