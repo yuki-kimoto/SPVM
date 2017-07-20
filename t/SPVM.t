@@ -309,6 +309,7 @@ is_deeply(
   # call_sub
   {
     ok(SPVM::TestCase::call_sub_args_byte(0, $BYTE_MAX, $BYTE_MIN));
+    ok(SPVM::TestCase::call_sub_args_short(0, $SHORT_MAX, $SHORT_MIN));
     ok(SPVM::TestCase::call_sub_args_int(0, $INT_MAX, $INT_MIN));
     ok(SPVM::TestCase::call_sub_args_long(0, $LONG_MAX, $LONG_MIN));
   }
