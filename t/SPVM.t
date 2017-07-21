@@ -34,6 +34,8 @@ my $DOUBLE_MIN = POSIX::DBL_MIN;
 {
   ok(SPVM::TestCase::enum_int());
   ok(SPVM::TestCase::enum_long());
+  ok(SPVM::TestCase::enum_float());
+  ok(SPVM::TestCase::enum_double());
 }
 
 # Convert type - floating point narrowing convertion

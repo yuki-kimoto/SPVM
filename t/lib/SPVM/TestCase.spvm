@@ -74,7 +74,28 @@ package TestCase {
     
     return 0;
   }
-  
+
+  enum {
+    DOUBLE_ZERO = 0.25,
+    DOUBLE_ONE = 1.0,
+    DOUBLE_THREE = 2.5,
+    DOUBLE_MINUS_ZERO = -0.25
+  }
+
+  sub enum_double () : int {
+    if (TestCase->DOUBLE_ZERO == 0.25) {
+      if (TestCase->DOUBLE_ONE == 1.0) {
+        if (TestCase->DOUBLE_THREE == 2.5) {
+          if (TestCase->DOUBLE_MINUS_ZERO == -0.25) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
   # Convert type - floating point narrowing convertion
   sub convert_float_to_byte() : int {
     my $value = (byte)127.1f;
