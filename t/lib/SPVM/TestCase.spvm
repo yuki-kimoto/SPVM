@@ -7,12 +7,12 @@ package TestCase {
   has x_string : string;
   
   enum {
-    ZERO,
-    ONE,
-    THREE = 3,
-    FOUR,
-    SIX = 6,
-    MINUS_MAX = -2147483648
+    INT_ZERO,
+    INT_ONE,
+    INT_THREE = 3,
+    INT_FOUR,
+    INT_SIX = 6,
+    INT_MINUS_MAX = -2147483648
   }
 
   enum {
@@ -27,12 +27,12 @@ package TestCase {
   }
   
   sub enum_int () : int {
-    if (TestCase->ZERO == 0) {
-      if (TestCase->ONE == 1) {
-        if (TestCase->THREE == 3) {
-          if (TestCase->FOUR == 4) {
-            if (TestCase->SIX == 6) {
-              if (TestCase->MINUS_MAX == -2147483648) {
+    if (TestCase->INT_ZERO == 0) {
+      if (TestCase->INT_ONE == 1) {
+        if (TestCase->INT_THREE == 3) {
+          if (TestCase->INT_FOUR == 4) {
+            if (TestCase->INT_SIX == 6) {
+              if (TestCase->INT_MINUS_MAX == -2147483648) {
                 return 1;
               }
             }
