@@ -140,6 +140,45 @@ void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
 }
 
 SPVM_OP* SPVM_OP_fold_constant(SPVM_COMPILER* compiler, SPVM_OP* op_cur) {
+
+  // Run OPs
+  SPVM_OP* op_base = op_cur;
+  _Bool finish = 0;
+  while (op_cur) {
+    
+    if (op_cur->first) {
+      op_cur = op_cur->first;
+    }
+    else {
+      while (1) {
+        // [START]Postorder traversal position
+        switch (op_cur->code) {
+          
+        }
+        // [END]Postorder traversal position
+        
+        if (op_cur == op_base) {
+          // Finish
+          finish = 1;
+          
+          break;
+        }
+        
+        // Next sibling
+        if (op_cur->moresib) {
+          op_cur = SPVM_OP_sibling(compiler, op_cur);
+          break;
+        }
+        // Next is parent
+        else {
+          op_cur = op_cur->sibparent;
+        }
+      }
+      if (finish) {
+        break;
+      }
+    }
+  }
   
   return op_cur;
 }
