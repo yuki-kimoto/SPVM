@@ -18,7 +18,12 @@ SPVM::Test - SPVM test module
 =cut
 
 package Test {
+  enum {
+    ONE = 0.25f
+  }
   sub main($mvar : int) : int {
+    stdout::println_float(Test->ONE);
+    
     # Logical or
     {
       if (1 || 0) {

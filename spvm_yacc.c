@@ -2308,15 +2308,15 @@ yyreduce:
 #line 507 "yacc/spvm_yacc.y"
     {
       if ((yyvsp[(2) - (2)].opval)->code == SPVM_OP_C_CODE_CONSTANT) {
-        SPVM_CONSTANT* constant = (yyvsp[(2) - (2)].opval)->uv.constant;
-        if (constant->type->id == SPVM_TYPE_C_ID_INT || constant->type->id == SPVM_TYPE_C_ID_LONG) {
-          constant->sign = 1;
-          (yyval.opval) = (yyvsp[(2) - (2)].opval);
+        SPVM_OP* op_constant = (yyvsp[(2) - (2)].opval);
+        SPVM_CONSTANT* constant = op_constant->uv.constant;
+        if (constant->sign) {
+          constant->sign = 0;
         }
         else {
-          SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, (yyvsp[(1) - (2)].opval)->file, (yyvsp[(1) - (2)].opval)->line);
-          (yyval.opval) = SPVM_OP_build_unop(compiler, op, (yyvsp[(2) - (2)].opval));
+          constant->sign = 1;
         }
+        (yyval.opval) = op_constant;
       }
       else {
         SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, (yyvsp[(1) - (2)].opval)->file, (yyvsp[(1) - (2)].opval)->line);
