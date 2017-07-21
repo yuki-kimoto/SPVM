@@ -11,7 +11,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
-use SPVM 'std'; my $use_std_line = __LINE__;
+use SPVM 'stdout'; my $use_std_line = __LINE__;
 
 use POSIX ();
 
@@ -134,7 +134,7 @@ is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
     {name => 'TestCase', file => $file, line => $use_test_line},
-    {name => 'std', file => $file, line => $use_std_line}
+    {name => 'stdout', file => $file, line => $use_std_line}
   ]
 );
 
