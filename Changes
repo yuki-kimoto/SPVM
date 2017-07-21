@@ -1,3 +1,5 @@
+0.0227 2017-07-21
+  - fix tests bug
 0.0226 2017-07-20
   - fix float convertion bugs
   - fix convert double to short bug
