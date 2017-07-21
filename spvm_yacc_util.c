@@ -120,8 +120,14 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
       SPVM_CONSTANT* constant = yylval.opval->uv.constant;
       
       switch(constant->type->id) {
+        case SPVM_TYPE_C_ID_BYTE:
+          fprintf(file, "int %" PRId8, constant->value.byte_value);
+          break;
+        case SPVM_TYPE_C_ID_SHORT:
+          fprintf(file, "int %" PRId16, constant->value.short_value);
+          break;
         case SPVM_TYPE_C_ID_INT:
-          fprintf(file, "int %" PRId64, constant->value.long_value);
+          fprintf(file, "int %" PRId32, constant->value.int_value);
           break;
         case SPVM_TYPE_C_ID_LONG:
           fprintf(file, "long %" PRId64, constant->value.long_value);

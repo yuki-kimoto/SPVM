@@ -122,10 +122,10 @@ void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   if (constant->type->id == SPVM_TYPE_C_ID_INT) {
     if (constant->sign) {
-      constant->value.long_value = (int32_t)-constant->tmp_ulong_value;
+      constant->value.int_value = (int32_t)-constant->tmp_ulong_value;
     }
     else {
-      constant->value.long_value = (int32_t)constant->tmp_ulong_value;
+      constant->value.int_value = (int32_t)constant->tmp_ulong_value;
     }
   }
   else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
@@ -165,7 +165,7 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->value.long_value = value;
+  constant->value.int_value = value;
   constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
   
   op_constant->uv.constant = constant;
@@ -863,11 +863,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_enumeration_block = op_enumeration->first;
         
         // Starting value
-        int64_t start_value = 0;
+        int64_t default_value = 0;
+        int32_t default_type_id = SPVM_TYPE_C_ID_INT;
         SPVM_OP* op_enumeration_values = op_enumeration_block->first;
         SPVM_OP* op_enumeration_value = op_enumeration_values->first;
         
-        int32_t constant_type_id = SPVM_TYPE_C_ID_INT;
         while ((op_enumeration_value = SPVM_OP_sibling(compiler, op_enumeration_value))) {
           SPVM_ENUMERATION_VALUE* enumeration_value = SPVM_ENUMERATION_VALUE_new(compiler);
           enumeration_value->op_name = op_enumeration_value->first;
@@ -875,40 +875,76 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             enumeration_value->op_constant = op_enumeration_value->last;
           }
           
-          SPVM_OP* op_constant;
           if (enumeration_value->op_constant) {
-            op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_enumeration_value->file, op_enumeration_value->line);
-            op_constant->uv.constant = enumeration_value->op_constant->uv.constant;
-            
-            if (op_constant->uv.constant->type->id == SPVM_TYPE_C_ID_INT) {
-              constant_type_id = SPVM_TYPE_C_ID_INT;
-            }
-            else if (op_constant->uv.constant->type->id == SPVM_TYPE_C_ID_LONG) {
-              constant_type_id = SPVM_TYPE_C_ID_LONG;
-            }
-            else {
-              assert(0);
-            }
+            SPVM_CONSTANT* constant = enumeration_value->op_constant->uv.constant;
             
             // Resolve constant
-            SPVM_OP_resolve_constant(compiler, op_constant);
+            default_type_id =constant->type->id;
             
-            start_value = op_constant->uv.constant->value.long_value + 1;
+            // TODO add type
+            if (default_type_id == SPVM_TYPE_C_ID_BYTE) {
+              default_value = constant->value.byte_value;
+            }
+            else if (default_type_id == SPVM_TYPE_C_ID_SHORT) {
+              default_value = constant->value.short_value;
+            }
+            else if (default_type_id == SPVM_TYPE_C_ID_INT) {
+              default_value = constant->value.int_value;
+            }
+            else if (default_type_id == SPVM_TYPE_C_ID_LONG) {
+              default_value = constant->value.long_value;
+            }
+            else if (default_type_id == SPVM_TYPE_C_ID_FLOAT) {
+              default_value = (int64_t)constant->value.float_value;
+            }
+            else if (default_type_id == SPVM_TYPE_C_ID_DOUBLE) {
+              default_value = (int64_t)constant->value.double_value;
+            }
+            
+            default_value++;
           }
           else {
-            if (constant_type_id == SPVM_TYPE_C_ID_INT) {
-              op_constant = SPVM_OP_new_op_constant_int(compiler, (int32_t)start_value, op_enumeration_value->file, op_enumeration_value->line);
+            SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+            
+            // TODO add type
+            if (default_type_id == SPVM_TYPE_C_ID_BYTE) {
+              constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+              constant->value.byte_value = (int8_t)default_value;
             }
-            else if (constant_type_id == SPVM_TYPE_C_ID_LONG) {
-              op_constant = SPVM_OP_new_op_constant_long(compiler, start_value, op_enumeration_value->file, op_enumeration_value->line);
+            else if (default_type_id == SPVM_TYPE_C_ID_SHORT) {
+              constant->type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
+              constant->value.short_value = (int16_t)default_value;
+            }
+            else if (default_type_id == SPVM_TYPE_C_ID_INT) {
+              constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+              constant->value.int_value = (int32_t)default_value;
+            }
+            else if (default_type_id == SPVM_TYPE_C_ID_LONG) {
+              constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
+              constant->value.long_value = (int64_t)default_value;
+            }
+            else if (default_type_id == SPVM_TYPE_C_ID_FLOAT) {
+              constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
+              constant->value.float_value = (float)default_value;
+            }
+            else if (default_type_id == SPVM_TYPE_C_ID_DOUBLE) {
+              constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
+              constant->value.double_value = (double)default_value;
             }
             else {
               assert(0);
             }
+            constant->resolved = 1;
+            
+            SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_enumeration_value->file, op_enumeration_value->line);
+            op_constant->uv.constant = constant;
             enumeration_value->op_constant = op_constant;
             
-            start_value++;
+            default_value++;
           }
+          
+          SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_enumeration_value->file, op_enumeration_value->line);
+          op_constant->uv.constant = enumeration_value->op_constant->uv.constant;
           
           // sub
           SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUB, op_enumeration_value->file, op_enumeration_value->line);

@@ -393,7 +393,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       switch (constant->type->id) {
                         case SPVM_TYPE_C_ID_INT: {
-                          int64_t value = constant->value.long_value;
+                          int32_t value = constant->value.int_value;
                           if (value >= -32768 && value <= 32767) {
                             constant->constant_pool_index = -1;
                             break;
@@ -560,7 +560,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         for (i = 0; i < length; i++) {
                           SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(op_cases, i);
                           SPVM_OP* op_constant = op_case->first;
-                          int32_t value = (int32_t)op_constant->uv.constant->value.long_value;
+                          int32_t value = op_constant->uv.constant->value.int_value;
                           
                           if (value < min) {
                             min = value;
