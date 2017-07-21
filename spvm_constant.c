@@ -11,7 +11,7 @@ SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler) {
   
   constant->sign = 0;
   constant->resolved = 0;
-  constant->type = -1;
+  constant->type = NULL;
   
   return constant;
 }

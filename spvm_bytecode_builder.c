@@ -1848,8 +1848,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     _Bool bytecode_set = 0;
                     if (constant->type->id == SPVM_TYPE_C_ID_BYTE) {
-                      // Currently not used logic
-                      assert(0);
                       if (constant->uv.long_value == 0) {
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONSTANT_BYTE_0);
                         bytecode_set = 1;
@@ -1865,8 +1863,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (constant->type->id == SPVM_TYPE_C_ID_SHORT) {
-                      // Currently not used logic
-                      assert(0);
                       
                       if (constant->uv.long_value == 0) {
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONSTANT_SHORT_0);
