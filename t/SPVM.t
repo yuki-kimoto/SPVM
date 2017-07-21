@@ -32,7 +32,9 @@ my $DOUBLE_MIN = POSIX::DBL_MIN;
 
 # Enumeration
 {
-  ok(SPVM::TestCase::enumeration());
+  ok(SPVM::TestCase::enum_int());
+  ok(SPVM::TestCase::enum_long());
+  ok(SPVM::TestCase::enum_int_minus());
 }
 
 # Convert type - floating point narrowing convertion

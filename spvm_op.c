@@ -876,10 +876,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           }
           
           if (enumeration_value->op_constant) {
+            SPVM_OP_resolve_constant(compiler, enumeration_value->op_constant);
+            
             SPVM_CONSTANT* constant = enumeration_value->op_constant->uv.constant;
             
             // Resolve constant
-            default_type_id =constant->type->id;
+            default_type_id = constant->type->id;
             
             // TODO add type
             if (default_type_id == SPVM_TYPE_C_ID_BYTE) {
