@@ -391,8 +391,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
                       
-                      switch (constant->code) {
-                        case SPVM_CONSTANT_C_CODE_INT: {
+                      switch (constant->type->id) {
+                        case SPVM_TYPE_C_ID_INT: {
                           int64_t value = constant->uv.long_value;
                           if (value >= -32768 && value <= 32767) {
                             constant->constant_pool_index = -1;
@@ -402,7 +402,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, (int32_t)value);
                           break;
                         }
-                        case SPVM_CONSTANT_C_CODE_LONG: {
+                        case SPVM_TYPE_C_ID_LONG: {
                           int64_t value = constant->uv.long_value;
                           
                           if (value >= -32768 && value <= 32767) {
@@ -413,7 +413,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
                           break;
                         }
-                        case SPVM_CONSTANT_C_CODE_FLOAT: {
+                        case SPVM_TYPE_C_ID_FLOAT: {
                           float value = constant->uv.float_value;
                           
                           if (value == 0 || value == 1 || value == 2) {
@@ -424,7 +424,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
                           break;
                         }
-                        case SPVM_CONSTANT_C_CODE_DOUBLE: {
+                        case SPVM_TYPE_C_ID_DOUBLE: {
                           double value = constant->uv.double_value;
                           
                           if (value == 0 || value == 1) {
@@ -435,7 +435,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
                           break;
                         }
-                        case SPVM_CONSTANT_C_CODE_STRING: {
+                        case SPVM_TYPE_C_ID_STRING: {
                           const char* value = constant->uv.string_value;
                           
                           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);

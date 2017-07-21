@@ -11,6 +11,7 @@
   #include "spvm_op.h"
   #include "spvm_dumper.h"
   #include "spvm_constant.h"
+  #include "spvm_type.h"
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE MALLOC
@@ -506,7 +507,7 @@ unop
     {
       if ($2->code == SPVM_OP_C_CODE_CONSTANT) {
         SPVM_CONSTANT* constant = $2->uv.constant;
-        if (constant->code == SPVM_CONSTANT_C_CODE_INT || constant->code == SPVM_CONSTANT_C_CODE_LONG) {
+        if (constant->type->id == SPVM_TYPE_C_ID_INT || constant->type->id == SPVM_TYPE_C_ID_LONG) {
           constant->sign = 1;
           $$ = $2;
         }

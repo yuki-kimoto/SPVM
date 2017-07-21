@@ -43,21 +43,21 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     printf("%s", SPVM_OP_C_CODE_NAMES[code]);
     if (op_cur->code == SPVM_OP_C_CODE_CONSTANT) {
       SPVM_CONSTANT* constant = op_cur->uv.constant;
-      printf(" %s", SPVM_CONSTANT_C_CODE_NAMES[constant->code]);
-      switch (constant->code) {
-        case SPVM_CONSTANT_C_CODE_INT:
+      printf(" %s", SPVM_TYPE_C_CORE_NAMES[constant->type->id]);
+      switch (constant->type->id) {
+        case SPVM_TYPE_C_ID_INT:
           printf(" %" PRId64, constant->uv.long_value);
           break;
-        case SPVM_CONSTANT_C_CODE_LONG:
+        case SPVM_TYPE_C_ID_LONG:
           printf(" %" PRId64, constant->uv.long_value);
           break;
-        case SPVM_CONSTANT_C_CODE_FLOAT:
+        case SPVM_TYPE_C_ID_FLOAT:
           printf(" %f", constant->uv.float_value);
           break;
-        case SPVM_CONSTANT_C_CODE_DOUBLE:
+        case SPVM_TYPE_C_ID_DOUBLE:
           printf(" %f", constant->uv.double_value);
           break;
-        case SPVM_CONSTANT_C_CODE_STRING:
+        case SPVM_TYPE_C_ID_STRING:
           printf(" \"%s\"", constant->uv.string_value);
           break;
       }
@@ -467,20 +467,20 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
 void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant) {
   (void)compiler;
   
-  switch(constant->code) {
-    case SPVM_CONSTANT_C_CODE_INT:
+  switch(constant->type->id) {
+    case SPVM_TYPE_C_ID_INT:
       printf("      int ld%" PRId64 "\n", constant->uv.long_value);
       break;
-    case SPVM_CONSTANT_C_CODE_LONG:
+    case SPVM_TYPE_C_ID_LONG:
       printf("      long ld%" PRId64 "\n", constant->uv.long_value);
       break;
-    case SPVM_CONSTANT_C_CODE_FLOAT:
+    case SPVM_TYPE_C_ID_FLOAT:
       printf("      float %f\n", constant->uv.float_value);
       break;
-    case SPVM_CONSTANT_C_CODE_DOUBLE:
+    case SPVM_TYPE_C_ID_DOUBLE:
       printf("      double %f\n", constant->uv.double_value);
       break;
-    case SPVM_CONSTANT_C_CODE_STRING:
+    case SPVM_TYPE_C_ID_STRING:
       printf("      string \"%s\"\n", constant->uv.string_value);
       break;
   }

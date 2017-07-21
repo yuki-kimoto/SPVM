@@ -12,6 +12,7 @@
 #include "spvm_constant.h"
 #include "spvm_var.h"
 #include "spvm_op.h"
+#include "spvm_type.h"
 
 void SPVM_yyerror_format(SPVM_COMPILER* compiler, const char* message_template, ...) {
   
@@ -118,20 +119,20 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
     case CONSTANT: {
       SPVM_CONSTANT* constant = yylval.opval->uv.constant;
       
-      switch(constant->code) {
-        case SPVM_CONSTANT_C_CODE_INT:
+      switch(constant->type->id) {
+        case SPVM_TYPE_C_ID_INT:
           fprintf(file, "int %" PRId64, constant->uv.long_value);
           break;
-        case SPVM_CONSTANT_C_CODE_LONG:
+        case SPVM_TYPE_C_ID_LONG:
           fprintf(file, "long %" PRId64, constant->uv.long_value);
           break;
-        case SPVM_CONSTANT_C_CODE_FLOAT:
+        case SPVM_TYPE_C_ID_FLOAT:
           fprintf(file, "float %f", constant->uv.float_value);
           break;
-        case SPVM_CONSTANT_C_CODE_DOUBLE:
+        case SPVM_TYPE_C_ID_DOUBLE:
           fprintf(file, "double %f", constant->uv.double_value);
           break;
-        case SPVM_CONSTANT_C_CODE_STRING:
+        case SPVM_TYPE_C_ID_STRING:
           fprintf(file, "string %s", constant->uv.string_value);
           break;
       }

@@ -3,18 +3,6 @@
 
 #include "spvm_base.h"
 
-enum {
-  SPVM_CONSTANT_C_CODE_BYTE,
-  SPVM_CONSTANT_C_CODE_SHORT,
-  SPVM_CONSTANT_C_CODE_INT,
-  SPVM_CONSTANT_C_CODE_LONG,
-  SPVM_CONSTANT_C_CODE_FLOAT,
-  SPVM_CONSTANT_C_CODE_DOUBLE,
-  SPVM_CONSTANT_C_CODE_STRING,
-};
-
-extern const char* const SPVM_CONSTANT_C_CODE_NAMES[];
-
 struct SPVM_constant {
   SPVM_TYPE* type;
   union {
@@ -25,9 +13,9 @@ struct SPVM_constant {
     const char* string_value;
   } uv;
   uint64_t tmp_ulong_value;
-  int32_t code;
   int32_t constant_pool_index;
   _Bool sign;
+  _Bool resolved;
 };
 
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler);

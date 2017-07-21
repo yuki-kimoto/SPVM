@@ -479,7 +479,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // Constant 
         SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
         SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-        constant->code = SPVM_CONSTANT_C_CODE_INT;
         constant->uv.long_value = ch;
         constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
         
@@ -585,7 +584,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         SPVM_OP* op_constant = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
         SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-        constant->code = SPVM_CONSTANT_C_CODE_STRING;
         constant->uv.string_value = str;
         constant->type = SPVM_HASH_search(compiler->type_symtable, "string", strlen("string"));
         op_constant->uv.constant = constant;
@@ -662,37 +660,33 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           memcpy(num_str, cur_token_ptr, str_len);
           num_str[str_len] = '\0';
           
-          // Constant type
-          int32_t constant_code;
+          // Constant
+          SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+          
           if (num_str[str_len - 1] == 'L')  {
-            constant_code = SPVM_CONSTANT_C_CODE_LONG;
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
             num_str[str_len - 1] = '\0';
           }
           else if (num_str[str_len - 1] == 'f')  {
-            constant_code = SPVM_CONSTANT_C_CODE_FLOAT;
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
             num_str[str_len - 1] = '\0';
           }
           else if (num_str[str_len - 1] == 'd')  {
-            constant_code = SPVM_CONSTANT_C_CODE_DOUBLE;
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
             num_str[str_len - 1] = '\0';
           }
           else {
             if (is_floating_number) {
-              constant_code = SPVM_CONSTANT_C_CODE_DOUBLE;
+              constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
             }
             else {
-              constant_code = SPVM_CONSTANT_C_CODE_INT;
+              constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
             }
           }
           
-          // Constant
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
-          SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-          constant->code = constant_code;
-          
           // float
           char *end;
-          if (constant->code == SPVM_CONSTANT_C_CODE_FLOAT) {
+          if (constant->type->id == SPVM_TYPE_C_ID_FLOAT) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -704,7 +698,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
           }
           // double
-          else if (constant->code == SPVM_CONSTANT_C_CODE_DOUBLE) {
+          else if (constant->type->id == SPVM_TYPE_C_ID_DOUBLE) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -715,7 +709,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
           }
           // int
-          else if (constant->code == SPVM_CONSTANT_C_CODE_INT) {
+          else if (constant->type->id == SPVM_TYPE_C_ID_INT) {
             uint64_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
@@ -736,7 +730,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
           }
           // long
-          else if (constant->code == SPVM_CONSTANT_C_CODE_LONG) {
+          else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
             uint64_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
@@ -757,6 +751,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
           }
           
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
           op->uv.constant = constant;
           yylvalp->opval = op;
           
