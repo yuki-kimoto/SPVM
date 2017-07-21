@@ -11,7 +11,8 @@ package TestCase {
     ONE,
     THREE = 3,
     FOUR,
-    SIX = 6
+    SIX = 6,
+    MINUS_MAX = -2147483648
   }
 
   enum {
@@ -22,8 +23,7 @@ package TestCase {
   }
 
   enum {
-    INT_MINUS_ONE = -1,
-    INT_MINUS_MAX = -2147483648
+    INT_MINUS_ONE = -1
   }
   
   sub enum_int () : int {
@@ -32,7 +32,9 @@ package TestCase {
         if (TestCase->THREE == 3) {
           if (TestCase->FOUR == 4) {
             if (TestCase->SIX == 6) {
-              return 1;
+              if (TestCase->MINUS_MAX == -2147483648) {
+                return 1;
+              }
             }
           }
         }
@@ -50,16 +52,6 @@ package TestCase {
             return 1;
           }
         }
-      }
-    }
-    
-    return 0;
-  }
-  
-  sub enum_int_minus () : int {
-    if (TestCase->INT_MINUS_ONE == -1) {
-      if (TestCase->INT_MINUS_MAX == -2147483648) {
-        return 1;
       }
     }
     

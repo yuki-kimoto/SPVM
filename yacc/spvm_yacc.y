@@ -506,15 +506,13 @@ unop
   | '-' term %prec UMINUS
     {
       if ($2->code == SPVM_OP_C_CODE_CONSTANT) {
-        SPVM_CONSTANT* constant = $2->uv.constant;
-        if (constant->type->id == SPVM_TYPE_C_ID_INT || constant->type->id == SPVM_TYPE_C_ID_LONG) {
-          constant->sign = 1;
-          $$ = $2;
+        if (constant->sign) {
+          constant->sign = 0;
         }
         else {
-          SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, $1->file, $1->line);
-          $$ = SPVM_OP_build_unop(compiler, op, $2);
+          constant->sign = 1;
         }
+        $$ = $2;
       }
       else {
         SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, $1->file, $1->line);
