@@ -508,13 +508,21 @@ unop
       if ($2->code == SPVM_OP_C_CODE_CONSTANT) {
         SPVM_OP* op_constant = $2;
         SPVM_CONSTANT* constant = op_constant->uv.constant;
-        if (constant->sign) {
-          constant->sign = 0;
+        if (constant->resolved) {
+          SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, $1->file, $1->line);
+          $$ = SPVM_OP_build_unop(compiler, op, $2);
         }
         else {
-          constant->sign = 1;
+          if (constant->sign) {
+            constant->sign = 0;
+          }
+          else {
+            constant->sign = 1;
+          }
+          SPVM_OP_resolve_constant(compiler, op_constant);
+          
+          $$ = op_constant;
         }
-        $$ = op_constant;
       }
       else {
         SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, $1->file, $1->line);
