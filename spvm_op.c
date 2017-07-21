@@ -883,6 +883,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             // Resolve constant
             default_type_id = constant->type->id;
             
+            
             // TODO add type
             if (default_type_id == SPVM_TYPE_C_ID_BYTE) {
               default_value = constant->value.byte_value;
@@ -945,6 +946,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             default_value++;
           }
           
+          // Constant
           SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_enumeration_value->file, op_enumeration_value->line);
           op_constant->uv.constant = enumeration_value->op_constant->uv.constant;
           

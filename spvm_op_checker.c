@@ -36,7 +36,70 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     int32_t i;
     for (i = 0; i < compiler->op_constants->length; i++) {
       SPVM_OP* op_constant = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_constants, i);
+      
+      // Resolve type
       SPVM_OP_resolve_constant(compiler, op_constant);
+      
+      // Constant
+      SPVM_CONSTANT* constant = op_constant->uv.constant;
+      
+      // Constant pool
+      SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
+      
+      // Push value to constant pool
+      switch (constant->type->id) {
+        case SPVM_TYPE_C_ID_INT: {
+          int32_t value = constant->value.int_value;
+          if (value >= -32768 && value <= 32767) {
+            constant->constant_pool_index = -1;
+            break;
+          }
+          
+          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, (int32_t)value);
+          break;
+        }
+        case SPVM_TYPE_C_ID_LONG: {
+          int64_t value = constant->value.long_value;
+          
+          if (value >= -32768 && value <= 32767) {
+            constant->constant_pool_index = -1;
+            break;
+          }
+          
+          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
+          break;
+        }
+        case SPVM_TYPE_C_ID_FLOAT: {
+          float value = constant->value.float_value;
+          
+          if (value == 0 || value == 1 || value == 2) {
+            constant->constant_pool_index = -1;
+            break;
+          }
+          
+          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
+          break;
+        }
+        case SPVM_TYPE_C_ID_DOUBLE: {
+          double value = constant->value.double_value;
+          
+          if (value == 0 || value == 1) {
+            constant->constant_pool_index = -1;
+            break;
+          }
+          
+          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
+          break;
+        }
+        case SPVM_TYPE_C_ID_STRING: {
+          const char* value = constant->value.string_value;
+          
+          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
+          
+          break;
+        }
+      }
+
     }
   }
   // Types
@@ -392,53 +455,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
                       
                       switch (constant->type->id) {
-                        case SPVM_TYPE_C_ID_INT: {
-                          int32_t value = constant->value.int_value;
-                          if (value >= -32768 && value <= 32767) {
-                            constant->constant_pool_index = -1;
-                            break;
-                          }
-                          
-                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, (int32_t)value);
-                          break;
-                        }
-                        case SPVM_TYPE_C_ID_LONG: {
-                          int64_t value = constant->value.long_value;
-                          
-                          if (value >= -32768 && value <= 32767) {
-                            constant->constant_pool_index = -1;
-                            break;
-                          }
-                          
-                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
-                          break;
-                        }
-                        case SPVM_TYPE_C_ID_FLOAT: {
-                          float value = constant->value.float_value;
-                          
-                          if (value == 0 || value == 1 || value == 2) {
-                            constant->constant_pool_index = -1;
-                            break;
-                          }
-                          
-                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
-                          break;
-                        }
-                        case SPVM_TYPE_C_ID_DOUBLE: {
-                          double value = constant->value.double_value;
-                          
-                          if (value == 0 || value == 1) {
-                            constant->constant_pool_index = -1;
-                            break;
-                          }
-                          
-                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
-                          break;
-                        }
                         case SPVM_TYPE_C_ID_STRING: {
                           const char* value = constant->value.string_value;
-                          
-                          constant->constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
                           
                           SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_cur->file, op_cur->line);
                           op_constant->uv.constant = op_cur->uv.constant;
