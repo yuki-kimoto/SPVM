@@ -46,19 +46,19 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       printf(" %s", SPVM_TYPE_C_CORE_NAMES[constant->type->id]);
       switch (constant->type->id) {
         case SPVM_TYPE_C_ID_INT:
-          printf(" %" PRId64, constant->uv.long_value);
+          printf(" %" PRId64, constant->value.long_value);
           break;
         case SPVM_TYPE_C_ID_LONG:
-          printf(" %" PRId64, constant->uv.long_value);
+          printf(" %" PRId64, constant->value.long_value);
           break;
         case SPVM_TYPE_C_ID_FLOAT:
-          printf(" %f", constant->uv.float_value);
+          printf(" %f", constant->value.float_value);
           break;
         case SPVM_TYPE_C_ID_DOUBLE:
-          printf(" %f", constant->uv.double_value);
+          printf(" %f", constant->value.double_value);
           break;
         case SPVM_TYPE_C_ID_STRING:
-          printf(" \"%s\"", constant->uv.string_value);
+          printf(" \"%s\"", constant->value.string_value);
           break;
       }
       printf(" (index %" PRId32 ")", constant->constant_pool_index);
@@ -469,19 +469,19 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
   
   switch(constant->type->id) {
     case SPVM_TYPE_C_ID_INT:
-      printf("      int ld%" PRId64 "\n", constant->uv.long_value);
+      printf("      int ld%" PRId64 "\n", constant->value.long_value);
       break;
     case SPVM_TYPE_C_ID_LONG:
-      printf("      long ld%" PRId64 "\n", constant->uv.long_value);
+      printf("      long ld%" PRId64 "\n", constant->value.long_value);
       break;
     case SPVM_TYPE_C_ID_FLOAT:
-      printf("      float %f\n", constant->uv.float_value);
+      printf("      float %f\n", constant->value.float_value);
       break;
     case SPVM_TYPE_C_ID_DOUBLE:
-      printf("      double %f\n", constant->uv.double_value);
+      printf("      double %f\n", constant->value.double_value);
       break;
     case SPVM_TYPE_C_ID_STRING:
-      printf("      string \"%s\"\n", constant->uv.string_value);
+      printf("      string \"%s\"\n", constant->value.string_value);
       break;
   }
   printf("      address => %" PRId32 "\n", constant->constant_pool_index);
@@ -566,7 +566,7 @@ void SPVM_DUMPER_dump_enumeration_value(SPVM_COMPILER* compiler, SPVM_ENUMERATIO
   
   if (enumeration_value) {
     printf("      name => \"%s\"\n", enumeration_value->op_name->uv.name);
-    printf("      value => %" PRId64 "\n", enumeration_value->op_constant->uv.constant->uv.long_value);
+    printf("      value => %" PRId64 "\n", enumeration_value->op_constant->uv.constant->value.long_value);
   }
   else {
     printf("      None\n");

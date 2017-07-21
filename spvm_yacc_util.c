@@ -121,19 +121,19 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
       
       switch(constant->type->id) {
         case SPVM_TYPE_C_ID_INT:
-          fprintf(file, "int %" PRId64, constant->uv.long_value);
+          fprintf(file, "int %" PRId64, constant->value.long_value);
           break;
         case SPVM_TYPE_C_ID_LONG:
-          fprintf(file, "long %" PRId64, constant->uv.long_value);
+          fprintf(file, "long %" PRId64, constant->value.long_value);
           break;
         case SPVM_TYPE_C_ID_FLOAT:
-          fprintf(file, "float %f", constant->uv.float_value);
+          fprintf(file, "float %f", constant->value.float_value);
           break;
         case SPVM_TYPE_C_ID_DOUBLE:
-          fprintf(file, "double %f", constant->uv.double_value);
+          fprintf(file, "double %f", constant->value.double_value);
           break;
         case SPVM_TYPE_C_ID_STRING:
-          fprintf(file, "string %s", constant->uv.string_value);
+          fprintf(file, "string %s", constant->value.string_value);
           break;
       }
     }

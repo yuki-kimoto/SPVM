@@ -2,16 +2,11 @@
 #define SPVM_CONSTANT_H
 
 #include "spvm_base.h"
+#include "spvm_value.h"
 
 struct SPVM_constant {
   SPVM_TYPE* type;
-  union {
-    // byte, short, int value is saved to long_value
-    int64_t long_value;
-    float float_value;
-    double double_value;
-    const char* string_value;
-  } uv;
+  SPVM_VALUE value;
   uint64_t tmp_ulong_value;
   int32_t constant_pool_index;
   _Bool sign;

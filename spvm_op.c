@@ -122,18 +122,18 @@ void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   if (constant->type->id == SPVM_TYPE_C_ID_INT) {
     if (constant->sign) {
-      constant->uv.long_value = (int32_t)-constant->tmp_ulong_value;
+      constant->value.long_value = (int32_t)-constant->tmp_ulong_value;
     }
     else {
-      constant->uv.long_value = (int32_t)constant->tmp_ulong_value;
+      constant->value.long_value = (int32_t)constant->tmp_ulong_value;
     }
   }
   else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
     if (constant->sign) {
-      constant->uv.long_value = (int64_t)-constant->tmp_ulong_value;
+      constant->value.long_value = (int64_t)-constant->tmp_ulong_value;
     }
     else {
-      constant->uv.long_value = (int64_t)constant->tmp_ulong_value;
+      constant->value.long_value = (int64_t)constant->tmp_ulong_value;
     }
   }
   constant->resolved = 1;
@@ -165,7 +165,7 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->uv.long_value = value;
+  constant->value.long_value = value;
   constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
   
   op_constant->uv.constant = constant;
@@ -177,7 +177,7 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->uv.long_value = value;
+  constant->value.long_value = value;
   constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
   
   op_constant->uv.constant = constant;
@@ -189,7 +189,7 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->uv.float_value = value;
+  constant->value.float_value = value;
   constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
   
   op_constant->uv.constant = constant;
@@ -201,7 +201,7 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->uv.double_value = value;
+  constant->value.double_value = value;
   constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
   
   op_constant->uv.constant = constant;
@@ -893,7 +893,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             // Resolve constant
             SPVM_OP_resolve_constant(compiler, op_constant);
             
-            start_value = op_constant->uv.constant->uv.long_value + 1;
+            start_value = op_constant->uv.constant->value.long_value + 1;
           }
           else {
             if (constant_type_id == SPVM_TYPE_C_ID_INT) {
@@ -1255,7 +1255,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
     // Default error message
     SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_die->file, op_die->line);
     SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-    constant->uv.string_value = "Error";
+    constant->value.string_value = "Error";
     constant->type = SPVM_HASH_search(compiler->type_symtable, "string", strlen("string"));
     op_constant->uv.constant = constant;
     

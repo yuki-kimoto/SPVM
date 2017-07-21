@@ -19,7 +19,7 @@ SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler) {
 SPVM_CONSTANT* SPVM_CONSTANT_create_int_1(SPVM_COMPILER* compiler) {
   
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-  constant->uv.long_value = 1;
+  constant->value.long_value = 1;
   constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
   constant->resolved = 1;
   

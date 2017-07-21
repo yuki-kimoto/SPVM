@@ -479,7 +479,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // Constant 
         SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
         SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-        constant->uv.long_value = ch;
+        constant->value.long_value = ch;
         constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
         
         op->uv.constant = constant;
@@ -584,7 +584,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         SPVM_OP* op_constant = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
         SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-        constant->uv.string_value = str;
+        constant->value.string_value = str;
         constant->type = SPVM_HASH_search(compiler->type_symtable, "string", strlen("string"));
         op_constant->uv.constant = constant;
         
@@ -693,7 +693,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fprintf(stderr, "Invalid float literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->uv.float_value = (float)num;
+            constant->value.float_value = (float)num;
             
             constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
           }
@@ -705,7 +705,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fprintf(stderr, "Invalid double literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->uv.double_value = num;
+            constant->value.double_value = num;
             constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
           }
           // int
