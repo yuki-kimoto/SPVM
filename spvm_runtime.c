@@ -56,9 +56,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   // Exception
   runtime->exception = NULL;
 
-#ifdef DEBUG
   runtime->object_count = 0;
-#endif
   
   return runtime;
 }

@@ -10,6 +10,11 @@ if ($ivsize < 8) {
   die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
 }
 
+use Getopt::Long;
+
+my $debug;
+GetOptions('d' => \$debug);
+
 WriteMakefile(
     NAME              => 'SPVM',
     VERSION_FROM      => 'lib/SPVM.pm', # finds $VERSION
@@ -21,4 +26,5 @@ WriteMakefile(
     INC               => '-I.', # e.g., '-I. -I/usr/include/other'
     OPTIMIZE => '-O3',
     OBJECT            => '$(O_FILES)', # link all the C files too
+    $debug ? (DEFINE => '-DDEBUG') : ()
 );

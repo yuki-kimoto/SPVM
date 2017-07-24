@@ -95,11 +95,12 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
     }
   }
 
-#ifdef DEBUG
   if (block != NULL) {
     runtime->object_count++;
   }
-  printf("MALLOC OBJECT COUNT %d\n", runtime->object_count);
+
+#ifdef DEBUG
+  fprintf(stderr, "MALLOC OBJECT COUNT %d\n", runtime->object_count);
 #endif
   
   return block;
@@ -117,10 +118,11 @@ void SPVM_RUNTIME_ALLOCATOR_free_base_object(SPVM_API* api, SPVM_RUNTIME_ALLOCAT
     
     assert(byte_size > 0);
     
-#ifdef DEBUG
     runtime->object_count--;
-    printf("FREE OBJECT COUNT %d\n", runtime->object_count);
     assert(runtime->object_count >= 0);
+
+#ifdef DEBUG
+    fprintf(stderr, "FREE OBJECT COUNT %d\n", runtime->object_count);
 #endif
     
     if (byte_size > allocator->base_object_max_byte_size_use_memory_pool) {
