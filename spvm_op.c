@@ -415,6 +415,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_TYPE*  type = NULL;
   
   switch (op->code) {
+    case SPVM_OP_C_CODE_ASSIGN_PROCESS:
+      type = SPVM_OP_get_type(compiler, op->first);
+      break;
     case SPVM_OP_C_CODE_ARRAY_LENGTH:
       type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
       break;
@@ -1244,6 +1247,9 @@ SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* 
 
 SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last) {
   
+  // Stab to add after process
+  SPVM_OP* op_assign_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN_PROCESS, op_assign->file, op_assign->line);
+  
   // Build op
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_first);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_last);
@@ -1254,11 +1260,13 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
     op_var->uv.var = op_first->uv.var;
     SPVM_OP_insert_child(compiler, op_var, op_var->last, op_assign);
     
-    return op_var;
+    SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_var);
   }
   else {
-    return op_assign;
+    SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_assign);
   }
+  
+  return op_assign_process;
 }
 
 
