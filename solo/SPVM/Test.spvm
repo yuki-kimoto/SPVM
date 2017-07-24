@@ -22,6 +22,7 @@ package Test {
     ONE = 0.25f
   }
   sub main($mvar : int) : int {
+    my $ppp = [1, 2, 3]
     stdout::println_float(Test->ONE);
     
     # Logical or

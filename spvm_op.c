@@ -1261,6 +1261,124 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
     SPVM_OP_insert_child(compiler, op_var, op_var->last, op_assign);
     
     SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_var);
+
+    // Array initialization
+    if (op_last->code == SPVM_OP_C_CODE_LIST) {
+      SPVM_OP* op_list = op_last;
+      
+      op_list->moresib = 0;
+      op_list->sibparent = NULL;
+      
+      // Length constant
+      int32_t length = 0;
+      SPVM_TYPE* first_type = NULL;
+      SPVM_OP* op_term = op_list->first;
+      while (op_term = SPVM_OP_sibling(compiler, op_term)) {
+        SPVM_OP_resolve_constant(compiler, op_term);
+        
+        // Term must be constant
+        if (op_term->code != SPVM_OP_C_CODE_CONSTANT) {
+          SPVM_yyerror_format(compiler, "Array init elements must be constant value at %s line %d\n", op_list->file, op_list->line);
+          compiler->fatal_error = 1;
+          return;
+        }
+        
+        if (first_type == NULL) {
+          first_type = SPVM_OP_get_type(compiler, op_term);
+        }
+        
+        // Type must be same as first type
+        SPVM_TYPE* constant_type = SPVM_OP_get_type(compiler, op_term);
+        if (constant_type->id != first_type->id) {
+          SPVM_yyerror_format(compiler, "All of array init elements must be same types at %s line %d\n", op_list->file, op_list->line);
+          compiler->fatal_error = 1;
+          return;
+        }
+        
+        length++;
+      }
+      SPVM_OP* op_constant_length = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_list->file, op_list->line);
+      SPVM_CONSTANT* constant_length = SPVM_CONSTANT_new(compiler);
+      constant_length->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+      constant_length->value.int_value = length;
+      constant_length->resolved = 1;
+      op_constant_length->uv.constant = constant_length;
+      
+      // Malloc
+      SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MALLOC, op_list->file, op_list->line);
+      SPVM_OP* op_type_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_list->file, op_list->line);
+      
+      if (first_type->id == SPVM_TYPE_C_ID_BYTE) {
+        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
+      }
+      else if (first_type->id == SPVM_TYPE_C_ID_SHORT) {
+        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "short[]", strlen("short[]"));
+      }
+      else if (first_type->id == SPVM_TYPE_C_ID_INT) {
+        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "int[]", strlen("int[]"));
+      }
+      else if (first_type->id == SPVM_TYPE_C_ID_LONG) {
+        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "long[]", strlen("long[]"));
+      }
+      else if (first_type->id == SPVM_TYPE_C_ID_FLOAT) {
+        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "float[]", strlen("float[]"));
+      }
+      else if (first_type->id == SPVM_TYPE_C_ID_DOUBLE) {
+        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "double[]", strlen("double[]"));
+      }
+      else if (first_type->id == SPVM_TYPE_C_ID_STRING) {
+        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "string[]", strlen("string[]"));
+      }
+      else {
+        assert(0);
+      }
+      SPVM_OP_insert_child(compiler, op_malloc, op_malloc->last, op_type_malloc);
+      
+      op_assign->last = op_malloc;
+      op_malloc->moresib = 0;
+      op_malloc->sibparent = op_assign;
+      op_first->sibparent = op_malloc;
+      
+      // Add length constant
+      SPVM_OP_insert_child(compiler, op_type_malloc, op_type_malloc->last, op_constant_length);
+      
+      // Assign array element
+      SPVM_OP* op_list_new = SPVM_OP_new_op_list(compiler, op_list->file, op_list->line);
+      SPVM_DYNAMIC_ARRAY* op_terms = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      op_term = op_list->first;
+      while (op_term = SPVM_OP_sibling(compiler, op_term)) {
+        SPVM_DYNAMIC_ARRAY_push(op_terms, op_term);
+      }
+      {
+        int32_t i;
+        for (i = 0; i < op_terms->length; i++) {
+          SPVM_OP* op_term = SPVM_DYNAMIC_ARRAY_fetch(op_terms, i);
+          
+          SPVM_OP* op_assign_array = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_list->file, op_list->line);
+          SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_ELEM, op_list->file, op_list->line);
+          SPVM_OP* op_var_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_list->file, op_list->line);
+          op_var_array_elem->uv.var = op_first->uv.var;
+          SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_array_elem);
+          
+          SPVM_OP* op_constant_index = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_list->file, op_list->line);
+          SPVM_CONSTANT* constant_index = SPVM_CONSTANT_new(compiler);
+          constant_index->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+          constant_index->value.int_value = i;
+          constant_index->resolved = 1;
+          op_constant_index->uv.constant = constant_index;
+          SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
+          
+          SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_array_elem);
+          op_term->moresib = 0;
+          op_term->sibparent = NULL;
+          SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_term);
+          
+          SPVM_OP_insert_child(compiler, op_list_new, op_list_new->last, op_assign_array);
+        }
+      }
+      
+      SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_list_new);
+    }
   }
   else {
     SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_assign);

@@ -593,6 +593,10 @@ binop
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
+  | my_var ASSIGN '[' opt_terms ']'
+    {
+      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $4);
+    }
   | my_var ASSIGN term
     {
       $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);

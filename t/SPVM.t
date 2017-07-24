@@ -30,6 +30,11 @@ my $FLOAT_MIN = POSIX::FLT_MIN;
 my $DOUBLE_MAX = POSIX::DBL_MAX;
 my $DOUBLE_MIN = POSIX::DBL_MIN;
 
+# Array initialization
+{
+  ok(SPVM::TestCase::array_int());
+}
+
 # Enumeration
 {
   ok(SPVM::TestCase::enum_int());
