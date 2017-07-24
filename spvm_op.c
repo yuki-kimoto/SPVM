@@ -112,6 +112,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "EVAL",
   "BLOCK_END",
   "EXCEPTION_VAR",
+  "ASSIGN_PROCESS",
 };
 
 void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
