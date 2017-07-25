@@ -1,6 +1,7 @@
-0.0229 2017-07-24
+0.0229 2017-07-25
   - support array initialization
     my $nums = [1, 2, 3];
+  - fix memory breaking bug when object is assigned from freelist
 0.0228 2017-07-22
   - fix enum constant bug
   - support float enum
