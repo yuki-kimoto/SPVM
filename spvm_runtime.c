@@ -520,7 +520,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   {
     // Get return value
     SPVM_VALUE return_value = call_stack[operand_stack_top];
-
+    
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
     
@@ -1266,6 +1266,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT: {
+    
     array = (SPVM_ARRAY*)call_stack[operand_stack_top - 2].object_value;
     index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
@@ -1328,7 +1329,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_STORE_OBJECT:
     index = *(pc + 1);
-    
+
     // Decrement reference count
     if (vars[index].object_value != NULL) {
       SPVM_RUNTIME_API_dec_ref_count(api, vars[index].object_value);

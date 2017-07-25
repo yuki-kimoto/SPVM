@@ -103,10 +103,10 @@ SPVM_ARRAY* SPVM_RUNTIME_API_malloc_int_array_noinc(SPVM_API* api, int32_t lengt
   
   int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_C_VALUE_TYPE_INT);
   
-  // Allocate array
+    // Allocate array
   int32_t array_byte_size = sizeof(SPVM_ARRAY) + size * length;
   SPVM_ARRAY* array = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, array_byte_size);
-  
+
   if (array) {
     // Set type
     array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
