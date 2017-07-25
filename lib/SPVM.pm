@@ -229,19 +229,25 @@ sub new_object {
   return $object;
 }
 
+my $package_names_h = {};
+
 sub import {
   my ($class, $package_name) = @_;
   
   # Add package infomations
   if (defined $package_name) {
-    my ($file, $line) = (caller)[1, 2];
+    unless ($package_names_h->{$package_name}) {
+      my ($file, $line) = (caller)[1, 2];
 
-    my $package_info = {
-      name => $package_name,
-      file => $file,
-      line => $line
-    };
-    push @PACKAGE_INFOS, $package_info;
+      my $package_info = {
+        name => $package_name,
+        file => $file,
+        line => $line
+      };
+      push @PACKAGE_INFOS, $package_info;
+      
+      $package_names_h->{$package_name} = 1;
+    }
   }
 }
 

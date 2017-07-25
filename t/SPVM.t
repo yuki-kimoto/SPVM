@@ -30,6 +30,16 @@ my $FLOAT_MIN = POSIX::FLT_MIN();
 my $DOUBLE_MAX = POSIX::DBL_MAX();
 my $DOUBLE_MIN = POSIX::DBL_MIN();
 
+use SPVM::stdout;
+
+is_deeply(
+  \@SPVM::PACKAGE_INFOS,
+  [
+    {name => 'TestCase', file => $file, line => $use_test_line},
+    {name => 'stdout', file => $file, line => $use_std_line}
+  ]
+);
+
 # Get object from freelist
 {
   ok(SPVM::TestCase::get_object_from_freelist());
@@ -142,14 +152,6 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
   }
   
 }
-
-is_deeply(
-  \@SPVM::PACKAGE_INFOS,
-  [
-    {name => 'TestCase', file => $file, line => $use_test_line},
-    {name => 'stdout', file => $file, line => $use_std_line}
-  ]
-);
 
 # call_sub return array
 {
