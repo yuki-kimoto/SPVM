@@ -1,5 +1,7 @@
-0.0230 2017-07-26
+0.0230 2017-07-25
+  - Fix POSIX function import bug
   - Package name must be start with upper case. Lowercase is reserved for core package.
+  - Add SPVM/stdout.pm as Perl module
 0.0229 2017-07-25
   - support array initialization
     my $nums = [1, 2, 3];
