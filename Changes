@@ -1,3 +1,5 @@
+0.0231 2017-07-25
+  - Fix clang compile error
 0.0230 2017-07-25
   - Fix POSIX function import bug
   - Package name must be start with upper case. Lowercase is reserved for core package.

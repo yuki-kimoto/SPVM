@@ -1281,7 +1281,7 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
         if (op_term->code != SPVM_OP_C_CODE_CONSTANT) {
           SPVM_yyerror_format(compiler, "Array init elements must be constant value at %s line %d\n", op_list->file, op_list->line);
           compiler->fatal_error = 1;
-          return;
+          return NULL;
         }
         
         if (first_type == NULL) {
@@ -1293,7 +1293,7 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
         if (constant_type->id != first_type->id) {
           SPVM_yyerror_format(compiler, "All of array init elements must be same types at %s line %d\n", op_list->file, op_list->line);
           compiler->fatal_error = 1;
-          return;
+          return NULL;
         }
         
         length++;
