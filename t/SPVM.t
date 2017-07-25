@@ -30,6 +30,11 @@ my $FLOAT_MIN = POSIX::FLT_MIN;
 my $DOUBLE_MAX = POSIX::DBL_MAX;
 my $DOUBLE_MIN = POSIX::DBL_MIN;
 
+# Get object from freelist
+{
+  ok(SPVM::TestCase::get_object_from_freelist());
+}
+
 # Array initialization
 {
   ok(SPVM::TestCase::array_int());

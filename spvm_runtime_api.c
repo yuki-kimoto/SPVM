@@ -333,6 +333,11 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
   assert(base_object != NULL);
   assert(base_object->ref_count > 0);
   
+  if (base_object->ref_count < 1) {
+    fprintf(stderr, "Found invalid reference count object(SPVM_RUNTIME_API_dec_ref_count)");
+    abort();
+  }
+  
   // Decrement reference count
   base_object->ref_count--;
   

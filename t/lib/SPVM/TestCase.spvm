@@ -28,6 +28,20 @@ package TestCase {
     INT_MINUS_MAX = -2147483648
   }
   
+  sub get_object_from_freelist () : int {
+    get_object_from_freelist_check();
+    
+    my $result = malloc int[65];
+    $result->[64] = 0;
+    
+    return 1;
+  }
+  sub get_object_from_freelist_check () : int[] {
+    my $result = malloc int[63];
+    my $true_result = malloc int[1];
+    return $true_result;
+  }
+
   sub enum_int () : int {
     if (TestCase->INT_ZERO == 0) {
       if (TestCase->INT_ONE == 1) {
