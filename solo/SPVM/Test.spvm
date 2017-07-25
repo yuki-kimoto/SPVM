@@ -22,6 +22,15 @@ package Test {
     ONE = 0.25f
   }
   sub main($mvar : int) : int {
+    
+    # Get object from freelist
+    {
+       check_freelist();
+       
+       my $result = malloc int[65];
+       $result->[64] = 0;
+    }
+    
     my $ppp = [1, 2, 3];
     stdout::println_float(Test->ONE);
     
@@ -891,7 +900,11 @@ package Test {
     
     return @$nums;
   }
-
+  sub check_freelist () : int[] {
+    my $result = malloc int[63];
+    my $true_result = malloc int[1];
+    return $true_result;
+  }
 }
 
 =head1 NAME
