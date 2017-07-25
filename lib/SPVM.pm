@@ -22,7 +22,7 @@ use Carp 'croak';
 
 my $INT_MAX = 2147483647;
 
-our $VERSION = '0.0227';
+our $VERSION = '0.0229';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
