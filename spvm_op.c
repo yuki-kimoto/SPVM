@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include <inttypes.h>
+#include <ctype.h>
 
 #include "spvm_compiler.h"
 #include "spvm_dynamic_array.h"

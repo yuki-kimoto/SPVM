@@ -130,9 +130,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
+
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
       SPVM_PACKAGE* package = op_package->uv.package;
+      const char* package_name = package->op_name->uv.name;
       SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
+
+      if (islower(package_name[0])) {
+        if (strcmp(package_name, "stdout") != 0) {
+          SPVM_yyerror_format(compiler, "Package name \"%s\" must be start with upper case. Lowercase is reserved for core package  at %s line %d\n", package_name, op_package->file, op_package->line);          return;
+        }
+      }
       
       SPVM_DYNAMIC_ARRAY* op_fields_ref = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       SPVM_DYNAMIC_ARRAY* op_fields_value = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
