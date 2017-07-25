@@ -10,6 +10,7 @@ lib/SPVM/Array/Object.pm
 lib/SPVM/Array/Short.pm
 lib/SPVM/BaseObject.pm
 lib/SPVM/Object.pm
+lib/SPVM/stdout.pm
 lib/SPVM/stdout.spvm
 lib/SPVM/String.pm
 Makefile.PL
