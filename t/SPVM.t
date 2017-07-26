@@ -625,8 +625,8 @@ is_deeply(
 {
   # int array and get length
   {
-    my $len = SPVM::TestCase::array_malloc_int_array_and_get_length();
-    is($len, 3);
+    ok(SPVM::TestCase::get_array_length_at());
+    ok(SPVM::TestCase::get_array_length_len());
   }
 
   # array - set and get array element, first element

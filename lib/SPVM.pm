@@ -475,6 +475,7 @@ Array is created by malloc. Elements values is not initialized.
 
   my $len = @$nums;
   my $len = @{$nums};
+  my $len = len $nums;
 
 =head3 Get and set array element
 

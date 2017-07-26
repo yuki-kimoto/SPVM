@@ -893,6 +893,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             return DESCRIPTOR;
           }
+          else if (strcmp(keyword, "len") == 0) {
+            compiler->bufptr++;
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ARRAY_LENGTH);
+            yylvalp->opval = op;
+            
+            return ARRAY_LENGTH;
+          }
           
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
           op->uv.name = keyword;

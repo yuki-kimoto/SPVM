@@ -223,7 +223,7 @@ package Test {
     
     {
       my $nums = malloc int[2000000];
-      my $len = @$nums;
+      my $len = len $nums;
       my $i = 0;
       for ($i = 0; $i < $len; $i = $i + 1) {
         $nums->[$i] = $i;

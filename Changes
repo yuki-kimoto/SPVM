@@ -1,3 +1,10 @@
+0.0232 2017-07-26
+  - add len keyword to get array length
+    reason is that
+    foo(@$nums) looks like passing array itself, not array length.
+    you can use len keyword for readability.
+    foo(len $nums);
+    
 0.0231 2017-07-25
   - Fix clang compile error
 0.0230 2017-07-25

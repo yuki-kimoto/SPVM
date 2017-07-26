@@ -2788,13 +2788,26 @@ package TestCase {
     }
   }
 
-  # Array
-  sub array_malloc_int_array_and_get_length() : int {
+  # Array length
+  sub get_array_length_at() : int {
     
     my $nums = malloc int[3];
     my $len = @$nums;
+    if ($len == 3) {
+      return 1;
+    }
     
-    return $len;
+    return 0;
+  }
+  sub get_array_length_len() : int {
+    
+    my $nums = malloc int[3];
+    my $len = len $nums;
+    if ($len == 3) {
+      return 1;
+    }
+    
+    return 0;
   }
 
   sub array_set_and_get_array_element_first() : int {
