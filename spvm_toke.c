@@ -783,18 +783,83 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           memcpy(keyword, cur_token_ptr, str_len);
           keyword[str_len] = '\0';
           
-          // Keyname
-          if (strcmp(keyword, "my") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MY);
-            return MY;
+          // Keyword
+          if (strcmp(keyword, "case") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CASE);
+            return CASE;
+          }
+          else if (strcmp(keyword, "const") == 0) {
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DESCRIPTOR);
+            op->code = SPVM_DESCRIPTOR_C_CODE_CONST;
+            yylvalp->opval = op;
+            
+            return DESCRIPTOR;
+          }
+          else if (strcmp(keyword, "default") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DEFAULT);
+            return DEFAULT;
+          }
+          else if (strcmp(keyword, "die") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DIE);
+            return DIE;
+          }
+          else if (strcmp(keyword, "elsif") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ELSIF);
+            return ELSIF;
+          }
+          else if (strcmp(keyword, "else") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ELSE);
+            return ELSE;
+          }
+          else if (strcmp(keyword, "enum") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ENUM);
+            return ENUM;
+          }
+          else if (strcmp(keyword, "eval") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EVAL);
+            return EVAL;
+          }
+          else if (strcmp(keyword, "for") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_FOR);
+            return FOR;
           }
           else if (strcmp(keyword, "has") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_FIELD);
             return HAS;
           }
-          else if (strcmp(keyword, "sub") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SUB);
-            return SUB;
+          else if (strcmp(keyword, "if") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_IF);
+            return IF;
+          }
+          else if (strcmp(keyword, "last") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LAST);
+            return LAST;
+          }
+          else if (strcmp(keyword, "len") == 0) {
+            compiler->bufptr++;
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ARRAY_LENGTH);
+            yylvalp->opval = op;
+            
+            return ARRAY_LENGTH;
+          }
+          else if (strcmp(keyword, "malloc") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MALLOC);
+            return MALLOC;
+          }
+          else if (strcmp(keyword, "my") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MY);
+            return MY;
+          }
+          else if (strcmp(keyword, "native") == 0) {
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DESCRIPTOR);
+            op->code = SPVM_DESCRIPTOR_C_CODE_NATIVE;
+            yylvalp->opval = op;
+            
+            return DESCRIPTOR;
+          }
+          else if (strcmp(keyword, "next") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NEXT);
+            return NEXT;
           }
           else if (strcmp(keyword, "package") == 0) {
             // File can contains only one package
@@ -807,53 +872,25 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_PACKAGE);
             return PACKAGE;
           }
-          else if (strcmp(keyword, "switch") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SWITCH);
-            return SWITCH;
-          }
-          else if (strcmp(keyword, "case") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CASE);
-            return CASE;
-          }
-          else if (strcmp(keyword, "default") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DEFAULT);
-            return DEFAULT;
-          }
-          else if (strcmp(keyword, "if") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_IF);
-            return IF;
-          }
-          else if (strcmp(keyword, "elsif") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ELSIF);
-            return ELSIF;
-          }
-          else if (strcmp(keyword, "else") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ELSE);
-            return ELSE;
-          }
           else if (strcmp(keyword, "return") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_RETURN);
             return RETURN;
           }
-          else if (strcmp(keyword, "for") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_FOR);
-            return FOR;
+          else if (strcmp(keyword, "switch") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SWITCH);
+            return SWITCH;
           }
-          else if (strcmp(keyword, "last") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LAST);
-            return LAST;
-          }
-          else if (strcmp(keyword, "next") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NEXT);
-            return NEXT;
-          }
-          else if (strcmp(keyword, "use") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_USE);
-            return USE;
+          else if (strcmp(keyword, "sub") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SUB);
+            return SUB;
           }
           else if (strcmp(keyword, "undef") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_UNDEF);
             return UNDEF;
+          }
+          else if (strcmp(keyword, "use") == 0) {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_USE);
+            return USE;
           }
           else if (strcmp(keyword, "void") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_VOID);
@@ -862,43 +899,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else if (strcmp(keyword, "while") == 0) {
             yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_WHILE);
             return WHILE;
-          }
-          else if (strcmp(keyword, "malloc") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MALLOC);
-            return MALLOC;
-          }
-          else if (strcmp(keyword, "enum") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ENUM);
-            return ENUM;
-          }
-          else if (strcmp(keyword, "die") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DIE);
-            return DIE;
-          }
-          else if (strcmp(keyword, "eval") == 0) {
-            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EVAL);
-            return EVAL;
-          }
-          else if (strcmp(keyword, "native") == 0) {
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DESCRIPTOR);
-            op->code = SPVM_DESCRIPTOR_C_CODE_NATIVE;
-            yylvalp->opval = op;
-            
-            return DESCRIPTOR;
-          }
-          else if (strcmp(keyword, "const") == 0) {
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DESCRIPTOR);
-            op->code = SPVM_DESCRIPTOR_C_CODE_CONST;
-            yylvalp->opval = op;
-            
-            return DESCRIPTOR;
-          }
-          else if (strcmp(keyword, "len") == 0) {
-            compiler->bufptr++;
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ARRAY_LENGTH);
-            yylvalp->opval = op;
-            
-            return ARRAY_LENGTH;
           }
           
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
