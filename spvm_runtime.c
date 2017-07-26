@@ -1441,25 +1441,53 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_DIVIDE_BYTE:
-    call_stack[operand_stack_top - 1].byte_value /= call_stack[operand_stack_top].byte_value;
-    operand_stack_top--;
-    pc++;
-    goto *jump[*pc];
+    if (call_stack[operand_stack_top].byte_value == 0) {
+      array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "Occur 0 division(BYTE_VALUE / BYTE_VALUE)");
+      SPVM_RUNTIME_API_set_exception(api, array_exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      call_stack[operand_stack_top - 1].byte_value /= call_stack[operand_stack_top].byte_value;
+      operand_stack_top--;
+      pc++;
+      goto *jump[*pc];
+    }
   case_SPVM_BYTECODE_C_CODE_DIVIDE_SHORT:
-    call_stack[operand_stack_top - 1].short_value /= call_stack[operand_stack_top].short_value;
-    operand_stack_top--;
-    pc++;
-    goto *jump[*pc];
+    if (call_stack[operand_stack_top].short_value == 0) {
+      array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "Occur 0 division(SHORT_VALUE / SHORT_VALUE)");
+      SPVM_RUNTIME_API_set_exception(api, array_exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      call_stack[operand_stack_top - 1].short_value /= call_stack[operand_stack_top].short_value;
+      operand_stack_top--;
+      pc++;
+      goto *jump[*pc];
+    }
   case_SPVM_BYTECODE_C_CODE_DIVIDE_INT:
-    call_stack[operand_stack_top - 1].int_value /= call_stack[operand_stack_top].int_value;
-    operand_stack_top--;
-    pc++;
-    goto *jump[*pc];
+    if (call_stack[operand_stack_top].int_value == 0) {
+      array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "Occur 0 division(INT_VALUE / INT_VALUE)");
+      SPVM_RUNTIME_API_set_exception(api, array_exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      call_stack[operand_stack_top - 1].int_value /= call_stack[operand_stack_top].int_value;
+      operand_stack_top--;
+      pc++;
+      goto *jump[*pc];
+    }
   case_SPVM_BYTECODE_C_CODE_DIVIDE_LONG:
-    call_stack[operand_stack_top - 1].long_value /= call_stack[operand_stack_top].long_value;
-    operand_stack_top--;
-    pc++;
-    goto *jump[*pc];
+    if (call_stack[operand_stack_top].long_value == 0) {
+      array_exception = SPVM_RUNTIME_API_create_array_byte_from_pv(api, "Occur 0 division(LONG_VALUE / LONG_VALUE)");
+      SPVM_RUNTIME_API_set_exception(api, array_exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      call_stack[operand_stack_top - 1].long_value /= call_stack[operand_stack_top].long_value;
+      operand_stack_top--;
+      pc++;
+      goto *jump[*pc];
+    }
   case_SPVM_BYTECODE_C_CODE_DIVIDE_FLOAT:
     call_stack[operand_stack_top - 1].float_value /= call_stack[operand_stack_top].float_value;
     operand_stack_top--;
