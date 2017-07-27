@@ -94,11 +94,12 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t na
   
   SPVM_TYPE* type = op_type->uv.type;
   
+  assert(type->name);
+  
   if (type->id >= 0) {
     return 1;
   }
   else {
-    SPVM_DYNAMIC_ARRAY* type_part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
     SPVM_DYNAMIC_ARRAY* parts = type->parts;
     
     {
@@ -111,14 +112,14 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t na
           || strcmp(part_name, "long") == 0 || strcmp(part_name, "float") == 0 || strcmp(part_name, "double") == 0
           || strcmp(part_name, "string") == 0 || strcmp(part_name, "[]") == 0)
         {
-          SPVM_DYNAMIC_ARRAY_push(type_part_names, (void*)part_name);
+          // Nothing
         }
         else {
           // Package
           SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
           SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, part_name, strlen(part_name));
           if (op_found_package) {
-            SPVM_DYNAMIC_ARRAY_push(type_part_names, (void*)part_name);
+            // Nothing
           }
           else {
             SPVM_yyerror_format(compiler, "unknown package \"%s\" at %s line %d\n", part_name, op_type->file, op_type->line);
@@ -128,35 +129,20 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t na
         name_length += strlen(part_name);
       }
     }
-    char* type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, name_length);
-    
-    int32_t cur_pos = 0;
-    {
-      int32_t i;
-      for (i = 0; i < type_part_names->length; i++) {
-        const char* type_part_name = (const char*) SPVM_DYNAMIC_ARRAY_fetch(type_part_names, i);
-        int32_t type_part_name_length = (int32_t)strlen(type_part_name);
-        memcpy(type_name + cur_pos, type_part_name, type_part_name_length);
-        cur_pos += type_part_name_length;
-      }
-    }
-    type_name[cur_pos] = '\0';
     
     // Create resolved type id
-    SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type_name, strlen(type_name));
+    SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name));
     if (found_type) {
       type->id = found_type->id;
-      type->name = found_type->name;
     }
     else {
       SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
       new_type->id = compiler->types->length;
-      new_type->name = type_name;
+      new_type->name = type->name;
       SPVM_DYNAMIC_ARRAY_push(compiler->types, new_type);
-      SPVM_HASH_insert(compiler->type_symtable, type_name, strlen(type_name), new_type);
+      SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
       
       type->id = new_type->id;
-      type->name = new_type->name;
     }
   }
   
