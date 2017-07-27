@@ -20,6 +20,7 @@
 #include "spvm_hash.h"
 #include "spvm_descriptor.h"
 #include "spvm_type.h"
+#include "spvm_use.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -54,8 +55,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           if (op_use) {
-            SPVM_OP* op_name_package = op_use->first;
-            const char* package_name = op_name_package->uv.name;
+            const char* package_name = op_use->uv.use->package_name;
             
             SPVM_OP* found_op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
             
@@ -113,7 +113,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               if (!fh) {
                 if (op_use) {
-                  fprintf(stderr, "Can't locate SPVM/%s.spvm @INC (@INC contains:", op_name_package->uv.name);
+                  fprintf(stderr, "Can't locate SPVM/%s.spvm @INC (@INC contains:", package_name);
                   {
                     int32_t i;
                     for (i = 0; i < include_pathes_length; i++) {
