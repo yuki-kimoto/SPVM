@@ -4,7 +4,7 @@
 #include "spvm_base.h"
 
 struct SPVM_use {
-  SPVM_OP* op_name;
+  const char* name;
   SPVM_DYNAMIC_ARRAY* template_args;
 };
 
