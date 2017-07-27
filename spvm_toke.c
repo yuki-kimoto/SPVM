@@ -755,8 +755,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           return CONSTANT;
         }
-        // Keyname or name
-        else if (isalpha(c) || c == '_') {
+        
+        else if (isalpha(c) || c == '_' || (c == ':' && *(compiler->bufptr + 1) == ':')) {
           // Save current position
           const char* cur_token_ptr = compiler->bufptr;
           
