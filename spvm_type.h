@@ -8,6 +8,7 @@
 enum {
   SPVM_TYPE_C_CODE_NAME,
   SPVM_TYPE_C_CODE_ARRAY,
+  SPVM_TYPE_C_CODE_TEMPLATE,
 };
 
 enum {
