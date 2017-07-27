@@ -22,7 +22,7 @@
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
 %type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package
 %type <opval> enumeration_values enumeration_value types template_args
-%type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
+%type <opval> type package declarations_in_grammar opt_enumeration_values type_array
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement type_array_with_length
@@ -123,7 +123,7 @@ types
   | type
 
 package
-  : PACKAGE package_name package_block
+  : PACKAGE NAME package_block
     {
       $$ = SPVM_OP_build_package(compiler, $1, $2, $3);
       if (compiler->fatal_error) {
@@ -364,17 +364,17 @@ else_statement
     }
 
 field
-  : HAS field_name ':' type ';'
+  : HAS NAME ':' type ';'
     {
       $$ = SPVM_OP_build_field(compiler, $1, $2, $4);
     }
 
 sub
- : SUB sub_name '(' opt_args ')' ':' opt_descriptors type_or_void block
+ : SUB NAME '(' opt_args ')' ':' opt_descriptors type_or_void block
      {
        $$ = SPVM_OP_build_sub(compiler, $1, $2, $4, $7, $8, $9);
      }
- | SUB sub_name '(' opt_args ')' ':' opt_descriptors type_or_void ';'
+ | SUB NAME '(' opt_args ')' ':' opt_descriptors type_or_void ';'
      {
        $$ = SPVM_OP_build_sub(compiler, $1, $2, $4, $7, $8, NULL);
      }
@@ -504,15 +504,15 @@ convert_type
     }
 
 call_field
-  : term ARROW '{' field_name '}'
+  : term ARROW '{' NAME '}'
     {
       $$ = SPVM_OP_build_call_field(compiler, $1, $4);
     }
-  | call_field '{' field_name '}'
+  | call_field '{' NAME '}'
     {
       $$ = SPVM_OP_build_call_field(compiler, $1, $3);
     }
-  | array_elem '{' field_name '}'
+  | array_elem '{' NAME '}'
     {
       $$ = SPVM_OP_build_call_field(compiler, $1, $3);
     }
@@ -663,24 +663,24 @@ array_elem
     }
 
 call_sub
-  : sub_name '(' opt_terms  ')'
+  : NAME '(' opt_terms  ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, $1->file, $1->line), $1, $3);
     }
-  | term ARROW sub_name '(' opt_terms ')'
+  | term ARROW NAME '(' opt_terms ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
     }
-  | term ARROW sub_name
+  | term ARROW NAME
     {
       SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
     }
-  | type ARROW sub_name '(' opt_terms  ')'
+  | type ARROW NAME '(' opt_terms  ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
     }
-  | type ARROW sub_name
+  | type ARROW NAME
     {
       SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
@@ -793,11 +793,6 @@ type_array_with_length
 type_or_void
   : type
   | VOID
-
-
-field_name : NAME
-sub_name : NAME
-package_name : NAME
 
 eval_block
   : EVAL block
