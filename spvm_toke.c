@@ -353,9 +353,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         /* < */
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LT);
-          yylvalp->opval = op;
-          return REL;
+          return '<';
         }
       
       case '>':
@@ -380,11 +378,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
           return REL;
         }
-        /* < */
+        /* > */
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_GT);
-          yylvalp->opval = op;
-          return REL;
+          return '>';
         }
       case '!':
         compiler->bufptr++;
