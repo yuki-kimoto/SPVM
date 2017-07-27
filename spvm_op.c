@@ -1033,7 +1033,6 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_use, op_use->last, op_type);
   
   const char* type_name = op_type->uv.type->name;
-  warn("AAAAAAAA %s %s", type_name, SPVM_OP_C_CODE_NAMES[op_type->code]);
   
   SPVM_OP* found_op_use = SPVM_HASH_search(compiler->op_use_symtable, type_name, strlen(type_name));
   

@@ -140,7 +140,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   SPVM_HASH_insert(compiler->op_use_symtable, "stdout", strlen("stdout"), op_use_std);
   
   /* call SPVM_yyparse */
-  SPVM_yydebug = 0;
   int32_t parse_success = SPVM_yyparse(compiler);
   
   return parse_success;

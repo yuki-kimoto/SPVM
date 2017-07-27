@@ -664,6 +664,10 @@ call_sub
     {
       $$ = SPVM_OP_build_call_sub(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, $1->file, $1->line), $1, $3);
     }
+  | type NAME '(' opt_terms  ')'
+    {
+      $$ = SPVM_OP_build_call_sub(compiler, $1, $2, $4);
+    }
   | term ARROW NAME '(' opt_terms ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);

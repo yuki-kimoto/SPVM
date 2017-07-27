@@ -25,6 +25,7 @@ package Test {
   
   sub main($mvar : int) : int {
     
+    
     # Get object from freelist
     {
        check_freelist();

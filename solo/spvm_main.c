@@ -14,9 +14,13 @@
 #include "../spvm_sub.h"
 #include "../spvm_dumper.h"
 #include "../spvm_api.h"
+#include "../spvm_yacc_util.h"
 
 int main(int argc, char *argv[])
 {
+  // Dump yacc token
+  SPVM_yydebug = 0;
+
   if (argc < 2) {
     fprintf(stderr, "Not script\n");
     exit(1);

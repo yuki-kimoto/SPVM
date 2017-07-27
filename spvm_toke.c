@@ -757,10 +757,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         
         else if (isalpha(c) || c == '_' || (c == ':' && *(compiler->bufptr + 1) == ':')) {
+          
           // Save current position
           const char* cur_token_ptr = compiler->bufptr;
-          
-          compiler->bufptr++;
           
           while(isalnum(*compiler->bufptr)
             || *compiler->bufptr == '_'
