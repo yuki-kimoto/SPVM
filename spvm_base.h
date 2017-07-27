@@ -20,6 +20,10 @@ typedef struct SPVM_constant_pool_package SPVM_CONSTANT_POOL_PACKAGE;
 struct SPVM_object;
 typedef struct SPVM_object SPVM_OBJECT;
 
+// spvm_use.h
+struct SPVM_use;
+typedef struct SPVM_use SPVM_USE;
+
 // spvm_array.h
 struct SPVM_array;
 typedef struct SPVM_array SPVM_ARRAY;
@@ -119,10 +123,6 @@ typedef struct SPVM_enumeration SPVM_ENUMERATION;
 /* spvm_enumeration_value.h */
 struct SPVM_enumeration_value;
 typedef struct SPVM_enumeration_value SPVM_ENUMERATION_VALUE;
-
-/* spvm_use.h */
-struct SPVM_use;
-typedef struct SPVM_use SPVM_USE;
 
 /* spvm_memory_pool.h */
 struct SPVM_memory_pool;
