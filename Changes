@@ -4,7 +4,7 @@
     foo(@$nums) looks like passing array itself, not array length.
     you can use len keyword for readability.
     foo(len $nums);
-    
+  - Fix bug that error occur when near small base_object_max_byte_size_use_memory_pool is malloced
 0.0231 2017-07-25
   - Fix clang compile error
 0.0230 2017-07-25

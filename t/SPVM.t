@@ -32,6 +32,15 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 
 use SPVM::stdout;
 
+{
+  ok(SPVM::TestCase::malloc_near_small_base_object_max_byte_size_use_memory_pool());
+}
+
+# Get object from freelist
+{
+  ok(SPVM::TestCase::get_object_from_freelist());
+}
+
 is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [

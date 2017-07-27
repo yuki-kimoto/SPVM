@@ -18,9 +18,12 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   (void)runtime;
   
   SPVM_RUNTIME_ALLOCATOR* allocator = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_RUNTIME_ALLOCATOR));
+
+  // use memory pool max reference byte size
+  allocator->base_object_max_byte_size_use_memory_pool = 0xFFFF;
   
   // Memory pool
-  allocator->memory_pool = SPVM_MEMORY_POOL_new(0);
+  allocator->memory_pool = SPVM_MEMORY_POOL_new(allocator->base_object_max_byte_size_use_memory_pool);
   
   // Free lists
   allocator->freelists = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(16, sizeof(SPVM_DYNAMIC_ARRAY));
@@ -32,9 +35,6 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
       allocator->freelists[i] = SPVM_DYNAMIC_ARRAY_new(0);
     }
   }
-  
-  // use memory pool max reference byte size
-  allocator->base_object_max_byte_size_use_memory_pool = 0xFFFF;
   
   return allocator;
 }
@@ -80,20 +80,19 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
 
   assert(byte_size > 0);
+  int32_t index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(api, allocator, byte_size);
+  int32_t alloc_byte_size = pow(2, index + 1);
   
   void* block;
-  if (byte_size > allocator->base_object_max_byte_size_use_memory_pool) {
-    block = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, byte_size);
+  if (alloc_byte_size > allocator->base_object_max_byte_size_use_memory_pool) {
+    block = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, alloc_byte_size);
   }
   else {
-    int32_t index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(api, allocator, byte_size);
-    
     void* free_address = SPVM_DYNAMIC_ARRAY_pop(allocator->freelists[index]);
     if (free_address) {
       block = free_address;
     }
     else {
-      int32_t alloc_byte_size = pow(2, index + 1);
       block = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, alloc_byte_size);
     }
   }

@@ -5,7 +5,14 @@ package TestCase {
   has x_long : long;
   has x_int_array : int[];
   has x_string : string;
-
+  
+  # malloc near small base_object_max_byte_size_use_memory_pool
+  sub malloc_near_small_base_object_max_byte_size_use_memory_pool() : int {
+    my $block = malloc byte[0xFFF0];
+    
+    return 1;
+  }
+  
   sub array_int () : int {
     my $nums = [1, 2, 3];
     

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <assert.h>
+#include <stdio.h>
 
 #include "spvm_memory_pool.h"
 #include "spvm_util_allocator.h"
@@ -31,7 +32,11 @@ SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(int32_t page_byte_size) {
 void* SPVM_MEMORY_POOL_alloc(SPVM_MEMORY_POOL* memory_pool, int32_t byte_size) {
   
   assert(byte_size > 0);
-  assert(byte_size <= memory_pool->page_byte_size);
+  
+  if (byte_size > memory_pool->page_byte_size) {
+    fprintf(stderr, "Very lerge memory byte size is specified(SPVM_MEMORY_POOL_alloc)\n");
+    abort();
+  }
   
   // Adjust alignment
   int32_t aligned_byte_size = (byte_size - 1) + ((int32_t)sizeof(SPVM_VALUE) - ((byte_size - 1) % (int32_t)sizeof(SPVM_VALUE)));
