@@ -1218,7 +1218,9 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     SPVM_OP_insert_child(compiler, op_terms, op_terms->last, op_invocant);
   }
   // Method call
-  else if (op_invocant->code == SPVM_OP_C_CODE_NAME) {
+  else if (op_invocant->code == SPVM_OP_C_CODE_TYPE) {
+    SPVM_OP* op_type = op_invocant;
+    
     // Absolute
     // P->Q::m;
     if (strstr(sub_name, ":")) {
@@ -1226,11 +1228,11 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     }
     // Base name
     else {
-      const char* package_name = op_invocant->uv.name;
+      const char* type_name = op_type->uv.type->name;
       const char* name = op_name_sub->uv.name;
       
       // Create abs name
-      const char* abs_name = SPVM_OP_create_abs_name(compiler, package_name, name);
+      const char* abs_name = SPVM_OP_create_abs_name(compiler, type_name, name);
       
       // Create op abs name
       SPVM_OP* op_abs_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_invocant->file, op_invocant->line);
