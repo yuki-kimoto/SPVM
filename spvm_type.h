@@ -47,7 +47,7 @@ struct SPVM_type {
     SPVM_OP* op_type;
   } uv;
   int32_t code;
-  const char** parts;
+  SPVM_DYNAMIC_ARRAY* parts;
 };
 
 
