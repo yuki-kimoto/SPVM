@@ -76,6 +76,8 @@ struct SPVM_compiler {
   // Entry point subroutine name
   const char* start_sub_name;
   
+  SPVM_DYNAMIC_ARRAY* cur_template_args;
+  
   // Current line number
   int32_t cur_line;
   

@@ -158,6 +158,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->befbufptr = src;
               compiler->current_package_count = 0;
               compiler->cur_line = 1;
+              compiler->cur_template_args = op_use->uv.use->template_args;
               break;
             }
           }
