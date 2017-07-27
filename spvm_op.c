@@ -154,12 +154,28 @@ SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
 }
 
 SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line) {
-
+  
+  // OP name
   SPVM_OP* op_name_package = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
   op_name_package->uv.name = package_name;
   SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_USE, file, line);
-  SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package);
   
+
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->code = SPVM_TYPE_C_CODE_NAME;
+  type->uv.op_name = op_name_package;
+
+  SPVM_OP* op_type_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, file, line);
+  SPVM_OP_insert_child(compiler, op_type_name, op_type_name->last, op_name_package);
+  
+  op_type_name->uv.type = type;
+  op_type_name->file = file;
+  op_type_name->line = line;
+  
+  SPVM_TYPE_resolve_name(compiler, op_type_name, 0);
+
+  SPVM_OP_insert_child(compiler, op_use, op_use->last, op_type_name);
+
   return op_use;
 }
 
@@ -1012,16 +1028,18 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   return op_package;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_package) {
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type) {
   
-  SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package);
+  SPVM_OP_insert_child(compiler, op_use, op_use->last, op_type);
   
-  const char* package_name = op_name_package->uv.name;
-  SPVM_OP* found_op_use = SPVM_HASH_search(compiler->op_use_symtable, package_name, strlen(package_name));
+  const char* type_name = op_type->uv.type->name;
+  warn("AAAAAAAA %s %s", type_name, SPVM_OP_C_CODE_NAMES[op_type->code]);
+  
+  SPVM_OP* found_op_use = SPVM_HASH_search(compiler->op_use_symtable, type_name, strlen(type_name));
   
   if (!found_op_use) {
     SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use);
-    SPVM_HASH_insert(compiler->op_use_symtable, package_name, strlen(package_name), op_use);
+    SPVM_HASH_insert(compiler->op_use_symtable, type_name, strlen(type_name), op_use);
   }
   
   return op_use;

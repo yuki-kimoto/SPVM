@@ -97,11 +97,7 @@ declaration_in_grammar
   | package
 
 use
-  : USE package_name ';'
-    {
-      $$ = SPVM_OP_build_use(compiler, $1, $2);
-    }
-  | USE package_name template_args ';'
+  : USE type ';'
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2);
     }
