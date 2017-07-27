@@ -21,7 +21,7 @@
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
 %type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package
-%type <opval> enumeration_values enumeration_value
+%type <opval> enumeration_values enumeration_value types
 %type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
@@ -101,6 +101,27 @@ use
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2);
     }
+  | USE package_name '<' types '>' ';'
+    {
+      $$ = SPVM_OP_build_use(compiler, $1, $2);
+    }
+
+types
+  : types ',' type
+    {
+      SPVM_OP* op_list;
+      if ($1->code == SPVM_OP_C_CODE_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
+    }
+  | type
 
 package
   : PACKAGE package_name package_block
