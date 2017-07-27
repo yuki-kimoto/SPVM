@@ -10,7 +10,7 @@ use Test::EnumC;
 use Test::EnumD;
 use Test::Simple;
 use Test::Minimal;
-# use Test::Template(int, long);
+use Test::Template<int, long>;
 
 =head1 NAME
 
@@ -22,6 +22,7 @@ package Test {
   enum {
     ONE = 0.25f
   }
+  
   sub main($mvar : int) : int {
     
     # Get object from freelist

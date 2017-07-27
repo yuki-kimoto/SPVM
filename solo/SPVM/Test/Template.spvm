@@ -1,4 +1,4 @@
-package Test::Template(int, long) {
+package Test::Template {
   sub get ($var1 : int, $var2 : int, $var3 : long) : int {
     
     my $var4 = $var1 + $var2;
