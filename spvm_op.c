@@ -30,6 +30,7 @@
 #include "spvm_limit.h"
 #include "spvm_extention.h"
 #include "spvm_extention_bind.h"
+#include "spvm_use.h"
 
 
 
@@ -1015,6 +1016,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_package) {
   
   SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package);
+  
+  SPVM_USE* use = SPVM_USE_new(compiler);
+  use->op_name = op_name_package;
+  op_use->uv.use = use;
   
   const char* package_name = op_name_package->uv.name;
   SPVM_OP* found_op_use = SPVM_HASH_search(compiler->op_use_symtable, package_name, strlen(package_name));

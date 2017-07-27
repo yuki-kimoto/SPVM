@@ -161,6 +161,7 @@ struct SPVM_op {
     SPVM_PACKAGE* package;
     SPVM_ENUMERATION* enumeration;
     SPVM_SWITCH_INFO* switch_info;
+    SPVM_USE* use;
   } uv;
   int32_t code;
   int32_t flag;
