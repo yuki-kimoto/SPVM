@@ -101,7 +101,7 @@ use
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2);
     }
-  | USE package_name '<' types '>' ';'
+  | USE package_name '{' types '}' ';'
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2);
     }

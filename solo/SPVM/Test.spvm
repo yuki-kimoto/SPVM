@@ -10,7 +10,7 @@ use Test::EnumC;
 use Test::EnumD;
 use Test::Simple;
 use Test::Minimal;
-use Test::Template<int, long>;
+use Test::Template{int, long};
 
 =head1 NAME
 
