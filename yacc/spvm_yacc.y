@@ -34,7 +34,7 @@
 %left <opval> AND
 %left <opval> BIT_OR BIT_XOR
 %left <opval> BIT_AND
-%nonassoc <opval> REL '<', '>'
+%nonassoc <opval> REL '<' '>'
 %left <opval> SHIFT
 %left <opval> '+' '-'
 %left <opval> MULTIPLY DIVIDE REMAINDER
@@ -773,6 +773,7 @@ type_array_with_length
 type_or_void
   : type
   | VOID
+
 
 field_name : NAME
 sub_name : NAME
