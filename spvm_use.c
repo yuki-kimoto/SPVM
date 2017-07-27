@@ -6,7 +6,7 @@
 SPVM_USE* SPVM_USE_new(SPVM_COMPILER* compiler) {
   SPVM_USE* use = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_USE));
   
-  use->name = NULL;
+  use->package_name = NULL;
   use->template_args = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
   return use;

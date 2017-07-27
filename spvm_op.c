@@ -1017,11 +1017,47 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   
   SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package_with_template_args);
 
-  const char* package_name = op_name_package_with_template_args->uv.name;
+  const char* package_name_with_template_args = op_name_package_with_template_args->uv.name;
   
   SPVM_USE* use = SPVM_USE_new(compiler);
-  use->name = package_name;
   op_use->uv.use = use;
+  
+  SPVM_DYNAMIC_ARRAY* part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  
+  const char* found_ptr = package_name_with_template_args;
+  const char* base_ptr = package_name_with_template_args;
+  
+  while (1) {
+    found_ptr = strchr(base_ptr, '_');
+    if (found_ptr) {
+      int32_t length = (int32_t)(found_ptr - base_ptr);
+      char* part_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+      memcpy(part_name, base_ptr, length);
+      part_name[length] = '\0';
+      SPVM_DYNAMIC_ARRAY_push(part_names, part_name);
+      base_ptr = found_ptr + 1;
+    }
+    else {
+      break;
+    }
+  }
+  {
+    int32_t length = (int32_t)(&package_name_with_template_args[strlen(package_name_with_template_args)] - base_ptr);
+    char* part_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+    memcpy(part_name, base_ptr, length);
+    part_name[length] = '\0';
+    SPVM_DYNAMIC_ARRAY_push(part_names, part_name);
+  }
+  
+  const char* package_name = SPVM_DYNAMIC_ARRAY_fetch(part_names, 0);
+  use->package_name = package_name;
+  if (part_names->length > 1) {
+    int32_t i;
+    for (i = 1; i < part_names->length; i++) {
+      const char* part_name = SPVM_DYNAMIC_ARRAY_fetch(part_names, i);
+      SPVM_DYNAMIC_ARRAY_push(use->template_args, part_name);
+    }
+  }
   
   SPVM_OP* found_op_use = SPVM_HASH_search(compiler->op_use_symtable, package_name, strlen(package_name));
   
