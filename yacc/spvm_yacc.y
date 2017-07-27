@@ -21,7 +21,7 @@
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
 %type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package
-%type <opval> enumeration_values enumeration_value types template_args
+%type <opval> enumeration_values enumeration_value types type_template
 %type <opval> type package declarations_in_grammar opt_enumeration_values type_array
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
@@ -101,9 +101,6 @@ use
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2);
     }
-
-template_args
-  : '{' types '}'
 
 types
   : types ',' type
@@ -763,6 +760,7 @@ descriptors
 type
   : type_name
   | type_array
+  | type_template
 
 type_name
   : NAME
@@ -788,6 +786,12 @@ type_array_with_length
   | type_array '[' term ']'
     {
       $$ = SPVM_OP_build_type_array(compiler, $1, $3);
+    }
+
+type_template
+  : type_name '<' types '>' %prec '('
+    {
+      $$ = $1;
     }
 
 type_or_void
