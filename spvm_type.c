@@ -46,6 +46,49 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
 }
 
 // Resolve type and index type
+_Bool SPVM_TYPE_resolve_name(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length) {
+  
+  SPVM_TYPE* type = op_type->uv.type;
+  
+  if (type->name) {
+    return 1;
+  }
+  else {
+    SPVM_DYNAMIC_ARRAY* type_part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+    
+    SPVM_DYNAMIC_ARRAY* parts = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+    SPVM_TYPE_build_parts(compiler, type, parts);
+    
+    {
+      int32_t i;
+      for (i = 0; i < parts->length; i++) {
+        const char* part_name = SPVM_DYNAMIC_ARRAY_fetch(parts, i);
+        
+        SPVM_DYNAMIC_ARRAY_push(type_part_names, (void*)part_name);
+        
+        name_length += strlen(part_name);
+      }
+    }
+    char* type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, name_length);
+    
+    int32_t cur_pos = 0;
+    {
+      int32_t i;
+      for (i = 0; i < type_part_names->length; i++) {
+        const char* type_part_name = (const char*) SPVM_DYNAMIC_ARRAY_fetch(type_part_names, i);
+        int32_t type_part_name_length = (int32_t)strlen(type_part_name);
+        memcpy(type_name + cur_pos, type_part_name, type_part_name_length);
+        cur_pos += type_part_name_length;
+      }
+    }
+    type_name[cur_pos] = '\0';
+    type->name = type_name;
+  }
+  
+  return 1;
+}
+
+// Resolve type and index type
 _Bool SPVM_TYPE_resolve_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length) {
   
   SPVM_TYPE* type = op_type->uv.type;
