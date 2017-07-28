@@ -10,7 +10,7 @@ use Test::EnumC;
 use Test::EnumD;
 use Test::Simple;
 use Test::Minimal;
-use Test::Template_int_long;
+# use Test::Template_int_long;
 
 =head1 NAME
 
@@ -24,7 +24,13 @@ package Test {
   }
   
   sub main($mvar : int) : int {
-    
+=pod
+    # Use template package
+    {
+      my $num = Test::Template_int_long::get(100, 200, 300L);
+      stdout::println_int($num);
+    }
+=cut
     # Get object from freelist
     {
        check_freelist();
