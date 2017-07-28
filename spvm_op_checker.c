@@ -257,11 +257,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
       SPVM_PACKAGE* package = op_package->uv.package;
       
+      /*
       if (strchr(package->op_name->uv.name, '_') != NULL) {
         SPVM_yyerror_format(compiler, "Package name can't contain _ at %s line %d\n", op_package->file, op_package->line);
         compiler->fatal_error = 1;
         return;
       }
+      */
       
       // Constant pool
       SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
