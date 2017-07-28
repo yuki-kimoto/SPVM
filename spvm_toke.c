@@ -930,6 +930,24 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               break;
           }
           
+          // Template variable
+          if (strncmp(keyword, "type", 4) == 0 && strlen(keyword) > 4 && isdigit(keyword[4])) {
+            int32_t template_args_index;
+            errno = 0;
+            char *end;
+            template_args_index = strtol(&keyword[4], &end, 10);
+            if (*end != '\0') {
+              fprintf(stderr, "Invalid template variable %s at %s line %" PRId32 "\n", &keyword[4], compiler->cur_file, compiler->cur_line);
+              exit(EXIT_FAILURE);
+            }
+            else if (template_args_index > compiler->cur_template_args->length - 1) {
+              fprintf(stderr, "Invalid template variable, Index out of range %s at %s line %" PRId32 "\n", &keyword[4], compiler->cur_file, compiler->cur_line);
+              exit(EXIT_FAILURE);
+            }
+            
+            keyword = SPVM_DYNAMIC_ARRAY_fetch(compiler->cur_template_args, template_args_index);
+          }
+          
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
           op->uv.name = keyword;
           yylvalp->opval = op;
