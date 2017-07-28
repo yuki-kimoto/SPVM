@@ -985,6 +985,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     SPVM_DYNAMIC_ARRAY_push(replaced_part_names, part_name);
                     replaced_part_names_length += strlen(part_name);
                   }
+                  // _
+                  if (i != part_names->length - 1) {
+                    replaced_part_names_length += 1;
+                  }
                 }
               }
               char* replaced_keyword = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, replaced_part_names_length);
@@ -995,10 +999,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   const char* replaced_part_name = SPVM_DYNAMIC_ARRAY_fetch(replaced_part_names, i);
                   memcpy(base_ptr, replaced_part_name, strlen(replaced_part_name));
                   base_ptr += strlen(replaced_part_name);
+                  if (i != replaced_part_names->length - 1) {
+                    *base_ptr = '_';
+                    base_ptr++;
+                  }
                 }
                 replaced_keyword[replaced_part_names_length] = '\0';
               }
               keyword = replaced_keyword;
+              warn("AAAAAAAAAA %s", keyword);
             }
           }
           

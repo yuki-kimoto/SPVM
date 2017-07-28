@@ -1,4 +1,4 @@
-package Test::Template {
+package Test::Template_type1_type2 {
   sub get ($var1 : type1, $var2 : type1, $var3 : type2) : int {
     
     my $var4 = $var1 + $var2;
