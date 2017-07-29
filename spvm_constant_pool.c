@@ -19,14 +19,15 @@
 SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_CONSTANT_POOL* constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_CONSTANT_POOL));
+  SPVM_CONSTANT_POOL* constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_CONSTANT_POOL));
   
   constant_pool->capacity = 64;
   
   // index 0 is not used.
   constant_pool->length = 1;
   
-  int32_t* values = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(constant_pool->capacity, sizeof(int32_t));
+  int64_t values_byte_size = (int64_t)constant_pool->capacity * (int64_t)sizeof(int32_t);
+  int32_t* values = SPVM_UTIL_ALLOCATOR_safe_malloc(values_byte_size);
   constant_pool->values = values;
   
   return constant_pool;
