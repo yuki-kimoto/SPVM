@@ -34,7 +34,7 @@
 %left <opval> AND
 %left <opval> BIT_OR BIT_XOR
 %left <opval> BIT_AND
-%nonassoc <opval> REL '<' '>'
+%nonassoc <opval> REL
 %left <opval> SHIFT
 %left <opval> '+' '-'
 %left <opval> MULTIPLY DIVIDE REMAINDER
@@ -600,16 +600,6 @@ binop
   | term REL term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | term '<' term %prec REL
-    {
-      SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LT);
-      $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
-    }
-  | term '>' term %prec REL
-    {
-      SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_GT);
-      $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
     }
   | my_var ASSIGN '[' opt_terms ']'
     {
