@@ -144,11 +144,6 @@ void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   constant->resolved = 1;
 }
 
-SPVM_OP* SPVM_OP_fold_constant(SPVM_COMPILER* compiler, SPVM_OP* op_cur) {
-  
-  return op_cur;
-}
-
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
@@ -931,7 +926,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   if (part_names->length > 1) {
     int32_t i;
     for (i = 1; i < part_names->length; i++) {
-      const char* part_name = SPVM_DYNAMIC_ARRAY_fetch(part_names, i);
+      char* part_name = SPVM_DYNAMIC_ARRAY_fetch(part_names, i);
       SPVM_DYNAMIC_ARRAY_push(use->template_args, part_name);
     }
   }
@@ -1079,7 +1074,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
 SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_sub, SPVM_OP* op_terms) {
   
   if (op_name_sub->code == SPVM_OP_C_CODE_NEW) {
-    op_name_sub->code == SPVM_OP_C_CODE_NAME;
+    op_name_sub->code = SPVM_OP_C_CODE_NAME;
     op_name_sub->uv.name = "new";
   }
   
@@ -1314,7 +1309,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       int32_t length = 0;
       SPVM_TYPE* first_type = NULL;
       SPVM_OP* op_term = op_list->first;
-      while (op_term = SPVM_OP_sibling(compiler, op_term)) {
+      while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
         SPVM_OP_resolve_constant(compiler, op_term);
         
         // Term must be constant
@@ -1387,7 +1382,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       SPVM_OP* op_list_new = SPVM_OP_new_op_list(compiler, op_list->file, op_list->line);
       SPVM_DYNAMIC_ARRAY* op_terms = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       op_term = op_list->first;
-      while (op_term = SPVM_OP_sibling(compiler, op_term)) {
+      while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
         SPVM_DYNAMIC_ARRAY_push(op_terms, op_term);
       }
       {
@@ -1551,6 +1546,7 @@ SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t code, const char* file,
 
 // Insert child. Child must not have sibling.
 void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, SPVM_OP* insert) {
+  (void)compiler;
   
   // del_count not used
   assert(parent);
