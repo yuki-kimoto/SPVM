@@ -472,7 +472,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_cur->file, op_cur->line);
                           op_constant->uv.constant = op_cur->uv.constant;
                           
-                          op_cur->code = SPVM_OP_C_CODE_MALLOC;
+                          op_cur->code = SPVM_OP_C_CODE_NEW;
                           op_cur->first = op_constant;
                           op_cur->last = op_constant;
                           
@@ -881,7 +881,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
-                    case SPVM_OP_C_CODE_MALLOC: {
+                    case SPVM_OP_C_CODE_NEW: {
                       SPVM_OP* op_type_or_constant = op_cur->first;
                       
                       if (op_cur->first->code == SPVM_OP_C_CODE_TYPE) {
@@ -916,7 +916,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         assert(0);
                       }
                       
-                      // If MALLOC is not rvalue, temparary variable is created, and assinged.
+                      // If NEW is not rvalue, temparary variable is created, and assinged.
                       if (!op_cur->rvalue) {
                         assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
                         if (my_var_length == SPVM_LIMIT_C_MY_VARS) {
@@ -956,7 +956,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
                         
                         // Malloc op
-                        SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MALLOC, op_cur->file, op_cur->line);
+                        SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_cur->file, op_cur->line);
                         
                         // Type parent is malloc
                         op_type_or_constant->moresib = 0;
@@ -1666,7 +1666,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         && op_term->code != SPVM_OP_C_CODE_ARRAY_ELEM
                         && op_term->code != SPVM_OP_C_CODE_CALL_FIELD
                         && op_term->code != SPVM_OP_C_CODE_CALL_SUB
-                        && op_term->code != SPVM_OP_C_CODE_MALLOC)
+                        && op_term->code != SPVM_OP_C_CODE_NEW)
                       {
                         SPVM_yyerror_format(compiler, "field invoker is invalid \"%s\" at %s line %d\n",
                           op_name->uv.name, op_cur->file, op_cur->line);

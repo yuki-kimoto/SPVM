@@ -14,14 +14,14 @@
   #include "spvm_type.h"
 %}
 
-%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE MALLOC
+%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW
 %token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF DIE
 %token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
 %type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package
-%type <opval> enumeration_values enumeration_value types
+%type <opval> enumeration_values enumeration_value
 %type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
@@ -101,23 +101,6 @@ use
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2);
     }
-
-types
-  : types ',' type
-    {
-      SPVM_OP* op_list;
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
-        op_list = $1;
-      }
-      else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
-      }
-      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
-      
-      $$ = op_list;
-    }
-  | type
 
 package
   : PACKAGE package_name package_block
@@ -375,6 +358,14 @@ sub
      {
        $$ = SPVM_OP_build_sub(compiler, $1, $2, $4, $7, $8, NULL);
      }
+ | SUB NEW '(' opt_args ')' ':' opt_descriptors type_or_void block
+     {
+       $$ = SPVM_OP_build_sub(compiler, $1, $2, $4, $7, $8, $9);
+     }
+ | SUB NEW '(' opt_args ')' ':' opt_descriptors type_or_void ';'
+     {
+       $$ = SPVM_OP_build_sub(compiler, $1, $2, $4, $7, $8, NULL);
+     }
 enumeration
   : ENUM enumeration_block
     {
@@ -485,11 +476,11 @@ term
   | my_var
 
 new_object
-  : MALLOC type_name
+  : NEW type_name
     {
       $$ = SPVM_OP_build_malloc_object(compiler, $1, $2);
     }
-  | MALLOC type_array_with_length
+  | NEW type_array_with_length
     {
       $$ = SPVM_OP_build_malloc_object(compiler, $1, $2);
     }
@@ -682,7 +673,25 @@ call_sub
       SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
     }
-
+  | term ARROW NEW '(' opt_terms ')'
+    {
+      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
+    }
+  | term ARROW NEW
+    {
+      SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
+      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
+    }
+  | package_name ARROW NEW '(' opt_terms  ')'
+    {
+      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
+    }
+  | package_name ARROW NEW
+    {
+      SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
+      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
+    }
+    
 opt_args
   :	/* Empty */
     {

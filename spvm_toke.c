@@ -855,11 +855,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               break;
             case 'm' :
-              if (strcmp(keyword, "malloc") == 0) {
-                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MALLOC);
-                return MALLOC;
-              }
-              else if (strcmp(keyword, "my") == 0) {
+              if (strcmp(keyword, "my") == 0) {
                 yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MY);
                 return MY;
               }
@@ -875,6 +871,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else if (strcmp(keyword, "next") == 0) {
                 yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NEXT);
                 return NEXT;
+              }
+              else if (strcmp(keyword, "new") == 0) {
+                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NEW);
+                return NEW;
               }
               break;
             case 'p' :

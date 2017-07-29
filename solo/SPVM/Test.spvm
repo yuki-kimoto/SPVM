@@ -34,7 +34,7 @@ package Test {
     {
        check_freelist();
        
-       my $result = malloc int[65];
+       my $result = new int[65];
        $result->[64] = 0;
     }
     
@@ -107,16 +107,16 @@ package Test {
     
     # $array->[0]{x}
     {
-      my $objs = malloc Test::Minimal[3];
-      $objs->[0] = malloc Test::Minimal;
+      my $objs = new Test::Minimal[3];
+      $objs->[0] = new Test::Minimal;
       $objs->[0]{x} = 111;
       stdout::println_int($objs->[0]{x});
     }
     
     # $obj->{x}[0]
     {
-      my $obj = malloc Test::Simple;
-      $obj->{values1} = malloc int[5];
+      my $obj = new Test::Simple;
+      $obj->{values1} = new int[5];
       $obj->{values1}[0] = 221;
       stdout::println_int($obj->{values1}[0]);
     }
@@ -133,22 +133,22 @@ package Test {
       stdout::println_int($total);
     }
     
-    # Create temporary varialbe for malloc
+    # Create temporary varialbe for new
     {
-      malloc Test::Minimal;
-      malloc Test::Minimal;
-      (malloc Test::Minimal)->{x};
+      new Test::Minimal;
+      new Test::Minimal;
+      (new Test::Minimal)->{x};
     }
     
-    my $obj1 = malloc Test::Minimal;
+    my $obj1 = new Test::Minimal;
     
     # last
     {
       while (1) {
-        my $obj1 = malloc Test::Minimal;
-        my $obj2 = malloc Test::Minimal;
+        my $obj1 = new Test::Minimal;
+        my $obj2 = new Test::Minimal;
         {
-          my $obj3 = malloc Test::Minimal;
+          my $obj3 = new Test::Minimal;
           last;
           next;
         }
@@ -185,8 +185,8 @@ package Test {
     
     # Malloc mutil array
     {
-      my $nums : int[][] = malloc int[][3];
-      $nums->[0] = malloc int[1];
+      my $nums : int[][] = new int[][3];
+      $nums->[0] = new int[1];
       $nums->[0][0] = 178;
       stdout::println_int($nums->[0][0]);
     }
@@ -211,7 +211,7 @@ package Test {
     }
 
     {
-      my $nums = malloc int[258];
+      my $nums = new int[258];
       my $len = @$nums;
       for (my $i = 0; $i < $len; $i++) {
         $nums->[$i] = $i;
@@ -224,14 +224,14 @@ package Test {
     
     # length with {} Too many elements over 4G
     {
-      my $nums = malloc int[150000000];
+      my $nums = new int[150000000];
       my $len = @{$nums};
       $nums->[149999999] = 764;
       stdout::println_int($nums->[149999999]);
     }
     
     {
-      my $nums = malloc int[2000000];
+      my $nums = new int[2000000];
       my $len = len $nums;
       my $i = 0;
       for ($i = 0; $i < $len; $i = $i + 1) {
@@ -255,13 +255,13 @@ package Test {
 
     # Index is out of range
     #{
-    #  my $nums = malloc int[3];
+    #  my $nums = new int[3];
     #  $nums->[3] = 1;
     #}
     
     # Index is out of range
     #{
-    #  my $nums = malloc int[3];
+    #  my $nums = new int[3];
     #  $nums->[-1] = 3;
     #}
 
@@ -273,13 +273,13 @@ package Test {
 
     # Index is out of range
     #{
-    #  my $nums = malloc int[3];
+    #  my $nums = new int[3];
     #  $nums->[3];
     #}
     
     # Index is out of range
     #{
-    #  my $nums = malloc int[3];
+    #  my $nums = new int[3];
     #  $nums->[-1];
     #}
     
@@ -290,11 +290,11 @@ package Test {
     #}
     
     {
-      malloc Test::Minimal;
+      new Test::Minimal;
     }
     
     {
-      my $obj1 = malloc Test::Minimal;
+      my $obj1 = new Test::Minimal;
       
       my $obj2 : Test::Minimal;
       
@@ -352,7 +352,7 @@ package Test {
     }
     
     {
-      my $nums = malloc int[3];
+      my $nums = new int[3];
       $nums->[0] = 1;
       $nums->[1] = 2;
       $nums->[2] = 3;
@@ -384,7 +384,7 @@ package Test {
     
     # get and set field
     {
-      my $m = malloc Test::Minimal;
+      my $m = new Test::Minimal;
       
       $m->{x} = 99;
       $m->{y} = 100;
@@ -395,8 +395,8 @@ package Test {
 
     # Free when assignment
     {
-      my $m = malloc Test::Minimal;
-      $m = malloc Test::Minimal;
+      my $m = new Test::Minimal;
+      $m = new Test::Minimal;
     }
 
     # left is object, right is undef
@@ -545,7 +545,7 @@ package Test {
     }
     6;
 
-    my $simple3 : Test::Simple = malloc Test::Simple;
+    my $simple3 : Test::Simple = new Test::Simple;
     
     stdout::println_int($simple3->get_x());
     $simple3->get_x;
@@ -554,7 +554,7 @@ package Test {
     $simple3->{x};
     $simple3->{y};
 
-    my $simple2 : Test::Simple = malloc Test::Simple;
+    my $simple2 : Test::Simple = new Test::Simple;
     
     if (1) { }
     
@@ -641,7 +641,7 @@ package Test {
     if (1 != 2) { };
 
     {
-      my $nums = malloc int[3];
+      my $nums = new int[3];
       $nums->[0] = 13;
       $nums->[1] = 14;
       stdout::println_int($nums->[0]);
@@ -649,7 +649,7 @@ package Test {
     }
     
     {
-      my $nums : long[] = malloc long[3];
+      my $nums : long[] = new long[3];
       $nums->[0] = 11L;
       $nums->[1] = 12L;
       stdout::println_long($nums->[0]);
@@ -658,7 +658,7 @@ package Test {
       my $nums_length : int = @$nums;
     }
     
-    my $simple : Test::Simple = malloc Test::Simple;
+    my $simple : Test::Simple = new Test::Simple;
     
     
     my $v1 : int;
@@ -830,7 +830,7 @@ package Test {
       
     }
     
-    array_malloc();
+    array_new();
     
     return 2;
   }
@@ -852,21 +852,21 @@ package Test {
 
   sub increfcount($test : Test::Minimal, $num : int) : int {
     
-    my $aaa = malloc Test::Minimal;
+    my $aaa = new Test::Minimal;
   }
 
   sub decinctest ($num1 : Test::Minimal, $num2 : int, $num3 : Test::Minimal) : int {
     {
-      my $num4 = malloc Test::Minimal;
-      my $num5 = malloc Test::Minimal;
+      my $num4 = new Test::Minimal;
+      my $num5 = new Test::Minimal;
     }
     return 2;
   }
 
   sub return_object() : Test::Minimal {
-    my $obj0 = malloc Test::Minimal;
+    my $obj0 = new Test::Minimal;
     {
-      my $obj1 = malloc Test::Minimal;
+      my $obj1 = new Test::Minimal;
       
       my $obj2 : Test::Minimal;
       
@@ -877,10 +877,10 @@ package Test {
   }
 
   sub eval_block() : void {
-    my $obj0 = malloc Test::Minimal;
+    my $obj0 = new Test::Minimal;
     
     eval {
-      my $obj1 = malloc Test::Minimal;
+      my $obj1 = new Test::Minimal;
       
       my $obj2 : Test::Minimal;
       
@@ -892,7 +892,7 @@ package Test {
     };
     
     {
-      my $obj4 = malloc Test::Minimal;
+      my $obj4 = new Test::Minimal;
       
       my $obj5 : Test::Minimal;
       
@@ -903,15 +903,15 @@ package Test {
       die $obj_error2;
     }
   }
-  sub array_malloc() : int {
+  sub array_new() : int {
     
-    my $nums = malloc int[3];
+    my $nums = new int[3];
     
     return @$nums;
   }
   sub check_freelist () : int[] {
-    my $result = malloc int[63];
-    my $true_result = malloc int[1];
+    my $result = new int[63];
+    my $true_result = new int[1];
     return $true_result;
   }
 }

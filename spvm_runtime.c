@@ -296,9 +296,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_STORE_3,
     &&case_SPVM_BYTECODE_C_CODE_STORE_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_POP,
-    &&case_SPVM_BYTECODE_C_CODE_MALLOC_OBJECT,
-    &&case_SPVM_BYTECODE_C_CODE_MALLOC_STRING,
-    &&case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY,
+    &&case_SPVM_BYTECODE_C_CODE_NEW_OBJECT,
+    &&case_SPVM_BYTECODE_C_CODE_NEW_STRING,
+    &&case_SPVM_BYTECODE_C_CODE_NEW_ARRAY,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_BYTE,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_SHORT,
     &&case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_INT,
@@ -2048,7 +2048,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     goto *jump[*pc];
   }
-  case_SPVM_BYTECODE_C_CODE_MALLOC_OBJECT:
+  case_SPVM_BYTECODE_C_CODE_NEW_OBJECT:
     // Get subroutine ID
     index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
@@ -2074,7 +2074,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     pc += 5;
     goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_MALLOC_ARRAY: {
+  case_SPVM_BYTECODE_C_CODE_NEW_ARRAY: {
     int32_t value_type = *(pc + 1);
     
     // length
@@ -2120,7 +2120,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc += 2;
     goto *jump[*pc];
   }
-  case_SPVM_BYTECODE_C_CODE_MALLOC_STRING:
+  case_SPVM_BYTECODE_C_CODE_NEW_STRING:
     index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
     array = SPVM_RUNTIME_API_create_array_byte_from_pv(api, (char*)&constant_pool[index + 1]);

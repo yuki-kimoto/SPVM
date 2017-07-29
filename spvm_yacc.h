@@ -50,7 +50,7 @@
      FOR = 266,
      WHILE = 267,
      USE = 268,
-     MALLOC = 269,
+     NEW = 269,
      LAST = 270,
      NEXT = 271,
      NAME = 272,
@@ -98,7 +98,7 @@
 #define FOR 266
 #define WHILE 267
 #define USE 268
-#define MALLOC 269
+#define NEW 269
 #define LAST 270
 #define NEXT 271
 #define NAME 272

@@ -4,6 +4,6 @@ package Test::Minimal {
   
   sub new() : Test::Minimal {
     
-    return malloc Test::Minimal;
+    return new Test::Minimal;
   }
 }

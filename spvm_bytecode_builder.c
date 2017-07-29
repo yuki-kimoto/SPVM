@@ -1165,11 +1165,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-                  case SPVM_OP_C_CODE_MALLOC: {
+                  case SPVM_OP_C_CODE_NEW: {
                     if (op_cur->first->code == SPVM_OP_C_CODE_CONSTANT) {
                       SPVM_CONSTANT* constant = op_cur->first->uv.constant;
                       
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MALLOC_STRING);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_STRING);
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 24) & 0xFF);
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 16) & 0xFF);
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 8) & 0xFF);
@@ -1179,7 +1179,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
                       
                       if (SPVM_TYPE_is_array(compiler, type)) {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MALLOC_ARRAY);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
                         if (SPVM_TYPE_is_array_numeric(compiler, type)) {
                           if (strcmp(type->name, "byte[]") == 0) {
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_BYTE);
@@ -1208,7 +1208,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         }
                       }
                       else {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MALLOC_OBJECT);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_OBJECT);
                         
                         const char* package_name = op_cur->first->uv.type->name;
                         

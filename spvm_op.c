@@ -102,7 +102,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "CONVERT",
   "POP",
   "UNDEF",
-  "MALLOC",
   "ARRAY_LENGTH",
   "CONDITION",
   "DIE",
@@ -115,6 +114,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "BLOCK_END",
   "EXCEPTION_VAR",
   "ASSIGN_PROCESS",
+  "NEW",
 };
 
 void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
@@ -449,7 +449,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_CODE_PLUS:
     case SPVM_OP_C_CODE_NEGATE:
     case SPVM_OP_C_CODE_ASSIGN:
-    case SPVM_OP_C_CODE_MALLOC:
+    case SPVM_OP_C_CODE_NEW:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
@@ -1118,6 +1118,11 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
 
 SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_type_or_void, SPVM_OP* op_block) {
   
+  if (op_name_sub->code == SPVM_OP_C_CODE_NEW) {
+    op_name_sub->code = SPVM_OP_C_CODE_NAME;
+    op_name_sub->uv.name = "new";
+  }
+  
   // Build OP_SUB
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_name_sub);
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_args);
@@ -1198,6 +1203,11 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
 }
 
 SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_sub, SPVM_OP* op_terms) {
+  
+  if (op_name_sub->code == SPVM_OP_C_CODE_NEW) {
+    op_name_sub->code == SPVM_OP_C_CODE_NAME;
+    op_name_sub->uv.name = "new";
+  }
   
   // Build OP_SUB
   SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_SUB, op_name_sub->file, op_name_sub->line);
@@ -1351,7 +1361,7 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
       op_constant_length->uv.constant = constant_length;
       
       // Malloc
-      SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MALLOC, op_list->file, op_list->line);
+      SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_list->file, op_list->line);
       SPVM_OP* op_type_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_list->file, op_list->line);
       
       if (first_type->id == SPVM_TYPE_C_ID_BYTE) {
