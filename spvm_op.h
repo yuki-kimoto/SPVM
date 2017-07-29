@@ -185,7 +185,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 void SPVM_OP_convert_to_op_constant_true(SPVM_COMPILER* compiler, SPVM_OP* op);
 void SPVM_OP_convert_to_op_constant_false(SPVM_COMPILER* compiler, SPVM_OP* op);
-void SPVM_OP_convert_not_to_if(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 void SPVM_OP_resolve_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, int32_t name_length);
 

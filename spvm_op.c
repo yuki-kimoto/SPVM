@@ -529,39 +529,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return type;
 }
 
-void SPVM_OP_convert_not_to_if(SPVM_COMPILER* compiler, SPVM_OP* op_if) {
-  
-  // before
-  //  NOT
-  //    x
-  
-  // after 
-  //  IF
-  //    x
-  //    0
-  //    1
-  
-  SPVM_OP* op_x = op_if->first;
-  
-  // Convert to ADN to IF
-  op_if->code = SPVM_OP_C_CODE_IF;
-  
-  // Cut op
-  op_x->moresib = 0;
-  op_x->sibparent = NULL;
-  op_if->first = NULL;
-  op_if->last = NULL;
-  
-  // Constant false
-  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_if->file, op_if->line);
-
-  // Constant true
-  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if->file, op_if->line);
-  
-  // Build if tree
-  SPVM_OP_build_if_statement(compiler, op_if, op_x, op_constant_false, op_constant_true);
-}
-
 void SPVM_OP_resolve_sub_name(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name) {
   
   SPVM_NAME_INFO* name_info = op_name->uv.name_info;
@@ -1288,13 +1255,29 @@ SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_f
 
 SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op_first) {
   
-  // Build op
-  SPVM_OP_insert_child(compiler, op_not, op_not->last, op_first);
-
   // Convert ! to if statement
-  SPVM_OP_convert_not_to_if(compiler, op_not);
+  // before
+  //  NOT
+  //    first
   
-  return op_not;
+  // after 
+  //  IF
+  //    first
+  //    0
+  //    1
+  
+  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_not->file, op_not->line);
+  
+  // Constant false
+  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_if->file, op_if->line);
+
+  // Constant true
+  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if->file, op_if->line);
+  
+  // Build if tree
+  SPVM_OP_build_if_statement(compiler, op_if, op_first, op_constant_false, op_constant_true);
+  
+  return op_if;
 }
 
 
