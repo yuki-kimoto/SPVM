@@ -42,27 +42,21 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_byte_array_noinc(SPVM_API* api, int32_t length)
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
-  int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_C_VALUE_TYPE_BYTE);
-  
   // Allocate array
-  int32_t array_byte_size = sizeof(SPVM_ARRAY) + size * length;
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_ARRAY) + (int64_t)length * (int64_t)sizeof(int8_t);
   SPVM_ARRAY* array = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, array_byte_size);
   
-  if (array) {
-    // Set type
-    array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
-    
-    // Set value type
-    array->value_type = SPVM_ARRAY_C_VALUE_TYPE_BYTE;
-    
-    // Set reference count
-    array->ref_count = 0;
-    
-    // Set array length
-    array->length = length;
-    
-    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
-  }
+  // Set type
+  array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
+  
+  // Set value type
+  array->value_type = SPVM_ARRAY_C_VALUE_TYPE_BYTE;
+  
+  // Set reference count
+  array->ref_count = 0;
+  
+  // Set array length
+  array->length = length;
   
   return array;
 }
@@ -72,27 +66,21 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_short_array_noinc(SPVM_API* api, int32_t length
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
-  int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_C_VALUE_TYPE_SHORT);
-  
   // Allocate array
-  int32_t array_byte_size = sizeof(SPVM_ARRAY) + size * length;
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_ARRAY) + (int64_t)length * (int64_t)sizeof(int16_t);
   SPVM_ARRAY* array = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, array_byte_size);
   
-  if (array) {
-    // Set type
-    array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
-    
-    // Set value type
-    array->value_type = SPVM_ARRAY_C_VALUE_TYPE_SHORT;
-    
-    // Set reference count
-    array->ref_count = 0;
-    
-    // Set array length
-    array->length = length;
-    
-    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
-  }
+  // Set type
+  array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
+  
+  // Set value type
+  array->value_type = SPVM_ARRAY_C_VALUE_TYPE_SHORT;
+  
+  // Set reference count
+  array->ref_count = 0;
+  
+  // Set array length
+  array->length = length;
   
   return array;
 }
@@ -101,27 +89,21 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_int_array_noinc(SPVM_API* api, int32_t length) 
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
-  int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_C_VALUE_TYPE_INT);
-  
-    // Allocate array
-  int32_t array_byte_size = sizeof(SPVM_ARRAY) + size * length;
+  // Allocate array
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_ARRAY) + (int64_t)length * (int64_t)sizeof(int32_t);
   SPVM_ARRAY* array = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, array_byte_size);
-
-  if (array) {
-    // Set type
-    array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
-    
-    // Set value type
-    array->value_type = SPVM_ARRAY_C_VALUE_TYPE_INT;
-    
-    // Set reference count
-    array->ref_count = 0;
-    
-    // Set array length
-    array->length = length;
-    
-    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
-  }
+  
+  // Set type
+  array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
+  
+  // Set value type
+  array->value_type = SPVM_ARRAY_C_VALUE_TYPE_INT;
+  
+  // Set reference count
+  array->ref_count = 0;
+  
+  // Set array length
+  array->length = length;
   
   return array;
 }
@@ -130,27 +112,21 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_long_array_noinc(SPVM_API* api, int32_t length)
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
-  int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_C_VALUE_TYPE_LONG);
-  
   // Allocate array
-  int32_t array_byte_size = sizeof(SPVM_ARRAY) + size * length;
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_ARRAY) + (int64_t)length * (int64_t)sizeof(int64_t);
   SPVM_ARRAY* array = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, array_byte_size);
   
-  if (array) {
-    // Set type
-    array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
-    
-    // Set value type
-    array->value_type = SPVM_ARRAY_C_VALUE_TYPE_LONG;
-    
-    // Set reference count
-    array->ref_count = 0;
-    
-    // Set array length
-    array->length = length;
-    
-    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
-  }
+  // Set type
+  array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
+  
+  // Set value type
+  array->value_type = SPVM_ARRAY_C_VALUE_TYPE_LONG;
+  
+  // Set reference count
+  array->ref_count = 0;
+  
+  // Set array length
+  array->length = length;
   
   return array;
 }
@@ -159,27 +135,21 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_float_array_noinc(SPVM_API* api, int32_t length
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
-  int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_C_VALUE_TYPE_FLOAT);
-  
   // Allocate array
-  int32_t array_byte_size = sizeof(SPVM_ARRAY) + size * length;
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_ARRAY) + (int64_t)length * (int64_t)sizeof(float);
   SPVM_ARRAY* array = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, array_byte_size);
   
-  if (array) {
-    // Set type
-    array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
-    
-    // Set value type
-    array->value_type = SPVM_ARRAY_C_VALUE_TYPE_FLOAT;
-    
-    // Set reference count
-    array->ref_count = 0;
-    
-    // Set array length
-    array->length = length;
-    
-    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
-  }
+  // Set type
+  array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
+  
+  // Set value type
+  array->value_type = SPVM_ARRAY_C_VALUE_TYPE_FLOAT;
+  
+  // Set reference count
+  array->ref_count = 0;
+  
+  // Set array length
+  array->length = length;
   
   return array;
 }
@@ -188,27 +158,21 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_double_array_noinc(SPVM_API* api, int32_t lengt
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
-  int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_C_VALUE_TYPE_DOUBLE);
-  
   // Allocate array
-  int32_t array_byte_size = sizeof(SPVM_ARRAY) + size * length;
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_ARRAY) + (int64_t)length * (int64_t)sizeof(double);
   SPVM_ARRAY* array = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, array_byte_size);
   
-  if (array) {
-    // Set type
-    array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
-    
-    // Set value type
-    array->value_type = SPVM_ARRAY_C_VALUE_TYPE_DOUBLE;
-    
-    // Set reference count
-    array->ref_count = 0;
-    
-    // Set array length
-    array->length = length;
-    
-    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
-  }
+  // Set type
+  array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
+  
+  // Set value type
+  array->value_type = SPVM_ARRAY_C_VALUE_TYPE_DOUBLE;
+  
+  // Set reference count
+  array->ref_count = 0;
+  
+  // Set array length
+  array->length = length;
   
   return array;
 }
@@ -217,30 +181,24 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_object_array_noinc(SPVM_API* api, int32_t lengt
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
-  int32_t size = SPVM_RUNTIME_API_get_array_value_size(api, SPVM_ARRAY_C_VALUE_TYPE_OBJECT);
-  
   // Allocate array
-  int32_t array_byte_size = sizeof(SPVM_ARRAY) + size * length;
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_ARRAY) + (int64_t)length * (int64_t)sizeof(SPVM_BASE_OBJECT*);
   SPVM_ARRAY* array = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, array_byte_size);
   
-  if (array) {
-    // Initialize by null
-    memset((void*)((intptr_t)array + sizeof(SPVM_ARRAY)), 0, size * length);
-    
-    // Set type
-    array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
-    
-    // Set value type
-    array->value_type = SPVM_ARRAY_C_VALUE_TYPE_OBJECT;
-    
-    // Set reference count
-    array->ref_count = 0;
-    
-    // Set array length
-    array->length = length;
-    
-    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
-  }
+  // Initialize by null
+  memset(array, 0, array_byte_size);
+  
+  // Set type
+  array->type = SPVM_BASE_OBJECT_C_TYPE_ARRAY;
+  
+  // Set value type
+  array->value_type = SPVM_ARRAY_C_VALUE_TYPE_OBJECT;
+  
+  // Set reference count
+  array->ref_count = 0;
+  
+  // Set array length
+  array->length = length;
   
   return array;
 }
