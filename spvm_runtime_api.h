@@ -67,7 +67,6 @@ void SPVM_RUNTIME_API_push_retval_object(SPVM_API* api, SPVM_BASE_OBJECT* value)
 int64_t SPVM_RUNTIME_API_calcurate_base_object_byte_size(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 SPVM_ARRAY* SPVM_RUNTIME_API_create_array_byte(SPVM_API* api, int32_t length);
 SPVM_ARRAY* SPVM_RUNTIME_API_create_array_byte_from_pv(SPVM_API* api, const char* pv);
-int32_t SPVM_RUNTIME_API_get_array_value_size(SPVM_API* api, int32_t type);
 SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object);

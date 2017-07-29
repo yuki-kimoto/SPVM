@@ -57,7 +57,9 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_byte_array_noinc(SPVM_API* api, int32_t length)
   
   // Set array length
   array->length = length;
-  
+ 
+  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
+
   return array;
 }
 
@@ -81,7 +83,9 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_short_array_noinc(SPVM_API* api, int32_t length
   
   // Set array length
   array->length = length;
-  
+
+  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
+
   return array;
 }
 
@@ -104,7 +108,9 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_int_array_noinc(SPVM_API* api, int32_t length) 
   
   // Set array length
   array->length = length;
-  
+
+  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
+
   return array;
 }
 
@@ -127,7 +133,9 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_long_array_noinc(SPVM_API* api, int32_t length)
   
   // Set array length
   array->length = length;
-  
+
+  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
+
   return array;
 }
 
@@ -150,7 +158,9 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_float_array_noinc(SPVM_API* api, int32_t length
   
   // Set array length
   array->length = length;
-  
+
+  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
+
   return array;
 }
 
@@ -173,7 +183,9 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_double_array_noinc(SPVM_API* api, int32_t lengt
   
   // Set array length
   array->length = length;
-  
+
+  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
+
   return array;
 }
 
@@ -199,12 +211,13 @@ SPVM_ARRAY* SPVM_RUNTIME_API_new_object_array_noinc(SPVM_API* api, int32_t lengt
   
   // Set array length
   array->length = length;
-  
+
+  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)array));
+
   return array;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object_noinc(SPVM_API* api, int32_t package_constant_pool_index) {
-  
   
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
@@ -215,25 +228,23 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_noinc(SPVM_API* api, int32_t package_co
   
   // Allocate memory
   int32_t length = constant_pool_package.fields_length;
-  int32_t byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * length;
-  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, byte_size);
+  int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)sizeof(SPVM_VALUE) * (int64_t)length;
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc(api, allocator, object_byte_size);
   
-  if (__builtin_expect(object != NULL, 1)) {
-    // Set type
-    object->type = SPVM_BASE_OBJECT_C_TYPE_OBJECT;
-    
-    // Set reference count
-    object->ref_count = 0;
-    
-    // Initialize reference fields by 0
-    memset((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), 0, sizeof(SPVM_VALUE) * constant_pool_package.object_fields_length);
-    
-    // Package constant pool index
-    object->package_constant_pool_index = package_constant_pool_index;
-    
-    assert(byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)object));
-  }
+  // Initialize fields by 0
+  memset(object, 0, object_byte_size);
   
+  // Set type
+  object->type = SPVM_BASE_OBJECT_C_TYPE_OBJECT;
+  
+  // Set reference count
+  object->ref_count = 0;
+  
+  // Package constant pool index
+  object->package_constant_pool_index = package_constant_pool_index;
+
+  assert(object_byte_size == SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, (SPVM_BASE_OBJECT*)object));
+
   return object;
 }
 
