@@ -23,11 +23,13 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
   
   // Copy constant pool to runtime
-  runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->constant_pool->length, sizeof(int32_t));
+  int64_t runtime_constant_pool_byte_size = (int64_t)compiler->constant_pool->length * (int64_t)sizeof(int32_t);
+  runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_constant_pool_byte_size);
   memcpy(runtime->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
   
   // Copy bytecodes to runtime
-  runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(compiler->bytecode_array->length, sizeof(uint8_t));
+  int64_t runtime_bytecodes_byte_size = (int64_t)compiler->bytecode_array->length * (int64_t)sizeof(uint8_t);
+  runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc(runtime_bytecodes_byte_size);
   memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
   
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
