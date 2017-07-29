@@ -402,15 +402,15 @@ expression
     }
   | call_field ASSIGN term
     {
-      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | array_elem ASSIGN term
     {
-      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | EXCEPTION_VAR ASSIGN term
     {
-      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
 
 opt_terms
@@ -613,15 +613,15 @@ binop
     }
   | my_var ASSIGN '[' opt_terms ']'
     {
-      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $4);
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $4);
     }
   | my_var ASSIGN term
     {
-      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | VAR ASSIGN term
     {
-      $$ = SPVM_OP_build_assignop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | '(' term ')'
     {
