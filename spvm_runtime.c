@@ -21,7 +21,7 @@
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
-  SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_RUNTIME));
+  SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
 
   runtime->constant_pool = NULL;
   runtime->bytecodes = NULL;
@@ -30,7 +30,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
   
   runtime->call_stack_capacity = 0xFF;
-  runtime->call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(runtime->call_stack_capacity, sizeof(SPVM_VALUE));
+  int64_t runtime_call_stack_byte_size = (int64_t)runtime->call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
+  runtime->call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_call_stack_byte_size);
   
   SPVM_API* api = SPVM_RUNTIME_new_api(runtime);
   
@@ -64,7 +65,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   (void)runtime;
   
-  SPVM_API* api = SPVM_UTIL_ALLOCATOR_safe_malloc_i32(1, sizeof(SPVM_API));
+  SPVM_API* api = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API));
   
   // Array functions
   api->get_array_length = (int32_t (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_array_length;
@@ -415,8 +416,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       
       while (call_stack_max > runtime->call_stack_capacity) {
         int32_t new_call_stack_capacity = runtime->call_stack_capacity * 2;
-
-        SPVM_VALUE* new_call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_call_stack_capacity, sizeof(sizeof(SPVM_VALUE)));
+        
+        int64_t new_call_stack_byte_size = (int64_t)new_call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
+        SPVM_VALUE* new_call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_call_stack_byte_size);
         memcpy(new_call_stack, runtime->call_stack, runtime->call_stack_capacity * sizeof(sizeof(SPVM_VALUE)));
         free(runtime->call_stack);
         runtime->call_stack = call_stack = new_call_stack;
