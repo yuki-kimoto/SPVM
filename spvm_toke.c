@@ -1007,7 +1007,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 replaced_keyword[replaced_part_names_length] = '\0';
               }
               keyword = replaced_keyword;
-              warn("AAAAAAAAAA %s", keyword);
             }
           }
           

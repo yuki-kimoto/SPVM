@@ -1319,11 +1319,23 @@ SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_f
   SPVM_OP_insert_child(compiler, op_or, op_or->last, op_first);
   SPVM_OP_insert_child(compiler, op_or, op_or->last, op_last);
   
-  // Convert && to if statement
+  // Convert || to if statement
   SPVM_OP_convert_or_to_if(compiler, op_or);
   
   return op_or;
 }
+
+SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op_first) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_not, op_not->last, op_first);
+
+  // Convert ! to if statement
+  SPVM_OP_convert_not_to_if(compiler, op_not);
+  
+  return op_not;
+}
+
 
 SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last) {
   

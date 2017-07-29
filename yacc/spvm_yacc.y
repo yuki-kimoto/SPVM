@@ -555,7 +555,7 @@ unop
     }
   | NOT term
     {
-      $$ = SPVM_OP_build_unop(compiler, $1, $2);
+      $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
 
 binop
