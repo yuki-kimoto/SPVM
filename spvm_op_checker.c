@@ -336,18 +336,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               // [START]Preorder traversal position
               
               switch (op_cur->code) {
-                case SPVM_OP_C_CODE_SWITCH: {
-                  if (in_switch) {
-                    SPVM_yyerror_format(compiler, "duplicate switch is forbidden at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  else {
-                    in_switch = 1;
-                  }
-                  
-                  break;
-                }
                 // Start scope
                 case SPVM_OP_C_CODE_BLOCK: {
                   
@@ -393,6 +381,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
                     }
                   }
+                  else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+                    if (in_switch) {
+                      SPVM_yyerror_format(compiler, "duplicate switch is forbidden at %s line %d\n", op_cur->file, op_cur->line);
+                      compiler->fatal_error = 1;
+                      return;
+                    }
+                    else {
+                      in_switch = 1;
+                    }
+                  }
                   
                   block_my_var_base = op_my_var_stack->length;
                   int32_t* block_my_var_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
@@ -409,8 +407,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
               }
-              
               // [END]Preorder traversal position
+              
               if (op_cur->first) {
                 op_cur = op_cur->first;
               }
