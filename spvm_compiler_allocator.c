@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-
+#include <string.h>
 
 #include "spvm_dynamic_array.h"
 #include "spvm_hash.h"

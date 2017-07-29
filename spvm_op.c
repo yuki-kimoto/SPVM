@@ -118,6 +118,8 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
 };
 
 void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
+  (void)compiler;
+  
   SPVM_CONSTANT* constant = op_constant->uv.constant;
   if (constant->resolved) {
     return;

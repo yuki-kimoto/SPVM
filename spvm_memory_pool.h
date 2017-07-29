@@ -7,7 +7,7 @@ struct SPVM_memory_pool {
   int32_t page_byte_size;
   int32_t pages_length;
   int32_t current_offset;
-  int8_t** pages;
+  char** pages;
   int32_t current_page;
 };
 

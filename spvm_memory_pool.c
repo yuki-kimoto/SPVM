@@ -2,6 +2,7 @@
 #include <math.h>
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "spvm_memory_pool.h"
 #include "spvm_util_allocator.h"
@@ -18,9 +19,9 @@ SPVM_MEMORY_POOL* SPVM_MEMORY_POOL_new(int32_t page_byte_size) {
     memory_pool->page_byte_size = page_byte_size;
   }
   
-  int8_t* page = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(memory_pool->page_byte_size);
+  char* page = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(memory_pool->page_byte_size);
   memory_pool->pages_length = 1;
-  int64_t memory_pool_pages_byte_size = (int64_t)memory_pool->pages_length * (int64_t)sizeof(int8_t*);
+  int64_t memory_pool_pages_byte_size = (int64_t)memory_pool->pages_length * (int64_t)sizeof(char*);
   memory_pool->pages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(memory_pool_pages_byte_size);
   memory_pool->pages[0] = page;
   
@@ -51,9 +52,9 @@ void* SPVM_MEMORY_POOL_alloc(SPVM_MEMORY_POOL* memory_pool, int32_t byte_size) {
     if (memory_pool->current_page == memory_pool->pages_length) {
       int32_t new_memory_pool_pages_length = memory_pool->pages_length * 2;
       
-      int64_t new_pages_byte_size = (int64_t)new_memory_pool_pages_length * (int64_t)sizeof(uint8_t*);
-      uint8_t** new_pages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_pages_byte_size);
-      memcpy(new_pages, memory_pool->pages, memory_pool->pages_length * sizeof(uint8_t*));
+      int64_t new_pages_byte_size = (int64_t)new_memory_pool_pages_length * (int64_t)sizeof(char*);
+      char** new_pages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_pages_byte_size);
+      memcpy(new_pages, memory_pool->pages, memory_pool->pages_length * sizeof(char*));
       free(memory_pool->pages);
       memory_pool->pages = new_pages;
       
@@ -69,7 +70,7 @@ void* SPVM_MEMORY_POOL_alloc(SPVM_MEMORY_POOL* memory_pool, int32_t byte_size) {
   }
   
   // Allocated address
-  int8_t* alloc_address = memory_pool->pages[memory_pool->current_page] + memory_pool->current_offset;
+  char* alloc_address = memory_pool->pages[memory_pool->current_page] + memory_pool->current_offset;
   
   memory_pool->current_offset += aligned_byte_size;
   

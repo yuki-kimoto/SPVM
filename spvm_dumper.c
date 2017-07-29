@@ -481,7 +481,7 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
       printf("      int %" PRId16 "\n", constant->value.short_value);
       break;
     case SPVM_TYPE_C_ID_INT:
-      printf("      int %" PRId64 "\n", constant->value.int_value);
+      printf("      int %" PRId32 "\n", constant->value.int_value);
       break;
     case SPVM_TYPE_C_ID_LONG:
       printf("      long %" PRId64 "\n", constant->value.long_value);
