@@ -1,3 +1,16 @@
+0.0234 2017-07-29
+  - rename malloc to new. you can also define new function for object initialization.
+    my $obj = new Foo;
+    my $obj = Foo::new(3);
+    package Foo {
+      sub new($var1 : int) {
+        
+        # ...
+        
+        return new Foo;
+      }
+    }
+    
 0.0233 2017-07-28
   - support package template.
   - support over 4G memory allocation
