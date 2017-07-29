@@ -254,6 +254,9 @@ SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* 
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_exception_var);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_undef);
   
+  op_assign->first->lvalue = 1;
+  op_assign->last->rvalue = 1;
+  
   SPVM_OP* op_list_statement = op_eval_block->first;
   SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_assign);
   
@@ -1346,6 +1349,9 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_first);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_last);
   
+  op_assign->first->lvalue = 1;
+  op_assign->last->rvalue = 1;
+  
   // Return variable if first children is var
   if (op_first->code == SPVM_OP_C_CODE_VAR) {
     SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
@@ -1465,6 +1471,9 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
           op_term->sibparent = NULL;
           SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_term);
           
+          op_assign_array->first->lvalue = 1;
+          op_assign_array->last->rvalue = 1;
+          
           SPVM_OP_insert_child(compiler, op_list_new, op_list_new->last, op_assign_array);
         }
       }
@@ -1530,6 +1539,9 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_term->file, op_term->line);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_exception_var);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_term);
+  
+  op_assign->first->lvalue = 1;
+  op_assign->last->rvalue = 1;
   
   SPVM_OP_insert_child(compiler, op_die, op_die->last, op_assign);
   

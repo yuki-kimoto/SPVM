@@ -408,14 +408,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
-                case SPVM_OP_C_CODE_ASSIGN: {
-                  // Left side of "=" is lvalue
-                  op_cur->first->lvalue = 1;
-                  
-                  // Right side of "=" is rvalue
-                  op_cur->last->rvalue = 1;
-                  break;
-                }
               }
               
               // [END]Preorder traversal position
@@ -946,7 +938,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_assign->last = op_malloc;
                         op_assign->moresib = 0;
                         op_assign->sibparent = op_cur;
-                        
+
+                        op_assign->first->lvalue = 1;
+                        op_assign->last->rvalue = 1;
+
                         // Convert cur malloc op to var
                         op_cur->code = SPVM_OP_C_CODE_VAR;
                         op_cur->uv.var = op_var->uv.var;
