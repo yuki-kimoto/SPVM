@@ -1313,6 +1313,18 @@ SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op
   return op_and;
 }
 
+SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_first, SPVM_OP* op_last) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_or, op_or->last, op_first);
+  SPVM_OP_insert_child(compiler, op_or, op_or->last, op_last);
+  
+  // Convert && to if statement
+  SPVM_OP_convert_or_to_if(compiler, op_or);
+  
+  return op_or;
+}
+
 SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Stab to add after process

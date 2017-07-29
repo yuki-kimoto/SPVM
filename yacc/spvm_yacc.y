@@ -629,7 +629,7 @@ binop
     }
   | term OR term
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
     }
   | term AND term
     {

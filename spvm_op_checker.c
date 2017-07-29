@@ -336,13 +336,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               // [START]Preorder traversal position
               
               switch (op_cur->code) {
-                case SPVM_OP_C_CODE_OR: {
-                  
-                  // Convert || to if statement
-                  SPVM_OP_convert_or_to_if(compiler, op_cur);
-                  
-                  break;
-                }
                 case SPVM_OP_C_CODE_NOT: {
                   // Convert ! to if statement
                   SPVM_OP_convert_not_to_if(compiler, op_cur);
