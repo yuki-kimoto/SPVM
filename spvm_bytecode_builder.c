@@ -204,16 +204,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
             // [START]Preorder traversal position
             
             switch (op_cur->code) {
-              case SPVM_OP_C_CODE_EVAL: {
-                
-                SPVM_DYNAMIC_ARRAY_push(eval_stack, op_cur);
-                
-                break;
-              }
-              case SPVM_OP_C_CODE_SWITCH: {
-                cur_case_bytecode_indexes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-                break;
-              }
               case SPVM_OP_C_CODE_BLOCK: {
                 if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
                   // Add goto
@@ -226,6 +216,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
+                }
+                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+                  cur_case_bytecode_indexes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+                }
+                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
+                  SPVM_DYNAMIC_ARRAY_push(eval_stack, op_cur);
                 }
               }
             }
