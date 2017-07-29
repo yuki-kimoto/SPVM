@@ -32,6 +32,11 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 
 use SPVM::stdout;
 
+# Lookup switch
+{
+  ok(SPVM::TestCase::lookup_switch());
+}
+
 # Table switch
 {
   ok(SPVM::TestCase::table_switch());
