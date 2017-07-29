@@ -49,7 +49,8 @@ void SPVM_CONSTANT_POOL_extend(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* cons
   if (constant_pool->length + extend >= capacity) {
     int32_t new_capacity = capacity * 2;
     
-    int32_t* new_values = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_capacity, sizeof(int32_t));
+    int64_t new_values_byte_size = (int64_t)new_capacity * (int64_t)sizeof(int32_t);
+    int32_t* new_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_values_byte_size);
     memcpy(new_values, constant_pool->values, capacity * sizeof(int32_t));
     free(constant_pool->values);
     constant_pool->values = new_values;
