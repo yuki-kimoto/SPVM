@@ -37,7 +37,8 @@ void SPVM_DYNAMIC_ARRAY_maybe_extend(SPVM_DYNAMIC_ARRAY* array) {
   if (length >= capacity) {
     int32_t new_capacity = capacity * 2;
     
-    void** new_values = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_capacity, sizeof(void*));
+    int64_t new_values_byte_size = (int64_t)new_capacity * (int64_t)sizeof(void*);
+    void** new_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_values_byte_size);
     memcpy(new_values, array->values, capacity * sizeof(void*));
     free(array->values);
     array->values = new_values;

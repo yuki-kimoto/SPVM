@@ -27,8 +27,9 @@ void SPVM_BYTECODE_ARRAY_push(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* byte
   
   if (length >= capacity) {
     int32_t new_capacity = capacity * 2;
-
-    uint8_t* new_values = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_capacity, sizeof(uint8_t));
+    
+    int64_t new_values_byte_size = (int64_t)new_capacity * (int64_t)sizeof(uint8_t);
+    uint8_t* new_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_values_byte_size);
     memcpy(new_values, bytecodes->values, capacity * sizeof(uint8_t));
     free(bytecodes->values);
     bytecodes->values = new_values;
