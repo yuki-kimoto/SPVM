@@ -529,57 +529,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return type;
 }
 
-void SPVM_OP_convert_and_to_if(SPVM_COMPILER* compiler, SPVM_OP* op_if1) {
-  
-  /* before
-    AND
-      x
-      y
-  */
-  
-  /* after 
-    IF              if1
-      CONDITION
-        x
-      IF            if2
-        CONDITION
-          y
-        1           true1
-        0           false1
-      0             false2
-  */
-  
-  SPVM_OP* op_x = op_if1->first;
-  SPVM_OP* op_y = op_if1->last;
-  
-  // Convert to ADN to IF
-  op_if1->code = SPVM_OP_C_CODE_IF;
-  
-  // Cut op
-  op_x->moresib = 0;
-  op_x->sibparent = NULL;
-  op_y->moresib = 0;
-  op_y->sibparent = NULL;
-  op_if1->first = NULL;
-  op_if1->last = NULL;
-  
-  // Constant true
-  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if1->file, op_if1->line);
-
-  // Constant false 1
-  SPVM_OP* op_constant_false1 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
-  
-  // Constant false 2
-  SPVM_OP* op_constant_false2 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
-  
-  // if2
-  SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_if1->file, op_if1->line);
-  
-  // Build if tree
-  SPVM_OP_build_if_statement(compiler, op_if2, op_y, op_constant_true, op_constant_false1);
-  SPVM_OP_build_if_statement(compiler, op_if1, op_x, op_if2, op_constant_false2);
-}
-
 void SPVM_OP_convert_or_to_if(SPVM_COMPILER* compiler, SPVM_OP* op_if1) {
   
   // before
@@ -1306,14 +1255,44 @@ SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* 
 
 SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op_first, SPVM_OP* op_last) {
   
-  // Build op
-  SPVM_OP_insert_child(compiler, op_and, op_and->last, op_first);
-  SPVM_OP_insert_child(compiler, op_and, op_and->last, op_last);
-  
   // Convert && to if statement
-  SPVM_OP_convert_and_to_if(compiler, op_and);
+  /* before
+    AND
+      first
+      last
+  */
   
-  return op_and;
+  /* after 
+    IF              if1
+      CONDITION
+        first
+      IF            if2
+        CONDITION
+          last
+        1           true1
+        0           false1
+      0             false2
+  */
+  
+  SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_and->file, op_and->line);
+  
+  // Constant true
+  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if1->file, op_if1->line);
+
+  // Constant false 1
+  SPVM_OP* op_constant_false1 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
+  
+  // Constant false 2
+  SPVM_OP* op_constant_false2 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
+  
+  // if2
+  SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_if1->file, op_if1->line);
+  
+  // Build if tree
+  SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_constant_true, op_constant_false1);
+  SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_if2, op_constant_false2);
+  
+  return op_if1;
 }
 
 SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_first, SPVM_OP* op_last) {
