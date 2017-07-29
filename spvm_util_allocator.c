@@ -5,6 +5,25 @@
 
 #include "spvm_util_allocator.h"
 
+void* SPVM_UTIL_ALLOCATOR_safe_malloc(int64_t byte_size) {
+
+  assert(byte_size > 0);
+
+  if (byte_size > SIZE_MAX) {
+    fprintf(stderr, "Failed to allocate memory. Size is too big(SPVM_UTIL_ALLOCATOR_safe_malloc)\n");
+    abort();
+  }
+  
+  void* block = malloc(byte_size);
+  
+  if (!block) {
+    fprintf(stderr, "Failed to allocate memory. malloc function return NULL(SPVM_UTIL_ALLOCATOR_safe_malloc)\n");
+    abort();
+  }
+  
+  return block;
+}
+
 void* SPVM_UTIL_ALLOCATOR_safe_malloc_i32(int32_t count, int32_t size) {
   
   assert(count >= 0);
