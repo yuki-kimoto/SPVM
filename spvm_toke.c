@@ -653,7 +653,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Number literal(first is space for sign)
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          char* num_str = (char*) SPVM_UTIL_ALLOCATOR_safe_malloc_i32(str_len + 2, sizeof(char));
+          char* num_str = (char*) SPVM_UTIL_ALLOCATOR_safe_malloc_zero(str_len + 2);
           memcpy(num_str, cur_token_ptr, str_len);
           num_str[str_len] = '\0';
           
