@@ -10,6 +10,7 @@
         return new Foo;
       }
     }
+  - object's fields are initialized by zero.
     
 0.0233 2017-07-28
   - support package template.

@@ -36,6 +36,10 @@ use SPVM::stdout;
   ok(SPVM::TestCase::new_near_small_base_object_max_byte_size_use_memory_pool());
 }
 
+{
+  ok(SPVM::TestCase::object_field_initialized_zero());
+}
+
 # Get object from freelist
 {
   ok(SPVM::TestCase::get_object_from_freelist());
