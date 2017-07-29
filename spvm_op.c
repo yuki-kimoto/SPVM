@@ -1301,6 +1301,18 @@ SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* 
   return op_bin;
 }
 
+SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op_first, SPVM_OP* op_last) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_and, op_and->last, op_first);
+  SPVM_OP_insert_child(compiler, op_and, op_and->last, op_last);
+  
+  // Convert && to if statement
+  SPVM_OP_convert_and_to_if(compiler, op_and);
+  
+  return op_and;
+}
+
 SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Stab to add after process

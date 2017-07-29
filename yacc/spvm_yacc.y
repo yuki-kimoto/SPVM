@@ -633,7 +633,7 @@ binop
     }
   | term AND term
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
     }
 
 array_elem
