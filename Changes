@@ -1,5 +1,6 @@
 0.0233 2017-07-28
-  - support package template
+  - support package template.
+  - support over 4G memory allocation
 0.0232 2017-07-26
   - add len keyword to get array length
     reason is that
@@ -124,5 +125,5 @@
   - fix memset 0 bug
 0.02 2017-06-20
   - improve XS type convertion logic
-0.01 2017-06-17
+0.01 2017-06-17(DEVELOPMENT RELEASE
 	- Fisrt development release

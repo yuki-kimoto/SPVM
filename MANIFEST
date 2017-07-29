@@ -15,7 +15,6 @@ lib/SPVM/stdout.spvm
 lib/SPVM/String.pm
 Makefile.PL
 MANIFEST			This list of files
-PL
 ppport.h
 README.md
 solo/Main.spvm
@@ -28,6 +27,7 @@ solo/SPVM/Test/EnumC.spvm
 solo/SPVM/Test/EnumD.spvm
 solo/SPVM/Test/Minimal.spvm
 solo/SPVM/Test/Simple.spvm
+solo/SPVM/Test/Template.spvm
 solo/spvm_main.c
 solo/t/spvm_t_array.c
 solo/t/spvm_t_hash.c
@@ -103,6 +103,8 @@ spvm_toke.c
 spvm_toke.h
 spvm_type.c
 spvm_type.h
+spvm_use.c
+spvm_use.h
 spvm_util_allocator.c
 spvm_util_allocator.h
 spvm_value.h

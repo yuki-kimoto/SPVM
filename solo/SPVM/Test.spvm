@@ -222,10 +222,12 @@ package Test {
       }
     }
     
-    # length with {}
+    # length with {} Too many elements over 4G
     {
-      my $nums = malloc int[2000000];
+      my $nums = malloc int[150000000];
       my $len = @{$nums};
+      $nums->[149999999] = 764;
+      stdout::println_int($nums->[149999999]);
     }
     
     {
