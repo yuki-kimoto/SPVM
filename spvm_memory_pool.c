@@ -50,7 +50,8 @@ void* SPVM_MEMORY_POOL_alloc(SPVM_MEMORY_POOL* memory_pool, int32_t byte_size) {
     if (memory_pool->current_page == memory_pool->pages_length) {
       int32_t new_memory_pool_pages_length = memory_pool->pages_length * 2;
       
-      uint8_t** new_pages = SPVM_UTIL_ALLOCATOR_safe_malloc_i32_zero(new_memory_pool_pages_length, sizeof(uint8_t*));
+      int64_t new_pages_byte_size = (int64_t)new_memory_pool_pages_length * (int64_t)sizeof(uint8_t*);
+      uint8_t** new_pages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_pages_byte_size);
       memcpy(new_pages, memory_pool->pages, memory_pool->pages_length * sizeof(uint8_t*));
       free(memory_pool->pages);
       memory_pool->pages = new_pages;
