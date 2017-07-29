@@ -673,24 +673,6 @@ call_sub
       SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
     }
-  | term ARROW NEW '(' opt_terms ')'
-    {
-      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
-    }
-  | term ARROW NEW
-    {
-      SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
-      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
-    }
-  | package_name ARROW NEW '(' opt_terms  ')'
-    {
-      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
-    }
-  | package_name ARROW NEW
-    {
-      SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
-      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
-    }
     
 opt_args
   :	/* Empty */

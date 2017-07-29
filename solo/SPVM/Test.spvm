@@ -133,7 +133,7 @@ package Test {
       stdout::println_int($total);
     }
     
-    # Create temporary varialbe for new
+    # Create temporary varialbe
     {
       new Test::Minimal;
       new Test::Minimal;

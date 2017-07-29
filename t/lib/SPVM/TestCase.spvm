@@ -6,9 +6,9 @@ package TestCase {
   has x_int_array : int[];
   has x_string : string;
   
-  # malloc near small base_object_max_byte_size_use_memory_pool
-  sub malloc_near_small_base_object_max_byte_size_use_memory_pool() : int {
-    my $block = malloc byte[0xFFF0];
+  # new near small base_object_max_byte_size_use_memory_pool
+  sub new_near_small_base_object_max_byte_size_use_memory_pool() : int {
+    my $block = new byte[0xFFF0];
     
     return 1;
   }
@@ -38,14 +38,14 @@ package TestCase {
   sub get_object_from_freelist () : int {
     get_object_from_freelist_check();
     
-    my $result = malloc int[65];
+    my $result = new int[65];
     $result->[64] = 0;
     
     return 1;
   }
   sub get_object_from_freelist_check () : int[] {
-    my $result = malloc int[63];
-    my $true_result = malloc int[1];
+    my $result = new int[63];
+    my $true_result = new int[1];
     return $true_result;
   }
 
@@ -639,7 +639,7 @@ package TestCase {
   
   # call_sub return value
   sub call_sub_return_byte_array() : byte[] {
-    my $nums = malloc byte[3];
+    my $nums = new byte[3];
     
     $nums->[0] = (byte)1;
     $nums->[1] = (byte)2;
@@ -663,7 +663,7 @@ package TestCase {
   }
 
   sub call_sub_return_short_array() : short[] {
-    my $nums = malloc short[3];
+    my $nums = new short[3];
     
     $nums->[0] = (short)1;
     $nums->[1] = (short)2;
@@ -687,7 +687,7 @@ package TestCase {
   }
 
   sub call_sub_return_int_array() : int[] {
-    my $nums = malloc int[3];
+    my $nums = new int[3];
     
     $nums->[0] = (int)1;
     $nums->[1] = (int)2;
@@ -711,7 +711,7 @@ package TestCase {
   }
 
   sub call_sub_return_long_array() : long[] {
-    my $nums = malloc long[3];
+    my $nums = new long[3];
     
     $nums->[0] = (long)1;
     $nums->[1] = (long)2;
@@ -735,7 +735,7 @@ package TestCase {
   }
 
   sub call_sub_return_float_array() : float[] {
-    my $nums = malloc float[3];
+    my $nums = new float[3];
     
     $nums->[0] = (float)1;
     $nums->[1] = (float)2;
@@ -759,7 +759,7 @@ package TestCase {
   }
 
   sub call_sub_return_double_array() : double[] {
-    my $nums = malloc double[3];
+    my $nums = new double[3];
     
     $nums->[0] = (double)1;
     $nums->[1] = (double)2;
@@ -1337,7 +1337,7 @@ package TestCase {
   }
 
   sub if_true_object() : int {
-    if (malloc TestCase) {
+    if (new TestCase) {
       return 1;
     }
     
@@ -1583,7 +1583,7 @@ package TestCase {
   
   sub if_eq_object_same () : int {
     
-    my $obj1 = malloc TestCase;
+    my $obj1 = new TestCase;
     
     if ($obj1 == $obj1) {
       return 1;
@@ -1594,8 +1594,8 @@ package TestCase {
   }
 
   sub if_eq_object_different () : int {
-    my $obj1 = malloc TestCase;
-    my $obj2 = malloc TestCase;
+    my $obj1 = new TestCase;
+    my $obj2 = new TestCase;
     
     if ($obj1 == $obj2) {
       return 0;
@@ -1728,7 +1728,7 @@ package TestCase {
   
   sub if_ne_object_same () : int {
     
-    my $obj1 = malloc TestCase;
+    my $obj1 = new TestCase;
     
     if ($obj1 != $obj1) {
       return 0;
@@ -1739,8 +1739,8 @@ package TestCase {
   }
 
   sub if_ne_object_different () : int {
-    my $obj1 = malloc TestCase;
-    my $obj2 = malloc TestCase;
+    my $obj1 = new TestCase;
+    my $obj2 = new TestCase;
     
     if ($obj1 != $obj2) {
       return 1;
@@ -2798,7 +2798,7 @@ package TestCase {
   # Array length
   sub get_array_length_at() : int {
     
-    my $nums = malloc int[3];
+    my $nums = new int[3];
     my $len = @$nums;
     if ($len == 3) {
       return 1;
@@ -2808,7 +2808,7 @@ package TestCase {
   }
   sub get_array_length_len() : int {
     
-    my $nums = malloc int[3];
+    my $nums = new int[3];
     my $len = len $nums;
     if ($len == 3) {
       return 1;
@@ -2819,7 +2819,7 @@ package TestCase {
 
   sub array_set_and_get_array_element_first() : int {
     
-    my $nums = malloc int[3];
+    my $nums = new int[3];
     $nums->[0] = 345;
 
     return $nums->[0];
@@ -2827,7 +2827,7 @@ package TestCase {
 
   sub array_set_and_get_array_element_last() : int {
     
-    my $nums = malloc int[3];
+    my $nums = new int[3];
     $nums->[2] = 298;
 
     return $nums->[2];
@@ -2835,7 +2835,7 @@ package TestCase {
 
   sub array_culcurate_sum_by_for() : int {
     
-    my $nums = malloc int[3];
+    my $nums = new int[3];
     $nums->[0] = 1;
     $nums->[1] = 2;
     $nums->[2] = 3;
