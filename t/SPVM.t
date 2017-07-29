@@ -32,6 +32,11 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 
 use SPVM::stdout;
 
+# Table switch
+{
+  ok(SPVM::TestCase::table_switch());
+}
+
 {
   ok(SPVM::TestCase::my_var_initialized_zero());
 }

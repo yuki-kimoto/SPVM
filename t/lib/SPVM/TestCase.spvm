@@ -6,6 +6,53 @@ package TestCase {
   has x_int_array : int[];
   has x_string : string;
   
+  # Table switch
+  sub table_switch() : int {
+    my $success1;
+    
+    switch(3) {
+      case 3:
+        $success1 = 1;
+      case 4:
+      
+      case 5:
+      
+      default:
+    }
+
+    my $success2;
+    switch(4) {
+      case 3:
+
+      case 4:
+        $success2 = 1;
+      case 5:
+      
+      default:
+    }
+    my $success3;
+    switch(10) {
+      case 3:
+
+      case 4:
+
+      case 5:
+      
+      default:
+        $success3 = 1;
+    }
+    
+    if ($success1) {
+      if ($success2) {
+        if ($success3) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   # My variable is initialized zero
   sub my_var_initialized_zero() : int {
     my $var1 : int;
