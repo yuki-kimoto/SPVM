@@ -372,7 +372,7 @@ is_deeply(
 
 # SPVM::Array
 {
-  my $data_nums = SPVM::Array::Int->malloc(3);
+  my $data_nums = SPVM::Array::Int->new(3);
   $data_nums->set_elements([1, 2, 3]);
 }
 

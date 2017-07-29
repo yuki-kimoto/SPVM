@@ -408,11 +408,11 @@ SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_l
   return op_array_length;
 }
 
-SPVM_OP* SPVM_OP_build_malloc_object(SPVM_COMPILER* compiler, SPVM_OP* op_malloc, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op_type) {
   
-  SPVM_OP_insert_child(compiler, op_malloc, op_malloc->last, op_type);
+  SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
   
-  return op_malloc;
+  return op_new;
 }
 
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
@@ -1361,42 +1361,42 @@ SPVM_OP* SPVM_OP_build_assignop(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPV
       op_constant_length->uv.constant = constant_length;
       
       // Malloc
-      SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_list->file, op_list->line);
-      SPVM_OP* op_type_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_list->file, op_list->line);
+      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_list->file, op_list->line);
+      SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_list->file, op_list->line);
       
       if (first_type->id == SPVM_TYPE_C_ID_BYTE) {
-        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
+        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
       }
       else if (first_type->id == SPVM_TYPE_C_ID_SHORT) {
-        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "short[]", strlen("short[]"));
+        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "short[]", strlen("short[]"));
       }
       else if (first_type->id == SPVM_TYPE_C_ID_INT) {
-        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "int[]", strlen("int[]"));
+        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "int[]", strlen("int[]"));
       }
       else if (first_type->id == SPVM_TYPE_C_ID_LONG) {
-        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "long[]", strlen("long[]"));
+        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "long[]", strlen("long[]"));
       }
       else if (first_type->id == SPVM_TYPE_C_ID_FLOAT) {
-        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "float[]", strlen("float[]"));
+        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "float[]", strlen("float[]"));
       }
       else if (first_type->id == SPVM_TYPE_C_ID_DOUBLE) {
-        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "double[]", strlen("double[]"));
+        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "double[]", strlen("double[]"));
       }
       else if (first_type->id == SPVM_TYPE_C_ID_STRING) {
-        op_type_malloc->uv.type = SPVM_HASH_search(compiler->type_symtable, "string[]", strlen("string[]"));
+        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "string[]", strlen("string[]"));
       }
       else {
         assert(0);
       }
-      SPVM_OP_insert_child(compiler, op_malloc, op_malloc->last, op_type_malloc);
+      SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
       
-      op_assign->last = op_malloc;
-      op_malloc->moresib = 0;
-      op_malloc->sibparent = op_assign;
-      op_first->sibparent = op_malloc;
+      op_assign->last = op_new;
+      op_new->moresib = 0;
+      op_new->sibparent = op_assign;
+      op_first->sibparent = op_new;
       
       // Add length constant
-      SPVM_OP_insert_child(compiler, op_type_malloc, op_type_malloc->last, op_constant_length);
+      SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
       
       // Assign array element
       SPVM_OP* op_list_new = SPVM_OP_new_op_list(compiler, op_list->file, op_list->line);

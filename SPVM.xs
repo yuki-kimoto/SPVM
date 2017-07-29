@@ -65,28 +65,28 @@ DESTROY(...)
 MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
 SV*
-malloc_object(...)
+new_object(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
   SV* sv_package = ST(1);
   
   if (!SvOK(sv_package)) {
-    croak("Type must be specified(SPVM::Object::malloc_object)");
+    croak("Type must be specified(SPVM::Object::new_object)");
   }
   
   const char* package = SvPV_nolen(sv_package);
 
   int32_t package_id = SPVM_XS_UTIL_get_package_id(package);
   if (package_id == SPVM_API_ERROR_NO_ID) {
-    croak("Unkown package \"%s\"(SPVM::Object::malloc_object", package);
+    croak("Unkown package \"%s\"(SPVM::Object::new_object", package);
   }
   
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_OBJECT* object =  api->malloc_object_noinc(api, package_id);
+  SPVM_API_OBJECT* object =  api->new_object_noinc(api, package_id);
   
   // Increment
   api->inc_ref_count(api, object);
@@ -277,7 +277,7 @@ get(...)
 MODULE = SPVM::Array::Byte		PACKAGE = SPVM::Array::Byte
 
 SV*
-malloc(...)
+new(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -289,7 +289,7 @@ malloc(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->malloc_byte_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_byte_array_noinc(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -364,7 +364,7 @@ get_elements(...)
 MODULE = SPVM::Array::Short		PACKAGE = SPVM::Array::Short
 
 SV*
-malloc(...)
+new(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -376,7 +376,7 @@ malloc(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->malloc_short_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_short_array_noinc(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -451,7 +451,7 @@ get_elements(...)
 MODULE = SPVM::Array::Int		PACKAGE = SPVM::Array::Int
 
 SV*
-malloc(...)
+new(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -463,7 +463,7 @@ malloc(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->malloc_int_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_int_array_noinc(api, length);
 
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -538,7 +538,7 @@ get_elements(...)
 MODULE = SPVM::Array::Long		PACKAGE = SPVM::Array::Long
 
 SV*
-malloc(...)
+new(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -550,7 +550,7 @@ malloc(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->malloc_long_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_long_array_noinc(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -625,7 +625,7 @@ get_elements(...)
 MODULE = SPVM::Array::Float		PACKAGE = SPVM::Array::Float
 
 SV*
-malloc(...)
+new(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -637,7 +637,7 @@ malloc(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->malloc_float_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_float_array_noinc(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -712,7 +712,7 @@ get_elements(...)
 MODULE = SPVM::Array::Double		PACKAGE = SPVM::Array::Double
 
 SV*
-malloc(...)
+new(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -724,7 +724,7 @@ malloc(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->malloc_double_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_double_array_noinc(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -799,7 +799,7 @@ get_elements(...)
 MODULE = SPVM::String		PACKAGE = SPVM::String
 
 SV*
-malloc_raw(...)
+new_raw(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
@@ -811,7 +811,7 @@ malloc_raw(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->malloc_byte_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_byte_array_noinc(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);

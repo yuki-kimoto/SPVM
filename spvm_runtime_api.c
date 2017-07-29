@@ -38,7 +38,7 @@ SPVM_ARRAY* SPVM_RUNTIME_API_get_exception(SPVM_API* api) {
   return runtime->exception;
 }
 
-SPVM_ARRAY* SPVM_RUNTIME_API_malloc_byte_array_noinc(SPVM_API* api, int32_t length) {
+SPVM_ARRAY* SPVM_RUNTIME_API_new_byte_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -68,7 +68,7 @@ SPVM_ARRAY* SPVM_RUNTIME_API_malloc_byte_array_noinc(SPVM_API* api, int32_t leng
 }
 
 
-SPVM_ARRAY* SPVM_RUNTIME_API_malloc_short_array_noinc(SPVM_API* api, int32_t length) {
+SPVM_ARRAY* SPVM_RUNTIME_API_new_short_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -97,7 +97,7 @@ SPVM_ARRAY* SPVM_RUNTIME_API_malloc_short_array_noinc(SPVM_API* api, int32_t len
   return array;
 }
 
-SPVM_ARRAY* SPVM_RUNTIME_API_malloc_int_array_noinc(SPVM_API* api, int32_t length) {
+SPVM_ARRAY* SPVM_RUNTIME_API_new_int_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -126,7 +126,7 @@ SPVM_ARRAY* SPVM_RUNTIME_API_malloc_int_array_noinc(SPVM_API* api, int32_t lengt
   return array;
 }
 
-SPVM_ARRAY* SPVM_RUNTIME_API_malloc_long_array_noinc(SPVM_API* api, int32_t length) {
+SPVM_ARRAY* SPVM_RUNTIME_API_new_long_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -155,7 +155,7 @@ SPVM_ARRAY* SPVM_RUNTIME_API_malloc_long_array_noinc(SPVM_API* api, int32_t leng
   return array;
 }
 
-SPVM_ARRAY* SPVM_RUNTIME_API_malloc_float_array_noinc(SPVM_API* api, int32_t length) {
+SPVM_ARRAY* SPVM_RUNTIME_API_new_float_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -184,7 +184,7 @@ SPVM_ARRAY* SPVM_RUNTIME_API_malloc_float_array_noinc(SPVM_API* api, int32_t len
   return array;
 }
 
-SPVM_ARRAY* SPVM_RUNTIME_API_malloc_double_array_noinc(SPVM_API* api, int32_t length) {
+SPVM_ARRAY* SPVM_RUNTIME_API_new_double_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -213,7 +213,7 @@ SPVM_ARRAY* SPVM_RUNTIME_API_malloc_double_array_noinc(SPVM_API* api, int32_t le
   return array;
 }
 
-SPVM_ARRAY* SPVM_RUNTIME_API_malloc_object_array_noinc(SPVM_API* api, int32_t length) {
+SPVM_ARRAY* SPVM_RUNTIME_API_new_object_array_noinc(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = api->runtime;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -245,7 +245,7 @@ SPVM_ARRAY* SPVM_RUNTIME_API_malloc_object_array_noinc(SPVM_API* api, int32_t le
   return array;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_malloc_object_noinc(SPVM_API* api, int32_t package_constant_pool_index) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object_noinc(SPVM_API* api, int32_t package_constant_pool_index) {
   
   
   SPVM_RUNTIME* runtime = api->runtime;

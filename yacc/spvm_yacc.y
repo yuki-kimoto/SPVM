@@ -478,11 +478,11 @@ term
 new_object
   : NEW type_name
     {
-      $$ = SPVM_OP_build_malloc_object(compiler, $1, $2);
+      $$ = SPVM_OP_build_new_object(compiler, $1, $2);
     }
   | NEW type_array_with_length
     {
-      $$ = SPVM_OP_build_malloc_object(compiler, $1, $2);
+      $$ = SPVM_OP_build_new_object(compiler, $1, $2);
     }
 
 convert_type

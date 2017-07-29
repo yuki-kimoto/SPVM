@@ -60,7 +60,7 @@ CHECK {
 sub new_string_raw {
   my $string = shift;
   
-  my $array = SPVM::String->malloc_raw($string);
+  my $array = SPVM::String->new_raw($string);
   
   return $array;
 }
@@ -70,7 +70,7 @@ sub new_string {
   
   $string = Encode::encode('UTF-8', $string);
   
-  my $array = SPVM::String->malloc_raw($string);
+  my $array = SPVM::String->new_raw($string);
   
   return $array;
 }
@@ -84,7 +84,7 @@ sub new_byte_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array::Byte->malloc($length);
+  my $array = SPVM::Array::Byte->new($length);
   
   $array->set_elements($elements);
   
@@ -94,7 +94,7 @@ sub new_byte_array {
 sub new_byte_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array::Byte->malloc($length);
+  my $array = SPVM::Array::Byte->new($length);
   
   return $array;
 }
@@ -108,7 +108,7 @@ sub new_short_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array::Short->malloc($length);
+  my $array = SPVM::Array::Short->new($length);
   
   $array->set_elements($elements);
   
@@ -118,7 +118,7 @@ sub new_short_array {
 sub new_short_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array::Short->malloc($length);
+  my $array = SPVM::Array::Short->new($length);
   
   return $array;
 }
@@ -132,7 +132,7 @@ sub new_int_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array::Int->malloc($length);
+  my $array = SPVM::Array::Int->new($length);
   
   $array->set_elements($elements);
   
@@ -142,7 +142,7 @@ sub new_int_array {
 sub new_int_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array::Int->malloc($length);
+  my $array = SPVM::Array::Int->new($length);
   
   return $array;
 }
@@ -156,7 +156,7 @@ sub new_long_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array::Long->malloc($length);
+  my $array = SPVM::Array::Long->new($length);
   
   $array->set_elements($elements);
   
@@ -166,7 +166,7 @@ sub new_long_array {
 sub new_long_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array::Long->malloc($length);
+  my $array = SPVM::Array::Long->new($length);
   
   return $array;
 }
@@ -180,7 +180,7 @@ sub new_float_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array::Float->malloc($length);
+  my $array = SPVM::Array::Float->new($length);
   
   $array->set_elements($elements);
   
@@ -190,7 +190,7 @@ sub new_float_array {
 sub new_float_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array::Float->malloc($length);
+  my $array = SPVM::Array::Float->new($length);
   
   return $array;
 }
@@ -204,7 +204,7 @@ sub new_double_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Array::Double->malloc($length);
+  my $array = SPVM::Array::Double->new($length);
   
   $array->set_elements($elements);
   
@@ -214,7 +214,7 @@ sub new_double_array {
 sub new_double_array_len {
   my $length = shift;
   
-  my $array = SPVM::Array::Double->malloc($length);
+  my $array = SPVM::Array::Double->new($length);
   
   return $array;
 }
@@ -222,7 +222,7 @@ sub new_double_array_len {
 sub new_object {
   my $package_name = shift;
   
-  my $object = SPVM::Object->malloc_object($package_name);
+  my $object = SPVM::Object->new_object($package_name);
   
   return $object;
 }
@@ -449,25 +449,25 @@ If the type of right value is known, the type of left value is automatically dec
   my $value2 = $value1;
 
   # Type of $values2 is int[]
-  my $values1 = malloc int[3];
+  my $values1 = new int[3];
   my $values2 = $values1;
 
   # Type of $object2 is PackageName
-  my $object1 = malloc PackageName
+  my $object1 = new PackageName
   my $object2 = $object1;
 
 =head2 Array
 
 =head3 Create array
 
-Array is created by malloc. Elements values is not initialized.
+Array is created by new. Elements values is not initialized.
 
-  my $nums = malloc byte[3];
-  my $nums = malloc short[3];
-  my $nums = malloc int[3];
-  my $nums = malloc long[3];
-  my $nums = malloc float[3];
-  my $nums = malloc double[3];
+  my $nums = new byte[3];
+  my $nums = new short[3];
+  my $nums = new int[3];
+  my $nums = new long[3];
+  my $nums = new float[3];
+  my $nums = new double[3];
 
 =head3 Get array length
 
@@ -499,14 +499,14 @@ Array is created by malloc. Elements values is not initialized.
 
 =head3 for
 
-  my $nums = malloc int[10];
+  my $nums = new int[10];
   for (my $i = 0; $i < @$nums; $i++) {
     $nums->[$i] = 0;
   }
 
 =head3 while
 
-  my $nums = malloc int[10];
+  my $nums = new int[10];
   my $i = 0;
   while ($i < @$nums) {
     $nums->[$i] = 0;
