@@ -1472,33 +1472,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_DYNAMIC_ARRAY_push(op_my_var_stack, op_cur);
                       }
                       
-                      // If left is object and right is not exists, append "= undef" code
-                      SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur);
-                      
-                      // Assign undef if left value is object and right value is nothing
-                      if (first_type && !SPVM_TYPE_is_numeric(compiler, first_type) && !SPVM_OP_sibling(compiler, op_cur)) {
-                        // Only my declarations after subroutine arguments
-                        if (my_var->index >= sub->op_args->length) {
-                          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                          
-                          SPVM_VAR* var = SPVM_VAR_new(compiler);
-                          SPVM_OP* op_name_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_cur->file, op_cur->line);
-                          op_name_var->uv.name = op_cur->uv.my_var->op_name->uv.name;
-                          var->op_name = op_name_var;
-                          var->op_my_var = op_cur;
-                          
-                          SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_cur->file, op_cur->line);
-                          op_var->uv.var = var;
-                          
-                          SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, op_cur->file, op_cur->line);
-                          
-                          SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_var);
-                          SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_undef);
-                          
-                          SPVM_OP_insert_child(compiler, op_cur->sibparent, op_cur->sibparent->last, op_assign);
-                        }
-                      }
-                      
                       break;
                     }
                     case SPVM_OP_C_CODE_CALL_SUB: {

@@ -33,11 +33,15 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 use SPVM::stdout;
 
 {
-  ok(SPVM::TestCase::new_near_small_base_object_max_byte_size_use_memory_pool());
+  ok(SPVM::TestCase::my_var_initialized_zero());
 }
 
 {
   ok(SPVM::TestCase::object_field_initialized_zero());
+}
+
+{
+  ok(SPVM::TestCase::new_near_small_base_object_max_byte_size_use_memory_pool());
 }
 
 # Get object from freelist

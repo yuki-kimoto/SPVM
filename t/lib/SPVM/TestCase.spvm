@@ -6,6 +6,19 @@ package TestCase {
   has x_int_array : int[];
   has x_string : string;
   
+  # My variable is initialized zero
+  sub my_var_initialized_zero() : int {
+    my $var1 : int;
+    my $var2 : TestCase;
+    
+    if ($var1 == 0) {
+      if ($var2 == undef) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+  
   # Object field is initialized zero
   sub object_field_initialized_zero() : int {
     my $obj = new TestCase;
