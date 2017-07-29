@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <assert.h>
+#include <ctype.h>
 
 
 #include "spvm_compiler.h"
@@ -431,12 +432,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     case SPVM_OP_C_CODE_CONSTANT: {
                       SPVM_CONSTANT* constant = op_cur->uv.constant;
                       
-                      SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
-                      
                       switch (constant->type->id) {
                         case SPVM_TYPE_C_ID_STRING: {
-                          const char* value = constant->value.string_value;
-                          
                           SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_cur->file, op_cur->line);
                           op_constant->uv.constant = op_cur->uv.constant;
                           

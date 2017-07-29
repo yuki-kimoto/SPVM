@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
+#include <string.h>
 
 #include "spvm_util_allocator.h"
 
@@ -12,7 +13,7 @@ void* SPVM_UTIL_ALLOCATOR_safe_malloc(int64_t byte_size) {
     abort();
   }
   
-  if (byte_size > SIZE_MAX) {
+  if ((size_t)byte_size > SIZE_MAX) {
     fprintf(stderr, "Failed to allocate memory. Size is too big(SPVM_UTIL_ALLOCATOR_safe_malloc)\n");
     abort();
   }
