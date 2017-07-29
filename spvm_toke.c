@@ -968,7 +968,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               {
                 int32_t i;
                 for (i = 0; i < part_names->length; i++) {
-                  const char* part_name = SPVM_DYNAMIC_ARRAY_fetch(part_names, i);
+                  char* part_name = SPVM_DYNAMIC_ARRAY_fetch(part_names, i);
                   if (strncmp(part_name, "type", 4) == 0 && isdigit(part_name[4])) {
                     int32_t template_args_index;
                     errno = 0;
@@ -983,7 +983,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       exit(EXIT_FAILURE);
                     }
                     
-                    const char* replaced_part_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->cur_template_args, template_args_index - 1);
+                    char* replaced_part_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->cur_template_args, template_args_index - 1);
                     SPVM_DYNAMIC_ARRAY_push(replaced_part_names, replaced_part_name);
                     replaced_part_names_length += strlen(replaced_part_name);
                   }
