@@ -32,6 +32,16 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 
 use SPVM::stdout;
 
+# Default return value
+{
+  ok(SPVM::TestCase::default_return_value_byte());
+  ok(SPVM::TestCase::default_return_value_short());
+  ok(SPVM::TestCase::default_return_value_int());
+  ok(SPVM::TestCase::default_return_value_long());
+  ok(SPVM::TestCase::default_return_value_float());
+  ok(SPVM::TestCase::default_return_value_double());
+}
+
 # Lookup switch
 {
   ok(SPVM::TestCase::lookup_switch());

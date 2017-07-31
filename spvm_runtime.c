@@ -808,17 +808,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONSTANT_SHORT_0:
-    // Currently no used logic
-    assert(0);
-    
     operand_stack_top++;
     call_stack[operand_stack_top].short_value = 0;
     pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONSTANT_SHORT_1:
-    // Currently no used logic
-    assert(0);
-    
     operand_stack_top++;
     call_stack[operand_stack_top].short_value = 1;
     pc++;
