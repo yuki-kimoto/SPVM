@@ -340,49 +340,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 // Start scope
                 case SPVM_OP_C_CODE_BLOCK: {
                   
-                  // Add return to the end of subroutine
-                  if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SUB) {
-                    SPVM_OP* op_statements = op_cur->first;
-                    
-                    if (op_statements->last->code != SPVM_OP_C_CODE_RETURN) {
-                      
-                      SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_cur->file, op_cur->line);
-                      if (sub->op_return_type->code != SPVM_OP_C_CODE_VOID) {
-                        SPVM_TYPE* op_return_type = SPVM_OP_get_type(compiler, sub->op_return_type);
-                        if (op_return_type) {
-                          if (SPVM_TYPE_is_numeric(compiler, op_return_type)) {
-                            SPVM_OP* op_constant;
-                            if (op_return_type->id <= SPVM_TYPE_C_ID_INT) {
-                              op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
-                            }
-                            else if (op_return_type->id == SPVM_TYPE_C_ID_LONG) {
-                              op_constant = SPVM_OP_new_op_constant_long(compiler, 0, op_cur->file, op_cur->line);
-                            }
-                            else if (op_return_type->id == SPVM_TYPE_C_ID_FLOAT) {
-                              op_constant = SPVM_OP_new_op_constant_float(compiler, 0, op_cur->file, op_cur->line);
-                            }
-                            else if (op_return_type->id == SPVM_TYPE_C_ID_DOUBLE) {
-                              op_constant = SPVM_OP_new_op_constant_double(compiler, 0, op_cur->file, op_cur->line);
-                            }
-                            else {
-                              assert(0);
-                            }
-                            
-                            SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
-                          }
-                          // Reference
-                          else {
-                            // Undef
-                            SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, op_cur->file, op_cur->line);
-                            SPVM_OP_insert_child(compiler, op_return, op_return->last, op_undef);
-                          }
-                        }
-                      }
-                      
-                      SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
-                    }
-                  }
-                  else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+                  if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
                     if (in_switch) {
                       SPVM_yyerror_format(compiler, "duplicate switch is forbidden at %s line %d\n", op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
