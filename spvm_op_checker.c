@@ -854,7 +854,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         // Var op
                         SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
                         
-                        // Malloc op
+                        // New op
                         SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_cur->file, op_cur->line);
                         
                         // Type parent is malloc
@@ -881,7 +881,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_var->moresib = 1;
                         op_var->sibparent = op_malloc;
                         
-                        // Malloc op parent is assign op
+                        // New op parent is assign op
                         op_malloc->first = op_type_or_constant;
                         op_malloc->last = op_type_or_constant;
                         op_malloc->moresib = 0;
@@ -1484,7 +1484,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         // Var op
                         SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
                         
-                        // Malloc op
+                        // New op
                         SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_SUB, op_cur->file, op_cur->line);
                         
                         // List args parent is call_sub
@@ -1508,7 +1508,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_var->moresib = 1;
                         op_var->sibparent = op_call_sub;
                         
-                        // Malloc op parent is assign op
+                        // New op parent is assign op
                         op_call_sub->first = op_name_sub;
                         op_call_sub->last = op_list_args;
                         op_call_sub->moresib = 0;
