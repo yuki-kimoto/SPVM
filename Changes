@@ -1,5 +1,6 @@
 0.0235 2017-07-31
   - fix default return value
+  - imporve exception message
 0.0234 2017-07-29
   - rename malloc to new. you can also define new function for object initialization.
     my $obj = new Foo;
