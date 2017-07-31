@@ -986,8 +986,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           if (last_type) {
                             SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
-                            op_type->uv.type = last_type;
-                            my_var->op_type = op_type;
+                            my_var->op_type->uv.type = last_type;
                           }
                           else {
                             SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_cur->first->file, op_cur->first->line);
