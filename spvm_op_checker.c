@@ -985,7 +985,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           first_type = last_type;
                           
                           if (last_type) {
-                            SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
                             my_var->op_type->uv.type = last_type;
                           }
                           else {
