@@ -1290,13 +1290,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_DYNAMIC_ARRAY_pop(try_block_my_var_base_stack);
                       }
                       
-                      // Free my variables at end of block
-                      SPVM_OP* op_block_end = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK_END, op_cur->file, op_cur->line);
-                      
-                      if (!(op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SUB)) {
-                        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_block_end);
-                      }
-                      
                       if (block_my_var_base_stack->length > 0) {
                         int32_t* before_block_my_var_base_ptr = SPVM_DYNAMIC_ARRAY_fetch(block_my_var_base_stack, block_my_var_base_stack->length - 1);
                         int32_t before_block_my_var_base = *before_block_my_var_base_ptr;
