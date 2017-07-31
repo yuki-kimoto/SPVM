@@ -86,7 +86,7 @@ new_object(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_OBJECT* object =  api->new_object_noinc(api, package_id);
+  SPVM_API_OBJECT* object =  api->new_object(api, package_id);
   
   // Increment
   api->inc_ref_count(api, object);
@@ -289,7 +289,7 @@ new(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->new_byte_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_byte_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -376,7 +376,7 @@ new(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->new_short_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_short_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -463,7 +463,7 @@ new(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->new_int_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_int_array(api, length);
 
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -550,7 +550,7 @@ new(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->new_long_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_long_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -637,7 +637,7 @@ new(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->new_float_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_float_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -724,7 +724,7 @@ new(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->new_double_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_double_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -811,7 +811,7 @@ new_raw(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_ARRAY* array =  api->new_byte_array_noinc(api, length);
+  SPVM_API_ARRAY* array =  api->new_byte_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);

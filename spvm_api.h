@@ -67,14 +67,14 @@ struct SPVM_api {
   
   // Malloc funtctions
   int32_t (*get_package_id)(SPVM_API*, const char*);
-  SPVM_API_OBJECT* (*new_object_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY* (*new_byte_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY* (*new_short_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY* (*new_int_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY* (*new_long_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY* (*new_float_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY* (*new_double_array_noinc)(SPVM_API*, int32_t);
-  SPVM_API_ARRAY* (*new_object_array_noinc)(SPVM_API*, int32_t);
+  SPVM_API_OBJECT* (*new_object)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY* (*new_byte_array)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY* (*new_short_array)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY* (*new_int_array)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY* (*new_long_array)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY* (*new_float_array)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY* (*new_double_array)(SPVM_API*, int32_t);
+  SPVM_API_ARRAY* (*new_object_array)(SPVM_API*, int32_t);
   
   // Functions used in subroutine
   int8_t (*get_var_byte)(SPVM_API*, int32_t);

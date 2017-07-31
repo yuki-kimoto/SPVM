@@ -114,14 +114,14 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   
   // Malloc funtctions
   api->get_package_id = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_package_id;
-  api->new_object_noinc = (SPVM_API_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_object_noinc;
-  api->new_byte_array_noinc = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_byte_array_noinc;
-  api->new_short_array_noinc = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_short_array_noinc;
-  api->new_int_array_noinc = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_int_array_noinc;
-  api->new_long_array_noinc = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_long_array_noinc;
-  api->new_float_array_noinc = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_float_array_noinc;
-  api->new_double_array_noinc = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_double_array_noinc;
-  api->new_object_array_noinc = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_object_array_noinc;
+  api->new_object = (SPVM_API_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_object;
+  api->new_byte_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_byte_array;
+  api->new_short_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_short_array;
+  api->new_int_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_int_array;
+  api->new_long_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_long_array;
+  api->new_float_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_float_array;
+  api->new_double_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_double_array;
+  api->new_object_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_object_array;
   
   // Functions used in subroutine
   api->get_var_byte = (int8_t (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_byte;
@@ -751,7 +751,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     total_length += strlen(file_name);
     
     // Create exception message
-    SPVM_ARRAY* new_array_exception = SPVM_RUNTIME_API_new_byte_array_noinc(api, total_length);
+    SPVM_ARRAY* new_array_exception = SPVM_RUNTIME_API_new_byte_array(api, total_length);
     memcpy(
       (void*)((intptr_t)new_array_exception + sizeof(SPVM_ARRAY)),
       (void*)((intptr_t)runtime->exception + sizeof(SPVM_ARRAY)),
@@ -2046,7 +2046,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Get subroutine ID
     index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
-    object = SPVM_RUNTIME_API_new_object_noinc(api, index);
+    object = SPVM_RUNTIME_API_new_object(api, index);
 
     // Memory allocation error
     if (__builtin_expect(!object, 0)) {
@@ -2076,25 +2076,25 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     switch(value_type) {
       case SPVM_ARRAY_C_VALUE_TYPE_BYTE:
-        array = SPVM_RUNTIME_API_new_byte_array_noinc(api, length);
+        array = SPVM_RUNTIME_API_new_byte_array(api, length);
         break;
       case SPVM_ARRAY_C_VALUE_TYPE_SHORT:
-        array = SPVM_RUNTIME_API_new_short_array_noinc(api, length);
+        array = SPVM_RUNTIME_API_new_short_array(api, length);
         break;
       case SPVM_ARRAY_C_VALUE_TYPE_INT:
-        array = SPVM_RUNTIME_API_new_int_array_noinc(api, length);
+        array = SPVM_RUNTIME_API_new_int_array(api, length);
         break;
       case SPVM_ARRAY_C_VALUE_TYPE_LONG:
-        array = SPVM_RUNTIME_API_new_long_array_noinc(api, length);
+        array = SPVM_RUNTIME_API_new_long_array(api, length);
         break;
       case SPVM_ARRAY_C_VALUE_TYPE_FLOAT:
-        array = SPVM_RUNTIME_API_new_float_array_noinc(api, length);
+        array = SPVM_RUNTIME_API_new_float_array(api, length);
         break;
       case SPVM_ARRAY_C_VALUE_TYPE_DOUBLE:
-        array = SPVM_RUNTIME_API_new_double_array_noinc(api, length);
+        array = SPVM_RUNTIME_API_new_double_array(api, length);
         break;
       case SPVM_ARRAY_C_VALUE_TYPE_OBJECT:
-        array = SPVM_RUNTIME_API_new_object_array_noinc(api, length);
+        array = SPVM_RUNTIME_API_new_object_array(api, length);
         break;
       default:
         assert(0);

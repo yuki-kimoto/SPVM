@@ -75,15 +75,15 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_obj
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name);
 int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name);
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_object_noinc(SPVM_API* api, int32_t package_id);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_id);
 
-SPVM_ARRAY* SPVM_RUNTIME_API_new_byte_array_noinc(SPVM_API* api, int32_t length);
-SPVM_ARRAY* SPVM_RUNTIME_API_new_short_array_noinc(SPVM_API* api, int32_t length);
-SPVM_ARRAY* SPVM_RUNTIME_API_new_int_array_noinc(SPVM_API* api, int32_t length);
-SPVM_ARRAY* SPVM_RUNTIME_API_new_long_array_noinc(SPVM_API* api, int32_t length);
-SPVM_ARRAY* SPVM_RUNTIME_API_new_float_array_noinc(SPVM_API* api, int32_t length);
-SPVM_ARRAY* SPVM_RUNTIME_API_new_double_array_noinc(SPVM_API* api, int32_t length);
-SPVM_ARRAY* SPVM_RUNTIME_API_new_object_array_noinc(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length);
+SPVM_ARRAY* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t length);
 
 // Exception
 void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY* exception);
