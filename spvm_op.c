@@ -977,7 +977,13 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_
   
   // Create my var information
   SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
-  my_var->op_type = op_type;
+  if (op_type) {
+    my_var->op_type = op_type;
+  }
+  else {
+    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_my_var->file, op_my_var->line);
+    my_var->op_type = op_type;
+  }
   
   // Name OP
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_var->file, op_var->line);
