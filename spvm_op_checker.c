@@ -100,7 +100,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           break;
         }
       }
-
     }
   }
   // Types
@@ -385,29 +384,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       if (loop_block_my_var_base_stack->length == 0) {
                         SPVM_yyerror_format(compiler, "last statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
                       }
-                      break;
-                    }
-                    case SPVM_OP_C_CODE_CONSTANT: {
-                      SPVM_CONSTANT* constant = op_cur->uv.constant;
-                      
-                      switch (constant->type->id) {
-                        case SPVM_TYPE_C_ID_STRING: {
-                          SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_cur->file, op_cur->line);
-                          op_constant->uv.constant = op_cur->uv.constant;
-                          
-                          op_cur->code = SPVM_OP_C_CODE_NEW;
-                          op_cur->first = op_constant;
-                          op_cur->last = op_constant;
-                          
-                          op_constant->moresib = 0;
-                          op_constant->sibparent = op_cur;
-                          
-                          op_cur = op_constant;
-                          
-                          break;
-                        }
-                      }
-                      
                       break;
                     }
                     case SPVM_OP_C_CODE_POP: {

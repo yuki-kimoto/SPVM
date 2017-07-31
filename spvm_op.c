@@ -147,8 +147,16 @@ void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
+  SPVM_CONSTANT* constant = op_constant->uv.constant;
   
-  return op_constant;
+  if (constant->type->id == SPVM_TYPE_C_ID_STRING) {
+    SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_constant->file, op_constant->line);
+    SPVM_OP_insert_child(compiler, op_new, op_new->last, op_constant);
+    return op_new;
+  }
+  else {
+    return op_constant;
+  }
 }
 
 SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line) {
