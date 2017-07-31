@@ -1325,7 +1325,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_STORE_OBJECT:
     index = *(pc + 1);
-
+    
     // Decrement reference count
     if (vars[index].object_value != NULL) {
       SPVM_RUNTIME_API_dec_ref_count(api, vars[index].object_value);

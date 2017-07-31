@@ -103,7 +103,23 @@ package TestCase {
   sub default_return_value_double_sub_empty() : double {
     
   }
-
+  sub default_return_value_object() : int {
+    
+    if (default_return_value_object_sub() == undef) {
+      if (default_return_value_object_sub_empty() == undef) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub default_return_value_object_sub() : TestCase {
+    1;
+  }
+  sub default_return_value_object_sub_empty() : TestCase {
+    
+  }
+  
   # Lookup switch int
   sub lookup_switch() : int {
     my $success1;

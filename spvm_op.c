@@ -1090,41 +1090,39 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     if (!op_list_statement->last || op_list_statement->last->code != SPVM_OP_C_CODE_RETURN) {
       if (sub->op_return_type->code != SPVM_OP_C_CODE_VOID) {
         SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_list_statement->file, op_list_statement->line);
-        SPVM_TYPE* op_return_type = SPVM_OP_get_type(compiler, sub->op_return_type);
-        if (op_return_type) {
-          if (SPVM_TYPE_is_numeric(compiler, op_return_type)) {
-            SPVM_OP* op_constant;
-            if (op_return_type->id == SPVM_TYPE_C_ID_BYTE) {
-              op_constant = SPVM_OP_new_op_constant_byte(compiler, 0, op_list_statement->file, op_list_statement->line);
-            }
-            else if (op_return_type->id == SPVM_TYPE_C_ID_SHORT) {
-              op_constant = SPVM_OP_new_op_constant_short(compiler, 0, op_list_statement->file, op_list_statement->line);
-            }
-            else if (op_return_type->id == SPVM_TYPE_C_ID_INT) {
-              op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_list_statement->file, op_list_statement->line);
-            }
-            else if (op_return_type->id == SPVM_TYPE_C_ID_LONG) {
-              op_constant = SPVM_OP_new_op_constant_long(compiler, 0, op_list_statement->file, op_list_statement->line);
-            }
-            else if (op_return_type->id == SPVM_TYPE_C_ID_FLOAT) {
-              op_constant = SPVM_OP_new_op_constant_float(compiler, 0, op_list_statement->file, op_list_statement->line);
-            }
-            else if (op_return_type->id == SPVM_TYPE_C_ID_DOUBLE) {
-              op_constant = SPVM_OP_new_op_constant_double(compiler, 0, op_list_statement->file, op_list_statement->line);
-            }
-            else {
-              assert(0);
-            }
-            
-            SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
-          }
-          // Reference
-          else {
-            // Undef
-            SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, op_list_statement->file, op_list_statement->line);
-            SPVM_OP_insert_child(compiler, op_return, op_return->last, op_undef);
-          }
+        SPVM_TYPE* return_type = sub->op_return_type->uv.type;
+        
+        SPVM_OP* op_constant;
+        if (return_type->id == SPVM_TYPE_C_ID_BYTE) {
+          op_constant = SPVM_OP_new_op_constant_byte(compiler, 0, op_list_statement->file, op_list_statement->line);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
         }
+        else if (return_type->id == SPVM_TYPE_C_ID_SHORT) {
+          op_constant = SPVM_OP_new_op_constant_short(compiler, 0, op_list_statement->file, op_list_statement->line);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
+        }
+        else if (return_type->id == SPVM_TYPE_C_ID_INT) {
+          op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_list_statement->file, op_list_statement->line);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
+        }
+        else if (return_type->id == SPVM_TYPE_C_ID_LONG) {
+          op_constant = SPVM_OP_new_op_constant_long(compiler, 0, op_list_statement->file, op_list_statement->line);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
+        }
+        else if (return_type->id == SPVM_TYPE_C_ID_FLOAT) {
+          op_constant = SPVM_OP_new_op_constant_float(compiler, 0, op_list_statement->file, op_list_statement->line);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
+        }
+        else if (return_type->id == SPVM_TYPE_C_ID_DOUBLE) {
+          op_constant = SPVM_OP_new_op_constant_double(compiler, 0, op_list_statement->file, op_list_statement->line);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
+        }
+        else {
+          // Undef
+          SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, op_list_statement->file, op_list_statement->line);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_undef);
+        }
+        
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
       }
     }

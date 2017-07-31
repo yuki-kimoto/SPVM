@@ -40,6 +40,7 @@ use SPVM::stdout;
   ok(SPVM::TestCase::default_return_value_long());
   ok(SPVM::TestCase::default_return_value_float());
   ok(SPVM::TestCase::default_return_value_double());
+  ok(SPVM::TestCase::default_return_value_object());
 }
 
 # Lookup switch
