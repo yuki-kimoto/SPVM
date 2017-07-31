@@ -296,6 +296,11 @@ SPVM_BASE_OBJECT** SPVM_RUNTIME_API_get_object_array_elements(SPVM_API* api, SPV
   return (SPVM_BASE_OBJECT**)((intptr_t)array + sizeof(SPVM_ARRAY));
 }
 
+void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
+  SPVM_RUNTIME_API_inc_ref_count(api, base_object);
+  SPVM_RUNTIME_API_dec_ref_count(api, base_object);
+}
+
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   

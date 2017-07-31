@@ -147,6 +147,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_ref_count = (int32_t (*)(SPVM_API* api, SPVM_API_BASE_OBJECT* base_object))SPVM_RUNTIME_API_get_ref_count;
   api->dec_ref_count = (void (*)(SPVM_API* api, SPVM_API_BASE_OBJECT* base_object))SPVM_RUNTIME_API_dec_ref_count;
   api->inc_ref_count = (void (*)(SPVM_API* api, SPVM_API_BASE_OBJECT* base_object))SPVM_RUNTIME_API_inc_ref_count;
+  api->inc_dec_ref_count = (void (*)(SPVM_API* api, SPVM_API_BASE_OBJECT* base_object))SPVM_RUNTIME_API_inc_dec_ref_count;
 
   return api;
 }
