@@ -1233,7 +1233,10 @@ call_sub(...)
   
   SPVM_API_ARRAY* exception = api->get_exception(api);
   if (exception) {
-    croak("Exception occur(%s)", sub_abs_name);
+    int32_t length = api->get_array_length(api, exception);
+    int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
+    SV* sv_exception = newSVpv(exception_bytes, length);
+    croak("%s", SvPV_nolen(sv_exception));
     XSRETURN(0);
   }
   

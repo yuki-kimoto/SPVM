@@ -6,6 +6,11 @@ package TestCase {
   has x_int_array : int[];
   has x_string : string;
   
+  # Exception
+  sub exception_zero_divide_int() : int {
+    1 / 0;
+  }
+  
   # Default return value empty
   sub default_return_value_byte() : int {
     
