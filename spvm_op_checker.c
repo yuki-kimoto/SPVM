@@ -819,7 +819,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       if (!op_cur->rvalue) {
                         assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
                         if (my_var_length == SPVM_LIMIT_C_MY_VARS) {
-                          SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created in malloc) at %s line %d\n", op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created in new) at %s line %d\n", op_cur->file, op_cur->line);
                           compiler->fatal_error = 1;
                           break;
                         }
@@ -850,28 +850,28 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_DYNAMIC_ARRAY_push(op_my_vars, op_my_var);
                         SPVM_DYNAMIC_ARRAY_push(op_my_var_stack, op_my_var);
                         
-                        // Convert malloc op to assing op
+                        // Convert new op to assing op
                         // Var op
                         SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
                         
                         // New op
-                        SPVM_OP* op_malloc = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_cur->file, op_cur->line);
+                        SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_cur->file, op_cur->line);
                         
-                        // Type parent is malloc
+                        // Type parent is new
                         op_type_or_constant->moresib = 0;
-                        op_type_or_constant->sibparent = op_malloc;
+                        op_type_or_constant->sibparent = op_new;
 
                         // Assing op
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
                         op_assign->first = op_var;
-                        op_assign->last = op_malloc;
+                        op_assign->last = op_new;
                         op_assign->moresib = 0;
                         op_assign->sibparent = op_cur;
 
                         op_assign->first->lvalue = 1;
                         op_assign->last->rvalue = 1;
 
-                        // Convert cur malloc op to var
+                        // Convert cur new op to var
                         op_cur->code = SPVM_OP_C_CODE_VAR;
                         op_cur->uv.var = op_var->uv.var;
                         op_cur->first = op_assign;
@@ -879,19 +879,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Var op has sibling
                         op_var->moresib = 1;
-                        op_var->sibparent = op_malloc;
+                        op_var->sibparent = op_new;
                         
                         // New op parent is assign op
-                        op_malloc->first = op_type_or_constant;
-                        op_malloc->last = op_type_or_constant;
-                        op_malloc->moresib = 0;
-                        op_malloc->sibparent = op_assign;
+                        op_new->first = op_type_or_constant;
+                        op_new->last = op_type_or_constant;
+                        op_new->moresib = 0;
+                        op_new->sibparent = op_assign;
                         
                         // Set lvalue and rvalue
                         op_assign->first->lvalue = 1;
                         op_assign->last->rvalue = 1;
                         
-                        op_cur = op_malloc;
+                        op_cur = op_new;
                       }
 
                       break;
