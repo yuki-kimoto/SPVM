@@ -255,7 +255,7 @@ sub build_spvm_subs {
     my $sub;
     $sub .= "sub SPVM::$abs_name {\n";
     $sub .= "  SPVM::call_sub(\"$abs_name\", \@_);\n";
-    $sub .= "}";
+    $sub .= "}\n";
     
     # Define SPVM subroutine
     eval $sub;

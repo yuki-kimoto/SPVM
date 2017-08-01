@@ -33,11 +33,10 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 use SPVM::stdout;
 
 # Exception
-=pod
 {
-  SPVM::TestCase::exception_zero_divide_int();
+  eval { SPVM::TestCase::exception_zero_divide_int() };
+  like($@, qr|\QOccur 0 division(INT_VALUE / INT_VALUE)|);
 }
-=cut
 
 # Default return value
 {

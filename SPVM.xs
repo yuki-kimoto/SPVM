@@ -1238,6 +1238,7 @@ call_sub(...)
     int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
     SV* sv_exception = newSVpv(exception_bytes, length);
     croak("%s", SvPV_nolen(sv_exception));
+    
     XSRETURN(0);
   }
   
