@@ -49,6 +49,7 @@ double SPVM_RUNTIME_API_pop_retval_double(SPVM_API* api);
 void* SPVM_RUNTIME_API_pop_retval_object(SPVM_API* api);
 
 // Functions used in subroutine
+void SPVM_RUNTIME_API_call_void_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
 int8_t SPVM_RUNTIME_API_call_byte_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
 int16_t SPVM_RUNTIME_API_call_short_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
 int32_t SPVM_RUNTIME_API_call_int_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
