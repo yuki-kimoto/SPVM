@@ -105,7 +105,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->call_double_sub = (double (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_double_sub;
   api->call_object_sub = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_object_sub;
   
-  // Malloc funtctions
+  // New funtctions
   api->get_package_id = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_package_id;
   api->new_object = (SPVM_API_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_object;
   api->new_byte_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_byte_array;
@@ -476,9 +476,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         runtime->call_stack_base = call_stack_base;
         
         // Call native sub
-        void (*native_address)(SPVM_API* api) = constant_pool_sub.native_address;
+        void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
         SPVM_RUNTIME_API_set_exception(api, NULL);
-        (*native_address)(api);
+        (*native_address)(api, vars);
         
         // Get runtimeiromnet
         operand_stack_top = runtime->operand_stack_top;
