@@ -1196,33 +1196,33 @@ call_sub(...)
         
         // warn("CALL_SUB_BEFORE %d", api->get_ref_count(api, base_object));
         
-        api->push_var_object(api, base_object);
+        call_sub_args[arg_index].object_value = base_object;
       }
       else {
         SV* sv_value = sv_base_object;
         if (strEQ(arg_type_name, "byte")) {
           int8_t value = (int8_t)SvIV(sv_value);
-          api->push_var_byte(api, value);
+          call_sub_args[arg_index].byte_value = value;
         }
         else if (strEQ(arg_type_name, "short")) {
           int16_t value = (int16_t)SvIV(sv_value);
-          api->push_var_short(api, value);
+          call_sub_args[arg_index].short_value = value;
         }
         else if (strEQ(arg_type_name, "int")) {
           int32_t value = (int32_t)SvIV(sv_value);
-          api->push_var_int(api, value);
+          call_sub_args[arg_index].int_value = value;
         }
         else if (strEQ(arg_type_name, "long")) {
           int64_t value = (int64_t)SvIV(sv_value);
-          api->push_var_long(api, value);
+          call_sub_args[arg_index].long_value = value;
         }
         else if (strEQ(arg_type_name, "float")) {
           float value = (float)SvNV(sv_value);
-          api->push_var_float(api, value);
+          call_sub_args[arg_index].float_value = value;
         }
         else if (strEQ(arg_type_name, "double")) {
           double value = (double)SvNV(sv_value);
-          api->push_var_double(api, value);
+          call_sub_args[arg_index].double_value = value;
         }
         else {
           assert(0);
@@ -1238,7 +1238,7 @@ call_sub(...)
     const char* return_type = SvPV_nolen(sv_return_type);
     
     if (strEQ(return_type, "byte")) {
-      api->call_sub(api, sub_id);
+      int8_t return_value = api->call_byte_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1246,11 +1246,10 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      int8_t return_value = api->pop_retval_byte(api);
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "short")) {
-      api->call_sub(api, sub_id);
+      int16_t return_value = api->call_short_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1258,11 +1257,10 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      int16_t return_value = api->pop_retval_short(api);
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "int")) {
-      api->call_sub(api, sub_id);
+      int32_t return_value = api->call_int_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1270,11 +1268,10 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      int32_t return_value = api->pop_retval_int(api);
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "long")) {
-      api->call_sub(api, sub_id);
+      int64_t return_value = api->call_long_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1282,11 +1279,10 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      int64_t return_value = api->pop_retval_long(api);
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "float")) {
-      api->call_sub(api, sub_id);
+      float return_value = api->call_float_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1294,11 +1290,10 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      float return_value = api->pop_retval_float(api);
       sv_return_value = sv_2mortal(newSVnv(return_value));
     }
     else if (strEQ(return_type, "double")) {
-      api->call_sub(api, sub_id);
+      double return_value = api->call_double_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1306,11 +1301,10 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      double return_value = api->pop_retval_double(api);
       sv_return_value = sv_2mortal(newSVnv(return_value));
     }
     else {
-      api->call_sub(api, sub_id);
+      SPVM_API_BASE_OBJECT* return_value = api->call_object_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1318,7 +1312,6 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      SPVM_API_BASE_OBJECT* return_value = api->pop_retval_object(api);
       
       if (return_value != NULL) {
         api->inc_ref_count(api, return_value);
@@ -1360,7 +1353,7 @@ call_sub(...)
     XSRETURN(1);
   }
   else {
-    api->call_sub(api, sub_id);
+    api->call_void_sub(api, sub_id, &call_sub_args);
     SPVM_API_ARRAY* exception = api->get_exception(api);
     if (exception) {
       int32_t length = api->get_array_length(api, exception);
