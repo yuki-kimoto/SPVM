@@ -596,55 +596,6 @@ SPVM_BASE_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_API* api, int32_t sub_co
   }
 }
 
-void SPVM_RUNTIME_API_push_retval_byte(SPVM_API* api, int8_t value) {
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
-  
-  runtime->operand_stack_top++;
-  runtime->call_stack[runtime->operand_stack_top].byte_value = value;
-}
-
-void SPVM_RUNTIME_API_push_retval_short(SPVM_API* api, int16_t value) {
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
-  
-  runtime->operand_stack_top++;
-  runtime->call_stack[runtime->operand_stack_top].short_value = value;
-}
-
-void SPVM_RUNTIME_API_push_retval_int(SPVM_API* api, int32_t value) {
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
-  
-  runtime->operand_stack_top++;
-  runtime->call_stack[runtime->operand_stack_top].int_value = value;
-}
-
-void SPVM_RUNTIME_API_push_retval_long(SPVM_API* api, int64_t value) {
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
-  
-  runtime->operand_stack_top++;
-  runtime->call_stack[runtime->operand_stack_top].long_value = value;
-}
-
-void SPVM_RUNTIME_API_push_retval_float(SPVM_API* api, float value) {
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
-  
-  runtime->operand_stack_top++;
-  runtime->call_stack[runtime->operand_stack_top].float_value = value;
-}
-
-void SPVM_RUNTIME_API_push_retval_double(SPVM_API* api, double value) {
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
-  
-  runtime->operand_stack_top++;
-  runtime->call_stack[runtime->operand_stack_top].double_value = value;
-}
-
-void SPVM_RUNTIME_API_push_retval_object(SPVM_API* api, SPVM_BASE_OBJECT* value) {
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
-  
-  runtime->operand_stack_top++;
-  runtime->call_stack[runtime->operand_stack_top].object_value = value;
-}
-
 int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const char* name) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   

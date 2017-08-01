@@ -67,7 +67,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   
   SPVM_API* api = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API));
   
-  // Array functions
+  // Get array
   api->get_array_length = (int32_t (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_array_length;
   api->get_byte_array_elements = (int8_t* (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_byte_array_elements;
   api->get_short_array_elements = (int16_t* (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_short_array_elements;
@@ -77,7 +77,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_double_array_elements = (double* (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_double_array_elements;
   api->get_object_array_elements = (SPVM_API_BASE_OBJECT** (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_object_array_elements;
   
-  // Object functions
+  // Get field
   api->get_field_id = (int32_t (*)(SPVM_API*, SPVM_API_OBJECT*, const char*))SPVM_RUNTIME_API_get_field_id;
   api->get_byte_field = (int8_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_byte_field;
   api->get_short_field = (int16_t (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_short_field;
@@ -86,6 +86,8 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_float_field = (float (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_float_field;
   api->get_double_field = (double (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_double_field;
   api->get_object_field = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t))SPVM_RUNTIME_API_get_object_field;
+  
+  // Set field
   api->set_byte_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int8_t))SPVM_RUNTIME_API_set_byte_field;
   api->set_short_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int16_t))SPVM_RUNTIME_API_set_short_field;
   api->set_int_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, int32_t))SPVM_RUNTIME_API_set_int_field;
@@ -117,15 +119,6 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->new_double_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_double_array;
   api->new_object_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_object_array;
   
-  // Functions used in subroutine
-  api->push_retval_byte = (void (*)(SPVM_API*, int8_t))SPVM_RUNTIME_API_push_retval_byte;
-  api->push_retval_short = (void (*)(SPVM_API*, int16_t))SPVM_RUNTIME_API_push_retval_short;
-  api->push_retval_int = (void (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_push_retval_int;
-  api->push_retval_long = (void (*)(SPVM_API*, int64_t))SPVM_RUNTIME_API_push_retval_long;
-  api->push_retval_float = (void (*)(SPVM_API*, float))SPVM_RUNTIME_API_push_retval_float;
-  api->push_retval_double = (void (*)(SPVM_API*, double))SPVM_RUNTIME_API_push_retval_double;
-  api->push_retval_object = (void (*)(SPVM_API*, SPVM_API_BASE_OBJECT*))SPVM_RUNTIME_API_push_retval_object;
-
   // Exception
   api->set_exception = (void (*)(SPVM_API* api, SPVM_API_ARRAY* exception))SPVM_RUNTIME_API_set_exception;
   api->get_exception = (SPVM_API_ARRAY* (*)(SPVM_API* api))SPVM_RUNTIME_API_get_exception;

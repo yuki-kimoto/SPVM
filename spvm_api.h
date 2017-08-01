@@ -82,15 +82,6 @@ struct SPVM_api {
   SPVM_API_ARRAY* (*new_double_array)(SPVM_API*, int32_t);
   SPVM_API_ARRAY* (*new_object_array)(SPVM_API*, int32_t);
   
-  // Functions used in subroutine
-  void (*push_retval_byte)(SPVM_API*, int8_t);
-  void (*push_retval_short)(SPVM_API*, int16_t);
-  void (*push_retval_int)(SPVM_API*, int32_t);
-  void (*push_retval_long)(SPVM_API*, int64_t);
-  void (*push_retval_float)(SPVM_API*, float);
-  void (*push_retval_double)(SPVM_API*, double);
-  void (*push_retval_object)(SPVM_API*, SPVM_API_BASE_OBJECT*);
-
   // Exception
   void (*set_exception)(SPVM_API* api, SPVM_API_ARRAY* exception);
   SPVM_API_ARRAY* (*get_exception)(SPVM_API* api);

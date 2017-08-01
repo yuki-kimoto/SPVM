@@ -40,13 +40,6 @@ int64_t SPVM_RUNTIME_API_call_long_sub(SPVM_API* api, int32_t sub_constant_pool_
 float SPVM_RUNTIME_API_call_float_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
 double SPVM_RUNTIME_API_call_double_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
 SPVM_BASE_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
-void SPVM_RUNTIME_API_push_retval_byte(SPVM_API* api, int8_t value);
-void SPVM_RUNTIME_API_push_retval_short(SPVM_API* api, int16_t value);
-void SPVM_RUNTIME_API_push_retval_int(SPVM_API* api, int32_t value);
-void SPVM_RUNTIME_API_push_retval_long(SPVM_API* api, int64_t value);
-void SPVM_RUNTIME_API_push_retval_float(SPVM_API* api, float value);
-void SPVM_RUNTIME_API_push_retval_double(SPVM_API* api, double value);
-void SPVM_RUNTIME_API_push_retval_object(SPVM_API* api, SPVM_BASE_OBJECT* value);
 
 // Internal functions
 int64_t SPVM_RUNTIME_API_calcurate_base_object_byte_size(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
