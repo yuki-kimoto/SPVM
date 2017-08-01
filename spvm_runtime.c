@@ -117,13 +117,6 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->new_object_array = (SPVM_API_ARRAY* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_new_object_array;
   
   // Functions used in subroutine
-  api->get_var_byte = (int8_t (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_byte;
-  api->get_var_short = (int16_t (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_short;
-  api->get_var_int = (int32_t (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_int;
-  api->get_var_long = (int64_t (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_long;
-  api->get_var_float = (float (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_float;
-  api->get_var_double = (double (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_double;
-  api->get_var_object = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_get_var_object;
   api->push_retval_byte = (void (*)(SPVM_API*, int8_t))SPVM_RUNTIME_API_push_retval_byte;
   api->push_retval_short = (void (*)(SPVM_API*, int16_t))SPVM_RUNTIME_API_push_retval_short;
   api->push_retval_int = (void (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_push_retval_int;

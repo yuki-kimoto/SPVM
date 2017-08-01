@@ -83,13 +83,6 @@ struct SPVM_api {
   SPVM_API_ARRAY* (*new_object_array)(SPVM_API*, int32_t);
   
   // Functions used in subroutine
-  int8_t (*get_var_byte)(SPVM_API*, int32_t);
-  int16_t (*get_var_short)(SPVM_API*, int32_t);
-  int32_t (*get_var_int)(SPVM_API*, int32_t);
-  int64_t (*get_var_long)(SPVM_API*, int32_t);
-  float (*get_var_float)(SPVM_API*, int32_t);
-  double (*get_var_double)(SPVM_API*, int32_t);
-  SPVM_API_BASE_OBJECT* (*get_var_object)(SPVM_API*, int32_t);
   void (*push_retval_byte)(SPVM_API*, int8_t);
   void (*push_retval_short)(SPVM_API*, int16_t);
   void (*push_retval_int)(SPVM_API*, int32_t);
