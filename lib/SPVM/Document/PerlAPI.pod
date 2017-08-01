@@ -1,0 +1,89 @@
+=head1 NAME
+
+SPVM::Document::PerlAPI - SPVM Perl API(BETA)
+
+=head1 FUNCTIONS
+
+=head2 new_byte_array
+
+Create new_byte array
+
+  my $array = SPVM::new_byte_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_short_array
+
+Create short array
+
+  my $array = SPVM::new_short_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_int_array
+
+Create int array
+
+  my $array = SPVM::new_int_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_long_array
+
+Create long array
+
+  my $array = SPVM::new_long_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_float_array
+
+Create float array
+
+  my $array = SPVM::new_float_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_double_array
+
+Create double array
+
+  my $array = SPVM::new_double_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_string_raw
+
+Create byte array from B<not decoded> Perl string.
+This function is faster than C<SPVM::string> because copy is not executed.
+
+  my $array = SPVM::new_string_raw("AGTCAGTC");
+
+=head2 new_string
+
+Create byte array from B<decoded> Perl string.
+
+  my $array = SPVM::new_string("Å†Ç¢Å§Ç¶Å®");
+
+=head2 new_object
+
+Create object.
+
+  my $object = SPVM::new_object("Point");
+
+You can set and get value by C<set> and C<get> method.
+
+  $object->set(x => 1);
+  my $x = $object->get('x');

@@ -1,6 +1,269 @@
 =head1 NAME
 
-SPVM::Specification - SPVM specification(BETA)
+SPVM::Document::Specification - SPVM specification(BETA)
+
+=head2 Type
+
+=head3 Numeric type
+
+Numeric types are byte, short, int, long, float, double.
+
+  byte    signed integer          1byte
+  short   signed integer          2byte
+  int     signed integer          4byte
+  long    signed integer          8byte
+  float   floating-point number   4byte
+  double  floating-point number   8byte
+
+Declaration
+
+  my $value : byte;
+  my $value : short;
+  my $value : int;
+  my $value : long;
+  my $value : float;
+  my $value : double;
+
+=head3 String type
+
+String type is string.
+
+This is same as byte[] at internal data structure.
+
+Declaration
+
+  my $string : string;
+
+=head3 Reference type
+
+Reference types are `array` and `object`.
+
+B<Object type>
+
+    PackageName
+
+Declaration
+
+    my $object : PackageName;
+
+B<Array type>
+
+  byte[]   byte array
+  short[]  short array
+  int[]    int array array
+  long[]   long array
+  float[]  float array
+  doube[]  double array
+  PackageName[] object array
+
+Declaration
+
+  my $values : byte[];
+  my $values : short[];
+  my $values : int[];
+  my $values : long[];
+  my $values : float[];
+  my $values : double[];
+  my $values : PackageName[];
+
+B<Multiple array type>
+
+  my $values : byte[][];
+  my $values : short[][];
+  my $values : int[][];
+  my $values : long[][];
+  my $values : float[][];
+  my $values : double[][];
+  my $values : PackageName[][];
+
+  my $values : byte[][][];
+  my $values : short[][][];
+  my $values : int[][][];
+  my $values : long[][][];
+  my $values : float[][][];
+  my $values : double[][][];
+  my $values : PackageName[][][];
+
+=head2 Type inference
+
+If the type of right value is known, the type of left value is automatically decided.
+
+  # Type of $value2 is byte.
+  my $value1 : byte;
+  my $value2 = $value1;
+
+  # Type of $values2 is int[]
+  my $values1 = new int[3];
+  my $values2 = $values1;
+
+  # Type of $object2 is PackageName
+  my $object1 = new PackageName
+  my $object2 = $object1;
+
+=head2 Array
+
+=head3 Create array
+
+Array is created by new. Elements values is not initialized.
+
+  my $nums = new byte[3];
+  my $nums = new short[3];
+  my $nums = new int[3];
+  my $nums = new long[3];
+  my $nums = new float[3];
+  my $nums = new double[3];
+
+=head3 Get array length
+
+  my $len = @$nums;
+  my $len = @{$nums};
+  my $len = len $nums;
+
+=head3 Get and set array element
+
+  # Get
+  my $num = $nums->[0];
+
+  # Set
+  $nums->[0] = 5;
+
+=head2 Condition branch
+
+  if (1) {
+
+  }
+  elsif (2) {
+
+  }
+  else {
+
+  }
+
+=head2 Loop
+
+=head3 for
+
+  my $nums = new int[10];
+  for (my $i = 0; $i < @$nums; $i++) {
+    $nums->[$i] = 0;
+  }
+
+=head3 while
+
+  my $nums = new int[10];
+  my $i = 0;
+  while ($i < @$nums) {
+    $nums->[$i] = 0;
+  }
+
+=head2 Constant
+
+=head3 Constant type
+
+Type of constant default integral value is `int`.
+
+  # int type
+  1;
+  3;
+
+Type of constant default floating-point value is `double`.
+
+  # double
+  1.2
+  5.3
+
+Type of constant is specified by type specifier.
+
+  # long
+  3L
+
+  # float
+  3.2f
+
+  # double
+  3.2d
+
+=head2 POD
+
+  =pod
+    AAAA
+  =cut
+
+=head2 __END__
+
+  __END__
+
+=head2 Exception
+
+=head3 Exception occur
+
+  die "Error";
+
+=head3 Catch exception
+
+  eval {
+    die "Error";
+  };
+
+=head3 Exception message
+
+  $@;
+
+=head2 Name
+
+=head3 Package name
+
+Package name is a combination of alphabets, numbers, and `::`. Numbers should not appear as the first character. `_` can't be used in class name.
+
+  # OK
+  Foo
+  Foo::Bar
+  Foo1::Bar1
+
+  # Not OK
+  1Foo
+  Foo::2Bar
+  Foo_Bar;
+
+=head3 Subroutine name
+
+Subroutine name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in subroutine name.
+
+  # OK
+  foo
+  foo1
+  foo_bar
+
+  # Not OK
+  1foo
+  foo__bar
+
+=head3 Field name
+
+Field name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in field name.
+
+  # OK
+  foo
+  foo1
+  foo_bar
+
+  # Not OK
+  1foo
+  foo__bar
+
+=head3 Absolute name
+
+Absolute name is combination of package name and subroutine name, or package name and field name.
+
+  PackageName1::foo
+  PackageName1::PackageName2::foo_bar
+
+=head2 Limitation
+
+Object can't have object and array of object.
+
+If I have idea to implement weaken reference and implement weaken reference, this limitation is removed.
+
 
 =head1 SPVM Language Specification
 

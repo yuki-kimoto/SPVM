@@ -1,4 +1,4 @@
 =head1 NAME
 
-SPVM::Tutorial - SPVM Tutorial(BETA)
+SPVM::Document::Tutorial - SPVM Tutorial(BETA)
 
