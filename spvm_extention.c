@@ -29,10 +29,11 @@ void SPVM_EXTENTION_std__test1(SPVM_API* api) {
   
   int32_t sub_id = api->get_sub_id(api, "stdout::test2");
   
-  api->push_var_int(api, 5);
-  api->push_var_int(api, 3);
-  api->call_sub(api, sub_id);
-  int32_t ret = api->pop_retval_int(api);
+  SPVM_API_VALUE args[2];
+  args[0].int_value = 5;
+  args[1].int_value = 3;
+  
+  int32_t ret = api->call_int_sub(api, sub_id, &args);
   
   int32_t num3 = num1 + num2 + ret;
   

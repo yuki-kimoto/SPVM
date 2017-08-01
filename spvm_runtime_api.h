@@ -33,13 +33,6 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
 
 // Call ubroutine functions
 void SPVM_RUNTIME_API_push_args(SPVM_API* api, SPVM_VALUE* values, int32_t length);
-void SPVM_RUNTIME_API_push_var_byte(SPVM_API* api, int8_t value);
-void SPVM_RUNTIME_API_push_var_short(SPVM_API* api, int16_t value);
-void SPVM_RUNTIME_API_push_var_int(SPVM_API* api, int32_t value);
-void SPVM_RUNTIME_API_push_var_long(SPVM_API* api, int64_t value);
-void SPVM_RUNTIME_API_push_var_float(SPVM_API* api, float value);
-void SPVM_RUNTIME_API_push_var_double(SPVM_API* api, double value);
-void SPVM_RUNTIME_API_push_var_object(SPVM_API* api, SPVM_BASE_OBJECT* value);
 int8_t SPVM_RUNTIME_API_pop_retval_byte(SPVM_API* api);
 int16_t SPVM_RUNTIME_API_pop_retval_short(SPVM_API* api);
 int32_t SPVM_RUNTIME_API_pop_retval_int(SPVM_API* api);

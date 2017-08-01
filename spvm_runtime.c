@@ -94,13 +94,6 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->set_object_field = (void (*)(SPVM_API*, SPVM_API_OBJECT*, int32_t, SPVM_API_BASE_OBJECT*))SPVM_RUNTIME_API_set_object_field;
   
   // Call subroutine fucntions
-  api->push_var_byte = (void (*)(SPVM_API*, int8_t))SPVM_RUNTIME_API_push_var_byte;
-  api->push_var_short = (void (*)(SPVM_API*, int16_t))SPVM_RUNTIME_API_push_var_short;
-  api->push_var_int = (void (*)(SPVM_API*, int32_t))SPVM_RUNTIME_API_push_var_int;
-  api->push_var_long = (void (*)(SPVM_API*, int64_t))SPVM_RUNTIME_API_push_var_long;
-  api->push_var_float = (void (*)(SPVM_API*, float))SPVM_RUNTIME_API_push_var_float;
-  api->push_var_double = (void (*)(SPVM_API*, double))SPVM_RUNTIME_API_push_var_double;
-  api->push_var_object = (void (*)(SPVM_API*, SPVM_API_BASE_OBJECT*))SPVM_RUNTIME_API_push_var_object;
   api->get_sub_id = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_sub_id;
   api->call_sub = (void (*)(SPVM_API*, int32_t))SPVM_RUNTIME_call_sub;
   api->call_void_sub = (void (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_void_sub;
