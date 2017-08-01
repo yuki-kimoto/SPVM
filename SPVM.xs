@@ -1234,13 +1234,12 @@ call_sub(...)
   api->set_exception(api, NULL);
   api->call_sub(api, sub_id);
   
-  SPVM_API_ARRAY* exception = api->get_exception(api);
-  
   SV* sv_return_value = NULL;
   if (SvOK(sv_return_type)) {
     const char* return_type = SvPV_nolen(sv_return_type);
     
     if (strEQ(return_type, "byte")) {
+      SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
         int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
@@ -1251,6 +1250,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "short")) {
+      SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
         int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
@@ -1261,6 +1261,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "int")) {
+      SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
         int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
@@ -1271,6 +1272,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "long")) {
+      SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
         int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
@@ -1281,6 +1283,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "float")) {
+      SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
         int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
@@ -1291,6 +1294,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSVnv(return_value));
     }
     else if (strEQ(return_type, "double")) {
+      SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
         int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
@@ -1301,6 +1305,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSVnv(return_value));
     }
     else {
+      SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
         int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
@@ -1349,6 +1354,7 @@ call_sub(...)
     XSRETURN(1);
   }
   else {
+    SPVM_API_ARRAY* exception = api->get_exception(api);
     if (exception) {
       int32_t length = api->get_array_length(api, exception);
       int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
