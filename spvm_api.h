@@ -69,7 +69,13 @@ struct SPVM_api {
   void (*push_var_object)(SPVM_API*, SPVM_API_BASE_OBJECT*);
   int32_t (*get_sub_id)(SPVM_API*, const char*);
   void (*call_sub)(SPVM_API*, int32_t);
+  int8_t (*call_byte_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
+  int16_t (*call_short_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   int32_t (*call_int_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
+  int64_t (*call_long_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
+  float (*call_float_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
+  double (*call_double_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
+  SPVM_API_BASE_OBJECT* (*call_object_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   int8_t (*pop_retval_byte)(SPVM_API*);
   int16_t (*pop_retval_short)(SPVM_API*);
   int32_t (*pop_retval_int)(SPVM_API*);

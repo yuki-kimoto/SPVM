@@ -103,7 +103,13 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->push_var_object = (void (*)(SPVM_API*, SPVM_API_BASE_OBJECT*))SPVM_RUNTIME_API_push_var_object;
   api->get_sub_id = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_sub_id;
   api->call_sub = (void (*)(SPVM_API*, int32_t))SPVM_RUNTIME_call_sub;
+  api->call_byte_sub = (int8_t (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_byte_sub;
+  api->call_short_sub = (int16_t (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_short_sub;
   api->call_int_sub = (int32_t (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_int_sub;
+  api->call_long_sub = (int64_t (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_long_sub;
+  api->call_float_sub = (float (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_float_sub;
+  api->call_double_sub = (double (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_double_sub;
+  api->call_object_sub = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_object_sub;
   api->pop_retval_byte = (int8_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_byte;
   api->pop_retval_short = (int16_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_short;
   api->pop_retval_int = (int32_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_int;
