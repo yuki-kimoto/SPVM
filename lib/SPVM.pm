@@ -356,6 +356,14 @@ B<Perl module> - SPVM function can be called from Perl itself (Not yet implement
 
 SPVM only work on the Perl which support 64 bit integer.
 
+=head1 SPECIFICATION
+
+L<SPVM::Document::Specification>
+
+=head1 TUTORIAL
+
+L<SPVM::Document::Tutorial>
+
 =head1 SPVM SYNTAX
 
 =head2 Type
