@@ -7,13 +7,25 @@ enum {
   SPVM_API_ERROR_NO_ID = -1
 };
 
-// spvm_api.h
 struct SPVM_api;
 typedef struct SPVM_api SPVM_API;
 typedef void SPVM_API_BASE_OBJECT;
 typedef void SPVM_API_OBJECT;
 typedef void SPVM_API_ARRAY;
 typedef void SPVM_API_RUNTIME;
+
+union SPVM_API_value {
+  int8_t byte_value;
+  int16_t short_value;
+  int32_t int_value;
+  int64_t long_value;
+  float float_value;
+  double double_value;
+  SPVM_API_BASE_OBJECT* object_value;
+};
+
+// spvm_api.h
+typedef union SPVM_API_value SPVM_API_VALUE;
 
 struct SPVM_api {
   // Runtime
