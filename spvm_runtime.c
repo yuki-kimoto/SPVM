@@ -447,7 +447,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       
       // Set vars base
       call_stack_base = operand_stack_top + 4;
-
+      
       // If arg is object, increment reference count
       if (constant_pool_sub.object_args_length) {
         int32_t object_arg_indexes_constant_pool_index = constant_pool_sub.object_arg_indexes_constant_pool_index;

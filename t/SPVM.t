@@ -33,11 +33,9 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 use SPVM::stdout;
 
 # Exception
-=pod
 {
   SPVM::TestCase::exception_zero_divide_int();
 }
-=cut
 
 # Default return value
 {
