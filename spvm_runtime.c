@@ -40,7 +40,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->call_stack_base = -1;
   runtime->operand_stack_top = -1;
-  runtime->abort = 0;
   
   // Packages length
   runtime->packages_length = 0;
@@ -484,13 +483,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         
         // Call native sub
         void (*native_address)(SPVM_API* api) = constant_pool_sub.native_address;
+        SPVM_RUNTIME_API_set_exception(api, NULL);
         (*native_address)(api);
         
         // Get runtimeiromnet
         operand_stack_top = runtime->operand_stack_top;
         call_stack_base = runtime->call_stack_base;
         
-        if (__builtin_expect(runtime->abort, 0)) {
+        if (__builtin_expect(runtime->exception, 0)) {
           goto case_SPVM_BYTECODE_C_CODE_DIE;
         }
         else {
@@ -562,7 +562,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
-      runtime->abort = 0;
+      SPVM_RUNTIME_API_set_exception(api, NULL);
       return;
     }
     else {
@@ -626,7 +626,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
-      runtime->abort = 0;
+      SPVM_RUNTIME_API_set_exception(api, NULL);
       return;
     }
     else {
@@ -673,7 +673,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
-      runtime->abort = 0;
+      SPVM_RUNTIME_API_set_exception(api, NULL);
       return;
     }
     else {
@@ -741,7 +741,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // stack trace strings
     const char* from = "\n  from ";
-    const char* at = " at ";
+    const char* at = "() at ";
     
     // Total string length
     int32_t total_length = 0;
@@ -772,9 +772,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Set exception
     SPVM_RUNTIME_API_set_exception(api, new_array_exception);
-    
-    // Abort
-    runtime->abort = 1;
     
     // Finish call sub with exception
     if (call_stack_base == call_stack_base_start) {

@@ -1229,6 +1229,7 @@ call_sub(...)
     }
   }
   
+  api->set_exception(api, NULL);
   api->call_sub(api, sub_id);
   
   SPVM_API_ARRAY* exception = api->get_exception(api);

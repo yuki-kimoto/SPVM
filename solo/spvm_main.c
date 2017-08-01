@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
   api->call_sub(api, sub_constant_pool_index);
   
 #ifdef DEBUG
-  if (runtime->abort) {
+  if (runtime->exception) {
     void* message_object = runtime->exception;;
     int8_t* message = api->get_byte_array_elements(api, message_object);
     
