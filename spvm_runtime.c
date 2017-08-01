@@ -104,13 +104,6 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->call_float_sub = (float (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_float_sub;
   api->call_double_sub = (double (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_double_sub;
   api->call_object_sub = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*, int32_t, SPVM_API_VALUE*))SPVM_RUNTIME_API_call_object_sub;
-  api->pop_retval_byte = (int8_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_byte;
-  api->pop_retval_short = (int16_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_short;
-  api->pop_retval_int = (int32_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_int;
-  api->pop_retval_long = (int64_t (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_long;
-  api->pop_retval_float = (float (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_float;
-  api->pop_retval_double = (double (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_double;
-  api->pop_retval_object = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*))SPVM_RUNTIME_API_pop_retval_object;
   
   // Malloc funtctions
   api->get_package_id = (int32_t (*)(SPVM_API*, const char*))SPVM_RUNTIME_API_get_package_id;

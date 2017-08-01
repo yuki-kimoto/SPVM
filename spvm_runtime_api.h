@@ -31,17 +31,7 @@ void SPVM_RUNTIME_API_set_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_
 void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, double value);
 void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, SPVM_BASE_OBJECT* value);
 
-// Call ubroutine functions
-void SPVM_RUNTIME_API_push_args(SPVM_API* api, SPVM_VALUE* values, int32_t length);
-int8_t SPVM_RUNTIME_API_pop_retval_byte(SPVM_API* api);
-int16_t SPVM_RUNTIME_API_pop_retval_short(SPVM_API* api);
-int32_t SPVM_RUNTIME_API_pop_retval_int(SPVM_API* api);
-int64_t SPVM_RUNTIME_API_pop_retval_long(SPVM_API* api);
-float SPVM_RUNTIME_API_pop_retval_float(SPVM_API* api);
-double SPVM_RUNTIME_API_pop_retval_double(SPVM_API* api);
-void* SPVM_RUNTIME_API_pop_retval_object(SPVM_API* api);
-
-// Functions used in subroutine
+// Call Subroutine
 void SPVM_RUNTIME_API_call_void_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
 int8_t SPVM_RUNTIME_API_call_byte_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
 int16_t SPVM_RUNTIME_API_call_short_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);

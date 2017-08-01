@@ -70,13 +70,6 @@ struct SPVM_api {
   float (*call_float_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   double (*call_double_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   SPVM_API_BASE_OBJECT* (*call_object_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int8_t (*pop_retval_byte)(SPVM_API*);
-  int16_t (*pop_retval_short)(SPVM_API*);
-  int32_t (*pop_retval_int)(SPVM_API*);
-  int64_t (*pop_retval_long)(SPVM_API*);
-  float (*pop_retval_float)(SPVM_API*);
-  double (*pop_retval_double)(SPVM_API*);
-  SPVM_API_BASE_OBJECT* (*pop_retval_object)(SPVM_API*);
   
   // Malloc funtctions
   int32_t (*get_package_id)(SPVM_API*, const char*);
