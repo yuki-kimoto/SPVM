@@ -1232,13 +1232,13 @@ call_sub(...)
   }
   
   api->set_exception(api, NULL);
-  api->call_sub(api, sub_id);
   
   SV* sv_return_value = NULL;
   if (SvOK(sv_return_type)) {
     const char* return_type = SvPV_nolen(sv_return_type);
     
     if (strEQ(return_type, "byte")) {
+      api->call_sub(api, sub_id);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1250,6 +1250,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "short")) {
+      api->call_sub(api, sub_id);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1261,6 +1262,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "int")) {
+      api->call_sub(api, sub_id);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1272,6 +1274,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "long")) {
+      api->call_sub(api, sub_id);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1283,6 +1286,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
     else if (strEQ(return_type, "float")) {
+      api->call_sub(api, sub_id);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1294,6 +1298,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSVnv(return_value));
     }
     else if (strEQ(return_type, "double")) {
+      api->call_sub(api, sub_id);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1305,6 +1310,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newSVnv(return_value));
     }
     else {
+      api->call_sub(api, sub_id);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1354,6 +1360,7 @@ call_sub(...)
     XSRETURN(1);
   }
   else {
+    api->call_sub(api, sub_id);
     SPVM_API_ARRAY* exception = api->get_exception(api);
     if (exception) {
       int32_t length = api->get_array_length(api, exception);
