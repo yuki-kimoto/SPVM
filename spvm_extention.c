@@ -6,7 +6,7 @@
 #include "spvm_api.h"
 
 void SPVM_EXTENTION_std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
-  void* array = api->get_var_object(api, 0);
+  SPVM_API_BASE_OBJECT* array = args[0].object_value;
   
   int32_t length = api->get_array_length(api, array);
   
@@ -24,8 +24,8 @@ void SPVM_EXTENTION_std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
 }
 
 void SPVM_EXTENTION_std__test1(SPVM_API* api, SPVM_API_VALUE* args) {
-  int32_t num1 = api->get_var_int(api, 0);
-  int32_t num2 = api->get_var_int(api, 1);
+  int32_t num1 = args[0].int_value;
+  int32_t num2 = args[1].int_value;
   
   int32_t sub_id = api->get_sub_id(api, "stdout::test2");
   
@@ -41,8 +41,8 @@ void SPVM_EXTENTION_std__test1(SPVM_API* api, SPVM_API_VALUE* args) {
 }
 
 void SPVM_EXTENTION_std__test2(SPVM_API* api, SPVM_API_VALUE* args) {
-  int32_t num1 = api->get_var_int(api, 0);
-  int32_t num2 = api->get_var_int(api, 1);
+  int32_t num1 = args[0].int_value;
+  int32_t num2 = args[1].int_value;
   
   int32_t num3 = num1 * num2;
   
