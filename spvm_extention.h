@@ -4,9 +4,9 @@
 #include "spvm_base.h"
 #include "spvm_api.h"
 
-void SPVM_EXTENTION_std__sum_int(SPVM_API* api);
-void SPVM_EXTENTION_std__test1(SPVM_API* api);
-void SPVM_EXTENTION_std__test2(SPVM_API* api);
+int32_t SPVM_EXTENTION_std__sum_int(SPVM_API* api);
+int32_t SPVM_EXTENTION_std__test1(SPVM_API* api);
+int32_t SPVM_EXTENTION_std__test2(SPVM_API* api);
 
 void SPVM_EXTENTION_std__println(SPVM_API* api);
 void SPVM_EXTENTION_std__println_byte(SPVM_API* api);

@@ -18,6 +18,7 @@
 #include "spvm_util_allocator.h"
 #include "spvm_value.h"
 #include "spvm_api.h"
+#include "spvm_type.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
@@ -468,31 +469,128 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         runtime->operand_stack_top = operand_stack_top;
         runtime->call_stack_base = call_stack_base;
         
-        // Call native sub
-        void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
-        SPVM_RUNTIME_API_set_exception(api, NULL);
-        (*native_address)(api, vars);
-        
-        // Get runtimeiromnet
-        operand_stack_top = runtime->operand_stack_top;
-        call_stack_base = runtime->call_stack_base;
-        
-        if (__builtin_expect(runtime->exception, 0)) {
-          goto case_SPVM_BYTECODE_C_CODE_DIE;
-        }
-        else {
-          static const void* return_jump[] = {
-            &&case_SPVM_BYTECODE_C_CODE_RETURN_VOID,
-            &&case_SPVM_BYTECODE_C_CODE_RETURN_BYTE,
-            &&case_SPVM_BYTECODE_C_CODE_RETURN_SHORT,
-            &&case_SPVM_BYTECODE_C_CODE_RETURN_INT,
-            &&case_SPVM_BYTECODE_C_CODE_RETURN_LONG,
-            &&case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT,
-            &&case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE,
-            &&case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT,
-          };
-          
-          goto *return_jump[constant_pool_sub.return_type_id + 1];
+        // Call native subroutine
+        switch (constant_pool_sub.return_type_id) {
+          case SPVM_TYPE_C_ID_VOID: {
+            void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            SPVM_RUNTIME_API_set_exception(api, NULL);
+            (*native_address)(api, vars);
+            
+            if (__builtin_expect(runtime->exception, 0)) {
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_DIE;
+            }
+            else {
+              operand_stack_top = runtime->operand_stack_top;
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_RETURN_VOID;
+            }
+            
+            break;
+          }
+          case SPVM_TYPE_C_ID_BYTE: {
+            int8_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            SPVM_RUNTIME_API_set_exception(api, NULL);
+            int8_t return_value = (*native_address)(api, vars);
+
+            if (__builtin_expect(runtime->exception, 0)) {
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_DIE;
+            }
+            else {
+              runtime->operand_stack_top++;
+              runtime->call_stack[runtime->operand_stack_top].byte_value = return_value;
+              operand_stack_top = runtime->operand_stack_top;
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_RETURN_BYTE;
+            }
+            
+            break;
+          }
+          case SPVM_TYPE_C_ID_SHORT: {
+            int16_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            SPVM_RUNTIME_API_set_exception(api, NULL);
+            int16_t return_value = (*native_address)(api, vars);
+            if (__builtin_expect(runtime->exception, 0)) {
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_DIE;
+            }
+            else {
+              runtime->operand_stack_top++;
+              runtime->call_stack[runtime->operand_stack_top].short_value = return_value;
+              operand_stack_top = runtime->operand_stack_top;
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_RETURN_SHORT;
+            }
+            break;
+          }
+          case SPVM_TYPE_C_ID_INT: {
+            int32_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            int32_t return_value = (*native_address)(api, vars);
+            SPVM_RUNTIME_API_set_exception(api, NULL);
+            if (__builtin_expect(runtime->exception, 0)) {
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_DIE;
+            }
+            else {
+              runtime->operand_stack_top++;
+              runtime->call_stack[runtime->operand_stack_top].int_value = return_value;
+              operand_stack_top = runtime->operand_stack_top;
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_RETURN_INT;
+            }
+            break;
+          }
+          case SPVM_TYPE_C_ID_FLOAT: {
+            float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            float return_value = (*native_address)(api, vars);
+            SPVM_RUNTIME_API_set_exception(api, NULL);
+            if (__builtin_expect(runtime->exception, 0)) {
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_DIE;
+            }
+            else {
+              runtime->operand_stack_top++;
+              runtime->call_stack[runtime->operand_stack_top].float_value = return_value;
+              operand_stack_top = runtime->operand_stack_top;
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT;
+            }
+            break;
+          }
+          case SPVM_TYPE_C_ID_DOUBLE: {
+            double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            double return_value = (*native_address)(api, vars);
+            SPVM_RUNTIME_API_set_exception(api, NULL);
+            if (__builtin_expect(runtime->exception, 0)) {
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_DIE;
+            }
+            else {
+              runtime->operand_stack_top++;
+              runtime->call_stack[runtime->operand_stack_top].double_value = return_value;
+              operand_stack_top = runtime->operand_stack_top;
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE;
+            }
+            break;
+          }
+          default: {
+            SPVM_BASE_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            SPVM_BASE_OBJECT* return_value = (*native_address)(api, vars);
+            SPVM_RUNTIME_API_set_exception(api, NULL);
+            if (__builtin_expect(runtime->exception, 0)) {
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_DIE;
+            }
+            else {
+              runtime->operand_stack_top++;
+              runtime->call_stack[runtime->operand_stack_top].object_value = return_value;
+              operand_stack_top = runtime->operand_stack_top;
+              call_stack_base = runtime->call_stack_base;
+              goto case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT;
+            }
+          }
         }
       }
       // Call normal sub

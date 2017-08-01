@@ -5,7 +5,7 @@
 
 #include "spvm_api.h"
 
-void SPVM_EXTENTION_std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM_EXTENTION_std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
   SPVM_API_BASE_OBJECT* array = args[0].object_value;
   
   int32_t length = api->get_array_length(api, array);
@@ -20,10 +20,10 @@ void SPVM_EXTENTION_std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
     }
   }
   
-  api->push_retval_int(api, total);
+  return total;
 }
 
-void SPVM_EXTENTION_std__test1(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM_EXTENTION_std__test1(SPVM_API* api, SPVM_API_VALUE* args) {
   int32_t num1 = args[0].int_value;
   int32_t num2 = args[1].int_value;
   
@@ -33,20 +33,20 @@ void SPVM_EXTENTION_std__test1(SPVM_API* api, SPVM_API_VALUE* args) {
   new_args[0].int_value = 5;
   new_args[1].int_value = 3;
   
-  int32_t ret = api->call_int_sub(api, sub_id, &args);
+  int32_t ret = api->call_int_sub(api, sub_id, &new_args);
   
   int32_t num3 = num1 + num2 + ret;
   
-  api->push_retval_int(api, num3);
+  return num3;
 }
 
-void SPVM_EXTENTION_std__test2(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM_EXTENTION_std__test2(SPVM_API* api, SPVM_API_VALUE* args) {
   int32_t num1 = args[0].int_value;
   int32_t num2 = args[1].int_value;
   
   int32_t num3 = num1 * num2;
   
-  api->push_retval_int(api, num3);
+  return num3;
 }
 
 void SPVM_EXTENTION_std__print(SPVM_API* api, SPVM_API_VALUE* args) {
