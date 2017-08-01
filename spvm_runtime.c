@@ -778,6 +778,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     // Finish call sub with exception
     if (call_stack_base == call_stack_base_start) {
+      
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       return;

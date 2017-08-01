@@ -1,3 +1,5 @@
+0.0236 2017-08-01
+  - add __END__
 0.0235 2017-07-31
   - fix default return value
   - imporve exception message

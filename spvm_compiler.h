@@ -23,10 +23,10 @@ struct SPVM_compiler {
   SPVM_COMPILER_ALLOCATOR* allocator;
   
   // Before buffer position
-  const char* befbufptr;
+  char* befbufptr;
   
   // Current buffer position
-  const char* bufptr;
+  char* bufptr;
   
   // Current file name
   const char* cur_file;

@@ -934,6 +934,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 return WHILE;
               }
               break;
+            case '_':
+              if (strcmp(keyword, "__END__") == 0) {
+                *compiler->bufptr = '\0';
+                continue;
+              }
+              break;
           }
           
           // Replace template variable

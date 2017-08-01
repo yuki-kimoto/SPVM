@@ -518,26 +518,36 @@ Array is created by new. Elements values is not initialized.
 
 Type of constant default integral value is `int`.
 
-    # int type
-    1;
-    3;
+  # int type
+  1;
+  3;
 
 Type of constant default floating-point value is `double`.
 
-    # double
-    1.2
-    5.3
+  # double
+  1.2
+  5.3
 
 Type of constant is specified by type specifier.
 
-    # long
-    3L
+  # long
+  3L
 
-    # float
-    3.2f
+  # float
+  3.2f
 
-    # double
-    3.2d
+  # double
+  3.2d
+
+=head2 POD
+
+  =pod
+    AAAA
+  =cut
+
+=head2 __END__
+
+  __END__
 
 =head2 Name
 
@@ -545,48 +555,48 @@ Type of constant is specified by type specifier.
 
 Package name is a combination of alphabets, numbers, and `::`. Numbers should not appear as the first character. `_` can't be used in class name.
 
-    # OK
-    Foo
-    Foo::Bar
-    Foo1::Bar1
+  # OK
+  Foo
+  Foo::Bar
+  Foo1::Bar1
 
-    # Not OK
-    1Foo
-    Foo::2Bar
-    Foo_Bar;
+  # Not OK
+  1Foo
+  Foo::2Bar
+  Foo_Bar;
 
 =head3 Subroutine name
 
 Subroutine name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in subroutine name.
 
-    # OK
-    foo
-    foo1
-    foo_bar
+  # OK
+  foo
+  foo1
+  foo_bar
 
-    # Not OK
-    1foo
-    foo__bar
+  # Not OK
+  1foo
+  foo__bar
 
 =head3 Field name
 
 Field name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in field name.
 
-    # OK
-    foo
-    foo1
-    foo_bar
+  # OK
+  foo
+  foo1
+  foo_bar
 
-    # Not OK
-    1foo
-    foo__bar
+  # Not OK
+  1foo
+  foo__bar
 
 =head3 Absolute name
 
 Absolute name is combination of package name and subroutine name, or package name and field name.
 
-    PackageName1::foo
-    PackageName1::PackageName2::foo_bar
+  PackageName1::foo
+  PackageName1::PackageName2::foo_bar
 
 =head2 Limitation
 
