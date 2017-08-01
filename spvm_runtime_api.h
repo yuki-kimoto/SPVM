@@ -32,6 +32,7 @@ void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_OBJECT* object, int32
 void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, SPVM_BASE_OBJECT* value);
 
 // Call ubroutine functions
+void SPVM_RUNTIME_API_push_args(SPVM_API* api, SPVM_VALUE* values, int32_t length);
 void SPVM_RUNTIME_API_push_var_byte(SPVM_API* api, int8_t value);
 void SPVM_RUNTIME_API_push_var_short(SPVM_API* api, int16_t value);
 void SPVM_RUNTIME_API_push_var_int(SPVM_API* api, int32_t value);
@@ -48,6 +49,7 @@ double SPVM_RUNTIME_API_pop_retval_double(SPVM_API* api);
 void* SPVM_RUNTIME_API_pop_retval_object(SPVM_API* api);
 
 // Functions used in subroutine
+int32_t SPVM_RUNTIME_API_call_int_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
 int8_t SPVM_RUNTIME_API_get_var_byte(SPVM_API* api, int32_t index);
 int16_t SPVM_RUNTIME_API_get_var_short(SPVM_API* api, int32_t index);
 int32_t SPVM_RUNTIME_API_get_var_int(SPVM_API* api, int32_t index);

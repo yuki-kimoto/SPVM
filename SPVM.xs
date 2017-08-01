@@ -25,6 +25,8 @@
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
 
+static SPVM_API_VALUE call_sub_args[255];
+
 SPVM_COMPILER* SPVM_XS_INTERNAL_UTIL_get_compiler() {
 
   // Get compiler

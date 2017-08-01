@@ -381,6 +381,34 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_obj
   return base_object->ref_count;
 }
 
+int32_t SPVM_RUNTIME_API_call_int_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args) {
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
+  
+  SPVM_CONSTANT_POOL_SUB constant_pool_sub;
+  memcpy(&constant_pool_sub, &runtime->constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
+  
+  int32_t args_length = constant_pool_sub.args_length;
+  
+  {
+    int32_t i;
+    for (i = 0; i < args_length; i++) {
+      runtime->operand_stack_top++;
+      runtime->call_stack[runtime->operand_stack_top] = args[i];
+    }
+  }
+  
+  SPVM_RUNTIME_call_sub(api, sub_constant_pool_index);
+  
+  if (runtime->exception) {
+    return 0;
+  }
+  else {
+    int32_t value = runtime->call_stack[runtime->operand_stack_top].int_value;
+    runtime->operand_stack_top--;
+    return value;
+  }
+}
+
 void SPVM_RUNTIME_API_push_var_byte(SPVM_API* api, int8_t value) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
