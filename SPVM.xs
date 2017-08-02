@@ -1250,8 +1250,6 @@ call_sub(...)
   
   SV* sv_return_value = NULL;
   if (return_type_id != -1) {
-    const char* return_type = SvPV_nolen(sv_return_type);
-    
     if (return_type_id == SPVM_TYPE_C_ID_BYTE) {
       int8_t return_value = api->call_byte_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
@@ -1331,6 +1329,7 @@ call_sub(...)
       if (return_value != NULL) {
         api->inc_ref_count(api, return_value);
         
+        const char* return_type = SvPV_nolen(sv_return_type);
         int32_t type_length = strlen(return_type);
         if (return_type_id == SPVM_TYPE_C_ID_ARRAY_BYTE) {
           sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)return_value);
