@@ -1198,13 +1198,14 @@ call_sub(...)
   {
     int32_t arg_index;
     for (arg_index = 0; arg_index < args_length; arg_index++) {
-      SV* sv_base_object = ST(arg_index + 1);
+      SV* sv_value = ST(arg_index + 1);
       
       SV** sv_arg_type_id_ptr = av_fetch(av_arg_type_ids, arg_index, 0);
       SV* sv_arg_type_id = sv_arg_type_id_ptr ? *sv_arg_type_id_ptr : &PL_sv_undef;
       int32_t arg_type_id = SvIV(sv_arg_type_id);
       
-      if (sv_isobject(sv_base_object)) {
+      if (sv_isobject(sv_value)) {
+        SV* sv_base_object = sv_value;
         if (sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
           SV** sv_arg_type_name_ptr = av_fetch(av_arg_type_names, arg_index, 0);
           SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
@@ -1234,7 +1235,6 @@ call_sub(...)
         }
       }
       else {
-        SV* sv_value = sv_base_object;
         switch (arg_type_id) {
           case SPVM_TYPE_C_ID_BYTE : {
             int8_t value = (int8_t)SvIV(sv_value);
