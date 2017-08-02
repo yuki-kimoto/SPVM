@@ -955,7 +955,7 @@ build_sub_symtable(...)
           }
           SV* sv_arg_type_names = sv_2mortal(newRV_inc((SV*)av_arg_type_names));
           hv_store(hv_sub_info, "arg_types", strlen("arg_types"), SvREFCNT_inc(sv_arg_type_names), 0);
-
+          
           SV* sv_arg_type_ids = sv_2mortal(newRV_inc((SV*)av_arg_type_ids));
           hv_store(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), SvREFCNT_inc(sv_arg_type_ids), 0);
           
@@ -1169,6 +1169,11 @@ call_sub(...)
   AV* av_arg_type_names = (AV*)SvRV(sv_arg_type_names);
   int32_t args_length = av_len(av_arg_type_names) + 1;
   
+  // Argument type id
+  SV** sv_arg_type_ids_ptr = hv_fetch(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), 0);
+  SV* sv_arg_type_ids = sv_arg_type_ids_ptr ? *sv_arg_type_ids_ptr : &PL_sv_undef;
+  AV* av_arg_type_ids = (AV*)SvRV(sv_arg_type_ids);
+  
   // Return type
   SV** sv_return_type_ptr = hv_fetch(hv_sub_info, "return_type", strlen("return_type"), 0);
   SV* sv_return_type = sv_return_type_ptr ? *sv_return_type_ptr : &PL_sv_undef;
@@ -1198,6 +1203,10 @@ call_sub(...)
       SV** sv_arg_type_name_ptr = av_fetch(av_arg_type_names, arg_index, 0);
       SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
       const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
+
+      SV** sv_arg_type_id_ptr = av_fetch(av_arg_type_ids, arg_index, 0);
+      SV* sv_arg_type_id = sv_arg_type_id_ptr ? *sv_arg_type_id_ptr : &PL_sv_undef;
+      int32_t arg_type_id = SvIV(sv_arg_type_id);
       
       if (sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
         
