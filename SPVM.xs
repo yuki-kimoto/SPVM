@@ -911,7 +911,7 @@ build_sub_symtable(...)
   // Subroutine information
   HV* hv_sub_symtable = get_hv("SPVM::SUB_SYMTABLE", 0);
   
-  // abs_name, arg_types, return_type, id, type_id
+  // id, arg_type_ids, return_type_id
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   {
     int32_t package_index;
@@ -1188,10 +1188,6 @@ call_sub(...)
   AV* av_arg_type_ids = (AV*)SvRV(sv_arg_type_ids);
   int32_t args_length = av_len(av_arg_type_ids) + 1;
   
-  // Return type
-  SV** sv_return_type_ptr = hv_fetch(hv_sub_info, "return_type", strlen("return_type"), 0);
-  SV* sv_return_type = sv_return_type_ptr ? *sv_return_type_ptr : &PL_sv_undef;
-
   // Return type id
   SV** sv_return_type_id_ptr = hv_fetch(hv_sub_info, "return_type_id", strlen("return_type_id"), 0);
   SV* sv_return_type_id = sv_return_type_id_ptr ? *sv_return_type_id_ptr : &PL_sv_undef;
@@ -1424,13 +1420,16 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
             break;
           default : {
-            const char* return_type = SvPV_nolen(sv_return_type);
-            int32_t type_length = strlen(return_type);
-            if (return_type[type_length -1] == ']') {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type, (SPVM_API_ARRAY*)return_value);
+            AV* av_type_names = av_get("SPVM::TYPE_NAMES", 0);
+            SV** sv_return_type_name_ptr = av_fetch(av_type_names, return_type_id, 0);
+            SV* sv_return_type_name = *sv_return_type_name_ptr;
+            const char* return_type_name = SvPV_nolen(sv_return_type_name);
+            int32_t type_name_length = strlen(return_type_name);
+            if (return_type_name[type_name_length - 1] == ']') {
+              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_name, (SPVM_API_ARRAY*)return_value);
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type, (SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_name, (SPVM_API_OBJECT*)return_value);
             }
           }
         }
