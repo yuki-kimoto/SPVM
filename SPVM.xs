@@ -1249,8 +1249,20 @@ call_sub(...)
   api->set_exception(api, NULL);
   
   SV* sv_return_value = NULL;
-  if (return_type_id != -1) {
-    if (return_type_id == SPVM_TYPE_C_ID_BYTE) {
+  switch (return_type_id) {
+    case SPVM_TYPE_C_ID_VOID:  {
+      api->call_void_sub(api, sub_id, &call_sub_args);
+      SPVM_API_ARRAY* exception = api->get_exception(api);
+      if (exception) {
+        int32_t length = api->get_array_length(api, exception);
+        int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
+        SV* sv_exception = newSVpv(exception_bytes, length);
+        croak("%s", SvPV_nolen(sv_exception));
+      }
+      XSRETURN(0);
+      break;
+    }
+    case SPVM_TYPE_C_ID_BYTE: {
       int8_t return_value = api->call_byte_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1260,8 +1272,11 @@ call_sub(...)
         croak("%s", SvPV_nolen(sv_exception));
       }
       sv_return_value = sv_2mortal(newSViv(return_value));
+      XPUSHs(sv_return_value);
+      XSRETURN(1);
+      break;
     }
-    else if (return_type_id == SPVM_TYPE_C_ID_SHORT) {
+    case SPVM_TYPE_C_ID_SHORT: {
       int16_t return_value = api->call_short_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1271,8 +1286,11 @@ call_sub(...)
         croak("%s", SvPV_nolen(sv_exception));
       }
       sv_return_value = sv_2mortal(newSViv(return_value));
+      XPUSHs(sv_return_value);
+      XSRETURN(1);
+      break;
     }
-    else if (return_type_id == SPVM_TYPE_C_ID_INT) {
+    case SPVM_TYPE_C_ID_INT: {
       int32_t return_value = api->call_int_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1282,8 +1300,11 @@ call_sub(...)
         croak("%s", SvPV_nolen(sv_exception));
       }
       sv_return_value = sv_2mortal(newSViv(return_value));
+      XPUSHs(sv_return_value);
+      XSRETURN(1);
+      break;
     }
-    else if (return_type_id == SPVM_TYPE_C_ID_LONG) {
+    case SPVM_TYPE_C_ID_LONG: {
       int64_t return_value = api->call_long_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1293,8 +1314,11 @@ call_sub(...)
         croak("%s", SvPV_nolen(sv_exception));
       }
       sv_return_value = sv_2mortal(newSViv(return_value));
+      XPUSHs(sv_return_value);
+      XSRETURN(1);
+      break;
     }
-    else if (return_type_id == SPVM_TYPE_C_ID_FLOAT) {
+    case SPVM_TYPE_C_ID_FLOAT: {
       float return_value = api->call_float_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1304,8 +1328,11 @@ call_sub(...)
         croak("%s", SvPV_nolen(sv_exception));
       }
       sv_return_value = sv_2mortal(newSVnv(return_value));
+      XPUSHs(sv_return_value);
+      XSRETURN(1);
+      break;
     }
-    else if (return_type_id == SPVM_TYPE_C_ID_DOUBLE) {
+    case SPVM_TYPE_C_ID_DOUBLE: {
       double return_value = api->call_double_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1315,8 +1342,11 @@ call_sub(...)
         croak("%s", SvPV_nolen(sv_exception));
       }
       sv_return_value = sv_2mortal(newSVnv(return_value));
+      XPUSHs(sv_return_value);
+      XSRETURN(1);
+      break;
     }
-    else {
+    default: {
       SPVM_API_BASE_OBJECT* return_value = api->call_object_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1364,19 +1394,8 @@ call_sub(...)
       else {
         sv_return_value = &PL_sv_undef;
       }
+      XPUSHs(sv_return_value);
+      XSRETURN(1);
     }
-    XPUSHs(sv_return_value);
-    XSRETURN(1);
-  }
-  else {
-    api->call_void_sub(api, sub_id, &call_sub_args);
-    SPVM_API_ARRAY* exception = api->get_exception(api);
-    if (exception) {
-      int32_t length = api->get_array_length(api, exception);
-      int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
-      SV* sv_exception = newSVpv(exception_bytes, length);
-      croak("%s", SvPV_nolen(sv_exception));
-    }
-    XSRETURN(0);
   }
 }
