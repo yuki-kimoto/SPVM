@@ -1359,8 +1359,6 @@ call_sub(...)
       if (return_value != NULL) {
         api->inc_ref_count(api, return_value);
         
-        const char* return_type = SvPV_nolen(sv_return_type);
-        int32_t type_length = strlen(return_type);
         if (return_type_id == SPVM_TYPE_C_ID_ARRAY_BYTE) {
           sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)return_value);
         }
@@ -1379,11 +1377,13 @@ call_sub(...)
         else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_DOUBLE) {
           sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)return_value);
         }
+        else if (return_type_id == SPVM_TYPE_C_ID_STRING) {
+          sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
+        }
         else {
-          if (strcmp(return_type, "string") == 0) {
-            sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
-          }
-          else if (return_type[type_length -1] == ']') {
+          const char* return_type = SvPV_nolen(sv_return_type);
+          int32_t type_length = strlen(return_type);
+          if (return_type[type_length -1] == ']') {
             sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type, (SPVM_API_ARRAY*)return_value);
           }
           else {
