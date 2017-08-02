@@ -1200,65 +1200,74 @@ call_sub(...)
     for (arg_index = 0; arg_index < args_length; arg_index++) {
       SV* sv_base_object = ST(arg_index + 1);
       
-      SV** sv_arg_type_name_ptr = av_fetch(av_arg_type_names, arg_index, 0);
-      SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
-      const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
-
       SV** sv_arg_type_id_ptr = av_fetch(av_arg_type_ids, arg_index, 0);
       SV* sv_arg_type_id = sv_arg_type_id_ptr ? *sv_arg_type_id_ptr : &PL_sv_undef;
       int32_t arg_type_id = SvIV(sv_arg_type_id);
       
-      if (sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
-        
-        HV* hv_base_object = (HV*)SvRV(sv_base_object);
-        
-        SV** sv_base_object_type_name_ptr = hv_fetch(hv_base_object, "type", strlen("type"), 0);
-        SV* sv_base_object_type_name = sv_base_object_type_name_ptr ? *sv_base_object_type_name_ptr : &PL_sv_undef;
-        const char* base_object_type_name = SvPV_nolen(sv_base_object_type_name);
-        
-        if (!strEQ(base_object_type_name, arg_type_name)) {
-          croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
+      if (sv_isobject(sv_base_object)) {
+        if (sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
+          SV** sv_arg_type_name_ptr = av_fetch(av_arg_type_names, arg_index, 0);
+          SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
+          const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
+         
+          HV* hv_base_object = (HV*)SvRV(sv_base_object);
+          
+          SV** sv_base_object_type_name_ptr = hv_fetch(hv_base_object, "type", strlen("type"), 0);
+          SV* sv_base_object_type_name = sv_base_object_type_name_ptr ? *sv_base_object_type_name_ptr : &PL_sv_undef;
+          const char* base_object_type_name = SvPV_nolen(sv_base_object_type_name);
+          
+          if (!strEQ(base_object_type_name, arg_type_name)) {
+            croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
+          }
+          
+          // Get content
+          SV** sv_content_ptr = hv_fetch(hv_base_object, "content", strlen("content"), 0);
+          SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
+          SV* sviv_content = SvRV(sv_content);
+          size_t iv_content = SvIV(sviv_content);
+          SPVM_API_BASE_OBJECT* base_object = INT2PTR(SPVM_API_BASE_OBJECT*, iv_content);
+          
+          call_sub_args[arg_index].object_value = base_object;
         }
-        
-        // Get content
-        SV** sv_content_ptr = hv_fetch(hv_base_object, "content", strlen("content"), 0);
-        SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
-        SV* sviv_content = SvRV(sv_content);
-        size_t iv_content = SvIV(sviv_content);
-        SPVM_API_BASE_OBJECT* base_object = INT2PTR(SPVM_API_BASE_OBJECT*, iv_content);
-        
-        // warn("CALL_SUB_BEFORE %d", api->get_ref_count(api, base_object));
-        
-        call_sub_args[arg_index].object_value = base_object;
+        else {
+          croak("Object must be derived from SPVM::BaseObject");
+        }
       }
       else {
         SV* sv_value = sv_base_object;
-        if (arg_type_id == SPVM_TYPE_C_ID_BYTE) {
-          int8_t value = (int8_t)SvIV(sv_value);
-          call_sub_args[arg_index].byte_value = value;
-        }
-        else if (arg_type_id == SPVM_TYPE_C_ID_SHORT) {
-          int16_t value = (int16_t)SvIV(sv_value);
-          call_sub_args[arg_index].short_value = value;
-        }
-        else if (arg_type_id == SPVM_TYPE_C_ID_INT) {
-          int32_t value = (int32_t)SvIV(sv_value);
-          call_sub_args[arg_index].int_value = value;
-        }
-        else if (arg_type_id == SPVM_TYPE_C_ID_LONG) {
-          int64_t value = (int64_t)SvIV(sv_value);
-          call_sub_args[arg_index].long_value = value;
-        }
-        else if (arg_type_id == SPVM_TYPE_C_ID_FLOAT) {
-          float value = (float)SvNV(sv_value);
-          call_sub_args[arg_index].float_value = value;
-        }
-        else if (arg_type_id == SPVM_TYPE_C_ID_DOUBLE) {
-          double value = (double)SvNV(sv_value);
-          call_sub_args[arg_index].double_value = value;
-        }
-        else {
-          assert(0);
+        switch (arg_type_id) {
+          case SPVM_TYPE_C_ID_BYTE : {
+            int8_t value = (int8_t)SvIV(sv_value);
+            call_sub_args[arg_index].byte_value = value;
+            break;
+          }
+          case  SPVM_TYPE_C_ID_SHORT : {
+            int16_t value = (int16_t)SvIV(sv_value);
+            call_sub_args[arg_index].short_value = value;
+            break;
+          }
+          case  SPVM_TYPE_C_ID_INT : {
+            int32_t value = (int32_t)SvIV(sv_value);
+            call_sub_args[arg_index].int_value = value;
+            break;
+          }
+          case  SPVM_TYPE_C_ID_LONG : {
+            int64_t value = (int64_t)SvIV(sv_value);
+            call_sub_args[arg_index].long_value = value;
+            break;
+          }
+          case  SPVM_TYPE_C_ID_FLOAT : {
+            float value = (float)SvNV(sv_value);
+            call_sub_args[arg_index].float_value = value;
+            break;
+          }
+          case  SPVM_TYPE_C_ID_DOUBLE : {
+            double value = (double)SvNV(sv_value);
+            call_sub_args[arg_index].double_value = value;
+            break;
+          }
+          default :
+            assert(0);
         }
       }
     }
