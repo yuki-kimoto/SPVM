@@ -497,7 +497,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         const char* cur_token_ptr = compiler->bufptr;
         
         char* str;
-        if (*(compiler->bufptr + 1) == '"') {
+        if (*(compiler->bufptr) == '"') {
           str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, 0);
           str[0] = '\0';
           compiler->bufptr++;

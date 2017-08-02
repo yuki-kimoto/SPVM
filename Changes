@@ -1,6 +1,7 @@
 0.0236 2017-08-01
   - add __END__
   - SPVM exception can be cached from Perl's eval { ... }
+  - fix one character string bug.
 0.0235 2017-07-31
   - fix default return value
   - imporve exception message

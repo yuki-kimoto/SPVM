@@ -24,6 +24,8 @@ package Test {
   }
   
   sub main($mvar : int) : int {
+    stdout::println("a");
+    
     # Default return value object
     if (default_return_value_object_sub() == undef) {
       if (default_return_value_object_sub_empty() == undef) {
