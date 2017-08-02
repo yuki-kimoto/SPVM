@@ -1175,7 +1175,7 @@ call_sub(...)
       SV* sv_arg_type_name = sv_arg_type_name_ptr ? *sv_arg_type_name_ptr : &PL_sv_undef;
       const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
       
-      if (sv_isobject(sv_base_object) && sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
+      if (sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
         
         HV* hv_base_object = (HV*)SvRV(sv_base_object);
         
