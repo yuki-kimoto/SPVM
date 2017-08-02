@@ -1248,7 +1248,6 @@ call_sub(...)
   
   api->set_exception(api, NULL);
   
-  SV* sv_return_value = NULL;
   switch (return_type_id) {
     case SPVM_TYPE_C_ID_VOID:  {
       api->call_void_sub(api, sub_id, &call_sub_args);
@@ -1271,7 +1270,7 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      sv_return_value = sv_2mortal(newSViv(return_value));
+      SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
       XSRETURN(1);
       break;
@@ -1285,7 +1284,7 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      sv_return_value = sv_2mortal(newSViv(return_value));
+      SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
       XSRETURN(1);
       break;
@@ -1299,7 +1298,7 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      sv_return_value = sv_2mortal(newSViv(return_value));
+      SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
       XSRETURN(1);
       break;
@@ -1313,7 +1312,7 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      sv_return_value = sv_2mortal(newSViv(return_value));
+      SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
       XSRETURN(1);
       break;
@@ -1327,7 +1326,7 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      sv_return_value = sv_2mortal(newSVnv(return_value));
+      SV* sv_return_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_return_value);
       XSRETURN(1);
       break;
@@ -1341,7 +1340,7 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      sv_return_value = sv_2mortal(newSVnv(return_value));
+      SV* sv_return_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_return_value);
       XSRETURN(1);
       break;
@@ -1355,7 +1354,8 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      
+
+      SV* sv_return_value = NULL;
       if (return_value != NULL) {
         api->inc_ref_count(api, return_value);
         
