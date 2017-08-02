@@ -935,20 +935,29 @@ build_sub_symtable(...)
           
           // Argument types
           AV* av_arg_type_names = (AV*)sv_2mortal((SV*)newAV());
+          AV* av_arg_type_ids = (AV*)sv_2mortal((SV*)newAV());
           SPVM_DYNAMIC_ARRAY* op_args = sub->op_args;
           {
             int32_t arg_index;
             for (arg_index = 0; arg_index < op_args->length; arg_index++) {
               SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(op_args, arg_index);
               SPVM_OP* op_arg_type = op_arg->uv.my_var->op_type;
-              const char* arg_type_name = op_arg_type->uv.type->name;
+              SPVM_TYPE* arg_type = op_arg_type->uv.type;
+              const char* arg_type_name = arg_type->name;
+              int32_t arg_type_id = arg_type->id;
               
               SV* sv_arg_type_name = sv_2mortal(newSVpv(arg_type_name, 0));
               av_push(av_arg_type_names, SvREFCNT_inc(sv_arg_type_name));
+              
+              SV* sv_arg_type_id = sv_2mortal(newSViv(arg_type_id));
+              av_push(av_arg_type_ids, SvREFCNT_inc(sv_arg_type_id));
             }
           }
           SV* sv_arg_type_names = sv_2mortal(newRV_inc((SV*)av_arg_type_names));
           hv_store(hv_sub_info, "arg_types", strlen("arg_types"), SvREFCNT_inc(sv_arg_type_names), 0);
+
+          SV* sv_arg_type_ids = sv_2mortal(newRV_inc((SV*)av_arg_type_ids));
+          hv_store(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), SvREFCNT_inc(sv_arg_type_ids), 0);
           
           // Return type
           SPVM_OP* op_return_type = sub->op_return_type;
