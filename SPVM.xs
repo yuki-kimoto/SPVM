@@ -962,6 +962,16 @@ build_sub_symtable(...)
             hv_store(hv_sub_info, "return_type", strlen("return_type"), &PL_sv_undef, 0);
           }
           
+          // Return type id
+          SV* sv_return_type_id;
+          if (return_type) {
+            sv_return_type_id = sv_2mortal(newSViv(return_type->id));
+          }
+          else {
+            sv_return_type_id = sv_2mortal(newSViv(-1));
+          }
+          hv_store(hv_sub_info, "return_type_id", strlen("return_type_id"), SvREFCNT_inc(sv_return_type_id), 0);
+          
           SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)hv_sub_info));
           hv_store(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), SvREFCNT_inc(sv_sub_info), 0);
         }
