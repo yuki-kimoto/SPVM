@@ -34,8 +34,10 @@ use SPVM::stdout;
 
 # Exception
 {
-  eval { SPVM::TestCase::exception_zero_divide_int() };
+  eval { SPVM::TestCase::exception_zero_divide_int() }; my $line = __LINE__;
   like($@, qr|\QOccur 0 division(INT_VALUE / INT_VALUE)|);
+  like($@, qr/SPVM\.t/);
+  like($@, qr/$line/);
 }
 
 # Default return value

@@ -254,7 +254,12 @@ sub build_spvm_subs {
     
     # Define SPVM subroutine
     no strict 'refs';
-    *{"SPVM::$abs_name"} = sub { SPVM::call_sub("$abs_name", @_) };
+    *{"SPVM::$abs_name"} = sub {
+      my $return_value;
+      eval { $return_value = SPVM::call_sub("$abs_name", @_) };
+      croak $@ if $@;
+      $return_value;
+    };
   }
 }
 
