@@ -1354,40 +1354,42 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-
+      
       SV* sv_return_value = NULL;
       if (return_value != NULL) {
         api->inc_ref_count(api, return_value);
         
-        if (return_type_id == SPVM_TYPE_C_ID_ARRAY_BYTE) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)return_value);
-        }
-        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_SHORT) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)return_value);
-        }
-        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_INT) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)return_value);
-        }
-        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_LONG) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)return_value);
-        }
-        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_FLOAT) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)return_value);
-        }
-        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_DOUBLE) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)return_value);
-        }
-        else if (return_type_id == SPVM_TYPE_C_ID_STRING) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
-        }
-        else {
-          const char* return_type = SvPV_nolen(sv_return_type);
-          int32_t type_length = strlen(return_type);
-          if (return_type[type_length -1] == ']') {
-            sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type, (SPVM_API_ARRAY*)return_value);
-          }
-          else {
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type, (SPVM_API_OBJECT*)return_value);
+        switch(return_type_id) {
+          case SPVM_TYPE_C_ID_ARRAY_BYTE :
+            sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)return_value);
+            break;
+          case SPVM_TYPE_C_ID_ARRAY_SHORT :
+            sv_return_value = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)return_value);
+            break;
+          case SPVM_TYPE_C_ID_ARRAY_INT :
+            sv_return_value = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)return_value);
+            break;
+          case SPVM_TYPE_C_ID_ARRAY_LONG :
+            sv_return_value = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)return_value);
+            break;
+          case SPVM_TYPE_C_ID_ARRAY_FLOAT :
+            sv_return_value = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)return_value);
+            break;
+          case SPVM_TYPE_C_ID_ARRAY_DOUBLE :
+            sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)return_value);
+            break;
+          case SPVM_TYPE_C_ID_STRING :
+            sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
+            break;
+          default : {
+            const char* return_type = SvPV_nolen(sv_return_type);
+            int32_t type_length = strlen(return_type);
+            if (return_type[type_length -1] == ']') {
+              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type, (SPVM_API_ARRAY*)return_value);
+            }
+            else {
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type, (SPVM_API_OBJECT*)return_value);
+            }
           }
         }
       }
