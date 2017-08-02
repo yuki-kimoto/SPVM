@@ -27,7 +27,6 @@ our @PACKAGE_INFOS;
 our %PACKAGE_SYMTABLE;
 our %FIELD_SYMTABLE;
 our %SUB_SYMTABLE;
-our %TYPE_SYMTABLE;
 our $API;
 our @TYPE_NAMES;
 
@@ -36,9 +35,6 @@ CHECK {
   # Compile SPVM source code
   compile();
   
-  # Build type symbol table
-  build_type_symtable();
-
   # Build type names
   build_type_names();
   

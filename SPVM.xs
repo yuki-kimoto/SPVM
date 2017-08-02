@@ -951,19 +951,9 @@ build_sub_symtable(...)
           SV* sv_arg_type_ids = sv_2mortal(newRV_inc((SV*)av_arg_type_ids));
           hv_store(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), SvREFCNT_inc(sv_arg_type_ids), 0);
           
-          // Return type
+          // Return type id
           SPVM_OP* op_return_type = sub->op_return_type;
           SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, op_return_type);
-          if (return_type) {
-            const char* return_type = op_return_type->uv.type->name;
-            SV* sv_return_type = sv_2mortal(newSVpv(return_type, 0));
-            hv_store(hv_sub_info, "return_type", strlen("return_type"), SvREFCNT_inc(sv_return_type), 0);
-          }
-          else {
-            hv_store(hv_sub_info, "return_type", strlen("return_type"), &PL_sv_undef, 0);
-          }
-          
-          // Return type id
           SV* sv_return_type_id;
           if (return_type) {
             sv_return_type_id = sv_2mortal(newSViv(return_type->id));
@@ -977,38 +967,6 @@ build_sub_symtable(...)
           hv_store(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), SvREFCNT_inc(sv_sub_info), 0);
         }
       }
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
-build_type_symtable(...)
-  PPCODE:
-{
-  // Get compiler
-  SPVM_COMPILER* compiler = SPVM_XS_INTERNAL_UTIL_get_compiler();
-  
-  // Subroutine information
-  HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
-  
-  // abs_name, arg_types, return_type, id, type_id
-  SPVM_DYNAMIC_ARRAY* types = compiler->types;
-  {
-    int32_t type_id;
-    for (type_id = 0; type_id < types->length; type_id++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, type_id);
-      
-      const char* type_name = type->name;
-      int32_t type_id = type->id;
-      SV* sv_type_id = sv_2mortal(newSViv(type_id));
-      
-      HV* hv_type_info = (HV*)sv_2mortal((SV*)newHV());
-      hv_store(hv_type_info, "id", strlen("id"), SvREFCNT_inc(sv_type_id), 0);
-      SV* sv_type_info = sv_2mortal(newRV_inc((SV*)hv_type_info));
-      
-      hv_store(hv_type_symtable, type_name, strlen(type_name), SvREFCNT_inc(sv_type_info), 0);
     }
   }
   
