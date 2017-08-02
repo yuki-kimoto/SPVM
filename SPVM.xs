@@ -1194,12 +1194,12 @@ call_sub(...)
   SV** sv_arg_type_names_ptr = hv_fetch(hv_sub_info, "arg_types", strlen("arg_types"), 0);
   SV* sv_arg_type_names = sv_arg_type_names_ptr ? *sv_arg_type_names_ptr : &PL_sv_undef;
   AV* av_arg_type_names = (AV*)SvRV(sv_arg_type_names);
-  int32_t args_length = av_len(av_arg_type_names) + 1;
   
   // Argument type id
   SV** sv_arg_type_ids_ptr = hv_fetch(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), 0);
   SV* sv_arg_type_ids = sv_arg_type_ids_ptr ? *sv_arg_type_ids_ptr : &PL_sv_undef;
   AV* av_arg_type_ids = (AV*)SvRV(sv_arg_type_ids);
+  int32_t args_length = av_len(av_arg_type_ids) + 1;
   
   // Return type
   SV** sv_return_type_ptr = hv_fetch(hv_sub_info, "return_type", strlen("return_type"), 0);
