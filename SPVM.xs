@@ -934,7 +934,6 @@ build_sub_symtable(...)
           hv_store(hv_sub_info, "id", strlen("id"), SvREFCNT_inc(sv_sub_id), 0);
           
           // Argument types
-          AV* av_arg_type_names = (AV*)sv_2mortal((SV*)newAV());
           AV* av_arg_type_ids = (AV*)sv_2mortal((SV*)newAV());
           SPVM_DYNAMIC_ARRAY* op_args = sub->op_args;
           {
@@ -943,19 +942,12 @@ build_sub_symtable(...)
               SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(op_args, arg_index);
               SPVM_OP* op_arg_type = op_arg->uv.my_var->op_type;
               SPVM_TYPE* arg_type = op_arg_type->uv.type;
-              const char* arg_type_name = arg_type->name;
               int32_t arg_type_id = arg_type->id;
-              
-              SV* sv_arg_type_name = sv_2mortal(newSVpv(arg_type_name, 0));
-              av_push(av_arg_type_names, SvREFCNT_inc(sv_arg_type_name));
               
               SV* sv_arg_type_id = sv_2mortal(newSViv(arg_type_id));
               av_push(av_arg_type_ids, SvREFCNT_inc(sv_arg_type_id));
             }
           }
-          SV* sv_arg_type_names = sv_2mortal(newRV_inc((SV*)av_arg_type_names));
-          hv_store(hv_sub_info, "arg_types", strlen("arg_types"), SvREFCNT_inc(sv_arg_type_names), 0);
-          
           SV* sv_arg_type_ids = sv_2mortal(newRV_inc((SV*)av_arg_type_ids));
           hv_store(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), SvREFCNT_inc(sv_arg_type_ids), 0);
           
@@ -1189,11 +1181,6 @@ call_sub(...)
   SV** sv_sub_id_ptr = hv_fetch(hv_sub_info, "id", strlen("id"), 0);
   SV* sv_sub_id = sv_sub_id_ptr ? *sv_sub_id_ptr : &PL_sv_undef;
   int32_t sub_id = (int32_t)SvIV(sv_sub_id);
-  
-  // Argument types
-  SV** sv_arg_type_names_ptr = hv_fetch(hv_sub_info, "arg_types", strlen("arg_types"), 0);
-  SV* sv_arg_type_names = sv_arg_type_names_ptr ? *sv_arg_type_names_ptr : &PL_sv_undef;
-  AV* av_arg_type_names = (AV*)SvRV(sv_arg_type_names);
   
   // Argument type id
   SV** sv_arg_type_ids_ptr = hv_fetch(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), 0);
