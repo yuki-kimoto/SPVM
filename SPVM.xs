@@ -1390,10 +1390,10 @@ call_sub(...)
             const char* return_type_name = SvPV_nolen(sv_return_type_name);
             int32_t type_name_length = strlen(return_type_name);
             if (return_type_name[type_name_length - 1] == ']') {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_name, (SPVM_API_ARRAY*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object_array2(return_type_id, (SPVM_API_ARRAY*)return_value);
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_name, (SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_type_id, (SPVM_API_OBJECT*)return_value);
             }
           }
         }
