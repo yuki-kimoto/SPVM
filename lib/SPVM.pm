@@ -252,17 +252,9 @@ sub import {
 sub build_spvm_subs {
   for my $abs_name (keys %SUB_SYMTABLE) {
     
-    my $sub;
-    $sub .= "sub SPVM::$abs_name {\n";
-    $sub .= "  SPVM::call_sub(\"$abs_name\", \@_);\n";
-    $sub .= "}\n";
-    
     # Define SPVM subroutine
-    eval $sub;
-    
-    if ($@) {
-      croak "Can't define SVPM subroutine \"$abs_name\"\n$sub";
-    }
+    no strict 'refs';
+    *{"SPVM::$abs_name"} = sub { SPVM::call_sub("$abs_name", @_) };
   }
 }
 
