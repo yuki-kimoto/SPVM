@@ -1182,6 +1182,12 @@ call_sub(...)
           SV* sv_base_object_type_name = sv_base_object_type_name_ptr ? *sv_base_object_type_name_ptr : &PL_sv_undef;
           const char* base_object_type_name = SvPV_nolen(sv_base_object_type_name);
           
+          /*
+          SV** sv_base_object_type_id_ptr = hv_fetch(hv_base_object, "type_id", strlen("type_id"), 0);
+          SV* sv_base_object_type_id = *sv_base_object_type_id_ptr;
+          const char* base_object_type_id = SvIV(sv_base_object_type_id);
+          */
+          
           AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
           SV** sv_arg_type_name_ptr = av_fetch(av_type_names, arg_type_id, 0);
           SV* sv_arg_type_name = *sv_arg_type_name_ptr;
