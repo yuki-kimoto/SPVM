@@ -1024,6 +1024,33 @@ build_type_symtable(...)
 }
 
 SV*
+build_type_names(...)
+  PPCODE:
+{
+  // Get compiler
+  SPVM_COMPILER* compiler = SPVM_XS_INTERNAL_UTIL_get_compiler();
+  
+  // Subroutine information
+  AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
+  
+  SPVM_DYNAMIC_ARRAY* types = compiler->types;
+  {
+    int32_t type_id;
+    for (type_id = 0; type_id < types->length; type_id++) {
+      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, type_id);
+      
+      const char* type_name = type->name;
+      SV* sv_type_name = sv_2mortal(newSVpv(type_name, 0));
+      int32_t type_id = type->id;
+      
+      av_store(av_type_names, type_id, SvREFCNT_inc(sv_type_name));
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
 build_package_symtable(...)
   PPCODE:
 {
