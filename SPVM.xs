@@ -1233,27 +1233,27 @@ call_sub(...)
       }
       else {
         SV* sv_value = sv_base_object;
-        if (strEQ(arg_type_name, "byte")) {
+        if (arg_type_id == SPVM_TYPE_C_ID_BYTE) {
           int8_t value = (int8_t)SvIV(sv_value);
           call_sub_args[arg_index].byte_value = value;
         }
-        else if (strEQ(arg_type_name, "short")) {
+        else if (arg_type_id == SPVM_TYPE_C_ID_SHORT) {
           int16_t value = (int16_t)SvIV(sv_value);
           call_sub_args[arg_index].short_value = value;
         }
-        else if (strEQ(arg_type_name, "int")) {
+        else if (arg_type_id == SPVM_TYPE_C_ID_INT) {
           int32_t value = (int32_t)SvIV(sv_value);
           call_sub_args[arg_index].int_value = value;
         }
-        else if (strEQ(arg_type_name, "long")) {
+        else if (arg_type_id == SPVM_TYPE_C_ID_LONG) {
           int64_t value = (int64_t)SvIV(sv_value);
           call_sub_args[arg_index].long_value = value;
         }
-        else if (strEQ(arg_type_name, "float")) {
+        else if (arg_type_id == SPVM_TYPE_C_ID_FLOAT) {
           float value = (float)SvNV(sv_value);
           call_sub_args[arg_index].float_value = value;
         }
-        else if (strEQ(arg_type_name, "double")) {
+        else if (arg_type_id == SPVM_TYPE_C_ID_DOUBLE) {
           double value = (double)SvNV(sv_value);
           call_sub_args[arg_index].double_value = value;
         }
