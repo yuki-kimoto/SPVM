@@ -344,7 +344,13 @@ SV* SPVM_XS_UTIL_new_sv_object_array2(int32_t type_id, SPVM_API_ARRAY* array) {
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(type_id));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-  
+
+  // Set type
+  AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
+  SV** sv_type_name_ptr = av_fetch(av_type_names, type_id, 0);
+  SV* sv_type_name = *sv_type_name_ptr;
+  hv_store(hv_array, "type", strlen("type"), SvREFCNT_inc(sv_type_name), 0);
+
   return sv_array;
 }
 
@@ -389,7 +395,13 @@ SV* SPVM_XS_UTIL_new_sv_object2(int32_t type_id, SPVM_API_OBJECT* object) {
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(type_id));
   hv_store(hv_object, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-  
+
+  // Set type
+  AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
+  SV** sv_type_name_ptr = av_fetch(av_type_names, type_id, 0);
+  SV* sv_type_name = *sv_type_name_ptr;
+  hv_store(hv_object, "type", strlen("type"), SvREFCNT_inc(sv_type_name), 0);
+
   return sv_object;
 }
 

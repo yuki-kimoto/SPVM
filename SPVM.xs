@@ -1140,7 +1140,7 @@ call_sub(...)
   SV* sv_sub_id = sv_sub_id_ptr ? *sv_sub_id_ptr : &PL_sv_undef;
   int32_t sub_id = (int32_t)SvIV(sv_sub_id);
   
-  // Argument type id
+  // Argument type ids
   SV** sv_arg_type_ids_ptr = hv_fetch(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), 0);
   SV* sv_arg_type_ids = sv_arg_type_ids_ptr ? *sv_arg_type_ids_ptr : &PL_sv_undef;
   AV* av_arg_type_ids = (AV*)SvRV(sv_arg_type_ids);
