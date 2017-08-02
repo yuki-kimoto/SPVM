@@ -1378,7 +1378,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
             break;
           default : {
-            AV* av_type_names = av_get("SPVM::TYPE_NAMES", 0);
+            AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
             SV** sv_return_type_name_ptr = av_fetch(av_type_names, return_type_id, 0);
             SV* sv_return_type_name = *sv_return_type_name_ptr;
             const char* return_type_name = SvPV_nolen(sv_return_type_name);
