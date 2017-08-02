@@ -1163,6 +1163,11 @@ call_sub(...)
   // Return type
   SV** sv_return_type_ptr = hv_fetch(hv_sub_info, "return_type", strlen("return_type"), 0);
   SV* sv_return_type = sv_return_type_ptr ? *sv_return_type_ptr : &PL_sv_undef;
+
+  // Return type id
+  SV** sv_return_type_id_ptr = hv_fetch(hv_sub_info, "return_type_id", strlen("return_type_id"), 0);
+  SV* sv_return_type_id = sv_return_type_id_ptr ? *sv_return_type_id_ptr : &PL_sv_undef;
+  int32_t return_type_id = SvIV(sv_return_type_id);
   
   // Get API
   SV* sv_api = get_sv("SPVM::API", 0);
@@ -1244,10 +1249,10 @@ call_sub(...)
   api->set_exception(api, NULL);
   
   SV* sv_return_value = NULL;
-  if (SvOK(sv_return_type)) {
+  if (return_type_id != -1) {
     const char* return_type = SvPV_nolen(sv_return_type);
     
-    if (strEQ(return_type, "byte")) {
+    if (return_type_id == SPVM_TYPE_C_ID_BYTE) {
       int8_t return_value = api->call_byte_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1258,7 +1263,7 @@ call_sub(...)
       }
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
-    else if (strEQ(return_type, "short")) {
+    else if (return_type_id == SPVM_TYPE_C_ID_SHORT) {
       int16_t return_value = api->call_short_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1269,7 +1274,7 @@ call_sub(...)
       }
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
-    else if (strEQ(return_type, "int")) {
+    else if (return_type_id == SPVM_TYPE_C_ID_INT) {
       int32_t return_value = api->call_int_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1280,7 +1285,7 @@ call_sub(...)
       }
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
-    else if (strEQ(return_type, "long")) {
+    else if (return_type_id == SPVM_TYPE_C_ID_LONG) {
       int64_t return_value = api->call_long_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1291,7 +1296,7 @@ call_sub(...)
       }
       sv_return_value = sv_2mortal(newSViv(return_value));
     }
-    else if (strEQ(return_type, "float")) {
+    else if (return_type_id == SPVM_TYPE_C_ID_FLOAT) {
       float return_value = api->call_float_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1302,7 +1307,7 @@ call_sub(...)
       }
       sv_return_value = sv_2mortal(newSVnv(return_value));
     }
-    else if (strEQ(return_type, "double")) {
+    else if (return_type_id == SPVM_TYPE_C_ID_DOUBLE) {
       double return_value = api->call_double_sub(api, sub_id, &call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
@@ -1327,32 +1332,34 @@ call_sub(...)
         api->inc_ref_count(api, return_value);
         
         int32_t type_length = strlen(return_type);
-        if (strcmp(return_type, "byte[]") == 0) {
+        if (return_type_id == SPVM_TYPE_C_ID_ARRAY_BYTE) {
           sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)return_value);
         }
-        else if (strcmp(return_type, "short[]") == 0) {
+        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_SHORT) {
           sv_return_value = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)return_value);
         }
-        else if (strcmp(return_type, "int[]") == 0) {
+        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_INT) {
           sv_return_value = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)return_value);
         }
-        else if (strcmp(return_type, "long[]") == 0) {
+        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_LONG) {
           sv_return_value = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)return_value);
         }
-        else if (strcmp(return_type, "float[]") == 0) {
+        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_FLOAT) {
           sv_return_value = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)return_value);
         }
-        else if (strcmp(return_type, "double[]") == 0) {
+        else if (return_type_id == SPVM_TYPE_C_ID_ARRAY_DOUBLE) {
           sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)return_value);
         }
-        else if (strcmp(return_type, "string") == 0) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
-        }
-        else if (return_type[type_length -1] == ']') {
-          sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type, (SPVM_API_ARRAY*)return_value);
-        }
         else {
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type, (SPVM_API_OBJECT*)return_value);
+          if (strcmp(return_type, "string") == 0) {
+            sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
+          }
+          else if (return_type[type_length -1] == ']') {
+            sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type, (SPVM_API_ARRAY*)return_value);
+          }
+          else {
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type, (SPVM_API_OBJECT*)return_value);
+          }
         }
       }
       else {
