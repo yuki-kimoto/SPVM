@@ -269,11 +269,11 @@ get(...)
       XPUSHs(sv_array);
     }
     else if (field_type[field_type_length - 1] == ']') {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type, (SPVM_API_ARRAY*)value);
+      SV* sv_array = SPVM_XS_UTIL_new_sv_object_array2(field_type_id, (SPVM_API_ARRAY*)value);
       XPUSHs(sv_array);
     }
     else {
-      SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type, (SPVM_API_OBJECT*)value);
+      SV* sv_object = SPVM_XS_UTIL_new_sv_object2(field_type_id, (SPVM_API_OBJECT*)value);
       XPUSHs(sv_object);
     }
   }
