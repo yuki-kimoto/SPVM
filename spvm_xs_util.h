@@ -19,6 +19,15 @@ SPVM_API* SPVM_XS_UTIL_get_api() {
   return api;
 }
 
+const char* SPVM_XS_UTIL_get_type_name(int32_t type_id) {
+  AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
+  SV** sv_type_name_ptr = av_fetch(av_type_names, type_id, 0);
+  SV* sv_type_name = *sv_type_name_ptr;
+  const char* type_name = SvPV_nolen(sv_type_name);
+  
+  return type_name;
+}
+
 const char* SPVM_XS_UTIL_get_type(SV* sv_object) {
   HV* hv_object = (HV*)SvRV(sv_object);
   SV** sv_type_ptr = hv_fetch(hv_object, "type", strlen("type"), 0);

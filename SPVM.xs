@@ -185,7 +185,13 @@ get(...)
   
   // Get content
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
-
+  
+  // Package type id
+  int32_t package_type_id = SPVM_XS_UTIL_get_type_id(sv_object);
+  
+  // Package name
+  
+  
   // Package name
   const char* package_name = SPVM_XS_UTIL_get_type(sv_object);
   
