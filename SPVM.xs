@@ -1265,16 +1265,9 @@ call_sub(...)
           SV* sv_base_object_type_id = *sv_base_object_type_id_ptr;
           int32_t base_object_type_id = SvIV(sv_base_object_type_id);
           
-          AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
-          SV** sv_arg_type_name_ptr = av_fetch(av_type_names, arg_type_id, 0);
-          SV* sv_arg_type_name = *sv_arg_type_name_ptr;
-          
-          const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
           if (base_object_type_id != arg_type_id) {
-            SV** sv_base_object_type_name_ptr = hv_fetch(hv_base_object, "type", strlen("type"), 0);
-            SV* sv_base_object_type_name = sv_base_object_type_name_ptr ? *sv_base_object_type_name_ptr : &PL_sv_undef;
-            const char* base_object_type_name = SvPV_nolen(sv_base_object_type_name);
-          
+            const char* base_object_type_name = SPVM_XS_UTIL_get_type_name(base_object_type_id);
+            const char* arg_type_name = SPVM_XS_UTIL_get_type_name(arg_type_id);
             
             croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
           }
@@ -1467,10 +1460,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)return_value);
             break;
           default : {
-            AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
-            SV** sv_return_type_name_ptr = av_fetch(av_type_names, return_type_id, 0);
-            SV* sv_return_type_name = *sv_return_type_name_ptr;
-            const char* return_type_name = SvPV_nolen(sv_return_type_name);
+            const char* return_type_name = SPVM_XS_UTIL_get_type_name(return_type_id);
             int32_t type_name_length = strlen(return_type_name);
             if (return_type_name[type_name_length - 1] == ']') {
               sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_id, (SPVM_API_ARRAY*)return_value);
