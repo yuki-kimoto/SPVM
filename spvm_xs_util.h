@@ -125,10 +125,6 @@ SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_ARRAY* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type
-  SV* sv_type = sv_2mortal(newSVpv("byte[]", 0));
-  hv_store(hv_array, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
-
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_BYTE));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
@@ -152,10 +148,6 @@ SV* SPVM_XS_UTIL_new_sv_string(SPVM_API_ARRAY* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type
-  SV* sv_type = sv_2mortal(newSVpv("string", 0));
-  hv_store(hv_array, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
-
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_STRING));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
@@ -179,10 +171,6 @@ SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_API_ARRAY* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type
-  SV* sv_type = sv_2mortal(newSVpv("short[]", 0));
-  hv_store(hv_array, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
-
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_SHORT));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
@@ -206,10 +194,6 @@ SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_API_ARRAY* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type
-  SV* sv_type = sv_2mortal(newSVpv("int[]", 0));
-  hv_store(hv_array, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
-
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_INT));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
@@ -233,10 +217,6 @@ SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_API_ARRAY* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type
-  SV* sv_type = sv_2mortal(newSVpv("long[]", 0));
-  hv_store(hv_array, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
-
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_LONG));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
@@ -260,10 +240,6 @@ SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_API_ARRAY* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type
-  SV* sv_type = sv_2mortal(newSVpv("float[]", 0));
-  hv_store(hv_array, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
-  
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_FLOAT));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
@@ -286,10 +262,6 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_ARRAY* array) {
   
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
-  
-  // Set type
-  SV* sv_type = sv_2mortal(newSVpv("double[]", 0));
-  hv_store(hv_array, "type", strlen("type"), SvREFCNT_inc(sv_type), 0);
   
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_DOUBLE));

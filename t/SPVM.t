@@ -173,9 +173,6 @@ is_deeply(
     $object->set(x_string => SPVM::new_string_raw("abc"));
     
     ok(SPVM::TestCase::spvm_object_set_object($object));
-    
-    is($object->get('x_int_array')->{type}, "int[]");
-    is($object->get('x_string')->{type}, "string");
   }
   # Create object
   {
@@ -193,8 +190,6 @@ is_deeply(
     is($object->get('x_short'), $SHORT_MAX);
     is($object->get('x_int'), $INT_MAX);
     is($object->get('x_long'), $LONG_MAX);
-    is($object->get('x_int_array')->{type}, "int[]");
-    is($object->get('x_string')->{type}, "string");
   }
   
 }
