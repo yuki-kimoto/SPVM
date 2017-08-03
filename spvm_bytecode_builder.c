@@ -607,6 +607,19 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     cur_default_bytecode_index = -1;
                     cur_case_bytecode_indexes = NULL;
                     
+                    // Set last position
+                    while (goto_last_bytecode_index_stack->length > 0) {
+                      
+                      int32_t* goto_last_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(goto_last_bytecode_index_stack);
+                      int32_t goto_last_bytecode_index = *goto_last_bytecode_index_ptr;
+                      
+                      // Last offset
+                      int32_t goto_last_offset = bytecode_array->length - goto_last_bytecode_index;
+                      
+                      bytecode_array->values[goto_last_bytecode_index + 1] = (goto_last_offset >> 8) & 0xFF;
+                      bytecode_array->values[goto_last_bytecode_index + 2] = goto_last_offset & 0xFF;
+                    }
+                    
                     break;
                   }
                   case SPVM_OP_C_CODE_CASE: {

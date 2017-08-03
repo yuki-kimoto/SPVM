@@ -510,10 +510,13 @@ package Test {
       switch($num) {
         case Test::EnumD->THREE:
           stdout::println_int(1);
+          last;
         case Test::EnumD->FORE:
           stdout::println_int(2);
+          last;
         case 5:
           stdout::println_int(3);
+          last;
         default:
           stdout::println_int(5);
       }
@@ -525,10 +528,13 @@ package Test {
       switch ($num) {
         case 1:
           stdout::println_int(1);
+          last;
         case 3:
           stdout::println_int(2);
+          last;
         case 10000:
           stdout::println_int(2);
+          last;
         default:
           stdout::println_int(5);
       }

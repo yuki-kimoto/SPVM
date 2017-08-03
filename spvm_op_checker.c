@@ -368,8 +368,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       break;
                     }
                     case SPVM_OP_C_CODE_LAST: {
-                      if (loop_block_my_var_base_stack->length == 0) {
-                        SPVM_yyerror_format(compiler, "last statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
+                      if (loop_block_my_var_base_stack->length == 0 && op_switch_stack->length == 0) {
+                        SPVM_yyerror_format(compiler, "last statement must be in loop block or switch block at %s line %d\n", op_cur->file, op_cur->line);
                       }
                       break;
                     }
