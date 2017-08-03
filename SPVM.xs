@@ -80,6 +80,8 @@ new_object(...)
   const char* package_name = SvPV_nolen(sv_package_name);
 
   int32_t package_id = SPVM_XS_UTIL_get_package_id(package_name);
+  int32_t type_id = SPVM_XS_UTIL_get_type_id_from_package_name(package_name);
+  
   if (package_id == SPVM_API_ERROR_NO_ID) {
     croak("Unkown package \"%s\"(SPVM::Object::new_object", package_name);
   }
@@ -1061,7 +1063,7 @@ build_package_symtable(...)
       SV** sv_type_info_ptr = hv_fetch(hv_type_symtable, package_name, strlen(package_name), 0);
       SV* sv_type_info = *sv_type_info_ptr;
       HV* hv_type_info = (HV*)SvRV(sv_type_info);
-      SV** sv_type_id_ptr = hv_fetch(hv_type_symtable, package_name, strlen(package_name), 0);
+      SV** sv_type_id_ptr = hv_fetch(hv_type_info, "id", strlen("id"), 0);
       SV* sv_type_id = *sv_type_id_ptr;
       
       // Package information
