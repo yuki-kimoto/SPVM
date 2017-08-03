@@ -132,45 +132,53 @@ set(...)
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   
-  if (field_type_id == SPVM_TYPE_C_ID_BYTE) {
-    int8_t value = (int8_t)SvIV(sv_value);
-    api->set_byte_field(api, object, field_id, value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_SHORT) {
-    int16_t value = (int16_t)SvIV(sv_value);
-    api->set_short_field(api, object, field_id, value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_INT) {
-    int32_t value = (int32_t)SvIV(sv_value);
-    api->set_int_field(api, object, field_id, value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_LONG) {
-    int64_t value = (int64_t)SvIV(sv_value);
-    api->set_long_field(api, object, field_id, value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_FLOAT) {
-    float value = (float)SvNV(sv_value);
-    api->set_float_field(api, object, field_id, value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_DOUBLE) {
-    double value = (double)SvNV(sv_value);
-    api->set_double_field(api, object, field_id, value);
-  }
-  else {
-    if (!sv_derived_from(sv_value, "SPVM::BaseObject")) {
-      const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
-      croak("Can't set numeric value to \"%s\" field", field_type_name);
+  switch (field_type_id) {
+    case SPVM_TYPE_C_ID_BYTE : {
+      int8_t value = (int8_t)SvIV(sv_value);
+      api->set_byte_field(api, object, field_id, value);
+      break;
     }
-    int32_t value_type_id = SPVM_XS_UTIL_get_type_id(sv_value);
-    if (value_type_id != field_type_id) {
-      const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
-      const char* value_type_name = SPVM_XS_UTIL_get_type_name(value_type_id);
-      croak("Can't set \"%s\" value to \"%s\" field", value_type_name, field_type_name);
+    case  SPVM_TYPE_C_ID_SHORT : {
+      int16_t value = (int16_t)SvIV(sv_value);
+      api->set_short_field(api, object, field_id, value);
+      break;
     }
-    
-    SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_value);
-    
-    api->set_object_field(api, object, field_id, array);
+    case SPVM_TYPE_C_ID_INT : {
+      int32_t value = (int32_t)SvIV(sv_value);
+      api->set_int_field(api, object, field_id, value);
+      break;
+    }
+    case SPVM_TYPE_C_ID_LONG : {
+      int64_t value = (int64_t)SvIV(sv_value);
+      api->set_long_field(api, object, field_id, value);
+      break;
+    }
+    case SPVM_TYPE_C_ID_FLOAT : {
+      float value = (float)SvNV(sv_value);
+      api->set_float_field(api, object, field_id, value);
+      break;
+    }
+    case SPVM_TYPE_C_ID_DOUBLE : {
+      double value = (double)SvNV(sv_value);
+      api->set_double_field(api, object, field_id, value);
+      break;
+    }
+    default : {
+      if (!sv_derived_from(sv_value, "SPVM::BaseObject")) {
+        const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
+        croak("Can't set numeric value to \"%s\" field", field_type_name);
+      }
+      int32_t value_type_id = SPVM_XS_UTIL_get_type_id(sv_value);
+      if (value_type_id != field_type_id) {
+        const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
+        const char* value_type_name = SPVM_XS_UTIL_get_type_name(value_type_id);
+        croak("Can't set \"%s\" value to \"%s\" field", value_type_name, field_type_name);
+      }
+      
+      SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_value);
+      
+      api->set_object_field(api, object, field_id, array);
+    }
   }
   
   XSRETURN(0);
