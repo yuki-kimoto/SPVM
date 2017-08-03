@@ -357,35 +357,39 @@ B<Perl module> - SPVM function can be called from Perl itself (Not yet implement
 
 SPVM only work on the Perl which support 64 bit integer.
 
-=head1 SPVM Tutorial
+=head1 DOCUMENT
 
-L<SPVM::Document::Tutorial>
+=over 2
 
-=head1 SPVM Perl API
+=item 1
 
-API to exchange Perl value to SPVM value.
+L<SPVM::Document::Tutorial> - SPVM Tutorial
 
-L<SPVM::Document::PerlAPI>
+=item 2
 
-=head1 SPVM Specification
+L<SPVM::Document::PerlAPI> - API to exchange Perl value to SPVM value.
 
-L<SPVM::Document::Specification>
+=item 3
 
-=head2 FAQ
-
-=over 4
-
-=item * B<Why SPVM don't support 32 bit Perl>
-
-In many 32 bit Perl, 64 bit integer is not supported. This means that Perl can not express 64 bit integers on source code.
-
-See the following code.
-
-    my $value = 9223372036854775807;
-
-In 32 bit Perl, 64bit integer value is converted to double automatically. The double value can't express long value accurately.
+ L<SPVM::Document::Specification> - SPVM Specification
 
 =back
+
+=head1 DON'T PANIC!
+
+We are constantly working on new documentation. Follow us on
+L<GitHub|https://github.com/yuki-kimoto/SPVM> or join the official IRC channel C<#mojo>
+on C<irc.perl.org> to get all the latest updates.
+=head2 SUPPORT
+
+If you have any questions the documentation might not yet answer, don't
+hesitate to ask on the the official IRC
+channel C<#perl11> on C<irc.perl.org>
+(L<chat now!|https://chat.mibbit.com/?channel=%23perl11&server=irc.perl.org>).
+
+You can see #perl11 log.
+
+L<http://irclog.perlgeek.de/perl11/>
 
 =head1 AUTHOR
 

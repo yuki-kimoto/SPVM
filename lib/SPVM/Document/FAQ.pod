@@ -1,0 +1,18 @@
+=head1 NAME
+
+SPVM::Document::Specification - SPVM FAQ(BETA)
+
+=head2 FAQ
+
+=over 4
+
+=item * B<Why SPVM don't support 32 bit integer Perl>
+
+In many 32 bit integer Perl, 64 bit integer is not supported. This means that Perl can not express 64 bit integers on source code.
+
+See the following code.
+
+    my $value = 9223372036854775807;
+
+In 32 bit integer Perl, 64bit integer value is converted to double automatically. The double value can't express long value accurately.
+
