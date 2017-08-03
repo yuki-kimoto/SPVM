@@ -351,7 +351,7 @@ B<Perlish syntax> - SPVM syntax is very similar to Perl
 
 =item *
 
-B<Perl module> - SPVM function can be called from Perl itself (Not yet implemented).
+B<Perl module> - SPVM function can be called from Perl itself.
 
 =back
 
@@ -371,15 +371,16 @@ L<SPVM::Document::PerlAPI> - API to exchange Perl value to SPVM value.
 
 =item 3
 
- L<SPVM::Document::Specification> - SPVM Specification
+L<SPVM::Document::Specification> - SPVM Specification
 
 =back
 
 =head1 DON'T PANIC!
 
 We are constantly working on new documentation. Follow us on
-L<GitHub|https://github.com/yuki-kimoto/SPVM> or join the official IRC channel C<#mojo>
+L<GitHub|https://github.com/yuki-kimoto/SPVM> or join the official IRC channel C<#perl11>
 on C<irc.perl.org> to get all the latest updates.
+
 =head2 SUPPORT
 
 If you have any questions the documentation might not yet answer, don't
