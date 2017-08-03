@@ -79,7 +79,7 @@ const char* SPVM_XS_UTIL_get_field_type(const char* package_name, const char* fi
   }
 }
 
-const char* SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* field_name) {
+int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* field_name) {
   // Field symbol table
   HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
   
@@ -93,12 +93,12 @@ const char* SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char*
       SV* sv_field_info = *sv_field_info_ptr;
       HV* hv_field_info = (HV*)SvRV(sv_field_info);
       
-      SV** sv_field_type_ptr = hv_fetch(hv_field_info, "type_id", strlen("type_id"), 0);
-      if (sv_field_type_ptr) {
-        SV* sv_field_type = *sv_field_type_ptr;
-        const char* field_type = SvPV_nolen(sv_field_type);
+      SV** sv_field_type_id_ptr = hv_fetch(hv_field_info, "type_id", strlen("type_id"), 0);
+      if (sv_field_type_id_ptr) {
+        SV* sv_field_type_id = *sv_field_type_id_ptr;
+        int32_t field_type_id = SvIV(sv_field_type_id);
         
-        return field_type;
+        return field_type_id;
       }
       else {
         return SPVM_API_ERROR_NO_ID;

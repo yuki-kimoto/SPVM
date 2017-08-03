@@ -192,6 +192,9 @@ get(...)
   // Field type
   const char* field_name = SvPV_nolen(sv_field_name);
   const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
+
+  // Field type id
+  int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
   
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
