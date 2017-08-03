@@ -1152,7 +1152,6 @@ build_field_symtable(...)
           SV* sv_field_id = sv_2mortal(newSViv(field_id));
           
           HV* hv_field_info = (HV*)sv_2mortal((SV*)newHV());
-          hv_store(hv_field_info, "type", strlen("type"), SvREFCNT_inc(sv_field_type), 0);
           hv_store(hv_field_info, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
           hv_store(hv_field_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_field_type_id), 0);
           SV* sv_field_info = sv_2mortal(newRV_inc((SV*)hv_field_info));
