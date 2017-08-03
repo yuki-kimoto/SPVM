@@ -96,7 +96,7 @@ new_object(...)
   api->inc_ref_count(api, object);
 
   // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object2(type_id, object);
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(type_id, object);
   
   XPUSHs(sv_object);
   XSRETURN(1);
@@ -269,11 +269,11 @@ get(...)
       XPUSHs(sv_array);
     }
     else if (field_type[field_type_length - 1] == ']') {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_object_array2(field_type_id, (SPVM_API_ARRAY*)value);
+      SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_API_ARRAY*)value);
       XPUSHs(sv_array);
     }
     else {
-      SV* sv_object = SPVM_XS_UTIL_new_sv_object2(field_type_id, (SPVM_API_OBJECT*)value);
+      SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, (SPVM_API_OBJECT*)value);
       XPUSHs(sv_object);
     }
   }
@@ -1447,10 +1447,10 @@ call_sub(...)
             const char* return_type_name = SvPV_nolen(sv_return_type_name);
             int32_t type_name_length = strlen(return_type_name);
             if (return_type_name[type_name_length - 1] == ']') {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object_array2(return_type_id, (SPVM_API_ARRAY*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_id, (SPVM_API_ARRAY*)return_value);
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_type_id, (SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_id, (SPVM_API_OBJECT*)return_value);
             }
           }
         }
