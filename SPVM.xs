@@ -198,84 +198,93 @@ get(...)
   
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
+  
   if (field_id == SPVM_API_ERROR_NO_ID) {
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   
-  if (field_type_id == SPVM_TYPE_C_ID_BYTE) {
-    int8_t value = api->get_byte_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSViv(value));
-    XPUSHs(sv_value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_SHORT) {
-    int16_t value = api->get_short_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSViv(value));
-    XPUSHs(sv_value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_INT) {
-    int32_t value = api->get_int_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSViv(value));
-    XPUSHs(sv_value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_LONG) {
-    int64_t value = api->get_long_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSViv(value));
-    XPUSHs(sv_value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_FLOAT) {
-    float value = api->get_float_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSVnv(value));
-    XPUSHs(sv_value);
-  }
-  else if (field_type_id == SPVM_TYPE_C_ID_DOUBLE) {
-    double value = api->get_double_field(api, object, field_id);
-    SV* sv_value = sv_2mortal(newSVnv(value));
-    XPUSHs(sv_value);
-  }
-  else {
-    SPVM_API_BASE_OBJECT* value = api->get_object_field(api, object, field_id);
-
-    if (value != NULL) {
-      api->inc_ref_count(api, value);
+  switch (field_type_id) {
+    case SPVM_TYPE_C_ID_BYTE : {
+      int8_t value = api->get_byte_field(api, object, field_id);
+      SV* sv_value = sv_2mortal(newSViv(value));
+      XPUSHs(sv_value);
+      break;
     }
-    
-    int32_t field_type_length = strlen(field_type);
-    if (field_type_id == SPVM_TYPE_C_ID_ARRAY_BYTE) {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)value);
-      XPUSHs(sv_array);
+    case SPVM_TYPE_C_ID_SHORT : {
+      int16_t value = api->get_short_field(api, object, field_id);
+      SV* sv_value = sv_2mortal(newSViv(value));
+      XPUSHs(sv_value);
+      break;
     }
-    else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_SHORT) {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)value);
-      XPUSHs(sv_array);
+    case SPVM_TYPE_C_ID_INT : {
+      int32_t value = api->get_int_field(api, object, field_id);
+      SV* sv_value = sv_2mortal(newSViv(value));
+      XPUSHs(sv_value);
+      break;
     }
-    else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_INT) {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)value);
-      XPUSHs(sv_array);
+    case SPVM_TYPE_C_ID_LONG : {
+      int64_t value = api->get_long_field(api, object, field_id);
+      SV* sv_value = sv_2mortal(newSViv(value));
+      XPUSHs(sv_value);
+      break;
     }
-    else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_LONG) {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)value);
-      XPUSHs(sv_array);
+    case SPVM_TYPE_C_ID_FLOAT : {
+      float value = api->get_float_field(api, object, field_id);
+      SV* sv_value = sv_2mortal(newSVnv(value));
+      XPUSHs(sv_value);
+      break;
     }
-    else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_FLOAT) {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)value);
-      XPUSHs(sv_array);
+    case SPVM_TYPE_C_ID_DOUBLE : {
+      double value = api->get_double_field(api, object, field_id);
+      SV* sv_value = sv_2mortal(newSVnv(value));
+      XPUSHs(sv_value);
+      break;
     }
-    else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_DOUBLE) {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)value);
-      XPUSHs(sv_array);
-    }
-    else if (field_type_id == SPVM_TYPE_C_ID_STRING) {
-      SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)value);
-      XPUSHs(sv_array);
-    }
-    else {
-      if (field_type[field_type_length - 1] == ']') {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_API_ARRAY*)value);
+    default : {
+      SPVM_API_BASE_OBJECT* value = api->get_object_field(api, object, field_id);
+      
+      if (value != NULL) {
+        api->inc_ref_count(api, value);
+      }
+      
+      int32_t field_type_length = strlen(field_type);
+      if (field_type_id == SPVM_TYPE_C_ID_ARRAY_BYTE) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)value);
+        XPUSHs(sv_array);
+      }
+      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_SHORT) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)value);
+        XPUSHs(sv_array);
+      }
+      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_INT) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)value);
+        XPUSHs(sv_array);
+      }
+      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_LONG) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)value);
+        XPUSHs(sv_array);
+      }
+      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_FLOAT) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)value);
+        XPUSHs(sv_array);
+      }
+      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_DOUBLE) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)value);
+        XPUSHs(sv_array);
+      }
+      else if (field_type_id == SPVM_TYPE_C_ID_STRING) {
+        SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)value);
         XPUSHs(sv_array);
       }
       else {
-        SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, (SPVM_API_OBJECT*)value);
-        XPUSHs(sv_object);
+        if (field_type[field_type_length - 1] == ']') {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_API_ARRAY*)value);
+          XPUSHs(sv_array);
+        }
+        else {
+          SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, (SPVM_API_OBJECT*)value);
+          XPUSHs(sv_object);
+        }
       }
     }
   }
