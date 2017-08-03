@@ -121,7 +121,6 @@ set(...)
   
   // Field type
   const char* field_name = SvPV_nolen(sv_field_name);
-  const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
   int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
 
   // Field id
@@ -130,9 +129,6 @@ set(...)
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   
-  assert(field_type);
-  
-  int32_t field_type_length = strlen(field_type);
   if (field_type_id == SPVM_TYPE_C_ID_BYTE) {
     int8_t value = (int8_t)SvIV(sv_value);
     api->set_byte_field(api, object, field_id, value);
@@ -159,10 +155,13 @@ set(...)
   }
   else {
     if (!sv_derived_from(sv_value, "SPVM::BaseObject")) {
+      const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
       croak("Can't set numeric value to \"%s\" field", field_type);
     }
-    const char* value_type = SPVM_XS_UTIL_get_type(sv_value);
-    if (!strEQ(field_type, value_type)) {
+    int32_t value_type_id = SPVM_XS_UTIL_get_type_id(sv_value);
+    if (value_type_id != field_type_id) {
+      const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
+      const char* value_type = SPVM_XS_UTIL_get_type(sv_value);
       croak("Can't set \"%s\" value to \"%s\" field", value_type, field_type);
     }
     
