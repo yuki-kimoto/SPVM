@@ -992,12 +992,14 @@ build_type_symtable(...)
     for (type_id = 0; type_id < types->length; type_id++) {
       SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, type_id);
       
+      // Type name
       const char* type_name = type->name;
       int32_t type_id = type->id;
       SV* sv_type_id = sv_2mortal(newSViv(type_id));
       
       HV* hv_type_info = (HV*)sv_2mortal((SV*)newHV());
       hv_store(hv_type_info, "id", strlen("id"), SvREFCNT_inc(sv_type_id), 0);
+      hv_store(hv_type_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
       SV* sv_type_info = sv_2mortal(newRV_inc((SV*)hv_type_info));
       
       hv_store(hv_type_symtable, type_name, strlen(type_name), SvREFCNT_inc(sv_type_info), 0);
@@ -1112,6 +1114,10 @@ build_field_symtable(...)
           const char* field_type = field->op_type->uv.type->name;
           SV* sv_field_type = sv_2mortal(newSVpv(field_type, 0));
           
+          // Field type id
+          int32_t field_type_id = field->op_type->uv.type->id;
+          SV* sv_field_type_id = sv_2mortal(newSViv(field_type_id));
+          
           // Field id
           int32_t field_id = field->index;
           SV* sv_field_id = sv_2mortal(newSViv(field_id));
@@ -1119,6 +1125,7 @@ build_field_symtable(...)
           HV* hv_field_info = (HV*)sv_2mortal((SV*)newHV());
           hv_store(hv_field_info, "type", strlen("type"), SvREFCNT_inc(sv_field_type), 0);
           hv_store(hv_field_info, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
+          hv_store(hv_field_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_field_type_id), 0);
           SV* sv_field_info = sv_2mortal(newRV_inc((SV*)hv_field_info));
           
           hv_store(hv_package_info, field_name, strlen(field_name), SvREFCNT_inc(sv_field_info), 0);
