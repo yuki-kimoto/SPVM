@@ -122,6 +122,7 @@ set(...)
   // Field type
   const char* field_name = SvPV_nolen(sv_field_name);
   const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
+  int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
 
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
@@ -132,32 +133,32 @@ set(...)
   assert(field_type);
   
   int32_t field_type_length = strlen(field_type);
-  if (strEQ(field_type, "byte")) {
+  if (field_type_id == SPVM_TYPE_C_ID_BYTE) {
     int8_t value = (int8_t)SvIV(sv_value);
     api->set_byte_field(api, object, field_id, value);
   }
-  else if (strEQ(field_type, "short")) {
+  else if (field_type_id == SPVM_TYPE_C_ID_SHORT) {
     int16_t value = (int16_t)SvIV(sv_value);
     api->set_short_field(api, object, field_id, value);
   }
-  else if (strEQ(field_type, "int")) {
+  else if (field_type_id == SPVM_TYPE_C_ID_INT) {
     int32_t value = (int32_t)SvIV(sv_value);
     api->set_int_field(api, object, field_id, value);
   }
-  else if (strEQ(field_type, "long")) {
+  else if (field_type_id == SPVM_TYPE_C_ID_LONG) {
     int64_t value = (int64_t)SvIV(sv_value);
     api->set_long_field(api, object, field_id, value);
   }
-  else if (strEQ(field_type, "float")) {
+  else if (field_type_id == SPVM_TYPE_C_ID_FLOAT) {
     float value = (float)SvNV(sv_value);
     api->set_float_field(api, object, field_id, value);
   }
-  else if (strEQ(field_type, "double")) {
+  else if (field_type_id == SPVM_TYPE_C_ID_DOUBLE) {
     double value = (double)SvNV(sv_value);
     api->set_double_field(api, object, field_id, value);
   }
   else {
-    if (!(sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BaseObject"))) {
+    if (!sv_derived_from(sv_value, "SPVM::BaseObject")) {
       croak("Can't set numeric value to \"%s\" field", field_type);
     }
     const char* value_type = SPVM_XS_UTIL_get_type(sv_value);
@@ -243,7 +244,6 @@ get(...)
       if (value != NULL) {
         api->inc_ref_count(api, value);
       }
-      
       
       switch (field_type_id) {
         case SPVM_TYPE_C_ID_ARRAY_BYTE : {
