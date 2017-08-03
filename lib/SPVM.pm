@@ -29,6 +29,7 @@ our %FIELD_SYMTABLE;
 our %SUB_SYMTABLE;
 our $API;
 our @TYPE_NAMES;
+our %TYPE_SYMTABLE;
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
@@ -37,6 +38,9 @@ CHECK {
   
   # Build type names
   build_type_names();
+
+  # Build type names
+  build_type_symtable();
   
   # Build subroutine symbol table
   build_sub_symtable();
