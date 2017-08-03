@@ -28,19 +28,6 @@ const char* SPVM_XS_UTIL_get_type_name(int32_t type_id) {
   return type_name;
 }
 
-const char* SPVM_XS_UTIL_get_type(SV* sv_object) {
-  HV* hv_object = (HV*)SvRV(sv_object);
-  SV** sv_type_ptr = hv_fetch(hv_object, "type", strlen("type"), 0);
-  SV* sv_type = sv_type_ptr ? *sv_type_ptr : &PL_sv_undef;
-  
-  if (SvOK(sv_type)) {
-    return SvPV_nolen(sv_type);
-  }
-  else {
-    return NULL;
-  }
-}
-
 int32_t SPVM_XS_UTIL_get_type_id(SV* sv_object) {
   HV* hv_object = (HV*)SvRV(sv_object);
   SV** sv_type_id_ptr = hv_fetch(hv_object, "type_id", strlen("type_id"), 0);
