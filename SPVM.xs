@@ -199,10 +199,10 @@ get(...)
   
   // Package type id
   int32_t package_type_id = SPVM_XS_UTIL_get_type_id(sv_object);
-  
+
   // Package name
   const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_id);
-  
+
   // Field type id
   const char* field_name = SvPV_nolen(sv_field_name);
   int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
