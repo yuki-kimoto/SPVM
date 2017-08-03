@@ -124,7 +124,7 @@ package TestCase {
   sub default_return_value_object_sub_empty() : TestCase {
     
   }
-  
+
   # Lookup switch int
   sub lookup_switch() : int {
     my $success1;
