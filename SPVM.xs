@@ -1261,21 +1261,21 @@ call_sub(...)
          
           HV* hv_base_object = (HV*)SvRV(sv_base_object);
           
-          SV** sv_base_object_type_name_ptr = hv_fetch(hv_base_object, "type", strlen("type"), 0);
-          SV* sv_base_object_type_name = sv_base_object_type_name_ptr ? *sv_base_object_type_name_ptr : &PL_sv_undef;
-          const char* base_object_type_name = SvPV_nolen(sv_base_object_type_name);
-          
-          /*
           SV** sv_base_object_type_id_ptr = hv_fetch(hv_base_object, "type_id", strlen("type_id"), 0);
           SV* sv_base_object_type_id = *sv_base_object_type_id_ptr;
-          const char* base_object_type_id = SvIV(sv_base_object_type_id);
-          */
+          int32_t base_object_type_id = SvIV(sv_base_object_type_id);
           
           AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
           SV** sv_arg_type_name_ptr = av_fetch(av_type_names, arg_type_id, 0);
           SV* sv_arg_type_name = *sv_arg_type_name_ptr;
+          
           const char* arg_type_name = SvPV_nolen(sv_arg_type_name);
-          if (!strEQ(base_object_type_name, arg_type_name)) {
+          if (base_object_type_id != arg_type_id) {
+            SV** sv_base_object_type_name_ptr = hv_fetch(hv_base_object, "type", strlen("type"), 0);
+            SV* sv_base_object_type_name = sv_base_object_type_name_ptr ? *sv_base_object_type_name_ptr : &PL_sv_undef;
+            const char* base_object_type_name = SvPV_nolen(sv_base_object_type_name);
+          
+            
             croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
           }
           
