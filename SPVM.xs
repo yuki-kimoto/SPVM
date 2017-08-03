@@ -189,11 +189,8 @@ get(...)
   // Package name
   const char* package_name = SPVM_XS_UTIL_get_type(sv_object);
   
-  // Field type
-  const char* field_name = SvPV_nolen(sv_field_name);
-  const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
-
   // Field type id
+  const char* field_name = SvPV_nolen(sv_field_name);
   int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
   
   // Field id
@@ -247,7 +244,6 @@ get(...)
         api->inc_ref_count(api, value);
       }
       
-      int32_t field_type_length = strlen(field_type);
       
       switch (field_type_id) {
         case SPVM_TYPE_C_ID_ARRAY_BYTE : {
@@ -286,6 +282,9 @@ get(...)
           break;
         }
         default : {
+          const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
+          int32_t field_type_length = strlen(field_type);
+          
           if (field_type[field_type_length - 1] == ']') {
             SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_API_ARRAY*)value);
             XPUSHs(sv_array);
