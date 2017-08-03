@@ -248,42 +248,52 @@ get(...)
       }
       
       int32_t field_type_length = strlen(field_type);
-      if (field_type_id == SPVM_TYPE_C_ID_ARRAY_BYTE) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)value);
-        XPUSHs(sv_array);
-      }
-      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_SHORT) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)value);
-        XPUSHs(sv_array);
-      }
-      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_INT) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)value);
-        XPUSHs(sv_array);
-      }
-      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_LONG) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)value);
-        XPUSHs(sv_array);
-      }
-      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_FLOAT) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)value);
-        XPUSHs(sv_array);
-      }
-      else if (field_type_id == SPVM_TYPE_C_ID_ARRAY_DOUBLE) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)value);
-        XPUSHs(sv_array);
-      }
-      else if (field_type_id == SPVM_TYPE_C_ID_STRING) {
-        SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)value);
-        XPUSHs(sv_array);
-      }
-      else {
-        if (field_type[field_type_length - 1] == ']') {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_API_ARRAY*)value);
+      
+      switch (field_type_id) {
+        case SPVM_TYPE_C_ID_ARRAY_BYTE : {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)value);
           XPUSHs(sv_array);
+          break;
         }
-        else {
-          SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, (SPVM_API_OBJECT*)value);
-          XPUSHs(sv_object);
+        case SPVM_TYPE_C_ID_ARRAY_SHORT : {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)value);
+          XPUSHs(sv_array);
+          break;
+        }
+        case SPVM_TYPE_C_ID_ARRAY_INT : {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)value);
+          XPUSHs(sv_array);
+          break;
+        }
+        case SPVM_TYPE_C_ID_ARRAY_LONG : {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)value);
+          XPUSHs(sv_array);
+          break;
+        }
+        case SPVM_TYPE_C_ID_ARRAY_FLOAT : {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)value);
+          XPUSHs(sv_array);
+          break;
+        }
+        case SPVM_TYPE_C_ID_ARRAY_DOUBLE : {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)value);
+          XPUSHs(sv_array);
+          break;
+        }
+        case SPVM_TYPE_C_ID_STRING : {
+          SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)value);
+          XPUSHs(sv_array);
+          break;
+        }
+        default : {
+          if (field_type[field_type_length - 1] == ']') {
+            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_API_ARRAY*)value);
+            XPUSHs(sv_array);
+          }
+          else {
+            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, (SPVM_API_OBJECT*)value);
+            XPUSHs(sv_object);
+          }
         }
       }
     }
