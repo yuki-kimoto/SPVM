@@ -309,12 +309,9 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_swi
   
   SPVM_SWITCH_INFO* switch_info = SPVM_SWITCH_INFO_new(compiler);
   op_switch->uv.switch_info = switch_info;
-  op_switch->uv.switch_info->op_cases = compiler->cur_op_cases;
   
   op_switch_condition->uv.switch_info = switch_info;
   switch_info->op_term_condition = op_term_condition;
-  
-  compiler->cur_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
   return op_switch;
 }
@@ -324,14 +321,6 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case,
   SPVM_OP_insert_child(compiler, op_case, op_case->last, op_term);
   
   op_term->flag = SPVM_OP_C_FLAG_CONSTANT_CASE;
-  
-  assert(compiler->cur_op_cases->length <= SPVM_LIMIT_C_CASES);
-  if (compiler->cur_op_cases->length == SPVM_LIMIT_C_CASES) {
-    SPVM_yyerror_format(compiler, "Too many case statements at %s line %d\n", op_case->file, op_case->line);
-    return NULL;
-  }
-
-  SPVM_DYNAMIC_ARRAY_push(compiler->cur_op_cases, op_case);
   
   return op_case;
 }

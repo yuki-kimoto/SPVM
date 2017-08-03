@@ -12,8 +12,9 @@ enum {
 struct SPVM_switch_info {
   SPVM_OP* op_term_condition;
   SPVM_DYNAMIC_ARRAY* op_cases;
-  int64_t max;
-  int64_t min;
+  SPVM_OP* op_default;
+  int32_t max;
+  int32_t min;
   int32_t code;
 };
 

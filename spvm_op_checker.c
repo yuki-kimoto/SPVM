@@ -309,11 +309,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // loop block my variable base position stack
             SPVM_DYNAMIC_ARRAY* loop_block_my_var_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
             
-            // Current case statements
-            SPVM_DYNAMIC_ARRAY* cur_case_ops = NULL;
-            
-            // Current default statement
-            SPVM_OP* cur_default_op = NULL;
+            // Switch information stack
+            SPVM_DYNAMIC_ARRAY* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
             
             // op count
             int32_t op_count = 0;
@@ -333,6 +330,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               // [START]Preorder traversal position
               
               switch (op_cur->code) {
+                case SPVM_OP_C_CODE_SWITCH: {
+                  SPVM_DYNAMIC_ARRAY_push(op_switch_stack, op_cur);
+                  break;
+                }
                 // Start scope
                 case SPVM_OP_C_CODE_BLOCK: {
                   
@@ -402,26 +403,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_CODE_DEFAULT: {
-                      if (cur_default_op) {
-                        SPVM_yyerror_format(compiler, "multiple default is forbidden at %s line %d\n", op_cur->file, op_cur->line);
-                        compiler->fatal_error = 1;
-                        break;
-                      }
-                      else {
-                        cur_default_op = op_cur;
-                      }
-                      break;
-                    }
-                    case SPVM_OP_C_CODE_CASE: {
-
-                      if (!cur_case_ops) {
-                        cur_case_ops = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-                      }
-                      SPVM_DYNAMIC_ARRAY_push(cur_case_ops, op_cur);
-                      
-                      break;
-                    }
                     case SPVM_OP_C_CODE_SWITCH: {
                       
                       SPVM_OP* op_switch_condition = op_cur->first;
@@ -433,9 +414,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_yyerror_format(compiler, "Switch condition need int value at %s line %d\n", op_cur->file, op_cur->line);
                         break;
                       }
-                      
-                      cur_default_op = NULL;
-                      cur_case_ops = NULL;
                       
                       // tableswitch if the following. SWITCHRTIO is 1.5 by default
                       // 4 + range <= (3 + 2 * length) * SWITCHRTIO
@@ -502,9 +480,34 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       switch_info->min = min;
                       switch_info->max = max;
                       
+                      SPVM_DYNAMIC_ARRAY_pop(op_switch_stack);
+                      
                       break;
                     }
-                    
+                    case SPVM_OP_C_CODE_CASE: {
+                      if (op_switch_stack->length > 0) {
+                        SPVM_OP* op_switch = SPVM_DYNAMIC_ARRAY_fetch(op_switch_stack, op_switch_stack->length - 1);
+                        SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
+                        SPVM_DYNAMIC_ARRAY_push(switch_info->op_cases, op_cur);
+                      }
+                      break;
+                    }
+                    case SPVM_OP_C_CODE_DEFAULT: {
+                      if (op_switch_stack->length > 0) {
+                        SPVM_OP* op_switch = SPVM_DYNAMIC_ARRAY_fetch(op_switch_stack, op_switch_stack->length - 1);
+                        SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
+                        
+                        if (switch_info->op_default) {
+                          SPVM_yyerror_format(compiler, "multiple default is forbidden at %s line %d\n", op_cur->file, op_cur->line);
+                          compiler->fatal_error = 1;
+                          break;
+                        }
+                        else {
+                          switch_info->op_default = op_cur;
+                        }
+                      }
+                      break;
+                    }
                     case SPVM_OP_C_CODE_EQ: {
                       
                       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
