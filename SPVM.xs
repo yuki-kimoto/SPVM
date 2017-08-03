@@ -158,7 +158,7 @@ set(...)
   }
   else {
     if (!sv_derived_from(sv_value, "SPVM::BaseObject")) {
-      const char* field_type_name = SPVM_XS_UTIL_get_field_name(field_type_id);
+      const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
       croak("Can't set numeric value to \"%s\" field", field_type_name);
     }
     int32_t value_type_id = SPVM_XS_UTIL_get_type_id(sv_value);
@@ -287,10 +287,11 @@ get(...)
           break;
         }
         default : {
-          const char* field_type = SPVM_XS_UTIL_get_field_type(package_name, field_name);
-          int32_t field_type_length = strlen(field_type);
+          const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
           
-          if (field_type[field_type_length - 1] == ']') {
+          int32_t field_type_name_length = strlen(field_type_name);
+          
+          if (field_type_name[field_type_name_length - 1] == ']') {
             SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_API_ARRAY*)value);
             XPUSHs(sv_array);
           }
