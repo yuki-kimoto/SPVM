@@ -71,17 +71,17 @@ new_object(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
-  SV* sv_package = ST(1);
+  SV* sv_package_name = ST(1);
   
-  if (!SvOK(sv_package)) {
+  if (!SvOK(sv_package_name)) {
     croak("Type must be specified(SPVM::Object::new_object)");
   }
   
-  const char* package = SvPV_nolen(sv_package);
+  const char* package_name = SvPV_nolen(sv_package_name);
 
-  int32_t package_id = SPVM_XS_UTIL_get_package_id(package);
+  int32_t package_id = SPVM_XS_UTIL_get_package_id(package_name);
   if (package_id == SPVM_API_ERROR_NO_ID) {
-    croak("Unkown package \"%s\"(SPVM::Object::new_object", package);
+    croak("Unkown package \"%s\"(SPVM::Object::new_object", package_name);
   }
   
   // Set API
@@ -94,7 +94,7 @@ new_object(...)
   api->inc_ref_count(api, object);
 
   // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object(package, object);
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(package_name, object);
   
   XPUSHs(sv_object);
   XSRETURN(1);
