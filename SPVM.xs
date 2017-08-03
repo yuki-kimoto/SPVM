@@ -96,7 +96,7 @@ new_object(...)
   api->inc_ref_count(api, object);
 
   // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object(package_name, object);
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object2(type_id, object);
   
   XPUSHs(sv_object);
   XSRETURN(1);
