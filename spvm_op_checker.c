@@ -309,9 +309,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // loop block my variable base position stack
             SPVM_DYNAMIC_ARRAY* loop_block_my_var_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
             
-            // In switch statement
-            _Bool in_switch = 0;
-            
             // Current case statements
             SPVM_DYNAMIC_ARRAY* cur_case_ops = NULL;
             
@@ -338,17 +335,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               switch (op_cur->code) {
                 // Start scope
                 case SPVM_OP_C_CODE_BLOCK: {
-                  
-                  if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
-                    if (in_switch) {
-                      SPVM_yyerror_format(compiler, "duplicate switch is forbidden at %s line %d\n", op_cur->file, op_cur->line);
-                      compiler->fatal_error = 1;
-                      return;
-                    }
-                    else {
-                      in_switch = 1;
-                    }
-                  }
                   
                   block_my_var_base = op_my_var_stack->length;
                   int32_t* block_my_var_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
@@ -448,7 +434,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       }
                       
-                      in_switch = 0;
                       cur_default_op = NULL;
                       cur_case_ops = NULL;
                       
