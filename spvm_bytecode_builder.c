@@ -194,6 +194,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
           // eval stack
           SPVM_DYNAMIC_ARRAY* eval_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
           
+          // Switch bytecode index stack
+          SPVM_DYNAMIC_ARRAY* switch_bytecode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+
           // Case base stack
           SPVM_DYNAMIC_ARRAY* case_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
           
