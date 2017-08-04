@@ -15,6 +15,7 @@ struct SPVM_switch_info {
   int32_t max;
   int32_t min;
   int32_t code;
+  int32_t bytecode_index;
 };
 
 SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_COMPILER* compiler);

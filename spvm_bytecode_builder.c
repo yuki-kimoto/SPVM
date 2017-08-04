@@ -193,10 +193,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
           
           // eval stack
           SPVM_DYNAMIC_ARRAY* eval_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-          
-          // Switch bytecode index stack
-          SPVM_DYNAMIC_ARRAY* switch_bytecode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
+          // Switch stack
+          SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+          
           // Case base stack
           SPVM_DYNAMIC_ARRAY* case_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
           
@@ -252,10 +252,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       // Switch bytecode index
                       int32_t switch_bytecode_index = bytecode_array->length - 1;
                       
-                      // Push switch bytecode index to stack
-                      int32_t* switch_bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                      *switch_bytecode_index_ptr = switch_bytecode_index;
-                      SPVM_DYNAMIC_ARRAY_push(switch_bytecode_index_stack, switch_bytecode_index_ptr);
+                      // Push switch information stack
+                      switch_info->bytecode_index = switch_bytecode_index;
+                      SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
                       
                       // Padding
                       int32_t padding = ((int32_t)sizeof(int32_t) - 1) - (switch_bytecode_index % (int32_t)sizeof(int32_t));
@@ -310,10 +309,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       // Switch bytecode index
                       int32_t switch_bytecode_index = bytecode_array->length - 1;
                       
-                      // Push switch bytecode index to stack
-                      int32_t* switch_bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                      *switch_bytecode_index_ptr = switch_bytecode_index;
-                      SPVM_DYNAMIC_ARRAY_push(switch_bytecode_index_stack, switch_bytecode_index_ptr);
+                      // Push switch information stack
+                      switch_info->bytecode_index = switch_bytecode_index;
+                      SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
                       
                       // Padding
                       int32_t padding = (sizeof(int32_t) - 1) - (switch_bytecode_index % sizeof(int32_t));
@@ -356,11 +354,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                   case SPVM_OP_C_CODE_SWITCH: {
                     
-                    SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
-                    
-                    // Pop switch bytecode index
-                    int32_t* switch_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(switch_bytecode_index_stack);
-                    int32_t switch_bytecode_index = *switch_bytecode_index_ptr;
+                    // Pop switch information
+                    SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_pop(switch_info_stack);
+                    int32_t switch_bytecode_index = switch_info->bytecode_index;
                     
                     // tableswitch
                     if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {

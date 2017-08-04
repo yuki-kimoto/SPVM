@@ -14,5 +14,7 @@ SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_COMPILER* compiler) {
   switch_info->min = 0;
   switch_info->code = 0;
   
+  switch_info->bytecode_index = -1;
+  
   return switch_info;
 }
