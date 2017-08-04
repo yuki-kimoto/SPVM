@@ -51,14 +51,11 @@ use SPVM::stdout;
   ok(SPVM::TestCase::default_return_value_object());
 }
 
-# Lookup switch
+# Switch
 {
-  ok(SPVM::TestCase::lookup_switch());
-}
-
-# Table switch
-{
-  ok(SPVM::TestCase::table_switch());
+  ok(SPVM::TestCase::switch_nest());
+  ok(SPVM::TestCase::switch_lookup_switch());
+  ok(SPVM::TestCase::switch_table_switch());
 }
 
 {
