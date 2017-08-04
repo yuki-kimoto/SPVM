@@ -16,6 +16,7 @@ SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_COMPILER* compiler) {
   
   switch_info->bytecode_index = -1;
   switch_info->default_bytecode_index = -1;
+  switch_info->case_bytecode_indexes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
   return switch_info;
 }

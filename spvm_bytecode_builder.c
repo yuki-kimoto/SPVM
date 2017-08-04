@@ -200,11 +200,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
           // Case base stack
           SPVM_DYNAMIC_ARRAY* case_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
           
-          // Case bytecode index stack
-          SPVM_DYNAMIC_ARRAY* case_bytecode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-          
-          SPVM_DYNAMIC_ARRAY* cur_case_bytecode_indexes = NULL;
-          
           while (op_cur) {
             // [START]Preorder traversal position
             
@@ -221,9 +216,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
-                }
-                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
-                  cur_case_bytecode_indexes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                   SPVM_DYNAMIC_ARRAY_push(eval_stack, op_cur);
@@ -357,6 +349,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_pop(switch_info_stack);
                     int32_t switch_bytecode_index = switch_info->bytecode_index;
                     int32_t default_bytecode_index = switch_info->default_bytecode_index;
+                    SPVM_DYNAMIC_ARRAY* case_bytecode_indexes = switch_info->case_bytecode_indexes;
                     
                     // tableswitch
                     if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
@@ -388,7 +381,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                           SPVM_OP* op_constant = op_case->first;
                           if (op_constant->uv.constant->value.int_value - min == i) {
                             // Case
-                            int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(cur_case_bytecode_indexes, case_pos);
+                            int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_bytecode_indexes, case_pos);
                             int32_t case_bytecode_index = *case_bytecode_index_ptr;
                             int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                             
@@ -431,7 +424,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       {
                         int32_t i;
                         for (i = 0; i < length; i++) {
-                          int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(cur_case_bytecode_indexes, i);
+                          int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_bytecode_indexes, i);
                           SPVM_DYNAMIC_ARRAY_push(ordered_case_bytecode_indexes, case_bytecode_index_ptr);
                         }
                       }
@@ -483,8 +476,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     
-                    cur_case_bytecode_indexes = NULL;
-                    
                     // Set last position
                     while (goto_last_bytecode_index_stack->length > 0) {
                       
@@ -501,12 +492,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     break;
                   }
                   case SPVM_OP_C_CODE_CASE: {
-                    
-                    int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                    *bytecode_index_ptr = bytecode_array->length;
-                    
-                    SPVM_DYNAMIC_ARRAY_push(cur_case_bytecode_indexes, bytecode_index_ptr);
-                    
+                    if (switch_info_stack->length > 0) {
+                      SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_fetch(switch_info_stack, switch_info_stack->length - 1);
+                      int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+                      *bytecode_index_ptr = bytecode_array->length;
+                      
+                      SPVM_DYNAMIC_ARRAY_push(switch_info->case_bytecode_indexes, bytecode_index_ptr);
+                    }
                     break;
                   }
                   case SPVM_OP_C_CODE_DEFAULT: {
