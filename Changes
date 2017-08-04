@@ -1,3 +1,5 @@
+0.0238 2017-08-04
+  - Support nested switch statement
 0.0237 2017-08-03
   - improve SPVM call_sub performance
 0.0236 2017-08-01
