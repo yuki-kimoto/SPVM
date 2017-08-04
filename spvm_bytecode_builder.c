@@ -346,8 +346,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_CODE_SWITCH: {
                     
                     SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
-                    SPVM_OP* op_term_condition = switch_info->op_term_condition;
-                    SPVM_TYPE* term_condition_type = SPVM_OP_get_type(compiler, op_term_condition);
                     
                     // tableswitch
                     if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {

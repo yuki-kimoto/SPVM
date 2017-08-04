@@ -311,7 +311,6 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_swi
   op_switch->uv.switch_info = switch_info;
   
   op_switch_condition->uv.switch_info = switch_info;
-  switch_info->op_term_condition = op_term_condition;
   
   return op_switch;
 }

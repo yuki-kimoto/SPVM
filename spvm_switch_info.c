@@ -9,7 +9,6 @@ SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_COMPILER* compiler) {
   
   switch_info->op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   switch_info->op_default = NULL;
-  switch_info->op_term_condition = NULL;
   
   switch_info->max = 0;
   switch_info->min = 0;
