@@ -496,7 +496,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                         if (switch_info->op_cases->length == SPVM_LIMIT_C_CASES) {
                           SPVM_yyerror_format(compiler, "Too many case statements at %s line %d\n", op_cur->file, op_cur->line);
-                          return NULL;
+                          return;
                         }
 
                         SPVM_DYNAMIC_ARRAY_push(switch_info->op_cases, op_cur);
@@ -1268,9 +1268,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     // End of scope
                     case SPVM_OP_C_CODE_BLOCK: {
-                      
-                      SPVM_OP* op_list_statement = op_cur->first;
-                      
                       // Pop block my variable base
                       assert(block_my_var_base_stack->length > 0);
                       int32_t* block_my_var_base_ptr = SPVM_DYNAMIC_ARRAY_pop(block_my_var_base_stack);
