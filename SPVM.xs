@@ -348,7 +348,7 @@ set_elements(...)
 {
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
-  AV* av_nums = SvRV(sv_nums);
+  AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -435,7 +435,7 @@ set_elements(...)
 {
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
-  AV* av_nums = SvRV(sv_nums);
+  AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -522,7 +522,7 @@ set_elements(...)
 {
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
-  AV* av_nums = SvRV(sv_nums);
+  AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -609,7 +609,7 @@ set_elements(...)
 {
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
-  AV* av_nums = SvRV(sv_nums);
+  AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -696,7 +696,7 @@ set_elements(...)
 {
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
-  AV* av_nums = SvRV(sv_nums);
+  AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -783,7 +783,7 @@ set_elements(...)
 {
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
-  AV* av_nums = SvRV(sv_nums);
+  AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -1335,7 +1335,7 @@ call_sub(...)
   
   switch (return_type_id) {
     case SPVM_TYPE_C_ID_VOID:  {
-      api->call_void_sub(api, sub_id, &call_sub_args);
+      api->call_void_sub(api, sub_id, call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1347,7 +1347,7 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_BYTE: {
-      int8_t return_value = api->call_byte_sub(api, sub_id, &call_sub_args);
+      int8_t return_value = api->call_byte_sub(api, sub_id, call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1361,7 +1361,7 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_SHORT: {
-      int16_t return_value = api->call_short_sub(api, sub_id, &call_sub_args);
+      int16_t return_value = api->call_short_sub(api, sub_id, call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1375,7 +1375,7 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_INT: {
-      int32_t return_value = api->call_int_sub(api, sub_id, &call_sub_args);
+      int32_t return_value = api->call_int_sub(api, sub_id, call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1389,7 +1389,7 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_LONG: {
-      int64_t return_value = api->call_long_sub(api, sub_id, &call_sub_args);
+      int64_t return_value = api->call_long_sub(api, sub_id, call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1403,7 +1403,7 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_FLOAT: {
-      float return_value = api->call_float_sub(api, sub_id, &call_sub_args);
+      float return_value = api->call_float_sub(api, sub_id, call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1417,7 +1417,7 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_DOUBLE: {
-      double return_value = api->call_double_sub(api, sub_id, &call_sub_args);
+      double return_value = api->call_double_sub(api, sub_id, call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);
@@ -1431,7 +1431,7 @@ call_sub(...)
       break;
     }
     default: {
-      SPVM_API_BASE_OBJECT* return_value = api->call_object_sub(api, sub_id, &call_sub_args);
+      SPVM_API_BASE_OBJECT* return_value = api->call_object_sub(api, sub_id, call_sub_args);
       SPVM_API_ARRAY* exception = api->get_exception(api);
       if (exception) {
         int32_t length = api->get_array_length(api, exception);

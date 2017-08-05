@@ -465,7 +465,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         // Call native subroutine
         switch (constant_pool_sub.return_type_id) {
           case SPVM_TYPE_C_ID_VOID: {
-            void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            void (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
             SPVM_RUNTIME_API_set_exception(api, NULL);
             (*native_address)(api, vars);
             
@@ -482,7 +482,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
             break;
           }
           case SPVM_TYPE_C_ID_BYTE: {
-            int8_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
             SPVM_RUNTIME_API_set_exception(api, NULL);
             int8_t return_value = (*native_address)(api, vars);
 
@@ -501,7 +501,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
             break;
           }
           case SPVM_TYPE_C_ID_SHORT: {
-            int16_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
             SPVM_RUNTIME_API_set_exception(api, NULL);
             int16_t return_value = (*native_address)(api, vars);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
@@ -518,7 +518,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
             break;
           }
           case SPVM_TYPE_C_ID_INT: {
-            int32_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
             int32_t return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
@@ -535,7 +535,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
             break;
           }
           case SPVM_TYPE_C_ID_FLOAT: {
-            float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            float (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
             float return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
@@ -552,7 +552,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
             break;
           }
           case SPVM_TYPE_C_ID_DOUBLE: {
-            double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            double (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
             double return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
@@ -569,7 +569,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
             break;
           }
           default: {
-            SPVM_BASE_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub.native_address;
+            SPVM_BASE_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
             SPVM_BASE_OBJECT* return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
