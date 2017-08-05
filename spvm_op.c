@@ -784,21 +784,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_enumeration_value->file, op_enumeration_value->line);
           op_name->uv.name = enumeration_value->op_name->uv.name;
           
-          // Create sub information
-          SPVM_SUB* sub = SPVM_SUB_new(compiler);
-          sub->op_name = op_name;
-          sub->op_return_type = op_return_type;
-          sub->op_block = op_block;
-          sub->is_constant = 1;
-
-          // Create absolute name
-          const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, op_name->uv.name);
-          sub->abs_name = sub_abs_name;
-          sub->file_name = op_enumeration_value->file;
+          // Build subroutine
+          op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, NULL, NULL, op_return_type, op_block);
           
-          // Set sub
-          op_sub->uv.sub = sub;
-         
+          // Subroutine is constant
+          op_sub->uv.sub->is_constant = 1;
+          
           SPVM_DYNAMIC_ARRAY_push(op_subs, op_sub);
         }
       }
