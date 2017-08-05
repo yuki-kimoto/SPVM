@@ -819,6 +819,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_enumeration_value->file, op_enumeration_value->line);
           op_constant->uv.constant = enumeration_value->op_constant->uv.constant;
           
+          // Return
+          SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_enumeration_value->file, op_enumeration_value->line);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
+          
+          // Block
+          SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_enumeration_value->file, op_enumeration_value->line);
+          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_return);
+          
           // sub
           SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUB, op_enumeration_value->file, op_enumeration_value->line);
           op_sub->file = op_enumeration_value->file;
@@ -831,10 +839,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           // Name
           SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_enumeration_value->file, op_enumeration_value->line);
           op_name->uv.name = enumeration_value->op_name->uv.name;
-          
-          // Return
-          SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_enumeration_value->file, op_enumeration_value->line);
-          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
           
           // Create sub information
           SPVM_SUB* sub = SPVM_SUB_new(compiler);
