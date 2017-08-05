@@ -1112,6 +1112,18 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   return op_sub;
 }
 
+SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_term) {
+  
+  SPVM_OP* op_enumeration_value = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, op_name->file, op_name->line);
+  
+  SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, op_name);
+  if (op_term) {
+    SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, op_term);
+  }
+  
+  return op_enumeration_value;
+}
+
 SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block) {
   
   // Build OP_SUB

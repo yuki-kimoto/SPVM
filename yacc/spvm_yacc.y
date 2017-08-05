@@ -202,16 +202,11 @@ enumeration_values
 enumeration_value
   : NAME
     {
-      SPVM_OP* op_enumeration_value = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, $1);
-      $$ = op_enumeration_value;
+      $$ = SPVM_OP_build_enumeration_value(compiler, $1, NULL);
     }
   | NAME ASSIGN term
     {
-      SPVM_OP* op_enumeration_value = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUMERATION_VALUE, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, $1);
-      SPVM_OP_insert_child(compiler, op_enumeration_value, op_enumeration_value->last, $3);
-      $$ = op_enumeration_value;
+      $$ = SPVM_OP_build_enumeration_value(compiler, $1, $3);
     }
 
 opt_statements
