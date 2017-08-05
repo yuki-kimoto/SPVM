@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 
 #include "../spvm_compiler.h"
 #include "../spvm_hash.h"
@@ -76,7 +77,7 @@ int main(int argc, char *argv[])
   args[0].int_value = 2;
   
   // Run
-  int32_t return_value = api->call_int_sub(api, sub_constant_pool_index, &args);
+  int32_t return_value = api->call_int_sub(api, sub_constant_pool_index, args);
   
 #ifdef DEBUG
   if (runtime->exception) {
@@ -87,7 +88,7 @@ int main(int argc, char *argv[])
     printf("\n");
   }
   else {
-    printf("TEST return_value: %ld\n", return_value);
+    printf("TEST return_value: %" PRId32 "\n", return_value);
   }
 #endif
   

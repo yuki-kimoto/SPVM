@@ -37,7 +37,7 @@ int32_t SPVM_EXTENTION_stdout__test1(SPVM_API* api, SPVM_API_VALUE* args) {
   new_args[0].int_value = 5;
   new_args[1].int_value = 3;
   
-  int32_t ret = api->call_int_sub(api, sub_id, &new_args);
+  int32_t ret = api->call_int_sub(api, sub_id, new_args);
   
   int32_t num3 = num1 + num2 + ret;
   
