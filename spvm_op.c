@@ -671,39 +671,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_DYNAMIC_ARRAY_push(op_fields, op_decl);
       }
       else if (op_decl->code == SPVM_OP_C_CODE_SUB) {
-        SPVM_OP* op_sub = op_decl;
-        SPVM_SUB* sub = op_sub->uv.sub;
-        
-        SPVM_OP* op_name_sub = sub->op_name;
-        const char* sub_name = op_name_sub->uv.name;
-        const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
-        
-        SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
-        
-        assert(op_subs->length <= SPVM_LIMIT_C_SUBS);
-        if (found_op_sub) {
-          SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
-        }
-        else if (op_subs->length == SPVM_LIMIT_C_SUBS) {
-          SPVM_yyerror_format(compiler, "too many subroutines at %s line %d\n", sub_name, op_sub->file, op_sub->line);
-          compiler->fatal_error = 1;
-        }
-        // Unknown sub
-        else {
-          // Bind standard functions
-          if (sub->is_native) {
-            SPVM_EXTENTION_BIND_bind_core_extentions(compiler, sub, sub_abs_name);
-          }
-          
-          sub->abs_name = sub_abs_name;
-          
-          assert(op_sub->file);
-          
-          sub->file_name = op_sub->file;
-          
-          SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
-          SPVM_DYNAMIC_ARRAY_push(op_subs, op_sub);
-        }
+        SPVM_DYNAMIC_ARRAY_push(op_subs, op_decl);
       }
       else if (op_decl->code == SPVM_OP_C_CODE_ENUM) {
         SPVM_OP* op_enumeration = op_decl;
@@ -831,20 +799,15 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           // Set sub
           op_sub->uv.sub = sub;
          
-          SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
-          
-          if (found_op_sub) {
-            SPVM_yyerror_format(compiler, "redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
-          }
-          // Unknown sub
-          else {
-            SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
-            SPVM_DYNAMIC_ARRAY_push(op_subs, op_sub);
-          }
+          SPVM_DYNAMIC_ARRAY_push(op_subs, op_sub);
         }
+      }
+      else {
+        assert(0);
       }
     }
     
+    // Register field
     {
       int32_t i;
       for (i = 0; i < op_fields->length; i++) {
@@ -874,6 +837,47 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         }
       }
     }
+    
+    // Register subrotuine
+    {
+      int32_t i;
+      for (i = 0; i < op_subs->length; i++) {
+        SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(op_subs, i);
+
+        SPVM_SUB* sub = op_sub->uv.sub;
+        
+        SPVM_OP* op_name_sub = sub->op_name;
+        const char* sub_name = op_name_sub->uv.name;
+        const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
+        
+        SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
+        
+        assert(op_subs->length <= SPVM_LIMIT_C_SUBS);
+        if (found_op_sub) {
+          SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
+        }
+        else if (op_subs->length == SPVM_LIMIT_C_SUBS) {
+          SPVM_yyerror_format(compiler, "Too many subroutines at %s line %d\n", sub_name, op_sub->file, op_sub->line);
+          compiler->fatal_error = 1;
+        }
+        // Unknown sub
+        else {
+          // Bind standard functions
+          if (sub->is_native) {
+            SPVM_EXTENTION_BIND_bind_core_extentions(compiler, sub, sub_abs_name);
+          }
+          
+          sub->abs_name = sub_abs_name;
+          
+          assert(op_sub->file);
+          
+          sub->file_name = op_sub->file;
+          
+          SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
+        }
+      }
+    }
+    
     package->op_fields = op_fields;
     package->op_subs = op_subs;
     
