@@ -1,7 +1,7 @@
 0.0239 2017-08-05
   - cleanup enum internal logic
   - fix clang compiler error
-  - fix all warnings
+  - fix all warnings 
 0.0238 2017-08-04
   - Support nested switch statement
 0.0237 2017-08-03
