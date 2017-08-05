@@ -35,6 +35,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   // Save buf pointer
   compiler->befbufptr = compiler->bufptr;
   
+  // Constant minus sign
+  int32_t minus = 0;
+  
   while(1) {
     // Get current character
     char c = *compiler->bufptr;
@@ -202,7 +205,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '-':
         compiler->bufptr++;
         
-        if (*compiler->bufptr == '>') {
+        if (isdigit(*compiler->bufptr)) {
+          minus = 1;
+          continue;
+        }
+        else if (*compiler->bufptr == '>') {
           compiler->bufptr++;
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);
           return ARROW;
@@ -643,7 +650,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         /* Number literal */
         else if (isdigit(c)) {
-          const char* cur_token_ptr = compiler->bufptr;
+          const char* cur_token_ptr;
+          
+          // Before character is minus
+          if (minus) {
+            cur_token_ptr = compiler->bufptr - 1;
+            minus = 0;
+          }
+          else {
+            cur_token_ptr = compiler->bufptr;
+          }
           
           _Bool is_floating_number = 0;
           
@@ -697,7 +713,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               exit(EXIT_FAILURE);
             }
             constant->value.float_value = (float)num;
-            
             constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
           }
           // double
@@ -713,46 +728,47 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           // int
           else if (constant->type->id == SPVM_TYPE_C_ID_INT) {
-            uint64_t num;
+            int32_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
-              num = strtoull(num_str, &end, 16);
+              num = (int32_t)(uint32_t)strtoul(num_str, &end, 16);
             }
             else {
-              num = strtoull(num_str, &end, 10);
+              num = (int32_t)strtol(num_str, &end, 10);
             }
             if (*end != '\0') {
               fprintf(stderr, "Invalid int literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            else if (num == INT64_MAX && errno == ERANGE) {
+            else if (errno == ERANGE) {
               fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->tmp_ulong_value = num;
+            constant->value.int_value = num;
             constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
           }
           // long
           else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
-            uint64_t num;
+            int64_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
-              num = strtoull(num_str, &end, 16);
+              num = (int64_t)(uint64_t)strtoull(num_str, &end, 16);
             }
             else {
-              num = strtoull(num_str, &end, 10);
+              num = (int64_t)strtoll(num_str, &end, 10);
             }
             if (*end != '\0') {
               fprintf(stderr, "Invalid long literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            else if (num == INT64_MAX && errno == ERANGE) {
+            else if (errno == ERANGE) {
               fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->tmp_ulong_value = num;
+            constant->value.long_value = num;
             constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
           }
+          constant->resolved = 1;
           
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
           op->uv.constant = constant;
