@@ -668,31 +668,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_OP* op_decl = op_decls->first;
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
       if (op_decl->code == SPVM_OP_C_CODE_FIELD) {
-        SPVM_OP* op_field = op_decl;
-        SPVM_FIELD* field = op_field->uv.field;
-        const char* field_name = field->op_name->uv.name;
-        
-        const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
-        SPVM_OP* found_op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        
-        assert(op_fields->length <= SPVM_LIMIT_C_FIELDS);
-        
-        if (found_op_field) {
-          SPVM_yyerror_format(compiler, "redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, op_field->file, op_field->line);
-        }
-        else if (op_fields->length == SPVM_LIMIT_C_FIELDS) {
-          SPVM_yyerror_format(compiler, "too many fields, field \"%s\" ignored at %s line %d\n", field_name, op_field->file, op_field->line);
-          compiler->fatal_error = 1;
-        }
-        else {
-          SPVM_DYNAMIC_ARRAY_push(op_fields, op_field);
-          
-          const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
-          field->abs_name = field_abs_name;
-          
-          // Add op field symtable
-          SPVM_HASH_insert(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name), op_field);
-        }
+        SPVM_DYNAMIC_ARRAY_push(op_fields, op_decl);
       }
       else if (op_decl->code == SPVM_OP_C_CODE_SUB) {
         SPVM_OP* op_sub = op_decl;
@@ -865,6 +841,36 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
             SPVM_DYNAMIC_ARRAY_push(op_subs, op_sub);
           }
+        }
+      }
+    }
+    
+    {
+      int32_t i;
+      for (i = 0; i < op_fields->length; i++) {
+        SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, i);
+        
+        SPVM_FIELD* field = op_field->uv.field;
+        const char* field_name = field->op_name->uv.name;
+        
+        const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
+        SPVM_OP* found_op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        
+        assert(op_fields->length <= SPVM_LIMIT_C_FIELDS);
+        
+        if (found_op_field) {
+          SPVM_yyerror_format(compiler, "Redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, op_field->file, op_field->line);
+        }
+        else if (op_fields->length == SPVM_LIMIT_C_FIELDS) {
+          SPVM_yyerror_format(compiler, "Too many fields, field \"%s\" ignored at %s line %d\n", field_name, op_field->file, op_field->line);
+          compiler->fatal_error = 1;
+        }
+        else {
+          const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
+          field->abs_name = field_abs_name;
+          
+          // Add op field symtable
+          SPVM_HASH_insert(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name), op_field);
         }
       }
     }
