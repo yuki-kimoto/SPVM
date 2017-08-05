@@ -844,7 +844,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_SUB* sub = SPVM_SUB_new(compiler);
           sub->op_name = op_name;
           sub->op_return_type = op_return_type;
-          sub->op_block = op_constant;
+          sub->op_block = op_block;
           sub->is_constant = 1;
 
           // Create absolute name

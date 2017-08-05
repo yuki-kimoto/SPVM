@@ -1428,7 +1428,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       if (found_sub->is_constant) {
                         // Replace sub to constant
                         op_cur->code = SPVM_OP_C_CODE_CONSTANT;
-                        op_cur->uv.constant = found_sub->op_block->uv.constant;
+                        op_cur->uv.constant = found_sub->op_block->first->first->uv.constant;
                         
                         op_cur->first = NULL;
                         op_cur->last = NULL;
