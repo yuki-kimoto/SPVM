@@ -989,6 +989,13 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     op_name_sub->uv.name = "new";
   }
   
+  if (op_args == NULL) {
+    op_args = SPVM_OP_new_op_list(compiler, op_sub->file, op_sub->line);
+  }
+  if (op_descriptors == NULL) {
+    op_descriptors = SPVM_OP_new_op_list(compiler, op_sub->file, op_sub->line);
+  }
+  
   // Build OP_SUB
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_name_sub);
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_args);
