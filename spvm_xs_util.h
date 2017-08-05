@@ -75,7 +75,7 @@ int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* fie
   }
 }
 
-const char* SPVM_XS_UTIL_get_field_id(const char* package_name, const char* field_name) {
+int32_t SPVM_XS_UTIL_get_field_id(const char* package_name, const char* field_name) {
   // Field symbol table
   HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
   
@@ -92,7 +92,7 @@ const char* SPVM_XS_UTIL_get_field_id(const char* package_name, const char* fiel
       SV** sv_field_id_ptr = hv_fetch(hv_package_info, "id", strlen("id"), 0);
       if (sv_field_id_ptr) {
         SV* sv_field_id = *sv_field_id_ptr;
-        const char* field_id = SvPV_nolen(sv_field_id);
+        int32_t field_id = (int32_t)SvIV(sv_field_id);
         
         return field_id;
       }
@@ -112,7 +112,7 @@ const char* SPVM_XS_UTIL_get_field_id(const char* package_name, const char* fiel
 SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_ARRAY* array) {
   
   // Create array
-  HV* hv_array = sv_2mortal((SV*)newHV());
+  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Byte", 0);
   sv_bless(sv_array, hv_class);
@@ -135,7 +135,7 @@ SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_ARRAY* array) {
 SV* SPVM_XS_UTIL_new_sv_string(SPVM_API_ARRAY* array) {
   
   // Create array
-  HV* hv_array = sv_2mortal((SV*)newHV());
+  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
   HV* hv_class = gv_stashpv("SPVM::String", 0);
   sv_bless(sv_array, hv_class);
@@ -158,7 +158,7 @@ SV* SPVM_XS_UTIL_new_sv_string(SPVM_API_ARRAY* array) {
 SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_API_ARRAY* array) {
   
   // Create array
-  HV* hv_array = sv_2mortal((SV*)newHV());
+  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Short", 0);
   sv_bless(sv_array, hv_class);
@@ -181,7 +181,7 @@ SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_API_ARRAY* array) {
 SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_API_ARRAY* array) {
   
   // Create array
-  HV* hv_array = sv_2mortal((SV*)newHV());
+  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Int", 0);
   sv_bless(sv_array, hv_class);
@@ -204,7 +204,7 @@ SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_API_ARRAY* array) {
 SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_API_ARRAY* array) {
   
   // Create array
-  HV* hv_array = sv_2mortal((SV*)newHV());
+  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Long", 0);
   sv_bless(sv_array, hv_class);
@@ -227,7 +227,7 @@ SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_API_ARRAY* array) {
 SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_API_ARRAY* array) {
   
   // Create array
-  HV* hv_array = sv_2mortal((SV*)newHV());
+  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Float", 0);
   sv_bless(sv_array, hv_class);
@@ -250,7 +250,7 @@ SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_API_ARRAY* array) {
 SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_ARRAY* array) {
   
   // Create array
-  HV* hv_array = sv_2mortal((SV*)newHV());
+  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Double", 0);
   sv_bless(sv_array, hv_class);
@@ -273,7 +273,7 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_ARRAY* array) {
 SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_id, SPVM_API_ARRAY* array) {
   
   // Create array
-  HV* hv_array = sv_2mortal((SV*)newHV());
+  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Object", 0);
   sv_bless(sv_array, hv_class);
@@ -296,7 +296,7 @@ SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_id, SPVM_API_ARRAY* array) {
 
 SV* SPVM_XS_UTIL_new_sv_object(int32_t type_id, SPVM_API_OBJECT* object) {
   // Create object
-  HV* hv_object = sv_2mortal((SV*)newHV());
+  HV* hv_object = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_object = sv_2mortal(newRV_inc((SV*)hv_object));
   HV* hv_class = gv_stashpv("SPVM::Object", 0);
   sv_bless(sv_object, hv_class);
