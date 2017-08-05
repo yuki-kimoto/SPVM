@@ -46,7 +46,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       
       // Push value to constant pool
       switch (constant->type->id) {
+        case SPVM_TYPE_C_ID_BYTE: {
+          break;
+        }
+        case SPVM_TYPE_C_ID_SHORT: {
+          break;
+        }
         case SPVM_TYPE_C_ID_INT: {
+          
           int32_t value = constant->value.int_value;
           if (value >= -32768 && value <= 32767) {
             constant->constant_pool_index = -1;
@@ -96,6 +103,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           break;
         }
+        default:
+          assert(0);
       }
     }
   }
@@ -1432,6 +1441,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         op_cur->first = NULL;
                         op_cur->last = NULL;
+                        break;
                       }
                       
                       SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, found_op_sub->uv.sub->op_return_type);

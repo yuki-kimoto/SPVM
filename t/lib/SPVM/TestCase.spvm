@@ -347,6 +347,7 @@ package TestCase {
   }
 
   sub enum_int () : int {
+    
     if (TestCase->INT_ZERO == 0) {
       if (TestCase->INT_ONE == 1) {
         if (TestCase->INT_THREE == 3) {
