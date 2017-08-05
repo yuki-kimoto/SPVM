@@ -204,7 +204,7 @@ enumeration_value
     {
       $$ = SPVM_OP_build_enumeration_value(compiler, $1, NULL);
     }
-  | NAME ASSIGN CONSTANT
+  | NAME ASSIGN term
     {
       $$ = SPVM_OP_build_enumeration_value(compiler, $1, $3);
     }
