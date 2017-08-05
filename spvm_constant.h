@@ -7,10 +7,7 @@
 struct SPVM_constant {
   SPVM_TYPE* type;
   SPVM_VALUE value;
-  uint64_t tmp_ulong_value;
   int32_t constant_pool_index;
-  _Bool sign;
-  _Bool resolved;
 };
 
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler);

@@ -768,7 +768,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->value.long_value = num;
             constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
           }
-          constant->resolved = 1;
           
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
           op->uv.constant = constant;

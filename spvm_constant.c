@@ -9,9 +9,8 @@
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler) {
   SPVM_CONSTANT* constant = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_CONSTANT));
   
-  constant->sign = 0;
-  constant->resolved = 0;
   constant->type = NULL;
+  constant->constant_pool_index = -1;
   
   return constant;
 }
@@ -21,7 +20,6 @@ SPVM_CONSTANT* SPVM_CONSTANT_create_int_1(SPVM_COMPILER* compiler) {
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   constant->value.int_value = 1;
   constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
-  constant->resolved = 1;
   
   return constant;
 }

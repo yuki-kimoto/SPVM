@@ -38,9 +38,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     for (i = 0; i < compiler->op_constants->length; i++) {
       SPVM_OP* op_constant = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_constants, i);
       
-      // Resolve type
-      SPVM_OP_resolve_constant(compiler, op_constant);
-      
       // Constant
       SPVM_CONSTANT* constant = op_constant->uv.constant;
       

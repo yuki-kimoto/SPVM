@@ -117,33 +117,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "NEW",
 };
 
-void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
-  (void)compiler;
-  
-  SPVM_CONSTANT* constant = op_constant->uv.constant;
-  if (constant->resolved) {
-    return;
-  }
-  
-  if (constant->type->id == SPVM_TYPE_C_ID_INT) {
-    if (constant->sign) {
-      constant->value.int_value = (int32_t)-constant->tmp_ulong_value;
-    }
-    else {
-      constant->value.int_value = (int32_t)constant->tmp_ulong_value;
-    }
-  }
-  else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
-    if (constant->sign) {
-      constant->value.long_value = (int64_t)-constant->tmp_ulong_value;
-    }
-    else {
-      constant->value.long_value = (int64_t)constant->tmp_ulong_value;
-    }
-  }
-  constant->resolved = 1;
-}
-
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
@@ -774,7 +747,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           }
           
           if (enumeration_value->op_constant) {
-            SPVM_OP_resolve_constant(compiler, enumeration_value->op_constant);
             
             SPVM_CONSTANT* constant = enumeration_value->op_constant->uv.constant;
             
@@ -835,7 +807,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             else {
               assert(0);
             }
-            constant->resolved = 1;
             
             SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_enumeration_value->file, op_enumeration_value->line);
             op_constant->uv.constant = constant;
@@ -1377,7 +1348,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       SPVM_TYPE* first_type = NULL;
       SPVM_OP* op_term = op_list->first;
       while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-        SPVM_OP_resolve_constant(compiler, op_term);
         
         // Term must be constant
         if (op_term->code != SPVM_OP_C_CODE_CONSTANT) {
@@ -1404,7 +1374,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       SPVM_CONSTANT* constant_length = SPVM_CONSTANT_new(compiler);
       constant_length->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
       constant_length->value.int_value = length;
-      constant_length->resolved = 1;
       op_constant_length->uv.constant = constant_length;
       
       // New
@@ -1467,7 +1436,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
           SPVM_CONSTANT* constant_index = SPVM_CONSTANT_new(compiler);
           constant_index->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
           constant_index->value.int_value = i;
-          constant_index->resolved = 1;
           op_constant_index->uv.constant = constant_index;
           SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
           
