@@ -40,6 +40,9 @@ struct SPVM_compiler {
   // Constants
   SPVM_DYNAMIC_ARRAY* op_constants;
   
+  // Enums
+  SPVM_DYNAMIC_ARRAY* cur_op_enumeration_values;
+  
   // Packages
   SPVM_DYNAMIC_ARRAY* op_packages;
   

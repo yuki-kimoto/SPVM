@@ -67,7 +67,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->cur_file = NULL;
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->cur_template_args = NULL;
-  
+  compiler->cur_op_enumeration_values = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+ 
   compiler->start_sub_name = NULL;
   
   compiler->fatal_error = 0;

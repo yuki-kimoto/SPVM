@@ -1117,6 +1117,9 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   // Build OP_SUB
   SPVM_OP_insert_child(compiler, op_enumeration, op_enumeration->last, op_enumeration_block);
   
+  // Create new current enumerations
+  compiler->cur_op_enumeration_values = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  
   return op_enumeration;
 }
 
