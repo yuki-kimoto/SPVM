@@ -854,7 +854,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
                         
                         // New op
-                        SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_cur->file, op_cur->line);
+                        SPVM_OP* op_new = SPVM_OP_cut_op(compiler, op_cur);
                         
                         // Type parent is new
                         op_type_or_constant->moresib = 0;
@@ -881,8 +881,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_var->sibparent = op_new;
                         
                         // New op parent is assign op
-                        op_new->first = op_type_or_constant;
-                        op_new->last = op_type_or_constant;
                         op_new->moresib = 0;
                         op_new->sibparent = op_assign;
                         
@@ -1482,7 +1480,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
                         
                         // New op
-                        SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_SUB, op_cur->file, op_cur->line);
+                        SPVM_OP* op_call_sub = SPVM_OP_cut_op(compiler, op_cur);
                         
                         // List args parent is call_sub
                         op_list_args->moresib = 0;
@@ -1506,8 +1504,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_var->sibparent = op_call_sub;
                         
                         // New op parent is assign op
-                        op_call_sub->first = op_name_sub;
-                        op_call_sub->last = op_list_args;
                         op_call_sub->moresib = 0;
                         op_call_sub->sibparent = op_assign;
                         op_call_sub->uv.name_info = name_info;
