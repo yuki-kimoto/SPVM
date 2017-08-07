@@ -143,6 +143,8 @@ SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
 
 // Replace target op with replace op
 void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace) {
+  (void)compiler;
+  
   op_target->first = op_replace->first;
   op_target->last = op_replace->last;
   if (op_target->last) {

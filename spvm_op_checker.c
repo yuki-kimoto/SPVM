@@ -1344,7 +1344,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       // Check sub name
                       SPVM_OP_resolve_sub_name(compiler, op_package, op_cur);
                       
-                      SPVM_OP* op_name_sub = op_cur->first;
                       SPVM_OP* op_list_args = op_cur->last;
                       
                       SPVM_NAME_INFO* name_info = op_cur->uv.name_info;
