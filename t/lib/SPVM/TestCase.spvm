@@ -2878,16 +2878,55 @@ package TestCase {
     }
   }
 
-  # Number literal
-  sub number_literal_hex_specifier() : int {
-    my $value1 = 0xFFf;
-    my $value2 = 0xFFd;
-    my $value3 = 0xFFL;
+  sub number_literal_specifier() : int {
+    my $value1 = 255f;
+    my $value2 = 255d;
+    my $value3 = 255L;
+    my $value4 = -128b;
+    my $value5 = -32768s;
+    my $value6 = 127b;
+    my $value7 = -128s;
     
     if ($value1 == (float)255) {
       if ($value2 == (double)255) {
         if ($value3 == (long)255) {
-          return 1;
+          if ($value4 == (byte)-1) {
+            if ($value5 == (short)-1) {
+              if ($value6 == (byte)127) {
+                if ($value7 == (short)32767) {
+                  return 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub number_literal_hex_specifier() : int {
+    my $value1 = 0xFFf;
+    my $value2 = 0xFFd;
+    my $value3 = 0xFFL;
+    my $value4 = 0xFFb;
+    my $value5 = 0xFFFFs;
+    my $value6 = 0x7Fb;
+    my $value7 = 0x7FFFs;
+    
+    if ($value1 == (float)255) {
+      if ($value2 == (double)255) {
+        if ($value3 == (long)255) {
+          if ($value4 == (byte)-1) {
+            if ($value5 == (short)-1) {
+              if ($value6 == (byte)127) {
+                if ($value7 == (short)32767) {
+                  return 1;
+                }
+              }
+            }
+          }
         }
       }
     }
