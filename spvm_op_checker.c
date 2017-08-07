@@ -330,7 +330,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_OP* op_cur = op_base;
             _Bool finish = 0;
             while (op_cur) {
-              
               op_count++;
               
               // [START]Preorder traversal position
@@ -862,19 +861,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                         // Assing op
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                        SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_var);
-                        SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_new);
-
-                        op_assign->first->lvalue = 1;
-                        op_assign->last->rvalue = 1;
-                        
-                        // var op return
-                        SPVM_OP* op_var_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_cur->file, op_cur->line);
-                        op_var_return->uv.var = op_var->uv.var;
-                        SPVM_OP_insert_child(compiler, op_var_return, op_var_return->last, op_assign);
+                        SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var, op_new);
                         
                         // Convert cur new op to var
-                        SPVM_OP_replace_op(compiler, op_cur, op_var_return);
+                        SPVM_OP_replace_op(compiler, op_cur, op_build_assign);
                         
                         op_cur = op_new;
                       }
@@ -1486,6 +1476,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     case SPVM_OP_C_CODE_CALL_FIELD: {
                       SPVM_OP* op_term = op_cur->first;
                       SPVM_OP* op_name = op_cur->last;
+                      
+                      if (op_term->code == SPVM_OP_C_CODE_ASSIGN_PROCESS) {
+                        op_term = op_term->first;
+                      }
                       
                       if (op_term->code != SPVM_OP_C_CODE_VAR
                         && op_term->code != SPVM_OP_C_CODE_ARRAY_ELEM
