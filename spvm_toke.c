@@ -706,7 +706,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Constant
           SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
           
-          if (*compiler->bufptr == 'L')  {
+          if (*compiler->bufptr == 'b')  {
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == 's')  {
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == 'L')  {
             constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
             compiler->bufptr++;
           }
@@ -749,6 +757,48 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             constant->value.double_value = num;
             constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
+          }
+          // byte
+          else if (constant->type->id == SPVM_TYPE_C_ID_BYTE) {
+            int32_t num;
+            errno = 0;
+            if (num_str[0] == '0' && num_str[1] == 'x') {
+              num = (int32_t)(uint32_t)strtoul(num_str, &end, 16);
+            }
+            else {
+              num = (int32_t)strtol(num_str, &end, 10);
+            }
+            if (*end != '\0') {
+              fprintf(stderr, "Invalid byte literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              exit(EXIT_FAILURE);
+            }
+            else if (num < -128 || num > 127 || errno == ERANGE) {
+              fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              exit(EXIT_FAILURE);
+            }
+            constant->value.byte_value = (int8_t)num;
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+          }
+          // short
+          else if (constant->type->id == SPVM_TYPE_C_ID_SHORT) {
+            int32_t num;
+            errno = 0;
+            if (num_str[0] == '0' && num_str[1] == 'x') {
+              num = (int32_t)(uint32_t)strtoul(num_str, &end, 16);
+            }
+            else {
+              num = (int32_t)strtol(num_str, &end, 10);
+            }
+            if (*end != '\0') {
+              fprintf(stderr, "Invalid short literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              exit(EXIT_FAILURE);
+            }
+            else if (num < -32768 || num > 32767 || errno == ERANGE) {
+              fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              exit(EXIT_FAILURE);
+            }
+            constant->value.short_value = (int16_t)num;
+            constant->type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
           }
           // int
           else if (constant->type->id == SPVM_TYPE_C_ID_INT) {

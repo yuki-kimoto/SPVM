@@ -1,6 +1,10 @@
 0.0240 2017-08-07
   - fix number literal bug that hex number e and E is floating point specifier
+  - add byte and short number literal syntax
+    123b
+    123s
   - hex number only allow A, B, C, D, E, F because f is used to specify the number is floating point
+    and b is used to specify the number is byte
 0.0239 2017-08-05
   - cleanup enum internal logic
   - fix clang compiler error

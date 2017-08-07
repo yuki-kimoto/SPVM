@@ -624,7 +624,6 @@ is_deeply(
   ok(SPVM::TestCase::number_literal_hex_all_number());
   ok(SPVM::TestCase::number_literal_hex_int());
   ok(SPVM::TestCase::number_literal_hex_int_max());
-  ok(SPVM::TestCase::number_literal_hex_long());
   ok(SPVM::TestCase::number_literal_hex_long_max());
 }
 
