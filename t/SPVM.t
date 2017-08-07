@@ -620,6 +620,7 @@ is_deeply(
 
 # Number literal
 {
+  ok(SPVM::TestCase::number_literal_hex_specifier());
   ok(SPVM::TestCase::number_literal_hex_all_number());
   ok(SPVM::TestCase::number_literal_hex_int());
   ok(SPVM::TestCase::number_literal_hex_int_max());
