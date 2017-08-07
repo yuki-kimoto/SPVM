@@ -309,8 +309,32 @@ package TestCase {
     
     return 1;
   }
-  
-  sub array_int () : int {
+
+  sub array_init_byte() : int {
+    my $nums = [1b, 2b, 3b];
+    
+    if ($nums->[0] == 1b) {
+      if ($nums->[1] == 2b) {
+        if ($nums->[2] == 3b) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  sub array_init_short() : int {
+    my $nums = [1s, 2s, 3s];
+    
+    if ($nums->[0] == 1s) {
+      if ($nums->[1] == 2s) {
+        if ($nums->[2] == 3s) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  sub array_init_int () : int {
     my $nums = [1, 2, 3];
     
     if ($nums->[0] == 1) {
@@ -322,7 +346,44 @@ package TestCase {
     }
     return 0;
   }
-  
+=pod
+  sub array_init_long() : int {
+    my $nums = [1L, 2L, 3L];
+    
+    if ($nums->[0] == 1L) {
+      if ($nums->[1] == 2L) {
+        if ($nums->[2] == 3L) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  sub array_init_float() : int {
+    my $nums = [1f, 2f, 3f];
+    
+    if ($nums->[0] == 1f) {
+      if ($nums->[1] == 2f) {
+        if ($nums->[2] == 3f) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  sub array_init_double() : int {
+    my $nums = [1d, 2d, 3d];
+    
+    if ($nums->[0] == 1d) {
+      if ($nums->[1] == 2d) {
+        if ($nums->[2] == 3d) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+=cut
   sub get_object_from_freelist () : int {
     get_object_from_freelist_check();
     

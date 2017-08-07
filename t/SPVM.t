@@ -90,7 +90,14 @@ is_deeply(
 
 # Array initialization
 {
-  ok(SPVM::TestCase::array_int());
+  ok(SPVM::TestCase::array_init_byte());
+  ok(SPVM::TestCase::array_init_short());
+  ok(SPVM::TestCase::array_init_int());
+=pod
+  ok(SPVM::TestCase::array_init_long());
+  ok(SPVM::TestCase::array_init_float());
+  ok(SPVM::TestCase::array_init_double());
+=cut
 }
 
 # Enumeration
