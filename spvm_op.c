@@ -115,6 +115,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "EXCEPTION_VAR",
   "ASSIGN_PROCESS",
   "NEW",
+  "STAB",
 };
 
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
