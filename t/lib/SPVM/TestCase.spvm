@@ -2879,6 +2879,33 @@ package TestCase {
   }
 
   # Number literal
+  sub number_literal_hex_specifier() : int {
+    my $value1 = 0xFFf;
+    my $value2 = 0xFFd;
+    my $value3 = 0xFFL;
+    
+    if ($value1 == (float)255) {
+      if ($value2 == (double)255) {
+        if ($value3 == (long)255) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub number_literal_hex_all_number() : int {
+    my $value1 = 0x01234567;
+    my $value2 = 0x00ABCDEF;
+    
+    if ($value1 == 19088743) {
+      if ($value2 == 11259375) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
   sub number_literal_hex_int() : int {
     my $value = 0xFF;
     
@@ -2889,7 +2916,6 @@ package TestCase {
       return 0;
     }
   }
-  
   sub number_literal_hex_int_max() : int {
     # 11111111 11111111 11111111 11111111
     my $value = 0xFFFFFFFF;
@@ -2901,7 +2927,6 @@ package TestCase {
       return 0;
     }
   }
-
   sub number_literal_hex_long() : int {
     my $value = 0xFFL;
     
@@ -2912,7 +2937,6 @@ package TestCase {
       return 0;
     }
   }
-  
   sub number_literal_hex_long_max() : int {
     # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
     my $value = 0xFFFFFFFFFFFFFFFFL;
