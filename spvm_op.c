@@ -118,6 +118,42 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "STAB",
 };
 
+// Return cloned op and target op become stab
+SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
+  
+  // Cut op
+  SPVM_OP* op_cut = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_target->file, op_target->line);
+  op_cut->first = op_target->first;
+  op_cut->last = op_target->last;
+  if (op_cut->last) {
+    op_cut->last->sibparent = op_cut;
+  }
+  op_cut->uv = op_target->uv;
+  op_cut->code = op_target->code;
+  op_cut->flag = op_target->flag;
+  
+  op_target->first = NULL;
+  op_target->last = NULL;
+  op_target->uv.name = NULL;
+  op_target->code = SPVM_OP_C_CODE_STAB;
+  op_target->flag = 0;
+  
+  return op_cut;
+}
+
+// Replace target op with replace op
+void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace) {
+  op_target->first = op_replace->first;
+  op_target->last = op_replace->last;
+  if (op_target->last) {
+    op_target->last->sibparent = op_target;
+  }
+  op_target->uv = op_replace->uv;
+  op_target->code = op_replace->code;
+  op_target->file = op_replace->file;
+  op_target->line = op_replace->line;
+}
+
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
