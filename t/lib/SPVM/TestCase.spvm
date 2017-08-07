@@ -346,7 +346,6 @@ package TestCase {
     }
     return 0;
   }
-=pod
   sub array_init_long() : int {
     my $nums = [1L, 2L, 3L];
     
@@ -359,6 +358,7 @@ package TestCase {
     }
     return 0;
   }
+=pod
   sub array_init_float() : int {
     my $nums = [1f, 2f, 3f];
     

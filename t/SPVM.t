@@ -93,8 +93,8 @@ is_deeply(
   ok(SPVM::TestCase::array_init_byte());
   ok(SPVM::TestCase::array_init_short());
   ok(SPVM::TestCase::array_init_int());
-=pod
   ok(SPVM::TestCase::array_init_long());
+=pod
   ok(SPVM::TestCase::array_init_float());
   ok(SPVM::TestCase::array_init_double());
 =cut
