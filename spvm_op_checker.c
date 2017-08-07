@@ -876,14 +876,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_cur->first = op_assign;
                         op_cur->last = op_assign;
                         
-                        // Var op has sibling
-                        op_var->moresib = 1;
-                        op_var->sibparent = op_new;
-                        
-                        // New op parent is assign op
-                        op_new->moresib = 0;
-                        op_new->sibparent = op_assign;
-                        
                         // Set lvalue and rvalue
                         op_assign->first->lvalue = 1;
                         op_assign->last->rvalue = 1;
@@ -1499,13 +1491,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_cur->first = op_assign;
                         op_cur->last = op_assign;
                         
-                        // Var op has sibling
-                        op_var->moresib = 1;
-                        op_var->sibparent = op_call_sub;
-                        
-                        // New op parent is assign op
-                        op_call_sub->moresib = 0;
-                        op_call_sub->sibparent = op_assign;
                         op_call_sub->uv.name_info = name_info;
                         
                         // Set lvalue and rvalue
