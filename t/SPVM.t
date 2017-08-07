@@ -39,13 +39,8 @@ use SPVM::stdout;
   ok(SPVM::TestCase::array_init_int());
   ok(SPVM::TestCase::array_init_long());
   ok(SPVM::TestCase::array_init_float());
-=pod
   ok(SPVM::TestCase::array_init_double());
-=cut
 }
-
-
-__END__
 
 # Exception
 {

@@ -371,7 +371,6 @@ package TestCase {
     }
     return 0;
   }
-=pod
   sub array_init_double() : int {
     my $nums = [1d, 2d, 3d];
     
@@ -384,7 +383,6 @@ package TestCase {
     }
     return 0;
   }
-=cut
   sub get_object_from_freelist () : int {
     get_object_from_freelist_check();
     
