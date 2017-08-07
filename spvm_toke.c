@@ -661,16 +661,40 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             cur_token_ptr = compiler->bufptr;
           }
           
+          // Hex number
+          _Bool hex;
+          if (*(compiler->bufptr) == '0' && *(compiler->bufptr + 1) == 'x') {
+            hex = 1;
+          }
+          else {
+            hex = 0;
+          }
+          
           _Bool is_floating_number = 0;
           
           compiler->bufptr++;
-          
           // Scan number
-          while(isdigit(*compiler->bufptr) || isalpha(*compiler->bufptr) || *compiler->bufptr == '.' || *compiler->bufptr == '-' || *compiler->bufptr == '+') {
-            if (*compiler->bufptr == '.' || *compiler->bufptr == 'e' || *compiler->bufptr == 'E') {
-              is_floating_number = 1;
+          if (hex) {
+            compiler->bufptr += 2;
+            while(
+              isdigit(*compiler->bufptr)
+              || *compiler->bufptr == 'A' || *compiler->bufptr == 'B' || *compiler->bufptr == 'C' || *compiler->bufptr == 'D' || *compiler->bufptr == 'E' || *compiler->bufptr == 'F'
+            )
+            {
+              compiler->bufptr++;
             }
-            compiler->bufptr++;
+          }
+          else {
+            while(
+              isdigit(*compiler->bufptr)
+              || *compiler->bufptr == '.' || *compiler->bufptr == '-' || *compiler->bufptr == '+' || *compiler->bufptr == 'e' || *compiler->bufptr == 'E'
+            )
+            {
+              if (*compiler->bufptr == '.' || *compiler->bufptr == 'e' || *compiler->bufptr == 'E') {
+                is_floating_number = 1;
+              }
+              compiler->bufptr++;
+            }
           }
           
           // Number literal(first is space for sign)
@@ -682,17 +706,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Constant
           SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
           
-          if (num_str[str_len - 1] == 'L')  {
+          if (*compiler->bufptr == 'L')  {
             constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
-            num_str[str_len - 1] = '\0';
+            compiler->bufptr++;
           }
-          else if (num_str[str_len - 1] == 'f')  {
+          else if (*compiler->bufptr == 'f')  {
             constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
-            num_str[str_len - 1] = '\0';
+            compiler->bufptr++;
           }
-          else if (num_str[str_len - 1] == 'd')  {
+          else if (*compiler->bufptr == 'd')  {
             constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
-            num_str[str_len - 1] = '\0';
+            compiler->bufptr++;
           }
           else {
             if (is_floating_number) {
