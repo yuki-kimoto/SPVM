@@ -3056,6 +3056,28 @@ package TestCase {
     
     return 0;
   }
+  sub number_literal_underline() : int {
+    my $value = 123_123;
+    
+    if ($value == 123123) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub number_literal_underline_hex() : int {
+    my $value = 0xFF_FF;
+    
+    if ($value == 0xFFFF) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
   sub number_literal_hex_int() : int {
     my $value = 0xFF;
     

@@ -679,6 +679,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             while(
               isdigit(*compiler->bufptr)
               || *compiler->bufptr == 'A' || *compiler->bufptr == 'B' || *compiler->bufptr == 'C' || *compiler->bufptr == 'D' || *compiler->bufptr == 'E' || *compiler->bufptr == 'F'
+              || *compiler->bufptr == '_'
             )
             {
               compiler->bufptr++;
@@ -688,6 +689,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             while(
               isdigit(*compiler->bufptr)
               || *compiler->bufptr == '.' || *compiler->bufptr == '-' || *compiler->bufptr == '+' || *compiler->bufptr == 'e' || *compiler->bufptr == 'E'
+              || *compiler->bufptr == '_'
             )
             {
               if (*compiler->bufptr == '.' || *compiler->bufptr == 'e' || *compiler->bufptr == 'E') {
@@ -700,8 +702,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Number literal(first is space for sign)
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
           char* num_str = (char*) SPVM_UTIL_ALLOCATOR_safe_malloc_zero(str_len + 2);
-          memcpy(num_str, cur_token_ptr, str_len);
-          num_str[str_len] = '\0';
+          {
+            int32_t i;
+            int32_t pos = 0;
+            for (i = 0; i < str_len; i++) {
+              if (*(cur_token_ptr + i) != '_') {
+                *(num_str + pos) = *(cur_token_ptr + i);
+                pos++;
+              }
+            }
+            num_str[pos] = '\0';
+          }
           
           // Constant
           SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);

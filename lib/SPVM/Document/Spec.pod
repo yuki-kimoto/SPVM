@@ -1,6 +1,63 @@
 =head1 NAME
 
-SPVM::Document::Specification - SPVM specification(BETA)
+SPVM::Document::Spec - SPVM language specification(BETA)
+
+=head2 Number literal
+
+Default number literal type is C<int>.
+
+  123
+
+You can use hex number literal by start C<0x>. C<A>, C<B>, C<C>, C<D>, C<E>, C<F> must be upper case.
+
+  0xAF
+
+If you use C<.> in number literal, the number is floating point literal.
+
+  1.23
+
+You can use C<E> or C<e> to specify exponential notation.
+
+  1.23E+12
+  1.23E-12
+  1.23e+12
+  1.23e-12
+
+You can use under line C<_> in number literal. Under line is meanless, only for visuality.
+
+  123_456
+  0xAB_CD
+
+You can use specifier to specify number leteral type
+
+=over 2
+
+=item * b
+
+  # Byte
+  123b
+
+=item * s
+  
+  # Short
+  123s
+
+=item * L
+  
+  # Long
+  123L
+
+=item * f
+  
+  # Float
+  123f
+
+=tem * d
+
+  # Double
+  123d
+
+=back
 
 =head2 Type
 
@@ -263,12 +320,3 @@ Absolute name is combination of package name and subroutine name, or package nam
 Object can't have object and array of object.
 
 If I have idea to implement weaken reference and implement weaken reference, this limitation is removed.
-
-
-=head1 SPVM Language Specification
-
-=head1 SPVM core modules
-
-=head1 SPVM Perl API
-
-=head1 SPVM Native API

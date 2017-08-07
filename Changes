@@ -6,6 +6,9 @@
   - hex number only allow A, B, C, D, E, F because f is used to specify the number is floating point
     and b is used to specify the number is byte
   - fix array float store and load bug
+  - support underline in number literal
+    123_123
+    0xFF_FF
 0.0239 2017-08-05
   - cleanup enum internal logic
   - fix clang compiler error
