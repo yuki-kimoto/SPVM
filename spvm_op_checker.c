@@ -862,8 +862,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                         // Assing op
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                        op_assign->first = op_var;
-                        op_assign->last = op_new;
+                        SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_var);
+                        SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_new);
                         op_assign->moresib = 0;
                         op_assign->sibparent = op_cur;
 
@@ -1488,8 +1488,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                         // Assing op
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                        op_assign->first = op_var;
-                        op_assign->last = op_call_sub;
+                        SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_var);
+                        SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_call_sub);
                         op_assign->moresib = 0;
                         op_assign->sibparent = op_cur;
                         
