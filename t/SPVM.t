@@ -96,6 +96,7 @@ is_deeply(
 # Enumeration
 {
   ok(SPVM::TestCase::enum_byte());
+  ok(SPVM::TestCase::enum_short());
   ok(SPVM::TestCase::enum_int());
   ok(SPVM::TestCase::enum_long());
   ok(SPVM::TestCase::enum_float());
