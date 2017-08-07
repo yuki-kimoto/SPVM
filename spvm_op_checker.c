@@ -869,12 +869,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                         op_assign->first->lvalue = 1;
                         op_assign->last->rvalue = 1;
-
+                        
+                        // var op return
+                        SPVM_OP* op_var_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_cur->file, op_cur->line);
+                        op_var_return->uv.var = op_var->uv.var;
+                        SPVM_OP_insert_child(compiler, op_var_return, op_var_return->last, op_assign);
+                        
                         // Convert cur new op to var
-                        op_cur->code = SPVM_OP_C_CODE_VAR;
-                        op_cur->uv.var = op_var->uv.var;
-                        op_cur->first = op_assign;
-                        op_cur->last = op_assign;
+                        SPVM_OP_replace_op(compiler, op_cur, op_var_return);
                         
                         op_cur = op_new;
                       }
