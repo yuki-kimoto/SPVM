@@ -876,10 +876,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_cur->first = op_assign;
                         op_cur->last = op_assign;
                         
-                        // Set lvalue and rvalue
-                        op_assign->first->lvalue = 1;
-                        op_assign->last->rvalue = 1;
-                        
                         op_cur = op_new;
                       }
 
