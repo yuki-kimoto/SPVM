@@ -1469,10 +1469,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // New op
                         SPVM_OP* op_call_sub = SPVM_OP_cut_op(compiler, op_cur);
-                        
-                        // List args parent is call_sub
-                        op_list_args->moresib = 0;
-                        op_list_args->sibparent = op_call_sub;
 
                         // Assing op
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
