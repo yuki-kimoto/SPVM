@@ -1310,7 +1310,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        *(float*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(float) * index) = call_stack[operand_stack_top - 1].float_value;
+        *(float*)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(float) * index) = call_stack[operand_stack_top].float_value;
         operand_stack_top -= 3;
         pc++;
         goto *jump[*pc];
@@ -2346,7 +2346,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     else {
       index = (*(pc + 1) << 8) + *(pc + 2);
-      call_stack[operand_stack_top - 1].float_value
+      call_stack[operand_stack_top].float_value
         = *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       pc += 3;
       goto *jump[*pc];
@@ -2450,7 +2450,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     else {
       index = (*(pc + 1) << 8) + *(pc + 2);
       *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
-        = call_stack[operand_stack_top - 1].float_value;
+        = call_stack[operand_stack_top].float_value;
       operand_stack_top -= 2;
       pc += 3;
       goto *jump[*pc];

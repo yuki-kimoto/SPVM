@@ -358,10 +358,10 @@ package TestCase {
     }
     return 0;
   }
-=pod
   sub array_init_float() : int {
     my $nums = [1f, 2f, 3f];
     
+    stdout::println_float($nums->[0]);
     if ($nums->[0] == 1f) {
       if ($nums->[1] == 2f) {
         if ($nums->[2] == 3f) {
@@ -371,6 +371,7 @@ package TestCase {
     }
     return 0;
   }
+=pod
   sub array_init_double() : int {
     my $nums = [1d, 2d, 3d];
     

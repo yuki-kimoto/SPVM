@@ -1346,22 +1346,14 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       // Length constant
       int32_t length = 0;
       SPVM_TYPE* first_type = NULL;
-      SPVM_OP* op_term = op_list->first;
-      while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-        
-        // Term must be constant
-        if (op_term->code != SPVM_OP_C_CODE_CONSTANT) {
-          SPVM_yyerror_format(compiler, "Array init elements must be constant value at %s line %d\n", op_list->file, op_list->line);
-          compiler->fatal_error = 1;
-          return NULL;
-        }
-        
+      SPVM_OP* op_constant = op_list->first;
+      while ((op_constant = SPVM_OP_sibling(compiler, op_constant))) {
         if (first_type == NULL) {
-          first_type = SPVM_OP_get_type(compiler, op_term);
+          first_type = SPVM_OP_get_type(compiler, op_constant);
         }
         
         // Type must be same as first type
-        SPVM_TYPE* constant_type = SPVM_OP_get_type(compiler, op_term);
+        SPVM_TYPE* constant_type = SPVM_OP_get_type(compiler, op_constant);
         if (constant_type->id != first_type->id) {
           SPVM_yyerror_format(compiler, "All of array init elements must be same types at %s line %d\n", op_list->file, op_list->line);
           compiler->fatal_error = 1;
@@ -1416,15 +1408,15 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       
       // Assign array element
       SPVM_OP* op_list_new = SPVM_OP_new_op_list(compiler, op_list->file, op_list->line);
-      SPVM_DYNAMIC_ARRAY* op_terms = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      op_term = op_list->first;
-      while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-        SPVM_DYNAMIC_ARRAY_push(op_terms, op_term);
+      SPVM_DYNAMIC_ARRAY* op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      op_constant = op_list->first;
+      while ((op_constant = SPVM_OP_sibling(compiler, op_constant))) {
+        SPVM_DYNAMIC_ARRAY_push(op_constants, op_constant);
       }
       {
         int32_t i;
-        for (i = 0; i < op_terms->length; i++) {
-          SPVM_OP* op_term = SPVM_DYNAMIC_ARRAY_fetch(op_terms, i);
+        for (i = 0; i < op_constants->length; i++) {
+          SPVM_OP* op_constant = SPVM_DYNAMIC_ARRAY_fetch(op_constants, i);
           
           SPVM_OP* op_assign_array = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_list->file, op_list->line);
           SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_ELEM, op_list->file, op_list->line);
@@ -1440,9 +1432,9 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
           SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
           
           SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_array_elem);
-          op_term->moresib = 0;
-          op_term->sibparent = NULL;
-          SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_term);
+          op_constant->moresib = 0;
+          op_constant->sibparent = NULL;
+          SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_constant);
           
           op_assign_array->first->lvalue = 1;
           op_assign_array->last->rvalue = 1;

@@ -32,6 +32,21 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 
 use SPVM::stdout;
 
+# Array initialization
+{
+  ok(SPVM::TestCase::array_init_byte());
+  ok(SPVM::TestCase::array_init_short());
+  ok(SPVM::TestCase::array_init_int());
+  ok(SPVM::TestCase::array_init_long());
+  ok(SPVM::TestCase::array_init_float());
+=pod
+  ok(SPVM::TestCase::array_init_double());
+=cut
+}
+
+
+__END__
+
 # Exception
 {
   eval { SPVM::TestCase::exception_zero_divide_int() }; my $line = __LINE__;
@@ -86,18 +101,6 @@ is_deeply(
 # Get object from freelist
 {
   ok(SPVM::TestCase::get_object_from_freelist());
-}
-
-# Array initialization
-{
-  ok(SPVM::TestCase::array_init_byte());
-  ok(SPVM::TestCase::array_init_short());
-  ok(SPVM::TestCase::array_init_int());
-  ok(SPVM::TestCase::array_init_long());
-=pod
-  ok(SPVM::TestCase::array_init_float());
-  ok(SPVM::TestCase::array_init_double());
-=cut
 }
 
 # Enumeration
