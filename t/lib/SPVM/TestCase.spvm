@@ -323,15 +323,6 @@ package TestCase {
     return 0;
   }
   
-  enum {
-    INT_ZERO,
-    INT_ONE,
-    INT_THREE = 3,
-    INT_FOUR,
-    INT_SIX = 6,
-    INT_MINUS_MAX = -2147483648
-  }
-  
   sub get_object_from_freelist () : int {
     get_object_from_freelist_check();
     
@@ -346,6 +337,66 @@ package TestCase {
     return $true_result;
   }
 
+  enum {
+    BYTE_ZERO = 0b,
+    BYTE_ONE,
+    BYTE_THREE = 3b,
+    BYTE_FOUR,
+    BYTE_SIX = 6b,
+    BYTE_MINUS_MAX = -128b
+  }
+  sub enum_byte () : int {
+    if (TestCase->BYTE_ZERO == (byte)0) {
+      if (TestCase->BYTE_ONE == (byte)1) {
+        if (TestCase->BYTE_THREE == (byte)3) {
+          if (TestCase->BYTE_FOUR == (byte)4) {
+            if (TestCase->BYTE_SIX == (byte)6) {
+              if (TestCase->BYTE_MINUS_MAX == (byte)-128) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  enum {
+    SHORT_ZERO = 0s,
+    SHORT_ONE,
+    SHORT_THREE = 3s,
+    SHORT_FOUR,
+    SHORT_SIX = 6s,
+    SHORT_MINUS_MAX = -32768s
+  }
+  sub enum_short () : int {
+    if (TestCase->SHORT_ZERO == (short)0) {
+      if (TestCase->SHORT_ONE == (short)1) {
+        if (TestCase->SHORT_THREE == (short)3) {
+          if (TestCase->SHORT_FOUR == (short)4) {
+            if (TestCase->SHORT_SIX == (short)6) {
+              if (TestCase->SHORT_MINUS_MAX == (short)-32768) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  enum {
+    INT_ZERO,
+    INT_ONE,
+    INT_THREE = 3,
+    INT_FOUR,
+    INT_SIX = 6,
+    INT_MINUS_MAX = -2147483648
+  }
   sub enum_int () : int {
     
     if (TestCase->INT_ZERO == 0) {

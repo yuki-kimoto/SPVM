@@ -1000,15 +1000,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   return op_sub;
 }
 
-SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_term) {
-  
-  if (op_term && op_term->code != SPVM_OP_C_CODE_CONSTANT) {
-    SPVM_yyerror_format(compiler, "Enumeration value must be constant at %s line %d\n", op_name->file, op_name->line);
-    compiler->fatal_error = 1;
-    return NULL;
-  }
-  
-  SPVM_OP* op_constant = op_term;
+SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_constant) {
   
   if (op_constant) {
     
@@ -1077,6 +1069,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     
     compiler->enum_default_value++;
   }
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
   
   // Return
   SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_name->file, op_name->line);
