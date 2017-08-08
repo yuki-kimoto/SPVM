@@ -490,7 +490,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
         SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
         constant->value.byte_value = ch;
-        constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+        constant->type = SPVM_TYPE_get_byte_type(compiler);
         
         op->uv.constant = constant;
         yylvalp->opval = op;

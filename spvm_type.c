@@ -34,6 +34,16 @@ const char* const SPVM_TYPE_C_CODE_NAMES[] = {
   "array",
 };
 
+SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
+  (void)compiler;
+  
+  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_BYTE);
+  
+  assert(type);
+  
+  return type;
+}
+
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
   
