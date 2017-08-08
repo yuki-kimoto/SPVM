@@ -168,7 +168,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               field_type_error = 1;
             }
           }
-          else if (SPVM_TYPE_is_string(compiler, field_type)) {
+          else if (field_type->id == SPVM_TYPE_C_ID_STRING) {
             // Nothing
           }
           else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {
@@ -198,7 +198,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               return;
             }
           }
-          else if (SPVM_TYPE_is_string(compiler, field_type)) {
+          else if (field_type->id == SPVM_TYPE_C_ID_STRING) {
             // Nothing
           }
           else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {

@@ -270,19 +270,6 @@ _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   }
 }
 
-_Bool SPVM_TYPE_is_string(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
-  (void)compiler;
-  
-  const char* name = type->name;
-  
-  if (strcmp(name, "string") == 0) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
-
 _Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
