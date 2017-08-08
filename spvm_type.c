@@ -27,6 +27,7 @@ const char* const SPVM_TYPE_C_CORE_NAMES[] = {
   "long[]",
   "float[]",
   "double[]",
+  "string[]",
 };
 
 const char* const SPVM_TYPE_C_CODE_NAMES[] = {

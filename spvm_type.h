@@ -12,7 +12,7 @@ enum {
 };
 
 enum {
-  SPVM_TYPE_C_CORE_LENGTH = 13
+  SPVM_TYPE_C_CORE_LENGTH = 14
 };
 
 enum {
@@ -33,6 +33,7 @@ enum {
   SPVM_TYPE_C_ID_LONG_ARRAY,
   SPVM_TYPE_C_ID_ARRAY_FLOAT,
   SPVM_TYPE_C_ID_DOUBLE_ARRAY,
+  SPVM_TYPE_C_ID_STRING_ARRAY,
 };
 
 extern const char* const SPVM_TYPE_C_CODE_NAMES[];
