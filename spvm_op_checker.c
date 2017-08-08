@@ -1517,7 +1517,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_type = op_cur->last;
                       
                       SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
+                      assert(term_type);
+                      
                       SPVM_TYPE* type_type = SPVM_OP_get_type(compiler, op_type);
+                      assert(type_type);
                       
                       _Bool can_convert = 0;
                       // Can convert byte[] to string
