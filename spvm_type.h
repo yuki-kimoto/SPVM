@@ -63,5 +63,11 @@ _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_is_string(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 
 SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_get_short_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_get_int_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_get_long_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_get_float_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler);
 
 #endif
