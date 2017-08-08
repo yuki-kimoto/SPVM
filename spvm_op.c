@@ -189,7 +189,7 @@ SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, con
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.byte_value = value;
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+  constant->type = SPVM_TYPE_get_byte_type(compiler);
   
   op_constant->uv.constant = constant;
   
@@ -201,7 +201,7 @@ SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, c
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.short_value = value;
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
+  constant->type = SPVM_TYPE_get_short_type(compiler);
   
   op_constant->uv.constant = constant;
   
@@ -213,7 +213,7 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.int_value = value;
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+  constant->type = SPVM_TYPE_get_int_type(compiler);
   
   op_constant->uv.constant = constant;
   
@@ -225,7 +225,7 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.long_value = value;
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
+  constant->type = SPVM_TYPE_get_long_type(compiler);
   
   op_constant->uv.constant = constant;
   
@@ -237,7 +237,7 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.float_value = value;
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
+  constant->type = SPVM_TYPE_get_float_type(compiler);
   
   op_constant->uv.constant = constant;
   
@@ -249,7 +249,7 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.double_value = value;
-  constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
+  constant->type = SPVM_TYPE_get_double_type(compiler);
   
   op_constant->uv.constant = constant;
   
@@ -456,7 +456,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
     case SPVM_OP_C_CODE_ARRAY_LENGTH:
-      type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+      type = SPVM_TYPE_get_int_type(compiler);
       break;
     case SPVM_OP_C_CODE_ARRAY_ELEM: {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
@@ -524,7 +524,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_CODE_EXCEPTION_VAR: {
-      type = SPVM_HASH_search(compiler->type_symtable, "string", strlen("string"));
+      type = SPVM_TYPE_get_string_type(compiler);
       break;
     }
     case SPVM_OP_C_CODE_MY: {
@@ -1074,27 +1074,27 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     
     // TODO add type
     if (compiler->enum_default_type_id == SPVM_TYPE_C_ID_BYTE) {
-      constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+      constant->type = SPVM_TYPE_get_byte_type(compiler);
       constant->value.byte_value = (int8_t)compiler->enum_default_value;
     }
     else if (compiler->enum_default_type_id == SPVM_TYPE_C_ID_SHORT) {
-      constant->type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
+      constant->type = SPVM_TYPE_get_short_type(compiler);
       constant->value.short_value = (int16_t)compiler->enum_default_value;
     }
     else if (compiler->enum_default_type_id == SPVM_TYPE_C_ID_INT) {
-      constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+      constant->type = SPVM_TYPE_get_int_type(compiler);
       constant->value.int_value = (int32_t)compiler->enum_default_value;
     }
     else if (compiler->enum_default_type_id == SPVM_TYPE_C_ID_LONG) {
-      constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
+      constant->type = SPVM_TYPE_get_long_type(compiler);
       constant->value.long_value = (int64_t)compiler->enum_default_value;
     }
     else if (compiler->enum_default_type_id == SPVM_TYPE_C_ID_FLOAT) {
-      constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
+      constant->type = SPVM_TYPE_get_float_type(compiler);
       constant->value.float_value = (float)compiler->enum_default_value;
     }
     else if (compiler->enum_default_type_id == SPVM_TYPE_C_ID_DOUBLE) {
-      constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
+      constant->type = SPVM_TYPE_get_double_type(compiler);
       constant->value.double_value = (double)compiler->enum_default_value;
     }
     else {
@@ -1403,7 +1403,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       }
       SPVM_OP* op_constant_length = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_list->file, op_list->line);
       SPVM_CONSTANT* constant_length = SPVM_CONSTANT_new(compiler);
-      constant_length->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+      constant_length->type = SPVM_TYPE_get_int_type(compiler);
       constant_length->value.int_value = length;
       op_constant_length->uv.constant = constant_length;
       
@@ -1465,7 +1465,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
           
           SPVM_OP* op_constant_index = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_list->file, op_list->line);
           SPVM_CONSTANT* constant_index = SPVM_CONSTANT_new(compiler);
-          constant_index->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+          constant_index->type = SPVM_TYPE_get_int_type(compiler);
           constant_index->value.int_value = i;
           op_constant_index->uv.constant = constant_index;
           SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
@@ -1540,7 +1540,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
     SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_die->file, op_die->line);
     SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
     constant->value.string_value = "Error";
-    constant->type = SPVM_HASH_search(compiler->type_symtable, "string", strlen("string"));
+    constant->type = SPVM_TYPE_get_string_type(compiler);
     op_constant->uv.constant = constant;
     
     op_term = op_constant;

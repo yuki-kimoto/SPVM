@@ -595,7 +595,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         SPVM_OP* op_constant = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
         SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
         constant->value.string_value = str;
-        constant->type = SPVM_HASH_search(compiler->type_symtable, "string", strlen("string"));
+        constant->type = SPVM_TYPE_get_string_type(compiler);
         op_constant->uv.constant = constant;
         
         yylvalp->opval = op_constant;
@@ -718,31 +718,31 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
           
           if (*compiler->bufptr == 'b')  {
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+            constant->type = SPVM_TYPE_get_byte_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 's')  {
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
+            constant->type = SPVM_TYPE_get_short_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'L')  {
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
+            constant->type = SPVM_TYPE_get_long_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'f')  {
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
+            constant->type = SPVM_TYPE_get_float_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'd')  {
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
+            constant->type = SPVM_TYPE_get_double_type(compiler);
             compiler->bufptr++;
           }
           else {
             if (is_floating_number) {
-              constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
+              constant->type = SPVM_TYPE_get_double_type(compiler);
             }
             else {
-              constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+              constant->type = SPVM_TYPE_get_int_type(compiler);
             }
           }
           
@@ -756,7 +756,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               exit(EXIT_FAILURE);
             }
             constant->value.float_value = (float)num;
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
+            constant->type = SPVM_TYPE_get_float_type(compiler);
           }
           // double
           else if (constant->type->id == SPVM_TYPE_C_ID_DOUBLE) {
@@ -767,7 +767,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               exit(EXIT_FAILURE);
             }
             constant->value.double_value = num;
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
+            constant->type = SPVM_TYPE_get_double_type(compiler);
           }
           // byte
           else if (constant->type->id == SPVM_TYPE_C_ID_BYTE) {
@@ -788,7 +788,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               exit(EXIT_FAILURE);
             }
             constant->value.byte_value = (int8_t)num;
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+            constant->type = SPVM_TYPE_get_byte_type(compiler);
           }
           // short
           else if (constant->type->id == SPVM_TYPE_C_ID_SHORT) {
@@ -809,7 +809,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               exit(EXIT_FAILURE);
             }
             constant->value.short_value = (int16_t)num;
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
+            constant->type = SPVM_TYPE_get_short_type(compiler);
           }
           // int
           else if (constant->type->id == SPVM_TYPE_C_ID_INT) {
@@ -830,7 +830,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               exit(EXIT_FAILURE);
             }
             constant->value.int_value = num;
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+            constant->type = SPVM_TYPE_get_int_type(compiler);
           }
           // long
           else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
@@ -851,7 +851,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               exit(EXIT_FAILURE);
             }
             constant->value.long_value = num;
-            constant->type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
+            constant->type = SPVM_TYPE_get_long_type(compiler);
           }
           
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
