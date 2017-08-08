@@ -753,7 +753,9 @@ type_array_with_length
 type_or_void
   : type
   | VOID
-
+    {
+      $$ = SPVM_OP_build_void(compiler, $1);
+    }
 
 field_name : NAME
 sub_name : NAME

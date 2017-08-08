@@ -579,7 +579,7 @@ static const yytype_uint16 yyrline[] =
      570,   574,   578,   582,   586,   590,   594,   598,   602,   606,
      612,   616,   620,   626,   630,   634,   639,   643,   651,   654,
      667,   681,   684,   691,   694,   707,   721,   724,   725,   728,
-     734,   738,   744,   748,   754,   755,   758,   759,   760,   763
+     734,   738,   744,   748,   754,   755,   760,   761,   762,   765
 };
 #endif
 
@@ -2680,8 +2680,15 @@ yyreduce:
     ;}
     break;
 
+  case 145:
+#line 756 "yacc/spvm_yacc.y"
+    {
+      (yyval.opval) = SPVM_OP_build_void(compiler, (yyvsp[(1) - (1)].opval));
+    ;}
+    break;
+
   case 149:
-#line 764 "yacc/spvm_yacc.y"
+#line 766 "yacc/spvm_yacc.y"
     {
       (yyval.opval) = SPVM_OP_build_eval(compiler, (yyvsp[(1) - (2)].opval), (yyvsp[(2) - (2)].opval));
     ;}
@@ -2689,7 +2696,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2693 "spvm_yacc.tab.c"
+#line 2700 "spvm_yacc.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2903,6 +2910,6 @@ yyreturn:
 }
 
 
-#line 768 "yacc/spvm_yacc.y"
+#line 770 "yacc/spvm_yacc.y"
 
 

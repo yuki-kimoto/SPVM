@@ -507,12 +507,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     printf("      name => \"%s\"\n", sub->op_name->uv.name);
     printf("      abs_name => \"%s\"\n", sub->abs_name);
     
-    if (sub->op_return_type->code == SPVM_OP_C_CODE_VOID) {
-      printf("      type => void\n");
-    }
-    else {
-      printf("      type => \"%s\"\n", sub->op_return_type->uv.type->name);
-    }
+    printf("      type => \"%s\"\n", sub->op_return_type->uv.type->name);
     
     printf("      is_constant => %d\n", sub->is_constant);
     printf("      is_native => %d\n", sub->is_native);
