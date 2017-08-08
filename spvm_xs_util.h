@@ -126,7 +126,7 @@ SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_ARRAY* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_BYTE));
+  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_BYTE_ARRAY));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
   
   return sv_array;
@@ -172,7 +172,7 @@ SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_API_ARRAY* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_SHORT));
+  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_SHORT_ARRAY));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
 
   return sv_array;
@@ -195,7 +195,7 @@ SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_API_ARRAY* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_INT));
+  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_INT_ARRAY));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
 
   return sv_array;
@@ -218,7 +218,7 @@ SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_API_ARRAY* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_LONG));
+  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_LONG_ARRAY));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
   
   return sv_array;
@@ -264,7 +264,7 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_ARRAY* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_DOUBLE));
+  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_DOUBLE_ARRAY));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
 
   return sv_array;

@@ -259,22 +259,22 @@ get(...)
       }
       
       switch (field_type_id) {
-        case SPVM_TYPE_C_ID_ARRAY_BYTE : {
+        case SPVM_TYPE_C_ID_BYTE_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)value);
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_ARRAY_SHORT : {
+        case SPVM_TYPE_C_ID_SHORT_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)value);
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_ARRAY_INT : {
+        case SPVM_TYPE_C_ID_INT_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)value);
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_ARRAY_LONG : {
+        case SPVM_TYPE_C_ID_LONG_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)value);
           XPUSHs(sv_array);
           break;
@@ -284,7 +284,7 @@ get(...)
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_ARRAY_DOUBLE : {
+        case SPVM_TYPE_C_ID_DOUBLE_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)value);
           XPUSHs(sv_array);
           break;
@@ -1445,22 +1445,22 @@ call_sub(...)
         api->inc_ref_count(api, return_value);
         
         switch(return_type_id) {
-          case SPVM_TYPE_C_ID_ARRAY_BYTE :
+          case SPVM_TYPE_C_ID_BYTE_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)return_value);
             break;
-          case SPVM_TYPE_C_ID_ARRAY_SHORT :
+          case SPVM_TYPE_C_ID_SHORT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)return_value);
             break;
-          case SPVM_TYPE_C_ID_ARRAY_INT :
+          case SPVM_TYPE_C_ID_INT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)return_value);
             break;
-          case SPVM_TYPE_C_ID_ARRAY_LONG :
+          case SPVM_TYPE_C_ID_LONG_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)return_value);
             break;
           case SPVM_TYPE_C_ID_ARRAY_FLOAT :
             sv_return_value = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)return_value);
             break;
-          case SPVM_TYPE_C_ID_ARRAY_DOUBLE :
+          case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)return_value);
             break;
           case SPVM_TYPE_C_ID_STRING :
