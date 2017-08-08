@@ -1,3 +1,5 @@
+0.0241 2017-08-08
+  - fix void subroutine bug that if return value is not exists, runtime error occur.
 0.0240 2017-08-07
   - fix number literal bug that hex number e and E is floating point specifier
   - add byte and short number literal syntax

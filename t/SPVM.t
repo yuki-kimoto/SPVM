@@ -32,6 +32,11 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 
 use SPVM::stdout;
 
+# Call void subroutine
+{
+  ok(SPVM::TestCase::call_void());
+}
+
 # Array initialization
 {
   ok(SPVM::TestCase::array_init_byte());

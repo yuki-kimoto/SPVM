@@ -991,7 +991,11 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     
     // Add return to last of statement if need
     if (!op_list_statement->last || op_list_statement->last->code != SPVM_OP_C_CODE_RETURN) {
-      if (sub->op_return_type->code != SPVM_OP_C_CODE_VOID) {
+      if (sub->op_return_type->code == SPVM_OP_C_CODE_VOID) {
+        SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_list_statement->file, op_list_statement->line);
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
+      }
+      else {
         SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_list_statement->file, op_list_statement->line);
         SPVM_TYPE* return_type = sub->op_return_type->uv.type;
         

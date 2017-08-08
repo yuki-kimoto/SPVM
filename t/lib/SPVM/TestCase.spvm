@@ -6,6 +6,21 @@ package TestCase {
   has x_int_array : int[];
   has x_string : string;
   
+  # Call void function
+  sub call_void_sub($nums : int[]) : void {
+    $nums->[0] = 5;
+  }
+  sub call_void() : int {
+    my $nums = [1];
+    
+    call_void_sub($nums);
+    
+    if ($nums->[0] == 5) {
+      return 1;
+    }
+    return 0;
+  }
+  
   # Exception
   sub exception_zero_divide_int() : int {
     1 / 0;

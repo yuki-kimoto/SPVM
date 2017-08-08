@@ -716,13 +716,12 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
   }
   case_SPVM_BYTECODE_C_CODE_RETURN_VOID: {
-    
     // Restore operand stack top
     operand_stack_top = call_stack_base - 4;
     
-    // Return address
+    // Get return address
     uint8_t* return_address = call_stack[call_stack_base - 3].address_value;
-
+    
     // Get sub_constant_pool_index
     sub_constant_pool_index = call_stack[call_stack_base - 2].int_value;
 
@@ -744,7 +743,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       }
     }
     
-    // Restore vars base
+    // Restore call stack base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
     // Finish call sub
@@ -757,7 +756,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     else {
       // Restore vars
       vars = &call_stack[call_stack_base];
-
+      
       pc = return_address;
       goto *jump[*pc];
     }
