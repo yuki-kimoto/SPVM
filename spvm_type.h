@@ -12,7 +12,7 @@ enum {
 };
 
 enum {
-  SPVM_TYPE_C_CORE_LENGTH = 14
+  SPVM_TYPE_C_CORE_LENGTH = 15
 };
 
 enum {
@@ -20,6 +20,7 @@ enum {
 };
 
 enum {
+  SPVM_TYPE_C_ID_UNKNOWN,
   SPVM_TYPE_C_ID_BYTE,
   SPVM_TYPE_C_ID_SHORT,
   SPVM_TYPE_C_ID_INT,
