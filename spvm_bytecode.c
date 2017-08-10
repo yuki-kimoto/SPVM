@@ -218,4 +218,5 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "LOAD_EXCEPTION",
   "STORE_EXCEPTION",
   "WIDE",
+  "CURRENT_LINE",
 };
