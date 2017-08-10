@@ -383,7 +383,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   SPVM_OBJECT* object = NULL;
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   int32_t index;
-  int32_t success;
+  register int32_t success;
+  int32_t current_line;
   
   // Goto subroutine
   goto CALLSUB_COMMON;
@@ -2501,6 +2502,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       goto *jump[*pc];
     }
   case_SPVM_BYTECODE_C_CODE_CURRENT_LINE:
+    current_line = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     pc += 5;
     goto *jump[*pc];
 }
