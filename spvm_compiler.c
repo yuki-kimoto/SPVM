@@ -91,6 +91,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   // Entry point sub name
   compiler->entry_point_sub_name = NULL;
+  
+  compiler->debug = 0;
 
   // Add core types
   {

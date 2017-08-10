@@ -101,6 +101,8 @@ struct SPVM_compiler {
   
   // Error is fatal
   _Bool fatal_error;
+  
+  _Bool debug;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
