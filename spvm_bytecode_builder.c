@@ -1058,22 +1058,22 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       if (SPVM_TYPE_is_array(compiler, type)) {
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
                         if (SPVM_TYPE_is_array_numeric(compiler, type)) {
-                          if (strcmp(type->name, "byte[]") == 0) {
+                          if (type->id == SPVM_TYPE_C_ID_BYTE_ARRAY) {
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_BYTE);
                           }
-                          else if (strcmp(type->name, "short[]") == 0) {
+                          else if (type->id == SPVM_TYPE_C_ID_SHORT_ARRAY) {
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_SHORT);
                           }
-                          else if (strcmp(type->name, "int[]") == 0) {
+                          else if (type->id == SPVM_TYPE_C_ID_INT_ARRAY) {
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_INT);
                           }
-                          else if (strcmp(type->name, "long[]") == 0) {
+                          else if (type->id == SPVM_TYPE_C_ID_LONG_ARRAY) {
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_LONG);
                           }
-                          else if (strcmp(type->name, "float[]") == 0) {
+                          else if (type->id == SPVM_TYPE_C_ID_FLOAT_ARRAY) {
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_FLOAT);
                           }
-                          else if (strcmp(type->name, "double[]") == 0) {
+                          else if (type->id == SPVM_TYPE_C_ID_DOUBLE_ARRAY) {
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_DOUBLE);
                           }
                           else {

@@ -279,7 +279,7 @@ get(...)
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_ARRAY_FLOAT : {
+        case SPVM_TYPE_C_ID_FLOAT_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)value);
           XPUSHs(sv_array);
           break;
@@ -1457,7 +1457,7 @@ call_sub(...)
           case SPVM_TYPE_C_ID_LONG_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)return_value);
             break;
-          case SPVM_TYPE_C_ID_ARRAY_FLOAT :
+          case SPVM_TYPE_C_ID_FLOAT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)return_value);
             break;
           case SPVM_TYPE_C_ID_DOUBLE_ARRAY :

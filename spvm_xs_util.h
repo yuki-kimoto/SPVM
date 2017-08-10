@@ -241,7 +241,7 @@ SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_API_ARRAY* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_ARRAY_FLOAT));
+  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_FLOAT_ARRAY));
   hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
   
   return sv_array;
