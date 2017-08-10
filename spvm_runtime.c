@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <inttypes.h>
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
@@ -823,6 +824,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // stack trace strings
     const char* from = "\n  from ";
     const char* at = "() at ";
+    const char* line = " line ";
     
     // Total string length
     int32_t total_length = 0;
@@ -831,6 +833,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     total_length += strlen(sub_name);
     total_length += strlen(at);
     total_length += strlen(file_name);
+    total_length += strlen(line);
+    total_length += strlen("2147483647");
     
     // Create exception message
     SPVM_ARRAY* new_array_exception = SPVM_RUNTIME_API_new_byte_array(api, total_length);
@@ -839,14 +843,28 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       (void*)((intptr_t)runtime->exception + sizeof(SPVM_ARRAY)),
       SPVM_RUNTIME_API_get_array_length(api, runtime->exception)
     );
-    sprintf(
-      (char*)((intptr_t)new_array_exception + sizeof(SPVM_ARRAY) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
-      "%s%s%s%s",
-      from,
-      sub_name,
-      at,
-      file_name
-    );
+    if (runtime->debug) {
+      sprintf(
+        (char*)((intptr_t)new_array_exception + sizeof(SPVM_ARRAY) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
+        "%s%s%s%s%s%" PRId32,
+        from,
+        sub_name,
+        at,
+        file_name,
+        line,
+        current_line
+      );
+    }
+    else {
+      sprintf(
+        (char*)((intptr_t)new_array_exception + sizeof(SPVM_ARRAY) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
+        "%s%s%s%s",
+        from,
+        sub_name,
+        at,
+        file_name
+      );
+    }
     
     // Restore vars base
     call_stack_base = call_stack[call_stack_base - 1].int_value;
