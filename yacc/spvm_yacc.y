@@ -16,7 +16,7 @@
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW
 %token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF DIE
-%token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR
+%token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR BYTE SHORT INT LONG FLOAT DOUBLE STRING
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
@@ -728,6 +728,34 @@ type_name
   : NAME
     {
       $$ = SPVM_OP_build_type_name(compiler, $1);
+    }
+  | BYTE
+    {
+      $$ = SPVM_OP_build_type_byte(compiler, $1);
+    }
+  | SHORT
+    {
+      $$ = SPVM_OP_build_type_short(compiler, $1);
+    }
+  | INT
+    {
+      $$ = SPVM_OP_build_type_int(compiler, $1);
+    }
+  | LONG
+    {
+      $$ = SPVM_OP_build_type_long(compiler, $1);
+    }
+  | FLOAT
+    {
+      $$ = SPVM_OP_build_type_float(compiler, $1);
+    }
+  | DOUBLE
+    {
+      $$ = SPVM_OP_build_type_double(compiler, $1);
+    }
+  | STRING
+    {
+      $$ = SPVM_OP_build_type_string(compiler, $1);
     }
 
 type_array

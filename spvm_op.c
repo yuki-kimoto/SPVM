@@ -116,6 +116,13 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "ASSIGN_PROCESS",
   "NEW",
   "STAB",
+  "BYTE",
+  "SHORT",
+  "INT",
+  "LONG",
+  "FLOAT",
+  "DOUBLE",
+  "STRING",
 };
 
 // Return cloned op and target op become stab
@@ -1561,6 +1568,64 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   return op_die;
 }
 
+SPVM_OP* SPVM_OP_build_type_byte(SPVM_COMPILER* compiler, SPVM_OP* op_byte) {
+  
+  // Type op
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_byte->file, op_byte->line);
+  op_type->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_BYTE);
+  
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_type_short(SPVM_COMPILER* compiler, SPVM_OP* op_short) {
+
+  // Type op
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_short->file, op_short->line);
+  op_type->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_SHORT);
+  
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_type_int(SPVM_COMPILER* compiler, SPVM_OP* op_int) {
+  // Type op
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_int->file, op_int->line);
+  op_type->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_INT);
+  
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_type_long(SPVM_COMPILER* compiler, SPVM_OP* op_long) {
+  // Type op
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_long->file, op_long->line);
+  op_type->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_LONG);
+  
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_type_float(SPVM_COMPILER* compiler, SPVM_OP* op_float) {
+  // Type op
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_float->file, op_float->line);
+  op_type->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_FLOAT);
+  
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_type_double(SPVM_COMPILER* compiler, SPVM_OP* op_double) {
+  // Type op
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_double->file, op_double->line);
+  op_type->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_DOUBLE);
+  
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_type_string(SPVM_COMPILER* compiler, SPVM_OP* op_string) {
+  // Type op
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_string->file, op_string->line);
+  op_type->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_STRING);
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
   // Type
@@ -1573,19 +1638,8 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   SPVM_OP* op_type_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_type_name, op_type_name->last, op_name);
   op_type_name->uv.type = type;
-  op_type_name->file = op_name->file;
-  op_type_name->line = op_name->line;
   
   SPVM_TYPE_resolve_name(compiler, op_type_name);
-  
-  // Resolve only numeric type
-  const char* type_name = op_name->uv.name;
-  if (strcmp(type_name, "byte") == 0 || strcmp(type_name, "short") == 0 || strcmp(type_name, "int") == 0
-    || strcmp(type_name, "long") == 0 || strcmp(type_name, "float") == 0 || strcmp(type_name, "double") == 0
-  )
-  {
-    SPVM_TYPE_resolve_id(compiler, op_type_name);
-  }
   
   // Add types
   SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_name);

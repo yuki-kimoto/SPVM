@@ -67,23 +67,30 @@
      VOID = 283,
      EVAL = 284,
      EXCEPTION_VAR = 285,
-     ASSIGN = 286,
-     OR = 287,
-     AND = 288,
-     BIT_XOR = 289,
-     BIT_OR = 290,
-     BIT_AND = 291,
-     REL = 292,
-     SHIFT = 293,
-     REMAINDER = 294,
-     DIVIDE = 295,
-     MULTIPLY = 296,
-     UMINUS = 297,
-     ARRAY_LENGTH = 298,
-     NOT = 299,
-     DEC = 300,
-     INC = 301,
-     ARROW = 302
+     BYTE = 286,
+     SHORT = 287,
+     INT = 288,
+     LONG = 289,
+     FLOAT = 290,
+     DOUBLE = 291,
+     STRING = 292,
+     ASSIGN = 293,
+     OR = 294,
+     AND = 295,
+     BIT_XOR = 296,
+     BIT_OR = 297,
+     BIT_AND = 298,
+     REL = 299,
+     SHIFT = 300,
+     REMAINDER = 301,
+     DIVIDE = 302,
+     MULTIPLY = 303,
+     UMINUS = 304,
+     ARRAY_LENGTH = 305,
+     NOT = 306,
+     DEC = 307,
+     INC = 308,
+     ARROW = 309
    };
 #endif
 /* Tokens.  */
@@ -115,23 +122,30 @@
 #define VOID 283
 #define EVAL 284
 #define EXCEPTION_VAR 285
-#define ASSIGN 286
-#define OR 287
-#define AND 288
-#define BIT_XOR 289
-#define BIT_OR 290
-#define BIT_AND 291
-#define REL 292
-#define SHIFT 293
-#define REMAINDER 294
-#define DIVIDE 295
-#define MULTIPLY 296
-#define UMINUS 297
-#define ARRAY_LENGTH 298
-#define NOT 299
-#define DEC 300
-#define INC 301
-#define ARROW 302
+#define BYTE 286
+#define SHORT 287
+#define INT 288
+#define LONG 289
+#define FLOAT 290
+#define DOUBLE 291
+#define STRING 292
+#define ASSIGN 293
+#define OR 294
+#define AND 295
+#define BIT_XOR 296
+#define BIT_OR 297
+#define BIT_AND 298
+#define REL 299
+#define SHIFT 300
+#define REMAINDER 301
+#define DIVIDE 302
+#define MULTIPLY 303
+#define UMINUS 304
+#define ARRAY_LENGTH 305
+#define NOT 306
+#define DEC 307
+#define INC 308
+#define ARROW 309
 
 
 

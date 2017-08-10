@@ -888,6 +888,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           switch (keyword[0]) {
             // Keyword
+            case 'b' :
+              if (strcmp(keyword, "byte") == 0) {
+                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_BYTE);
+                return BYTE;
+              }
+              break;
             case 'c' :
               if (strcmp(keyword, "case") == 0) {
                 yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CASE);
@@ -909,6 +915,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else if (strcmp(keyword, "die") == 0) {
                 yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DIE);
                 return DIE;
+              }
+              else if (strcmp(keyword, "double") == 0) {
+                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DOUBLE);
+                return DOUBLE;
               }
               break;
             case 'e' :
@@ -934,6 +944,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_FOR);
                 return FOR;
               }
+              else if (strcmp(keyword, "float") == 0) {
+                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_FLOAT);
+                return FLOAT;
+              }
               break;
             case 'h' :
               if (strcmp(keyword, "has") == 0) {
@@ -945,6 +959,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (strcmp(keyword, "if") == 0) {
                 yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_IF);
                 return IF;
+              }
+              else if (strcmp(keyword, "int") == 0) {
+                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_INT);
+                return INT;
               }
               break;
             case 'l' :
@@ -959,6 +977,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                 return ARRAY_LENGTH;
               }
+              else if (strcmp(keyword, "long") == 0) {
+                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LONG);
+                return LONG;
+              }
+              break;
               break;
             case 'm' :
               if (strcmp(keyword, "my") == 0) {
@@ -1010,6 +1033,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else if (strcmp(keyword, "sub") == 0) {
                 yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SUB);
                 return SUB;
+              }
+              else if (strcmp(keyword, "short") == 0) {
+                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SHORT);
+                return SHORT;
+              }
+              else if (strcmp(keyword, "string") == 0) {
+                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_STRING);
+                return STRING;
               }
               break;
             case 'u' :
