@@ -40,11 +40,12 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
   
   type->code = 0;
-  type->id = -1;
+  type->id = SPVM_TYPE_C_ID_UNKNOWN;
   type->name = NULL;
   type->name_length = 0;
   type->dimension = 0;
   type->base_name = NULL;
+  type->base_id = SPVM_TYPE_C_ID_UNKNOWN;
   
   return type;
 }
@@ -201,6 +202,7 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
       SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
       
       type->id = new_type->id;
+      type->base_id = new_type->id;
     }
   }
   
