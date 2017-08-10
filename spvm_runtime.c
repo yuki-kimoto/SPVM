@@ -1572,7 +1572,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
   case_SPVM_BYTECODE_C_CODE_DIVIDE_LONG:
     if (call_stack[operand_stack_top].long_value == 0) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Occur 0 division (long / long)");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "0 division (long / long)");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
