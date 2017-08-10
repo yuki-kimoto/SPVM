@@ -46,6 +46,8 @@ struct SPVM_runtime {
   int32_t sub_indexes_constant_pool_index;
 
   int32_t object_count;
+  
+  int32_t debug;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

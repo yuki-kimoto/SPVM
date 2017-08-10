@@ -197,7 +197,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
           // Switch stack
           SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
           
-          compiler->debug = 0;
+          compiler->debug = 1;
           
           while (op_cur) {
             if (compiler->debug) {

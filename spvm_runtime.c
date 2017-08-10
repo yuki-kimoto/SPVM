@@ -59,6 +59,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 
   runtime->object_count = 0;
   
+  runtime->debug = 0;
+  
   return runtime;
 }
 
