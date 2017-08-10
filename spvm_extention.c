@@ -63,12 +63,7 @@ void SPVM_EXTENTION_stdout__print(SPVM_API* api, SPVM_API_VALUE* args) {
   int32_t length = api->get_array_length(api, array);
   int8_t* string = api->get_byte_array_elements(api, array);
   
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      putchar((int)string[i]);
-    }
-  }
+  printf("%s\n", (char*)string);
 }
 
 void SPVM_EXTENTION_stdout__println(SPVM_API* api, SPVM_API_VALUE* args) {
@@ -79,15 +74,8 @@ void SPVM_EXTENTION_stdout__println(SPVM_API* api, SPVM_API_VALUE* args) {
   int32_t length = api->get_array_length(api, array);
   
   int8_t* string = api->get_byte_array_elements(api, array);
-  
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      putchar((int)string[i]);
-    }
-  }
-  
-  printf("\n");
+
+  printf("%s\n", (char*)string);
 }
 
 void SPVM_EXTENTION_stdout__println_byte(SPVM_API* api, SPVM_API_VALUE* args) {
