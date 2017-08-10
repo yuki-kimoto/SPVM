@@ -44,6 +44,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   type->name = NULL;
   type->name_length = 0;
   type->dimension = 0;
+  type->op_base_name = NULL;
   
   return type;
 }
