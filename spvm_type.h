@@ -37,7 +37,6 @@ struct SPVM_type {
   const char* name;
   const char* base_name;
   int32_t id;
-  int32_t name_length;
   int32_t base_id;
   int32_t dimension;
 };

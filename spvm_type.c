@@ -36,7 +36,6 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   
   type->id = SPVM_TYPE_C_ID_UNKNOWN;
   type->name = NULL;
-  type->name_length = 0;
   type->dimension = 0;
   type->base_name = NULL;
   type->base_id = SPVM_TYPE_C_ID_UNKNOWN;

@@ -100,7 +100,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       SPVM_TYPE* type = SPVM_TYPE_new(compiler);
       const char* name = SPVM_TYPE_C_ID_NAMES[type_id];
       type->name = name;
-      type->name_length = strlen(name);
       type->id = type_id;
       if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_DOUBLE_ARRAY) {
         type->dimension++;
