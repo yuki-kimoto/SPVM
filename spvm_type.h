@@ -6,13 +6,11 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_TYPE_C_CODE_NAME,
-  SPVM_TYPE_C_CODE_ARRAY,
-  SPVM_TYPE_C_CODE_TEMPLATE,
+  SPVM_TYPE_C_CORE_LENGTH = 15
 };
 
 enum {
-  SPVM_TYPE_C_CORE_LENGTH = 15
+  SPVM_TYPE_C_ID_UNKNOWN = -1
 };
 
 enum {
@@ -28,30 +26,22 @@ enum {
   SPVM_TYPE_C_ID_SHORT_ARRAY,
   SPVM_TYPE_C_ID_INT_ARRAY,
   SPVM_TYPE_C_ID_LONG_ARRAY,
-  SPVM_TYPE_C_ID_ARRAY_FLOAT,
+  SPVM_TYPE_C_ID_FLOAT_ARRAY,
   SPVM_TYPE_C_ID_DOUBLE_ARRAY,
   SPVM_TYPE_C_ID_STRING_ARRAY,
 };
 
-extern const char* const SPVM_TYPE_C_CODE_NAMES[];
-extern const char* const SPVM_TYPE_C_CORE_NAMES[];
+extern const char* const SPVM_TYPE_C_ID_NAMES[];
 
 struct SPVM_type {
   const char* name;
+  const char* base_name;
   int32_t id;
-  int32_t name_length;
-  union {
-    SPVM_OP* op_name;
-    SPVM_OP* op_type;
-  } uv;
-  int32_t code;
-  SPVM_DYNAMIC_ARRAY* parts;
-  _Bool is_array;
+  int32_t base_id;
+  int32_t dimension;
 };
 
-
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
-void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_DYNAMIC_ARRAY* parts);
 _Bool SPVM_TYPE_resolve_name(SPVM_COMPILER* compiler, SPVM_OP* op_type);
 _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type);
 

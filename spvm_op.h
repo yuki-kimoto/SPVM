@@ -114,6 +114,13 @@ enum {
   SPVM_OP_C_CODE_ASSIGN_PROCESS,
   SPVM_OP_C_CODE_NEW,
   SPVM_OP_C_CODE_STAB,
+  SPVM_OP_C_CODE_BYTE,
+  SPVM_OP_C_CODE_SHORT,
+  SPVM_OP_C_CODE_INT,
+  SPVM_OP_C_CODE_LONG,
+  SPVM_OP_C_CODE_FLOAT,
+  SPVM_OP_C_CODE_DOUBLE,
+  SPVM_OP_C_CODE_STRING,
 };
 
 extern const char* const SPVM_OP_C_CODE_NAMES[];
@@ -213,6 +220,13 @@ SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_l
 SPVM_OP* SPVM_OP_build_malloc_object(SPVM_COMPILER* compiler, SPVM_OP* op_malloc, SPVM_OP* op_type);
 SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_opt_terms);
 SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_call_op, SPVM_OP* op_first, SPVM_OP* op_last);
+SPVM_OP* SPVM_OP_build_type_byte(SPVM_COMPILER* compiler, SPVM_OP* op_byte);
+SPVM_OP* SPVM_OP_build_type_short(SPVM_COMPILER* compiler, SPVM_OP* op_short);
+SPVM_OP* SPVM_OP_build_type_int(SPVM_COMPILER* compiler, SPVM_OP* op_int);
+SPVM_OP* SPVM_OP_build_type_long(SPVM_COMPILER* compiler, SPVM_OP* op_long);
+SPVM_OP* SPVM_OP_build_type_float(SPVM_COMPILER* compiler, SPVM_OP* op_float);
+SPVM_OP* SPVM_OP_build_type_double(SPVM_COMPILER* compiler, SPVM_OP* op_double);
+SPVM_OP* SPVM_OP_build_type_string(SPVM_COMPILER* compiler, SPVM_OP* op_string);
 SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_type_name);
 SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term);
 SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_name_package, SPVM_OP* op_name_field);

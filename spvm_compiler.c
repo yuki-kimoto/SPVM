@@ -98,13 +98,14 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
     for (type_id = 0; type_id < SPVM_TYPE_C_CORE_LENGTH; type_id++) {
       // Type
       SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-      const char* name = SPVM_TYPE_C_CORE_NAMES[type_id];
+      const char* name = SPVM_TYPE_C_ID_NAMES[type_id];
       type->name = name;
-      type->name_length = strlen(name);
       type->id = type_id;
       if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_DOUBLE_ARRAY) {
-        type->is_array = 1;
+        type->dimension++;
       }
+      type->base_name = name;
+      type->base_id = type_id;
       SPVM_DYNAMIC_ARRAY_push(compiler->types, type);
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
     }
