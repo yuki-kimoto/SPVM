@@ -1,3 +1,5 @@
+0.0242 2017-08-08
+  - array malloc length + 1. and last value is 0. This is for C level string API.
 0.0241 2017-08-08
   - fix void subroutine bug that if return value is not exists, runtime error occur.
 0.0240 2017-08-07
