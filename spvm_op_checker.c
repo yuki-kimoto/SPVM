@@ -1525,8 +1525,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       _Bool can_convert = 0;
                       // Can convert byte[] to string
                       if (
-                        (strcmp(term_type->name, "byte[]") == 0 || strcmp(term_type->name, "string") == 0)
-                         && (strcmp(type_type->name, "byte[]") == 0 || strcmp(type_type->name, "string") == 0)
+                        (term_type->id == SPVM_TYPE_C_ID_BYTE_ARRAY || term_type->id == SPVM_TYPE_C_ID_STRING)
+                         && (type_type->id == SPVM_TYPE_C_ID_BYTE_ARRAY || type_type->id == SPVM_TYPE_C_ID_STRING)
                       )
                       {
                         can_convert = 1;
