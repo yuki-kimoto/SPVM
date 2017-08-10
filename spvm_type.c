@@ -163,7 +163,7 @@ _Bool SPVM_TYPE_resolve_name(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
 }
 
 // Resolve type and index type
-_Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length) {
+_Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
   SPVM_TYPE* type = op_type->uv.type;
   
@@ -174,7 +174,6 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t na
   }
   else {
     SPVM_DYNAMIC_ARRAY* parts = type->parts;
-    
     {
       int32_t i;
       for (i = 0; i < parts->length; i++) {
@@ -199,7 +198,6 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t na
             return 0;
           }
         }
-        name_length += strlen(part_name);
       }
     }
     

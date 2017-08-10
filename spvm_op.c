@@ -1514,7 +1514,7 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
     || strcmp(type_name, "long") == 0 || strcmp(type_name, "float") == 0 || strcmp(type_name, "double") == 0
   )
   {
-    SPVM_TYPE_resolve_id(compiler, op_type_name, 0);
+    SPVM_TYPE_resolve_id(compiler, op_type_name);
   }
   
   // Add types
