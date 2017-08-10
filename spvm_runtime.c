@@ -348,6 +348,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION,
     &&case_SPVM_BYTECODE_C_CODE_STORE_EXCEPTION,
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
+    &&case_SPVM_BYTECODE_C_CODE_CURRENT_LINE,
   };
   
   // Program counter
@@ -2497,6 +2498,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       pc += 3;
       goto *jump[*pc];
     }
+  case_SPVM_BYTECODE_C_CODE_CURRENT_LINE:
+    pc += 5;
+    goto *jump[*pc];
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
