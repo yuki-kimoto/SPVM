@@ -1087,7 +1087,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       else {
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_OBJECT);
                         
-                        const char* package_name = op_cur->first->uv.type->name;
+                        const char* package_name = op_cur->first->uv.type->base_name;
                         
                         SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
                         SPVM_PACKAGE* package = op_package->uv.package;
