@@ -47,7 +47,6 @@ struct SPVM_type {
   int32_t code;
   SPVM_DYNAMIC_ARRAY* parts;
   _Bool is_array;
-  int32_t dimension;
 };
 
 
