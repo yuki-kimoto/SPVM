@@ -43,7 +43,6 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   type->id = -1;
   type->name = NULL;
   type->name_length = 0;
-  type->is_array = 0;
   type->dimension = 0;
   
   return type;
@@ -238,7 +237,15 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_DYNAMI
 _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  return type->is_array;
+  _Bool is_array;
+  if (type->dimension > 0) {
+    is_array = 1;
+  }
+  else {
+    is_array = 0;
+  }
+  
+  return is_array;
 }
 
 _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
