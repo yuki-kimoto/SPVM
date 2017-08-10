@@ -103,7 +103,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       type->name_length = strlen(name);
       type->id = type_id;
       if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_DOUBLE_ARRAY) {
-        type->dimension++;
+        type->is_array = 1;
       }
       SPVM_DYNAMIC_ARRAY_push(compiler->types, type);
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
