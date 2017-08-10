@@ -886,6 +886,86 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           memcpy(keyword, cur_token_ptr, str_len);
           keyword[str_len] = '\0';
           
+          // Replace template variable
+          const char* found_template_var = strstr(keyword, "type");
+          if (found_template_var) {
+            if (isdigit(found_template_var[4])) {
+              SPVM_DYNAMIC_ARRAY* part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+              
+              char* base_ptr = keyword;
+              char* cur_ptr = keyword;
+              
+              while (1) {
+                if (*cur_ptr == '_' || *cur_ptr == '\0') {
+                  int32_t length = (int32_t)(cur_ptr - base_ptr);
+                  char* part_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+                  memcpy(part_name, base_ptr, length);
+                  part_name[length] = '\0';
+                  SPVM_DYNAMIC_ARRAY_push(part_names, part_name);
+                  if (*cur_ptr == '\0') {
+                    break;
+                  }
+                  cur_ptr++;
+                  base_ptr = cur_ptr;
+                }
+                else {
+                  cur_ptr++;
+                }
+              }
+              
+              SPVM_DYNAMIC_ARRAY* replaced_part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+              int32_t replaced_part_names_length = 0;
+              {
+                int32_t i;
+                for (i = 0; i < part_names->length; i++) {
+                  char* part_name = SPVM_DYNAMIC_ARRAY_fetch(part_names, i);
+                  if (strncmp(part_name, "type", 4) == 0 && isdigit(part_name[4])) {
+                    int32_t template_args_index;
+                    errno = 0;
+                    char *end;
+                    template_args_index = strtol(&part_name[4], &end, 10);
+                    if (*end != '\0') {
+                      fprintf(stderr, "Invalid template variable %s at %s line %" PRId32 "\n", &part_name[4], compiler->cur_file, compiler->cur_line);
+                      exit(EXIT_FAILURE);
+                    }
+                    else if (template_args_index == 0 || template_args_index > compiler->cur_template_args->length) {
+                      fprintf(stderr, "Invalid template variable, Index out of range %s at %s line %" PRId32 "\n", part_name, compiler->cur_file, compiler->cur_line);
+                      exit(EXIT_FAILURE);
+                    }
+                    
+                    char* replaced_part_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->cur_template_args, template_args_index - 1);
+                    SPVM_DYNAMIC_ARRAY_push(replaced_part_names, replaced_part_name);
+                    replaced_part_names_length += strlen(replaced_part_name);
+                  }
+                  else {
+                    SPVM_DYNAMIC_ARRAY_push(replaced_part_names, part_name);
+                    replaced_part_names_length += strlen(part_name);
+                  }
+                  // _
+                  if (i != part_names->length - 1) {
+                    replaced_part_names_length += 1;
+                  }
+                }
+              }
+              char* replaced_keyword = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, replaced_part_names_length);
+              {
+                int32_t i;
+                char* base_ptr = replaced_keyword;
+                for (i = 0; i < replaced_part_names->length; i++) {
+                  const char* replaced_part_name = SPVM_DYNAMIC_ARRAY_fetch(replaced_part_names, i);
+                  memcpy(base_ptr, replaced_part_name, strlen(replaced_part_name));
+                  base_ptr += strlen(replaced_part_name);
+                  if (i != replaced_part_names->length - 1) {
+                    *base_ptr = '_';
+                    base_ptr++;
+                  }
+                }
+                replaced_keyword[replaced_part_names_length] = '\0';
+              }
+              keyword = replaced_keyword;
+            }
+          }
+          
           switch (keyword[0]) {
             // Keyword
             case 'b' :
@@ -1071,86 +1151,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 continue;
               }
               break;
-          }
-          
-          // Replace template variable
-          const char* found_template_var = strstr(keyword, "type");
-          if (found_template_var) {
-            if (isdigit(found_template_var[4])) {
-              SPVM_DYNAMIC_ARRAY* part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-              
-              char* base_ptr = keyword;
-              char* cur_ptr = keyword;
-              
-              while (1) {
-                if (*cur_ptr == '_' || *cur_ptr == '\0') {
-                  int32_t length = (int32_t)(cur_ptr - base_ptr);
-                  char* part_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
-                  memcpy(part_name, base_ptr, length);
-                  part_name[length] = '\0';
-                  SPVM_DYNAMIC_ARRAY_push(part_names, part_name);
-                  if (*cur_ptr == '\0') {
-                    break;
-                  }
-                  cur_ptr++;
-                  base_ptr = cur_ptr;
-                }
-                else {
-                  cur_ptr++;
-                }
-              }
-
-              SPVM_DYNAMIC_ARRAY* replaced_part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-              int32_t replaced_part_names_length = 0;
-              {
-                int32_t i;
-                for (i = 0; i < part_names->length; i++) {
-                  char* part_name = SPVM_DYNAMIC_ARRAY_fetch(part_names, i);
-                  if (strncmp(part_name, "type", 4) == 0 && isdigit(part_name[4])) {
-                    int32_t template_args_index;
-                    errno = 0;
-                    char *end;
-                    template_args_index = strtol(&part_name[4], &end, 10);
-                    if (*end != '\0') {
-                      fprintf(stderr, "Invalid template variable %s at %s line %" PRId32 "\n", &part_name[4], compiler->cur_file, compiler->cur_line);
-                      exit(EXIT_FAILURE);
-                    }
-                    else if (template_args_index == 0 || template_args_index > compiler->cur_template_args->length) {
-                      fprintf(stderr, "Invalid template variable, Index out of range %s at %s line %" PRId32 "\n", part_name, compiler->cur_file, compiler->cur_line);
-                      exit(EXIT_FAILURE);
-                    }
-                    
-                    char* replaced_part_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->cur_template_args, template_args_index - 1);
-                    SPVM_DYNAMIC_ARRAY_push(replaced_part_names, replaced_part_name);
-                    replaced_part_names_length += strlen(replaced_part_name);
-                  }
-                  else {
-                    SPVM_DYNAMIC_ARRAY_push(replaced_part_names, part_name);
-                    replaced_part_names_length += strlen(part_name);
-                  }
-                  // _
-                  if (i != part_names->length - 1) {
-                    replaced_part_names_length += 1;
-                  }
-                }
-              }
-              char* replaced_keyword = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, replaced_part_names_length);
-              {
-                int32_t i;
-                char* base_ptr = replaced_keyword;
-                for (i = 0; i < replaced_part_names->length; i++) {
-                  const char* replaced_part_name = SPVM_DYNAMIC_ARRAY_fetch(replaced_part_names, i);
-                  memcpy(base_ptr, replaced_part_name, strlen(replaced_part_name));
-                  base_ptr += strlen(replaced_part_name);
-                  if (i != replaced_part_names->length - 1) {
-                    *base_ptr = '_';
-                    base_ptr++;
-                  }
-                }
-                replaced_keyword[replaced_part_names_length] = '\0';
-              }
-              keyword = replaced_keyword;
-            }
           }
           
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);

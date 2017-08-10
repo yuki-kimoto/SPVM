@@ -1656,6 +1656,7 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPV
   type->uv.op_type = op_type;
   assert(op_type->uv.type->base_name);
   type->base_name = op_type->uv.type->base_name;
+  type->base_id = op_type->uv.type->base_id;
   type->dimension = op_type->uv.type->dimension + 1;
   
   // Type OP

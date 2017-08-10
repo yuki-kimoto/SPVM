@@ -167,13 +167,12 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
     return 1;
   }
   else {
+    int32_t base_id = op_type->uv.type->base_id;
+    
     const char* base_name = op_type->uv.type->base_name;
       
     // Core type or array
-    if (strcmp(base_name, "void") == 0 || strcmp(base_name, "boolean") == 0 || strcmp(base_name, "byte") == 0 || strcmp(base_name, "short") == 0 || strcmp(base_name, "int") == 0
-      || strcmp(base_name, "long") == 0 || strcmp(base_name, "float") == 0 || strcmp(base_name, "double") == 0
-      || strcmp(base_name, "string") == 0 || strcmp(base_name, "[]") == 0)
-    {
+    if (SPVM_TYPE_is_array(compiler, type) || (base_id >= SPVM_TYPE_C_ID_VOID && base_id <= SPVM_TYPE_C_ID_STRING)) {
       // Nothing
     }
     else {
