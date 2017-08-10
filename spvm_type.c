@@ -44,6 +44,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   type->name = NULL;
   type->name_length = 0;
   type->is_array = 0;
+  type->dimension = 0;
   
   return type;
 }
@@ -183,7 +184,7 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
         // Core type or array
         if (strcmp(part_name, "void") == 0 || strcmp(part_name, "boolean") == 0 || strcmp(part_name, "byte") == 0 || strcmp(part_name, "short") == 0 || strcmp(part_name, "int") == 0
           || strcmp(part_name, "long") == 0 || strcmp(part_name, "float") == 0 || strcmp(part_name, "double") == 0
-          || strcmp(part_name, "string") == 0 || type->is_array)
+          || strcmp(part_name, "string") == 0 || strcmp(part_name, "[]") == 0)
         {
           // Nothing
         }
