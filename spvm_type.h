@@ -40,15 +40,15 @@ struct SPVM_type {
   const char* name;
   int32_t id;
   int32_t name_length;
+  const char* base_name;
   union {
     SPVM_OP* op_name;
     SPVM_OP* op_type;
   } uv;
   int32_t code;
   SPVM_DYNAMIC_ARRAY* parts;
-  _Bool is_array;
+  int32_t dimension;
 };
-
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_DYNAMIC_ARRAY* parts);
