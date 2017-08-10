@@ -119,7 +119,7 @@ SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
 }
 
 // Resolve type and index type
-_Bool SPVM_TYPE_resolve_name(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t name_length) {
+_Bool SPVM_TYPE_resolve_name(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
   SPVM_TYPE* type = op_type->uv.type;
   
@@ -133,6 +133,7 @@ _Bool SPVM_TYPE_resolve_name(SPVM_COMPILER* compiler, SPVM_OP* op_type, int32_t 
     SPVM_TYPE_build_parts(compiler, type, parts);
     type->parts = parts;
     
+    int32_t name_length = 0;
     {
       int32_t i;
       for (i = 0; i < parts->length; i++) {

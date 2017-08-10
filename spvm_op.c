@@ -1506,7 +1506,7 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   op_type_name->file = op_name->file;
   op_type_name->line = op_name->line;
   
-  SPVM_TYPE_resolve_name(compiler, op_type_name, 0);
+  SPVM_TYPE_resolve_name(compiler, op_type_name);
 
   // Resolve only numeric type
   const char* type_name = op_name->uv.name;
@@ -1614,7 +1614,7 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPV
   
   SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_array);
 
-  SPVM_TYPE_resolve_name(compiler, op_type_array, 0);
+  SPVM_TYPE_resolve_name(compiler, op_type_array);
   
   type->is_array = 1;
 
