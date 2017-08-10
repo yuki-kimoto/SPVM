@@ -1412,25 +1412,25 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_list->file, op_list->line);
       
       if (first_type->id == SPVM_TYPE_C_ID_BYTE) {
-        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
+        op_type_new->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_BYTE_ARRAY);
       }
       else if (first_type->id == SPVM_TYPE_C_ID_SHORT) {
-        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "short[]", strlen("short[]"));
+        op_type_new->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_SHORT_ARRAY);
       }
       else if (first_type->id == SPVM_TYPE_C_ID_INT) {
-        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "int[]", strlen("int[]"));
+        op_type_new->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_INT_ARRAY);
       }
       else if (first_type->id == SPVM_TYPE_C_ID_LONG) {
-        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "long[]", strlen("long[]"));
+        op_type_new->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_LONG_ARRAY);;
       }
       else if (first_type->id == SPVM_TYPE_C_ID_FLOAT) {
-        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "float[]", strlen("float[]"));
+        op_type_new->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_FLOAT_ARRAY);;
       }
       else if (first_type->id == SPVM_TYPE_C_ID_DOUBLE) {
-        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "double[]", strlen("double[]"));
+        op_type_new->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_DOUBLE_ARRAY);;
       }
       else if (first_type->id == SPVM_TYPE_C_ID_STRING) {
-        op_type_new->uv.type = SPVM_HASH_search(compiler->type_symtable, "string[]", strlen("string[]"));
+        op_type_new->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_STRING_ARRAY);;
       }
       else {
         assert(0);
@@ -1577,7 +1577,7 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   op_type_name->line = op_name->line;
   
   SPVM_TYPE_resolve_name(compiler, op_type_name);
-
+  
   // Resolve only numeric type
   const char* type_name = op_name->uv.name;
   if (strcmp(type_name, "byte") == 0 || strcmp(type_name, "short") == 0 || strcmp(type_name, "int") == 0
