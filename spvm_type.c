@@ -14,7 +14,7 @@
 #include "spvm_package.h"
 
 const char* const SPVM_TYPE_C_CORE_NAMES[] = {
-  "unknown",
+  "void",
   "byte",
   "short",
   "int",
