@@ -31,8 +31,7 @@ enum {
   SPVM_TYPE_C_ID_STRING_ARRAY,
 };
 
-extern const char* const SPVM_TYPE_C_CODE_NAMES[];
-extern const char* const SPVM_TYPE_C_CORE_NAMES[];
+extern const char* const SPVM_TYPE_C_ID_NAMES[];
 
 struct SPVM_type {
   const char* name;

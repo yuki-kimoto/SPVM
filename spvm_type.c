@@ -13,7 +13,7 @@
 #include "spvm_limit.h"
 #include "spvm_package.h"
 
-const char* const SPVM_TYPE_C_CORE_NAMES[] = {
+const char* const SPVM_TYPE_C_ID_NAMES[] = {
   "void",
   "byte",
   "short",
@@ -29,11 +29,6 @@ const char* const SPVM_TYPE_C_CORE_NAMES[] = {
   "float[]",
   "double[]",
   "string[]",
-};
-
-const char* const SPVM_TYPE_C_CODE_NAMES[] = {
-  "name",
-  "array",
 };
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
