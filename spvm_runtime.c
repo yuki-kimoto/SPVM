@@ -2156,7 +2156,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       index = constant_pool_sub.file_name_constant_pool_index;
       const char* file_name = (char*)&constant_pool[index + 1];
       
-      fprintf(stderr, "Failed to allocate memory(malloc PACKAGE) from %s at %s\n", sub_name, file_name);
+      fprintf(stderr, "Failed to allocate memory(new package) from %s at %s\n", sub_name, file_name);
       abort();
     }
     
@@ -2201,7 +2201,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Memory allocation error
     if (!array) {
       // Error message
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Failed to allocate memory(malloc ARRAY)");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Failed to allocate memory(new array)");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2234,7 +2234,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       index = constant_pool_sub.file_name_constant_pool_index;
       const char* file_name = (char*)&constant_pool[index + 1];
       
-      fprintf(stderr, "Failed to allocate memory(malloc STRING) from %s at %s\n", sub_name, file_name);
+      fprintf(stderr, "Failed to allocate memory(new string) from %s at %s\n", sub_name, file_name);
       abort();
     }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LENGTH:
