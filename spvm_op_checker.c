@@ -1203,7 +1203,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     case SPVM_OP_C_CODE_DIE: {
                       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                       
-                      if (!first_type || strcmp(first_type->name, "string") != 0) {
+                      if (!first_type || first_type->id != SPVM_TYPE_C_ID_STRING) {
                         SPVM_yyerror_format(compiler, "die argument type must be byte[] at %s line %d\n", op_cur->file, op_cur->line);
                         break;
                       }
