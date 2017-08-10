@@ -6,11 +6,6 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_TYPE_C_CODE_NAME,
-  SPVM_TYPE_C_CODE_ARRAY,
-};
-
-enum {
   SPVM_TYPE_C_CORE_LENGTH = 15
 };
 
@@ -45,7 +40,6 @@ struct SPVM_type {
   int32_t id;
   int32_t name_length;
   int32_t base_id;
-  int32_t code;
   int32_t dimension;
 };
 

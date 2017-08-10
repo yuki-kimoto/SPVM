@@ -693,7 +693,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     // Type(type is same as package name)
     SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-    type->code = SPVM_TYPE_C_CODE_NAME;
     type->base_name = package_name;
     
     // Type OP
@@ -1508,7 +1507,6 @@ SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void) {
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->code = SPVM_TYPE_C_CODE_NAME;
   type->base_name = name;
   type->base_id = SPVM_TYPE_C_ID_VOID;
   
@@ -1629,7 +1627,6 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->code = SPVM_TYPE_C_CODE_NAME;
   type->base_name = op_name->uv.name;
   
   // Type op
@@ -1649,7 +1646,6 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPV
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->code = SPVM_TYPE_C_CODE_ARRAY;
   assert(op_type->uv.type->base_name);
   type->base_name = op_type->uv.type->base_name;
   type->base_id = op_type->uv.type->base_id;

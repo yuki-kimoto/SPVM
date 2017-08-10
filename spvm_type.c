@@ -39,7 +39,6 @@ const char* const SPVM_TYPE_C_CODE_NAMES[] = {
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
   
-  type->code = 0;
   type->id = SPVM_TYPE_C_ID_UNKNOWN;
   type->name = NULL;
   type->name_length = 0;
