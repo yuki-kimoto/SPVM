@@ -207,19 +207,6 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   return 1;
 }
 
-void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_DYNAMIC_ARRAY* parts) {
-  
-  if (type->code == SPVM_TYPE_C_CODE_NAME) {
-    const char* part = type->uv.op_name->uv.name;
-    SPVM_DYNAMIC_ARRAY_push(parts, (void*)part);
-  }
-  else if (type->code == SPVM_TYPE_C_CODE_ARRAY) {
-    SPVM_TYPE_build_parts(compiler, type->uv.op_type->uv.type, parts);
-    const char* part = "[]";
-    SPVM_DYNAMIC_ARRAY_push(parts, (void*)part);
-  }
-}
-
 _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
