@@ -41,6 +41,7 @@ struct SPVM_type {
   int32_t id;
   int32_t name_length;
   const char* base_name;
+  int32_t base_id;
   union {
     SPVM_OP* op_name;
     SPVM_OP* op_type;

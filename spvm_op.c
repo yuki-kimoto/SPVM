@@ -1512,6 +1512,7 @@ SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void) {
   type->code = SPVM_TYPE_C_CODE_NAME;
   type->uv.op_name = op_name;
   type->base_name = name;
+  type->base_id = SPVM_TYPE_C_ID_VOID;
   
   // Type op
   SPVM_OP* op_type_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_void->file, op_void->line);

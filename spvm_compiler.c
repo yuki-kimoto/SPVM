@@ -106,6 +106,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
         type->dimension++;
       }
       type->base_name = name;
+      type->base_id = type_id;
       SPVM_DYNAMIC_ARRAY_push(compiler->types, type);
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
     }
