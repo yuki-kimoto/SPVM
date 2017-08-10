@@ -1536,7 +1536,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_DIVIDE_BYTE:
     if (call_stack[operand_stack_top].byte_value == 0) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Occur 0 division(BYTE_VALUE / BYTE_VALUE)");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "0 division(byte / byte)");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -1548,7 +1548,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
   case_SPVM_BYTECODE_C_CODE_DIVIDE_SHORT:
     if (call_stack[operand_stack_top].short_value == 0) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Occur 0 division(SHORT_VALUE / SHORT_VALUE)");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "0 division(short / short)");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -1560,7 +1560,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
   case_SPVM_BYTECODE_C_CODE_DIVIDE_INT:
     if (call_stack[operand_stack_top].int_value == 0) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Occur 0 division(INT_VALUE / INT_VALUE)");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "0 division(int / int)");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
