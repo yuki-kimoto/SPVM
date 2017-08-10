@@ -36,6 +36,18 @@ const char* const SPVM_TYPE_C_CODE_NAMES[] = {
   "array",
 };
 
+SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
+  SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
+  
+  type->code = 0;
+  type->id = -1;
+  type->name = NULL;
+  type->name_length = 0;
+  type->is_array = 0;
+  
+  return type;
+}
+
 SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
@@ -102,17 +114,6 @@ SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_ID_STRING);
   
   assert(type);
-  
-  return type;
-}
-
-SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
-  SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
-  
-  type->code = 0;
-  type->id = -1;
-  type->name = NULL;
-  type->name_length = 0;
   
   return type;
 }
@@ -237,22 +238,7 @@ void SPVM_TYPE_build_parts(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_DYNAMI
 _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  int32_t length = (int32_t)strlen(type->name);
-  
-  if (strlen(type->name) >= 2) {
-    char char1 = type->name[length - 2];
-    char char2 = type->name[length - 1];
-    
-    if (char1 == '[' && char2 == ']') {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  else {
-    return 0;
-  }
+  return type->is_array;
 }
 
 _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {

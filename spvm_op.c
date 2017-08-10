@@ -1615,6 +1615,8 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPV
   SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_array);
 
   SPVM_TYPE_resolve_name(compiler, op_type_array, 0);
+  
+  type->is_array = 1;
 
   return op_type_array;
 }

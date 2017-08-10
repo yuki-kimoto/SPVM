@@ -94,14 +94,17 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   // Add core types
   {
-    int32_t i;
-    for (i = 0; i < SPVM_TYPE_C_CORE_LENGTH; i++) {
+    int32_t type_id;
+    for (type_id = 0; type_id < SPVM_TYPE_C_CORE_LENGTH; type_id++) {
       // Type
       SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-      const char* name = SPVM_TYPE_C_CORE_NAMES[i];
+      const char* name = SPVM_TYPE_C_CORE_NAMES[type_id];
       type->name = name;
       type->name_length = strlen(name);
-      type->id = i;
+      type->id = type_id;
+      if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_DOUBLE_ARRAY) {
+        type->is_array = 1;
+      }
       SPVM_DYNAMIC_ARRAY_push(compiler->types, type);
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
     }

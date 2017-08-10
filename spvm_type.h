@@ -46,6 +46,7 @@ struct SPVM_type {
   } uv;
   int32_t code;
   SPVM_DYNAMIC_ARRAY* parts;
+  _Bool is_array;
 };
 
 
