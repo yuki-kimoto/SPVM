@@ -8,7 +8,6 @@
 enum {
   SPVM_TYPE_C_CODE_NAME,
   SPVM_TYPE_C_CODE_ARRAY,
-  SPVM_TYPE_C_CODE_TEMPLATE,
 };
 
 enum {
@@ -42,16 +41,11 @@ extern const char* const SPVM_TYPE_C_CORE_NAMES[];
 
 struct SPVM_type {
   const char* name;
+  const char* base_name;
   int32_t id;
   int32_t name_length;
-  const char* base_name;
   int32_t base_id;
-  union {
-    SPVM_OP* op_name;
-    SPVM_OP* op_type;
-  } uv;
   int32_t code;
-  SPVM_DYNAMIC_ARRAY* parts;
   int32_t dimension;
 };
 
