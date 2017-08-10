@@ -519,13 +519,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       break;
                     }
                     case SPVM_OP_C_CODE_EQ: {
+                      SPVM_OP* op_first = op_cur->first;
+                      SPVM_OP* op_last = op_cur->last;
                       
-                      SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                      SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-                      
-                      // TERM == TERM
-                      if (first_type && last_type) {
-                        // core == core
+                      // term == term
+                      if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
+                        SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                        SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                        
+                        // numeric == numeric
                         if (SPVM_TYPE_is_numeric(compiler, first_type) && SPVM_TYPE_is_numeric(compiler, last_type)) {
                           if (first_type->id != last_type->id) {
                             SPVM_yyerror_format(compiler, "== operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
@@ -543,17 +545,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           break;
                         }
                       }
-                      // undef == TERM
-                      else if (!first_type) {
-                        if (SPVM_TYPE_is_numeric(compiler, last_type)) {
-                          SPVM_yyerror_format(compiler, "== right value must be object at %s line %d\n", op_cur->file, op_cur->line);
+                      // term == undef
+                      else if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code == SPVM_OP_C_CODE_UNDEF) {
+                        SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                        if (SPVM_TYPE_is_numeric(compiler, first_type)) {
+                          SPVM_yyerror_format(compiler, "== left value must be object at %s line %d\n", op_cur->file, op_cur->line);
                           break;
                         }
                       }
-                      // TERM == undef
-                      else if (!last_type) {
-                        if (SPVM_TYPE_is_numeric(compiler, first_type)) {
-                          SPVM_yyerror_format(compiler, "== left value must be object at %s line %d\n", op_cur->file, op_cur->line);
+                      // undef == term
+                      else if (op_first->code == SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
+                        SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                        if (SPVM_TYPE_is_numeric(compiler, last_type)) {
+                          SPVM_yyerror_format(compiler, "== right value must be object at %s line %d\n", op_cur->file, op_cur->line);
                           break;
                         }
                       }
