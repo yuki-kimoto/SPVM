@@ -826,6 +826,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     const char* at = "() at ";
     const char* line = " line ";
     
+    char line_str[20];
+    sprintf(line_str, "%" PRId32, current_line);
+    
     // Total string length
     int32_t total_length = 0;
     total_length += SPVM_RUNTIME_API_get_array_length(api, runtime->exception);
@@ -834,7 +837,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     total_length += strlen(at);
     total_length += strlen(file_name);
     total_length += strlen(line);
-    total_length += strlen("2147483647");
+    total_length += strlen(line_str);
     
     // Create exception message
     SPVM_ARRAY* new_array_exception = SPVM_RUNTIME_API_new_byte_array(api, total_length);
