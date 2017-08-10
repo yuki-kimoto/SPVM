@@ -197,8 +197,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
           // Switch stack
           SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
           
-          compiler->debug = 0;
-          
           while (op_cur) {
             if (compiler->debug) {
               SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CURRENT_LINE);
@@ -572,6 +570,14 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_index >> 16) & 0xFF);
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_index >> 8) & 0xFF);
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant_pool_index & 0xFF);
+                    
+                    if (compiler->debug) {
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CURRENT_LINE);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (op_cur->line >> 24) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (op_cur->line >> 16) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (op_cur->line >> 8) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, op_cur->line & 0xFF);
+                    }
                     
                     //  Goto exception handler
                     if (eval_stack->length > 0) {
