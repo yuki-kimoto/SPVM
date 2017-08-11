@@ -178,8 +178,10 @@ is_deeply(
 # SPVM new_object_array_len
 {
   my $object_array = SPVM::new_object_array_len("int[]", 3);
-  my $object = SPVM::new_int_array([1, 2, 3]);
-  $object_array->set(0, $object);
+  my $object1 = SPVM::new_int_array([1, 2, 3]);
+  $object_array->set(0, $object1);
+  my $object2 = SPVM::new_int_array([4, 5, 6]);
+  $object_array->set(1, $object2);
   ok(SPVM::TestCase::spvm_new_object_array_len($object_array));
 }
 
@@ -190,7 +192,6 @@ is_deeply(
     my $object = SPVM::new_object("TestCase");
     $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
     $object->set(x_string => SPVM::new_string_raw("abc"));
-    
     ok(SPVM::TestCase::spvm_object_set_object($object));
   }
   # Create object

@@ -10,7 +10,13 @@ package TestCase {
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
         if ($nums->[0][2] == 3) {
-          return 1;
+          if ($nums->[1][0] == 4) {
+            if ($nums->[1][1] == 5) {
+              if ($nums->[1][2] == 6) {
+                return ;
+              }
+            }
+          }
         }
       }
     }
