@@ -917,6 +917,31 @@ new(...)
   XSRETURN(1);
 }
 
+SV*
+set(...)
+  PPCODE:
+{
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_object = ST(2);
+
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get array
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+
+  // Get object
+  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  api->set_object_array_element(api, array, index, (SPVM_API_BASE_OBJECT*)object);
+  
+  XSRETURN(0);
+}
+
 MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 
