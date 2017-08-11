@@ -78,7 +78,7 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_long_array_elements = (int64_t* (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_long_array_elements;
   api->get_float_array_elements = (float* (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_float_array_elements;
   api->get_double_array_elements = (double* (*)(SPVM_API*, SPVM_API_ARRAY*))SPVM_RUNTIME_API_get_double_array_elements;
-  api->get_object_array_element = (SPVM_BASE_OBJECT* (*)(SPVM_API*, SPVM_API_ARRAY*, int32_t index))SPVM_RUNTIME_API_get_object_array_element;
+  api->get_object_array_element = (SPVM_API_BASE_OBJECT* (*)(SPVM_API*, SPVM_API_ARRAY*, int32_t index))SPVM_RUNTIME_API_get_object_array_element;
   api->set_object_array_element = (void (*)(SPVM_API*, SPVM_API_ARRAY*, int32_t index, SPVM_API_BASE_OBJECT* value))SPVM_RUNTIME_API_set_object_array_element;
   
   // Get field

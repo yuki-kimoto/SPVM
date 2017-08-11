@@ -318,7 +318,7 @@ SPVM_BASE_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_API* api, SPVM_
   return value;
 }
 
-void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_ARRAY* array, int32_t index, SPVM_BASE_OBJECT** value) {
+void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_ARRAY* array, int32_t index, SPVM_BASE_OBJECT* value) {
   (void)api;
   
   SPVM_BASE_OBJECT** objects = (SPVM_BASE_OBJECT**)((intptr_t)array + sizeof(SPVM_ARRAY));
