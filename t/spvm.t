@@ -12,8 +12,6 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-# use SPVM::Debug;
-
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'stdout'; my $use_std_line = __LINE__;
 
@@ -175,6 +173,12 @@ is_deeply(
   ok(SPVM::TestCase::convert_int_to_short());
   ok(SPVM::TestCase::convert_int_to_byte());
   ok(SPVM::TestCase::convert_short_to_byte());
+}
+
+# Create object array
+{
+  my $object_array = SPVM::new_object_array_len("int[]", 3);
+  
 }
 
 # Create object

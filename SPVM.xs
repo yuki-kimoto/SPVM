@@ -894,7 +894,7 @@ new(...)
   HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
   SV** sv_type_info_ptr = hv_fetch(hv_type_symtable, type_name, strlen(type_name), 0);
   if (!sv_type_info_ptr) {
-    croak("Can't find type %s(SPVM::Array::Object::new())", type_name);
+    croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Array::Object::new())", type_name);
   }
   
   // Type id

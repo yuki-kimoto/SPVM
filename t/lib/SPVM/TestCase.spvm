@@ -6,6 +6,11 @@ package TestCase {
   has x_int_array : int[];
   has x_string : string;
   
+  sub int_array2 ($nums : int[][]) : int {
+    
+    return 1;
+  }
+  
   # Call void function
   sub call_void_sub($nums : int[]) : void {
     $nums->[0] = 5;
