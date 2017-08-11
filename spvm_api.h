@@ -41,6 +41,8 @@ struct SPVM_api {
   float* (*get_float_array_elements)(SPVM_API*, SPVM_API_ARRAY*);
   double* (*get_double_array_elements)(SPVM_API*, SPVM_API_ARRAY*);
   SPVM_API_BASE_OBJECT** (*get_object_array_elements)(SPVM_API*, SPVM_API_ARRAY*);
+  SPVM_API_BASE_OBJECT* (*get_object_array_element)(SPVM_API*, SPVM_API_ARRAY*, int32_t index);
+  void (*set_object_array_element)(SPVM_API*, SPVM_API_ARRAY*, int32_t index, SPVM_API_BASE_OBJECT* value);
   
   // Object functions
   int32_t (*get_field_id)(SPVM_API*, SPVM_API_OBJECT*, const char*);
