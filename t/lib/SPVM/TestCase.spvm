@@ -6,9 +6,16 @@ package TestCase {
   has x_int_array : int[];
   has x_string : string;
   
-  sub int_array2 ($nums : int[][]) : int {
+  sub spvm_new_object_array_len($nums : int[][]) : int {
+    if ($nums->[0][0] == 1) {
+      if ($nums->[0][1] == 2) {
+        if ($nums->[0][2] == 3) {
+          return 1;
+        }
+      }
+    }
     
-    return 1;
+    return 0;
   }
   
   # Call void function

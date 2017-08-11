@@ -175,10 +175,12 @@ is_deeply(
   ok(SPVM::TestCase::convert_short_to_byte());
 }
 
-# Create object array
+# SPVM new_object_array_len
 {
   my $object_array = SPVM::new_object_array_len("int[]", 3);
-  
+  my $object = SPVM::new_int_array([1, 2, 3]);
+  $object_array->set(0, $object);
+  ok(SPVM::TestCase::spvm_new_object_array_len($object_array));
 }
 
 # Create object

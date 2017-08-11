@@ -916,13 +916,29 @@ set(...)
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   SV* sv_object = ST(2);
-
+  
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get array
   SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
-
+  
+  // Array type id
+  int32_t array_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_array);
+  
+  // Array type name
+  const char* array_type_name = SPVM_XS_UTIL_get_type_name(array_type_id);
+  
+  // Object type id
+  int32_t object_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_object);
+  
+  // Object type name
+  const char* object_type_name = SPVM_XS_UTIL_get_type_name(object_type_id);
+  
+  if (strncmp(array_type_name, object_type_name, strlen(array_type_name - 2)) != 0) {
+    croak("Invalid type %s is set to object array %s(SPVM::Array::Object::set())", object_type_name, array_type_name);
+  }
+  
   // Get object
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
