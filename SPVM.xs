@@ -868,6 +868,55 @@ new_raw(...)
   XSRETURN(1);
 }
 
+MODULE = SPVM::Array::Object		PACKAGE = SPVM::Array::Object
+
+SV*
+new(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  SV* sv_type_name = ST(1);
+  SV* sv_length = ST(2);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Malloc array
+  SPVM_API_ARRAY* array =  api->new_object_array(api, length);
+  
+  // Fix type name(int[] -> int[][]);
+  sv_catpv(sv_type_name, "[]");
+  
+  // Type information
+  const char* type_name = SvPV_nolen(sv_type_name);
+  HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
+  SV** sv_type_info_ptr = hv_fetch(hv_type_symtable, type_name, strlen(type_name), 0);
+  if (!sv_type_info_ptr) {
+    croak("Can't find type %s(SPVM::Array::Object::new())", type_name);
+  }
+  
+  // Type id
+  SV* sv_type_info = *sv_type_info_ptr;
+  HV* hv_type_info = (HV*)SvRV(sv_type_info);
+  SV** sv_type_id_ptr = hv_fetch(hv_type_info, "id", strlen("id"), 0);
+  SV* sv_type_id = *sv_type_id_ptr;
+  int32_t type_id = SvIV(sv_type_id);
+  if (type_id >= SPVM_TYPE_C_ID_BYTE && type_id <= SPVM_TYPE_C_ID_DOUBLE) {
+    croak("Type is not object array %s(SPVM::Array::Object::new())", type_name);
+  }
+  
+  // Increment reference count
+  api->inc_ref_count(api, array);
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(type_id, array);
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 
