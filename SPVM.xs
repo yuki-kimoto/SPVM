@@ -950,6 +950,57 @@ set(...)
   XSRETURN(0);
 }
 
+SV*
+get(...)
+  PPCODE:
+{
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get array
+  SPVM_API_ARRAY* array = SPVM_XS_UTIL_get_array(sv_array);
+  
+  // Array type id
+  int32_t array_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_array);
+  
+  // Array type name
+  const char* array_type_name = SPVM_XS_UTIL_get_type_name(array_type_id);
+  
+  // Element type name sv
+  SV* sv_element_type_name = sv_2mortal(newSVpv(array_type_name, strlen(array_type_name) - 2));
+  const char* element_type_name = SvPV_nolen(sv_element_type_name);
+  
+  // Is array
+  _Bool is_array;
+  if (element_type_name[strlen(element_type_name) - 1] == ']') {
+    is_array = 1;
+  }
+  else {
+    is_array = 0;
+  }
+  
+  // Element type id
+  int32_t element_type_id = SPVM_XS_UTIL_get_type_id(element_type_name);
+
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  SPVM_API_BASE_OBJECT* base_object = api->get_object_array_element(api, array, index);
+  
+  if (is_array) {
+    SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(element_type_id, base_object);
+    XPUSHs(sv_array);
+  }
+  else {
+    SV* sv_object = SPVM_XS_UTIL_new_sv_object(element_type_id, base_object);
+    XPUSHs(sv_object);
+  }
+  
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 
