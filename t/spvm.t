@@ -2,10 +2,12 @@ use strict;
 use warnings;
 use utf8;
 use Data::Dumper;
+use File::Basename 'basename';
+use FindBin;
 
 use Test::More 'no_plan';
 
-my $file = 't/SPVM.t';
+my $file = 't/' . basename $0;
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -53,7 +55,7 @@ use SPVM::stdout;
 {
   eval { SPVM::TestCase::exception_zero_divide_int() }; my $line = __LINE__;
   like($@, qr|\Q0 division (int / int)|);
-  like($@, qr/SPVM\.t/);
+  like($@, qr/spvm\.t/);
   like($@, qr/$line/);
 }
 
