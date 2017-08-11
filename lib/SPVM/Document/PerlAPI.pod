@@ -63,6 +63,17 @@ Create double array
 If you get perl values, you can use C<get_elements> methods.
 
   my $values = $array->get_elements;
+  
+=head2 new_object_array_len
+
+Create object array with type name and length.
+
+  my $array = SPVM::new_object_array_len("int[]", 3);
+
+You can set and get elements by C<set> and C<get> method.
+
+  $array->set(1, SPVM::new_int_array([1, 2, 3]));
+  my $element = $array->get(1);
 
 =head2 new_string_raw
 
