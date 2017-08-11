@@ -177,12 +177,37 @@ is_deeply(
 
 # SPVM new_object_array_len
 {
-  my $object_array = SPVM::new_object_array_len("int[]", 3);
-  my $object1 = SPVM::new_int_array([1, 2, 3]);
-  $object_array->set(0, $object1);
-  my $object2 = SPVM::new_int_array([4, 5, 6]);
-  $object_array->set(1, $object2);
-  ok(SPVM::TestCase::spvm_new_object_array_len($object_array));
+  # element byte array
+  {
+    my $object_array = SPVM::new_object_array_len("byte[]", 3);
+    my $object1 = SPVM::new_byte_array([1, 2, 3]);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::new_byte_array([4, 5, 6]);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_byte_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
+  }
+
+  # element int array
+  {
+    my $object_array = SPVM::new_object_array_len("int[]", 3);
+    my $object1 = SPVM::new_int_array([1, 2, 3]);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::new_int_array([4, 5, 6]);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_int_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
+  }
 }
 
 # Create object

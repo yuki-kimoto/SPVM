@@ -973,30 +973,52 @@ get(...)
   SV* sv_element_type_name = sv_2mortal(newSVpv(array_type_name, strlen(array_type_name) - 2));
   const char* element_type_name = SvPV_nolen(sv_element_type_name);
   
-  // Is array
-  _Bool is_array;
-  if (element_type_name[strlen(element_type_name) - 1] == ']') {
-    is_array = 1;
-  }
-  else {
-    is_array = 0;
-  }
-  
   // Element type id
   int32_t element_type_id = SPVM_XS_UTIL_get_type_id(element_type_name);
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
   SPVM_API_BASE_OBJECT* base_object = api->get_object_array_element(api, array, index);
+  if (base_object != NULL) {
+    api->inc_ref_count(api, base_object);
+  }
   
-  if (is_array) {
-    SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(element_type_id, base_object);
-    XPUSHs(sv_array);
+  SV* sv_base_object;
+  switch (element_type_id) {
+    case SPVM_TYPE_C_ID_BYTE_ARRAY :
+      sv_base_object = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_ARRAY*)base_object);
+      break;
+    case SPVM_TYPE_C_ID_SHORT_ARRAY :
+      sv_base_object = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_ARRAY*)base_object);
+      break;
+    case SPVM_TYPE_C_ID_INT_ARRAY :
+      sv_base_object = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_ARRAY*)base_object);
+      break;
+    case SPVM_TYPE_C_ID_LONG_ARRAY :
+      sv_base_object = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_ARRAY*)base_object);
+      break;
+    case SPVM_TYPE_C_ID_FLOAT_ARRAY :
+      sv_base_object = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_ARRAY*)base_object);
+      break;
+    case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
+      sv_base_object = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_ARRAY*)base_object);
+      break;
+    case SPVM_TYPE_C_ID_STRING :
+      sv_base_object = SPVM_XS_UTIL_new_sv_string((SPVM_API_ARRAY*)base_object);
+      break;
+    default : {
+      const char* return_type_name = SPVM_XS_UTIL_get_type_name(element_type_id);
+      int32_t element_type_name_length = strlen(element_type_name);
+      if (element_type_name[element_type_name_length - 1] == ']') {
+        sv_base_object = SPVM_XS_UTIL_new_sv_object_array(element_type_id, (SPVM_API_ARRAY*)base_object);
+      }
+      else {
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(element_type_id, (SPVM_API_OBJECT*)base_object);
+      }
+    }
   }
-  else {
-    SV* sv_object = SPVM_XS_UTIL_new_sv_object(element_type_id, base_object);
-    XPUSHs(sv_object);
-  }
+  
+  XPUSHs(sv_base_object);
   
   XSRETURN(1);
 }

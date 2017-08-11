@@ -5,8 +5,26 @@ package TestCase {
   has x_long : long;
   has x_int_array : int[];
   has x_string : string;
+
+  sub spvm_new_object_array_len_element_byte_array($nums : byte[][]) : int {
+    if ($nums->[0][0] == 1b) {
+      if ($nums->[0][1] == 2b) {
+        if ($nums->[0][2] == 3b) {
+          if ($nums->[1][0] == 4b) {
+            if ($nums->[1][1] == 5b) {
+              if ($nums->[1][2] == 6b) {
+                return ;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
   
-  sub spvm_new_object_array_len($nums : int[][]) : int {
+  sub spvm_new_object_array_len_element_int_array($nums : int[][]) : int {
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
         if ($nums->[0][2] == 3) {

@@ -331,7 +331,7 @@ SV* SPVM_XS_UTIL_new_sv_object(int32_t type_id, SPVM_API_OBJECT* object) {
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(type_id));
   hv_store(hv_object, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-
+  
   return sv_object;
 }
 
