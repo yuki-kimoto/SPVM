@@ -197,15 +197,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
           // Switch stack
           SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
           
+          _Bool is_before_current_line = 0;
+          
           while (op_cur) {
-            if (compiler->debug) {
-              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CURRENT_LINE);
-              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (op_cur->line >> 24) & 0xFF);
-              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (op_cur->line >> 16) & 0xFF);
-              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (op_cur->line >> 8) & 0xFF);
-              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, op_cur->line & 0xFF);
-            }
-            
             // [START]Preorder traversal position
             
             switch (op_cur->code) {
@@ -235,6 +229,31 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
             }
             else {
               while (1) {
+                if (compiler->debug) {
+                  _Bool is_operation;
+                  switch (op_cur->code) {
+                    case SPVM_OP_C_CODE_NULL:
+                    case SPVM_OP_C_CODE_STAB:
+                    case SPVM_OP_C_CODE_PUSHMARK:
+                    case SPVM_OP_C_CODE_LIST:
+                    case SPVM_OP_C_CODE_BLOCK:
+                    case SPVM_OP_C_CODE_NAME:
+                    case SPVM_OP_C_CODE_MY:
+                      is_operation = 0;
+                      break;
+                    default:
+                      is_operation = 1;
+                  }
+                  
+                  if (is_operation) {
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CURRENT_LINE);
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (op_cur->line >> 24) & 0xFF);
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (op_cur->line >> 16) & 0xFF);
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (op_cur->line >> 8) & 0xFF);
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, op_cur->line & 0xFF);
+                  }
+                }
+                
                 // [START]Postorder traversal position
                 switch (op_cur->code) {
                   case SPVM_OP_C_CODE_SWITCH_CONDITION: {
