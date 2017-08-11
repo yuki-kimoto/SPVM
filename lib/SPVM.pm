@@ -20,7 +20,7 @@ use Encode 'encode';
 
 use Carp 'croak';
 
-our $VERSION = '0.0241';
+our $VERSION = '0.0242';
 
 our $COMPILER;
 our @PACKAGE_INFOS;

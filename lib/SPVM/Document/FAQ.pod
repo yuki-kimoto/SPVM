@@ -2,17 +2,27 @@
 
 SPVM::Document::Specification - SPVM FAQ(BETA)
 
-=head2 FAQ
+=head1 FAQ
 
-=over 4
+=head2 How to know the line number which exception occur
 
-=item * B<Why SPVM don't support 32 bit integer Perl>
+Trun on debug mode by using L<SPVM::Debug>. Line number which exception occur is printed to execption message.
 
-In many 32 bit integer Perl, 64 bit integer is not supported. This means that Perl can not express 64 bit integers on source code.
+  use SPVM::Debug;
+  
+  use SPVM::YourModule;
+
+For example:
+  
+  0 division (int / int)
+    from TestCase::exception_zero_divide_int() at /home/kimoto/labo/SPVM/t/lib/SPVM/TestCase.spvm line 26
+
+=head2 Why SPVM don't support 32 bit integer Perl
+
+In 32 bit integer Perl, 64 bit integer is not supported. This means that Perl can not express 64 bit integers on source code.
 
 See the following code.
 
     my $value = 9223372036854775807;
 
 In 32 bit integer Perl, 64bit integer value is converted to double automatically. The double value can't express long value accurately.
-

@@ -2,3 +2,15 @@
 
 SPVM::Document::Tutorial - SPVM Tutorial(BETA)
 
+=head1 Debug mode
+
+If you want to see Line Number which exception occur, use L<SPVM::Debug>.
+
+  use SPVM::Debug;
+
+Line number which exception occur is printed to exception message.
+
+For example:
+
+  0 division (int / int)
+    from TestCase::exception_zero_divide_int() at /home/kimoto/labo/SPVM/t/lib/SPVM/TestCase.spvm line 26

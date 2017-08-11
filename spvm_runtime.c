@@ -385,7 +385,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   int32_t index;
   register int32_t success;
-  int32_t current_line;
+  int32_t current_line = 0;
   
   _Bool debug = runtime->debug ? 1 : 0;
   
