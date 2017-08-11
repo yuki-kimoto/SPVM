@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Data::Dumper;
 
-use Test::More 'no_plan';;
+use Test::More 'no_plan';
 
 my $file = 't/SPVM.t';
 
