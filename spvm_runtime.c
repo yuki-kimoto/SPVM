@@ -2312,7 +2312,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to get an byte field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an byte field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2326,7 +2326,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to get an short field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an short field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2340,7 +2340,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_INT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to get an int field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an int field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2354,7 +2354,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_LONG:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to get an long field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an long field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2368,7 +2368,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to get an float field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an float field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2382,7 +2382,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to get an double field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an double field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2396,7 +2396,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to get an reference field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an reference field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2410,7 +2410,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_SET_FIELD_BYTE:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to set an byte field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to set an byte field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2425,7 +2425,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_SET_FIELD_SHORT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to set an short field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to set an short field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2440,7 +2440,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_SET_FIELD_INT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to set an int field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to set an int field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2456,7 +2456,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_SET_FIELD_LONG:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to set an long field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to set an long field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2471,7 +2471,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_SET_FIELD_FLOAT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to set an float field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to set an float field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2486,7 +2486,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE: 
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to set an double field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to set an double field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2501,7 +2501,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "The object to set an reference field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to set an reference field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
