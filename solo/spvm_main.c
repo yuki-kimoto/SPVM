@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
+  // compiler->debug = 1;
+  
   compiler->entry_point_package_name = package_name;
   
   SPVM_DYNAMIC_ARRAY_push(compiler->include_pathes, "lib");

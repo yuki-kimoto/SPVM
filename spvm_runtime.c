@@ -387,6 +387,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   register int32_t success;
   int32_t current_line;
   
+  _Bool debug = runtime->debug ? 1 : 0;
+  
   // Goto subroutine
   goto CALLSUB_COMMON;
   
@@ -422,7 +424,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         call_stack[operand_stack_top + 1].address_value = (uint8_t*)-1;
       }
       else {
-        call_stack[operand_stack_top + 1].address_value = (uint8_t*)((intptr_t)pc + 5 + 3);
+        int32_t jump = 5 + (debug * 5) + 3;
+        call_stack[operand_stack_top + 1].address_value = (uint8_t*)((intptr_t)pc + jump);
       }
       
       // Save sub_constant_pool_index
@@ -846,7 +849,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       (void*)((intptr_t)runtime->exception + sizeof(SPVM_ARRAY)),
       SPVM_RUNTIME_API_get_array_length(api, runtime->exception)
     );
-    if (runtime->debug) {
+    if (debug) {
       sprintf(
         (char*)((intptr_t)new_array_exception + sizeof(SPVM_ARRAY) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
         "%s%s%s%s%s%" PRId32,

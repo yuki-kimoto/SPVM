@@ -10,6 +10,8 @@ my $file = 't/SPVM.t';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# use SPVM::Debug;
+
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'stdout'; my $use_std_line = __LINE__;
 
