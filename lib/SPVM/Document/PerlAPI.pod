@@ -1,6 +1,8 @@
+=encoding utf8
+
 =head1 NAME
 
-SPVM::Document::PerlAPI - SPVM Perl API(BETA)
+SPVM::Document::PerlAPI - SPVM API(BETA)
 
 =head1 FUNCTIONS
 
@@ -86,7 +88,7 @@ This function is faster than C<SPVM::string> because copy is not executed.
 
 Create byte array from B<decoded> Perl string.
 
-  my $array = SPVM::new_string("Å†Ç¢Å§Ç¶Å®");
+  my $array = SPVM::new_string("‚ñ°„ÅÑ‚ñΩ„Åà‚Üí");
 
 =head2 new_object
 
