@@ -889,20 +889,12 @@ new(...)
   // Fix type name(int[] -> int[][]);
   sv_catpv(sv_type_name, "[]");
   
-  // Type information
+  // Type id
   const char* type_name = SvPV_nolen(sv_type_name);
-  HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
-  SV** sv_type_info_ptr = hv_fetch(hv_type_symtable, type_name, strlen(type_name), 0);
-  if (!sv_type_info_ptr) {
+  int32_t type_id = SPVM_XS_UTIL_get_type_id(type_name);
+  if (type_id < 0) {
     croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Array::Object::new())", type_name);
   }
-  
-  // Type id
-  SV* sv_type_info = *sv_type_info_ptr;
-  HV* hv_type_info = (HV*)SvRV(sv_type_info);
-  SV** sv_type_id_ptr = hv_fetch(hv_type_info, "id", strlen("id"), 0);
-  SV* sv_type_id = *sv_type_id_ptr;
-  int32_t type_id = SvIV(sv_type_id);
   if (type_id >= SPVM_TYPE_C_ID_BYTE && type_id <= SPVM_TYPE_C_ID_DOUBLE) {
     croak("Type is not object array %s(SPVM::Array::Object::new())", type_name);
   }
