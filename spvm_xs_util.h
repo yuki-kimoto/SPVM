@@ -28,7 +28,7 @@ const char* SPVM_XS_UTIL_get_type_name(int32_t type_id) {
   return type_name;
 }
 
-int32_t SPVM_XS_UTIL_get_type_id(SV* sv_object) {
+int32_t SPVM_XS_UTIL_get_sv_object_type_id(SV* sv_object) {
   HV* hv_object = (HV*)SvRV(sv_object);
   SV** sv_type_id_ptr = hv_fetch(hv_object, "type_id", strlen("type_id"), 0);
   SV* sv_type_id = sv_type_id_ptr ? *sv_type_id_ptr : &PL_sv_undef;

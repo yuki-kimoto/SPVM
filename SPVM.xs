@@ -117,7 +117,7 @@ set(...)
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
 
   // Package type id
-  int32_t package_type_id = SPVM_XS_UTIL_get_type_id(sv_object);
+  int32_t package_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_object);
   
   // Package name
   const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_id);
@@ -168,7 +168,7 @@ set(...)
         const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
         croak("Can't set numeric value to \"%s\" field", field_type_name);
       }
-      int32_t value_type_id = SPVM_XS_UTIL_get_type_id(sv_value);
+      int32_t value_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_value);
       if (value_type_id != field_type_id) {
         const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
         const char* value_type_name = SPVM_XS_UTIL_get_type_name(value_type_id);
@@ -198,7 +198,7 @@ get(...)
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   // Package type id
-  int32_t package_type_id = SPVM_XS_UTIL_get_type_id(sv_object);
+  int32_t package_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_object);
 
   // Package name
   const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_id);
