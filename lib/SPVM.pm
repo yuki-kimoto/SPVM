@@ -223,6 +223,14 @@ sub new_double_array_len {
   return $array;
 }
 
+sub new_object_array_len {
+  my ($type_name, $length) = @_;
+  
+  my $array = SPVM::Array::Object->new($type_name, $length);
+  
+  return $array;
+}
+
 sub new_object {
   my $package_name = shift;
   
