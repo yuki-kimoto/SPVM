@@ -79,7 +79,7 @@ int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_API* api, SPVM_RUNTIME_AL
 
 void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, int32_t byte_size) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
-
+  
   assert(byte_size > 0);
   int32_t index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(api, allocator, byte_size);
   int32_t alloc_byte_size = pow(2, index + 1);
@@ -105,6 +105,9 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
 #ifdef DEBUG
   fprintf(stderr, "MALLOC OBJECT COUNT %d\n", runtime->object_count);
 #endif
+  
+  // Address first bit must be 0 for weaken reference
+  assert(((intptr_t)block & 1) == 0);
   
   return block;
 }

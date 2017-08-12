@@ -16,7 +16,7 @@
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW
 %token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF DIE
-%token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR BYTE SHORT INT LONG FLOAT DOUBLE STRING
+%token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop

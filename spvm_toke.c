@@ -1144,6 +1144,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_WHILE);
                 return WHILE;
               }
+              else if (strcmp(keyword, "weaken") == 0) {
+                yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_WEAKEN);
+                return WEAKEN;
+              }
               break;
             case '_':
               if (strcmp(keyword, "__END__") == 0) {

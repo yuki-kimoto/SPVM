@@ -121,6 +121,7 @@ enum {
   SPVM_OP_C_CODE_FLOAT,
   SPVM_OP_C_CODE_DOUBLE,
   SPVM_OP_C_CODE_STRING,
+  SPVM_OP_C_CODE_WEAKEN,
 };
 
 extern const char* const SPVM_OP_C_CODE_NAMES[];
