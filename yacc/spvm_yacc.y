@@ -502,9 +502,9 @@ call_field
     }
 
 weaken_field
-  : WEAKEN term ARROW '{' field_name '}'
+  : WEAKEN call_field
     {
-      $$ = SPVM_OP_build_weaken_field(compiler, $1, $2, $5);
+      $$ = SPVM_OP_build_weaken_field(compiler, $1, $2);
     }
 
 unop
