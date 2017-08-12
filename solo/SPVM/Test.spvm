@@ -19,9 +19,15 @@ SPVM::Test - SPVM test module
 =cut
 
 package Test {
-  has test : Test;
+  has next_test : Test;
   
   sub main($mvar : int) : int {
+    
+    my $test = new Test;
+    
+    $test->{next_test} = $test;
+    
+    weaken $test->{next_test};
     
     call_void();
     
