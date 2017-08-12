@@ -628,6 +628,27 @@ SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM
   return op_field;
 }
 
+SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_var, SPVM_OP* op_name_field) {
+  
+  SPVM_OP_insert_child(compiler, op_weaken, op_weaken->last, op_var);
+  SPVM_OP_insert_child(compiler, op_weaken, op_weaken->last, op_name_field);
+  
+  op_var->lvalue = 1;
+  
+  SPVM_NAME_INFO* name_info = SPVM_NAME_INFO_new(compiler);
+  
+  if (strchr(op_name_field->uv.name, ':')) {
+    SPVM_yyerror_format(compiler, "field name \"%s\" can't contain :: at %s line %d\n",
+      op_name_field, op_name_field->file, op_name_field->line);
+  }
+  
+  name_info->code = SPVM_NAME_INFO_C_CODE_VARBASENAME;
+  name_info->op_var = op_var;
+  name_info->op_name = op_name_field;
+  
+  return op_weaken;
+}
+
 SPVM_OP* SPVM_OP_build_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term) {
   
   SPVM_OP* op_convert_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_type->file, op_type->line);

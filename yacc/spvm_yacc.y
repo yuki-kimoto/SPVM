@@ -21,7 +21,7 @@
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
 %type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package
-%type <opval> enumeration_values enumeration_value
+%type <opval> enumeration_values enumeration_value weaken_field
 %type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
@@ -407,6 +407,7 @@ expression
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
+  | weaken_field
 
 opt_terms
   :	/* Empty */
@@ -498,6 +499,12 @@ call_field
   | array_elem '{' field_name '}'
     {
       $$ = SPVM_OP_build_call_field(compiler, $1, $3);
+    }
+
+weaken_field
+  : WEAKEN term ARROW '{' field_name '}'
+    {
+      $$ = SPVM_OP_build_weaken_field(compiler, $1, $2, $5);
     }
 
 unop
