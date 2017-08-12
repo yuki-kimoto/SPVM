@@ -8,6 +8,7 @@ struct SPVM_object {
   int8_t type;
   int32_t ref_count;
   int32_t package_constant_pool_index;
+  SPVM_ARRAY* weaken_back_refs;
 };
 
 #endif

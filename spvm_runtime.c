@@ -2417,10 +2417,17 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     else {
       index = (*(pc + 1) << 8) + *(pc + 2);
-      /*
-      call_stack[operand_stack_top].object_value
-        = *(void**)((intptr_t)call_stack[operand_stack_top].object_value + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
-      */
+      SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+      
+      // Weaken object field
+      // Weaken is implemented tag pointer. If pointer first bit is 1, object is weaken.
+      if (*base_object_address != NULL) {
+        if (!((intptr_t)*base_object_address & 1)) {
+          warn("AAAAAAAAAAAA");
+          *base_object_address = (SPVM_BASE_OBJECT*)((intptr_t)*base_object_address | 1);
+        }
+      }
+      
       pc += 3;
       goto *jump[*pc];
     }

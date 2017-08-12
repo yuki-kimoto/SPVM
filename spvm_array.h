@@ -9,6 +9,7 @@ struct SPVM_array {
   int8_t value_type;
   int32_t ref_count;
   int32_t length;
+  SPVM_ARRAY* weaken_back_refs;
 };
 
 enum {
