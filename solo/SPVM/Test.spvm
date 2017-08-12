@@ -25,9 +25,9 @@ package Test {
     
     my $test = new Test;
     
-    $test->{next_test} = $test;
+    # $test->{next_test} = $test;
     
-    weaken $test->{next_test};
+    # weaken $test->{next_test};
     
     call_void();
     
