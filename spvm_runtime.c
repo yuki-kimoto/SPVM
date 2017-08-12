@@ -1385,18 +1385,18 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       else {
         SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)array + sizeof(SPVM_ARRAY) + sizeof(void*) * index);
         
-        // Increment reference count
-        if (call_stack[operand_stack_top].object_value != NULL) {
-          call_stack[operand_stack_top].object_value->ref_count++;
-        }
-        
-        // Decrement reference count
+        // Decrement old object reference count
         if (*base_object_address != NULL) {
           SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
         }
         
         // Store address
         *base_object_address = call_stack[operand_stack_top].object_value;
+
+        // Increment new object reference count
+        if (*base_object_address != NULL) {
+          (*base_object_address)->ref_count++;
+        }
         
         operand_stack_top -= 3;
         pc++;
@@ -2526,18 +2526,18 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       index = (*(pc + 1) << 8) + *(pc + 2);
       SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       
-      // Increment reference count
-      if (call_stack[operand_stack_top].object_value != NULL) {
-        call_stack[operand_stack_top].object_value->ref_count++;
-      }
-      
-      // Decrement reference count
+      // Decrement old ojbect reference count
       if (*base_object_address != NULL) {
         SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
       }
       
       // Store object
       *base_object_address = call_stack[operand_stack_top].object_value;
+      
+      // Increment new object reference count
+      if (*base_object_address != NULL) {
+        (*base_object_address)->ref_count++;
+      }
       
       operand_stack_top -= 2;
       pc += 3;
