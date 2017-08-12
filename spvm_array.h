@@ -9,7 +9,7 @@ struct SPVM_array {
   int8_t value_type;
   int32_t ref_count;
   SPVM_ARRAY* weaken_back_refs;
-  int32_t weaken_back_refs_count;
+  int32_t weaken_back_refs_length;
   int32_t length;
 };
 

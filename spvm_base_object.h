@@ -8,7 +8,7 @@ struct SPVM_base_object {
   int8_t type;
   int32_t ref_count;
   SPVM_ARRAY* weaken_back_refs;
-  int32_t weaken_back_refs_count;
+  int32_t weaken_back_refs_length;
 };
 
 enum {
