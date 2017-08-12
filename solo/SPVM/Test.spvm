@@ -19,6 +19,8 @@ SPVM::Test - SPVM test module
 =cut
 
 package Test {
+  has test : Test;
+  
   enum {
     ONE = 0.25f
   }

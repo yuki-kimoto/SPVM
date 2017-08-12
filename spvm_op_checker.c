@@ -149,9 +149,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
-      SPVM_DYNAMIC_ARRAY* op_fields_ref = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      SPVM_DYNAMIC_ARRAY* op_fields_value = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-
+      SPVM_DYNAMIC_ARRAY* op_fields_object = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_DYNAMIC_ARRAY* op_fields_numeric = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      
+      /*
       // Separate reference type and value type
       _Bool field_type_error = 0;
       int32_t field_pos;
@@ -181,6 +182,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         compiler->fatal_error = 1;
         return;
       }
+      */
       
       // Separate reference type and value type
       {
@@ -190,28 +192,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_FIELD* field = op_field->uv.field;
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
-          // Check field type
-          if (SPVM_TYPE_is_array(compiler, field_type)) {
-            if (!SPVM_TYPE_is_array_numeric(compiler, field_type)) {
-              SPVM_yyerror_format(compiler, "field type must be numeric or numeric array or string array at %s line %d\n", op_field->file, op_field->line);
-              compiler->fatal_error = 1;
-              return;
-            }
-          }
-          else if (field_type->id == SPVM_TYPE_C_ID_STRING) {
-            // Nothing
-          }
-          else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {
-            SPVM_yyerror_format(compiler, "field type must be numeric or numeric array or string array at %s line %d\n", op_field->file, op_field->line);
-            compiler->fatal_error = 1;
-            return;
-          }
-          
           if (SPVM_TYPE_is_numeric(compiler, field_type)) {
-            SPVM_DYNAMIC_ARRAY_push(op_fields_value, op_field);
+            SPVM_DYNAMIC_ARRAY_push(op_fields_numeric, op_field);
           }
           else {
-            SPVM_DYNAMIC_ARRAY_push(op_fields_ref, op_field);
+            SPVM_DYNAMIC_ARRAY_push(op_fields_object, op_field);
           }
         }
       }
@@ -220,16 +205,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_DYNAMIC_ARRAY* ordered_op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       {
         int32_t field_pos;
-        for (field_pos = 0; field_pos < op_fields_ref->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields_ref, field_pos);
+        for (field_pos = 0; field_pos < op_fields_object->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields_object, field_pos);
           SPVM_DYNAMIC_ARRAY_push(ordered_op_fields, op_field);
         }
       }
       
       {
         int32_t field_pos;
-        for (field_pos = 0; field_pos < op_fields_value->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields_value, field_pos);
+        for (field_pos = 0; field_pos < op_fields_numeric->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields_numeric, field_pos);
           SPVM_DYNAMIC_ARRAY_push(ordered_op_fields, op_field);
         }
       }
