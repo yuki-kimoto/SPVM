@@ -48,7 +48,9 @@ void SPVM_RUNTIME_API_add_weaken_back_ref(SPVM_API* api, SPVM_BASE_OBJECT* base_
     base_object->weaken_back_refs = new_weaken_back_refs;
   }
   
-  
+  SPVM_BASE_OBJECT** weaken_back_refs_objects = (SPVM_BASE_OBJECT**)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));
+  weaken_back_refs_objects[length] = base_object;
+  base_object->weaken_back_refs_length++;
 }
 
 void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY* exception) {
