@@ -1521,6 +1521,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
+                    case SPVM_OP_C_CODE_WEAKEN_FIELD: {
+                      SPVM_OP* op_call_field = op_cur->first;
+                      const char* field_abs_name = op_call_field->uv.name_info->resolved_name;
+                      
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
+                      
+                      if (type->id <= SPVM_TYPE_C_ID_DOUBLE) {
+                        SPVM_yyerror_format(compiler, "weaken is only used for object field \"%s\" at %s line %d\n",
+                          field_abs_name, op_cur->file, op_cur->line);
+                        compiler->fatal_error = 1;
+                        break;
+                      }
+                      
+                      break;
+                    }
                     case SPVM_OP_C_CODE_CONVERT: {
                       
                       SPVM_OP* op_term = op_cur->first;

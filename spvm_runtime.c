@@ -353,6 +353,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_STORE_EXCEPTION,
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
     &&case_SPVM_BYTECODE_C_CODE_CURRENT_LINE,
+    &&case_SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT,
   };
   
   // Program counter
@@ -2396,7 +2397,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an reference field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an object field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2404,6 +2405,22 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       index = (*(pc + 1) << 8) + *(pc + 2);
       call_stack[operand_stack_top].object_value
         = *(void**)((intptr_t)call_stack[operand_stack_top].object_value + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+      pc += 3;
+      goto *jump[*pc];
+    }
+  case_SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT:
+    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
+    if (__builtin_expect(!object, 0)) {
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to weaken an object field must not be undefined.");
+      SPVM_RUNTIME_API_set_exception(api, array_exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      index = (*(pc + 1) << 8) + *(pc + 2);
+      /*
+      call_stack[operand_stack_top].object_value
+        = *(void**)((intptr_t)call_stack[operand_stack_top].object_value + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+      */
       pc += 3;
       goto *jump[*pc];
     }
@@ -2501,7 +2518,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
   case_SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT:
     object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to set an reference field must not be undefined.");
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to set an object field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
