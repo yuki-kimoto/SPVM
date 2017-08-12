@@ -21,25 +21,6 @@ SPVM::Test - SPVM test module
 package Test {
   has test : Test;
   
-  enum {
-    ONE = 0.25f
-  }
-
-  # Call void function
-  sub call_void_sub($nums : int[]) : void {
-    $nums->[0] = 5;
-  }
-  sub call_void() : int {
-    my $nums = [1];
-    
-    call_void_sub($nums);
-    
-    if ($nums->[0] == 5) {
-      return 1;
-    }
-    return 0;
-  }
-  
   sub main($mvar : int) : int {
     
     call_void();
@@ -813,6 +794,25 @@ package Test {
     # die $error;
     
     return $mvar + 3;
+  }
+
+  enum {
+    ONE = 0.25f
+  }
+
+  # Call void function
+  sub call_void_sub($nums : int[]) : void {
+    $nums->[0] = 5;
+  }
+  sub call_void() : int {
+    my $nums = [1];
+    
+    call_void_sub($nums);
+    
+    if ($nums->[0] == 5) {
+      return 1;
+    }
+    return 0;
   }
   
   sub test1 () : int {
