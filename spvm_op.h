@@ -153,6 +153,11 @@ enum {
   SPVM_OP_C_FLAG_ASSIGN_TMP_VAR = 1
 };
 
+enum {
+  // CALL_FIELD flag
+  SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN = 1
+};
+
 /* Binary operation */
 struct SPVM_op {
   SPVM_OP* first;

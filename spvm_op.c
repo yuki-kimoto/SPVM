@@ -634,6 +634,8 @@ SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken,
   SPVM_OP* op_weaken_field = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_WEAKEN_FIELD, op_weaken->file, op_weaken->line);
   SPVM_OP_insert_child(compiler, op_weaken_field, op_weaken_field->last, op_call_field);
   
+  op_call_field->flag |= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN;
+  
   return op_weaken_field;
 }
 

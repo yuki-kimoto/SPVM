@@ -219,4 +219,5 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "STORE_EXCEPTION",
   "WIDE",
   "CURRENT_LINE",
+  "WEAKEN_FIELD",
 };

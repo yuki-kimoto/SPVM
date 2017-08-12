@@ -538,26 +538,34 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     if (!op_cur->lvalue) {
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                       
-                      if (type->id == SPVM_TYPE_C_ID_BYTE) {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE);
+                      // Weaken field
+                      if (op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN) {
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_WEAKEN_FIELD);
                       }
-                      else if (type->id == SPVM_TYPE_C_ID_SHORT) {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT);
-                      }
-                      else if (type->id == SPVM_TYPE_C_ID_INT) {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_INT);
-                      }
-                      else if (type->id == SPVM_TYPE_C_ID_LONG) {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_LONG);
-                      }
-                      else if (type->id == SPVM_TYPE_C_ID_FLOAT) {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT);
-                      }
-                      else if (type->id == SPVM_TYPE_C_ID_DOUBLE) {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE);
-                      }
+                      // Get field
                       else {
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT);
+                      
+                        if (type->id == SPVM_TYPE_C_ID_BYTE) {
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE);
+                        }
+                        else if (type->id == SPVM_TYPE_C_ID_SHORT) {
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT);
+                        }
+                        else if (type->id == SPVM_TYPE_C_ID_INT) {
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_INT);
+                        }
+                        else if (type->id == SPVM_TYPE_C_ID_LONG) {
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_LONG);
+                        }
+                        else if (type->id == SPVM_TYPE_C_ID_FLOAT) {
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT);
+                        }
+                        else if (type->id == SPVM_TYPE_C_ID_DOUBLE) {
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE);
+                        }
+                        else {
+                          SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT);
+                        }
                       }
                       
                       SPVM_NAME_INFO* name_info = op_cur->uv.name_info;
