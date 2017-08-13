@@ -21,7 +21,7 @@
 void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_address) {
   (void)api;
   
-  if (SPVM_RUNTIME_API_is_weaken(api, *base_object_address)) {
+  if (SPVM_RUNTIME_API_isweak(api, *base_object_address)) {
     return;
   }
   
@@ -63,10 +63,10 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_addre
   base_object->weaken_back_refs_length++;
 }
 
-_Bool SPVM_RUNTIME_API_is_weaken(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
-  _Bool is_weaken = (intptr_t)base_object & 1;
+_Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
+  _Bool isweak = (intptr_t)base_object & 1;
   
-  return is_weaken;
+  return isweak;
 }
 
 void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY* exception) {
