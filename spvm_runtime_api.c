@@ -562,12 +562,10 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
           }
         }
       }
-      /*
       if (object->weaken_back_refs != NULL) {
         warn("AAAAAAAAAA %d", object->weaken_back_refs->ref_count);
         SPVM_RUNTIME_API_dec_ref_count(api, object->weaken_back_refs);
       }
-      */
       
       SPVM_RUNTIME_ALLOCATOR_free_base_object(api, runtime->allocator, (SPVM_BASE_OBJECT*)object);
     }
