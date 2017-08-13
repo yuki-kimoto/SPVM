@@ -45,28 +45,67 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_addre
     SPVM_ARRAY* new_weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, new_capacity);
     new_weaken_back_refs->ref_count++;
     
-    SPVM_BASE_OBJECT** weaken_back_refs_objects = (SPVM_BASE_OBJECT**)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));
-    SPVM_BASE_OBJECT** new_weaken_back_refs_objects = (SPVM_BASE_OBJECT**)((intptr_t)new_weaken_back_refs + sizeof(SPVM_ARRAY));
-    memcpy(new_weaken_back_refs_objects, weaken_back_refs_objects, length * sizeof(SPVM_VALUE));
+    SPVM_BASE_OBJECT** weaken_back_refs_elements = (SPVM_BASE_OBJECT**)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));
+    SPVM_BASE_OBJECT** new_weaken_back_refs_elements = (SPVM_BASE_OBJECT**)((intptr_t)new_weaken_back_refs + sizeof(SPVM_ARRAY));
+    memcpy(new_weaken_back_refs_elements, weaken_back_refs_elements, length * sizeof(SPVM_VALUE));
     
     // Old object become NULL
-    memset(weaken_back_refs_objects, 0, length * sizeof(SPVM_VALUE));
+    memset(weaken_back_refs_elements, 0, length * sizeof(SPVM_VALUE));
     
     // Free old weaken back references
-    SPVM_RUNTIME_API_dec_ref_count(api, base_object->weaken_back_refs);
+    SPVM_RUNTIME_API_dec_ref_count(api, (SPVM_BASE_OBJECT*)base_object->weaken_back_refs);
     
     base_object->weaken_back_refs = new_weaken_back_refs;
   }
   
-  SPVM_BASE_OBJECT** weaken_back_refs_objects = (SPVM_BASE_OBJECT**)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));
-  weaken_back_refs_objects[length] = base_object;
+  SPVM_BASE_OBJECT*** weaken_back_refs_elements = (SPVM_BASE_OBJECT***)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));
+  weaken_back_refs_elements[length] = base_object_address;
   base_object->weaken_back_refs_length++;
 }
 
 _Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
+  (void)api;
+  
   _Bool isweak = (intptr_t)base_object & 1;
   
   return isweak;
+}
+
+void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_address) {
+  (void)api;
+  
+  if (!SPVM_RUNTIME_API_isweak(api, *base_object_address)) {
+    return;
+  }
+  
+  // Unweaken
+  *base_object_address = (SPVM_BASE_OBJECT*)((intptr_t)*base_object_address & ~(intptr_t)1);
+  
+  SPVM_BASE_OBJECT* base_object = *base_object_address;
+  
+  int32_t length = base_object->weaken_back_refs_length;
+  
+  SPVM_BASE_OBJECT*** weaken_back_refs_elements = (SPVM_BASE_OBJECT***)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));
+  
+  {
+    int32_t i;
+    int32_t found_index = -1;
+    for (i = 0; i < length; i++) {
+      if (weaken_back_refs_elements[i] == base_object_address) {
+        found_index = i;
+        break;
+      }
+    }
+    if (found_index == -1) {
+      fprintf(stderr, "Not weakened address is specified(SPVM_RUNTIME_API_unweaken())");
+      abort();
+    }
+    if (found_index < length - 1) {
+      int32_t move_length = length - found_index - 1;
+      memmove(&weaken_back_refs_elements[found_index], &weaken_back_refs_elements[found_index + 1], move_length);
+    }
+  }
+  base_object->weaken_back_refs_length--;
 }
 
 void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY* exception) {
