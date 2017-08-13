@@ -18,26 +18,17 @@
 #include "spvm_runtime_allocator.h"
 #include "spvm_api.h"
 
-SPVM_BASE_OBJECT* SPVM_RUNTIME_API_get_object_weaken(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
-  
-  // Weaken is implemented tag pointer. If pointer first bit is 1, object is weaken.
-  base_object = (SPVM_BASE_OBJECT*)((intptr_t)base_object & ~(intptr_t)1);
-  
-  return base_object;
-}
-
 void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_address) {
+  (void)api;
+  
+  if (SPVM_RUNTIME_API_is_weaken(api, *base_object_address)) {
+    return;
+  }
+  
+  SPVM_BASE_OBJECT* base_object = *base_object_address;
+  
   // Weaken is implemented tag pointer. If pointer first bit is 1, object is weaken.
   *base_object_address = (SPVM_BASE_OBJECT*)((intptr_t)*base_object_address | 1);
-}
-
-_Bool SPVM_RUNTIME_API_is_weaken(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
-  _Bool is_weaken = (intptr_t)base_object & 1;
-  
-  return is_weaken;
-}
-
-void SPVM_RUNTIME_API_add_weaken_back_ref(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
   
   // Create array of weaken_back_refs if need
   if (base_object->weaken_back_refs == NULL) {
@@ -70,6 +61,12 @@ void SPVM_RUNTIME_API_add_weaken_back_ref(SPVM_API* api, SPVM_BASE_OBJECT* base_
   SPVM_BASE_OBJECT** weaken_back_refs_objects = (SPVM_BASE_OBJECT**)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));
   weaken_back_refs_objects[length] = base_object;
   base_object->weaken_back_refs_length++;
+}
+
+_Bool SPVM_RUNTIME_API_is_weaken(SPVM_API* api, SPVM_BASE_OBJECT* base_object) {
+  _Bool is_weaken = (intptr_t)base_object & 1;
+  
+  return is_weaken;
 }
 
 void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_ARRAY* exception) {

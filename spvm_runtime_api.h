@@ -72,8 +72,7 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_obj
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
-void SPVM_RUNTIME_API_add_weaken_back_ref(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
 _Bool SPVM_RUNTIME_API_is_weaken(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
-SPVM_BASE_OBJECT* SPVM_RUNTIME_API_get_object_weaken(SPVM_API* api, SPVM_BASE_OBJECT* base_object);
+void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_address);
 
 #endif

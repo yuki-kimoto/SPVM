@@ -2421,12 +2421,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       
       // Weaken object field
       if (*base_object_address != NULL) {
-        if (!SPVM_RUNTIME_API_is_weaken(api, *base_object_address)) {
-          SPVM_RUNTIME_API_weaken(api, base_object_address);
-          
-          // Add weaken back refnerece
-          SPVM_RUNTIME_API_add_weaken_back_ref(api, SPVM_RUNTIME_API_get_object_weaken(api, *base_object_address));
-        }
+        SPVM_RUNTIME_API_weaken(api, base_object_address);
       }
       
       pc += 3;
