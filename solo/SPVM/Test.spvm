@@ -23,11 +23,14 @@ package Test {
   
   sub main($mvar : int) : int {
     
-    my $test = new Test;
-    
-    # $test->{next_test} = $test;
-    
-    # weaken $test->{next_test};
+    # Weaken
+    {
+      my $test = new Test;
+      
+      $test->{next_test} = $test;
+      
+      weaken $test->{next_test};
+    }
     
     call_void();
     
