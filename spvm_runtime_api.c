@@ -28,7 +28,14 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_addre
   SPVM_BASE_OBJECT* base_object = *base_object_address;
   
   // Decrelement reference count
-  base_object->ref_count--;
+  if (base_object->ref_count == 1) {
+    // If reference count is 1, the object is freeed without weaken
+    SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
+    *base_object_address = NULL;
+  }
+  else {
+    base_object->ref_count--;
+  }
   
   // Weaken is implemented tag pointer. If pointer first bit is 1, object is weaken.
   *base_object_address = (SPVM_BASE_OBJECT*)((intptr_t)*base_object_address | 1);
