@@ -43,6 +43,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_addre
   // Create array of weaken_back_refs if need
   if (base_object->weaken_back_refs == NULL) {
     base_object->weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, 32);
+    base_object->weaken_back_refs->ref_count++;
   }
   
   int32_t capacity = base_object->weaken_back_refs->length;
@@ -54,6 +55,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_addre
     int32_t new_capacity = capacity * 2;
     SPVM_ARRAY* new_weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, new_capacity);
     new_weaken_back_refs->ref_count++;
+    warn("BBBBBBBB %d", new_weaken_back_refs->ref_count);
     
     SPVM_BASE_OBJECT** weaken_back_refs_elements = (SPVM_BASE_OBJECT**)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));
     SPVM_BASE_OBJECT** new_weaken_back_refs_elements = (SPVM_BASE_OBJECT**)((intptr_t)new_weaken_back_refs + sizeof(SPVM_ARRAY));
@@ -546,12 +548,26 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_BASE_OBJECT* base_object
       {
         int32_t i;
         for (i = 0; i < object_fields_length; i++) {
-          SPVM_BASE_OBJECT* base_object_field = *(SPVM_BASE_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(void*) * i);
-          if (base_object_field != NULL) {
-            SPVM_RUNTIME_API_dec_ref_count(api, base_object_field);
+          SPVM_BASE_OBJECT** base_object_field_address
+            = (SPVM_BASE_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_BASE_OBJECT*) * i);
+          if (*base_object_field_address != NULL) {
+            // If object is weak, unweaken
+            if (SPVM_RUNTIME_API_isweak(api, *base_object_field_address)) {
+              SPVM_RUNTIME_API_unweaken(api, base_object_field_address);
+              (*base_object_field_address)->ref_count--;
+            }
+            else {
+              SPVM_RUNTIME_API_dec_ref_count(api, *base_object_field_address);
+            }
           }
         }
       }
+      /*
+      if (object->weaken_back_refs != NULL) {
+        warn("AAAAAAAAAA %d", object->weaken_back_refs->ref_count);
+        SPVM_RUNTIME_API_dec_ref_count(api, object->weaken_back_refs);
+      }
+      */
       
       SPVM_RUNTIME_ALLOCATOR_free_base_object(api, runtime->allocator, (SPVM_BASE_OBJECT*)object);
     }
