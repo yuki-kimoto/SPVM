@@ -27,6 +27,9 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_addre
   
   SPVM_BASE_OBJECT* base_object = *base_object_address;
   
+  // Decrelement reference count
+  base_object->ref_count--;
+  
   // Weaken is implemented tag pointer. If pointer first bit is 1, object is weaken.
   *base_object_address = (SPVM_BASE_OBJECT*)((intptr_t)*base_object_address | 1);
   
@@ -82,7 +85,10 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_add
   *base_object_address = (SPVM_BASE_OBJECT*)((intptr_t)*base_object_address & ~(intptr_t)1);
   
   SPVM_BASE_OBJECT* base_object = *base_object_address;
-  
+
+  // Increment reference count
+  base_object->ref_count++;
+
   int32_t length = base_object->weaken_back_refs_length;
   
   SPVM_BASE_OBJECT*** weaken_back_refs_elements = (SPVM_BASE_OBJECT***)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));

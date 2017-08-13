@@ -2529,6 +2529,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       index = (*(pc + 1) << 8) + *(pc + 2);
       SPVM_BASE_OBJECT** base_object_address = (SPVM_BASE_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       
+      // If object is weak, unweaken
+      if (SPVM_RUNTIME_API_isweak(api, *base_object_address)) {
+        SPVM_RUNTIME_API_unweaken(api, base_object_address);
+      }
+      
       // Decrement old ojbect reference count
       if (*base_object_address != NULL) {
         SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
