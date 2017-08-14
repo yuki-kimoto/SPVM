@@ -48,7 +48,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_from_pv(SPVM_API* api, const char* 
 SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object);
-int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_OBJECT* base_object);
+int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_OBJECT* object);
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name);
 int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name);
@@ -68,11 +68,11 @@ void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_OBJECT* exception);
 SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_API* api);
 
 // Reference count
-int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_OBJECT* base_object);
-void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object);
-void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_OBJECT* base_object);
-void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object);
-_Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_OBJECT* base_object);
-void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** base_object_address);
-void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** base_object_address);
+int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_OBJECT* object);
+void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object);
+void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_OBJECT* object);
+void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object);
+_Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_OBJECT* object);
+void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address);
+void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address);
 #endif
