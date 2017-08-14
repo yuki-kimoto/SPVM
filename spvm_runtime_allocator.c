@@ -20,10 +20,10 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   SPVM_RUNTIME_ALLOCATOR* allocator = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_ALLOCATOR));
 
   // use memory pool max reference byte size
-  allocator->base_object_max_byte_size_use_memory_pool = 0xFFFF;
+  allocator->object_max_byte_size_use_memory_pool = 0xFFFF;
   
   // Memory pool
-  allocator->memory_pool = SPVM_MEMORY_POOL_new(allocator->base_object_max_byte_size_use_memory_pool);
+  allocator->memory_pool = SPVM_MEMORY_POOL_new(allocator->object_max_byte_size_use_memory_pool);
   
   // Free lists
   int64_t allocator_freelists_byte_size = (int64_t)16 * (int64_t)sizeof(SPVM_DYNAMIC_ARRAY);
@@ -85,7 +85,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
   int32_t alloc_byte_size = pow(2, index + 1);
   
   void* block;
-  if (alloc_byte_size > allocator->base_object_max_byte_size_use_memory_pool) {
+  if (alloc_byte_size > allocator->object_max_byte_size_use_memory_pool) {
     block = SPVM_UTIL_ALLOCATOR_safe_malloc(alloc_byte_size);
   }
   else {
@@ -112,15 +112,15 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
   return block;
 }
 
-void SPVM_RUNTIME_ALLOCATOR_free_base_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* base_object) {
+void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
-  if (base_object == NULL) {
+  if (object == NULL) {
     return;
   }
   else {
     // Byte size
-    int32_t byte_size = SPVM_RUNTIME_API_calcurate_object_byte_size(api, base_object);
+    int32_t byte_size = SPVM_RUNTIME_API_calcurate_object_byte_size(api, object);
     
     assert(byte_size > 0);
     
@@ -131,15 +131,15 @@ void SPVM_RUNTIME_ALLOCATOR_free_base_object(SPVM_API* api, SPVM_RUNTIME_ALLOCAT
     fprintf(stderr, "FREE OBJECT COUNT %d\n", runtime->object_count);
 #endif
     
-    if (byte_size > allocator->base_object_max_byte_size_use_memory_pool) {
-      free(base_object);
+    if (byte_size > allocator->object_max_byte_size_use_memory_pool) {
+      free(object);
     }
     else {
       // Freelist index
       int32_t freelist_index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(api, allocator, byte_size);
       
       // Push free address
-      SPVM_DYNAMIC_ARRAY_push(allocator->freelists[freelist_index], base_object);
+      SPVM_DYNAMIC_ARRAY_push(allocator->freelists[freelist_index], object);
     }
   }
 }

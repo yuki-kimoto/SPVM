@@ -542,7 +542,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
           }
         }
       }
-      SPVM_RUNTIME_ALLOCATOR_free_base_object(api, runtime->allocator, base_object);
+      SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, base_object);
     }
     // Reference is object
     else if (base_object->type == SPVM_OBJECT_C_TYPE_OBJECT) {
@@ -578,7 +578,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
         SPVM_RUNTIME_API_free_weaken_back_refs(api, object->weaken_back_refs, object->weaken_back_refs_length);
       }
       
-      SPVM_RUNTIME_ALLOCATOR_free_base_object(api, runtime->allocator, (SPVM_OBJECT*)object);
+      SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, (SPVM_OBJECT*)object);
     }
   }
 }
