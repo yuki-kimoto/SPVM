@@ -95,30 +95,30 @@ _Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_OBJECT* base_object) {
   return isweak;
 }
 
-void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** base_object_address) {
+void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   (void)api;
   
-  if (!SPVM_RUNTIME_API_isweak(api, *base_object_address)) {
+  if (!SPVM_RUNTIME_API_isweak(api, *object_address)) {
     return;
   }
   
   // Unweaken
-  *base_object_address = (SPVM_OBJECT*)((intptr_t)*base_object_address & ~(intptr_t)1);
+  *object_address = (SPVM_OBJECT*)((intptr_t)*object_address & ~(intptr_t)1);
   
-  SPVM_OBJECT* base_object = *base_object_address;
+  SPVM_OBJECT* object = *object_address;
 
   // Increment reference count
-  base_object->ref_count++;
+  object->ref_count++;
 
-  int32_t length = base_object->weaken_back_refs_length;
+  int32_t length = object->weaken_back_refs_length;
   
-  SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_OBJECT));
+  SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->weaken_back_refs + sizeof(SPVM_OBJECT));
   
   {
     int32_t i;
     int32_t found_index = -1;
     for (i = 0; i < length; i++) {
-      if (weaken_back_refs_elements[i] == base_object_address) {
+      if (weaken_back_refs_elements[i] == object_address) {
         found_index = i;
         break;
       }
@@ -132,7 +132,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** base_object_address)
       memmove(&weaken_back_refs_elements[found_index], &weaken_back_refs_elements[found_index + 1], move_length);
     }
   }
-  base_object->weaken_back_refs_length--;
+  object->weaken_back_refs_length--;
 }
 
 void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_OBJECT* exception) {
