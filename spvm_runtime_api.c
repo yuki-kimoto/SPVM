@@ -583,20 +583,20 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
   }
 }
 
-void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
+void SPVM_RUNTIME_API_inc_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
-  if (base_object != NULL) {
-    assert(base_object->ref_count >= 0);
+  if (object != NULL) {
+    assert(object->ref_count >= 0);
     // Increment reference count
-    base_object->ref_count++;
+    object->ref_count++;
   }
 }
 
-int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
+int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
-  return base_object->ref_count;
+  return object->ref_count;
 }
 
 void SPVM_RUNTIME_API_call_void_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args) {
