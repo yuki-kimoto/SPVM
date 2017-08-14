@@ -120,7 +120,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_base_object(SPVM_API* api, SPVM_RUNTIME_ALLOCAT
   }
   else {
     // Byte size
-    int32_t byte_size = SPVM_RUNTIME_API_calcurate_base_object_byte_size(api, base_object);
+    int32_t byte_size = SPVM_RUNTIME_API_calcurate_object_byte_size(api, base_object);
     
     assert(byte_size > 0);
     

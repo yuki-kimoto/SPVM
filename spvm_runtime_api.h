@@ -43,7 +43,7 @@ double SPVM_RUNTIME_API_call_double_sub(SPVM_API* api, int32_t sub_constant_pool
 SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_API* api, int32_t sub_constant_pool_index, SPVM_VALUE* args);
 
 // Internal functions
-int64_t SPVM_RUNTIME_API_calcurate_base_object_byte_size(SPVM_API* api, SPVM_OBJECT* base_object);
+int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* object);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_from_pv(SPVM_API* api, const char* pv);
 SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object);
