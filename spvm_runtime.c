@@ -126,10 +126,10 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->get_exception = (SPVM_API_OBJECT* (*)(SPVM_API* api))SPVM_RUNTIME_API_get_exception;
   
   // Reference count
-  api->get_ref_count = (int32_t (*)(SPVM_API* api, SPVM_API_OBJECT* base_object))SPVM_RUNTIME_API_get_ref_count;
-  api->dec_ref_count = (void (*)(SPVM_API* api, SPVM_API_OBJECT* base_object))SPVM_RUNTIME_API_dec_ref_count;
-  api->inc_ref_count = (void (*)(SPVM_API* api, SPVM_API_OBJECT* base_object))SPVM_RUNTIME_API_inc_ref_count;
-  api->inc_dec_ref_count = (void (*)(SPVM_API* api, SPVM_API_OBJECT* base_object))SPVM_RUNTIME_API_inc_dec_ref_count;
+  api->get_ref_count = (int32_t (*)(SPVM_API* api, SPVM_API_OBJECT* object))SPVM_RUNTIME_API_get_ref_count;
+  api->dec_ref_count = (void (*)(SPVM_API* api, SPVM_API_OBJECT* object))SPVM_RUNTIME_API_dec_ref_count;
+  api->inc_ref_count = (void (*)(SPVM_API* api, SPVM_API_OBJECT* object))SPVM_RUNTIME_API_inc_ref_count;
+  api->inc_dec_ref_count = (void (*)(SPVM_API* api, SPVM_API_OBJECT* object))SPVM_RUNTIME_API_inc_dec_ref_count;
 
   return api;
 }
@@ -1381,19 +1381,19 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        SPVM_OBJECT** base_object_address = (SPVM_OBJECT**)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(void*) * index);
+        SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(void*) * index);
         
         // Decrement old object reference count
-        if (*base_object_address != NULL) {
-          SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
+        if (*object_address != NULL) {
+          SPVM_RUNTIME_API_dec_ref_count(api, *object_address);
         }
         
         // Store address
-        *base_object_address = call_stack[operand_stack_top].object_value;
+        *object_address = call_stack[operand_stack_top].object_value;
 
         // Increment new object reference count
-        if (*base_object_address != NULL) {
-          (*base_object_address)->ref_count++;
+        if (*object_address != NULL) {
+          (*object_address)->ref_count++;
         }
         
         operand_stack_top -= 3;
@@ -2415,11 +2415,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     else {
       index = (*(pc + 1) << 8) + *(pc + 2);
-      SPVM_OBJECT** base_object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+      SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       
       // Weaken object field
-      if (*base_object_address != NULL) {
-        SPVM_RUNTIME_API_weaken(api, base_object_address);
+      if (*object_address != NULL) {
+        SPVM_RUNTIME_API_weaken(api, object_address);
       }
       
       pc += 3;
@@ -2525,24 +2525,24 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     else {
       index = (*(pc + 1) << 8) + *(pc + 2);
-      SPVM_OBJECT** base_object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+      SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       
-      if (*base_object_address != NULL) {
+      if (*object_address != NULL) {
         // If object is weak, unweaken
-        if (SPVM_RUNTIME_API_isweak(api, *base_object_address)) {
-          SPVM_RUNTIME_API_unweaken(api, base_object_address);
+        if (SPVM_RUNTIME_API_isweak(api, *object_address)) {
+          SPVM_RUNTIME_API_unweaken(api, object_address);
         }
         
         // Decrement old ojbect reference count
-        SPVM_RUNTIME_API_dec_ref_count(api, *base_object_address);
+        SPVM_RUNTIME_API_dec_ref_count(api, *object_address);
       }
       
       // Store object
-      *base_object_address = call_stack[operand_stack_top].object_value;
+      *object_address = call_stack[operand_stack_top].object_value;
       
       // Increment new object reference count
-      if (*base_object_address != NULL) {
-        (*base_object_address)->ref_count++;
+      if (*object_address != NULL) {
+        (*object_address)->ref_count++;
       }
       
       operand_stack_top -= 2;
