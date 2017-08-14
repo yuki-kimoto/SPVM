@@ -585,7 +585,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
         int32_t i;
         for (i = 0; i < object_fields_length; i++) {
           SPVM_OBJECT** base_object_field_address
-            = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_OBJECT*) * i);
+            = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
           if (*base_object_field_address != NULL) {
             // If object is weak, unweaken
             if (SPVM_RUNTIME_API_isweak(api, *base_object_field_address)) {
