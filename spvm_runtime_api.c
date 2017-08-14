@@ -87,10 +87,10 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   object->weaken_back_refs_length++;
 }
 
-_Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_OBJECT* base_object) {
+_Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
-  _Bool isweak = (intptr_t)base_object & 1;
+  _Bool isweak = (intptr_t)object & 1;
   
   return isweak;
 }
@@ -503,30 +503,29 @@ void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_OBJECT* objec
   }
 }
 
-void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
-  SPVM_RUNTIME_API_inc_ref_count(api, base_object);
-  SPVM_RUNTIME_API_dec_ref_count(api, base_object);
+void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
+  SPVM_RUNTIME_API_inc_ref_count(api, object);
+  SPVM_RUNTIME_API_dec_ref_count(api, object);
 }
 
-void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
+void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
-  assert(base_object != NULL);
-  assert(base_object->ref_count > 0);
+  assert(object != NULL);
+  assert(object->ref_count > 0);
   
-  if (base_object->ref_count < 1) {
+  if (object->ref_count < 1) {
     fprintf(stderr, "Found invalid reference count object(SPVM_RUNTIME_API_dec_ref_count)");
     abort();
   }
   
   // Decrement reference count
-  base_object->ref_count--;
+  object->ref_count--;
   
   // If reference count is zero, free address.
-  if (base_object->ref_count == 0) {
+  if (object->ref_count == 0) {
     
-    if (base_object->type == SPVM_OBJECT_C_TYPE_ARRAY) {
-      SPVM_OBJECT* object = (SPVM_OBJECT*)base_object;
+    if (object->type == SPVM_OBJECT_C_TYPE_ARRAY) {
       if (object->value_type == SPVM_OBJECT_C_VALUE_TYPE_OBJECT) {
         
         // Array length
@@ -535,21 +534,18 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
         {
           int32_t i;
           for (i = 0; i < length; i++) {
-            SPVM_OBJECT* base_object_element = *(SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(void*) * i);
-            if (base_object_element != NULL) {
-              SPVM_RUNTIME_API_dec_ref_count(api, base_object_element);
+            SPVM_OBJECT* object_element = *(SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(void*) * i);
+            if (object_element != NULL) {
+              SPVM_RUNTIME_API_dec_ref_count(api, object_element);
             }
           }
         }
       }
-      SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, base_object);
+      SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, object);
     }
     // Reference is object
-    else if (base_object->type == SPVM_OBJECT_C_TYPE_OBJECT) {
+    else if (object->type == SPVM_OBJECT_C_TYPE_OBJECT) {
       int32_t* constant_pool = runtime->constant_pool;
-      
-      SPVM_OBJECT* object = (SPVM_OBJECT*)base_object;
-      
       int32_t package_constant_pool_index = object->package_constant_pool_index;
       SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
       
@@ -560,16 +556,16 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* base_object) {
       {
         int32_t i;
         for (i = 0; i < object_fields_length; i++) {
-          SPVM_OBJECT** base_object_field_address
+          SPVM_OBJECT** object_field_address
             = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
-          if (*base_object_field_address != NULL) {
+          if (*object_field_address != NULL) {
             // If object is weak, unweaken
-            if (SPVM_RUNTIME_API_isweak(api, *base_object_field_address)) {
-              SPVM_RUNTIME_API_unweaken(api, base_object_field_address);
-              (*base_object_field_address)->ref_count--;
+            if (SPVM_RUNTIME_API_isweak(api, *object_field_address)) {
+              SPVM_RUNTIME_API_unweaken(api, object_field_address);
+              (*object_field_address)->ref_count--;
             }
             else {
-              SPVM_RUNTIME_API_dec_ref_count(api, *base_object_field_address);
+              SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);
             }
           }
         }
