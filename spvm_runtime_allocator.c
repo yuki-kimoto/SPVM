@@ -112,7 +112,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
   return block;
 }
 
-void SPVM_RUNTIME_ALLOCATOR_free_base_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_BASE_OBJECT* base_object) {
+void SPVM_RUNTIME_ALLOCATOR_free_base_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* base_object) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->runtime;
   
   if (base_object == NULL) {

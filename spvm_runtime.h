@@ -16,7 +16,7 @@ struct SPVM_runtime {
   SPVM_API* api;
   
   // Exception
-  SPVM_ARRAY* exception;
+  SPVM_OBJECT* exception;
   
   // Bytecodes
   uint8_t* bytecodes;

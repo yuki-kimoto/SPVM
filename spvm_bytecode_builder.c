@@ -29,7 +29,7 @@
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
-#include "spvm_array.h"
+#include "spvm_object.h"
 
 
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
@@ -1103,25 +1103,25 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         
                         switch (type->id) {
                           case SPVM_TYPE_C_ID_BYTE_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_BYTE);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_BYTE);
                             break;
                           case SPVM_TYPE_C_ID_SHORT_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_SHORT);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_SHORT);
                             break;
                           case SPVM_TYPE_C_ID_INT_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_INT);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_INT);
                             break;
                           case SPVM_TYPE_C_ID_LONG_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_LONG);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_LONG);
                             break;
                           case SPVM_TYPE_C_ID_FLOAT_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_FLOAT);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_FLOAT);
                             break;
                           case SPVM_TYPE_C_ID_DOUBLE_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_DOUBLE);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_DOUBLE);
                             break;
                           default:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_ARRAY_C_VALUE_TYPE_OBJECT);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_OBJECT);
                         }
                       }
                       else {

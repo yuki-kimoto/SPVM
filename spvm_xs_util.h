@@ -128,7 +128,7 @@ int32_t SPVM_XS_UTIL_get_field_id(const char* package_name, const char* field_na
   }
 }
 
-SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_ARRAY* array) {
+SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -151,7 +151,7 @@ SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_ARRAY* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_string(SPVM_API_ARRAY* array) {
+SV* SPVM_XS_UTIL_new_sv_string(SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -174,7 +174,7 @@ SV* SPVM_XS_UTIL_new_sv_string(SPVM_API_ARRAY* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_API_ARRAY* array) {
+SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -197,7 +197,7 @@ SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_API_ARRAY* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_API_ARRAY* array) {
+SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -220,7 +220,7 @@ SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_API_ARRAY* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_API_ARRAY* array) {
+SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -243,7 +243,7 @@ SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_API_ARRAY* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_API_ARRAY* array) {
+SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -266,7 +266,7 @@ SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_API_ARRAY* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_ARRAY* array) {
+SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -289,7 +289,7 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_ARRAY* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_id, SPVM_API_ARRAY* array) {
+SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_id, SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -335,7 +335,7 @@ SV* SPVM_XS_UTIL_new_sv_object(int32_t type_id, SPVM_API_OBJECT* object) {
   return sv_object;
 }
 
-SPVM_API_ARRAY* SPVM_XS_UTIL_get_array(SV* sv_array) {
+SPVM_API_OBJECT* SPVM_XS_UTIL_get_array(SV* sv_array) {
   
   HV* hv_array = (HV*)SvRV(sv_array);
   SV** sv_content_ptr = hv_fetch(hv_array, "content", strlen("content"), 0);
@@ -343,7 +343,7 @@ SPVM_API_ARRAY* SPVM_XS_UTIL_get_array(SV* sv_array) {
     SV* sv_content = *sv_content_ptr;
     SV* sviv_content = SvRV(sv_content);
     size_t iv_content = SvIV(sviv_content);
-    SPVM_API_ARRAY* array = INT2PTR(SPVM_API_ARRAY*, iv_content);
+    SPVM_API_OBJECT* array = INT2PTR(SPVM_API_OBJECT*, iv_content);
     
     return array;
   }

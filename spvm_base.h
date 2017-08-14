@@ -24,14 +24,6 @@ typedef struct SPVM_object SPVM_OBJECT;
 struct SPVM_use;
 typedef struct SPVM_use SPVM_USE;
 
-// spvm_array.h
-struct SPVM_array;
-typedef struct SPVM_array SPVM_ARRAY;
-
-// spvm_base_object.h
-struct SPVM_base_object;
-typedef struct SPVM_base_object SPVM_BASE_OBJECT;
-
 // spvm_value.h
 union SPVM_value;
 typedef union SPVM_value SPVM_VALUE;
