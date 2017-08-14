@@ -10,7 +10,6 @@ struct SPVM_object {
   int32_t weaken_back_refs_length;
   int32_t package_constant_pool_index;
   int32_t length;
-  int32_t object_length;
   int8_t type;
   int8_t value_type;
 };
