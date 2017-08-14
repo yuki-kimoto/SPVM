@@ -70,7 +70,6 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_BASE_OBJECT** base_object_addre
     int32_t new_capacity = capacity * 2;
     SPVM_ARRAY* new_weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, new_capacity);
     new_weaken_back_refs->ref_count++;
-    warn("BBBBBBBB %d", new_weaken_back_refs->ref_count);
     
     SPVM_BASE_OBJECT*** weaken_back_refs_elements = (SPVM_BASE_OBJECT***)((intptr_t)base_object->weaken_back_refs + sizeof(SPVM_ARRAY));
     SPVM_BASE_OBJECT*** new_weaken_back_refs_elements = (SPVM_BASE_OBJECT***)((intptr_t)new_weaken_back_refs + sizeof(SPVM_ARRAY));

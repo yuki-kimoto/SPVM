@@ -418,7 +418,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       int32_t length = op_cases->length;
                       
                       // Check case type
-                      _Bool has_syntax_error = 0;
                       {
                         int32_t i;
                         for (i = 0; i < length; i++) {

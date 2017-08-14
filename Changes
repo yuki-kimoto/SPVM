@@ -1,3 +1,7 @@
+0.0244 2017-08-13
+  - implement weak reference to resolve recursive reference
+    weaken $obj->{foo};
+  - Field become have any object
 0.0243 2017-08-12
   - add SPVM::new_object_array_len function
   - add SPVM::Array::Object::set function
