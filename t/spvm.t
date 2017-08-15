@@ -42,6 +42,14 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
+      ok(SPVM::TestCase::weaken_target_object_undef());
+    }
+    my $end_objects_count = SPVM::get_objects_count();
+    is($end_objects_count, $start_objects_count);
+  }
+  {
+    my $start_objects_count = SPVM::get_objects_count();
+    {
       SPVM::TestCase::weaken_recursive3();
     }
     my $end_objects_count = SPVM::get_objects_count();
