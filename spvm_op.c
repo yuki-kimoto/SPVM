@@ -125,6 +125,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "STRING",
   "WEAKEN",
   "WEAKEN_FIELD",
+  "WEAKEN_ARRAY_ELEM",
 };
 
 // Return cloned op and target op become stab
@@ -637,6 +638,16 @@ SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken,
   op_call_field->flag |= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN;
   
   return op_weaken_field;
+}
+
+SPVM_OP* SPVM_OP_build_weaken_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_array_elem) {
+  
+  SPVM_OP* op_weaken_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_WEAKEN_ARRAY_ELEM, op_weaken->file, op_weaken->line);
+  SPVM_OP_insert_child(compiler, op_weaken_array_elem, op_weaken_array_elem->last, op_array_elem);
+  
+  op_array_elem->flag |= SPVM_OP_C_FLAG_ARRAY_ELEM_WEAKEN;
+  
+  return op_weaken_array_elem;
 }
 
 SPVM_OP* SPVM_OP_build_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term) {
