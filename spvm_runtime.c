@@ -18,6 +18,7 @@
 #include "spvm_value.h"
 #include "spvm_api.h"
 #include "spvm_type.h"
+#include "spvm_global.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
@@ -35,7 +36,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   SPVM_API* api = SPVM_RUNTIME_new_api(runtime);
   
-  api->runtime = runtime;
   runtime->api = api;
   
   runtime->call_stack_base = -1;
@@ -354,11 +354,10 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT,
   };
   
+  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  
   // Program counter
   register uint8_t* pc = NULL;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = api->runtime;
   
   // Constant pool
   int32_t* constant_pool = runtime->constant_pool;

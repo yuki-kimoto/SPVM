@@ -10,7 +10,6 @@ enum {
 struct SPVM_api;
 typedef struct SPVM_api SPVM_API;
 typedef void SPVM_API_OBJECT;
-typedef void SPVM_API_RUNTIME;
 
 union SPVM_API_value {
   int8_t byte_value;
@@ -26,9 +25,6 @@ union SPVM_API_value {
 typedef union SPVM_API_value SPVM_API_VALUE;
 
 struct SPVM_api {
-  // Runtime
-  SPVM_API_RUNTIME* runtime;
-  
   // Array functions
   int32_t (*get_array_length)(SPVM_API*, SPVM_API_OBJECT*);
   int32_t (*get_array_value_size)(SPVM_API*, int32_t);
