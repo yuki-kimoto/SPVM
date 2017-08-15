@@ -1601,6 +1601,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
+                    case SPVM_OP_C_CODE_WEAKEN_ARRAY_ELEM: {
+                      SPVM_OP* op_array_elem = op_cur->first;
+                      
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_array_elem);
+                      
+                      if (type->id <= SPVM_TYPE_C_ID_DOUBLE) {
+                        SPVM_yyerror_format(compiler, "weaken is only used for object element at %s line %d\n",
+                          op_cur->file, op_cur->line);
+                        compiler->fatal_error = 1;
+                        break;
+                      }
+                      
+                      break;
+                    }
                     case SPVM_OP_C_CODE_CONVERT: {
                       
                       SPVM_OP* op_term = op_cur->first;
