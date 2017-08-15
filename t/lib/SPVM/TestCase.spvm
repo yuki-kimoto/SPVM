@@ -9,6 +9,19 @@ package TestCase {
   has x_string : string;
   has x_test_case : TestCase;
   has x_weaken : TestCase::Weaken;
+
+  sub weaken_recursive3() : int {
+    my $weaken = new TestCase::Weaken;
+    my $weaken2 = new TestCase::Weaken2;
+    my $test_case = new TestCase;
+    $test_case->{x_weaken} = $weaken;
+    $weaken->{weaken2} = $weaken2;
+    $weaken2->{test_case} = $test_case;
+    
+    weaken $test_case->{x_weaken};
+    
+    return 1;
+  }
   
   sub weaken_reference_count1_object() : int {
     my $weaken = new TestCase::Weaken;
