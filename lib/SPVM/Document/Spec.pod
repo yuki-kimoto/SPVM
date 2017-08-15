@@ -315,8 +315,16 @@ Absolute name is combination of package name and subroutine name, or package nam
   PackageName1::foo
   PackageName1::PackageName2::foo_bar
 
-=head2 Limitation
+=head2 Weak reference
 
-Object can't have object and array of object.
+Using weak reference, recursive reference is resolved.
 
-If I have idea to implement weaken reference and implement weaken reference, this limitation is removed.
+  my $foo = new Foo;
+  my $bar = new Bar;
+  
+  # Recursive reference
+  $foo->{bar} = $foo;
+  $bar->{foo} = $foo;
+  
+  # Weak reference
+  weaken $foo->{bar};
