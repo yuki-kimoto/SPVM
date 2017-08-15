@@ -10,6 +10,25 @@ package TestCase {
   has x_test_case : TestCase;
   has x_weaken : TestCase::Weaken;
 
+  sub weaken_weaken_object_undef() : int {
+    my $weaken = new TestCase::Weaken;
+    my $test_case = new TestCase;
+    $test_case->{x_int} = 2;
+    
+    $test_case->{x_weaken} = $weaken;
+    $weaken->{test_case} = $test_case;
+    
+    weaken $test_case->{x_weaken};
+    $test_case->{x_weaken} = undef;
+    
+    if ($test_case->{x_weaken} == undef) {
+      if ($test_case->{x_int} == 2) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+  
   sub weaken_target_object_undef() : int {
     my $weaken = new TestCase::Weaken;
     my $test_case = new TestCase;
