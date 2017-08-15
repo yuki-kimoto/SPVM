@@ -56,7 +56,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   // Exception
   runtime->exception = NULL;
 
-  runtime->object_count = 0;
+  runtime->objects_count = 0;
   
   runtime->debug = 0;
   
@@ -130,7 +130,9 @@ SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime) {
   api->dec_ref_count = (void (*)(SPVM_API* api, SPVM_API_OBJECT* object))SPVM_RUNTIME_API_dec_ref_count;
   api->inc_ref_count = (void (*)(SPVM_API* api, SPVM_API_OBJECT* object))SPVM_RUNTIME_API_inc_ref_count;
   api->inc_dec_ref_count = (void (*)(SPVM_API* api, SPVM_API_OBJECT* object))SPVM_RUNTIME_API_inc_dec_ref_count;
-
+  
+  api->get_objects_count = (int32_t (*)(SPVM_API* api))SPVM_RUNTIME_API_get_objects_count;
+  
   return api;
 }
 

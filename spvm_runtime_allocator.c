@@ -100,11 +100,11 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
   }
   
   if (block != NULL) {
-    runtime->object_count++;
+    runtime->objects_count++;
   }
 
 #ifdef DEBUG
-  fprintf(stderr, "MALLOC OBJECT COUNT %d\n", runtime->object_count);
+  fprintf(stderr, "MALLOC OBJECT COUNT %d\n", runtime->objects_count);
 #endif
   
   // Address first bit must be 0 for weaken reference
@@ -125,11 +125,11 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
     
     assert(byte_size > 0);
     
-    runtime->object_count--;
-    assert(runtime->object_count >= 0);
+    runtime->objects_count--;
+    assert(runtime->objects_count >= 0);
 
 #ifdef DEBUG
-    fprintf(stderr, "FREE OBJECT COUNT %d\n", runtime->object_count);
+    fprintf(stderr, "FREE OBJECT COUNT %d\n", runtime->objects_count);
 #endif
     
     if (byte_size > allocator->object_max_byte_size_use_memory_pool) {

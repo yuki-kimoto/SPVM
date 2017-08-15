@@ -87,5 +87,7 @@ struct SPVM_api {
   void (*inc_ref_count)(SPVM_API* api, SPVM_API_OBJECT* base_object);
   void (*dec_ref_count)(SPVM_API* api, SPVM_API_OBJECT* base_object);
   void (*inc_dec_ref_count)(SPVM_API* api, SPVM_API_OBJECT* base_object);
+  
+  int32_t (*get_objects_count)(SPVM_API* api);
 };
 #endif

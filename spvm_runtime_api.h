@@ -75,4 +75,8 @@ void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object);
 _Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_OBJECT* object);
 void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address);
 void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address);
+
+// Global information
+int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_API* api);
+
 #endif

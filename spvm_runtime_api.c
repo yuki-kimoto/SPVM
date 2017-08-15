@@ -17,6 +17,10 @@
 #include "spvm_api.h"
 #include "spvm_global.h"
 
+int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_API* api) {
+  return SPVM_GLOBAL_RUNTIME->objects_count;
+}
+
 void SPVM_RUNTIME_API_free_weaken_back_refs(SPVM_API* api, SPVM_OBJECT* weaken_back_refs, int32_t weaken_back_refs_length) {
   
   SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)weaken_back_refs + sizeof(SPVM_OBJECT));
