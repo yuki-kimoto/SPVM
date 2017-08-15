@@ -123,7 +123,6 @@ enum {
   SPVM_OP_C_CODE_STRING,
   SPVM_OP_C_CODE_WEAKEN,
   SPVM_OP_C_CODE_WEAKEN_FIELD,
-  SPVM_OP_C_CODE_WEAKEN_ARRAY_ELEM,
 };
 
 extern const char* const SPVM_OP_C_CODE_NAMES[];
@@ -157,11 +156,6 @@ enum {
 enum {
   // CALL_FIELD flag
   SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN = 1
-};
-
-enum {
-  // CALL_FIELD flag
-  SPVM_OP_C_FLAG_ARRAY_ELEM_WEAKEN = 1
 };
 
 /* Binary operation */
@@ -258,7 +252,6 @@ SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last);
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant);
 SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_call_field);
-SPVM_OP* SPVM_OP_build_weaken_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_array_elem);
 
 void SPVM_OP_resolve_op_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_convert_type);
 
