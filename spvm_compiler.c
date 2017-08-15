@@ -17,10 +17,14 @@
 #include "spvm_sub.h"
 #include "spvm_constant_pool.h"
 #include "spvm_runtime.h"
+#include "spvm_global.h"
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  
+  // Set global runtime
+  SPVM_GLOBAL_RUNTIME = runtime;
   
   // Copy constant pool to runtime
   int64_t runtime_constant_pool_byte_size = (int64_t)compiler->constant_pool->length * (int64_t)sizeof(int32_t);
