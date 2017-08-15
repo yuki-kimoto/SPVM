@@ -18,6 +18,7 @@
 #include "spvm_global.h"
 
 int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_API* api) {
+  (void)api;
   return SPVM_GLOBAL_RUNTIME->objects_count;
 }
 
@@ -155,6 +156,8 @@ void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_OBJECT* exception) {
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_API* api) {
+  (void)api;
+  
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   return runtime->exception;
@@ -816,6 +819,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_API* api, int32_t sub_constan
 }
 
 int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const char* name) {
+  (void)api;
+  
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   int32_t* constant_pool = runtime->constant_pool;
@@ -853,6 +858,8 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
 }
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
+  (void)api;
+  
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   int32_t* constant_pool = runtime->constant_pool;
@@ -888,6 +895,8 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
 }
 
 int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
+  (void)api;
+  
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   int32_t* constant_pool = runtime->constant_pool;
@@ -1074,6 +1083,8 @@ SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_OBJECT* object) {
 }
 
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
+  (void)api;
+  
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   int32_t* constant_pool = runtime->constant_pool;
@@ -1086,6 +1097,8 @@ int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
 
 
 int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object) {
+  (void)api;
+  
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   int32_t* constant_pool = runtime->constant_pool;
