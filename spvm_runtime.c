@@ -339,6 +339,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
     &&case_SPVM_BYTECODE_C_CODE_CURRENT_LINE,
     &&case_SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT,
+    &&case_SPVM_BYTECODE_C_CODE_WEAKEN_ARRAY_ELEM,
   };
   
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
@@ -1216,8 +1217,35 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        call_stack[operand_stack_top - 1].object_value = *(void**)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(void*) * index);
+        call_stack[operand_stack_top - 1].object_value = *(SPVM_OBJECT**)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(SPVM_OBJECT*) * index);
         operand_stack_top--;
+        pc++;
+        goto *jump[*pc];
+      }
+    }
+  case_SPVM_BYTECODE_C_CODE_WEAKEN_ARRAY_ELEM:
+    array = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+    index = call_stack[operand_stack_top].int_value;
+    if (__builtin_expect(!array, 0)) {
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "OBJECT_ARRAY must not be undef(weaken OBJECT_ARRAY->[INDEX])");
+      SPVM_RUNTIME_API_set_exception(api, array_exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      if (__builtin_expect(index < 0 || index >= array->length, 0)) {
+        array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "INDEX is out of range(weaken OBJECT_ARRAY->[INDEX])");
+        SPVM_RUNTIME_API_set_exception(api, array_exception);
+        goto case_SPVM_BYTECODE_C_CODE_DIE;
+      }
+      else {
+        SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(SPVM_OBJECT*) * index);
+        
+        // Weaken object field
+        if (*object_address != NULL) {
+          SPVM_RUNTIME_API_weaken(api, object_address);
+        }
+        
+        operand_stack_top -= 2;
         pc++;
         goto *jump[*pc];
       }
