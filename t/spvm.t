@@ -37,6 +37,11 @@ use SPVM::stdout;
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
+# Weaken
+{
+  SPVM::TestCase::weaken_self_recuresive();
+}
+
 # Call void subroutine
 {
   ok(SPVM::TestCase::call_void());
@@ -871,5 +876,5 @@ is_deeply(
 
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
-is($start_objects_count, $end_objects_count);
+is($end_objects_count, $start_objects_count);
 

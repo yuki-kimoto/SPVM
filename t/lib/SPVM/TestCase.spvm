@@ -5,6 +5,16 @@ package TestCase {
   has x_long : long;
   has x_int_array : int[];
   has x_string : string;
+  has x_test_case : TestCase;
+  
+  sub weaken_self_recuresive() : void {
+    my $test_case = new TestCase;
+    
+    # Recuresive reference
+    $test_case->{x_test_case} = $test_case;
+    
+    weaken $test_case->{x_test_case};
+  }
 
   sub spvm_new_object_array_len_element_byte_array($nums : byte[][]) : int {
     if ($nums->[0][0] == (byte)1) {
