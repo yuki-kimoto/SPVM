@@ -14,7 +14,7 @@
 #include "../spvm_op.h"
 #include "../spvm_sub.h"
 #include "../spvm_dumper.h"
-#include "../spvm_nai.h"
+#include "../spvm_api.h"
 
 int main(int argc, char *argv[])
 {
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
-  SPVM_NAI* nai = runtime->nai;
+  SPVM_API* api = runtime->api;
 
   // Entry point subroutine address
   const char* entry_point_sub_name = compiler->entry_point_sub_name;
@@ -75,16 +75,16 @@ int main(int argc, char *argv[])
   // Free compiler
   SPVM_COMPILER_free(compiler);
   
-  SPVM_NAI_VALUE args[1];
+  SPVM_API_VALUE args[1];
   args[0].int_value = 2;
   
   // Run
-  int32_t return_value = nai->call_int_sub(nai, sub_constant_pool_index, args);
+  int32_t return_value = api->call_int_sub(api, sub_constant_pool_index, args);
   
 #ifdef DEBUG
   if (runtime->exception) {
     void* message_object = runtime->exception;
-    int8_t* message = nai->get_byte_array_elements(nai, message_object);
+    int8_t* message = api->get_byte_array_elements(api, message_object);
     
     printf("%s", (char*)message);
     printf("\n");
