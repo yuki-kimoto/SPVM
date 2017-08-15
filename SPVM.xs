@@ -957,7 +957,7 @@ get(...)
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   
-  // Set API
+  // Get API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get array
@@ -1027,6 +1027,18 @@ MODULE = SPVM::Array		PACKAGE = SPVM::Array
 
 
 MODULE = SPVM		PACKAGE = SPVM
+
+SV*
+get_objects_count(...)
+  PPCODE:
+{
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  int32_t objects_count = api->get_objects_count(api);
+  SV* sv_objects_count = sv_2mortal(newSViv(objects_count));
+  
+  XPUSHs(sv_objects_count);
+  XSRETURN(1);
+}
 
 SV*
 compile(...)
