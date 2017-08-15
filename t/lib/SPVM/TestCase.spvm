@@ -9,7 +9,72 @@ package TestCase {
   has x_string : string;
   has x_test_case : TestCase;
   has x_weaken : TestCase::Weaken;
+  has weaken1 : TestCase::Weaken;
+  has weaken2 : TestCase::Weaken;
+  has weaken3 : TestCase::Weaken;
+  has weaken4 : TestCase::Weaken;
+  
+  sub weaken_target4() : int {
+    my $test_case = new TestCase;
+    $test_case->{x_int} = 2;
+    my $weaken1 = new TestCase::Weaken;
+    my $weaken2 = new TestCase::Weaken;
+    my $weaken3 = new TestCase::Weaken;
+    my $weaken4 = new TestCase::Weaken;
+    
+    $test_case->{weaken1} = $weaken1;
+    $test_case->{weaken2} = $weaken2;
+    $test_case->{weaken3} = $weaken3;
+    $test_case->{weaken4} = $weaken4;
+    
+    $weaken1->{test_case} = $test_case;
+    $weaken2->{test_case} = $test_case;
+    $weaken3->{test_case} = $test_case;
+    $weaken4->{test_case} = $test_case;
+    
+    weaken $weaken1->{test_case};
+    weaken $weaken2->{test_case};
+    weaken $weaken3->{test_case};
+    weaken $weaken4->{test_case};
 
+    if ($test_case->{x_int} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+
+=pod
+  sub weaken_target4() : int {
+    my $test_case1 = new TestCase;
+    my $test_case2 = new TestCase;
+    my $test_case3 = new TestCase;
+    my $test_case4 = new TestCase;
+    
+    my $weaken = new TestCase::Weaken;
+    $weaken->{x1} = 2;
+    $test_case1->{x_weaken} = $weaken;
+    $test_case2->{x_weaken} = $weaken;
+    $test_case3->{x_weaken} = $weaken;
+    $test_case4->{x_weaken} = $weaken;
+    
+    $weaken->{test_cases} = new TestCase[4];
+    $weaken->{test_cases}[0] = $test_case1;
+    $weaken->{test_cases}[1] = $test_case2;
+    $weaken->{test_cases}[2] = $test_case3;
+    $weaken->{test_cases}[3] = $test_case4;
+
+    weaken $test_case1->{x_weaken};
+    weaken $test_case2->{x_weaken};
+    weaken $test_case3->{x_weaken};
+    weaken $test_case4->{x_weaken};
+
+    if ($weaken->{x1} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+=cut
+  
   sub weaken_weaken_object_undef() : int {
     my $weaken = new TestCase::Weaken;
     my $test_case = new TestCase;

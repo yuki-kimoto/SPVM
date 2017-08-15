@@ -66,7 +66,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   
   // Create array of weaken_back_refs if need
   if (object->weaken_back_refs == NULL) {
-    object->weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, 32);
+    object->weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, 1);
     object->weaken_back_refs->ref_count++;
   }
   
@@ -76,6 +76,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   // Extend capacity
   assert(capacity >= length);
   if (length == capacity) {
+    
     int32_t new_capacity = capacity * 2;
     SPVM_OBJECT* new_weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, new_capacity);
     new_weaken_back_refs->ref_count++;
@@ -88,7 +89,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
     memset(weaken_back_refs_elements, 0, length * sizeof(SPVM_OBJECT**));
     
     // Free old weaken back references
-    SPVM_RUNTIME_API_dec_ref_count(api, (SPVM_OBJECT*)object->weaken_back_refs);
+    SPVM_RUNTIME_API_dec_ref_count(api, object->weaken_back_refs);
     
     object->weaken_back_refs = new_weaken_back_refs;
   }
@@ -126,6 +127,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   object->ref_count++;
 
   int32_t length = object->weaken_back_refs_length;
+  // warn("FFFFFFFFFFFF %d", length);
   
   SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->weaken_back_refs + sizeof(SPVM_OBJECT));
   
@@ -133,11 +135,15 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
     int32_t i;
     int32_t found_index = -1;
     for (i = 0; i < length; i++) {
+      //warn("CCCCCCCCCC %d", i);
+      //  warn("DDDDDDDDD %p %p", weaken_back_refs_elements[i], object_address);
       if (weaken_back_refs_elements[i] == object_address) {
         found_index = i;
         break;
       }
     }
+    //warn("EEEEEEEEE %d", found_index);
+    
     if (found_index == -1) {
       fprintf(stderr, "Not weakened address is specified(SPVM_RUNTIME_API_unweaken())");
       abort();
@@ -579,7 +585,6 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
             // If object is weak, unweaken
             if (SPVM_RUNTIME_API_isweak(api, *object_field_address)) {
               SPVM_RUNTIME_API_unweaken(api, object_field_address);
-              (*object_field_address)->ref_count--;
             }
             else {
               SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);

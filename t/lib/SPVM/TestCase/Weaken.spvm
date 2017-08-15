@@ -4,4 +4,5 @@ package TestCase::Weaken {
   has x1 : int;
   has test_case : TestCase;
   has weaken2 : TestCase::Weaken2;
+  has test_cases : TestCase[];
 }

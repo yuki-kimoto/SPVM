@@ -1,6 +1,7 @@
 package Test::Minimal {
   has x : int;
   has y : int;
+  has tests : Test[];
   
   sub new() : Test::Minimal {
     
