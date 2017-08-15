@@ -1,3 +1,6 @@
+use TestCase::Weaken2;
+
 package TestCase::Weaken {
   has test_case : TestCase;
+  has weaken2 : TestCase::Weaken2;
 }
