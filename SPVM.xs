@@ -22,10 +22,10 @@
 #include "spvm_type.h"
 #include "spvm_field.h"
 
-#include "spvm_sni.h"
+#include "spvm_api.h"
 #include "spvm_xs_util.h"
 
-static SPVM_SNI_VALUE call_sub_args[255];
+static SPVM_API_VALUE call_sub_args[255];
 
 SPVM_COMPILER* SPVM_XS_INTERNAL_UTIL_get_compiler() {
 
@@ -51,15 +51,15 @@ DESTROY(...)
   // warn("DESTROY");
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
-  assert(sni->get_ref_count(sni, object));
+  assert(api->get_ref_count(api, object));
   
   // Decrement reference count
-  sni->dec_ref_count(sni, object);
+  api->dec_ref_count(api, object);
   
   XSRETURN(0);
 }
@@ -82,18 +82,18 @@ new_object(...)
   int32_t package_id = SPVM_XS_UTIL_get_package_id(package_name);
   int32_t type_id = SPVM_XS_UTIL_get_type_id_from_package_name(package_name);
   
-  if (package_id == SPVM_SNI_ERROR_NO_ID) {
+  if (package_id == SPVM_API_ERROR_NO_ID) {
     croak("Unkown package \"%s\"(SPVM::Object::new_object", package_name);
   }
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_SNI_OBJECT* object =  sni->new_object(sni, package_id);
+  SPVM_API_OBJECT* object =  api->new_object(api, package_id);
   
   // Increment
-  sni->inc_ref_count(sni, object);
+  api->inc_ref_count(api, object);
 
   // New sv object
   SV* sv_object = SPVM_XS_UTIL_new_sv_object(type_id, object);
@@ -111,10 +111,10 @@ set(...)
   SV* sv_value = ST(2);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
 
   // Package type id
   int32_t package_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_object);
@@ -127,40 +127,40 @@ set(...)
   int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
 
   // Field id
-  int32_t field_id = sni->get_field_id(sni, object, field_name);
-  if (field_id == SPVM_SNI_ERROR_NO_ID) {
+  int32_t field_id = api->get_field_id(api, object, field_name);
+  if (field_id == SPVM_API_ERROR_NO_ID) {
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   
   switch (field_type_id) {
     case SPVM_TYPE_C_ID_BYTE : {
       int8_t value = (int8_t)SvIV(sv_value);
-      sni->set_byte_field(sni, object, field_id, value);
+      api->set_byte_field(api, object, field_id, value);
       break;
     }
     case  SPVM_TYPE_C_ID_SHORT : {
       int16_t value = (int16_t)SvIV(sv_value);
-      sni->set_short_field(sni, object, field_id, value);
+      api->set_short_field(api, object, field_id, value);
       break;
     }
     case SPVM_TYPE_C_ID_INT : {
       int32_t value = (int32_t)SvIV(sv_value);
-      sni->set_int_field(sni, object, field_id, value);
+      api->set_int_field(api, object, field_id, value);
       break;
     }
     case SPVM_TYPE_C_ID_LONG : {
       int64_t value = (int64_t)SvIV(sv_value);
-      sni->set_long_field(sni, object, field_id, value);
+      api->set_long_field(api, object, field_id, value);
       break;
     }
     case SPVM_TYPE_C_ID_FLOAT : {
       float value = (float)SvNV(sv_value);
-      sni->set_float_field(sni, object, field_id, value);
+      api->set_float_field(api, object, field_id, value);
       break;
     }
     case SPVM_TYPE_C_ID_DOUBLE : {
       double value = (double)SvNV(sv_value);
-      sni->set_double_field(sni, object, field_id, value);
+      api->set_double_field(api, object, field_id, value);
       break;
     }
     default : {
@@ -175,9 +175,9 @@ set(...)
         croak("Can't set \"%s\" value to \"%s\" field", value_type_name, field_type_name);
       }
       
-      SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_value);
+      SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_value);
       
-      sni->set_object_field(sni, object, field_id, array);
+      api->set_object_field(api, object, field_id, array);
     }
   }
   
@@ -192,10 +192,10 @@ get(...)
   SV* sv_field_name = ST(1);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   // Package type id
   int32_t package_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_object);
@@ -208,89 +208,89 @@ get(...)
   int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
   
   // Field id
-  int32_t field_id = sni->get_field_id(sni, object, field_name);
+  int32_t field_id = api->get_field_id(api, object, field_name);
   
-  if (field_id == SPVM_SNI_ERROR_NO_ID) {
+  if (field_id == SPVM_API_ERROR_NO_ID) {
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   
   switch (field_type_id) {
     case SPVM_TYPE_C_ID_BYTE : {
-      int8_t value = sni->get_byte_field(sni, object, field_id);
+      int8_t value = api->get_byte_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSViv(value));
       XPUSHs(sv_value);
       break;
     }
     case SPVM_TYPE_C_ID_SHORT : {
-      int16_t value = sni->get_short_field(sni, object, field_id);
+      int16_t value = api->get_short_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSViv(value));
       XPUSHs(sv_value);
       break;
     }
     case SPVM_TYPE_C_ID_INT : {
-      int32_t value = sni->get_int_field(sni, object, field_id);
+      int32_t value = api->get_int_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSViv(value));
       XPUSHs(sv_value);
       break;
     }
     case SPVM_TYPE_C_ID_LONG : {
-      int64_t value = sni->get_long_field(sni, object, field_id);
+      int64_t value = api->get_long_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSViv(value));
       XPUSHs(sv_value);
       break;
     }
     case SPVM_TYPE_C_ID_FLOAT : {
-      float value = sni->get_float_field(sni, object, field_id);
+      float value = api->get_float_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSVnv(value));
       XPUSHs(sv_value);
       break;
     }
     case SPVM_TYPE_C_ID_DOUBLE : {
-      double value = sni->get_double_field(sni, object, field_id);
+      double value = api->get_double_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSVnv(value));
       XPUSHs(sv_value);
       break;
     }
     default : {
-      SPVM_SNI_OBJECT* value = sni->get_object_field(sni, object, field_id);
+      SPVM_API_OBJECT* value = api->get_object_field(api, object, field_id);
       
       if (value != NULL) {
-        sni->inc_ref_count(sni, value);
+        api->inc_ref_count(api, value);
       }
       
       switch (field_type_id) {
         case SPVM_TYPE_C_ID_BYTE_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_SNI_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_OBJECT*)value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_SHORT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_SNI_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_OBJECT*)value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_INT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_SNI_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_OBJECT*)value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_LONG_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_SNI_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_OBJECT*)value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_FLOAT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_SNI_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_OBJECT*)value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_DOUBLE_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_SNI_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_STRING : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_SNI_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)value);
           XPUSHs(sv_array);
           break;
         }
@@ -300,11 +300,11 @@ get(...)
           int32_t field_type_name_length = strlen(field_type_name);
           
           if (field_type_name[field_type_name_length - 1] == ']') {
-            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_SNI_OBJECT*)value);
+            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_API_OBJECT*)value);
             XPUSHs(sv_array);
           }
           else {
-            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, (SPVM_SNI_OBJECT*)value);
+            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, (SPVM_API_OBJECT*)value);
             XPUSHs(sv_object);
           }
         }
@@ -327,13 +327,13 @@ new(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_SNI_OBJECT* array =  sni->new_byte_array(sni, length);
+  SPVM_API_OBJECT* array =  api->new_byte_array(api, length);
   
   // Increment reference count
-  sni->inc_ref_count(sni, array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_byte_array = SPVM_XS_UTIL_new_sv_byte_array(array);
@@ -351,14 +351,14 @@ set_elements(...)
   AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  int8_t* elements = sni->get_byte_array_elements(sni, array);
+  int8_t* elements = api->get_byte_array_elements(api, array);
   
   {
     int32_t i;
@@ -379,14 +379,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  int8_t* elements = sni->get_byte_array_elements(sni, array);
+  int8_t* elements = api->get_byte_array_elements(api, array);
   
   AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -414,13 +414,13 @@ new(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_SNI_OBJECT* array =  sni->new_short_array(sni, length);
+  SPVM_API_OBJECT* array =  api->new_short_array(api, length);
   
   // Increment reference count
-  sni->inc_ref_count(sni, array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_short_array(array);
@@ -438,14 +438,14 @@ set_elements(...)
   AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  int16_t* elements = sni->get_short_array_elements(sni, array);
+  int16_t* elements = api->get_short_array_elements(api, array);
   
   {
     int32_t i;
@@ -466,14 +466,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  int16_t* elements = sni->get_short_array_elements(sni, array);
+  int16_t* elements = api->get_short_array_elements(api, array);
   
   AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -501,13 +501,13 @@ new(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_SNI_OBJECT* array =  sni->new_int_array(sni, length);
+  SPVM_API_OBJECT* array =  api->new_int_array(api, length);
 
   // Increment reference count
-  sni->inc_ref_count(sni, array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_int_array(array);
@@ -525,14 +525,14 @@ set_elements(...)
   AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  int32_t* elements = sni->get_int_array_elements(sni, array);
+  int32_t* elements = api->get_int_array_elements(api, array);
   
   {
     int32_t i;
@@ -553,14 +553,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  int32_t* elements = sni->get_int_array_elements(sni, array);
+  int32_t* elements = api->get_int_array_elements(api, array);
   
   AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -588,13 +588,13 @@ new(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_SNI_OBJECT* array =  sni->new_long_array(sni, length);
+  SPVM_API_OBJECT* array =  api->new_long_array(api, length);
   
   // Increment reference count
-  sni->inc_ref_count(sni, array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_long_array(array);
@@ -612,14 +612,14 @@ set_elements(...)
   AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  int64_t* elements = sni->get_long_array_elements(sni, array);
+  int64_t* elements = api->get_long_array_elements(api, array);
   
   {
     int32_t i;
@@ -640,14 +640,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  int64_t* elements = sni->get_long_array_elements(sni, array);
+  int64_t* elements = api->get_long_array_elements(api, array);
   
   AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -675,13 +675,13 @@ new(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_SNI_OBJECT* array =  sni->new_float_array(sni, length);
+  SPVM_API_OBJECT* array =  api->new_float_array(api, length);
   
   // Increment reference count
-  sni->inc_ref_count(sni, array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_float_array(array);
@@ -699,14 +699,14 @@ set_elements(...)
   AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  float* elements = sni->get_float_array_elements(sni, array);
+  float* elements = api->get_float_array_elements(api, array);
   
   {
     int32_t i;
@@ -727,14 +727,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  float* elements = sni->get_float_array_elements(sni, array);
+  float* elements = api->get_float_array_elements(api, array);
   
   AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -762,13 +762,13 @@ new(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_SNI_OBJECT* array =  sni->new_double_array(sni, length);
+  SPVM_API_OBJECT* array =  api->new_double_array(api, length);
   
   // Increment reference count
-  sni->inc_ref_count(sni, array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_double_array(array);
@@ -786,14 +786,14 @@ set_elements(...)
   AV* av_nums = (AV*)SvRV(sv_nums);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  double* elements = sni->get_double_array_elements(sni, array);
+  double* elements = api->get_double_array_elements(api, array);
   
   {
     int32_t i;
@@ -814,14 +814,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
-  int32_t length = sni->get_array_length(sni, array);
+  int32_t length = api->get_array_length(api, array);
   
-  double* elements = sni->get_double_array_elements(sni, array);
+  double* elements = api->get_double_array_elements(api, array);
   
   AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -849,16 +849,16 @@ new_raw(...)
   int32_t length = (int32_t)sv_len(sv_string);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_SNI_OBJECT* array =  sni->new_byte_array(sni, length);
+  SPVM_API_OBJECT* array =  api->new_byte_array(api, length);
   
   // Increment reference count
-  sni->inc_ref_count(sni, array);
+  api->inc_ref_count(api, array);
   
   const char* string = SvPV_nolen(sv_string);
-  int8_t* elements = sni->get_byte_array_elements(sni, array);
+  int8_t* elements = api->get_byte_array_elements(api, array);
   memcpy(elements, string, length);
   
   // New sv array
@@ -881,10 +881,10 @@ new(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_SNI_OBJECT* array =  sni->new_object_array(sni, length);
+  SPVM_API_OBJECT* array =  api->new_object_array(api, length);
   
   // Fix type name(int[] -> int[][]);
   sv_catpv(sv_type_name, "[]");
@@ -900,7 +900,7 @@ new(...)
   }
   
   // Increment reference count
-  sni->inc_ref_count(sni, array);
+  api->inc_ref_count(api, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(type_id, array);
@@ -918,10 +918,10 @@ set(...)
   SV* sv_object = ST(2);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get array
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
   // Array type id
   int32_t array_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_array);
@@ -940,12 +940,12 @@ set(...)
   }
   
   // Get object
-  SPVM_SNI_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
   
-  sni->set_object_array_element(sni, array, index, (SPVM_SNI_OBJECT*)object);
+  api->set_object_array_element(api, array, index, (SPVM_API_OBJECT*)object);
   
   XSRETURN(0);
 }
@@ -958,10 +958,10 @@ get(...)
   SV* sv_index = ST(1);
   
   // Set API
-  SPVM_SNI* sni = SPVM_XS_UTIL_get_sni();
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get array
-  SPVM_SNI_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
   
   // Array type id
   int32_t array_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_array);
@@ -978,42 +978,42 @@ get(...)
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
-  SPVM_SNI_OBJECT* base_object = sni->get_object_array_element(sni, array, index);
+  SPVM_API_OBJECT* base_object = api->get_object_array_element(api, array, index);
   if (base_object != NULL) {
-    sni->inc_ref_count(sni, base_object);
+    api->inc_ref_count(api, base_object);
   }
   
   SV* sv_base_object;
   switch (element_type_id) {
     case SPVM_TYPE_C_ID_BYTE_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_byte_array((SPVM_SNI_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_OBJECT*)base_object);
       break;
     case SPVM_TYPE_C_ID_SHORT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_short_array((SPVM_SNI_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_OBJECT*)base_object);
       break;
     case SPVM_TYPE_C_ID_INT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_int_array((SPVM_SNI_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_OBJECT*)base_object);
       break;
     case SPVM_TYPE_C_ID_LONG_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_long_array((SPVM_SNI_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_OBJECT*)base_object);
       break;
     case SPVM_TYPE_C_ID_FLOAT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_float_array((SPVM_SNI_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_OBJECT*)base_object);
       break;
     case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_double_array((SPVM_SNI_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)base_object);
       break;
     case SPVM_TYPE_C_ID_STRING :
-      sv_base_object = SPVM_XS_UTIL_new_sv_string((SPVM_SNI_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)base_object);
       break;
     default : {
       const char* return_type_name = SPVM_XS_UTIL_get_type_name(element_type_id);
       int32_t element_type_name_length = strlen(element_type_name);
       if (element_type_name[element_type_name_length - 1] == ']') {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object_array(element_type_id, (SPVM_SNI_OBJECT*)base_object);
+        sv_base_object = SPVM_XS_UTIL_new_sv_object_array(element_type_id, (SPVM_API_OBJECT*)base_object);
       }
       else {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(element_type_id, (SPVM_SNI_OBJECT*)base_object);
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(element_type_id, (SPVM_API_OBJECT*)base_object);
       }
     }
   }
@@ -1350,11 +1350,11 @@ build_runtime(...)
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
   
   // SPVM API
-  SPVM_SNI* sni = runtime->sni;
-  size_t iv_sni = PTR2IV(sni);
-  SV* sviv_sni = sv_2mortal(newSViv(iv_sni));
-  SV* sv_sni = sv_2mortal(newRV_inc(sviv_sni));
-  sv_setsv(get_sv("SPVM::API", 0), sv_sni);
+  SPVM_API* api = runtime->api;
+  size_t iv_api = PTR2IV(api);
+  SV* sviv_api = sv_2mortal(newSViv(iv_api));
+  SV* sv_api = sv_2mortal(newRV_inc(sviv_api));
+  sv_setsv(get_sv("SPVM::API", 0), sv_api);
   
   XSRETURN(0);
 }
@@ -1405,10 +1405,10 @@ call_sub(...)
   int32_t return_type_id = SvIV(sv_return_type_id);
   
   // Get API
-  SV* sv_sni = get_sv("SPVM::API", 0);
-  SV* sviv_sni = SvROK(sv_sni) ? SvRV(sv_sni) : sv_sni;
-  size_t iv_sni = SvIV(sviv_sni);
-  SPVM_SNI* sni = INT2PTR(SPVM_SNI*, iv_sni);
+  SV* sv_api = get_sv("SPVM::API", 0);
+  SV* sviv_api = SvROK(sv_api) ? SvRV(sv_api) : sv_api;
+  size_t iv_api = SvIV(sviv_api);
+  SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
   
   // Check argument count
   if (items - 1 != args_length) {
@@ -1447,7 +1447,7 @@ call_sub(...)
           SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
           SV* sviv_content = SvRV(sv_content);
           size_t iv_content = SvIV(sviv_content);
-          SPVM_SNI_OBJECT* base_object = INT2PTR(SPVM_SNI_OBJECT*, iv_content);
+          SPVM_API_OBJECT* base_object = INT2PTR(SPVM_API_OBJECT*, iv_content);
           
           call_sub_args[arg_index].object_value = base_object;
         }
@@ -1494,15 +1494,15 @@ call_sub(...)
     }
   }
   
-  sni->set_exception(sni, NULL);
+  api->set_exception(api, NULL);
   
   switch (return_type_id) {
     case SPVM_TYPE_C_ID_VOID:  {
-      sni->call_void_sub(sni, sub_id, call_sub_args);
-      SPVM_SNI_OBJECT* exception = sni->get_exception(sni);
+      api->call_void_sub(api, sub_id, call_sub_args);
+      SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
-        int32_t length = sni->get_array_length(sni, exception);
-        int8_t* exception_bytes = sni->get_byte_array_elements(sni, exception);
+        int32_t length = api->get_array_length(api, exception);
+        int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
@@ -1510,11 +1510,11 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_BYTE: {
-      int8_t return_value = sni->call_byte_sub(sni, sub_id, call_sub_args);
-      SPVM_SNI_OBJECT* exception = sni->get_exception(sni);
+      int8_t return_value = api->call_byte_sub(api, sub_id, call_sub_args);
+      SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
-        int32_t length = sni->get_array_length(sni, exception);
-        int8_t* exception_bytes = sni->get_byte_array_elements(sni, exception);
+        int32_t length = api->get_array_length(api, exception);
+        int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
@@ -1524,11 +1524,11 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_SHORT: {
-      int16_t return_value = sni->call_short_sub(sni, sub_id, call_sub_args);
-      SPVM_SNI_OBJECT* exception = sni->get_exception(sni);
+      int16_t return_value = api->call_short_sub(api, sub_id, call_sub_args);
+      SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
-        int32_t length = sni->get_array_length(sni, exception);
-        int8_t* exception_bytes = sni->get_byte_array_elements(sni, exception);
+        int32_t length = api->get_array_length(api, exception);
+        int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
@@ -1538,11 +1538,11 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_INT: {
-      int32_t return_value = sni->call_int_sub(sni, sub_id, call_sub_args);
-      SPVM_SNI_OBJECT* exception = sni->get_exception(sni);
+      int32_t return_value = api->call_int_sub(api, sub_id, call_sub_args);
+      SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
-        int32_t length = sni->get_array_length(sni, exception);
-        int8_t* exception_bytes = sni->get_byte_array_elements(sni, exception);
+        int32_t length = api->get_array_length(api, exception);
+        int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
@@ -1552,11 +1552,11 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_LONG: {
-      int64_t return_value = sni->call_long_sub(sni, sub_id, call_sub_args);
-      SPVM_SNI_OBJECT* exception = sni->get_exception(sni);
+      int64_t return_value = api->call_long_sub(api, sub_id, call_sub_args);
+      SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
-        int32_t length = sni->get_array_length(sni, exception);
-        int8_t* exception_bytes = sni->get_byte_array_elements(sni, exception);
+        int32_t length = api->get_array_length(api, exception);
+        int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
@@ -1566,11 +1566,11 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_FLOAT: {
-      float return_value = sni->call_float_sub(sni, sub_id, call_sub_args);
-      SPVM_SNI_OBJECT* exception = sni->get_exception(sni);
+      float return_value = api->call_float_sub(api, sub_id, call_sub_args);
+      SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
-        int32_t length = sni->get_array_length(sni, exception);
-        int8_t* exception_bytes = sni->get_byte_array_elements(sni, exception);
+        int32_t length = api->get_array_length(api, exception);
+        int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
@@ -1580,11 +1580,11 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_ID_DOUBLE: {
-      double return_value = sni->call_double_sub(sni, sub_id, call_sub_args);
-      SPVM_SNI_OBJECT* exception = sni->get_exception(sni);
+      double return_value = api->call_double_sub(api, sub_id, call_sub_args);
+      SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
-        int32_t length = sni->get_array_length(sni, exception);
-        int8_t* exception_bytes = sni->get_byte_array_elements(sni, exception);
+        int32_t length = api->get_array_length(api, exception);
+        int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
@@ -1594,49 +1594,49 @@ call_sub(...)
       break;
     }
     default: {
-      SPVM_SNI_OBJECT* return_value = sni->call_object_sub(sni, sub_id, call_sub_args);
-      SPVM_SNI_OBJECT* exception = sni->get_exception(sni);
+      SPVM_API_OBJECT* return_value = api->call_object_sub(api, sub_id, call_sub_args);
+      SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
-        int32_t length = sni->get_array_length(sni, exception);
-        int8_t* exception_bytes = sni->get_byte_array_elements(sni, exception);
+        int32_t length = api->get_array_length(api, exception);
+        int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
       
       SV* sv_return_value = NULL;
       if (return_value != NULL) {
-        sni->inc_ref_count(sni, return_value);
+        api->inc_ref_count(api, return_value);
         
         switch(return_type_id) {
           case SPVM_TYPE_C_ID_BYTE_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_SNI_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_OBJECT*)return_value);
             break;
           case SPVM_TYPE_C_ID_SHORT_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_short_array((SPVM_SNI_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_OBJECT*)return_value);
             break;
           case SPVM_TYPE_C_ID_INT_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_int_array((SPVM_SNI_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_OBJECT*)return_value);
             break;
           case SPVM_TYPE_C_ID_LONG_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_long_array((SPVM_SNI_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_OBJECT*)return_value);
             break;
           case SPVM_TYPE_C_ID_FLOAT_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_float_array((SPVM_SNI_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_OBJECT*)return_value);
             break;
           case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_SNI_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)return_value);
             break;
           case SPVM_TYPE_C_ID_STRING :
-            sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_SNI_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)return_value);
             break;
           default : {
             const char* return_type_name = SPVM_XS_UTIL_get_type_name(return_type_id);
             int32_t type_name_length = strlen(return_type_name);
             if (return_type_name[type_name_length - 1] == ']') {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_id, (SPVM_SNI_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_id, (SPVM_API_OBJECT*)return_value);
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_id, (SPVM_SNI_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_id, (SPVM_API_OBJECT*)return_value);
             }
           }
         }

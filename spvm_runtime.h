@@ -2,7 +2,7 @@
 #define SPVM_RUNTIME_H
 
 #include "spvm_base.h"
-#include "spvm_sni.h"
+#include "spvm_api.h"
 
 struct SPVM_runtime {
   
@@ -13,7 +13,7 @@ struct SPVM_runtime {
   SPVM_VALUE* call_stack;
 
   // Env
-  SPVM_SNI* sni;
+  SPVM_API* api;
   
   // Exception
   SPVM_OBJECT* exception;
@@ -52,8 +52,8 @@ struct SPVM_runtime {
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
-SPVM_SNI* SPVM_RUNTIME_new_sni(SPVM_RUNTIME* runtime);
+SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime);
 
-void SPVM_RUNTIME_call_sub(SPVM_SNI* sni, int32_t sub_constant_pool_index);
+void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index);
 
 #endif
