@@ -13,7 +13,7 @@ package TestCase {
   has weaken2 : TestCase::Weaken;
   has weaken3 : TestCase::Weaken;
   has weaken4 : TestCase::Weaken;
-
+  
   sub weaken_target4_weaken_object_assign() : int {
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;

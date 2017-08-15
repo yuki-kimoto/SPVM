@@ -1,4 +1,4 @@
-0.0244 2017-08-13
+0.0244 2017-08-15
   - implement weak reference to resolve recursive reference
     weaken $obj->{foo};
   - Field become have any object
