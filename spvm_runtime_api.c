@@ -127,7 +127,6 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   object->ref_count++;
 
   int32_t length = object->weaken_back_refs_length;
-  // warn("FFFFFFFFFFFF %d", length);
   
   SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->weaken_back_refs + sizeof(SPVM_OBJECT));
   
@@ -135,14 +134,11 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
     int32_t i;
     int32_t found_index = -1;
     for (i = 0; i < length; i++) {
-      //warn("CCCCCCCCCC %d", i);
-      //  warn("DDDDDDDDD %p %p", weaken_back_refs_elements[i], object_address);
       if (weaken_back_refs_elements[i] == object_address) {
         found_index = i;
         break;
       }
     }
-    //warn("EEEEEEEEE %d", found_index);
     
     if (found_index == -1) {
       fprintf(stderr, "Not weakened address is specified(SPVM_RUNTIME_API_unweaken())");
@@ -150,7 +146,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
     }
     if (found_index < length - 1) {
       int32_t move_length = length - found_index - 1;
-      memmove(&weaken_back_refs_elements[found_index], &weaken_back_refs_elements[found_index + 1], move_length);
+      memmove(&weaken_back_refs_elements[found_index], &weaken_back_refs_elements[found_index + 1], move_length * sizeof(SPVM_OBJECT**));
     }
   }
   object->weaken_back_refs_length--;
