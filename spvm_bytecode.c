@@ -220,5 +220,4 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "WIDE",
   "CURRENT_LINE",
   "WEAKEN_FIELD",
-  "WEAKEN_ARRAY_ELEM",
 };
