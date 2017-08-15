@@ -40,6 +40,10 @@ void SPVM_RUNTIME_API_free_weaken_back_refs(SPVM_API* api, SPVM_OBJECT* weaken_b
 void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   (void)api;
   
+  if (*object_address == NULL) {
+    return;
+  }
+  
   if (SPVM_RUNTIME_API_isweak(api, *object_address)) {
     return;
   }
@@ -51,6 +55,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
     // If reference count is 1, the object is freeed without weaken
     SPVM_RUNTIME_API_dec_ref_count(api, *object_address);
     *object_address = NULL;
+    return;
   }
   else {
     object->ref_count--;
@@ -104,6 +109,10 @@ _Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_OBJECT* object) {
 void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   (void)api;
   
+  if (*object_address == NULL) {
+    return;
+  }
+  
   if (!SPVM_RUNTIME_API_isweak(api, *object_address)) {
     return;
   }
@@ -112,7 +121,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   *object_address = (SPVM_OBJECT*)((intptr_t)*object_address & ~(intptr_t)1);
   
   SPVM_OBJECT* object = *object_address;
-
+  
   // Increment reference count
   object->ref_count++;
 

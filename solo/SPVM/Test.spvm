@@ -20,8 +20,28 @@ SPVM::Test - SPVM test module
 
 package Test {
   has next_test : Test;
+  has minimal : Test::Minimal;
+
+  sub weaken_reference_count1_object() : int {
+    my $minimal = new Test::Minimal;
+    my $test = new Test;
+    
+    $test->{minimal} = $minimal;
+    $minimal = undef;
+    weaken $test->{minimal};
+    
+    if ($test->{minimal} == undef) {
+      return 1;
+    }
+    
+    return 0;
+  }
   
   sub main($mvar : int) : int {
+    # Weaken
+    {
+      my $num = weaken_reference_count1_object();
+    }
     
     # Weaken
     {
