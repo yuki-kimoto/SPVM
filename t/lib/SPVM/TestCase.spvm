@@ -24,6 +24,19 @@ package TestCase {
     
     return 0;
   }
+
+  sub weaken_recursive_again() : void {
+    my $weaken = new TestCase::Weaken;
+    
+    # Recuresive reference
+    my $test_case = new TestCase;
+    $test_case->{x_weaken} = $weaken;
+    
+    $weaken->{test_case} = $test_case;
+    
+    weaken $test_case->{x_weaken};
+    weaken $test_case->{x_weaken};
+  }
   
   sub weaken_recursive() : void {
     my $weaken = new TestCase::Weaken;
