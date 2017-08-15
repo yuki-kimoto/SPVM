@@ -83,6 +83,7 @@ spvm_memory_pool.c
 spvm_memory_pool.h
 spvm_my_var.c
 spvm_my_var.h
+spvm_nai.h
 spvm_name_info.c
 spvm_name_info.h
 spvm_object.h
@@ -98,7 +99,6 @@ spvm_runtime_allocator.c
 spvm_runtime_allocator.h
 spvm_runtime_api.c
 spvm_runtime_api.h
-spvm_sni.h
 spvm_sub.c
 spvm_sub.h
 spvm_switch_info.c

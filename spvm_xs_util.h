@@ -4,19 +4,19 @@
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
-#include "spvm_sni.h"
+#include "spvm_nai.h"
 #include "spvm_type.h"
 
 #include <stdint.h>
 
-SPVM_SNI* SPVM_XS_UTIL_get_sni() {
-  SV* sv_sni = get_sv("SPVM::API", 0);
-  SV* sviv_sni = SvRV(sv_sni);
-  size_t iv_sni = SvIV(sviv_sni);
+SPVM_NAI* SPVM_XS_UTIL_get_nai() {
+  SV* sv_nai = get_sv("SPVM::API", 0);
+  SV* sviv_nai = SvRV(sv_nai);
+  size_t iv_nai = SvIV(sviv_nai);
   
-  SPVM_SNI* sni = INT2PTR(SPVM_SNI*, iv_sni);
+  SPVM_NAI* nai = INT2PTR(SPVM_NAI*, iv_nai);
   
-  return sni;
+  return nai;
 }
 
 const char* SPVM_XS_UTIL_get_type_name(int32_t type_id) {
@@ -82,15 +82,15 @@ int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* fie
         return field_type_id;
       }
       else {
-        return SPVM_SNI_ERROR_NO_ID;
+        return SPVM_NAI_ERROR_NO_ID;
       }
     }
     else {
-      return SPVM_SNI_ERROR_NO_ID;
+      return SPVM_NAI_ERROR_NO_ID;
     }
   }
   else {
-    return SPVM_SNI_ERROR_NO_ID;
+    return SPVM_NAI_ERROR_NO_ID;
   }
 }
 
@@ -116,19 +116,19 @@ int32_t SPVM_XS_UTIL_get_field_id(const char* package_name, const char* field_na
         return field_id;
       }
       else {
-        return SPVM_SNI_ERROR_NO_ID;
+        return SPVM_NAI_ERROR_NO_ID;
       }
     }
     else {
-      return SPVM_SNI_ERROR_NO_ID;
+      return SPVM_NAI_ERROR_NO_ID;
     }
   }
   else {
-    return SPVM_SNI_ERROR_NO_ID;
+    return SPVM_NAI_ERROR_NO_ID;
   }
 }
 
-SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_SNI_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_NAI_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -151,7 +151,7 @@ SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_SNI_OBJECT* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_string(SPVM_SNI_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_string(SPVM_NAI_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -174,7 +174,7 @@ SV* SPVM_XS_UTIL_new_sv_string(SPVM_SNI_OBJECT* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_SNI_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_NAI_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -197,7 +197,7 @@ SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_SNI_OBJECT* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_SNI_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_NAI_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -220,7 +220,7 @@ SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_SNI_OBJECT* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_SNI_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_NAI_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -243,7 +243,7 @@ SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_SNI_OBJECT* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_SNI_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_NAI_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -266,7 +266,7 @@ SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_SNI_OBJECT* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_SNI_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_NAI_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -289,7 +289,7 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_SNI_OBJECT* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_id, SPVM_SNI_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_id, SPVM_NAI_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -313,7 +313,7 @@ SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_id, SPVM_SNI_OBJECT* array) {
 }
 
 
-SV* SPVM_XS_UTIL_new_sv_object(int32_t type_id, SPVM_SNI_OBJECT* object) {
+SV* SPVM_XS_UTIL_new_sv_object(int32_t type_id, SPVM_NAI_OBJECT* object) {
   // Create object
   HV* hv_object = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_object = sv_2mortal(newRV_inc((SV*)hv_object));
@@ -335,7 +335,7 @@ SV* SPVM_XS_UTIL_new_sv_object(int32_t type_id, SPVM_SNI_OBJECT* object) {
   return sv_object;
 }
 
-SPVM_SNI_OBJECT* SPVM_XS_UTIL_get_array(SV* sv_array) {
+SPVM_NAI_OBJECT* SPVM_XS_UTIL_get_array(SV* sv_array) {
   
   HV* hv_array = (HV*)SvRV(sv_array);
   SV** sv_content_ptr = hv_fetch(hv_array, "content", strlen("content"), 0);
@@ -343,7 +343,7 @@ SPVM_SNI_OBJECT* SPVM_XS_UTIL_get_array(SV* sv_array) {
     SV* sv_content = *sv_content_ptr;
     SV* sviv_content = SvRV(sv_content);
     size_t iv_content = SvIV(sviv_content);
-    SPVM_SNI_OBJECT* array = INT2PTR(SPVM_SNI_OBJECT*, iv_content);
+    SPVM_NAI_OBJECT* array = INT2PTR(SPVM_NAI_OBJECT*, iv_content);
     
     return array;
   }
@@ -352,7 +352,7 @@ SPVM_SNI_OBJECT* SPVM_XS_UTIL_get_array(SV* sv_array) {
   }
 }
 
-SPVM_SNI_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
+SPVM_NAI_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   
   HV* hv_object = (HV*)SvRV(sv_object);
   SV** sv_content_ptr = hv_fetch(hv_object, "content", strlen("content"), 0);
@@ -362,7 +362,7 @@ SPVM_SNI_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   SV* sv_content = *sv_content_ptr;
   SV* sviv_content = SvRV(sv_content);
   size_t iv_content = SvIV(sviv_content);
-  SPVM_SNI_OBJECT* object = INT2PTR(SPVM_SNI_OBJECT*, iv_content);
+  SPVM_NAI_OBJECT* object = INT2PTR(SPVM_NAI_OBJECT*, iv_content);
   
   return object;
 }
@@ -382,11 +382,11 @@ int32_t SPVM_XS_UTIL_get_package_id(const char* package) {
       return package_id;
     }
     else {
-      return SPVM_SNI_ERROR_NO_ID;
+      return SPVM_NAI_ERROR_NO_ID;
     }
   }
   else {
-    return SPVM_SNI_ERROR_NO_ID;
+    return SPVM_NAI_ERROR_NO_ID;
   }
 }
 
@@ -405,11 +405,11 @@ int32_t SPVM_XS_UTIL_get_type_id_from_package_name(const char* package_name) {
       return type_id;
     }
     else {
-      return SPVM_SNI_ERROR_NO_ID;
+      return SPVM_NAI_ERROR_NO_ID;
     }
   }
   else {
-    return SPVM_SNI_ERROR_NO_ID;
+    return SPVM_NAI_ERROR_NO_ID;
   }
 }
 
