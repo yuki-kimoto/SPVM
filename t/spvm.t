@@ -34,6 +34,9 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 
 use SPVM::stdout;
 
+# Start objects count
+my $start_objects_count = SPVM::get_objects_count();
+
 # Call void subroutine
 {
   ok(SPVM::TestCase::call_void());
@@ -180,6 +183,7 @@ is_deeply(
   # element byte array
   {
     my $object_array = SPVM::new_object_array_len("byte[]", 3);
+    
     my $object1 = SPVM::new_byte_array([1, 2, 3]);
     $object_array->set(0, $object1);
     my $object2 = SPVM::new_byte_array([4, 5, 6]);
@@ -864,4 +868,8 @@ is_deeply(
   my $total = SPVM::TestCase::for_basic();
   cmp_ok($total, '==', 6);
 }
+
+# All object is freed
+my $end_objects_count = SPVM::get_objects_count();
+is($start_objects_count, $end_objects_count);
 
