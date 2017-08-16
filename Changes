@@ -1,3 +1,6 @@
+0.0245 2017-08-16
+  - fix get object byte field bug
+  - fix set object byte field bug
 0.0244 2017-08-15
   - implement weak reference to resolve recursive reference
     weaken $obj->{foo};

@@ -158,6 +158,11 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::my_var_initialized_zero());
 }
 
+# Field
+{
+  ok(SPVM::TestCase::object_field_set_and_get());
+}
+
 {
   ok(SPVM::TestCase::object_field_initialized_zero());
 }
@@ -192,6 +197,18 @@ is_deeply(
   ok(SPVM::TestCase::enum_long());
   ok(SPVM::TestCase::enum_float());
   ok(SPVM::TestCase::enum_double());
+
+=pod
+  is(SPVM::TestCase::BYTE_MAX(), 127);
+  is(SPVM::TestCase::BYTE_MIN(), -128);
+  is(SPVM::TestCase::SHORT_MAX(), 32767);
+  is(SPVM::TestCase::SHORT_MIN(), -32768);
+  is(SPVM::TestCase::INT_MAX(), 2147483647);
+  is(SPVM::TestCase::INT_MIN(), -2147483648);
+  is(SPVM::TestCase::LONG_MAX(), 9223372036854775807);
+  is(SPVM::TestCase::LONG_MIN(), -9223372036854775808);
+=cut
+
 }
 
 # Convert type - floating point narrowing convertion

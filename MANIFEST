@@ -37,10 +37,6 @@ solo/spvm_main.c
 solo/t/spvm_t_array.c
 solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
-SPVM-0.0243/META.json
-SPVM-0.0243/META.yml
-SPVM-0.0244/META.json
-SPVM-0.0244/META.yml
 SPVM.xs
 spvm_api.h
 spvm_base.h
@@ -124,6 +120,7 @@ spvm_yacc.h
 spvm_yacc_util.c
 spvm_yacc_util.h
 t/lib/SPVM/TestCase.spvm
+t/lib/SPVM/TestCase/Minimal.spvm
 t/lib/SPVM/TestCase/Weaken.spvm
 t/lib/SPVM/TestCase/Weaken2.spvm
 t/spvm-debug.t

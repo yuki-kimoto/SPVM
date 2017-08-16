@@ -5,6 +5,8 @@ package TestCase {
   has x_short : short;
   has x_int : int;
   has x_long : long;
+  has x_float : float;
+  has x_double : double;
   has x_int_array : int[];
   has x_string : string;
   has x_test_case : TestCase;
@@ -13,6 +15,19 @@ package TestCase {
   has weaken2 : TestCase::Weaken;
   has weaken3 : TestCase::Weaken;
   has weaken4 : TestCase::Weaken;
+
+  enum {
+    BYTE_MAX = 127b,
+    BYTE_MIN = -128b,
+    SHORT_MAX = 32767s,
+    SHORT_MIN = -32768s,
+    INT_MAX = 2147483647,
+    INT_MIN = -2147483648,
+    LONG_MAX = 9223372036854775807L,
+    LONG_MIN = -9223372036854775808L,
+    FLOAT_PRECICE = 32767f,
+    DOUBLE_PRECICE = 2147483647.0
+  }
   
   sub weaken_target4_weaken_object_assign() : int {
     my $test_case = new TestCase;
@@ -619,6 +634,22 @@ package TestCase {
     }
     return 0;
   }
+  
+  # Object field set and get
+  sub object_field_set_and_get() : int {
+    my $test_case = new TestCase;
+    $test_case->{x_byte} = TestCase->BYTE_MAX;
+    $test_case->{x_short} = TestCase->SHORT_MAX;
+    $test_case->{x_int} = TestCase->INT_MAX;
+    $test_case->{x_long} = TestCase->LONG_MAX;
+    $test_case->{x_float} = TestCase->FLOAT_PRECICE;
+    $test_case->{x_double} = TestCase->DOUBLE_PRECICE;
+    
+    if ($test_case->{x_byte} == TestCase->BYTE_MAX) {
+      return 1;
+    }
+  }
+  
   # new near small base_object_max_byte_size_use_memory_pool
   sub new_near_small_base_object_max_byte_size_use_memory_pool() : int {
     my $block = new byte[0xFFF0];

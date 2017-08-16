@@ -2295,7 +2295,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     operand_stack_top--;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Object to get an byte field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, array_exception);
@@ -2420,7 +2420,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
     else {
       index = (*(pc + 1) << 8) + *(pc + 2);
-      *(int8_t*)((intptr_t)object + sizeof(SPVM_VALUE) * index)
+      *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
         = call_stack[operand_stack_top].byte_value;
       operand_stack_top -= 2;
       pc += 3;
