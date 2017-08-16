@@ -27,8 +27,8 @@ package TestCase {
     INT_MIN = -2147483648,
     LONG_MAX = 9223372036854775807L,
     LONG_MIN = -9223372036854775808L,
-    FLOAT_PRECICE = 32767f,
-    DOUBLE_PRECICE = 2147483647.0
+    FLOAT_PRECICE = 16384f,
+    DOUBLE_PRECICE = 65536.0
   }
 
   sub weaken_target4_weaken_object_assign() : int {
@@ -766,7 +766,6 @@ package TestCase {
   sub array_init_float() : int {
     my $nums = [1f, 2f, 3f];
     
-    stdout::println_float($nums->[0]);
     if ($nums->[0] == 1f) {
       if ($nums->[1] == 2f) {
         if ($nums->[2] == 3f) {
@@ -1361,7 +1360,13 @@ package TestCase {
       if ($obj->{x_short} == (short)32767) {
         if ($obj->{x_int} == 2147483647) {
           if ($obj->{x_long} == 9223372036854775807L) {
-            return 1;
+            if ($obj->{x_float} == TestCase->FLOAT_PRECICE) {
+              if ($obj->{x_double} == TestCase->DOUBLE_PRECICE) {
+                if ($obj->{minimal}{x} == 3) {
+                  return 1;
+                }
+              }
+            }
           }
         }
       }

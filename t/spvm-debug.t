@@ -2,6 +2,7 @@
 use SPVM::Debug;
 
 use strict;
+use strict;
 use warnings;
 use utf8;
 use Data::Dumper;
@@ -34,6 +35,8 @@ my $FLOAT_MAX = POSIX::FLT_MAX();
 my $FLOAT_MIN = POSIX::FLT_MIN();
 my $DOUBLE_MAX = POSIX::DBL_MAX();
 my $DOUBLE_MIN = POSIX::DBL_MIN();
+my $FLOAT_PRECICE = 16384.0;
+my $DOUBLE_PRECICE = 65536.0;
 
 use SPVM::stdout;
 
@@ -164,6 +167,7 @@ my $start_objects_count = SPVM::get_objects_count();
 # Field
 {
   ok(SPVM::TestCase::object_field_set_and_get());
+  ok(SPVM::TestCase::object_field_set_and_get_again());
 }
 
 {
@@ -408,8 +412,13 @@ is_deeply(
     $object->set(x_short => $SHORT_MAX);
     $object->set(x_int => $INT_MAX);
     $object->set(x_long => $LONG_MAX);
+    $object->set(x_float => $FLOAT_PRECICE);
+    $object->set(x_double => $DOUBLE_PRECICE);
     $object->set(x_int_array => SPVM::new_int_array([1, 2, 3, 4]));
     $object->set(x_string => SPVM::new_string("Hello"));
+    my $minimal = SPVM::new_object("TestCase::Minimal");
+    $minimal->set(x => 3);
+    $object->set(minimal => $minimal);
     
     ok(SPVM::TestCase::spvm_object_set($object));
     
@@ -417,6 +426,9 @@ is_deeply(
     is($object->get('x_short'), $SHORT_MAX);
     is($object->get('x_int'), $INT_MAX);
     is($object->get('x_long'), $LONG_MAX);
+    is($object->get('x_float'), $FLOAT_PRECICE);
+    is($object->get('x_double'), $DOUBLE_PRECICE);
+    is($object->get('minimal')->get('x'), 3);
   }
   
 }
