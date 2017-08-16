@@ -161,6 +161,7 @@ my $start_objects_count = SPVM::get_objects_count();
 # Field
 {
   ok(SPVM::TestCase::object_field_set_and_get());
+  ok(SPVM::TestCase::object_field_set_and_get_again());
 }
 
 {
