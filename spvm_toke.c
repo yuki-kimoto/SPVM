@@ -46,6 +46,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     switch(c) {
       case '\0':
         compiler->cur_file = NULL;
+        free(compiler->cur_src);
         compiler->cur_src = NULL;
         compiler->bufptr = NULL;
         compiler->befbufptr = NULL;

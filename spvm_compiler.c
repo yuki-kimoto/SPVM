@@ -52,7 +52,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
 }
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
-  SPVM_COMPILER* compiler = malloc(sizeof(SPVM_COMPILER));
+  SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
 
   // Allocator
   compiler->allocator = SPVM_COMPILER_ALLOCATOR_new(compiler);
