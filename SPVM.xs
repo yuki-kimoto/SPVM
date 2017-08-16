@@ -260,37 +260,37 @@ get(...)
       
       switch (field_type_id) {
         case SPVM_TYPE_C_ID_BYTE_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array(value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_SHORT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_short_array(value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_INT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_int_array(value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_LONG_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_long_array(value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_FLOAT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_float_array(value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_DOUBLE_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_double_array(value);
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_ID_STRING : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_string(value);
           XPUSHs(sv_array);
           break;
         }
@@ -300,11 +300,11 @@ get(...)
           int32_t field_type_name_length = strlen(field_type_name);
           
           if (field_type_name[field_type_name_length - 1] == ']') {
-            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, (SPVM_API_OBJECT*)value);
+            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, value);
             XPUSHs(sv_array);
           }
           else {
-            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, (SPVM_API_OBJECT*)value);
+            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, value);
             XPUSHs(sv_object);
           }
         }
