@@ -1025,6 +1025,10 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   
   if(fields[field_index].object_value != NULL) {
+    // If object is weak, unweaken
+    if (SPVM_RUNTIME_API_isweak(api, fields[field_index].object_value)) {
+      SPVM_RUNTIME_API_unweaken(api, (SPVM_OBJECT**)&fields[field_index]);
+    }
     api->dec_ref_count(api, fields[field_index].object_value);
   }
   

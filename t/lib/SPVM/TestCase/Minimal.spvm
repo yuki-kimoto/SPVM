@@ -1,0 +1,4 @@
+package TestCase::Minimal {
+  has x : int;
+  has y : int;
+}
