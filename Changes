@@ -1,6 +1,7 @@
 0.0245 2017-08-16
   - fix get object byte field bug
   - fix set object byte field bug
+  - fix bug that compiler can't load source file over 0xFF bytes
 0.0244 2017-08-15
   - implement weak reference to resolve recursive reference
     weaken $obj->{foo};
