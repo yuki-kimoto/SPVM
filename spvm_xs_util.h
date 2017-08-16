@@ -335,36 +335,24 @@ SV* SPVM_XS_UTIL_new_sv_object(int32_t type_id, SPVM_API_OBJECT* object) {
   return sv_object;
 }
 
-SPVM_API_OBJECT* SPVM_XS_UTIL_get_array(SV* sv_array) {
+SPVM_API_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   
-  HV* hv_array = (HV*)SvRV(sv_array);
-  SV** sv_content_ptr = hv_fetch(hv_array, "content", strlen("content"), 0);
-  if (sv_content_ptr) {
+  if (SvOK(sv_object)) {
+    HV* hv_object = (HV*)SvRV(sv_object);
+    SV** sv_content_ptr = hv_fetch(hv_object, "content", strlen("content"), 0);
+    
+    assert(sv_content_ptr);
+    
     SV* sv_content = *sv_content_ptr;
     SV* sviv_content = SvRV(sv_content);
     size_t iv_content = SvIV(sviv_content);
-    SPVM_API_OBJECT* array = INT2PTR(SPVM_API_OBJECT*, iv_content);
+    SPVM_API_OBJECT* object = INT2PTR(SPVM_API_OBJECT*, iv_content);
     
-    return array;
+    return object;
   }
   else {
     return NULL;
   }
-}
-
-SPVM_API_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
-  
-  HV* hv_object = (HV*)SvRV(sv_object);
-  SV** sv_content_ptr = hv_fetch(hv_object, "content", strlen("content"), 0);
-  
-  assert(sv_content_ptr);
-  
-  SV* sv_content = *sv_content_ptr;
-  SV* sviv_content = SvRV(sv_content);
-  size_t iv_content = SvIV(sviv_content);
-  SPVM_API_OBJECT* object = INT2PTR(SPVM_API_OBJECT*, iv_content);
-  
-  return object;
 }
 
 int32_t SPVM_XS_UTIL_get_package_id(const char* package) {

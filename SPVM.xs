@@ -175,7 +175,7 @@ set(...)
         croak("Can't set \"%s\" value to \"%s\" field", value_type_name, field_type_name);
       }
       
-      SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_value);
+      SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_value);
       
       api->set_object_field(api, object, field_id, array);
     }
@@ -354,7 +354,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -382,7 +382,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -441,7 +441,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -469,7 +469,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -528,7 +528,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -556,7 +556,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -615,7 +615,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -643,7 +643,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -702,7 +702,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -730,7 +730,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -789,7 +789,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -817,7 +817,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -921,7 +921,7 @@ set(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Array type id
   int32_t array_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_array);
@@ -961,7 +961,7 @@ get(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_array(sv_array);
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Array type id
   int32_t array_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_array);
