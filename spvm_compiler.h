@@ -32,7 +32,7 @@ struct SPVM_compiler {
   const char* cur_file;
   
   // Source base_object
-  const char* cur_src;
+  char* cur_src;
   
   // AST grammar
   SPVM_OP* op_grammar;

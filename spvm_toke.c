@@ -47,6 +47,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\0':
         compiler->cur_file = NULL;
         compiler->cur_src = NULL;
+        compiler->bufptr = NULL;
+        compiler->befbufptr = NULL;
         
         // If there are more module, load it
         SPVM_DYNAMIC_ARRAY* op_use_stack = compiler->op_use_stack;
@@ -143,8 +145,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 exit(EXIT_FAILURE);
               }
               fseek(fh, 0, SEEK_SET);
-              char* src = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, file_size);
-              if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
+              char* cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
+              if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
                 if (op_use) {
                   fprintf(stderr, "Can't read file %s at %s line %" PRId32 "\n", cur_file, op_use->file, op_use->line);
                 }
@@ -154,11 +156,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 exit(EXIT_FAILURE);
               }
               fclose(fh);
-              src[file_size] = '\0';
+              cur_src[file_size] = '\0';
               
-              compiler->cur_src = src;
-              compiler->bufptr = src;
-              compiler->befbufptr = src;
+              compiler->cur_src = cur_src;
+              compiler->bufptr = cur_src;
+              compiler->befbufptr = cur_src;
               compiler->current_package_count = 0;
               compiler->cur_line = 1;
               compiler->cur_template_args = op_use->uv.use->template_args;
@@ -947,6 +949,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
               }
+              
               char* replaced_keyword = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, replaced_part_names_length);
               {
                 int32_t i;
