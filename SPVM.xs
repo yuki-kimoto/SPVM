@@ -175,9 +175,9 @@ set(...)
         croak("Can't set \"%s\" value to \"%s\" field", value_type_name, field_type_name);
       }
       
-      SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_value);
+      SPVM_API_OBJECT* set_object = SPVM_XS_UTIL_get_object(sv_value);
       
-      api->set_object_field(api, object, field_id, array);
+      api->set_object_field(api, object, field_id, set_object);
     }
   }
   
