@@ -1344,6 +1344,31 @@ build_sub_symtable(...)
 }
 
 SV*
+build_native_sub_names(...)
+  PPCODE:
+{
+  // Get compiler
+  SPVM_COMPILER* compiler = SPVM_XS_UTIL_get_compiler();
+  
+  // Native subroutine names
+  AV* av_native_sub_names = get_av("SPVM::NATIVE_SUB_NAMES", 0);
+  SPVM_DYNAMIC_ARRAY* native_subs = compiler->native_subs;
+  {
+    int32_t native_sub_index;
+    for (native_sub_index = 0; native_sub_index < native_subs->length; native_sub_index++) {
+      SPVM_SUB* native_sub = SPVM_DYNAMIC_ARRAY_fetch(native_subs, native_sub_index);
+      
+      const char* native_sub_name = native_sub->abs_name;
+      SV* sv_native_sub_name = sv_2mortal(newSVpv(native_sub_name, 0));
+      
+      av_push(av_native_sub_names, SvREFCNT_inc(sv_native_sub_name));
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
 build_type_symtable(...)
   PPCODE:
 {

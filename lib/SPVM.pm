@@ -124,6 +124,9 @@ CHECK {
   # Build subroutine symbol table
   build_sub_symtable();
   
+  # Build native subroutine names
+  build_native_sub_names();
+  
   # Build package symbol table
   build_package_symtable();
   
