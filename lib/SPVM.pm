@@ -139,7 +139,7 @@ CHECK {
   # Build native subroutine names
   build_native_sub_names();
   
-  # Bind native subroutine
+  # Build native subroutine
   build_native_sub_symtable();
   
   # Build package symbol table

@@ -21,6 +21,7 @@
 #include "spvm_my_var.h"
 #include "spvm_type.h"
 #include "spvm_field.h"
+#include "spvm_constant_pool_sub.h"
 
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
@@ -1362,6 +1363,42 @@ build_native_sub_names(...)
       SV* sv_native_sub_name = sv_2mortal(newSVpv(native_sub_name, 0));
       
       av_push(av_native_sub_names, SvREFCNT_inc(sv_native_sub_name));
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+bind_native_address(...)
+  PPCODE:
+{
+  // Get compiler
+  SPVM_COMPILER* compiler = SPVM_XS_UTIL_get_compiler();
+  
+  // Native subroutine names
+  HV* hv_native_sub_symtable = get_hv("SPVM::NATIVE_SUB_SYMTABLE", 0);
+  
+  SPVM_DYNAMIC_ARRAY* native_subs = compiler->native_subs;
+  {
+    int32_t native_sub_index;
+    for (native_sub_index = 0; native_sub_index < native_subs->length; native_sub_index++) {
+      SPVM_SUB* native_sub = SPVM_DYNAMIC_ARRAY_fetch(native_subs, native_sub_index);
+      const char* native_sub_name = native_sub->abs_name;
+      
+      // Native address
+      SV** sv_native_address_ptr = hv_fetch(hv_native_sub_symtable, native_sub_name, strlen(native_sub_name), 0);
+      SV* sv_native_address = *sv_native_address_ptr;
+      IV native_address = SvIV(sv_native_address);
+      
+      // Sub id
+      int32_t sub_id = native_sub->constant_pool_index;
+      
+      // Set native address
+      SPVM_CONSTANT_POOL_SUB constant_pool_sub;
+      memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
+      constant_pool_sub.native_address = (void*)native_address;
+      memcpy(&compiler->constant_pool->values[sub_id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
     }
   }
   
