@@ -40,7 +40,7 @@ package Test {
     FLOAT_PRECICE = 32767f,
     DOUBLE_PRECICE = 2147483647.0
   }
-
+  
   sub main($mvar : int) : int {
     # enum
     {
