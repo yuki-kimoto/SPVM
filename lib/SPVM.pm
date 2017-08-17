@@ -34,13 +34,13 @@ our @TYPE_NAMES;
 our %TYPE_SYMTABLE;
 
 sub _get_dll_file {
-  my $module = shift;
+  my $package_name = shift;
   
   # DLL file name
   my $dlext = $Config{dlext};
-  my $dll_base_name = __PACKAGE__ . ".$dlext";
+  my $dll_base_name = $package_name . ".$dlext";
   $dll_base_name =~ s/^.*:://;
-  my $dll_file_tail = 'auto/' . __PACKAGE__ . '/' . $dll_base_name;
+  my $dll_file_tail = 'auto/' . $package_name . '/' . $dll_base_name;
   $dll_file_tail =~ s/::/\//g;
   my $dll_file;
   for my $dl_shared_object (@DynaLoader::dl_shared_objects) {
@@ -53,6 +53,57 @@ sub _get_dll_file {
   return $dll_file;
 }
 
+sub get_sub_native_address {
+  my $sub_abs_name = shift;
+  
+  my $native_address;
+  
+  my $package_name;
+  my $sub_name;
+  if ($sub_abs_name =~ /^(?:(.+)::)(.+)$/) {
+    $package_name = $1;
+    $sub_name = $2;
+  }
+  
+  my $dll_file;
+  my $dll_package_name = $package_name;
+  while (1) {
+    my $not_found;
+    $dll_file = _get_dll_file($dll_package_name);
+    if ($dll_file) {
+      my $dll_libref = DynaLoader::dl_load_file($dll_file);
+      if ($dll_libref) {
+        my $sub_abs_name_c = $sub_abs_name;
+        $sub_abs_name_c =~ s/:/_/g;
+        $native_address = DynaLoader::dl_find_symbol($dll_libref, $sub_abs_name_c);
+        if ($native_address) {
+          last;
+        }
+        else {
+          $not_found = 1;
+        }
+      }
+      else {
+        $not_found = 1;
+      }
+    }
+    else {
+      $not_found = 1;
+    }
+    
+    if ($not_found) {
+      if ($dll_package_name =~ /::/) {
+        $dll_package_name =~ s/::[^:]+$//;
+      }
+      else {
+        last;
+      }
+    }
+  }
+  
+  return $native_address;
+}
+
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
   require XSLoader;
@@ -61,14 +112,11 @@ CHECK {
   # Compile SPVM source code
   compile();
   
-  require DynaLoader;
-  my $dll_file = _get_dll_file(__PACKAGE__);
-  my $dll_libref = DynaLoader::dl_load_file($dll_file);
-  my $dll_symref = DynaLoader::dl_find_symbol($dll_libref, 'SPVM__stdout__sum_int');
+  my $sub_native_address = get_sub_native_address('SPVM::stdout::sum_int');
   
   # Build type names
   build_type_names();
-
+  
   # Build type names
   build_type_symtable();
   
