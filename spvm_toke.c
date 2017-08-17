@@ -1162,6 +1162,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
+          if (strstr(keyword, "__")) {
+            fprintf(stderr, "Can't contain __ in package, subroutine or field name at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
+            exit(EXIT_FAILURE);
+          }
           op->uv.name = keyword;
           yylvalp->opval = op;
           
