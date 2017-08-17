@@ -39,6 +39,13 @@ use SPVM::stdout;
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
+# Native subroutine
+{
+  my $nums = SPVM::new_int_array([1, 2, 3]);
+  my $total = SPVM::stdout::sum_int($nums);
+  is($total, 6);
+}
+
 # Weaken
 {
   {
