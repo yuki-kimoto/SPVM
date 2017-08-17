@@ -25,6 +25,27 @@
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
 
+// SPVM::stdout
+int32_t SPVM__stdout__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  SPVM_API_OBJECT* array = args[0].object_value;
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int32_t* values = api->get_int_array_elements(api, array);
+  
+  int64_t total = 0;
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      total += values[i];
+    }
+  }
+  
+  return total;
+}
+
 static SPVM_API_VALUE call_sub_args[255];
 
 MODULE = SPVM::BaseObject		PACKAGE = SPVM::BaseObject
