@@ -108,8 +108,8 @@ sub get_sub_native_address {
 
 sub build_native_sub_symtable {
   for my $native_sub_name (@NATIVE_SUB_NAMES) {
-    $native_sub_name = "SPVM::$native_sub_name";
-    my $native_address = get_sub_native_address($native_sub_name);
+    my $native_sub_name_spvm = "SPVM::$native_sub_name";
+    my $native_address = get_sub_native_address($native_sub_name_spvm);
     unless ($native_address) {
       croak "Can't find native address($native_sub_name())";
     }
@@ -142,6 +142,9 @@ CHECK {
   # Build native subroutine
   build_native_sub_symtable();
   
+  # Bind native address
+  bind_native_address();
+
   # Build package symbol table
   build_package_symtable();
   

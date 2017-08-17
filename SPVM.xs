@@ -1386,7 +1386,6 @@ bind_native_address(...)
       SPVM_SUB* native_sub = SPVM_DYNAMIC_ARRAY_fetch(native_subs, native_sub_index);
       const char* native_sub_name = native_sub->abs_name;
       
-      // Native address
       SV** sv_native_address_ptr = hv_fetch(hv_native_sub_symtable, native_sub_name, strlen(native_sub_name), 0);
       SV* sv_native_address = *sv_native_address_ptr;
       IV native_address = SvIV(sv_native_address);
