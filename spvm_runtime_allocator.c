@@ -78,7 +78,7 @@ int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_API* api, SPVM_RUNTIME_AL
   return index;
 }
 
-void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, int32_t byte_size) {
+void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t byte_size) {
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   assert(byte_size > 0);
@@ -87,7 +87,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
   
   void* block;
   if (alloc_byte_size > allocator->object_max_byte_size_use_memory_pool) {
-    block = SPVM_UTIL_ALLOCATOR_safe_malloc(alloc_byte_size);
+    block = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(alloc_byte_size);
   }
   else {
     void* free_address = SPVM_DYNAMIC_ARRAY_pop(allocator->freelists[index]);
@@ -97,6 +97,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* alloc
     else {
       block = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, alloc_byte_size);
     }
+    memset(block, 0, alloc_byte_size);
   }
   
   if (block != NULL) {
