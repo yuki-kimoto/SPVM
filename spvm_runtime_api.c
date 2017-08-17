@@ -190,19 +190,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_BYTE;
   
-  // Set reference count
-  object->ref_count = 0;
-  
   // Set array length
   object->length = length;
-
-  // Weaken back references
-  object->weaken_back_refs = NULL;
   
-  // Weaken back references count
-  object->weaken_back_refs_length = 0;
-  
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, (SPVM_OBJECT*)object));
+  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
 }
@@ -223,18 +214,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_SHORT;
-  
-  // Set reference count
-  object->ref_count = 0;
-  
+
   // Set array length
   object->length = length;
-
-  // Weaken back references
-  object->weaken_back_refs = NULL;
-
-  // Weaken back references count
-  object->weaken_back_refs_length = 0;
 
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
 
@@ -257,20 +239,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_INT;
   
-  // Set reference count
-  object->ref_count = 0;
-  
   // Set array length
   object->length = length;
-
-  // Weaken back references
-  object->weaken_back_refs = NULL;
-
-  // Weaken back references count
-  object->weaken_back_refs_length = 0;
-
+  
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-
+  
   return object;
 }
 
@@ -290,20 +263,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_LONG;
   
-  // Set reference count
-  object->ref_count = 0;
-  
   // Set array length
   object->length = length;
-
-  // Weaken back references
-  object->weaken_back_refs = NULL;
-
-  // Weaken back references count
-  object->weaken_back_refs_length = 0;
-
+  
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-
+  
   return object;
 }
 
@@ -323,20 +287,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_FLOAT;
   
-  // Set reference count
-  object->ref_count = 0;
-  
   // Set array length
   object->length = length;
-
-  // Weaken back references
-  object->weaken_back_refs = NULL;
-
-  // Weaken back references count
-  object->weaken_back_refs_length = 0;
-
+  
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-
+  
   return object;
 }
 
@@ -356,20 +311,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_DOUBLE;
   
-  // Set reference count
-  object->ref_count = 0;
-  
   // Set array length
   object->length = length;
   
-  // Weaken back references
-  object->weaken_back_refs = NULL;
-
-  // Weaken back references count
-  object->weaken_back_refs_length = 0;
-
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-
+  
   return object;
 }
 
@@ -392,17 +338,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t length) {
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_OBJECT;
   
-  // Set reference count
-  object->ref_count = 0;
-  
   // Set array length
   object->length = length;
-
-  // Weaken back references
-  object->weaken_back_refs = NULL;
-
-  // Weaken back references count
-  object->weaken_back_refs_length = 0;
 
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
 
@@ -423,26 +360,14 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_constant
   int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)sizeof(SPVM_VALUE) * (int64_t)length;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
   
-  // Initialize fields by 0
-  memset(object, 0, object_byte_size);
-  
   // Set type
   object->type = SPVM_OBJECT_C_TYPE_OBJECT;
   
-  // Set reference count
-  object->ref_count = 0;
-  
   // Package constant pool index
   object->package_constant_pool_index = package_constant_pool_index;
-
-  // Weaken back references
-  object->weaken_back_refs = NULL;
-
-  // Weaken back references count
-  object->weaken_back_refs_length = 0;
   
   assert(object_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-
+  
   return object;
 }
 
@@ -592,7 +517,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
         SPVM_RUNTIME_API_free_weaken_back_refs(api, object->weaken_back_refs, object->weaken_back_refs_length);
       }
       
-      SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, (SPVM_OBJECT*)object);
+      SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, object);
     }
   }
 }

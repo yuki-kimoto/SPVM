@@ -1,3 +1,5 @@
+0.0246 2017-08-17
+  - array element is initialized by zero.
 0.0245 2017-08-16
   - fix get object byte field bug
   - fix set object byte field bug
