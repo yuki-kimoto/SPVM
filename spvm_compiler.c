@@ -73,6 +73,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->cur_file = NULL;
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->cur_template_args = NULL;
+  
+  compiler->native_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
   compiler->enum_default_value = 0;
   compiler->enum_default_type_id = SPVM_TYPE_C_ID_INT;

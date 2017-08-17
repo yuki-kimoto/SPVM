@@ -29,6 +29,7 @@ our @PACKAGE_INFOS;
 our %PACKAGE_SYMTABLE;
 our %FIELD_SYMTABLE;
 our %SUB_SYMTABLE;
+our @NATIVE_SUB_NAMES;
 our $API;
 our @TYPE_NAMES;
 our %TYPE_SYMTABLE;
@@ -454,7 +455,11 @@ L<SPVM::Document::PerlAPI> - API to exchange Perl value to SPVM value.
 
 =item 3
 
-L<SPVM::Document::Specification> - SPVM Specification
+L<SPVM::Document::Spec> - SPVM Specification
+
+=item 4
+
+L<SPVM::Document::FAQ> - SPVM Specification
 
 =back
 

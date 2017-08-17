@@ -99,6 +99,9 @@ struct SPVM_compiler {
   // Subroutine length
   int32_t subs_length;
   
+  // Native subroutines
+  SPVM_DYNAMIC_ARRAY* native_subs;
+  
   // Error is fatal
   _Bool fatal_error;
   
