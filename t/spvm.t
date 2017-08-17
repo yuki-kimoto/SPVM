@@ -123,6 +123,7 @@ my $start_objects_count = SPVM::get_objects_count();
 # Array default
 {
   ok(SPVM::TestCase::array_default_zero_memory_pool());
+  ok(SPVM::TestCase::array_default_zero_not_memory_pool());
 }
 
 # Array initialization
