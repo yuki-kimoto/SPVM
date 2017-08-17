@@ -61,9 +61,10 @@ CHECK {
   # Compile SPVM source code
   compile();
   
+  require DynaLoader;
   my $dll_file = _get_dll_file(__PACKAGE__);
-  
-  # my $spvm_dll = DynaLoader::dl_load_file(
+  my $dll_libref = DynaLoader::dl_load_file($dll_file);
+  my $dll_symref = DynaLoader::dl_find_symbol($dll_libref, 'SPVM__stdout__sum_int');
   
   # Build type names
   build_type_names();
