@@ -1,8 +1,7 @@
-#include <assert.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <inttypes.h>
+#ifndef SPVM_CORE_FUNC_H
+#define SPVM_CORE_FUNC_H
 
+#include "spvm_base.h"
 #include "spvm_api.h"
 
 int32_t SPVM__stdout__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
@@ -170,3 +169,5 @@ void SPVM__stdout__print_double(SPVM_API* api, SPVM_API_VALUE* args) {
   
   printf("%f", value);
 }
+
+#endif
