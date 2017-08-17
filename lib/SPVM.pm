@@ -4,6 +4,8 @@ use 5.008007;
 use strict;
 use warnings;
 
+use Config;
+
 use SPVM::BaseObject;
 use SPVM::Object;
 use SPVM::Array;
@@ -31,6 +33,26 @@ our $API;
 our @TYPE_NAMES;
 our %TYPE_SYMTABLE;
 
+sub _get_dll_file {
+  my $module = shift;
+  
+  # DLL file name
+  my $dlext = $Config{dlext};
+  my $dll_base_name = __PACKAGE__ . ".$dlext";
+  $dll_base_name =~ s/^.*:://;
+  my $dll_file_tail = 'auto/' . __PACKAGE__ . '/' . $dll_base_name;
+  $dll_file_tail =~ s/::/\//g;
+  my $dll_file;
+  for my $dl_shared_object (@DynaLoader::dl_shared_objects) {
+    if ($dl_shared_object =~ /\Q$dll_file_tail\E$/) {
+      $dll_file = $dl_shared_object;
+      last;
+    }
+  }
+  
+  return $dll_file;
+}
+
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
   require XSLoader;
@@ -38,6 +60,10 @@ CHECK {
   
   # Compile SPVM source code
   compile();
+  
+  my $dll_file = _get_dll_file(__PACKAGE__);
+  
+  # my $spvm_dll = DynaLoader::dl_load_file(
   
   # Build type names
   build_type_names();
@@ -63,7 +89,6 @@ CHECK {
   # Free compiler
   free_compiler();
 }
-
 sub new_string_raw {
   my $string = shift;
   
