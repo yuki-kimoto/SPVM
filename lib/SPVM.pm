@@ -33,6 +33,9 @@ our %TYPE_SYMTABLE;
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
+  require XSLoader;
+  XSLoader::load('SPVM', $VERSION);
+  
   # Compile SPVM source code
   compile();
   
@@ -275,8 +278,6 @@ sub build_spvm_subs {
   }
 }
 
-require XSLoader;
-XSLoader::load('SPVM', $VERSION);
 
 # Preloaded methods go here.
 
