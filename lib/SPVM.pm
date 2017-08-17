@@ -140,10 +140,10 @@ CHECK {
   build_native_sub_names();
   
   # Build native subroutine
-  # build_native_sub_symtable();
+  build_native_sub_symtable();
   
   # Bind native address
-  # bind_native_address();
+  bind_native_address();
 
   # Build package symbol table
   build_package_symtable();

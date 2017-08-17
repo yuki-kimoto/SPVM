@@ -798,7 +798,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           // Bind standard functions
           if (sub->is_native) {
             SPVM_DYNAMIC_ARRAY_push(compiler->native_subs, sub);
-            SPVM_EXTENTION_BIND_bind_core_extentions(compiler, sub, sub_abs_name);
           }
           
           sub->abs_name = sub_abs_name;
