@@ -30,6 +30,7 @@ our %PACKAGE_SYMTABLE;
 our %FIELD_SYMTABLE;
 our %SUB_SYMTABLE;
 our @NATIVE_SUB_NAMES;
+our %NATIVE_SUB_SYMTABLE;
 our $API;
 our @TYPE_NAMES;
 our %TYPE_SYMTABLE;
@@ -105,6 +106,17 @@ sub get_sub_native_address {
   return $native_address;
 }
 
+sub build_native_sub_symtable {
+  for my $native_sub_name (@NATIVE_SUB_NAMES) {
+    $native_sub_name = "SPVM::$native_sub_name";
+    my $native_address = get_sub_native_address($native_sub_name);
+    unless ($native_address) {
+      croak "Can't find native address($native_sub_name())";
+    }
+    $NATIVE_SUB_SYMTABLE{$native_sub_name} = $native_address;
+  }
+}
+
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
   require XSLoader;
@@ -126,6 +138,9 @@ CHECK {
   
   # Build native subroutine names
   build_native_sub_names();
+  
+  # Bind native subroutine
+  build_native_sub_symtable();
   
   # Build package symbol table
   build_package_symtable();
