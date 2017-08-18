@@ -13,7 +13,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
-use SPVM 'stdout'; my $use_std_line = __LINE__;
+use SPVM 'std'; my $use_std_line = __LINE__;
 
 use POSIX ();
 
@@ -34,7 +34,7 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 my $FLOAT_PRECICE = 16384.0;
 my $DOUBLE_PRECICE = 65536.0;
 
-use SPVM::stdout;
+use SPVM::std;
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
@@ -42,7 +42,7 @@ my $start_objects_count = SPVM::get_objects_count();
 # Native subroutine
 {
   my $nums = SPVM::new_int_array([1, 2, 3]);
-  my $total = SPVM::stdout::sum_int($nums);
+  my $total = SPVM::std::sum_int($nums);
   is($total, 6);
 }
 
@@ -196,7 +196,7 @@ is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
     {name => 'TestCase', file => $file, line => $use_test_line},
-    {name => 'stdout', file => $file, line => $use_std_line}
+    {name => 'std', file => $file, line => $use_std_line}
   ]
 );
 

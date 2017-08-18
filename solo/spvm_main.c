@@ -56,53 +56,53 @@ int main(int argc, char *argv[])
       SPVM_CONSTANT_POOL_SUB constant_pool_sub;
       memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
       
-      if (strcmp(sub_abs_name, "stdout::println_byte") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__println_byte;
+      if (strcmp(sub_abs_name, "std::println_byte") == 0) {
+        constant_pool_sub.native_address = SPVM__std__println_byte;
       }
-      else if (strcmp(sub_abs_name, "stdout::println_short") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__println_short;
+      else if (strcmp(sub_abs_name, "std::println_short") == 0) {
+        constant_pool_sub.native_address = SPVM__std__println_short;
       }
-      else if (strcmp(sub_abs_name, "stdout::println_int") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__println_int;
+      else if (strcmp(sub_abs_name, "std::println_int") == 0) {
+        constant_pool_sub.native_address = SPVM__std__println_int;
       }
-      else if (strcmp(sub_abs_name, "stdout::println_long") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__println_long;
+      else if (strcmp(sub_abs_name, "std::println_long") == 0) {
+        constant_pool_sub.native_address = SPVM__std__println_long;
       }
-      else if (strcmp(sub_abs_name, "stdout::println_float") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__println_float;
+      else if (strcmp(sub_abs_name, "std::println_float") == 0) {
+        constant_pool_sub.native_address = SPVM__std__println_float;
       }
-      else if (strcmp(sub_abs_name, "stdout::println_double") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__println_double;
+      else if (strcmp(sub_abs_name, "std::println_double") == 0) {
+        constant_pool_sub.native_address = SPVM__std__println_double;
       }
-      else if (strcmp(sub_abs_name, "stdout::print_byte") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__print_byte;
+      else if (strcmp(sub_abs_name, "std::print_byte") == 0) {
+        constant_pool_sub.native_address = SPVM__std__print_byte;
       }
-      else if (strcmp(sub_abs_name, "stdout::print_short") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__print_short;
+      else if (strcmp(sub_abs_name, "std::print_short") == 0) {
+        constant_pool_sub.native_address = SPVM__std__print_short;
       }
-      else if (strcmp(sub_abs_name, "stdout::print_int") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__print_int;
+      else if (strcmp(sub_abs_name, "std::print_int") == 0) {
+        constant_pool_sub.native_address = SPVM__std__print_int;
       }
-      else if (strcmp(sub_abs_name, "stdout::print_long") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__print_long;
+      else if (strcmp(sub_abs_name, "std::print_long") == 0) {
+        constant_pool_sub.native_address = SPVM__std__print_long;
       }
-      else if (strcmp(sub_abs_name, "stdout::print_float") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__print_float;
+      else if (strcmp(sub_abs_name, "std::print_float") == 0) {
+        constant_pool_sub.native_address = SPVM__std__print_float;
       }
-      else if (strcmp(sub_abs_name, "stdout::print_double") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__print_double;
+      else if (strcmp(sub_abs_name, "std::print_double") == 0) {
+        constant_pool_sub.native_address = SPVM__std__print_double;
       }
-      else if (strcmp(sub_abs_name, "stdout::println") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__println;
+      else if (strcmp(sub_abs_name, "std::println") == 0) {
+        constant_pool_sub.native_address = SPVM__std__println;
       }
-      else if (strcmp(sub_abs_name, "stdout::sum_int") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__sum_int;
+      else if (strcmp(sub_abs_name, "std::sum_int") == 0) {
+        constant_pool_sub.native_address = SPVM__std__sum_int;
       }
-      else if (strcmp(sub_abs_name, "stdout::test1") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__test1;
+      else if (strcmp(sub_abs_name, "std::test1") == 0) {
+        constant_pool_sub.native_address = SPVM__std__test1;
       }
-      else if (strcmp(sub_abs_name, "stdout::test2") == 0) {
-        constant_pool_sub.native_address = SPVM__stdout__test2;
+      else if (strcmp(sub_abs_name, "std::test2") == 0) {
+        constant_pool_sub.native_address = SPVM__std__test2;
       }
       memcpy(&compiler->constant_pool->values[sub_id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
     }

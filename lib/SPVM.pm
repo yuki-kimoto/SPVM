@@ -125,7 +125,7 @@ CHECK {
   # Compile SPVM source code
   compile();
   
-  my $sub_native_address = get_sub_native_address('SPVM::stdout::sum_int');
+  my $sub_native_address = get_sub_native_address('SPVM::std::sum_int');
   
   # Build type names
   build_type_names();

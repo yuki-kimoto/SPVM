@@ -1,4 +1,4 @@
-package stdout {
+package std {
   sub println_byte ($value : byte) : native void;
   sub println_short ($value : short) : native void;
   sub println_int ($value : int) : native void;

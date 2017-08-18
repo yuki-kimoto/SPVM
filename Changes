@@ -1,4 +1,6 @@
-0.0247 2017-08-18
+0.0247 2017-08-19
+  - Sorry, rename back stdout to std
+    SPVM only have std package by default and automatically loaded without use std;
   - support dynamic link library
 0.0246 2017-08-17
   - array element is initialized by zero.
