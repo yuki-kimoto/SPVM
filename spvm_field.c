@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <string.h>
 
 #include "spvm_field.h"
 

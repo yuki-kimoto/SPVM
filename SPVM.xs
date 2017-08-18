@@ -6,6 +6,7 @@
 
 #include <stdint.h>
 #include <assert.h>
+#include <string.h>
 
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
