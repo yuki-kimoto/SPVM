@@ -52,7 +52,7 @@ You can use specifier to specify number leteral type
   # Float
   123f
 
-=tem * d
+=item * d
 
   # Double
   123d
