@@ -1476,7 +1476,7 @@ call_sub(...)
   SV** sv_arg_type_ids_ptr = hv_fetch(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), 0);
   SV* sv_arg_type_ids = *sv_arg_type_ids_ptr;
   AV* av_arg_type_ids = (AV*)SvRV(sv_arg_type_ids);
-  int32_t args_length = av_len(av_arg_type_ids) + 1;
+  int32_t args_length = constant_pool_sub.args_length;
   
   // Return type id
   int32_t return_type_id = constant_pool_sub.return_type_id;
