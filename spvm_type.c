@@ -168,6 +168,23 @@ _Bool SPVM_TYPE_resolve_name(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   return 1;
 }
 
+// Create array name
+char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* base_name) {
+  
+  int32_t base_name_length = strlen(base_name);
+  int32_t name_length = base_name_length + 2;
+  char* type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, name_length);
+  
+  int32_t cur_pos = 0;
+  memcpy(type_name, base_name, base_name_length);
+  type_name[base_name_length] = '[';
+  type_name[base_name_length + 1] = ']';
+  cur_pos += 2;
+  type_name[name_length] = '\0';
+  
+  return type_name;
+}
+
 // Resolve type id
 _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
