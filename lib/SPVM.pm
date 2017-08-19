@@ -28,7 +28,6 @@ our $COMPILER;
 our @PACKAGE_INFOS;
 our %PACKAGE_SYMTABLE;
 our %FIELD_SYMTABLE;
-our %SUB_SYMTABLE;
 our @NATIVE_SUB_NAMES;
 our %NATIVE_SUB_SYMTABLE;
 our $API;
@@ -132,9 +131,6 @@ CHECK {
   
   # Build type names
   build_type_symtable();
-  
-  # Build subroutine symbol table
-  build_sub_symtable();
   
   # Build native subroutine names
   build_native_sub_names();
