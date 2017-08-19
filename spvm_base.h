@@ -16,6 +16,10 @@ typedef struct SPVM_constant_pool_field SPVM_CONSTANT_POOL_FIELD;
 struct SPVM_constant_pool_package;
 typedef struct SPVM_constant_pool_package SPVM_CONSTANT_POOL_PACKAGE;
 
+// spvm_constant_pool_package.h
+struct SPVM_constant_pool_type;
+typedef struct SPVM_constant_pool_type SPVM_CONSTANT_POOL_TYPE;
+
 // spvm_object.h
 struct SPVM_object;
 typedef struct SPVM_object SPVM_OBJECT;
