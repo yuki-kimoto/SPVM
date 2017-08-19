@@ -67,7 +67,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   
   // Create array of weaken_back_refs if need
   if (object->weaken_back_refs == NULL) {
-    object->weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, 1);
+    object->weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, SPVM_TYPE_C_ID_VOID, 1);
     object->weaken_back_refs->ref_count++;
   }
   
@@ -79,7 +79,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   if (length == capacity) {
     
     int32_t new_capacity = capacity * 2;
-    SPVM_OBJECT* new_weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, new_capacity);
+    SPVM_OBJECT* new_weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, SPVM_TYPE_C_ID_VOID, new_capacity);
     new_weaken_back_refs->ref_count++;
     
     SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->weaken_back_refs + sizeof(SPVM_OBJECT));
@@ -401,7 +401,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   }
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_type_id, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -409,7 +409,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t length) {
   // alloc length + 1. Last value is 0
   int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)(length + 1) * (int64_t)sizeof(SPVM_OBJECT*);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
-
+  
   // Memory allocation error
   if (__builtin_expect(object == NULL, 0)) {
     // Error message

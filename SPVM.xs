@@ -881,7 +881,7 @@ new(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_OBJECT* array =  api->new_object_array(api, length);
+  SPVM_API_OBJECT* array =  api->new_object_array(api, 0, length);
   
   // Fix type name(int[] -> int[][]);
   sv_catpv(sv_type_name, "[]");
