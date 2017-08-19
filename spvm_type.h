@@ -43,6 +43,8 @@ struct SPVM_type {
   int32_t id;
   SPVM_TYPE* base_type;
   int32_t base_id;
+  SPVM_TYPE* child_type;
+  SPVM_TYPE* parent_type;
   int32_t dimension;
 };
 
