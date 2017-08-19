@@ -890,14 +890,14 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
   
   int32_t* constant_pool = runtime->constant_pool;
   int32_t length = runtime->subs_length;
-  int32_t sub_indexes_constant_pool_index = runtime-> sub_indexes_constant_pool_index;
+  int32_t subs_base = runtime->subs_base;
   
   int32_t found_sub_constant_pool_index = SPVM_API_ERROR_NO_ID;
   _Bool found = 0;
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      int32_t sub_constant_pool_index = constant_pool[sub_indexes_constant_pool_index + i];
+      int32_t sub_constant_pool_index = constant_pool[subs_base + i];
       SPVM_CONSTANT_POOL_SUB constant_pool_sub;
       memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
       
@@ -927,14 +927,14 @@ int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
   
   int32_t* constant_pool = runtime->constant_pool;
   int32_t length = runtime->packages_length;
-  int32_t package_indexes_constant_pool_index = runtime-> package_indexes_constant_pool_index;
+  int32_t packages_base = runtime-> packages_base;
   
   int32_t found_package_constant_pool_index = SPVM_API_ERROR_NO_ID;
   _Bool found = 0;
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      int32_t package_constant_pool_index = constant_pool[package_indexes_constant_pool_index + i];
+      int32_t package_constant_pool_index = constant_pool[packages_base + i];
       SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
       memcpy(&constant_pool_package, &constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
       

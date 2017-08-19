@@ -103,13 +103,13 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   runtime->packages_length = 0;
   
   // Indexes of package
-  runtime->package_indexes_constant_pool_index = -1;
+  runtime->packages_base = -1;
   
   // Subroutines length
   runtime->subs_length = 0;
   
   // Indexes of package
-  runtime->sub_indexes_constant_pool_index = -1;
+  runtime->subs_base = -1;
   
   // Exception
   runtime->exception = NULL;

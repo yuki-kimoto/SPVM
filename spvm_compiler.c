@@ -40,9 +40,9 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   runtime->packages_length = op_packages->length;
   
-  runtime->package_indexes_constant_pool_index = compiler->package_indexes_constant_pool_index;
+  runtime->packages_base = compiler->package_indexes_constant_pool_index;
   
-  runtime->sub_indexes_constant_pool_index = compiler->sub_indexes_constant_pool_index;
+  runtime->subs_base = compiler->sub_indexes_constant_pool_index;
   
   runtime->subs_length = compiler->subs_length;
   
