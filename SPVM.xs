@@ -1156,27 +1156,35 @@ SV*
 get_native_sub_names(...)
   PPCODE:
 {
-  // Get compiler
-  SPVM_COMPILER* compiler = SPVM_XS_UTIL_get_compiler();
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Native subroutine names
-  AV* av_native_sub_names = (AV*)sv_2mortal((SV*)newAV());
-  SPVM_DYNAMIC_ARRAY* native_subs = compiler->native_subs;
+  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  
+  int32_t subs_base = runtime->subs_base;
+  int32_t subs_length = runtime->subs_length;
+  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
+  
   {
-    int32_t native_sub_index;
-    for (native_sub_index = 0; native_sub_index < native_subs->length; native_sub_index++) {
-      SPVM_SUB* native_sub = SPVM_DYNAMIC_ARRAY_fetch(native_subs, native_sub_index);
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < subs_length; sub_index++) {
+      int32_t sub_id = runtime->constant_pool[subs_base + sub_index];
       
-      const char* native_sub_name = native_sub->abs_name;
-      SV* sv_native_sub_name = sv_2mortal(newSVpv(native_sub_name, 0));
-      
-      av_push(av_native_sub_names, SvREFCNT_inc(sv_native_sub_name));
+      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+      if (constant_pool_sub->is_native) {
+        int32_t sub_name_id = constant_pool_sub->abs_name_id;
+        int32_t sub_name_length = runtime->constant_pool[sub_name_id];
+        const char* sub_name = (char*)&runtime->constant_pool[sub_name_id + 1];
+        
+        SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, sub_name_length));
+        av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+      }
     }
   }
   
-  SV* sv_native_sub_names = sv_2mortal(newRV_inc((SV*)av_native_sub_names));
+  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
   
-  XPUSHs(sv_native_sub_names);
+  XPUSHs(sv_sub_names);
   XSRETURN(1);
 }
 
