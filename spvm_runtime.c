@@ -445,7 +445,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
   SPVM_OBJECT* array = NULL;
   SPVM_OBJECT* array_exception = NULL;
   SPVM_OBJECT* object = NULL;
-  SPVM_CONSTANT_POOL_SUB constant_pool_sub;
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub;
   int32_t index;
   register int32_t success;
   int32_t current_line = 0;
@@ -460,10 +460,10 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     sub_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
     CALLSUB_COMMON:
-      memcpy(&constant_pool_sub, &constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
+      constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
 
       // Extend call stack(current size + 2(return address + call stack base before) + lexical variable area + operand_stack area)
-      int32_t call_stack_max = operand_stack_top + 2 + constant_pool_sub.my_vars_length + constant_pool_sub.operand_stack_max;
+      int32_t call_stack_max = operand_stack_top + 2 + constant_pool_sub->my_vars_length + constant_pool_sub->operand_stack_max;
       
       while (call_stack_max > runtime->call_stack_capacity) {
         int32_t new_call_stack_capacity = runtime->call_stack_capacity * 2;
@@ -477,10 +477,10 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
         runtime->call_stack_capacity = new_call_stack_capacity;
       }
 
-      operand_stack_top -= constant_pool_sub.args_length;
+      operand_stack_top -= constant_pool_sub->args_length;
 
       // Prepare arguments
-      memmove(&call_stack[operand_stack_top + 4], &call_stack[operand_stack_top + 1], constant_pool_sub.args_length * sizeof(SPVM_VALUE));
+      memmove(&call_stack[operand_stack_top + 4], &call_stack[operand_stack_top + 1], constant_pool_sub->args_length * sizeof(SPVM_VALUE));
       
       // Save return address(operand + (throw or goto exception handler))
       if (call_stack_base == call_stack_base_start) {
@@ -501,9 +501,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
       call_stack_base = operand_stack_top + 4;
 
       // If arg is object, increment reference count
-      if (constant_pool_sub.object_args_length) {
-        int32_t object_args_base = constant_pool_sub.object_args_base;
-        int32_t object_args_length = constant_pool_sub.object_args_length;
+      if (constant_pool_sub->object_args_length) {
+        int32_t object_args_base = constant_pool_sub->object_args_base;
+        int32_t object_args_length = constant_pool_sub->object_args_length;
         {
           int32_t i;
           for (i = 0; i < object_args_length; i++) {
@@ -517,26 +517,26 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
       }
       
       // Initialize my variables
-      if (constant_pool_sub.my_vars_length > 0) {
-        memset(&call_stack[call_stack_base + constant_pool_sub.args_length], 0, (constant_pool_sub.my_vars_length - constant_pool_sub.args_length) * sizeof(SPVM_VALUE));
+      if (constant_pool_sub->my_vars_length > 0) {
+        memset(&call_stack[call_stack_base + constant_pool_sub->args_length], 0, (constant_pool_sub->my_vars_length - constant_pool_sub->args_length) * sizeof(SPVM_VALUE));
       }
       
       // Set variables to local variable
       vars = &call_stack[call_stack_base];
       
       // Set operant stack top
-      operand_stack_top = call_stack_base + constant_pool_sub.my_vars_length - 1;
+      operand_stack_top = call_stack_base + constant_pool_sub->my_vars_length - 1;
       
       // Call native sub
-      if (constant_pool_sub.is_native) {
+      if (constant_pool_sub->is_native) {
         // Set runtimeironment
         runtime->operand_stack_top = operand_stack_top;
         runtime->call_stack_base = call_stack_base;
         
         // Call native subroutine
-        switch (constant_pool_sub.return_type_id) {
+        switch (constant_pool_sub->return_type_id) {
           case SPVM_TYPE_C_ID_VOID: {
-            void (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
+            void (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
             SPVM_RUNTIME_API_set_exception(api, NULL);
             (*native_address)(api, vars);
             
@@ -553,7 +553,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
             break;
           }
           case SPVM_TYPE_C_ID_BYTE: {
-            int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
+            int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
             SPVM_RUNTIME_API_set_exception(api, NULL);
             int8_t return_value = (*native_address)(api, vars);
 
@@ -572,7 +572,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
             break;
           }
           case SPVM_TYPE_C_ID_SHORT: {
-            int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
+            int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
             SPVM_RUNTIME_API_set_exception(api, NULL);
             int16_t return_value = (*native_address)(api, vars);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
@@ -589,7 +589,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
             break;
           }
           case SPVM_TYPE_C_ID_INT: {
-            int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
+            int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
             int32_t return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
@@ -606,7 +606,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
             break;
           }
           case SPVM_TYPE_C_ID_FLOAT: {
-            float (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
+            float (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
             float return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
@@ -623,7 +623,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
             break;
           }
           case SPVM_TYPE_C_ID_DOUBLE: {
-            double (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
+            double (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
             double return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
@@ -640,7 +640,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
             break;
           }
           default: {
-            SPVM_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub.native_address;
+            SPVM_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
             SPVM_OBJECT* return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
@@ -659,7 +659,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
       }
       // Call normal sub
       else {
-        pc = &bytecodes[constant_pool_sub.bytecode_base];
+        pc = &bytecodes[constant_pool_sub->bytecode_base];
       }
       goto *jump[*pc];
   }
@@ -683,9 +683,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     sub_id = call_stack[call_stack_base - 2].int_value;
     
     // Decrement object my vars reference count
-    memcpy(&constant_pool_sub, &constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
-    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_vars_base = constant_pool_sub.object_my_vars_base;
+    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+    int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
+    int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
     if (object_my_vars_length) {
       {
         int32_t i;
@@ -742,9 +742,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     }
     
     // Decrement object my vars reference count
-    memcpy(&constant_pool_sub, &constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
-    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_vars_base = constant_pool_sub.object_my_vars_base;
+    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+    int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
+    int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
     if (object_my_vars_length) {
       {
         int32_t i;
@@ -797,9 +797,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     sub_id = call_stack[call_stack_base - 2].int_value;
 
     // Decrement object my vars reference count
-    memcpy(&constant_pool_sub, &constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
-    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_vars_base = constant_pool_sub.object_my_vars_base;
+    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+    int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
+    int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
     if (object_my_vars_length) {
       {
         int32_t i;
@@ -859,9 +859,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     sub_id = call_stack[call_stack_base - 2].int_value;
     
     // Decrement object my vars reference count
-    memcpy(&constant_pool_sub, &constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
-    int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_vars_base = constant_pool_sub.object_my_vars_base;
+    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+    int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
+    int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
     if (object_my_vars_length) {
       {
         int32_t i;
@@ -877,14 +877,14 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     }
     
     // Get constant pool sub
-    memcpy(&constant_pool_sub, &constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
+    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     
     // Sub name
-    int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_id;
+    int32_t sub_name_constant_pool_index = constant_pool_sub->abs_name_id;
     const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
     
     // File name
-    int32_t file_name_id = constant_pool_sub.file_name_id;
+    int32_t file_name_id = constant_pool_sub->file_name_id;
     const char* file_name = (char*)&constant_pool[file_name_id + 1];
     
     // stack trace strings
@@ -2218,11 +2218,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     // Memory allocation error
     if (__builtin_expect(!object, 0)) {
       // Sub name
-      index = constant_pool_sub.abs_name_id;
+      index = constant_pool_sub->abs_name_id;
       const char* sub_name = (char*)&constant_pool[index + 1];
       
       // File name
-      index = constant_pool_sub.file_name_id;
+      index = constant_pool_sub->file_name_id;
       const char* file_name = (char*)&constant_pool[index + 1];
       
       fprintf(stderr, "Failed to allocate memory(new package) from %s at %s\n", sub_name, file_name);
@@ -2384,11 +2384,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     // Memory allocation error
     else {
       // Sub name
-      index = constant_pool_sub.abs_name_id;
+      index = constant_pool_sub->abs_name_id;
       const char* sub_name = (char*)&constant_pool[index + 1];
       
       // File name
-      index = constant_pool_sub.file_name_id;
+      index = constant_pool_sub->file_name_id;
       const char* file_name = (char*)&constant_pool[index + 1];
       
       fprintf(stderr, "Failed to allocate memory(new string) from %s at %s\n", sub_name, file_name);
