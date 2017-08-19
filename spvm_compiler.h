@@ -92,6 +92,9 @@ struct SPVM_compiler {
   
   // Package indexes constant pool index
   int32_t package_indexes_constant_pool_index;
+
+  // Type indexes constant pool index
+  int32_t type_indexes_constant_pool_index;
   
   // Subroutine indexes constant pool index
   int32_t sub_indexes_constant_pool_index;

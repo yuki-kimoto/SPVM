@@ -1730,19 +1730,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   }
   
   // Create package indexes
-  compiler->package_indexes_constant_pool_index = compiler->constant_pool->length;
   {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
       int32_t package_constant_pool_index = op_package->uv.package->constant_pool_index;
       
-      SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_constant_pool_index);
+      int32_t added_index = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_constant_pool_index);
+      if (compiler->package_indexes_constant_pool_index < 0) {
+        compiler->package_indexes_constant_pool_index = added_index;
+      }
     }
   }
   
   // Create subroutine indexes
-  compiler->sub_indexes_constant_pool_index = compiler->constant_pool->length;
   compiler->subs_length = 0;
   {
     int32_t package_pos;
@@ -1758,8 +1759,23 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(package->op_subs, sub_pos);
           SPVM_SUB* sub = op_sub->uv.sub;
           int32_t sub_constant_pool_index = sub->constant_pool_index;
-          SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_constant_pool_index);
+          int32_t added_index = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_constant_pool_index);
+          if (compiler->sub_indexes_constant_pool_index < 0) {
+            compiler->sub_indexes_constant_pool_index = added_index;
+          }
         }
+      }
+    }
+  }
+  
+  // Push type information to constant_pool
+  {
+    int32_t i;
+    for (i = 0; i < compiler->types->length; i++) {
+      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
+      int32_t added_index = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
+      if (compiler->type_indexes_constant_pool_index < 0) {
+        compiler->type_indexes_constant_pool_index = added_index;
       }
     }
   }

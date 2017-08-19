@@ -110,6 +110,10 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   // Indexes of package
   runtime->subs_base = -1;
+
+  runtime->types_length = 0;
+  
+  runtime->types_base = -1;
   
   // Exception
   runtime->exception = NULL;

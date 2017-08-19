@@ -45,6 +45,12 @@ struct SPVM_runtime {
   // Subroutine base
   int32_t subs_base;
   
+  // Subroutines length
+  int32_t types_length;
+  
+  // Subroutine base
+  int32_t types_base;
+  
   int32_t objects_count;
   
   int32_t debug;
