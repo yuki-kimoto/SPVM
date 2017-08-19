@@ -410,6 +410,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_WIDE,
     &&case_SPVM_BYTECODE_C_CODE_CURRENT_LINE,
     &&case_SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT,
+    &&case_SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY,
   };
   
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
@@ -2229,6 +2230,28 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     
     pc += 5;
     goto *jump[*pc];
+  case_SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY: {
+    
+    // length
+    int32_t length = call_stack[operand_stack_top].int_value;
+    
+    array = SPVM_RUNTIME_API_new_byte_array(api, length);
+    
+    // Memory allocation error
+    if (__builtin_expect(array == NULL, 0)) {
+      // Error message
+      array_exception = SPVM_RUNTIME_API_new_byte_array_from_pv(api, "Failed to allocate memory(new array)");
+      SPVM_RUNTIME_API_set_exception(api, array_exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      // Set array
+      call_stack[operand_stack_top].object_value = array;
+      
+      pc++;
+      goto *jump[*pc];
+    }
+  }
   case_SPVM_BYTECODE_C_CODE_NEW_ARRAY: {
     int32_t value_type = *(pc + 1);
     

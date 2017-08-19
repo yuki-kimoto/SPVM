@@ -1101,8 +1101,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       if (SPVM_TYPE_is_array(compiler, type)) {
                         switch (type->id) {
                           case SPVM_TYPE_C_ID_BYTE_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_BYTE);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY);
                             break;
                           case SPVM_TYPE_C_ID_SHORT_ARRAY:
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
