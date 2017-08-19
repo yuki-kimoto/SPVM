@@ -186,13 +186,12 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
       type->id = found_type->id;
     }
     else {
+      type->id = compiler->types->length;
+      
       SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
-      new_type->id = compiler->types->length;
-      new_type->name = type->name;
+      memcpy(new_type, type, sizeof(SPVM_TYPE));
       SPVM_DYNAMIC_ARRAY_push(compiler->types, new_type);
       SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
-      
-      type->id = new_type->id;
     }
   }
   

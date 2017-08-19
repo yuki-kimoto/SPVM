@@ -40,7 +40,7 @@ extern const char* const SPVM_TYPE_C_ID_NAMES[];
 struct SPVM_type {
   const char* name;
   int32_t id;
-  int32_t element_type_id;
+  int32_t element_id;
   int32_t is_array;
 };
 
