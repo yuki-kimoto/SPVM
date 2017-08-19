@@ -1661,6 +1661,7 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   type->base_name = op_type_child->uv.type->base_name;
   type->base_id = op_type_child->uv.type->base_id;
   type->dimension = op_type_child->uv.type->dimension + 1;
+  type->name = SPVM_TYPE_create_array_name(compiler, op_type_child->uv.type->name);
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type_child->file, op_type_child->line);
@@ -1679,8 +1680,6 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   op_type->line = op_type_child->line;
   
   SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type);
-  
-  SPVM_TYPE_resolve_name(compiler, op_type);
   
   return op_type;
 }
