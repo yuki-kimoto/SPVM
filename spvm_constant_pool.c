@@ -123,6 +123,17 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   
   // Add length
   constant_pool->length += extend_length;
+
+  // Arg type ids
+  constant_pool_sub.arg_type_ids_base = constant_pool->length;
+  {
+    int32_t i;
+    for (i = 0; i < sub->op_args->length; i++) {
+      SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
+      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, arg_type->id);
+    }
+  }
   
   // Object args length
   int32_t object_args_length = 0;
