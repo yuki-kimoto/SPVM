@@ -2355,45 +2355,19 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    switch(value_type) {
-      case SPVM_OBJECT_C_VALUE_TYPE_BYTE:
-        array = SPVM_RUNTIME_API_new_byte_array(api, length);
-        break;
-      case SPVM_OBJECT_C_VALUE_TYPE_SHORT:
-        array = SPVM_RUNTIME_API_new_short_array(api, length);
-        break;
-      case SPVM_OBJECT_C_VALUE_TYPE_INT:
-        array = SPVM_RUNTIME_API_new_int_array(api, length);
-        break;
-      case SPVM_OBJECT_C_VALUE_TYPE_LONG:
-        array = SPVM_RUNTIME_API_new_long_array(api, length);
-        break;
-      case SPVM_OBJECT_C_VALUE_TYPE_FLOAT:
-        array = SPVM_RUNTIME_API_new_float_array(api, length);
-        break;
-      case SPVM_OBJECT_C_VALUE_TYPE_DOUBLE:
-        array = SPVM_RUNTIME_API_new_double_array(api, length);
-        break;
-      case SPVM_OBJECT_C_VALUE_TYPE_OBJECT:
-        array = SPVM_RUNTIME_API_new_object_array(api, length);
-        break;
-      default:
-        assert(0);
-    }
+    object = SPVM_RUNTIME_API_new_object_array(api, length);
     
-    // Memory allocation error
-    if (!array) {
-      // Error message
-      array_exception = SPVM_RUNTIME_API_new_string(api, "Failed to allocate memory(new array)");
-      SPVM_RUNTIME_API_set_exception(api, array_exception);
+    if (__builtin_expect(object == NULL, 0)) {
+      // Throw exception
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
-    
-    // Set array
-    call_stack[operand_stack_top].object_value = (SPVM_OBJECT*)array;
-    
-    pc += 2;
-    goto *jump[*pc];
+    else {
+      // Set array
+      call_stack[operand_stack_top].object_value = object;
+      
+      pc += 2;
+      goto *jump[*pc];
+    }
   }
   case_SPVM_BYTECODE_C_CODE_NEW_STRING:
     index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);

@@ -191,24 +191,25 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
     SPVM_RUNTIME_API_set_exception(api, exception);
     return NULL;
   }
-  
-  ((int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
-  
-  // Array
-  object->is_array = 1;
-  
-  // Set type id
-  object->type_id = SPVM_TYPE_C_ID_BYTE;
-  
-  // Set value type
-  object->value_type = SPVM_OBJECT_C_VALUE_TYPE_BYTE;
-  
-  // Set array length
-  object->length = length;
-  
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-  
-  return object;
+  else {
+    ((int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
+    
+    // Array
+    object->is_array = 1;
+    
+    // Set type id
+    object->type_id = SPVM_TYPE_C_ID_BYTE;
+    
+    // Set value type
+    object->value_type = SPVM_OBJECT_C_VALUE_TYPE_BYTE;
+    
+    // Set array length
+    object->length = length;
+    
+    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
+    
+    return object;
+  }
 }
 
 
@@ -228,24 +229,26 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
     SPVM_RUNTIME_API_set_exception(api, exception);
     return NULL;
   }
-  
-  ((int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
-  
-  // Array
-  object->is_array = 1;
-  
-  // Set type id
-  object->type_id = SPVM_TYPE_C_ID_SHORT;
-  
-  // Set value type
-  object->value_type = SPVM_OBJECT_C_VALUE_TYPE_SHORT;
+  else {
+    
+    ((int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
+    
+    // Array
+    object->is_array = 1;
+    
+    // Set type id
+    object->type_id = SPVM_TYPE_C_ID_SHORT;
+    
+    // Set value type
+    object->value_type = SPVM_OBJECT_C_VALUE_TYPE_SHORT;
 
-  // Set array length
-  object->length = length;
+    // Set array length
+    object->length = length;
 
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
+    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
 
-  return object;
+    return object;
+  }
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
@@ -264,24 +267,26 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
     SPVM_RUNTIME_API_set_exception(api, exception);
     return NULL;
   }
-  
-  ((int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
-  
-  // Array
-  object->is_array = 1;
-  
-  // Set type id
-  object->type_id = SPVM_TYPE_C_ID_INT;
-  
-  // Set value type
-  object->value_type = SPVM_OBJECT_C_VALUE_TYPE_INT;
-  
-  // Set array length
-  object->length = length;
-  
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-  
-  return object;
+  else {
+    
+    ((int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
+    
+    // Array
+    object->is_array = 1;
+    
+    // Set type id
+    object->type_id = SPVM_TYPE_C_ID_INT;
+    
+    // Set value type
+    object->value_type = SPVM_OBJECT_C_VALUE_TYPE_INT;
+    
+    // Set array length
+    object->length = length;
+    
+    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
+    
+    return object;
+  }
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
@@ -300,24 +305,26 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
     SPVM_RUNTIME_API_set_exception(api, exception);
     return NULL;
   }
+  else {
   
-  ((int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
-  
-  // Array
-  object->is_array = 1;
-  
-  // Set type id
-  object->type_id = SPVM_TYPE_C_ID_LONG;
-  
-  // Set value type
-  object->value_type = SPVM_OBJECT_C_VALUE_TYPE_LONG;
-  
-  // Set array length
-  object->length = length;
-  
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-  
-  return object;
+    ((int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
+    
+    // Array
+    object->is_array = 1;
+    
+    // Set type id
+    object->type_id = SPVM_TYPE_C_ID_LONG;
+    
+    // Set value type
+    object->value_type = SPVM_OBJECT_C_VALUE_TYPE_LONG;
+    
+    // Set array length
+    object->length = length;
+    
+    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
+    
+    return object;
+  }
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
@@ -336,24 +343,25 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
     SPVM_RUNTIME_API_set_exception(api, exception);
     return NULL;
   }
-  
-  ((float*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
-  
-  // Array
-  object->is_array = 1;
-  
-  // Set type id
-  object->type_id = SPVM_TYPE_C_ID_FLOAT;
-  
-  // Set value type
-  object->value_type = SPVM_OBJECT_C_VALUE_TYPE_FLOAT;
-
-  // Set array length
-  object->length = length;
-  
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-  
-  return object;
+  else {
+    ((float*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
+    
+    // Array
+    object->is_array = 1;
+    
+    // Set type id
+    object->type_id = SPVM_TYPE_C_ID_FLOAT;
+    
+    // Set value type
+    object->value_type = SPVM_OBJECT_C_VALUE_TYPE_FLOAT;
+    
+    // Set array length
+    object->length = length;
+    
+    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
+    
+    return object;
+  }
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
@@ -372,24 +380,25 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
     SPVM_RUNTIME_API_set_exception(api, exception);
     return NULL;
   }
-  
-  ((double*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
-  
-  // Array
-  object->is_array = 1;
-  
-  // Set type id
-  object->type_id = SPVM_TYPE_C_ID_DOUBLE;
-  
-  // Set value type
-  object->value_type = SPVM_OBJECT_C_VALUE_TYPE_DOUBLE;
-  
-  // Set array length
-  object->length = length;
-  
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-  
-  return object;
+  else {
+    ((double*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
+    
+    // Array
+    object->is_array = 1;
+    
+    // Set type id
+    object->type_id = SPVM_TYPE_C_ID_DOUBLE;
+    
+    // Set value type
+    object->value_type = SPVM_OBJECT_C_VALUE_TYPE_DOUBLE;
+    
+    // Set array length
+    object->length = length;
+    
+    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
+    
+    return object;
+  }
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t length) {
@@ -400,23 +409,33 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t length) {
   // alloc length + 1. Last value is 0
   int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)(length + 1) * (int64_t)sizeof(SPVM_OBJECT*);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
-  ((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
-  
-  // Initialize by null
-  memset(object, 0, array_byte_size);
-  
-  // Set type
-  object->is_array = 1;
-  
-  // Set value type
-  object->value_type = SPVM_OBJECT_C_VALUE_TYPE_OBJECT;
-  
-  // Set array length
-  object->length = length;
-  
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-  
-  return object;
+
+  // Memory allocation error
+  if (__builtin_expect(object == NULL, 0)) {
+    // Error message
+    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Failed to allocate memory(new_double_array())");
+    SPVM_RUNTIME_API_set_exception(api, exception);
+    return NULL;
+  }
+  else {
+    ((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
+    
+    // Initialize by null
+    memset(object, 0, array_byte_size);
+    
+    // Set type
+    object->is_array = 1;
+    
+    // Set value type
+    object->value_type = SPVM_OBJECT_C_VALUE_TYPE_OBJECT;
+    
+    // Set array length
+    object->length = length;
+    
+    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
+    
+    return object;
+  }
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_constant_pool_index) {
