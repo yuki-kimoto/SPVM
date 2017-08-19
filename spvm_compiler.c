@@ -118,26 +118,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
     }
   }
-  {
-    int32_t type_id;
-    for (type_id = 0; type_id < SPVM_TYPE_C_CORE_LENGTH; type_id++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_id);
-      // Array of Core type
-      if (type->dimension > 0) {
-        type->base_name = SPVM_TYPE_C_ID_NAMES[type_id - SPVM_TYPE_C_ARRAY_SHIFT];
-        type->base_type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_id - SPVM_TYPE_C_ARRAY_SHIFT);
-        type->base_id = type_id - SPVM_TYPE_C_ARRAY_SHIFT;
-        type->child_type = type->base_type;
-      }
-      // Core type
-      else {
-        type->base_name = type->name;
-        type->base_type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_id);
-        type->base_id = type_id;
-        type->parent_type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_id + SPVM_TYPE_C_ARRAY_SHIFT);
-      }
-    }
-  }
   
   // Package indexes constant pool index
   compiler->package_indexes_constant_pool_index = -1;

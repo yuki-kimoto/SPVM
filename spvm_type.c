@@ -38,7 +38,6 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   type->name = NULL;
   type->dimension = 0;
   type->base_name = NULL;
-  type->base_id = SPVM_TYPE_C_ID_UNKNOWN;
   
   return type;
 }
@@ -160,12 +159,15 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
     return 1;
   }
   else {
-    int32_t base_id = op_type->uv.type->base_id;
-    
     const char* base_name = SPVM_TYPE_get_base_name(compiler, type->name);
       
     // Core type or array
-    if (SPVM_TYPE_is_array(compiler, type) || (base_id >= SPVM_TYPE_C_ID_VOID && base_id <= SPVM_TYPE_C_ID_STRING)) {
+    if (
+      SPVM_TYPE_is_array(compiler, type) || strcmp(base_name, "void") || strcmp(base_name, "byte")
+      || strcmp(base_name, "short") || strcmp(base_name, "int") || strcmp(base_name, "long")
+      || strcmp(base_name, "float") || strcmp(base_name, "double") || strcmp(base_name, "string")
+    )
+    {
       // Nothing
     }
     else {
@@ -194,7 +196,6 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
       SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
       
       type->id = new_type->id;
-      type->base_id = new_type->id;
     }
   }
   
