@@ -1489,12 +1489,13 @@ call_sub(...)
   // Push arguments
   {
     int32_t arg_index;
+    int32_t arg_type_ids_base = constant_pool_sub.arg_type_ids_base;
     for (arg_index = 0; arg_index < args_length; arg_index++) {
       SV* sv_value = ST(arg_index + 1);
       
       SV** sv_arg_type_id_ptr = av_fetch(av_arg_type_ids, arg_index, 0);
       SV* sv_arg_type_id = sv_arg_type_id_ptr ? *sv_arg_type_id_ptr : &PL_sv_undef;
-      int32_t arg_type_id = SvIV(sv_arg_type_id);
+      int32_t arg_type_id = runtime->constant_pool[arg_type_ids_base + arg_index];
       
       if (sv_isobject(sv_value)) {
         SV* sv_base_object = sv_value;
