@@ -2350,7 +2350,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     }
   }
   case_SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY: {
-    int32_t value_type = *(pc + 1);
+    int32_t type_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
@@ -2365,7 +2365,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
       // Set array
       call_stack[operand_stack_top].object_value = object;
       
-      pc += 2;
+      pc += 5;
       goto *jump[*pc];
     }
   }

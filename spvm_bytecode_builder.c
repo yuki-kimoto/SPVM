@@ -1120,7 +1120,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                             break;
                           default:
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY);
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_OBJECT);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type->id >> 24) & 0xFF);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type->id >> 16) & 0xFF);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type->id >> 8) & 0xFF);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, type->id & 0xFF);
                         }
                       }
                       else {
