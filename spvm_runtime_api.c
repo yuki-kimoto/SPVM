@@ -582,11 +582,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
     else {
       int32_t* constant_pool = runtime->constant_pool;
       int32_t package_id = object->package_id;
-      SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
+      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[object->package_id];
       
-      memcpy(&constant_pool_package, &constant_pool[package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-      
-      int32_t object_fields_length = constant_pool_package.object_fields_length;
+      int32_t object_fields_length = constant_pool_package->object_fields_length;
       
       {
         int32_t i;
@@ -850,13 +848,11 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   int32_t* constant_pool = runtime->constant_pool;
-  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-  memcpy(&constant_pool_package, &constant_pool[object->package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[object->package_id];
   
-  int32_t length = constant_pool_package.fields_length;
+  int32_t length = constant_pool_package->fields_length;
   
-  
-  int32_t fields_base = constant_pool_package.fields_base;
+  int32_t fields_base = constant_pool_package->fields_base;
   
   int32_t field_index = SPVM_API_ERROR_NO_ID;
   _Bool found = 0;
@@ -935,10 +931,9 @@ int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
     int32_t i;
     for (i = 0; i < length; i++) {
       int32_t package_id = constant_pool[packages_base + i];
-      SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-      memcpy(&constant_pool_package, &constant_pool[package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[package_id];
       
-      int32_t package_name_id = constant_pool_package.name_id;
+      int32_t package_name_id = constant_pool_package->name_id;
       
       char* match_name = (char*)&constant_pool[package_name_id + 1];
       if (strcmp(name, match_name) == 0) {
