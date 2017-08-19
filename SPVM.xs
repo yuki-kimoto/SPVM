@@ -70,6 +70,9 @@ new_object(...)
 {
   SV* sv_class = ST(0);
   SV* sv_package_name = ST(1);
+
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   if (!SvOK(sv_package_name)) {
     croak("Type must be specified(SPVM::Object::new_object)");
@@ -77,15 +80,12 @@ new_object(...)
   
   const char* package_name = SvPV_nolen(sv_package_name);
 
-  int32_t package_id = SPVM_XS_UTIL_get_package_id(package_name);
+  int32_t package_id = api->get_package_id(api, package_name);
   int32_t type_id = SPVM_XS_UTIL_get_type_id_from_package_name(package_name);
   
   if (package_id == SPVM_API_ERROR_NO_ID) {
     croak("Unkown package \"%s\"(SPVM::Object::new_object", package_name);
   }
-  
-  // Set API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
   SPVM_API_OBJECT* object =  api->new_object(api, package_id);
