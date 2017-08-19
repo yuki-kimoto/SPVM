@@ -6,6 +6,96 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 enum {
   SPVM_BYTECODE_C_CODE_NOP,
   SPVM_BYTECODE_C_CODE_UNDEF,
@@ -220,6 +310,13 @@ enum {
   SPVM_BYTECODE_C_CODE_WIDE,
   SPVM_BYTECODE_C_CODE_CURRENT_LINE,
   SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT,
+  SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY,
+  SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY,
+  SPVM_BYTECODE_C_CODE_NEW_INT_ARRAY,
+  SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY,
+  SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY,
+  SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY,
+  SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY,
 };
 
 extern const char* const SPVM_BYTECODE_C_CODE_NAMES[];
