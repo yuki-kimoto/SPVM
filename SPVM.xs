@@ -1197,10 +1197,8 @@ bind_native_address(...)
       int32_t sub_id = native_sub->constant_pool_index;
       
       // Set native address
-      SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-      memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
-      constant_pool_sub.native_address = (void*)native_address;
-      memcpy(&compiler->constant_pool->values[sub_id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
+      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&compiler->constant_pool->values[sub_id];
+      constant_pool_sub->native_address = (void*)native_address;
     }
   }
   
