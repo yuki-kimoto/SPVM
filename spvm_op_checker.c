@@ -27,6 +27,7 @@
 #include "spvm_constant_pool.h"
 #include "spvm_limit.h"
 #include "spvm_constant_pool_package.h"
+#include "spvm_constant_pool_type.h"
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   

@@ -47,6 +47,8 @@ struct SPVM_type {
 };
 
 char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name);
+char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* base_name);
+char* SPVM_TYPE_get_element_name(SPVM_COMPILER* compiler, const char* type_name);
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 

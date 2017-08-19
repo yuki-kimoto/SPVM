@@ -402,6 +402,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_type_id, int32_t length) {
+  (void)element_type_id;
+  
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -581,6 +583,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
     else {
       int32_t* constant_pool = runtime->constant_pool;
       int32_t package_id = object->package_id;
+      (void)package_id;
       SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[object->package_id];
       
       int32_t object_fields_length = constant_pool_package->object_fields_length;
@@ -852,7 +855,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
     for (i = 0; i < length; i++) {
       
       int32_t field_id = constant_pool[fields_base + i];
-      SPVM_CONSTANT_POOL_FIELD* constant_pool_field = &constant_pool[field_id];
+      SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
       
       int32_t field_name_id = constant_pool_field->name_id;
       
