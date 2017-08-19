@@ -1144,7 +1144,7 @@ get_sub_names(...)
     }
   }
   
-  SV* sv_sub_names = sv_2mortal(newRV_inc(av_sub_names));
+  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
   
   XPUSHs(sv_sub_names);
   XSRETURN(1);
