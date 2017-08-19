@@ -48,7 +48,7 @@ DESTROY(...)
   
   // warn("DESTROY");
   
-  // Set API
+  // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get content
@@ -1186,6 +1186,39 @@ build_sub_symtable(...)
 }
 
 SV*
+get_sub_names(...)
+  PPCODE:
+{
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  
+  int32_t subs_base = runtime->subs_base;
+  int32_t subs_length = runtime->subs_length;
+  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < subs_length; sub_index++) {
+      int32_t sub_id = runtime->constant_pool[subs_base + sub_index];
+      SPVM_CONSTANT_POOL_SUB constant_pool_sub;
+      memcpy(&constant_pool_sub, &runtime->constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
+      
+      int32_t sub_name_id = constant_pool_sub.abs_name_id;
+      int32_t sub_name_length = runtime->constant_pool[sub_name_id];
+      const char* sub_name = (char*)&runtime->constant_pool[sub_name_id + 1];
+      
+      SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, sub_name_length));
+      av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+    }
+  }
+  SV* sv_sub_names = sv_2mortal(newRV_inc(av_sub_names));
+  
+  XPUSHs(sv_sub_names);
+  XSRETURN(1);
+}
+
+SV*
 build_native_sub_names(...)
   PPCODE:
 {
@@ -1457,8 +1490,6 @@ call_sub(...)
   size_t iv_api = SvIV(sviv_api);
   SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
   
-  HV* hv_sub_symtable = get_hv("SPVM::SUB_SYMTABLE", 0);
-  
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   int32_t sub_id = api->get_sub_id(api, sub_abs_name);
   
@@ -1468,33 +1499,19 @@ call_sub(...)
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   memcpy(&constant_pool_sub, &runtime->constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
   
-  SV** sv_sub_info_ptr = hv_fetch(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), 0);
-  SV* sv_sub_info = *sv_sub_info_ptr;
-  HV* hv_sub_info = (HV*)SvRV(sv_sub_info);
-  
-  // Argument type ids
-  SV** sv_arg_type_ids_ptr = hv_fetch(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), 0);
-  SV* sv_arg_type_ids = *sv_arg_type_ids_ptr;
-  AV* av_arg_type_ids = (AV*)SvRV(sv_arg_type_ids);
-  int32_t args_length = constant_pool_sub.args_length;
-  
-  // Return type id
-  int32_t return_type_id = constant_pool_sub.return_type_id;
-  
-  // Check argument count
-  if (items - 1 != args_length) {
-    croak("Argument count is defferent");
-  }
-  
-  // Push arguments
+  // Arguments
   {
     int32_t arg_index;
     int32_t arg_type_ids_base = constant_pool_sub.arg_type_ids_base;
+    int32_t args_length = constant_pool_sub.args_length;
+    // Check argument count
+    if (items - 1 != args_length) {
+      croak("Argument count is defferent");
+    }
+    
     for (arg_index = 0; arg_index < args_length; arg_index++) {
       SV* sv_value = ST(arg_index + 1);
       
-      SV** sv_arg_type_id_ptr = av_fetch(av_arg_type_ids, arg_index, 0);
-      SV* sv_arg_type_id = sv_arg_type_id_ptr ? *sv_arg_type_id_ptr : &PL_sv_undef;
       int32_t arg_type_id = runtime->constant_pool[arg_type_ids_base + arg_index];
       
       if (sv_isobject(sv_value)) {
@@ -1567,6 +1584,9 @@ call_sub(...)
   }
   
   api->set_exception(api, NULL);
+  
+  // Return type id
+  int32_t return_type_id = constant_pool_sub.return_type_id;
   
   switch (return_type_id) {
     case SPVM_TYPE_C_ID_VOID:  {
