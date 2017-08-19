@@ -36,13 +36,15 @@ sub _get_dll_file {
   
   # DLL file name
   my $dlext = $Config{dlext};
-  my $dll_base_name = $package_name . ".$dlext";
+  my $dll_base_name = $package_name;
   $dll_base_name =~ s/^.*:://;
   my $dll_file_tail = 'auto/' . $package_name . '/' . $dll_base_name;
   $dll_file_tail =~ s/::/\//g;
   my $dll_file;
   for my $dl_shared_object (@DynaLoader::dl_shared_objects) {
-    if ($dl_shared_object =~ /\Q$dll_file_tail\E$/) {
+    my $dl_shared_object_no_ext = $dl_shared_object;
+    $dl_shared_object_no_ext =~ s/\.[^\.]+$//;
+    if ($dl_shared_object_no_ext =~ /\Q$dll_file_tail\E$/) {
       $dll_file = $dl_shared_object;
       last;
     }
