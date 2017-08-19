@@ -27,7 +27,6 @@ our $VERSION = '0.0247';
 our $COMPILER;
 our @PACKAGE_INFOS;
 our %FIELD_SYMTABLE;
-our @NATIVE_SUB_NAMES;
 our %NATIVE_SUB_SYMTABLE;
 our $API;
 our @TYPE_NAMES;
@@ -105,7 +104,8 @@ sub get_sub_native_address {
 }
 
 sub build_native_sub_symtable {
-  for my $native_sub_name (@NATIVE_SUB_NAMES) {
+  my $native_sub_names = get_native_sub_names();
+  for my $native_sub_name (@$native_sub_names) {
     my $native_sub_name_spvm = "SPVM::$native_sub_name";
     my $native_address = get_sub_native_address($native_sub_name_spvm);
     unless ($native_address) {
@@ -130,9 +130,6 @@ CHECK {
   
   # Build type names
   build_type_symtable();
-  
-  # Build native subroutine names
-  build_native_sub_names();
   
   # Build native subroutine
   build_native_sub_symtable();

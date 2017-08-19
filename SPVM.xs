@@ -1153,14 +1153,14 @@ get_sub_names(...)
 }
 
 SV*
-build_native_sub_names(...)
+get_native_sub_names(...)
   PPCODE:
 {
   // Get compiler
   SPVM_COMPILER* compiler = SPVM_XS_UTIL_get_compiler();
   
   // Native subroutine names
-  AV* av_native_sub_names = get_av("SPVM::NATIVE_SUB_NAMES", 0);
+  AV* av_native_sub_names = sv_2mortal(newAV());
   SPVM_DYNAMIC_ARRAY* native_subs = compiler->native_subs;
   {
     int32_t native_sub_index;
@@ -1174,7 +1174,10 @@ build_native_sub_names(...)
     }
   }
   
-  XSRETURN(0);
+  SV* sv_native_sub_names = sv_2mortal(newRV_inc((SV*)av_native_sub_names));
+  
+  XPUSHs(sv_native_sub_names);
+  XSRETURN(1);
 }
 
 SV*
