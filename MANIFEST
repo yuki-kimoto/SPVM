@@ -57,6 +57,7 @@ spvm_constant_pool.h
 spvm_constant_pool_field.h
 spvm_constant_pool_package.h
 spvm_constant_pool_sub.h
+spvm_constant_pool_type.h
 spvm_descriptor.c
 spvm_descriptor.h
 spvm_dumper.c
