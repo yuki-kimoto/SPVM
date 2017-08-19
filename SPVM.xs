@@ -1131,11 +1131,8 @@ get_sub_names(...)
     for (sub_index = 0; sub_index < subs_length; sub_index++) {
       int32_t sub_id = runtime->constant_pool[subs_base + sub_index];
       
-      SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-      memcpy(&constant_pool_sub, &runtime->constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
-      
-      int32_t sub_name_id = constant_pool_sub.abs_name_id;
-      
+      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+      int32_t sub_name_id = constant_pool_sub->abs_name_id;
       int32_t sub_name_length = runtime->constant_pool[sub_name_id];
       const char* sub_name = (char*)&runtime->constant_pool[sub_name_id + 1];
       
