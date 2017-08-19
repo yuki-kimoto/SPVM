@@ -706,6 +706,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Type(type is same as package name)
     SPVM_TYPE* type = SPVM_TYPE_new(compiler);
     type->base_name = package_name;
+    type->name = package_name;
     
     // Type OP
     SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name_package->file, op_name_package->line);
@@ -1521,6 +1522,7 @@ SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void) {
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->base_name = name;
   type->base_id = SPVM_TYPE_C_ID_VOID;
+  type->name = name;
   
   // Type op
   SPVM_OP* op_type_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_void->file, op_void->line);

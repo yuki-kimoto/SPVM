@@ -122,7 +122,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         return;
       }
       
-      SPVM_TYPE_resolve_name(compiler, op_type);
       _Bool success = SPVM_TYPE_resolve_id(compiler, op_type);
       
       if (!success) {

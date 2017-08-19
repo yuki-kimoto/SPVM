@@ -132,42 +132,6 @@ char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name) {
   return type_base_name;
 }
 
-// Resolve type name
-_Bool SPVM_TYPE_resolve_name(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
-  
-  SPVM_TYPE* type = op_type->uv.type;
-  
-  if (type->name) {
-    return 1;
-  }
-  else {
-    const char* base_name = op_type->uv.type->base_name;
-    assert(base_name);
-    int32_t base_name_length = strlen(base_name);
-    
-    int32_t name_length = 0;
-    name_length += base_name_length;
-    name_length += type->dimension * 2;
-    char* type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, name_length);
-    
-    int32_t cur_pos = 0;
-    memcpy(type_name, base_name, base_name_length);
-    cur_pos += base_name_length;
-    {
-      int32_t i;
-      for (i = 0; i < type->dimension; i++) {
-        type_name[cur_pos] = '[';
-        type_name[cur_pos + 1] = ']';
-        cur_pos += 2;
-      }
-    }
-    type_name[cur_pos] = '\0';
-    type->name = type_name;
-  }
-  
-  return 1;
-}
-
 // Create array name
 char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* base_name) {
   
