@@ -1272,52 +1272,6 @@ build_type_names(...)
 }
 
 SV*
-build_package_symtable(...)
-  PPCODE:
-{
-  // Get compiler
-  SPVM_COMPILER* compiler = SPVM_XS_UTIL_get_compiler();
-  
-  // Subroutine information
-  HV* hv_package_symtable = get_hv("SPVM::PACKAGE_SYMTABLE", 0);
-  
-  // abs_name, arg_packages, return_package, id, package_id
-  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < op_packages->length; package_index++) {
-      // Package name
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      const char* package_name = package->op_name->uv.name;
-      
-      // Package id
-      int32_t package_id = package->constant_pool_index;
-      SV* sv_package_id = sv_2mortal(newSViv(package_id));
-      
-      // Type id
-      HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
-      SV** sv_type_info_ptr = hv_fetch(hv_type_symtable, package_name, strlen(package_name), 0);
-      SV* sv_type_info = *sv_type_info_ptr;
-      HV* hv_type_info = (HV*)SvRV(sv_type_info);
-      SV** sv_type_id_ptr = hv_fetch(hv_type_info, "id", strlen("id"), 0);
-      SV* sv_type_id = *sv_type_id_ptr;
-      
-      // Package information
-      HV* hv_package_info = (HV*)sv_2mortal((SV*)newHV());
-      hv_store(hv_package_info, "id", strlen("id"), SvREFCNT_inc(sv_package_id), 0);
-      hv_store(hv_package_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-      SV* sv_package_info = sv_2mortal(newRV_inc((SV*)hv_package_info));
-      
-      // Add package information
-      hv_store(hv_package_symtable, package_name, strlen(package_name), SvREFCNT_inc(sv_package_info), 0);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 build_field_symtable(...)
   PPCODE:
 {

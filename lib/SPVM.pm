@@ -140,9 +140,6 @@ CHECK {
   
   # Bind native address
   bind_native_address();
-
-  # Build package symbol table
-  build_package_symtable();
   
   # Build field symbol table
   build_field_symtable();
