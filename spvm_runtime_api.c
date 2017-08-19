@@ -852,10 +852,9 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
     for (i = 0; i < length; i++) {
       
       int32_t field_id = constant_pool[fields_base + i];
-      SPVM_CONSTANT_POOL_FIELD constant_pool_field;
-      memcpy(&constant_pool_field, &constant_pool[field_id], sizeof(SPVM_CONSTANT_POOL_FIELD));
+      SPVM_CONSTANT_POOL_FIELD* constant_pool_field = &constant_pool[field_id];
       
-      int32_t field_name_id = constant_pool_field.name_id;
+      int32_t field_name_id = constant_pool_field->name_id;
       
       char* match_name = (char*)&constant_pool[field_name_id + 1];
       
@@ -1068,9 +1067,8 @@ int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* 
   }
   // Reference is object
   else {
-    SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-    memcpy(&constant_pool_package, &runtime->constant_pool[object->package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-    byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * constant_pool_package.fields_length;
+    SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[object->package_id];
+    byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * constant_pool_package->fields_length;
   }
   
   return byte_size;
