@@ -151,11 +151,11 @@ CHECK {
   # Build field symbol table
   build_field_symtable();
   
-  # Build SPVM subroutine
-  build_spvm_subs();
-  
   # Build run-time
   build_runtime();
+  
+  # Build SPVM subroutine
+  build_spvm_subs();
   
   # Free compiler
   free_compiler();
@@ -361,8 +361,9 @@ sub import {
 }
 
 sub build_spvm_subs {
-  for my $abs_name (keys %SUB_SYMTABLE) {
-    
+  my $sub_names = get_sub_names();
+  
+  for my $abs_name (@$sub_names) {
     # Define SPVM subroutine
     no strict 'refs';
     *{"SPVM::$abs_name"} = sub {
@@ -373,7 +374,6 @@ sub build_spvm_subs {
     };
   }
 }
-
 
 # Preloaded methods go here.
 

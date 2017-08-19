@@ -1197,14 +1197,17 @@ get_sub_names(...)
   int32_t subs_base = runtime->subs_base;
   int32_t subs_length = runtime->subs_length;
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
+  
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < subs_length; sub_index++) {
       int32_t sub_id = runtime->constant_pool[subs_base + sub_index];
+      
       SPVM_CONSTANT_POOL_SUB constant_pool_sub;
       memcpy(&constant_pool_sub, &runtime->constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
       
       int32_t sub_name_id = constant_pool_sub.abs_name_id;
+      
       int32_t sub_name_length = runtime->constant_pool[sub_name_id];
       const char* sub_name = (char*)&runtime->constant_pool[sub_name_id + 1];
       
@@ -1212,6 +1215,7 @@ get_sub_names(...)
       av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
     }
   }
+  
   SV* sv_sub_names = sv_2mortal(newRV_inc(av_sub_names));
   
   XPUSHs(sv_sub_names);
