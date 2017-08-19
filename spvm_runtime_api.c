@@ -185,7 +185,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   ((int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type
-  object->type = SPVM_OBJECT_C_TYPE_ARRAY;
+  object->is_array = 1;;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_BYTE;
@@ -210,7 +210,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
   ((int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type
-  object->type = SPVM_OBJECT_C_TYPE_ARRAY;
+  object->is_array = 1;;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_SHORT;
@@ -234,7 +234,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
   ((int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type
-  object->type = SPVM_OBJECT_C_TYPE_ARRAY;
+  object->is_array = 1;;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_INT;
@@ -258,7 +258,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
   ((int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type
-  object->type = SPVM_OBJECT_C_TYPE_ARRAY;
+  object->is_array = 1;;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_LONG;
@@ -282,7 +282,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
   ((float*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type
-  object->type = SPVM_OBJECT_C_TYPE_ARRAY;
+  object->is_array = 1;;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_FLOAT;
@@ -306,7 +306,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   ((double*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type
-  object->type = SPVM_OBJECT_C_TYPE_ARRAY;
+  object->is_array = 1;;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_DOUBLE;
@@ -333,7 +333,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t length) {
   memset(object, 0, array_byte_size);
   
   // Set type
-  object->type = SPVM_OBJECT_C_TYPE_ARRAY;
+  object->is_array = 1;;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_OBJECT;
@@ -359,9 +359,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_constant
   int32_t length = constant_pool_package.fields_length;
   int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)sizeof(SPVM_VALUE) * (int64_t)length;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
-  
-  // Set type
-  object->type = SPVM_OBJECT_C_TYPE_OBJECT;
   
   // Package constant pool index
   object->package_constant_pool_index = package_constant_pool_index;
@@ -468,8 +465,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   
   // If reference count is zero, free address.
   if (object->ref_count == 0) {
-    
-    if (object->type == SPVM_OBJECT_C_TYPE_ARRAY) {
+    // Array
+    if (object->is_array) {
       if (object->value_type == SPVM_OBJECT_C_VALUE_TYPE_OBJECT) {
         
         // Array length
@@ -487,8 +484,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       }
       SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, object);
     }
-    // Reference is object
-    else if (object->type == SPVM_OBJECT_C_TYPE_OBJECT) {
+    // Object
+    else {
       int32_t* constant_pool = runtime->constant_pool;
       int32_t package_constant_pool_index = object->package_constant_pool_index;
       SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
@@ -987,17 +984,14 @@ int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* 
   int64_t byte_size;
   
   // Reference is string
-  if (object->type == SPVM_OBJECT_C_TYPE_ARRAY) {
+  if (object->is_array) {
     byte_size = sizeof(SPVM_OBJECT) + (object->length + 1) * SPVM_RUNTIME_API_get_array_value_size(api, object->value_type);
   }
   // Reference is object
-  else if (object->type == SPVM_OBJECT_C_TYPE_OBJECT) {
+  else {
     SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
     memcpy(&constant_pool_package, &runtime->constant_pool[object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
     byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * constant_pool_package.fields_length;
-  }
-  else {
-    assert(0);
   }
   
   return byte_size;
