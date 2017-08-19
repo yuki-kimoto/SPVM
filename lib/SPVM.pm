@@ -136,14 +136,14 @@ CHECK {
   # Build run-time
   build_runtime();
   
+  # Free compiler
+  free_compiler();
+  
   # Bind native subroutines
   bind_native_subs();
   
   # Build SPVM subroutine
   build_spvm_subs();
-  
-  # Free compiler
-  free_compiler();
 }
 sub new_string_raw {
   my $string = shift;
