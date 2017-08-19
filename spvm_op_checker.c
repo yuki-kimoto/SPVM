@@ -164,6 +164,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
     }
   }
+
+  // Resolve element type id
+  {
+    int32_t i;
+    for (i = 0; i < compiler->types->length; i++) {
+      
+      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
+      
+      
+    }
+  }
   
   // Reorder fields. Reference types place before value types.
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;

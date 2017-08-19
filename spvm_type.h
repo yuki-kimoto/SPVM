@@ -47,7 +47,6 @@ struct SPVM_type {
 char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name);
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
-_Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type);
 
 _Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type);
