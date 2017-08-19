@@ -366,29 +366,6 @@ SPVM_API_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   }
 }
 
-int32_t SPVM_XS_UTIL_get_package_id(const char* package) {
-  HV* hv_package_symtable = get_hv("SPVM::PACKAGE_SYMTABLE", 0);
-
-  SV** sv_package_ptr = hv_fetch(hv_package_symtable, package, strlen(package), 0);
-  if (sv_package_ptr) {
-    SV* sv_package_info = *sv_package_ptr;
-    HV* hv_package_info = (HV*)SvRV(sv_package_info);
-    
-    SV** sv_package_id_ptr = hv_fetch(hv_package_info, "id", strlen("id"), 0);
-    if (sv_package_id_ptr) {
-      SV* sv_package_id = *sv_package_id_ptr;
-      int32_t package_id = (int32_t)SvIV(sv_package_id);
-      return package_id;
-    }
-    else {
-      return SPVM_API_ERROR_NO_ID;
-    }
-  }
-  else {
-    return SPVM_API_ERROR_NO_ID;
-  }
-}
-
 int32_t SPVM_XS_UTIL_get_type_id_from_package_name(const char* package_name) {
   HV* hv_package_symtable = get_hv("SPVM::PACKAGE_SYMTABLE", 0);
 
