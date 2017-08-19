@@ -1450,10 +1450,10 @@ call_sub(...)
   PPCODE:
 {
   SV* sv_sub_abs_name = ST(0);
-
+  
   // Get API
   SV* sv_api = get_sv("SPVM::API", 0);
-  SV* sviv_api = SvROK(sv_api) ? SvRV(sv_api) : sv_api;
+  SV* sviv_api = SvRV(sv_api);
   size_t iv_api = SvIV(sviv_api);
   SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
   
