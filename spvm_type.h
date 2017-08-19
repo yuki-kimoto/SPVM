@@ -10,6 +10,10 @@ enum {
 };
 
 enum {
+  SPVM_TYPE_C_ARRAY_SHIFT = 7
+};
+
+enum {
   SPVM_TYPE_C_ID_UNKNOWN = -1
 };
 
@@ -37,6 +41,7 @@ struct SPVM_type {
   const char* name;
   const char* base_name;
   int32_t id;
+  SPVM_TYPE* base_type;
   int32_t base_id;
   int32_t dimension;
 };
