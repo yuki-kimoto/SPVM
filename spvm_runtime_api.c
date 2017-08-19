@@ -444,18 +444,17 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_id) {
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   int32_t* constant_pool = runtime->constant_pool;
   
-  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-  memcpy(&constant_pool_package, &constant_pool[package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[package_id];
   
   // Allocate memory
-  int32_t length = constant_pool_package.fields_length;
+  int32_t length = constant_pool_package->fields_length;
   int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)sizeof(SPVM_VALUE) * (int64_t)length;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
   
   // Package constant pool index
   object->package_id = package_id;
   
-  object->type_id = constant_pool_package.type_id;
+  object->type_id = constant_pool_package->type_id;
   
   assert(object_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
