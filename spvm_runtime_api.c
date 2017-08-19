@@ -382,6 +382,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_constant
   // Package constant pool index
   object->package_constant_pool_index = package_constant_pool_index;
   
+  object->type_id = constant_pool_package.type_id;
+  
   assert(object_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
