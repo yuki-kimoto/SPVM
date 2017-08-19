@@ -108,7 +108,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
     }
   }
-  // Types
+  // Resolve types
   {
     int32_t i;
     for (i = 0; i < op_types->length; i++) {
@@ -122,15 +122,49 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         return;
       }
       
-      _Bool success = SPVM_TYPE_resolve_id(compiler, op_type);
+      SPVM_TYPE* type = op_type->uv.type;
       
-      if (!success) {
-        compiler->fatal_error = 1;
-        return;
+      const char* base_name = SPVM_TYPE_get_base_name(compiler, type->name);
+        
+      // Core type or array
+      if (
+        SPVM_TYPE_is_array(compiler, type) || strcmp(base_name, "void") || strcmp(base_name, "byte")
+        || strcmp(base_name, "short") || strcmp(base_name, "int") || strcmp(base_name, "long")
+        || strcmp(base_name, "float") || strcmp(base_name, "double") || strcmp(base_name, "string")
+      )
+      {
+        // Nothing
+      }
+      else {
+        // Package
+        SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
+        SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, base_name, strlen(base_name));
+        if (op_found_package) {
+          // Nothing
+        }
+        else {
+          SPVM_yyerror_format(compiler, "unknown package \"%s\" at %s line %d\n", base_name, op_type->file, op_type->line);
+          compiler->fatal_error = 1;
+          return;
+        }
+      }
+      
+      // Create resolved type id
+      SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name));
+      if (found_type) {
+        type->id = found_type->id;
+      }
+      else {
+        type->id = compiler->types->length;
+        
+        SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
+        memcpy(new_type, type, sizeof(SPVM_TYPE));
+        SPVM_DYNAMIC_ARRAY_push(compiler->types, new_type);
+        SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
       }
     }
   }
-
+  
   // Reorder fields. Reference types place before value types.
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   {
