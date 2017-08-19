@@ -1,5 +1,6 @@
 0.0248 2017-08-19
   - support xs.dll dynamiclin library
+  - fix __END__ not used bug
 0.0247 2017-08-19
   - Sorry, rename back stdout to std
     SPVM only have std package by default and automatically loaded without use std;

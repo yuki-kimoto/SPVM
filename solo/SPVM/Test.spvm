@@ -65,7 +65,6 @@ package Test {
       $test->{x_double} = Test->DOUBLE_PRECICE;
     }
     
-    
     # Weaken
     {
       my $num = weaken_reference_count1_object();
