@@ -105,40 +105,6 @@ int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* fie
   }
 }
 
-int32_t SPVM_XS_UTIL_get_field_id(const char* package_name, const char* field_name) {
-  // Field symbol table
-  HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
-  
-  SV** sv_package_info_ptr = hv_fetch(hv_field_symtable, package_name, strlen(package_name), 0);
-  if (sv_package_info_ptr) {
-    SV* sv_package_info = *sv_package_info_ptr;
-    HV* hv_package_info = (HV*)SvRV(sv_package_info);
-    
-    SV** sv_field_info_ptr = hv_fetch(hv_package_info, field_name, strlen(field_name), 0);
-    if (sv_field_info_ptr) {
-      SV* sv_field_info = *sv_field_info_ptr;
-      HV* hv_field_info = (HV*)SvRV(sv_field_info);
-      
-      SV** sv_field_id_ptr = hv_fetch(hv_package_info, "id", strlen("id"), 0);
-      if (sv_field_id_ptr) {
-        SV* sv_field_id = *sv_field_id_ptr;
-        int32_t field_id = (int32_t)SvIV(sv_field_id);
-        
-        return field_id;
-      }
-      else {
-        return SPVM_API_ERROR_NO_ID;
-      }
-    }
-    else {
-      return SPVM_API_ERROR_NO_ID;
-    }
-  }
-  else {
-    return SPVM_API_ERROR_NO_ID;
-  }
-}
-
 SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_OBJECT* array) {
   
   // Create array
