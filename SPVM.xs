@@ -27,6 +27,8 @@
 #include "spvm_type.h"
 #include "spvm_field.h"
 #include "spvm_constant_pool_sub.h"
+#include "spvm_constant_pool_package.h"
+#include "spvm_constant_pool_field.h"
 #include "spvm_global.h"
 
 #include "spvm_api.h"
@@ -70,7 +72,9 @@ new_object(...)
 {
   SV* sv_class = ST(0);
   SV* sv_package_name = ST(1);
-
+  
+  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
@@ -79,9 +83,10 @@ new_object(...)
   }
   
   const char* package_name = SvPV_nolen(sv_package_name);
-
+  
   int32_t package_id = api->get_package_id(api, package_name);
-  int32_t type_id = SPVM_XS_UTIL_get_type_id_from_package_name(package_name);
+  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[package_id];
+  int32_t type_id = constant_pool_package->type_id;
   
   if (package_id == SPVM_API_ERROR_NO_ID) {
     croak("Unkown package \"%s\"(SPVM::Object::new_object", package_name);
