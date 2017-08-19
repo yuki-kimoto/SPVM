@@ -438,14 +438,14 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   }
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_constant_pool_index) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_id) {
   
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   int32_t* constant_pool = runtime->constant_pool;
   
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-  memcpy(&constant_pool_package, &constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  memcpy(&constant_pool_package, &constant_pool[package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   
   // Allocate memory
   int32_t length = constant_pool_package.fields_length;
@@ -453,7 +453,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_constant
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
   
   // Package constant pool index
-  object->package_constant_pool_index = package_constant_pool_index;
+  object->package_id = package_id;
   
   object->type_id = constant_pool_package.type_id;
   
@@ -581,10 +581,10 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
     // Object
     else {
       int32_t* constant_pool = runtime->constant_pool;
-      int32_t package_constant_pool_index = object->package_constant_pool_index;
+      int32_t package_id = object->package_id;
       SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
       
-      memcpy(&constant_pool_package, &constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+      memcpy(&constant_pool_package, &constant_pool[package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
       
       int32_t object_fields_length = constant_pool_package.object_fields_length;
       
@@ -851,7 +851,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   
   int32_t* constant_pool = runtime->constant_pool;
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-  memcpy(&constant_pool_package, &constant_pool[object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  memcpy(&constant_pool_package, &constant_pool[object->package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   
   int32_t length = constant_pool_package.fields_length;
   
@@ -929,21 +929,21 @@ int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
   int32_t length = runtime->packages_length;
   int32_t packages_base = runtime-> packages_base;
   
-  int32_t found_package_constant_pool_index = SPVM_API_ERROR_NO_ID;
+  int32_t found_package_id = SPVM_API_ERROR_NO_ID;
   _Bool found = 0;
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      int32_t package_constant_pool_index = constant_pool[packages_base + i];
+      int32_t package_id = constant_pool[packages_base + i];
       SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-      memcpy(&constant_pool_package, &constant_pool[package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+      memcpy(&constant_pool_package, &constant_pool[package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
       
       int32_t package_name_constant_pool_index = constant_pool_package.name_constant_pool_index;
       
       char* match_name = (char*)&constant_pool[package_name_constant_pool_index + 1];
       if (strcmp(name, match_name) == 0) {
         found = 1;
-        found_package_constant_pool_index = package_constant_pool_index;
+        found_package_id = package_id;
         break;
       }
     }
@@ -954,7 +954,7 @@ int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
     abort();
   }
   
-  return found_package_constant_pool_index;
+  return found_package_id;
 }
 
 
@@ -1084,7 +1084,7 @@ int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* 
   // Reference is object
   else {
     SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-    memcpy(&constant_pool_package, &runtime->constant_pool[object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+    memcpy(&constant_pool_package, &runtime->constant_pool[object->package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
     byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * constant_pool_package.fields_length;
   }
   
@@ -1116,7 +1116,7 @@ int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
   
   int32_t* constant_pool = runtime->constant_pool;
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-  memcpy(&constant_pool_package, &constant_pool[object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  memcpy(&constant_pool_package, &constant_pool[object->package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   int32_t length = constant_pool_package.fields_length;
   
   return length;
@@ -1130,7 +1130,7 @@ int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object) {
   
   int32_t* constant_pool = runtime->constant_pool;
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-  memcpy(&constant_pool_package, &constant_pool[object->package_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
+  memcpy(&constant_pool_package, &constant_pool[object->package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   int32_t field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
   int32_t length = constant_pool_package.fields_length;
   
