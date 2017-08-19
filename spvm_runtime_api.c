@@ -413,9 +413,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t length) {
   
   // Set array length
   object->length = length;
-
+  
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-
+  
   return object;
 }
 

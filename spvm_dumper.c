@@ -269,7 +269,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_STORE:
         case SPVM_BYTECODE_C_CODE_STORE_OBJECT:
         case SPVM_BYTECODE_C_CODE_LOAD:
-        case SPVM_BYTECODE_C_CODE_NEW_ARRAY:
+        case SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY:
         {
           i++;
           bytecode = bytecode_array->values[i];

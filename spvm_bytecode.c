@@ -239,7 +239,7 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "POP",
   "NEW_OBJECT",
   "NEW_STRING",
-  "NEW_ARRAY",
+  "NEW_OBJECT_ARRAY",
   "FOO",
   "ARRAY_LOAD_BYTE",
   "ARRAY_LOAD_SHORT",
@@ -317,5 +317,4 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "NEW_LONG_ARRAY",
   "NEW_FLOAT_ARRAY",
   "NEW_DOUBLE_ARRAY",
-  "NEW_OBJECT_ARRAY",
 };
