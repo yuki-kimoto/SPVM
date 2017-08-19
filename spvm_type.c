@@ -113,6 +113,25 @@ SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
+char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name) {
+  int32_t type_name_length = (int32_t)strlen(type_name);
+  char* type_base_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_name_length);
+  
+  char* found_ptr = strchr(type_name, '[');
+  int32_t type_base_name_length;
+  if (found_ptr) {
+    type_base_name_length = (int32_t)(found_ptr - type_name);
+  }
+  else {
+    type_base_name_length = type_name_length;
+  }
+  
+  strncpy(type_base_name, type_name, type_base_name_length);
+  type_base_name[type_base_name_length] = '\0';
+  
+  return type_base_name;
+}
+
 // Resolve type name
 _Bool SPVM_TYPE_resolve_name(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
