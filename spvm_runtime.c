@@ -2235,18 +2235,15 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    array = SPVM_RUNTIME_API_new_byte_array(api, length);
+    object = SPVM_RUNTIME_API_new_byte_array(api, length);
     
-    // Memory allocation error
-    if (__builtin_expect(array == NULL, 0)) {
-      // Error message
-      array_exception = SPVM_RUNTIME_API_new_string(api, "Failed to allocate memory(new array)");
-      SPVM_RUNTIME_API_set_exception(api, array_exception);
+    if (__builtin_expect(object == NULL, 0)) {
+      // Throw exception
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
     else {
       // Set array
-      call_stack[operand_stack_top].object_value = array;
+      call_stack[operand_stack_top].object_value = object;
       
       pc++;
       goto *jump[*pc];
