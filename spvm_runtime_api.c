@@ -16,6 +16,7 @@
 #include "spvm_runtime_allocator.h"
 #include "spvm_api.h"
 #include "spvm_global.h"
+#include "spvm_type.h"
 
 int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_API* api) {
   (void)api;
@@ -184,8 +185,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   ((int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
-  // Set type
-  object->is_array = 1;;
+  // Array
+  object->is_array = 1;
+  
+  // Set type id
+  object->type_id = SPVM_TYPE_C_ID_BYTE;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_BYTE;
@@ -209,8 +213,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   ((int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
-  // Set type
-  object->is_array = 1;;
+  // Array
+  object->is_array = 1;
+  
+  // Set type id
+  object->type_id = SPVM_TYPE_C_ID_SHORT;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_SHORT;
@@ -233,8 +240,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   ((int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
-  // Set type
-  object->is_array = 1;;
+  // Array
+  object->is_array = 1;
+  
+  // Set type id
+  object->type_id = SPVM_TYPE_C_ID_INT;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_INT;
@@ -257,8 +267,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   ((int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
-  // Set type
-  object->is_array = 1;;
+  // Array
+  object->is_array = 1;
+  
+  // Set type id
+  object->type_id = SPVM_TYPE_C_ID_LONG;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_LONG;
@@ -281,12 +294,15 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   ((float*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
-  // Set type
-  object->is_array = 1;;
+  // Array
+  object->is_array = 1;
+  
+  // Set type id
+  object->type_id = SPVM_TYPE_C_ID_FLOAT;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_FLOAT;
-  
+
   // Set array length
   object->length = length;
   
@@ -305,8 +321,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   ((double*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
-  // Set type
-  object->is_array = 1;;
+  // Array
+  object->is_array = 1;
+  
+  // Set type id
+  object->type_id = SPVM_TYPE_C_ID_DOUBLE;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_DOUBLE;
@@ -333,7 +352,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t length) {
   memset(object, 0, array_byte_size);
   
   // Set type
-  object->is_array = 1;;
+  object->is_array = 1;
   
   // Set value type
   object->value_type = SPVM_OBJECT_C_VALUE_TYPE_OBJECT;
