@@ -16,6 +16,29 @@
 #include "spvm_constant_pool_package.h"
 #include "spvm_type.h"
 
+void SPVM_CONSTANT_POOL_adjust_alignment(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int32_t byte_size) {
+  
+  assert(byte_size % sizeof(int32_t) == 0);
+  int32_t count = byte_size / sizeof(int32_t);
+  
+  int32_t rem_count = constant_pool->length % count;
+  
+  if (rem_count == 0) {
+    return;
+  }
+  
+  int32_t rest_count = count - rem_count;
+  
+  {
+    int32_t i;
+    for (i = 0; i < rest_count; i++) {
+      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, rest_count);
+    }
+  }
+  
+  assert(constant_pool->length % count == 0);
+}
+
 SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(SPVM_COMPILER* compiler) {
   (void)compiler;
   
@@ -102,6 +125,8 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
 
 int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_SUB* sub) {
   (void)compiler;
+  
+  SPVM_CONSTANT_POOL_adjust_alignment(compiler, constant_pool, sizeof(void*));
   
   int32_t start_index = constant_pool->length;
   
@@ -230,7 +255,9 @@ int32_t SPVM_CONSTANT_POOL_push_int(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
 
 int32_t SPVM_CONSTANT_POOL_push_long(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int64_t value) {
   (void)compiler;
-
+  
+  SPVM_CONSTANT_POOL_adjust_alignment(compiler, constant_pool, sizeof(int64_t));
+  
   int32_t start_index = constant_pool->length;
 
   // Add long value
@@ -259,6 +286,8 @@ int32_t SPVM_CONSTANT_POOL_push_float(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
 
 int32_t SPVM_CONSTANT_POOL_push_double(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, double value) {
   (void)compiler;
+
+  SPVM_CONSTANT_POOL_adjust_alignment(compiler, constant_pool, sizeof(double));
 
   int32_t start_index = constant_pool->length;
 
