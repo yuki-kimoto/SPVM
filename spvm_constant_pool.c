@@ -79,7 +79,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   
   // Push package name to constant pool
   const char* package_name = package->op_name->uv.name;
-  constant_pool_package.name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
+  constant_pool_package.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
   
   // Type id
   constant_pool_package.type_id = package->op_type->uv.type->id;
@@ -87,7 +87,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   // Push fields constant_pool indexes to constant pool
   {
     int32_t field_pos;
-    constant_pool_package.field_indexes_constant_pool_index = constant_pool->length;
+    constant_pool_package.fields_base = constant_pool->length;
     for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
       SPVM_FIELD* field = op_field->uv.field;
@@ -187,16 +187,16 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   
   // Constant pool field information
   SPVM_CONSTANT_POOL_FIELD constant_pool_field;
-  constant_pool_field.index = field->index;
+  constant_pool_field.id = field->index;
   
   // Add length
   constant_pool->length += extend_length;
   
   // Add field abs name to constant pool
-  constant_pool_field.abs_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->abs_name);
+  constant_pool_field.abs_name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->abs_name);
   
   // Add field name to constant pool
-  constant_pool_field.name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->op_name->uv.name);
+  constant_pool_field.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->op_name->uv.name);
   
   memcpy(&constant_pool->values[start_index], &constant_pool_field, sizeof(SPVM_CONSTANT_POOL_FIELD));
   

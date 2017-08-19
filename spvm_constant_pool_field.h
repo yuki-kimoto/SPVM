@@ -5,9 +5,9 @@
 
 // SPVM_CONSTANT_POOL_FIELD
 struct SPVM_constant_pool_field {
-  int32_t abs_name_constant_pool_index;
-  int32_t name_constant_pool_index;
-  int32_t index;
+  int32_t abs_name_id;
+  int32_t name_id;
+  int32_t id;
 };
 
 #endif

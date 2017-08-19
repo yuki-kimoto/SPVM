@@ -856,7 +856,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   int32_t length = constant_pool_package.fields_length;
   
   
-  int32_t field_indexes_constant_pool_index = constant_pool_package.field_indexes_constant_pool_index;
+  int32_t fields_base = constant_pool_package.fields_base;
   
   int32_t field_index = SPVM_API_ERROR_NO_ID;
   _Bool found = 0;
@@ -864,13 +864,13 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
     int32_t i;
     for (i = 0; i < length; i++) {
       
-      int32_t field_constant_pool_index = constant_pool[field_indexes_constant_pool_index + i];
+      int32_t field_id = constant_pool[fields_base + i];
       SPVM_CONSTANT_POOL_FIELD constant_pool_field;
-      memcpy(&constant_pool_field, &constant_pool[field_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_FIELD));
+      memcpy(&constant_pool_field, &constant_pool[field_id], sizeof(SPVM_CONSTANT_POOL_FIELD));
       
-      int32_t field_name_constant_pool_index = constant_pool_field.name_constant_pool_index;
+      int32_t field_name_id = constant_pool_field.name_id;
       
-      char* match_name = (char*)&constant_pool[field_name_constant_pool_index + 1];
+      char* match_name = (char*)&constant_pool[field_name_id + 1];
       
       if (strcmp(name, match_name) == 0) {
         found = 1;
@@ -901,9 +901,9 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
       SPVM_CONSTANT_POOL_SUB constant_pool_sub;
       memcpy(&constant_pool_sub, &constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
       
-      int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_id;
+      int32_t sub_name_id = constant_pool_sub.abs_name_id;
       
-      char* match_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
+      char* match_name = (char*)&constant_pool[sub_name_id + 1];
       if (strcmp(name, match_name) == 0) {
         found = 1;
         found_sub_id = sub_id;
@@ -938,9 +938,9 @@ int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
       SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
       memcpy(&constant_pool_package, &constant_pool[package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
       
-      int32_t package_name_constant_pool_index = constant_pool_package.name_constant_pool_index;
+      int32_t package_name_id = constant_pool_package.name_id;
       
-      char* match_name = (char*)&constant_pool[package_name_constant_pool_index + 1];
+      char* match_name = (char*)&constant_pool[package_name_id + 1];
       if (strcmp(name, match_name) == 0) {
         found = 1;
         found_package_id = package_id;
@@ -1131,13 +1131,13 @@ int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object) {
   int32_t* constant_pool = runtime->constant_pool;
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
   memcpy(&constant_pool_package, &constant_pool[object->package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  int32_t field_name_indexes_constant_pool_index = constant_pool_package.field_name_indexes_constant_pool_index;
+  int32_t field_names_base = constant_pool_package.field_names_base;
   int32_t length = constant_pool_package.fields_length;
   
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      int32_t name_index = constant_pool[field_name_indexes_constant_pool_index + i];
+      int32_t name_index = constant_pool[field_names_base + i];
       char* name = (char*)&constant_pool[name_index + 1];
       fprintf(stderr, "%s\n", name);
     }
