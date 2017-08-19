@@ -43,6 +43,7 @@ struct SPVM_type {
   int32_t element_type_id;
   _Bool is_array;
   _Bool is_package;
+  SPVM_OP* op_package;
 };
 
 char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name);

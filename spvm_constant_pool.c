@@ -14,6 +14,7 @@
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
+#include "spvm_constant_pool_type.h"
 #include "spvm_type.h"
 
 void SPVM_CONSTANT_POOL_adjust_alignment(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int32_t byte_size) {
@@ -81,6 +82,36 @@ void SPVM_CONSTANT_POOL_extend(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* cons
     
     constant_pool->capacity = new_capacity;
   }
+}
+
+int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_TYPE* type) {
+  (void)compiler;
+  
+  int32_t start_index = constant_pool->length;
+  
+  // Extend
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_TYPE));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
+
+  // Constant pool type information
+  SPVM_CONSTANT_POOL_TYPE constant_pool_type;
+  
+  constant_pool_type.id = type->id;
+  
+  // Push type name to constant pool
+  constant_pool_type.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, type->name);
+  
+  constant_pool_type.element_type_id = type->element_type_id;
+  
+  constant_pool_type.package_id = type->op_package->uv.package->constant_pool_index;
+  
+  constant_pool_type.is_array = type->is_array;
+  
+  constant_pool_type.is_package = type->is_package;
+  
+  memcpy(&constant_pool->values[start_index], &constant_pool_type, sizeof(SPVM_CONSTANT_POOL_TYPE));
+  
+  return start_index;
 }
 
 int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_PACKAGE* package) {
