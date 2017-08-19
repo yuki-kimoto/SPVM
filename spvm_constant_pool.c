@@ -80,6 +80,9 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   // Push package name to constant pool
   const char* package_name = package->op_name->uv.name;
   constant_pool_package.name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
+  
+  // Type id
+  constant_pool_package.type_id = package->op_type->uv.type->id;
 
   // Push fields constant_pool indexes to constant pool
   {

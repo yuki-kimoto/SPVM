@@ -10,6 +10,7 @@ struct SPVM_constant_pool_package {
   int32_t object_fields_length;
   int32_t field_name_indexes_constant_pool_index;
   int32_t field_indexes_constant_pool_index;
+  int32_t type_id;
 };
 
 #endif
