@@ -27,7 +27,6 @@ our $VERSION = '0.0247';
 our $COMPILER;
 our @PACKAGE_INFOS;
 our %FIELD_SYMTABLE;
-our %NATIVE_SUB_SYMTABLE;
 our $API;
 our @TYPE_NAMES;
 our %TYPE_SYMTABLE;
@@ -103,7 +102,7 @@ sub get_sub_native_address {
   return $native_address;
 }
 
-sub build_native_sub_symtable {
+sub bind_native_subs {
   my $native_sub_names = get_native_sub_names();
   for my $native_sub_name (@$native_sub_names) {
     my $native_sub_name_spvm = "SPVM::$native_sub_name";
@@ -111,7 +110,7 @@ sub build_native_sub_symtable {
     unless ($native_address) {
       croak "Can't find native address($native_sub_name())";
     }
-    $NATIVE_SUB_SYMTABLE{$native_sub_name} = $native_address;
+    bind_native_sub($native_sub_name, $native_address);
   }
 }
 
@@ -131,17 +130,14 @@ CHECK {
   # Build type names
   build_type_symtable();
   
-  # Build native subroutine
-  build_native_sub_symtable();
-  
-  # Bind native address
-  bind_native_address();
-  
   # Build field symbol table
   build_field_symtable();
   
   # Build run-time
   build_runtime();
+  
+  # Bind native subroutines
+  bind_native_subs();
   
   # Build SPVM subroutine
   build_spvm_subs();

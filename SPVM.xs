@@ -1160,7 +1160,7 @@ get_native_sub_names(...)
   SPVM_COMPILER* compiler = SPVM_XS_UTIL_get_compiler();
   
   // Native subroutine names
-  AV* av_native_sub_names = sv_2mortal(newAV());
+  AV* av_native_sub_names = (AV*)sv_2mortal((SV*)newAV());
   SPVM_DYNAMIC_ARRAY* native_subs = compiler->native_subs;
   {
     int32_t native_sub_index;
@@ -1181,35 +1181,31 @@ get_native_sub_names(...)
 }
 
 SV*
-bind_native_address(...)
+bind_native_sub(...)
   PPCODE:
 {
-  // Get compiler
-  SPVM_COMPILER* compiler = SPVM_XS_UTIL_get_compiler();
+  SV* sv_native_sub_name = ST(0);
+  SV* sv_native_address = ST(1);
   
-  // Native subroutine names
-  HV* hv_native_sub_symtable = get_hv("SPVM::NATIVE_SUB_SYMTABLE", 0);
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
-  SPVM_DYNAMIC_ARRAY* native_subs = compiler->native_subs;
-  {
-    int32_t native_sub_index;
-    for (native_sub_index = 0; native_sub_index < native_subs->length; native_sub_index++) {
-      SPVM_SUB* native_sub = SPVM_DYNAMIC_ARRAY_fetch(native_subs, native_sub_index);
-      const char* native_sub_name = native_sub->abs_name;
-      
-      SV** sv_native_address_ptr = hv_fetch(hv_native_sub_symtable, native_sub_name, strlen(native_sub_name), 0);
-      SV* sv_native_address = *sv_native_address_ptr;
-      IV native_address = SvIV(sv_native_address);
-      
-      // Sub id
-      int32_t sub_id = native_sub->constant_pool_index;
-      
-      // Set native address
-      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&compiler->constant_pool->values[sub_id];
-      constant_pool_sub->native_address = (void*)native_address;
-    }
-  }
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
+  // Native subroutine name
+  const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
+  
+  // Native address
+  IV native_address = SvIV(sv_native_address);
+  
+  // Sub id
+  int32_t sub_id = api->get_sub_id(api, native_sub_name);
+
+  // Set native address
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  constant_pool_sub->native_address = (void*)native_address;
+
   XSRETURN(0);
 }
 
