@@ -411,6 +411,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     &&case_SPVM_BYTECODE_C_CODE_CURRENT_LINE,
     &&case_SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY,
+    &&case_SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY,
+    &&case_SPVM_BYTECODE_C_CODE_NEW_INT_ARRAY,
+    &&case_SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY,
+    &&case_SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY,
+    &&case_SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY,
   };
   
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
@@ -2236,6 +2241,101 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     int32_t length = call_stack[operand_stack_top].int_value;
     
     object = SPVM_RUNTIME_API_new_byte_array(api, length);
+    
+    if (__builtin_expect(object == NULL, 0)) {
+      // Throw exception
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      // Set array
+      call_stack[operand_stack_top].object_value = object;
+      
+      pc++;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY: {
+    
+    // length
+    int32_t length = call_stack[operand_stack_top].int_value;
+    
+    object = SPVM_RUNTIME_API_new_short_array(api, length);
+    
+    if (__builtin_expect(object == NULL, 0)) {
+      // Throw exception
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      // Set array
+      call_stack[operand_stack_top].object_value = object;
+      
+      pc++;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_NEW_INT_ARRAY: {
+    
+    // length
+    int32_t length = call_stack[operand_stack_top].int_value;
+    
+    object = SPVM_RUNTIME_API_new_int_array(api, length);
+    
+    if (__builtin_expect(object == NULL, 0)) {
+      // Throw exception
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      // Set array
+      call_stack[operand_stack_top].object_value = object;
+      
+      pc++;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY: {
+    
+    // length
+    int32_t length = call_stack[operand_stack_top].int_value;
+    
+    object = SPVM_RUNTIME_API_new_long_array(api, length);
+    
+    if (__builtin_expect(object == NULL, 0)) {
+      // Throw exception
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      // Set array
+      call_stack[operand_stack_top].object_value = object;
+      
+      pc++;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY: {
+    
+    // length
+    int32_t length = call_stack[operand_stack_top].int_value;
+    
+    object = SPVM_RUNTIME_API_new_float_array(api, length);
+    
+    if (__builtin_expect(object == NULL, 0)) {
+      // Throw exception
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      // Set array
+      call_stack[operand_stack_top].object_value = object;
+      
+      pc++;
+      goto *jump[*pc];
+    }
+  }
+  case_SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY: {
+    
+    // length
+    int32_t length = call_stack[operand_stack_top].int_value;
+    
+    object = SPVM_RUNTIME_API_new_double_array(api, length);
     
     if (__builtin_expect(object == NULL, 0)) {
       // Throw exception

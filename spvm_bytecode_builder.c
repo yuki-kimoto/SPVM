@@ -1104,24 +1104,19 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY);
                             break;
                           case SPVM_TYPE_C_ID_SHORT_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_SHORT);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY);
                             break;
                           case SPVM_TYPE_C_ID_INT_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_INT);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_INT_ARRAY);
                             break;
                           case SPVM_TYPE_C_ID_LONG_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_LONG);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY);
                             break;
                           case SPVM_TYPE_C_ID_FLOAT_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_FLOAT);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY);
                             break;
                           case SPVM_TYPE_C_ID_DOUBLE_ARRAY:
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
-                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_OBJECT_C_VALUE_TYPE_DOUBLE);
+                            SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY);
                             break;
                           default:
                             SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_ARRAY);
