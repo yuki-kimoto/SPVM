@@ -1449,18 +1449,21 @@ call_sub(...)
   PPCODE:
 {
   SV* sv_sub_abs_name = ST(0);
+
+  // Get API
+  SV* sv_api = get_sv("SPVM::API", 0);
+  SV* sviv_api = SvROK(sv_api) ? SvRV(sv_api) : sv_api;
+  size_t iv_api = SvIV(sviv_api);
+  SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
   
   HV* hv_sub_symtable = get_hv("SPVM::SUB_SYMTABLE", 0);
   
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
+  int32_t sub_id = api->get_sub_id(api, sub_abs_name);
+  
   SV** sv_sub_info_ptr = hv_fetch(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), 0);
   SV* sv_sub_info = *sv_sub_info_ptr;
   HV* hv_sub_info = (HV*)SvRV(sv_sub_info);
-  
-  // Subroutine id
-  SV** sv_sub_id_ptr = hv_fetch(hv_sub_info, "id", strlen("id"), 0);
-  SV* sv_sub_id = *sv_sub_id_ptr;
-  int32_t sub_id = (int32_t)SvIV(sv_sub_id);
   
   // Argument type ids
   SV** sv_arg_type_ids_ptr = hv_fetch(hv_sub_info, "arg_type_ids", strlen("arg_type_ids"), 0);
@@ -1472,12 +1475,6 @@ call_sub(...)
   SV** sv_return_type_id_ptr = hv_fetch(hv_sub_info, "return_type_id", strlen("return_type_id"), 0);
   SV* sv_return_type_id = *sv_return_type_id_ptr;
   int32_t return_type_id = SvIV(sv_return_type_id);
-  
-  // Get API
-  SV* sv_api = get_sv("SPVM::API", 0);
-  SV* sviv_api = SvROK(sv_api) ? SvRV(sv_api) : sv_api;
-  size_t iv_api = SvIV(sviv_api);
-  SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
   
   // Check argument count
   if (items - 1 != args_length) {
