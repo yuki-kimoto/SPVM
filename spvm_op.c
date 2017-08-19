@@ -1640,18 +1640,17 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->base_name = op_name->uv.name;
+  type->name = op_name->uv.name;
   
   // Type op
-  SPVM_OP* op_type_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name->file, op_name->line);
-  SPVM_OP_insert_child(compiler, op_type_name, op_type_name->last, op_name);
-  op_type_name->uv.type = type;
-  
-  SPVM_TYPE_resolve_name(compiler, op_type_name);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name->file, op_name->line);
+  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
+  op_type->uv.type = type;
   
   // Add types
-  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_name);
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type);
   
-  return op_type_name;
+  return op_type;
 }
 
 SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term_length) {
