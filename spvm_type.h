@@ -39,11 +39,9 @@ extern const char* const SPVM_TYPE_C_ID_NAMES[];
 
 struct SPVM_type {
   const char* name;
-  const char* base_name;
   int32_t id;
-  SPVM_TYPE* child_type;
-  SPVM_TYPE* parent_type;
-  int32_t dimension;
+  int32_t element_type_id;
+  int32_t is_array;
 };
 
 char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name);

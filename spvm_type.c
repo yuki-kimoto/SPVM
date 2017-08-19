@@ -35,9 +35,6 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
   
   type->id = SPVM_TYPE_C_ID_UNKNOWN;
-  type->name = NULL;
-  type->dimension = 0;
-  type->base_name = NULL;
   
   return type;
 }
@@ -205,15 +202,7 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
 _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  _Bool is_array;
-  if (type->dimension > 0) {
-    is_array = 1;
-  }
-  else {
-    is_array = 0;
-  }
-  
-  return is_array;
+  return type->is_array;
 }
 
 _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
