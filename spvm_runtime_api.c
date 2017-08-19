@@ -1018,14 +1018,14 @@ int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* 
   return byte_size;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_from_pv(SPVM_API* api, const char* pv) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* string) {
   (void)api;
   
-  int32_t length = strlen(pv);
+  int32_t length = strlen(string);
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array(api, length);
   
   // Copy string
-  memcpy((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), pv, length + 1);
+  memcpy((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), string, length + 1);
   
   return object;
 }
