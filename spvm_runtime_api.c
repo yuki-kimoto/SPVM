@@ -1110,9 +1110,8 @@ int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   int32_t* constant_pool = runtime->constant_pool;
-  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-  memcpy(&constant_pool_package, &constant_pool[object->package_id], sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  int32_t length = constant_pool_package.fields_length;
+  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[object->package_id];
+  int32_t length = constant_pool_package->fields_length;
   
   return length;
 }
