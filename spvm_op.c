@@ -1653,36 +1653,36 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term_length) {
+SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type_child, SPVM_OP* op_term_length) {
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  assert(op_type->uv.type->base_name);
-  type->base_name = op_type->uv.type->base_name;
-  type->base_id = op_type->uv.type->base_id;
-  type->dimension = op_type->uv.type->dimension + 1;
+  assert(op_type_child->uv.type->base_name);
+  type->base_name = op_type_child->uv.type->base_name;
+  type->base_id = op_type_child->uv.type->base_id;
+  type->dimension = op_type_child->uv.type->dimension + 1;
   
   // Type OP
-  SPVM_OP* op_type_array = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);
-  SPVM_OP_insert_child(compiler, op_type_array, op_type_array->last, op_type);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type_child->file, op_type_child->line);
+  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_child);
   
   if (op_term_length) {
-    SPVM_OP_insert_child(compiler, op_type_array, op_type_array->last, op_term_length);
+    SPVM_OP_insert_child(compiler, op_type, op_type->last, op_term_length);
   }
   else {
-    SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_type->file, op_type->line);
-    SPVM_OP_insert_child(compiler, op_type_array, op_type_array->last, op_null);
+    SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_type_child->file, op_type_child->line);
+    SPVM_OP_insert_child(compiler, op_type, op_type->last, op_null);
   }
   
-  op_type_array->uv.type = type;
-  op_type_array->file = op_type->file;
-  op_type_array->line = op_type->line;
+  op_type->uv.type = type;
+  op_type->file = op_type_child->file;
+  op_type->line = op_type_child->line;
   
-  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_array);
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type);
   
-  SPVM_TYPE_resolve_name(compiler, op_type_array);
+  SPVM_TYPE_resolve_name(compiler, op_type);
   
-  return op_type_array;
+  return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_list(SPVM_COMPILER* compiler, const char* file, int32_t line) {
