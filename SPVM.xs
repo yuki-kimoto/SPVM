@@ -1423,14 +1423,13 @@ call_sub(...)
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   // Subroutine information
-  SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-  memcpy(&constant_pool_sub, &runtime->constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
   
   // Arguments
   {
     int32_t arg_index;
-    int32_t arg_type_ids_base = constant_pool_sub.arg_type_ids_base;
-    int32_t args_length = constant_pool_sub.args_length;
+    int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
+    int32_t args_length = constant_pool_sub->args_length;
     // Check argument count
     if (items - 1 != args_length) {
       croak("Argument count is defferent");
@@ -1513,7 +1512,7 @@ call_sub(...)
   api->set_exception(api, NULL);
   
   // Return type id
-  int32_t return_type_id = constant_pool_sub.return_type_id;
+  int32_t return_type_id = constant_pool_sub->return_type_id;
   
   switch (return_type_id) {
     case SPVM_TYPE_C_ID_VOID:  {
