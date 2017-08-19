@@ -162,7 +162,7 @@ _Bool SPVM_TYPE_resolve_id(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   else {
     int32_t base_id = op_type->uv.type->base_id;
     
-    const char* base_name = op_type->uv.type->base_name;
+    const char* base_name = SPVM_TYPE_get_base_name(compiler, type->name);
       
     // Core type or array
     if (SPVM_TYPE_is_array(compiler, type) || (base_id >= SPVM_TYPE_C_ID_VOID && base_id <= SPVM_TYPE_C_ID_STRING)) {
