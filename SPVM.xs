@@ -27,6 +27,7 @@
 #include "spvm_type.h"
 #include "spvm_field.h"
 #include "spvm_constant_pool_sub.h"
+#include "spvm_global.h"
 
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
@@ -1461,6 +1462,12 @@ call_sub(...)
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   int32_t sub_id = api->get_sub_id(api, sub_abs_name);
   
+  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  
+  // Subroutine information
+  SPVM_CONSTANT_POOL_SUB constant_pool_sub;
+  memcpy(&constant_pool_sub, &runtime->constant_pool[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
+  
   SV** sv_sub_info_ptr = hv_fetch(hv_sub_symtable, sub_abs_name, strlen(sub_abs_name), 0);
   SV* sv_sub_info = *sv_sub_info_ptr;
   HV* hv_sub_info = (HV*)SvRV(sv_sub_info);
@@ -1472,9 +1479,7 @@ call_sub(...)
   int32_t args_length = av_len(av_arg_type_ids) + 1;
   
   // Return type id
-  SV** sv_return_type_id_ptr = hv_fetch(hv_sub_info, "return_type_id", strlen("return_type_id"), 0);
-  SV* sv_return_type_id = *sv_return_type_id_ptr;
-  int32_t return_type_id = SvIV(sv_return_type_id);
+  int32_t return_type_id = constant_pool_sub.return_type_id;
   
   // Check argument count
   if (items - 1 != args_length) {
