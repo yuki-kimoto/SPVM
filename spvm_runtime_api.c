@@ -901,7 +901,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
       SPVM_CONSTANT_POOL_SUB constant_pool_sub;
       memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
       
-      int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_constant_pool_index;
+      int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_id;
       
       char* match_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
       if (strcmp(name, match_name) == 0) {

@@ -126,7 +126,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   
   // Object args length
   int32_t object_args_length = 0;
-  constant_pool_sub.object_arg_indexes_constant_pool_index = constant_pool->length;
+  constant_pool_sub.object_args_base = constant_pool->length;
   {
     int32_t i;
     for (i = 0; i < sub->op_args->length; i++) {
@@ -141,12 +141,12 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
     constant_pool_sub.object_args_length = object_args_length;
   }
   if (object_args_length == 0) {
-    constant_pool_sub.object_arg_indexes_constant_pool_index = -1;
+    constant_pool_sub.object_args_base = -1;
   }
 
   // Object my_vars length
   int32_t object_my_vars_length = 0;
-  constant_pool_sub.object_my_var_indexes_constant_pool_index = constant_pool->length;
+  constant_pool_sub.object_my_vars_base = constant_pool->length;
   {
     int32_t i;
     for (i = 0; i < sub->op_my_vars->length; i++) {
@@ -162,14 +162,14 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   }
   
   if (object_my_vars_length == 0) {
-    constant_pool_sub.object_my_var_indexes_constant_pool_index = -1;
+    constant_pool_sub.object_my_vars_base = -1;
   }
 
   // Push sub name to constant pool
-  constant_pool_sub.abs_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->abs_name);
+  constant_pool_sub.abs_name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->abs_name);
   
   // Push file name to constant pool
-  constant_pool_sub.file_name_constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->file_name);
+  constant_pool_sub.file_name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->file_name);
   
   memcpy(&constant_pool->values[start_index], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
   

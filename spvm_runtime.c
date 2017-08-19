@@ -502,12 +502,12 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
 
       // If arg is object, increment reference count
       if (constant_pool_sub.object_args_length) {
-        int32_t object_arg_indexes_constant_pool_index = constant_pool_sub.object_arg_indexes_constant_pool_index;
+        int32_t object_args_base = constant_pool_sub.object_args_base;
         int32_t object_args_length = constant_pool_sub.object_args_length;
         {
           int32_t i;
           for (i = 0; i < object_args_length; i++) {
-            int32_t arg_index = constant_pool[object_arg_indexes_constant_pool_index + i];
+            int32_t arg_index = constant_pool[object_args_base + i];
             SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[call_stack_base + arg_index].object_value;
             if (object != NULL) {
               object->ref_count++;
@@ -685,12 +685,12 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Decrement object my vars reference count
     memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
     int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    int32_t object_my_vars_base = constant_pool_sub.object_my_vars_base;
     if (object_my_vars_length) {
       {
         int32_t i;
         for (i = 0; i < object_my_vars_length; i++) {
-          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          int32_t my_var_index = constant_pool[object_my_vars_base + i];
           SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           
           if (object != NULL) {
@@ -744,12 +744,12 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Decrement object my vars reference count
     memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
     int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    int32_t object_my_vars_base = constant_pool_sub.object_my_vars_base;
     if (object_my_vars_length) {
       {
         int32_t i;
         for (i = 0; i < object_my_vars_length; i++) {
-          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          int32_t my_var_index = constant_pool[object_my_vars_base + i];
           SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           
           if (object != NULL) {
@@ -799,12 +799,12 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Decrement object my vars reference count
     memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
     int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    int32_t object_my_vars_base = constant_pool_sub.object_my_vars_base;
     if (object_my_vars_length) {
       {
         int32_t i;
         for (i = 0; i < object_my_vars_length; i++) {
-          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          int32_t my_var_index = constant_pool[object_my_vars_base + i];
           SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           
           if (object != NULL) {
@@ -861,12 +861,12 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Decrement object my vars reference count
     memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
     int32_t object_my_vars_length = constant_pool_sub.object_my_vars_length;
-    int32_t object_my_var_indexes_constant_pool_index = constant_pool_sub.object_my_var_indexes_constant_pool_index;
+    int32_t object_my_vars_base = constant_pool_sub.object_my_vars_base;
     if (object_my_vars_length) {
       {
         int32_t i;
         for (i = 0; i < object_my_vars_length; i++) {
-          int32_t my_var_index = constant_pool[object_my_var_indexes_constant_pool_index + i];
+          int32_t my_var_index = constant_pool[object_my_vars_base + i];
           SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[call_stack_base + my_var_index].object_value;
           
           if (object != NULL) {
@@ -880,12 +880,12 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     memcpy(&constant_pool_sub, &constant_pool[sub_constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
     
     // Sub name
-    int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_constant_pool_index;
+    int32_t sub_name_constant_pool_index = constant_pool_sub.abs_name_id;
     const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
     
     // File name
-    int32_t file_name_constant_pool_index = constant_pool_sub.file_name_constant_pool_index;
-    const char* file_name = (char*)&constant_pool[file_name_constant_pool_index + 1];
+    int32_t file_name_id = constant_pool_sub.file_name_id;
+    const char* file_name = (char*)&constant_pool[file_name_id + 1];
     
     // stack trace strings
     const char* from = "\n  from ";
@@ -2218,11 +2218,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Memory allocation error
     if (__builtin_expect(!object, 0)) {
       // Sub name
-      index = constant_pool_sub.abs_name_constant_pool_index;
+      index = constant_pool_sub.abs_name_id;
       const char* sub_name = (char*)&constant_pool[index + 1];
       
       // File name
-      index = constant_pool_sub.file_name_constant_pool_index;
+      index = constant_pool_sub.file_name_id;
       const char* file_name = (char*)&constant_pool[index + 1];
       
       fprintf(stderr, "Failed to allocate memory(new package) from %s at %s\n", sub_name, file_name);
@@ -2384,11 +2384,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_constant_pool_index) {
     // Memory allocation error
     else {
       // Sub name
-      index = constant_pool_sub.abs_name_constant_pool_index;
+      index = constant_pool_sub.abs_name_id;
       const char* sub_name = (char*)&constant_pool[index + 1];
       
       // File name
-      index = constant_pool_sub.file_name_constant_pool_index;
+      index = constant_pool_sub.file_name_id;
       const char* file_name = (char*)&constant_pool[index + 1];
       
       fprintf(stderr, "Failed to allocate memory(new string) from %s at %s\n", sub_name, file_name);
