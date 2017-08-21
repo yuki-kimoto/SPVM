@@ -1777,7 +1777,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       type->id = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
     }
   }
-
+  
   // Create type index
   {
     int32_t i;

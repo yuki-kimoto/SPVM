@@ -10,6 +10,7 @@
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
+#include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
 #include "spvm_value.h"
 #include "spvm_runtime.h"
@@ -915,7 +916,7 @@ int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
   
   int32_t* constant_pool = runtime->constant_pool;
   int32_t length = runtime->packages_length;
-  int32_t packages_base = runtime-> packages_base;
+  int32_t packages_base = runtime->packages_base;
   
   int32_t found_package_id = SPVM_API_ERROR_NO_ID;
   _Bool found = 0;
@@ -944,6 +945,41 @@ int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
   return found_package_id;
 }
 
+int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
+  (void)api;
+  
+  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  int32_t length = runtime->types_length;
+  int32_t types_base = runtime->types_base;
+  
+  int32_t found_type_id = SPVM_API_ERROR_NO_ID;
+  _Bool found = 0;
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      int32_t type_id = constant_pool[types_base + i];
+      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[type_id];
+      
+      int32_t type_name_id = constant_pool_type->name_id;
+      
+      char* match_name = (char*)&constant_pool[type_name_id + 1];
+      if (strcmp(name, match_name) == 0) {
+        found = 1;
+        found_type_id = type_id;
+        break;
+      }
+    }
+  }
+  
+  if (!found) {
+    fprintf(stderr, "Can't find typeroutine name \"%s\"\n", name);
+    abort();
+  }
+  
+  return found_type_id;
+}
 
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_index) {
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
