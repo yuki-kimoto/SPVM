@@ -402,8 +402,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   }
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_type_code, int32_t length) {
-  (void)element_type_code;
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_type_id, int32_t length) {
   
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
@@ -425,6 +424,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
     
     // Initialize by null
     memset(object, 0, array_byte_size);
+    
+    // Type id
+    SPVM_CONSTANT_POOL_TYPE* type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
+    // int32_t type_id = type->parent_type_id;
+    // object->type_id = type_id;
     
     // Set type
     object->is_array = 1;

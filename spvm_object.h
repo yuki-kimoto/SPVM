@@ -13,6 +13,7 @@ struct SPVM_object {
   int8_t value_type;
   int8_t is_array;
   int32_t type_code;
+  int32_t type_id;
 };
 
 enum {

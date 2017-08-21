@@ -2355,19 +2355,19 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     }
   }
   case_SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY: {
-    int32_t element_type_code = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    int32_t element_type_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    object = SPVM_RUNTIME_API_new_object_array(api, element_type_code, length);
+    object = SPVM_RUNTIME_API_new_object_array(api, element_type_id, length);
     
     if (__builtin_expect(object == NULL, 0)) {
       // Throw exception
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
     else {
-      // Set array
+      // Set object
       call_stack[operand_stack_top].object_value = object;
       
       pc += 5;
