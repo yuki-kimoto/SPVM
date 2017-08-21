@@ -1022,9 +1022,7 @@ get(...)
       sv_base_object = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)base_object);
       break;
     default : {
-      const char* return_type_name = SPVM_XS_UTIL_get_type_name(element_type_code);
-      int32_t element_type_name_length = strlen(element_type_name);
-      if (element_type_name[element_type_name_length - 1] == ']') {
+      if (element_type->is_array) {
         sv_base_object = SPVM_XS_UTIL_new_sv_object_array(element_type_code, (SPVM_API_OBJECT*)base_object);
       }
       else {
