@@ -67,7 +67,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
           printf(" \"%s\"", constant->value.string_value);
           break;
       }
-      printf(" (index %" PRId32 ")", constant->constant_pool_index);
+      printf(" (index %" PRId32 ")", constant->id);
     }
     else if (code == SPVM_OP_C_CODE_MY) {
       SPVM_MY_VAR* my_var = op_cur->uv.my_var;
@@ -498,7 +498,7 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
       printf("      string \"%s\"\n", constant->value.string_value);
       break;
   }
-  printf("      address => %" PRId32 "\n", constant->constant_pool_index);
+  printf("      address => %" PRId32 "\n", constant->id);
 }
 
 void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
@@ -562,7 +562,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     printf("      type => \"%s\"\n", type->name);
     printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_get_byte_size(compiler, field));
     
-    printf("      constant_pool_index => \"%" PRId32 "\"\n", field->constant_pool_index);
+    printf("      id => \"%" PRId32 "\"\n", field->id);
   }
   else {
     printf("        None\n");

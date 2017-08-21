@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
       const char* sub_abs_name = native_sub->abs_name;
       
       // Sub id
-      int32_t sub_id = native_sub->constant_pool_index;
+      int32_t sub_id = native_sub->id;
       
       // Set native address
       SPVM_CONSTANT_POOL_SUB constant_pool_sub;
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
   if (entry_point_sub_name) {
     op_sub_start = SPVM_HASH_search(compiler->op_sub_symtable, entry_point_sub_name, strlen(entry_point_sub_name));
     if (op_sub_start) {
-      sub_constant_pool_index = op_sub_start->uv.sub->constant_pool_index;
+      sub_constant_pool_index = op_sub_start->uv.sub->id;
     }
     else {
       fprintf(stderr, "Can't find entry point subroutine %s", entry_point_sub_name);

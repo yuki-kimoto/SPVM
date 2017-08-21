@@ -40,13 +40,13 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   runtime->packages_length = op_packages->length;
   
-  runtime->packages_base = compiler->package_indexes_constant_pool_index;
+  runtime->packages_base = compiler->packages_base;
   
-  runtime->subs_base = compiler->sub_indexes_constant_pool_index;
+  runtime->subs_base = compiler->subs_base;
   
   runtime->subs_length = compiler->subs_length;
 
-  runtime->types_base = compiler->type_indexes_constant_pool_index;
+  runtime->types_base = compiler->types_base;
   
   runtime->types_length = compiler->types->length;
   
@@ -124,12 +124,12 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   }
   
   // Package indexes constant pool index
-  compiler->package_indexes_constant_pool_index = -1;
+  compiler->packages_base = -1;
   
   // Subroutine indexes constant pool index
-  compiler->sub_indexes_constant_pool_index = -1;
+  compiler->subs_base = -1;
 
-  compiler->type_indexes_constant_pool_index = -1;
+  compiler->types_base = -1;
   
   // Subroutine length
   compiler->subs_length = 0;

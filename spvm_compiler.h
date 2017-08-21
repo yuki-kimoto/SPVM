@@ -91,13 +91,13 @@ struct SPVM_compiler {
   int32_t current_package_count;
   
   // Package indexes constant pool index
-  int32_t package_indexes_constant_pool_index;
+  int32_t packages_base;
 
   // Type indexes constant pool index
-  int32_t type_indexes_constant_pool_index;
+  int32_t types_base;
   
   // Subroutine indexes constant pool index
-  int32_t sub_indexes_constant_pool_index;
+  int32_t subs_base;
   
   // Subroutine length
   int32_t subs_length;

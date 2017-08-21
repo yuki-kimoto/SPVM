@@ -159,7 +159,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
           SPVM_SUB* sub = op_sub->uv.sub;
           
           // Check sub information
-          assert(sub->constant_pool_index > -1);
+          assert(sub->id > -1);
           assert(sub->op_name);
           assert(sub->op_return_type);
           assert(sub->abs_name);
@@ -573,7 +573,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_FIELD* field = op_field->uv.field;
                       
                       SPVM_CONSTANT_POOL_FIELD constant_pool_field;
-                      memcpy(&constant_pool_field, &compiler->constant_pool->values[field->constant_pool_index], sizeof(SPVM_CONSTANT_POOL_FIELD));
+                      memcpy(&constant_pool_field, &compiler->constant_pool->values[field->id], sizeof(SPVM_CONSTANT_POOL_FIELD));
                       
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_field.id >> 8) & 0xFF);
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant_pool_field.id & 0xFF);
@@ -591,12 +591,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
                     SPVM_SUB* sub = op_sub->uv.sub;
                     
-                    int32_t constant_pool_index = sub->constant_pool_index;
+                    int32_t id = sub->id;
                     
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_index >> 24) & 0xFF);
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_index >> 16) & 0xFF);
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_index >> 8) & 0xFF);
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant_pool_index & 0xFF);
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (id >> 24) & 0xFF);
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (id >> 16) & 0xFF);
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (id >> 8) & 0xFF);
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, id & 0xFF);
                     
                     if (compiler->debug) {
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CURRENT_LINE);
@@ -1090,10 +1090,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_CONSTANT* constant = op_cur->first->uv.constant;
                       
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_STRING);
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 24) & 0xFF);
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 16) & 0xFF);
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 8) & 0xFF);
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant->constant_pool_index & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 24) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 16) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 8) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant->id & 0xFF);
                     }
                     else if (op_cur->first->code == SPVM_OP_C_CODE_TYPE) {
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
@@ -1134,12 +1134,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
                         SPVM_PACKAGE* package = op_package->uv.package;
                         
-                        int32_t constant_pool_index = package->constant_pool_index;
+                        int32_t id = package->id;
                         
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_index >> 24) & 0xFF);
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_index >> 16) & 0xFF);
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_index >> 8) & 0xFF);
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant_pool_index & 0xFF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (id >> 24) & 0xFF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (id >> 16) & 0xFF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (id >> 8) & 0xFF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, id & 0xFF);
                       }
                     }
                     else {
@@ -1381,7 +1381,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_FIELD* field = op_field->uv.field;
 
                       SPVM_CONSTANT_POOL_FIELD constant_pool_field;
-                      memcpy(&constant_pool_field, &compiler->constant_pool->values[field->constant_pool_index], sizeof(SPVM_CONSTANT_POOL_FIELD));
+                      memcpy(&constant_pool_field, &compiler->constant_pool->values[field->id], sizeof(SPVM_CONSTANT_POOL_FIELD));
                       
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_field.id >> 8) & 0xFF);
                       SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant_pool_field.id & 0xFF);
@@ -1926,12 +1926,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         assert(0);
                       }
                       
-                      assert(constant->constant_pool_index != -1);
+                      assert(constant->id != -1);
                       
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 24) & 0xFF);
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 16) & 0xFF);
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->constant_pool_index >> 8) & 0xFF);
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant->constant_pool_index & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 24) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 16) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 8) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant->id & 0xFF);
                     }
                     
                     break;
@@ -1964,9 +1964,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
           
           // Set bytecode base to sub
           SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-          memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub->constant_pool_index], sizeof(SPVM_CONSTANT_POOL_SUB));
+          memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub->id], sizeof(SPVM_CONSTANT_POOL_SUB));
           constant_pool_sub.bytecode_base = sub->bytecode_base;
-          memcpy(&compiler->constant_pool->values[sub->constant_pool_index], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
+          memcpy(&compiler->constant_pool->values[sub->id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
           
         }
       }

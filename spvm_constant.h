@@ -7,7 +7,7 @@
 struct SPVM_constant {
   SPVM_TYPE* type;
   SPVM_VALUE value;
-  int32_t constant_pool_index;
+  int32_t id;
 };
 
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler);

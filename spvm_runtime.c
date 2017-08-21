@@ -884,8 +884,8 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     
     // Sub name
-    int32_t sub_name_constant_pool_index = constant_pool_sub->abs_name_id;
-    const char* sub_name = (char*)&constant_pool[sub_name_constant_pool_index + 1];
+    int32_t sub_name_id = constant_pool_sub->abs_name_id;
+    const char* sub_name = (char*)&constant_pool[sub_name_id + 1];
     
     // File name
     int32_t file_name_id = constant_pool_sub->file_name_id;

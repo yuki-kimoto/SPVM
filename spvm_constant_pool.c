@@ -104,7 +104,7 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   constant_pool_type.element_type_code = type->element_type_code;
   
   if (type->op_package) {
-    constant_pool_type.package_id = type->op_package->uv.package->constant_pool_index;
+    constant_pool_type.package_id = type->op_package->uv.package->id;
   }
   else {
     constant_pool_type.package_id = -1;
@@ -149,7 +149,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
     for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
       SPVM_FIELD* field = op_field->uv.field;
-      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->constant_pool_index);
+      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->id);
     }
   }
   

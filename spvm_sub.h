@@ -16,7 +16,7 @@ struct SPVM_sub {
   int32_t bytecode_base;
   int32_t bytecode_length;
   int32_t operand_stack_max;
-  int32_t constant_pool_index;
+  int32_t id;
   _Bool is_native;
   _Bool is_constant;
 };
