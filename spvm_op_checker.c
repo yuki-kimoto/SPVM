@@ -1760,8 +1760,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
           assert(sub->file_name);
           
-          // Push sub information to constant pool
-          sub->id = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
         }
       }
     }
@@ -1780,8 +1778,27 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
     }
   }
+
+  // Push subroutine into constant pool
+  {
+    int32_t package_pos;
+    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      
+      {
+        int32_t sub_pos;
+        for (sub_pos = 0; sub_pos < package->op_subs->length; sub_pos++) {
+          
+          SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(package->op_subs, sub_pos);
+          SPVM_SUB* sub = op_sub->uv.sub;
+          sub->id = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
+        }
+      }
+    }
+  }
   
-  // Create subroutine indexes
+  // Push subroutine index to constant pool
   compiler->subs_length = 0;
   {
     int32_t package_pos;
