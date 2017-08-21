@@ -426,8 +426,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
     memset(object, 0, array_byte_size);
     
     // Type id
-    SPVM_CONSTANT_POOL_TYPE* type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
-    int32_t type_id = type->parent_type_id;
+    SPVM_CONSTANT_POOL_TYPE* element_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
+    int32_t type_id = element_type->parent_type_id;
     object->type_id = type_id;
     
     // Set type
