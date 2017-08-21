@@ -185,6 +185,28 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
   
+  // Push type information to constant_pool
+  {
+    int32_t i;
+    for (i = 0; i < compiler->types->length; i++) {
+      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
+      type->id = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
+    }
+  }
+  
+  // Create type index
+  {
+    int32_t i;
+    for (i = 0; i < compiler->types->length; i++) {
+      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
+      int32_t type_id = type->id;
+      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, type_id);
+      if (compiler->types_base < 0) {
+        compiler->types_base = added_id;
+      }
+    }
+  }
+  
   // Reorder fields. Reference types place before value types.
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   {
@@ -1768,29 +1790,4 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
     }
   }
-  
-  // Push type information to constant_pool
-  {
-    int32_t i;
-    for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
-      type->id = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
-    }
-  }
-  
-  // Create type index
-  {
-    int32_t i;
-    for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
-      int32_t type_id = type->id;
-      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, type_id);
-      if (compiler->types_base < 0) {
-        compiler->types_base = added_id;
-      }
-    }
-  }
-  
-  int32_t type_id = compiler->constant_pool->values[compiler->types_base + 2];
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool[type_id];
 }
