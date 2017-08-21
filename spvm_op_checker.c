@@ -346,21 +346,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
       */
       
-      // Constant pool
-      SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
-      
-      // Push field information to constant pool
-      {
-        int32_t field_pos;
-        for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
-          
-          // Add field to constant pool
-          field->id = SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
-        }
-      }
-      
       {
         int32_t sub_pos;
         for (sub_pos = 0; sub_pos < package->op_subs->length; sub_pos++) {
@@ -1762,12 +1747,24 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Create package indexes
+  // Push package into constant_pool
   {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
       SPVM_PACKAGE* package = op_package->uv.package;
+      
+      // Push field information to constant pool
+      {
+        int32_t field_pos;
+        for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
+          SPVM_FIELD* field = op_field->uv.field;
+          
+          // Add field to constant pool
+          field->id = SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
+        }
+      }
       package->id = SPVM_CONSTANT_POOL_push_package(compiler, compiler->constant_pool, package);
     }
   }
