@@ -150,12 +150,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
-      // warn("BBBBBBBBBB %s", type->name);
-      
       // Create resolved type id
       SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name));
       if (found_type) {
-        type->code = found_type->code;
+        op_type->uv.type = found_type;
       }
       else {
         type->code = compiler->types->length;
@@ -164,6 +162,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         memcpy(new_type, type, sizeof(SPVM_TYPE));
         SPVM_DYNAMIC_ARRAY_push(compiler->types, new_type);
         SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
+        
+        op_type->uv.type = new_type;
       }
     }
   }
@@ -1749,7 +1749,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           // Push sub information to constant pool
           sub->id = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
-          // warn("AAAAAAAA %d %s", sub->op_return_type->uv.type->id, sub->op_return_type->uv.type->name);
         }
       }
     }
