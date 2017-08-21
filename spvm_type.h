@@ -42,7 +42,9 @@ struct SPVM_type {
   SPVM_OP* op_package;
   int32_t code;
   int32_t element_type_code;
+  SPVM_TYPE* element_type;
   int32_t parent_type_code;
+  SPVM_TYPE* parent_type;
   int32_t id;
   _Bool is_array;
   _Bool is_package;
