@@ -1628,9 +1628,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)return_value);
             break;
           default : {
-            const char* return_type_name = SPVM_XS_UTIL_get_type_name(return_type_code);
-            int32_t type_name_length = strlen(return_type_name);
-            if (return_type_name[type_name_length - 1] == ']') {
+            if (return_type->is_array) {
               sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_code, (SPVM_API_OBJECT*)return_value);
             }
             else {
