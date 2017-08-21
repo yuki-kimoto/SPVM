@@ -168,13 +168,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
 
-  // Resolve element type id
+  // Resolve element type id and parent type id
   {
     int32_t i;
     for (i = 0; i < compiler->types->length; i++) {
       
       SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
       const char* type_name = type->name;
+      
+      // Element type
       const char* element_type_name = SPVM_TYPE_get_element_name(compiler, type_name);
       if (element_type_name == NULL) {
         type->element_type_code = -1;
@@ -183,6 +185,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         SPVM_TYPE* element_type = SPVM_HASH_search(compiler->type_symtable, type_name, strlen(type_name));
         assert(element_type);
         type->element_type_code = element_type->code;
+      }
+      
+      // Parent type
+      const char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type_name);
+      if (parent_type_name == NULL) {
+        type->parent_type_code = -1;
+      }
+      else {
+        SPVM_TYPE* parent_type = SPVM_HASH_search(compiler->type_symtable, type_name, strlen(type_name));
+        assert(parent_type);
+        type->parent_type_code = parent_type->code;
       }
     }
   }
