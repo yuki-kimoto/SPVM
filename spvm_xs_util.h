@@ -39,25 +39,6 @@ const char* SPVM_XS_UTIL_get_type_name(int32_t type_code) {
   return type_name;
 }
 
-int32_t SPVM_XS_UTIL_get_type_code(const char* type_name) {
-  
-  // Type information
-  HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
-  SV** sv_type_info_ptr = hv_fetch(hv_type_symtable, type_name, strlen(type_name), 0);
-  if (!sv_type_info_ptr) {
-    return -1;
-  }
-  
-  // Type id
-  SV* sv_type_info = *sv_type_info_ptr;
-  HV* hv_type_info = (HV*)SvRV(sv_type_info);
-  SV** sv_type_code_ptr = hv_fetch(hv_type_info, "id", strlen("id"), 0);
-  SV* sv_type_code = *sv_type_code_ptr;
-  int32_t type_code = SvIV(sv_type_code);
-  
-  return type_code;
-}
-
 int32_t SPVM_XS_UTIL_get_sv_object_type_code(SV* sv_object) {
   HV* hv_object = (HV*)SvRV(sv_object);
   SV** sv_type_code_ptr = hv_fetch(hv_object, "type_code", strlen("type_code"), 0);

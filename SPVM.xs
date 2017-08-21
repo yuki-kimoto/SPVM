@@ -967,6 +967,8 @@ get(...)
 {
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
+
+  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
   // Get API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -985,7 +987,9 @@ get(...)
   const char* element_type_name = SvPV_nolen(sv_element_type_name);
   
   // Element type id
-  int32_t element_type_code = SPVM_XS_UTIL_get_type_code(element_type_name);
+  int32_t element_type_id = api->get_type_id(api, element_type_name);
+  SPVM_CONSTANT_POOL_TYPE* element_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
+  int32_t element_type_code = element_type->code;
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
