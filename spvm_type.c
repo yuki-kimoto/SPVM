@@ -157,6 +157,19 @@ char* SPVM_TYPE_get_element_name(SPVM_COMPILER* compiler, const char* type_name)
   return type_base_name;
 }
 
+char* SPVM_TYPE_get_parent_name(SPVM_COMPILER* compiler, const char* type_name) {
+  int32_t type_name_length = (int32_t)strlen(type_name);
+  int32_t type_parent_name_length = type_name_length + 2;
+  char* type_parent_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_parent_name_length);
+  
+  strncpy(type_parent_name, type_name, type_name_length);
+  type_parent_name[type_name_length] = '[';
+  type_parent_name[type_name_length + 1] = ']';
+  type_parent_name[type_parent_name_length] = '\0';
+  
+  return type_parent_name;
+}
+
 // Create array name
 char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* base_name) {
   

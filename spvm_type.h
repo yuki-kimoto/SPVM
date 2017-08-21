@@ -42,6 +42,7 @@ struct SPVM_type {
   SPVM_OP* op_package;
   int32_t code;
   int32_t element_type_code;
+  int32_t parent_type_code;
   int32_t id;
   _Bool is_array;
   _Bool is_package;
@@ -50,6 +51,7 @@ struct SPVM_type {
 char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name);
 char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* base_name);
 char* SPVM_TYPE_get_element_name(SPVM_COMPILER* compiler, const char* type_name);
+char* SPVM_TYPE_get_parent_name(SPVM_COMPILER* compiler, const char* type_name);
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 
