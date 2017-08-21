@@ -96,7 +96,7 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   // Constant pool type information
   SPVM_CONSTANT_POOL_TYPE constant_pool_type;
   
-  constant_pool_type.id = type->code;
+  constant_pool_type.code = type->code;
   
   // Push type name to constant pool
   constant_pool_type.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, type->name);
