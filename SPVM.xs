@@ -894,6 +894,9 @@ new(...)
   
   // Type id
   const char* type_name = SvPV_nolen(sv_type_name);
+  
+  int32_t type_id = api->get_type_id(api, type_name);
+  
   int32_t type_code = SPVM_XS_UTIL_get_type_code(type_name);
   if (type_code < 0) {
     croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Array::Object::new())", type_name);

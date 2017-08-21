@@ -1790,4 +1790,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
     }
   }
+  
+  int32_t type_id = compiler->constant_pool->values[compiler->types_base + 2];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool[type_id];
 }

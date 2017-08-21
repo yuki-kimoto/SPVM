@@ -92,11 +92,14 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   // Extend
   int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_TYPE));
   SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-
+  
   // Constant pool type information
   SPVM_CONSTANT_POOL_TYPE constant_pool_type;
   
   constant_pool_type.code = type->code;
+  
+  // Add length
+  constant_pool->length += extend_length;
   
   // Push type name to constant pool
   constant_pool_type.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, type->name);
