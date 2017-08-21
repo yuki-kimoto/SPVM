@@ -1514,30 +1514,12 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
 
 SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void) {
   
-  // Name op
-  const char* name = "void";
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_void->file, op_void->line);
-  op_name->uv.name = name;
-  
-  // Type
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->name = name;
-  
   // Type op
-  SPVM_OP* op_type_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_void->file, op_void->line);
-  SPVM_OP_insert_child(compiler, op_type_name, op_type_name->last, op_name);
-  op_type_name->uv.type = type;
-  op_type_name->file = op_name->file;
-  op_type_name->line = op_name->line;
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_void->file, op_void->line);
   
-  // Resolve name and id
-  type->name = name;
-  type->code = SPVM_TYPE_C_CODE_VOID;
+  op_type->uv.type = SPVM_TYPE_get_void_type(compiler);
   
-  // Add types
-  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_name);
-  
-  return op_type_name;
+  return op_type;
 }
 
 SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_OP* op_term) {

@@ -39,6 +39,16 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   return type;
 }
 
+SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
+  (void)compiler;
+  
+  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_VOID);
+  
+  assert(type);
+  
+  return type;
+}
+
 SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
