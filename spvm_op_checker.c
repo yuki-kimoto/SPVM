@@ -179,13 +179,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       // Element type
       const char* element_type_name = SPVM_TYPE_get_element_name(compiler, type_name);
       if (element_type_name == NULL) {
-        type->element_type_code = -1;
         type->element_type = NULL;
       }
       else {
         SPVM_TYPE* element_type = SPVM_HASH_search(compiler->type_symtable, type_name, strlen(type_name));
         assert(element_type);
-        type->element_type_code = element_type->code;
         type->element_type = element_type;
       }
       

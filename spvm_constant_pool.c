@@ -104,7 +104,14 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   // Push type name to constant pool
   constant_pool_type.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, type->name);
   
-  constant_pool_type.element_type_code = type->element_type_code;
+  if (type->element_type) {
+    constant_pool_type.element_type_code = type->element_type->code;
+    constant_pool_type.element_type_id = type->element_type->id;
+  }
+  else {
+    constant_pool_type.element_type_code = -1;
+    constant_pool_type.element_type_id = -1;
+  }
   
   if (type->op_package) {
     constant_pool_type.package_id = type->op_package->uv.package->id;
