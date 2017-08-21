@@ -24,10 +24,7 @@
 #include "spvm_name_info.h"
 #include "spvm_type.h"
 #include "spvm_switch_info.h"
-#include "spvm_constant_pool.h"
 #include "spvm_limit.h"
-#include "spvm_constant_pool_package.h"
-#include "spvm_constant_pool_type.h"
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
@@ -1649,82 +1646,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
 
-  // Push constant to constant pool
-  {
-    int32_t i;
-    for (i = 0; i < compiler->op_constants->length; i++) {
-      SPVM_OP* op_constant = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_constants, i);
-      
-      // Constant
-      SPVM_CONSTANT* constant = op_constant->uv.constant;
-      
-      // Constant pool
-      SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
-      
-      // Push value to constant pool
-      switch (constant->type->code) {
-        case SPVM_TYPE_C_CODE_BYTE: {
-          break;
-        }
-        case SPVM_TYPE_C_CODE_SHORT: {
-          break;
-        }
-        case SPVM_TYPE_C_CODE_INT: {
-          
-          int32_t value = constant->value.int_value;
-          if (value >= -32768 && value <= 32767) {
-            constant->id = -1;
-            break;
-          }
-          
-          constant->id = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, (int32_t)value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_LONG: {
-          int64_t value = constant->value.long_value;
-          
-          if (value >= -32768 && value <= 32767) {
-            constant->id = -1;
-            break;
-          }
-          
-          constant->id = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_FLOAT: {
-          float value = constant->value.float_value;
-          
-          if (value == 0 || value == 1 || value == 2) {
-            constant->id = -1;
-            break;
-          }
-          
-          constant->id = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_DOUBLE: {
-          double value = constant->value.double_value;
-          
-          if (value == 0 || value == 1) {
-            constant->id = -1;
-            break;
-          }
-          
-          constant->id = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_STRING: {
-          const char* value = constant->value.string_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
-          
-          break;
-        }
-        default:
-          assert(0);
-      }
-    }
-  }
+
   
   
   
