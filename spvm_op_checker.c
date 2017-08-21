@@ -361,9 +361,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
-      // Push package information to constant pool
-      package->id = SPVM_CONSTANT_POOL_push_package(compiler, constant_pool, package);
-      
       {
         int32_t sub_pos;
         for (sub_pos = 0; sub_pos < package->op_subs->length; sub_pos++) {
@@ -1770,6 +1767,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      package->id = SPVM_CONSTANT_POOL_push_package(compiler, compiler->constant_pool, package);
+    }
+  }
+  
+  // Create package indexes
+  {
+    int32_t package_pos;
+    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
       int32_t package_id = op_package->uv.package->id;
       
       int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_id);
@@ -1789,7 +1796,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       {
         int32_t sub_pos;
         for (sub_pos = 0; sub_pos < package->op_subs->length; sub_pos++) {
-          
           SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(package->op_subs, sub_pos);
           SPVM_SUB* sub = op_sub->uv.sub;
           sub->id = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
