@@ -29,6 +29,7 @@
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_field.h"
+#include "spvm_constant_pool_type.h"
 #include "spvm_global.h"
 
 #include "spvm_api.h"
@@ -881,6 +882,8 @@ new(...)
   SV* sv_type_name = ST(1);
   SV* sv_length = ST(2);
   
+  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Set API
@@ -896,8 +899,10 @@ new(...)
   const char* type_name = SvPV_nolen(sv_type_name);
   
   int32_t type_id = api->get_type_id(api, type_name);
+  SPVM_CONSTANT_POOL_TYPE* type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[type_id];
   
-  int32_t type_code = SPVM_XS_UTIL_get_type_code(type_name);
+  int32_t type_code = type->code;
+  
   if (type_code < 0) {
     croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Array::Object::new())", type_name);
   }
