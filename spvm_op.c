@@ -931,7 +931,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_type_or_void, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_type, SPVM_OP* op_block) {
   
   if (op_name_sub->code == SPVM_OP_C_CODE_NEW) {
     op_name_sub->code = SPVM_OP_C_CODE_NAME;
@@ -949,7 +949,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_name_sub);
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_args);
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_descriptors);
-  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_type_or_void);
+  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_type);
   if (op_block) {
     op_block->flag = SPVM_OP_C_FLAG_BLOCK_SUB;
     SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_block);
@@ -992,7 +992,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   }
 
   // return type
-  sub->op_return_type = op_type_or_void;
+  sub->op_return_type = op_type;
   
   // Add my declaration to first of block
   if (op_block) {
