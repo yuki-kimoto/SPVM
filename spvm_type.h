@@ -39,11 +39,12 @@ extern const char* const SPVM_TYPE_C_CODE_NAMES[];
 
 struct SPVM_type {
   const char* name;
+  SPVM_OP* op_package;
   int32_t code;
   int32_t element_type_code;
+  int32_t id;
   _Bool is_array;
   _Bool is_package;
-  SPVM_OP* op_package;
 };
 
 char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name);

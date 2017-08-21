@@ -1737,9 +1737,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
       int32_t package_id = op_package->uv.package->id;
       
-      int32_t added_index = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_id);
+      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_id);
       if (compiler->packages_base < 0) {
-        compiler->packages_base = added_index;
+        compiler->packages_base = added_id;
       }
     }
   }
@@ -1760,9 +1760,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(package->op_subs, sub_pos);
           SPVM_SUB* sub = op_sub->uv.sub;
           int32_t sub_id = sub->id;
-          int32_t added_index = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_id);
+          int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_id);
           if (compiler->subs_base < 0) {
-            compiler->subs_base = added_index;
+            compiler->subs_base = added_id;
           }
         }
       }
@@ -1774,10 +1774,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     int32_t i;
     for (i = 0; i < compiler->types->length; i++) {
       SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
-      int32_t added_index = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
+      int32_t added_id = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
       if (compiler->types_base < 0) {
-        compiler->types_base = added_index;
+        compiler->types_base = added_id;
       }
+      type->id = added_id;
     }
   }
 }
