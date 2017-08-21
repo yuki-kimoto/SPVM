@@ -41,7 +41,7 @@ struct SPVM_compiler {
   SPVM_DYNAMIC_ARRAY* op_constants;
   
   int64_t enum_default_value;
-  int32_t enum_default_type_id;
+  int32_t enum_default_type_code;
 
   // Packages
   SPVM_DYNAMIC_ARRAY* op_packages;

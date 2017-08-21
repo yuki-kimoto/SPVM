@@ -30,16 +30,16 @@ SPVM_API* SPVM_XS_UTIL_get_api() {
   return api;
 }
 
-const char* SPVM_XS_UTIL_get_type_name(int32_t type_id) {
+const char* SPVM_XS_UTIL_get_type_name(int32_t type_code) {
   AV* av_type_names = get_av("SPVM::TYPE_NAMES", 0);
-  SV** sv_type_name_ptr = av_fetch(av_type_names, type_id, 0);
+  SV** sv_type_name_ptr = av_fetch(av_type_names, type_code, 0);
   SV* sv_type_name = *sv_type_name_ptr;
   const char* type_name = SvPV_nolen(sv_type_name);
   
   return type_name;
 }
 
-int32_t SPVM_XS_UTIL_get_type_id(const char* type_name) {
+int32_t SPVM_XS_UTIL_get_type_code(const char* type_name) {
   
   // Type information
   HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
@@ -51,27 +51,27 @@ int32_t SPVM_XS_UTIL_get_type_id(const char* type_name) {
   // Type id
   SV* sv_type_info = *sv_type_info_ptr;
   HV* hv_type_info = (HV*)SvRV(sv_type_info);
-  SV** sv_type_id_ptr = hv_fetch(hv_type_info, "id", strlen("id"), 0);
-  SV* sv_type_id = *sv_type_id_ptr;
-  int32_t type_id = SvIV(sv_type_id);
+  SV** sv_type_code_ptr = hv_fetch(hv_type_info, "id", strlen("id"), 0);
+  SV* sv_type_code = *sv_type_code_ptr;
+  int32_t type_code = SvIV(sv_type_code);
   
-  return type_id;
+  return type_code;
 }
 
-int32_t SPVM_XS_UTIL_get_sv_object_type_id(SV* sv_object) {
+int32_t SPVM_XS_UTIL_get_sv_object_type_code(SV* sv_object) {
   HV* hv_object = (HV*)SvRV(sv_object);
-  SV** sv_type_id_ptr = hv_fetch(hv_object, "type_id", strlen("type_id"), 0);
-  SV* sv_type_id = sv_type_id_ptr ? *sv_type_id_ptr : &PL_sv_undef;
+  SV** sv_type_code_ptr = hv_fetch(hv_object, "type_code", strlen("type_code"), 0);
+  SV* sv_type_code = sv_type_code_ptr ? *sv_type_code_ptr : &PL_sv_undef;
   
-  if (SvOK(sv_type_id)) {
-    return (int32_t)SvIV(sv_type_id);
+  if (SvOK(sv_type_code)) {
+    return (int32_t)SvIV(sv_type_code);
   }
   else {
     return -1;
   }
 }
 
-int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* field_name) {
+int32_t SPVM_XS_UTIL_get_field_type_code(const char* package_name, const char* field_name) {
   // Field symbol table
   HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
   
@@ -85,12 +85,12 @@ int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* fie
       SV* sv_field_info = *sv_field_info_ptr;
       HV* hv_field_info = (HV*)SvRV(sv_field_info);
       
-      SV** sv_field_type_id_ptr = hv_fetch(hv_field_info, "type_id", strlen("type_id"), 0);
-      if (sv_field_type_id_ptr) {
-        SV* sv_field_type_id = *sv_field_type_id_ptr;
-        int32_t field_type_id = SvIV(sv_field_type_id);
+      SV** sv_field_type_code_ptr = hv_fetch(hv_field_info, "type_code", strlen("type_code"), 0);
+      if (sv_field_type_code_ptr) {
+        SV* sv_field_type_code = *sv_field_type_code_ptr;
+        int32_t field_type_code = SvIV(sv_field_type_code);
         
-        return field_type_id;
+        return field_type_code;
       }
       else {
         return SPVM_API_ERROR_NO_ID;
@@ -122,8 +122,8 @@ SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_OBJECT* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_BYTE_ARRAY));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+  SV* sv_type_code = sv_2mortal(newSViv(SPVM_TYPE_C_CODE_BYTE_ARRAY));
+  hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
   
   return sv_array;
 }
@@ -145,8 +145,8 @@ SV* SPVM_XS_UTIL_new_sv_string(SPVM_API_OBJECT* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_STRING));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+  SV* sv_type_code = sv_2mortal(newSViv(SPVM_TYPE_C_CODE_STRING));
+  hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
 
   return sv_array;
 }
@@ -168,8 +168,8 @@ SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_API_OBJECT* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_SHORT_ARRAY));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+  SV* sv_type_code = sv_2mortal(newSViv(SPVM_TYPE_C_CODE_SHORT_ARRAY));
+  hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
 
   return sv_array;
 }
@@ -191,8 +191,8 @@ SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_API_OBJECT* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_INT_ARRAY));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+  SV* sv_type_code = sv_2mortal(newSViv(SPVM_TYPE_C_CODE_INT_ARRAY));
+  hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
 
   return sv_array;
 }
@@ -214,8 +214,8 @@ SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_API_OBJECT* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_LONG_ARRAY));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+  SV* sv_type_code = sv_2mortal(newSViv(SPVM_TYPE_C_CODE_LONG_ARRAY));
+  hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
   
   return sv_array;
 }
@@ -237,8 +237,8 @@ SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_API_OBJECT* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_FLOAT_ARRAY));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+  SV* sv_type_code = sv_2mortal(newSViv(SPVM_TYPE_C_CODE_FLOAT_ARRAY));
+  hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
   
   return sv_array;
 }
@@ -260,13 +260,13 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_OBJECT* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(SPVM_TYPE_C_ID_DOUBLE_ARRAY));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+  SV* sv_type_code = sv_2mortal(newSViv(SPVM_TYPE_C_CODE_DOUBLE_ARRAY));
+  hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
 
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_id, SPVM_API_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_code, SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -283,14 +283,14 @@ SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_id, SPVM_API_OBJECT* array) {
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(type_id));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+  SV* sv_type_code = sv_2mortal(newSViv(type_code));
+  hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
   
   return sv_array;
 }
 
 
-SV* SPVM_XS_UTIL_new_sv_object(int32_t type_id, SPVM_API_OBJECT* object) {
+SV* SPVM_XS_UTIL_new_sv_object(int32_t type_code, SPVM_API_OBJECT* object) {
   // Create object
   HV* hv_object = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_object = sv_2mortal(newRV_inc((SV*)hv_object));
@@ -306,8 +306,8 @@ SV* SPVM_XS_UTIL_new_sv_object(int32_t type_id, SPVM_API_OBJECT* object) {
   hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(type_id));
-  hv_store(hv_object, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+  SV* sv_type_code = sv_2mortal(newSViv(type_code));
+  hv_store(hv_object, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
   
   return sv_object;
 }

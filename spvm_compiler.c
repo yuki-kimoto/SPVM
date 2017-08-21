@@ -81,7 +81,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->native_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
   compiler->enum_default_value = 0;
-  compiler->enum_default_type_id = SPVM_TYPE_C_ID_INT;
+  compiler->enum_default_type_code = SPVM_TYPE_C_CODE_INT;
 
   compiler->start_sub_name = NULL;
   
@@ -108,14 +108,14 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   // Add core types
   {
-    int32_t type_id;
-    for (type_id = 0; type_id < SPVM_TYPE_C_CORE_LENGTH; type_id++) {
+    int32_t type_code;
+    for (type_code = 0; type_code < SPVM_TYPE_C_CORE_LENGTH; type_code++) {
       // Type
       SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-      const char* name = SPVM_TYPE_C_ID_NAMES[type_id];
+      const char* name = SPVM_TYPE_C_CODE_NAMES[type_code];
       type->name = name;
-      type->id = type_id;
-      if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_STRING_ARRAY) {
+      type->code = type_code;
+      if (type_code >= SPVM_TYPE_C_CODE_BYTE_ARRAY && type_code <= SPVM_TYPE_C_CODE_STRING_ARRAY) {
         type->is_array = 1;
       }
       SPVM_DYNAMIC_ARRAY_push(compiler->types, type);

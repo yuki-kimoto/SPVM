@@ -751,7 +751,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // float
           char *end;
-          if (constant->type->id == SPVM_TYPE_C_ID_FLOAT) {
+          if (constant->type->code == SPVM_TYPE_C_CODE_FLOAT) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -762,7 +762,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->type = SPVM_TYPE_get_float_type(compiler);
           }
           // double
-          else if (constant->type->id == SPVM_TYPE_C_ID_DOUBLE) {
+          else if (constant->type->code == SPVM_TYPE_C_CODE_DOUBLE) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -773,7 +773,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->type = SPVM_TYPE_get_double_type(compiler);
           }
           // byte
-          else if (constant->type->id == SPVM_TYPE_C_ID_BYTE) {
+          else if (constant->type->code == SPVM_TYPE_C_CODE_BYTE) {
             int32_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
@@ -794,7 +794,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->type = SPVM_TYPE_get_byte_type(compiler);
           }
           // short
-          else if (constant->type->id == SPVM_TYPE_C_ID_SHORT) {
+          else if (constant->type->code == SPVM_TYPE_C_CODE_SHORT) {
             int32_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
@@ -815,7 +815,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->type = SPVM_TYPE_get_short_type(compiler);
           }
           // int
-          else if (constant->type->id == SPVM_TYPE_C_ID_INT) {
+          else if (constant->type->code == SPVM_TYPE_C_CODE_INT) {
             int32_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
@@ -836,7 +836,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             constant->type = SPVM_TYPE_get_int_type(compiler);
           }
           // long
-          else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
+          else if (constant->type->code == SPVM_TYPE_C_CODE_LONG) {
             int64_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {

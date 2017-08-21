@@ -86,7 +86,7 @@ new_object(...)
   
   int32_t package_id = api->get_package_id(api, package_name);
   SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[package_id];
-  int32_t type_id = constant_pool_package->type_id;
+  int32_t type_code = constant_pool_package->type_code;
   
   if (package_id == SPVM_API_ERROR_NO_ID) {
     croak("Unkown package \"%s\"(SPVM::Object::new_object", package_name);
@@ -99,7 +99,7 @@ new_object(...)
   api->inc_ref_count(api, object);
 
   // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object(type_id, object);
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(type_code, object);
   
   XPUSHs(sv_object);
   XSRETURN(1);
@@ -120,14 +120,14 @@ set(...)
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
 
   // Package type id
-  int32_t package_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_object);
+  int32_t package_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_object);
   
   // Package name
-  const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_id);
+  const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_code);
   
   // Field type
   const char* field_name = SvPV_nolen(sv_field_name);
-  int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
+  int32_t field_type_code = SPVM_XS_UTIL_get_field_type_code(package_name, field_name);
 
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
@@ -135,46 +135,46 @@ set(...)
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   
-  switch (field_type_id) {
-    case SPVM_TYPE_C_ID_BYTE : {
+  switch (field_type_code) {
+    case SPVM_TYPE_C_CODE_BYTE : {
       int8_t value = (int8_t)SvIV(sv_value);
       api->set_byte_field(api, object, field_id, value);
       break;
     }
-    case  SPVM_TYPE_C_ID_SHORT : {
+    case  SPVM_TYPE_C_CODE_SHORT : {
       int16_t value = (int16_t)SvIV(sv_value);
       api->set_short_field(api, object, field_id, value);
       break;
     }
-    case SPVM_TYPE_C_ID_INT : {
+    case SPVM_TYPE_C_CODE_INT : {
       int32_t value = (int32_t)SvIV(sv_value);
       api->set_int_field(api, object, field_id, value);
       break;
     }
-    case SPVM_TYPE_C_ID_LONG : {
+    case SPVM_TYPE_C_CODE_LONG : {
       int64_t value = (int64_t)SvIV(sv_value);
       api->set_long_field(api, object, field_id, value);
       break;
     }
-    case SPVM_TYPE_C_ID_FLOAT : {
+    case SPVM_TYPE_C_CODE_FLOAT : {
       float value = (float)SvNV(sv_value);
       api->set_float_field(api, object, field_id, value);
       break;
     }
-    case SPVM_TYPE_C_ID_DOUBLE : {
+    case SPVM_TYPE_C_CODE_DOUBLE : {
       double value = (double)SvNV(sv_value);
       api->set_double_field(api, object, field_id, value);
       break;
     }
     default : {
       if (!sv_derived_from(sv_value, "SPVM::BaseObject")) {
-        const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
+        const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_code);
         croak("Can't set numeric value to \"%s\" field", field_type_name);
       }
-      int32_t value_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_value);
-      if (value_type_id != field_type_id) {
-        const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
-        const char* value_type_name = SPVM_XS_UTIL_get_type_name(value_type_id);
+      int32_t value_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_value);
+      if (value_type_code != field_type_code) {
+        const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_code);
+        const char* value_type_name = SPVM_XS_UTIL_get_type_name(value_type_code);
         croak("Can't set \"%s\" value to \"%s\" field", value_type_name, field_type_name);
       }
       
@@ -201,14 +201,14 @@ get(...)
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   // Package type id
-  int32_t package_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_object);
+  int32_t package_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_object);
 
   // Package name
-  const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_id);
+  const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_code);
 
   // Field type id
   const char* field_name = SvPV_nolen(sv_field_name);
-  int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
+  int32_t field_type_code = SPVM_XS_UTIL_get_field_type_code(package_name, field_name);
   
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
@@ -217,38 +217,38 @@ get(...)
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   
-  switch (field_type_id) {
-    case SPVM_TYPE_C_ID_BYTE : {
+  switch (field_type_code) {
+    case SPVM_TYPE_C_CODE_BYTE : {
       int8_t value = api->get_byte_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSViv(value));
       XPUSHs(sv_value);
       break;
     }
-    case SPVM_TYPE_C_ID_SHORT : {
+    case SPVM_TYPE_C_CODE_SHORT : {
       int16_t value = api->get_short_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSViv(value));
       XPUSHs(sv_value);
       break;
     }
-    case SPVM_TYPE_C_ID_INT : {
+    case SPVM_TYPE_C_CODE_INT : {
       int32_t value = api->get_int_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSViv(value));
       XPUSHs(sv_value);
       break;
     }
-    case SPVM_TYPE_C_ID_LONG : {
+    case SPVM_TYPE_C_CODE_LONG : {
       int64_t value = api->get_long_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSViv(value));
       XPUSHs(sv_value);
       break;
     }
-    case SPVM_TYPE_C_ID_FLOAT : {
+    case SPVM_TYPE_C_CODE_FLOAT : {
       float value = api->get_float_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSVnv(value));
       XPUSHs(sv_value);
       break;
     }
-    case SPVM_TYPE_C_ID_DOUBLE : {
+    case SPVM_TYPE_C_CODE_DOUBLE : {
       double value = api->get_double_field(api, object, field_id);
       SV* sv_value = sv_2mortal(newSVnv(value));
       XPUSHs(sv_value);
@@ -261,53 +261,53 @@ get(...)
         api->inc_ref_count(api, value);
       }
       
-      switch (field_type_id) {
-        case SPVM_TYPE_C_ID_BYTE_ARRAY : {
+      switch (field_type_code) {
+        case SPVM_TYPE_C_CODE_BYTE_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array(value);
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_SHORT_ARRAY : {
+        case SPVM_TYPE_C_CODE_SHORT_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_short_array(value);
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_INT_ARRAY : {
+        case SPVM_TYPE_C_CODE_INT_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_int_array(value);
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_LONG_ARRAY : {
+        case SPVM_TYPE_C_CODE_LONG_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_long_array(value);
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_FLOAT_ARRAY : {
+        case SPVM_TYPE_C_CODE_FLOAT_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_float_array(value);
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_DOUBLE_ARRAY : {
+        case SPVM_TYPE_C_CODE_DOUBLE_ARRAY : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_double_array(value);
           XPUSHs(sv_array);
           break;
         }
-        case SPVM_TYPE_C_ID_STRING : {
+        case SPVM_TYPE_C_CODE_STRING : {
           SV* sv_array = SPVM_XS_UTIL_new_sv_string(value);
           XPUSHs(sv_array);
           break;
         }
         default : {
-          const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_id);
+          const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_code);
           
           int32_t field_type_name_length = strlen(field_type_name);
           
           if (field_type_name[field_type_name_length - 1] == ']') {
-            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_id, value);
+            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_code, value);
             XPUSHs(sv_array);
           }
           else {
-            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_id, value);
+            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_code, value);
             XPUSHs(sv_object);
           }
         }
@@ -894,11 +894,11 @@ new(...)
   
   // Type id
   const char* type_name = SvPV_nolen(sv_type_name);
-  int32_t type_id = SPVM_XS_UTIL_get_type_id(type_name);
-  if (type_id < 0) {
+  int32_t type_code = SPVM_XS_UTIL_get_type_code(type_name);
+  if (type_code < 0) {
     croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Array::Object::new())", type_name);
   }
-  if (type_id >= SPVM_TYPE_C_ID_BYTE && type_id <= SPVM_TYPE_C_ID_DOUBLE) {
+  if (type_code >= SPVM_TYPE_C_CODE_BYTE && type_code <= SPVM_TYPE_C_CODE_DOUBLE) {
     croak("Type is not object array %s(SPVM::Array::Object::new())", type_name);
   }
   
@@ -906,7 +906,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(type_id, array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(type_code, array);
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -927,16 +927,16 @@ set(...)
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Array type id
-  int32_t array_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_array);
+  int32_t array_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_array);
   
   // Array type name
-  const char* array_type_name = SPVM_XS_UTIL_get_type_name(array_type_id);
+  const char* array_type_name = SPVM_XS_UTIL_get_type_name(array_type_code);
   
   // Object type id
-  int32_t object_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_object);
+  int32_t object_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_object);
   
   // Object type name
-  const char* object_type_name = SPVM_XS_UTIL_get_type_name(object_type_id);
+  const char* object_type_name = SPVM_XS_UTIL_get_type_name(object_type_code);
   
   if (strncmp(array_type_name, object_type_name, strlen(array_type_name - 2)) != 0) {
     croak("Invalid type %s is set to object array %s(SPVM::Array::Object::set())", object_type_name, array_type_name);
@@ -967,17 +967,17 @@ get(...)
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Array type id
-  int32_t array_type_id = SPVM_XS_UTIL_get_sv_object_type_id(sv_array);
+  int32_t array_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_array);
   
   // Array type name
-  const char* array_type_name = SPVM_XS_UTIL_get_type_name(array_type_id);
+  const char* array_type_name = SPVM_XS_UTIL_get_type_name(array_type_code);
   
   // Element type name sv
   SV* sv_element_type_name = sv_2mortal(newSVpv(array_type_name, strlen(array_type_name) - 2));
   const char* element_type_name = SvPV_nolen(sv_element_type_name);
   
   // Element type id
-  int32_t element_type_id = SPVM_XS_UTIL_get_type_id(element_type_name);
+  int32_t element_type_code = SPVM_XS_UTIL_get_type_code(element_type_name);
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -987,36 +987,36 @@ get(...)
   }
   
   SV* sv_base_object;
-  switch (element_type_id) {
-    case SPVM_TYPE_C_ID_BYTE_ARRAY :
+  switch (element_type_code) {
+    case SPVM_TYPE_C_CODE_BYTE_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_OBJECT*)base_object);
       break;
-    case SPVM_TYPE_C_ID_SHORT_ARRAY :
+    case SPVM_TYPE_C_CODE_SHORT_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_OBJECT*)base_object);
       break;
-    case SPVM_TYPE_C_ID_INT_ARRAY :
+    case SPVM_TYPE_C_CODE_INT_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_OBJECT*)base_object);
       break;
-    case SPVM_TYPE_C_ID_LONG_ARRAY :
+    case SPVM_TYPE_C_CODE_LONG_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_OBJECT*)base_object);
       break;
-    case SPVM_TYPE_C_ID_FLOAT_ARRAY :
+    case SPVM_TYPE_C_CODE_FLOAT_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_OBJECT*)base_object);
       break;
-    case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
+    case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)base_object);
       break;
-    case SPVM_TYPE_C_ID_STRING :
+    case SPVM_TYPE_C_CODE_STRING :
       sv_base_object = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)base_object);
       break;
     default : {
-      const char* return_type_name = SPVM_XS_UTIL_get_type_name(element_type_id);
+      const char* return_type_name = SPVM_XS_UTIL_get_type_name(element_type_code);
       int32_t element_type_name_length = strlen(element_type_name);
       if (element_type_name[element_type_name_length - 1] == ']') {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object_array(element_type_id, (SPVM_API_OBJECT*)base_object);
+        sv_base_object = SPVM_XS_UTIL_new_sv_object_array(element_type_code, (SPVM_API_OBJECT*)base_object);
       }
       else {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(element_type_id, (SPVM_API_OBJECT*)base_object);
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(element_type_code, (SPVM_API_OBJECT*)base_object);
       }
     }
   }
@@ -1227,21 +1227,21 @@ build_type_symtable(...)
   // Subroutine information
   HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
   
-  // abs_name, arg_types, return_type, id, type_id
+  // abs_name, arg_types, return_type, id, type_code
   SPVM_DYNAMIC_ARRAY* types = compiler->types;
   {
-    int32_t type_id;
-    for (type_id = 0; type_id < types->length; type_id++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, type_id);
+    int32_t type_code;
+    for (type_code = 0; type_code < types->length; type_code++) {
+      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, type_code);
       
       // Type name
       const char* type_name = type->name;
-      int32_t type_id = type->id;
-      SV* sv_type_id = sv_2mortal(newSViv(type_id));
+      int32_t type_code = type->code;
+      SV* sv_type_code = sv_2mortal(newSViv(type_code));
       
       HV* hv_type_info = (HV*)sv_2mortal((SV*)newHV());
-      hv_store(hv_type_info, "id", strlen("id"), SvREFCNT_inc(sv_type_id), 0);
-      hv_store(hv_type_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+      hv_store(hv_type_info, "id", strlen("id"), SvREFCNT_inc(sv_type_code), 0);
+      hv_store(hv_type_info, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
       SV* sv_type_info = sv_2mortal(newRV_inc((SV*)hv_type_info));
       
       hv_store(hv_type_symtable, type_name, strlen(type_name), SvREFCNT_inc(sv_type_info), 0);
@@ -1263,15 +1263,15 @@ build_type_names(...)
   
   SPVM_DYNAMIC_ARRAY* types = compiler->types;
   {
-    int32_t type_id;
-    for (type_id = 0; type_id < types->length; type_id++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, type_id);
+    int32_t type_code;
+    for (type_code = 0; type_code < types->length; type_code++) {
+      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, type_code);
       
       const char* type_name = type->name;
       SV* sv_type_name = sv_2mortal(newSVpv(type_name, 0));
-      int32_t type_id = type->id;
+      int32_t type_code = type->code;
       
-      av_store(av_type_names, type_id, SvREFCNT_inc(sv_type_name));
+      av_store(av_type_names, type_code, SvREFCNT_inc(sv_type_name));
     }
   }
   
@@ -1311,8 +1311,8 @@ build_field_symtable(...)
           SV* sv_field_type = sv_2mortal(newSVpv(field_type, 0));
           
           // Field type id
-          int32_t field_type_id = field->op_type->uv.type->id;
-          SV* sv_field_type_id = sv_2mortal(newSViv(field_type_id));
+          int32_t field_type_code = field->op_type->uv.type->code;
+          SV* sv_field_type_code = sv_2mortal(newSViv(field_type_code));
           
           // Field id
           int32_t field_id = field->index;
@@ -1320,7 +1320,7 @@ build_field_symtable(...)
           
           HV* hv_field_info = (HV*)sv_2mortal((SV*)newHV());
           hv_store(hv_field_info, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
-          hv_store(hv_field_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_field_type_id), 0);
+          hv_store(hv_field_info, "type_code", strlen("type_code"), SvREFCNT_inc(sv_field_type_code), 0);
           SV* sv_field_info = sv_2mortal(newRV_inc((SV*)hv_field_info));
           
           hv_store(hv_package_info, field_name, strlen(field_name), SvREFCNT_inc(sv_field_info), 0);
@@ -1394,7 +1394,7 @@ call_sub(...)
   // Arguments
   {
     int32_t arg_index;
-    int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
+    int32_t arg_type_codes_base = constant_pool_sub->arg_type_codes_base;
     int32_t args_length = constant_pool_sub->args_length;
     // Check argument count
     if (items - 1 != args_length) {
@@ -1404,7 +1404,7 @@ call_sub(...)
     for (arg_index = 0; arg_index < args_length; arg_index++) {
       SV* sv_value = ST(arg_index + 1);
       
-      int32_t arg_type_id = runtime->constant_pool[arg_type_ids_base + arg_index];
+      int32_t arg_type_code = runtime->constant_pool[arg_type_codes_base + arg_index];
       
       if (sv_isobject(sv_value)) {
         SV* sv_base_object = sv_value;
@@ -1412,13 +1412,13 @@ call_sub(...)
          
           HV* hv_base_object = (HV*)SvRV(sv_base_object);
           
-          SV** sv_base_object_type_id_ptr = hv_fetch(hv_base_object, "type_id", strlen("type_id"), 0);
-          SV* sv_base_object_type_id = *sv_base_object_type_id_ptr;
-          int32_t base_object_type_id = SvIV(sv_base_object_type_id);
+          SV** sv_base_object_type_code_ptr = hv_fetch(hv_base_object, "type_code", strlen("type_code"), 0);
+          SV* sv_base_object_type_code = *sv_base_object_type_code_ptr;
+          int32_t base_object_type_code = SvIV(sv_base_object_type_code);
           
-          if (base_object_type_id != arg_type_id) {
-            const char* base_object_type_name = SPVM_XS_UTIL_get_type_name(base_object_type_id);
-            const char* arg_type_name = SPVM_XS_UTIL_get_type_name(arg_type_id);
+          if (base_object_type_code != arg_type_code) {
+            const char* base_object_type_name = SPVM_XS_UTIL_get_type_name(base_object_type_code);
+            const char* arg_type_name = SPVM_XS_UTIL_get_type_name(arg_type_code);
             
             croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
           }
@@ -1437,33 +1437,33 @@ call_sub(...)
         }
       }
       else {
-        switch (arg_type_id) {
-          case SPVM_TYPE_C_ID_BYTE : {
+        switch (arg_type_code) {
+          case SPVM_TYPE_C_CODE_BYTE : {
             int8_t value = (int8_t)SvIV(sv_value);
             call_sub_args[arg_index].byte_value = value;
             break;
           }
-          case  SPVM_TYPE_C_ID_SHORT : {
+          case  SPVM_TYPE_C_CODE_SHORT : {
             int16_t value = (int16_t)SvIV(sv_value);
             call_sub_args[arg_index].short_value = value;
             break;
           }
-          case  SPVM_TYPE_C_ID_INT : {
+          case  SPVM_TYPE_C_CODE_INT : {
             int32_t value = (int32_t)SvIV(sv_value);
             call_sub_args[arg_index].int_value = value;
             break;
           }
-          case  SPVM_TYPE_C_ID_LONG : {
+          case  SPVM_TYPE_C_CODE_LONG : {
             int64_t value = (int64_t)SvIV(sv_value);
             call_sub_args[arg_index].long_value = value;
             break;
           }
-          case  SPVM_TYPE_C_ID_FLOAT : {
+          case  SPVM_TYPE_C_CODE_FLOAT : {
             float value = (float)SvNV(sv_value);
             call_sub_args[arg_index].float_value = value;
             break;
           }
-          case  SPVM_TYPE_C_ID_DOUBLE : {
+          case  SPVM_TYPE_C_CODE_DOUBLE : {
             double value = (double)SvNV(sv_value);
             call_sub_args[arg_index].double_value = value;
             break;
@@ -1478,10 +1478,10 @@ call_sub(...)
   api->set_exception(api, NULL);
   
   // Return type id
-  int32_t return_type_id = constant_pool_sub->return_type_id;
+  int32_t return_type_code = constant_pool_sub->return_type_code;
   
-  switch (return_type_id) {
-    case SPVM_TYPE_C_ID_VOID:  {
+  switch (return_type_code) {
+    case SPVM_TYPE_C_CODE_VOID:  {
       api->call_void_sub(api, sub_id, call_sub_args);
       SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
@@ -1493,7 +1493,7 @@ call_sub(...)
       XSRETURN(0);
       break;
     }
-    case SPVM_TYPE_C_ID_BYTE: {
+    case SPVM_TYPE_C_CODE_BYTE: {
       int8_t return_value = api->call_byte_sub(api, sub_id, call_sub_args);
       SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
@@ -1507,7 +1507,7 @@ call_sub(...)
       XSRETURN(1);
       break;
     }
-    case SPVM_TYPE_C_ID_SHORT: {
+    case SPVM_TYPE_C_CODE_SHORT: {
       int16_t return_value = api->call_short_sub(api, sub_id, call_sub_args);
       SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
@@ -1521,7 +1521,7 @@ call_sub(...)
       XSRETURN(1);
       break;
     }
-    case SPVM_TYPE_C_ID_INT: {
+    case SPVM_TYPE_C_CODE_INT: {
       int32_t return_value = api->call_int_sub(api, sub_id, call_sub_args);
       SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
@@ -1535,7 +1535,7 @@ call_sub(...)
       XSRETURN(1);
       break;
     }
-    case SPVM_TYPE_C_ID_LONG: {
+    case SPVM_TYPE_C_CODE_LONG: {
       int64_t return_value = api->call_long_sub(api, sub_id, call_sub_args);
       SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
@@ -1549,7 +1549,7 @@ call_sub(...)
       XSRETURN(1);
       break;
     }
-    case SPVM_TYPE_C_ID_FLOAT: {
+    case SPVM_TYPE_C_CODE_FLOAT: {
       float return_value = api->call_float_sub(api, sub_id, call_sub_args);
       SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
@@ -1563,7 +1563,7 @@ call_sub(...)
       XSRETURN(1);
       break;
     }
-    case SPVM_TYPE_C_ID_DOUBLE: {
+    case SPVM_TYPE_C_CODE_DOUBLE: {
       double return_value = api->call_double_sub(api, sub_id, call_sub_args);
       SPVM_API_OBJECT* exception = api->get_exception(api);
       if (exception) {
@@ -1591,36 +1591,36 @@ call_sub(...)
       if (return_value != NULL) {
         api->inc_ref_count(api, return_value);
         
-        switch(return_type_id) {
-          case SPVM_TYPE_C_ID_BYTE_ARRAY :
+        switch(return_type_code) {
+          case SPVM_TYPE_C_CODE_BYTE_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_OBJECT*)return_value);
             break;
-          case SPVM_TYPE_C_ID_SHORT_ARRAY :
+          case SPVM_TYPE_C_CODE_SHORT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_OBJECT*)return_value);
             break;
-          case SPVM_TYPE_C_ID_INT_ARRAY :
+          case SPVM_TYPE_C_CODE_INT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_OBJECT*)return_value);
             break;
-          case SPVM_TYPE_C_ID_LONG_ARRAY :
+          case SPVM_TYPE_C_CODE_LONG_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_OBJECT*)return_value);
             break;
-          case SPVM_TYPE_C_ID_FLOAT_ARRAY :
+          case SPVM_TYPE_C_CODE_FLOAT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_float_array((SPVM_API_OBJECT*)return_value);
             break;
-          case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
+          case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)return_value);
             break;
-          case SPVM_TYPE_C_ID_STRING :
+          case SPVM_TYPE_C_CODE_STRING :
             sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)return_value);
             break;
           default : {
-            const char* return_type_name = SPVM_XS_UTIL_get_type_name(return_type_id);
+            const char* return_type_name = SPVM_XS_UTIL_get_type_name(return_type_code);
             int32_t type_name_length = strlen(return_type_name);
             if (return_type_name[type_name_length - 1] == ']') {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_id, (SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_code, (SPVM_API_OBJECT*)return_value);
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_id, (SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_code, (SPVM_API_OBJECT*)return_value);
             }
           }
         }

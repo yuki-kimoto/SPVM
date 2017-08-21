@@ -43,27 +43,27 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     printf("%s", SPVM_OP_C_CODE_NAMES[code]);
     if (op_cur->code == SPVM_OP_C_CODE_CONSTANT) {
       SPVM_CONSTANT* constant = op_cur->uv.constant;
-      printf(" %s", SPVM_TYPE_C_ID_NAMES[constant->type->id]);
-      switch (constant->type->id) {
-        case SPVM_TYPE_C_ID_BYTE:
+      printf(" %s", SPVM_TYPE_C_CODE_NAMES[constant->type->code]);
+      switch (constant->type->code) {
+        case SPVM_TYPE_C_CODE_BYTE:
           printf(" %" PRId8, constant->value.byte_value);
           break;
-        case SPVM_TYPE_C_ID_SHORT:
+        case SPVM_TYPE_C_CODE_SHORT:
           printf(" %" PRId16, constant->value.short_value);
           break;
-        case SPVM_TYPE_C_ID_INT:
+        case SPVM_TYPE_C_CODE_INT:
           printf(" %" PRId32, constant->value.int_value);
           break;
-        case SPVM_TYPE_C_ID_LONG:
+        case SPVM_TYPE_C_CODE_LONG:
           printf(" %" PRId64, constant->value.long_value);
           break;
-        case SPVM_TYPE_C_ID_FLOAT:
+        case SPVM_TYPE_C_CODE_FLOAT:
           printf(" %f", constant->value.float_value);
           break;
-        case SPVM_TYPE_C_ID_DOUBLE:
+        case SPVM_TYPE_C_CODE_DOUBLE:
           printf(" %f", constant->value.double_value);
           break;
-        case SPVM_TYPE_C_ID_STRING:
+        case SPVM_TYPE_C_CODE_STRING:
           printf(" \"%s\"", constant->value.string_value);
           break;
       }
@@ -206,7 +206,7 @@ void SPVM_DUMPER_dump_types(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* types) 
       printf("type[%" PRId32 "]\n", i);
       SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, i);
       printf("    name => \"%s\"\n", type->name);
-      printf("    id => \"%" PRId32 "\"\n", type->id);
+      printf("    id => \"%" PRId32 "\"\n", type->code);
     }
   }
 }
@@ -475,26 +475,26 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
 void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant) {
   (void)compiler;
   
-  switch(constant->type->id) {
-    case SPVM_TYPE_C_ID_BYTE:
+  switch(constant->type->code) {
+    case SPVM_TYPE_C_CODE_BYTE:
       printf("      int %" PRId8 "\n", constant->value.byte_value);
       break;
-    case SPVM_TYPE_C_ID_SHORT:
+    case SPVM_TYPE_C_CODE_SHORT:
       printf("      int %" PRId16 "\n", constant->value.short_value);
       break;
-    case SPVM_TYPE_C_ID_INT:
+    case SPVM_TYPE_C_CODE_INT:
       printf("      int %" PRId32 "\n", constant->value.int_value);
       break;
-    case SPVM_TYPE_C_ID_LONG:
+    case SPVM_TYPE_C_CODE_LONG:
       printf("      long %" PRId64 "\n", constant->value.long_value);
       break;
-    case SPVM_TYPE_C_ID_FLOAT:
+    case SPVM_TYPE_C_CODE_FLOAT:
       printf("      float %f\n", constant->value.float_value);
       break;
-    case SPVM_TYPE_C_ID_DOUBLE:
+    case SPVM_TYPE_C_CODE_DOUBLE:
       printf("      double %f\n", constant->value.double_value);
       break;
-    case SPVM_TYPE_C_ID_STRING:
+    case SPVM_TYPE_C_CODE_STRING:
       printf("      string \"%s\"\n", constant->value.string_value);
       break;
   }

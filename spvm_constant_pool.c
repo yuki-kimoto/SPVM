@@ -96,12 +96,12 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   // Constant pool type information
   SPVM_CONSTANT_POOL_TYPE constant_pool_type;
   
-  constant_pool_type.id = type->id;
+  constant_pool_type.id = type->code;
   
   // Push type name to constant pool
   constant_pool_type.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, type->name);
   
-  constant_pool_type.element_type_id = type->element_type_id;
+  constant_pool_type.element_type_code = type->element_type_code;
   
   if (type->op_package) {
     constant_pool_type.package_id = type->op_package->uv.package->constant_pool_index;
@@ -140,7 +140,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   constant_pool_package.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
   
   // Type id
-  constant_pool_package.type_id = package->op_type->uv.type->id;
+  constant_pool_package.type_code = package->op_type->uv.type->code;
 
   // Push fields constant_pool indexes to constant pool
   {
@@ -179,19 +179,19 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   constant_pool_sub.is_native = sub->is_native;
   
   assert(sub->op_return_type);
-  constant_pool_sub.return_type_id = sub->op_return_type->uv.type->id;
+  constant_pool_sub.return_type_code = sub->op_return_type->uv.type->code;
   
   // Add length
   constant_pool->length += extend_length;
 
   // Arg type ids
-  constant_pool_sub.arg_type_ids_base = constant_pool->length;
+  constant_pool_sub.arg_type_codes_base = constant_pool->length;
   {
     int32_t i;
     for (i = 0; i < sub->op_args->length; i++) {
       SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
-      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, arg_type->id);
+      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, arg_type->code);
     }
   }
   

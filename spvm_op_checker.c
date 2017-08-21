@@ -46,14 +46,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
       
       // Push value to constant pool
-      switch (constant->type->id) {
-        case SPVM_TYPE_C_ID_BYTE: {
+      switch (constant->type->code) {
+        case SPVM_TYPE_C_CODE_BYTE: {
           break;
         }
-        case SPVM_TYPE_C_ID_SHORT: {
+        case SPVM_TYPE_C_CODE_SHORT: {
           break;
         }
-        case SPVM_TYPE_C_ID_INT: {
+        case SPVM_TYPE_C_CODE_INT: {
           
           int32_t value = constant->value.int_value;
           if (value >= -32768 && value <= 32767) {
@@ -64,7 +64,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, (int32_t)value);
           break;
         }
-        case SPVM_TYPE_C_ID_LONG: {
+        case SPVM_TYPE_C_CODE_LONG: {
           int64_t value = constant->value.long_value;
           
           if (value >= -32768 && value <= 32767) {
@@ -75,7 +75,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_ID_FLOAT: {
+        case SPVM_TYPE_C_CODE_FLOAT: {
           float value = constant->value.float_value;
           
           if (value == 0 || value == 1 || value == 2) {
@@ -86,7 +86,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_ID_DOUBLE: {
+        case SPVM_TYPE_C_CODE_DOUBLE: {
           double value = constant->value.double_value;
           
           if (value == 0 || value == 1) {
@@ -97,7 +97,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_ID_STRING: {
+        case SPVM_TYPE_C_CODE_STRING: {
           const char* value = constant->value.string_value;
           
           constant->constant_pool_index = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
@@ -153,10 +153,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       // Create resolved type id
       SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name));
       if (found_type) {
-        type->id = found_type->id;
+        type->code = found_type->code;
       }
       else {
-        type->id = compiler->types->length;
+        type->code = compiler->types->length;
         
         SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
         memcpy(new_type, type, sizeof(SPVM_TYPE));
@@ -175,12 +175,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       const char* type_name = type->name;
       const char* element_type_name = SPVM_TYPE_get_element_name(compiler, type_name);
       if (element_type_name == NULL) {
-        type->element_type_id = -1;
+        type->element_type_code = -1;
       }
       else {
         SPVM_TYPE* element_type = SPVM_HASH_search(compiler->type_symtable, type_name, strlen(type_name));
         assert(element_type);
-        type->element_type_id = element_type->id;
+        type->element_type_code = element_type->code;
       }
     }
   }
@@ -225,7 +225,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               return;
             }
           }
-          else if (field_type->id == SPVM_TYPE_C_ID_STRING) {
+          else if (field_type->code == SPVM_TYPE_C_CODE_STRING) {
             // Nothing
           }
           else if (!SPVM_TYPE_is_numeric(compiler, field_type)) {
@@ -433,7 +433,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         );
                         SPVM_SUB* sub = op_sub->uv.sub;
                         
-                        if (sub->op_return_type->uv.type->id == SPVM_TYPE_C_ID_VOID) {
+                        if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
                           op_cur->code = SPVM_OP_C_CODE_NULL;
                         }
                       }
@@ -457,7 +457,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_switch_condition->first);
                       
                       // Check type
-                      if (!term_type || !(term_type->id == SPVM_TYPE_C_ID_INT)) {
+                      if (!term_type || !(term_type->code == SPVM_TYPE_C_CODE_INT)) {
                         SPVM_yyerror_format(compiler, "Switch condition need int value at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -485,7 +485,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
                           
-                          if (case_value_type->id != term_type->id) {
+                          if (case_value_type->code != term_type->code) {
                             SPVM_yyerror_format(compiler, "case value type must be same as switch condition value type at %s line %d\n", op_case->file, op_case->line);
                             compiler->fatal_error = 1;
                             return;
@@ -570,7 +570,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // numeric == numeric
                         if (SPVM_TYPE_is_numeric(compiler, first_type) && SPVM_TYPE_is_numeric(compiler, last_type)) {
-                          if (first_type->id != last_type->id) {
+                          if (first_type->code != last_type->code) {
                             SPVM_yyerror_format(compiler, "== operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
                             compiler->fatal_error = 1;
                             return;
@@ -621,7 +621,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                         // core == core
                         if (SPVM_TYPE_is_numeric(compiler, first_type) && SPVM_TYPE_is_numeric(compiler, last_type)) {
-                          if (first_type->id != last_type->id) {
+                          if (first_type->code != last_type->code) {
                             SPVM_yyerror_format(compiler, "!= operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
                             compiler->fatal_error = 1;
                             return;
@@ -692,7 +692,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
 
-                      if (first_type->id != last_type->id) {
+                      if (first_type->code != last_type->code) {
                         SPVM_yyerror_format(compiler, "< operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -729,7 +729,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
 
-                      if (first_type->id != last_type->id) {
+                      if (first_type->code != last_type->code) {
                         SPVM_yyerror_format(compiler, "<= operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -766,7 +766,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
 
-                      if (first_type->id != last_type->id) {
+                      if (first_type->code != last_type->code) {
                         SPVM_yyerror_format(compiler, "> operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -803,7 +803,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
 
-                      if (first_type->id != last_type->id) {
+                      if (first_type->code != last_type->code) {
                         SPVM_yyerror_format(compiler, ">= operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -821,7 +821,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         compiler->fatal_error = 1;
                         return;
                       }
-                      if (last_type->id != SPVM_TYPE_C_ID_INT) {
+                      if (last_type->code != SPVM_TYPE_C_CODE_INT) {
                         SPVM_yyerror_format(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -839,7 +839,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         compiler->fatal_error = 1;
                         return;
                       }
-                      if (last_type->id != SPVM_TYPE_C_ID_INT) {
+                      if (last_type->code != SPVM_TYPE_C_CODE_INT) {
                         SPVM_yyerror_format(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -857,7 +857,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         compiler->fatal_error = 1;
                         return;
                       }
-                      if (last_type->id > SPVM_TYPE_C_ID_INT) {
+                      if (last_type->code > SPVM_TYPE_C_CODE_INT) {
                         SPVM_yyerror_format(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -881,7 +881,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             compiler->fatal_error = 1;
                             return;
                           }
-                          else if (index_type->id != SPVM_TYPE_C_ID_INT) {
+                          else if (index_type->code != SPVM_TYPE_C_CODE_INT) {
                             SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
                             compiler->fatal_error = 1;
                             return;
@@ -966,7 +966,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                       
                       // Can receive only core type
-                      if (first_type->id >= SPVM_TYPE_C_ID_FLOAT || last_type->id >= SPVM_TYPE_C_ID_FLOAT) {
+                      if (first_type->code >= SPVM_TYPE_C_CODE_FLOAT || last_type->code >= SPVM_TYPE_C_CODE_FLOAT) {
                         SPVM_yyerror_format(compiler,
                           "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
@@ -980,7 +980,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                       
                       // Can receive only core type
-                      if (first_type->id >= SPVM_TYPE_C_ID_FLOAT || last_type->id >= SPVM_TYPE_C_ID_FLOAT) {
+                      if (first_type->code >= SPVM_TYPE_C_CODE_FLOAT || last_type->code >= SPVM_TYPE_C_CODE_FLOAT) {
                         SPVM_yyerror_format(compiler,
                           "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
@@ -994,7 +994,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                       
                       // Can receive only core type
-                      if (first_type->id >= SPVM_TYPE_C_ID_FLOAT || last_type->id >= SPVM_TYPE_C_ID_FLOAT) {
+                      if (first_type->code >= SPVM_TYPE_C_CODE_FLOAT || last_type->code >= SPVM_TYPE_C_CODE_FLOAT) {
                         SPVM_yyerror_format(compiler,
                           "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
@@ -1029,7 +1029,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       // Last value must be integer
-                      if (last_type->id != SPVM_TYPE_C_ID_INT) {
+                      if (last_type->code != SPVM_TYPE_C_CODE_INT) {
                         SPVM_yyerror_format(compiler, "array index must be int at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -1070,7 +1070,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           // OK
                         }
                         // Invalid type
-                        else if (first_type->id != last_type->id) {
+                        else if (first_type->code != last_type->code) {
                           SPVM_yyerror_format(compiler, "Invalid type value is assigned at %s line %d\n", op_cur->file, op_cur->line);
                           compiler->fatal_error = 1;
                           return;
@@ -1096,7 +1096,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Undef
                         if (op_term->code == SPVM_OP_C_CODE_UNDEF) {
-                          if (sub->op_return_type->uv.type->id == SPVM_TYPE_C_ID_VOID) {
+                          if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
                             is_invalid = 1;
                           }
                           else {
@@ -1107,13 +1107,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         // Normal
                         else if (op_term) {
-                          if (first_type->id != sub_return_type->id) {
+                          if (first_type->code != sub_return_type->code) {
                             is_invalid = 1;
                           }
                         }
                         // Empty
                         else {
-                          if (sub->op_return_type->uv.type->id != SPVM_TYPE_C_ID_VOID) {
+                          if (sub->op_return_type->uv.type->code != SPVM_TYPE_C_CODE_VOID) {
                             is_invalid = 1;
                           }
                         }
@@ -1169,7 +1169,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       // Must be same type
-                      if (first_type->id != last_type->id) {
+                      if (first_type->code != last_type->code) {
                         SPVM_yyerror_format(compiler, "Type of + operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -1203,7 +1203,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       // Must be same type
-                      if (first_type->id != last_type->id) {
+                      if (first_type->code != last_type->code) {
                         SPVM_yyerror_format(compiler, "Type of - operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -1237,7 +1237,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       // Must be same type
-                      if (first_type->id != last_type->id) {
+                      if (first_type->code != last_type->code) {
                         SPVM_yyerror_format(compiler, "Type of * operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -1271,7 +1271,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       // Must be same type
-                      if (first_type->id != last_type->id) {
+                      if (first_type->code != last_type->code) {
                         SPVM_yyerror_format(compiler, "Type of / operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -1305,7 +1305,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       // Must be same type
-                      if (first_type->id != last_type->id) {
+                      if (first_type->code != last_type->code) {
                         SPVM_yyerror_format(compiler, "Type of % operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -1323,7 +1323,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     case SPVM_OP_C_CODE_DIE: {
                       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                       
-                      if (!first_type || first_type->id != SPVM_TYPE_C_ID_STRING) {
+                      if (!first_type || first_type->code != SPVM_TYPE_C_CODE_STRING) {
                         SPVM_yyerror_format(compiler, "die argument type must be byte[] at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -1343,7 +1343,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
                       
                       // Only int or long
-                      if (first_type->id > SPVM_TYPE_C_ID_LONG) {
+                      if (first_type->code > SPVM_TYPE_C_CODE_LONG) {
                         SPVM_yyerror_format(compiler, "Type of increment or decrement target must be integral at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -1516,7 +1516,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         else if (op_term) {
                           SPVM_TYPE* op_term_type = SPVM_OP_get_type(compiler, op_term);
                           
-                          if (op_term_type->id !=  sub_arg_type->id) {
+                          if (op_term_type->code !=  sub_arg_type->code) {
                             is_invalid = 1;
                           }
                         }
@@ -1547,7 +1547,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, found_op_sub->uv.sub->op_return_type);
                       
                       // If CALL_SUB is is not rvalue and return type is object, temparary variable is created, and assinged.
-                      if (!op_cur->rvalue && (return_type->id != SPVM_TYPE_C_ID_VOID && !SPVM_TYPE_is_numeric(compiler, return_type))) {
+                      if (!op_cur->rvalue && (return_type->code != SPVM_TYPE_C_CODE_VOID && !SPVM_TYPE_is_numeric(compiler, return_type))) {
                         assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
                         if (my_var_length == SPVM_LIMIT_C_MY_VARS) {
                           SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created for return value) at %s line %d\n", op_cur->file, op_cur->line);
@@ -1645,7 +1645,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
                       
-                      if (type->id <= SPVM_TYPE_C_ID_DOUBLE) {
+                      if (type->code <= SPVM_TYPE_C_CODE_DOUBLE) {
                         SPVM_yyerror_format(compiler, "weaken is only used for object field \"%s\" at %s line %d\n",
                           field_abs_name, op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
@@ -1668,8 +1668,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       _Bool can_convert = 0;
                       // Can convert byte[] to string
                       if (
-                        (term_type->id == SPVM_TYPE_C_ID_BYTE_ARRAY || term_type->id == SPVM_TYPE_C_ID_STRING)
-                         && (type_type->id == SPVM_TYPE_C_ID_BYTE_ARRAY || type_type->id == SPVM_TYPE_C_ID_STRING)
+                        (term_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY || term_type->code == SPVM_TYPE_C_CODE_STRING)
+                         && (type_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY || type_type->code == SPVM_TYPE_C_CODE_STRING)
                       )
                       {
                         can_convert = 1;
