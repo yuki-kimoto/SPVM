@@ -29,7 +29,6 @@ our @PACKAGE_INFOS;
 our %FIELD_SYMTABLE;
 our $API;
 our @TYPE_NAMES;
-our %TYPE_SYMTABLE;
 
 sub _get_dll_file {
   my $package_name = shift;
