@@ -190,13 +190,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       // Parent type
       const char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type_name);
       if (parent_type_name == NULL) {
-        type->parent_type_code = -1;
         type->parent_type = NULL;
       }
       else {
         SPVM_TYPE* parent_type = SPVM_HASH_search(compiler->type_symtable, type_name, strlen(type_name));
         assert(parent_type);
-        type->parent_type_code = parent_type->code;
         type->parent_type = parent_type;
       }
     }
