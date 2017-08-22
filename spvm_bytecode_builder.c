@@ -382,7 +382,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       
                       // Default offset
                       int32_t default_offset;
-                      if (default_bytecode_index == -1) {
+                      if (!default_bytecode_index) {
                         default_offset = bytecode_array->length - switch_bytecode_index;
                       }
                       else {
@@ -427,7 +427,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       
                       // Default offset
                       int32_t default_offset;
-                      if (default_bytecode_index == -1) {
+                      if (!default_bytecode_index) {
                         default_offset = bytecode_array->length - switch_bytecode_index;
                       }
                       else {
