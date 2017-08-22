@@ -746,7 +746,7 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
       SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
       int32_t type_id = type->id;
       int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, type_id);
-      if (compiler->types_base < 0) {
+      if (compiler->types_base == 0) {
         compiler->types_base = added_id;
       }
     }
@@ -782,7 +782,7 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
       int32_t package_id = op_package->uv.package->id;
       
       int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_id);
-      if (compiler->packages_base < 0) {
+      if (!compiler->packages_base) {
         compiler->packages_base = added_id;
       }
     }
@@ -840,7 +840,7 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           SPVM_SUB* sub = op_sub->uv.sub;
           int32_t sub_id = sub->id;
           int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_id);
-          if (compiler->subs_base < 0) {
+          if (!compiler->subs_base) {
             compiler->subs_base = added_id;
           }
         }

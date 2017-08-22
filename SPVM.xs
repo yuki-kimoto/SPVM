@@ -134,7 +134,7 @@ set(...)
 
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
-  if (field_id == SPVM_API_ERROR_NO_ID) {
+  if (!field_id) {
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   
@@ -216,7 +216,7 @@ get(...)
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
   
-  if (field_id == SPVM_API_ERROR_NO_ID) {
+  if (!field_id) {
     croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
   }
   

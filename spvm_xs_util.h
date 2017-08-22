@@ -74,15 +74,15 @@ int32_t SPVM_XS_UTIL_get_field_type_code(const char* package_name, const char* f
         return field_type_code;
       }
       else {
-        return SPVM_API_ERROR_NO_ID;
+        return 0;
       }
     }
     else {
-      return SPVM_API_ERROR_NO_ID;
+      return 0;
     }
   }
   else {
-    return SPVM_API_ERROR_NO_ID;
+    return 0;
   }
 }
 

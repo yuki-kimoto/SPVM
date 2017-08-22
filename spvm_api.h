@@ -3,10 +3,6 @@
 
 #include <stdint.h>
 
-enum {
-  SPVM_API_ERROR_NO_ID = -1
-};
-
 struct SPVM_api;
 typedef struct SPVM_api SPVM_API;
 typedef void SPVM_API_OBJECT;

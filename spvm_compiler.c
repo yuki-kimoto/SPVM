@@ -73,39 +73,18 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->bufptr = "";
   compiler->types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
-  compiler->cur_line = 0;
-  compiler->cur_file = NULL;
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  compiler->cur_template_args = NULL;
   
   compiler->native_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
-  compiler->enum_default_value = 0;
   compiler->enum_default_type_code = SPVM_TYPE_C_CODE_INT;
-
-  compiler->start_sub_name = NULL;
-  
-  compiler->fatal_error = 0;
-  
-  compiler->current_package_count = 0;
-  
-  // Error count
-  compiler->error_count = 0;
 
   // Constant pool
   compiler->constant_pool = SPVM_CONSTANT_POOL_new(compiler);
   
   // Bytecodes
   compiler->bytecode_array = SPVM_BYTECODE_ARRAY_new(compiler);
-
-  // Entry point package name
-  compiler->entry_point_package_name = NULL;
-
-  // Entry point sub name
-  compiler->entry_point_sub_name = NULL;
   
-  compiler->debug = 0;
-
   // Add core types
   {
     int32_t type_code;
@@ -126,17 +105,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
     }
   }
-  
-  // Package indexes constant pool index
-  compiler->packages_base = -1;
-  
-  // Subroutine indexes constant pool index
-  compiler->subs_base = -1;
-
-  compiler->types_base = -1;
-  
-  // Subroutine length
-  compiler->subs_length = 0;
   
   return compiler;
 }

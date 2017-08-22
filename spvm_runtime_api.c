@@ -860,7 +860,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   
   int32_t fields_base = constant_pool_package->fields_base;
   
-  int32_t field_index = SPVM_API_ERROR_NO_ID;
+  int32_t field_index = 0;
   _Bool found = 0;
   {
     int32_t i;
