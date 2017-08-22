@@ -397,7 +397,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     &&case_SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY,
   };
   
-  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   
   // Program counter
   register uint8_t* pc = NULL;
