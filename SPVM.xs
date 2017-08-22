@@ -74,10 +74,10 @@ new_object(...)
   SV* sv_class = ST(0);
   SV* sv_package_name = ST(1);
   
-  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
-  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   if (!SvOK(sv_package_name)) {
     croak("Type must be specified(SPVM::Object::new_object)");
@@ -884,12 +884,12 @@ new(...)
   SV* sv_type_name = ST(1);
   SV* sv_length = ST(2);
   
-  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   int32_t length = (int32_t)SvIV(sv_length);
-  
-  // Set API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
   SPVM_API_OBJECT* array =  api->new_object_array(api, 0, length);
@@ -969,11 +969,12 @@ get(...)
 {
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
-
-  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
   
-  // Get API
+  // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Get array
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
@@ -1137,7 +1138,7 @@ get_sub_names(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   int32_t subs_base = runtime->subs_base;
   int32_t subs_length = runtime->subs_length;
@@ -1171,7 +1172,7 @@ get_native_sub_names(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   int32_t subs_base = runtime->subs_base;
   int32_t subs_length = runtime->subs_length;
@@ -1207,11 +1208,11 @@ bind_native_sub(...)
   SV* sv_native_sub_name = ST(0);
   SV* sv_native_address = ST(1);
   
-  // Runtime
-  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
-  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Native subroutine name
   const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
@@ -1398,7 +1399,7 @@ call_sub(...)
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   int32_t sub_id = api->get_sub_id(api, sub_abs_name);
   
-  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Subroutine information
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
