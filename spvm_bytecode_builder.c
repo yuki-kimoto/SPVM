@@ -1129,17 +1129,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       else {
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_OBJECT);
                         
-                        const char* package_name = op_cur->first->uv.type->name;
+                        int32_t type_id = op_cur->first->uv.type->id;
                         
-                        SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
-                        SPVM_PACKAGE* package = op_package->uv.package;
-                        
-                        int32_t id = package->id;
-                        
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (id >> 24) & 0xFF);
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (id >> 16) & 0xFF);
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (id >> 8) & 0xFF);
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, id & 0xFF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 24) & 0xFF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 16) & 0xFF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 8) & 0xFF);
+                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, type_id & 0xFF);
                       }
                     }
                     else {

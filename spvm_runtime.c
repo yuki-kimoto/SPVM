@@ -2214,11 +2214,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     
     goto *jump[*pc];
   }
-  case_SPVM_BYTECODE_C_CODE_NEW_OBJECT:
+  case_SPVM_BYTECODE_C_CODE_NEW_OBJECT: {
     // Get subroutine ID
-    index = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    int32_t type_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
-    object = SPVM_RUNTIME_API_new_object(api, index);
+    object = SPVM_RUNTIME_API_new_object(api, type_id);
 
     // Memory allocation error
     if (__builtin_expect(!object, 0)) {
@@ -2240,6 +2240,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     
     pc += 5;
     goto *jump[*pc];
+  }
   case_SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY: {
     
     // length

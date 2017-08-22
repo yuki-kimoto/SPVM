@@ -445,12 +445,16 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   }
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_id) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   
   SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
+  
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
+  
   int32_t* constant_pool = runtime->constant_pool;
   
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[type_id];
+  int32_t package_id = constant_pool_type->package_id;
   SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[package_id];
   
   // Allocate memory
@@ -460,6 +464,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_id) {
   
   // Package constant pool index
   object->package_id = package_id;
+  
+  
+  object->type_id = type_id;
   
   object->type_code = constant_pool_package->type_code;
   

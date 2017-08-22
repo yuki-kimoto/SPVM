@@ -32,9 +32,7 @@
 #include "spvm_extention_bind.h"
 #include "spvm_use.h"
 #include "spvm_constant_pool.h"
-
-
-
+#include "spvm_constant_pool_type.h"
 
 
 
@@ -792,7 +790,19 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
   
   // Set package id to type constant pool
   {
-    
+    {
+      int32_t i;
+      for (i = 0; i < compiler->types->length; i++) {
+        SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
+        if (type->op_package) {
+          SPVM_PACKAGE* package = type->op_package->uv.package;
+          const char* package_name = package->op_name->uv.name;
+          int32_t type_id = type->id;
+          SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type_id];
+          constant_pool_type->package_id = package->id;
+        }
+      }
+    }
   }
   
   // Push subroutine into constant pool

@@ -84,6 +84,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         SPVM_DYNAMIC_ARRAY_push(compiler->types, new_type);
         SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
         
+        new_type->op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+        
         op_type->uv.type = new_type;
       }
     }

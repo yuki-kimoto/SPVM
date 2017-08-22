@@ -85,16 +85,18 @@ new_object(...)
   
   const char* package_name = SvPV_nolen(sv_package_name);
   
-  int32_t package_id = api->get_package_id(api, package_name);
-  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[package_id];
-  int32_t type_code = constant_pool_package->type_code;
+  int32_t type_id = api->get_type_id(api, package_name);
   
-  if (package_id == SPVM_API_ERROR_NO_ID) {
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[type_id];
+  
+  int32_t type_code = constant_pool_type->code;
+  
+  if (type_id <= 0) {
     croak("Unkown package \"%s\"(SPVM::Object::new_object", package_name);
   }
   
   // Malloc array
-  SPVM_API_OBJECT* object =  api->new_object(api, package_id);
+  SPVM_API_OBJECT* object =  api->new_object(api, type_id);
   
   // Increment
   api->inc_ref_count(api, object);
