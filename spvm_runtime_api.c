@@ -25,6 +25,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime(SPVM_API* api) {
   return SPVM_GLOBAL_RUNTIME;
 }
 
+void SPVM_RUNTIME_API_set_runtime(SPVM_API* api, SPVM_RUNTIME* runtime) {
+  (void)api;
+  
+  SPVM_GLOBAL_RUNTIME = runtime;
+}
+
 int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_API* api) {
   (void)api;
   return SPVM_RUNTIME_API_get_runtime(api)->objects_count;
