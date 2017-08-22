@@ -1130,6 +1130,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_OBJECT);
                         
                         int32_t type_id = op_cur->first->uv.type->id;
+                        assert(type_id);
                         
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 24) & 0xFF);
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 16) & 0xFF);
