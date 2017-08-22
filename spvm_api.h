@@ -6,6 +6,7 @@
 struct SPVM_api;
 typedef struct SPVM_api SPVM_API;
 typedef void SPVM_API_OBJECT;
+typedef void SPVM_API_RUNTIME;
 
 union SPVM_API_value {
   int8_t byte_value;
@@ -72,5 +73,6 @@ struct SPVM_api {
   void (*dec_ref_count)(SPVM_API* api, SPVM_API_OBJECT* base_object);
   void (*inc_dec_ref_count)(SPVM_API* api, SPVM_API_OBJECT* base_object);
   int32_t (*get_objects_count)(SPVM_API* api);
+  SPVM_API_RUNTIME* (*get_runtime)(SPVM_API* api);
 };
 #endif

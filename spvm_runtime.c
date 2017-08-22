@@ -76,6 +76,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_dec_ref_count,
   SPVM_RUNTIME_API_inc_dec_ref_count,
   SPVM_RUNTIME_API_get_objects_count,
+  SPVM_RUNTIME_API_get_runtime,
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {

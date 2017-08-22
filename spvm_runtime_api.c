@@ -1096,6 +1096,12 @@ SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_OBJECT* object) {
   return (SPVM_VALUE*)((intptr_t)object + sizeof(SPVM_OBJECT));
 }
 
+SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime(SPVM_API* api) {
+  (void)api;
+  
+  return SPVM_GLOBAL_RUNTIME;
+}
+
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
