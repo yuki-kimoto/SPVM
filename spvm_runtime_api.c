@@ -875,13 +875,13 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
       
       if (strcmp(name, match_name) == 0) {
         found = 1;
-        field_index = i;
+        field_index = i + 1;
         break;
       }
     }
   }
   
-  return field_index + 1;
+  return field_index;
 }
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
@@ -910,11 +910,6 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
         break;
       }
     }
-  }
-  
-  if (!found) {
-    fprintf(stderr, "Can't find subroutine name \"%s\"\n", name);
-    abort();
   }
   
   return found_sub_id;
@@ -946,11 +941,6 @@ int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
         break;
       }
     }
-  }
-  
-  if (!found) {
-    fprintf(stderr, "Can't find typeroutine name \"%s\"\n", name);
-    abort();
   }
   
   return found_type_id;
