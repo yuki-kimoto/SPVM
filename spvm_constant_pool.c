@@ -16,6 +16,8 @@
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_type.h"
+#include "spvm_hash.h"
+#include "spvm_compiler.h"
 
 void SPVM_CONSTANT_POOL_adjust_alignment(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int32_t byte_size) {
   
@@ -104,19 +106,11 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   // Push type name to constant pool
   constant_pool_type.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, type->name);
   
-  // Element type id
-  if (type->element_type) {
-    constant_pool_type.element_type_code = type->element_type->code;
-    constant_pool_type.element_type_id = type->element_type->id;
-  }
-  else {
-    constant_pool_type.element_type_code = -1;
-    constant_pool_type.element_type_id = -1;
-  }
-  
   // Parent type id
-  if (type->parent_type) {
-    constant_pool_type.parent_type_id = type->parent_type->id;
+  char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
+  SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
+  if (parent_type) {
+    constant_pool_type.parent_type_id = parent_type->id;
   }
   else {
     constant_pool_type.parent_type_id = -1;
