@@ -14,6 +14,8 @@ struct SPVM_object {
   int8_t is_array;
   int32_t type_code;
   int32_t type_id;
+  int32_t base_type_id;
+  int32_t dimension;
 };
 
 enum {
