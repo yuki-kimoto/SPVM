@@ -81,9 +81,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
-
-  runtime->constant_pool = NULL;
-  runtime->bytecodes = NULL;
   
   // Runtime memory allocator
   runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
@@ -98,29 +95,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->call_stack_base = -1;
   runtime->operand_stack_top = -1;
-  
-  // Packages length
-  runtime->packages_length = 0;
-  
-  // Indexes of package
-  runtime->packages_base = -1;
-  
-  // Subroutines length
-  runtime->subs_length = 0;
-  
-  // Indexes of package
-  runtime->subs_base = -1;
-
-  runtime->types_length = 0;
-  
-  runtime->types_base = -1;
-  
-  // Exception
-  runtime->exception = NULL;
-
-  runtime->objects_count = 0;
-  
-  runtime->debug = 0;
   
   return runtime;
 }
