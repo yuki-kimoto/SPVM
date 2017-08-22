@@ -1097,8 +1097,14 @@ int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* string) {
   (void)api;
   
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  
   int32_t length = strlen(string);
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array(api, length);
+  
+  // Set type id
+  int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
+  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_STRING];
   
   // Copy string
   memcpy((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), string, length + 1);
