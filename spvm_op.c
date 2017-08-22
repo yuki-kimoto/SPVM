@@ -1827,6 +1827,7 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->is_array = 1;
   type->name = SPVM_TYPE_create_array_name(compiler, op_type_child->uv.type->name);
+  type->dimension++;
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type_child->file, op_type_child->line);

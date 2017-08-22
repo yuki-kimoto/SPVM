@@ -132,6 +132,8 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   
   constant_pool_type.is_package = type->is_package;
   
+  constant_pool_type.dimension = type->dimension;
+  
   memcpy(&constant_pool->values[start_index], &constant_pool_type, sizeof(SPVM_CONSTANT_POOL_TYPE));
   
   return start_index;

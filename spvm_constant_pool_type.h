@@ -13,6 +13,7 @@ struct SPVM_constant_pool_type {
   int32_t package_id;
   _Bool is_array;
   _Bool is_package;
+  int32_t dimension;
 };
 
 #endif
