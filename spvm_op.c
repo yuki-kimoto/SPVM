@@ -748,6 +748,20 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
     }
   }
 
+  // Push type code to id index to constant pool
+  {
+    int32_t type_code;
+    for (type_code = 0; type_code < SPVM_TYPE_C_CORE_LENGTH; type_code++) {
+      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_code);
+      int32_t type_id = type->id;
+      
+      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, type_id);
+      if (!compiler->type_code_to_id_base) {
+        compiler->type_code_to_id_base = added_id;
+      }
+    }
+  }
+  
   // Push package into constant_pool
   {
     int32_t package_index;

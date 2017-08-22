@@ -95,6 +95,9 @@ struct SPVM_compiler {
 
   // Type indexes constant pool index
   int32_t types_base;
+
+  // Type code to id index
+  int32_t type_code_to_id_base;
   
   // Subroutine indexes constant pool index
   int32_t subs_base;

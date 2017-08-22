@@ -51,6 +51,9 @@ struct SPVM_runtime {
   // Subroutine base
   int32_t types_base;
   
+  // Type code to id
+  int32_t type_code_to_id_base;
+  
   int32_t objects_count;
   
   int32_t debug;
