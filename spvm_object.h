@@ -8,7 +8,6 @@ struct SPVM_object {
   SPVM_OBJECT* weaken_back_refs;
   int32_t ref_count;
   int32_t weaken_back_refs_length;
-  int32_t package_id;
   int32_t length;
   int8_t value_type;
   int32_t type_id;
