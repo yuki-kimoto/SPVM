@@ -122,13 +122,6 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
     constant_pool_type.parent_type_id = -1;
   }
   
-  if (type->op_package) {
-    constant_pool_type.package_id = type->op_package->uv.package->id;
-  }
-  else {
-    constant_pool_type.package_id = -1;
-  }
-
   constant_pool_type.is_package = type->is_package;
   
   constant_pool_type.dimension = type->dimension;
