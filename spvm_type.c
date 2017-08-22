@@ -193,6 +193,14 @@ _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   return type->dimension > 0;
 }
 
+_Bool SPVM_TYPE_is_package(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+  (void)compiler;
+  
+  _Bool is_package = type->dimension == 0 && type->code > SPVM_TYPE_C_CODE_STRING;
+  
+  return is_package;
+}
+
 _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   

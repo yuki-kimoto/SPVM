@@ -44,7 +44,6 @@ struct SPVM_type {
   SPVM_TYPE* element_type;
   SPVM_TYPE* parent_type;
   int32_t id;
-  _Bool is_package;
   int32_t dimension;
   SPVM_TYPE* base_type;
 };

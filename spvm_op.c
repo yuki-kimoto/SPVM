@@ -892,7 +892,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Type(type is same as package name)
     SPVM_TYPE* type = SPVM_TYPE_new(compiler);
     type->name = package_name;
-    type->is_package = 1;
     type->op_package = op_package;
     type->base_type = type;
     
