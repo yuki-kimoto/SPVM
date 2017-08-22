@@ -893,7 +893,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
   int32_t length = runtime->subs_length;
   int32_t subs_base = runtime->subs_base;
   
-  int32_t found_sub_id = SPVM_API_ERROR_NO_ID;
+  int32_t found_sub_id = 0;
   _Bool found = 0;
   {
     int32_t i;
@@ -920,42 +920,6 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
   return found_sub_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name) {
-  (void)api;
-  
-  SPVM_RUNTIME* runtime = SPVM_GLOBAL_RUNTIME;
-  
-  int32_t* constant_pool = runtime->constant_pool;
-  int32_t length = runtime->packages_length;
-  int32_t packages_base = runtime->packages_base;
-  
-  int32_t found_package_id = SPVM_API_ERROR_NO_ID;
-  _Bool found = 0;
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      int32_t package_id = constant_pool[packages_base + i];
-      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[package_id];
-      
-      int32_t package_name_id = constant_pool_package->name_id;
-      
-      char* match_name = (char*)&constant_pool[package_name_id + 1];
-      if (strcmp(name, match_name) == 0) {
-        found = 1;
-        found_package_id = package_id;
-        break;
-      }
-    }
-  }
-  
-  if (!found) {
-    fprintf(stderr, "Can't find packageroutine name \"%s\"\n", name);
-    abort();
-  }
-  
-  return found_package_id;
-}
-
 int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
   (void)api;
   
@@ -965,7 +929,7 @@ int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
   int32_t length = runtime->types_length;
   int32_t types_base = runtime->types_base;
   
-  int32_t found_type_id = SPVM_API_ERROR_NO_ID;
+  int32_t found_type_id = 0;
   _Bool found = 0;
   {
     int32_t i;

@@ -61,7 +61,6 @@ struct SPVM_api {
   double (*call_double_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   SPVM_API_OBJECT* (*call_object_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   int32_t (*get_type_id)(SPVM_API*, const char*);
-  int32_t (*get_package_id)(SPVM_API*, const char*);
   SPVM_API_OBJECT* (*new_object)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_byte_array)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_short_array)(SPVM_API*, int32_t);

@@ -61,7 +61,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_call_double_sub,
   SPVM_RUNTIME_API_call_object_sub,
   SPVM_RUNTIME_API_get_type_id,
-  SPVM_RUNTIME_API_get_package_id,
   SPVM_RUNTIME_API_new_object,
   SPVM_RUNTIME_API_new_byte_array,
   SPVM_RUNTIME_API_new_short_array,

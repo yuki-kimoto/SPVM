@@ -52,7 +52,6 @@ int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_OBJECT* object);
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name);
-int32_t SPVM_RUNTIME_API_get_package_id(SPVM_API* api, const char* name);
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t package_id);
 
