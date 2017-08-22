@@ -13,19 +13,8 @@ SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {
   
   sub->op_args = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   sub->op_my_vars = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  sub->id = -1;
-
-  sub->op_name = NULL;
-  sub->op_return_type = NULL;
-  sub->op_block = NULL;
-  sub->native_address = NULL;
-  sub->abs_name = NULL;
-  sub->file_name = NULL;
+  
   sub->bytecode_base = -1;
-  sub->bytecode_length = 0;
-  sub->operand_stack_max = 0;
-  sub->is_native = 0;
-  sub->is_constant = 0;
   
   return sub;
 }

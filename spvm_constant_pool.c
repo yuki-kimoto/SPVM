@@ -112,9 +112,6 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   if (parent_type) {
     constant_pool_type.parent_type_id = parent_type->id;
   }
-  else {
-    constant_pool_type.parent_type_id = -1;
-  }
 
   // Element type id
   char* element_type_name = SPVM_TYPE_get_element_name(compiler, type->name);
@@ -123,12 +120,6 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
     if (element_type) {
       constant_pool_type.element_type_id = element_type->id;
     }
-    else {
-      constant_pool_type.element_type_id = -1;
-    }
-  }
-  else {
-    constant_pool_type.element_type_id = -1;
   }
   
   constant_pool_type.dimension = type->dimension;
@@ -236,9 +227,6 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
     }
     constant_pool_sub.object_args_length = object_args_length;
   }
-  if (object_args_length == 0) {
-    constant_pool_sub.object_args_base = -1;
-  }
 
   // Object my_vars length
   int32_t object_my_vars_length = 0;
@@ -257,10 +245,6 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
     constant_pool_sub.object_my_vars_length = object_my_vars_length;
   }
   
-  if (object_my_vars_length == 0) {
-    constant_pool_sub.object_my_vars_base = -1;
-  }
-
   // Push sub name to constant pool
   constant_pool_sub.abs_name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->abs_name);
   
