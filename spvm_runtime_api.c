@@ -211,7 +211,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
     object->dimension = 1;
     
     // Set type id
-    object->type_code = SPVM_TYPE_C_CODE_BYTE;
+    int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
+    object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_BYTE];
     
     // Set value type
     object->value_type = SPVM_OBJECT_C_VALUE_TYPE_BYTE;
@@ -250,7 +251,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
     object->dimension = 1;
     
     // Set type id
-    object->type_code = SPVM_TYPE_C_CODE_SHORT;
+    int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
+    object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_SHORT];
     
     // Set value type
     object->value_type = SPVM_OBJECT_C_VALUE_TYPE_SHORT;
@@ -288,7 +290,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
     object->dimension = 1;
     
     // Set type id
-    object->type_code = SPVM_TYPE_C_CODE_INT;
+    int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
+    object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_INT];
     
     // Set value type
     object->value_type = SPVM_OBJECT_C_VALUE_TYPE_INT;
@@ -326,7 +329,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
     object->dimension = 1;
     
     // Set type id
-    object->type_code = SPVM_TYPE_C_CODE_LONG;
+    int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
+    object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_LONG];
     
     // Set value type
     object->value_type = SPVM_OBJECT_C_VALUE_TYPE_LONG;
@@ -363,7 +367,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
     object->dimension = 1;
     
     // Set type id
-    object->type_code = SPVM_TYPE_C_CODE_FLOAT;
+    int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
+    object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_FLOAT];
     
     // Set value type
     object->value_type = SPVM_OBJECT_C_VALUE_TYPE_FLOAT;
@@ -400,7 +405,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
     object->dimension = 1;
     
     // Set type id
-    object->type_code = SPVM_TYPE_C_CODE_DOUBLE;
+    int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
+    object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_DOUBLE];
     
     // Set value type
     object->value_type = SPVM_OBJECT_C_VALUE_TYPE_DOUBLE;
@@ -477,10 +483,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   // Package constant pool index
   object->package_id = package_id;
   
-  
+  // Set type id
   object->type_id = type_id;
-  
-  object->type_code = constant_pool_package->type_code;
   
   assert(object_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
