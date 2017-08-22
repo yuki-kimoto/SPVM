@@ -128,8 +128,7 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   else {
     constant_pool_type.package_id = -1;
   }
-  constant_pool_type.is_array = type->is_array;
-  
+
   constant_pool_type.is_package = type->is_package;
   
   constant_pool_type.dimension = type->dimension;

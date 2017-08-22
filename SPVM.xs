@@ -1022,7 +1022,7 @@ get(...)
       sv_base_object = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)base_object);
       break;
     default : {
-      if (element_type->is_array) {
+      if (element_type->dimension > 0) {
         sv_base_object = SPVM_XS_UTIL_new_sv_object_array(element_type_code, (SPVM_API_OBJECT*)base_object);
       }
       else {
@@ -1626,7 +1626,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)return_value);
             break;
           default : {
-            if (return_type->is_array) {
+            if (return_type->dimension > 0) {
               sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_code, (SPVM_API_OBJECT*)return_value);
             }
             else {

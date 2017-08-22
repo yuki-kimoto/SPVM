@@ -196,7 +196,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
     ((int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
     
     // Array
-    object->is_array = 1;
+    object->dimension = 1;
     
     // Set type id
     object->type_code = SPVM_TYPE_C_CODE_BYTE;
@@ -235,7 +235,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
     ((int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
     
     // Array
-    object->is_array = 1;
+    object->dimension = 1;
     
     // Set type id
     object->type_code = SPVM_TYPE_C_CODE_SHORT;
@@ -273,7 +273,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
     ((int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
     
     // Array
-    object->is_array = 1;
+    object->dimension = 1;
     
     // Set type id
     object->type_code = SPVM_TYPE_C_CODE_INT;
@@ -311,7 +311,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
     ((int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
     
     // Array
-    object->is_array = 1;
+    object->dimension = 1;
     
     // Set type id
     object->type_code = SPVM_TYPE_C_CODE_LONG;
@@ -348,7 +348,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
     ((float*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
     
     // Array
-    object->is_array = 1;
+    object->dimension = 1;
     
     // Set type id
     object->type_code = SPVM_TYPE_C_CODE_FLOAT;
@@ -385,7 +385,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
     ((double*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
     
     // Array
-    object->is_array = 1;
+    object->dimension = 1;
     
     // Set type id
     object->type_code = SPVM_TYPE_C_CODE_DOUBLE;
@@ -431,7 +431,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
     object->type_id = type_id;
     
     // Set type
-    object->is_array = 1;
+    object->dimension = 1;
     
     // Set value type
     object->value_type = SPVM_OBJECT_C_VALUE_TYPE_OBJECT;
@@ -566,7 +566,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   // If reference count is zero, free address.
   if (object->ref_count == 0) {
     // Array
-    if (object->is_array) {
+    if (object->dimension > 0) {
       if (object->value_type == SPVM_OBJECT_C_VALUE_TYPE_OBJECT) {
         
         // Array length
@@ -1105,7 +1105,7 @@ int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* 
   int64_t byte_size;
   
   // Reference is string
-  if (object->is_array) {
+  if (object->dimension > 0) {
     byte_size = sizeof(SPVM_OBJECT) + (object->length + 1) * SPVM_RUNTIME_API_get_array_value_size(api, object->value_type);
   }
   // Reference is object

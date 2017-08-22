@@ -190,7 +190,7 @@ char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* base_name
 _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  return type->is_array;
+  return type->dimension > 0;
 }
 
 _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
