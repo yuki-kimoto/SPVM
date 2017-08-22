@@ -14,6 +14,7 @@ struct SPVM_constant_pool_type {
   _Bool is_array;
   _Bool is_package;
   int32_t dimension;
+  int32_t base_id;
 };
 
 #endif
