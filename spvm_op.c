@@ -1698,16 +1698,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
 }
 
 
-SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void) {
-  
-  // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_void->file, op_void->line);
-  
-  op_type->uv.type = SPVM_TYPE_get_void_type(compiler);
-  
-  return op_type;
-}
-
 SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_OP* op_term) {
   
   if (op_term) {
@@ -1744,6 +1734,16 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_die, op_die->last, op_assign);
   
   return op_die;
+}
+
+SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void) {
+  
+  // Type op
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_void->file, op_void->line);
+  
+  op_type->uv.type = SPVM_TYPE_get_void_type(compiler);
+  
+  return op_type;
 }
 
 SPVM_OP* SPVM_OP_build_type_byte(SPVM_COMPILER* compiler, SPVM_OP* op_byte) {
@@ -1818,6 +1818,8 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   // Add types
   SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type);
   
+  type->base_type = type;
+  
   return op_type;
 }
 
@@ -1828,6 +1830,8 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   type->is_array = 1;
   type->name = SPVM_TYPE_create_array_name(compiler, op_type_child->uv.type->name);
   type->dimension++;
+  
+  type->base_type = op_type_child->uv.type->base_type;
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type_child->file, op_type_child->line);
