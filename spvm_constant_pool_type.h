@@ -8,6 +8,7 @@ struct SPVM_constant_pool_type {
   int32_t code;
   int32_t name_id;
   int32_t parent_type_id;
+  int32_t element_type_id;
   int32_t dimension;
   int32_t base_id;
 };

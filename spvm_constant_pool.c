@@ -115,6 +115,21 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   else {
     constant_pool_type.parent_type_id = -1;
   }
+
+  // Element type id
+  char* element_type_name = SPVM_TYPE_get_element_name(compiler, type->name);
+  if (element_type_name) {
+    SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
+    if (element_type) {
+      constant_pool_type.element_type_id = element_type->id;
+    }
+    else {
+      constant_pool_type.element_type_id = -1;
+    }
+  }
+  else {
+    constant_pool_type.element_type_id = -1;
+  }
   
   constant_pool_type.dimension = type->dimension;
   
