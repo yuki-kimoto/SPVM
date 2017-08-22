@@ -9,9 +9,6 @@
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler) {
   SPVM_CONSTANT* constant = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_CONSTANT));
   
-  constant->type = NULL;
-  constant->id = -1;
-  
   return constant;
 }
 

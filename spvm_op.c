@@ -677,7 +677,6 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           
           int32_t value = constant->value.int_value;
           if (value >= -32768 && value <= 32767) {
-            constant->id = -1;
             break;
           }
           
@@ -688,7 +687,6 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           int64_t value = constant->value.long_value;
           
           if (value >= -32768 && value <= 32767) {
-            constant->id = -1;
             break;
           }
           
@@ -699,7 +697,6 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           float value = constant->value.float_value;
           
           if (value == 0 || value == 1 || value == 2) {
-            constant->id = -1;
             break;
           }
           
@@ -710,7 +707,6 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           double value = constant->value.double_value;
           
           if (value == 0 || value == 1) {
-            constant->id = -1;
             break;
           }
           
