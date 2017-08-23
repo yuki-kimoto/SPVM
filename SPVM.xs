@@ -131,6 +131,7 @@ set(...)
   // Field type
   const char* field_name = SvPV_nolen(sv_field_name);
   int32_t field_type_code = SPVM_XS_UTIL_get_field_type_code(package_name, field_name);
+  int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
 
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
@@ -213,6 +214,7 @@ get(...)
   const char* field_name = SvPV_nolen(sv_field_name);
   int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
   int32_t field_type_code = SPVM_XS_UTIL_get_field_type_code(package_name, field_name);
+  warn("AAAAAAAA %d %d", field_type_id, field_type_code);
   
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
@@ -1339,6 +1341,7 @@ build_field_symtable(...)
           HV* hv_field_info = (HV*)sv_2mortal((SV*)newHV());
           hv_store(hv_field_info, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
           hv_store(hv_field_info, "type_code", strlen("type_code"), SvREFCNT_inc(sv_field_type_code), 0);
+          hv_store(hv_field_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_field_type_id), 0);
           SV* sv_field_info = sv_2mortal(newRV_inc((SV*)hv_field_info));
           
           hv_store(hv_package_info, field_name, strlen(field_name), SvREFCNT_inc(sv_field_info), 0);
