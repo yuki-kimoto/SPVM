@@ -102,7 +102,7 @@ new_object(...)
   api->inc_ref_count(api, object);
 
   // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object(type_code, object);
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(type_code, type_id, object);
   
   XPUSHs(sv_object);
   XSRETURN(1);
@@ -211,6 +211,7 @@ get(...)
 
   // Field type id
   const char* field_name = SvPV_nolen(sv_field_name);
+  int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
   int32_t field_type_code = SPVM_XS_UTIL_get_field_type_code(package_name, field_name);
   
   // Field id
@@ -310,7 +311,7 @@ get(...)
             XPUSHs(sv_array);
           }
           else {
-            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_code, value);
+            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_code, field_type_id, value);
             XPUSHs(sv_object);
           }
         }
@@ -1029,7 +1030,7 @@ get(...)
         sv_base_object = SPVM_XS_UTIL_new_sv_object_array(element_type_code, (SPVM_API_OBJECT*)base_object);
       }
       else {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(element_type_code, (SPVM_API_OBJECT*)base_object);
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(element_type_code, element_type_id, (SPVM_API_OBJECT*)base_object);
       }
     }
   }
@@ -1408,6 +1409,7 @@ call_sub(...)
   {
     int32_t arg_index;
     int32_t arg_type_codes_base = constant_pool_sub->arg_type_codes_base;
+    int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
     int32_t args_length = constant_pool_sub->args_length;
     // Check argument count
     if (items - 1 != args_length) {
@@ -1418,6 +1420,7 @@ call_sub(...)
       SV* sv_value = ST(arg_index + 1);
       
       int32_t arg_type_code = runtime->constant_pool[arg_type_codes_base + arg_index];
+      int32_t arg_type_id = runtime->constant_pool[arg_type_ids_base + arg_index];
       
       if (sv_isobject(sv_value)) {
         SV* sv_base_object = sv_value;
@@ -1633,7 +1636,7 @@ call_sub(...)
               sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_code, (SPVM_API_OBJECT*)return_value);
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_code, (SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_code, return_type_id, (SPVM_API_OBJECT*)return_value);
             }
           }
         }

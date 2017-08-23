@@ -86,6 +86,40 @@ int32_t SPVM_XS_UTIL_get_field_type_code(const char* package_name, const char* f
   }
 }
 
+int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* field_name) {
+  // Field symbol table
+  HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
+  
+  SV** sv_package_info_ptr = hv_fetch(hv_field_symtable, package_name, strlen(package_name), 0);
+  if (sv_package_info_ptr) {
+    SV* sv_package_info = *sv_package_info_ptr;
+    HV* hv_package_info = (HV*)SvRV(sv_package_info);
+    
+    SV** sv_field_info_ptr = hv_fetch(hv_package_info, field_name, strlen(field_name), 0);
+    if (sv_field_info_ptr) {
+      SV* sv_field_info = *sv_field_info_ptr;
+      HV* hv_field_info = (HV*)SvRV(sv_field_info);
+      
+      SV** sv_field_type_id_ptr = hv_fetch(hv_field_info, "type_id", strlen("type_id"), 0);
+      if (sv_field_type_id_ptr) {
+        SV* sv_field_type_id = *sv_field_type_id_ptr;
+        int32_t field_type_id = SvIV(sv_field_type_id);
+        
+        return field_type_id;
+      }
+      else {
+        return 0;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+  else {
+    return 0;
+  }
+}
+
 SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_OBJECT* array) {
   
   // Create array
@@ -271,7 +305,7 @@ SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_code, SPVM_API_OBJECT* array) 
 }
 
 
-SV* SPVM_XS_UTIL_new_sv_object(int32_t type_code, SPVM_API_OBJECT* object) {
+SV* SPVM_XS_UTIL_new_sv_object(int32_t type_code, int32_t type_id, SPVM_API_OBJECT* object) {
   // Create object
   HV* hv_object = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_object = sv_2mortal(newRV_inc((SV*)hv_object));
@@ -286,9 +320,13 @@ SV* SPVM_XS_UTIL_new_sv_object(int32_t type_code, SPVM_API_OBJECT* object) {
   // Set content
   hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
+  // Set type code
   SV* sv_type_code = sv_2mortal(newSViv(type_code));
   hv_store(hv_object, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
+
+  // Set type id
+  SV* sv_type_id = sv_2mortal(newSViv(type_id));
+  hv_store(hv_object, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
   
   return sv_object;
 }
