@@ -214,7 +214,6 @@ get(...)
   const char* field_name = SvPV_nolen(sv_field_name);
   int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
   int32_t field_type_code = SPVM_XS_UTIL_get_field_type_code(package_name, field_name);
-  warn("AAAAAAAA %d %d", field_type_id, field_type_code);
   
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
