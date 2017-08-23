@@ -258,7 +258,7 @@ SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_API_OBJECT* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_OBJECT* object) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -267,14 +267,14 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_OBJECT* array) {
   sv_bless(sv_array, hv_class);
   
   // Create content
-  size_t iv_content = PTR2IV(array);
+  size_t iv_content = PTR2IV(object);
   SV* sviv_content = sv_2mortal(newSViv(iv_content));
   SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
   
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
+  // Set type code
   SV* sv_type_code = sv_2mortal(newSViv(SPVM_TYPE_C_CODE_DOUBLE_ARRAY));
   hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
 

@@ -1324,10 +1324,14 @@ build_field_symtable(...)
           const char* field_type = field->op_type->uv.type->name;
           SV* sv_field_type = sv_2mortal(newSVpv(field_type, 0));
           
-          // Field type id
+          // Field type code
           int32_t field_type_code = field->op_type->uv.type->code;
           SV* sv_field_type_code = sv_2mortal(newSViv(field_type_code));
           
+          // Field type id
+          int32_t field_type_id = field->op_type->uv.type->id;
+          SV* sv_field_type_id = sv_2mortal(newSViv(field_type_id));
+
           // Field id
           int32_t field_id = field->index;
           SV* sv_field_id = sv_2mortal(newSViv(field_id));
