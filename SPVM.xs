@@ -1475,7 +1475,6 @@ call_sub(...)
   // Arguments
   {
     int32_t arg_index;
-    int32_t arg_type_codes_base = constant_pool_sub->arg_type_codes_base;
     int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
     int32_t args_length = constant_pool_sub->args_length;
     // Check argument count
@@ -1486,11 +1485,12 @@ call_sub(...)
     for (arg_index = 0; arg_index < args_length; arg_index++) {
       SV* sv_value = ST(arg_index + 1);
       
-      int32_t arg_type_code = runtime->constant_pool[arg_type_codes_base + arg_index];
       int32_t arg_type_id = runtime->constant_pool[arg_type_ids_base + arg_index];
 
       // Array type
       SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[arg_type_id];
+
+      int32_t arg_type_code = constant_pool_arg_type->code;
       
       if (sv_isobject(sv_value)) {
         SV* sv_base_object = sv_value;

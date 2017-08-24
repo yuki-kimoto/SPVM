@@ -152,9 +152,6 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   // Push package name to constant pool
   const char* package_name = package->op_name->uv.name;
   constant_pool_package.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
-  
-  // Type id
-  constant_pool_package.type_code = package->op_type->uv.type->code;
 
   // Push fields constant_pool indexes to constant pool
   {
@@ -200,8 +197,6 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   // Add length
   constant_pool->length += extend_length;
 
-  // Arg type ids
-  constant_pool_sub.arg_type_codes_base = constant_pool->length;
   {
     int32_t i;
     for (i = 0; i < sub->op_args->length; i++) {
