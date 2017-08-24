@@ -13,19 +13,15 @@ SPVM_COMPILER* SPVM_XS_UTIL_get_compiler() {
 
   // Get compiler
   SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
-  SV* sviv_compiler = SvROK(sv_compiler) ? SvRV(sv_compiler) : sv_compiler;
-  size_t iv_compiler = SvIV(sviv_compiler);
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, iv_compiler);
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(sv_compiler));
   
   return compiler;
 }
 
 SPVM_API* SPVM_XS_UTIL_get_api() {
   SV* sv_api = get_sv("SPVM::API", 0);
-  SV* sviv_api = SvRV(sv_api);
-  size_t iv_api = SvIV(sviv_api);
-  
-  SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
+
+  SPVM_API* api = (SPVM_API*)SvIV(SvRV(sv_api));
   
   return api;
 }
