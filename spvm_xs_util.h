@@ -98,7 +98,7 @@ SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_API_OBJECT* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
+  // Set type code
   SV* sv_type_code = sv_2mortal(newSViv(SPVM_TYPE_C_CODE_BYTE_ARRAY));
   hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
   
