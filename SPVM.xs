@@ -334,7 +334,7 @@ get(...)
           break;
         }
         case SPVM_TYPE_C_CODE_STRING : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_string(value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object2(value, "SPVM::String");
           XPUSHs(sv_array);
           break;
         }
@@ -907,7 +907,7 @@ new_raw(...)
   memcpy(elements, string, length);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_string(array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object2(array, "SPVM::String");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1087,7 +1087,7 @@ get(...)
       sv_base_object = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)base_object);
       break;
     case SPVM_TYPE_C_CODE_STRING :
-      sv_base_object = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::String");
       break;
     default : {
       if (element_type->dimension > 0) {
@@ -1630,7 +1630,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)return_value);
             break;
           case SPVM_TYPE_C_CODE_STRING :
-            sv_return_value = SPVM_XS_UTIL_new_sv_string((SPVM_API_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::String");
             break;
           default : {
             if (return_type->dimension > 0) {
