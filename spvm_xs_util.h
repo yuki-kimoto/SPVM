@@ -10,18 +10,9 @@
 
 #include <stdint.h>
 
-SPVM_COMPILER* SPVM_XS_UTIL_get_compiler() {
-
-  // Get compiler
-  SV* sv_compiler = get_sv("SPVM::COMPILER", 0);
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(sv_compiler));
-  
-  return compiler;
-}
-
 SPVM_API* SPVM_XS_UTIL_get_api() {
   SV* sv_api = get_sv("SPVM::API", 0);
-
+  
   SPVM_API* api = (SPVM_API*)SvIV(SvRV(sv_api));
   
   return api;
