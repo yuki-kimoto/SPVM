@@ -52,18 +52,6 @@ int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* fie
   }
 }
 
-SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_OBJECT* array) {
-  
-  // Create array
-  size_t iv_array = PTR2IV(array);
-  SV* sviv_array = sv_2mortal(newSViv(iv_array));
-  SV* sv_array = sv_2mortal(newRV_inc(sviv_array));
-  HV* hv_class = gv_stashpv("SPVM::Array::Short", 0);
-  sv_bless(sv_array, hv_class);
-  
-  return sv_array;
-}
-
 SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_OBJECT* array) {
   
   // Create array
