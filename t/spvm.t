@@ -36,6 +36,16 @@ my $DOUBLE_PRECICE = 65536.0;
 
 use SPVM::std;
 
+  # Create object
+  {
+    my $object = SPVM::new_object("TestCase");
+    $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
+    $object->set(x_string => SPVM::new_string_raw("abc"));
+    ok(SPVM::TestCase::spvm_object_set_object($object));
+  }
+
+__END__
+
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 

@@ -196,10 +196,11 @@ set(...)
       
       SPVM_CONSTANT_POOL_TYPE* constant_pool_value_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[value_type_id];
       
-      int32_t value_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_value);
+      int32_t value_type_code = constant_pool_value_type->code;
       // warn("BBBBBB %d %d %d", value_type_id, value_type_code, constant_pool_value_type->code);
       
-      if (value_type_code != field_type_code) {
+      if (value_type_id != field_type_id
+      ) {
         const char* field_type_name = (char*)&runtime->constant_pool[constant_pool_field_type->name_id + 1];
         const char* value_type_name = (char*)&runtime->constant_pool[constant_pool_value_type->name_id + 1];
         croak("Can't set \"%s\" value to \"%s\" field", value_type_name, field_type_name);
@@ -891,16 +892,17 @@ new_raw(...)
   
   int32_t length = (int32_t)sv_len(sv_string);
   
+  const char* string = SvPV_nolen(sv_string);
+  
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_OBJECT* array =  api->new_byte_array(api, length);
+  SPVM_API_OBJECT* array =  api->new_string(api, string);
   
   // Increment reference count
   api->inc_ref_count(api, array);
   
-  const char* string = SvPV_nolen(sv_string);
   int8_t* elements = api->get_byte_array_elements(api, array);
   memcpy(elements, string, length);
   
