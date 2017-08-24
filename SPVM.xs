@@ -338,7 +338,7 @@ get(...)
           break;
         }
         default : {
-          const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_code);
+          const char* field_type_name =  (char*)&runtime->constant_pool[constant_pool_field_type->name_id + 1];
           
           int32_t field_type_name_length = strlen(field_type_name);
           
@@ -976,26 +976,41 @@ set(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_OBJECT* array = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Array type id
+  int32_t array_type_id = array->type_id;
+  
+  // Array type
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
+  
+  // Array type code
   int32_t array_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_array);
   
   // Array type name
-  const char* array_type_name = SPVM_XS_UTIL_get_type_name(array_type_code);
+  const char* array_type_name = (char*)&runtime->constant_pool[constant_pool_array_type->name_id + 1];
+
+  // Get object
+  SPVM_OBJECT* object = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_object);
   
   // Object type id
+  int32_t object_type_id = object->type_id;
+
+  // Object type
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_objet_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object_type_id];
+
+  // Object type code
   int32_t object_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_object);
   
   // Object type name
-  const char* object_type_name = SPVM_XS_UTIL_get_type_name(object_type_code);
+  const char* object_type_name = (char*)&runtime->constant_pool[constant_pool_objet_type->name_id + 1];
   
   if (strncmp(array_type_name, object_type_name, strlen(array_type_name - 2)) != 0) {
     croak("Invalid type %s is set to object array %s(SPVM::Array::Object::set())", object_type_name, array_type_name);
   }
-  
-  // Get object
-  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
