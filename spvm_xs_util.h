@@ -55,56 +55,35 @@ int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* fie
 SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_OBJECT* array) {
   
   // Create array
-  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
+  size_t iv_array = PTR2IV(array);
+  SV* sviv_array = sv_2mortal(newSViv(iv_array));
+  SV* sv_array = sv_2mortal(newRV_inc(sviv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Byte", 0);
   sv_bless(sv_array, hv_class);
-  
-  // Create content
-  size_t iv_content = PTR2IV(array);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_string(SPVM_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_string(SPVM_OBJECT* string) {
   
-  // Create array
-  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
+  // Create string
+  size_t iv_string = PTR2IV(string);
+  SV* sviv_string = sv_2mortal(newSViv(iv_string));
+  SV* sv_string = sv_2mortal(newRV_inc(sviv_string));
   HV* hv_class = gv_stashpv("SPVM::String", 0);
-  sv_bless(sv_array, hv_class);
+  sv_bless(sv_string, hv_class);
   
-  // Create content
-  size_t iv_content = PTR2IV(array);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
-  
-  return sv_array;
+  return sv_string;
 }
 
 SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_OBJECT* array) {
   
   // Create array
-  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
+  size_t iv_array = PTR2IV(array);
+  SV* sviv_array = sv_2mortal(newSViv(iv_array));
+  SV* sv_array = sv_2mortal(newRV_inc(sviv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Short", 0);
   sv_bless(sv_array, hv_class);
-  
-  // Create content
-  size_t iv_content = PTR2IV(array);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   return sv_array;
 }
@@ -112,18 +91,11 @@ SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_OBJECT* array) {
 SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_OBJECT* array) {
   
   // Create array
-  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
+  size_t iv_array = PTR2IV(array);
+  SV* sviv_array = sv_2mortal(newSViv(iv_array));
+  SV* sv_array = sv_2mortal(newRV_inc(sviv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Int", 0);
   sv_bless(sv_array, hv_class);
-  
-  // Create content
-  size_t iv_content = PTR2IV(array);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   return sv_array;
 }
@@ -131,18 +103,11 @@ SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_OBJECT* array) {
 SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_OBJECT* array) {
   
   // Create array
-  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
+  size_t iv_array = PTR2IV(array);
+  SV* sviv_array = sv_2mortal(newSViv(iv_array));
+  SV* sv_array = sv_2mortal(newRV_inc(sviv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Long", 0);
   sv_bless(sv_array, hv_class);
-  
-  // Create content
-  size_t iv_content = PTR2IV(array);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   return sv_array;
 }
@@ -150,37 +115,23 @@ SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_OBJECT* array) {
 SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_OBJECT* array) {
   
   // Create array
-  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
+  size_t iv_array = PTR2IV(array);
+  SV* sviv_array = sv_2mortal(newSViv(iv_array));
+  SV* sv_array = sv_2mortal(newRV_inc(sviv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Float", 0);
   sv_bless(sv_array, hv_class);
-  
-  // Create content
-  size_t iv_content = PTR2IV(array);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_OBJECT* object) {
+SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_OBJECT* array) {
   
   // Create array
-  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
+  size_t iv_array = PTR2IV(array);
+  SV* sviv_array = sv_2mortal(newSViv(iv_array));
+  SV* sv_array = sv_2mortal(newRV_inc(sviv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Double", 0);
   sv_bless(sv_array, hv_class);
-  
-  // Create content
-  size_t iv_content = PTR2IV(object);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   return sv_array;
 }
@@ -188,37 +139,24 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_OBJECT* object) {
 SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_code, int32_t type_id, SPVM_OBJECT* array) {
   
   // Create array
-  HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_array = sv_2mortal(newRV_inc((SV*)hv_array));
+  size_t iv_array = PTR2IV(array);
+  SV* sviv_array = sv_2mortal(newSViv(iv_array));
+  SV* sv_array = sv_2mortal(newRV_inc(sviv_array));
   HV* hv_class = gv_stashpv("SPVM::Array::Object", 0);
   sv_bless(sv_array, hv_class);
-  
-  // Create content
-  size_t iv_content = PTR2IV(array);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   return sv_array;
 }
 
 
 SV* SPVM_XS_UTIL_new_sv_object(int32_t type_code, int32_t type_id, SPVM_OBJECT* object) {
+  
   // Create object
-  HV* hv_object = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_object = sv_2mortal(newRV_inc((SV*)hv_object));
+  size_t iv_object = PTR2IV(object);
+  SV* sviv_object = sv_2mortal(newSViv(iv_object));
+  SV* sv_object = sv_2mortal(newRV_inc(sviv_object));
   HV* hv_class = gv_stashpv("SPVM::Object", 0);
   sv_bless(sv_object, hv_class);
-  
-  // Create content
-  size_t iv_content = PTR2IV(object);
-  SV* sviv_content = sv_2mortal(newSViv(iv_content));
-  SV* sv_content = sv_2mortal(newRV_inc(sviv_content));
-  
-  // Set content
-  hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
   return sv_object;
 }
@@ -226,15 +164,8 @@ SV* SPVM_XS_UTIL_new_sv_object(int32_t type_code, int32_t type_id, SPVM_OBJECT* 
 SPVM_API_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   
   if (SvOK(sv_object)) {
-    HV* hv_object = (HV*)SvRV(sv_object);
-    SV** sv_content_ptr = hv_fetch(hv_object, "content", strlen("content"), 0);
-    
-    assert(sv_content_ptr);
-    
-    SV* sv_content = *sv_content_ptr;
-    SV* sviv_content = SvRV(sv_content);
-    size_t iv_content = SvIV(sviv_content);
-    SPVM_API_OBJECT* object = INT2PTR(SPVM_API_OBJECT*, iv_content);
+    size_t iv_object = SvIV(SvRV(sv_object));
+    SPVM_API_OBJECT* object = INT2PTR(SPVM_API_OBJECT*, iv_object);
     
     return object;
   }
