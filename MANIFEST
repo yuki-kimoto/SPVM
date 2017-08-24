@@ -115,7 +115,6 @@ spvm_util_allocator.h
 spvm_value.h
 spvm_var.c
 spvm_var.h
-spvm_xs_util.h
 spvm_yacc.c
 spvm_yacc.h
 spvm_yacc_util.c
