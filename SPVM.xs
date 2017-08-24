@@ -135,7 +135,7 @@ set(...)
   int32_t package_type_code = constant_pool_package_type->code;
   
   // Package name
-  const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_code);
+  const char* package_name = (char*)&runtime->constant_pool[constant_pool_package_type->name_id + 1];
   
   // Field type
   const char* field_name = SvPV_nolen(sv_field_name);
@@ -926,7 +926,7 @@ new(...)
   const char* element_type_name = SvPV_nolen(sv_element_type_name);
   int32_t element_type_id = api->get_type_id(api, element_type_name);
   
-  // Malloc array
+  // New array
   SPVM_API_OBJECT* array =  api->new_object_array(api, element_type_id, length);
   
   // Fix type name(int[] -> int[][]);
