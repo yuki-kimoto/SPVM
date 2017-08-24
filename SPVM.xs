@@ -184,7 +184,17 @@ set(...)
         const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_code);
         croak("Can't set numeric value to \"%s\" field", field_type_name);
       }
+      
+      SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
+      int32_t value_type_id = value->type_id;
+      
+      // warn("AAAAAAAAAAA %d", value_type_id);
+      
+      SPVM_CONSTANT_POOL_TYPE* constant_pool_value_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[value_type_id];
+      
       int32_t value_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_value);
+      // warn("BBBBBB %d %d %d", value_type_id, value_type_code, constant_pool_value_type->code);
+      
       if (value_type_code != field_type_code) {
         const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_code);
         const char* value_type_name = SPVM_XS_UTIL_get_type_name(value_type_code);
