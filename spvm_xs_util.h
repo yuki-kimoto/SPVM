@@ -52,7 +52,7 @@ int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* fie
   }
 }
 
-SV* SPVM_XS_UTIL_new_sv_object2(SPVM_OBJECT* object, const char* package) {
+SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
   // Create object
   size_t iv_object = PTR2IV(object);
   SV* sviv_object = sv_2mortal(newSViv(iv_object));
