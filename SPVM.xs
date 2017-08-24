@@ -26,11 +26,13 @@
 #include "spvm_my_var.h"
 #include "spvm_type.h"
 #include "spvm_field.h"
+#include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_global.h"
+#include "spvm_object.h"
 
 #include "spvm_api.h"
 #include "spvm_xs_util.h"
@@ -119,9 +121,16 @@ set(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
+  // Runtime
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime;
+  
   // Get content
-  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
-
+  SPVM_OBJECT* object = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_object);
+  
+  int32_t package_type_id = object->type_id;
+  
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_package_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[package_type_id];
+  
   // Package type id
   int32_t package_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_object);
   
