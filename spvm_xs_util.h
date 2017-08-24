@@ -243,7 +243,7 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_API_OBJECT* object) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_code, SPVM_API_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_code, int32_t type_id, SPVM_API_OBJECT* array) {
   
   // Create array
   HV* hv_array = (HV*)sv_2mortal((SV*)newHV());
@@ -262,7 +262,11 @@ SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_code, SPVM_API_OBJECT* array) 
   // Set type id
   SV* sv_type_code = sv_2mortal(newSViv(type_code));
   hv_store(hv_array, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
-  
+
+  // Set type id
+  SV* sv_type_id = sv_2mortal(newSViv(type_id));
+  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
+
   return sv_array;
 }
 
@@ -285,7 +289,7 @@ SV* SPVM_XS_UTIL_new_sv_object(int32_t type_code, int32_t type_id, SPVM_API_OBJE
   // Set type code
   SV* sv_type_code = sv_2mortal(newSViv(type_code));
   hv_store(hv_object, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
-
+  
   // Set type id
   SV* sv_type_id = sv_2mortal(newSViv(type_id));
   hv_store(hv_object, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
