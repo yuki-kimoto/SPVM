@@ -136,7 +136,7 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_OBJECT* array) {
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_code, int32_t type_id, SPVM_OBJECT* array) {
+SV* SPVM_XS_UTIL_new_sv_object_array(SPVM_OBJECT* array) {
   
   // Create array
   size_t iv_array = PTR2IV(array);
@@ -149,7 +149,7 @@ SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_code, int32_t type_id, SPVM_OB
 }
 
 
-SV* SPVM_XS_UTIL_new_sv_object(int32_t type_code, int32_t type_id, SPVM_OBJECT* object) {
+SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object) {
   
   // Create object
   size_t iv_object = PTR2IV(object);

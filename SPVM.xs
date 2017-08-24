@@ -104,7 +104,7 @@ new_object(...)
   api->inc_ref_count(api, object);
 
   // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object(type_code, type_id, object);
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(object);
   
   XPUSHs(sv_object);
   XSRETURN(1);
@@ -344,11 +344,11 @@ get(...)
           int32_t field_type_name_length = strlen(field_type_name);
           
           if (field_type_name[field_type_name_length - 1] == ']') {
-            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(field_type_code, field_type_id, value);
+            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(value);
             XPUSHs(sv_array);
           }
           else {
-            SV* sv_object = SPVM_XS_UTIL_new_sv_object(field_type_code, field_type_id, value);
+            SV* sv_object = SPVM_XS_UTIL_new_sv_object(value);
             XPUSHs(sv_object);
           }
         }
@@ -960,7 +960,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(type_code, type_id, array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(array);
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1091,10 +1091,10 @@ get(...)
       break;
     default : {
       if (element_type->dimension > 0) {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object_array(element_type_code, element_type_id, (SPVM_API_OBJECT*)base_object);
+        sv_base_object = SPVM_XS_UTIL_new_sv_object_array((SPVM_API_OBJECT*)base_object);
       }
       else {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(element_type_code, element_type_id, (SPVM_API_OBJECT*)base_object);
+        sv_base_object = SPVM_XS_UTIL_new_sv_object((SPVM_API_OBJECT*)base_object);
       }
     }
   }
@@ -1634,10 +1634,10 @@ call_sub(...)
             break;
           default : {
             if (return_type->dimension > 0) {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object_array(return_type_code, return_type_id, (SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object_array((SPVM_API_OBJECT*)return_value);
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_type_code, return_type_id, (SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object((SPVM_API_OBJECT*)return_value);
             }
           }
         }
