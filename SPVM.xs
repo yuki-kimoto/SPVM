@@ -237,7 +237,7 @@ get(...)
   SPVM_CONSTANT_POOL_TYPE* constant_pool_package_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[package_type_id];
   
   // Package type code
-  int32_t package_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_object);
+  int32_t package_type_code = constant_pool_package_type->code;
   
   // Package name
   const char* package_name = (char*)&runtime->constant_pool[constant_pool_package_type->name_id + 1];
@@ -988,7 +988,7 @@ set(...)
   SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
   
   // Array type code
-  int32_t array_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_array);
+  int32_t array_type_code = constant_pool_array_type->code;
   
   // Array type name
   const char* array_type_name = (char*)&runtime->constant_pool[constant_pool_array_type->name_id + 1];
@@ -1003,7 +1003,7 @@ set(...)
   SPVM_CONSTANT_POOL_TYPE* constant_pool_objet_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object_type_id];
 
   // Object type code
-  int32_t object_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_object);
+  int32_t object_type_code = constant_pool_objet_type->code;
   
   // Object type name
   const char* object_type_name = (char*)&runtime->constant_pool[constant_pool_objet_type->name_id + 1];
@@ -1043,7 +1043,7 @@ get(...)
   SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
   
   // Array type code
-  int32_t array_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_array);
+  int32_t array_type_code = constant_pool_array_type->code;
   
   // Array type name
   const char* array_type_name = (char*)&runtime->constant_pool[constant_pool_array_type->name_id + 1];
