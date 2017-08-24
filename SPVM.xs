@@ -1487,6 +1487,9 @@ call_sub(...)
       
       int32_t arg_type_code = runtime->constant_pool[arg_type_codes_base + arg_index];
       int32_t arg_type_id = runtime->constant_pool[arg_type_ids_base + arg_index];
+
+      // Array type
+      SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[arg_type_id];
       
       if (sv_isobject(sv_value)) {
         SV* sv_base_object = sv_value;
@@ -1506,7 +1509,7 @@ call_sub(...)
           
           if (base_object_type_code != arg_type_code) {
             const char* base_object_type_name = (char*)&runtime->constant_pool[constant_pool_base_object_type->name_id + 1];
-            const char* arg_type_name = SPVM_XS_UTIL_get_type_name(arg_type_code);
+            const char* arg_type_name = (char*)&runtime->constant_pool[constant_pool_arg_type->name_id + 1];
             
             croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
           }
