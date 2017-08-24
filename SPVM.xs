@@ -329,7 +329,7 @@ get(...)
           break;
         }
         case SPVM_TYPE_C_CODE_DOUBLE_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_double_array(value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object2(value, "SPVM::Array::Double");
           XPUSHs(sv_array);
           break;
         }
@@ -815,7 +815,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_double_array(array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object2(array, "SPVM::Array::Double");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1084,7 +1084,7 @@ get(...)
       sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::Array::Float");
       break;
     case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::Array::Double");
       break;
     case SPVM_TYPE_C_CODE_STRING :
       sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::String");
@@ -1627,7 +1627,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::Array::Float");
             break;
           case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_double_array((SPVM_API_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::Array::Double");
             break;
           case SPVM_TYPE_C_CODE_STRING :
             sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::String");
