@@ -190,7 +190,6 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   constant_pool_sub.is_native = sub->is_native;
   
   assert(sub->op_return_type);
-  constant_pool_sub.return_type_code = sub->op_return_type->uv.type->code;
   
   constant_pool_sub.return_type_id = sub->op_return_type->uv.type->id;
   

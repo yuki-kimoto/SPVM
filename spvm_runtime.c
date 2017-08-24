@@ -13,13 +13,13 @@
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
+#include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
 #include "spvm_util_allocator.h"
 #include "spvm_value.h"
 #include "spvm_api.h"
 #include "spvm_type.h"
 #include "spvm_global.h"
-
 
 
 
@@ -513,8 +513,10 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
         runtime->operand_stack_top = operand_stack_top;
         runtime->call_stack_base = call_stack_base;
         
+        SPVM_CONSTANT_POOL_TYPE* constant_pool_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[constant_pool_sub->return_type_id];
+        
         // Call native subroutine
-        switch (constant_pool_sub->return_type_code) {
+        switch (constant_pool_sub_return_type->code) {
           case SPVM_TYPE_C_CODE_VOID: {
             void (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
             SPVM_RUNTIME_API_set_exception(api, NULL);
