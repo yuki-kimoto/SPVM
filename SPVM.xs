@@ -125,7 +125,7 @@ set(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Get content
-  SPVM_OBJECT* object = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   int32_t package_type_id = object->type_id;
   
@@ -229,7 +229,7 @@ get(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Get content
-  SPVM_OBJECT* object = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   // Package type id
   int32_t package_type_id = object->type_id;
@@ -978,7 +978,7 @@ set(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get array
-  SPVM_OBJECT* array = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
@@ -996,7 +996,7 @@ set(...)
   const char* array_type_name = (char*)&runtime->constant_pool[constant_pool_array_type->name_id + 1];
 
   // Get object
-  SPVM_OBJECT* object = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   // Object type id
   int32_t object_type_id = object->type_id;
@@ -1036,7 +1036,7 @@ get(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Get array
-  SPVM_OBJECT* array = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Array type id
   int32_t array_type_id = array->type_id;
@@ -1432,7 +1432,7 @@ call_sub(...)
         SV* sv_base_object = sv_value;
         if (sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
           
-          SPVM_OBJECT* base_object = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_base_object);
+          SPVM_OBJECT* base_object = SPVM_XS_UTIL_get_object(sv_base_object);
           
           int32_t base_object_type_id = base_object->type_id;
           

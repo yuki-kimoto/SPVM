@@ -63,11 +63,11 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
   return sv_object;
 }
 
-SPVM_API_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
+SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   
   if (SvOK(sv_object)) {
     size_t iv_object = SvIV(SvRV(sv_object));
-    SPVM_API_OBJECT* object = INT2PTR(SPVM_API_OBJECT*, iv_object);
+    SPVM_OBJECT* object = INT2PTR(SPVM_OBJECT*, iv_object);
     
     return object;
   }
