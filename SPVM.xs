@@ -912,7 +912,7 @@ new(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
-  SV* sv_type_name = ST(1);
+  SV* sv_element_type_name = ST(1);
   SV* sv_length = ST(2);
   
   // API
@@ -922,10 +922,15 @@ new(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
+  // Element type id
+  const char* element_type_name = SvPV_nolen(sv_element_type_name);
+  int32_t element_type_id = api->get_type_id(api, element_type_name);
+  
   // Malloc array
-  SPVM_API_OBJECT* array =  api->new_object_array(api, 0, length);
+  SPVM_API_OBJECT* array =  api->new_object_array(api, element_type_id, length);
   
   // Fix type name(int[] -> int[][]);
+  SV* sv_type_name = sv_2mortal(newSVsv(sv_element_type_name));
   sv_catpv(sv_type_name, "[]");
   
   // Type id
