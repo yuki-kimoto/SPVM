@@ -344,7 +344,7 @@ get(...)
           int32_t field_type_name_length = strlen(field_type_name);
           
           if (field_type_name[field_type_name_length - 1] == ']') {
-            SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(value);
+            SV* sv_array = SPVM_XS_UTIL_new_sv_object2(value, "SPVM::Array::Object");
             XPUSHs(sv_array);
           }
           else {
@@ -960,7 +960,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object_array(array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object2(array, "SPVM::Array::Object");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1091,7 +1091,7 @@ get(...)
       break;
     default : {
       if (element_type->dimension > 0) {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object_array((SPVM_API_OBJECT*)base_object);
+        sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::Array::Object");
       }
       else {
         sv_base_object = SPVM_XS_UTIL_new_sv_object((SPVM_API_OBJECT*)base_object);
@@ -1634,7 +1634,7 @@ call_sub(...)
             break;
           default : {
             if (return_type->dimension > 0) {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object_array((SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::Array::Object");
             }
             else {
               sv_return_value = SPVM_XS_UTIL_new_sv_object((SPVM_API_OBJECT*)return_value);
