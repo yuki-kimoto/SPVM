@@ -122,7 +122,7 @@ set(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime;
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Get content
   SPVM_OBJECT* object = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_object);
@@ -132,7 +132,7 @@ set(...)
   SPVM_CONSTANT_POOL_TYPE* constant_pool_package_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[package_type_id];
   
   // Package type id
-  int32_t package_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_object);
+  int32_t package_type_code = constant_pool_package_type->code;
   
   // Package name
   const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_code);
