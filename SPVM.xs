@@ -304,7 +304,7 @@ get(...)
       
       switch (field_type_code) {
         case SPVM_TYPE_C_CODE_BYTE_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_byte_array(value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object2(value, "SPVM::Array::Byte");
           XPUSHs(sv_array);
           break;
         }
@@ -380,7 +380,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_byte_array(array);
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object2(array, "SPVM::Array::Byte");
   
   XPUSHs(sv_byte_array);
   XSRETURN(1);
@@ -1069,7 +1069,7 @@ get(...)
   SV* sv_base_object;
   switch (element_type_code) {
     case SPVM_TYPE_C_CODE_BYTE_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::Array::Byte");
       break;
     case SPVM_TYPE_C_CODE_SHORT_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_OBJECT*)base_object);
@@ -1612,7 +1612,7 @@ call_sub(...)
         
         switch(return_type_code) {
           case SPVM_TYPE_C_CODE_BYTE_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_byte_array((SPVM_API_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::Array::Byte");
             break;
           case SPVM_TYPE_C_CODE_SHORT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_short_array((SPVM_API_OBJECT*)return_value);
