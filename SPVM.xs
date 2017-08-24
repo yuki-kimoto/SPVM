@@ -998,9 +998,15 @@ get(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Get array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_OBJECT* array = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_array);
   
   // Array type id
+  int32_t array_type_id = array->type_id;
+  
+  // Array type
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
+  
+  // Array type code
   int32_t array_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_array);
   
   // Array type name
