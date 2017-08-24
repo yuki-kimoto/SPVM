@@ -224,6 +224,9 @@ get(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
+  // Runtime
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  
   // Get content
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
@@ -236,7 +239,10 @@ get(...)
   // Field type id
   const char* field_name = SvPV_nolen(sv_field_name);
   int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
-  int32_t field_type_code = SPVM_XS_UTIL_get_field_type_code(package_name, field_name);
+  
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_field_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[field_type_id];
+  
+  int32_t field_type_code = constant_pool_field_type->code;
   
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
