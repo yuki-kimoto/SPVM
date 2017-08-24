@@ -1503,11 +1503,7 @@ call_sub(...)
           
           SPVM_CONSTANT_POOL_TYPE* constant_pool_base_object_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[base_object_type_id];
           
-          HV* hv_base_object = (HV*)SvRV(sv_base_object);
-          
-          SV** sv_base_object_type_code_ptr = hv_fetch(hv_base_object, "type_code", strlen("type_code"), 0);
-          SV* sv_base_object_type_code = *sv_base_object_type_code_ptr;
-          int32_t base_object_type_code = SvIV(sv_base_object_type_code);
+          int32_t base_object_type_code =constant_pool_base_object_type->code;
           
           if (base_object_type_code != arg_type_code) {
             const char* base_object_type_name = (char*)&runtime->constant_pool[constant_pool_base_object_type->name_id + 1];
