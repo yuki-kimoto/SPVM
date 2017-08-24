@@ -77,10 +77,6 @@ SV* SPVM_XS_UTIL_new_sv_byte_array(SPVM_OBJECT* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(array->type_id));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-
   return sv_array;
 }
 
@@ -100,9 +96,6 @@ SV* SPVM_XS_UTIL_new_sv_string(SPVM_OBJECT* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(array->type_id));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
   return sv_array;
 }
 
@@ -122,10 +115,6 @@ SV* SPVM_XS_UTIL_new_sv_short_array(SPVM_OBJECT* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(array->type_id));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-
   return sv_array;
 }
 
@@ -145,10 +134,6 @@ SV* SPVM_XS_UTIL_new_sv_int_array(SPVM_OBJECT* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(array->type_id));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-
   return sv_array;
 }
 
@@ -168,10 +153,6 @@ SV* SPVM_XS_UTIL_new_sv_long_array(SPVM_OBJECT* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(array->type_id));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-
   return sv_array;
 }
 
@@ -191,10 +172,6 @@ SV* SPVM_XS_UTIL_new_sv_float_array(SPVM_OBJECT* array) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(array->type_id));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-
   return sv_array;
 }
 
@@ -214,10 +191,6 @@ SV* SPVM_XS_UTIL_new_sv_double_array(SPVM_OBJECT* object) {
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(object->type_id));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-
   return sv_array;
 }
 
@@ -237,10 +210,6 @@ SV* SPVM_XS_UTIL_new_sv_object_array(int32_t type_code, int32_t type_id, SPVM_OB
   // Set content
   hv_store(hv_array, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
   
-  // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(array->type_id));
-  hv_store(hv_array, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-
   return sv_array;
 }
 
@@ -259,10 +228,6 @@ SV* SPVM_XS_UTIL_new_sv_object(int32_t type_code, int32_t type_id, SPVM_OBJECT* 
   
   // Set content
   hv_store(hv_object, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
-  
-  // Set type id
-  SV* sv_type_id = sv_2mortal(newSViv(object->type_id));
-  hv_store(hv_object, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
   
   return sv_object;
 }

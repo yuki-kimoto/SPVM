@@ -142,6 +142,7 @@ CHECK {
   # Build SPVM subroutine
   build_spvm_subs();
 }
+
 sub new_string_raw {
   my $string = shift;
   
