@@ -131,9 +131,6 @@ CHECK {
   # Build type names
   build_type_names();
   
-  # Build type names
-  build_type_symtable();
-  
   # Build field symbol table
   build_field_symtable();
   

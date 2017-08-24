@@ -1296,43 +1296,6 @@ bind_native_sub(...)
 }
 
 SV*
-build_type_symtable(...)
-  PPCODE:
-{
-  // Get compiler
-  SPVM_COMPILER* compiler = SPVM_XS_UTIL_get_compiler();
-  
-  // Subroutine information
-  HV* hv_type_symtable = get_hv("SPVM::TYPE_SYMTABLE", 0);
-  
-  // abs_name, arg_types, return_type, id, type_code
-  SPVM_DYNAMIC_ARRAY* types = compiler->types;
-  {
-    int32_t type_code;
-    for (type_code = 0; type_code < types->length; type_code++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(types, type_code);
-      
-      // Type name
-      const char* type_name = type->name;
-      int32_t type_code = type->code;
-      SV* sv_type_code = sv_2mortal(newSViv(type_code));
-      
-      // Type id
-      SV* sv_type_id = sv_2mortal(newSViv(type->id));
-      
-      HV* hv_type_info = (HV*)sv_2mortal((SV*)newHV());
-      hv_store(hv_type_info, "id", strlen("id"), SvREFCNT_inc(sv_type_code), 0);
-      hv_store(hv_type_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
-      SV* sv_type_info = sv_2mortal(newRV_inc((SV*)hv_type_info));
-      
-      hv_store(hv_type_symtable, type_name, strlen(type_name), SvREFCNT_inc(sv_type_info), 0);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 build_type_names(...)
   PPCODE:
 {
