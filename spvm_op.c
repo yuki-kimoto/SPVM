@@ -468,7 +468,12 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     case SPVM_OP_C_CODE_ARRAY_ELEM: {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
-      type = SPVM_HASH_search(compiler->type_symtable, first_type->name, strlen(first_type->name) - 2);
+      if (strcmp(first_type->name, "string") == 0) {
+        type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+      }
+      else {
+        type = SPVM_HASH_search(compiler->type_symtable, first_type->name, strlen(first_type->name) - 2);
+      }
       break;
     }
     case SPVM_OP_C_CODE_ADD:

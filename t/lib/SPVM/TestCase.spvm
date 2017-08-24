@@ -1406,7 +1406,7 @@ package TestCase {
   
   sub spvm_object_set_object($obj : TestCase) : int {
     my $nums = $obj->{x_int_array};
-    my $bytes = (byte[])($obj->{x_string});
+    my $bytes = ($obj->{x_string});
     
     # [INT_MAX, INT_MAX]
     if (@$nums == 2) {
@@ -1825,7 +1825,7 @@ package TestCase {
   # SPVM::string
   sub call_sub_string($string : string) : int {
     
-    my $bytes = (byte[])$string;
+    my $bytes = $string;
     
     if ($bytes->[0] == (byte)0xE3) {
       if ($bytes->[1] == (byte)0x81) {
@@ -1843,7 +1843,7 @@ package TestCase {
   # SPVM::string_raw
   sub call_sub_string_raw($string : string) : int {
     
-    my $bytes = (byte[])$string;
+    my $bytes = $string;
     
     if ($bytes->[0] == (byte)97) {
       if ($bytes->[1] == (byte)98) {

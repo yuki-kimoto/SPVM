@@ -896,7 +896,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       // First value must be array
                       _Bool first_type_is_array = SPVM_TYPE_is_array(compiler, first_type);
-                      if (!first_type_is_array) {
+                      if (!(SPVM_TYPE_is_array(compiler, first_type) || first_type->code == SPVM_TYPE_C_CODE_STRING)) {
                         SPVM_yyerror_format(compiler, "right of @ must be array at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
@@ -908,15 +908,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                       SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                       
-                      // First value must be array
-                      _Bool first_type_is_array = SPVM_TYPE_is_array(compiler, first_type);
-                      if (!first_type_is_array) {
+                      // Left value must be array or string
+                      if (!(SPVM_TYPE_is_array(compiler, first_type) || first_type->code == SPVM_TYPE_C_CODE_STRING)) {
                         SPVM_yyerror_format(compiler, "left value must be array at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
                       }
                       
-                      // Last value must be integer
+                      // Right value must be integer
                       if (last_type->code != SPVM_TYPE_C_CODE_INT) {
                         SPVM_yyerror_format(compiler, "array index must be int at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
@@ -1554,16 +1553,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       assert(type_type);
                       
                       _Bool can_convert = 0;
-                      // Can convert byte[] to string
-                      if (
-                        (term_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY || term_type->code == SPVM_TYPE_C_CODE_STRING)
-                         && (type_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY || type_type->code == SPVM_TYPE_C_CODE_STRING)
-                      )
-                      {
-                        can_convert = 1;
-                      }
-                      // Can convert each core types
-                      else if (SPVM_TYPE_is_numeric(compiler, term_type) && SPVM_TYPE_is_numeric(compiler, type_type)) {
+                      if (SPVM_TYPE_is_numeric(compiler, term_type) && SPVM_TYPE_is_numeric(compiler, type_type)) {
                         can_convert = 1;
                       }
                       

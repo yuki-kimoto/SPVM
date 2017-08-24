@@ -132,14 +132,11 @@ package Test {
       my $num = 0.25E-3f;
       std::println_float($num);
     }
-=pod
     # Convert to string to byte[]
     {
       my $string = "abc";
-      my $bytes = (byte[])$string;
-      $string = (string)$bytes;
+      my $byte = $string->[0];
     }
-=cut
     
     # MIN long constant;
     {
