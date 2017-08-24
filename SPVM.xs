@@ -314,7 +314,7 @@ get(...)
           break;
         }
         case SPVM_TYPE_C_CODE_INT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_int_array(value);
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object2(value, "SPVM::Array::Int");
           XPUSHs(sv_array);
           break;
         }
@@ -554,7 +554,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_int_array(array);
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object2(array, "SPVM::Array::Int");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1075,7 +1075,7 @@ get(...)
       sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::Array::Short");
       break;
     case SPVM_TYPE_C_CODE_INT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_OBJECT*)base_object);
+      sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::Array::Int");
       break;
     case SPVM_TYPE_C_CODE_LONG_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_OBJECT*)base_object);
@@ -1618,7 +1618,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::Array::Short");
             break;
           case SPVM_TYPE_C_CODE_INT_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_int_array((SPVM_API_OBJECT*)return_value);
+            sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::Array::Int");
             break;
           case SPVM_TYPE_C_CODE_LONG_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_long_array((SPVM_API_OBJECT*)return_value);
