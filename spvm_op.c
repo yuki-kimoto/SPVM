@@ -756,6 +756,13 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
           constant_pool_type->element_type_id = element_type->id;
         }
+        else {
+          if (type->code == SPVM_TYPE_C_CODE_STRING) {
+            SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
+            SPVM_TYPE* byte_type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_BYTE);
+            constant_pool_type->element_type_id = byte_type->id;
+          }
+        }
       }
     }
   }
