@@ -52,18 +52,6 @@ int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* fie
   }
 }
 
-SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object) {
-  
-  // Create object
-  size_t iv_object = PTR2IV(object);
-  SV* sviv_object = sv_2mortal(newSViv(iv_object));
-  SV* sv_object = sv_2mortal(newRV_inc(sviv_object));
-  HV* hv_class = gv_stashpv("SPVM::Object", 0);
-  sv_bless(sv_object, hv_class);
-  
-  return sv_object;
-}
-
 SV* SPVM_XS_UTIL_new_sv_object2(SPVM_OBJECT* object, const char* package) {
   // Create object
   size_t iv_object = PTR2IV(object);

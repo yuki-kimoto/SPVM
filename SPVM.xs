@@ -104,7 +104,7 @@ new_object(...)
   api->inc_ref_count(api, object);
 
   // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object(object);
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object2(object, "SPVM::Object");
   
   XPUSHs(sv_object);
   XSRETURN(1);
@@ -348,7 +348,7 @@ get(...)
             XPUSHs(sv_array);
           }
           else {
-            SV* sv_object = SPVM_XS_UTIL_new_sv_object(value);
+            SV* sv_object = SPVM_XS_UTIL_new_sv_object2(value, "SPVM::Object");
             XPUSHs(sv_object);
           }
         }
@@ -1094,7 +1094,7 @@ get(...)
         sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::Array::Object");
       }
       else {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object((SPVM_API_OBJECT*)base_object);
+        sv_base_object = SPVM_XS_UTIL_new_sv_object2(base_object, "SPVM::Object");
       }
     }
   }
@@ -1637,7 +1637,7 @@ call_sub(...)
               sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::Array::Object");
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object((SPVM_API_OBJECT*)return_value);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object2(return_value, "SPVM::Object");
             }
           }
         }
