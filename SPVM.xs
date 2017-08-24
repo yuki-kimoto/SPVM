@@ -1040,13 +1040,13 @@ get(...)
   int32_t array_type_id = array->type_id;
   
   // Array type
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
   
   // Array type code
   int32_t array_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_array);
   
   // Array type name
-  const char* array_type_name = SPVM_XS_UTIL_get_type_name(array_type_code);
+  const char* array_type_name = (char*)&runtime->constant_pool[constant_pool_array_type->name_id + 1];
   
   // Element type name sv
   SV* sv_element_type_name = sv_2mortal(newSVpv(array_type_name, strlen(array_type_name) - 2));
@@ -1491,7 +1491,13 @@ call_sub(...)
       if (sv_isobject(sv_value)) {
         SV* sv_base_object = sv_value;
         if (sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
-         
+          
+          SPVM_OBJECT* base_object = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_base_object);
+          
+          int32_t base_object_type_id = base_object->type_id;
+          
+          SPVM_CONSTANT_POOL_TYPE* constant_pool_base_object_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[base_object_type_id];
+          
           HV* hv_base_object = (HV*)SvRV(sv_base_object);
           
           SV** sv_base_object_type_code_ptr = hv_fetch(hv_base_object, "type_code", strlen("type_code"), 0);
@@ -1499,18 +1505,11 @@ call_sub(...)
           int32_t base_object_type_code = SvIV(sv_base_object_type_code);
           
           if (base_object_type_code != arg_type_code) {
-            const char* base_object_type_name = SPVM_XS_UTIL_get_type_name(base_object_type_code);
+            const char* base_object_type_name = (char*)&runtime->constant_pool[constant_pool_base_object_type->name_id + 1];
             const char* arg_type_name = SPVM_XS_UTIL_get_type_name(arg_type_code);
             
             croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
           }
-          
-          // Get content
-          SV** sv_content_ptr = hv_fetch(hv_base_object, "content", strlen("content"), 0);
-          SV* sv_content = sv_content_ptr ? *sv_content_ptr : &PL_sv_undef;
-          SV* sviv_content = SvRV(sv_content);
-          size_t iv_content = SvIV(sviv_content);
-          SPVM_API_OBJECT* base_object = INT2PTR(SPVM_API_OBJECT*, iv_content);
           
           call_sub_args[arg_index].object_value = base_object;
         }
