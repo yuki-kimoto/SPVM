@@ -28,7 +28,6 @@ our $COMPILER;
 our @PACKAGE_INFOS;
 our %FIELD_SYMTABLE;
 our $API;
-our @TYPE_NAMES;
 
 sub _get_dll_file {
   my $package_name = shift;
@@ -127,9 +126,6 @@ CHECK {
   compile();
   
   my $sub_native_address = get_sub_native_address('SPVM::std::sum_int');
-  
-  # Build type names
-  build_type_names();
   
   # Build field symbol table
   build_field_symtable();
