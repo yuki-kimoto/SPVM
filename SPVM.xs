@@ -185,7 +185,7 @@ set(...)
     }
     default : {
       if (!sv_derived_from(sv_value, "SPVM::BaseObject")) {
-        const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_code);
+        const char* field_type_name = (char*)&runtime->constant_pool[constant_pool_field_type->name_id + 1];
         croak("Can't set numeric value to \"%s\" field", field_type_name);
       }
       
@@ -200,8 +200,8 @@ set(...)
       // warn("BBBBBB %d %d %d", value_type_id, value_type_code, constant_pool_value_type->code);
       
       if (value_type_code != field_type_code) {
-        const char* field_type_name = SPVM_XS_UTIL_get_type_name(field_type_code);
-        const char* value_type_name = SPVM_XS_UTIL_get_type_name(value_type_code);
+        const char* field_type_name = (char*)&runtime->constant_pool[constant_pool_field_type->name_id + 1];
+        const char* value_type_name = (char*)&runtime->constant_pool[constant_pool_value_type->name_id + 1];
         croak("Can't set \"%s\" value to \"%s\" field", value_type_name, field_type_name);
       }
       
@@ -228,14 +228,20 @@ get(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   // Get content
-  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_OBJECT* object = (SPVM_OBJECT*)SPVM_XS_UTIL_get_object(sv_object);
   
   // Package type id
+  int32_t package_type_id = object->type_id;
+  
+  // Package type
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_package_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[package_type_id];
+  
+  // Package type code
   int32_t package_type_code = SPVM_XS_UTIL_get_sv_object_type_code(sv_object);
-
+  
   // Package name
-  const char* package_name = SPVM_XS_UTIL_get_type_name(package_type_code);
-
+  const char* package_name = (char*)&runtime->constant_pool[constant_pool_package_type->name_id + 1];
+  
   // Field type id
   const char* field_name = SvPV_nolen(sv_field_name);
   int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
