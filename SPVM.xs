@@ -1322,7 +1322,6 @@ build_type_symtable(...)
       
       HV* hv_type_info = (HV*)sv_2mortal((SV*)newHV());
       hv_store(hv_type_info, "id", strlen("id"), SvREFCNT_inc(sv_type_code), 0);
-      hv_store(hv_type_info, "type_code", strlen("type_code"), SvREFCNT_inc(sv_type_code), 0);
       hv_store(hv_type_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_type_id), 0);
       SV* sv_type_info = sv_2mortal(newRV_inc((SV*)hv_type_info));
       
