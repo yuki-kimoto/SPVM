@@ -998,6 +998,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           field->abs_name = field_abs_name;
           
           // Add op field symtable
+          SPVM_DYNAMIC_ARRAY_push(compiler->op_fields, op_field);
           SPVM_HASH_insert(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name), op_field);
         }
       }

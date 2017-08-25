@@ -57,6 +57,17 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
+  /*
+  // Build constant pool field information symtable
+  {
+    int32_t field_info_index;
+    for (field_info_index = 0; field_info_index < compiler->field_infos->length; field_info_index++) {
+      SPVM_FIELD_INFO* field_info = SPVM_DYNAMIC_ARRAY_fetch(compiler->field_infos, field_info_index);
+      SPVM_HASH_insert(runtime->constant_pool_field_info_symtable, field_info->name, strlen(field_info->name), (void*)field_info->id);
+    }
+  }
+  */
+  
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
   runtime->packages_length = op_packages->length;
@@ -92,6 +103,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_use_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->op_use_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->op_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->bufptr = "";
   compiler->types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
