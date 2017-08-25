@@ -1024,6 +1024,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Register subrotuine
     {
       int32_t i;
+      int32_t subs_length = 0;
+      int32_t subs_base = compiler->op_subs->length;
       for (i = 0; i < op_subs->length; i++) {
         SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(op_subs, i);
 
@@ -1058,12 +1060,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub);
           SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
+          subs_length++;
         }
       }
     }
     
     package->op_fields = op_fields;
     package->op_subs = op_subs;
+    package->subs_length++;
     
     // Add package
     op_package->uv.package = package;

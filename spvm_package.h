@@ -8,6 +8,8 @@ struct SPVM_package {
   SPVM_OP* op_type;
   SPVM_DYNAMIC_ARRAY* op_fields;
   SPVM_DYNAMIC_ARRAY* op_subs;
+  int32_t subs_base;
+  int32_t subs_length;
   int32_t id;
 };
 
