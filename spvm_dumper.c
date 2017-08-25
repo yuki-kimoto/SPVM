@@ -124,12 +124,9 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
 
 void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
   
-  printf("\n[Abstract Syntax Tree]\n");
+  printf("\n[AST]\n");
   SPVM_DUMPER_dump_ast(compiler, compiler->op_grammar);
   
-  printf("\n[Resolved types]\n");
-  SPVM_DUMPER_dump_types(compiler, compiler->types);
-
   printf("\n[Types]\n");
   SPVM_DUMPER_dump_types(compiler, compiler->types);
   
