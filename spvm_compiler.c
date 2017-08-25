@@ -48,6 +48,15 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
+  // Build constant pool type symtable
+  {
+    int32_t type_index;
+    for (type_index = 0; type_index < compiler->types->length; type_index++) {
+      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_index);
+      SPVM_HASH_insert(runtime->constant_pool_type_symtable, type->name, strlen(type->name), (void*)type->id);
+    }
+  }
+  
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
   runtime->packages_length = op_packages->length;

@@ -916,31 +916,10 @@ int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
   (void)api;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-  
-  int32_t* constant_pool = runtime->constant_pool;
-  int32_t length = runtime->types_length;
-  int32_t types_base = runtime->types_base;
-  
-  int32_t found_type_id = 0;
-  _Bool found = 0;
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      int32_t type_id = constant_pool[types_base + i];
-      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[type_id];
-      
-      int32_t type_name_id = constant_pool_type->name_id;
-      
-      char* match_name = (char*)&constant_pool[type_name_id + 1];
-      if (strcmp(name, match_name) == 0) {
-        found = 1;
-        found_type_id = type_id;
-        break;
-      }
-    }
-  }
-  
-  return found_type_id;
+  SPVM_HASH* constant_pool_type_symtable = runtime->constant_pool_type_symtable;
+  int32_t constant_pool_type_id = (int32_t)SPVM_HASH_search(constant_pool_type_symtable, name, strlen(name));
+
+  return constant_pool_type_id;
 }
 
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
