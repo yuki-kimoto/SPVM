@@ -14,7 +14,7 @@
 #include "spvm_op.h"
 #include "spvm_sub.h"
 #include "spvm_constant.h"
-#include "spvm_field.h"
+#include "spvm_field_info.h"
 #include "spvm_my_var.h"
 #include "spvm_var.h"
 #include "spvm_enumeration_value.h"
@@ -120,7 +120,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       {
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_FIELD_INFO* field = op_field->uv.field;
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
           // Check field type
@@ -148,7 +148,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_FIELD_INFO* field = op_field->uv.field;
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
           if (SPVM_TYPE_is_numeric(compiler, field_type)) {
@@ -194,7 +194,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_FIELD_INFO* field = op_field->uv.field;
           field->index = field_pos;
         }
       }

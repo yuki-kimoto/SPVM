@@ -6,13 +6,13 @@
 #include "spvm_constant_pool.h"
 #include "spvm_constant.h"
 #include "spvm_package.h"
-#include "spvm_field.h"
+#include "spvm_field_info.h"
 #include "spvm_sub.h"
 #include "spvm_util_allocator.h"
 #include "spvm_dynamic_array.h"
 #include "spvm_op.h"
 #include "spvm_constant_pool_sub.h"
-#include "spvm_constant_pool_field.h"
+#include "spvm_constant_pool_field_info.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_type.h"
@@ -159,7 +159,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
     constant_pool_package.fields_base = constant_pool->length;
     for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
-      SPVM_FIELD* field = op_field->uv.field;
+      SPVM_FIELD_INFO* field = op_field->uv.field;
       SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->id);
     }
   }
@@ -261,18 +261,18 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   return id;
 }
 
-int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_FIELD* field) {
+int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_FIELD_INFO* field) {
   (void)compiler;
 
   int32_t id = constant_pool->length;
 
   // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_FIELD));
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
   SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   
   // Constant pool field information
   // Field id is field index + 1 because 0 mean no id
-  SPVM_CONSTANT_POOL_FIELD constant_pool_field = {0};
+  SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field = {0};
   constant_pool_field.id = field->index + 1;
   
   // Add length
@@ -284,7 +284,7 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   // Add field name to constant pool
   constant_pool_field.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->op_name->uv.name);
   
-  memcpy(&constant_pool->values[id], &constant_pool_field, sizeof(SPVM_CONSTANT_POOL_FIELD));
+  memcpy(&constant_pool->values[id], &constant_pool_field, sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
   
   return id;
 }

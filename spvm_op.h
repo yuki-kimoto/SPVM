@@ -172,7 +172,7 @@ struct SPVM_op {
     SPVM_NAME_INFO* name_info;
     SPVM_TYPE* type;
     SPVM_VAR* var;
-    SPVM_FIELD* field;
+    SPVM_FIELD_INFO* field;
     SPVM_PACKAGE* package;
     SPVM_ENUMERATION* enumeration;
     SPVM_SWITCH_INFO* switch_info;

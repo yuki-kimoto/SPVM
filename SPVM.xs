@@ -26,11 +26,11 @@
 #include "spvm_sub.h"
 #include "spvm_my_var.h"
 #include "spvm_type.h"
-#include "spvm_field.h"
+#include "spvm_field_info.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_package.h"
-#include "spvm_constant_pool_field.h"
+#include "spvm_constant_pool_field_info.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_global.h"
 #include "spvm_object.h"
@@ -1384,7 +1384,7 @@ build_field_symtable(...)
         int32_t field_index;
         for (field_index = 0; field_index < op_fields->length; field_index++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_index);
-          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_FIELD_INFO* field = op_field->uv.field;
           const char* field_name = field->op_name->uv.name;
           
           // Field type

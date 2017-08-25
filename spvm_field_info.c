@@ -1,20 +1,20 @@
 #include <assert.h>
 #include <string.h>
 
-#include "spvm_field.h"
+#include "spvm_field_info.h"
 
 #include "spvm_compiler_allocator.h"
 #include "spvm_type.h"
 #include "spvm_op.h"
 #include "spvm_compiler.h"
 
-SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler) {
+SPVM_FIELD_INFO* SPVM_FIELD_INFO_new(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  return SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_FIELD));
+  return SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_FIELD_INFO));
 }
 
-int32_t SPVM_FIELD_get_byte_size(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
+int32_t SPVM_FIELD_INFO_get_byte_size(SPVM_COMPILER* compiler, SPVM_FIELD_INFO* field) {
   (void)compiler;
   
   SPVM_TYPE* field_type = field->op_type->uv.type;

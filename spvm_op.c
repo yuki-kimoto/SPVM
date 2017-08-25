@@ -13,7 +13,7 @@
 #include "spvm_op.h"
 #include "spvm_sub.h"
 #include "spvm_constant.h"
-#include "spvm_field.h"
+#include "spvm_field_info.h"
 #include "spvm_my_var.h"
 #include "spvm_var.h"
 #include "spvm_enumeration_value.h"
@@ -560,7 +560,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       SPVM_NAME_INFO* name_info = op->uv.name_info;
       const char* abs_name = name_info->resolved_name;
       SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, abs_name, strlen(abs_name));
-      SPVM_FIELD* field = op_field->uv.field;
+      SPVM_FIELD_INFO* field = op_field->uv.field;
       type = field->op_type->uv.type;
       break;
     }
@@ -811,7 +811,7 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
         int32_t field_index;
         for (field_index = 0; field_index < package->op_fields->length; field_index++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_index);
-          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_FIELD_INFO* field = op_field->uv.field;
           
           // Add field to constant pool
           field->id = SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
@@ -996,7 +996,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       for (i = 0; i < op_fields->length; i++) {
         SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, i);
         
-        SPVM_FIELD* field = op_field->uv.field;
+        SPVM_FIELD_INFO* field = op_field->uv.field;
         const char* field_name = field->op_name->uv.name;
         
         const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
@@ -1165,7 +1165,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_type);
   
   // Create field information
-  SPVM_FIELD* field = SPVM_FIELD_new(compiler);
+  SPVM_FIELD_INFO* field = SPVM_FIELD_INFO_new(compiler);
   
   // Name
   field->op_name = op_name_field;

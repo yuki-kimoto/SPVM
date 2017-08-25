@@ -8,7 +8,7 @@
 #include "spvm_value.h"
 #include "spvm_runtime_api.h"
 #include "spvm_constant_pool_sub.h"
-#include "spvm_constant_pool_field.h"
+#include "spvm_constant_pool_field_info.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
@@ -880,7 +880,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
     for (i = 0; i < length; i++) {
       
       int32_t field_id = constant_pool[fields_base + i];
-      SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+      SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD_INFO*)&constant_pool[field_id];
       
       int32_t field_name_id = constant_pool_field->name_id;
       

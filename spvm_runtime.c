@@ -11,7 +11,7 @@
 #include "spvm_runtime_allocator.h"
 #include "spvm_bytecode.h"
 #include "spvm_constant_pool_sub.h"
-#include "spvm_constant_pool_field.h"
+#include "spvm_constant_pool_field_info.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
