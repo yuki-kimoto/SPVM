@@ -54,8 +54,11 @@ struct SPVM_compiler {
   
   // Include pathes
   SPVM_DYNAMIC_ARRAY* include_pathes;
+
+  // Subroutine ops
+  SPVM_DYNAMIC_ARRAY* op_subs;
   
-  // Method absolute name symbol table
+  // Subroutine absolute name symbol table
   SPVM_HASH* op_sub_symtable;
   
   // Field absolute name symbol table
@@ -64,10 +67,10 @@ struct SPVM_compiler {
   // use symbol table
   SPVM_HASH* op_use_symtable;
   
-  // Types
+  // Types(This is all type ops in source code)
   SPVM_DYNAMIC_ARRAY* op_types;
   
-  // Resovled types
+  // Types(This is unique types)
   SPVM_DYNAMIC_ARRAY* types;
   
   // Resolved type symbol table
