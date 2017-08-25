@@ -863,7 +863,6 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
   }
 
   // Push subroutine index to constant pool
-  compiler->subs_length = 0;
   {
     int32_t package_index;
     for (package_index = 0; package_index < op_packages->length; package_index++) {
@@ -871,7 +870,6 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
       SPVM_PACKAGE* package = op_package->uv.package;
       
       {
-        compiler->subs_length += package->op_subs->length;
         int32_t sub_index;
         for (sub_index = 0; sub_index < package->op_subs->length; sub_index++) {
           

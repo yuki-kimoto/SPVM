@@ -105,9 +105,6 @@ struct SPVM_compiler {
   // Subroutine indexes constant pool index
   int32_t subs_base;
   
-  // Subroutine length
-  int32_t subs_length;
-  
   // Native subroutines
   SPVM_DYNAMIC_ARRAY* native_subs;
   

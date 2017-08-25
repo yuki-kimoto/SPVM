@@ -45,7 +45,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   runtime->subs_base = compiler->subs_base;
   
-  runtime->subs_length = compiler->subs_length;
+  runtime->subs_length = compiler->op_subs->length;
 
   runtime->types_base = compiler->types_base;
   
