@@ -18,6 +18,7 @@
 #include "spvm_api.h"
 #include "spvm_global.h"
 #include "spvm_type.h"
+#include "spvm_hash.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime(SPVM_API* api) {
   (void)api;
@@ -900,32 +901,15 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
   (void)api;
   
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-  
-  int32_t* constant_pool = runtime->constant_pool;
-  int32_t length = runtime->subs_length;
-  int32_t subs_base = runtime->subs_base;
-  
-  int32_t found_sub_id = 0;
-  _Bool found = 0;
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      int32_t sub_id = constant_pool[subs_base + i];
-      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
-      
-      int32_t sub_name_id = constant_pool_sub->abs_name_id;
-      
-      char* match_name = (char*)&constant_pool[sub_name_id + 1];
-      if (strcmp(name, match_name) == 0) {
-        found = 1;
-        found_sub_id = sub_id;
-        break;
-      }
-    }
+  if (name == NULL) {
+    return 0;
   }
   
-  return found_sub_id;
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  SPVM_HASH* constant_pool_sub_symtable = runtime->constant_pool_sub_symtable;
+  int32_t constant_pool_sub_id = (int32_t)SPVM_HASH_search(constant_pool_sub_symtable, name, strlen(name));
+  
+  return constant_pool_sub_id;
 }
 
 int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
