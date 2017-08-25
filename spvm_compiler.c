@@ -19,6 +19,7 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 #include "spvm_global.h"
+#include "spvm_sub.h"
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
@@ -36,6 +37,16 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   int64_t runtime_bytecodes_byte_size = (int64_t)compiler->bytecode_array->length * (int64_t)sizeof(uint8_t);
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc(runtime_bytecodes_byte_size);
   memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
+  
+  // Build constant pool sub symtable
+  {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
+      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
+      SPVM_SUB* sub = op_sub->uv.sub;
+      SPVM_HASH_insert(runtime->constant_pool_sub_symtable, sub->abs_name, strlen(sub->abs_name), (void*)sub->id);
+    }
+  }
   
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
