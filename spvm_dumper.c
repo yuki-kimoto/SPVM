@@ -135,6 +135,9 @@ void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
   
   printf("\n[Packages]\n");
   SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
+
+  printf("\n[Subroutines]\n");
+  SPVM_DUMPER_dump_subs(compiler, compiler->op_subs);
 }
 
 void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_constants) {
@@ -145,6 +148,18 @@ void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_
       SPVM_CONSTANT* constant = op_constant->uv.constant;
       printf("    constant[%" PRId32 "]\n", i);
       SPVM_DUMPER_dump_constant(compiler, constant);
+    }
+  }
+}
+
+void SPVM_DUMPER_dump_subs(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_subs) {
+  {
+    int32_t j;
+    for (j = 0; j < op_subs->length; j++) {
+      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(op_subs, j);
+      SPVM_SUB* sub = op_sub->uv.sub;
+      printf("  sub[%" PRId32 "]\n", j);
+      SPVM_DUMPER_dump_sub(compiler, sub);
     }
   }
 }
@@ -175,19 +190,6 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_p
           SPVM_FIELD_INFO* field = op_field->uv.field;
           printf("    field%" PRId32 "\n", j);
           SPVM_DUMPER_dump_field(compiler, field);
-        }
-      }
-      
-      // Sub information
-      printf("  subs\n");
-      SPVM_DYNAMIC_ARRAY* op_subs = package->op_subs;
-      {
-        int32_t j;
-        for (j = 0; j < op_subs->length; j++) {
-          SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(op_subs, j);
-          SPVM_SUB* sub = op_sub->uv.sub;
-          printf("    sub%" PRId32 "\n", j);
-          SPVM_DUMPER_dump_sub(compiler, sub);
         }
       }
     }
@@ -503,11 +505,9 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   
   if (sub) {
     
-    printf("      name => \"%s\"\n", sub->op_name->uv.name);
     printf("      abs_name => \"%s\"\n", sub->abs_name);
-    
-    printf("      type => \"%s\"\n", sub->op_return_type->uv.type->name);
-    
+    printf("      name => \"%s\"\n", sub->op_name->uv.name);
+    printf("      return_type => \"%s\"\n", sub->op_return_type->uv.type->name);
     printf("      is_constant => %d\n", sub->is_constant);
     printf("      is_native => %d\n", sub->is_native);
     
