@@ -864,23 +864,15 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
 
   // Push subroutine index to constant pool
   {
-    int32_t package_index;
-    for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
       
-      {
-        int32_t sub_index;
-        for (sub_index = 0; sub_index < package->op_subs->length; sub_index++) {
-          
-          SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(package->op_subs, sub_index);
-          SPVM_SUB* sub = op_sub->uv.sub;
-          int32_t sub_id = sub->id;
-          int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_id);
-          if (!compiler->subs_base) {
-            compiler->subs_base = added_id;
-          }
-        }
+      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
+      SPVM_SUB* sub = op_sub->uv.sub;
+      int32_t sub_id = sub->id;
+      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_id);
+      if (!compiler->subs_base) {
+        compiler->subs_base = added_id;
       }
     }
   }
