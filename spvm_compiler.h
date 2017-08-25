@@ -54,7 +54,7 @@ struct SPVM_compiler {
   
   // Include pathes
   SPVM_DYNAMIC_ARRAY* include_pathes;
-
+  
   // Subroutine ops
   SPVM_DYNAMIC_ARRAY* op_subs;
   

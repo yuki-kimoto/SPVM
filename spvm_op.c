@@ -1056,6 +1056,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           sub->file_name = op_sub->file;
           
+          SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub);
           SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
         }
       }
