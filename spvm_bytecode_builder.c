@@ -569,8 +569,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field;
                   memcpy(&constant_pool_field, &compiler->constant_pool->values[field->id], sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
                   
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_field.index >> 8) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant_pool_field.index & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_field.index + 1 >> 8) & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant_pool_field.index + 1 & 0xFF);
                 }
                 
                 break;
@@ -1373,8 +1373,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field;
                   memcpy(&constant_pool_field, &compiler->constant_pool->values[field->id], sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
                   
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_field.index >> 8) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant_pool_field.index & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_field.index + 1 >> 8) & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant_pool_field.index + 1 & 0xFF);
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_EXCEPTION);
