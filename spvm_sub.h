@@ -8,6 +8,7 @@ struct SPVM_sub {
   SPVM_OP* op_name;
   SPVM_OP* op_return_type;
   SPVM_OP* op_block;
+  SPVM_OP* op_package;
   SPVM_DYNAMIC_ARRAY* op_args;
   SPVM_DYNAMIC_ARRAY* op_my_vars;
   void* native_address;

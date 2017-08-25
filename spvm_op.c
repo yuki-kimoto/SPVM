@@ -1036,6 +1036,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           sub->abs_name = sub_abs_name;
           
+          sub->op_package = op_package;
+          
           assert(op_sub->file);
           
           sub->file_name = op_sub->file;
@@ -1048,9 +1050,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
     
     package->op_fields = op_fields;
-    package->op_subs = op_subs;
-    package->subs_length = subs_length;
-    package->subs_base = subs_base;
     
     // Add package
     op_package->uv.package = package;
