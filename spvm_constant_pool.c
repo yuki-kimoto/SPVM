@@ -273,7 +273,7 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   // Constant pool field information
   // Field id is field index + 1 because 0 mean no id
   SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field = {0};
-  constant_pool_field.id = field->index + 1;
+  constant_pool_field.index = field->index + 1;
   
   // Add length
   constant_pool->length += extend_length;
