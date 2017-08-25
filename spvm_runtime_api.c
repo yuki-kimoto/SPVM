@@ -874,7 +874,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   
   int32_t fields_base = constant_pool_package->fields_base;
   
-  int32_t field_index = 0;
+  int32_t field_index;
   _Bool found = 0;
   {
     int32_t i;
@@ -889,13 +889,21 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
       
       if (strcmp(name, match_name) == 0) {
         found = 1;
-        field_index = i + 1;
+        field_index = i;
         break;
       }
     }
   }
   
-  return field_index;
+  int32_t field_id;
+  if (found) {
+    field_id = field_index + 1;
+  }
+  else {
+    field_id = 0;
+  }
+  
+  return field_id;
 }
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
