@@ -80,12 +80,12 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   *object_address = (SPVM_OBJECT*)((intptr_t)*object_address | 1);
   
   // Create array of weaken_back_refs if need
-  if (object->weaken_back_refs == NULL) {
-    object->weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, SPVM_TYPE_C_CODE_VOID, 1);
-    object->weaken_back_refs->ref_count++;
+  if (object->uv.weaken_back_refs == NULL) {
+    object->uv.weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, SPVM_TYPE_C_CODE_VOID, 1);
+    object->uv.weaken_back_refs->ref_count++;
   }
   
-  int32_t capacity = object->weaken_back_refs->length;
+  int32_t capacity = object->uv.weaken_back_refs->length;
   int32_t length = object->weaken_back_refs_length;
   
   // Extend capacity
@@ -96,7 +96,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
     SPVM_OBJECT* new_weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, SPVM_TYPE_C_CODE_VOID, new_capacity);
     new_weaken_back_refs->ref_count++;
     
-    SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->weaken_back_refs + sizeof(SPVM_OBJECT));
+    SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->uv.weaken_back_refs + sizeof(SPVM_OBJECT));
     SPVM_OBJECT*** new_weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)new_weaken_back_refs + sizeof(SPVM_OBJECT));
     memcpy(new_weaken_back_refs_elements, weaken_back_refs_elements, length * sizeof(SPVM_OBJECT**));
     
@@ -104,12 +104,12 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
     memset(weaken_back_refs_elements, 0, length * sizeof(SPVM_OBJECT**));
     
     // Free old weaken back references
-    SPVM_RUNTIME_API_dec_ref_count(api, object->weaken_back_refs);
+    SPVM_RUNTIME_API_dec_ref_count(api, object->uv.weaken_back_refs);
     
-    object->weaken_back_refs = new_weaken_back_refs;
+    object->uv.weaken_back_refs = new_weaken_back_refs;
   }
   
-  SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->weaken_back_refs + sizeof(SPVM_OBJECT));
+  SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->uv.weaken_back_refs + sizeof(SPVM_OBJECT));
   weaken_back_refs_elements[length] = object_address;
   object->weaken_back_refs_length++;
 }
@@ -143,7 +143,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
 
   int32_t length = object->weaken_back_refs_length;
   
-  SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->weaken_back_refs + sizeof(SPVM_OBJECT));
+  SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->uv.weaken_back_refs + sizeof(SPVM_OBJECT));
   
   {
     int32_t i;
@@ -602,8 +602,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
         }
       }
     }
-    if (__builtin_expect(object->weaken_back_refs != NULL, 0)) {
-      SPVM_RUNTIME_API_free_weaken_back_refs(api, object->weaken_back_refs, object->weaken_back_refs_length);
+    if (__builtin_expect(object->uv.weaken_back_refs != NULL, 0)) {
+      SPVM_RUNTIME_API_free_weaken_back_refs(api, object->uv.weaken_back_refs, object->weaken_back_refs_length);
     }
     
     SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, object);
