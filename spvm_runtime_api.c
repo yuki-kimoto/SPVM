@@ -572,6 +572,11 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   
   // If reference count is zero, free address.
   if (object->ref_count == 0) {
+    
+    if (__builtin_expect(object->has_destructor, 0)) {
+      warn("AAAAAAAAAAA");
+    }
+    
     int32_t objects_length = object->objects_length;
     
     {

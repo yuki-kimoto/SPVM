@@ -43,6 +43,9 @@ package Test {
   }
   
   sub main($mvar : int) : int {
+    
+    my $dest = new Test::Destructor;
+    
     # enum
     {
       BYTE_MAX();
