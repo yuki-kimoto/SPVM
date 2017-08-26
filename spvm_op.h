@@ -186,7 +186,7 @@ struct SPVM_op {
   _Bool rvalue;
 };
 
-SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler);
+void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler);
 SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target);
 void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace);
 SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void);

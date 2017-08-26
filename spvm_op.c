@@ -655,7 +655,7 @@ SPVM_OP* SPVM_OP_build_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, S
   return op_convert_type;
 }
 
-SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
+void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
   // Push constant to constant pool
@@ -843,7 +843,6 @@ SPVM_OP* SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
         SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
         if (type->op_package) {
           SPVM_PACKAGE* package = type->op_package->uv.package;
-          const char* package_name = package->op_name->uv.name;
           int32_t type_id = type->id;
           SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type_id];
           constant_pool_type->package_id = package->id;
