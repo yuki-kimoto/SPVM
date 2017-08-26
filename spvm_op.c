@@ -33,6 +33,7 @@
 #include "spvm_use.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_type.h"
+#include "spvm_constant_pool_package.h"
 
 
 
@@ -872,6 +873,23 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
       int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_id);
       if (!compiler->subs_base) {
         compiler->subs_base = added_id;
+      }
+    }
+  }
+
+  // Set destcutor sub id to package
+  {
+    int32_t package_index;
+    for (package_index = 0; package_index < op_packages->length; package_index++) {
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      
+      int32_t package_id = package->id;
+      
+      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&compiler->constant_pool->values[package_id];
+      
+      if (package->op_sub_destructor) {
+        constant_pool_package->destructor_sub_id = package->op_sub_destructor->uv.sub->id;
       }
     }
   }
