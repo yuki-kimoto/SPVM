@@ -1036,7 +1036,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           sub->op_package = op_package;
           
           if (sub->is_destructor) {
-            package->has_destructor = 1;
+            package->op_sub_destructor = op_sub;
           }
           
           assert(op_sub->file);
