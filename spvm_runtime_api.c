@@ -474,14 +474,18 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   
   // Allocate memory
   int32_t length = constant_pool_package->fields_length;
-  int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)sizeof(SPVM_VALUE) * (int64_t)length;
+  int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)(length + 1) * (int64_t)sizeof(SPVM_VALUE);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
   
   // Set type id
   object->type_id = type_id;
   
+  object->length = length;
+  
   // Objects length
   object->objects_length = constant_pool_package->object_fields_length;
+  
+  object->element_byte_size = sizeof(SPVM_VALUE);
   
   assert(object_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
@@ -981,21 +985,7 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
 
 int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* object) {
   
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-  
-  int64_t byte_size;
-  
-  // Reference is string
-  if (object->dimension > 0) {
-    byte_size = sizeof(SPVM_OBJECT) + (object->length + 1) * object->element_byte_size;
-  }
-  // Reference is object
-  else {
-    SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
-    
-    SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[constant_pool_type->package_id];
-    byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * constant_pool_package->fields_length;
-  }
+  int64_t byte_size = sizeof(SPVM_OBJECT) + (object->length + 1) * object->element_byte_size;
   
   return byte_size;
 }
