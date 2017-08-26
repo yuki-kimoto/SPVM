@@ -466,6 +466,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   
   object->element_byte_size = sizeof(SPVM_VALUE);
   
+  if (constant_pool_package->destructor_sub_id > 0) {
+    object->has_destructor = 1;
+  }
+  
   assert(object_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
