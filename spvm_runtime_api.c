@@ -596,7 +596,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
         {
           int32_t i;
           for (i = 0; i < length; i++) {
-            SPVM_OBJECT* object_element = *(SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(void*) * i);
+            SPVM_OBJECT* object_element = *(SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
             if (object_element != NULL) {
               SPVM_RUNTIME_API_dec_ref_count(api, object_element);
             }
