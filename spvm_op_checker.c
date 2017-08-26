@@ -882,7 +882,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   
                   // First value must be array
-                  _Bool first_type_is_array = SPVM_TYPE_is_array(compiler, first_type);
                   if (!(SPVM_TYPE_is_array(compiler, first_type) || first_type->code == SPVM_TYPE_C_CODE_STRING)) {
                     SPVM_yyerror_format(compiler, "right of @ must be array at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;

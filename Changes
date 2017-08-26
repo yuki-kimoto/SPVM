@@ -2,6 +2,7 @@
   - string can't convert to byte[]
   - byte[] can't convert to string
   - allow $string->[0] to get byte value
+  - improve get_sub_id, get_type_id, get_field_id performance
 0.0248 2017-08-19
   - support xs.dll dynamiclin library
   - fix __END__ not used bug

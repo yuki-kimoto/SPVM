@@ -96,7 +96,8 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   
   // Constant pool type information
-  SPVM_CONSTANT_POOL_TYPE constant_pool_type = {0};
+  SPVM_CONSTANT_POOL_TYPE constant_pool_type;
+  memset(&constant_pool_type, 0, sizeof(SPVM_CONSTANT_POOL_TYPE));
   
   constant_pool_type.code = type->code;
   
@@ -142,7 +143,8 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
 
   // Constant pool package information
-  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package = {0};
+  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
+  memset(&constant_pool_package, 0, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   constant_pool_package.fields_length = package->op_fields->length;
   constant_pool_package.object_fields_length = SPVM_PACKAGE_get_object_fields_length(compiler, package);
   
@@ -181,7 +183,8 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
   
   // Set subroutine information
-  SPVM_CONSTANT_POOL_SUB constant_pool_sub = {0};
+  SPVM_CONSTANT_POOL_SUB constant_pool_sub;
+  memset(&constant_pool_sub, 0, sizeof(SPVM_CONSTANT_POOL_SUB));
   constant_pool_sub.native_address = sub->native_address;
   constant_pool_sub.bytecode_base = sub->bytecode_base;
   constant_pool_sub.my_vars_length = sub->op_my_vars->length;
@@ -272,7 +275,8 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   
   // Constant pool field information
   // Field id is field index + 1 because 0 mean no id
-  SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field = {0};
+  SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field;
+  memset(&constant_pool_field, 0, sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
   constant_pool_field.index = field->index;
   constant_pool_field.type_id = field->op_type->uv.type->id;
   
