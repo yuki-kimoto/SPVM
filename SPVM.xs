@@ -47,40 +47,6 @@ SPVM_API* SPVM_XS_UTIL_get_api() {
   return api;
 }
 
-int32_t SPVM_XS_UTIL_get_field_type_id(const char* package_name, const char* field_name) {
-  // Field symbol table
-  HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
-  
-  SV** sv_package_info_ptr = hv_fetch(hv_field_symtable, package_name, strlen(package_name), 0);
-  if (sv_package_info_ptr) {
-    SV* sv_package_info = *sv_package_info_ptr;
-    HV* hv_package_info = (HV*)SvRV(sv_package_info);
-    
-    SV** sv_field_info_ptr = hv_fetch(hv_package_info, field_name, strlen(field_name), 0);
-    if (sv_field_info_ptr) {
-      SV* sv_field_info = *sv_field_info_ptr;
-      HV* hv_field_info = (HV*)SvRV(sv_field_info);
-      
-      SV** sv_field_type_id_ptr = hv_fetch(hv_field_info, "type_id", strlen("type_id"), 0);
-      if (sv_field_type_id_ptr) {
-        SV* sv_field_type_id = *sv_field_type_id_ptr;
-        int32_t field_type_id = SvIV(sv_field_type_id);
-        
-        return field_type_id;
-      }
-      else {
-        return 0;
-      }
-    }
-    else {
-      return 0;
-    }
-  }
-  else {
-    return 0;
-  }
-}
-
 SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
   // Create object
   size_t iv_object = PTR2IV(object);

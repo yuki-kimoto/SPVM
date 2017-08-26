@@ -26,7 +26,6 @@ our $VERSION = '0.0248';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
-our %FIELD_SYMTABLE;
 our $API;
 
 sub _get_dll_file {
@@ -124,11 +123,6 @@ CHECK {
   
   # Compile SPVM source code
   compile();
-  
-  my $sub_native_address = get_sub_native_address('SPVM::std::sum_int');
-  
-  # Build field symbol table
-  build_field_symtable();
   
   # Build run-time
   build_runtime();
