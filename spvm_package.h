@@ -8,6 +8,7 @@ struct SPVM_package {
   SPVM_OP* op_type;
   SPVM_DYNAMIC_ARRAY* op_fields;
   int32_t id;
+  _Bool has_destructor;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);

@@ -1,0 +1,8 @@
+package Test::Destructor {
+  has x : int;
+  has y : int;
+  
+  sub DESTORY() : void {
+    
+  }
+}

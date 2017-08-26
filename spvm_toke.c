@@ -119,7 +119,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               if (!fh) {
                 if (op_use) {
-                  fprintf(stderr, "Can't locate SPVM/%s.spvm @INC (@INC contains:", package_name);
+                  fprintf(stderr, "Can't locate %s in @INC (@INC contains:", module_path_base);
                   {
                     int32_t i;
                     for (i = 0; i < include_pathes_length; i++) {

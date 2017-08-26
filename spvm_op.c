@@ -1035,6 +1035,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           sub->op_package = op_package;
           
+          if (strcmp(sub->op_name->uv.name, "DESTORY") == 0) {
+            package->has_destructor = 1;
+          }
+          
           assert(op_sub->file);
           
           sub->file_name = op_sub->file;

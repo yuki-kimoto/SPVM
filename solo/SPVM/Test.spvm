@@ -11,6 +11,7 @@ use Test::EnumD;
 use Test::Simple;
 use Test::Minimal;
 use Test::Template_int_long;
+use Test::Destructor;
 
 =head1 NAME
 
