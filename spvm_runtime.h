@@ -25,13 +25,16 @@ struct SPVM_runtime {
   int32_t* constant_pool;
   
   // Constant pool subroutine symbol table
-  SPVM_HASH* constant_pool_sub_symtable;
+  SPVM_HASH* sub_id_symtable;
   
   // Constant pool type symbol table
-  SPVM_HASH* constant_pool_type_symtable;
+  SPVM_HASH* type_id_symtable;
   
   // Constant pool type symbol table
-  SPVM_HASH* constant_pool_field_symtable;
+  SPVM_HASH* field_id_symtable;
+  
+  // Constant pool type symbol table
+  SPVM_HASH* field_info_id_symtable;
   
   // Call stack capacity
   int32_t call_stack_capacity;

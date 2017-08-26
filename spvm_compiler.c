@@ -45,7 +45,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
       SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
-      SPVM_HASH_insert(runtime->constant_pool_sub_symtable, sub->abs_name, strlen(sub->abs_name), (void*)(intptr_t)sub->id);
+      SPVM_HASH_insert(runtime->sub_id_symtable, sub->abs_name, strlen(sub->abs_name), (void*)(intptr_t)sub->id);
     }
   }
   
@@ -54,7 +54,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     int32_t type_index;
     for (type_index = 0; type_index < compiler->types->length; type_index++) {
       SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_index);
-      SPVM_HASH_insert(runtime->constant_pool_type_symtable, type->name, strlen(type->name), (void*)(intptr_t)type->id);
+      SPVM_HASH_insert(runtime->type_id_symtable, type->name, strlen(type->name), (void*)(intptr_t)type->id);
     }
   }
   
@@ -79,7 +79,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
         }
       }
       
-      SPVM_HASH_insert(runtime->constant_pool_field_symtable, package_name, strlen(package_name), field_name_symtable);
+      SPVM_HASH_insert(runtime->field_id_symtable, package_name, strlen(package_name), field_name_symtable);
     }
   }
   

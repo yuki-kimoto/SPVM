@@ -100,13 +100,16 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   runtime->operand_stack_top = -1;
   
   // Constant pool subroutine symbol table
-  runtime->constant_pool_sub_symtable = SPVM_HASH_new(0);
+  runtime->sub_id_symtable = SPVM_HASH_new(0);
   
   // Constant pool type symbol table
-  runtime->constant_pool_type_symtable = SPVM_HASH_new(0);
+  runtime->type_id_symtable = SPVM_HASH_new(0);
   
   // Constant pool type symbol table
-  runtime->constant_pool_field_symtable = SPVM_HASH_new(0);
+  runtime->field_id_symtable = SPVM_HASH_new(0);
+
+  // Constant pool type symbol table
+  runtime->field_info_id_symtable = SPVM_HASH_new(0);
   
   return runtime;
 }
