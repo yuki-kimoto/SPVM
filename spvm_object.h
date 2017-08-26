@@ -9,20 +9,10 @@ struct SPVM_object {
   int32_t type_id;
   int32_t ref_count;
   int32_t weaken_back_refs_length;
-  int8_t value_type;
   int32_t dimension;
   int32_t length;
   int32_t objects_length;
-};
-
-enum {
-  SPVM_OBJECT_C_VALUE_TYPE_BYTE,
-  SPVM_OBJECT_C_VALUE_TYPE_SHORT,
-  SPVM_OBJECT_C_VALUE_TYPE_INT,
-  SPVM_OBJECT_C_VALUE_TYPE_LONG,
-  SPVM_OBJECT_C_VALUE_TYPE_FLOAT,
-  SPVM_OBJECT_C_VALUE_TYPE_DOUBLE,
-  SPVM_OBJECT_C_VALUE_TYPE_OBJECT,
+  int8_t element_byte_size;
 };
 
 #endif
