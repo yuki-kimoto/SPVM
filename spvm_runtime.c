@@ -1288,7 +1288,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        call_stack[operand_stack_top - 1].object_value = *(void**)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(void*) * index);
+        call_stack[operand_stack_top - 1] = *(SPVM_VALUE*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
         operand_stack_top--;
         pc++;
         goto *jump[*pc];
@@ -1439,7 +1439,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
         goto case_SPVM_BYTECODE_C_CODE_DIE;
       }
       else {
-        SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(void*) * index);
+        SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
         
         // Decrement old object reference count
         if (*object_address != NULL) {
