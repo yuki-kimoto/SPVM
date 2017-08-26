@@ -308,10 +308,14 @@ get(...)
   // Package name
   const char* package_name = (char*)&runtime->constant_pool[constant_pool_package_type->name_id + 1];
   
-  // Field type id
+  // Field name
   const char* field_name = SvPV_nolen(sv_field_name);
-  int32_t field_type_id = SPVM_XS_UTIL_get_field_type_id(package_name, field_name);
   
+  // Field type
+  SPVM_HASH* field_name_symtable = SPVM_HASH_search(runtime->field_info_id_symtable, package_name, strlen(package_name));
+  int32_t filed_info_id = (int32_t)(intptr_t)SPVM_HASH_search(field_name_symtable, field_name, strlen(field_name));
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[filed_info_id];
+  int32_t field_type_id =constant_pool_field_info->type_id;
   SPVM_CONSTANT_POOL_TYPE* constant_pool_field_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[field_type_id];
   
   int32_t field_type_code = constant_pool_field_type->code;
