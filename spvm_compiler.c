@@ -39,7 +39,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc(runtime_bytecodes_byte_size);
   memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(uint8_t));
   
-  // Build constant pool sub symtable
+  // Build sub id symtable
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
@@ -49,7 +49,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Build constant pool type symtable
+  // Build type id symtable
   {
     int32_t type_index;
     for (type_index = 0; type_index < compiler->types->length; type_index++) {
@@ -58,7 +58,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Build constant pool field symtable
+  // Build field id symtable
   {
     int32_t package_index;
     for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
@@ -80,6 +80,31 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
       }
       
       SPVM_HASH_insert(runtime->field_id_symtable, package_name, strlen(package_name), field_name_symtable);
+    }
+  }
+
+  // Build field info id symtable
+  {
+    int32_t package_index;
+    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_packages, package_index);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      const char* package_name = package->op_name->uv.name;
+      
+      SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
+      SPVM_HASH* field_name_symtable = SPVM_HASH_new(0);
+      {
+        int32_t op_field_index;
+        for (op_field_index = 0; op_field_index < op_fields->length; op_field_index++) {
+          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, op_field_index);
+          SPVM_FIELD_INFO* field_info = op_field->uv.field;
+          const char* field_name = field_info->op_name->uv.name;
+          
+          SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)field_info->id);
+        }
+      }
+      
+      SPVM_HASH_insert(runtime->field_info_id_symtable, package_name, strlen(package_name), field_name_symtable);
     }
   }
   
