@@ -4,7 +4,7 @@
 #include "spvm_base.h"
 
 // Field information
-struct SPVM_field {
+struct SPVM_field_info {
   SPVM_OP* op_type;
   SPVM_OP* op_name;
   const char* abs_name;

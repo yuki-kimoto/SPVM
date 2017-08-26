@@ -20,6 +20,7 @@
 #include "spvm_runtime_api.h"
 #include "spvm_global.h"
 #include "spvm_sub.h"
+#include "spvm_field_info.h"
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
@@ -44,7 +45,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
       SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
-      SPVM_HASH_insert(runtime->constant_pool_sub_symtable, sub->abs_name, strlen(sub->abs_name), (void*)sub->id);
+      SPVM_HASH_insert(runtime->constant_pool_sub_symtable, sub->abs_name, strlen(sub->abs_name), (void*)(intptr_t)sub->id);
     }
   }
   
@@ -53,20 +54,34 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     int32_t type_index;
     for (type_index = 0; type_index < compiler->types->length; type_index++) {
       SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_index);
-      SPVM_HASH_insert(runtime->constant_pool_type_symtable, type->name, strlen(type->name), (void*)type->id);
+      SPVM_HASH_insert(runtime->constant_pool_type_symtable, type->name, strlen(type->name), (void*)(intptr_t)type->id);
     }
   }
   
-  /*
-  // Build constant pool field information symtable
+  // Build constant pool field symtable
   {
-    int32_t field_info_index;
-    for (field_info_index = 0; field_info_index < compiler->field_infos->length; field_info_index++) {
-      SPVM_FIELD_INFO* field_info = SPVM_DYNAMIC_ARRAY_fetch(compiler->field_infos, field_info_index);
-      SPVM_HASH_insert(runtime->constant_pool_field_info_symtable, field_info->name, strlen(field_info->name), (void*)field_info->id);
+    int32_t package_index;
+    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_packages, package_index);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      const char* package_name = package->op_name->uv.name;
+      
+      SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
+      SPVM_HASH* field_name_symtable = SPVM_HASH_new(0);
+      {
+        int32_t op_field_index;
+        for (op_field_index = 0; op_field_index < op_fields->length; op_field_index++) {
+          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, op_field_index);
+          SPVM_FIELD_INFO* field_info = op_field->uv.field;
+          const char* field_name = field_info->op_name->uv.name;
+          
+          SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)(field_info->index + 1));
+        }
+      }
+      
+      SPVM_HASH_insert(runtime->constant_pool_field_symtable, package_name, strlen(package_name), field_name_symtable);
     }
   }
-  */
   
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   

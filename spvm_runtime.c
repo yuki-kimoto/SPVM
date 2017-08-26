@@ -102,16 +102,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   // Constant pool subroutine symbol table
   runtime->constant_pool_sub_symtable = SPVM_HASH_new(0);
   
-  /*
-  // Constant pool package symbol table
-  runtime->constant_pool_package_symtable = SPVM_HASH_new(0);
-  */
-  
   // Constant pool type symbol table
   runtime->constant_pool_type_symtable = SPVM_HASH_new(0);
   
   // Constant pool type symbol table
-  runtime->constant_pool_field_info_symtable = SPVM_HASH_new(0);
+  runtime->constant_pool_field_symtable = SPVM_HASH_new(0);
   
   return runtime;
 }
