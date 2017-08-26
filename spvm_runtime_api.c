@@ -458,6 +458,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
     // Set array length
     object->length = length;
     
+    // Objects length
+    object->objects_length = length;
+    
     assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
     
     return object;
@@ -483,6 +486,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   
   // Set type id
   object->type_id = type_id;
+  
+  // Objects length
+  object->objects_length = constant_pool_package->object_fields_length;
   
   assert(object_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
@@ -591,7 +597,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       if (object->value_type == SPVM_OBJECT_C_VALUE_TYPE_OBJECT) {
         
         // Array length
-        int32_t length = object->length;
+        int32_t length = object->objects_length;
         
         {
           int32_t i;
@@ -606,20 +612,16 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
     }
     // Object
     else {
-      int32_t* constant_pool = runtime->constant_pool;
-      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
-      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[constant_pool_type->package_id];
-      
-      int32_t object_fields_length = constant_pool_package->object_fields_length;
+      int32_t objects_length = object->objects_length;
       
       {
         int32_t i;
-        for (i = 0; i < object_fields_length; i++) {
+        for (i = 0; i < objects_length; i++) {
           SPVM_OBJECT** object_field_address
             = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
           if (*object_field_address != NULL) {
             // If object is weak, unweaken
-            if (SPVM_RUNTIME_API_isweak(api, *object_field_address)) {
+            if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
               SPVM_RUNTIME_API_unweaken(api, object_field_address);
             }
             else {
@@ -628,7 +630,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
           }
         }
       }
-      if (object->weaken_back_refs != NULL) {
+      if (__builtin_expect(object->weaken_back_refs != NULL, 0)) {
         SPVM_RUNTIME_API_free_weaken_back_refs(api, object->weaken_back_refs, object->weaken_back_refs_length);
       }
     }

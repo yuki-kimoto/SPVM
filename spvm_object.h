@@ -12,6 +12,7 @@ struct SPVM_object {
   int8_t value_type;
   int32_t type_id;
   int32_t dimension;
+  int32_t objects_length;
 };
 
 enum {
