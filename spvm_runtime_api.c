@@ -603,7 +603,6 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
           }
         }
       }
-      SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, object);
     }
     // Object
     else {
@@ -632,9 +631,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       if (object->weaken_back_refs != NULL) {
         SPVM_RUNTIME_API_free_weaken_back_refs(api, object->weaken_back_refs, object->weaken_back_refs_length);
       }
-      
-      SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, object);
     }
+    
+    SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, object);
   }
 }
 
