@@ -20,6 +20,7 @@ struct SPVM_sub {
   int32_t id;
   _Bool is_native;
   _Bool is_constant;
+  _Bool is_destructor;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

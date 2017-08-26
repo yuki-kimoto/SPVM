@@ -1035,7 +1035,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           sub->op_package = op_package;
           
-          if (strcmp(sub->op_name->uv.name, "DESTORY") == 0) {
+          if (sub->is_destructor) {
             package->has_destructor = 1;
           }
           
@@ -1166,7 +1166,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_type, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_return_type, SPVM_OP* op_block) {
   
   if (op_name_sub->code == SPVM_OP_C_CODE_NEW) {
     op_name_sub->code = SPVM_OP_C_CODE_NAME;
@@ -1184,7 +1184,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_name_sub);
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_args);
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_descriptors);
-  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_type);
+  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_return_type);
   if (op_block) {
     op_block->flag = SPVM_OP_C_FLAG_BLOCK_SUB;
     SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_block);
@@ -1227,7 +1227,19 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   }
 
   // return type
-  sub->op_return_type = op_type;
+  sub->op_return_type = op_return_type;
+  
+  if (strcmp(sub->op_name->uv.name, "DESTROY") == 0) {
+    sub->is_destructor = 1;
+    // DESTROY argument must be 0
+    if (sub->op_args->length != 0) {
+      SPVM_yyerror_format(compiler, "DESTROY argument length must be 0\n", op_block->file, op_block->line);
+    }
+    // DESTROY argument must be 0
+    if (sub->op_return_type->uv.type->code != SPVM_TYPE_C_CODE_VOID) {
+      SPVM_yyerror_format(compiler, "DESTROY return type must be void\n", op_block->file, op_block->line);
+    }
+  }
   
   // Add my declaration to first of block
   if (op_block) {
