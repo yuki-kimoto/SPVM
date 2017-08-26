@@ -582,8 +582,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   assert(object != NULL);
   assert(object->ref_count > 0);
   
-  if (object->ref_count < 1) {
-    fprintf(stderr, "Found invalid reference count object(SPVM_RUNTIME_API_dec_ref_count)");
+  if (__builtin_expect(object->ref_count < 1, 0)) {
+    fprintf(stderr, "Found invalid reference count object(SPVM_RUNTIME_API_dec_ref_count())");
     abort();
   }
   
@@ -592,47 +592,25 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   
   // If reference count is zero, free address.
   if (object->ref_count == 0) {
-    // Array
-    if (object->dimension > 0) {
-      if (object->value_type == SPVM_OBJECT_C_VALUE_TYPE_OBJECT) {
-        
-        // Array length
-        int32_t length = object->objects_length;
-        
-        {
-          int32_t i;
-          for (i = 0; i < length; i++) {
-            SPVM_OBJECT* object_element = *(SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
-            if (object_element != NULL) {
-              SPVM_RUNTIME_API_dec_ref_count(api, object_element);
-            }
+    int32_t objects_length = object->objects_length;
+    
+    {
+      int32_t i;
+      for (i = 0; i < objects_length; i++) {
+        SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
+        if (*object_field_address != NULL) {
+          // If object is weak, unweaken
+          if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
+            SPVM_RUNTIME_API_unweaken(api, object_field_address);
+          }
+          else {
+            SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);
           }
         }
       }
     }
-    // Object
-    else {
-      int32_t objects_length = object->objects_length;
-      
-      {
-        int32_t i;
-        for (i = 0; i < objects_length; i++) {
-          SPVM_OBJECT** object_field_address
-            = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
-          if (*object_field_address != NULL) {
-            // If object is weak, unweaken
-            if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
-              SPVM_RUNTIME_API_unweaken(api, object_field_address);
-            }
-            else {
-              SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);
-            }
-          }
-        }
-      }
-      if (__builtin_expect(object->weaken_back_refs != NULL, 0)) {
-        SPVM_RUNTIME_API_free_weaken_back_refs(api, object->weaken_back_refs, object->weaken_back_refs_length);
-      }
+    if (__builtin_expect(object->weaken_back_refs != NULL, 0)) {
+      SPVM_RUNTIME_API_free_weaken_back_refs(api, object->weaken_back_refs, object->weaken_back_refs_length);
     }
     
     SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, object);
