@@ -39,12 +39,12 @@ int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_API* api) {
 
 void SPVM_RUNTIME_API_free_weaken_back_refs(SPVM_API* api, SPVM_OBJECT* weaken_back_refs, int32_t weaken_back_refs_length) {
   
-  SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)weaken_back_refs + sizeof(SPVM_OBJECT));
+  SPVM_VALUE* weaken_back_refs_elements = (SPVM_VALUE*)((intptr_t)weaken_back_refs + sizeof(SPVM_OBJECT));
   
   {
     int32_t i;
     for (i = 0; i < weaken_back_refs_length; i++) {
-      *weaken_back_refs_elements[i] = NULL;
+      *(weaken_back_refs_elements[i].object_address_value) = NULL;
     }
   }
   memset(weaken_back_refs_elements, 0, sizeof(SPVM_OBJECT**) * weaken_back_refs->length);
