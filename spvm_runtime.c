@@ -419,6 +419,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   int32_t runtime_call_stack_byte_size = (int64_t)call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
   SPVM_VALUE* call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_call_stack_byte_size);
   
+  /*
+  SPVM_OBJECT* call_stack_array = SPVM_RUNTIME_API_new_value_array(api, call_stack_capacity);
+  call_stack_array->ref_count++;
+  SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+  */
+  
   // Top position of operand stack
   register int32_t operand_stack_top = -1;
   

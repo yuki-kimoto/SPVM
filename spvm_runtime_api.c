@@ -206,8 +206,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_array(SPVM_API* api, int32_t length) {
     return NULL;
   }
   else {
-    memcpy(&((SPVM_VALUE*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length], 0, sizeof(SPVM_VALUE));
-
     // Set array length
     object->length = length;
     
