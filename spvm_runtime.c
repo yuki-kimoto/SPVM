@@ -809,9 +809,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Finish call sub
     if (return_address == NULL) {
+      SPVM_VALUE return_value;
+      
+      memset(&return_value, 0, sizeof(SPVM_VALUE));
+      
       SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
       
-      return;
+      return return_value;
     }
     else {
       // Restore vars

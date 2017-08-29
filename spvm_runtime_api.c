@@ -778,6 +778,7 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
 }
 
 int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* object) {
+  (void)api;
   
   int64_t byte_size = sizeof(SPVM_OBJECT) + (object->length + 1) * object->element_byte_size;
   
