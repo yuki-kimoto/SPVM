@@ -698,8 +698,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Finish call sub
     if (return_address == NULL) {
-      SPVM_RUNTIME_API_set_exception(api, NULL);
-      
       SPVM_VALUE return_value = call_stack[operand_stack_top];
       operand_stack_top--;
 
@@ -766,8 +764,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Finish call sub
     if (return_address == NULL) {
-      SPVM_RUNTIME_API_set_exception(api, NULL);
-      
       SPVM_VALUE return_value = call_stack[operand_stack_top];
       operand_stack_top--;
       
@@ -816,8 +812,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Finish call sub
     if (return_address == NULL) {
-      SPVM_RUNTIME_API_set_exception(api, NULL);
-      
       SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
       
       return;
