@@ -47,7 +47,6 @@ void SPVM_RUNTIME_API_free_weaken_back_refs(SPVM_API* api, SPVM_OBJECT* weaken_b
       *(weaken_back_refs_elements[i].object_address_value) = NULL;
     }
   }
-  memset(weaken_back_refs_elements, 0, sizeof(SPVM_OBJECT**) * weaken_back_refs->length);
   
   SPVM_RUNTIME_API_dec_ref_count(api, (SPVM_OBJECT*)weaken_back_refs);
 }
@@ -81,7 +80,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   
   // Create array of weaken_back_refs if need
   if (object->uv.weaken_back_refs == NULL) {
-    object->uv.weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, SPVM_TYPE_C_CODE_VOID, 1);
+    object->uv.weaken_back_refs = SPVM_RUNTIME_API_new_value_array(api, 1);
     object->uv.weaken_back_refs->ref_count++;
   }
   
@@ -93,7 +92,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   if (length == capacity) {
     
     int32_t new_capacity = capacity * 2;
-    SPVM_OBJECT* new_weaken_back_refs = SPVM_RUNTIME_API_new_object_array(api, SPVM_TYPE_C_CODE_VOID, new_capacity);
+    SPVM_OBJECT* new_weaken_back_refs = SPVM_RUNTIME_API_new_value_array(api, new_capacity);
     new_weaken_back_refs->ref_count++;
     
     SPVM_VALUE* weaken_back_refs_elements = (SPVM_VALUE*)((intptr_t)object->uv.weaken_back_refs + sizeof(SPVM_OBJECT));

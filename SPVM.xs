@@ -1527,12 +1527,13 @@ call_sub(...)
     }
   }
   
-  api->set_exception(api, NULL);
-  
   // Return type id
   int32_t return_type_id = constant_pool_sub->return_type_id;
   SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[return_type_id];
   int32_t return_type_code = return_type->code;
+  
+  // Set exception to undef
+  api->set_exception(api, NULL);
   
   switch (return_type_code) {
     case SPVM_TYPE_C_CODE_VOID:  {

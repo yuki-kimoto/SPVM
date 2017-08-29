@@ -36,7 +36,7 @@ void* SPVM_MEMORY_POOL_alloc(SPVM_MEMORY_POOL* memory_pool, int32_t byte_size) {
   assert(byte_size > 0);
   
   if (byte_size > memory_pool->page_byte_size) {
-    fprintf(stderr, "Very lerge memory byte size is specified(SPVM_MEMORY_POOL_alloc)\n");
+    fprintf(stderr, "Very lerge memory byte size is specified(SPVM_MEMORY_POOL_alloc())\n");
     abort();
   }
   
