@@ -416,14 +416,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   // Call stack
   int32_t call_stack_capacity = 0xFF;
-  int32_t runtime_call_stack_byte_size = (int64_t)call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
-  SPVM_VALUE* call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_call_stack_byte_size);
   
-  /*
   SPVM_OBJECT* call_stack_array = SPVM_RUNTIME_API_new_value_array(api, call_stack_capacity);
   call_stack_array->ref_count++;
-  SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
-  */
+  // SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+  
+  SPVM_VALUE* call_stack = SPVM_RUNTIME_API_get_value_array_elements(api, call_stack_array);
   
   // Top position of operand stack
   register int32_t operand_stack_top = -1;
@@ -474,11 +472,15 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       while (call_stack_max > call_stack_capacity) {
         int32_t new_call_stack_capacity = call_stack_capacity * 2;
         
-        int64_t new_call_stack_byte_size = (int64_t)new_call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
-        SPVM_VALUE* new_call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_call_stack_byte_size);
-        memcpy(new_call_stack, call_stack, call_stack_capacity * sizeof(sizeof(SPVM_VALUE)));
-        free(call_stack);
+        SPVM_OBJECT* new_call_stack_array = SPVM_RUNTIME_API_new_value_array(api, new_call_stack_capacity);
+        new_call_stack_array->ref_count++;
+        
+        SPVM_VALUE* new_call_stack = SPVM_RUNTIME_API_get_value_array_elements(api, new_call_stack_array);
+        memcpy(new_call_stack, call_stack, call_stack_capacity * sizeof(SPVM_VALUE));
+        SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+        
         call_stack = new_call_stack;
+        call_stack_array = new_call_stack_array;
 
         call_stack_capacity = new_call_stack_capacity;
       }
@@ -700,6 +702,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       
       SPVM_VALUE return_value = call_stack[operand_stack_top];
       operand_stack_top--;
+
+      SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
       
       return return_value;
     }
@@ -767,6 +771,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       SPVM_VALUE return_value = call_stack[operand_stack_top];
       operand_stack_top--;
       
+      SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+      
       return return_value;
     }
     else {
@@ -811,6 +817,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // Finish call sub
     if (return_address == NULL) {
       SPVM_RUNTIME_API_set_exception(api, NULL);
+      
+      SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+      
       return;
     }
     else {
@@ -934,6 +943,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     if (return_address == NULL) {
       SPVM_VALUE return_value = call_stack[operand_stack_top];
       operand_stack_top--;
+      
+      SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
       
       return return_value;
     }
