@@ -416,11 +416,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   // Call stack
   int32_t call_stack_capacity = 0xFF;
-  
   SPVM_OBJECT* call_stack_array = SPVM_RUNTIME_API_new_value_array(api, call_stack_capacity);
   call_stack_array->ref_count++;
-  // SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
-  
   SPVM_VALUE* call_stack = SPVM_RUNTIME_API_get_value_array_elements(api, call_stack_array);
   
   // Top position of operand stack
