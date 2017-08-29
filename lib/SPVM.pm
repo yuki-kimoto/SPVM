@@ -346,7 +346,11 @@ sub build_spvm_subs {
     *{"SPVM::$abs_name"} = sub {
       my $return_value;
       eval { $return_value = SPVM::call_sub("$abs_name", @_) };
-      croak $@ if $@;
+      my $error = $@;
+      if ($error) {
+        $error = Encode::decode('UTF-8', $error);
+        croak $error;
+      }
       $return_value;
     };
   }

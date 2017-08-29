@@ -1630,7 +1630,6 @@ call_sub(...)
       return_count = 1;
     }
   }
-  
   SPVM_API_OBJECT* exception = api->get_exception(api);
   if (exception) {
     int32_t length = api->get_array_length(api, exception);
