@@ -92,7 +92,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   int64_t runtime_call_stack_byte_size = (int64_t)runtime->call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
   runtime->call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_call_stack_byte_size);
   
-  SPVM_API* api = (SPVM_API*)SPVM_NATIVE_INTERFACE;;
+  SPVM_API* api = (SPVM_API*)SPVM_NATIVE_INTERFACE;
   
   runtime->api = api;
   
@@ -432,7 +432,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
   register int32_t operand_stack_top = runtime->operand_stack_top;
   
   int32_t call_stack_base = runtime->call_stack_base;
-  int32_t call_stack_base_start = call_stack_base;
   
   // Offten used variables
   SPVM_OBJECT* array = NULL;
@@ -482,7 +481,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
       
       // Save return address(operand + (throw or goto exception handler))
       if (pc == NULL) {
-        call_stack[call_stack_base - 3].address_value = 0;
+        call_stack[call_stack_base - 3].address_value = NULL;
       }
       else {
         int32_t jump = 5 + (debug * 5) + 3;
@@ -706,7 +705,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     call_stack[operand_stack_top] = return_value;
     
     // Finish call sub
-    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
+    if (return_address == NULL) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       SPVM_RUNTIME_API_set_exception(api, NULL);
@@ -770,7 +769,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     call_stack[operand_stack_top].object_value = return_value;
     
     // Finish call sub
-    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
+    if (return_address == NULL) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       SPVM_RUNTIME_API_set_exception(api, NULL);
@@ -816,7 +815,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     call_stack_base = call_stack[call_stack_base - 1].int_value;
     
     // Finish call sub
-    if (__builtin_expect(call_stack_base == call_stack_base_start, 0)) {
+    if (return_address == NULL) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       SPVM_RUNTIME_API_set_exception(api, NULL);
@@ -940,7 +939,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
     SPVM_RUNTIME_API_set_exception(api, new_array_exception);
     
     // Finish call sub with exception
-    if (call_stack_base == call_stack_base_start) {
+    if (return_address == NULL) {
       
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
