@@ -9,9 +9,6 @@ struct SPVM_runtime {
   // Runtime memory allocator
   SPVM_RUNTIME_ALLOCATOR* allocator;
 
-  // Call stack
-  SPVM_VALUE* call_stack;
-
   // Env
   SPVM_API* api;
   
@@ -35,15 +32,6 @@ struct SPVM_runtime {
   
   // Constant pool type symbol table
   SPVM_HASH* field_info_id_symtable;
-  
-  // Call stack capacity
-  int32_t call_stack_capacity;
-  
-  // Operand stack base
-  int32_t call_stack_base;
-  
-  // Operand stack top
-  int32_t operand_stack_top;
   
   // Packages length
   int32_t packages_length;

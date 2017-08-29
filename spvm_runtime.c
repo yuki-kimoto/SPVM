@@ -88,16 +88,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   // Runtime memory allocator
   runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
   
-  runtime->call_stack_capacity = 0xFF;
-  int64_t runtime_call_stack_byte_size = (int64_t)runtime->call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
-  runtime->call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_call_stack_byte_size);
-  
   SPVM_API* api = (SPVM_API*)SPVM_NATIVE_INTERFACE;
   
   runtime->api = api;
-  
-  runtime->call_stack_base = -1;
-  runtime->operand_stack_top = -1;
   
   // Constant pool subroutine symbol table
   runtime->sub_id_symtable = SPVM_HASH_new(0);
@@ -421,11 +414,19 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   int32_t args_length = constant_pool_sub->args_length;
   
+  // Call stack
+  int32_t call_stack_capacity = 0xFF;
+  int32_t runtime_call_stack_byte_size = (int64_t)call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
+  SPVM_VALUE* call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_call_stack_byte_size);
+
+  // Top position of operand stack
+  register int32_t operand_stack_top = -1;
+  
   {
     int32_t i;
     for (i = 0; i < args_length; i++) {
-      runtime->operand_stack_top++;
-      runtime->call_stack[runtime->operand_stack_top] = args[i];
+      operand_stack_top++;
+      call_stack[operand_stack_top] = args[i];
     }
   }
   
@@ -436,15 +437,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   uint8_t* bytecodes = runtime->bytecodes;
   
   // Variables
-  SPVM_VALUE* vars = &runtime->call_stack[runtime->call_stack_base];
-  
-  // Call stack
-  SPVM_VALUE* call_stack = runtime->call_stack;
-  
-  // Top position of operand stack
-  register int32_t operand_stack_top = runtime->operand_stack_top;
-  
-  int32_t call_stack_base = runtime->call_stack_base;
+  int32_t call_stack_base = -1;
+  SPVM_VALUE* vars = &call_stack[call_stack_base];
   
   // Offten used variables
   SPVM_OBJECT* array = NULL;
@@ -455,6 +449,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   int32_t current_line = 0;
   
   _Bool debug = runtime->debug ? 1 : 0;
+  
   
   // Goto subroutine
   goto CALLSUB_COMMON;
@@ -470,16 +465,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       // Extend call stack(current size + 2(return address + call stack base before) + lexical variable area + operand_stack area)
       int32_t call_stack_max = operand_stack_top + 2 + constant_pool_sub->my_vars_length + constant_pool_sub->operand_stack_max;
       
-      while (call_stack_max > runtime->call_stack_capacity) {
-        int32_t new_call_stack_capacity = runtime->call_stack_capacity * 2;
+      while (call_stack_max > call_stack_capacity) {
+        int32_t new_call_stack_capacity = call_stack_capacity * 2;
         
         int64_t new_call_stack_byte_size = (int64_t)new_call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
         SPVM_VALUE* new_call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_call_stack_byte_size);
-        memcpy(new_call_stack, runtime->call_stack, runtime->call_stack_capacity * sizeof(sizeof(SPVM_VALUE)));
-        free(runtime->call_stack);
-        runtime->call_stack = call_stack = new_call_stack;
+        memcpy(new_call_stack, call_stack, call_stack_capacity * sizeof(sizeof(SPVM_VALUE)));
+        free(call_stack);
+        call_stack = new_call_stack;
 
-        runtime->call_stack_capacity = new_call_stack_capacity;
+        call_stack_capacity = new_call_stack_capacity;
       }
       
       operand_stack_top -= constant_pool_sub->args_length;
@@ -537,9 +532,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       // Call native sub
       if (constant_pool_sub->is_native) {
         // Set runtimeironment
-        runtime->operand_stack_top = operand_stack_top;
-        runtime->call_stack_base = call_stack_base;
-        
         SPVM_CONSTANT_POOL_TYPE* constant_pool_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[constant_pool_sub->return_type_id];
         
         // Call native subroutine
@@ -550,13 +542,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             (*native_address)(api, vars);
             
             if (__builtin_expect(runtime->exception != NULL, 0)) {
-              call_stack_base = runtime->call_stack_base;
               goto case_SPVM_BYTECODE_C_CODE_DIE;
             }
             else {
-              operand_stack_top = runtime->operand_stack_top;
-              
-              call_stack_base = runtime->call_stack_base;
               goto case_SPVM_BYTECODE_C_CODE_RETURN_VOID;
             }
             
@@ -568,14 +556,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             int8_t return_value = (*native_address)(api, vars);
 
             if (__builtin_expect(runtime->exception != NULL, 0)) {
-              call_stack_base = runtime->call_stack_base;
               goto case_SPVM_BYTECODE_C_CODE_DIE;
             }
             else {
-              runtime->operand_stack_top++;
-              runtime->call_stack[runtime->operand_stack_top].byte_value = return_value;
-              operand_stack_top = runtime->operand_stack_top;
-              call_stack_base = runtime->call_stack_base;
+              operand_stack_top++;
+              call_stack[operand_stack_top].byte_value = return_value;
               goto case_SPVM_BYTECODE_C_CODE_RETURN_BYTE;
             }
             
@@ -586,14 +571,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             SPVM_RUNTIME_API_set_exception(api, NULL);
             int16_t return_value = (*native_address)(api, vars);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
-              call_stack_base = runtime->call_stack_base;
               goto case_SPVM_BYTECODE_C_CODE_DIE;
             }
             else {
-              runtime->operand_stack_top++;
-              runtime->call_stack[runtime->operand_stack_top].short_value = return_value;
-              operand_stack_top = runtime->operand_stack_top;
-              call_stack_base = runtime->call_stack_base;
+              operand_stack_top++;
+              call_stack[operand_stack_top].short_value = return_value;
               goto case_SPVM_BYTECODE_C_CODE_RETURN_SHORT;
             }
             break;
@@ -603,14 +585,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             int32_t return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
-              call_stack_base = runtime->call_stack_base;
               goto case_SPVM_BYTECODE_C_CODE_DIE;
             }
             else {
-              runtime->operand_stack_top++;
-              runtime->call_stack[runtime->operand_stack_top].int_value = return_value;
-              operand_stack_top = runtime->operand_stack_top;
-              call_stack_base = runtime->call_stack_base;
+              operand_stack_top++;
+              call_stack[operand_stack_top].int_value = return_value;
               goto case_SPVM_BYTECODE_C_CODE_RETURN_INT;
             }
             break;
@@ -620,14 +599,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             float return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
-              call_stack_base = runtime->call_stack_base;
               goto case_SPVM_BYTECODE_C_CODE_DIE;
             }
             else {
-              runtime->operand_stack_top++;
-              runtime->call_stack[runtime->operand_stack_top].float_value = return_value;
-              operand_stack_top = runtime->operand_stack_top;
-              call_stack_base = runtime->call_stack_base;
+              operand_stack_top++;
+              call_stack[operand_stack_top].float_value = return_value;
               goto case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT;
             }
             break;
@@ -637,14 +613,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             double return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
-              call_stack_base = runtime->call_stack_base;
               goto case_SPVM_BYTECODE_C_CODE_DIE;
             }
             else {
-              runtime->operand_stack_top++;
-              runtime->call_stack[runtime->operand_stack_top].double_value = return_value;
-              operand_stack_top = runtime->operand_stack_top;
-              call_stack_base = runtime->call_stack_base;
+              operand_stack_top++;
+              call_stack[operand_stack_top].double_value = return_value;
               goto case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE;
             }
             break;
@@ -654,14 +627,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             SPVM_OBJECT* return_value = (*native_address)(api, vars);
             SPVM_RUNTIME_API_set_exception(api, NULL);
             if (__builtin_expect(runtime->exception != NULL, 0)) {
-              call_stack_base = runtime->call_stack_base;
               goto case_SPVM_BYTECODE_C_CODE_DIE;
             }
             else {
-              runtime->operand_stack_top++;
-              runtime->call_stack[runtime->operand_stack_top].object_value = return_value;
-              operand_stack_top = runtime->operand_stack_top;
-              call_stack_base = runtime->call_stack_base;
+              operand_stack_top++;
+              call_stack[operand_stack_top].object_value = return_value;
               goto case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT;
             }
           }
@@ -720,12 +690,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Finish call sub
     if (return_address == NULL) {
-      runtime->call_stack_base = call_stack_base;
-      runtime->operand_stack_top = operand_stack_top;
       SPVM_RUNTIME_API_set_exception(api, NULL);
       
-      SPVM_VALUE return_value = runtime->call_stack[runtime->operand_stack_top];
-      runtime->operand_stack_top--;
+      SPVM_VALUE return_value = call_stack[operand_stack_top];
+      operand_stack_top--;
       
       return return_value;
     }
@@ -788,12 +756,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Finish call sub
     if (return_address == NULL) {
-      runtime->call_stack_base = call_stack_base;
-      runtime->operand_stack_top = operand_stack_top;
       SPVM_RUNTIME_API_set_exception(api, NULL);
       
-      SPVM_VALUE return_value = runtime->call_stack[runtime->operand_stack_top];
-      runtime->operand_stack_top--;
+      SPVM_VALUE return_value = call_stack[operand_stack_top];
+      operand_stack_top--;
       
       return return_value;
     }
@@ -838,8 +804,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Finish call sub
     if (return_address == NULL) {
-      runtime->call_stack_base = call_stack_base;
-      runtime->operand_stack_top = operand_stack_top;
       SPVM_RUNTIME_API_set_exception(api, NULL);
       return;
     }
@@ -962,12 +926,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Finish call sub with exception
     if (return_address == NULL) {
-      
-      runtime->call_stack_base = call_stack_base;
-      runtime->operand_stack_top = operand_stack_top;
-      
-      SPVM_VALUE return_value = runtime->call_stack[runtime->operand_stack_top];
-      runtime->operand_stack_top--;
+      SPVM_VALUE return_value = call_stack[operand_stack_top];
+      operand_stack_top--;
       
       return return_value;
     }
@@ -2734,9 +2694,6 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
 
   // Free exception
   SPVM_RUNTIME_API_set_exception(runtime->api, NULL);
-  
-  // Free call stack
-  free(runtime->call_stack);
   
   // Free runtime allocator
   SPVM_RUNTIME_ALLOCATOR_free(runtime, runtime->allocator);
