@@ -114,7 +114,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   return runtime;
 }
 
-void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
+SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   (void)api;
   
   
@@ -723,7 +723,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       SPVM_RUNTIME_API_set_exception(api, NULL);
-      return;
+      
+      SPVM_VALUE return_value = runtime->call_stack[runtime->operand_stack_top];
+      runtime->operand_stack_top--;
+      
+      return return_value;
     }
     else {
       // Restore vars
@@ -787,7 +791,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
       SPVM_RUNTIME_API_set_exception(api, NULL);
-      return;
+      
+      SPVM_VALUE return_value = runtime->call_stack[runtime->operand_stack_top];
+      runtime->operand_stack_top--;
+      
+      return return_value;
     }
     else {
       // Restore vars
@@ -957,7 +965,11 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
       
       runtime->call_stack_base = call_stack_base;
       runtime->operand_stack_top = operand_stack_top;
-      return;
+      
+      SPVM_VALUE return_value = runtime->call_stack[runtime->operand_stack_top];
+      runtime->operand_stack_top--;
+      
+      return return_value;
     }
     else {
       // Restore vars
