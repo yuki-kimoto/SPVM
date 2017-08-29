@@ -412,12 +412,25 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   };
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Constant pool
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub;
+  
+  constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  int32_t args_length = constant_pool_sub->args_length;
+  
+  {
+    int32_t i;
+    for (i = 0; i < args_length; i++) {
+      runtime->operand_stack_top++;
+      runtime->call_stack[runtime->operand_stack_top] = args[i];
+    }
+  }
   
   // Program counter
   register uint8_t* pc = NULL;
-  
-  // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
   
   // Bytecode
   uint8_t* bytecodes = runtime->bytecodes;
@@ -437,7 +450,6 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   SPVM_OBJECT* array = NULL;
   SPVM_OBJECT* array_exception = NULL;
   SPVM_OBJECT* object = NULL;
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub;
   int32_t index;
   register int32_t success;
   int32_t current_line = 0;
@@ -451,8 +463,9 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
     // Get subroutine ID
     sub_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
-    CALLSUB_COMMON:
-      constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+    
+    CALLSUB_COMMON: {
 
       // Extend call stack(current size + 2(return address + call stack base before) + lexical variable area + operand_stack area)
       int32_t call_stack_max = operand_stack_top + 2 + constant_pool_sub->my_vars_length + constant_pool_sub->operand_stack_max;
@@ -659,6 +672,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
         pc = &bytecodes[constant_pool_sub->bytecode_base];
       }
       goto *jump[*pc];
+    }
   }
   case_SPVM_BYTECODE_C_CODE_RETURN_BYTE:
   case_SPVM_BYTECODE_C_CODE_RETURN_SHORT:

@@ -616,14 +616,6 @@ void SPVM_RUNTIME_API_call_void_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* a
   
   int32_t args_length = constant_pool_sub->args_length;
   
-  {
-    int32_t i;
-    for (i = 0; i < args_length; i++) {
-      runtime->operand_stack_top++;
-      runtime->call_stack[runtime->operand_stack_top] = args[i];
-    }
-  }
-  
   SPVM_RUNTIME_call_sub(api, sub_id, args);
 }
 
@@ -633,14 +625,6 @@ int8_t SPVM_RUNTIME_API_call_byte_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE*
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
   
   int32_t args_length = constant_pool_sub->args_length;
-  
-  {
-    int32_t i;
-    for (i = 0; i < args_length; i++) {
-      runtime->operand_stack_top++;
-      runtime->call_stack[runtime->operand_stack_top] = args[i];
-    }
-  }
   
   SPVM_RUNTIME_call_sub(api, sub_id, args);
   
@@ -661,14 +645,6 @@ int16_t SPVM_RUNTIME_API_call_short_sub(SPVM_API* api, int32_t sub_id, SPVM_VALU
   
   int32_t args_length = constant_pool_sub->args_length;
   
-  {
-    int32_t i;
-    for (i = 0; i < args_length; i++) {
-      runtime->operand_stack_top++;
-      runtime->call_stack[runtime->operand_stack_top] = args[i];
-    }
-  }
-  
   SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
@@ -687,14 +663,6 @@ int32_t SPVM_RUNTIME_API_call_int_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE*
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
   
   int32_t args_length = constant_pool_sub->args_length;
-  
-  {
-    int32_t i;
-    for (i = 0; i < args_length; i++) {
-      runtime->operand_stack_top++;
-      runtime->call_stack[runtime->operand_stack_top] = args[i];
-    }
-  }
   
   SPVM_RUNTIME_call_sub(api, sub_id, args);
   
@@ -715,14 +683,6 @@ int64_t SPVM_RUNTIME_API_call_long_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE
   
   int32_t args_length = constant_pool_sub->args_length;
   
-  {
-    int32_t i;
-    for (i = 0; i < args_length; i++) {
-      runtime->operand_stack_top++;
-      runtime->call_stack[runtime->operand_stack_top] = args[i];
-    }
-  }
-  
   SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
@@ -741,14 +701,6 @@ float SPVM_RUNTIME_API_call_float_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE*
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
   
   int32_t args_length = constant_pool_sub->args_length;
-  
-  {
-    int32_t i;
-    for (i = 0; i < args_length; i++) {
-      runtime->operand_stack_top++;
-      runtime->call_stack[runtime->operand_stack_top] = args[i];
-    }
-  }
   
   SPVM_RUNTIME_call_sub(api, sub_id, args);
   
@@ -769,14 +721,6 @@ double SPVM_RUNTIME_API_call_double_sub(SPVM_API* api, int32_t sub_id, SPVM_VALU
   
   int32_t args_length = constant_pool_sub->args_length;
   
-  {
-    int32_t i;
-    for (i = 0; i < args_length; i++) {
-      runtime->operand_stack_top++;
-      runtime->call_stack[runtime->operand_stack_top] = args[i];
-    }
-  }
-  
   SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
@@ -795,14 +739,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_API* api, int32_t sub_id, SPV
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
   
   int32_t args_length = constant_pool_sub->args_length;
-  
-  {
-    int32_t i;
-    for (i = 0; i < args_length; i++) {
-      runtime->operand_stack_top++;
-      runtime->call_stack[runtime->operand_stack_top] = args[i];
-    }
-  }
   
   SPVM_RUNTIME_call_sub(api, sub_id, args);
   
