@@ -405,7 +405,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   };
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-
+  
   // Constant pool
   int32_t* constant_pool = runtime->constant_pool;
   
@@ -418,7 +418,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   int32_t call_stack_capacity = 0xFF;
   int32_t runtime_call_stack_byte_size = (int64_t)call_stack_capacity * (int64_t)sizeof(SPVM_VALUE);
   SPVM_VALUE* call_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_call_stack_byte_size);
-
+  
   // Top position of operand stack
   register int32_t operand_stack_top = -1;
   

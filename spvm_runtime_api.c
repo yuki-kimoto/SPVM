@@ -189,6 +189,36 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_API* api) {
   return runtime->exception;
 }
 
+// Use only internal
+SPVM_OBJECT* SPVM_RUNTIME_API_new_value_array(SPVM_API* api, int32_t length) {
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
+  
+  // Allocate array
+  // alloc length + 1. Last value is 0
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)(length + 1) * (int64_t)sizeof(SPVM_VALUE);
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
+  
+  if (__builtin_expect(object == NULL, 0)) {
+    // Error message
+    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Failed to allocate memory(new_value_array())");
+    SPVM_RUNTIME_API_set_exception(api, exception);
+    return NULL;
+  }
+  else {
+    memcpy(&((SPVM_VALUE*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length], 0, sizeof(SPVM_VALUE));
+
+    // Set array length
+    object->length = length;
+    
+    object->element_byte_size = sizeof(SPVM_VALUE);
+    
+    assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
+  }
+  
+  return object;
+}
+
 SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
