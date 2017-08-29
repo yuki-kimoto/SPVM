@@ -551,34 +551,34 @@ double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_OBJECT* o
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_API* api, SPVM_OBJECT* object, int32_t index) {
   (void)api;
   
-  SPVM_OBJECT** objects = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT));
+  SPVM_VALUE* values = (SPVM_VALUE*)((intptr_t)object + sizeof(SPVM_OBJECT));
 
   assert(object);
   assert(index >= 0);
   assert(index <= object->length);
   
-  SPVM_OBJECT* value = objects[index];
+  SPVM_OBJECT* object_value = values[index].object_value;
   
-  return value;
+  return object_value;
 }
 
-void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* value) {
+void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* object_value) {
   (void)api;
   
-  SPVM_OBJECT** objects = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT));
+  SPVM_VALUE* values = (SPVM_VALUE*)((intptr_t)object + sizeof(SPVM_OBJECT));
   
   assert(object);
   assert(index >= 0);
   assert(index <= object->length);
   
-  if(objects[index] != NULL) {
-    api->dec_ref_count(api, objects[index]);
+  if(values[index].object_value != NULL) {
+    api->dec_ref_count(api, values[index].object_value);
   }
   
-  objects[index] = value;
+  values[index].object_value = object_value;
   
-  if(objects[index] != NULL) {
-    api->inc_ref_count(api, objects[index]);
+  if(values[index].object_value != NULL) {
+    api->inc_ref_count(api, values[index].object_value);
   }
 }
 
