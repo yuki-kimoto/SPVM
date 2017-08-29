@@ -1535,6 +1535,8 @@ call_sub(...)
   // Set exception to undef
   api->set_exception(api, NULL);
   
+  // Return count
+  int32_t return_count;
   switch (return_type_code) {
     case SPVM_TYPE_C_CODE_VOID:  {
       api->call_void_sub(api, sub_id, call_sub_args);
@@ -1545,7 +1547,7 @@ call_sub(...)
         SV* sv_exception = newSVpv(exception_bytes, length);
         croak("%s", SvPV_nolen(sv_exception));
       }
-      XSRETURN(0);
+      return_count = 0;
       break;
     }
     case SPVM_TYPE_C_CODE_BYTE: {
@@ -1559,7 +1561,7 @@ call_sub(...)
       }
       SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
-      XSRETURN(1);
+      return_count = 1;
       break;
     }
     case SPVM_TYPE_C_CODE_SHORT: {
@@ -1573,7 +1575,7 @@ call_sub(...)
       }
       SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
-      XSRETURN(1);
+      return_count = 1;
       break;
     }
     case SPVM_TYPE_C_CODE_INT: {
@@ -1587,7 +1589,7 @@ call_sub(...)
       }
       SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
-      XSRETURN(1);
+      return_count = 1;
       break;
     }
     case SPVM_TYPE_C_CODE_LONG: {
@@ -1601,7 +1603,7 @@ call_sub(...)
       }
       SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
-      XSRETURN(1);
+      return_count = 1;
       break;
     }
     case SPVM_TYPE_C_CODE_FLOAT: {
@@ -1615,7 +1617,7 @@ call_sub(...)
       }
       SV* sv_return_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_return_value);
-      XSRETURN(1);
+      return_count = 1;
       break;
     }
     case SPVM_TYPE_C_CODE_DOUBLE: {
@@ -1629,7 +1631,7 @@ call_sub(...)
       }
       SV* sv_return_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_return_value);
-      XSRETURN(1);
+      return_count = 1;
       break;
     }
     default: {
@@ -1682,7 +1684,8 @@ call_sub(...)
         sv_return_value = &PL_sv_undef;
       }
       XPUSHs(sv_return_value);
-      XSRETURN(1);
+      return_count = 1;
     }
   }
+  XSRETURN(return_count);
 }
