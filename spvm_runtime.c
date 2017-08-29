@@ -469,30 +469,32 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
 
         runtime->call_stack_capacity = new_call_stack_capacity;
       }
-
+      
       operand_stack_top -= constant_pool_sub->args_length;
-
-      // Prepare arguments
-      memmove(&call_stack[operand_stack_top + 4], &call_stack[operand_stack_top + 1], constant_pool_sub->args_length * sizeof(SPVM_VALUE));
       
-      // Save return address(operand + (throw or goto exception handler))
-      if (call_stack_base == call_stack_base_start) {
-        call_stack[operand_stack_top + 1].address_value = (uint8_t*)-1;
-      }
-      else {
-        int32_t jump = 5 + (debug * 5) + 3;
-        call_stack[operand_stack_top + 1].address_value = (uint8_t*)((intptr_t)pc + jump);
-      }
-      
-      // Save sub_id
-      call_stack[operand_stack_top + 2].int_value = sub_id;
-      
-      // Save vars base before
-      call_stack[operand_stack_top + 3].int_value = call_stack_base;
+      int32_t old_call_stack_base = call_stack_base;
       
       // Set vars base
       call_stack_base = operand_stack_top + 4;
-
+      
+      // Prepare arguments
+      memmove(&call_stack[call_stack_base], &call_stack[call_stack_base - 3], constant_pool_sub->args_length * sizeof(SPVM_VALUE));
+      
+      // Save return address(operand + (throw or goto exception handler))
+      if (pc == NULL) {
+        call_stack[call_stack_base - 3].address_value = 0;
+      }
+      else {
+        int32_t jump = 5 + (debug * 5) + 3;
+        call_stack[call_stack_base - 3].address_value = (uint8_t*)((intptr_t)pc + jump);
+      }
+      
+      // Save sub_id
+      call_stack[call_stack_base - 2].int_value = sub_id;
+      
+      // Save old call stack base
+      call_stack[call_stack_base - 1].int_value = old_call_stack_base;
+      
       // If arg is object, increment reference count
       if (constant_pool_sub->object_args_length) {
         int32_t object_args_base = constant_pool_sub->object_args_base;
@@ -541,6 +543,7 @@ void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
             }
             else {
               operand_stack_top = runtime->operand_stack_top;
+              
               call_stack_base = runtime->call_stack_base;
               goto case_SPVM_BYTECODE_C_CODE_RETURN_VOID;
             }
