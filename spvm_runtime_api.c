@@ -505,6 +505,13 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_OBJECT* object) {
   return object->length;
 }
 
+// Use only internal
+SPVM_VALUE* SPVM_RUNTIME_API_get_value_array_elements(SPVM_API* api, SPVM_OBJECT* object) {
+  (void)api;
+
+  return (SPVM_VALUE*)((intptr_t)object + sizeof(SPVM_OBJECT));
+}
+
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
 
