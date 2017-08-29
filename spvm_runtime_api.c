@@ -624,7 +624,7 @@ void SPVM_RUNTIME_API_call_void_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* a
     }
   }
   
-  SPVM_RUNTIME_call_sub(api, sub_id);
+  SPVM_RUNTIME_call_sub(api, sub_id, args);
 }
 
 int8_t SPVM_RUNTIME_API_call_byte_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
@@ -642,7 +642,7 @@ int8_t SPVM_RUNTIME_API_call_byte_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE*
     }
   }
   
-  SPVM_RUNTIME_call_sub(api, sub_id);
+  SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
     return 0;
@@ -669,7 +669,7 @@ int16_t SPVM_RUNTIME_API_call_short_sub(SPVM_API* api, int32_t sub_id, SPVM_VALU
     }
   }
   
-  SPVM_RUNTIME_call_sub(api, sub_id);
+  SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
     return 0;
@@ -696,7 +696,7 @@ int32_t SPVM_RUNTIME_API_call_int_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE*
     }
   }
   
-  SPVM_RUNTIME_call_sub(api, sub_id);
+  SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
     return 0;
@@ -723,7 +723,7 @@ int64_t SPVM_RUNTIME_API_call_long_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE
     }
   }
   
-  SPVM_RUNTIME_call_sub(api, sub_id);
+  SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
     return 0;
@@ -750,7 +750,7 @@ float SPVM_RUNTIME_API_call_float_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE*
     }
   }
   
-  SPVM_RUNTIME_call_sub(api, sub_id);
+  SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
     return 0;
@@ -777,7 +777,7 @@ double SPVM_RUNTIME_API_call_double_sub(SPVM_API* api, int32_t sub_id, SPVM_VALU
     }
   }
   
-  SPVM_RUNTIME_call_sub(api, sub_id);
+  SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
     return 0;
@@ -804,7 +804,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_API* api, int32_t sub_id, SPV
     }
   }
   
-  SPVM_RUNTIME_call_sub(api, sub_id);
+  SPVM_RUNTIME_call_sub(api, sub_id, args);
   
   if (runtime->exception) {
     return NULL;

@@ -114,7 +114,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   return runtime;
 }
 
-void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id) {
+void SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   (void)api;
   
   
