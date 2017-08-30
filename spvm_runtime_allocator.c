@@ -14,6 +14,7 @@
 #include "spvm_constant_pool.h"
 #include "spvm_api.h"
 #include "spvm_global.h"
+#include "spvm_object.h"
 
 SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   (void)runtime;
@@ -103,7 +104,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* 
   assert(block);
   
   runtime->objects_count++;
-
+  
 #ifdef DEBUG
   fprintf(stderr, "MALLOC OBJECT COUNT %d\n", runtime->objects_count);
 #endif
@@ -128,7 +129,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
     
     runtime->objects_count--;
     assert(runtime->objects_count >= 0);
-
+    
 #ifdef DEBUG
     fprintf(stderr, "FREE OBJECT COUNT %d\n", runtime->objects_count);
 #endif
