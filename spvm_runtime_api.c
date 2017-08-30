@@ -534,7 +534,11 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   if (object->ref_count == 0) {
     
     if (__builtin_expect(object->has_destructor, 0)) {
-      warn("AAAAAAAAAAA");
+      SPVM_RUNTIME* runtime = api->get_runtime(api);
+      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
+      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[constant_pool_type->package_id];
+      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[constant_pool_package->destructor_sub_id];
+      // warn("AAAAAAAAAAA %d", constant_pool_sub->is_destructor);
     }
     
     int32_t objects_length = object->objects_length;
