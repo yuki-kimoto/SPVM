@@ -114,6 +114,9 @@ struct SPVM_compiler {
   // Error is fatal
   _Bool fatal_error;
   
+  // Before is camma
+  _Bool before_is_comma;
+  
   _Bool debug;
 };
 

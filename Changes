@@ -3,6 +3,7 @@
   - allow term last camma
   - allow args last camma
   - allow descripter last camma
+  - forbidden double comma
 0.0251 2017-08-30
   - fix bug that if package is not exists, compile is ok.
   - implement destructor

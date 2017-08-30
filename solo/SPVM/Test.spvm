@@ -39,7 +39,7 @@ package Test {
     LONG_MAX = 9223372036854775807L,
     LONG_MIN = -9223372036854775808L,
     FLOAT_PRECICE = 32767f,
-    DOUBLE_PRECICE = 2147483647.0
+    DOUBLE_PRECICE = 2147483647.0,
   }
   
   sub main($mvar : int) : int {
