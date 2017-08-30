@@ -434,7 +434,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   SPVM_VALUE* call_stack = SPVM_RUNTIME_API_get_value_array_elements(api, call_stack_array);
   
   // Copy arguments
-  memmove(call_stack, args, args_length * sizeof(SPVM_VALUE));
+  memcpy(call_stack, args, args_length * sizeof(SPVM_VALUE));
   
   // If arg is object, increment reference count
   if (constant_pool_sub->object_args_length) {
@@ -589,7 +589,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
     
-    if (api->get_exception) {
+    if (api->get_exception(api)) {
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
