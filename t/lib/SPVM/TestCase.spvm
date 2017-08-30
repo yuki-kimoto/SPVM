@@ -18,7 +18,7 @@ package TestCase {
   has weaken3 : TestCase::Weaken;
   has weaken4 : TestCase::Weaken;
   has minimal : TestCase::Minimal;
-
+  
   enum {
     BYTE_MAX = 127b,
     BYTE_MIN = -128b,
@@ -34,7 +34,18 @@ package TestCase {
     FLOAT_PRECICE = 16384f,
     DOUBLE_PRECICE = 65536.0,
   }
-
+  
+  sub call_sub_last_camma() : int {
+    
+    my $total = sum_int(3, 4,);
+    
+    if ($total == 7) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   sub destructor() : int {
     my $minimal = new TestCase::Minimal;
     destructor_call($minimal);

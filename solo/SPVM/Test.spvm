@@ -96,7 +96,7 @@ package Test {
 
     # Use template package
     {
-      my $num = Test::Template_int_long::get(100, 200, 300L);
+      my $num = Test::Template_int_long::get(100, 200, 300L,);
       std::println_int($num);
     }
 

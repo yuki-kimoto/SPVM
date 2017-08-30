@@ -445,6 +445,10 @@ terms
       
       $$ = op_list;
     }
+  | terms ','
+    {
+      $$ = $1
+    }
   | term
 
 array_length

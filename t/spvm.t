@@ -46,6 +46,10 @@ my $start_objects_count = SPVM::get_objects_count();
   is($total, 6);
 }
 
+# Call subroutine
+{
+  ok(SPVM::TestCase::call_sub_last_camma());
+}
 # Destructor
 {
   ok(SPVM::TestCase::destructor());
