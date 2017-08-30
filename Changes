@@ -1,8 +1,14 @@
-0.0250
+0.0251  2017-08-30
+  - fix bug that if package is not exists, compile is ok.
+  - implement destructor
+    sub DESTROY ($self : Foo) : void {
+      
+    }
+0.0250 2017-08-29
   - cleanup runtime
   - cleanup api
   - fix exception some bug
-0.0249
+0.0249 2017-08-25
   - string can't convert to byte[]
   - byte[] can't convert to string
   - allow $string->[0] to get byte value

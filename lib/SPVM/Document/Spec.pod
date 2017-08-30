@@ -328,3 +328,14 @@ Using weak reference, recursive reference is resolved.
   
   # Weak reference
   weaken $foo->{bar};
+
+=head2 Destructor
+
+Destructor.
+  
+  package Foo {
+  
+    sub DESTROY($self : Foo) : void {
+      
+    }
+  }
