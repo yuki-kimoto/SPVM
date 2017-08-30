@@ -1,0 +1,9 @@
+use TestCase::Minimal;
+
+package TestCase::Destructor {
+  has minimal : TestCase::Minimal;
+  
+  sub DESTROY($self : TestCase::Destructor) : void {
+    $self->{minimal}{x} = 3;
+  }
+}

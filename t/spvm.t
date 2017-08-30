@@ -46,6 +46,11 @@ my $start_objects_count = SPVM::get_objects_count();
   is($total, 6);
 }
 
+# Destructor
+{
+  ok(SPVM::TestCase::destructor());
+}
+
 # Weaken
 {
   {
