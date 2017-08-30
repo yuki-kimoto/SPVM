@@ -190,6 +190,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         else {
           SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, 0);
           SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+          // assert(arg_type->id);
+          
           if (arg_type->id != package->op_type->uv.type->id) {
             error = 1;
           }

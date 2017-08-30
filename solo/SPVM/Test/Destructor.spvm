@@ -2,7 +2,7 @@ package Test::Destructor {
   has x : int;
   has y : int;
   
-  sub DESTROY($self : Test::Destrcutro) : void {
-    
+  sub DESTROY($self : int) : void {
+    std::println("DESTROY");
   }
 }

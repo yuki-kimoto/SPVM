@@ -45,9 +45,7 @@ package Test {
   sub main($mvar : int) : int {
     
     my $dest = new Test::Destructor;
-  }
-}
-__END__
+    
     # enum
     {
       BYTE_MAX();
@@ -59,7 +57,6 @@ __END__
       LONG_MAX();
       LONG_MIN();
     }
-    
     # Field set and get
     {
       my $test = new Test;

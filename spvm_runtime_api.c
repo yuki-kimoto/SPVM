@@ -527,19 +527,36 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
     abort();
   }
   
+  if (__builtin_expect(object->has_destructor, 0)) {
+    if (object->in_destroy) {
+      return;
+    }
+    else {
+      SPVM_RUNTIME* runtime = api->get_runtime(api);
+      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
+      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[constant_pool_type->package_id];
+      
+      // Call destructor
+      SPVM_VALUE args[1];
+      args[0].object_value = object;
+      object->in_destroy = 1;
+      // SPVM_RUNTIME_API_call_void_sub(api, constant_pool_package->destructor_sub_id, args);
+      object->in_destroy = 0;
+      
+      // warn("AAAAAAAAAAA %d", constant_pool_sub->is_destructor);
+      
+      if (object->ref_count < 1) {
+        printf("object reference count become 0 in DESTROY()");
+        abort();
+      }
+    }
+  }
+  
   // Decrement reference count
   object->ref_count--;
   
   // If reference count is zero, free address.
   if (object->ref_count == 0) {
-    
-    if (__builtin_expect(object->has_destructor, 0)) {
-      SPVM_RUNTIME* runtime = api->get_runtime(api);
-      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
-      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[constant_pool_type->package_id];
-      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[constant_pool_package->destructor_sub_id];
-      // warn("AAAAAAAAAAA %d", constant_pool_sub->is_destructor);
-    }
     
     int32_t objects_length = object->objects_length;
     
