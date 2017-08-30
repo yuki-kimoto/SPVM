@@ -1,4 +1,6 @@
-0.0251  2017-08-30
+0.0252 2017-08-30
+  - allow enum last camma
+0.0251 2017-08-30
   - fix bug that if package is not exists, compile is ok.
   - implement destructor
     sub DESTROY ($self : Foo) : void {

@@ -197,6 +197,10 @@ enumeration_values
       
       $$ = op_list;
     }
+  | enumeration_values ','
+    {
+      $$ = $1;
+    }
   | enumeration_value
   
 enumeration_value

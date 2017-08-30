@@ -3,6 +3,6 @@ package Test::EnumA {
     ONE,
     TWO,
     THREE = 4L,
-    FORE = 100000L
+    FORE = 100000L,
   }
 }

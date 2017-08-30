@@ -339,3 +339,20 @@ Destructor.
       
     }
   }
+
+=head2 enumeration
+
+Enumeration.
+
+  package Foo {
+    enum {
+      ONE,
+      TWO,
+      THREE
+    }
+    
+    enum {
+      FORE = 4,
+      FIVE,
+    }
+  }
