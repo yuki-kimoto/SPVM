@@ -62,7 +62,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
         SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, base_name, strlen(base_name));
         
-        
         if (op_found_package) {
           // Nothing
         }
@@ -89,6 +88,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         new_type->op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
         
         op_type->uv.type = new_type;
+
       }
     }
   }
@@ -192,9 +192,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         else {
           SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, 0);
           SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
-          // assert(arg_type->id);
           
-          if (arg_type->id != package->op_type->uv.type->id) {
+          assert(arg_type->code);
+          
+          if (arg_type->code != package->op_type->uv.type->code) {
             error = 1;
           }
         }
