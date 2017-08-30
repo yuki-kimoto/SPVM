@@ -19,6 +19,7 @@ struct SPVM_constant_pool_sub {
   int32_t arg_type_ids_base;
   _Bool is_native;
   _Bool is_destructor;
+  _Bool is_void;
 };
 
 #endif
