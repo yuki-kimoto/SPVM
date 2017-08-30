@@ -50,9 +50,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
       // Core type or array
       if (
-        SPVM_TYPE_is_array(compiler, type) || strcmp(base_name, "void") || strcmp(base_name, "byte")
-        || strcmp(base_name, "short") || strcmp(base_name, "int") || strcmp(base_name, "long")
-        || strcmp(base_name, "float") || strcmp(base_name, "double") || strcmp(base_name, "string")
+        SPVM_TYPE_is_array(compiler, type) || strcmp(base_name, "void") == 0 || strcmp(base_name, "byte") == 0
+        || strcmp(base_name, "short") == 0 || strcmp(base_name, "int") == 0 || strcmp(base_name, "long") == 0
+        || strcmp(base_name, "float") == 0 || strcmp(base_name, "double") == 0 || strcmp(base_name, "string") == 0
       )
       {
         // Nothing
@@ -61,6 +61,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         // Package
         SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
         SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, base_name, strlen(base_name));
+        
+        
         if (op_found_package) {
           // Nothing
         }
