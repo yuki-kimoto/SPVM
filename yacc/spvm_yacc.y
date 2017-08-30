@@ -693,6 +693,10 @@ args
       
       $$ = op_list;
     }
+  | args ','
+    {
+      $$ = $1;
+    }
   | arg
 
 arg
@@ -732,6 +736,10 @@ descriptors
       SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
       
       $$ = op_list;
+    }
+  | descriptors ','
+    {
+      $$ = $1;
     }
   | DESCRIPTOR
 
