@@ -100,9 +100,9 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* 
     memset(block, 0, alloc_byte_size);
   }
   
-  if (block != NULL) {
-    runtime->objects_count++;
-  }
+  assert(block);
+  
+  runtime->objects_count++;
 
 #ifdef DEBUG
   fprintf(stderr, "MALLOC OBJECT COUNT %d\n", runtime->objects_count);
