@@ -1,0 +1,7 @@
+use Test::Inline;
+
+package Test::Inline {
+  sub sum($num1 : int, $num2 : int) : native int;
+}
+
+__END__
