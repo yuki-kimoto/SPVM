@@ -141,7 +141,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
   // Offten used variables
   SPVM_OBJECT* array = NULL;
-  SPVM_OBJECT* object = NULL;
   int32_t index;
   register int32_t success;
   int32_t current_line = 0;
@@ -1988,7 +1987,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // Get subroutine ID
     int32_t type_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
-    object = SPVM_RUNTIME_API_new_object(api, type_id);
+    SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, type_id);
 
     // Memory allocation error
     if (__builtin_expect(!object, 0)) {
@@ -2016,7 +2015,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    object = SPVM_RUNTIME_API_new_byte_array(api, length);
+    SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array(api, length);
     
     if (__builtin_expect(object == NULL, 0)) {
       // Throw exception
@@ -2035,7 +2034,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    object = SPVM_RUNTIME_API_new_short_array(api, length);
+    SPVM_OBJECT* object = SPVM_RUNTIME_API_new_short_array(api, length);
     
     if (__builtin_expect(object == NULL, 0)) {
       // Throw exception
@@ -2054,7 +2053,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    object = SPVM_RUNTIME_API_new_int_array(api, length);
+    SPVM_OBJECT* object = SPVM_RUNTIME_API_new_int_array(api, length);
     
     if (__builtin_expect(object == NULL, 0)) {
       // Throw exception
@@ -2073,7 +2072,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    object = SPVM_RUNTIME_API_new_long_array(api, length);
+    SPVM_OBJECT* object = SPVM_RUNTIME_API_new_long_array(api, length);
     
     if (__builtin_expect(object == NULL, 0)) {
       // Throw exception
@@ -2092,7 +2091,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    object = SPVM_RUNTIME_API_new_float_array(api, length);
+    SPVM_OBJECT* object = SPVM_RUNTIME_API_new_float_array(api, length);
     
     if (__builtin_expect(object == NULL, 0)) {
       // Throw exception
@@ -2111,7 +2110,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    object = SPVM_RUNTIME_API_new_double_array(api, length);
+    SPVM_OBJECT* object = SPVM_RUNTIME_API_new_double_array(api, length);
     
     if (__builtin_expect(object == NULL, 0)) {
       // Throw exception
@@ -2131,7 +2130,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
     
-    object = SPVM_RUNTIME_API_new_object_array(api, element_type_id, length);
+    SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object_array(api, element_type_id, length);
     
     if (__builtin_expect(object == NULL, 0)) {
       // Throw exception
@@ -2235,8 +2234,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     pc += success * (int16_t)((*(pc + 1) << 8) +  *(pc + 2)) + (~success & 1) * 3;
     operand_stack_top--;
     goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
+  case_SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to get an byte field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2249,8 +2248,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to get an short field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2263,8 +2263,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_GET_FIELD_INT:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_GET_FIELD_INT: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to get an int field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2277,8 +2278,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_GET_FIELD_LONG:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_GET_FIELD_LONG: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to get an long field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2291,8 +2293,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to get an float field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2305,8 +2308,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to get an double field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2319,8 +2323,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to get an object field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2333,8 +2338,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to weaken an object field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2352,8 +2358,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_SET_FIELD_BYTE:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_SET_FIELD_BYTE: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to set an byte field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2367,8 +2374,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_SET_FIELD_SHORT:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_SET_FIELD_SHORT: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to set an short field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2382,8 +2390,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_SET_FIELD_INT:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_SET_FIELD_INT: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to set an int field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2398,8 +2407,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_SET_FIELD_LONG:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_SET_FIELD_LONG: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to set an long field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2413,8 +2423,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_SET_FIELD_FLOAT:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_SET_FIELD_FLOAT: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to set an float field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2428,8 +2439,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE: 
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to set an double field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2443,8 +2455,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
-  case_SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT:
-    object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+  }
+  case_SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT: {
+    SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to set an object field must not be undefined.");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -2476,6 +2489,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
+  }
   case_SPVM_BYTECODE_C_CODE_CURRENT_LINE:
     current_line = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     pc += 5;
