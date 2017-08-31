@@ -589,6 +589,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     SPVM_VALUE args[255];
     memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_VALUE) * args_length);
     
+    api->set_exception(api, NULL);
+    
     SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
     
     if (api->get_exception(api)) {
