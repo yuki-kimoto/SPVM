@@ -176,8 +176,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         (*native_address)(api, call_stack);
         
         goto case_SPVM_BYTECODE_C_CODE_RETURN_VOID;
-        
-        break;
       }
       case SPVM_TYPE_C_CODE_BYTE: {
         int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
@@ -186,8 +184,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         operand_stack_top++;
         call_stack[operand_stack_top].byte_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_BYTE;
-        
-        break;
       }
       case SPVM_TYPE_C_CODE_SHORT: {
         int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
@@ -196,8 +192,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         operand_stack_top++;
         call_stack[operand_stack_top].short_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_SHORT;
-
-        break;
       }
       case SPVM_TYPE_C_CODE_INT: {
         
@@ -207,8 +201,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         operand_stack_top++;
         call_stack[operand_stack_top].int_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_INT;
-
-        break;
       }
       case SPVM_TYPE_C_CODE_FLOAT: {
         float (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
@@ -217,8 +209,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         operand_stack_top++;
         call_stack[operand_stack_top].float_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT;
-
-        break;
       }
       case SPVM_TYPE_C_CODE_DOUBLE: {
         double (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
@@ -227,8 +217,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         operand_stack_top++;
         call_stack[operand_stack_top].double_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE;
-
-        break;
       }
       default: {
         SPVM_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
