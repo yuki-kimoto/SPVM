@@ -619,7 +619,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     SPVM_VALUE return_value = call_stack[operand_stack_top];
     
     // Decrement object my vars reference count
-    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
     int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
     
@@ -652,7 +651,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
     
     // Decrement object my vars reference count
-    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
     int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
     if (object_my_vars_length) {
@@ -680,7 +678,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_RETURN_VOID: {
     // Decrement object my vars reference count
-    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
     int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
     if (object_my_vars_length) {
@@ -723,7 +720,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_DIE: {
     
     // Decrement object my vars reference count
-    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
     int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
     if (object_my_vars_length) {
@@ -739,9 +735,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
     }
-    
-    // Get constant pool sub
-    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     
     // Sub name
     int32_t sub_name_id = constant_pool_sub->abs_name_id;
