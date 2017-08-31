@@ -580,9 +580,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // Get subroutine ID
     sub_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
-    constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+    SPVM_CONSTANT_POOL_SUB* constant_pool_sub_called = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     
-    int32_t args_length = constant_pool_sub->args_length;
+    int32_t args_length = constant_pool_sub_called->args_length;
     
     operand_stack_top -= args_length;
     
@@ -590,7 +590,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_VALUE) * args_length);
     
     api->set_exception(api, NULL);
-    
+
     SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
     
     if (api->get_exception(api)) {
@@ -598,7 +598,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
     else {
-      if (!constant_pool_sub->is_void) {
+      if (!constant_pool_sub_called->is_void) {
         operand_stack_top++;
         call_stack[operand_stack_top] = return_value;
       }
@@ -622,6 +622,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
     int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
+    
     if (object_my_vars_length) {
       {
         int32_t i;
