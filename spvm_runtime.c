@@ -516,7 +516,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     SPVM_VALUE args[255];
     memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_VALUE) * args_length);
     
-    SPVM_RUNTIME_API_set_exception(runtime, NULL);
+    SPVM_RUNTIME_API_set_exception(api, NULL);
 
     SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
     
@@ -925,7 +925,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_BYTE: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-    index = call_stack[operand_stack_top].int_value;
+    int32_t index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "BYTE_ARRAY must not be undef(BYTE_ARRAY->[INDEX])");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -948,7 +948,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_SHORT: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-    index = call_stack[operand_stack_top].int_value;
+    int32_t index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "SHORT_ARRAY must not be undef(SHORT_ARRAY->[INDEX])");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -971,7 +971,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_INT: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-    index = call_stack[operand_stack_top].int_value;
+    int32_t index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "INT_ARRAY must not be undef(INT_ARRAY->[INDEX])");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -993,7 +993,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_LONG: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-    index = call_stack[operand_stack_top].int_value;
+    int32_t index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "LONG_ARRAY must not be undef(LONG_ARRAY->[INDEX])");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1015,7 +1015,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_FLOAT: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-    index = call_stack[operand_stack_top].int_value;
+    int32_t index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "FLOAT_ARRAY must not be undef(FLOAT_ARRAY->[INDEX])");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1037,7 +1037,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_DOUBLE: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-    index = call_stack[operand_stack_top].int_value;
+    int32_t index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "DOUBLE_ARRAY must not be undef(DOUBLE_ARRAY->[INDEX])");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1059,7 +1059,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_OBJECT: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-    index = call_stack[operand_stack_top].int_value;
+    int32_t index = call_stack[operand_stack_top].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "OBJECT_ARRAY must not be undef(OBJECT_ARRAY->[INDEX])");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1081,7 +1081,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_BYTE: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-    index = call_stack[operand_stack_top - 1].int_value;
+    int32_t index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "BYTE_ARRAY must not be undef(BYTE_ARRAY->[INDEX] = VALUE)");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1104,7 +1104,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_SHORT: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-    index = call_stack[operand_stack_top - 1].int_value;
+    int32_t index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "SHORT_ARRAY must not be undef(SHORT_ARRAY->[INDEX] = VALUE)");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1127,7 +1127,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_INT: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-    index = call_stack[operand_stack_top - 1].int_value;
+    int32_t index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "INT_ARRAY must not be undef(INT_ARRAY->[INDEX] = VALUE)");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1149,7 +1149,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_LONG: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-    index = call_stack[operand_stack_top - 1].int_value;
+    int32_t index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "LONG_ARRAY must not be undef(LONG_ARRAY->[INDEX] = VALUE)");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1171,7 +1171,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_FLOAT: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-    index = call_stack[operand_stack_top - 1].int_value;
+    int32_t index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "FLOAT_ARRAY must not be undef(FLOAT_ARRAY->[INDEX] = VALUE)");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1193,7 +1193,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_DOUBLE: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-    index = call_stack[operand_stack_top - 1].int_value;
+    int32_t index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "DOUBLE_ARRAY must not be undef(DOUBLE_ARRAY->[INDEX] = VALUE)");
       SPVM_RUNTIME_API_set_exception(api, exception);
@@ -1217,7 +1217,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT: {
     
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-    index = call_stack[operand_stack_top - 1].int_value;
+    int32_t index = call_stack[operand_stack_top - 1].int_value;
     if (__builtin_expect(!array, 0)) {
       SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "OBJECT_ARRAY must not be undef(OBJECT_ARRAY->[INDEX] = VALUE)");
       SPVM_RUNTIME_API_set_exception(api, exception);
