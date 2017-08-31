@@ -432,7 +432,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   SPVM_OBJECT* call_stack_array = SPVM_RUNTIME_API_new_value_array(api, call_stack_length);
   call_stack_array->ref_count++;
   SPVM_VALUE* call_stack = SPVM_RUNTIME_API_get_value_array_elements(api, call_stack_array);
-  
+
+  // Offten used variables
+  SPVM_OBJECT* array = NULL;
+  SPVM_OBJECT* exception = NULL;
+  SPVM_OBJECT* object = NULL;
+  int32_t index;
+  register int32_t success;
+  int32_t current_line = 0;
+
+
   // Copy arguments
   memcpy(call_stack, args, args_length * sizeof(SPVM_VALUE));
   
@@ -504,6 +513,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_TYPE_C_CODE_INT: {
+        
         int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
         int32_t return_value = (*native_address)(api, call_stack);
         SPVM_RUNTIME_API_set_exception(api, NULL);
@@ -566,14 +576,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   goto *jump[*pc];
 
-  // Offten used variables
-  SPVM_OBJECT* array = NULL;
-  SPVM_OBJECT* exception = NULL;
-  SPVM_OBJECT* object = NULL;
-  int32_t index;
-  register int32_t success;
-  int32_t current_line = 0;
-
   case_SPVM_BYTECODE_C_CODE_CALL_SUB: {
     // Get subroutine ID
     sub_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
@@ -585,7 +587,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     operand_stack_top -= args_length;
     
     SPVM_VALUE args[255];
-    memcpy(args, &call_stack[operand_stack_top], sizeof(SPVM_VALUE) * args_length);
+    memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_VALUE) * args_length);
     
     SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
     
