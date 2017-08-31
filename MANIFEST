@@ -31,6 +31,7 @@ solo/SPVM/Test/EnumA.spvm
 solo/SPVM/Test/EnumB.spvm
 solo/SPVM/Test/EnumC.spvm
 solo/SPVM/Test/EnumD.spvm
+solo/SPVM/Test/Inline.spvm
 solo/SPVM/Test/Minimal.spvm
 solo/SPVM/Test/Simple.spvm
 solo/SPVM/Test/Template.spvm
@@ -71,8 +72,6 @@ spvm_enumeration_value.c
 spvm_enumeration_value.h
 spvm_extention.c
 spvm_extention.h
-spvm_extention_bind.c
-spvm_extention_bind.h
 spvm_field_info.c
 spvm_field_info.h
 spvm_global.h

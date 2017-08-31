@@ -29,7 +29,6 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_limit.h"
 #include "spvm_extention.h"
-#include "spvm_extention_bind.h"
 #include "spvm_use.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_type.h"
