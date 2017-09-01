@@ -45,6 +45,10 @@ package Test {
   sub main($mvar : int) : int {
     
     {
+      error_eval_call();
+    }
+    
+    {
       # error_call_stack();
     }
     
@@ -1062,6 +1066,20 @@ package Test {
       return 0;
     }
   }
+
+  sub error_eval_call() : int {
+    eval {
+      error();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
 }
 
 =head1 NAME

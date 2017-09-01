@@ -134,6 +134,10 @@ my $start_objects_count = SPVM::get_objects_count();
 # Exception
 {
   {
+    ok(SPVM::TestCase::exception_eval_call_sub());
+  }
+  
+  {
     eval { SPVM::TestCase::exception_call_stack() };
     like($@, qr/Error/);
     like($@, qr/exception_die_return_int/);

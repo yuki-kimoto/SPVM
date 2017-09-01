@@ -34,6 +34,18 @@ package TestCase {
     FLOAT_PRECICE = 16384f,
     DOUBLE_PRECICE = 65536.0,
   }
+
+  sub exception_eval_call_sub() : int {
+    eval {
+      exception_die_return_int();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
   
   sub exception_call_stack() : int {
     exception_die_return_int();
