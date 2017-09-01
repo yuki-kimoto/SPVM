@@ -1165,6 +1165,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 *compiler->bufptr = '\0';
                 continue;
               }
+              else if (strcmp(keyword, "__NATIVE__") == 0) {
+                *compiler->bufptr = '\0';
+                continue;
+              }
               break;
           }
           

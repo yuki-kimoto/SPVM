@@ -4,4 +4,12 @@ package Test::Inline {
   sub sum($num1 : int, $num2 : int) : native int;
 }
 
-__END__
+__NATIVE__
+
+#include "spvm_api.h"
+
+int32_t SPVM__Test__Inline(SPVM_API api, SPVM_API_VALUE* args) {
+  int32_t total = args[0].int_value + args[1].int_value;
+  
+  return total;
+}
