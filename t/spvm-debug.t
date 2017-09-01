@@ -138,8 +138,50 @@ my $start_objects_count = SPVM::get_objects_count();
 # Exception
 {
   {
+    eval { SPVM::TestCase::exception_call_stack() };
+    like($@, qr/Error/);
+    like($@, qr/exception_die_return_int/);
+    like($@, qr/exception_call_stack/);
+  }
+
+  {
     eval { SPVM::TestCase::exception_die_return_byte() };
     like($@, qr/Error/);
+    like($@, qr/exception_die_return_byte/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_short() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_int() };
+    like($@, qr/Error/);
+    like($@, qr/exception_die_return_int/);
+    like($@, qr/TestCase\.spvm/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_long() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_float() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_double() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_object() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_void() };
+    like($@, qr/Error/);
+  }
+  
+  {
+    ok(SPVM::TestCase::exception_die_return_int_eval_catch());
   }
 }
 

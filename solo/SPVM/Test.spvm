@@ -1,48 +1,20 @@
-=pod
-
-ABCDE
-
-=cut ppppp
-
-use Test::EnumA;
-use Test::EnumB;
-use Test::EnumC;
-use Test::EnumD;
-use Test::Simple;
-use Test::Minimal;
-use Test::Template_int_long;
-use Test::Destructor;
-
-=head1 NAME
-
-SPVM::Test - SPVM test module
-
-=cut
-
 package Test {
-  has next_test : Test;
-  has minimal : Test::Minimal;
-  has x_byte : byte;
-  has x_short : short;
-  has x_int : int;
-  has x_long : long;
-  has x_float : float;
-  has x_double : double;
-
-  enum {
-    BYTE_MAX = 127b,
-    BYTE_MIN = -128b,
-    SHORT_MAX = 32767s,
-    SHORT_MIN = -32768s,
-    INT_MAX = 2147483647,
-    INT_MIN = -2147483648,
-    LONG_MAX = 9223372036854775807L,
-    LONG_MIN = -9223372036854775808L,
-    FLOAT_PRECICE = 32767f,
-    DOUBLE_PRECICE = 2147483647.0,
+  sub error() : int {
+    die "ERROR";
+  }
+  
+  sub error_call_stack() : int {
+    error();
   }
   
   sub main($mvar : int) : int {
+    
+    {
+      error_call_stack();
+    }
+  }
+}
+__END__
 
     {
       my $ret = error_eval();
@@ -1040,6 +1012,10 @@ package Test {
   
   sub error() : int {
     die "ERROR";
+  }
+  
+  sub error_call_stack() : int {
+    error();
   }
 
   sub error_eval() : int {

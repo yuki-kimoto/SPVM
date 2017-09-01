@@ -35,6 +35,10 @@ package TestCase {
     DOUBLE_PRECICE = 65536.0,
   }
   
+  sub exception_call_stack() : int {
+    exception_die_return_int();
+  }
+  
   sub exception_die_return_byte() : byte {
     die "Error";
   }
