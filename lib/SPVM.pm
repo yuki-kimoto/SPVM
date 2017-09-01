@@ -143,6 +143,12 @@ sub bind_native_subs {
   }
 }
 
+sub compile_inline_native_subs {
+  for my $package_info (@SPVM::PACKAGE_INFOS_INLINE) {
+    
+  }
+}
+
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
   require XSLoader;
@@ -156,6 +162,9 @@ CHECK {
   
   # Free compiler
   free_compiler();
+  
+  # Compile inline native subroutine
+  compile_inline_native_subs();
   
   # Bind native subroutines
   bind_native_subs();
