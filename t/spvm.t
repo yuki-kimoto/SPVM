@@ -136,6 +136,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     eval { SPVM::TestCase::exception_die_return_byte() };
     like($@, qr/Error/);
+    like($@, qr/exception_die_return_byte/);
   }
   {
     eval { SPVM::TestCase::exception_die_return_short() };
@@ -144,6 +145,8 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     eval { SPVM::TestCase::exception_die_return_int() };
     like($@, qr/Error/);
+    like($@, qr/exception_die_return_int/);
+    like($@, qr/TestCase\.spvm/);
   }
   {
     eval { SPVM::TestCase::exception_die_return_long() };
