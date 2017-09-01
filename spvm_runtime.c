@@ -637,7 +637,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_DIE: {
-    
     // Decrement object my vars reference count
     int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
     int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
@@ -682,7 +681,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     total_length += strlen(line_str);
     
     // Create exception message
-    SPVM_OBJECT* new_exception = SPVM_RUNTIME_API_new_byte_array(api, total_length);
+    SPVM_OBJECT* new_exception = SPVM_RUNTIME_API_new_string_len(api, total_length);
     memcpy(
       (void*)((intptr_t)new_exception + sizeof(SPVM_OBJECT)),
       (void*)((intptr_t)runtime->exception + sizeof(SPVM_OBJECT)),
