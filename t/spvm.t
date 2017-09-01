@@ -15,6 +15,8 @@ use lib "$FindBin::Bin/lib";
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
 
+# use SPVM::Inline 'TestCase::Inline';
+
 use POSIX ();
 
 use SPVM::Object;

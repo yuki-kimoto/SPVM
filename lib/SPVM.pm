@@ -26,7 +26,28 @@ our $VERSION = '0.0253';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
+our %PACKAGE_INFO_SYMTABLE;
 our $API;
+
+sub import {
+  my ($class, $package_name) = @_;
+  
+  # Add package infomations
+  if (defined $package_name) {
+    unless ($PACKAGE_INFO_SYMTABLE{$package_name}) {
+      my ($file, $line) = (caller)[1, 2];
+
+      my $package_info = {
+        name => $package_name,
+        file => $file,
+        line => $line
+      };
+      push @PACKAGE_INFOS, $package_info;
+      
+      $PACKAGE_INFO_SYMTABLE{$package_name} = 1;
+    }
+  }
+}
 
 sub _get_dll_file {
   my $package_name = shift;
@@ -313,28 +334,6 @@ sub new_object {
   my $object = SPVM::Object->new_object($package_name);
   
   return $object;
-}
-
-my $package_names_h = {};
-
-sub import {
-  my ($class, $package_name) = @_;
-  
-  # Add package infomations
-  if (defined $package_name) {
-    unless ($package_names_h->{$package_name}) {
-      my ($file, $line) = (caller)[1, 2];
-
-      my $package_info = {
-        name => $package_name,
-        file => $file,
-        line => $line
-      };
-      push @PACKAGE_INFOS, $package_info;
-      
-      $package_names_h->{$package_name} = 1;
-    }
-  }
 }
 
 sub build_spvm_subs {
