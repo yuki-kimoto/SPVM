@@ -665,10 +665,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // stack trace strings
     const char* from = "\n  from ";
     const char* at = "() at ";
-    const char* line = " line ";
-    
-    char line_str[20];
-    sprintf(line_str, "%" PRId32, current_line);
     
     // Total string length
     int32_t total_length = 0;
@@ -677,8 +673,15 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     total_length += strlen(sub_name);
     total_length += strlen(at);
     total_length += strlen(file_name);
-    total_length += strlen(line);
-    total_length += strlen(line_str);
+
+    const char* line = " line ";
+    char line_str[20];
+    
+    if (debug) {
+      sprintf(line_str, "%" PRId32, current_line);
+      total_length += strlen(line);
+      total_length += strlen(line_str);
+    }
     
     // Create exception message
     SPVM_OBJECT* new_exception = SPVM_RUNTIME_API_new_string_len(api, total_length);

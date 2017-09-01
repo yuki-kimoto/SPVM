@@ -453,7 +453,7 @@ int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_OBJECT* obj
   return (int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT));
 }
 
-int8_t* SPVM_RUNTIME_API_get_string_bytes(SPVM_API* api, SPVM_OBJECT* object) {
+char* SPVM_RUNTIME_API_get_string_bytes(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
   return (int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT));
