@@ -1532,9 +1532,6 @@ call_sub(...)
   SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[return_type_id];
   int32_t return_type_code = return_type->code;
   
-  // Set exception to undef
-  api->set_exception(api, NULL);
-  
   // Return count
   int32_t return_count;
   switch (return_type_code) {
@@ -1637,6 +1634,6 @@ call_sub(...)
     SV* sv_exception = newSVpv(exception_bytes, length);
     croak("%s", SvPV_nolen(sv_exception));
   }
-
+  
   XSRETURN(return_count);
 }

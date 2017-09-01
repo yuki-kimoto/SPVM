@@ -35,6 +35,38 @@ package TestCase {
     DOUBLE_PRECICE = 65536.0,
   }
   
+  sub exception_die_return_byte() : byte {
+    die "Error";
+  }
+  
+  sub exception_die_return_short() : short {
+    die "Error";
+  }
+  
+  sub exception_die_return_int() : int {
+    die "Error";
+  }
+  
+  sub exception_die_return_long() : long {
+    die "Error";
+  }
+  
+  sub exception_die_return_float() : float {
+    die "Error";
+  }
+  
+  sub exception_die_return_double() : double {
+    die "Error";
+  }
+  
+  sub exception_die_return_object() : TestCase::Minimal {
+    die "Error";
+  }
+  
+  sub exception_die_return_void() : void {
+    die "Error";
+  }
+  
   sub call_sub_last_camma() : int {
     
     my $total = sum_int(3, 4,);

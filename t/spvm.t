@@ -131,6 +131,14 @@ my $start_objects_count = SPVM::get_objects_count();
   }
 }
 
+# Exception
+{
+  {
+    eval { SPVM::TestCase::exception_die_return_byte() };
+    like($@, qr/Error/);
+  }
+}
+
 # Call void subroutine
 {
   ok(SPVM::TestCase::call_void());
