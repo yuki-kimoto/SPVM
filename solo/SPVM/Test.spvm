@@ -43,6 +43,14 @@ package Test {
   }
   
   sub main($mvar : int) : int {
+
+    {
+      my $ret = error_eval();
+      
+      std::println_int($ret);
+    }
+    
+    error_eval();
     
     my $dest = new Test::Destructor;
     
@@ -1032,6 +1040,19 @@ package Test {
   
   sub error() : int {
     die "ERROR";
+  }
+
+  sub error_eval() : int {
+    eval {
+      die "ERROR";
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
 }
 

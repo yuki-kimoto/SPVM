@@ -180,6 +180,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_TYPE_C_CODE_BYTE: {
         int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
         int8_t return_value = (*native_address)(api, call_stack);
+
+        if (runtime->exception) {
+          return_value = 0;
+        }
         
         operand_stack_top++;
         call_stack[operand_stack_top].byte_value = return_value;
@@ -188,6 +192,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_TYPE_C_CODE_SHORT: {
         int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
         int16_t return_value = (*native_address)(api, call_stack);
+
+        if (runtime->exception) {
+          return_value = 0;
+        }
 
         operand_stack_top++;
         call_stack[operand_stack_top].short_value = return_value;
@@ -198,6 +206,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
         int32_t return_value = (*native_address)(api, call_stack);
 
+        if (runtime->exception) {
+          return_value = 0;
+        }
+
         operand_stack_top++;
         call_stack[operand_stack_top].int_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_INT;
@@ -206,6 +218,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         float (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
         float return_value = (*native_address)(api, call_stack);
 
+        if (runtime->exception) {
+          return_value = 0;
+        }
+        
         operand_stack_top++;
         call_stack[operand_stack_top].float_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT;
@@ -214,6 +230,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         double (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
         double return_value = (*native_address)(api, call_stack);
 
+        if (runtime->exception) {
+          return_value = 0;
+        }
+        
         operand_stack_top++;
         call_stack[operand_stack_top].double_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE;
@@ -222,6 +242,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         SPVM_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
         SPVM_OBJECT* return_value = (*native_address)(api, call_stack);
 
+        if (runtime->exception) {
+          return_value = NULL;
+        }
+        
         operand_stack_top++;
         call_stack[operand_stack_top].object_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT;
@@ -503,13 +527,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
   {
     // Get return value
-    SPVM_VALUE return_value;
-    if (runtime->exception) {
-      memset(&return_value, 0, sizeof(SPVM_VALUE));
-    }
-    else {
-      return_value = call_stack[operand_stack_top];
-    }
+    SPVM_VALUE return_value = call_stack[operand_stack_top];
     
     // Decrement object my vars reference count
     int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
@@ -538,13 +556,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
     
-    SPVM_VALUE return_value;
-    if (runtime->exception) {
-      memset(&return_value, 0, sizeof(SPVM_VALUE));
-    }
-    else {
-      return_value = call_stack[operand_stack_top];
-    }
+    SPVM_VALUE return_value = call_stack[operand_stack_top];
     
     // Increment ref count of return value not to release by decrement
     if (return_value.object_value != NULL) {
@@ -611,6 +623,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION: {
     operand_stack_top++;
     call_stack[operand_stack_top].object_value = (SPVM_OBJECT*)runtime->exception;
+    
     pc++;
     goto *jump[*pc];
   }
@@ -2225,6 +2238,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     operand_stack_top--;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_IF_NON_NULL:
+    
     success = call_stack[operand_stack_top].object_value != (void*)NULL;
     pc += success * (int16_t)((*(pc + 1) << 8) +  *(pc + 2)) + (~success & 1) * 3;
     operand_stack_top--;

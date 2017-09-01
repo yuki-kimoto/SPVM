@@ -625,6 +625,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               case SPVM_OP_C_CODE_DIE: {
                 //  Goto exception handler
                 if (eval_stack->length > 0) {
+                  // Goto end of evel block
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
                   
                   int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);

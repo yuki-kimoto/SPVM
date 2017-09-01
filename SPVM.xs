@@ -81,8 +81,6 @@ DESTROY(...)
   
   assert(SvOK(sv_object));
   
-  // warn("DESTROY");
-  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
@@ -223,12 +221,9 @@ set(...)
       SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
       int32_t value_type_id = value->type_id;
       
-      // warn("AAAAAAAAAAA %d", value_type_id);
-      
       SPVM_CONSTANT_POOL_TYPE* constant_pool_value_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[value_type_id];
       
       int32_t value_type_code = constant_pool_value_type->code;
-      // warn("BBBBBB %d %d %d", value_type_id, value_type_code, constant_pool_value_type->code);
       
       if (value_type_id != field_type_id
       ) {

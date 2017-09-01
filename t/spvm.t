@@ -165,6 +165,10 @@ my $start_objects_count = SPVM::get_objects_count();
     eval { SPVM::TestCase::exception_die_return_void() };
     like($@, qr/Error/);
   }
+  
+  {
+    ok(SPVM::TestCase::exception_die_return_int_eval_catch());
+  }
 }
 
 # Call void subroutine
