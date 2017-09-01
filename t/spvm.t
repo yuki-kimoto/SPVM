@@ -137,6 +137,34 @@ my $start_objects_count = SPVM::get_objects_count();
     eval { SPVM::TestCase::exception_die_return_byte() };
     like($@, qr/Error/);
   }
+  {
+    eval { SPVM::TestCase::exception_die_return_short() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_int() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_long() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_float() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_double() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_object() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_die_return_void() };
+    like($@, qr/Error/);
+  }
 }
 
 # Call void subroutine
