@@ -29,12 +29,14 @@ our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
 our $API;
 
+our @PACKAGE_INFOS_INLINE;
+
 sub import {
   my ($class, $package_name) = @_;
   
   # Add package infomations
   if (defined $package_name) {
-    unless ($PACKAGE_INFO_SYMTABLE{$package_name}) {
+    unless ($SPVM::PACKAGE_INFO_SYMTABLE{$package_name}) {
       my ($file, $line) = (caller)[1, 2];
 
       my $package_info = {
@@ -42,11 +44,15 @@ sub import {
         file => $file,
         line => $line
       };
-      push @PACKAGE_INFOS, $package_info;
+      push @SPVM::PACKAGE_INFOS, $package_info;
       
-      $PACKAGE_INFO_SYMTABLE{$package_name} = 1;
+      $SPVM::PACKAGE_INFO_SYMTABLE{$package_name} = 1;
+      
+      return $package_info;
     }
   }
+  
+  return undef;
 }
 
 sub _get_dll_file {
