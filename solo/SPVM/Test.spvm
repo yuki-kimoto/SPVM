@@ -1030,7 +1030,9 @@ package Test {
     return 0;
   }
   
-
+  sub error() : int {
+    die "ERROR";
+  }
 }
 
 =head1 NAME

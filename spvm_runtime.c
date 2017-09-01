@@ -476,7 +476,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
     
     if (api->get_exception(api)) {
-      goto case_SPVM_BYTECODE_C_CODE_DIE;
+      memset(&return_value, 0, sizeof(SPVM_VALUE));
+      
+      // Exception handler
+      pc += 5 + (debug * 5);
+      
+      goto *jump[*pc];
     }
     else {
       if (!constant_pool_sub_called->is_void) {
@@ -484,6 +489,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         call_stack[operand_stack_top] = return_value;
       }
       
+      // Next operation
       pc += 5 + (debug * 5) + 3;
       
       goto *jump[*pc];
@@ -524,6 +530,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
     
     SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+    
+    // No exception
+    SPVM_RUNTIME_API_set_exception(api, NULL);
     
     return return_value;
   }
@@ -566,6 +575,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
     
+    // No exception
+    SPVM_RUNTIME_API_set_exception(api, NULL);
+    
     return return_value;
   }
   case_SPVM_BYTECODE_C_CODE_RETURN_VOID: {
@@ -590,6 +602,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
     
     SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+    
+    // No exception
+    SPVM_RUNTIME_API_set_exception(api, NULL);
     
     return return_value;
   }
