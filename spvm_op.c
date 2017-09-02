@@ -1072,6 +1072,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   
   SPVM_USE* use = SPVM_USE_new(compiler);
   op_use->uv.use = use;
+  use->package_name_with_template_args = package_name_with_template_args;
   
   SPVM_DYNAMIC_ARRAY* part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
