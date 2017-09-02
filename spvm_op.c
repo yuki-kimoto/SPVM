@@ -186,6 +186,7 @@ SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const cha
   SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_USE, file, line);
   SPVM_USE* use = SPVM_USE_new(compiler);
   use->package_name = package_name;
+  use->package_name_with_template_args = package_name;
   op_use->uv.use = use;
   SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package);
   
