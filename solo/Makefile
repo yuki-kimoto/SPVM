@@ -14,7 +14,7 @@ CPPFLAGS  = -MD -MF $(@:%.o=%.Po)
 OBJDIR := solo/objs
 DIRS += $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
 $(OBJDIR)/%.o: %.c | $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(LIBS) $(INCLUDE) -c -o $@ $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 
 # libspvm
 libspvm_SRCS := $(wildcard *.c) spvm_yacc.c

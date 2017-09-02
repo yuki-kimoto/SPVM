@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include "spvm_compiler.h"
 #include "spvm_type.h"
@@ -108,16 +109,17 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
-  /*
-  // Build inc symtable
+  // Build use package id symtable
   {
-    int32_t inc_index;
-    for (inc_index = 0; inc_index < compiler->incs->length; inc_index++) {
-      const char* inc = SPVM_DYNAMIC_ARRAY_fetch(compiler->incs, inc_index);
-      SPVM_HASH_insert(runtime->inc_symtable, inc, strlen(inc), (void*)(intptr_t)inc->id);
+    int32_t package_name_index;
+    for (package_name_index = 0; package_name_index < compiler->use_package_names->length; package_name_index++) {
+      const char* package_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->use_package_names, package_name_index);
+      int32_t package_name_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, package_name, strlen(package_name));
+      assert(package_name_id > 0);
+      
+      SPVM_HASH_insert(runtime->use_package_id_symtable, package_name, strlen(package_name), (void*)(intptr_t)package_name_id);
     }
   }
-  */
   
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
@@ -162,8 +164,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->string_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   
-  compiler->inc_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
-  compiler->incs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  compiler->use_package_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
   compiler->native_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 

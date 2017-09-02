@@ -362,7 +362,7 @@ int32_t SPVM_CONSTANT_POOL_push_double(SPVM_COMPILER* compiler, SPVM_CONSTANT_PO
 
 int32_t SPVM_CONSTANT_POOL_push_string(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, const char* string) {
   
-  int32_t id = SPVM_HASH_search(compiler->string_symtable, string, strlen(string));
+  int32_t id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, string, strlen(string));
   
   if (id > 0) {
     return id;
@@ -383,7 +383,7 @@ int32_t SPVM_CONSTANT_POOL_push_string(SPVM_COMPILER* compiler, SPVM_CONSTANT_PO
     
     constant_pool->length += extend_length;
     
-    SPVM_HASH_insert(compiler->string_symtable, string, strlen(string), id);
+    SPVM_HASH_insert(compiler->string_symtable, string, strlen(string), (void*)(intptr_t)id);
     
     return id;
   }

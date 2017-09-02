@@ -90,9 +90,8 @@ struct SPVM_compiler {
   
   SPVM_DYNAMIC_ARRAY* cur_template_args;
   
-  SPVM_DYNAMIC_ARRAY* incs;
-  
-  SPVM_HASH* inc_symtable;
+  // Use module pathes
+  SPVM_DYNAMIC_ARRAY* use_package_names;
   
   // Current line number
   int32_t cur_line;

@@ -34,7 +34,7 @@ struct SPVM_runtime {
   SPVM_HASH* field_info_id_symtable;
   
   // Module include symbol table
-  SPVM_HASH* inc_symtable;
+  SPVM_HASH* use_package_id_symtable;
   
   // Packages length
   int32_t packages_length;

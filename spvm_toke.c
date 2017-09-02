@@ -21,6 +21,7 @@
 #include "spvm_descriptor.h"
 #include "spvm_type.h"
 #include "spvm_use.h"
+#include "spvm_constant_pool.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -163,8 +164,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               
               // Add package loading information
               const char* package_name_with_template_args = op_use->uv.use->package_name_with_template_args;
-              SPVM_DYNAMIC_ARRAY_push(compiler->incs, (void*)package_name_with_template_args);
-              SPVM_HASH_insert(compiler->inc_symtable, package_name_with_template_args, strlen(package_name_with_template_args), (void*)cur_file);
+              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_name_with_template_args);
+              SPVM_DYNAMIC_ARRAY_push(compiler->use_package_names, (void*)package_name_with_template_args);
               
               compiler->cur_src = cur_src;
               compiler->bufptr = cur_src;
