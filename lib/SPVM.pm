@@ -145,9 +145,13 @@ sub bind_native_subs {
 }
 
 sub compile_inline_native_subs {
+
+  my $temp_dir = tempdir;
+  my $native_src_file = "$temp_dir/inline_native.c";
+  open my $native_src_fh, '>>', $native_src_file
+    or die "Can't open $native_src_file:$!";
   
   for my $package_info (@SPVM::PACKAGE_INFOS_INLINE) {
-    my $temp_dir = tempdir;
     
     my $src = "$temp_dir/inline_native.c";
     
@@ -160,9 +164,15 @@ sub compile_inline_native_subs {
     
     my $spvm_content = do { local $/; <$spvm_fh> };
     
-    warn "$spvm_content";
+    my $native_src;
+    if ($spvm_content =~ /__NATIVE__(.*)$/sm) {
+      $native_src = $1;
+    }
     
+    print $native_src_fh, "$native_src\n";
   }
+  
+  
 }
 
 # Compile SPVM source code just after compile-time of Perl
