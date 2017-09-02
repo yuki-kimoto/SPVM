@@ -19,6 +19,8 @@ use lib "$FindBin::Bin/lib";
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
 
+use SPVM::Inline 'TestCase::Inline';
+
 use POSIX ();
 
 use SPVM::Object;
@@ -138,6 +140,10 @@ my $start_objects_count = SPVM::get_objects_count();
 # Exception
 {
   {
+    ok(SPVM::TestCase::exception_eval_call_sub());
+  }
+  
+  {
     eval { SPVM::TestCase::exception_call_stack() };
     like($@, qr/Error/);
     like($@, qr/exception_die_return_int/);
@@ -255,6 +261,7 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::get_object_from_freelist());
 }
 
+=pod
 is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
@@ -262,6 +269,12 @@ is_deeply(
     {name => 'std', file => $file, line => $use_std_line}
   ]
 );
+=cut
+
+# Inline
+{
+  ok(SPVM::TestCase::spvm_inline());
+}
 
 # Get object from freelist
 {

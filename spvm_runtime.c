@@ -171,18 +171,19 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   if (constant_pool_sub->is_native) {
     // Set runtimeironment
     SPVM_CONSTANT_POOL_TYPE* constant_pool_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[constant_pool_sub->return_type_id];
+
     
     // Call native subroutine
     switch (constant_pool_sub_return_type->code) {
       case SPVM_TYPE_C_CODE_VOID: {
-        void (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
-        (*native_address)(api, call_stack);
+        void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
+        (*native_address)(api, (SPVM_API_VALUE*)call_stack);
         
         goto case_SPVM_BYTECODE_C_CODE_RETURN_VOID;
       }
       case SPVM_TYPE_C_CODE_BYTE: {
-        int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
-        int8_t return_value = (*native_address)(api, call_stack);
+        int8_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
+        int8_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
           return_value = 0;
@@ -193,8 +194,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         goto case_SPVM_BYTECODE_C_CODE_RETURN_BYTE;
       }
       case SPVM_TYPE_C_CODE_SHORT: {
-        int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
-        int16_t return_value = (*native_address)(api, call_stack);
+        int16_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
+        int16_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
           return_value = 0;
@@ -206,8 +207,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_TYPE_C_CODE_INT: {
         
-        int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
-        int32_t return_value = (*native_address)(api, call_stack);
+        int32_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
+        
+        int32_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
           return_value = 0;
@@ -218,8 +220,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         goto case_SPVM_BYTECODE_C_CODE_RETURN_INT;
       }
       case SPVM_TYPE_C_CODE_FLOAT: {
-        float (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
-        float return_value = (*native_address)(api, call_stack);
+        float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
+        float return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
           return_value = 0;
@@ -230,8 +232,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         goto case_SPVM_BYTECODE_C_CODE_RETURN_FLOAT;
       }
       case SPVM_TYPE_C_CODE_DOUBLE: {
-        double (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
-        double return_value = (*native_address)(api, call_stack);
+        double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
+        double return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
           return_value = 0;
@@ -242,8 +244,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         goto case_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE;
       }
       default: {
-        SPVM_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = constant_pool_sub->native_address;
-        SPVM_OBJECT* return_value = (*native_address)(api, call_stack);
+        SPVM_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
+        SPVM_OBJECT* return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
           return_value = NULL;

@@ -1,6 +1,7 @@
 use TestCase::Weaken;
 use TestCase::Minimal;
 use TestCase::Destructor;
+use TestCase::Inline;
 
 package TestCase {
   has x_byte : byte;
@@ -34,7 +35,17 @@ package TestCase {
     FLOAT_PRECICE = 16384f,
     DOUBLE_PRECICE = 65536.0,
   }
-
+  
+  sub spvm_inline() : int {
+    my $total = TestCase::Inline::sum(2, 3);
+    
+    if ($total == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   sub exception_eval_call_sub() : int {
     eval {
       exception_die_return_int();

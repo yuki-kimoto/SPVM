@@ -267,6 +267,11 @@ is_deeply(
 );
 =cut
 
+# Inline
+{
+  ok(SPVM::TestCase::spvm_inline());
+}
+
 # Get object from freelist
 {
   ok(SPVM::TestCase::get_object_from_freelist());
