@@ -100,9 +100,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   // Constant pool type symbol table
   runtime->field_id_symtable = SPVM_HASH_new(0);
-
+  
   // Constant pool type symbol table
   runtime->field_info_id_symtable = SPVM_HASH_new(0);
+  
+  // Constant pool type symbol table
+  runtime->inc_symtable = SPVM_HASH_new(0);
   
   return runtime;
 }
