@@ -18,6 +18,8 @@ use SPVM::Array::Double;
 use SPVM::String;
 use SPVM::Array::Object;
 use File::Temp 'tempdir';
+use ExtUtils::CBuilder;
+
 
 use Encode 'encode';
 
@@ -29,6 +31,7 @@ our $COMPILER;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
 our $API;
+our $INLINE_DLL_FILE;
 
 our @PACKAGE_INFOS_INLINE;
 
@@ -172,7 +175,11 @@ sub compile_inline_native_subs {
     print $native_src_fh, "$native_src\n";
   }
   
+  my $cbuilder = ExtUtils::CBuilder->new;
+  my $obj_file = $cbuilder->compile(source => $native_src_file);
+  my $lib_file = $cbuilder->link(objects => $obj_file);
   
+  $INLINE_DLL_FILE = $lib_file;
 }
 
 # Compile SPVM source code just after compile-time of Perl
