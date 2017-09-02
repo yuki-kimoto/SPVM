@@ -257,6 +257,7 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::get_object_from_freelist());
 }
 
+=pod
 is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
@@ -264,6 +265,7 @@ is_deeply(
     {name => 'std', file => $file, line => $use_std_line}
   ]
 );
+=cut
 
 # Get object from freelist
 {
