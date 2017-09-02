@@ -109,15 +109,17 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Build use package id symtable
+  // Build use package path id symtable
   {
     int32_t package_name_index;
     for (package_name_index = 0; package_name_index < compiler->use_package_names->length; package_name_index++) {
       const char* package_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->use_package_names, package_name_index);
-      int32_t package_name_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, package_name, strlen(package_name));
-      assert(package_name_id > 0);
+      const char* package_path = SPVM_HASH_search(compiler->use_package_path_symtable, package_name, strlen(package_name));
       
-      SPVM_HASH_insert(runtime->use_package_path_id_symtable, package_name, strlen(package_name), (void*)(intptr_t)package_name_id);
+      int32_t package_path_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, package_path, strlen(package_path));
+      assert(package_path_id > 0);
+      
+      SPVM_HASH_insert(runtime->use_package_path_id_symtable, package_name, strlen(package_name), (void*)(intptr_t)package_path_id);
     }
   }
   
@@ -165,6 +167,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->string_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   
   compiler->use_package_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+
+  compiler->use_package_path_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   
   compiler->native_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 

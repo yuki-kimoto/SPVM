@@ -93,6 +93,9 @@ struct SPVM_compiler {
   // Use module pathes
   SPVM_DYNAMIC_ARRAY* use_package_names;
   
+  // Use module pathes
+  SPVM_HASH* use_package_path_symtable;
+  
   // Current line number
   int32_t cur_line;
   

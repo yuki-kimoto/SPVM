@@ -163,9 +163,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               cur_src[file_size] = '\0';
               
               // Add package loading information
-              const char* package_name_with_template_args = op_use->uv.use->package_name_with_template_args;
-              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_name_with_template_args);
-              SPVM_DYNAMIC_ARRAY_push(compiler->use_package_names, (void*)package_name_with_template_args);
+              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_name);
+              const char* package_path = cur_file;
+              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_path);
+              SPVM_DYNAMIC_ARRAY_push(compiler->use_package_names, (void*)package_name);
+              SPVM_HASH_insert(compiler->use_package_path_symtable, package_name, strlen(package_name), (void*)package_path);
               
               compiler->cur_src = cur_src;
               compiler->bufptr = cur_src;

@@ -151,7 +151,9 @@ sub compile_inline_native_subs {
     
     my $src = "$temp_dir/inline_native.c";
     
-    my $spvm_file = $package_info->{file};
+    my $package_name = $package_info->{name};
+    
+    my $spvm_file = get_use_package_path($package_name);
     
     open my $spvm_fh, '<', $spvm_file
       or confess "Can't open $spvm_file: $!";
