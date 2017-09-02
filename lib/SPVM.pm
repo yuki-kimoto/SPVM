@@ -17,6 +17,7 @@ use SPVM::Array::Float;
 use SPVM::Array::Double;
 use SPVM::String;
 use SPVM::Array::Object;
+use File::Temp 'tempdir';
 
 use Encode 'encode';
 
@@ -145,6 +146,11 @@ sub bind_native_subs {
 
 sub compile_inline_native_subs {
   for my $package_info (@SPVM::PACKAGE_INFOS_INLINE) {
+    my $temp_dir = tempdir;
+    
+    my $src = "$temp_dir/inline_native.c";
+    
+    
     
   }
 }
