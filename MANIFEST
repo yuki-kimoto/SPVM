@@ -14,7 +14,9 @@ lib/SPVM/Document/FAQ.pod
 lib/SPVM/Document/PerlAPI.pod
 lib/SPVM/Document/Spec.pod
 lib/SPVM/Document/Tutorial.pod
+lib/SPVM/Inline.pm
 lib/SPVM/Object.pm
+lib/SPVM/spvm_api.h
 lib/SPVM/std.pm
 lib/SPVM/std.spvm
 lib/SPVM/String.pm
@@ -40,7 +42,6 @@ solo/t/spvm_t_array.c
 solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
 SPVM.xs
-spvm_api.h
 spvm_base.h
 spvm_bytecode.c
 spvm_bytecode.h
@@ -121,6 +122,7 @@ spvm_yacc_util.c
 spvm_yacc_util.h
 t/lib/SPVM/TestCase.spvm
 t/lib/SPVM/TestCase/Destructor.spvm
+t/lib/SPVM/TestCase/Inline.spvm
 t/lib/SPVM/TestCase/Minimal.spvm
 t/lib/SPVM/TestCase/Weaken.spvm
 t/lib/SPVM/TestCase/Weaken2.spvm

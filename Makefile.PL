@@ -23,7 +23,7 @@ WriteMakefile(
       (ABSTRACT_FROM  => 'lib/SPVM.pm', # retrieve abstract from module
        AUTHOR         => 'A. U. Thor <kimoto@sakura.ne.jp>') : ()),
     LIBS              => ['-lm'], # e.g., '-lm'
-    INC               => '-I.', # e.g., '-I. -I/usr/include/other'
+    INC               => '-I. -Ilib/SPVM', # e.g., '-I. -I/usr/include/other'
     OPTIMIZE => '-O3',
     OBJECT            => '$(O_FILES)', # link all the C files too
     $debug ? (DEFINE => '-DDEBUG') : ()
