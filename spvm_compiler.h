@@ -10,6 +10,9 @@ struct SPVM_compiler {
   // Constant pool
   SPVM_CONSTANT_POOL* constant_pool;
   
+  // String symbol table
+  SPVM_HASH* string_symtable;
+  
   // Bytecodes
   SPVM_BYTECODE_ARRAY* bytecode_array;
 

@@ -108,6 +108,17 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
+  /*
+  // Build inc symtable
+  {
+    int32_t inc_index;
+    for (inc_index = 0; inc_index < compiler->incs->length; inc_index++) {
+      const char* inc = SPVM_DYNAMIC_ARRAY_fetch(compiler->incs, inc_index);
+      SPVM_HASH_insert(runtime->inc_symtable, inc, strlen(inc), (void*)(intptr_t)inc->id);
+    }
+  }
+  */
+  
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
   runtime->packages_length = op_packages->length;
@@ -149,6 +160,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  compiler->string_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   
   compiler->inc_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->incs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
