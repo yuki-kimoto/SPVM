@@ -117,7 +117,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
       int32_t package_name_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, package_name, strlen(package_name));
       assert(package_name_id > 0);
       
-      SPVM_HASH_insert(runtime->use_package_id_symtable, package_name, strlen(package_name), (void*)(intptr_t)package_name_id);
+      SPVM_HASH_insert(runtime->use_package_path_id_symtable, package_name, strlen(package_name), (void*)(intptr_t)package_name_id);
     }
   }
   

@@ -1297,6 +1297,31 @@ get_native_sub_names(...)
 }
 
 SV*
+get_use_package_path(...)
+  PPCODE:
+{
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+
+  SV* sv_package_name = ST(0);
+  const char* package_name = SvPV_nolen(sv_package_name);
+  
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  int32_t package_name_id = (int32_t)(intptr_t)SPVM_HASH_search(runtime->use_package_path_id_symtable, package_name, strlen(package_name));
+  
+  const char* use_package_path = (char*)&constant_pool[package_name_id + 1];
+  
+  SV* sv_use_package_path = sv_2mortal(newSVpv(use_package_path, 0));
+  
+  XPUSHs(sv_use_package_path);
+  
+  XSRETURN(1);
+}
+
+SV*
 bind_native_sub(...)
   PPCODE:
 {
