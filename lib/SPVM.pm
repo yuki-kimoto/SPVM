@@ -94,6 +94,7 @@ sub search_native_address {
     if ($dll_libref) {
       my $sub_abs_name_c = $sub_abs_name;
       $sub_abs_name_c =~ s/:/_/g;
+      warn("CCCCCCCCC $sub_abs_name_c");
       $native_address = DynaLoader::dl_find_symbol($dll_libref, $sub_abs_name_c);
     }
     else {
@@ -122,7 +123,6 @@ sub get_sub_native_address {
   my $dll_file;
   my $dll_package_name = $package_name;
   while (1) {
-    my $not_found;
     $dll_file = _get_dll_file($dll_package_name);
     $native_address = search_native_address($dll_file, $sub_abs_name);
     
@@ -137,6 +137,13 @@ sub get_sub_native_address {
         last;
       }
     }
+  }
+  
+  # Search inline dll
+  unless ($native_address) {
+    my $dll_file = $INLINE_DLL_FILE;
+    $native_address = search_native_address($dll_file, $sub_abs_name);
+    warn "AAAAAAAAAA $native_address";
   }
   
   return $native_address;
