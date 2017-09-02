@@ -84,6 +84,29 @@ sub _get_dll_file {
   return $dll_file;
 }
 
+sub search_native_address {
+  my ($dll_file, $sub_abs_name) = @_;
+  
+  my $native_address;
+  
+  if ($dll_file) {
+    my $dll_libref = DynaLoader::dl_load_file($dll_file);
+    if ($dll_libref) {
+      my $sub_abs_name_c = $sub_abs_name;
+      $sub_abs_name_c =~ s/:/_/g;
+      $native_address = DynaLoader::dl_find_symbol($dll_libref, $sub_abs_name_c);
+    }
+    else {
+      return;
+    }
+  }
+  else {
+    return;
+  }
+  
+  return $native_address;
+}
+
 sub get_sub_native_address {
   my $sub_abs_name = shift;
   
@@ -101,28 +124,12 @@ sub get_sub_native_address {
   while (1) {
     my $not_found;
     $dll_file = _get_dll_file($dll_package_name);
-    if ($dll_file) {
-      my $dll_libref = DynaLoader::dl_load_file($dll_file);
-      if ($dll_libref) {
-        my $sub_abs_name_c = $sub_abs_name;
-        $sub_abs_name_c =~ s/:/_/g;
-        $native_address = DynaLoader::dl_find_symbol($dll_libref, $sub_abs_name_c);
-        if ($native_address) {
-          last;
-        }
-        else {
-          $not_found = 1;
-        }
-      }
-      else {
-        $not_found = 1;
-      }
+    $native_address = search_native_address($dll_file, $sub_abs_name);
+    
+    if ($native_address) {
+      last;
     }
     else {
-      $not_found = 1;
-    }
-    
-    if ($not_found) {
       if ($dll_package_name =~ /::/) {
         $dll_package_name =~ s/::[^:]+$//;
       }
