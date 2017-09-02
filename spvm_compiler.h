@@ -87,6 +87,10 @@ struct SPVM_compiler {
   
   SPVM_DYNAMIC_ARRAY* cur_template_args;
   
+  SPVM_DYNAMIC_ARRAY* incs;
+  
+  SPVM_HASH* inc_symtable;
+  
   // Current line number
   int32_t cur_line;
   

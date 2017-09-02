@@ -150,6 +150,9 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
+  compiler->inc_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->incs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  
   compiler->native_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
   compiler->enum_default_type_code = SPVM_TYPE_C_CODE_INT;

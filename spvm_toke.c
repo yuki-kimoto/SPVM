@@ -161,6 +161,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fclose(fh);
               cur_src[file_size] = '\0';
               
+              // Add package loading information
+              SPVM_DYNAMIC_ARRAY_push(compiler->incs, (void*)package_name);
+              SPVM_HASH_insert(compiler->inc_symtable, package_name, strlen(package_name), (void*)cur_file);
+              
               compiler->cur_src = cur_src;
               compiler->bufptr = cur_src;
               compiler->befbufptr = cur_src;
