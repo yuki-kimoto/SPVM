@@ -94,7 +94,6 @@ sub search_native_address {
     if ($dll_libref) {
       my $sub_abs_name_c = $sub_abs_name;
       $sub_abs_name_c =~ s/:/_/g;
-      warn("CCCCCCCCC $sub_abs_name_c");
       $native_address = DynaLoader::dl_find_symbol($dll_libref, $sub_abs_name_c);
     }
     else {
@@ -143,7 +142,6 @@ sub get_sub_native_address {
   unless ($native_address) {
     my $dll_file = $INLINE_DLL_FILE;
     $native_address = search_native_address($dll_file, $sub_abs_name);
-    warn "AAAAAAAAAA $native_address";
   }
   
   return $native_address;
@@ -186,8 +184,10 @@ sub compile_inline_native_subs {
       $native_src = $1;
     }
     
-    print $native_src_fh, "$native_src\n";
+    print $native_src_fh "$native_src\n";
   }
+  close $native_src_fh;
+  
   
   my $cbuilder = ExtUtils::CBuilder->new;
   my $obj_file = $cbuilder->compile(source => $native_src_file);
