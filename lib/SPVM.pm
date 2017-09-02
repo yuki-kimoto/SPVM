@@ -20,7 +20,7 @@ use SPVM::Array::Object;
 
 use Encode 'encode';
 
-use Carp 'croak';
+use Carp 'confess';
 
 our $VERSION = '0.0253';
 
@@ -137,7 +137,7 @@ sub bind_native_subs {
     my $native_sub_name_spvm = "SPVM::$native_sub_name";
     my $native_address = get_sub_native_address($native_sub_name_spvm);
     unless ($native_address) {
-      croak "Can't find native address($native_sub_name())";
+      confess "Can't find native address($native_sub_name())";
     }
     bind_native_sub($native_sub_name, $native_address);
   }
@@ -195,7 +195,7 @@ sub new_byte_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
-    croak "Argument must be array reference";
+    confess "Argument must be array reference";
   }
   
   my $length = @$elements;
@@ -219,7 +219,7 @@ sub new_short_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
-    croak "Argument must be array reference";
+    confess "Argument must be array reference";
   }
   
   my $length = @$elements;
@@ -243,7 +243,7 @@ sub new_int_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
-    croak "Argument must be array reference";
+    confess "Argument must be array reference";
   }
   
   my $length = @$elements;
@@ -267,7 +267,7 @@ sub new_long_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
-    croak "Argument must be array reference";
+    confess "Argument must be array reference";
   }
   
   my $length = @$elements;
@@ -291,7 +291,7 @@ sub new_float_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
-    croak "Argument must be array reference";
+    confess "Argument must be array reference";
   }
   
   my $length = @$elements;
@@ -315,7 +315,7 @@ sub new_double_array {
   my $elements = shift;
   
   if (ref $elements ne 'ARRAY') {
-    croak "Argument must be array reference";
+    confess "Argument must be array reference";
   }
   
   my $length = @$elements;
@@ -363,7 +363,7 @@ sub build_spvm_subs {
       my $error = $@;
       if ($error) {
         $error = Encode::decode('UTF-8', $error);
-        croak $error;
+        confess $error;
       }
       $return_value;
     };
