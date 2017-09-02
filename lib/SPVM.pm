@@ -145,12 +145,20 @@ sub bind_native_subs {
 }
 
 sub compile_inline_native_subs {
+  
   for my $package_info (@SPVM::PACKAGE_INFOS_INLINE) {
     my $temp_dir = tempdir;
     
     my $src = "$temp_dir/inline_native.c";
     
+    my $spvm_file = $package_info->{file};
     
+    open my $spvm_fh, '<', $spvm_file
+      or confess "Can't open $spvm_file: $!";
+    
+    my $spvm_content = do { local $/; <$spvm_fh> };
+    
+    warn "$spvm_content";
     
   }
 }
