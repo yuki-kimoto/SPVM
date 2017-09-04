@@ -166,16 +166,10 @@ sub compile_inline_native_subs {
   open my $native_src_fh, '>>', $native_src_file
     or die "Can't open $native_src_file:$!";
     
-  # my $inline_files = get_inline_files();
+  my $spvm_files = get_inline_files();
   
-  for my $package_info (@SPVM::PACKAGE_INFOS_INLINE) {
-    
-    my $src = "$temp_dir/inline_native.c";
-    
-    my $package_name = $package_info->{name};
-    
-    my $spvm_file = get_use_package_path($package_name);
-    
+  for my $spvm_file (@$spvm_files) {
+
     open my $spvm_fh, '<', $spvm_file
       or confess "Can't open $spvm_file: $!";
     
