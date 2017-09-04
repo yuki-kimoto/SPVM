@@ -15,8 +15,8 @@ Package declaration is the following.
 C<PackageName> is package name.
 
 Package name is consist of Upper Case and Lower Case and Number and C<::>.
-Package name must start with Upper Case. lower case package name is forbidden.
-lower case package name is resolved by core.
+Package name must start with Upper Case. Package name which start with Lower Case is forbidden.
+Package name which start with Lower Case is resolved for core.
 
 Note that package name can't contain Under Score C<_>.
 Under Score is used for C<Package Template>.
@@ -55,8 +55,8 @@ Field declaration is the following.
   has field_name : type_name;
 
 C<filed_name> is field name. 
-Field name name is consist of Upper Case and Lower Case and Number and Under Score C<_>.
-Package name must not start with Number.
+Field name is consist of Upper Case and Lower Case and Number and Under Score C<_>.
+Field name must not start with Number. Under score must not continue more than one.
 
   # Legal
   foo
@@ -67,6 +67,7 @@ Package name must not start with Number.
   
   # Illegal
   2foo
+  foo__bar
 
 C<type_name> is a type. Type is explained C<Type> section. List some type examples.
 

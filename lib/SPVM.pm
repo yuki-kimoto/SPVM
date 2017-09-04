@@ -187,7 +187,7 @@ sub compile_inline_native_subs {
   my $api_header_include_dir = $INC{"SPVM.pm"};
   $api_header_include_dir =~ s/\.pm$//;
   
-  my $cbuilder = ExtUtils::CBuilder->new;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
   my $obj_file = $cbuilder->compile(
     source => $native_src_file,
     include_dirs => [$api_header_include_dir]
