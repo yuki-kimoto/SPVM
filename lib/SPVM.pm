@@ -418,10 +418,8 @@ sub build_spvm_subs {
   }
 }
 
-# Preloaded methods go here.
-
 1;
-__END__
+
 =encoding UTF-8
 
 =head1 NAME
@@ -511,21 +509,114 @@ SPVM only work on the Perl which support 64 bit integer.
 
 =item 1
 
-L<SPVM::Document::Tutorial> - SPVM Tutorial
-
-=item 2
-
-L<SPVM::Document::PerlAPI> - API to exchange Perl value to SPVM value.
+L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many examples.
 
 =item 3
 
-L<SPVM::Document::Spec> - SPVM Specification
+L<SPVM::Document::Spec> - SPVM Language Specification
 
 =item 4
 
-L<SPVM::Document::FAQ> - SPVM Specification
+L<SPVM::Document::FAQ> - Oftten asked question.
 
 =back
+
+=head1 FUNCTIONS
+
+=head2 new_byte_array
+
+Create new_byte array
+
+  my $array = SPVM::new_byte_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_short_array
+
+Create short array
+
+  my $array = SPVM::new_short_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_int_array
+
+Create int array
+
+  my $array = SPVM::new_int_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_long_array
+
+Create long array
+
+  my $array = SPVM::new_long_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_float_array
+
+Create float array
+
+  my $array = SPVM::new_float_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+
+=head2 new_double_array
+
+Create double array
+
+  my $array = SPVM::new_double_array([1, 2, 3]);
+
+If you get perl values, you can use C<get_elements> methods.
+
+  my $values = $array->get_elements;
+  
+=head2 new_object_array_len
+
+Create object array with type name and length.
+
+  my $array = SPVM::new_object_array_len("int[]", 3);
+
+You can set and get elements by C<set> and C<get> method.
+
+  $array->set(1, SPVM::new_int_array([1, 2, 3]));
+  my $element = $array->get(1);
+
+=head2 new_string_raw
+
+Create byte array from B<not decoded> Perl string.
+This function is faster than C<SPVM::string> because copy is not executed.
+
+  my $array = SPVM::new_string_raw("AGTCAGTC");
+
+=head2 new_string
+
+Create byte array from B<decoded> Perl string.
+
+  my $array = SPVM::new_string("Å†Ç¢Å§Ç¶Å®");
+
+=head2 new_object
+
+Create object.
+
+  my $object = SPVM::new_object("Point");
+
+You can set and get value by C<set> and C<get> method.
+
+  $object->set(x => 1);
+  my $x = $object->get('x');
 
 =head1 DON'T PANIC!
 

@@ -10,10 +10,9 @@ lib/SPVM/Array/Object.pm
 lib/SPVM/Array/Short.pm
 lib/SPVM/BaseObject.pm
 lib/SPVM/Debug.pm
+lib/SPVM/Document/Cookbook.pod
 lib/SPVM/Document/FAQ.pod
-lib/SPVM/Document/PerlAPI.pod
 lib/SPVM/Document/Spec.pod
-lib/SPVM/Document/Tutorial.pod
 lib/SPVM/Object.pm
 lib/SPVM/spvm_api.h
 lib/SPVM/std.pm
