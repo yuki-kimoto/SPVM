@@ -1,6 +1,38 @@
 =head1 NAME
 
-SPVM::Document::Spec - SPVM language specification(BETA)
+SPVM::Document::Spec - SPVM language specification(BETA before 1.0)
+
+=head1 SPVM Language Specification
+
+=head2 Package Declaration
+
+Package declaration is the following.
+
+  package PackageName {
+    
+  }
+
+C<PackageName> is package name.
+
+Package name is consist of Upper Case and Lower Case and Number and C<::>.
+Package name must start Upper Case. lower case package name is forbidden.
+lower case package name is resolved by core.
+
+Note that package name can't contain Under Score C<_>.
+Under Score is used for C<Package Template>.
+
+  # Legal
+  Foo
+  Foo2
+  Foo::Bar
+  Foo::Bar::Baz
+  Foo::bar
+  
+  # Illigal
+  foo
+  foo::Bar
+  2Foo
+  Foo_Bar
 
 =head2 Number literal
 
