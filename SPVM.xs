@@ -1322,6 +1322,36 @@ get_use_package_path(...)
 }
 
 SV*
+get_inline_files(...)
+  PPCODE:
+{
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  AV* av_inline_files = (AV*)sv_2mortal((SV*)newAV());
+  
+  {
+    int32_t inline_file_index;
+    for (inline_file_index = 0; inline_file_index < runtime->inline_file_ids->length; inline_file_index++) {
+      int32_t inline_file_id = (int32_t)(intptr_t)SPVM_DYNAMIC_ARRAY_fetch(runtime->inline_file_ids, inline_file_index);
+      const char* inline_file = (char*)&constant_pool[inline_file_id + 1];
+      SV* sv_inline_file = sv_2mortal(newSVpv(inline_file, 0));
+      av_push(av_inline_files, SvREFCNT_inc(sv_inline_file));
+    }
+  }
+  
+  SV* sv_inline_files = sv_2mortal(newRV_inc((SV*)av_inline_files));
+  
+  XPUSHs(sv_inline_files);
+  
+  XSRETURN(1);
+}
+
+SV*
 bind_native_sub(...)
   PPCODE:
 {
