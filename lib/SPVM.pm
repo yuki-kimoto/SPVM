@@ -160,7 +160,7 @@ sub bind_native_subs {
 }
 
 sub compile_inline_native_subs {
-
+  
   my $temp_dir = tempdir;
   my $native_src_file = "$temp_dir/inline_native.c";
   open my $native_src_fh, '>>', $native_src_file

@@ -122,6 +122,19 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
       SPVM_HASH_insert(runtime->use_package_path_id_symtable, package_name, strlen(package_name), (void*)(intptr_t)package_path_id);
     }
   }
+
+  // Build inline files
+  {
+    int32_t inline_file_index;
+    for (inline_file_index = 0; inline_file_index < compiler->inline_files->length; inline_file_index++) {
+      const char* inline_file = SPVM_DYNAMIC_ARRAY_fetch(compiler->inline_files, inline_file_index);
+      
+      int32_t inline_file_id = SPVM_HASH_search(compiler->string_symtable, inline_file, strlen(inline_file));
+      assert(inline_file_id > 0);
+      
+      SPVM_DYNAMIC_ARRAY_push(runtime->inline_file_ids, (void*)(intptr_t)inline_file_id);
+    }
+  }
   
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
