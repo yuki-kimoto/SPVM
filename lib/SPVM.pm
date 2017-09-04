@@ -445,9 +445,9 @@ Module file
     has x : int;
     has y : int;
 
-    sub sum ($a : int, $b : int) : int {
+    sub sum ($x : int, $y : int) : int {
 
-      my $total = $a + $b;
+      my $total = $x + $y;
 
       return $total;
     }
@@ -457,9 +457,9 @@ Module file
   use MyModule1;
   package MyModule2 {
 
-    sub foo ($a : int, $b : int) : int {
+    sub foo ($x : int, $y : int) : int {
 
-      my $total = ($a * $b) + MyModule1::sum(2, 4);
+      my $total = ($x * $y) + MyModule1::sum(2, 4);
 
       return $total;
     }
@@ -501,7 +501,81 @@ B<Perl module> - SPVM function can be called from Perl itself.
 
 =back
 
-SPVM only work on the Perl which support 64 bit integer.
+=head1 TUTORIAL
+
+L<SPVM> is a language which is similar with Perl. SPVM is very similar to Perl, and you can write same syntax of Perl in most part.
+
+L<SPVM> communicate with Perl. You can call SPVM function directory from Perl.
+
+L<SPVM> is very fast and provide array data structure. Now SPVM array operation is about 6x faster.
+
+=head2 SPVM module
+
+At first, you can write SPVM module. 
+
+  # lib/SPVM/MyModule1.spvm
+  package MyModule1 {
+    has x : int;
+    has y : int;
+
+    sub sum ($x : int, $y : int) : int {
+
+      my $total = $x + $y;
+
+      return $total;
+    }
+  }
+
+This is same as Perl except SPVM have static type and C<has> keyword.
+
+You can define field by C<has> keyword, and specify static type by C<: type>.
+
+  has x : int;
+
+You can specify argument types and return type to subroutine by C<: type>.
+
+  sub sum ($x : int, $y : int) : int {
+
+    my $total = $x + $y;
+
+    return $total;
+  }
+
+Let's save this file by the following name
+
+  lib/SPVM/MyModule1.spvm
+
+If package name is C<MyModule1>, file name must be C<SPVM/MyModule1.spvm>.
+
+Extension is C<spvm>. And you create C<SPVM> directory.
+
+C<lib> is normal directory.
+
+=head2 Call SPVM subroutine
+
+Next you can use SPVM subroutine from Perl.
+
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+
+  use SPVM 'MyModule1';
+
+  my $total = SPVM::MyModule1::sum(3, 5);
+  print $total . "\n";
+
+At first, you add library path by L<FindBin> and L<lib> module.
+
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+
+Next, use SPVM module. C<MyModule1> is loaded.
+
+  use SPVM 'MyModule1';
+
+And call SPVM subroutine. If SPVM subroutine absolute name is C<MyModule1::sum>, you can call this subroutine by C<SPVM::MyModule1::sum>.
+
+  my $total = SPVM::MyModule1::sum(3, 5);
+  print $total . "\n";
 
 =head1 DOCUMENT
 
