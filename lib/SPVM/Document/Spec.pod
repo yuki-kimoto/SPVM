@@ -34,7 +34,7 @@ Under Score is used for C<Package Template>.
   2Foo
   Foo_Bar
 
-Package Decraration must be just under file itself.
+Package Declaration must be just under file itself.
 
   # Legal
   package PackageName {
@@ -50,7 +50,7 @@ Package Decraration must be just under file itself.
 
 =head2 Field Declaration
 
-Field decration is the following.
+Field declaration is the following.
 
   has field_name : type_name;
 
@@ -91,6 +91,16 @@ Field Declaration must be just under Package Declaration.
   sub foo() : int {
     has field_name : type_name
   }
+
+=head2 Subroutine Decralation
+
+Subroutine declaration is the following.
+
+  sub sub_name(arg_name : type_name, ...) {
+    
+  }
+
+
 
 =head2 Number literal
 
