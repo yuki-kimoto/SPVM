@@ -14,7 +14,6 @@ lib/SPVM/Document/FAQ.pod
 lib/SPVM/Document/PerlAPI.pod
 lib/SPVM/Document/Spec.pod
 lib/SPVM/Document/Tutorial.pod
-lib/SPVM/Inline.pm
 lib/SPVM/Object.pm
 lib/SPVM/spvm_api.h
 lib/SPVM/std.pm
