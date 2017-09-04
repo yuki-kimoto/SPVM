@@ -15,7 +15,7 @@ Package declaration is the following.
 C<PackageName> is package name.
 
 Package name is consist of Upper Case and Lower Case and Number and C<::>.
-Package name must start Upper Case. lower case package name is forbidden.
+Package name must start with Upper Case. lower case package name is forbidden.
 lower case package name is resolved by core.
 
 Note that package name can't contain Under Score C<_>.
@@ -28,11 +28,69 @@ Under Score is used for C<Package Template>.
   Foo::Bar::Baz
   Foo::bar
   
-  # Illigal
+  # Illegal
   foo
   foo::Bar
   2Foo
   Foo_Bar
+
+Package Decraration must be just under file itself.
+
+  # Legal
+  package PackageName {
+    
+  }
+  
+  # Illegal
+  sub foo() : int {
+    package PackageName {
+      
+    }
+  }
+
+=head2 Field Declaration
+
+Field decration is the following.
+
+  has field_name : type_name;
+
+C<filed_name> is field name. 
+Field name name is consist of Upper Case and Lower Case and Number and Under Score C<_>.
+Package name must not start with Number.
+
+  # Legal
+  foo
+  foo_bar
+  foo2
+  foo_bar2
+  FOO
+  
+  # Illegal
+  2foo
+
+C<type_name> is a type. Type is explained C<Type> section. List some type examples.
+
+  byte
+  short
+  int
+  long
+  float
+  double
+  string
+  PackageName
+
+Field Declaration must be just under Package Declaration.
+
+  # Legal
+  package PackageName {
+    has field_name : type_name;
+  }
+
+  # Illeagal
+  has field_name : type_name;
+  sub foo() : int {
+    has field_name : type_name
+  }
 
 =head2 Number literal
 
