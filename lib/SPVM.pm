@@ -31,7 +31,7 @@ our $COMPILER;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
 our $API;
-our $INLINE_DLL_FILE;
+our @INLINE_DLL_FILES;
 
 our @PACKAGE_INFOS_INLINE;
 
@@ -138,10 +138,14 @@ sub get_sub_native_address {
     }
   }
   
-  # Search inline dll
+  # Search inline dlls
   unless ($native_address) {
-    my $dll_file = $INLINE_DLL_FILE;
-    $native_address = search_native_address($dll_file, $sub_abs_name);
+    for my $dll_file (@INLINE_DLL_FILES) {
+      $native_address = search_native_address($dll_file, $sub_abs_name);
+      if ($native_address) {
+        last;
+      }
+    }
   }
   
   return $native_address;
@@ -161,15 +165,11 @@ sub bind_native_subs {
 
 sub compile_inline_native_subs {
   
-  my $temp_dir = tempdir;
-  my $native_src_file = "$temp_dir/inline_native.c";
-  open my $native_src_fh, '>>', $native_src_file
-    or die "Can't open $native_src_file:$!";
-    
   my $spvm_files = get_inline_files();
   
   for my $spvm_file (@$spvm_files) {
-
+    my $temp_dir = tempdir;
+    
     open my $spvm_fh, '<', $spvm_file
       or confess "Can't open $spvm_file: $!";
     
@@ -180,21 +180,31 @@ sub compile_inline_native_subs {
       $native_src = $1;
     }
     
+    my $spvm_tmp_file = $spvm_file;
+    $spvm_tmp_file =~ s/\//_/g;
+    $spvm_tmp_file =~ s/\.spvm$//;
+    $spvm_tmp_file .= '.c';
+
+    my $native_src_file = "$temp_dir/$spvm_tmp_file";
+    open my $native_src_fh, '>', $native_src_file
+      or die "Can't open $native_src_file:$!";
+    
     print $native_src_fh "$native_src\n";
+    
+    close $native_src_fh;
+    
+    my $api_header_include_dir = $INC{"SPVM.pm"};
+    $api_header_include_dir =~ s/\.pm$//;
+    
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
+    my $obj_file = $cbuilder->compile(
+      source => $native_src_file,
+      include_dirs => [$api_header_include_dir]
+    );
+    my $lib_file = $cbuilder->link(objects => $obj_file);
+    
+    push @INLINE_DLL_FILES, $lib_file;
   }
-  close $native_src_fh;
-  
-  my $api_header_include_dir = $INC{"SPVM.pm"};
-  $api_header_include_dir =~ s/\.pm$//;
-  
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-  my $obj_file = $cbuilder->compile(
-    source => $native_src_file,
-    include_dirs => [$api_header_include_dir]
-  );
-  my $lib_file = $cbuilder->link(objects => $obj_file);
-  
-  $INLINE_DLL_FILE = $lib_file;
 }
 
 # Compile SPVM source code just after compile-time of Perl
