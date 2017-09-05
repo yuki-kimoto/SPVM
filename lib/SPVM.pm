@@ -139,11 +139,15 @@ sub get_sub_native_address {
   }
   
   # Search inline dlls
+  my $package_name_tmp = $package_name;
+  $package_name_tmp =~ s/:/_/g;
   unless ($native_address) {
     for my $dll_file (@INLINE_DLL_FILES) {
-      $native_address = search_native_address($dll_file, $sub_abs_name);
-      if ($native_address) {
-        last;
+      if ($dll_file =~ /\Q$package_name_tmp/) {
+        $native_address = search_native_address($dll_file, $sub_abs_name);
+        if ($native_address) {
+          last;
+        }
       }
     }
   }
@@ -181,10 +185,10 @@ sub compile_inline_native_subs {
     }
     
     my $spvm_tmp_file = $spvm_file;
-    $spvm_tmp_file =~ s/\//_/g;
+    $spvm_tmp_file =~ s/\//__/g;
     $spvm_tmp_file =~ s/\.spvm$//;
     $spvm_tmp_file .= '.c';
-
+    
     my $native_src_file = "$temp_dir/$spvm_tmp_file";
     open my $native_src_fh, '>', $native_src_file
       or die "Can't open $native_src_file:$!";
