@@ -139,17 +139,15 @@ char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name) {
 }
 
 char* SPVM_TYPE_get_element_name(SPVM_COMPILER* compiler, const char* type_name) {
-  int32_t type_name_length = (int32_t)strlen(type_name);
-  char* type_base_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_name_length);
-  
-  char* found_ptr = rindex(type_name, '[');
   int32_t type_base_name_length;
-  if (found_ptr) {
-    type_base_name_length = (int32_t)(found_ptr - type_name);
+  if (strchr(type_name, '[')) {
+    type_base_name_length = strlen(type_name) - 2;
   }
   else {
     return NULL;
   }
+
+  char* type_base_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_base_name_length);
   
   strncpy(type_base_name, type_name, type_base_name_length);
   type_base_name[type_base_name_length] = '\0';
