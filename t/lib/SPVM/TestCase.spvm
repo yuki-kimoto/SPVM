@@ -2,6 +2,7 @@ use TestCase::Weaken;
 use TestCase::Minimal;
 use TestCase::Destructor;
 use TestCase::Inline;
+use TestCase::Inline2;
 
 package TestCase {
   has x_byte : byte;
@@ -40,6 +41,16 @@ package TestCase {
     my $total = TestCase::Inline::sum(2, 3);
     
     if ($total == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub spvm_inline2() : int {
+    my $total = TestCase::Inline::sum(5, 3);
+    
+    if ($total == 8) {
       return 1;
     }
     

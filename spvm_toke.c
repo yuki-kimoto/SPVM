@@ -1169,7 +1169,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               break;
             case '_':
-              if (strcmp(keyword, "__END__") == 0) {
+              if (strcmp(keyword, "__END__") == 0 || strcmp(keyword, "__CONFIG__") == 0) {
                 if (strstr(compiler->bufptr, "__NATIVE__")) {
                   SPVM_DYNAMIC_ARRAY_push(compiler->inline_files, (void*)compiler->cur_file);
                 }
