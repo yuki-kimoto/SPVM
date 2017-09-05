@@ -107,7 +107,7 @@ Subroutine name must not start with Number. Under score must not continue more t
   2foo
   foo__bar
 
-C<arg_name> is Argument Name. This is Lexical Variable name. Lexical Variable is explained in L</"Lexical Variable"> section,
+C<arg_name> is Argument Name. This is Variable name. Variable name is explained in L</"Variable Declaration"> section,
 
 C<type_name> is a Type. Type is explained L</"Type"> section.
 
@@ -139,6 +139,25 @@ Subroutine Declaration must be just under Package Declaration.
       
     }
   }
+
+=head2 Variable Declaration
+
+Variable Declaration is the following.
+
+  my var_name : type_name;
+
+C<var_name> is Variable Name. Variable Name first character is C<$>.
+Rest characters is consist of Upper case, Lower case, Number and Under score C<_>.
+
+  # Legal
+  $foo
+  $FOO
+  $foo2
+  $foo_bar
+
+If Variable Declaration is done, you can use variable after the declaration.
+
+C<type_name> is a <Type>. Type is explained L</"Type"> section.
 
 =head2 Number literal
 
