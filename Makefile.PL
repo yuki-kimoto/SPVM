@@ -15,6 +15,10 @@ use Getopt::Long;
 my $debug;
 GetOptions('d' => \$debug);
 
+# Edit CCFLAGS
+my $ccflags = "$Config{ccflags} -Wall -Wextra";
+
+
 WriteMakefile(
     NAME              => 'SPVM',
     VERSION_FROM      => 'lib/SPVM.pm', # finds $VERSION
@@ -24,6 +28,7 @@ WriteMakefile(
        AUTHOR         => 'A. U. Thor <kimoto@sakura.ne.jp>') : ()),
     LIBS              => ['-lm'], # e.g., '-lm'
     INC               => '-I. -Ilib/SPVM', # e.g., '-I. -I/usr/include/other'
+    CCFLAGS => $ccflags,
     OPTIMIZE => '-O3',
     OBJECT            => '$(O_FILES)', # link all the C files too
     $debug ? (DEFINE => '-DDEBUG') : ()

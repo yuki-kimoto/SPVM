@@ -40,6 +40,7 @@
 static SPVM_API_VALUE call_sub_args[255];
 
 SPVM_API* SPVM_XS_UTIL_get_api() {
+  
   SV* sv_api = get_sv("SPVM::API", 0);
   
   SPVM_API* api = (SPVM_API*)SvIV(SvRV(sv_api));
@@ -77,6 +78,8 @@ SV*
 DESTROY(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_object = ST(0);
   
   assert(SvOK(sv_object));
@@ -101,6 +104,8 @@ SV*
 new_object(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_class = ST(0);
   SV* sv_package_name = ST(1);
   
@@ -142,6 +147,8 @@ SV*
 set(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_object = ST(0);
   SV* sv_field_name = ST(1);
   SV* sv_value = ST(2);
@@ -245,6 +252,8 @@ SV*
 get(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_object = ST(0);
   SV* sv_field_name = ST(1);
   
@@ -395,6 +404,8 @@ SV*
 new(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_class = ST(0);
   SV* sv_length = ST(1);
   
@@ -450,6 +461,8 @@ SV*
 get_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
 
   // Set API
@@ -482,6 +495,8 @@ SV*
 new(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_class = ST(0);
   SV* sv_length = ST(1);
   
@@ -507,6 +522,8 @@ SV*
 set_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
   AV* av_nums = (AV*)SvRV(sv_nums);
@@ -537,6 +554,8 @@ SV*
 get_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
 
   // Set API
@@ -569,6 +588,8 @@ SV*
 new(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_class = ST(0);
   SV* sv_length = ST(1);
   
@@ -594,6 +615,8 @@ SV*
 set_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
   AV* av_nums = (AV*)SvRV(sv_nums);
@@ -624,6 +647,8 @@ SV*
 get_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
 
   // Set API
@@ -656,6 +681,8 @@ SV*
 new(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_class = ST(0);
   SV* sv_length = ST(1);
   
@@ -681,6 +708,8 @@ SV*
 set_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
   AV* av_nums = (AV*)SvRV(sv_nums);
@@ -711,6 +740,8 @@ SV*
 get_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
 
   // Set API
@@ -743,6 +774,8 @@ SV*
 new(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_class = ST(0);
   SV* sv_length = ST(1);
   
@@ -768,6 +801,8 @@ SV*
 set_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
   AV* av_nums = (AV*)SvRV(sv_nums);
@@ -798,6 +833,8 @@ SV*
 get_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
 
   // Set API
@@ -830,6 +867,8 @@ SV*
 new(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_class = ST(0);
   SV* sv_length = ST(1);
   
@@ -855,6 +894,8 @@ SV*
 set_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
   SV* sv_nums = ST(1);
   AV* av_nums = (AV*)SvRV(sv_nums);
@@ -885,6 +926,8 @@ SV*
 get_elements(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
 
   // Set API
@@ -917,6 +960,8 @@ SV*
 new_raw(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_class = ST(0);
   SV* sv_string = ST(1);
   
@@ -949,6 +994,8 @@ SV*
 new(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_class = ST(0);
   SV* sv_element_type_name = ST(1);
   SV* sv_length = ST(2);
@@ -1000,6 +1047,8 @@ SV*
 set(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   SV* sv_object = ST(2);
@@ -1056,6 +1105,8 @@ SV*
 get(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   
@@ -1143,6 +1194,8 @@ SV*
 get_objects_count(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   int32_t objects_count = api->get_objects_count(api);
   SV* sv_objects_count = sv_2mortal(newSViv(objects_count));
@@ -1155,6 +1208,8 @@ SV*
 compile(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
@@ -1230,6 +1285,8 @@ SV*
 get_sub_names(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
@@ -1264,6 +1321,8 @@ SV*
 get_native_sub_names(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
@@ -1300,6 +1359,8 @@ SV*
 get_use_package_path(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
@@ -1325,6 +1386,8 @@ SV*
 get_inline_files(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
@@ -1355,6 +1418,8 @@ SV*
 bind_native_sub(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_native_sub_name = ST(0);
   SV* sv_native_address = ST(1);
   
@@ -1384,6 +1449,8 @@ SV*
 build_field_symtable(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   // Get compiler
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
   
@@ -1441,6 +1508,8 @@ SV*
 build_runtime(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   // Get compiler
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
   
@@ -1461,6 +1530,8 @@ SV*
 free_compiler(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   // Get compiler
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
   
@@ -1477,6 +1548,8 @@ SV*
 call_sub(...)
   PPCODE:
 {
+  (void)RETVAL;
+  
   SV* sv_sub_abs_name = ST(0);
   
   // Get API
