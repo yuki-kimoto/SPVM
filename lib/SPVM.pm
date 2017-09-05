@@ -526,7 +526,7 @@ B<Perl module> - SPVM function can be called from Perl itself.
 
 =back
 
-=head1 TUTORIAL
+=head1 SPVM Tutorial
 
 L<SPVM> is a language which is similar with Perl. SPVM is very similar to Perl, and you can write same syntax of Perl in most part.
 
@@ -602,25 +602,27 @@ And call SPVM subroutine. If SPVM subroutine absolute name is C<MyModule1::sum>,
   my $total = SPVM::MyModule1::sum(3, 5);
   print $total . "\n";
 
-=head1 DOCUMENT
+=head1 Document
 
-=over 2
-
-=item 1
-
-L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many examples.
-
-=item 3
+=head2 SPVM Language Specification
 
 L<SPVM::Document::Spec> - SPVM Language Specification
 
-=item 4
+=head2 SPVM Native API
+
+L<SPVM::Document::NativeAPI> - SPVM Native API.
+
+Native API is C level API. You can write programing logic using C language and SPVM Native API.
+
+=head2 SPVM Cookbook
+
+L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many examples.
+
+=head2 SPVM FAQ
 
 L<SPVM::Document::FAQ> - Oftten asked question.
 
-=back
-
-=head1 FUNCTIONS
+=head1 Functions
 
 =head2 new_byte_array
 
