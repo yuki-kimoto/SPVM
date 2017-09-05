@@ -177,11 +177,22 @@ sub compile_inline_native_subs {
     open my $spvm_fh, '<', $spvm_file
       or confess "Can't open $spvm_file: $!";
     
-    my $spvm_content = do { local $/; <$spvm_fh> };
-    
     my $native_src;
-    if ($spvm_content =~ /__NATIVE__(.*)$/sm) {
-      $native_src = $1;
+    my $start;
+    my $first_line = 1;
+    while (my $line = <$spvm_fh>) {
+      if ($start) {
+        if ($first_line) {
+          $native_src .= "#line $. \"$spvm_file\"";
+          $first_line = 0;
+        }
+        $native_src .= $line;
+      }
+      else {
+        if ($line =~ /__NATIVE__/) {
+          $start = 1;
+        }
+      }
     }
     
     my $spvm_tmp_file = $spvm_file;
