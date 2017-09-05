@@ -1,3 +1,6 @@
+0.0257 2017-09-05
+  - improve inline native source error message
+  - inline source is separated each
 0.0256 2017-09-04
   - CBuilder output become quite.
   - Fix some Windows compile error
