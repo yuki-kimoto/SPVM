@@ -1,6 +1,6 @@
 =head1 NAME
 
-SPVM::Document::Spec - SPVM language specification(BETA before 1.0)
+SPVM::Document::Spec - SPVM Language Specification(BETA before 1.0)
 
 =head1 SPVM Language Specification
 
@@ -69,16 +69,7 @@ Field name must not start with Number. Under score must not continue more than o
   2foo
   foo__bar
 
-C<type_name> is a type. Type is explained C<Type> section. List some type examples.
-
-  byte
-  short
-  int
-  long
-  float
-  double
-  string
-  PackageName
+C<type_name> is a type. Type is explained in L</"Type"> section.
 
 Field Declaration must be just under Package Declaration.
 
@@ -97,11 +88,57 @@ Field Declaration must be just under Package Declaration.
 
 Subroutine declaration is the following.
 
-  sub sub_name(arg_name : type_name, ...) {
+  sub sub_name(arg_name : type_name, ...) : descripter_name return_type_name {
     
   }
 
+C<sub_name> is subroutine name. 
+Subroutine name is consist of Upper Case and Lower Case and Number and Under Score C<_>.
+Subroutine name must not start with Number. Under score must not continue more than one.
 
+  # Legal
+  foo
+  foo_bar
+  foo2
+  foo_bar2
+  FOO
+  
+  # Illegal
+  2foo
+  foo__bar
+
+C<arg_name> is Argument Name. This is Lexical Variable name. Lexical Variable is explained in L</"Lexical Variable"> section,
+
+C<type_name> is a Type. Type is explained L</"Type"> section.
+
+C<arg_name : type_name> can be repeated with C<,>. If argument is none, that is ok. Max arguments count is C<255>.
+
+C<descripter_name> is a Descripter. If descripter is none, that is ok. Available descripters are following.
+Currently only one descripter is available.
+  
+  [Name]     [Description]
+  native     the subroutine is native
+
+Native subroutine is explained in L</"Native Subroutine">.
+
+C<return_type_name> is a Type or C<void>. C<void> mean the subroutine don't have return value.
+Type is explained L</"Type"> section.
+
+Subroutine Declaration must be just under Package Declaration.
+
+  # Legal
+  package PackageName {
+    sub foo($nums : int[]) : int {
+    
+    }
+  }
+  
+  # Illeagal
+  sub foo() : double {
+    sub var() : void {
+      
+    }
+  }
 
 =head2 Number literal
 
