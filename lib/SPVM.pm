@@ -183,7 +183,7 @@ sub compile_inline_native_subs {
     while (my $line = <$spvm_fh>) {
       if ($start) {
         if ($first_line) {
-          $native_src .= "#line $. \"$spvm_file\"";
+          $native_src .= "#line " . ($. + 1) . "\"$spvm_file\"";
           $first_line = 0;
         }
         $native_src .= $line;
