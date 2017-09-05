@@ -1,5 +1,6 @@
 0.0256 2017-09-04
   - CBuilder output become quite.
+  - Fix some Windows compile error
 0.0255 2017-09-04
   - detect automatically inline native function
   - remove SPVM::Inline
