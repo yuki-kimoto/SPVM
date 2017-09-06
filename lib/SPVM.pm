@@ -178,20 +178,31 @@ sub compile_inline_native_subs {
       or confess "Can't open $spvm_file: $!";
     
     my $native_src;
-    my $start;
-    my $first_line = 1;
+    my $config_src;
+    my $state = '';
+    my $native_first_line = 1;
+    my $config_first_line = 1;
     while (my $line = <$spvm_fh>) {
-      if ($start) {
-        if ($first_line) {
+      if ($state eq 'native') {
+        if ($native_first_line) {
           $native_src .= "#line " . ($. + 1) . "\"$spvm_file\"";
-          $first_line = 0;
+          $native_first_line = 0;
         }
         $native_src .= $line;
       }
-      else {
-        if ($line =~ /__NATIVE__/) {
-          $start = 1;
+      elsif ($state eq 'config') {
+        if ($config_first_line) {
+          $config_src .= "use strict;\nuse warnings\n";
+          $config_first_line = 0;
         }
+        $config_src .= $line;
+      }
+      
+      if ($line =~ /__NATIVE__/) {
+        $state = 'native';
+      }
+      elsif ($line =~ /__CONFIG__/) {
+        $state = 'config';
       }
     }
     

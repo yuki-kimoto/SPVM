@@ -4,6 +4,9 @@ package TestCase::Inline2 {
 
 __CONFIG__
 
+
+{OPTIMIZE => '-O3'}
+
 __NATIVE__
 
 #include <spvm_api.h>
