@@ -139,7 +139,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               
               compiler->cur_file = cur_file;
-              
+              compiler->cur_package_name_with_template_args = op_use->uv.use->package_name_with_template_args;
               
               // Read file content
               fseek(fh, 0, SEEK_END);
@@ -164,6 +164,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               
               // Add package loading information
               SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_name);
+              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, op_use->uv.use->package_name_with_template_args);
               const char* package_path = cur_file;
               SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_path);
               SPVM_DYNAMIC_ARRAY_push(compiler->use_package_names, (void*)package_name);
@@ -1172,6 +1173,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (strcmp(keyword, "__END__") == 0 || strcmp(keyword, "__CONFIG__") == 0) {
                 if (strstr(compiler->bufptr, "__NATIVE__")) {
                   SPVM_DYNAMIC_ARRAY_push(compiler->inline_files, (void*)compiler->cur_file);
+                  SPVM_DYNAMIC_ARRAY_push(compiler->inline_package_names, (void*)compiler->cur_package_name_with_template_args);
+                  SPVM_HASH_insert(compiler->inline_file_symtable, compiler->cur_package_name_with_template_args, strlen(compiler->cur_package_name_with_template_args), (void*)compiler->cur_file);
                 }
                 
                 *compiler->bufptr = '\0';
@@ -1179,6 +1182,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               else if (strcmp(keyword, "__NATIVE__") == 0) {
                 SPVM_DYNAMIC_ARRAY_push(compiler->inline_files, (void*)compiler->cur_file);
+                SPVM_DYNAMIC_ARRAY_push(compiler->inline_package_names, (void*)compiler->cur_package_name_with_template_args);
+                SPVM_HASH_insert(compiler->inline_file_symtable, compiler->cur_package_name_with_template_args, strlen(compiler->cur_package_name_with_template_args), (void*)compiler->cur_file);
                 *compiler->bufptr = '\0';
                 continue;
               }

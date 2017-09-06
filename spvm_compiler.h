@@ -34,6 +34,8 @@ struct SPVM_compiler {
   // Current file name
   const char* cur_file;
   
+  const char* cur_package_name_with_template_args;
+  
   // Source base_object
   char* cur_src;
   
@@ -84,6 +86,12 @@ struct SPVM_compiler {
   
   // Inline files
   SPVM_DYNAMIC_ARRAY* inline_files;
+
+  // Inline packages
+  SPVM_DYNAMIC_ARRAY* inline_package_names;
+  
+  // Inline files
+  SPVM_HASH* inline_file_symtable;
   
   // Current case statements in switch statement
   SPVM_DYNAMIC_ARRAY* cur_op_cases;
