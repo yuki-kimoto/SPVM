@@ -245,6 +245,10 @@ sub compile_inline_native_subs {
       if (defined $config->{OPTIMIZE}) {
         $cbuilder_new_config->{optimize} = delete $config->{OPTIMIZE};
       }
+      else {
+        # Default is -O3
+        $cbuilder_new_config->{optimize} = '-O3';
+      }
       
       my @keys = keys %$config;
       if (@keys) {
