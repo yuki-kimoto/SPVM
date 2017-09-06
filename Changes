@@ -1,3 +1,5 @@
+0.0259 2017-09-06
+  - fix temporary inline file name.
 0.0258 2017-09-06
   - support inline native config
     __CONFIG__

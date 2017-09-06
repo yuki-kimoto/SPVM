@@ -211,12 +211,12 @@ sub compile_inline_native_subs {
       }
     }
     
-    my $spvm_tmp_file = $spvm_file;
-    $spvm_tmp_file =~ s/\//__/g;
-    $spvm_tmp_file =~ s/\.spvm$//;
-    $spvm_tmp_file .= '.c';
+    my $spvm_tmp_file = $package_name;
+    $spvm_tmp_file =~ s/:/_/g;
+    $spvm_tmp_file = "SPVM__${spvm_tmp_file}.c";
     
     my $native_src_file = "$temp_dir/$spvm_tmp_file";
+    
     open my $native_src_fh, '>', $native_src_file
       or die "Can't open $native_src_file:$!";
     
