@@ -1412,6 +1412,63 @@ get_inline_files(...)
 }
 
 SV*
+get_inline_package_names(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  AV* av_inline_package_names = (AV*)sv_2mortal((SV*)newAV());
+  
+  {
+    int32_t inline_package_name_index;
+    for (inline_package_name_index = 0; inline_package_name_index < runtime->inline_package_name_ids->length; inline_package_name_index++) {
+      int32_t inline_package_name_id = (int32_t)(intptr_t)SPVM_DYNAMIC_ARRAY_fetch(runtime->inline_package_name_ids, inline_package_name_index);
+      const char* inline_package_name = (char*)&constant_pool[inline_package_name_id + 1];
+      SV* sv_inline_package_name = sv_2mortal(newSVpv(inline_package_name, 0));
+      av_push(av_inline_package_names, SvREFCNT_inc(sv_inline_package_name));
+    }
+  }
+  
+  SV* sv_inline_package_names = sv_2mortal(newRV_inc((SV*)av_inline_package_names));
+  
+  XPUSHs(sv_inline_package_names);
+  
+  XSRETURN(1);
+}
+
+SV*
+get_inline_file(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_package_name = ST(0);
+  const char* package_name = SvPV_nolen(sv_package_name);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  int32_t inline_file_id = (int32_t)(intptr_t)SPVM_HASH_search(runtime->inline_file_id_symtable, package_name, strlen(package_name));
+  const char* inline_file = (char*)&constant_pool[inline_file_id + 1];
+  SV* sv_inline_file = sv_2mortal(newSVpv(inline_file, 0));
+  
+  XPUSHs(sv_inline_file);
+  
+  XSRETURN(1);
+}
+
+SV*
 bind_native_sub(...)
   PPCODE:
 {
