@@ -1,0 +1,3 @@
+package Math {
+  sub sin ($value : double) : native double;
+}
