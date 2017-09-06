@@ -149,6 +149,22 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
+  // Build inline file symtable
+  {
+    int32_t inline_package_name_index;
+    for (inline_package_name_index = 0; inline_package_name_index < compiler->inline_package_names->length; inline_package_name_index++) {
+      const char* inline_package_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->inline_package_names, inline_package_name_index);
+      
+      const char* inline_file = (char*)SPVM_HASH_search(compiler->inline_file_symtable, inline_package_name, strlen(inline_package_name));
+      assert(inline_file);
+      
+      int32_t inline_file_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, inline_file, strlen(inline_file));
+      assert(inline_file_id > 0);
+      
+      SPVM_HASH_insert(runtime->inline_file_id_symtable, inline_package_name, strlen(inline_package_name), (void*)(intptr_t)inline_file_id);
+    }
+  }
+  
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
   runtime->packages_length = op_packages->length;
