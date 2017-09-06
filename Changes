@@ -1,3 +1,8 @@
+0.0259 2017-0906
+  - add Math module
+  - add Math::sin function
+  - add Math->PI constant
+  - add Math->E constant
 0.0258 2017-09-06
   - fix temporary inline file name.
   - support inline native config

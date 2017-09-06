@@ -42,6 +42,11 @@ use SPVM::std;
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
+# Call subroutine
+{
+  ok(SPVM::TestCase::sin());
+}
+
 # Native subroutine
 {
   my $nums = SPVM::new_int_array([1, 2, 3]);

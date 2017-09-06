@@ -3,6 +3,7 @@ use TestCase::Minimal;
 use TestCase::Destructor;
 use TestCase::Inline;
 use TestCase::Inline2;
+use Math;
 
 package TestCase {
   has x_byte : byte;
@@ -35,6 +36,15 @@ package TestCase {
   enum {
     FLOAT_PRECICE = 16384f,
     DOUBLE_PRECICE = 65536.0,
+  }
+  
+  sub sin() : int {
+    my $value = Math::sin(Math->PI);
+    
+    if ($value < 0.000001) {
+      return 1;
+    }
+    return 0;
   }
   
   sub spvm_inline() : int {
