@@ -4,7 +4,6 @@ package TestCase::Inline2 {
 
 __CONFIG__
 
-
 {OPTIMIZE => '-O3'}
 
 __NATIVE__
@@ -17,3 +16,4 @@ int32_t SPVM__TestCase__Inline2__sum(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return total;
 }
+

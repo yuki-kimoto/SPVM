@@ -242,12 +242,33 @@ sub compile_inline_native_subs {
     my $cbuilder_compile_config = {};
     my $cbuilder_link_config = {};
     if ($config) {
+      # OPTIMIZE
       if (defined $config->{OPTIMIZE}) {
         $cbuilder_new_config->{optimize} = delete $config->{OPTIMIZE};
       }
       else {
         # Default is -O3
         $cbuilder_new_config->{optimize} = '-O3';
+      }
+      
+      # CC
+      if (defined $config->{CC}) {
+        $cbuilder_new_config->{cc} = delete $config->{CC};
+      }
+
+      # CCFLAGS
+      if (defined $config->{CCFLAGS}) {
+        $cbuilder_new_config->{ccflags} = delete $config->{CCFLAGS};
+      }
+      
+      # LD
+      if (defined $config->{LD}) {
+        $cbuilder_new_config->{ld} = delete $config->{LD};
+      }
+      
+      # LDDLFLAGS
+      if (defined $config->{LDDLFLAGS}) {
+        $cbuilder_new_config->{lddlflags} = delete $config->{LDDLFLAGS};
       }
       
       my @keys = keys %$config;
