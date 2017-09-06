@@ -34,6 +34,7 @@ WriteMakefile(
     $debug ? (DEFINE => '-DDEBUG') : ()
 );
 
+# Run create_lib_dll script after running LD
 sub MY::postamble {
 
   my $make =<<"EOS";
