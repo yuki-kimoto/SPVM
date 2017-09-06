@@ -170,9 +170,11 @@ sub bind_native_subs {
 
 sub compile_inline_native_subs {
   
-  my $spvm_files = get_inline_files();
+  my $inline_package_names = get_inline_package_names();
   
-  for my $spvm_file (@$spvm_files) {
+  for my $package_name (@$inline_package_names) {
+    my $spvm_file = get_inline_file($package_name);
+    
     my $temp_dir = tempdir;
     
     open my $spvm_fh, '<', $spvm_file
