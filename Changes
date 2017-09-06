@@ -3,7 +3,12 @@
 0.0258 2017-09-06
   - support inline native config
     __CONFIG__
-  - support inline config OPTIMIZE option
+  - support inline config following options
+    CC
+    CCFLAGS
+    LD
+    LDDLFLAGS
+    OPTIMIZE
 0.0257 2017-09-05
   - improve inline native source error message
   - inline source is separated each
