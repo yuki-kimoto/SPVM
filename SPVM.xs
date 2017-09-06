@@ -35,7 +35,7 @@
 #include "spvm_global.h"
 #include "spvm_object.h"
 #include "spvm_api.h"
-#include "spvm_extention.h"
+#include "spvm_std.h"
 
 static SPVM_API_VALUE call_sub_args[255];
 
