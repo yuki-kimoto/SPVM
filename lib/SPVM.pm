@@ -183,6 +183,15 @@ sub compile_inline_native_subs {
     my $native_first_line = 1;
     my $config_first_line = 1;
     while (my $line = <$spvm_fh>) {
+      if ($line =~ /__NATIVE__/) {
+        $state = 'native';
+        next;
+      }
+      elsif ($line =~ /__CONFIG__/) {
+        $state = 'config';
+        next;
+      }
+
       if ($state eq 'native') {
         if ($native_first_line) {
           $native_src .= "#line " . ($. + 1) . "\"$spvm_file\"";
@@ -192,17 +201,18 @@ sub compile_inline_native_subs {
       }
       elsif ($state eq 'config') {
         if ($config_first_line) {
-          $config_src .= "use strict;\nuse warnings\n";
+          $config_src .= "use strict;\nuse warnings;\n";
           $config_first_line = 0;
         }
         $config_src .= $line;
       }
+    }
+    
+    if (defined $config_src) {
+      my $config = eval $config_src;
       
-      if ($line =~ /__NATIVE__/) {
-        $state = 'native';
-      }
-      elsif ($line =~ /__CONFIG__/) {
-        $state = 'config';
+      if ($@) {
+        confess "Can't parse __CONFIG__ section at $spvm_file: $@\n$config_src";
       }
     }
     
