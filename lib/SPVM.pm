@@ -19,6 +19,7 @@ use SPVM::String;
 use SPVM::Array::Object;
 use File::Temp 'tempdir';
 use ExtUtils::CBuilder;
+use Config;
 
 
 use Encode 'encode';
@@ -208,14 +209,6 @@ sub compile_inline_native_subs {
       }
     }
     
-    if (defined $config_src) {
-      my $config = eval $config_src;
-      
-      if ($@) {
-        confess "Can't parse __CONFIG__ section at $spvm_file: $@\n$config_src";
-      }
-    }
-    
     my $spvm_tmp_file = $spvm_file;
     $spvm_tmp_file =~ s/\//__/g;
     $spvm_tmp_file =~ s/\.spvm$//;
@@ -231,8 +224,36 @@ sub compile_inline_native_subs {
     
     my $api_header_include_dir = $INC{"SPVM.pm"};
     $api_header_include_dir =~ s/\.pm$//;
+
+    my $config;
+    if (defined $config_src) {
+      $config = eval $config_src;
+      
+      if ($@) {
+        confess "Can't parse __CONFIG__ section at $spvm_file: $@\n$config_src";
+      }
+      if (ref $config ne 'HASH') {
+        confess "__CONFIG__ section must return hash reference";
+      }
+    }
     
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
+    # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
+    my $cbuilder_new_config = {};
+    my $cbuilder_compile_config = {};
+    my $cbuilder_link_config = {};
+    if ($config) {
+      if (defined $config->{OPTIMIZE}) {
+        $cbuilder_new_config->{optimize} = delete $config->{OPTIMIZE};
+      }
+      
+      my @keys = keys %$config;
+      if (@keys) {
+        confess "$keys[0] is not supported option";
+      }
+    }
+    
+    my $quiet = 1;
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_new_config);
     my $obj_file = $cbuilder->compile(
       source => $native_src_file,
       include_dirs => [$api_header_include_dir]
