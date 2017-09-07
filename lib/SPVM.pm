@@ -71,7 +71,7 @@ sub _get_dll_file {
   $dll_file_tail =~ s/::/\//g;
   my $dll_file;
   for my $dl_shared_object (@DynaLoader::dl_shared_objects) {
-    my $dl_shared_object_no_ext = $dl_shared_object . '.ppp';
+    my $dl_shared_object_no_ext = $dl_shared_object;
     # remove .so, xs.dll .dll, etc
     while ($dl_shared_object_no_ext =~ s/\.[^\/\.]+$//) {
       1;
