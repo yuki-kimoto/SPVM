@@ -284,7 +284,7 @@ sub compile_inline_native_subs {
       source => $native_src_file,
       include_dirs => [$api_header_include_dir]
     );
-    my $lib_file = $cbuilder->link(objects => $obj_file);
+    my $lib_file = $cbuilder->link(objects => $obj_file, module_name => "SPVM::$package_name");
     
     push @INLINE_DLL_FILES, $lib_file;
   }
