@@ -298,8 +298,8 @@ CHECK {
   # I want to load dll file from Package name
   # but XSLoader::load call boot_ function and error occur
   # so I surround eval. This is very bad hack
-  eval {XSLoader::load('SPVM::std', $VERSION) };
-  eval {XSLoader::load('SPVM::Math', $VERSION)};
+  XSLoader::load('SPVM::std', $VERSION);
+  XSLoader::load('SPVM::Math', $VERSION);
   
   # Compile SPVM source code
   compile();
