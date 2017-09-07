@@ -16,7 +16,7 @@
 #include "../spvm_sub.h"
 #include "../spvm_dumper.h"
 
-#include "../spvm_lib_std.c"
+#include "../spvm_lib/spvm_lib_std.c"
 
 #include <spvm_api.h>
 
