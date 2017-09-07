@@ -11,7 +11,7 @@ my @libs = ('std', 'Math');
 
 for my $lib (@libs) {
   my $obj_file = $cbuilder->compile(
-    source => "spvm_lib_${lib}.c",
+    source => "spvm_lib/spvm_lib_${lib}.c",
     include_dirs => ['lib/SPVM']
   );
   my $lib_file = $cbuilder->link(objects => $obj_file);

@@ -81,8 +81,10 @@ spvm_hash.h
 spvm_hash_entry.h
 spvm_hash_func.c
 spvm_hash_func.h
-spvm_lib_Math.c
-spvm_lib_std.c
+spvm_lib/spvm_lib_Math.c
+spvm_lib/spvm_lib_Math.o
+spvm_lib/spvm_lib_std.c
+spvm_lib/spvm_lib_std.o
 spvm_limit.h
 spvm_memory_pool.c
 spvm_memory_pool.h
