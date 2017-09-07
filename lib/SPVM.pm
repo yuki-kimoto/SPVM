@@ -64,7 +64,6 @@ sub _get_dll_file {
   my $package_name = shift;
   
   # DLL file name
-  my $dlext = $Config{dlext};
   my $dll_base_name = $package_name;
   $dll_base_name =~ s/^.*:://;
   my $dll_file_tail = 'auto/' . $package_name . '/' . $dll_base_name;
