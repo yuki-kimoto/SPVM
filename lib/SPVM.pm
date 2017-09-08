@@ -267,19 +267,10 @@ sub compile_inline_native_subs {
       include_dirs => [$api_header_include_dir]
     );
     
-    my $dl_func_list;
-    if ($package_name eq 'TestCase::Inline') {
-      $dl_func_list = [qw(
-        boot_SPVM__TestCase__Inline
-        SPVM__TestCase__Inline__sum
-      )];
-    }
-    elsif ($package_name eq 'TestCase::Inline2') {
-      $dl_func_list = [qw(
-        boot_SPVM__TestCase__Inline2
-        SPVM__TestCase__Inline2__sum
-      )];
-    }
+    # This is required for Windows
+    my $dl_func_list = get_native_sub_names_from_package($package_name);
+    my $boot_name = "boot_SPVM__${package_name_under_score}";
+    push @$dl_func_list, $boot_name;
     
     my $lib_file = "$temp_dir/SPVM__${package_name_under_score}.$Config{dlext}";
     

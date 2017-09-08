@@ -1372,7 +1372,11 @@ get_native_sub_names_from_package(...)
   {
     int32_t sub_name_index;
     for (sub_name_index = 0; sub_name_index < native_sub_name_ids->length; sub_name_index++) {
-      const char* native_sub_name = (char*)&runtime->constant_pool[sub_name_index + 1];
+      
+      int32_t sub_name_id = (int32_t)(intptr_t)SPVM_DYNAMIC_ARRAY_fetch(native_sub_name_ids, sub_name_index);
+      
+      const char* native_sub_name = (char*)&runtime->constant_pool[sub_name_id + 1];
+      assert(native_sub_name);
       
       SV* sv_native_sub_name = sv_2mortal(newSVpv(native_sub_name, 0));
       av_push(av_native_sub_names, SvREFCNT_inc(sv_native_sub_name));
