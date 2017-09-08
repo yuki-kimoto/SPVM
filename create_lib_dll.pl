@@ -14,28 +14,30 @@ my $dlext = $Config{dlext};
 
 my $func_list = {
   std => [qw(
-    println_byte
-    println_short
-    println_int
-    println_long
-    println_float
-    println_double
-    println
+    boot_SPVM__std
+    SPVM__std__println_byte
+    SPVM__std__println_short
+    SPVM__std__println_int
+    SPVM__std__println_long
+    SPVM__std__println_float
+    SPVM__std__println_double
+    SPVM__std__println
 
-    print_byte
-    print_short
-    print_int
-    print_long
-    print_float
-    print_double
+    SPVM__std__print_byte
+    SPVM__std__print_short
+    SPVM__std__print_int
+    SPVM__std__print_long
+    SPVM__std__print_float
+    SPVM__std__print_double
     
-    sum_int
-    test1
-    test2
+    SPVM__std__sum_int
+    SPVM__std__test1
+    SPVM__std__test2
   )],
-  Math => [
-    'sin'
-  ]
+  Math => [qw(
+    boot_SPVM__Math
+    SPVM__Math__sin
+  )]
 };
 
 for my $lib (@libs) {
