@@ -268,7 +268,13 @@ sub compile_inline_native_subs {
     );
     
     # This is required for Windows
-    my $dl_func_list = get_native_sub_names_from_package($package_name);
+    my $native_sub_names = get_native_sub_names_from_package($package_name);
+    my $dl_func_list = [];
+    for my $native_sub_name (@$native_sub_names) {
+      my $dl_func = "SPVM__$native_sub_name";
+      $dl_func =~ s/:/_/g;
+      push @$dl_func_list, $dl_func;
+    }
     my $boot_name = "boot_SPVM__${package_name_under_score}";
     push @$dl_func_list, $boot_name;
     
