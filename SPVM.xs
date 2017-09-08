@@ -1352,6 +1352,40 @@ get_native_sub_names(...)
 }
 
 SV*
+get_native_sub_names_from_package(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_package_name = ST(0);
+  const char* package_name = SvPV_nolen(sv_package_name);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  
+  SPVM_DYNAMIC_ARRAY* native_sub_name_ids = SPVM_HASH_search(runtime->native_sub_name_ids_symtable, package_name, strlen(package_name));
+  
+  AV* av_native_sub_names = (AV*)sv_2mortal((SV*)newAV());
+  
+  {
+    int32_t sub_name_index;
+    for (sub_name_index = 0; sub_name_index < native_sub_name_ids->length; sub_name_index++) {
+      const char* native_sub_name = (char*)&runtime->constant_pool[sub_name_index + 1];
+      
+      SV* sv_native_sub_name = sv_2mortal(newSVpv(native_sub_name, 0));
+      av_push(av_native_sub_names, SvREFCNT_inc(sv_native_sub_name));
+    }
+  }
+  
+  SV* sv_native_sub_names = sv_2mortal(newRV_inc((SV*)av_native_sub_names));
+  
+  XPUSHs(sv_native_sub_names);
+  XSRETURN(1);
+}
+
+SV*
 get_use_package_path(...)
   PPCODE:
 {
