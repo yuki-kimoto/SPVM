@@ -14,7 +14,6 @@ my $dlext = $Config{dlext};
 
 my $func_list = {
   std => [qw(
-    boot_SPVM__std
     SPVM__std__println_byte
     SPVM__std__println_short
     SPVM__std__println_int
@@ -35,7 +34,6 @@ my $func_list = {
     SPVM__std__test2
   )],
   Math => [qw(
-    boot_SPVM__Math
     SPVM__Math__sin
   )]
 };

@@ -276,8 +276,6 @@ sub compile_inline_native_subs {
       $dl_func =~ s/:/_/g;
       push @$dl_func_list, $dl_func;
     }
-    my $boot_name = "boot_SPVM__${package_name_under_score}";
-    push @$dl_func_list, $boot_name;
     
     my $lib_file_name = "$temp_dir/SPVM__${package_name_under_score}.$Config{dlext}";
     
