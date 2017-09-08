@@ -20,6 +20,7 @@ use SPVM::Array::Object;
 use File::Temp 'tempdir';
 use ExtUtils::CBuilder;
 use Config;
+use DynaLoader;
 
 
 use Encode 'encode';
@@ -295,12 +296,19 @@ sub compile_inline_native_subs {
 CHECK {
   require XSLoader;
   XSLoader::load('SPVM', $VERSION);
-
-  # I want to load dll file from Package name
-  # but XSLoader::load call boot_ function and error occur
-  # so I surround eval. This is very bad hack
-  XSLoader::load('SPVM::std', $VERSION);
-  XSLoader::load('SPVM::Math', $VERSION);
+  
+  # Load standard library
+  my @dll_file_bases = ('std', 'Math');
+  for my $dll_file_base (@dll_file_bases) {
+    my $dll_file_rel = "auto/SPVM/$dll_file_base/$dll_file_base.$Config{dlext}";
+    for my $module_dir (@INC) {
+      my $dll_file = "$module_dir/$dll_file_rel";
+      if (-f $dll_file) {
+        DynaLoader::dl_load_file($dll_file);
+        push @DynaLoader::dl_shared_objects, $dll_file;
+      }
+    }
+  }
   
   # Compile SPVM source code
   compile();
