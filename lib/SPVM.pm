@@ -272,13 +272,13 @@ sub compile_inline_native_subs {
     my $boot_name = "boot_SPVM__${package_name_under_score}";
     push @$dl_func_list, $boot_name;
     
-    my $lib_file = "$temp_dir/SPVM__${package_name_under_score}.$Config{dlext}";
+    my $lib_file_name = "$temp_dir/SPVM__${package_name_under_score}.$Config{dlext}";
     
-    $cbuilder->link(
+    my $lib_file = $cbuilder->link(
       objects => $obj_file,
       module_name => "SPVM::$package_name",
       dl_func_list => $dl_func_list,
-      lib_file => $lib_file
+      lib_file => $lib_file_name
     );
     
     push @INLINE_DLL_FILES, $lib_file;
