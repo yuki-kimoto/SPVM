@@ -110,8 +110,6 @@ sub search_native_address {
 sub get_sub_native_address {
   my $sub_abs_name = shift;
   
-  my $native_address;
-  
   my $package_name;
   my $sub_name;
   if ($sub_abs_name =~ /^(?:(.+)::)(.+)$/) {
@@ -119,25 +117,10 @@ sub get_sub_native_address {
     $sub_name = $2;
   }
   
-  my $dll_file;
   my $dll_package_name = $package_name;
-  while (1) {
-    $dll_file = _get_dll_file($dll_package_name);
-    $native_address = search_native_address($dll_file, $sub_abs_name);
-    
-    if ($native_address) {
-      last;
-    }
-    else {
-      if ($dll_package_name =~ /::/) {
-        $dll_package_name =~ s/::[^:]+$//;
-      }
-      else {
-        last;
-      }
-    }
-  }
-  
+  my $dll_file = _get_dll_file($dll_package_name);
+  my $native_address = search_native_address($dll_file, $sub_abs_name);
+
   # Search inline dlls
   unless ($native_address) {
     my $package_name_tmp = $package_name;
