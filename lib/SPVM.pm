@@ -139,9 +139,9 @@ sub get_sub_native_address {
   }
   
   # Search inline dlls
-  my $package_name_tmp = $package_name;
-  $package_name_tmp =~ s/:/_/g;
   unless ($native_address) {
+    my $package_name_tmp = $package_name;
+    $package_name_tmp =~ s/:/_/g;
     for my $dll_file (@INLINE_DLL_FILES) {
       if ($dll_file =~ /\Q$package_name_tmp/) {
         $native_address = search_native_address($dll_file, $sub_abs_name);
