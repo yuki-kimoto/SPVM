@@ -165,6 +165,34 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
+  // Build native subroutine name symtable
+  {
+    int32_t package_index;
+    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_packages, package_index);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      const char* package_name = package->op_name->uv.name;
+      
+      SPVM_DYNAMIC_ARRAY* native_subs = package->native_subs;
+      
+      SPVM_DYNAMIC_ARRAY* native_sub_name_ids = SPVM_DYNAMIC_ARRAY_new(0);
+      
+      {
+        int32_t native_sub_index;
+        for (native_sub_index = 0; native_sub_index < native_subs->length; native_sub_index++) {
+          SPVM_SUB* native_sub = SPVM_DYNAMIC_ARRAY_fetch(native_subs, native_sub_index);
+          
+          int32_t native_sub_name_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, native_sub->abs_name, strlen(native_sub->abs_name));
+          assert(native_sub_name_id);
+          
+          SPVM_DYNAMIC_ARRAY_push(native_sub_name_ids, (void*)(intptr_t)native_sub_name_id);
+        }
+      }
+      
+      SPVM_HASH_insert(runtime->native_sub_name_ids_symtable, package_name, strlen(package_name), native_sub_name_ids);
+    }
+  }
+  
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   
   runtime->packages_length = op_packages->length;

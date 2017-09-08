@@ -26,9 +26,11 @@ struct SPVM_runtime {
   
   // Constant pool subroutine symbol table
   SPVM_DYNAMIC_ARRAY* inline_file_ids;
-
+  
   // Constant pool subroutine symbol table
   SPVM_DYNAMIC_ARRAY* inline_package_name_ids;
+  
+  SPVM_HASH* native_sub_name_ids_symtable;
   
   // Inline file id symtable
   SPVM_HASH* inline_file_id_symtable;

@@ -193,11 +193,10 @@ sub compile_inline_native_subs {
       }
     }
     
-    my $spvm_tmp_file = $package_name;
-    $spvm_tmp_file =~ s/:/_/g;
-    $spvm_tmp_file = "SPVM__${spvm_tmp_file}.c";
+    my $package_name_under_score = $package_name;
+    $package_name_under_score =~ s/:/_/g;
     
-    my $native_src_file = "$temp_dir/$spvm_tmp_file";
+    my $native_src_file = "$temp_dir/SPVM__${package_name_under_score}.c";
     
     open my $native_src_fh, '>', $native_src_file
       or die "Can't open $native_src_file:$!";
@@ -267,7 +266,29 @@ sub compile_inline_native_subs {
       source => $native_src_file,
       include_dirs => [$api_header_include_dir]
     );
-    my $lib_file = $cbuilder->link(objects => $obj_file, module_name => "SPVM::$package_name");
+    
+    my $dl_func_list;
+    if ($package_name eq 'TestCase::Inline') {
+      $dl_func_list = [qw(
+        boot_SPVM__TestCase__Inline
+        SPVM__TestCase__Inline__sum
+      )];
+    }
+    elsif ($package_name eq 'TestCase::Inline2') {
+      $dl_func_list = [qw(
+        boot_SPVM__TestCase__Inline2
+        SPVM__TestCase__Inline2__sum
+      )];
+    }
+    
+    my $lib_file = "$temp_dir/SPVM__${package_name_under_score}.$Config{dlext}";
+    
+    $cbuilder->link(
+      objects => $obj_file,
+      module_name => "SPVM::$package_name",
+      dl_func_list => $dl_func_list,
+      lib_file => $lib_file
+    );
     
     push @INLINE_DLL_FILES, $lib_file;
   }
