@@ -6,7 +6,6 @@ use File::Path 'mkpath';
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
-
 use SPVM::Build;
 
 # Module name

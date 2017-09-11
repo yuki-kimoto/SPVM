@@ -53,8 +53,13 @@ sub build_shared_lib {
   # Header inlucde directory
   my $include_dirs = [];
   my $api_header_include_dir = $INC{"SPVM.pm"};
-  $api_header_include_dir =~ s/\.pm$//;
-  push @$include_dirs, $api_header_include_dir;
+  if ($api_header_include_dir) {
+    $api_header_include_dir =~ s/\.pm$//;
+    push @$include_dirs, $api_header_include_dir;
+  }
+  else {
+    push @$include_dirs, 'lib/SPVM';
+  }
   
   # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
   my $cbuilder_new_config = {};
@@ -94,7 +99,8 @@ sub build_shared_lib {
   $cbuilder_new_config->{optimize} ||= '-O3';
   
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(config => $config);
+  my $quiet = 1;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
@@ -107,7 +113,7 @@ sub build_shared_lib {
     $cbuilder->compile(
       source => $src_file,
       object_file => $object_file,
-      include_dirs => ['lib/SPVM']
+      include_dirs => $include_dirs
     );
     push @$object_files, $object_file;
   }
@@ -118,7 +124,7 @@ sub build_shared_lib {
   my $lib_file = $cbuilder->link(
     objects => $object_files,
     module_name => $module_name,
-    dl_func_list => $native_func_names
+    dl_func_list => $native_func_names,
   );
   
   $compiled->{$module_name} = $lib_file;

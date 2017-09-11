@@ -60,7 +60,7 @@ sub import {
     }
   }
   
-  return undef;
+  return;
 }
 
 sub _get_dll_file {
