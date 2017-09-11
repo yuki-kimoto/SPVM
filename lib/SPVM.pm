@@ -69,7 +69,7 @@ sub _get_dll_file {
   # DLL file name
   my $dll_base_name = $package_name;
   $dll_base_name =~ s/^.*:://;
-  my $dll_file_tail = 'auto/' . $package_name . '/' . $dll_base_name;
+  my $dll_file_tail = 'auto/' . $package_name . '.native' . '/' . $dll_base_name;
   $dll_file_tail =~ s/::/\//g;
   my $dll_file;
   for my $dl_shared_object (@DynaLoader::dl_shared_objects) {
@@ -126,7 +126,19 @@ sub get_sub_native_address {
   
   # Search inline dlls
   unless ($native_address) {
-    my $dll_file = compile_inline_native_sub($package_name);
+    
+    my $module_name = $package_name;
+    $module_name =~ s/^SPVM:://;
+    my $module_dir = get_use_package_path($module_name);
+    $module_dir =~ s/\.spvm$//;
+    
+    my $module_name_slash = $package_name;
+    $module_name_slash =~ s/::/\//g;
+    
+    $module_dir =~ s/$module_name_slash$//;
+    $module_dir =~ s/\/$//;
+    
+    my $dll_file = compile_inline_native_sub($module_dir, $module_name);
     if ($dll_file) {
       $native_address = search_native_address($dll_file, $sub_abs_name);
     }
@@ -138,29 +150,30 @@ sub get_sub_native_address {
 my $compiled = {};
 
 sub compile_inline_native_sub {
-  my $package_name = shift;
+  my ($module_dir, $module_name) = @_;
   
-  $package_name =~ s/^SPVM:://;
-  
-  if ($compiled->{$package_name}) {
-    return $compiled->{$package_name};
+  if ($compiled->{$module_name}) {
+    return $compiled->{$module_name};
   }
   
-  my $package_base_name = $package_name;
-  $package_base_name =~ s/^.+:://;
+  my $module_base_name = $module_name;
+  $module_base_name =~ s/^.+:://;
   
-  my $src_dir = get_use_package_path($package_name);
-  $src_dir =~ s/\.spvm$//;
+  my $src_dir = "SPVM::$module_name";
+  $src_dir =~ s/::/\//g;
   $src_dir .= '.native';
   
-  my $src_file;
-  for my $file (glob "$src_dir/$package_base_name.*") {
-    next if $file =~ /\.config$/;
-    $src_file = $file;
-    last;
+  # Correct source files
+  my $src_files = [];
+  my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
+  for my $src_file (glob "$module_dir/$src_dir/*") {
+    if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
+      push @$src_files, $src_file;
+    }
   }
+  my $src_file = $src_files->[0];
   
-  my $config_file = "$src_dir/$package_base_name.config";
+  my $config_file = "$src_dir/$module_base_name.config";
   my $config;
   if (-f $config_file) {
   
@@ -209,13 +222,13 @@ sub compile_inline_native_sub {
     }
   }
   
-  my $package_name_under_score = $package_name;
-  $package_name_under_score =~ s/:/_/g;
+  my $module_name_under_score = $module_name;
+  $module_name_under_score =~ s/:/_/g;
   
   my $temp_dir = tempdir;
   my $quiet = 1;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_object_file = "$temp_dir/SPVM__${package_name_under_score}.o";
+  my $tmp_object_file = "$temp_dir/SPVM__${module_name_under_score}.o";
   my $obj_file = $cbuilder->compile(
     object_file => $tmp_object_file,
     source => $src_file,
@@ -224,7 +237,7 @@ sub compile_inline_native_sub {
   
   
   # This is required for Windows
-  my $native_sub_names = get_native_sub_names_from_package($package_name);
+  my $native_sub_names = get_native_sub_names_from_package($module_name);
   my $dl_func_list = [];
   for my $native_sub_name (@$native_sub_names) {
     my $dl_func = "SPVM__$native_sub_name";
@@ -232,16 +245,16 @@ sub compile_inline_native_sub {
     push @$dl_func_list, $dl_func;
   }
   
-  my $lib_file_name = "$temp_dir/SPVM__${package_name_under_score}.$Config{dlext}";
+  my $lib_file_name = "$temp_dir/SPVM__${module_name_under_score}.$Config{dlext}";
   
   my $lib_file = $cbuilder->link(
     objects => $obj_file,
-    module_name => "SPVM::$package_name",
+    module_name => "SPVM::$module_name",
     dl_func_list => $dl_func_list,
     lib_file => $lib_file_name
   );
   
-  $compiled->{$package_name} = $lib_file;
+  $compiled->{$module_name} = $lib_file;
   
   return $lib_file;
 }
