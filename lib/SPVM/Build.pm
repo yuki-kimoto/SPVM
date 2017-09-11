@@ -51,19 +51,17 @@ sub build_shared_lib {
   }
   
   # Header inlucde directory
+  my $include_dirs = [];
   my $api_header_include_dir = $INC{"SPVM.pm"};
   $api_header_include_dir =~ s/\.pm$//;
-
+  push @$include_dirs, $api_header_include_dir;
+  
   # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
   my $cbuilder_new_config = {};
   if ($config) {
     # OPTIMIZE
     if (defined $config->{OPTIMIZE}) {
       $cbuilder_new_config->{optimize} = delete $config->{OPTIMIZE};
-    }
-    else {
-      # Default is -O3
-      $cbuilder_new_config->{optimize} = '-O3';
     }
     
     # CC
@@ -91,6 +89,9 @@ sub build_shared_lib {
       confess "$keys[0] is not supported option";
     }
   }
+  
+  # OPTIMIZE default is -O3
+  $cbuilder_new_config->{optimize} ||= '-O3';
   
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(config => $config);
