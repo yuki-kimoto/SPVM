@@ -140,7 +140,7 @@ sub get_sub_native_address {
     
     my $dll_file = build_shared_lib(
       module_dir => $module_dir,
-      module_name => $module_name
+      module_name => "SPVM::$module_name"
     );
     if ($dll_file) {
       $native_address = search_native_address($dll_file, $sub_abs_name);
@@ -168,7 +168,7 @@ sub build_shared_lib {
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
-  my $src_dir = "SPVM::$module_name";
+  my $src_dir = "$module_name";
   $src_dir =~ s/::/\//g;
   $src_dir .= '.native';
   
@@ -246,20 +246,13 @@ sub build_shared_lib {
   
   
   # This is required for Windows
-  my $native_func_names = get_native_sub_names_from_package($module_name);
-  my $dl_func_list = [];
-  for my $native_func_name (@$native_func_names) {
-    my $dl_func = "SPVM__$native_func_name";
-    $dl_func =~ s/:/_/g;
-    push @$dl_func_list, $dl_func;
-  }
-  
+  my $native_func_names = SPVM::Build::get_native_func_names($module_dir, $module_name);
   my $lib_file_name = "$temp_dir/SPVM__${module_name_under_score}.$Config{dlext}";
   
   my $lib_file = $cbuilder->link(
     objects => $obj_file,
     module_name => "SPVM::$module_name",
-    dl_func_list => $dl_func_list,
+    dl_func_list => $native_func_names,
     lib_file => $lib_file_name
   );
   
