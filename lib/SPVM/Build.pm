@@ -52,14 +52,9 @@ sub build_shared_lib {
   
   # Header inlucde directory
   my $include_dirs = [];
-  my $api_header_include_dir = $INC{"SPVM.pm"};
-  if ($api_header_include_dir) {
-    $api_header_include_dir =~ s/\.pm$//;
-    push @$include_dirs, $api_header_include_dir;
-  }
-  else {
-    push @$include_dirs, 'lib/SPVM';
-  }
+  my $api_header_include_dir = $INC{"SPVM/Build.pm"};
+  $api_header_include_dir =~ s/\/Build\.pm$//;
+  push @$include_dirs, $api_header_include_dir;
   
   # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
   my $cbuilder_new_config = {};
