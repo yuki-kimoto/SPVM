@@ -9,3 +9,4 @@ use SPVM::Util;
 my $module = shift;
 
 SPVM::Util::build_shared_lib($module);
+

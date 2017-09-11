@@ -21,6 +21,8 @@ use File::Temp 'tempdir';
 use ExtUtils::CBuilder;
 use Config;
 use DynaLoader;
+use SPVM::Util;
+use File::Basename 'basename';
 
 
 use Encode 'encode';
@@ -121,22 +123,128 @@ sub get_sub_native_address {
   my $dll_package_name = $package_name;
   my $dll_file = _get_dll_file($dll_package_name);
   my $native_address = search_native_address($dll_file, $sub_abs_name);
-
+  
   # Search inline dlls
   unless ($native_address) {
-    my $package_name_tmp = $package_name;
-    $package_name_tmp =~ s/:/_/g;
-    for my $dll_file (@INLINE_DLL_FILES) {
-      if ($dll_file =~ /\Q$package_name_tmp/) {
-        $native_address = search_native_address($dll_file, $sub_abs_name);
-        if ($native_address) {
-          last;
-        }
-      }
+    my $dll_file = compile_inline_native_sub($package_name);
+    if ($dll_file) {
+      $native_address = search_native_address($dll_file, $sub_abs_name);
     }
   }
   
   return $native_address;
+}
+
+my $compiled = {};
+
+sub compile_inline_native_sub {
+  my $package_name = shift;
+  
+  $package_name =~ s/^SPVM:://;
+  
+  if ($compiled->{$package_name}) {
+    return $compiled->{$package_name};
+  }
+  
+  my $package_base_name = $package_name;
+  $package_base_name =~ s/^.+:://;
+  
+  my $shared_lib_dir = get_use_package_path($package_name);
+  $shared_lib_dir =~ s/\.spvm$//;
+  
+  my $src_file;
+  for my $file (glob "$shared_lib_dir/$package_base_name.*") {
+    next if $file =~ /\.config$/;
+    $src_file = $file;
+    last;
+  }
+  
+  my $config_file = "$shared_lib_dir/$package_base_name.config";
+  my $config;
+  if (-f $config_file) {
+  
+    $config = do $config_file
+      or confess "Can't parser $config_file: $!$@";
+  }
+  
+  my $api_header_include_dir = $INC{"SPVM.pm"};
+  $api_header_include_dir =~ s/\.pm$//;
+  
+  # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
+  my $cbuilder_new_config = {};
+  if ($config) {
+    # OPTIMIZE
+    if (defined $config->{OPTIMIZE}) {
+      $cbuilder_new_config->{optimize} = delete $config->{OPTIMIZE};
+    }
+    else {
+      # Default is -O3
+      $cbuilder_new_config->{optimize} = '-O3';
+    }
+    
+    # CC
+    if (defined $config->{CC}) {
+      $cbuilder_new_config->{cc} = delete $config->{CC};
+    }
+    
+    # CCFLAGS
+    if (defined $config->{CCFLAGS}) {
+      $cbuilder_new_config->{ccflags} = delete $config->{CCFLAGS};
+    }
+    
+    # LD
+    if (defined $config->{LD}) {
+      $cbuilder_new_config->{ld} = delete $config->{LD};
+    }
+    
+    # LDDLFLAGS
+    if (defined $config->{LDDLFLAGS}) {
+      $cbuilder_new_config->{lddlflags} = delete $config->{LDDLFLAGS};
+    }
+    
+    my @keys = keys %$config;
+    if (@keys) {
+      confess "$keys[0] is not supported option";
+    }
+  }
+  
+  my $package_name_under_score = $package_name;
+  $package_name_under_score =~ s/:/_/g;
+  
+  $DB::single = 1;
+  
+  my $temp_dir = tempdir;
+  my $quiet = 1;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $tmp_object_file = "$temp_dir/SPVM__${package_name_under_score}.o";
+  my $obj_file = $cbuilder->compile(
+    object_file => $tmp_object_file,
+    source => $src_file,
+    include_dirs => [$api_header_include_dir]
+  );
+  
+  
+  # This is required for Windows
+  my $native_sub_names = get_native_sub_names_from_package($package_name);
+  my $dl_func_list = [];
+  for my $native_sub_name (@$native_sub_names) {
+    my $dl_func = "SPVM__$native_sub_name";
+    $dl_func =~ s/:/_/g;
+    push @$dl_func_list, $dl_func;
+  }
+  
+  my $lib_file_name = "$temp_dir/SPVM__${package_name_under_score}.$Config{dlext}";
+  
+  my $lib_file = $cbuilder->link(
+    objects => $obj_file,
+    module_name => "SPVM::$package_name",
+    dl_func_list => $dl_func_list,
+    lib_file => $lib_file_name
+  );
+  
+  $compiled->{$package_name} = $lib_file;
+  
+  return $lib_file;
 }
 
 sub bind_native_subs {
@@ -318,7 +426,7 @@ CHECK {
   free_compiler();
   
   # Compile inline native subroutine
-  compile_inline_native_subs();
+  # compile_inline_native_subs();
   
   # Bind native subroutines
   bind_native_subs();
