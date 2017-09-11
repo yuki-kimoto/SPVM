@@ -43,6 +43,10 @@ sub build_shared_lib {
   
   my $config;
   
+  # Header inlucde directory
+  my $api_header_include_dir = $INC{"SPVM.pm"};
+  $api_header_include_dir =~ s/\.pm$//;
+
   # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
   my $cbuilder_new_config = {};
   if ($config) {
