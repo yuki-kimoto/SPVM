@@ -6,8 +6,6 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM::Util;
 
-my @modules = ('SPVM::std', 'SPVM::Math');
+my $module = shift;
 
-for my $module (@modules) {
-  SPVM::Util::build_shared_lib($module);
-}
+SPVM::Util::build_shared_lib($module);
