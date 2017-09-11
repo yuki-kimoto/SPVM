@@ -5,6 +5,7 @@ use Config;
 
 use File::Copy 'move';
 use File::Path 'mkpath';
+use File::Basename 'dirname', 'basename';
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -12,29 +13,35 @@ use SPVM::Util;
 
 my $cbuilder = ExtUtils::CBuilder->new(config => {optimize => '-O3'});
 
-my @libs = ('std', 'Math');
+my @modules = ('SPVM::std', 'SPVM::Math');
 
 my $dlext = $Config{dlext};
 
-my $func_list = {
-  std => SPVM::Util::create_native_func_names('SPVM::std'),
-  Math => SPVM::Util::create_native_func_names('SPVM::Math')
-};
-
-for my $lib (@libs) {
+for my $module (@modules) {
+  my $module_base_name = $module;
+  $module_base_name =~ s/^.+:://;
+  
+  my $src_dir = $module;
+  $src_dir =~ s/::/\//g;
+  
+  my $src_file = "$src_dir/$module_base_name.c";
+  
   my $obj_file = $cbuilder->compile(
-    source => "spvm_lib/spvm_lib_${lib}.c",
+    source => "lib/$src_file",
     include_dirs => ['lib/SPVM']
   );
+  
+  my $native_func_names = SPVM::Util::create_native_func_names($module);
   my $lib_file = $cbuilder->link(
     objects => $obj_file,
-    module_name => "SPVM::$lib",
-    dl_func_list => $func_list->{$lib}
+    module_name => $module,
+    dl_func_list => $native_func_names
   );
-
-  mkpath "blib/arch/auto/SPVM/${lib}";
-
-  my $lib_file_blib = "blib/arch/auto/SPVM/${lib}/${lib}.$dlext";
+  
+  mkpath "blib/arch/auto/$src_dir";
+  
+  my $lib_file_blib = "blib/arch/auto/$src_dir/${module_base_name}.$dlext";
+  unlink $obj_file;
   move($lib_file, $lib_file_blib)
     or die "Can't move $lib_file to $lib_file_blib";
 }
