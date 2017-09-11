@@ -10,6 +10,7 @@ use Config;
 use File::Copy 'move';
 use File::Path 'mkpath';
 use File::Basename 'dirname', 'basename';
+use File::Temp 'tempdir';
 
 sub build_shared_lib {
   my $module = shift;
@@ -35,27 +36,35 @@ sub build_shared_lib {
     }
   }
   
-  # Compile
-  my $obj_files = [];
+  # Compile source files
+  my $object_files = [];
   for my $src_file (@$src_files) {
-    my $obj_file = $cbuilder->compile(
+    # Object file
+    my $temp_dir = tempdir;
+    my $object_file = $module;
+    $object_file =~ s/:/_/g;
+    $object_file = "$temp_dir/$object_file.o";
+    
+    # Compile source file
+    $cbuilder->compile(
       source => $src_file,
+      object_file => $object_file,
       include_dirs => ['lib/SPVM']
     );
-    push @$obj_files, $obj_file;
+    push @$object_files, $object_file;
   }
   
   # Link
   my $native_func_names = SPVM::Build::create_native_func_names($module);
   my $lib_file = $cbuilder->link(
-    objects => $obj_files,
+    objects => $object_files,
     module_name => $module,
     dl_func_list => $native_func_names
   );
   
   # Delete object files
-  for my $obj_file (@$obj_files) {
-    unlink $obj_file;
+  for my $object_file (@$object_files) {
+    unlink $object_file;
   }
   
   mkpath "blib/arch/auto/$src_dir";
