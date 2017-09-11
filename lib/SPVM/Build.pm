@@ -10,6 +10,8 @@ use Config;
 use File::Basename 'dirname', 'basename';
 use File::Temp 'tempdir';
 
+my $compiled = {};
+
 sub build_shared_lib {
   my %opt = @_;
   
@@ -18,6 +20,10 @@ sub build_shared_lib {
   
   # Module directory
   my $module_dir = $opt{module_dir};
+  
+  if ($compiled->{$module_name}) {
+    return $compiled->{$module_name};
+  }
   
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
@@ -62,6 +68,8 @@ sub build_shared_lib {
     module_name => $module_name,
     dl_func_list => $native_func_names
   );
+  
+  $compiled->{$module_name} = $lib_file;
   
   return $lib_file;
 }
