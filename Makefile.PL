@@ -44,7 +44,7 @@ sub MY::postamble {
 
   my $make =<<"EOS";
 dynamic ::
-\tperl create_lib_dll.pl
+\tperl build_shared_lib.pl
 EOS
 
   return $make;
