@@ -69,31 +69,31 @@ sub _get_dll_file {
   # DLL file name
   my $dll_base_name = $package_name;
   $dll_base_name =~ s/^.*:://;
-  my $dll_file_tail = 'auto/' . $package_name . '.native' . '/' . $dll_base_name;
-  $dll_file_tail =~ s/::/\//g;
-  my $dll_file;
+  my $shared_lib_file_tail = 'auto/' . $package_name . '.native' . '/' . $dll_base_name;
+  $shared_lib_file_tail =~ s/::/\//g;
+  my $shared_lib_file;
   for my $dl_shared_object (@DynaLoader::dl_shared_objects) {
     my $dl_shared_object_no_ext = $dl_shared_object;
     # remove .so, xs.dll .dll, etc
     while ($dl_shared_object_no_ext =~ s/\.[^\/\.]+$//) {
       1;
     }
-    if ($dl_shared_object_no_ext =~ /\Q$dll_file_tail\E$/) {
-      $dll_file = $dl_shared_object;
+    if ($dl_shared_object_no_ext =~ /\Q$shared_lib_file_tail\E$/) {
+      $shared_lib_file = $dl_shared_object;
       last;
     }
   }
   
-  return $dll_file;
+  return $shared_lib_file;
 }
 
 sub search_native_address {
-  my ($dll_file, $sub_abs_name) = @_;
+  my ($shared_lib_file, $sub_abs_name) = @_;
   
   my $native_address;
   
-  if ($dll_file) {
-    my $dll_libref = DynaLoader::dl_load_file($dll_file);
+  if ($shared_lib_file) {
+    my $dll_libref = DynaLoader::dl_load_file($shared_lib_file);
     if ($dll_libref) {
       my $sub_abs_name_c = $sub_abs_name;
       $sub_abs_name_c =~ s/:/_/g;
@@ -121,10 +121,10 @@ sub get_sub_native_address {
   }
   
   my $dll_package_name = $package_name;
-  my $dll_file = _get_dll_file($dll_package_name);
-  my $native_address = search_native_address($dll_file, $sub_abs_name);
+  my $shared_lib_file = _get_dll_file($dll_package_name);
+  my $native_address = search_native_address($shared_lib_file, $sub_abs_name);
   
-  # Search inline dlls
+  # Try runtime compile
   unless ($native_address) {
     
     my $module_name = $package_name;
@@ -138,130 +138,16 @@ sub get_sub_native_address {
     $module_dir =~ s/$module_name_slash$//;
     $module_dir =~ s/\/$//;
     
-    my $dll_file = build_shared_lib(
+    my $shared_lib_file = SPVM::Build::build_shared_lib(
       module_dir => $module_dir,
       module_name => "SPVM::$module_name"
     );
-    if ($dll_file) {
-      $native_address = search_native_address($dll_file, $sub_abs_name);
+    if ($shared_lib_file) {
+      $native_address = search_native_address($shared_lib_file, $sub_abs_name);
     }
   }
   
   return $native_address;
-}
-
-my $compiled = {};
-
-sub build_shared_lib {
-  my %opt = @_;
-  
-  # Module name
-  my $module_name = $opt{module_name};
-  
-  # Module directory
-  my $module_dir = $opt{module_dir};
-  
-  if ($compiled->{$module_name}) {
-    return $compiled->{$module_name};
-  }
-  
-  my $module_base_name = $module_name;
-  $module_base_name =~ s/^.+:://;
-  
-  my $src_dir = "$module_name";
-  $src_dir =~ s/::/\//g;
-  $src_dir .= '.native';
-  
-  # Correct source files
-  my $src_files = [];
-  my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
-  for my $src_file (glob "$module_dir/$src_dir/*") {
-    if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
-      push @$src_files, $src_file;
-    }
-  }
-  
-  # Config
-  my $config_file = "$src_dir/$module_base_name.config";
-  my $config;
-  if (-f $config_file) {
-  
-    $config = do $config_file
-      or confess "Can't parser $config_file: $!$@";
-  }
-  
-  my $api_header_include_dir = $INC{"SPVM.pm"};
-  $api_header_include_dir =~ s/\.pm$//;
-  
-  # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
-  my $cbuilder_new_config = {};
-  if ($config) {
-    # OPTIMIZE
-    if (defined $config->{OPTIMIZE}) {
-      $cbuilder_new_config->{optimize} = delete $config->{OPTIMIZE};
-    }
-    else {
-      # Default is -O3
-      $cbuilder_new_config->{optimize} = '-O3';
-    }
-    
-    # CC
-    if (defined $config->{CC}) {
-      $cbuilder_new_config->{cc} = delete $config->{CC};
-    }
-    
-    # CCFLAGS
-    if (defined $config->{CCFLAGS}) {
-      $cbuilder_new_config->{ccflags} = delete $config->{CCFLAGS};
-    }
-    
-    # LD
-    if (defined $config->{LD}) {
-      $cbuilder_new_config->{ld} = delete $config->{LD};
-    }
-    
-    # LDDLFLAGS
-    if (defined $config->{LDDLFLAGS}) {
-      $cbuilder_new_config->{lddlflags} = delete $config->{LDDLFLAGS};
-    }
-    
-    my @keys = keys %$config;
-    if (@keys) {
-      confess "$keys[0] is not supported option";
-    }
-  }
-  
-  # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(config => $cbuilder_new_config);
-  my $object_files = [];
-  for my $src_file (@$src_files) {
-    # Object file
-    my $temp_dir = tempdir;
-    my $object_file = $module_name;
-    $object_file =~ s/:/_/g;
-    $object_file = "$temp_dir/$object_file.o";
-    
-    # Compile source file
-    $cbuilder->compile(
-      source => $src_file,
-      object_file => $object_file,
-      include_dirs => ['lib/SPVM']
-    );
-    push @$object_files, $object_file;
-  }
-  
-  # Link
-  my $dlext = $Config{dlext};
-  my $native_func_names = SPVM::Build::get_native_func_names($module_dir, $module_name);
-  my $lib_file = $cbuilder->link(
-    objects => $object_files,
-    module_name => $module_name,
-    dl_func_list => $native_func_names
-  );
-  
-  $compiled->{$module_name} = $lib_file;
-  
-  return $lib_file;
 }
 
 sub bind_native_subs {
@@ -283,13 +169,13 @@ CHECK {
   
   # Load standard library
   my @dll_file_bases = ('std', 'Math');
-  for my $dll_file_base (@dll_file_bases) {
-    my $dll_file_rel = "auto/SPVM/$dll_file_base.native/$dll_file_base.$Config{dlext}";
+  for my $shared_lib_file_base (@dll_file_bases) {
+    my $shared_lib_file_rel = "auto/SPVM/$shared_lib_file_base.native/$shared_lib_file_base.$Config{dlext}";
     for my $module_dir (@INC) {
-      my $dll_file = "$module_dir/$dll_file_rel";
-      if (-f $dll_file) {
-        DynaLoader::dl_load_file($dll_file);
-        push @DynaLoader::dl_shared_objects, $dll_file;
+      my $shared_lib_file = "$module_dir/$shared_lib_file_rel";
+      if (-f $shared_lib_file) {
+        DynaLoader::dl_load_file($shared_lib_file);
+        push @DynaLoader::dl_shared_objects, $shared_lib_file;
       }
     }
   }
