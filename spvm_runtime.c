@@ -108,15 +108,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   // Constant pool type symbol table
   runtime->use_package_path_id_symtable = SPVM_HASH_new(0);
   
-  // Inline file ids
-  runtime->inline_file_ids = SPVM_DYNAMIC_ARRAY_new(0);
-
-  // Inline package name ids
-  runtime->inline_package_name_ids = SPVM_DYNAMIC_ARRAY_new(0);
-  
-  // Inline file id symtable
-  runtime->inline_file_id_symtable = SPVM_HASH_new(0);
-  
   runtime->native_sub_name_ids_symtable = SPVM_HASH_new(0);
   
   return runtime;

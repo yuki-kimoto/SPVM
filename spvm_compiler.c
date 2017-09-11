@@ -122,48 +122,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
       SPVM_HASH_insert(runtime->use_package_path_id_symtable, package_name, strlen(package_name), (void*)(intptr_t)package_path_id);
     }
   }
-
-  // Build inline files
-  {
-    int32_t inline_file_index;
-    for (inline_file_index = 0; inline_file_index < compiler->inline_files->length; inline_file_index++) {
-      const char* inline_file = SPVM_DYNAMIC_ARRAY_fetch(compiler->inline_files, inline_file_index);
-      
-      int32_t inline_file_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, inline_file, strlen(inline_file));
-      assert(inline_file_id > 0);
-      
-      SPVM_DYNAMIC_ARRAY_push(runtime->inline_file_ids, (void*)(intptr_t)inline_file_id);
-    }
-  }
-  
-  // Build inline package names
-  {
-    int32_t inline_package_name_index;
-    for (inline_package_name_index = 0; inline_package_name_index < compiler->inline_package_names->length; inline_package_name_index++) {
-      const char* inline_package_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->inline_package_names, inline_package_name_index);
-      
-      int32_t inline_package_name_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, inline_package_name, strlen(inline_package_name));
-      assert(inline_package_name_id > 0);
-      
-      SPVM_DYNAMIC_ARRAY_push(runtime->inline_package_name_ids, (void*)(intptr_t)inline_package_name_id);
-    }
-  }
-  
-  // Build inline file symtable
-  {
-    int32_t inline_package_name_index;
-    for (inline_package_name_index = 0; inline_package_name_index < compiler->inline_package_names->length; inline_package_name_index++) {
-      const char* inline_package_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->inline_package_names, inline_package_name_index);
-      
-      const char* inline_file = (char*)SPVM_HASH_search(compiler->inline_file_symtable, inline_package_name, strlen(inline_package_name));
-      assert(inline_file);
-      
-      int32_t inline_file_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, inline_file, strlen(inline_file));
-      assert(inline_file_id > 0);
-      
-      SPVM_HASH_insert(runtime->inline_file_id_symtable, inline_package_name, strlen(inline_package_name), (void*)(intptr_t)inline_file_id);
-    }
-  }
   
   // Build native subroutine name symtable
   {
@@ -235,12 +193,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->string_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
-  
-  compiler->inline_files = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-
-  compiler->inline_package_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-
-  compiler->inline_file_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   
   compiler->use_package_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 

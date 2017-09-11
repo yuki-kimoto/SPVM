@@ -1170,20 +1170,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               break;
             case '_':
-              if (strcmp(keyword, "__END__") == 0 || strcmp(keyword, "__CONFIG__") == 0) {
-                if (strstr(compiler->bufptr, "__NATIVE__")) {
-                  SPVM_DYNAMIC_ARRAY_push(compiler->inline_files, (void*)compiler->cur_file);
-                  SPVM_DYNAMIC_ARRAY_push(compiler->inline_package_names, (void*)compiler->cur_package_name_with_template_args);
-                  SPVM_HASH_insert(compiler->inline_file_symtable, compiler->cur_package_name_with_template_args, strlen(compiler->cur_package_name_with_template_args), (void*)compiler->cur_file);
-                }
-                
-                *compiler->bufptr = '\0';
-                continue;
-              }
-              else if (strcmp(keyword, "__NATIVE__") == 0) {
-                SPVM_DYNAMIC_ARRAY_push(compiler->inline_files, (void*)compiler->cur_file);
-                SPVM_DYNAMIC_ARRAY_push(compiler->inline_package_names, (void*)compiler->cur_package_name_with_template_args);
-                SPVM_HASH_insert(compiler->inline_file_symtable, compiler->cur_package_name_with_template_args, strlen(compiler->cur_package_name_with_template_args), (void*)compiler->cur_file);
+              if (strcmp(keyword, "__END__") == 0) {
                 *compiler->bufptr = '\0';
                 continue;
               }

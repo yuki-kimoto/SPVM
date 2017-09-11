@@ -84,15 +84,6 @@ struct SPVM_compiler {
   // Resolved type symbol table
   SPVM_HASH* type_symtable;
   
-  // Inline files
-  SPVM_DYNAMIC_ARRAY* inline_files;
-
-  // Inline packages
-  SPVM_DYNAMIC_ARRAY* inline_package_names;
-  
-  // Inline files
-  SPVM_HASH* inline_file_symtable;
-  
   // Current case statements in switch statement
   SPVM_DYNAMIC_ARRAY* cur_op_cases;
   
