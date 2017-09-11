@@ -246,10 +246,10 @@ sub build_shared_lib {
   
   
   # This is required for Windows
-  my $native_sub_names = get_native_sub_names_from_package($module_name);
+  my $native_func_names = get_native_sub_names_from_package($module_name);
   my $dl_func_list = [];
-  for my $native_sub_name (@$native_sub_names) {
-    my $dl_func = "SPVM__$native_sub_name";
+  for my $native_func_name (@$native_func_names) {
+    my $dl_func = "SPVM__$native_func_name";
     $dl_func =~ s/:/_/g;
     push @$dl_func_list, $dl_func;
   }
@@ -269,14 +269,14 @@ sub build_shared_lib {
 }
 
 sub bind_native_subs {
-  my $native_sub_names = get_native_sub_names();
-  for my $native_sub_name (@$native_sub_names) {
-    my $native_sub_name_spvm = "SPVM::$native_sub_name";
-    my $native_address = get_sub_native_address($native_sub_name_spvm);
+  my $native_func_names = get_native_sub_names();
+  for my $native_func_name (@$native_func_names) {
+    my $native_func_name_spvm = "SPVM::$native_func_name";
+    my $native_address = get_sub_native_address($native_func_name_spvm);
     unless ($native_address) {
-      confess "Can't find native address($native_sub_name())";
+      confess "Can't find native address($native_func_name())";
     }
-    bind_native_sub($native_sub_name, $native_address);
+    bind_native_sub($native_func_name, $native_address);
   }
 }
 
