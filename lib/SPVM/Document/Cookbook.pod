@@ -4,21 +4,21 @@ SPVM::Document::Cookbook - SPVM Tutorial(BETA)
 
 =head1 Advanced
 
-=head2 Inline native function
+=head2 Runtime Compile Native Function
 
-If you use C<__NATIVE__> keyword, you can write program using C language by inline.
+If you use the feature Runtime Compile Native Function, you can write program using C language in runtime.
 This is similar with L<Inline::C>, but L<SPVM> implement this feature by default.
-
+  
+  # SPVM/TestCase/Inline.spvm
   package TestCase::Inline {
     sub sum($num1 : int, $num2 : int) : native int;
   }
-
-  __NATIVE__
-
+  
+  // SPVM/TestCase/Inline/Inline.c
   #include <spvm_api.h>
-
+  
   int32_t SPVM__TestCase__Inline__sum(SPVM_API* api, SPVM_API_VALUE* args) {
-
+    
     int32_t total = args[0].int_value + args[1].int_value;
     
     return total;
@@ -31,9 +31,10 @@ At first, you specify C<native> descripter at SPVM subroutine.
     sub sum($num1 : int, $num2 : int) : native int;
   }
 
-Next, you write C<__NATIVE__> keyword.
-
-  __NATIVE__
+Next, you create "SPVM/TestCase/Inline/Inline.c" file
+  
+  SPVM/TestCase/Inline.spvm
+  SPVM/TestCase/Inline/Inline.c
 
 Next, you write C language. You include C<spvm_api.h>.
 
