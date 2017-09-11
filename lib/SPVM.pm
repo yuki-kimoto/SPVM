@@ -138,7 +138,10 @@ sub get_sub_native_address {
     $module_dir =~ s/$module_name_slash$//;
     $module_dir =~ s/\/$//;
     
-    my $dll_file = compile_inline_native_sub($module_dir, $module_name);
+    my $dll_file = build_shared_lib(
+      module_dir => $module_dir,
+      module_name => $module_name
+    );
     if ($dll_file) {
       $native_address = search_native_address($dll_file, $sub_abs_name);
     }
@@ -149,8 +152,14 @@ sub get_sub_native_address {
 
 my $compiled = {};
 
-sub compile_inline_native_sub {
-  my ($module_dir, $module_name) = @_;
+sub build_shared_lib {
+  my %opt = @_;
+  
+  # Module name
+  my $module_name = $opt{module_name};
+  
+  # Module directory
+  my $module_dir = $opt{module_dir};
   
   if ($compiled->{$module_name}) {
     return $compiled->{$module_name};
