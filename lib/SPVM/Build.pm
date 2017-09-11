@@ -7,8 +7,6 @@ use Carp 'croak';
 use ExtUtils::CBuilder;
 use Config;
 
-use File::Copy 'move';
-use File::Path 'mkpath';
 use File::Basename 'dirname', 'basename';
 use File::Temp 'tempdir';
 
@@ -64,12 +62,6 @@ sub build_shared_lib {
     module_name => $module_name,
     dl_func_list => $native_func_names
   );
-  
-  mkpath "blib/arch/auto/$src_dir";
-  
-  my $lib_file_blib = "blib/arch/auto/$src_dir/${module_base_name}.$dlext";
-  move($lib_file, $lib_file_blib)
-    or die "Can't move $lib_file to $lib_file_blib";
   
   return $lib_file;
 }
