@@ -10,21 +10,21 @@ lib/SPVM/Array/Long.pm
 lib/SPVM/Array/Object.pm
 lib/SPVM/Array/Short.pm
 lib/SPVM/BaseObject.pm
+lib/SPVM/Build.pm
 lib/SPVM/Debug.pm
 lib/SPVM/Document/Cookbook.pod
 lib/SPVM/Document/FAQ.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Document/Spec.pod
+lib/SPVM/Math.native/Math.c
 lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
-lib/SPVM/Math/Math.c
 lib/SPVM/Object.pm
 lib/SPVM/spvm_api.h
+lib/SPVM/std.native/std.c
 lib/SPVM/std.pm
 lib/SPVM/std.spvm
-lib/SPVM/std/std.c
 lib/SPVM/String.pm
-lib/SPVM/Util.pm
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
@@ -126,7 +126,10 @@ spvm_yacc_util.c
 spvm_yacc_util.h
 t/lib/SPVM/TestCase.spvm
 t/lib/SPVM/TestCase/Destructor.spvm
+t/lib/SPVM/TestCase/Inline.native/Inline.c
 t/lib/SPVM/TestCase/Inline.spvm
+t/lib/SPVM/TestCase/Inline2.native/Inline2.c
+t/lib/SPVM/TestCase/Inline2.native/Inline2.config
 t/lib/SPVM/TestCase/Inline2.spvm
 t/lib/SPVM/TestCase/Minimal.spvm
 t/lib/SPVM/TestCase/Weaken.spvm

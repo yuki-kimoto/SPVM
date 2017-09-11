@@ -1,4 +1,4 @@
-package SPVM::Util;
+package SPVM::Build;
 
 use strict;
 use warnings;
@@ -46,7 +46,7 @@ sub build_shared_lib {
   }
   
   # Link
-  my $native_func_names = SPVM::Util::create_native_func_names($module);
+  my $native_func_names = SPVM::Build::create_native_func_names($module);
   my $lib_file = $cbuilder->link(
     objects => $obj_files,
     module_name => $module,

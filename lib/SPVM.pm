@@ -21,7 +21,7 @@ use File::Temp 'tempdir';
 use ExtUtils::CBuilder;
 use Config;
 use DynaLoader;
-use SPVM::Util;
+use SPVM::Build;
 use File::Basename 'basename';
 
 
