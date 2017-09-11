@@ -149,18 +149,18 @@ sub compile_inline_native_sub {
   my $package_base_name = $package_name;
   $package_base_name =~ s/^.+:://;
   
-  my $shared_lib_dir = get_use_package_path($package_name);
-  $shared_lib_dir =~ s/\.spvm$//;
-  $shared_lib_dir .= '.native';
+  my $src_dir = get_use_package_path($package_name);
+  $src_dir =~ s/\.spvm$//;
+  $src_dir .= '.native';
   
   my $src_file;
-  for my $file (glob "$shared_lib_dir/$package_base_name.*") {
+  for my $file (glob "$src_dir/$package_base_name.*") {
     next if $file =~ /\.config$/;
     $src_file = $file;
     last;
   }
   
-  my $config_file = "$shared_lib_dir/$package_base_name.config";
+  my $config_file = "$src_dir/$package_base_name.config";
   my $config;
   if (-f $config_file) {
   
