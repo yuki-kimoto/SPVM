@@ -14,7 +14,7 @@ This is similar with L<Inline::C>, but L<SPVM> implement this feature by default
     sub sum($num1 : int, $num2 : int) : native int;
   }
   
-  // SPVM/TestCase/Inline/Inline.c
+  // SPVM/TestCase/Inline.native/Inline.c
   #include <spvm_api.h>
   
   int32_t SPVM__TestCase__Inline__sum(SPVM_API* api, SPVM_API_VALUE* args) {
@@ -34,7 +34,7 @@ At first, you specify C<native> descripter at SPVM subroutine.
 Next, you create "SPVM/TestCase/Inline/Inline.c" file
   
   SPVM/TestCase/Inline.spvm
-  SPVM/TestCase/Inline/Inline.c
+  SPVM/TestCase/Inline.native/Inline.c
 
 Next, you write C language. You include C<spvm_api.h>.
 

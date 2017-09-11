@@ -29,7 +29,7 @@ use Encode 'encode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0260';
+our $VERSION = '0.0261';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
@@ -151,6 +151,7 @@ sub compile_inline_native_sub {
   
   my $shared_lib_dir = get_use_package_path($package_name);
   $shared_lib_dir =~ s/\.spvm$//;
+  $shared_lib_dir .= '.native';
   
   my $src_file;
   for my $file (glob "$shared_lib_dir/$package_base_name.*") {
@@ -265,7 +266,7 @@ CHECK {
   # Load standard library
   my @dll_file_bases = ('std', 'Math');
   for my $dll_file_base (@dll_file_bases) {
-    my $dll_file_rel = "auto/SPVM/$dll_file_base/$dll_file_base.$Config{dlext}";
+    my $dll_file_rel = "auto/SPVM/$dll_file_base.native/$dll_file_base.$Config{dlext}";
     for my $module_dir (@INC) {
       my $dll_file = "$module_dir/$dll_file_rel";
       if (-f $dll_file) {
