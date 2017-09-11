@@ -5,6 +5,11 @@ use ExtUtils::MakeMaker;
 
 # SPVM only support the environment 64bit integer is supported
 use Config;
+
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use SPVM::Util;
+
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
   die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
@@ -44,3 +49,7 @@ EOS
 
   return $make;
 }
+
+my $func_names = SPVM::Util::get_sub_names('SPVM::Math');
+
+1;
