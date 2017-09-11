@@ -41,8 +41,10 @@ sub build_shared_lib {
     }
   }
   
+  my $config = {optimize => '-O3'};
+  
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(config => {optimize => '-O3'});
+  my $cbuilder = ExtUtils::CBuilder->new(config => $config);
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file

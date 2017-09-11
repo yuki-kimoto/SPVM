@@ -234,26 +234,32 @@ sub build_shared_lib {
   my $module_name_under_score = $module_name;
   $module_name_under_score =~ s/:/_/g;
   
-  my $temp_dir = tempdir;
-  my $quiet = 1;
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_object_file = "$temp_dir/SPVM__${module_name_under_score}.o";
-  my $obj_file = $cbuilder->compile(
-    object_file => $tmp_object_file,
-    source => $src_file,
-    include_dirs => [$api_header_include_dir]
-  );
+  # Compile source files
+  my $cbuilder = ExtUtils::CBuilder->new(config => $config);
+  my $object_files = [];
+  for my $src_file (@$src_files) {
+    # Object file
+    my $temp_dir = tempdir;
+    my $object_file = $module_name;
+    $object_file =~ s/:/_/g;
+    $object_file = "$temp_dir/$object_file.o";
+    
+    # Compile source file
+    $cbuilder->compile(
+      source => $src_file,
+      object_file => $object_file,
+      include_dirs => ['lib/SPVM']
+    );
+    push @$object_files, $object_file;
+  }
   
-  
-  # This is required for Windows
+  # Link
+  my $dlext = $Config{dlext};
   my $native_func_names = SPVM::Build::get_native_func_names($module_dir, $module_name);
-  my $lib_file_name = "$temp_dir/SPVM__${module_name_under_score}.$Config{dlext}";
-  
   my $lib_file = $cbuilder->link(
-    objects => $obj_file,
-    module_name => "SPVM::$module_name",
-    dl_func_list => $native_func_names,
-    lib_file => $lib_file_name
+    objects => $object_files,
+    module_name => $module_name,
+    dl_func_list => $native_func_names
   );
   
   $compiled->{$module_name} = $lib_file;
