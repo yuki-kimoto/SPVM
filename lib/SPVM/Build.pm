@@ -17,10 +17,6 @@ sub build_shared_lib {
   
   my $lib_dir = 'lib/';
   
-  my $cbuilder = ExtUtils::CBuilder->new(config => {optimize => '-O3'});
-  
-  my $dlext = $Config{dlext};
-  
   my $module_base_name = $module;
   $module_base_name =~ s/^.+:://;
   
@@ -37,6 +33,7 @@ sub build_shared_lib {
   }
   
   # Compile source files
+  my $cbuilder = ExtUtils::CBuilder->new(config => {optimize => '-O3'});
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
@@ -55,6 +52,7 @@ sub build_shared_lib {
   }
   
   # Link
+  my $dlext = $Config{dlext};
   my $native_func_names = SPVM::Build::create_native_func_names($module);
   my $lib_file = $cbuilder->link(
     objects => $object_files,
