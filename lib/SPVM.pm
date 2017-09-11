@@ -180,8 +180,8 @@ sub build_shared_lib {
       push @$src_files, $src_file;
     }
   }
-  my $src_file = $src_files->[0];
   
+  # Config
   my $config_file = "$src_dir/$module_base_name.config";
   my $config;
   if (-f $config_file) {

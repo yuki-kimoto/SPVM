@@ -41,7 +41,14 @@ sub build_shared_lib {
     }
   }
   
+  # Config
+  my $config_file = "$src_dir/$module_base_name.config";
   my $config;
+  if (-f $config_file) {
+  
+    $config = do $config_file
+      or confess "Can't parser $config_file: $!$@";
+  }
   
   # Header inlucde directory
   my $api_header_include_dir = $INC{"SPVM.pm"};
