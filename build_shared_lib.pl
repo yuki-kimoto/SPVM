@@ -6,7 +6,9 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM::Build;
 
-my $module = shift;
+my $module_name = shift;
 
-SPVM::Build::build_shared_lib($module);
-
+my $shared_lib_file = SPVM::Build::build_shared_lib(
+  module_name => $module_name,
+  module_dir => 'lib'
+);

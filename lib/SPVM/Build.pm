@@ -13,20 +13,25 @@ use File::Basename 'dirname', 'basename';
 use File::Temp 'tempdir';
 
 sub build_shared_lib {
-  my $module = shift;
+  my %opt = @_;
   
-  my $lib_dir = 'lib/';
+  # Module name
+  my $module_name = $opt{module_name};
   
-  my $module_base_name = $module;
+  # Module directory
+  my $module_dir = $opt{module_dir};
+  
+  my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
-  my $src_dir = $module;
+  my $src_dir = $module_name;
   $src_dir =~ s/::/\//g;
   $src_dir .= '.native';
-
+  
+  # Correct source files
   my $src_files = [];
   my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
-  for my $src_file (glob "$lib_dir/$src_dir/*") {
+  for my $src_file (glob "$module_dir/$src_dir/*") {
     if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
       push @$src_files, $src_file;
     }
@@ -38,7 +43,7 @@ sub build_shared_lib {
   for my $src_file (@$src_files) {
     # Object file
     my $temp_dir = tempdir;
-    my $object_file = $module;
+    my $object_file = $module_name;
     $object_file =~ s/:/_/g;
     $object_file = "$temp_dir/$object_file.o";
     
@@ -53,23 +58,20 @@ sub build_shared_lib {
   
   # Link
   my $dlext = $Config{dlext};
-  my $native_func_names = SPVM::Build::create_native_func_names($module);
+  my $native_func_names = SPVM::Build::create_native_func_names($module_name);
   my $lib_file = $cbuilder->link(
     objects => $object_files,
-    module_name => $module,
+    module_name => $module_name,
     dl_func_list => $native_func_names
   );
-  
-  # Delete object files
-  for my $object_file (@$object_files) {
-    unlink $object_file;
-  }
   
   mkpath "blib/arch/auto/$src_dir";
   
   my $lib_file_blib = "blib/arch/auto/$src_dir/${module_base_name}.$dlext";
   move($lib_file, $lib_file_blib)
     or die "Can't move $lib_file to $lib_file_blib";
+  
+  return $lib_file;
 }
 
 sub create_native_func_names {
