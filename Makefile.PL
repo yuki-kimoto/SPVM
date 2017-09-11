@@ -50,6 +50,4 @@ EOS
   return $make;
 }
 
-my $func_names = SPVM::Util::get_sub_names('SPVM::Math');
-
 1;

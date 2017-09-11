@@ -6,6 +6,10 @@ use Config;
 use File::Copy 'move';
 use File::Path 'mkpath';
 
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use SPVM::Util;
+
 my $cbuilder = ExtUtils::CBuilder->new(config => {optimize => '-O3'});
 
 my @libs = ('std', 'Math');
@@ -13,29 +17,8 @@ my @libs = ('std', 'Math');
 my $dlext = $Config{dlext};
 
 my $func_list = {
-  std => [qw(
-    SPVM__std__println_byte
-    SPVM__std__println_short
-    SPVM__std__println_int
-    SPVM__std__println_long
-    SPVM__std__println_float
-    SPVM__std__println_double
-    SPVM__std__println
-
-    SPVM__std__print_byte
-    SPVM__std__print_short
-    SPVM__std__print_int
-    SPVM__std__print_long
-    SPVM__std__print_float
-    SPVM__std__print_double
-    
-    SPVM__std__sum_int
-    SPVM__std__test1
-    SPVM__std__test2
-  )],
-  Math => [qw(
-    SPVM__Math__sin
-  )]
+  std => SPVM::Util::create_native_func_names('SPVM::std'),
+  Math => SPVM::Util::create_native_func_names('SPVM::Math')
 };
 
 for my $lib (@libs) {

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp 'croak';
 
-sub get_sub_names {
+sub create_native_func_names {
   my $module = shift;
   
   my $module_file = $module;
@@ -14,22 +14,22 @@ sub get_sub_names {
   open my $module_fh, '<', $module_file
     or croak "Can't open $module_file: $!";
   
-  my $sub_names = [];
+  my $native_func_names = [];
   
   my $src = do { local $/; <$module_fh> };
-
-  $DB::single = 1;
   
-  # \s*\:\s*([^\{]+?);
-  while ($src =~ /sub\s+([^\s]+)\s*\((?:[^\)]*?)\)\s*\:\s*([^\{]+);/g) {
+  while ($src =~ /sub\s+([^\s]+)\s*\((?:[^\)]*?)\)\s*\:\s*([^\{;]+);/g) {
     my $sub_name = $1;
     my $descripter_type = $2;
     if ($descripter_type =~ /\bnative\b/) {
-      push @$sub_names, $sub_name;
+      my $native_func_name = "${module}::$sub_name";
+      $native_func_name =~ s/:/_/g;
+      
+      push @$native_func_names, $native_func_name;
     }
   }
   
-  return $sub_names;
+  return $native_func_names;
 }
 
 1;
