@@ -231,11 +231,8 @@ sub build_shared_lib {
     }
   }
   
-  my $module_name_under_score = $module_name;
-  $module_name_under_score =~ s/:/_/g;
-  
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(config => $cbuilder_new_config);
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file

@@ -2,7 +2,7 @@ package SPVM::Build;
 
 use strict;
 use warnings;
-use Carp 'croak';
+use Carp 'croak', 'confess';
 
 use ExtUtils::CBuilder;
 use Config;
@@ -41,7 +41,45 @@ sub build_shared_lib {
     }
   }
   
-  my $config = {optimize => '-O3'};
+  my $config;
+  
+  # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
+  my $cbuilder_new_config = {};
+  if ($config) {
+    # OPTIMIZE
+    if (defined $config->{OPTIMIZE}) {
+      $cbuilder_new_config->{optimize} = delete $config->{OPTIMIZE};
+    }
+    else {
+      # Default is -O3
+      $cbuilder_new_config->{optimize} = '-O3';
+    }
+    
+    # CC
+    if (defined $config->{CC}) {
+      $cbuilder_new_config->{cc} = delete $config->{CC};
+    }
+    
+    # CCFLAGS
+    if (defined $config->{CCFLAGS}) {
+      $cbuilder_new_config->{ccflags} = delete $config->{CCFLAGS};
+    }
+    
+    # LD
+    if (defined $config->{LD}) {
+      $cbuilder_new_config->{ld} = delete $config->{LD};
+    }
+    
+    # LDDLFLAGS
+    if (defined $config->{LDDLFLAGS}) {
+      $cbuilder_new_config->{lddlflags} = delete $config->{LDDLFLAGS};
+    }
+    
+    my @keys = keys %$config;
+    if (@keys) {
+      confess "$keys[0] is not supported option";
+    }
+  }
   
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(config => $config);
