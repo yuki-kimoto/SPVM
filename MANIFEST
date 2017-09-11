@@ -1,5 +1,5 @@
+build_shared_lib.pl
 Changes
-create_lib_dll.pl
 lib/SPVM.pm
 lib/SPVM/Array.pm
 lib/SPVM/Array/Byte.pm
@@ -17,11 +17,14 @@ lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Document/Spec.pod
 lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
+lib/SPVM/Math/Math.c
 lib/SPVM/Object.pm
 lib/SPVM/spvm_api.h
 lib/SPVM/std.pm
 lib/SPVM/std.spvm
+lib/SPVM/std/std.c
 lib/SPVM/String.pm
+lib/SPVM/Util.pm
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
@@ -81,10 +84,7 @@ spvm_hash.h
 spvm_hash_entry.h
 spvm_hash_func.c
 spvm_hash_func.h
-spvm_lib/spvm_lib_Math.c
-spvm_lib/spvm_lib_Math.o
-spvm_lib/spvm_lib_std.c
-spvm_lib/spvm_lib_std.o
+spvm_lib_std.c
 spvm_limit.h
 spvm_memory_pool.c
 spvm_memory_pool.h

@@ -23,7 +23,6 @@ GetOptions('d' => \$debug);
 # Edit CCFLAGS
 my $ccflags = "$Config{ccflags} -Wall -Wextra";
 
-
 WriteMakefile(
     NAME              => 'SPVM',
     VERSION_FROM      => 'lib/SPVM.pm', # finds $VERSION
@@ -39,7 +38,7 @@ WriteMakefile(
     $debug ? (DEFINE => '-DDEBUG') : ()
 );
 
-# Run create_lib_dll script after running LD
+# Build shared library
 sub MY::postamble {
 
   my $make =<<"EOS";
