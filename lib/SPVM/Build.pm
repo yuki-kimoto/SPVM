@@ -21,6 +21,9 @@ sub build_shared_lib {
   # Module directory
   my $module_dir = $opt{module_dir};
   
+  # Object created directory
+  my $object_dir = $opt{object_dir};
+  
   if ($compiled->{$module_name}) {
     return $compiled->{$module_name};
   }
@@ -97,12 +100,14 @@ sub build_shared_lib {
   my $quiet = 1;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $object_files = [];
+  unless (defined $object_dir) {
+    $object_dir = tempdir(CLEANUP => 1);
+  }
   for my $src_file (@$src_files) {
     # Object file
-    my $temp_dir = tempdir;
     my $object_file = $module_name;
     $object_file =~ s/:/_/g;
-    $object_file = "$temp_dir/$object_file.o";
+    $object_file = "$object_dir/$object_file.o";
     
     # Compile source file
     $cbuilder->compile(
