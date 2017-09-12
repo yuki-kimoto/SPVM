@@ -119,8 +119,7 @@ sub build_shared_lib {
   $api_header_include_dir =~ s/\/Build\.pm$//;
   push @$include_dirs, $api_header_include_dir;
   
-  
-  
+  push @$include_dirs, $native_dir;
   
   # CBuilder config
   my $cbuilder_config = {};
@@ -179,7 +178,10 @@ sub build_shared_lib {
     # Object file
     my $object_file = $module_name;
     $object_file =~ s/:/_/g;
-    $object_file = "$object_dir/$object_file.o";
+    my $src_file_under_score = $src_file;
+    $src_file_under_score =~ s/^.+\///;
+    $src_file_under_score =~ s/[^a-zA-Z0-9]/_/g;
+    $object_file = "$object_dir/${object_file}____$src_file_under_score.o";
     
     # Compile source file
     $cbuilder->compile(
@@ -190,7 +192,6 @@ sub build_shared_lib {
     push @$object_files, $object_file;
   }
   
-  # Link
   my $dlext = $Config{dlext};
   my $native_func_names = SPVM::Build::get_native_func_names($module_dir, $module_name);
   my $lib_file = $cbuilder->link(
