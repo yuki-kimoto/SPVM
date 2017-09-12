@@ -23,8 +23,8 @@
     __NATIVE__
   - add new runtime compile syntax
     Foo.spvm
-    Foo/Foo.c
-    Foo/Foo.config
+    Foo.native/Foo.c
+    Foo.native/Foo.config
     
 0.0260 2017-09-08
   - fix windows dll bugs
