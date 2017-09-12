@@ -36,8 +36,9 @@ sub create_postamble {
     my $module_name_under_score = $module_name;
     $module_name_under_score =~ s/:/_/g;
     
+    # Get native source files
     $postamble
-      .= "shared_lib_$module_name_under_score ::\n";
+      .= "shared_lib_$module_name_under_score :: \n";
     $postamble
       .= "\tperl build_shared_lib.pl --object_dir=. $module_name\n\n";
   }
@@ -53,6 +54,12 @@ sub build_shared_lib {
   
   # Module directory
   my $module_dir = $opt{module_dir};
+
+  # Source directory
+  my $source_dir = $opt{source_dir};
+  unless (defined $source_dir) {
+    $source_dir = $module_dir;
+  }
   
   # Object created directory
   my $object_dir = $opt{object_dir};
@@ -71,7 +78,7 @@ sub build_shared_lib {
   # Correct source files
   my $src_files = [];
   my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
-  for my $src_file (glob "$module_dir/$src_dir/*") {
+  for my $src_file (glob "$source_dir/$src_dir/*") {
     if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
       push @$src_files, $src_file;
     }
