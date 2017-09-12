@@ -32,13 +32,31 @@ sub create_postamble {
   $postamble .= "\n\n";
   
   # shared_lib sections
+  my $dlext = $Config{dlext};
   for my $module_name (@$module_names) {
     my $module_name_under_score = $module_name;
     $module_name_under_score =~ s/:/_/g;
     
+    my $module_base_name = $module_name;
+    $module_base_name =~ s/^.+:://;
+    
+    my $src_dir = $module_name;
+    $src_dir =~ s/::/\//g;
+    $src_dir = "native/$src_dir.native";
+    
+    # Dependency
+    my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
+    
+    # Shared library file
+    my $shared_lib_file = $module_name;
+    $shared_lib_file =~ s/::/\//g;
+    $shared_lib_file = "blib/arch/auto/$shared_lib_file.native/$module_base_name.$dlext";
+    
     # Get native source files
     $postamble
-      .= "shared_lib_$module_name_under_score :: \n";
+      .= "shared_lib_$module_name_under_score :: $shared_lib_file\n\n";
+    $postamble
+      .= "$shared_lib_file :: @deps\n\n";
     $postamble
       .= "\tperl build_shared_lib.pl --object_dir=. $module_name\n\n";
   }

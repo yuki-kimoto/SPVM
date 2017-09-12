@@ -39,7 +39,6 @@ WriteMakefile(
 
 # Build shared library
 sub MY::postamble {
-  
   my $postamble = SPVM::Build::create_postamble(
     module_names => [
       'SPVM::std',
@@ -49,5 +48,6 @@ sub MY::postamble {
   
   return $postamble;
 }
+
 
 1;
