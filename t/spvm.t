@@ -15,8 +15,8 @@ use lib "$FindBin::Bin/lib";
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
 
-use SPVM 'TestCase::Inline';
-use SPVM 'TestCase::Inline2';
+use SPVM 'TestCase::Extension';
+use SPVM 'TestCase::Extension2';
 
 use POSIX ();
 
@@ -273,11 +273,12 @@ is_deeply(
 );
 =cut
 
-# Inline 
+# Extension 
 {
-  ok(SPVM::TestCase::spvm_inline());
-  ok(SPVM::TestCase::spvm_inline2());
-  ok(SPVM::TestCase::spvm_inline2_binding());
+  ok(SPVM::TestCase::spvm_extension());
+  ok(SPVM::TestCase::spvm_extension_add_int_array());
+  ok(SPVM::TestCase::spvm_extension2());
+  ok(SPVM::TestCase::spvm_extension2_binding());
 }
 
 # Get object from freelist

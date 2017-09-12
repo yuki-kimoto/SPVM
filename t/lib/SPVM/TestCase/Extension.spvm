@@ -1,0 +1,5 @@
+package TestCase::Extension {
+  sub sum($num1 : int, $num2 : int) : native int;
+  
+  sub add_int_array($nums1 : int[], $nums2 : int[]) : native int[];
+}

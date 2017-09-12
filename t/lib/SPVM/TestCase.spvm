@@ -1,8 +1,8 @@
 use TestCase::Weaken;
 use TestCase::Minimal;
 use TestCase::Destructor;
-use TestCase::Inline;
-use TestCase::Inline2;
+use TestCase::Extension;
+use TestCase::Extension2;
 use Math;
 
 package TestCase {
@@ -96,8 +96,8 @@ package TestCase {
     return 0;
   }
   
-  sub spvm_inline() : int {
-    my $total = TestCase::Inline::sum(2, 3);
+  sub spvm_extension() : int {
+    my $total = TestCase::Extension::sum(2, 3);
     
     if ($total == 5) {
       return 1;
@@ -105,9 +105,27 @@ package TestCase {
     
     return 0;
   }
+
+  sub spvm_extension_add_int_array() : int {
+    my $nums1 = [1, 2, 3];
+    my $nums2 = [4, 5, 6];
+    
+    my $nums3 = TestCase::Extension::add_int_array($nums1, $nums2);
+    
+    if ($nums3->[0] == 5) {
+      if ($nums3->[1] == 7) {
+        if ($nums3->[2] == 9) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
   
-  sub spvm_inline2() : int {
-    my $total = TestCase::Inline2::mul(5, 3);
+  sub spvm_extension2() : int {
+    my $total = TestCase::Extension2::mul(5, 3);
     
     if ($total == 15) {
       return 1;
@@ -116,8 +134,8 @@ package TestCase {
     return 0;
   }
 
-  sub spvm_inline2_binding() : int {
-    my $total = TestCase::Inline2::one();
+  sub spvm_extension2_binding() : int {
+    my $total = TestCase::Extension2::one();
     
     if ($total == 1) {
       return 1;

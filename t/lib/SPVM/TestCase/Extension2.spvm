@@ -1,4 +1,4 @@
-package TestCase::Inline2 {
+package TestCase::Extension2 {
   sub mul($num1 : int, $num2 : int) : native int;
 
   sub one() : native int;

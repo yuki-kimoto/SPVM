@@ -30,7 +30,7 @@ B<1. Add two int value:>
 
   #include <spvm_api.h>
 
-  int32_t SPVM__TestCase__Inline__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_API_VALUE* args) {
 
     int32_t total = args[0].int_value + args[1].int_value;
     
@@ -43,7 +43,7 @@ C Function name must be the name which Replace C<:> of SPVM subroutine with C<_>
 and add C<SPVM> to the top of it.
 
   [SPVM subroutine]            [C Function]                  
-  SPVM::TestCase::Inline::sum  SPVM__TestCase__Inline__sum   
+  SPVM::TestCase::Extension::sum  SPVM__TestCase__Extension__sum   
 
 =head1 Data Definision
 
@@ -51,13 +51,13 @@ and add C<SPVM> to the top of it.
 
 SPVM Native API object. This object is always First Argument of native function .
   
-  int32_t SPVM__TestCase__Inline__array_sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__array_sum(SPVM_API* api, SPVM_API_VALUE* args) {
     
   }
 
 You can call Native API from this object, and First Argument of Native API is always this object.
 
-  int32_t SPVM__TestCase__Inline__array_sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__array_sum(SPVM_API* api, SPVM_API_VALUE* args) {
     // Call SPVM Native API
     int32_t length = api->get_array_length(api, args[0].object_value);
   }

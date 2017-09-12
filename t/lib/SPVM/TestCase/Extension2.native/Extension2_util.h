@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-int32_t Inline2_util_one();
+int32_t Extension2_util_one();
 
 #endif

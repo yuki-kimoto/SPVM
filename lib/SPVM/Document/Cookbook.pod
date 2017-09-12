@@ -7,17 +7,17 @@ SPVM::Document::Cookbook - SPVM Tutorial(BETA)
 =head2 Runtime Compile Native Function
 
 If you use the feature Runtime Compile Native Function, you can write program using C language in runtime.
-This is similar with L<Inline::C>, but L<SPVM> implement this feature by default.
+This is similar with L<Extension::C>, but L<SPVM> implement this feature by default.
   
-  # SPVM/TestCase/Inline.spvm
-  package TestCase::Inline {
+  # SPVM/TestCase/Extension.spvm
+  package TestCase::Extension {
     sub sum($num1 : int, $num2 : int) : native int;
   }
   
-  // SPVM/TestCase/Inline.native/Inline.c
+  // SPVM/TestCase/Extension.native/Extension.c
   #include <spvm_api.h>
   
-  int32_t SPVM__TestCase__Inline__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_API_VALUE* args) {
     
     int32_t total = args[0].int_value + args[1].int_value;
     
@@ -26,24 +26,24 @@ This is similar with L<Inline::C>, but L<SPVM> implement this feature by default
 
 At first, you specify C<native> descripter at SPVM subroutine.
 
-  package TestCase::Inline {
+  package TestCase::Extension {
     # native descripter
     sub sum($num1 : int, $num2 : int) : native int;
   }
 
-Next, you create "SPVM/TestCase/Inline/Inline.c" file
+Next, you create "SPVM/TestCase/Extension/Extension.c" file
   
-  SPVM/TestCase/Inline.spvm
-  SPVM/TestCase/Inline.native/Inline.c
+  SPVM/TestCase/Extension.spvm
+  SPVM/TestCase/Extension.native/Extension.c
 
 Next, you write C language. You include C<spvm_api.h>.
 
   #include <spvm_api.h>
 
 C Function name must be replace C<:> with <_> and add C<SPVM__> to top of SPVM subroutine name. SPVM subroutine absolute name is
-C<TestCase::Inline::sum>. C function name is C<SPVM__TestCase__Inline__sum>.
+C<TestCase::Extension::sum>. C function name is C<SPVM__TestCase__Extension__sum>.
 
-  int32_t SPVM__TestCase__Inline__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_API_VALUE* args) {
 
     int32_t total = args[0].int_value + args[1].int_value;
     
