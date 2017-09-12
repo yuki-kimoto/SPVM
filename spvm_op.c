@@ -1626,6 +1626,49 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last) {
   
+  if (op_assign->code == SPVM_OP_C_CODE_SPECIAL_ASSIGN) {
+    int32_t flag = op_assign->flag;
+    
+    SPVM_OP* op_operation;
+    if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ADD, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUBTRACT, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MULTIPLY, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_DIVIDE, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_REMAINDER, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LEFT_SHIFT, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RIGHT_SHIFT, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT_UNSIGNED) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BIT_XOR, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_OR) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BIT_OR, op_assign->file, op_assign->line);
+    }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BIT_AND, op_assign->file, op_assign->line);
+    }
+    else {
+      assert(0);
+    }
+    
+  }
+  
   // Stab to add after process
   SPVM_OP* op_assign_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN_PROCESS, op_assign->file, op_assign->line);
   
