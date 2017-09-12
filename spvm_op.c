@@ -1667,6 +1667,15 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       assert(0);
     }
     
+    SPVM_OP* op_var_right = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
+    op_var_right->uv.var = op_first->uv.var;
+    
+    SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_var_right);
+    SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_last);
+    
+    op_last = op_operation;
+    
+    op_assign->code = SPVM_OP_C_CODE_ASSIGN;
   }
   
   // Stab to add after process

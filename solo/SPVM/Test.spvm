@@ -43,6 +43,13 @@ package Test {
   }
   
   sub main($mvar : int) : int {
+    {
+      my $num = 1;
+      
+      $num += 4;
+      
+      std::println_int($num);
+    }
     
     {
       error_eval_call();
