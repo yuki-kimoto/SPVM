@@ -34,10 +34,9 @@ WriteMakefile(
     $debug ? (DEFINE => '-DDEBUG') : ()
 );
 
-# Build shared library
-sub MY::postamble {
-
-  my $make =<<"EOS";
+sub create_postamble {
+  
+  my $postamble =<<"EOS";
 dynamic :: shared_lib_SPVM__std shared_lib_SPVM__Math
 
 shared_lib_SPVM__std ::
@@ -47,8 +46,16 @@ shared_lib_SPVM__Math ::
 \tperl build_shared_lib.pl --object_dir=. SPVM::Math
 
 EOS
+  
+  return $postamble;
+}
 
-  return $make;
+# Build shared library
+sub MY::postamble {
+  
+  my $postamble = create_postamble();
+  
+  return $postamble;
 }
 
 1;
