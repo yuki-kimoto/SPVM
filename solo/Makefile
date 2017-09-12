@@ -7,7 +7,7 @@ DEFINE :=
 CC     	 := gcc
 CFLAGS 	 := -g -O -Wall -Wextra $(DEFINE)
 LIBS   	 := -lm 
-INCLUDE  := -Ilib/SPVM
+INCLUDE  := -I. -Ilib/SPVM
 DIRS     :=
 CPPFLAGS  = -MD -MF $(@:%.o=%.Po)
 
@@ -33,7 +33,7 @@ spvm_LDFLAGS := $(LDFLAGS) -L .
 spvm_LIBS    := -lspvm $(LIBS)
 -include $(spvm_OBJS:%.o=%.Po)
 spvm: $(spvm_OBJS) libspvm.a
-	$(CC) -o $@ $(spvm_LDFLAGS) $(spvm_OBJS) $(spvm_LIBS)
+	$(CC) $(INCLUDE) -o $@ $(spvm_LDFLAGS) $(spvm_OBJS) $(spvm_LIBS)
 all: spvm
 
 # test (solo/t/spvm_t_*)

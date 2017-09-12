@@ -3,20 +3,20 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include "../spvm_compiler.h"
-#include "../spvm_hash.h"
-#include "../spvm_dynamic_array.h"
-#include "../spvm_util_allocator.h"
-#include "../spvm_constant_pool.h"
-#include "../spvm_constant_pool_sub.h"
-#include "../spvm_bytecode_array.h"
-#include "../spvm_runtime.h"
-#include "../spvm_runtime_allocator.h"
-#include "../spvm_op.h"
-#include "../spvm_sub.h"
-#include "../spvm_dumper.h"
+#include "spvm_compiler.h"
+#include "spvm_hash.h"
+#include "spvm_dynamic_array.h"
+#include "spvm_util_allocator.h"
+#include "spvm_constant_pool.h"
+#include "spvm_constant_pool_sub.h"
+#include "spvm_bytecode_array.h"
+#include "spvm_runtime.h"
+#include "spvm_runtime_allocator.h"
+#include "spvm_op.h"
+#include "spvm_sub.h"
+#include "spvm_dumper.h"
 
-#include "../native/SPVM/std.native/std.c";
+#include "native/SPVM/std.native/std.c";
 
 #include <spvm_api.h>
 
