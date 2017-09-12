@@ -579,6 +579,10 @@ is_deeply(
   ok(SPVM::TestCase::logical_and_both_false());
 }
 
+# Special assign
+{
+  ok(SPVM::TestCase::special_assign());
+}
 # Add
 {
   is(SPVM::TestCase::add_byte_max(), 127);
