@@ -5,13 +5,15 @@ use ExtUtils::MakeMaker;
 
 # SPVM only support the environment 64bit integer is supported
 use Config;
+use Getopt::Long;
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use SPVM::Build;
 
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
   die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
 }
-
-use Getopt::Long;
 
 my $debug;
 GetOptions('d' => \$debug);
@@ -34,26 +36,16 @@ WriteMakefile(
     $debug ? (DEFINE => '-DDEBUG') : ()
 );
 
-sub create_postamble {
-  
-  my $postamble =<<"EOS";
-dynamic :: shared_lib_SPVM__std shared_lib_SPVM__Math
-
-shared_lib_SPVM__std ::
-\tperl build_shared_lib.pl --object_dir=. SPVM::std
-
-shared_lib_SPVM__Math ::
-\tperl build_shared_lib.pl --object_dir=. SPVM::Math
-
-EOS
-  
-  return $postamble;
-}
 
 # Build shared library
 sub MY::postamble {
   
-  my $postamble = create_postamble();
+  my $postamble = SPVM::Build::create_postamble(
+    module_names => [
+      'SPVM::std',
+      'SPVM::Math'
+    ]
+  );
   
   return $postamble;
 }

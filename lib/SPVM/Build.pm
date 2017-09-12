@@ -12,6 +12,39 @@ use File::Temp 'tempdir';
 
 my $compiled = {};
 
+sub create_postamble {
+  my %opt = @_;
+  
+  my $module_names = $opt{module_names};
+  
+  my $postamble;
+  
+  # dynamic section
+  $postamble
+    = "dynamic :: ";
+  for my $module_name (@$module_names) {
+    my $module_name_under_score = $module_name;
+    $module_name_under_score =~ s/:/_/g;
+    
+    $postamble
+      .= "shared_lib_$module_name_under_score ";
+  }
+  $postamble .= "\n\n";
+  
+  # shared_lib sections
+  for my $module_name (@$module_names) {
+    my $module_name_under_score = $module_name;
+    $module_name_under_score =~ s/:/_/g;
+    
+    $postamble
+      .= "shared_lib_$module_name_under_score ::\n";
+    $postamble
+      .= "\tperl build_shared_lib.pl --object_dir=. $module_name\n\n";
+  }
+  
+  return $postamble;
+}
+
 sub build_shared_lib {
   my %opt = @_;
   
