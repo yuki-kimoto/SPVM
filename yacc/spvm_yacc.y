@@ -29,7 +29,7 @@
 %type <opval> ';' opt_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
 
 
-%right <opval> ASSIGN
+%right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> OR
 %left <opval> AND
 %left <opval> BIT_OR BIT_XOR
@@ -607,6 +607,10 @@ binop
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | VAR ASSIGN term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
+  | VAR SPECIAL_ASSIGN term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }

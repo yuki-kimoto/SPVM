@@ -123,6 +123,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "STRING",
   "WEAKEN",
   "WEAKEN_FIELD",
+  "SPECIAL_ASSIGN",
 };
 
 // Return cloned op and target op become stab
