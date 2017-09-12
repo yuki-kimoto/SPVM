@@ -210,6 +210,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);
           return INC;
         }
+        else if (*compiler->bufptr == '=') {
+          compiler->bufptr++;
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD;
+          
+          yylvalp->opval = op_special_assign;
+          
+          return SPECIAL_ASSIGN;
+        }
         else {
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);
           return '+';
@@ -233,6 +242,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);
           return DEC;
         }
+        else if (*compiler->bufptr == '=') {
+          compiler->bufptr++;
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT;
+          
+          yylvalp->opval = op_special_assign;
+          
+          return SPECIAL_ASSIGN;
+        }
         else {
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);;
           return '-';
@@ -240,28 +258,74 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       /* Multiply */
       case '*': {
         compiler->bufptr++;
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MULTIPLY);
-        yylvalp->opval = op;
-        return MULTIPLY;
+        
+        if (*compiler->bufptr == '=') {
+          compiler->bufptr++;
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY;
+          
+          yylvalp->opval = op_special_assign;
+          
+          return SPECIAL_ASSIGN;
+        }
+        else {
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MULTIPLY);
+          yylvalp->opval = op;
+          return MULTIPLY;
+        }
       }
       /* Divide */
       case '/': {
         compiler->bufptr++;
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DIVIDE);
-        yylvalp->opval = op;
-        return DIVIDE;
+        
+        if (*compiler->bufptr == '=') {
+          compiler->bufptr++;
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE;
+          
+          yylvalp->opval = op_special_assign;
+          
+          return SPECIAL_ASSIGN;
+        }
+        else {
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DIVIDE);
+          yylvalp->opval = op;
+          return DIVIDE;
+        }
       }
       case '%': {
         compiler->bufptr++;
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_REMAINDER);
-        yylvalp->opval = op;
-        return REMAINDER;
+        if (*compiler->bufptr == '=') {
+          compiler->bufptr++;
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER;
+          
+          yylvalp->opval = op_special_assign;
+          
+          return SPECIAL_ASSIGN;
+        }
+        else {
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_REMAINDER);
+          yylvalp->opval = op;
+          return REMAINDER;
+        }
       }
       case '^': {
         compiler->bufptr++;
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_BIT_XOR);
-        yylvalp->opval = op;
-        return BIT_XOR;
+        if (*compiler->bufptr == '=') {
+          compiler->bufptr++;
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR;
+          
+          yylvalp->opval = op_special_assign;
+          
+          return SPECIAL_ASSIGN;
+        }
+        else {
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_BIT_XOR);
+          yylvalp->opval = op;
+          return BIT_XOR;
+        }
       }
       case '|':
         compiler->bufptr++;
@@ -272,7 +336,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
           return OR;
         }
-        /* Bit or */
+        else if (*compiler->bufptr == '=') {
+          compiler->bufptr++;
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_OR;
+          
+          yylvalp->opval = op_special_assign;
+          
+          return SPECIAL_ASSIGN;
+        }
         else {
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_BIT_OR);
           yylvalp->opval = op;
@@ -287,6 +359,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_AND);
           yylvalp->opval = op;
           return AND;
+        }
+        else if (*compiler->bufptr == '=') {
+          compiler->bufptr++;
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND;
+          
+          yylvalp->opval = op_special_assign;
+          
+          return SPECIAL_ASSIGN;
         }
         /* Bit and */
         else {
