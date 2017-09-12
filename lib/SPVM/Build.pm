@@ -89,36 +89,42 @@ sub build_shared_lib {
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
-  my $src_dir = $module_name;
-  $src_dir =~ s/::/\//g;
-  $src_dir .= '.native';
+  my $native_dir = $module_name;
+  $native_dir =~ s/::/\//g;
+  $native_dir .= '.native';
+  $native_dir = "$source_dir/$native_dir";
   
   # Correct source files
   my $src_files = [];
   my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
-  for my $src_file (glob "$source_dir/$src_dir/*") {
+  for my $src_file (glob "$native_dir/*") {
     if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
       push @$src_files, $src_file;
     }
   }
   
   # Config
-  my $config_file = "$source_dir/$src_dir/$module_base_name.config";
+  my $config_file = "$native_dir/$module_base_name.config";
   my $config;
   if (-f $config_file) {
     $config = do $config_file
       or confess "Can't parser $config_file: $!$@";
   }
   
-  # Header inlucde directory
+  # Include directory
   my $include_dirs = [];
+  
+  # Default include path
   my $api_header_include_dir = $INC{"SPVM/Build.pm"};
   $api_header_include_dir =~ s/\/Build\.pm$//;
   push @$include_dirs, $api_header_include_dir;
   
+  
+  
+  
+  # CBuilder config
   my $cbuilder_config = {};
   
-
   # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
   if ($config) {
     # CBuilder config name which compatible with ExtUtils::MakeMaker
@@ -137,10 +143,26 @@ sub build_shared_lib {
       }
     }
     
-    my @keys = keys %$config;
-    if (@keys) {
-      confess "$keys[0] is not supported option";
+  }
+  
+  # Include directory
+  if (defined $config->{INC}) {
+    my $inc = delete $config->{INC};
+    
+    my @include_dirs_tmp = split /\s+/, $inc;
+    for my $include_dir_tmp (reverse @include_dirs_tmp) {
+      if ($include_dir_tmp =~ s/^-I//) {
+        unshift @$include_dirs, $include_dir_tmp;
+      }
+      else {
+        confess "Invalid include option \"$inc\"";
+      }
     }
+  }
+  
+  my @keys = keys %$config;
+  if (@keys) {
+    confess "$keys[0] is not supported option";
   }
   
   # OPTIMIZE default is -O3
