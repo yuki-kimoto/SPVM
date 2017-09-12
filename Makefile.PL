@@ -41,10 +41,10 @@ sub MY::postamble {
 dynamic :: shared_lib_SPVM__std shared_lib_SPVM__Math
 
 shared_lib_SPVM__std ::
-\tperl build_shared_lib.pl SPVM::std
+\tperl build_shared_lib.pl --object_dir=. SPVM::std
 
 shared_lib_SPVM__Math ::
-\tperl build_shared_lib.pl SPVM::Math
+\tperl build_shared_lib.pl --object_dir=. SPVM::Math
 
 EOS
 
