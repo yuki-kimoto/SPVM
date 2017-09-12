@@ -5,8 +5,6 @@
 
 #include "spvm_api.h"
 
-void boot_SPVM__std() {}
-
 int32_t SPVM__std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
