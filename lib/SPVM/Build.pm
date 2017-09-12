@@ -103,10 +103,9 @@ sub build_shared_lib {
   }
   
   # Config
-  my $config_file = "$src_dir/$module_base_name.config";
+  my $config_file = "$source_dir/$src_dir/$module_base_name.config";
   my $config;
   if (-f $config_file) {
-  
     $config = do $config_file
       or confess "Can't parser $config_file: $!$@";
   }
@@ -133,7 +132,7 @@ sub build_shared_lib {
     for my $cbuilder_name (@cbuilder_config_names_compatible) {
       my $makemaker_name = uc $cbuilder_name;
       
-      if (define $config->{$makemaker_name}) {
+      if (defined $config->{$makemaker_name}) {
         $cbuilder_config->{$cbuilder_name} = delete $config->{$makemaker_name};
       }
     }
