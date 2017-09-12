@@ -118,31 +118,31 @@ sub build_shared_lib {
   push @$include_dirs, $api_header_include_dir;
   
   # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
-  my $cbuilder_new_config = {};
+  my $cbuilder_config = {};
   if ($config) {
     # OPTIMIZE
     if (defined $config->{OPTIMIZE}) {
-      $cbuilder_new_config->{optimize} = delete $config->{OPTIMIZE};
+      $cbuilder_config->{optimize} = delete $config->{OPTIMIZE};
     }
     
     # CC
     if (defined $config->{CC}) {
-      $cbuilder_new_config->{cc} = delete $config->{CC};
+      $cbuilder_config->{cc} = delete $config->{CC};
     }
     
     # CCFLAGS
     if (defined $config->{CCFLAGS}) {
-      $cbuilder_new_config->{ccflags} = delete $config->{CCFLAGS};
+      $cbuilder_config->{ccflags} = delete $config->{CCFLAGS};
     }
     
     # LD
     if (defined $config->{LD}) {
-      $cbuilder_new_config->{ld} = delete $config->{LD};
+      $cbuilder_config->{ld} = delete $config->{LD};
     }
     
     # LDDLFLAGS
     if (defined $config->{LDDLFLAGS}) {
-      $cbuilder_new_config->{lddlflags} = delete $config->{LDDLFLAGS};
+      $cbuilder_config->{lddlflags} = delete $config->{LDDLFLAGS};
     }
     
     my @keys = keys %$config;
@@ -152,11 +152,11 @@ sub build_shared_lib {
   }
   
   # OPTIMIZE default is -O3
-  $cbuilder_new_config->{optimize} ||= '-O3';
+  $cbuilder_config->{optimize} ||= '-O3';
   
   # Compile source files
   my $quiet = 1;
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
   my $object_files = [];
   unless (defined $object_dir) {
     $object_dir = tempdir(CLEANUP => 1);
