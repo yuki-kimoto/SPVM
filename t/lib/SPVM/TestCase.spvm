@@ -58,9 +58,9 @@ package TestCase {
   }
   
   sub spvm_inline2() : int {
-    my $total = TestCase::Inline::sum(5, 3);
+    my $total = TestCase::Inline2::mul(5, 3);
     
-    if ($total == 8) {
+    if ($total == 15) {
       return 1;
     }
     
