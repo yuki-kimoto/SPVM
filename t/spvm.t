@@ -277,6 +277,7 @@ is_deeply(
 {
   ok(SPVM::TestCase::spvm_inline());
   ok(SPVM::TestCase::spvm_inline2());
+  ok(SPVM::TestCase::spvm_inline2_binding());
 }
 
 # Get object from freelist
