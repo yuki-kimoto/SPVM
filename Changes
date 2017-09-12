@@ -1,4 +1,4 @@
-0.0264 2017-09-12
+0.0263 2017-09-12
   - add native INC config
   - add native LIBS config
   - add special assign syntax
@@ -13,8 +13,7 @@
     <<=	
     >>=	
     >>>=	
-0.0263 2017-09-12
-  - fix CBuilder config
+  - fix CBuilder config bug
 0.0262 2017-09-12
   - fix make dependency
 0.0261 2017-09-11

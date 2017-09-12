@@ -130,6 +130,8 @@ t/lib/SPVM/TestCase/Inline.native/Inline.c
 t/lib/SPVM/TestCase/Inline.spvm
 t/lib/SPVM/TestCase/Inline2.native/Inline2.c
 t/lib/SPVM/TestCase/Inline2.native/Inline2.config
+t/lib/SPVM/TestCase/Inline2.native/Inline2_util.c
+t/lib/SPVM/TestCase/Inline2.native/Inline2_util.h
 t/lib/SPVM/TestCase/Inline2.spvm
 t/lib/SPVM/TestCase/Minimal.spvm
 t/lib/SPVM/TestCase/Weaken.spvm
