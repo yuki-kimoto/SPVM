@@ -117,32 +117,25 @@ sub build_shared_lib {
   $api_header_include_dir =~ s/\/Build\.pm$//;
   push @$include_dirs, $api_header_include_dir;
   
-  # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
   my $cbuilder_config = {};
+  
+
+  # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
   if ($config) {
-    # OPTIMIZE
-    if (defined $config->{OPTIMIZE}) {
-      $cbuilder_config->{optimize} = delete $config->{OPTIMIZE};
-    }
-    
-    # CC
-    if (defined $config->{CC}) {
-      $cbuilder_config->{cc} = delete $config->{CC};
-    }
-    
-    # CCFLAGS
-    if (defined $config->{CCFLAGS}) {
-      $cbuilder_config->{ccflags} = delete $config->{CCFLAGS};
-    }
-    
-    # LD
-    if (defined $config->{LD}) {
-      $cbuilder_config->{ld} = delete $config->{LD};
-    }
-    
-    # LDDLFLAGS
-    if (defined $config->{LDDLFLAGS}) {
-      $cbuilder_config->{lddlflags} = delete $config->{LDDLFLAGS};
+    # CBuilder config name which compatible with ExtUtils::MakeMaker
+    my @cbuilder_config_names_compatible = qw(
+      optimize
+      cc
+      ccflags
+      ld
+      lddlflags
+    );
+    for my $cbuilder_name (@cbuilder_config_names_compatible) {
+      my $makemaker_name = uc $cbuilder_name;
+      
+      if (define $config->{$makemaker_name}) {
+        $cbuilder_config->{$cbuilder_name} = delete $config->{$makemaker_name};
+      }
     }
     
     my @keys = keys %$config;
