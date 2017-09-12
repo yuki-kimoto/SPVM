@@ -443,11 +443,24 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         if (*compiler->bufptr == '<') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LEFT_SHIFT);
-          yylvalp->opval = op;
-          return SHIFT;
+          // <<=
+          if (*compiler->bufptr == '=') {
+            compiler->bufptr++;
+            SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+            op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT;
+            
+            yylvalp->opval = op_special_assign;
+            
+            return SPECIAL_ASSIGN;
+          }
+          // <<
+          else {
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LEFT_SHIFT);
+            yylvalp->opval = op;
+            return SHIFT;
+          }
         }
-        /* <= */
+        // <=
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LE);
