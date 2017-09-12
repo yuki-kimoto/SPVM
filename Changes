@@ -1,5 +1,6 @@
 0.0264 2017-09-12
   - add native INC config
+  - add native LIBS config
 0.0263 2017-09-12
   - fix CBuilder config
 0.0262 2017-09-12

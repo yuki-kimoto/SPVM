@@ -141,7 +141,6 @@ sub build_shared_lib {
         $cbuilder_config->{$cbuilder_name} = delete $config->{$makemaker_name};
       }
     }
-    
   }
   
   # Include directory
@@ -157,6 +156,18 @@ sub build_shared_lib {
         confess "Invalid include option \"$inc\"";
       }
     }
+  }
+  
+  # Shared library
+  my $extra_linker_flags = '';
+  if (defined $config->{LIBS}) {
+    my $libs = delete $config->{LIBS};
+    
+    if (ref $libs eq 'ARRAY') {
+      $libs = join(' ', @$libs);
+    }
+    
+    $extra_linker_flags .= $libs;
   }
   
   my @keys = keys %$config;
@@ -198,6 +209,7 @@ sub build_shared_lib {
     objects => $object_files,
     module_name => $module_name,
     dl_func_list => $native_func_names,
+    extra_linker_flags => $extra_linker_flags
   );
   
   $compiled->{$module_name} = $lib_file;
