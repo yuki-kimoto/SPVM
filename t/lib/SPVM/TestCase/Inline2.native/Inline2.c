@@ -8,3 +8,10 @@ int32_t SPVM__TestCase__Inline2__mul(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return total;
 }
+
+int32_t SPVM__TestCase__Inline2__one(SPVM_API* api, SPVM_API_VALUE* args) {
+  
+  int32_t value = Inline2_util_one();
+  
+  return value;
+}
