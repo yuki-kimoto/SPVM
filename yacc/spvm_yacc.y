@@ -36,7 +36,7 @@
 %left <opval> BIT_AND
 %nonassoc <opval> REL
 %left <opval> SHIFT
-%left <opval> '+' '-'
+%left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
 %right <opval> NOT '~' ARRAY_LENGTH UMINUS
 %nonassoc <opval> INC DEC
@@ -565,6 +565,10 @@ binop
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUBTRACT, $2->file, $2->line);
       $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
+    }
+  | term '.' term
+    {
+      $$ = SPVM_OP_build_concat_string(compiler, $2, $1, $3);
     }
   | term MULTIPLY term
     {

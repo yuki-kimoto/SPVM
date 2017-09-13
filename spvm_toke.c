@@ -201,6 +201,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->cur_line++;
         continue;
       
+      /* Cancat */
+      case '.':
+        compiler->bufptr++;
+        yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONCAT_STRING);
+        return '.';
+      
       /* Addition */
       case '+':
         compiler->bufptr++;

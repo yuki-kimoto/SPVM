@@ -124,6 +124,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "WEAKEN",
   "WEAKEN_FIELD",
   "SPECIAL_ASSIGN",
+  "CONCAT_STRING",
 };
 
 // Return cloned op and target op become stab
@@ -1514,6 +1515,15 @@ SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* 
   SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_last);
   
   return op_bin;
+}
+
+SPVM_OP* SPVM_OP_build_concat_string(SPVM_COMPILER* compiler, SPVM_OP* op_cancat_string, SPVM_OP* op_first, SPVM_OP* op_last) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_cancat_string, op_cancat_string->last, op_first);
+  SPVM_OP_insert_child(compiler, op_cancat_string, op_cancat_string->last, op_last);
+  
+  return op_cancat_string;
 }
 
 SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op_first, SPVM_OP* op_last) {
