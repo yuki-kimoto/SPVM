@@ -2517,7 +2517,29 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_STRING: {
-    assert(0);
+    SPVM_OBJECT* value1 = call_stack[operand_stack_top - 1].object_value;
+    SPVM_OBJECT* value2 = call_stack[operand_stack_top].object_value;
+    
+    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t value2_length = SPVM_RUNTIME_API_get_string_length(api, value2);
+    
+    int32_t value3_length = value1_length + value2_length;
+    SPVM_OBJECT* value3 = SPVM_RUNTIME_API_new_string_len(api, value3_length);
+    
+    value3->ref_count++;
+    
+    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
+    char* value2_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value2);
+    char* value3_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value3);
+    
+    memcpy(value3_bytes, value1_bytes, value1_length);
+    memcpy(value3_bytes + value1_length, value2_bytes, value2_length);
+    
+    call_stack[operand_stack_top - 1].object_value = value3;
+    
+    operand_stack_top--;
+    pc++;
+    goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_BYTE: {
     assert(0);
