@@ -43,6 +43,16 @@ package Test {
   }
   
   sub main($mvar : int) : int {
+    # .
+    {
+      my $string1 = "abc";
+      my $string2 = "def";
+      my $string3 = $string1 . $string2;
+      
+      std::println($string3);
+      
+      
+    }
     {
       my $num = 1;
       

@@ -2526,8 +2526,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value3_length = value1_length + value2_length;
     SPVM_OBJECT* value3 = SPVM_RUNTIME_API_new_string_len(api, value3_length);
     
-    value3->ref_count++;
-    
     char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
     char* value2_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value2);
     char* value3_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value3);
@@ -2559,6 +2557,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE: {
     assert(0);
   }
+  
   case_SPVM_BYTECODE_C_CODE_CURRENT_LINE:
     current_line = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     pc += 5;

@@ -474,6 +474,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_TYPE*  type = NULL;
   
   switch (op->code) {
+    case SPVM_OP_C_CODE_CONCAT_STRING:
+      type = SPVM_TYPE_get_string_type(compiler);
+      break;
     case SPVM_OP_C_CODE_ASSIGN_PROCESS:
       type = SPVM_OP_get_type(compiler, op->first);
       break;
