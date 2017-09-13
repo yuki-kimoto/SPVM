@@ -32,7 +32,6 @@
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_field_info.h"
 #include "spvm_constant_pool_type.h"
-#include "spvm_global.h"
 #include "spvm_object.h"
 #include "spvm_api.h"
 

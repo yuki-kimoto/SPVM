@@ -19,7 +19,6 @@
 #include "spvm_value.h"
 #include "spvm_api.h"
 #include "spvm_type.h"
-#include "spvm_global.h"
 #include "spvm_hash.h"
 #include "spvm_dynamic_array.h"
 
