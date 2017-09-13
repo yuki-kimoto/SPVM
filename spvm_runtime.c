@@ -487,6 +487,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     &&case_SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY,
     &&case_SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY,
     &&case_SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY,
+    &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_STRING,
+    &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_BYTE,
+    &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_SHORT,
+    &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_INT,
+    &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_LONG,
+    &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_FLOAT,
+    &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE,
   };
   
   goto *jump[*pc];
@@ -2508,6 +2515,27 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       pc += 3;
       goto *jump[*pc];
     }
+  }
+  case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_STRING: {
+    assert(0);
+  }
+  case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_BYTE: {
+    assert(0);
+  }
+  case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_SHORT: {
+    assert(0);
+  }
+  case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_INT: {
+    assert(0);
+  }
+  case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_LONG: {
+    assert(0);
+  }
+  case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_FLOAT: {
+    assert(0);
+  }
+  case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE: {
+    assert(0);
   }
   case_SPVM_BYTECODE_C_CODE_CURRENT_LINE:
     current_line = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
