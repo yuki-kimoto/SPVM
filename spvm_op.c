@@ -202,6 +202,8 @@ SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, con
   constant->type = SPVM_TYPE_get_byte_type(compiler);
   
   op_constant->uv.constant = constant;
+
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
   
   return op_constant;
 }
@@ -214,7 +216,9 @@ SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, c
   constant->type = SPVM_TYPE_get_short_type(compiler);
   
   op_constant->uv.constant = constant;
-  
+
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
+
   return op_constant;
 }
 
@@ -226,7 +230,9 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
   constant->type = SPVM_TYPE_get_int_type(compiler);
   
   op_constant->uv.constant = constant;
-  
+
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
+
   return op_constant;
 }
 
@@ -238,7 +244,9 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
   constant->type = SPVM_TYPE_get_long_type(compiler);
   
   op_constant->uv.constant = constant;
-  
+
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
+
   return op_constant;
 }
 
@@ -250,7 +258,9 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
   constant->type = SPVM_TYPE_get_float_type(compiler);
   
   op_constant->uv.constant = constant;
-  
+
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
+
   return op_constant;
 }
 
@@ -262,6 +272,21 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   constant->type = SPVM_TYPE_get_double_type(compiler);
   
   op_constant->uv.constant = constant;
+  
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
+  
+  return op_constant;
+}
+
+SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, const char* file, int32_t line) {
+
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+  constant->value.string_value = string;
+  constant->type = SPVM_TYPE_get_string_type(compiler);
+  op_constant->uv.constant = constant;
+  
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
   
   return op_constant;
 }
