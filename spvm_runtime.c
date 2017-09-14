@@ -26,15 +26,16 @@
 
 
 
-
 static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_array_length,
+  SPVM_RUNTIME_API_get_string_length,
   SPVM_RUNTIME_API_get_byte_array_elements,
   SPVM_RUNTIME_API_get_short_array_elements,
   SPVM_RUNTIME_API_get_int_array_elements,
   SPVM_RUNTIME_API_get_long_array_elements,
   SPVM_RUNTIME_API_get_float_array_elements,
   SPVM_RUNTIME_API_get_double_array_elements,
+  SPVM_RUNTIME_API_get_string_bytes,
   SPVM_RUNTIME_API_get_object_array_element,
   SPVM_RUNTIME_API_set_object_array_element,
   SPVM_RUNTIME_API_get_field_id,
@@ -70,6 +71,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_new_float_array,
   SPVM_RUNTIME_API_new_double_array,
   SPVM_RUNTIME_API_new_object_array,
+  SPVM_RUNTIME_API_new_string,
   SPVM_RUNTIME_API_get_exception,
   SPVM_RUNTIME_API_set_exception,
   SPVM_RUNTIME_API_get_ref_count,
@@ -78,7 +80,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_inc_dec_ref_count,
   SPVM_RUNTIME_API_get_objects_count,
   SPVM_RUNTIME_API_get_runtime,
-  SPVM_RUNTIME_API_new_string,
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
