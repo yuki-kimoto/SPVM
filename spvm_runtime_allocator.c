@@ -13,7 +13,6 @@
 #include "spvm_runtime.h"
 #include "spvm_constant_pool.h"
 #include "spvm_api.h"
-#include "spvm_global.h"
 #include "spvm_object.h"
 
 SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {

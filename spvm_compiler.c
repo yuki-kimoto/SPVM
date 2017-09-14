@@ -19,7 +19,6 @@
 #include "spvm_constant_pool.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
-#include "spvm_global.h"
 #include "spvm_sub.h"
 #include "spvm_field_info.h"
 
