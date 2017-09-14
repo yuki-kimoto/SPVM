@@ -6,7 +6,7 @@
 
 int32_t SPVM_HASH_FUNC_calc_hash_for_index(const char* str, int32_t len) {
   
-  assert(len > 0);
+  assert(len >= 0);
   
   const char* str_tmp = str;
   int32_t hash = 5381;

@@ -14,6 +14,16 @@
 
 int main()
 {
+  // Hash - first same key
+  {
+    SPVM_HASH* hash = SPVM_HASH_new(0);
+    int32_t value1 = 3;
+    SPVM_HASH_insert_norehash(hash, "", 0, &value1);
+    
+    int32_t value1_ret = *(int32_t*)SPVM_HASH_search(hash, "", 0);
+    OK(value1_ret == 3);
+  }
+  
   // Hash - new
   {
     SPVM_HASH* hash = SPVM_HASH_new(10);

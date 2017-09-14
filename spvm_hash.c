@@ -168,7 +168,7 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
   
   assert(hash);
   assert(key);
-  assert(length > 0);
+  assert(length >= 0);
   
   int32_t hash_value = SPVM_HASH_FUNC_calc_hash_for_index(key, length);
   int32_t table_index = hash_value % hash->table_capacity;
@@ -205,7 +205,7 @@ void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* va
   
   assert(hash);
   assert(key);
-  assert(length > 0);
+  assert(length >= 0);
   
   // Rehash
   if (hash->entries_length > hash->table_capacity * 0.75) {
@@ -221,7 +221,7 @@ void* SPVM_HASH_search(SPVM_HASH* hash, const char* key, int32_t length) {
   
   assert(hash);
   assert(key);
-  assert(length > 0);
+  assert(length >= 0);
   
   int32_t hash_value = SPVM_HASH_FUNC_calc_hash_for_index(key, length);
   int32_t table_index = hash_value % hash->table_capacity;
