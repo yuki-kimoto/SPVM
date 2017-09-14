@@ -1,0 +1,10 @@
+package TestCase::Minimal {
+  has x : int;
+  has y : int;
+  has tests : TestCase[];
+  
+  sub new() : TestCase::Minimal {
+    
+    return new TestCase::Minimal;
+  }
+}

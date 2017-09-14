@@ -1,6 +1,6 @@
-use Test::Inline;
+use TestCase::Inline;
 
-package Test::Inline {
+package TestCase::Inline {
   sub sum($num1 : int, $num2 : int) : native int;
 }
 

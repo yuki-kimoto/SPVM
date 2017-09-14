@@ -1,0 +1,8 @@
+package TestCase::Destructor {
+  has x : int;
+  has y : int;
+  
+  sub DESTROY($self : TestCase::Destructor) : void {
+    std::println("DESTROY");
+  }
+}
