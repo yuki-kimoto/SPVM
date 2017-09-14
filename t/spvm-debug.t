@@ -487,7 +487,7 @@ is_deeply(
   {
     my $object = SPVM::new_object("TestCase");
     $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    $object->set(x_string => SPVM::new_string_raw("abc"));
+    $object->set(x_string => SPVM::new_string_bytes("abc"));
     ok(SPVM::TestCase::spvm_object_set_object($object));
   }
   # Create object
@@ -675,10 +675,10 @@ is_deeply(
     ok(SPVM::TestCase::call_sub_string($string));
   }
   
-  # call_sub string_raw
+  # call_sub string_bytes
   {
-    my $string = SPVM::new_string_raw("abc");
-    ok(SPVM::TestCase::call_sub_string_raw($string));
+    my $string = SPVM::new_string_bytes("abc");
+    ok(SPVM::TestCase::call_sub_string_bytes($string));
   }
   
   # call_sub byte_array

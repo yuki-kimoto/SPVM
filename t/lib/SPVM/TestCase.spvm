@@ -2046,8 +2046,8 @@ package TestCase {
     return 0;
   }
 
-  # SPVM::string_raw
-  sub call_sub_string_raw($string : string) : int {
+  # SPVM::string_bytes
+  sub call_sub_string_bytes($string : string) : int {
     
     my $bytes = $string;
     

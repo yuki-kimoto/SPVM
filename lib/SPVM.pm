@@ -199,10 +199,10 @@ CHECK {
   build_spvm_subs();
 }
 
-sub new_string_raw {
+sub new_string_bytes {
   my $string = shift;
   
-  my $array = SPVM::String->new_raw($string);
+  my $array = SPVM::String->new_bytes($string);
   
   return $array;
 }
@@ -212,7 +212,7 @@ sub new_string {
   
   $string = Encode::encode('UTF-8', $string);
   
-  my $array = SPVM::String->new_raw($string);
+  my $array = SPVM::String->new_bytes($string);
   
   return $array;
 }
@@ -648,12 +648,12 @@ You can set and get elements by C<set> and C<get> method.
   $array->set(1, SPVM::new_int_array([1, 2, 3]));
   my $element = $array->get(1);
 
-=head2 new_string_raw
+=head2 new_string_bytes
 
 Create byte array from B<not decoded> Perl string.
 This function is faster than C<SPVM::string> because copy is not executed.
 
-  my $array = SPVM::new_string_raw("AGTCAGTC");
+  my $array = SPVM::new_string_bytes("AGTCAGTC");
 
 =head2 new_string
 

@@ -1,5 +1,6 @@
 0.0266 2017-09-13
   - fix bug that empty string is not used
+  - rename SPVM::new_string_raw to SPVM::new_string_bytes
 0.0265 2017-09-13
   - fix clang duplicate symbol bug
 0.0264 2017-09-12
