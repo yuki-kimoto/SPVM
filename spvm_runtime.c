@@ -146,6 +146,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
   register int32_t success;
   int32_t current_line = 0;
+  
+  char tmp_string[30];
 
   // Copy arguments
   memcpy(call_stack, args, args_length * sizeof(SPVM_VALUE));
@@ -2533,24 +2535,51 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
     int32_t value2_length = SPVM_RUNTIME_API_get_string_length(api, value2);
     
-    int32_t value3_length = value1_length + value2_length;
-    SPVM_OBJECT* value3 = SPVM_RUNTIME_API_new_string_len(api, value3_length);
+    int32_t value_ret_length = value1_length + value2_length;
+    SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
     
     char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
     char* value2_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value2);
-    char* value3_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value3);
+    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
     
-    memcpy(value3_bytes, value1_bytes, value1_length);
-    memcpy(value3_bytes + value1_length, value2_bytes, value2_length);
+    memcpy(value_ret_bytes, value1_bytes, value1_length);
+    memcpy(value_ret_bytes + value1_length, value2_bytes, value2_length);
     
-    call_stack[operand_stack_top - 1].object_value = value3;
+    call_stack[operand_stack_top - 1].object_value = value_ret;
     
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_BYTE: {
-    assert(0);
+    SPVM_OBJECT* value1 = call_stack[operand_stack_top - 1].object_value;
+    int8_t value2 = call_stack[operand_stack_top].byte_value;
+    
+    if (value1 == NULL) {
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_RUNTIME_API_set_exception(api, exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    
+    sprintf(tmp_string, "%" PRId8, value2);
+    
+    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t tmp_string_length = strlen(tmp_string);
+    
+    int32_t value_ret_length = value1_length + tmp_string_length;
+    SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
+    
+    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
+    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    
+    memcpy(value_ret_bytes, value1_bytes, value1_length);
+    memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
+    
+    call_stack[operand_stack_top - 1].object_value = value_ret;
+    
+    operand_stack_top--;
+    pc++;
+    goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_SHORT: {
     assert(0);
