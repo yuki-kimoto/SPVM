@@ -2582,19 +2582,154 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_SHORT: {
-    assert(0);
+    SPVM_OBJECT* value1 = call_stack[operand_stack_top - 1].object_value;
+    int16_t value2 = call_stack[operand_stack_top].short_value;
+    
+    if (value1 == NULL) {
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_RUNTIME_API_set_exception(api, exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    
+    sprintf(tmp_string, "%" PRId16, value2);
+    
+    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t tmp_string_length = strlen(tmp_string);
+    
+    int32_t value_ret_length = value1_length + tmp_string_length;
+    SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
+    
+    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
+    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    
+    memcpy(value_ret_bytes, value1_bytes, value1_length);
+    memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
+    
+    call_stack[operand_stack_top - 1].object_value = value_ret;
+    
+    operand_stack_top--;
+    pc++;
+    goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_INT: {
-    assert(0);
+    SPVM_OBJECT* value1 = call_stack[operand_stack_top - 1].object_value;
+    int32_t value2 = call_stack[operand_stack_top].int_value;
+    
+    if (value1 == NULL) {
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_RUNTIME_API_set_exception(api, exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    
+    sprintf(tmp_string, "%" PRId32, value2);
+    
+    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t tmp_string_length = strlen(tmp_string);
+    
+    int32_t value_ret_length = value1_length + tmp_string_length;
+    SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
+    
+    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
+    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    
+    memcpy(value_ret_bytes, value1_bytes, value1_length);
+    memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
+    
+    call_stack[operand_stack_top - 1].object_value = value_ret;
+    
+    operand_stack_top--;
+    pc++;
+    goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_LONG: {
-    assert(0);
+    SPVM_OBJECT* value1 = call_stack[operand_stack_top - 1].object_value;
+    int64_t value2 = call_stack[operand_stack_top].long_value;
+    
+    if (value1 == NULL) {
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_RUNTIME_API_set_exception(api, exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    
+    sprintf(tmp_string, "%" PRId64, value2);
+    
+    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t tmp_string_length = strlen(tmp_string);
+    
+    int32_t value_ret_length = value1_length + tmp_string_length;
+    SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
+    
+    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
+    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    
+    memcpy(value_ret_bytes, value1_bytes, value1_length);
+    memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
+    
+    call_stack[operand_stack_top - 1].object_value = value_ret;
+    
+    operand_stack_top--;
+    pc++;
+    goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_FLOAT: {
-    assert(0);
+    SPVM_OBJECT* value1 = call_stack[operand_stack_top - 1].object_value;
+    float value2 = call_stack[operand_stack_top].float_value;
+    
+    if (value1 == NULL) {
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_RUNTIME_API_set_exception(api, exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    
+    sprintf(tmp_string, "%f", value2);
+    
+    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t tmp_string_length = strlen(tmp_string);
+    
+    int32_t value_ret_length = value1_length + tmp_string_length;
+    SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
+    
+    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
+    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    
+    memcpy(value_ret_bytes, value1_bytes, value1_length);
+    memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
+    
+    call_stack[operand_stack_top - 1].object_value = value_ret;
+    
+    operand_stack_top--;
+    pc++;
+    goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE: {
-    assert(0);
+    SPVM_OBJECT* value1 = call_stack[operand_stack_top - 1].object_value;
+    double value2 = call_stack[operand_stack_top].double_value;
+    
+    if (value1 == NULL) {
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_RUNTIME_API_set_exception(api, exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    
+    sprintf(tmp_string, "%f", value2);
+    
+    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t tmp_string_length = strlen(tmp_string);
+    
+    int32_t value_ret_length = value1_length + tmp_string_length;
+    SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
+    
+    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
+    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    
+    memcpy(value_ret_bytes, value1_bytes, value1_length);
+    memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
+    
+    call_stack[operand_stack_top - 1].object_value = value_ret;
+    
+    operand_stack_top--;
+    pc++;
+    goto *jump[*pc];
   }
   
   case_SPVM_BYTECODE_C_CODE_CURRENT_LINE:
