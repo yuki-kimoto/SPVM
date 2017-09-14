@@ -68,7 +68,7 @@ int32_t* SPVM_COMPILER_ALLOCATOR_alloc_int(SPVM_COMPILER* compiler, SPVM_COMPILE
 char* SPVM_COMPILER_ALLOCATOR_alloc_string(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, int32_t length) {
   (void)compiler;
   
-  assert(length > 0);
+  assert(length >= 0);
   assert(length <= 0xFFFF);
   
   char* str = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, length + 1);

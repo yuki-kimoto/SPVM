@@ -650,7 +650,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, 0);
           str[0] = '\0';
           compiler->bufptr++;
-          compiler->bufptr++;
         }
         else {
           _Bool finish = 0;

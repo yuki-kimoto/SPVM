@@ -38,6 +38,12 @@ package TestCase {
     DOUBLE_PRECICE = 65536.0,
   }
   
+  sub string_empty() : string {
+    my $value = "";
+    
+    return $value;
+  }
+  
   sub special_assign() : int {
     my $num1 = 1;
     $num1 += 4;

@@ -2522,12 +2522,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     SPVM_OBJECT* value2 = call_stack[operand_stack_top].object_value;
     
     if (value1 == NULL) {
-      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined(string . string)");
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
     else if (value2 == NULL) {
-      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater right value must be defined");
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater right value must be defined(string . string)");
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2556,7 +2556,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int8_t value2 = call_stack[operand_stack_top].byte_value;
     
     if (value1 == NULL) {
-      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined(string . byte)");
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2586,7 +2586,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int16_t value2 = call_stack[operand_stack_top].short_value;
     
     if (value1 == NULL) {
-      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined(string . short)");
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2616,7 +2616,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value2 = call_stack[operand_stack_top].int_value;
     
     if (value1 == NULL) {
-      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined(string . int)");
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2646,7 +2646,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int64_t value2 = call_stack[operand_stack_top].long_value;
     
     if (value1 == NULL) {
-      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined(string . long)");
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2676,7 +2676,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     float value2 = call_stack[operand_stack_top].float_value;
     
     if (value1 == NULL) {
-      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined(string . float)");
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2706,7 +2706,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     double value2 = call_stack[operand_stack_top].double_value;
     
     if (value1 == NULL) {
-      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined(string . double)");
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
