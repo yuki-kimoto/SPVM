@@ -46,6 +46,15 @@ package Test {
     # .
     {
       my $string1 = "abc";
+      my $byte2 = 13b;
+      my $string3 = $string1 . $byte2;
+      
+      std::println($string3);
+    }
+
+    # .
+    {
+      my $string1 = "abc";
       my $string2 = "def";
       my $string3 = $string1 . $string2;
       
