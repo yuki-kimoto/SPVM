@@ -46,23 +46,24 @@ package TestCase {
 
     # .
     {
-      my $string1 = "abc";
-      my $byte2 = 13b;
-      my $string3 = $string1 . $byte2;
-      
-      std::println($string3);
-    }
+      {
+        my $value1 = "abc";
+        my $value2 = 13b;
+        my $value3 = $value1 . $value2;
+        
+        std::println($value3);
+      }
 
-    # .
-    {
-      my $string1 = "abc";
-      my $string2 = "def";
-      my $string3 = $string1 . $string2;
-      
-      std::println($string3);
-      
-      
+      # .
+      {
+        my $value1 = "abc";
+        my $value2 = "def";
+        my $value3 = $value1 . $value2;
+        
+        std::println($value3);
+      }
     }
+    
     {
       my $num = 1;
       
