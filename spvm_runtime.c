@@ -2484,7 +2484,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT: {
     SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     if (__builtin_expect(!object, 0)) {
-      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to set an object field must not be undefined.");
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Object to set an object field must not be undefined");
       SPVM_RUNTIME_API_set_exception(api, exception);
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
@@ -2518,6 +2518,17 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_STRING: {
     SPVM_OBJECT* value1 = call_stack[operand_stack_top - 1].object_value;
     SPVM_OBJECT* value2 = call_stack[operand_stack_top].object_value;
+    
+    if (value1 == NULL) {
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater left value must be defined");
+      SPVM_RUNTIME_API_set_exception(api, exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else if (value2 == NULL) {
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, ". operater right value must be defined");
+      SPVM_RUNTIME_API_set_exception(api, exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
     
     int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
     int32_t value2_length = SPVM_RUNTIME_API_get_string_length(api, value2);
