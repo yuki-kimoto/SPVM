@@ -124,7 +124,7 @@ new_object(...)
     croak("Unkown package \"%s\"(SPVM::Object::new_object", package_name);
   }
   
-  // Malloc array
+  // New array
   SPVM_API_OBJECT* object =  api->new_object(api, type_id);
   
   // Increment
@@ -402,7 +402,7 @@ new(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array
+  // New array
   SPVM_API_OBJECT* array =  api->new_byte_array(api, length);
   
   // Increment reference count
@@ -497,7 +497,7 @@ new(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array
+  // New array
   SPVM_API_OBJECT* array =  api->new_short_array(api, length);
   
   // Increment reference count
@@ -592,7 +592,7 @@ new(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array
+  // New array
   SPVM_API_OBJECT* array =  api->new_int_array(api, length);
 
   // Increment reference count
@@ -687,7 +687,7 @@ new(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array
+  // New array
   SPVM_API_OBJECT* array =  api->new_long_array(api, length);
   
   // Increment reference count
@@ -782,7 +782,7 @@ new(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array
+  // New array
   SPVM_API_OBJECT* array =  api->new_float_array(api, length);
   
   // Increment reference count
@@ -877,7 +877,7 @@ new(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array
+  // New array
   SPVM_API_OBJECT* array =  api->new_double_array(api, length);
   
   // Increment reference count
@@ -974,7 +974,7 @@ new_string_bytes(...)
   // Set API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Malloc array
+  // New string
   SPVM_API_OBJECT* spvm_string =  api->new_string_len(api, length);
   
   // Increment reference count
@@ -987,6 +987,32 @@ new_string_bytes(...)
   SV* sv_spvm_string = SPVM_XS_UTIL_new_sv_object(spvm_string, "SPVM::String");
   
   XPUSHs(sv_spvm_string);
+  XSRETURN(1);
+}
+
+SV*
+get_string_bytes(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_spvm_string = ST(0);
+
+  // Get SPVM string
+  SPVM_API_OBJECT* spvm_string = SPVM_XS_UTIL_get_object(sv_spvm_string);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get string bytes
+  const char* string_bytes = api->get_string_bytes(api, spvm_string);
+  
+  // Get string length
+  int32_t spvm_string_length = api->get_string_length(api, spvm_string);
+  
+  SV* sv_string = sv_2mortal(newSVpv(string_bytes, spvm_string_length));
+  
+  XPUSHs(sv_string);
   XSRETURN(1);
 }
 
