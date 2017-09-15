@@ -39,9 +39,17 @@ my $DOUBLE_PRECICE = 65536.0;
 
 use SPVM::std;
 
+# String
 {
-  my $spvm_string = SPVM::TestCase::string_empty();
-  is($spvm_string->get_string_bytes, "");
+  {
+    my $spvm_string = SPVM::TestCase::string_empty();
+    is($spvm_string->get_string_bytes, "");
+  }
+  
+  {
+    my $spvm_string = SPVM::TestCase::string_utf8();
+    is($spvm_string->get_string, "あいうえお");
+  }
 }
 
 # Start objects count

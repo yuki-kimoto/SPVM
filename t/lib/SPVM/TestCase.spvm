@@ -38,6 +38,12 @@ package TestCase {
     DOUBLE_PRECICE = 65536.0,
   }
   
+  # String
+  sub string_utf8() : string {
+    my $value = "あいうえお";
+    
+    return $value;
+  }
   sub string_empty() : string {
     my $value = "";
     
