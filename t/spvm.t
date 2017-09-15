@@ -39,12 +39,10 @@ my $DOUBLE_PRECICE = 65536.0;
 
 use SPVM::std;
 
-=pod
-# String
 {
-  is(SPVM::TestCase::string_empty(), "");
+  my $spvm_string = SPVM::TestCase::string_empty();
+  is($spvm_string->get_string_bytes, "");
 }
-=cut
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();

@@ -20,6 +20,7 @@ use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'std'; my $use_std_line = __LINE__;
 
 use SPVM 'TestCase::Extension';
+use SPVM 'TestCase::Extension2';
 
 use POSIX ();
 
@@ -42,8 +43,18 @@ my $DOUBLE_PRECICE = 65536.0;
 
 use SPVM::std;
 
+{
+  my $spvm_string = SPVM::TestCase::string_empty();
+  is($spvm_string->get_string_bytes, "");
+}
+
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
+
+# Call subroutine
+{
+  ok(SPVM::TestCase::sin());
+}
 
 # Native subroutine
 {
@@ -271,9 +282,12 @@ is_deeply(
 );
 =cut
 
-# Extension
+# Extension 
 {
   ok(SPVM::TestCase::spvm_extension());
+  ok(SPVM::TestCase::spvm_extension_add_int_array());
+  ok(SPVM::TestCase::spvm_extension2());
+  ok(SPVM::TestCase::spvm_extension2_binding());
 }
 
 # Get object from freelist
@@ -575,6 +589,10 @@ is_deeply(
   ok(SPVM::TestCase::logical_and_both_false());
 }
 
+# Special assign
+{
+  ok(SPVM::TestCase::special_assign());
+}
 # Add
 {
   is(SPVM::TestCase::add_byte_max(), 127);
