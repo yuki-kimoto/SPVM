@@ -72,6 +72,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_new_double_array,
   SPVM_RUNTIME_API_new_object_array,
   SPVM_RUNTIME_API_new_string,
+  SPVM_RUNTIME_API_new_string_len,
   SPVM_RUNTIME_API_get_exception,
   SPVM_RUNTIME_API_set_exception,
   SPVM_RUNTIME_API_get_ref_count,

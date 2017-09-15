@@ -975,18 +975,18 @@ new_string_bytes(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Malloc array
-  SPVM_API_OBJECT* array =  api->new_string(api, string);
+  SPVM_API_OBJECT* spvm_string =  api->new_string_len(api, length);
   
   // Increment reference count
-  api->inc_ref_count(api, array);
+  api->inc_ref_count(api, spvm_string);
   
-  int8_t* elements = api->get_byte_array_elements(api, array);
-  memcpy(elements, string, length);
+  char* spvm_string_bytes = api->get_string_bytes(api, spvm_string);
+  memcpy(spvm_string_bytes, string, length);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::String");
+  SV* sv_spvm_string = SPVM_XS_UTIL_new_sv_object(spvm_string, "SPVM::String");
   
-  XPUSHs(sv_array);
+  XPUSHs(sv_spvm_string);
   XSRETURN(1);
 }
 
