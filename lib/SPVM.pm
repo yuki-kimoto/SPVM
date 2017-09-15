@@ -388,7 +388,6 @@ sub build_spvm_subs {
       eval { $return_value = SPVM::call_sub("$abs_name", @_) };
       my $error = $@;
       if ($error) {
-        $error = Encode::decode('UTF-8', $error);
         confess $error;
       }
       $return_value;
