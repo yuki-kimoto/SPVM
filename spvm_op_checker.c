@@ -209,9 +209,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
         SPVM_SUB_CHECK_INFO* sub_check_info = SPVM_SUB_CHECK_INFO_new(compiler);
         
-        // my variable stack
-        SPVM_DYNAMIC_ARRAY* op_my_var_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-        
         // block my variable base position stack
         SPVM_DYNAMIC_ARRAY* block_my_var_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
         int32_t block_my_var_base = 0;
@@ -249,7 +246,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Start scope
             case SPVM_OP_C_CODE_BLOCK: {
               
-              block_my_var_base = op_my_var_stack->length;
+              block_my_var_base = sub_check_info->op_my_var_stack->length;
               int32_t* block_my_var_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *block_my_var_base_ptr = block_my_var_base;
               SPVM_DYNAMIC_ARRAY_push(block_my_var_base_stack, block_my_var_base_ptr);
@@ -805,7 +802,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // Add my var
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_my_var);
-                    SPVM_DYNAMIC_ARRAY_push(op_my_var_stack, op_my_var);
+                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_var_stack, op_my_var);
                     
                     // Convert new op to assing op
                     // Var op
@@ -1325,8 +1322,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_my_var = NULL;
                   {
                     int32_t i;
-                    for (i = op_my_var_stack->length; i-- > 0; ) {
-                      SPVM_OP* op_my_var_tmp = SPVM_DYNAMIC_ARRAY_fetch(op_my_var_stack, i);
+                    for (i = sub_check_info->op_my_var_stack->length; i-- > 0; ) {
+                      SPVM_OP* op_my_var_tmp = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_var_stack, i);
                       SPVM_MY_VAR* my_var_tmp = op_my_var_tmp->uv.my_var;
                       if (strcmp(var->op_name->uv.name, my_var_tmp->op_name->uv.name) == 0) {
                         op_my_var = op_my_var_tmp;
@@ -1362,8 +1359,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   {
                     int32_t i;
-                    for (i = op_my_var_stack->length; i-- > block_my_var_base; ) {
-                      SPVM_OP* op_bef_my_var = SPVM_DYNAMIC_ARRAY_fetch(op_my_var_stack, i);
+                    for (i = sub_check_info->op_my_var_stack->length; i-- > block_my_var_base; ) {
+                      SPVM_OP* op_bef_my_var = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_var_stack, i);
                       SPVM_MY_VAR* bef_my_var = op_bef_my_var->uv.my_var;
                       if (strcmp(my_var->op_name->uv.name, bef_my_var->op_name->uv.name) == 0) {
                         found = 1;
@@ -1380,7 +1377,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   else {
                     my_var->index = my_var_length++;
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_cur);
-                    SPVM_DYNAMIC_ARRAY_push(op_my_var_stack, op_cur);
+                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_var_stack, op_cur);
                   }
                   
                   break;
@@ -1500,7 +1497,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // Add my var
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_my_var);
-                    SPVM_DYNAMIC_ARRAY_push(op_my_var_stack, op_my_var);
+                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_var_stack, op_my_var);
                     
                     // Convert call_sub op to assing op
                     // Var op
