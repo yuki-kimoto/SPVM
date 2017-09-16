@@ -211,9 +211,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
         int32_t block_my_var_base = 0;
         
-        // Switch information stack
-        SPVM_DYNAMIC_ARRAY* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-        
         // op count
         int32_t op_count = 0;
         
@@ -232,7 +229,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           switch (op_cur->code) {
             case SPVM_OP_C_CODE_SWITCH: {
-              SPVM_DYNAMIC_ARRAY_push(op_switch_stack, op_cur);
+              SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_switch_stack, op_cur);
               break;
             }
             // Start scope
@@ -271,7 +268,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_LAST: {
-                  if (sub_check_info->loop_block_my_var_base_stack->length == 0 && op_switch_stack->length == 0) {
+                  if (sub_check_info->loop_block_my_var_base_stack->length == 0 && sub_check_info->op_switch_stack->length == 0) {
                     SPVM_yyerror_format(compiler, "last statement must be in loop block or switch block at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -383,13 +380,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   switch_info->min = min;
                   switch_info->max = max;
                   
-                  SPVM_DYNAMIC_ARRAY_pop(op_switch_stack);
+                  SPVM_DYNAMIC_ARRAY_pop(sub_check_info->op_switch_stack);
                   
                   break;
                 }
                 case SPVM_OP_C_CODE_CASE: {
-                  if (op_switch_stack->length > 0) {
-                    SPVM_OP* op_switch = SPVM_DYNAMIC_ARRAY_fetch(op_switch_stack, op_switch_stack->length - 1);
+                  if (sub_check_info->op_switch_stack->length > 0) {
+                    SPVM_OP* op_switch = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_switch_stack, sub_check_info->op_switch_stack->length - 1);
                     SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                     if (switch_info->op_cases->length == SPVM_LIMIT_C_CASES) {
                       SPVM_yyerror_format(compiler, "Too many case statements at %s line %d\n", op_cur->file, op_cur->line);
@@ -402,8 +399,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_DEFAULT: {
-                  if (op_switch_stack->length > 0) {
-                    SPVM_OP* op_switch = SPVM_DYNAMIC_ARRAY_fetch(op_switch_stack, op_switch_stack->length - 1);
+                  if (sub_check_info->op_switch_stack->length > 0) {
+                    SPVM_OP* op_switch = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_switch_stack, sub_check_info->op_switch_stack->length - 1);
                     SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                     
                     if (switch_info->op_default) {
