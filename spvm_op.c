@@ -1758,11 +1758,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
         
         length++;
       }
-      SPVM_OP* op_constant_length = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_list->file, op_list->line);
-      SPVM_CONSTANT* constant_length = SPVM_CONSTANT_new(compiler);
-      constant_length->type = SPVM_TYPE_get_int_type(compiler);
-      constant_length->value.int_value = length;
-      op_constant_length->uv.constant = constant_length;
+      SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, op_list->file, op_list->line);
       
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_list->file, op_list->line);
