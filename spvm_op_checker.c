@@ -1114,7 +1114,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     After
                       concat_string1
                         concat_string2
-                          ""
+                          new
+                            ""
                           term1
                         term2
                   */
@@ -1124,13 +1125,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_concat_string2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONCAT_STRING, op_concat_string1->file, op_concat_string1->line);
                     
                     SPVM_OP* op_term1 = op_concat_string1->first;
-                    
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term1);
                     
                     // Empty string
                     SPVM_OP* op_constant_empty_string = SPVM_OP_new_op_constant_string(compiler, "", op_concat_string1->file, op_concat_string1->line);
+                    SPVM_OP* op_build_constant = SPVM_OP_build_constant(compiler, op_constant_empty_string);
                     
-                    SPVM_OP_insert_child(compiler, op_concat_string2, op_concat_string2->last, op_constant_empty_string);
+                    SPVM_OP_insert_child(compiler, op_concat_string2, op_concat_string2->last, op_build_constant);
                     SPVM_OP_insert_child(compiler, op_concat_string2, op_concat_string2->last, op_term1);
                     
                     SPVM_OP_replace_op(compiler, op_stab, op_concat_string2);

@@ -48,11 +48,7 @@ package TestCase {
     {
 =pod
       {
-        my $value1 = -2147483648;
-        my $value2 = -9223372036854775808L;
-        my $value3 = $value1 . $value2;
-        
-        std::println($value3);
+        2 . 3;
       }
 =cut
       {
