@@ -629,13 +629,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         
         // Constant 
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
-        SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-        constant->value.byte_value = ch;
-        constant->type = SPVM_TYPE_get_byte_type(compiler);
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_byte(compiler, ch, compiler->cur_file, compiler->cur_line);
         
-        op->uv.constant = constant;
-        yylvalp->opval = op;
+        yylvalp->opval = op_constant;
         
         return CONSTANT;
       }
@@ -899,9 +895,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fprintf(stderr, "Invalid float literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->value.float_value = (float)num;
-            constant->type = SPVM_TYPE_get_float_type(compiler);
-            op_constant->uv.constant = constant;
+            op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num, compiler->cur_file, compiler->cur_line);
           }
           // double
           else if (constant->type->code == SPVM_TYPE_C_CODE_DOUBLE) {
@@ -911,9 +905,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fprintf(stderr, "Invalid double literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->value.double_value = num;
-            constant->type = SPVM_TYPE_get_double_type(compiler);
-            op_constant->uv.constant = constant;
+            op_constant = SPVM_OP_new_op_constant_double(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // byte
           else if (constant->type->code == SPVM_TYPE_C_CODE_BYTE) {
@@ -933,9 +925,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->value.byte_value = (int8_t)num;
-            constant->type = SPVM_TYPE_get_byte_type(compiler);
-            op_constant->uv.constant = constant;
+            op_constant = SPVM_OP_new_op_constant_byte(compiler, (int8_t)num, compiler->cur_file, compiler->cur_line);
           }
           // short
           else if (constant->type->code == SPVM_TYPE_C_CODE_SHORT) {
@@ -955,9 +945,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->value.short_value = (int16_t)num;
-            constant->type = SPVM_TYPE_get_short_type(compiler);
-            op_constant->uv.constant = constant;
+            op_constant = SPVM_OP_new_op_constant_short(compiler, (int16_t)num, compiler->cur_file, compiler->cur_line);
           }
           // int
           else if (constant->type->code == SPVM_TYPE_C_CODE_INT) {
@@ -977,9 +965,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->value.int_value = num;
-            constant->type = SPVM_TYPE_get_int_type(compiler);
-            op_constant->uv.constant = constant;
+            op_constant = SPVM_OP_new_op_constant_int(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // long
           else if (constant->type->code == SPVM_TYPE_C_CODE_LONG) {
