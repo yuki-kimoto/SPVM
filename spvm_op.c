@@ -128,6 +128,8 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
 };
 
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
+  (void)compiler;
+  
   SPVM_OP* op_parent;
   SPVM_OP* op_cur = op_target;
   while (1) {
@@ -171,7 +173,7 @@ void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** o
 }
 
 // Replace target op with replace op
-void SPVM_OP_replace_op_new(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace) {
+void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace) {
   (void)compiler;
 
   // Get before op
@@ -199,7 +201,7 @@ void SPVM_OP_replace_op_new(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP
 }
 
 // Cut op and insert stab into original position and return stab
-SPVM_OP* SPVM_OP_cut_op_new(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
+SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   // Get before op
   _Bool next_is_child;
   SPVM_OP* op_before;
@@ -230,44 +232,6 @@ SPVM_OP* SPVM_OP_cut_op_new(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   op_target->sibparent = NULL;
   
   return op_stab;
-}
-
-// Cut op and insert stab into original position
-SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
-  
-  // Cut op
-  SPVM_OP* op_cut = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_target->file, op_target->line);
-  op_cut->first = op_target->first;
-  op_cut->last = op_target->last;
-  if (op_cut->last) {
-    op_cut->last->sibparent = op_cut;
-  }
-  op_cut->uv = op_target->uv;
-  op_cut->code = op_target->code;
-  op_cut->flag = op_target->flag;
-  
-  op_target->first = NULL;
-  op_target->last = NULL;
-  op_target->uv.name = NULL;
-  op_target->code = SPVM_OP_C_CODE_STAB;
-  op_target->flag = 0;
-  
-  return op_cut;
-}
-
-// Replace target op with replace op
-void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace) {
-  (void)compiler;
-  
-  op_target->first = op_replace->first;
-  op_target->last = op_replace->last;
-  if (op_target->last) {
-    op_target->last->sibparent = op_target;
-  }
-  op_target->uv = op_replace->uv;
-  op_target->code = op_replace->code;
-  op_target->file = op_replace->file;
-  op_target->line = op_replace->line;
 }
 
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {

@@ -814,7 +814,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_new = op_cur;
                     
                     // Cut new op
-                    SPVM_OP* op_stab = SPVM_OP_cut_op_new(compiler, op_new);
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_new);
                     
                     // Type parent is new
                     op_type_or_constant->moresib = 0;
@@ -825,7 +825,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var, op_new);
                     
                     // Convert cur new op to var
-                    SPVM_OP_replace_op_new(compiler, op_stab, op_build_assign);
+                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
                     
                     op_cur = op_new;
                   }
@@ -1125,7 +1125,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     SPVM_OP* op_term1 = op_concat_string1->first;
                     
-                    SPVM_OP* op_stab = SPVM_OP_cut_op_new(compiler, op_term1);
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term1);
                     
                     // Empty string
                     SPVM_OP* op_constant_empty_string = SPVM_OP_new_op_constant_string(compiler, "", op_concat_string1->file, op_concat_string1->line);
@@ -1133,7 +1133,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP_insert_child(compiler, op_concat_string2, op_concat_string2->last, op_constant_empty_string);
                     SPVM_OP_insert_child(compiler, op_concat_string2, op_concat_string2->last, op_term1);
                     
-                    SPVM_OP_replace_op_new(compiler, op_stab, op_concat_string2);
+                    SPVM_OP_replace_op(compiler, op_stab, op_concat_string2);
                     
                   }
                   
@@ -1507,14 +1507,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // New op
                     SPVM_OP* op_call_sub = op_cur;
-                    SPVM_OP* op_stab = SPVM_OP_cut_op_new(compiler, op_call_sub);
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_call_sub);
 
                     // Assing op
                     SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
                     SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var, op_call_sub);
                     
                     // Convert cur call_sub op to var
-                    SPVM_OP_replace_op_new(compiler, op_stab, op_build_assign);
+                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
                     op_call_sub->uv.name_info = name_info;
                     
                     op_cur = op_call_sub;
