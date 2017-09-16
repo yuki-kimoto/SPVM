@@ -143,13 +143,40 @@ SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   return op_parent;
 }
 
+void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** op_before_ptr, _Bool* next_is_child_ptr) {
+
+  // Get parent
+  SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
+  
+  SPVM_OP* op_before;
+  _Bool next_is_child = 0;
+  if (op_parent->first == op_target) {
+    op_before = op_parent;
+    next_is_child = 1;
+  }
+  else {
+    op_before = op_parent->first;
+    while (1) {
+      if (op_before->sibparent == op_target) {
+        break;
+      }
+      else {
+        op_before = op_before->sibparent;
+      }
+    }
+  }
+  
+  *op_before_ptr = op_before;
+  *next_is_child_ptr = next_is_child;
+}
+
 // Cut op and insert stab into original position
 SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   
-  // Search parent
-  SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
-  
-  warn("PPPPP %p", op_parent);
+  // Get before op
+  _Bool next_is_child;
+  SPVM_OP* op_before;
+  SPVM_OP_get_before(compiler, op_target, &op_before, &next_is_child);
   
   // Cut op
   SPVM_OP* op_cut = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_target->file, op_target->line);
