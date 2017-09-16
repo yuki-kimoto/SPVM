@@ -204,6 +204,8 @@ struct SPVM_op {
   _Bool rvalue;
 };
 
+void SPVM_OP_replace_op_new(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace);
+
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target);
 void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** op_before_ptr, _Bool* next_is_child_ptr);
 
