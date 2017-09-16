@@ -999,9 +999,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            constant->value.long_value = num;
-            constant->type = SPVM_TYPE_get_long_type(compiler);
-            op->uv.constant = constant;
+            
+            op = SPVM_OP_new_op_constant_long(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           
           yylvalp->opval = op;
