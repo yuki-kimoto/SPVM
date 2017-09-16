@@ -28,6 +28,13 @@
 #include "spvm_sub_check_info.h"
 
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_SUB_CHECK_INFO* sub_check_info, const char* file, int32_t line) {
+
+  assert(sub_check_info->my_var_length <= SPVM_LIMIT_C_MY_VARS);
+  if (sub_check_info->my_var_length == SPVM_LIMIT_C_MY_VARS) {
+    SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created in new) at %s line %d\n", file, line);
+    compiler->fatal_error = 1;
+    return NULL;
+  }
                     
   // Create temporary variable
   // my_var
@@ -786,15 +793,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (!op_cur->rvalue) {
                     
                     // Create temporary variable
-                    assert(sub_check_info->my_var_length <= SPVM_LIMIT_C_MY_VARS);
-                    if (sub_check_info->my_var_length == SPVM_LIMIT_C_MY_VARS) {
-                      SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created in new) at %s line %d\n", op_cur->file, op_cur->line);
-                      compiler->fatal_error = 1;
+                    SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_cur->first);
+                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
+                    if (op_var_tmp == NULL) {
                       return;
                     }
-                    SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_cur->first);
-                    
-                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
                     
                     // Cut new op
                     SPVM_OP* op_new = op_cur;
