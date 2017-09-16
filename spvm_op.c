@@ -1820,11 +1820,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
           op_var_array_elem->uv.var = op_first->uv.var;
           SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_array_elem);
           
-          SPVM_OP* op_constant_index = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_list->file, op_list->line);
-          SPVM_CONSTANT* constant_index = SPVM_CONSTANT_new(compiler);
-          constant_index->type = SPVM_TYPE_get_int_type(compiler);
-          constant_index->value.int_value = i;
-          op_constant_index->uv.constant = constant_index;
+          SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, i, op_list->file, op_list->line);
           SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
           
           SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_array_elem);
@@ -1863,13 +1859,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   
   if (!op_term) {
     // Default error message
-    SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_die->file, op_die->line);
-    SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-    constant->value.string_value = "Error";
-    constant->type = SPVM_TYPE_get_string_type(compiler);
-    op_constant->uv.constant = constant;
-    
-    op_term = op_constant;
+    op_term = SPVM_OP_new_op_constant_string(compiler, "Error", op_die->file, op_die->line);;
   }
   
   // Exception variable
