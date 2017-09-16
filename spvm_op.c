@@ -1367,41 +1367,28 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     compiler->enum_default_value++;
   }
   else {
-    SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-    
     // TODO add type
     if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_BYTE) {
-      constant->type = SPVM_TYPE_get_byte_type(compiler);
-      constant->value.byte_value = (int8_t)compiler->enum_default_value;
+      op_constant = SPVM_OP_new_op_constant_byte(compiler, (int8_t)compiler->enum_default_value, op_name->file, op_name->line);
     }
     else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_SHORT) {
-      constant->type = SPVM_TYPE_get_short_type(compiler);
-      constant->value.short_value = (int16_t)compiler->enum_default_value;
+      op_constant = SPVM_OP_new_op_constant_short(compiler, (int16_t)compiler->enum_default_value, op_name->file, op_name->line);
     }
     else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_INT) {
-      constant->type = SPVM_TYPE_get_int_type(compiler);
-      constant->value.int_value = (int32_t)compiler->enum_default_value;
+      op_constant = SPVM_OP_new_op_constant_int(compiler, (int32_t)compiler->enum_default_value, op_name->file, op_name->line);
     }
     else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_LONG) {
-      constant->type = SPVM_TYPE_get_long_type(compiler);
-      constant->value.long_value = (int64_t)compiler->enum_default_value;
+      op_constant = SPVM_OP_new_op_constant_long(compiler, (int64_t)compiler->enum_default_value, op_name->file, op_name->line);
     }
     else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_FLOAT) {
-      constant->type = SPVM_TYPE_get_float_type(compiler);
-      constant->value.float_value = (float)compiler->enum_default_value;
+      op_constant = SPVM_OP_new_op_constant_float(compiler, (float)compiler->enum_default_value, op_name->file, op_name->line);
     }
     else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_DOUBLE) {
-      constant->type = SPVM_TYPE_get_double_type(compiler);
-      constant->value.double_value = (double)compiler->enum_default_value;
+      op_constant = SPVM_OP_new_op_constant_double(compiler, (double)compiler->enum_default_value, op_name->file, op_name->line);
     }
     else {
       assert(0);
     }
-    
-    op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, op_name->file, op_name->line);
-    op_constant->uv.constant = constant;
-    
-    SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
     
     compiler->enum_default_value++;
   }
