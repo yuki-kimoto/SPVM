@@ -209,9 +209,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
         SPVM_SUB_CHECK_INFO* sub_check_info = SPVM_SUB_CHECK_INFO_new(compiler);
         
-        // my var informations
-        SPVM_DYNAMIC_ARRAY* op_my_vars = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-        
         // my variable stack
         SPVM_DYNAMIC_ARRAY* op_my_var_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
         
@@ -807,7 +804,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     op_my_var->uv.my_var = my_var;
                     
                     // Add my var
-                    SPVM_DYNAMIC_ARRAY_push(op_my_vars, op_my_var);
+                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_my_var);
                     SPVM_DYNAMIC_ARRAY_push(op_my_var_stack, op_my_var);
                     
                     // Convert new op to assing op
@@ -1382,7 +1379,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   else {
                     my_var->index = my_var_length++;
-                    SPVM_DYNAMIC_ARRAY_push(op_my_vars, op_cur);
+                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_cur);
                     SPVM_DYNAMIC_ARRAY_push(op_my_var_stack, op_cur);
                   }
                   
@@ -1502,7 +1499,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     op_my_var->uv.my_var = my_var;
                     
                     // Add my var
-                    SPVM_DYNAMIC_ARRAY_push(op_my_vars, op_my_var);
+                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_my_var);
                     SPVM_DYNAMIC_ARRAY_push(op_my_var_stack, op_my_var);
                     
                     // Convert call_sub op to assing op
@@ -1632,7 +1629,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
         }
         // Set my var information
-        sub->op_my_vars = op_my_vars;
+        sub->op_my_vars = sub_check_info->op_my_vars;
         
         // Operand stack max
         sub->operand_stack_max = op_count * 2;
