@@ -62,7 +62,7 @@ package TestCase {
         my $value2 = -9223372036854775808L;
         my $value3 = $value1 . $value2;
         
-        std::println($value3);
+        std::say($value3);
       }
 
       {
@@ -70,7 +70,7 @@ package TestCase {
         my $value2 = -2147483648;
         my $value3 = $value1 . $value2;
         
-        std::println($value3);
+        std::say($value3);
       }
 
       {
@@ -78,7 +78,7 @@ package TestCase {
         my $value2 = (short)13;
         my $value3 = $value1 . $value2;
         
-        std::println($value3);
+        std::say($value3);
       }
 
       {
@@ -86,7 +86,7 @@ package TestCase {
         my $value2 = (byte)13;
         my $value3 = $value1 . $value2;
         
-        std::println($value3);
+        std::say($value3);
       }
       
       # .
@@ -95,7 +95,7 @@ package TestCase {
         my $value2 = "def";
         my $value3 = $value1 . $value2;
         
-        std::println($value3);
+        std::say($value3);
       }
     }
     
@@ -104,7 +104,7 @@ package TestCase {
       
       $num += 4;
       
-      std::println_int($num);
+      std::say_int($num);
     }
     
     {
@@ -118,7 +118,7 @@ package TestCase {
     {
       my $ret = error_eval();
       
-      std::println_int($ret);
+      std::say_int($ret);
     }
     
     error_eval();
@@ -164,7 +164,7 @@ package TestCase {
     
     call_void();
     
-    std::println("a");
+    std::say("a");
     
     # Default return value object
     if (default_return_value_object_sub() == undef) {
@@ -176,7 +176,7 @@ package TestCase {
     # Use template package
     {
       my $num = TestCase::Template_int_long::get(100, 200, 300L,);
-      std::println_int($num);
+      std::say_int($num);
     }
 
     # Get object from freelist
@@ -188,32 +188,32 @@ package TestCase {
     }
     
     my $ppp = [1, 2, 3];
-    std::println_float(TestCase->ONE);
+    std::say_float(TestCase->ONE);
     
     # Logical or
     {
       if (1 || 0) {
-        std::println("Logical or");
+        std::say("Logical or");
       }
     }
 
     # Logical and
     {
       if (1 && 1) {
-        std::println("Logical and");
+        std::say("Logical and");
       }
     }
     
     # Constant e
     {
       my $num = 0.25E+3;
-      std::println_double($num);
+      std::say_double($num);
     }
 
     # Constant e
     {
       my $num = 0.25E-3f;
-      std::println_float($num);
+      std::say_float($num);
     }
     # Convert to string to byte[]
     {
@@ -224,12 +224,12 @@ package TestCase {
     # MIN long constant;
     {
       my $num = -9223372036854775808L;
-      std::println_long($num);
+      std::say_long($num);
     }
     {
       my $var = 3;
       while (my $var = 964) {
-        std::println_int($var);
+        std::say_int($var);
         last;
       }
     }
@@ -238,7 +238,7 @@ package TestCase {
       my $error = "First";
       $@ = "Error";
       if (my $error = $@) {
-        std::println($error);
+        std::say($error);
       }
     }
     
@@ -251,7 +251,7 @@ package TestCase {
     # Exception variable
     {
       $@ = "Exception";
-      std::println($@);
+      std::say($@);
     }
     
     # $array->[0]{x}
@@ -259,7 +259,7 @@ package TestCase {
       my $objs = new TestCase::Minimal[3];
       $objs->[0] = new TestCase::Minimal;
       $objs->[0]{x} = 111;
-      std::println_int($objs->[0]{x});
+      std::say_int($objs->[0]{x});
     }
     
     # $obj->{x}[0]
@@ -267,7 +267,7 @@ package TestCase {
       my $obj = new TestCase::Simple;
       $obj->{values1} = new int[5];
       $obj->{values1}[0] = 221;
-      std::println_int($obj->{values1}[0]);
+      std::say_int($obj->{values1}[0]);
     }
     
     # Call new subroutine without variable
@@ -279,7 +279,7 @@ package TestCase {
     # Subroutine call from native
     {
       my $total = std::test1(3, 11);
-      std::println_int($total);
+      std::say_int($total);
     }
     
     # Create temporary varialbe
@@ -307,7 +307,7 @@ package TestCase {
     {
       my $string : string = "abc\"\'\\\n\t\b\r\fdef";
      
-      std::println($string);
+      std::say($string);
     }
     
     # Escape sequence
@@ -337,7 +337,7 @@ package TestCase {
       my $nums : int[][] = new int[][3];
       $nums->[0] = new int[1];
       $nums->[0][0] = 178;
-      std::println_int($nums->[0][0]);
+      std::say_int($nums->[0][0]);
     }
     
     # Declare mutil array
@@ -345,8 +345,8 @@ package TestCase {
       my $nums : int[][];
     }
     
-    std::println_int(TestCase::EnumD->THREE);
-    std::println_int(TestCase::EnumD->FORE);
+    std::say_int(TestCase::EnumD->THREE);
+    std::say_int(TestCase::EnumD->FORE);
     
     # Core functions
     {
@@ -356,7 +356,7 @@ package TestCase {
       std::print_long(1L);
       std::print_float(1f);
       std::print_double(1.0);
-      std::println("end");
+      std::say("end");
     }
 
     {
@@ -376,7 +376,7 @@ package TestCase {
       my $nums = new int[150000000];
       my $len = @{$nums};
       $nums->[149999999] = 764;
-      std::println_int($nums->[149999999]);
+      std::say_int($nums->[149999999]);
     }
     
     {
@@ -386,8 +386,8 @@ package TestCase {
       for ($i = 0; $i < $len; $i = $i + 1) {
         $nums->[$i] = $i;
       }
-      std::println_int($i);
-      std::println_int($nums->[$i - 1]);
+      std::say_int($i);
+      std::say_int($nums->[$i - 1]);
     }
     
     # Object to get long field is undef
@@ -454,14 +454,14 @@ package TestCase {
     {
       my $num = (byte)1;
       $num++;
-      std::println_byte($num);
+      std::say_byte($num);
     }
     
     # Increment short 
     {
       my $num = (short)1;
       $num++;
-      std::println_short($num);
+      std::say_short($num);
     }
     
     # increment int
@@ -497,7 +497,7 @@ package TestCase {
     {
       sum0(5, 6);
       2;
-      std::println("Error");
+      std::say("Error");
     }
     
     {
@@ -507,28 +507,28 @@ package TestCase {
       $nums->[2] = 3;
       
       my $total = std::sum_int($nums);
-      std::println_int($total);
+      std::say_int($total);
     }
     
     {
       my $string = "ace";
      
-      std::println($string);
+      std::say($string);
     }
 
     {
       my $string : string = "ace";
      
-      std::println($string);
+      std::say($string);
     }
     
     {
       my $num = (byte)3;
-      std::println_byte($num);
+      std::say_byte($num);
       
       my $num2 = (long)1 + (long)$num;
       
-      std::println_long($num2);
+      std::say_long($num2);
     }
     
     # get and set field
@@ -538,8 +538,8 @@ package TestCase {
       $m->{x} = 99;
       $m->{y} = 100;
       
-      std::println_int($m->{x});
-      std::println_int($m->{y});
+      std::say_int($m->{x});
+      std::say_int($m->{y});
     }
 
     # Free when assignment
@@ -570,76 +570,76 @@ package TestCase {
     }
     7;
     
-    std::println_int(sum0(1, 1));
-    std::println_int(sum2(1, 2));
+    std::say_int(sum0(1, 1));
+    std::say_int(sum2(1, 2));
 
     # Constant float
-    std::println_float(0.3f);
-    std::println_float(1f);
-    std::println_float(2f);
-    std::println_float(1.2f);
+    std::say_float(0.3f);
+    std::say_float(1f);
+    std::say_float(2f);
+    std::say_float(1.2f);
     
     # Constant double
-    std::println_double(0d);
-    std::println_double(1d);
-    std::println_double(1.2);
+    std::say_double(0d);
+    std::say_double(1d);
+    std::say_double(1.2);
 
     # Constant int
-    std::println_int(-2147483648);
-    std::println_int(-32769);
-    std::println_int(-32768);
-    std::println_int(-129);
-    std::println_int(-128);
-    std::println_int(-2);
-    std::println_int(-1);
-    std::println_int(0);
-    std::println_int(1);
-    std::println_int(2);
-    std::println_int(3);
-    std::println_int(4);
-    std::println_int(5);
-    std::println_int(6);
-    std::println_int(127);
-    std::println_int(128);
-    std::println_int(255);
-    std::println_int(256);
-    std::println_int(32767);
-    std::println_int(32768);
-    std::println_int(65535);
-    std::println_int(65536);
-    std::println_int(2147483647);
+    std::say_int(-2147483648);
+    std::say_int(-32769);
+    std::say_int(-32768);
+    std::say_int(-129);
+    std::say_int(-128);
+    std::say_int(-2);
+    std::say_int(-1);
+    std::say_int(0);
+    std::say_int(1);
+    std::say_int(2);
+    std::say_int(3);
+    std::say_int(4);
+    std::say_int(5);
+    std::say_int(6);
+    std::say_int(127);
+    std::say_int(128);
+    std::say_int(255);
+    std::say_int(256);
+    std::say_int(32767);
+    std::say_int(32768);
+    std::say_int(65535);
+    std::say_int(65536);
+    std::say_int(2147483647);
     
     # Constant long
-    std::println_long(-1L);
-    std::println_long(0L);
-    std::println_long(1L);
-    std::println_long(2L);
-    std::println_long(9223372036854775807L);
-    std::println_long(-9223372036854775807L);
-    std::println_long(-2147483648L);
-    std::println_long(-32769L);
-    std::println_long(-32768L);
-    std::println_long(-129L);
-    std::println_long(-128L);
-    std::println_long(-2L);
-    std::println_long(-1L);
-    std::println_long(0L);
-    std::println_long(1L);
-    std::println_long(2L);
-    std::println_long(3L);
-    std::println_long(4L);
-    std::println_long(5L);
-    std::println_long(6L);
-    std::println_long(127L);
-    std::println_long(128L);
-    std::println_long(255L);
-    std::println_long(256L);
-    std::println_long(32767L);
-    std::println_long(32768L);
-    std::println_long(65535L);
-    std::println_long(65536L);
-    std::println_long(2147483647L);
-    std::println_long(0xFFL);
+    std::say_long(-1L);
+    std::say_long(0L);
+    std::say_long(1L);
+    std::say_long(2L);
+    std::say_long(9223372036854775807L);
+    std::say_long(-9223372036854775807L);
+    std::say_long(-2147483648L);
+    std::say_long(-32769L);
+    std::say_long(-32768L);
+    std::say_long(-129L);
+    std::say_long(-128L);
+    std::say_long(-2L);
+    std::say_long(-1L);
+    std::say_long(0L);
+    std::say_long(1L);
+    std::say_long(2L);
+    std::say_long(3L);
+    std::say_long(4L);
+    std::say_long(5L);
+    std::say_long(6L);
+    std::say_long(127L);
+    std::say_long(128L);
+    std::say_long(255L);
+    std::say_long(256L);
+    std::say_long(32767L);
+    std::say_long(32768L);
+    std::say_long(65535L);
+    std::say_long(65536L);
+    std::say_long(2147483647L);
+    std::say_long(0xFFL);
     
     "abc";
     
@@ -649,16 +649,16 @@ package TestCase {
       
       switch($num) {
         case TestCase::EnumD->THREE:
-          std::println_int(1);
+          std::say_int(1);
           last;
         case TestCase::EnumD->FORE:
-          std::println_int(2);
+          std::say_int(2);
           last;
         case 5:
-          std::println_int(3);
+          std::say_int(3);
           last;
         default:
-          std::println_int(5);
+          std::say_int(5);
       }
     }
 
@@ -667,16 +667,16 @@ package TestCase {
       my $num = 3;
       switch ($num) {
         case 1:
-          std::println_int(1);
+          std::say_int(1);
           last;
         case 3:
-          std::println_int(2);
+          std::say_int(2);
           last;
         case 10000:
-          std::println_int(2);
+          std::say_int(2);
           last;
         default:
-          std::println_int(5);
+          std::say_int(5);
       }
     }
     
@@ -684,7 +684,7 @@ package TestCase {
     #   my $num = 5;
     #   switch($num) {
     #     default:
-    #       std::println_int(5);
+    #       std::say_int(5);
     #   }
     # }
     
@@ -702,7 +702,7 @@ package TestCase {
 
     my $simple3 : TestCase::Simple = new TestCase::Simple;
     
-    std::println_int($simple3->get_x());
+    std::say_int($simple3->get_x());
     $simple3->get_x;
     
     $simple3->{y} = 2;
@@ -799,17 +799,17 @@ package TestCase {
       my $nums = new int[3];
       $nums->[0] = 13;
       $nums->[1] = 14;
-      std::println_int($nums->[0]);
-      std::println_int($nums->[1]);
+      std::say_int($nums->[0]);
+      std::say_int($nums->[1]);
     }
     
     {
       my $nums : long[] = new long[3];
       $nums->[0] = 11L;
       $nums->[1] = 12L;
-      std::println_long($nums->[0]);
-      std::println_long($nums->[1]);
-      std::println_int(@$nums);
+      std::say_long($nums->[0]);
+      std::say_long($nums->[1]);
+      std::say_int(@$nums);
       my $nums_length : int = @$nums;
     }
     
@@ -821,7 +821,7 @@ package TestCase {
     my $v3 : int;
     
     $v3 = $v2 = $v1 = 543;
-    std::println_int($v3);
+    std::say_int($v3);
     
     100;
     1000;
@@ -918,7 +918,7 @@ package TestCase {
       my $num1 = (byte)1;
       my $num2 = (byte)2;
       my $num3 = $num0 + $num1 + $num2;
-      std::println_byte($num3);
+      std::say_byte($num3);
     }
 
     {
@@ -926,7 +926,7 @@ package TestCase {
       my $num1 = (short)1;
       my $num2 = (short)2;
       my $num3 = $num0 + $num1 + $num2;
-      std::println_short($num3);
+      std::say_short($num3);
     }
 
     # my $error : byte[] = "Error";

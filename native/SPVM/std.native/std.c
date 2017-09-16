@@ -65,7 +65,7 @@ void SPVM__std__print(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%s\n", (char*)string);
 }
 
-void SPVM__std__println(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__std__say(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* array = args[0].object_value;
@@ -75,7 +75,7 @@ void SPVM__std__println(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%s\n", (char*)string);
 }
 
-void SPVM__std__println_byte(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__std__say_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int8_t value = args[0].byte_value;
@@ -83,7 +83,7 @@ void SPVM__std__println_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId8 "\n", value);
 }
 
-void SPVM__std__println_short(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__std__say_short(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int16_t value = args[0].short_value;
@@ -91,7 +91,7 @@ void SPVM__std__println_short(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId16 "\n", value);
 }
 
-void SPVM__std__println_int(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__std__say_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int32_t value = args[0].int_value;
@@ -99,7 +99,7 @@ void SPVM__std__println_int(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId32 "\n", value);
 }
 
-void SPVM__std__println_long(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__std__say_long(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int64_t value = args[0].long_value;
@@ -107,7 +107,7 @@ void SPVM__std__println_long(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId64 "\n", value);
 }
 
-void SPVM__std__println_float(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__std__say_float(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   float value = args[0].float_value;
@@ -115,7 +115,7 @@ void SPVM__std__println_float(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%f\n", value);
 }
 
-void SPVM__std__println_double(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__std__say_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double value = args[0].double_value;

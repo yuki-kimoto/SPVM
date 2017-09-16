@@ -1,5 +1,6 @@
 0.0267 2017-09-16
   - implement . operator to concat string
+  - renmae println to say
 0.0266 2017-09-13
   - fix bug that empty string is not used
   - rename SPVM::new_string_raw to SPVM::new_string_bytes

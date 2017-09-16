@@ -1,11 +1,11 @@
 package std {
-  sub println_byte ($value : byte) : native void;
-  sub println_short ($value : short) : native void;
-  sub println_int ($value : int) : native void;
-  sub println_long ($value : long) : native void;
-  sub println_float ($value : float) : native void;
-  sub println_double ($value : double) : native void;
-  sub println ($value : string) : native void;
+  sub say_byte ($value : byte) : native void;
+  sub say_short ($value : short) : native void;
+  sub say_int ($value : int) : native void;
+  sub say_long ($value : long) : native void;
+  sub say_float ($value : float) : native void;
+  sub say_double ($value : double) : native void;
+  sub say ($value : string) : native void;
 
   sub print_byte ($value : byte) : native void;
   sub print_short ($value : short) : native void;
