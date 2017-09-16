@@ -1086,6 +1086,26 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
+                  if (!op_cur->rvalue) {
+                    // Create temporary variable
+                    SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_cur->first);
+                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
+                    if (op_var_tmp == NULL) {
+                      return;
+                    }
+                    
+                    // Cut new op
+                    SPVM_OP* op_concat_string = op_cur;
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_concat_string);
+
+                    // Assing op
+                    SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
+                    SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_concat_string);
+                    
+                    // Convert cur new op to var
+                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                  }
+                  
                   // If left type is not string, add another concat
                   /*
                     Before

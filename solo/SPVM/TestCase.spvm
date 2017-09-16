@@ -50,7 +50,10 @@ package TestCase {
       {
         2 . 3;
       }
-=cut
+=cut  
+      {
+        "abc" . 13;
+      }
       {
         my $value1 = "abc";
         my $value2 = -9223372036854775808L;
