@@ -85,6 +85,13 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (code == SPVM_OP_C_CODE_TYPE) {
       printf(" \"%s\"", op_cur->uv.type->name);
     }
+    else if (code == SPVM_OP_C_CODE_PACKAGE) {
+      if (strcmp(op_cur->uv.package->op_name->uv.name, "std") == 0) {
+        printf(" std(omit)\n");
+        op_cur = op_cur->sibparent;
+        continue;
+      }
+    }
     printf("\n");
     
     // [END]Preorder traversal position
@@ -171,6 +178,7 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_p
       printf("package[%" PRId32 "]\n", i);
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, i);
       SPVM_PACKAGE* package = op_package->uv.package;
+      
       printf("  name => \"%s\"\n", package->op_name->uv.name);
       
       if (package->op_type) {
