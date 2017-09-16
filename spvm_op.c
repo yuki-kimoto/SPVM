@@ -194,6 +194,7 @@ SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   op_target->moresib = 0;
   op_target->sibparent = NULL;
   
+  return op_target;
   */
 
   // Cut op
