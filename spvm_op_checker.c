@@ -1514,7 +1514,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var, op_call_sub);
                     
                     // Convert cur call_sub op to var
-                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                    SPVM_OP_replace_op_new(compiler, op_stab, op_build_assign);
                     op_call_sub->uv.name_info = name_info;
                     
                     op_cur = op_call_sub;
