@@ -25,6 +25,7 @@
 #include "spvm_type.h"
 #include "spvm_switch_info.h"
 #include "spvm_limit.h"
+#include "spvm_sub_check_info.h"
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
