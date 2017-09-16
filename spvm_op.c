@@ -167,7 +167,6 @@ void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
-  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
   SPVM_CONSTANT* constant = op_constant->uv.constant;
   
   if (constant->type->code == SPVM_TYPE_C_CODE_STRING) {
