@@ -1506,14 +1506,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
                     
                     // New op
-                    SPVM_OP* op_call_sub = SPVM_OP_cut_op(compiler, op_cur);
+                    SPVM_OP* op_call_sub = op_cur;
+                    SPVM_OP* op_stab = SPVM_OP_cut_op_new(compiler, op_call_sub);
 
                     // Assing op
                     SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
                     SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var, op_call_sub);
                     
                     // Convert cur call_sub op to var
-                    SPVM_OP_replace_op(compiler, op_cur, op_build_assign);
+                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
                     op_call_sub->uv.name_info = name_info;
                     
                     op_cur = op_call_sub;
