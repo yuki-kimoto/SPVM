@@ -39,6 +39,15 @@ package TestCase {
   }
 
   # Concat
+  # Concat
+  sub concat_string_string() : string {
+    "a" . "b";
+    
+    my $value = "a" . "b";
+    
+    return $value;
+  }
+  
   sub concat_string_byte() : string {
     my $value = "a" . 3;
     
