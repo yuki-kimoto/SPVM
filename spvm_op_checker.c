@@ -211,10 +211,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
         int32_t block_my_var_base = 0;
         
-        int32_t my_var_length = 0;
-        
-        int32_t my_var_tmp_index = 0;
-        
         // Run OPs
         SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
         SPVM_OP* op_cur = op_base;
@@ -757,8 +753,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // If NEW is not rvalue, temparary variable is created, and assinged.
                   if (!op_cur->rvalue) {
-                    assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
-                    if (my_var_length == SPVM_LIMIT_C_MY_VARS) {
+                    assert(sub_check_info->my_var_length <= SPVM_LIMIT_C_MY_VARS);
+                    if (sub_check_info->my_var_length == SPVM_LIMIT_C_MY_VARS) {
                       SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created in new) at %s line %d\n", op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
@@ -770,7 +766,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // Temparary variable name
                     char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
-                    sprintf(name, "@tmp%d", my_var_tmp_index++);
+                    sprintf(name, "@tmp%d", sub_check_info->my_var_tmp_index++);
                     SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_cur->file, op_cur->line);
                     op_name->uv.name = name;
                     my_var->op_name = op_name;
@@ -780,7 +776,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     my_var->op_type->uv.type = SPVM_OP_get_type(compiler, op_cur->first);
                     
                     // Index
-                    my_var->index = my_var_length++;
+                    my_var->index = sub_check_info->my_var_length++;
                     
                     // op my_var
                     SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_cur->file, op_cur->line);
@@ -1336,8 +1332,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_MY: {
                   SPVM_MY_VAR* my_var = op_cur->uv.my_var;
                   
-                  assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
-                  if (my_var_length == SPVM_LIMIT_C_MY_VARS) {
+                  assert(sub_check_info->my_var_length <= SPVM_LIMIT_C_MY_VARS);
+                  if (sub_check_info->my_var_length == SPVM_LIMIT_C_MY_VARS) {
                     SPVM_yyerror_format(compiler, "too many lexical variables, my \"%s\" ignored at %s line %d\n", my_var->op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1364,7 +1360,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   else {
-                    my_var->index = my_var_length++;
+                    my_var->index = sub_check_info->my_var_length++;
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_cur);
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_var_stack, op_cur);
                   }
@@ -1456,8 +1452,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // If CALL_SUB is is not rvalue and return type is object, temparary variable is created, and assinged.
                   if (!op_cur->rvalue && (return_type->code != SPVM_TYPE_C_CODE_VOID && !SPVM_TYPE_is_numeric(compiler, return_type))) {
-                    assert(my_var_length <= SPVM_LIMIT_C_MY_VARS);
-                    if (my_var_length == SPVM_LIMIT_C_MY_VARS) {
+                    assert(sub_check_info->my_var_length <= SPVM_LIMIT_C_MY_VARS);
+                    if (sub_check_info->my_var_length == SPVM_LIMIT_C_MY_VARS) {
                       SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created for return value) at %s line %d\n", op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
@@ -1469,7 +1465,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // Temparary variable name
                     char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
-                    sprintf(name, "@tmp%d", my_var_tmp_index++);
+                    sprintf(name, "@tmp%d", sub_check_info->my_var_tmp_index++);
                     SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_cur->file, op_cur->line);
                     op_name->uv.name = name;
                     my_var->op_name = op_name;
@@ -1478,7 +1474,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     my_var->op_type = found_sub->op_return_type;
                     
                     // Index
-                    my_var->index = my_var_length++;
+                    my_var->index = sub_check_info->my_var_length++;
                     
                     // op my_var
                     SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_cur->file, op_cur->line);
