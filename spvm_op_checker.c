@@ -825,7 +825,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var, op_new);
                     
                     // Convert cur new op to var
-                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                    SPVM_OP_replace_op_new(compiler, op_stab, op_build_assign);
                     
                     op_cur = op_new;
                   }
