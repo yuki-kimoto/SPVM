@@ -752,8 +752,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_NEW: {
-                  SPVM_OP* op_type_or_constant = op_cur->first;
-                  
                   if (op_cur->first->code == SPVM_OP_C_CODE_TYPE) {
                     SPVM_OP* op_type = op_cur->first;
                     SPVM_TYPE* type = op_type->uv.type;
@@ -802,10 +800,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     // Cut new op
                     SPVM_OP* op_new = op_cur;
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_new);
-                    
-                    // Type parent is new
-                    op_type_or_constant->moresib = 0;
-                    op_type_or_constant->sibparent = op_new;
 
                     // Assing op
                     SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
