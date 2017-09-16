@@ -211,9 +211,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
         int32_t block_my_var_base = 0;
         
-        // op count
-        int32_t op_count = 0;
-        
         int32_t my_var_length = 0;
         
         int32_t my_var_tmp_index = 0;
@@ -223,7 +220,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         SPVM_OP* op_cur = op_base;
         _Bool finish = 0;
         while (op_cur) {
-          op_count++;
+          sub_check_info->op_count++;
           
           // [START]Preorder traversal position
           
@@ -1621,7 +1618,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         sub->op_my_vars = sub_check_info->op_my_vars;
         
         // Operand stack max
-        sub->operand_stack_max = op_count * 2;
+        sub->operand_stack_max = sub_check_info->op_count * 2;
       }
 
       assert(sub->file_name);
