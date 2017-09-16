@@ -27,6 +27,39 @@
 #include "spvm_limit.h"
 #include "spvm_sub_check_info.h"
 
+SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_SUB_CHECK_INFO* sub_check_info, const char* file, int32_t line) {
+                    
+  // Create temporary variable
+  // my_var
+  SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
+
+  // Temparary variable name
+  char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
+  sprintf(name, "@tmp%d", sub_check_info->my_var_tmp_index++);
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
+  op_name->uv.name = name;
+  my_var->op_name = op_name;
+
+  // Set type to my var
+  my_var->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, file, line);
+  my_var->op_type->uv.type = type;
+
+  // Index
+  my_var->index = sub_check_info->my_var_length++;
+
+  // op my_var
+  SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, file, line);
+  op_my_var->uv.my_var = my_var;
+
+  // Add my var
+  SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_my_var);
+  SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_var_stack, op_my_var);
+  
+  SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
+  
+  return op_var;
+}
+
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   SPVM_DYNAMIC_ARRAY* op_types = compiler->op_types;
@@ -751,42 +784,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // If NEW is not rvalue, temparary variable is created, and assinged.
                   if (!op_cur->rvalue) {
+                    
+                    // Create temporary variable
                     assert(sub_check_info->my_var_length <= SPVM_LIMIT_C_MY_VARS);
                     if (sub_check_info->my_var_length == SPVM_LIMIT_C_MY_VARS) {
                       SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created in new) at %s line %d\n", op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
                     }
+                    SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_cur->first);
                     
-                    // Create temporary variable
-                    // my_var
-                    SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
-                    
-                    // Temparary variable name
-                    char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
-                    sprintf(name, "@tmp%d", sub_check_info->my_var_tmp_index++);
-                    SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_cur->file, op_cur->line);
-                    op_name->uv.name = name;
-                    my_var->op_name = op_name;
-                    
-                    // Set type to my var
-                    my_var->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
-                    my_var->op_type->uv.type = SPVM_OP_get_type(compiler, op_cur->first);
-                    
-                    // Index
-                    my_var->index = sub_check_info->my_var_length++;
-                    
-                    // op my_var
-                    SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_cur->file, op_cur->line);
-                    op_my_var->uv.my_var = my_var;
-                    
-                    // Add my var
-                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_my_var);
-                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_var_stack, op_my_var);
-                    
-                    // Convert new op to assing op
-                    // Var op
-                    SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
+                    SPVM_OP* op_var = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
                     
                     SPVM_OP* op_new = op_cur;
                     
