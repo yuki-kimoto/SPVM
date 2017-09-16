@@ -1405,7 +1405,6 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     
     compiler->enum_default_value++;
   }
-  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
   
   // Return
   SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_name->file, op_name->line);
