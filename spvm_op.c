@@ -127,8 +127,29 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "CONCAT_STRING",
 };
 
-// Return cloned op and target op become stab
+SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
+  SPVM_OP* op_parent;
+  SPVM_OP* op_cur = op_target;
+  while (1) {
+    if (op_cur->moresib) {
+      op_cur = op_cur->sibparent;
+    }
+    else {
+      op_parent = op_cur->sibparent;
+      break;
+    }
+  }
+  
+  return op_parent;
+}
+
+// Cut op and insert stab into original position
 SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
+  
+  // Search parent
+  SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
+  
+  warn("PPPPP %p", op_parent);
   
   // Cut op
   SPVM_OP* op_cut = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_target->file, op_target->line);
