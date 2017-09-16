@@ -107,6 +107,8 @@ spvm_runtime_api.c
 spvm_runtime_api.h
 spvm_sub.c
 spvm_sub.h
+spvm_sub_check_info.c
+spvm_sub_check_info.h
 spvm_switch_info.c
 spvm_switch_info.h
 spvm_toke.c
