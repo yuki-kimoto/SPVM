@@ -37,6 +37,53 @@ package TestCase {
     FLOAT_PRECICE = 16384f,
     DOUBLE_PRECICE = 65536.0,
   }
+
+  # Concat
+  sub concat_string_byte() : string {
+    my $value = "a" . 3;
+    
+    return $value;
+  }
+
+  sub concat_string_short() : string {
+    "a" . 3s;
+    
+    my $value = "a" . 3s;
+    
+    return $value;
+  }
+
+  sub concat_string_int() : string {
+    "a" . 3;
+    
+    my $value = "a" . 3;
+    
+    return $value;
+  }
+  
+  sub concat_string_long() : string {
+    "a" . 3L;
+    
+    my $value = "a" . 3L;
+    
+    return $value;
+  }
+  
+  sub concat_string_float() : string {
+    "a" . 3.0f;
+    
+    my $value = "a" . 3.0f;
+    
+    return $value;
+  }
+  
+  sub concat_string_double() : string {
+    "a" . 3.0;
+    
+    my $value = "a" . 3.0;
+    
+    return $value;
+  }
   
   # String
   sub string_utf8() : string {
