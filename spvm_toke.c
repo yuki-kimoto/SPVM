@@ -729,11 +729,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           str[str_index] = '\0';
         }
         
-        SPVM_OP* op_constant = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
-        SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-        constant->value.string_value = str;
-        constant->type = SPVM_TYPE_get_string_type(compiler);
-        op_constant->uv.constant = constant;
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str, compiler->cur_file, compiler->cur_line);
         
         yylvalp->opval = op_constant;
         
@@ -852,43 +848,43 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           // Constant op
-          SPVM_OP* op_constant = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONSTANT);
+          SPVM_OP* op_constant;
           
           // Constant
-          SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+          SPVM_TYPE* constant_type;
           
           if (*compiler->bufptr == 'b')  {
-            constant->type = SPVM_TYPE_get_byte_type(compiler);
+            constant_type = SPVM_TYPE_get_byte_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 's')  {
-            constant->type = SPVM_TYPE_get_short_type(compiler);
+            constant_type = SPVM_TYPE_get_short_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'L')  {
-            constant->type = SPVM_TYPE_get_long_type(compiler);
+            constant_type = SPVM_TYPE_get_long_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'f')  {
-            constant->type = SPVM_TYPE_get_float_type(compiler);
+            constant_type = SPVM_TYPE_get_float_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'd')  {
-            constant->type = SPVM_TYPE_get_double_type(compiler);
+            constant_type = SPVM_TYPE_get_double_type(compiler);
             compiler->bufptr++;
           }
           else {
             if (is_floating_number) {
-              constant->type = SPVM_TYPE_get_double_type(compiler);
+              constant_type = SPVM_TYPE_get_double_type(compiler);
             }
             else {
-              constant->type = SPVM_TYPE_get_int_type(compiler);
+              constant_type = SPVM_TYPE_get_int_type(compiler);
             }
           }
           
           // float
           char *end;
-          if (constant->type->code == SPVM_TYPE_C_CODE_FLOAT) {
+          if (constant_type->code == SPVM_TYPE_C_CODE_FLOAT) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -898,7 +894,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num, compiler->cur_file, compiler->cur_line);
           }
           // double
-          else if (constant->type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+          else if (constant_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -908,7 +904,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_double(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // byte
-          else if (constant->type->code == SPVM_TYPE_C_CODE_BYTE) {
+          else if (constant_type->code == SPVM_TYPE_C_CODE_BYTE) {
             int32_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
@@ -928,7 +924,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_byte(compiler, (int8_t)num, compiler->cur_file, compiler->cur_line);
           }
           // short
-          else if (constant->type->code == SPVM_TYPE_C_CODE_SHORT) {
+          else if (constant_type->code == SPVM_TYPE_C_CODE_SHORT) {
             int32_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
@@ -948,7 +944,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_short(compiler, (int16_t)num, compiler->cur_file, compiler->cur_line);
           }
           // int
-          else if (constant->type->code == SPVM_TYPE_C_CODE_INT) {
+          else if (constant_type->code == SPVM_TYPE_C_CODE_INT) {
             int32_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
@@ -968,7 +964,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_int(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // long
-          else if (constant->type->code == SPVM_TYPE_C_CODE_LONG) {
+          else if (constant_type->code == SPVM_TYPE_C_CODE_LONG) {
             int64_t num;
             errno = 0;
             if (num_str[0] == '0' && num_str[1] == 'x') {
