@@ -207,6 +207,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       // Only process normal subroutine
       if (!sub->is_native) {
         
+        SPVM_SUB_CHECK_INFO* sub_check_info = SPVM_SUB_CHECK_INFO_new(compiler);
+        
         // my var informations
         SPVM_DYNAMIC_ARRAY* op_my_vars = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
         
