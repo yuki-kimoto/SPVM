@@ -173,11 +173,29 @@ void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** o
 // Cut op and insert stab into original position
 SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   
+  /*
   // Get before op
   _Bool next_is_child;
   SPVM_OP* op_before;
   SPVM_OP_get_before(compiler, op_target, &op_before, &next_is_child);
   
+  // Stab
+  SPVM_OP* op_stab = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_STAB, op_target->file, op_target->line);
+  if (next_is_child) {
+    op_before->first = op_stab;
+  }
+  else {
+    op_before->sibparent = op_stab;
+  }
+  op_stab->moresib = op_target->moresib;
+  op_stab->sibparent = op_target->sibparent;
+  
+  // Clear target
+  op_target->moresib = 0;
+  op_target->sibparent = NULL;
+  
+  */
+
   // Cut op
   SPVM_OP* op_cut = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_target->file, op_target->line);
   op_cut->first = op_target->first;

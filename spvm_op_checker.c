@@ -813,6 +813,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // New op
                     SPVM_OP* op_new = SPVM_OP_cut_op(compiler, op_cur);
+                    warn("CCCCCCCCCC");
                     
                     // Type parent is new
                     op_type_or_constant->moresib = 0;
@@ -1122,6 +1123,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_concat_string2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONCAT_STRING, op_concat_string1->file, op_concat_string1->line);
                     
                     SPVM_OP* op_term1 = SPVM_OP_cut_op(compiler, op_concat_string1->first);
+                    warn("BBBBBBBBBB");
                     
                     // Empty string
                     SPVM_OP* op_constant_empty_string = SPVM_OP_new_op_constant_string(compiler, "", op_concat_string1->file, op_concat_string1->line);
@@ -1503,6 +1505,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // New op
                     SPVM_OP* op_call_sub = SPVM_OP_cut_op(compiler, op_cur);
+                    warn("AAAAAAAAAAAA");
 
                     // Assing op
                     SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
