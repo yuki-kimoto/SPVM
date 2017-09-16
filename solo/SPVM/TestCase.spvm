@@ -46,11 +46,10 @@ package TestCase {
 
     # .
     {
-=pod
       {
-        2 . 3;
+        # 2 . 3;
       }
-=cut  
+
       {
         "abc" . 13;
       }
