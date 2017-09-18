@@ -138,8 +138,8 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
         case SPVM_TYPE_C_CODE_DOUBLE:
           fprintf(file, "double %f", constant->value.double_value);
           break;
-        case SPVM_TYPE_C_CODE_STRING:
-          fprintf(file, "string %s", constant->value.string_value);
+        case SPVM_TYPE_C_CODE_BYTE_ARRAY:
+          fprintf(file, "byte[] %s", constant->value.string_value);
           break;
       }
     }

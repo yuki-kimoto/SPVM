@@ -238,7 +238,7 @@ SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_CONSTANT* constant = op_constant->uv.constant;
   
-  if (constant->type->code == SPVM_TYPE_C_CODE_STRING || constant->type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY) {
+  if (constant->type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY) {
     SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_constant->file, op_constant->line);
     SPVM_OP_insert_child(compiler, op_new, op_new->last, op_constant);
     return op_new;
@@ -816,13 +816,6 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           constant->id = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_CODE_STRING: {
-          const char* value = constant->value.string_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
-          
-          break;
-        }
         case SPVM_TYPE_C_CODE_BYTE_ARRAY: {
           const char* value = constant->value.string_value;
           
@@ -867,11 +860,7 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           constant_pool_type->element_type_id = element_type->id;
         }
         else {
-          if (type->code == SPVM_TYPE_C_CODE_STRING) {
-            SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
-            SPVM_TYPE* byte_type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_BYTE);
-            constant_pool_type->element_type_id = byte_type->id;
-          }
+          assert(0);
         }
       }
     }
@@ -1861,9 +1850,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       else if (first_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
         op_type_new->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_DOUBLE_ARRAY);;
       }
-      else if (first_type->code == SPVM_TYPE_C_CODE_STRING) {
-        op_type_new->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_STRING_ARRAY);;
-      }
       else {
         assert(0);
       }
@@ -2009,14 +1995,6 @@ SPVM_OP* SPVM_OP_build_type_double(SPVM_COMPILER* compiler, SPVM_OP* op_double) 
   // Type op
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_double->file, op_double->line);
   op_type->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_DOUBLE);
-  
-  return op_type;
-}
-
-SPVM_OP* SPVM_OP_build_type_string(SPVM_COMPILER* compiler, SPVM_OP* op_string) {
-  // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_string->file, op_string->line);
-  op_type->uv.type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_STRING);
   
   return op_type;
 }

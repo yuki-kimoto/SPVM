@@ -1073,14 +1073,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
                   // First value must be numeric or byte array
-                  if (!(SPVM_TYPE_is_numeric(compiler, first_type) || SPVM_TYPE_is_string(compiler, first_type) || SPVM_TYPE_is_byte_array(compiler, first_type))) {
+                  if (!(SPVM_TYPE_is_numeric(compiler, first_type) || SPVM_TYPE_is_byte_array(compiler, first_type))) {
                     SPVM_yyerror_format(compiler, ". operator left value must be numeric or string at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                   
                   // First value must be numeric or byte array
-                  if (!(SPVM_TYPE_is_numeric(compiler, last_type) || SPVM_TYPE_is_string(compiler, last_type) || SPVM_TYPE_is_byte_array(compiler, last_type))) {
+                  if (!(SPVM_TYPE_is_numeric(compiler, last_type) || SPVM_TYPE_is_byte_array(compiler, last_type))) {
                     SPVM_yyerror_format(compiler, ". operator right value must be numeric or string at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1121,7 +1121,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         term2
                   */
                   
-                  if (!SPVM_TYPE_is_string(compiler, first_type)) {
+                  if (!SPVM_TYPE_is_byte_array(compiler, first_type)) {
                     SPVM_OP* op_concat_string1 = op_cur;
                     SPVM_OP* op_concat_string2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONCAT_STRING, op_concat_string1->file, op_concat_string1->line);
 

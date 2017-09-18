@@ -63,7 +63,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         case SPVM_TYPE_C_CODE_DOUBLE:
           printf(" %f", constant->value.double_value);
           break;
-        case SPVM_TYPE_C_CODE_STRING:
+        case SPVM_TYPE_C_CODE_BYTE_ARRAY:
           printf(" \"%s\"", constant->value.string_value);
           break;
       }
@@ -501,8 +501,8 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
     case SPVM_TYPE_C_CODE_DOUBLE:
       printf("      double %f\n", constant->value.double_value);
       break;
-    case SPVM_TYPE_C_CODE_STRING:
-      printf("      string \"%s\"\n", constant->value.string_value);
+    case SPVM_TYPE_C_CODE_BYTE_ARRAY:
+      printf("      byte[] \"%s\"\n", constant->value.string_value);
       break;
   }
   printf("      address => %" PRId32 "\n", constant->id);

@@ -784,10 +784,6 @@ type_name
     {
       $$ = SPVM_OP_build_type_double(compiler, $1);
     }
-  | STRING
-    {
-      $$ = SPVM_OP_build_type_string(compiler, $1);
-    }
 
 type_array
   : type_name '[' ']'
