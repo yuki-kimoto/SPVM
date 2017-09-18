@@ -46,8 +46,6 @@ solo/spvm_main.c
 solo/t/spvm_t_array.c
 solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
-SPVM-0.0266/META.json
-SPVM-0.0266/META.yml
 SPVM.xs
 spvm_base.h
 spvm_bytecode.c
