@@ -975,7 +975,7 @@ new_string_bytes(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New string
-  SPVM_API_OBJECT* spvm_string =  api->new_string_len(api, length);
+  SPVM_API_OBJECT* spvm_string =  api->new_byte_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, spvm_string);

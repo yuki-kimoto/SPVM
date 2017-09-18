@@ -829,35 +829,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* string) {
   (void)api;
   
   int32_t length = strlen(string);
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_string_len(api, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array(api, length);
   
   // Copy string
   memcpy((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), string, length);
-  
-  return object;
-}
-
-SPVM_OBJECT* SPVM_RUNTIME_API_new_string_len(SPVM_API* api, int32_t length) {
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
-  
-  // Allocate array
-  // alloc length + 1. Last value is 0
-  int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)(length + 1) * (int64_t)sizeof(int8_t);
-  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
-  
-  ((int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
-  
-  // Set type id
-  int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
-  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_BYTE_ARRAY];
-  
-  // Set array length
-  object->length = length;
-  
-  object->element_byte_size = sizeof(int8_t);
-  
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
 }
