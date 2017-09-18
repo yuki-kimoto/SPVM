@@ -311,7 +311,7 @@ package TestCase {
     }
     # String escape character
     {
-      my $string : string = "abc\"\'\\\n\t\b\r\fdef";
+      my $string = "abc\"\'\\\n\t\b\r\fdef";
      
       std::say($string);
     }
@@ -523,7 +523,7 @@ package TestCase {
     }
 
     {
-      my $string : string = "ace";
+      my $string = "ace";
      
       std::say($string);
     }
