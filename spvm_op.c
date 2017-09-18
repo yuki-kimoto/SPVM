@@ -238,7 +238,7 @@ SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_CONSTANT* constant = op_constant->uv.constant;
   
-  if (constant->type->code == SPVM_TYPE_C_CODE_STRING) {
+  if (constant->type->code == SPVM_TYPE_C_CODE_STRING || constant->type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY) {
     SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_constant->file, op_constant->line);
     SPVM_OP_insert_child(compiler, op_new, op_new->last, op_constant);
     return op_new;
