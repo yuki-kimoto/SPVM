@@ -52,6 +52,7 @@ char* SPVM_TYPE_get_element_name(SPVM_COMPILER* compiler, const char* type_name)
 char* SPVM_TYPE_get_parent_name(SPVM_COMPILER* compiler, const char* type_name);
 
 _Bool SPVM_TYPE_is_string(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_byte_array(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 
