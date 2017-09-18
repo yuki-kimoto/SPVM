@@ -825,7 +825,7 @@ int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* 
   return byte_size;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* string) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_string(SPVM_API* api, const char* string) {
   (void)api;
   
   int32_t length = strlen(string);
