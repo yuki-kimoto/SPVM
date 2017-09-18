@@ -34,7 +34,6 @@ struct SPVM_api {
   int64_t* (*get_long_array_elements)(SPVM_API*, SPVM_API_OBJECT*);
   float* (*get_float_array_elements)(SPVM_API*, SPVM_API_OBJECT*);
   double* (*get_double_array_elements)(SPVM_API*, SPVM_API_OBJECT*);
-  char* (*get_string_bytes)(SPVM_API*, SPVM_API_OBJECT*);
   SPVM_API_OBJECT* (*get_object_array_element)(SPVM_API*, SPVM_API_OBJECT*, int32_t index);
   void (*set_object_array_element)(SPVM_API*, SPVM_API_OBJECT*, int32_t index, SPVM_API_OBJECT* value);
   int32_t (*get_field_id)(SPVM_API*, SPVM_API_OBJECT*, const char*);

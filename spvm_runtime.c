@@ -34,7 +34,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_long_array_elements,
   SPVM_RUNTIME_API_get_float_array_elements,
   SPVM_RUNTIME_API_get_double_array_elements,
-  SPVM_RUNTIME_API_get_string_bytes,
   SPVM_RUNTIME_API_get_object_array_element,
   SPVM_RUNTIME_API_set_object_array_element,
   SPVM_RUNTIME_API_get_field_id,
@@ -2539,9 +2538,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value_ret_length = value1_length + value2_length;
     SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
     
-    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
-    char* value2_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value2);
-    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    char* value1_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value1);
+    char* value2_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value2);
+    char* value_ret_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value_ret);
     
     memcpy(value_ret_bytes, value1_bytes, value1_length);
     memcpy(value_ret_bytes + value1_length, value2_bytes, value2_length);
@@ -2570,8 +2569,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value_ret_length = value1_length + tmp_string_length;
     SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
     
-    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
-    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    char* value1_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value1);
+    char* value_ret_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value_ret);
     
     memcpy(value_ret_bytes, value1_bytes, value1_length);
     memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
@@ -2600,8 +2599,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value_ret_length = value1_length + tmp_string_length;
     SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
     
-    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
-    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    char* value1_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value1);
+    char* value_ret_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value_ret);
     
     memcpy(value_ret_bytes, value1_bytes, value1_length);
     memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
@@ -2630,8 +2629,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value_ret_length = value1_length + tmp_string_length;
     SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
     
-    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
-    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    char* value1_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value1);
+    char* value_ret_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value_ret);
     
     memcpy(value_ret_bytes, value1_bytes, value1_length);
     memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
@@ -2660,8 +2659,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value_ret_length = value1_length + tmp_string_length;
     SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
     
-    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
-    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    char* value1_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value1);
+    char* value_ret_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value_ret);
     
     memcpy(value_ret_bytes, value1_bytes, value1_length);
     memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
@@ -2690,8 +2689,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value_ret_length = value1_length + tmp_string_length;
     SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
     
-    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
-    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    char* value1_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value1);
+    char* value_ret_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value_ret);
     
     memcpy(value_ret_bytes, value1_bytes, value1_length);
     memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
@@ -2720,8 +2719,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t value_ret_length = value1_length + tmp_string_length;
     SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
     
-    char* value1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value1);
-    char* value_ret_bytes = SPVM_RUNTIME_API_get_string_bytes(api, value_ret);
+    char* value1_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value1);
+    char* value_ret_bytes = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value_ret);
     
     memcpy(value_ret_bytes, value1_bytes, value1_length);
     memcpy(value_ret_bytes + value1_length, tmp_string, tmp_string_length);
