@@ -850,7 +850,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_len(SPVM_API* api, int32_t length) {
   
   // Set type id
   int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
-  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_STRING];
+  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_BYTE_ARRAY];
   
   // Set array length
   object->length = length;

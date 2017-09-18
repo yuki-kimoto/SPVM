@@ -13,7 +13,7 @@ package TestCase {
   has x_float : float;
   has x_double : double;
   has x_int_array : int[];
-  has x_string : string;
+  has x_string : byte[];
   has x_test_case : TestCase;
   has x_weaken : TestCase::Weaken;
   has weaken1 : TestCase::Weaken;
@@ -2099,7 +2099,7 @@ package TestCase {
   }
   
   # SPVM::string
-  sub call_sub_string($string : string) : int {
+  sub call_sub_string($string : byte[]) : int {
     
     my $bytes = $string;
     
@@ -2117,7 +2117,7 @@ package TestCase {
   }
 
   # SPVM::string_bytes
-  sub call_sub_string_bytes($string : string) : int {
+  sub call_sub_string_bytes($string : byte[]) : int {
     
     my $bytes = $string;
     
