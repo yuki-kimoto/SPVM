@@ -28,7 +28,6 @@
 
 static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_array_length,
-  SPVM_RUNTIME_API_get_string_length,
   SPVM_RUNTIME_API_get_byte_array_elements,
   SPVM_RUNTIME_API_get_short_array_elements,
   SPVM_RUNTIME_API_get_int_array_elements,
@@ -686,7 +685,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Total string length
     int32_t total_length = 0;
-    total_length += SPVM_RUNTIME_API_get_string_length(api, runtime->exception);
+    total_length += SPVM_RUNTIME_API_get_array_length(api, runtime->exception);
     total_length += strlen(from);
     total_length += strlen(sub_name);
     total_length += strlen(at);
@@ -706,11 +705,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     memcpy(
       (void*)((intptr_t)new_exception + sizeof(SPVM_OBJECT)),
       (void*)((intptr_t)runtime->exception + sizeof(SPVM_OBJECT)),
-      SPVM_RUNTIME_API_get_string_length(api, runtime->exception)
+      SPVM_RUNTIME_API_get_array_length(api, runtime->exception)
     );
     if (debug) {
       sprintf(
-        (char*)((intptr_t)new_exception + sizeof(SPVM_OBJECT) + SPVM_RUNTIME_API_get_string_length(api, runtime->exception)),
+        (char*)((intptr_t)new_exception + sizeof(SPVM_OBJECT) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
         "%s%s%s%s%s%" PRId32,
         from,
         sub_name,
@@ -722,7 +721,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
     else {
       sprintf(
-        (char*)((intptr_t)new_exception + sizeof(SPVM_OBJECT) + SPVM_RUNTIME_API_get_string_length(api, runtime->exception)),
+        (char*)((intptr_t)new_exception + sizeof(SPVM_OBJECT) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
         "%s%s%s%s",
         from,
         sub_name,
@@ -2534,8 +2533,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_DIE;
     }
     
-    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
-    int32_t value2_length = SPVM_RUNTIME_API_get_string_length(api, value2);
+    int32_t value1_length = SPVM_RUNTIME_API_get_array_length(api, value1);
+    int32_t value2_length = SPVM_RUNTIME_API_get_array_length(api, value2);
     
     int32_t value_ret_length = value1_length + value2_length;
     SPVM_OBJECT* value_ret = SPVM_RUNTIME_API_new_string_len(api, value_ret_length);
@@ -2565,7 +2564,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     sprintf(tmp_string, "%" PRId8, value2);
     
-    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t value1_length = SPVM_RUNTIME_API_get_array_length(api, value1);
     int32_t tmp_string_length = strlen(tmp_string);
     
     int32_t value_ret_length = value1_length + tmp_string_length;
@@ -2595,7 +2594,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     sprintf(tmp_string, "%" PRId16, value2);
     
-    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t value1_length = SPVM_RUNTIME_API_get_array_length(api, value1);
     int32_t tmp_string_length = strlen(tmp_string);
     
     int32_t value_ret_length = value1_length + tmp_string_length;
@@ -2625,7 +2624,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     sprintf(tmp_string, "%" PRId32, value2);
     
-    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t value1_length = SPVM_RUNTIME_API_get_array_length(api, value1);
     int32_t tmp_string_length = strlen(tmp_string);
     
     int32_t value_ret_length = value1_length + tmp_string_length;
@@ -2655,7 +2654,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     sprintf(tmp_string, "%" PRId64, value2);
     
-    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t value1_length = SPVM_RUNTIME_API_get_array_length(api, value1);
     int32_t tmp_string_length = strlen(tmp_string);
     
     int32_t value_ret_length = value1_length + tmp_string_length;
@@ -2685,7 +2684,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     sprintf(tmp_string, "%f", value2);
     
-    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t value1_length = SPVM_RUNTIME_API_get_array_length(api, value1);
     int32_t tmp_string_length = strlen(tmp_string);
     
     int32_t value_ret_length = value1_length + tmp_string_length;
@@ -2715,7 +2714,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     sprintf(tmp_string, "%f", value2);
     
-    int32_t value1_length = SPVM_RUNTIME_API_get_string_length(api, value1);
+    int32_t value1_length = SPVM_RUNTIME_API_get_array_length(api, value1);
     int32_t tmp_string_length = strlen(tmp_string);
     
     int32_t value_ret_length = value1_length + tmp_string_length;

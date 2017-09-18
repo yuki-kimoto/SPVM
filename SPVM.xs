@@ -1008,7 +1008,7 @@ get_string_bytes(...)
   const char* string_bytes = api->get_string_bytes(api, spvm_string);
   
   // Get string length
-  int32_t spvm_string_length = api->get_string_length(api, spvm_string);
+  int32_t spvm_string_length = api->get_array_length(api, spvm_string);
   
   SV* sv_string = sv_2mortal(newSVpv(string_bytes, spvm_string_length));
   

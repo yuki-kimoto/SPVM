@@ -28,7 +28,6 @@ typedef union SPVM_API_value SPVM_API_VALUE;
 
 struct SPVM_api {
   int32_t (*get_array_length)(SPVM_API*, SPVM_API_OBJECT*);
-  int32_t (*get_string_length)(SPVM_API*, SPVM_API_OBJECT*);
   int8_t* (*get_byte_array_elements)(SPVM_API*, SPVM_API_OBJECT*);
   int16_t* (*get_short_array_elements)(SPVM_API*, SPVM_API_OBJECT*);
   int32_t* (*get_int_array_elements)(SPVM_API*, SPVM_API_OBJECT*);
