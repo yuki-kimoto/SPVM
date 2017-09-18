@@ -1589,16 +1589,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else {
-                  if (
-                    (src_type->code == SPVM_TYPE_C_CODE_STRING || src_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY)
-                    || (dist_type->code == SPVM_TYPE_C_CODE_STRING || dist_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY)
-                  )
-                  {
-                    // OK
-                  }
-                  else {
-                    assert(0);
-                  }
+                  assert(0);
                 }
                 
                 break;
@@ -1637,10 +1628,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               case SPVM_OP_C_CODE_CONCAT_STRING: {
                 
                 SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                assert(first_type->code == SPVM_TYPE_C_CODE_STRING || first_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY);
+                assert(first_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY);
                 
                 SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-                if (last_type->code == SPVM_TYPE_C_CODE_STRING || last_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY) {
+                if (last_type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY) {
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONCAT_STRING_STRING);
                 }
                 else if (last_type->code == SPVM_TYPE_C_CODE_BYTE) {
@@ -1929,7 +1920,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     bytecode_set = 1;
                   }
                 }
-                else if (constant->type->code == SPVM_TYPE_C_CODE_STRING || constant->type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY) {
+                else if (constant->type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY) {
                   break;
                 }
                 else {
