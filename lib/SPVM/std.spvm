@@ -5,7 +5,7 @@ package std {
   sub say_long ($value : long) : native void;
   sub say_float ($value : float) : native void;
   sub say_double ($value : double) : native void;
-  sub say ($value : string) : native void;
+  sub say ($value : byte[]) : native void;
 
   sub print_byte ($value : byte) : native void;
   sub print_short ($value : short) : native void;

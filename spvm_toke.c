@@ -740,7 +740,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           str[str_index] = '\0';
         }
         
-        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str, compiler->cur_file, compiler->cur_line);
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_byte_array_string(compiler, str, compiler->cur_file, compiler->cur_line);
         
         yylvalp->opval = op_constant;
         

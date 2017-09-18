@@ -871,8 +871,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
-                  // Left value must be array or string
-                  if (!(SPVM_TYPE_is_array(compiler, first_type) || first_type->code == SPVM_TYPE_C_CODE_STRING)) {
+                  // Left value must be array
+                  if (!SPVM_TYPE_is_array(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "left value must be array at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1072,15 +1072,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
-                  // First value must be numeric or string
-                  if (!(SPVM_TYPE_is_numeric(compiler, first_type) || SPVM_TYPE_is_string(compiler, first_type))) {
+                  // First value must be numeric or byte array
+                  if (!(SPVM_TYPE_is_numeric(compiler, first_type) || SPVM_TYPE_is_string(compiler, first_type) || SPVM_TYPE_is_byte_array(compiler, first_type))) {
                     SPVM_yyerror_format(compiler, ". operator left value must be numeric or string at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                   
-                  // First value must be numeric or string
-                  if (!(SPVM_TYPE_is_numeric(compiler, last_type) || SPVM_TYPE_is_string(compiler, last_type))) {
+                  // First value must be numeric or byte array
+                  if (!(SPVM_TYPE_is_numeric(compiler, last_type) || SPVM_TYPE_is_string(compiler, last_type) || SPVM_TYPE_is_byte_array(compiler, last_type))) {
                     SPVM_yyerror_format(compiler, ". operator right value must be numeric or string at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1088,7 +1088,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   if (!op_cur->rvalue) {
                     // Create temporary variable
-                    SPVM_TYPE* var_type = SPVM_TYPE_get_string_type(compiler);
+                    SPVM_TYPE* var_type = SPVM_TYPE_get_byte_array_type(compiler);
                     SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
                     if (op_var_tmp == NULL) {
                       return;
@@ -1130,7 +1130,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term1);
                     
                     // Empty string
-                    SPVM_OP* op_constant_empty_string = SPVM_OP_new_op_constant_string(compiler, "", op_concat_string1->file, op_concat_string1->line);
+                    SPVM_OP* op_constant_empty_string = SPVM_OP_new_op_constant_byte_array_string(compiler, "", op_concat_string1->file, op_concat_string1->line);
                     SPVM_OP* op_build_constant = SPVM_OP_build_constant(compiler, op_constant_empty_string);
                     
                     SPVM_OP_insert_child(compiler, op_concat_string2, op_concat_string2->last, op_build_constant);
@@ -1140,7 +1140,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     {
                       // Create temporary variable for concat_string2
-                      SPVM_TYPE* var_type = SPVM_TYPE_get_string_type(compiler);
+                      SPVM_TYPE* var_type = SPVM_TYPE_get_byte_array_type(compiler);
                       SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
                       if (op_var_tmp == NULL) {
                         return;
@@ -1159,7 +1159,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                     {
                       // Create temporary variable for new
-                      SPVM_TYPE* var_type = SPVM_TYPE_get_string_type(compiler);
+                      SPVM_TYPE* var_type = SPVM_TYPE_get_byte_array_type(compiler);
                       SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
                       if (op_var_tmp == NULL) {
                         return;
@@ -1284,7 +1284,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_DIE: {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   
-                  if (!first_type || first_type->code != SPVM_TYPE_C_CODE_STRING) {
+                  if (!first_type || (first_type->code != SPVM_TYPE_C_CODE_STRING && first_type->code != SPVM_TYPE_C_CODE_BYTE_ARRAY)) {
                     SPVM_yyerror_format(compiler, "die argument type must be byte[] at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;

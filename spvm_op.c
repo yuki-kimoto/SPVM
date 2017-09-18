@@ -351,7 +351,20 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, c
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   constant->value.string_value = string;
-  constant->type = SPVM_TYPE_get_string_type(compiler);
+  constant->type = SPVM_TYPE_get_byte_array_type(compiler);
+  op_constant->uv.constant = constant;
+  
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
+  
+  return op_constant;
+}
+
+SPVM_OP* SPVM_OP_new_op_constant_byte_array_string(SPVM_COMPILER* compiler, char* string, const char* file, int32_t line) {
+
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+  constant->value.string_value = string;
+  constant->type = SPVM_TYPE_get_byte_array_type(compiler);
   op_constant->uv.constant = constant;
   
   SPVM_DYNAMIC_ARRAY_push(compiler->op_constants, op_constant);
@@ -543,7 +556,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   switch (op->code) {
     case SPVM_OP_C_CODE_CONCAT_STRING:
-      type = SPVM_TYPE_get_string_type(compiler);
+      type = SPVM_TYPE_get_byte_array_type(compiler);
       break;
     case SPVM_OP_C_CODE_ASSIGN_PROCESS:
       type = SPVM_OP_get_type(compiler, op->first);
@@ -622,7 +635,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_CODE_EXCEPTION_VAR: {
-      type = SPVM_TYPE_get_string_type(compiler);
+      type = SPVM_TYPE_get_byte_array_type(compiler);
       break;
     }
     case SPVM_OP_C_CODE_MY: {
@@ -804,6 +817,13 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           break;
         }
         case SPVM_TYPE_C_CODE_STRING: {
+          const char* value = constant->value.string_value;
+          
+          constant->id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
+          
+          break;
+        }
+        case SPVM_TYPE_C_CODE_BYTE_ARRAY: {
           const char* value = constant->value.string_value;
           
           constant->id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
@@ -1914,7 +1934,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   
   if (!op_term) {
     // Default error message
-    op_term = SPVM_OP_new_op_constant_string(compiler, "Error", op_die->file, op_die->line);;
+    op_term =SPVM_OP_new_op_constant_byte_array_string(compiler, "Error", op_die->file, op_die->line);;
   }
   
   // Exception variable

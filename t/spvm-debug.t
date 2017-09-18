@@ -43,9 +43,31 @@ my $DOUBLE_PRECICE = 65536.0;
 
 use SPVM::std;
 
+# .
 {
-  my $spvm_string = SPVM::TestCase::string_empty();
-  is($spvm_string->get_string_bytes, "");
+  {
+    is("ab", SPVM::TestCase::concat_string_special_assign()->get_string_bytes);
+    is("ab", SPVM::TestCase::concat_string_string()->get_string_bytes);
+    is("a3", SPVM::TestCase::concat_string_byte()->get_string_bytes);
+    is("a3", SPVM::TestCase::concat_string_short()->get_string_bytes);
+    is("a3", SPVM::TestCase::concat_string_int()->get_string_bytes);
+    is("a3", SPVM::TestCase::concat_string_long()->get_string_bytes);
+    is("a3.000000", SPVM::TestCase::concat_string_float()->get_string_bytes);
+    is("a3.000000", SPVM::TestCase::concat_string_double()->get_string_bytes);
+  }
+}
+
+# String
+{
+  {
+    my $spvm_string = SPVM::TestCase::string_empty();
+    is($spvm_string->get_string_bytes, "");
+  }
+  
+  {
+    my $spvm_string = SPVM::TestCase::string_utf8();
+    is($spvm_string->get_string, "あいうえお");
+  }
 }
 
 # Start objects count

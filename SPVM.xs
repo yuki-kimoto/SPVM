@@ -479,6 +479,32 @@ get_elements(...)
   XSRETURN(1);
 }
 
+SV*
+get_string_bytes(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_spvm_string = ST(0);
+
+  // Get SPVM string
+  SPVM_API_OBJECT* spvm_string = SPVM_XS_UTIL_get_object(sv_spvm_string);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get string bytes
+  const char* string_bytes = (const char*)api->get_byte_array_elements(api, spvm_string);
+  
+  // Get string length
+  int32_t spvm_string_length = api->get_array_length(api, spvm_string);
+  
+  SV* sv_string = sv_2mortal(newSVpv(string_bytes, spvm_string_length));
+  
+  XPUSHs(sv_string);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Array::Short		PACKAGE = SPVM::Array::Short
 
 SV*
