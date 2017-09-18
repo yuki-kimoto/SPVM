@@ -39,7 +39,15 @@ package TestCase {
   }
 
   # Concat
-  # Concat
+  sub concat_string_special_assign() : string {
+    
+    my $value = "a";
+    
+    $value .= "b";
+    
+    return $value;
+  }
+  
   sub concat_string_string() : string {
     "a" . "b";
     

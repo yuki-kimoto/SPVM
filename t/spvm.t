@@ -42,6 +42,7 @@ use SPVM::std;
 # .
 {
   {
+    is("ab", SPVM::TestCase::concat_string_special_assign()->get_string_bytes);
     is("ab", SPVM::TestCase::concat_string_string()->get_string_bytes);
     is("a3", SPVM::TestCase::concat_string_byte()->get_string_bytes);
     is("a3", SPVM::TestCase::concat_string_short()->get_string_bytes);

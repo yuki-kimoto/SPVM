@@ -204,8 +204,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       /* Cancat */
       case '.':
         compiler->bufptr++;
-        yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONCAT_STRING);
-        return '.';
+        if (*compiler->bufptr == '=') {
+          compiler->bufptr++;
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT_STRING;
+          
+          yylvalp->opval = op_special_assign;
+          
+          return SPECIAL_ASSIGN;
+        }
+        else {
+          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONCAT_STRING);
+          return '.';
+        }
       
       /* Addition */
       case '+':

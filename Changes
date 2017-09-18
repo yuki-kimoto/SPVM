@@ -1,4 +1,6 @@
-0.0266 2017-09-13
+0.0267 2017-09-18
+  - add .= operator
+0.0266 2017-09-16
   - fix bug that empty string is not used
   - rename SPVM::new_string_raw to SPVM::new_string_bytes
   - implement . operator to concat string

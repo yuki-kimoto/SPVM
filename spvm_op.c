@@ -1755,6 +1755,9 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND) {
       op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BIT_AND, op_assign->file, op_assign->line);
     }
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT_STRING) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONCAT_STRING, op_assign->file, op_assign->line);
+    }
     else {
       assert(0);
     }
