@@ -858,9 +858,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             num_str[pos] = '\0';
           }
           
-          // Constant op
-          SPVM_OP* op_constant;
-          
           // Constant
           SPVM_TYPE* constant_type;
           
@@ -895,6 +892,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // float
           char *end;
+          // Constant op
+          SPVM_OP* op_constant;
+          
           if (constant_type->code == SPVM_TYPE_C_CODE_FLOAT) {
             double num = strtod(num_str, &end);
             
@@ -994,6 +994,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             op_constant = SPVM_OP_new_op_constant_long(compiler, num, compiler->cur_file, compiler->cur_line);
+          }
+          else {
+            assert(0);
           }
           
           yylvalp->opval = op_constant;
