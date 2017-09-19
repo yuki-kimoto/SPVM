@@ -20,7 +20,7 @@ use SPVM 'TestCase::Extension2';
 
 use POSIX ();
 
-use SPVM::Object;
+use SPVM::Object::Package;
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -554,32 +554,32 @@ is_deeply(
 {
   {
     my $nums = SPVM::TestCase::call_sub_return_byte_array();
-    is(ref $nums, 'SPVM::Array::Byte');
+    is(ref $nums, 'SPVM::Object::Array::Byte');
     SPVM::TestCase::call_sub_return_byte_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_short_array();
-    is(ref $nums, 'SPVM::Array::Short');
+    is(ref $nums, 'SPVM::Object::Array::Short');
     SPVM::TestCase::call_sub_return_short_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_int_array();
-    is(ref $nums, 'SPVM::Array::Int');
+    is(ref $nums, 'SPVM::Object::Array::Int');
     SPVM::TestCase::call_sub_return_int_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_long_array();
-    is(ref $nums, 'SPVM::Array::Long');
+    is(ref $nums, 'SPVM::Object::Array::Long');
     SPVM::TestCase::call_sub_return_long_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_float_array();
-    is(ref $nums, 'SPVM::Array::Float');
+    is(ref $nums, 'SPVM::Object::Array::Float');
     SPVM::TestCase::call_sub_return_float_array_check($nums);
   }
   {
     my $nums = SPVM::TestCase::call_sub_return_double_array();
-    is(ref $nums, 'SPVM::Array::Double');
+    is(ref $nums, 'SPVM::Object::Array::Double');
     SPVM::TestCase::call_sub_return_double_array_check($nums);
   }
 }
@@ -762,9 +762,9 @@ is_deeply(
   }
 }
 
-# SPVM::Array
+# SPVM::Object::Array
 {
-  my $data_nums = SPVM::Array::Int->new(3);
+  my $data_nums = SPVM::Object::Array::Int->new(3);
   $data_nums->set_elements([1, 2, 3]);
 }
 

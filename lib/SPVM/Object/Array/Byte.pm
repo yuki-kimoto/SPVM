@@ -1,6 +1,6 @@
-package SPVM::Array::Byte;
+package SPVM::Object::Array::Byte;
 
-use base 'SPVM::Array';
+use base 'SPVM::Object::Array';
 
 use Encode 'decode';
 

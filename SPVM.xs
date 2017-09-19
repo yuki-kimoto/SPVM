@@ -70,7 +70,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   }
 }
 
-MODULE = SPVM::BaseObject		PACKAGE = SPVM::BaseObject
+MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
 SV*
 DESTROY(...)
@@ -96,7 +96,7 @@ DESTROY(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Object		PACKAGE = SPVM::Object
+MODULE = SPVM::Object::Package		PACKAGE = SPVM::Object::Package
 
 SV*
 new_object(...)
@@ -113,7 +113,7 @@ new_object(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   if (!SvOK(sv_package_name)) {
-    croak("Type must be specified(SPVM::Object::new_object)");
+    croak("Type must be specified(SPVM::Object::Package::new_object)");
   }
   
   const char* package_name = SvPV_nolen(sv_package_name);
@@ -121,7 +121,7 @@ new_object(...)
   int32_t type_id = api->get_type_id(api, package_name);
   
   if (type_id <= 0) {
-    croak("Unkown package \"%s\"(SPVM::Object::new_object", package_name);
+    croak("Unkown package \"%s\"(SPVM::Object::Package::new_object", package_name);
   }
   
   // New array
@@ -131,7 +131,7 @@ new_object(...)
   api->inc_ref_count(api, object);
 
   // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object(object, "SPVM::Object");
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(object, "SPVM::Object::Package");
   
   XPUSHs(sv_object);
   XSRETURN(1);
@@ -176,7 +176,7 @@ set(...)
   // Field id
   int32_t field_id = api->get_field_id(api, object, field_name);
   if (!field_id) {
-    croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
+    croak("Can't find %s \"%s\" field(SPVM::Object::Package::set)", package_name, field_name);
   }
   
   switch (field_type_code) {
@@ -211,7 +211,7 @@ set(...)
       break;
     }
     default : {
-      if (!sv_derived_from(sv_value, "SPVM::BaseObject")) {
+      if (!sv_derived_from(sv_value, "SPVM::Object")) {
         const char* field_type_name = (char*)&runtime->constant_pool[constant_pool_field_type->name_id + 1];
         croak("Can't set numeric value to \"%s\" field", field_type_name);
       }
@@ -280,7 +280,7 @@ get(...)
   int32_t field_id = api->get_field_id(api, object, field_name);
   
   if (!field_id) {
-    croak("Can't find %s \"%s\" field(SPVM::Object::set)", package_name, field_name);
+    croak("Can't find %s \"%s\" field(SPVM::Object::Package::set)", package_name, field_name);
   }
   
   switch (field_type_code) {
@@ -329,32 +329,32 @@ get(...)
       
       switch (field_type_code) {
         case SPVM_TYPE_C_CODE_BYTE_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Array::Byte");
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Byte");
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_CODE_SHORT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Array::Short");
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Short");
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_CODE_INT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Array::Int");
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Int");
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_CODE_LONG_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Array::Long");
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Long");
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_CODE_FLOAT_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Array::Float");
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Float");
           XPUSHs(sv_array);
           break;
         }
         case SPVM_TYPE_C_CODE_DOUBLE_ARRAY : {
-          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Array::Double");
+          SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Double");
           XPUSHs(sv_array);
           break;
         }
@@ -364,11 +364,11 @@ get(...)
           int32_t field_type_name_length = strlen(field_type_name);
           
           if (field_type_name[field_type_name_length - 1] == ']') {
-            SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Array::Object");
+            SV* sv_array = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Object");
             XPUSHs(sv_array);
           }
           else {
-            SV* sv_object = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object");
+            SV* sv_object = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Package");
             XPUSHs(sv_object);
           }
         }
@@ -379,7 +379,7 @@ get(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Array::Byte		PACKAGE = SPVM::Array::Byte
+MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
 
 SV*
 new(...)
@@ -404,7 +404,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Array::Byte");
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Byte");
   
   XPUSHs(sv_byte_array);
   XSRETURN(1);
@@ -528,13 +528,13 @@ new_data(...)
   memcpy(spvm_string_bytes, string, length);
   
   // New sv array
-  SV* sv_spvm_string = SPVM_XS_UTIL_new_sv_object(spvm_string, "SPVM::Array::Byte");
+  SV* sv_spvm_string = SPVM_XS_UTIL_new_sv_object(spvm_string, "SPVM::Object::Array::Byte");
   
   XPUSHs(sv_spvm_string);
   XSRETURN(1);
 }
 
-MODULE = SPVM::Array::Short		PACKAGE = SPVM::Array::Short
+MODULE = SPVM::Object::Array::Short		PACKAGE = SPVM::Object::Array::Short
 
 SV*
 new(...)
@@ -559,7 +559,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Array::Short");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Short");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -629,7 +629,7 @@ to_array(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Array::Int		PACKAGE = SPVM::Array::Int
+MODULE = SPVM::Object::Array::Int		PACKAGE = SPVM::Object::Array::Int
 
 SV*
 new(...)
@@ -654,7 +654,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Array::Int");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Int");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -724,7 +724,7 @@ to_array(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Array::Long		PACKAGE = SPVM::Array::Long
+MODULE = SPVM::Object::Array::Long		PACKAGE = SPVM::Object::Array::Long
 
 SV*
 new(...)
@@ -749,7 +749,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Array::Long");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Long");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -819,7 +819,7 @@ to_array(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Array::Float		PACKAGE = SPVM::Array::Float
+MODULE = SPVM::Object::Array::Float		PACKAGE = SPVM::Object::Array::Float
 
 SV*
 new(...)
@@ -844,7 +844,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Array::Float");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Float");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -914,7 +914,7 @@ to_array(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Array::Double		PACKAGE = SPVM::Array::Double
+MODULE = SPVM::Object::Array::Double		PACKAGE = SPVM::Object::Array::Double
 
 SV*
 new(...)
@@ -939,7 +939,7 @@ new(...)
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Array::Double");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Double");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1009,7 +1009,7 @@ to_array(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Array::Object		PACKAGE = SPVM::Array::Object
+MODULE = SPVM::Object::Array::Object		PACKAGE = SPVM::Object::Array::Object
 
 SV*
 new(...)
@@ -1050,17 +1050,17 @@ new(...)
   int32_t type_code = type->code;
   
   if (type_code < 0) {
-    croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Array::Object::new())", type_name);
+    croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Object::Array::Object::new())", type_name);
   }
   if (type_code >= SPVM_TYPE_C_CODE_BYTE && type_code <= SPVM_TYPE_C_CODE_DOUBLE) {
-    croak("Type is not object array %s(SPVM::Array::Object::new())", type_name);
+    croak("Type is not object array %s(SPVM::Object::Array::Object::new())", type_name);
   }
   
   // Increment reference count
   api->inc_ref_count(api, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Array::Object");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Object");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1107,7 +1107,7 @@ set(...)
   const char* object_type_name = (char*)&runtime->constant_pool[constant_pool_objet_type->name_id + 1];
   
   if (strncmp(array_type_name, object_type_name, strlen(array_type_name - 2)) != 0) {
-    croak("Invalid type %s is set to object array %s(SPVM::Array::Object::set())", object_type_name, array_type_name);
+    croak("Invalid type %s is set to object array %s(SPVM::Object::Array::Object::set())", object_type_name, array_type_name);
   }
   
   // Index
@@ -1164,29 +1164,29 @@ get(...)
   SV* sv_base_object;
   switch (element_type_code) {
     case SPVM_TYPE_C_CODE_BYTE_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Array::Byte");
+      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Byte");
       break;
     case SPVM_TYPE_C_CODE_SHORT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Array::Short");
+      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Short");
       break;
     case SPVM_TYPE_C_CODE_INT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Array::Int");
+      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Int");
       break;
     case SPVM_TYPE_C_CODE_LONG_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Array::Long");
+      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Long");
       break;
     case SPVM_TYPE_C_CODE_FLOAT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Array::Float");
+      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Float");
       break;
     case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Array::Double");
+      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Double");
       break;
     default : {
       if (element_type->dimension > 0) {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Array::Object");
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Object");
       }
       else {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object");
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Package");
       }
     }
   }
@@ -1196,7 +1196,7 @@ get(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Array		PACKAGE = SPVM::Array
+MODULE = SPVM::Object::Array		PACKAGE = SPVM::Object::Array
 
 
 MODULE = SPVM		PACKAGE = SPVM
@@ -1602,7 +1602,7 @@ call_sub(...)
       
       if (sv_isobject(sv_value)) {
         SV* sv_base_object = sv_value;
-        if (sv_derived_from(sv_base_object, "SPVM::BaseObject")) {
+        if (sv_derived_from(sv_base_object, "SPVM::Object")) {
           
           SPVM_OBJECT* base_object = SPVM_XS_UTIL_get_object(sv_base_object);
           
@@ -1622,7 +1622,7 @@ call_sub(...)
           call_sub_args[arg_index].object_value = base_object;
         }
         else {
-          croak("Object must be derived from SPVM::BaseObject");
+          croak("Object must be derived from SPVM::Object");
         }
       }
       else {
@@ -1727,29 +1727,29 @@ call_sub(...)
         
         switch(return_type_code) {
           case SPVM_TYPE_C_CODE_BYTE_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Array::Byte");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Byte");
             break;
           case SPVM_TYPE_C_CODE_SHORT_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Array::Short");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Short");
             break;
           case SPVM_TYPE_C_CODE_INT_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Array::Int");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Int");
             break;
           case SPVM_TYPE_C_CODE_LONG_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Array::Long");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Long");
             break;
           case SPVM_TYPE_C_CODE_FLOAT_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Array::Float");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Float");
             break;
           case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Array::Double");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Double");
             break;
           default : {
             if (return_type->dimension > 0) {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Array::Object");
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Object");
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object");
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Package");
             }
           }
         }
