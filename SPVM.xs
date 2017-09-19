@@ -443,7 +443,7 @@ set_elements(...)
 }
 
 SV*
-get_elements(...)
+to_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -475,7 +475,7 @@ get_elements(...)
 }
 
 SV*
-get_data(...)
+to_data(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -598,7 +598,7 @@ set_elements(...)
 }
 
 SV*
-get_elements(...)
+to_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -693,7 +693,7 @@ set_elements(...)
 }
 
 SV*
-get_elements(...)
+to_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -788,7 +788,7 @@ set_elements(...)
 }
 
 SV*
-get_elements(...)
+to_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -883,7 +883,7 @@ set_elements(...)
 }
 
 SV*
-get_elements(...)
+to_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -978,7 +978,7 @@ set_elements(...)
 }
 
 SV*
-get_elements(...)
+to_array(...)
   PPCODE:
 {
   (void)RETVAL;

@@ -582,9 +582,9 @@ Create byte array.
 
   my $array = SPVM::new_byte_array([1, 2, 3]);
 
-If you get perl values, you can use C<get_elements> methods.
+If you get perl values, you can use C<to_array> methods.
 
-  my $values = $array->get_elements;
+  my $values = $array->to_array;
 
 =head2 new_byte_array_data
 
@@ -605,9 +605,9 @@ Create short array
 
   my $array = SPVM::new_short_array([1, 2, 3]);
 
-If you get perl values, you can use C<get_elements> methods.
+If you get perl values, you can use C<to_array> methods.
 
-  my $values = $array->get_elements;
+  my $values = $array->to_array;
 
 =head2 new_int_array
 
@@ -615,9 +615,9 @@ Create int array
 
   my $array = SPVM::new_int_array([1, 2, 3]);
 
-If you get perl values, you can use C<get_elements> methods.
+If you get perl values, you can use C<to_array> methods.
 
-  my $values = $array->get_elements;
+  my $values = $array->to_array;
 
 =head2 new_long_array
 
@@ -625,9 +625,9 @@ Create long array
 
   my $array = SPVM::new_long_array([1, 2, 3]);
 
-If you get perl values, you can use C<get_elements> methods.
+If you get perl values, you can use C<to_array> methods.
 
-  my $values = $array->get_elements;
+  my $values = $array->to_array;
 
 =head2 new_float_array
 
@@ -635,9 +635,9 @@ Create float array
 
   my $array = SPVM::new_float_array([1, 2, 3]);
 
-If you get perl values, you can use C<get_elements> methods.
+If you get perl values, you can use C<to_array> methods.
 
-  my $values = $array->get_elements;
+  my $values = $array->to_array;
 
 =head2 new_double_array
 
@@ -645,9 +645,9 @@ Create double array
 
   my $array = SPVM::new_double_array([1, 2, 3]);
 
-If you get perl values, you can use C<get_elements> methods.
+If you get perl values, you can use C<to_array> methods.
 
-  my $values = $array->get_elements;
+  my $values = $array->to_array;
   
 =head2 new_object_array_len
 

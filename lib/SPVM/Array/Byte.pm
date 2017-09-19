@@ -4,10 +4,10 @@ use base 'SPVM::Array';
 
 use Encode 'decode';
 
-sub get_string {
+sub to_string {
   my $self = shift;
   
-  my $string = $self->get_data;
+  my $string = $self->to_data;
   
   $string = decode('UTF-8', $string);
   

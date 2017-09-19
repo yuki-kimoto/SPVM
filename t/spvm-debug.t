@@ -45,14 +45,14 @@ use SPVM::std;
 # .
 {
   {
-    is("ab", SPVM::TestCase::concat_string_special_assign()->get_data);
-    is("ab", SPVM::TestCase::concat_string_string()->get_data);
-    is("a3", SPVM::TestCase::concat_string_byte()->get_data);
-    is("a3", SPVM::TestCase::concat_string_short()->get_data);
-    is("a3", SPVM::TestCase::concat_string_int()->get_data);
-    is("a3", SPVM::TestCase::concat_string_long()->get_data);
-    is("a3.000000", SPVM::TestCase::concat_string_float()->get_data);
-    is("a3.000000", SPVM::TestCase::concat_string_double()->get_data);
+    is("ab", SPVM::TestCase::concat_string_special_assign()->to_data);
+    is("ab", SPVM::TestCase::concat_string_string()->to_data);
+    is("a3", SPVM::TestCase::concat_string_byte()->to_data);
+    is("a3", SPVM::TestCase::concat_string_short()->to_data);
+    is("a3", SPVM::TestCase::concat_string_int()->to_data);
+    is("a3", SPVM::TestCase::concat_string_long()->to_data);
+    is("a3.000000", SPVM::TestCase::concat_string_float()->to_data);
+    is("a3.000000", SPVM::TestCase::concat_string_double()->to_data);
   }
 }
 
@@ -60,12 +60,12 @@ use SPVM::std;
 {
   {
     my $spvm_string = SPVM::TestCase::string_empty();
-    is($spvm_string->get_data, "");
+    is($spvm_string->to_data, "");
   }
   
   {
     my $spvm_string = SPVM::TestCase::string_utf8();
-    is($spvm_string->get_string, "あいうえお");
+    is($spvm_string->to_string, "あいうえお");
   }
 }
 
@@ -413,8 +413,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
+    is_deeply($object1_get->to_array, [1, 2, 3]);
+    is_deeply($object2_get->to_array, [4, 5, 6]);
   }
 
   # element short array
@@ -429,8 +429,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
+    is_deeply($object1_get->to_array, [1, 2, 3]);
+    is_deeply($object2_get->to_array, [4, 5, 6]);
   }
 
   # element int array
@@ -445,8 +445,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
+    is_deeply($object1_get->to_array, [1, 2, 3]);
+    is_deeply($object2_get->to_array, [4, 5, 6]);
   }
 
   # element long array
@@ -461,8 +461,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
+    is_deeply($object1_get->to_array, [1, 2, 3]);
+    is_deeply($object2_get->to_array, [4, 5, 6]);
   }
 
   # element float array
@@ -477,8 +477,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
+    is_deeply($object1_get->to_array, [1, 2, 3]);
+    is_deeply($object2_get->to_array, [4, 5, 6]);
   }
 
   # element double array
@@ -493,8 +493,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
+    is_deeply($object1_get->to_array, [1, 2, 3]);
+    is_deeply($object2_get->to_array, [4, 5, 6]);
   }
 
   # element object array
@@ -662,46 +662,46 @@ is_deeply(
   is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
 }
 
-# get_elements
+# to_array
 {
-  # get_elements - byte
+  # to_array - byte
   {
     my $array = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
-    my $nums = $array->get_elements;
+    my $nums = $array->to_array;
     is_deeply($nums, [1, $BYTE_MAX, $BYTE_MIN]);
   }
   
-  # get_elements - short
+  # to_array - short
   {
     my $array = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
-    my $nums = $array->get_elements;
+    my $nums = $array->to_array;
     is_deeply($nums, [1, $SHORT_MAX, $SHORT_MIN]);
   }
 
-  # get_elements - int
+  # to_array - int
   {
     my $array = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
-    my $nums = $array->get_elements;
+    my $nums = $array->to_array;
     is_deeply($nums, [1, $INT_MAX, $INT_MIN]);
   }
 
-  # get_elements - long
+  # to_array - long
   {
     my $array = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
-    my $nums = $array->get_elements;
+    my $nums = $array->to_array;
     is_deeply($nums, [1, $LONG_MAX, $LONG_MIN]);
   }
 
-  # get_elements - float
+  # to_array - float
   {
     my $array = SPVM::new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
-    my $nums = $array->get_elements;
+    my $nums = $array->to_array;
     is_deeply($nums, [1, $FLOAT_MAX, $FLOAT_MIN]);
   }
-  # get_elements - double
+  # to_array - double
   {
     my $array = SPVM::new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
-    my $nums = $array->get_elements;
+    my $nums = $array->to_array;
     is_deeply($nums, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
   }
 }
