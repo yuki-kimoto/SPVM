@@ -768,7 +768,7 @@ is_deeply(
 
 # SPVM::Object::Array
 {
-  my $data_nums = SPVM::Object::Array::Int->new(3);
+  my $data_nums = SPVM::Object::Array::Int->new_len(3);
   $data_nums->set_elements([1, 2, 3]);
 }
 

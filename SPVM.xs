@@ -382,7 +382,7 @@ get(...)
 MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
 
 SV*
-new(...)
+new_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -537,7 +537,7 @@ new_data(...)
 MODULE = SPVM::Object::Array::Short		PACKAGE = SPVM::Object::Array::Short
 
 SV*
-new(...)
+new_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -632,7 +632,7 @@ to_array(...)
 MODULE = SPVM::Object::Array::Int		PACKAGE = SPVM::Object::Array::Int
 
 SV*
-new(...)
+new_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -727,7 +727,7 @@ to_array(...)
 MODULE = SPVM::Object::Array::Long		PACKAGE = SPVM::Object::Array::Long
 
 SV*
-new(...)
+new_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -822,7 +822,7 @@ to_array(...)
 MODULE = SPVM::Object::Array::Float		PACKAGE = SPVM::Object::Array::Float
 
 SV*
-new(...)
+new_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -917,7 +917,7 @@ to_array(...)
 MODULE = SPVM::Object::Array::Double		PACKAGE = SPVM::Object::Array::Double
 
 SV*
-new(...)
+new_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1012,7 +1012,7 @@ to_array(...)
 MODULE = SPVM::Object::Array::Object		PACKAGE = SPVM::Object::Array::Object
 
 SV*
-new(...)
+new_len(...)
   PPCODE:
 {
   (void)RETVAL;

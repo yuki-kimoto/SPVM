@@ -226,7 +226,7 @@ sub new_byte_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Byte->new($length);
+  my $array = SPVM::Object::Array::Byte->new_len($length);
   
   $array->set_elements($elements);
   
@@ -236,7 +236,7 @@ sub new_byte_array {
 sub new_byte_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Byte->new($length);
+  my $array = SPVM::Object::Array::Byte->new_len($length);
   
   return $array;
 }
@@ -250,7 +250,7 @@ sub new_short_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Short->new($length);
+  my $array = SPVM::Object::Array::Short->new_len($length);
   
   $array->set_elements($elements);
   
@@ -260,7 +260,7 @@ sub new_short_array {
 sub new_short_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Short->new($length);
+  my $array = SPVM::Object::Array::Short->new_len($length);
   
   return $array;
 }
@@ -274,7 +274,7 @@ sub new_int_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Int->new($length);
+  my $array = SPVM::Object::Array::Int->new_len($length);
   
   $array->set_elements($elements);
   
@@ -284,7 +284,7 @@ sub new_int_array {
 sub new_int_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Int->new($length);
+  my $array = SPVM::Object::Array::Int->new_len($length);
   
   return $array;
 }
@@ -298,7 +298,7 @@ sub new_long_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Long->new($length);
+  my $array = SPVM::Object::Array::Long->new_len($length);
   
   $array->set_elements($elements);
   
@@ -308,7 +308,7 @@ sub new_long_array {
 sub new_long_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Long->new($length);
+  my $array = SPVM::Object::Array::Long->new_len($length);
   
   return $array;
 }
@@ -322,7 +322,7 @@ sub new_float_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Float->new($length);
+  my $array = SPVM::Object::Array::Float->new_len($length);
   
   $array->set_elements($elements);
   
@@ -332,7 +332,7 @@ sub new_float_array {
 sub new_float_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Float->new($length);
+  my $array = SPVM::Object::Array::Float->new_len($length);
   
   return $array;
 }
@@ -346,7 +346,7 @@ sub new_double_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Double->new($length);
+  my $array = SPVM::Object::Array::Double->new_len($length);
   
   $array->set_elements($elements);
   
@@ -356,7 +356,7 @@ sub new_double_array {
 sub new_double_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Double->new($length);
+  my $array = SPVM::Object::Array::Double->new_len($length);
   
   return $array;
 }
@@ -364,7 +364,7 @@ sub new_double_array_len {
 sub new_object_array_len {
   my ($type_name, $length) = @_;
   
-  my $array = SPVM::Object::Array::Object->new($type_name, $length);
+  my $array = SPVM::Object::Array::Object->new_len($type_name, $length);
   
   return $array;
 }
