@@ -202,7 +202,7 @@ CHECK {
 sub new_byte_array_data {
   my $string = shift;
   
-  my $array = SPVM::String->new_string_bytes($string);
+  my $array = SPVM::String->new_data($string);
   
   return $array;
 }
@@ -213,7 +213,7 @@ sub new_byte_array_string {
   # Encode internal string to UTF-8 string
   Encode::encode('UTF-8', $string);
   
-  my $array = SPVM::String->new_string_bytes($string);
+  my $array = SPVM::String->new_data($string);
   
   return $array;
 }

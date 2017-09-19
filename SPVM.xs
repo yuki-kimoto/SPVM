@@ -978,7 +978,7 @@ get_elements(...)
 MODULE = SPVM::String		PACKAGE = SPVM::String
 
 SV*
-new_string_bytes(...)
+new_data(...)
   PPCODE:
 {
   (void)RETVAL;
