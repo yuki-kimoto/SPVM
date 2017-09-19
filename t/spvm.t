@@ -719,6 +719,34 @@ is_deeply(
     my $value = $array->get(1);
     is($value, $SHORT_MAX);
   }
+  {
+    my $array = SPVM::new_int_array([0, 0]);
+    $array->set(1, $INT_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_int($array));
+    my $value = $array->get(1);
+    is($value, $INT_MAX);
+  }
+  {
+    my $array = SPVM::new_long_array([0, 0]);
+    $array->set(1, $LONG_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_long($array));
+    my $value = $array->get(1);
+    is($value, $LONG_MAX);
+  }
+  {
+    my $array = SPVM::new_float_array([0, 0]);
+    $array->set(1, $FLOAT_PRECICE);
+    ok(SPVM::TestCase::spvm_set_and_get_float($array));
+    my $value = $array->get(1);
+    is($value, $FLOAT_PRECICE);
+  }
+  {
+    my $array = SPVM::new_double_array([0, 0]);
+    $array->set(1, $DOUBLE_PRECICE);
+    ok(SPVM::TestCase::spvm_set_and_get_double($array));
+    my $value = $array->get(1);
+    is($value, $DOUBLE_PRECICE);
+  }
 }
 
 # call_sub array

@@ -49,12 +49,50 @@ package TestCase {
     
     return 0;
   }
-
-  # SPVM set and get
   sub spvm_set_and_get_short($nums : short[]) : int {
     
     if ($nums->[0] == 0s) {
       if ($nums->[1] == TestCase->SHORT_MAX) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub spvm_set_and_get_int($nums : int[]) : int {
+    
+    if ($nums->[0] == 0) {
+      if ($nums->[1] == TestCase->INT_MAX) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub spvm_set_and_get_long($nums : long[]) : int {
+    
+    if ($nums->[0] == 0L) {
+      if ($nums->[1] == TestCase->LONG_MAX) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub spvm_set_and_get_float($nums : float[]) : int {
+    
+    if ($nums->[0] == 0.0f) {
+      if ($nums->[1] == TestCase->FLOAT_PRECICE) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub spvm_set_and_get_double($nums : double[]) : int {
+    
+    if ($nums->[0] == 0.0) {
+      if ($nums->[1] == TestCase->DOUBLE_PRECICE) {
         return 1;
       }
     }
