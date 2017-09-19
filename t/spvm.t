@@ -703,6 +703,17 @@ is_deeply(
   }
 }
 
+# get and set
+{
+  {
+    my $array = SPVM::new_byte_array([0, 0]);
+    $array->set(1, $BYTE_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_byte($array));
+    my $value = $array->get(1);
+    is($value, $BYTE_MAX);
+  }
+}
+
 # call_sub array
 {
   # SPVM::new_byte_array_string

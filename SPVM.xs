@@ -474,6 +474,7 @@ set(...)
   
   // Set element
   int8_t* elements = api->get_byte_array_elements(api, array);
+  
   elements[index] = value;
   
   XSRETURN(0);
