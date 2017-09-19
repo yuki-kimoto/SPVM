@@ -475,7 +475,7 @@ get_elements(...)
 }
 
 SV*
-get_string_bytes(...)
+get_data(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1012,7 +1012,7 @@ new_string_bytes(...)
 }
 
 SV*
-get_string_bytes(...)
+get_data(...)
   PPCODE:
 {
   (void)RETVAL;

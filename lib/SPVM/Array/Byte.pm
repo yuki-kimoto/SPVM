@@ -7,7 +7,7 @@ use Encode 'decode';
 sub get_string {
   my $self = shift;
   
-  my $string = $self->get_string_bytes;
+  my $string = $self->get_data;
   
   $string = decode('UTF-8', $string);
   
