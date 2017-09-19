@@ -216,6 +216,16 @@ You can use specifier to specify number leteral type
 
 =back
 
+=head2 String Literal
+
+String Literal is the following.
+
+  "abc"
+
+Type of String literal is C<byte[]>. You can assign string literal to variable whith type is C<byte[]>.
+
+  my $string : byte[] = "abc";
+
 =head2 Type
 
 =head3 Numeric type
@@ -237,16 +247,6 @@ Declaration
   my $value : long;
   my $value : float;
   my $value : double;
-
-=head3 String type
-
-String type is string.
-
-This is same as byte[] at internal data structure.
-
-Declaration
-
-  my $string : string;
 
 =head3 Reference type
 

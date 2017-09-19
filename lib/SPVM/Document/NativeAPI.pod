@@ -106,6 +106,7 @@ You can call Native API from this object, and First Argument of Native API is al
   SPVM_API_OBJECT* (*new_float_array)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_double_array)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_object_array)(SPVM_API*, int32_t, int32_t);
+  SPVM_API_OBJECT* (*new_byte_array_string)(SPVM_API* api, const char* string);
   SPVM_API_OBJECT* (*get_exception)(SPVM_API* api);
   void (*set_exception)(SPVM_API* api, SPVM_API_OBJECT* exception);
   int32_t (*get_ref_count)(SPVM_API* api, SPVM_API_OBJECT* base_object);
@@ -114,6 +115,5 @@ You can call Native API from this object, and First Argument of Native API is al
   void (*inc_dec_ref_count)(SPVM_API* api, SPVM_API_OBJECT* base_object);
   int32_t (*get_objects_count)(SPVM_API* api);
   SPVM_API_RUNTIME* (*get_runtime)(SPVM_API* api);
-  SPVM_API_OBJECT* (*new_string)(SPVM_API* api, const char* string);
 
 
