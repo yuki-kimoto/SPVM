@@ -7,9 +7,9 @@ use Encode 'decode';
 sub to_string {
   my $self = shift;
   
-  my $string = $self->to_data;
+  my $data = $self->to_data;
   
-  $string = decode('UTF-8', $string);
+  my $string = decode('UTF-8', $data);
   
   return $string;
 }
