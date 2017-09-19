@@ -199,9 +199,9 @@ CHECK {
 }
 
 sub new_byte_array_data {
-  my $string = shift;
+  my $data = shift;
   
-  my $array = SPVM::Array::Byte->new_data($string);
+  my $array = SPVM::Array::Byte->new_data($data);
   
   return $array;
 }
@@ -210,9 +210,9 @@ sub new_byte_array_string {
   my $string = shift;
   
   # Encode internal string to UTF-8 string
-  Encode::encode('UTF-8', $string);
+  my $data = Encode::encode('UTF-8', $string);
   
-  my $array = SPVM::Array::Byte->new_data($string);
+  my $array = SPVM::Array::Byte->new_data($data);
   
   return $array;
 }
