@@ -556,6 +556,38 @@ And call SPVM subroutine. If SPVM subroutine absolute name is C<MyModule1::sum>,
 
 =head1 Document
 
+=head2 SPVM Functions
+
+L<SPVM::Document::Function> - SPVM data convertion function.
+
+List of SPVM functions:
+
+=over 2
+
+=item * new_byte_array
+
+=item * new_byte_array_data
+
+=item * new_byte_array_string
+
+=item * new_short_array
+
+=item * new_int_array
+
+=item * new_long_array
+
+=item * new_float_array
+
+=item * new_double_array
+
+=item * new_object_array_len
+
+=item * new_object
+
+=back
+
+If you know Detail of SPVM Function, see L<SPVM::Document::Function>.
+
 =head2 SPVM Language Specification
 
 L<SPVM::Document::Spec> - SPVM Language Specification
@@ -574,119 +606,11 @@ L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many example
 
 L<SPVM::Document::FAQ> - Oftten asked question.
 
-=head1 Functions
-
-=head2 new_byte_array
-
-Create byte array.
-
-  my $array = SPVM::new_byte_array([1, 2, 3]);
-
-If you get perl values, you can use C<to_array> methods.
-
-  my $values = $array->to_array;
-
-=head2 new_byte_array_data
-
-Create byte array from B<not decoded> Perl string.
-This function is faster than C<new_byte_array_string> because the data is not encoded.
-
-  my $array = SPVM::new_byte_array_data("AGTCAGTC");
-
-=head2 new_byte_array_string
-
-Create byte array from B<decoded> Perl string.
-
-  my $array = SPVM::new_byte_array_string("あいうえお");
-
-=head2 new_short_array
-
-Create short array
-
-  my $array = SPVM::new_short_array([1, 2, 3]);
-
-If you get perl values, you can use C<to_array> methods.
-
-  my $values = $array->to_array;
-
-=head2 new_int_array
-
-Create int array
-
-  my $array = SPVM::new_int_array([1, 2, 3]);
-
-If you get perl values, you can use C<to_array> methods.
-
-  my $values = $array->to_array;
-
-=head2 new_long_array
-
-Create long array
-
-  my $array = SPVM::new_long_array([1, 2, 3]);
-
-If you get perl values, you can use C<to_array> methods.
-
-  my $values = $array->to_array;
-
-=head2 new_float_array
-
-Create float array
-
-  my $array = SPVM::new_float_array([1, 2, 3]);
-
-If you get perl values, you can use C<to_array> methods.
-
-  my $values = $array->to_array;
-
-=head2 new_double_array
-
-Create double array
-
-  my $array = SPVM::new_double_array([1, 2, 3]);
-
-If you get perl values, you can use C<to_array> methods.
-
-  my $values = $array->to_array;
-  
-=head2 new_object_array_len
-
-Create object array with type name and length.
-
-  my $array = SPVM::new_object_array_len("int[]", 3);
-
-You can set and get elements by C<set> and C<get> method.
-
-  $array->set(1, SPVM::new_int_array([1, 2, 3]));
-  my $element = $array->get(1);
-
-=head2 new_object
-
-Create object.
-
-  my $object = SPVM::new_object("Point");
-
-You can set and get value by C<set> and C<get> method.
-
-  $object->set(x => 1);
-  my $x = $object->get('x');
-
-=head1 DON'T PANIC!
-
-We are constantly working on new documentation. Follow us on
-L<GitHub|https://github.com/yuki-kimoto/SPVM> or join the official IRC channel C<#perl11>
-on C<irc.perl.org> to get all the latest updates.
-
 =head2 SUPPORT
 
-If you have any questions the documentation might not yet answer, don't
-hesitate to ask on the the official IRC
-channel C<#perl11> on C<irc.perl.org>
-(L<chat now!|https://chat.mibbit.com/?channel=%23perl11&server=irc.perl.org>).
+If you have problems or find bugs, comment to GitHub Issue.
 
-You can see #perl11 log.
-
-L<http://irclog.perlgeek.de/perl11/>
+L<SPVM(GitHub)|https://github.com/yuki-kimoto/SPVM>.
 
 =head1 AUTHOR
 

@@ -5,6 +5,7 @@ lib/SPVM/Build.pm
 lib/SPVM/Debug.pm
 lib/SPVM/Document/Cookbook.pod
 lib/SPVM/Document/FAQ.pod
+lib/SPVM/Document/Function.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Document/Spec.pod
 lib/SPVM/Math.pm
