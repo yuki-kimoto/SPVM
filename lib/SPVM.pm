@@ -15,7 +15,6 @@ use SPVM::Array::Int;
 use SPVM::Array::Long;
 use SPVM::Array::Float;
 use SPVM::Array::Double;
-use SPVM::String;
 use SPVM::Array::Object;
 use File::Temp 'tempdir';
 use ExtUtils::CBuilder;
@@ -202,7 +201,7 @@ CHECK {
 sub new_byte_array_data {
   my $string = shift;
   
-  my $array = SPVM::String->new_data($string);
+  my $array = SPVM::Array::Byte->new_data($string);
   
   return $array;
 }
@@ -213,7 +212,7 @@ sub new_byte_array_string {
   # Encode internal string to UTF-8 string
   Encode::encode('UTF-8', $string);
   
-  my $array = SPVM::String->new_data($string);
+  my $array = SPVM::Array::Byte->new_data($string);
   
   return $array;
 }

@@ -500,6 +500,40 @@ get_data(...)
   XSRETURN(1);
 }
 
+SV*
+new_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_class = ST(0);
+  (void)sv_class;
+  
+  SV* sv_string = ST(1);
+  
+  int32_t length = (int32_t)sv_len(sv_string);
+  
+  const char* string = SvPV_nolen(sv_string);
+  
+  // Set API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // New string
+  SPVM_API_OBJECT* spvm_string =  api->new_byte_array(api, length);
+  
+  // Increment reference count
+  api->inc_ref_count(api, spvm_string);
+  
+  char* spvm_string_bytes = (char*)api->get_byte_array_elements(api, spvm_string);
+  memcpy(spvm_string_bytes, string, length);
+  
+  // New sv array
+  SV* sv_spvm_string = SPVM_XS_UTIL_new_sv_object(spvm_string, "SPVM::Array::Byte");
+  
+  XPUSHs(sv_spvm_string);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Array::Short		PACKAGE = SPVM::Array::Short
 
 SV*
@@ -972,68 +1006,6 @@ get_elements(...)
   SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
   
   XPUSHs(sv_nums);
-  XSRETURN(1);
-}
-
-MODULE = SPVM::String		PACKAGE = SPVM::String
-
-SV*
-new_data(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_class = ST(0);
-  (void)sv_class;
-  
-  SV* sv_string = ST(1);
-  
-  int32_t length = (int32_t)sv_len(sv_string);
-  
-  const char* string = SvPV_nolen(sv_string);
-  
-  // Set API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  // New string
-  SPVM_API_OBJECT* spvm_string =  api->new_byte_array(api, length);
-  
-  // Increment reference count
-  api->inc_ref_count(api, spvm_string);
-  
-  char* spvm_string_bytes = (char*)api->get_byte_array_elements(api, spvm_string);
-  memcpy(spvm_string_bytes, string, length);
-  
-  // New sv array
-  SV* sv_spvm_string = SPVM_XS_UTIL_new_sv_object(spvm_string, "SPVM::String");
-  
-  XPUSHs(sv_spvm_string);
-  XSRETURN(1);
-}
-
-SV*
-get_data(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_spvm_string = ST(0);
-
-  // Get SPVM string
-  SPVM_API_OBJECT* spvm_string = SPVM_XS_UTIL_get_object(sv_spvm_string);
-  
-  // Set API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  // Get string bytes
-  const char* string_bytes = (const char*)api->get_byte_array_elements(api, spvm_string);
-  
-  // Get string length
-  int32_t spvm_string_length = api->get_array_length(api, spvm_string);
-  
-  SV* sv_string = sv_2mortal(newSVpv(string_bytes, spvm_string_length));
-  
-  XPUSHs(sv_string);
   XSRETURN(1);
 }
 
