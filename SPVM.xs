@@ -694,7 +694,7 @@ set(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Object::Array::Byte::set())");
+    croak("Out of range(SPVM::Object::Array::Short::set())");
   }
   
   // Value
@@ -731,7 +731,7 @@ get(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Object::Array::Byte::set())");
+    croak("Out of range(SPVM::Object::Array::Short::set())");
   }
   
   // Get element
@@ -839,6 +839,79 @@ set_elements(...)
 }
 
 SV*
+set(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_value = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range(SPVM::Object::Array::Int::set())");
+  }
+  
+  // Value
+  int32_t value = (int32_t)SvIV(sv_value);
+  
+  // Set element
+  int32_t* elements = api->get_int_array_elements(api, array);
+  
+  elements[index] = value;
+  
+  XSRETURN(0);
+}
+
+SV*
+get(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range(SPVM::Object::Array::Int::set())");
+  }
+  
+  // Get element
+  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t value = elements[index];
+  SV* sv_value = sv_2mortal(newSViv(value));
+  
+  XPUSHs(sv_value);
+  XSRETURN(1);
+}
+
+SV*
 to_array(...)
   PPCODE:
 {
@@ -931,6 +1004,79 @@ set_elements(...)
   }
   
   XSRETURN(0);
+}
+
+SV*
+set(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_value = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range(SPVM::Object::Array::Long::set())");
+  }
+  
+  // Value
+  int64_t value = (int64_t)SvIV(sv_value);
+  
+  // Set element
+  int64_t* elements = api->get_long_array_elements(api, array);
+  
+  elements[index] = value;
+  
+  XSRETURN(0);
+}
+
+SV*
+get(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range(SPVM::Object::Array::Long::set())");
+  }
+  
+  // Get element
+  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t value = elements[index];
+  SV* sv_value = sv_2mortal(newSViv(value));
+  
+  XPUSHs(sv_value);
+  XSRETURN(1);
 }
 
 SV*
@@ -1029,6 +1175,79 @@ set_elements(...)
 }
 
 SV*
+set(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_value = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range(SPVM::Object::Array::Float::set())");
+  }
+  
+  // Value
+  float value = (float)SvIV(sv_value);
+  
+  // Set element
+  float* elements = api->get_float_array_elements(api, array);
+  
+  elements[index] = value;
+  
+  XSRETURN(0);
+}
+
+SV*
+get(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range(SPVM::Object::Array::Float::set())");
+  }
+  
+  // Get element
+  float* elements = api->get_float_array_elements(api, array);
+  float value = elements[index];
+  SV* sv_value = sv_2mortal(newSViv(value));
+  
+  XPUSHs(sv_value);
+  XSRETURN(1);
+}
+
+SV*
 to_array(...)
   PPCODE:
 {
@@ -1121,6 +1340,79 @@ set_elements(...)
   }
   
   XSRETURN(0);
+}
+
+SV*
+set(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_value = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range(SPVM::Object::Array::Double::set())");
+  }
+  
+  // Value
+  double value = (double)SvIV(sv_value);
+  
+  // Set element
+  double* elements = api->get_double_array_elements(api, array);
+  
+  elements[index] = value;
+  
+  XSRETURN(0);
+}
+
+SV*
+get(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range(SPVM::Object::Array::Double::set())");
+  }
+  
+  // Get element
+  double* elements = api->get_double_array_elements(api, array);
+  double value = elements[index];
+  SV* sv_value = sv_2mortal(newSViv(value));
+  
+  XPUSHs(sv_value);
+  XSRETURN(1);
 }
 
 SV*
