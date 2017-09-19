@@ -2,7 +2,6 @@
 use SPVM::Debug;
 
 use strict;
-use strict;
 use warnings;
 use utf8;
 use Data::Dumper;
@@ -523,7 +522,7 @@ is_deeply(
   {
     my $object = SPVM::new_object("TestCase");
     $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    $object->set(x_string => SPVM::new_string_bytes("abc"));
+    $object->set(x_string => SPVM::new_byte_array_data("abc"));
     ok(SPVM::TestCase::spvm_object_set_object($object));
   }
   # Create object
@@ -536,7 +535,7 @@ is_deeply(
     $object->set(x_float => $FLOAT_PRECICE);
     $object->set(x_double => $DOUBLE_PRECICE);
     $object->set(x_int_array => SPVM::new_int_array([1, 2, 3, 4]));
-    $object->set(x_string => SPVM::new_string("Hello"));
+    $object->set(x_string => SPVM::new_byte_array_string("Hello"));
     my $minimal = SPVM::new_object("TestCase::Minimal");
     $minimal->set(x => 3);
     $object->set(minimal => $minimal);
@@ -709,15 +708,15 @@ is_deeply(
 
 # call_sub array
 {
-  # SPVM::new_string
+  # SPVM::new_byte_array_string
   {
-    my $string = SPVM::new_string("あ");
+    my $string = SPVM::new_byte_array_string("あ");
     ok(SPVM::TestCase::call_sub_string($string));
   }
   
   # call_sub string_bytes
   {
-    my $string = SPVM::new_string_bytes("abc");
+    my $string = SPVM::new_byte_array_data("abc");
     ok(SPVM::TestCase::call_sub_string_bytes($string));
   }
   

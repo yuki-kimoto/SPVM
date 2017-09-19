@@ -199,7 +199,7 @@ CHECK {
   build_spvm_subs();
 }
 
-sub new_string_bytes {
+sub new_byte_array_data {
   my $string = shift;
   
   my $array = SPVM::String->new_string_bytes($string);
@@ -207,7 +207,7 @@ sub new_string_bytes {
   return $array;
 }
 
-sub new_string {
+sub new_byte_array_string {
   my $string = shift;
   
   # Encode internal string to UTF-8 string
@@ -579,13 +579,26 @@ L<SPVM::Document::FAQ> - Oftten asked question.
 
 =head2 new_byte_array
 
-Create new_byte array
+Create byte array.
 
   my $array = SPVM::new_byte_array([1, 2, 3]);
 
 If you get perl values, you can use C<get_elements> methods.
 
   my $values = $array->get_elements;
+
+=head2 new_byte_array_data
+
+Create byte array from B<not decoded> Perl string.
+This function is faster than C<new_byte_array_string> because the data is not encoded.
+
+  my $array = SPVM::new_byte_array_data("AGTCAGTC");
+
+=head2 new_byte_array_string
+
+Create byte array from B<decoded> Perl string.
+
+  my $array = SPVM::new_byte_array_string("ã‚ã„ã†ãˆãŠ");
 
 =head2 new_short_array
 
@@ -647,19 +660,6 @@ You can set and get elements by C<set> and C<get> method.
 
   $array->set(1, SPVM::new_int_array([1, 2, 3]));
   my $element = $array->get(1);
-
-=head2 new_string_bytes
-
-Create byte array from B<not decoded> Perl string.
-This function is faster than C<SPVM::string> because copy is not executed.
-
-  my $array = SPVM::new_string_bytes("AGTCAGTC");
-
-=head2 new_string
-
-Create byte array from B<decoded> Perl string.
-
-  my $array = SPVM::new_string(" ‚¢¤‚¦¨");
 
 =head2 new_object
 

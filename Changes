@@ -1,3 +1,8 @@
+0.0268 2017-09-19
+  - remove string type. SPVM string become byte[].
+  - SPVM::new_string_bytes renamed to SPVM::new_byte_array_data and return SPVM::Array::Byte object
+  - SPVM::new_string renamed to SPVM::new_byte_array_string and return SPVM::Array::Byte object
+  
 0.0267 2017-09-18
   - add .= operator
 0.0266 2017-09-16
