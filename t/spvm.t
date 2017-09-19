@@ -712,6 +712,13 @@ is_deeply(
     my $value = $array->get(1);
     is($value, $BYTE_MAX);
   }
+  {
+    my $array = SPVM::new_short_array([0, 0]);
+    $array->set(1, $SHORT_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_short($array));
+    my $value = $array->get(1);
+    is($value, $SHORT_MAX);
+  }
 }
 
 # call_sub array

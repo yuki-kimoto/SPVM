@@ -49,6 +49,18 @@ package TestCase {
     
     return 0;
   }
+
+  # SPVM set and get
+  sub spvm_set_and_get_short($nums : short[]) : int {
+    
+    if ($nums->[0] == 0s) {
+      if ($nums->[1] == TestCase->SHORT_MAX) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
   
   # Concat
   sub concat_string_special_assign() : byte[] {
