@@ -213,7 +213,7 @@ set(...)
     default : {
       if (!sv_derived_from(sv_value, "SPVM::Object")) {
         const char* field_type_name = (char*)&runtime->constant_pool[constant_pool_field_type->name_id + 1];
-        croak("Can't set numeric value to \"%s\" field", field_type_name);
+        croak("Can't set valueeric value to \"%s\" field", field_type_name);
       }
       
       SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
@@ -417,8 +417,8 @@ set_elements(...)
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_nums = ST(1);
-  AV* av_nums = (AV*)SvRV(sv_nums);
+  SV* sv_values = ST(1);
+  AV* av_values = (AV*)SvRV(sv_values);
 
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -433,9 +433,9 @@ set_elements(...)
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
-      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
-      elements[i] = (int8_t)SvIV(sv_num);
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[i] = (int8_t)SvIV(sv_value);
     }
   }
   
@@ -496,17 +496,17 @@ to_array(...)
   
   int8_t* elements = api->get_byte_array_elements(api, array);
   
-  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV* sv_num = sv_2mortal(newSViv(elements[i]));
-      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+      SV* sv_value = sv_2mortal(newSViv(elements[i]));
+      av_store(av_values, i, SvREFCNT_inc(sv_value));
     }
   }
-  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
-  XPUSHs(sv_nums);
+  XPUSHs(sv_values);
   XSRETURN(1);
 }
 
@@ -608,8 +608,8 @@ set_elements(...)
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_nums = ST(1);
-  AV* av_nums = (AV*)SvRV(sv_nums);
+  SV* sv_values = ST(1);
+  AV* av_values = (AV*)SvRV(sv_values);
 
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -624,9 +624,9 @@ set_elements(...)
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
-      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
-      elements[i] = (int16_t)SvIV(sv_num);
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[i] = (int16_t)SvIV(sv_value);
     }
   }
   
@@ -651,17 +651,17 @@ to_array(...)
   
   int16_t* elements = api->get_short_array_elements(api, array);
   
-  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV* sv_num = sv_2mortal(newSViv(elements[i]));
-      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+      SV* sv_value = sv_2mortal(newSViv(elements[i]));
+      av_store(av_values, i, SvREFCNT_inc(sv_value));
     }
   }
-  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
-  XPUSHs(sv_nums);
+  XPUSHs(sv_values);
   XSRETURN(1);
 }
 
@@ -703,8 +703,8 @@ set_elements(...)
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_nums = ST(1);
-  AV* av_nums = (AV*)SvRV(sv_nums);
+  SV* sv_values = ST(1);
+  AV* av_values = (AV*)SvRV(sv_values);
 
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -719,9 +719,9 @@ set_elements(...)
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
-      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
-      elements[i] = (int32_t)SvIV(sv_num);
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[i] = (int32_t)SvIV(sv_value);
     }
   }
   
@@ -746,17 +746,17 @@ to_array(...)
   
   int32_t* elements = api->get_int_array_elements(api, array);
   
-  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV* sv_num = sv_2mortal(newSViv(elements[i]));
-      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+      SV* sv_value = sv_2mortal(newSViv(elements[i]));
+      av_store(av_values, i, SvREFCNT_inc(sv_value));
     }
   }
-  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
-  XPUSHs(sv_nums);
+  XPUSHs(sv_values);
   XSRETURN(1);
 }
 
@@ -798,8 +798,8 @@ set_elements(...)
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_nums = ST(1);
-  AV* av_nums = (AV*)SvRV(sv_nums);
+  SV* sv_values = ST(1);
+  AV* av_values = (AV*)SvRV(sv_values);
 
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -814,9 +814,9 @@ set_elements(...)
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
-      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
-      elements[i] = (int64_t)SvIV(sv_num);
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[i] = (int64_t)SvIV(sv_value);
     }
   }
   
@@ -841,17 +841,17 @@ to_array(...)
   
   int64_t* elements = api->get_long_array_elements(api, array);
   
-  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV* sv_num = sv_2mortal(newSViv(elements[i]));
-      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+      SV* sv_value = sv_2mortal(newSViv(elements[i]));
+      av_store(av_values, i, SvREFCNT_inc(sv_value));
     }
   }
-  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
-  XPUSHs(sv_nums);
+  XPUSHs(sv_values);
   XSRETURN(1);
 }
 
@@ -893,8 +893,8 @@ set_elements(...)
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_nums = ST(1);
-  AV* av_nums = (AV*)SvRV(sv_nums);
+  SV* sv_values = ST(1);
+  AV* av_values = (AV*)SvRV(sv_values);
 
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -909,9 +909,9 @@ set_elements(...)
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
-      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
-      elements[i] = (float)SvNV(sv_num);
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[i] = (float)SvNV(sv_value);
     }
   }
   
@@ -936,17 +936,17 @@ to_array(...)
   
   float* elements = api->get_float_array_elements(api, array);
   
-  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV* sv_num = sv_2mortal(newSVnv((NV)elements[i]));
-      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+      SV* sv_value = sv_2mortal(newSVnv((NV)elements[i]));
+      av_store(av_values, i, SvREFCNT_inc(sv_value));
     }
   }
-  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
-  XPUSHs(sv_nums);
+  XPUSHs(sv_values);
   XSRETURN(1);
 }
 
@@ -988,8 +988,8 @@ set_elements(...)
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_nums = ST(1);
-  AV* av_nums = (AV*)SvRV(sv_nums);
+  SV* sv_values = ST(1);
+  AV* av_values = (AV*)SvRV(sv_values);
 
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -1004,9 +1004,9 @@ set_elements(...)
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV** sv_num_ptr = av_fetch(av_nums, i, 0);
-      SV* sv_num = sv_num_ptr ? *sv_num_ptr : &PL_sv_undef;
-      elements[i] = (double)SvNV(sv_num);
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[i] = (double)SvNV(sv_value);
     }
   }
   
@@ -1031,17 +1031,17 @@ to_array(...)
   
   double* elements = api->get_double_array_elements(api, array);
   
-  AV* av_nums = (AV*)sv_2mortal((SV*)newAV());
+  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t i;
     for (i = 0; i < length; i++) {
-      SV* sv_num = sv_2mortal(newSVnv((NV)elements[i]));
-      av_store(av_nums, i, SvREFCNT_inc(sv_num));
+      SV* sv_value = sv_2mortal(newSVnv((NV)elements[i]));
+      av_store(av_values, i, SvREFCNT_inc(sv_value));
     }
   }
-  SV* sv_nums = sv_2mortal(newRV_inc((SV*)av_nums));
+  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
-  XPUSHs(sv_nums);
+  XPUSHs(sv_values);
   XSRETURN(1);
 }
 
