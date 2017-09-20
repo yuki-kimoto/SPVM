@@ -434,7 +434,7 @@ set_elements(...)
   if (av_len(av_values) + 1 != length) {
     croak("Elements length must be same as array length(SPVM::Object::Array::Byte::set_elements())");
   }
-
+  
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -443,6 +443,35 @@ set_elements(...)
       elements[i] = (int8_t)SvIV(sv_value);
     }
   }
+  
+  XSRETURN(0);
+}
+
+SV*
+set_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_data = ST(1);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int8_t* elements = api->get_byte_array_elements(api, array);
+  
+  // Check range
+  if ((int32_t)sv_len(sv_data) != length) {
+    croak("Data total byte size must be same as byte array length(SPVM::Object::Array::Byte::set_data())");
+  }
+  
+  memcpy(elements, SvPV_nolen(sv_data), length);
   
   XSRETURN(0);
 }
@@ -575,40 +604,6 @@ to_data(...)
   SV* sv_string = sv_2mortal(newSVpv(string_bytes, spvm_string_length));
   
   XPUSHs(sv_string);
-  XSRETURN(1);
-}
-
-SV*
-new_data(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_class = ST(0);
-  (void)sv_class;
-  
-  SV* sv_string = ST(1);
-  
-  int32_t length = (int32_t)sv_len(sv_string);
-  
-  const char* string = SvPV_nolen(sv_string);
-  
-  // API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  // New string
-  SPVM_API_OBJECT* spvm_string =  api->new_byte_array(api, length);
-  
-  // Increment reference count
-  api->inc_ref_count(api, spvm_string);
-  
-  char* spvm_string_bytes = (char*)api->get_byte_array_elements(api, spvm_string);
-  memcpy(spvm_string_bytes, string, length);
-  
-  // New sv array
-  SV* sv_spvm_string = SPVM_XS_UTIL_new_sv_object(spvm_string, "SPVM::Object::Array::Byte");
-  
-  XPUSHs(sv_spvm_string);
   XSRETURN(1);
 }
 
