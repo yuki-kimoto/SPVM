@@ -754,13 +754,13 @@ is_deeply(
   # SPVM::new_byte_array_string
   {
     my $string = SPVM::new_byte_array_string("あ");
-    ok(SPVM::TestCase::call_sub_string($string));
+    ok(SPVM::TestCase::spvm_new_byte_array_string($string));
   }
   
   # SPVM::new_byte_array_data
   {
     my $string = SPVM::new_byte_array_data("abc");
-    ok(SPVM::TestCase::call_sub_string_bytes($string));
+    ok(SPVM::TestCase::spvm_new_byte_array_data($string));
   }
 
   # SPVM::new_byte_array_data packed
@@ -768,7 +768,7 @@ is_deeply(
     my $data = pack('c3', 97, 98, 99);
     
     my $string = SPVM::new_byte_array_data($data);
-    ok(SPVM::TestCase::call_sub_string_bytes($string));
+    ok(SPVM::TestCase::spvm_new_byte_array_data($string));
   }
 }
 

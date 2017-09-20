@@ -2161,7 +2161,7 @@ package TestCase {
   }
   
   # SPVM::string
-  sub call_sub_string($string : byte[]) : int {
+  sub spvm_new_byte_array_string($string : byte[]) : int {
     
     my $bytes = $string;
     
@@ -2179,7 +2179,7 @@ package TestCase {
   }
 
   # SPVM::string_bytes
-  sub call_sub_string_bytes($string : byte[]) : int {
+  sub spvm_new_byte_array_data($string : byte[]) : int {
     
     my $bytes = $string;
     

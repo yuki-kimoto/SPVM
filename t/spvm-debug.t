@@ -2,7 +2,6 @@
 use SPVM::Debug;
 
 use strict;
-use strict;
 use warnings;
 use utf8;
 use Data::Dumper;
@@ -707,20 +706,77 @@ is_deeply(
   }
 }
 
-# call_sub array
+# get and set
+{
+  {
+    my $array = SPVM::new_byte_array([0, 0]);
+    $array->set(1, $BYTE_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_byte($array));
+    my $value = $array->get(1);
+    is($value, $BYTE_MAX);
+  }
+  {
+    my $array = SPVM::new_short_array([0, 0]);
+    $array->set(1, $SHORT_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_short($array));
+    my $value = $array->get(1);
+    is($value, $SHORT_MAX);
+  }
+  {
+    my $array = SPVM::new_int_array([0, 0]);
+    $array->set(1, $INT_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_int($array));
+    my $value = $array->get(1);
+    is($value, $INT_MAX);
+  }
+  {
+    my $array = SPVM::new_long_array([0, 0]);
+    $array->set(1, $LONG_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_long($array));
+    my $value = $array->get(1);
+    is($value, $LONG_MAX);
+  }
+  {
+    my $array = SPVM::new_float_array([0, 0]);
+    $array->set(1, $FLOAT_PRECICE);
+    ok(SPVM::TestCase::spvm_set_and_get_float($array));
+    my $value = $array->get(1);
+    is($value, $FLOAT_PRECICE);
+  }
+  {
+    my $array = SPVM::new_double_array([0, 0]);
+    $array->set(1, $DOUBLE_PRECICE);
+    ok(SPVM::TestCase::spvm_set_and_get_double($array));
+    my $value = $array->get(1);
+    is($value, $DOUBLE_PRECICE);
+  }
+}
+
+# SPVM Functions
 {
   # SPVM::new_byte_array_string
   {
     my $string = SPVM::new_byte_array_string("あ");
-    ok(SPVM::TestCase::call_sub_string($string));
+    ok(SPVM::TestCase::spvm_new_byte_array_string($string));
   }
   
-  # call_sub string_bytes
+  # SPVM::new_byte_array_data
   {
     my $string = SPVM::new_byte_array_data("abc");
-    ok(SPVM::TestCase::call_sub_string_bytes($string));
+    ok(SPVM::TestCase::spvm_new_byte_array_data($string));
   }
-  
+
+  # SPVM::new_byte_array_data packed
+  {
+    my $data = pack('c3', 97, 98, 99);
+    
+    my $string = SPVM::new_byte_array_data($data);
+    ok(SPVM::TestCase::spvm_new_byte_array_data($string));
+  }
+}
+
+# call_sub array
+{
   # call_sub byte_array
   {
     my $array = SPVM::new_byte_array([1, 2, 3]);
