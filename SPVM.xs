@@ -1051,6 +1051,35 @@ set_elements(...)
 }
 
 SV*
+set_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_data = ST(1);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get content
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int16_t* elements = api->get_short_array_elements(api, array);
+  
+  // Check range
+  if ((int32_t)sv_len(sv_data) != length * 2) {
+    croak("Data total byte size must be same as short array length * 2(SPVM::Object::Array::Short::set_data())");
+  }
+  
+  memcpy(elements, SvPV_nolen(sv_data), length * 2);
+  
+  XSRETURN(0);
+}
+
+SV*
 set(...)
   PPCODE:
 {

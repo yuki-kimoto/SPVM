@@ -275,8 +275,8 @@ sub new_short_array_data {
   
   my $byte_length = length $data;
   
-  unless ($byte_length % 8 == 0) {
-    confess("data byte length must be divide by 8(SPVM::new_short_array_data())");
+  unless ($byte_length % 2 == 0) {
+    confess("data byte length must be divide by 2(SPVM::new_short_array_data())");
   }
   
   my $length = int($byte_length / 2);
@@ -317,8 +317,8 @@ sub new_int_array_data {
   
   my $byte_length = length $data;
   
-  unless ($byte_length % 8 == 0) {
-    confess("data byte length must be divide by 8(SPVM::new_int_array_data())");
+  unless ($byte_length % 4 == 0) {
+    confess("data byte length must be divide by 4(SPVM::new_int_array_data())");
   }
   
   my $length = int($byte_length / 4);
@@ -396,6 +396,24 @@ sub new_float_array {
   return $array;
 }
 
+sub new_float_array_data {
+  my $data = shift;
+  
+  my $byte_length = length $data;
+  
+  unless ($byte_length % 4 == 0) {
+    confess("data byte length must be divide by 4(SPVM::new_float_array_data())");
+  }
+  
+  my $length = $byte_length / 4;
+  
+  my $array = SPVM::Object::Array::Float->new_len($length);
+  
+  $array->set_data($data);
+  
+  return $array;
+}
+
 sub new_double_array_len {
   my $length = shift;
   
@@ -416,6 +434,24 @@ sub new_double_array {
   my $array = SPVM::Object::Array::Double->new_len($length);
   
   $array->set_elements($elements);
+  
+  return $array;
+}
+
+sub new_double_array_data {
+  my $data = shift;
+  
+  my $byte_length = length $data;
+  
+  unless ($byte_length % 8 == 0) {
+    confess("data byte length must be divide by 8(SPVM::new_double_array_data())");
+  }
+  
+  my $length = $byte_length / 8;
+  
+  my $array = SPVM::Object::Array::Double->new_len($length);
+  
+  $array->set_data($data);
   
   return $array;
 }
