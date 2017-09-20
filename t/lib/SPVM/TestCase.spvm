@@ -1744,17 +1744,17 @@ package TestCase {
   
   sub spvm_object_set_object($obj : TestCase) : int {
     my $nums = $obj->{x_int_array};
-    my $bytes = ($obj->{x_string});
+    my $values = ($obj->{x_string});
     
     # [INT_MAX, INT_MAX]
     if (@$nums == 2) {
       if ($nums->[0] == 2147483647) {
         if ($nums->[1] == 2147483647) {
           # abc
-          if ($bytes->[0] == (byte)97) {
-            if ($bytes->[1] == (byte)98) {
-              if ($bytes->[2] == (byte)99) {
-                if (@$bytes == 3) {
+          if ($values->[0] == (byte)97) {
+            if ($values->[1] == (byte)98) {
+              if ($values->[2] == (byte)99) {
+                if (@$values == 3) {
                   return 1;
                 }
               }
@@ -2161,14 +2161,12 @@ package TestCase {
   }
   
   # SPVM Functions
-  sub spvm_new_byte_array_string($string : byte[]) : int {
+  sub spvm_new_byte_array_string($values : byte[]) : int {
     
-    my $bytes = $string;
-    
-    if ($bytes->[0] == (byte)0xE3) {
-      if ($bytes->[1] == (byte)0x81) {
-        if ($bytes->[2] == (byte)0x82) {
-          if (@$bytes == 3) {
+    if ($values->[0] == (byte)0xE3) {
+      if ($values->[1] == (byte)0x81) {
+        if ($values->[2] == (byte)0x82) {
+          if (@$values == 3) {
             return 1;
           }
         }
@@ -2178,14 +2176,12 @@ package TestCase {
     return 0;
   }
 
-  sub spvm_new_byte_array_data($data : byte[]) : int {
+  sub spvm_new_byte_array_data($values : byte[]) : int {
     
-    my $bytes = $data;
-    
-    if ($bytes->[0] == (byte)97) {
-      if ($bytes->[1] == (byte)98) {
-        if ($bytes->[2] == (byte)99) {
-           if (@$bytes == 3) {
+    if ($values->[0] == (byte)97) {
+      if ($values->[1] == (byte)98) {
+        if ($values->[2] == (byte)99) {
+           if (@$values == 3) {
              return 1;
            }
         }
@@ -2195,14 +2191,12 @@ package TestCase {
     return 0;
   }
 
-  sub spvm_new_byte_array_data_pack($data : byte[]) : int {
+  sub spvm_new_byte_array_data_pack($values : byte[]) : int {
     
-    my $bytes = $data;
-    
-    if ($bytes->[0] == (byte)97) {
-      if ($bytes->[1] == (byte)98) {
-        if ($bytes->[2] == (byte)TestCase->BYTE_MAX) {
-           if (@$bytes == 3) {
+    if ($values->[0] == (byte)97) {
+      if ($values->[1] == (byte)98) {
+        if ($values->[2] == (byte)TestCase->BYTE_MAX) {
+           if (@$values == 3) {
              return 1;
            }
         }
@@ -2212,14 +2206,12 @@ package TestCase {
     return 0;
   }
 
-  sub spvm_new_short_array_data_pack($data : short[]) : int {
+  sub spvm_new_short_array_data_pack($values : short[]) : int {
     
-    my $shorts = $data;
-    
-    if ($shorts->[0] == (short)97) {
-      if ($shorts->[1] == (short)98) {
-        if ($shorts->[2] == (short)TestCase->SHORT_MAX) {
-           if (@$shorts == 3) {
+    if ($values->[0] == (short)97) {
+      if ($values->[1] == (short)98) {
+        if ($values->[2] == (short)TestCase->SHORT_MAX) {
+           if (@$values == 3) {
              return 1;
            }
         }
