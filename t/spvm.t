@@ -751,24 +751,31 @@ is_deeply(
 
 # SPVM Functions
 {
-  # SPVM::new_byte_array_string
   {
     my $string = SPVM::new_byte_array_string("あ");
     ok(SPVM::TestCase::spvm_new_byte_array_string($string));
   }
-  
-  # SPVM::new_byte_array_data
   {
     my $string = SPVM::new_byte_array_data("abc");
     ok(SPVM::TestCase::spvm_new_byte_array_data($string));
   }
-
-  # SPVM::new_byte_array_data packed
   {
     my $data = pack('c3', 97, 98, $BYTE_MAX);
     
     my $string = SPVM::new_byte_array_data($data);
     ok(SPVM::TestCase::spvm_new_byte_array_data_pack($string));
+  }
+  {
+    my $data = pack('c3', 97, 98, $BYTE_MAX);
+    
+    my $string = SPVM::new_byte_array_data($data);
+    ok(SPVM::TestCase::spvm_new_byte_array_data_pack($string));
+  }
+  {
+    my $data = pack('s3', 97, 98, $SHORT_MAX);
+    
+    my $string = SPVM::new_short_array_data($data);
+    ok(SPVM::TestCase::spvm_new_short_array_data_pack($string));
   }
 }
 
