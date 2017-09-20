@@ -777,6 +777,12 @@ is_deeply(
     my $string = SPVM::new_short_array_data($data);
     ok(SPVM::TestCase::spvm_new_short_array_data_pack($string));
   }
+  {
+    my $data = pack('l3', 97, 98, $INT_MAX);
+    
+    my $string = SPVM::new_int_array_data($data);
+    ok(SPVM::TestCase::spvm_new_int_array_data_pack($string));
+  }
 }
 
 # call_sub array
