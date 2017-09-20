@@ -783,6 +783,24 @@ is_deeply(
     my $string = SPVM::new_int_array_data($data);
     ok(SPVM::TestCase::spvm_new_int_array_data_pack($string));
   }
+  {
+    my $data = pack('q3', 97, 98, $LONG_MAX);
+    
+    my $string = SPVM::new_long_array_data($data);
+    ok(SPVM::TestCase::spvm_new_long_array_data_pack($string));
+  }
+  {
+    my $data = pack('f3', 97, 98, $FLOAT_PRECICE);
+    
+    my $string = SPVM::new_float_array_data($data);
+    ok(SPVM::TestCase::spvm_new_float_array_data_pack($string));
+  }
+  {
+    my $data = pack('d3', 97, 98, $DOUBLE_PRECICE);
+    
+    my $string = SPVM::new_double_array_data($data);
+    ok(SPVM::TestCase::spvm_new_double_array_data_pack($string));
+  }
 }
 
 # call_sub array

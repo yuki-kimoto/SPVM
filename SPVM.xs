@@ -85,7 +85,7 @@ DESTROY(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   assert(api->get_ref_count(api, object));
@@ -153,7 +153,7 @@ set(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
-  // Get content
+  // Get object
   SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   int32_t package_type_id = object->type_id;
@@ -252,7 +252,7 @@ get(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
-  // Get content
+  // Get object
   SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
   
   // Package type id
@@ -423,7 +423,7 @@ set_elements(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -459,7 +459,7 @@ set_data(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -560,7 +560,7 @@ to_array(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -651,7 +651,7 @@ set_elements(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -687,7 +687,7 @@ set_data(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -788,7 +788,7 @@ to_array(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -853,7 +853,7 @@ set_elements(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -889,7 +889,7 @@ set_data(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -989,7 +989,7 @@ to_array(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -1054,7 +1054,7 @@ set_elements(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -1089,20 +1089,20 @@ set_data(...)
   
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  // Get content
+
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int64_t* elements = api->get_long_array_elements(api, array);
   
   // Check range
-  if ((int32_t)sv_len(sv_data) != length * 2) {
-    croak("Data total byte size must be same as short array length * 2(SPVM::Object::Array::Short::set_data())");
+  if ((int32_t)sv_len(sv_data) != length * 8) {
+    croak("Data total byte size must be same as long array length * 8(SPVM::Object::Array::Long::set_data())");
   }
   
-  memcpy(elements, SvPV_nolen(sv_data), length * 2);
+  memcpy(elements, SvPV_nolen(sv_data), length * 8);
   
   XSRETURN(0);
 }
@@ -1191,7 +1191,7 @@ to_array(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -1256,7 +1256,7 @@ set_elements(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -1276,6 +1276,35 @@ set_elements(...)
       elements[i] = (float)SvNV(sv_value);
     }
   }
+  
+  XSRETURN(0);
+}
+
+SV*
+set_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_data = ST(1);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  float* elements = api->get_float_array_elements(api, array);
+  
+  // Check range
+  if ((int32_t)sv_len(sv_data) != length * 4) {
+    croak("Data total byte size must be same as float array length * 4(SPVM::Object::Array::Float::set_data())");
+  }
+  
+  memcpy(elements, SvPV_nolen(sv_data), length * 4);
   
   XSRETURN(0);
 }
@@ -1364,7 +1393,7 @@ to_array(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -1429,7 +1458,7 @@ set_elements(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
@@ -1449,6 +1478,35 @@ set_elements(...)
       elements[i] = (double)SvNV(sv_value);
     }
   }
+  
+  XSRETURN(0);
+}
+
+SV*
+set_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_data = ST(1);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  double* elements = api->get_double_array_elements(api, array);
+  
+  // Check range
+  if ((int32_t)sv_len(sv_data) != length * 8) {
+    croak("Data total byte size must be same as double array length * 8(SPVM::Object::Array::Double::set_data())");
+  }
+  
+  memcpy(elements, SvPV_nolen(sv_data), length * 8);
   
   XSRETURN(0);
 }
@@ -1537,7 +1595,7 @@ to_array(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get content
+  // Get object
   SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
