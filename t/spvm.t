@@ -765,10 +765,10 @@ is_deeply(
 
   # SPVM::new_byte_array_data packed
   {
-    my $data = pack('c3', 97, 98, 99);
+    my $data = pack('c3', 97, 98, $BYTE_MAX);
     
     my $string = SPVM::new_byte_array_data($data);
-    ok(SPVM::TestCase::spvm_new_byte_array_data($string));
+    ok(SPVM::TestCase::spvm_new_byte_array_data_pack($string));
   }
 }
 
