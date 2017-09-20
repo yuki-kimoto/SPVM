@@ -749,7 +749,7 @@ is_deeply(
   }
 }
 
-# call_sub array
+# SPVM Functions
 {
   # SPVM::new_byte_array_string
   {
@@ -757,12 +757,23 @@ is_deeply(
     ok(SPVM::TestCase::call_sub_string($string));
   }
   
-  # call_sub string_bytes
+  # SPVM::new_byte_array_data
   {
     my $string = SPVM::new_byte_array_data("abc");
     ok(SPVM::TestCase::call_sub_string_bytes($string));
   }
-  
+
+  # SPVM::new_byte_array_data packed
+  {
+    my $data = pack('c3', 97, 98, 99);
+    
+    my $string = SPVM::new_byte_array_data($data);
+    ok(SPVM::TestCase::call_sub_string_bytes($string));
+  }
+}
+
+# call_sub array
+{
   # call_sub byte_array
   {
     my $array = SPVM::new_byte_array([1, 2, 3]);
