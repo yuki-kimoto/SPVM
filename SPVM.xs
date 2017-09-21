@@ -418,8 +418,13 @@ set_elements(...)
   
   SV* sv_array = ST(0);
   SV* sv_values = ST(1);
+  
+  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
+    croak("Values must be array refenrece(SPVM::Object::Array::Byte::set_elements())");
+  }
+  
   AV* av_values = (AV*)SvRV(sv_values);
-
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
