@@ -20,6 +20,12 @@
   - add SPVM::Object::Array::Long::set_elements_range()
   - add SPVM::Object::Array::Float::set_elements_range()
   - add SPVM::Object::Array::Double::set_elements_range()
+  - add SPVM::Object::Array::Byte::set_data_range()
+  - add SPVM::Object::Array::Short::set_data_range()
+  - add SPVM::Object::Array::Int::set_data_range()
+  - add SPVM::Object::Array::Long::set_data_range()
+  - add SPVM::Object::Array::Float::set_data_range()
+  - add SPVM::Object::Array::Double::set_data_range()
 
 0.0268 2017-09-19
   - remove string type. SPVM string become byte[].
