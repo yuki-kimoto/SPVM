@@ -20,6 +20,12 @@
   - add SPVM::new_long_array_data()
   - add SPVM::new_float_array_data()
   - add SPVM::new_double_array_data()
+  - add SPVM::Object::Array::Byte::set_elements_range()
+  - add SPVM::Object::Array::Short::set_elements_range()
+  - add SPVM::Object::Array::Int::set_elements_range()
+  - add SPVM::Object::Array::Long::set_elements_range()
+  - add SPVM::Object::Array::Float::set_elements_range()
+  - add SPVM::Object::Array::Double::set_elements_range()
   
 0.0267 2017-09-18
   - add .= operator
