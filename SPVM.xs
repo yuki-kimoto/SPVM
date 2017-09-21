@@ -587,23 +587,21 @@ to_data(...)
 {
   (void)RETVAL;
   
-  SV* sv_spvm_string = ST(0);
+  SV* sv_array = ST(0);
 
-  // Get SPVM string
-  SPVM_API_OBJECT* spvm_string = SPVM_XS_UTIL_get_object(sv_spvm_string);
-  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Get string bytes
-  const char* string_bytes = (const char*)api->get_byte_array_elements(api, spvm_string);
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  // Get string length
-  int32_t spvm_string_length = api->get_array_length(api, spvm_string);
+  int32_t length = api->get_array_length(api, array);
   
-  SV* sv_string = sv_2mortal(newSVpv(string_bytes, spvm_string_length));
+  int8_t* elements = api->get_byte_array_elements(api, array);
   
-  XPUSHs(sv_string);
+  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length));
+  
+  XPUSHs(sv_data);
   XSRETURN(1);
 }
 
