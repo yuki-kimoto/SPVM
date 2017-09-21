@@ -541,7 +541,9 @@ set_data(...)
     croak("Data total byte size must be same as array length(SPVM::Object::Array::Byte::set_data())");
   }
   
-  memcpy(elements, SvPV_nolen(sv_data), length);
+  if (length > 0) {
+    memcpy(elements, SvPV_nolen(sv_data), length);
+  }
   
   XSRETURN(0);
 }
@@ -593,7 +595,9 @@ set_data_range(...)
   int8_t* elements = api->get_byte_array_elements(api, array);
   
   // Copy data
-  memcpy(elements + index, SvPV_nolen(sv_data), count);
+  if (count > 0) {
+    memcpy(elements + index, SvPV_nolen(sv_data), count);
+  }
   
   XSRETURN(0);
 }
@@ -978,7 +982,9 @@ set_data(...)
     croak("Data total byte size must be same as array length * 2(SPVM::Object::Array::Short::set_data())");
   }
   
-  memcpy(elements, SvPV_nolen(sv_data), length * 2);
+  if (length > 0) {
+    memcpy(elements, SvPV_nolen(sv_data), length * 2);
+  }
   
   XSRETURN(0);
 }
@@ -1030,7 +1036,9 @@ set_data_range(...)
   int16_t* elements = api->get_short_array_elements(api, array);
   
   // Copy data
-  memcpy(elements + index, SvPV_nolen(sv_data), count * 2);
+  if (count > 0) {
+    memcpy(elements + index, SvPV_nolen(sv_data), count * 2);
+  }
   
   XSRETURN(0);
 }
@@ -1414,7 +1422,10 @@ set_data(...)
   if ((int32_t)sv_len(sv_data) != length * 4) {
     croak("Data total byte size must be same as array length * 4(SPVM::Object::Array::Int::set_data())");
   }
-  memcpy(elements, SvPV_nolen(sv_data), length * 4);
+  
+  if (length > 0) {
+    memcpy(elements, SvPV_nolen(sv_data), length * 4);
+  }
   
   XSRETURN(0);
 }
@@ -1466,7 +1477,9 @@ set_data_range(...)
   int32_t* elements = api->get_int_array_elements(api, array);
   
   // Copy data
-  memcpy(elements + index, SvPV_nolen(sv_data), count * 4);
+  if (count > 0) {
+    memcpy(elements + index, SvPV_nolen(sv_data), count * 4);
+  }
   
   XSRETURN(0);
 }
@@ -1851,7 +1864,9 @@ set_data(...)
     croak("Data total byte size must be same as array length * 8(SPVM::Object::Array::Long::set_data())");
   }
   
-  memcpy(elements, SvPV_nolen(sv_data), length * 8);
+  if (length > 0) {
+    memcpy(elements, SvPV_nolen(sv_data), length * 8);
+  }
   
   XSRETURN(0);
 }
@@ -1903,7 +1918,9 @@ set_data_range(...)
   int64_t* elements = api->get_long_array_elements(api, array);
   
   // Copy data
-  memcpy(elements + index, SvPV_nolen(sv_data), count * 8);
+  if (count > 0) {
+    memcpy(elements + index, SvPV_nolen(sv_data), count * 8);
+  }
   
   XSRETURN(0);
 }
@@ -2288,7 +2305,9 @@ set_data(...)
     croak("Data total byte size must be same as array length * 4(SPVM::Object::Array::Float::set_data())");
   }
   
-  memcpy(elements, SvPV_nolen(sv_data), length * 4);
+  if (length > 0) {
+    memcpy(elements, SvPV_nolen(sv_data), length * 4);
+  }
   
   XSRETURN(0);
 }
@@ -2340,7 +2359,9 @@ set_data_range(...)
   float* elements = api->get_float_array_elements(api, array);
   
   // Copy data
-  memcpy(elements + index, SvPV_nolen(sv_data), count * 4);
+  if (count > 0) {
+    memcpy(elements + index, SvPV_nolen(sv_data), count * 4);
+  }
   
   XSRETURN(0);
 }
@@ -2725,7 +2746,9 @@ set_data(...)
     croak("Data total byte size must be same as array length * 8(SPVM::Object::Array::Double::set_data())");
   }
   
-  memcpy(elements, SvPV_nolen(sv_data), length * 8);
+  if (length > 0) {
+    memcpy(elements, SvPV_nolen(sv_data), length * 8);
+  }
   
   XSRETURN(0);
 }
@@ -2777,7 +2800,9 @@ set_data_range(...)
   double* elements = api->get_double_array_elements(api, array);
   
   // Copy data
-  memcpy(elements + index, SvPV_nolen(sv_data), count * 8);
+  if (count > 0) {
+    memcpy(elements + index, SvPV_nolen(sv_data), count * 8);
+  }
   
   XSRETURN(0);
 }
