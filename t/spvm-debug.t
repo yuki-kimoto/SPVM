@@ -2,6 +2,7 @@
 use SPVM::Debug;
 
 use strict;
+use strict;
 use warnings;
 use utf8;
 use Data::Dumper;
@@ -37,8 +38,8 @@ my $FLOAT_MAX = POSIX::FLT_MAX();
 my $FLOAT_MIN = POSIX::FLT_MIN();
 my $DOUBLE_MAX = POSIX::DBL_MAX();
 my $DOUBLE_MIN = POSIX::DBL_MIN();
-my $FLOAT_PRECICE = 16384.0;
-my $DOUBLE_PRECICE = 65536.0;
+my $FLOAT_PRECICE = 16384.5;
+my $DOUBLE_PRECICE = 65536.5;
 
 use SPVM::std;
 
@@ -59,13 +60,13 @@ use SPVM::std;
 # String
 {
   {
-    my $spvm_string = SPVM::TestCase::string_empty();
-    is($spvm_string->to_data, "");
+    my $values = SPVM::TestCase::string_empty();
+    is($values->to_data, "");
   }
   
   {
-    my $spvm_string = SPVM::TestCase::string_utf8();
-    is($spvm_string->to_string, "あいうえお");
+    my $values = SPVM::TestCase::string_utf8();
+    is($values->to_string, "あいうえお");
   }
 }
 
@@ -79,8 +80,8 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Native subroutine
 {
-  my $nums = SPVM::new_int_array([1, 2, 3]);
-  my $total = SPVM::std::sum_int($nums);
+  my $sp_values = SPVM::new_int_array([1, 2, 3]);
+  my $total = SPVM::std::sum_int($sp_values);
   is($total, 6);
 }
 
@@ -556,34 +557,34 @@ is_deeply(
 # call_sub return array
 {
   {
-    my $nums = SPVM::TestCase::call_sub_return_byte_array();
-    is(ref $nums, 'SPVM::Object::Array::Byte');
-    SPVM::TestCase::call_sub_return_byte_array_check($nums);
+    my $sp_values = SPVM::TestCase::call_sub_return_byte_array();
+    is(ref $sp_values, 'SPVM::Object::Array::Byte');
+    SPVM::TestCase::call_sub_return_byte_array_check($sp_values);
   }
   {
-    my $nums = SPVM::TestCase::call_sub_return_short_array();
-    is(ref $nums, 'SPVM::Object::Array::Short');
-    SPVM::TestCase::call_sub_return_short_array_check($nums);
+    my $sp_values = SPVM::TestCase::call_sub_return_short_array();
+    is(ref $sp_values, 'SPVM::Object::Array::Short');
+    SPVM::TestCase::call_sub_return_short_array_check($sp_values);
   }
   {
-    my $nums = SPVM::TestCase::call_sub_return_int_array();
-    is(ref $nums, 'SPVM::Object::Array::Int');
-    SPVM::TestCase::call_sub_return_int_array_check($nums);
+    my $sp_values = SPVM::TestCase::call_sub_return_int_array();
+    is(ref $sp_values, 'SPVM::Object::Array::Int');
+    SPVM::TestCase::call_sub_return_int_array_check($sp_values);
   }
   {
-    my $nums = SPVM::TestCase::call_sub_return_long_array();
-    is(ref $nums, 'SPVM::Object::Array::Long');
-    SPVM::TestCase::call_sub_return_long_array_check($nums);
+    my $sp_values = SPVM::TestCase::call_sub_return_long_array();
+    is(ref $sp_values, 'SPVM::Object::Array::Long');
+    SPVM::TestCase::call_sub_return_long_array_check($sp_values);
   }
   {
-    my $nums = SPVM::TestCase::call_sub_return_float_array();
-    is(ref $nums, 'SPVM::Object::Array::Float');
-    SPVM::TestCase::call_sub_return_float_array_check($nums);
+    my $sp_values = SPVM::TestCase::call_sub_return_float_array();
+    is(ref $sp_values, 'SPVM::Object::Array::Float');
+    SPVM::TestCase::call_sub_return_float_array_check($sp_values);
   }
   {
-    my $nums = SPVM::TestCase::call_sub_return_double_array();
-    is(ref $nums, 'SPVM::Object::Array::Double');
-    SPVM::TestCase::call_sub_return_double_array_check($nums);
+    my $sp_values = SPVM::TestCase::call_sub_return_double_array();
+    is(ref $sp_values, 'SPVM::Object::Array::Double');
+    SPVM::TestCase::call_sub_return_double_array_check($sp_values);
   }
 }
 
@@ -662,116 +663,310 @@ is_deeply(
   is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
 }
 
-# to_array
-{
-  # to_array - byte
-  {
-    my $array = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $BYTE_MAX, $BYTE_MIN]);
-  }
-  
-  # to_array - short
-  {
-    my $array = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $SHORT_MAX, $SHORT_MIN]);
-  }
 
-  # to_array - int
-  {
-    my $array = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $INT_MAX, $INT_MIN]);
-  }
-
-  # to_array - long
-  {
-    my $array = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $LONG_MAX, $LONG_MIN]);
-  }
-
-  # to_array - float
-  {
-    my $array = SPVM::new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $FLOAT_MAX, $FLOAT_MIN]);
-  }
-  # to_array - double
-  {
-    my $array = SPVM::new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
-  }
-}
 
 # get and set
 {
   {
-    my $array = SPVM::new_byte_array([0, 0]);
-    $array->set(1, $BYTE_MAX);
-    ok(SPVM::TestCase::spvm_set_and_get_byte($array));
-    my $value = $array->get(1);
+    my $sp_values = SPVM::new_byte_array([0, 0]);
+    $sp_values->set(1, $BYTE_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_byte($sp_values));
+    my $value = $sp_values->get(1);
     is($value, $BYTE_MAX);
   }
   {
-    my $array = SPVM::new_short_array([0, 0]);
-    $array->set(1, $SHORT_MAX);
-    ok(SPVM::TestCase::spvm_set_and_get_short($array));
-    my $value = $array->get(1);
+    my $sp_values = SPVM::new_short_array([0, 0]);
+    $sp_values->set(1, $SHORT_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_short($sp_values));
+    my $value = $sp_values->get(1);
     is($value, $SHORT_MAX);
   }
   {
-    my $array = SPVM::new_int_array([0, 0]);
-    $array->set(1, $INT_MAX);
-    ok(SPVM::TestCase::spvm_set_and_get_int($array));
-    my $value = $array->get(1);
+    my $sp_values = SPVM::new_int_array([0, 0]);
+    $sp_values->set(1, $INT_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_int($sp_values));
+    my $value = $sp_values->get(1);
     is($value, $INT_MAX);
   }
   {
-    my $array = SPVM::new_long_array([0, 0]);
-    $array->set(1, $LONG_MAX);
-    ok(SPVM::TestCase::spvm_set_and_get_long($array));
-    my $value = $array->get(1);
+    my $sp_values = SPVM::new_long_array([0, 0]);
+    $sp_values->set(1, $LONG_MAX);
+    ok(SPVM::TestCase::spvm_set_and_get_long($sp_values));
+    my $value = $sp_values->get(1);
     is($value, $LONG_MAX);
   }
   {
-    my $array = SPVM::new_float_array([0, 0]);
-    $array->set(1, $FLOAT_PRECICE);
-    ok(SPVM::TestCase::spvm_set_and_get_float($array));
-    my $value = $array->get(1);
+    my $sp_values = SPVM::new_float_array([0, 0]);
+    $sp_values->set(1, $FLOAT_PRECICE);
+    ok(SPVM::TestCase::spvm_set_and_get_float($sp_values));
+    my $value = $sp_values->get(1);
     is($value, $FLOAT_PRECICE);
   }
   {
-    my $array = SPVM::new_double_array([0, 0]);
-    $array->set(1, $DOUBLE_PRECICE);
-    ok(SPVM::TestCase::spvm_set_and_get_double($array));
-    my $value = $array->get(1);
+    my $sp_values = SPVM::new_double_array([0, 0]);
+    $sp_values->set(1, $DOUBLE_PRECICE);
+    ok(SPVM::TestCase::spvm_set_and_get_double($sp_values));
+    my $value = $sp_values->get(1);
     is($value, $DOUBLE_PRECICE);
   }
 }
 
 # SPVM Functions
 {
-  # SPVM::new_byte_array_string
+  # to_array
   {
-    my $string = SPVM::new_byte_array_string("あ");
-    ok(SPVM::TestCase::spvm_new_byte_array_string($string));
-  }
-  
-  # SPVM::new_byte_array_data
-  {
-    my $string = SPVM::new_byte_array_data("abc");
-    ok(SPVM::TestCase::spvm_new_byte_array_data($string));
+    {
+      my $sp_values = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
+    }
+    {
+      my $sp_values = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
+    }
+    {
+      my $sp_values = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, $INT_MAX, $INT_MIN]);
+    }
+    {
+      my $sp_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
+    }
+    {
+      my $sp_values = SPVM::new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, $FLOAT_MAX, $FLOAT_MIN]);
+    }
+    {
+      my $sp_values = SPVM::new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
+    }
   }
 
-  # SPVM::new_byte_array_data packed
+  # to_array_range
   {
-    my $data = pack('c3', 97, 98, 99);
-    
-    my $string = SPVM::new_byte_array_data($data);
-    ok(SPVM::TestCase::spvm_new_byte_array_data($string));
+    {
+      my $sp_values = SPVM::new_byte_array([1, 2, $BYTE_MAX, 4]);
+      my $values = $sp_values->to_array_range(1, 2);
+      is_deeply($values, [2, $BYTE_MAX]);
+    }
+    {
+      my $sp_values = SPVM::new_short_array([1, 2, $SHORT_MAX, 4]);
+      my $values = $sp_values->to_array_range(1, 2);
+      is_deeply($values, [2, $SHORT_MAX]);
+    }
+  }
+
+  # set_elements_range
+  {
+    {
+      my $sp_values = SPVM::new_byte_array([1, 2, 3, 4]);
+      $sp_values->set_elements_range(1, 2, [5, $BYTE_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('c4', $data);
+      is_deeply(\@values, [1, 5, $BYTE_MAX, 4]);
+    }
+    {
+      my $sp_values = SPVM::new_short_array([1, 2, 3, 4]);
+      $sp_values->set_elements_range(1, 2, [5, $SHORT_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('s4', $data);
+      is_deeply(\@values, [1, 5, $SHORT_MAX, 4]);
+    }
+    {
+      my $sp_values = SPVM::new_int_array([1, 2, 3, 4]);
+      $sp_values->set_elements_range(1, 2, [5, $INT_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('l4', $data);
+      is_deeply(\@values, [1, 5, $INT_MAX, 4]);
+    }
+    {
+      my $sp_values = SPVM::new_long_array([1, 2, 3, 4]);
+      $sp_values->set_elements_range(1, 2, [5, $LONG_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('q4', $data);
+      is_deeply(\@values, [1, 5, $LONG_MAX, 4]);
+    }
+    {
+      my $sp_values = SPVM::new_float_array([1, 2, 3, 4]);
+      $sp_values->set_elements_range(1, 2, [5, $FLOAT_PRECICE]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('f4', $data);
+      is_deeply(\@values, [1, 5, $FLOAT_PRECICE, 4]);
+    }
+    {
+      my $sp_values = SPVM::new_double_array([1, 2, 3, 4]);
+      $sp_values->set_elements_range(1, 2, [5, $DOUBLE_PRECICE]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('d4', $data);
+      is_deeply(\@values, [1, 5, $DOUBLE_PRECICE, 4]);
+    }
+  }
+  
+  # to_data
+  {
+    {
+      my $sp_values = SPVM::new_byte_array([1, 2, $BYTE_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('c3', $data);
+      is_deeply(\@values, [1, 2, $BYTE_MAX]);
+    }
+    {
+      my $sp_values = SPVM::new_short_array([1, 2, $SHORT_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('s3', $data);
+      is_deeply(\@values, [1, 2, $SHORT_MAX]);
+    }
+    {
+      my $sp_values = SPVM::new_int_array([1, 2, $INT_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('l3', $data);
+      is_deeply(\@values, [1, 2, $INT_MAX]);
+    }
+    {
+      my $sp_values = SPVM::new_long_array([1, 2, $LONG_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('q3', $data);
+      is_deeply(\@values, [1, 2, $LONG_MAX]);
+    }
+    {
+      my $sp_values = SPVM::new_float_array([1, 2, $FLOAT_PRECICE]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('f3', $data);
+      is_deeply(\@values, [1, 2, $FLOAT_PRECICE]);
+    }
+    {
+      my $sp_values = SPVM::new_double_array([1, 2, $DOUBLE_PRECICE]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('d3', $data);
+      is_deeply(\@values, [1, 2, $DOUBLE_PRECICE]);
+    }
+  }
+  
+  # new_xxx_array_string
+  {
+    {
+      my $sp_values = SPVM::new_byte_array_string("あ");
+      ok(SPVM::TestCase::spvm_new_byte_array_string($sp_values));
+    }
+  }
+  
+  # set_data_range
+  {
+    {
+      my $data = pack('c2', 5, $BYTE_MAX);
+      my $sp_values = SPVM::new_byte_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $BYTE_MAX, 4]);
+    }
+    {
+      my $data = pack('s2', 5, $SHORT_MAX);
+      my $sp_values = SPVM::new_short_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $SHORT_MAX, 4]);
+    }
+    {
+      my $data = pack('l2', 5, $INT_MAX);
+      my $sp_values = SPVM::new_int_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $INT_MAX, 4]);
+    }
+    {
+      my $data = pack('q2', 5, $LONG_MAX);
+      my $sp_values = SPVM::new_long_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $LONG_MAX, 4]);
+    }
+    {
+      my $data = pack('f2', 5, $FLOAT_PRECICE);
+      my $sp_values = SPVM::new_float_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $FLOAT_PRECICE, 4]);
+    }
+    {
+      my $data = pack('d2', 5, $DOUBLE_PRECICE);
+      my $sp_values = SPVM::new_double_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $DOUBLE_PRECICE, 4]);
+    }
+  }
+  
+  # new_xxx_array_data
+  {
+    {
+      my $sp_values = SPVM::new_byte_array_data("abc");
+      ok(SPVM::TestCase::spvm_new_byte_array_data($sp_values));
+    }
+    {
+      my $data = pack('c3', 97, 98, $BYTE_MAX);
+      
+      my $sp_values = SPVM::new_byte_array_data($data);
+      ok(SPVM::TestCase::spvm_new_byte_array_data_pack($sp_values));
+    }
+    {
+      my $data = pack('c3', 97, 98, $BYTE_MAX);
+      
+      my $sp_values = SPVM::new_byte_array_data($data);
+      ok(SPVM::TestCase::spvm_new_byte_array_data_pack($sp_values));
+    }
+    {
+      my $data = pack('s3', 97, 98, $SHORT_MAX);
+      
+      my $sp_values = SPVM::new_short_array_data($data);
+      ok(SPVM::TestCase::spvm_new_short_array_data_pack($sp_values));
+    }
+    {
+      my $data = pack('l3', 97, 98, $INT_MAX);
+      
+      my $sp_values = SPVM::new_int_array_data($data);
+      ok(SPVM::TestCase::spvm_new_int_array_data_pack($sp_values));
+    }
+    {
+      my $data = pack('q3', 97, 98, $LONG_MAX);
+      
+      my $sp_values = SPVM::new_long_array_data($data);
+      ok(SPVM::TestCase::spvm_new_long_array_data_pack($sp_values));
+    }
+    {
+      my $data = pack('f3', 97, 98, $FLOAT_PRECICE);
+      
+      my $sp_values = SPVM::new_float_array_data($data);
+      ok(SPVM::TestCase::spvm_new_float_array_data_pack($sp_values));
+    }
+    {
+      my $data = pack('d3', 97, 98, $DOUBLE_PRECICE);
+      
+      my $sp_values = SPVM::new_double_array_data($data);
+      ok(SPVM::TestCase::spvm_new_double_array_data_pack($sp_values));
+    }
   }
 }
 
@@ -779,38 +974,38 @@ is_deeply(
 {
   # call_sub byte_array
   {
-    my $array = SPVM::new_byte_array([1, 2, 3]);
-    is(SPVM::TestCase::call_sub_byte_array($array), 6);
+    my $sp_values = SPVM::new_byte_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_byte_array($sp_values), 6);
   }
 
   # call_sub short_array
   {
-    my $array = SPVM::new_short_array([1, 2, 3]);
-    is(SPVM::TestCase::call_sub_short_array($array), 6);
+    my $sp_values = SPVM::new_short_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_short_array($sp_values), 6);
   }
 
   # call_sub int_array
   {
-    my $array = SPVM::new_int_array([1, 2, 3]);
-    is(SPVM::TestCase::call_sub_int_array($array), 6);
+    my $sp_values = SPVM::new_int_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_int_array($sp_values), 6);
   }
 
   # call_sub long_array
   {
-    my $array = SPVM::new_long_array([1, 2, 3]);
-    is(SPVM::TestCase::call_sub_long_array($array), 6);
+    my $sp_values = SPVM::new_long_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_long_array($sp_values), 6);
   }
 
   # call_sub float_array
   {
-    my $array = SPVM::new_float_array([0.5, 0.5, 1.0]);
-    is(SPVM::TestCase::call_sub_float_array($array), 2.0);
+    my $sp_values = SPVM::new_float_array([0.5, 0.5, 1.0]);
+    is(SPVM::TestCase::call_sub_float_array($sp_values), 2.0);
   }
 
   # call_sub double_array
   {
-    my $array = SPVM::new_double_array([0.5, 0.5, 1.0]);
-    is(SPVM::TestCase::call_sub_double_array($array), 2.0);
+    my $sp_values = SPVM::new_double_array([0.5, 0.5, 1.0]);
+    is(SPVM::TestCase::call_sub_double_array($sp_values), 2.0);
   }
 
   # call_sub
@@ -824,8 +1019,8 @@ is_deeply(
 
 # SPVM::Object::Array
 {
-  my $data_nums = SPVM::Object::Array::Int->new_len(3);
-  $data_nums->set_elements([1, 2, 3]);
+  my $sp_values = SPVM::Object::Array::Int->new_len(3);
+  $sp_values->set_elements([1, 2, 3]);
 }
 
 # constant int

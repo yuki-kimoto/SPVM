@@ -34,8 +34,8 @@ package TestCase {
   }
   
   enum {
-    FLOAT_PRECICE = 16384f,
-    DOUBLE_PRECICE = 65536.0,
+    FLOAT_PRECICE = 16384.5f,
+    DOUBLE_PRECICE = 65536.5,
   }
   
   # SPVM set and get
