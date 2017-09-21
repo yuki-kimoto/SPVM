@@ -777,6 +777,16 @@ is_deeply(
     }
   }
 
+  # to_data_range
+  {
+    {
+      my $sp_values = SPVM::new_byte_array([1, 2, $BYTE_MAX, 4]);
+      my $data = $sp_values->to_data_range(1, 2);
+      my @values = unpack('c2', $data);
+      is_deeply(\@values, [2, $BYTE_MAX]);
+    }
+  }
+  
   # set_elements_range
   {
     {
