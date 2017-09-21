@@ -767,6 +767,34 @@ is_deeply(
       my @values = unpack('s3', $data);
       is_deeply(\@values, [1, 2, $SHORT_MAX]);
     }
+    {
+      my $sp_values = SPVM::new_int_array([1, 2, $INT_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('l3', $data);
+      is_deeply(\@values, [1, 2, $INT_MAX]);
+    }
+    {
+      my $sp_values = SPVM::new_long_array([1, 2, $LONG_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('q3', $data);
+      is_deeply(\@values, [1, 2, $LONG_MAX]);
+    }
+    {
+      my $sp_values = SPVM::new_float_array([1, 2, $FLOAT_PRECICE]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('f3', $data);
+      is_deeply(\@values, [1, 2, $FLOAT_PRECICE]);
+    }
+    {
+      my $sp_values = SPVM::new_double_array([1, 2, $DOUBLE_PRECICE]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('d3', $data);
+      is_deeply(\@values, [1, 2, $DOUBLE_PRECICE]);
+    }
   }
   
   # new_xxx_array_string
