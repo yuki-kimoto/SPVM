@@ -1088,7 +1088,7 @@ to_array(...)
     int32_t i;
     for (i = 0; i < length; i++) {
       SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_store(av_values, i, SvREFCNT_inc(sv_value));
+      av_push(av_values, SvREFCNT_inc(sv_value));
     }
   }
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
@@ -1430,7 +1430,7 @@ to_array(...)
     int32_t i;
     for (i = 0; i < length; i++) {
       SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_store(av_values, i, SvREFCNT_inc(sv_value));
+      av_push(av_values, SvREFCNT_inc(sv_value));
     }
   }
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
@@ -1773,7 +1773,7 @@ to_array(...)
     int32_t i;
     for (i = 0; i < length; i++) {
       SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_store(av_values, i, SvREFCNT_inc(sv_value));
+      av_push(av_values, SvREFCNT_inc(sv_value));
     }
   }
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
@@ -2116,7 +2116,7 @@ to_array(...)
     int32_t i;
     for (i = 0; i < length; i++) {
       SV* sv_value = sv_2mortal(newSVnv((NV)elements[i]));
-      av_store(av_values, i, SvREFCNT_inc(sv_value));
+      av_push(av_values, SvREFCNT_inc(sv_value));
     }
   }
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
@@ -2459,7 +2459,7 @@ to_array(...)
     int32_t i;
     for (i = 0; i < length; i++) {
       SV* sv_value = sv_2mortal(newSVnv((NV)elements[i]));
-      av_store(av_values, i, SvREFCNT_inc(sv_value));
+      av_push(av_values, SvREFCNT_inc(sv_value));
     }
   }
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
