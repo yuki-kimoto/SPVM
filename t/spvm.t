@@ -751,15 +751,16 @@ is_deeply(
 
 # SPVM Functions
 {
-=pod
   # to_data
   {
     {
       my $sp_values = SPVM::new_byte_array([1, 2, $BYTE_MAX]);
-      ok(SPVM::TestCase::spvm_new_byte_array_data($sp_values));
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('c3', $data);
+      is_deeply(\@values, [1, 2, $BYTE_MAX]);
     }
   }
-=cut
   
   # new_xxx_array_string
   {
