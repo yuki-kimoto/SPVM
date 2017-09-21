@@ -56,13 +56,13 @@ use SPVM::std;
 # String
 {
   {
-    my $spvm_string = SPVM::TestCase::string_empty();
-    is($spvm_string->to_data, "");
+    my $values = SPVM::TestCase::string_empty();
+    is($values->to_data, "");
   }
   
   {
-    my $spvm_string = SPVM::TestCase::string_utf8();
-    is($spvm_string->to_string, "あいうえお");
+    my $values = SPVM::TestCase::string_utf8();
+    is($values->to_string, "あいうえお");
   }
 }
 
