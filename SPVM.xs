@@ -694,7 +694,7 @@ to_array(...)
     int32_t i;
     for (i = 0; i < length; i++) {
       SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_store(av_values, i, SvREFCNT_inc(sv_value));
+      av_push(av_values, SvREFCNT_inc(sv_value));
     }
   }
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
@@ -740,9 +740,17 @@ to_array_range(...)
   
   int8_t* elements = api->get_byte_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count));
+  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t i;
+    for (i = index; i < index + count; i++) {
+      SV* sv_value = sv_2mortal(newSViv(elements[i]));
+      av_push(av_values, SvREFCNT_inc(sv_value));
+    }
+  }
+  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_values);
   XSRETURN(1);
 }
 

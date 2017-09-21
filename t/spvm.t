@@ -661,47 +661,49 @@ is_deeply(
 
 # to_array
 {
-  # to_array - byte
   {
     my $array = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
     my $nums = $array->to_array;
     is_deeply($nums, [1, $BYTE_MAX, $BYTE_MIN]);
   }
-  
-  # to_array - short
   {
     my $array = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
     my $nums = $array->to_array;
     is_deeply($nums, [1, $SHORT_MAX, $SHORT_MIN]);
   }
-
-  # to_array - int
   {
     my $array = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
     my $nums = $array->to_array;
     is_deeply($nums, [1, $INT_MAX, $INT_MIN]);
   }
-
-  # to_array - long
   {
     my $array = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
     my $nums = $array->to_array;
     is_deeply($nums, [1, $LONG_MAX, $LONG_MIN]);
   }
-
-  # to_array - float
   {
     my $array = SPVM::new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
     my $nums = $array->to_array;
     is_deeply($nums, [1, $FLOAT_MAX, $FLOAT_MIN]);
   }
-  # to_array - double
   {
     my $array = SPVM::new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
     my $nums = $array->to_array;
     is_deeply($nums, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
   }
 }
+
+=pod
+# to_array_data
+{
+  {
+    my $array = SPVM::new_byte_array([1, 2, 3, 4]);
+    my $data = $array->to_array_range(1, 2);
+    my @values = unpack(
+    is_deeply($nums, [1, $BYTE_MAX, $BYTE_MIN]);
+  }
+}
+=cut
 
 # get and set
 {
