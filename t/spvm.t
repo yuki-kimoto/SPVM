@@ -785,6 +785,12 @@ is_deeply(
       my @values = unpack('c2', $data);
       is_deeply(\@values, [2, $BYTE_MAX]);
     }
+    {
+      my $sp_values = SPVM::new_short_array([1, 2, $SHORT_MAX, 4]);
+      my $data = $sp_values->to_data_range(1, 2);
+      my @values = unpack('s2', $data);
+      is_deeply(\@values, [2, $SHORT_MAX]);
+    }
   }
   
   # set_elements_range
