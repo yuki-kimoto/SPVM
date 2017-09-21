@@ -467,7 +467,7 @@ sub new_object_array_len {
 sub new_object {
   my $package_name = shift;
   
-  my $object = SPVM::Object::Package->new_object($package_name);
+  my $object = SPVM::Object::Package->new($package_name);
   
   return $object;
 }

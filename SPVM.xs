@@ -99,7 +99,7 @@ DESTROY(...)
 MODULE = SPVM::Object::Package		PACKAGE = SPVM::Object::Package
 
 SV*
-new_object(...)
+new(...)
   PPCODE:
 {
   (void)RETVAL;
