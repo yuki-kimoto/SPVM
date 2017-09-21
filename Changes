@@ -32,6 +32,12 @@
   - add SPVM::Object::Array::Long::to_array_range()
   - add SPVM::Object::Array::Float::to_array_range()
   - add SPVM::Object::Array::Double::to_array_range()
+  - add SPVM::Object::Array::Byte::to_data_range()
+  - add SPVM::Object::Array::Short::to_data_range()
+  - add SPVM::Object::Array::Int::to_data_range()
+  - add SPVM::Object::Array::Long::to_data_range()
+  - add SPVM::Object::Array::Float::to_data_range()
+  - add SPVM::Object::Array::Double::to_data_range()
 
 0.0268 2017-09-19
   - remove string type. SPVM string become byte[].
