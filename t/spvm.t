@@ -751,6 +751,28 @@ is_deeply(
 
 # SPVM Functions
 {
+  # set_elements_range
+  {
+    {
+      my $sp_values = SPVM::new_byte_array([1, 2, 3, 4]);
+      $sp_values->set_elements_range(1, 2, [5, $BYTE_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('c4', $data);
+      is_deeply(\@values, [1, 5, $BYTE_MAX, 4]);
+    }
+    {
+      my $sp_values = SPVM::new_short_array([1, 2, 3, 4]);
+      $sp_values->set_elements_range(1, 2, [5, $SHORT_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('s4', $data);
+      is_deeply(\@values, [1, 5, $SHORT_MAX, 4]);
+    }
+  }
+}
+__END__
+  
   # to_data
   {
     {
