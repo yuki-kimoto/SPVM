@@ -659,48 +659,7 @@ is_deeply(
   is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
 }
 
-# to_array
-{
-  {
-    my $array = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $BYTE_MAX, $BYTE_MIN]);
-  }
-  {
-    my $array = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $SHORT_MAX, $SHORT_MIN]);
-  }
-  {
-    my $array = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $INT_MAX, $INT_MIN]);
-  }
-  {
-    my $array = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $LONG_MAX, $LONG_MIN]);
-  }
-  {
-    my $array = SPVM::new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $FLOAT_MAX, $FLOAT_MIN]);
-  }
-  {
-    my $array = SPVM::new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
-    my $nums = $array->to_array;
-    is_deeply($nums, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
-  }
-}
 
-# to_array_range
-{
-  {
-    my $array = SPVM::new_byte_array([1, 2, $BYTE_MAX, 4]);
-    my $values = $array->to_array_range(1, 2);
-    is_deeply($values, [2, $BYTE_MAX]);
-  }
-}
 
 # get and set
 {
@@ -750,6 +709,54 @@ is_deeply(
 
 # SPVM Functions
 {
+  # to_array
+  {
+    {
+      my $array = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+      my $nums = $array->to_array;
+      is_deeply($nums, [1, $BYTE_MAX, $BYTE_MIN]);
+    }
+    {
+      my $array = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+      my $nums = $array->to_array;
+      is_deeply($nums, [1, $SHORT_MAX, $SHORT_MIN]);
+    }
+    {
+      my $array = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
+      my $nums = $array->to_array;
+      is_deeply($nums, [1, $INT_MAX, $INT_MIN]);
+    }
+    {
+      my $array = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
+      my $nums = $array->to_array;
+      is_deeply($nums, [1, $LONG_MAX, $LONG_MIN]);
+    }
+    {
+      my $array = SPVM::new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
+      my $nums = $array->to_array;
+      is_deeply($nums, [1, $FLOAT_MAX, $FLOAT_MIN]);
+    }
+    {
+      my $array = SPVM::new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
+      my $nums = $array->to_array;
+      is_deeply($nums, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
+    }
+  }
+
+  # to_array_range
+  {
+    {
+      my $array = SPVM::new_byte_array([1, 2, $BYTE_MAX, 4]);
+      my $values = $array->to_array_range(1, 2);
+      is_deeply($values, [2, $BYTE_MAX]);
+    }
+    {
+      my $array = SPVM::new_short_array([1, 2, $SHORT_MAX, 4]);
+      my $values = $array->to_array_range(1, 2);
+      is_deeply($values, [2, $SHORT_MAX]);
+    }
+  }
+
   # set_elements_range
   {
     {
