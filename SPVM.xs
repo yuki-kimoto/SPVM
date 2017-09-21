@@ -807,6 +807,30 @@ to_array(...)
   XSRETURN(1);
 }
 
+SV*
+to_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int16_t* elements = api->get_short_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 2));
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Object::Array::Int		PACKAGE = SPVM::Object::Array::Int
 
 SV*
