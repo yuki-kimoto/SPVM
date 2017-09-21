@@ -3414,7 +3414,8 @@ get_native_sub_names_from_package(...)
       const char* native_sub_name = (char*)&runtime->constant_pool[sub_name_id + 1];
       assert(native_sub_name);
       
-      SV* sv_native_sub_name = sv_2mortal(newSVpv(native_sub_name, 0));
+      int32_t native_sub_name_length = (int32_t)strlen(native_sub_name);
+      SV* sv_native_sub_name = sv_2mortal(newSVpv(native_sub_name, native_sub_name_length));
       av_push(av_native_sub_names, SvREFCNT_inc(sv_native_sub_name));
     }
   }
@@ -3445,7 +3446,8 @@ get_use_package_path(...)
   
   const char* use_package_path = (char*)&constant_pool[package_name_id + 1];
   
-  SV* sv_use_package_path = sv_2mortal(newSVpv(use_package_path, 0));
+  int32_t use_package_path_length = (int32_t)strlen(use_package_path);
+  SV* sv_use_package_path = sv_2mortal(newSVpv(use_package_path, use_package_path_length));
   
   XPUSHs(sv_use_package_path);
   
