@@ -693,17 +693,14 @@ is_deeply(
   }
 }
 
-=pod
-# to_array_data
+# to_array_range
 {
   {
-    my $array = SPVM::new_byte_array([1, 2, 3, 4]);
-    my $data = $array->to_array_range(1, 2);
-    my @values = unpack(
-    is_deeply($nums, [1, $BYTE_MAX, $BYTE_MIN]);
+    my $array = SPVM::new_byte_array([1, 2, $BYTE_MAX, 4]);
+    my $values = $array->to_array_range(1, 2);
+    is_deeply($values, [2, $BYTE_MAX]);
   }
 }
-=cut
 
 # get and set
 {
