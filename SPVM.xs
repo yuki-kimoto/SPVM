@@ -2999,7 +2999,7 @@ to_data_range(...)
   
   double* elements = api->get_double_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 2));
+  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 8));
   
   XPUSHs(sv_data);
   XSRETURN(1);
