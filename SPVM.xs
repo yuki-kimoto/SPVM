@@ -435,7 +435,7 @@ set_elements(...)
   
   int8_t* elements = api->get_byte_array_elements(api, array);
 
-  // Check range
+  // Check length
   if (av_len(av_values) + 1 != length) {
     croak("Elements length must be same as array length(SPVM::Object::Array::Byte::set_elements())");
   }
