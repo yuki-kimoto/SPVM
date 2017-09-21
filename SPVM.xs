@@ -1032,6 +1032,30 @@ to_array(...)
   XSRETURN(1);
 }
 
+SV*
+to_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int32_t* elements = api->get_int_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 4));
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Object::Array::Long		PACKAGE = SPVM::Object::Array::Long
 
 SV*
@@ -1231,6 +1255,30 @@ to_array(...)
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
   XPUSHs(sv_values);
+  XSRETURN(1);
+}
+
+SV*
+to_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  int64_t* elements = api->get_long_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 8));
+  
+  XPUSHs(sv_data);
   XSRETURN(1);
 }
 
@@ -1436,6 +1484,30 @@ to_array(...)
   XSRETURN(1);
 }
 
+SV*
+to_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  float* elements = api->get_float_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 4));
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Object::Array::Double		PACKAGE = SPVM::Object::Array::Double
 
 SV*
@@ -1635,6 +1707,30 @@ to_array(...)
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
   XPUSHs(sv_values);
+  XSRETURN(1);
+}
+
+SV*
+to_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = api->get_array_length(api, array);
+  
+  double* elements = api->get_double_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 8));
+  
+  XPUSHs(sv_data);
   XSRETURN(1);
 }
 
