@@ -1651,6 +1651,49 @@ to_data(...)
   XSRETURN(1);
 }
 
+SV*
+to_data_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Int::to_data_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Int::to_data_range())");
+  }
+  
+  int32_t* elements = api->get_int_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 4));
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Object::Array::Long		PACKAGE = SPVM::Object::Array::Long
 
 SV*
@@ -2040,6 +2083,49 @@ to_data(...)
   int64_t* elements = api->get_long_array_elements(api, array);
   
   SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 8));
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
+SV*
+to_data_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Long::to_data_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Long::to_data_range())");
+  }
+  
+  int64_t* elements = api->get_long_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 8));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -2439,6 +2525,49 @@ to_data(...)
   XSRETURN(1);
 }
 
+SV*
+to_data_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Float::to_data_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Float::to_data_range())");
+  }
+  
+  float* elements = api->get_float_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 4));
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Object::Array::Double		PACKAGE = SPVM::Object::Array::Double
 
 SV*
@@ -2828,6 +2957,49 @@ to_data(...)
   double* elements = api->get_double_array_elements(api, array);
   
   SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 8));
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
+SV*
+to_data_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Double::to_data_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Double::to_data_range())");
+  }
+  
+  double* elements = api->get_double_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 2));
   
   XPUSHs(sv_data);
   XSRETURN(1);
