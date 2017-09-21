@@ -755,6 +755,26 @@ is_deeply(
       my $values = $sp_values->to_array_range(1, 2);
       is_deeply($values, [2, $SHORT_MAX]);
     }
+    {
+      my $sp_values = SPVM::new_int_array([1, 2, $INT_MAX, 4]);
+      my $values = $sp_values->to_array_range(1, 2);
+      is_deeply($values, [2, $INT_MAX]);
+    }
+    {
+      my $sp_values = SPVM::new_long_array([1, 2, $LONG_MAX, 4]);
+      my $values = $sp_values->to_array_range(1, 2);
+      is_deeply($values, [2, $LONG_MAX]);
+    }
+    {
+      my $sp_values = SPVM::new_float_array([1, 2, $FLOAT_PRECICE, 4]);
+      my $values = $sp_values->to_array_range(1, 2);
+      is_deeply($values, [2, $FLOAT_PRECICE]);
+    }
+    {
+      my $sp_values = SPVM::new_double_array([1, 2, $DOUBLE_PRECICE, 4]);
+      my $values = $sp_values->to_array_range(1, 2);
+      is_deeply($values, [2, $DOUBLE_PRECICE]);
+    }
   }
 
   # set_elements_range
