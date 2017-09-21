@@ -1,10 +1,4 @@
-0.0268 2017-09-19
-  - remove string type. SPVM string become byte[].
-  - SPVM::new_string_bytes renamed to SPVM::new_byte_array_data and return SPVM::Array::Byte object
-  - SPVM::new_string renamed to SPVM::new_byte_array_string and return SPVM::Array::Byte object
-  - rename get_elements to to_array
-  - rename get_string to to_string
-  - rename get_data to to_data
+0.0269 2017-09-21
   - add SPVM::Object::Array::Short::set_data()
   - add SPVM::Object::Array::Int::set_data()
   - add SPVM::Object::Array::Long::set_data()
@@ -26,6 +20,14 @@
   - add SPVM::Object::Array::Long::set_elements_range()
   - add SPVM::Object::Array::Float::set_elements_range()
   - add SPVM::Object::Array::Double::set_elements_range()
+
+0.0268 2017-09-19
+  - remove string type. SPVM string become byte[].
+  - SPVM::new_string_bytes renamed to SPVM::new_byte_array_data and return SPVM::Array::Byte object
+  - SPVM::new_string renamed to SPVM::new_byte_array_string and return SPVM::Array::Byte object
+  - rename get_elements to to_array
+  - rename get_string to to_string
+  - rename get_data to to_data
   
 0.0267 2017-09-18
   - add .= operator
