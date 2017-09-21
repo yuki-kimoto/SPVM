@@ -179,7 +179,17 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
     
     int32_t entry_index = hash->table[table_index];
     while (1) {
-      if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0) {
+      _Bool match_string = 0;
+      if (length == 0) {
+        if (strlen(&hash->key_buffer[hash->entries[entry_index].key_index]) == 0) {
+          match_string = 1;
+        }
+      }
+      else if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0) {
+        match_string = 1;
+      }
+      
+      if (match_string) {
         hash->entries[entry_index].value = value;
         break;
       }
@@ -233,7 +243,17 @@ void* SPVM_HASH_search(SPVM_HASH* hash, const char* key, int32_t length) {
   while (1) {
     assert(entry_index >= -1);
     if (entry_index != -1) {
-      if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0) {
+      _Bool match_string = 0;
+      if (length == 0) {
+        if (strlen(&hash->key_buffer[hash->entries[entry_index].key_index]) == 0) {
+          match_string = 1;
+        }
+      }
+      else if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0) {
+        match_string = 1;
+      }
+      
+      if (match_string) {
         return hash->entries[entry_index].value;
       }
       else {

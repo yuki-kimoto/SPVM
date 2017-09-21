@@ -168,6 +168,8 @@ int main()
     int32_t i;
     int32_t max = 70000;
     
+    SPVM_HASH_insert(hash, "", strlen(""), (void*)(intptr_t)-1);
+    
     for (i = 1; i < max; i++) {
       char* key = malloc(10);
       sprintf(key, "key%d", i);
@@ -175,6 +177,12 @@ int main()
     }
     
     _Bool ok = 1;
+    
+    int32_t value = (int32_t)(intptr_t)SPVM_HASH_search(hash, "", strlen(""));
+    if (value != -1) {
+      ok = 0;
+    }
+    
     for (i = 1; i < max; i++) {
       char* key = malloc(10);
       sprintf(key, "key%d", i);
