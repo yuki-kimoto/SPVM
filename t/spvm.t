@@ -867,6 +867,14 @@ is_deeply(
       my $values = $sp_values->to_array;
       is_deeply($values, [1, 5, $BYTE_MAX, 4]);
     }
+    {
+      my $data = pack('s2', 5, $SHORT_MAX);
+      my $sp_values = SPVM::new_short_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $SHORT_MAX, 4]);
+    }
   }
   
   # new_xxx_array_data
