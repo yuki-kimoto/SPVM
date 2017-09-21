@@ -875,6 +875,38 @@ is_deeply(
       my $values = $sp_values->to_array;
       is_deeply($values, [1, 5, $SHORT_MAX, 4]);
     }
+    {
+      my $data = pack('l2', 5, $INT_MAX);
+      my $sp_values = SPVM::new_int_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $INT_MAX, 4]);
+    }
+    {
+      my $data = pack('q2', 5, $LONG_MAX);
+      my $sp_values = SPVM::new_long_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $LONG_MAX, 4]);
+    }
+    {
+      my $data = pack('f2', 5, $FLOAT_PRECICE);
+      my $sp_values = SPVM::new_float_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $FLOAT_PRECICE, 4]);
+    }
+    {
+      my $data = pack('d2', 5, $DOUBLE_PRECICE);
+      my $sp_values = SPVM::new_double_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $DOUBLE_PRECICE, 4]);
+    }
   }
   
   # new_xxx_array_data
