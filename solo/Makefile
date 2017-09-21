@@ -44,7 +44,7 @@ spvm_t_LDFLAGS := $(LDFLAGS) -L .
 spvm_t_LIBS    := -lspvm $(LIBS)
 -include $(test_names:spvm_t_%=$(OBJDIR)/solo/t/spvm_t_%.Po)
 $(OBJDIR)/solo/t/spvm_t_%: $(OBJDIR)/solo/t/spvm_t_%.o libspvm.a
-	$(CC) $(spvm_t_LDFLAGS) -o $@ $< $(spvm_t_LIBS)
+	$(CC) $(spvm_t_LDFLAGS) -DDEBUG -o $@ $< $(spvm_t_LIBS)
 spvm_t_%: $(OBJDIR)/solo/t/spvm_t_%
 	./$<
 .PRECIOUS: $(OBJDIR)/solo/t/spvm_t_%.o $(OBJDIR)/solo/t/spvm_t_%

@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "../../spvm_hash.h"
 #include "../../spvm_hash_entry.h"
@@ -165,23 +168,18 @@ int main()
     int32_t i;
     int32_t max = 70000;
     
-    int32_t* values = malloc(sizeof(int32_t) * max);
-    for (i = 0; i < max; i++) {
-      values[i] = i * 10;
-    }
-    
-    for (i = 0; i < max; i++) {
+    for (i = 1; i < max; i++) {
       char* key = malloc(10);
       sprintf(key, "key%d", i);
-      SPVM_HASH_insert(hash, key, strlen(key), &values[i]);
+      SPVM_HASH_insert(hash, key, strlen(key), (void*)(intptr_t)(i * 10));
     }
     
     _Bool ok = 1;
-    for (i = 0; i < max; i++) {
+    for (i = 1; i < max; i++) {
       char* key = malloc(10);
       sprintf(key, "key%d", i);
-      int32_t* value_ptr = SPVM_HASH_search(hash, key, strlen(key));
-      if (*value_ptr != i * 10) {
+      int32_t value = (int32_t)(intptr_t)SPVM_HASH_search(hash, key, strlen(key));
+      if (value != i * 10) {
         ok = 0;
       }
     }
