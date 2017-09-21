@@ -852,58 +852,70 @@ is_deeply(
   # new_xxx_array_string
   {
     {
-      my $sv_values = SPVM::new_byte_array_string("あ");
-      ok(SPVM::TestCase::spvm_new_byte_array_string($sv_values));
+      my $sp_values = SPVM::new_byte_array_string("あ");
+      ok(SPVM::TestCase::spvm_new_byte_array_string($sp_values));
+    }
+  }
+  
+  # set_data_range
+  {
+    {
+      my $data = pack('c2', 5, $BYTE_MAX);
+      my $sp_values = SPVM::new_byte_array([1, 2, 3, 4]);
+      $sp_values->set_data_range(1, 2, $data);
+      
+      my $values = $sp_values->to_array;
+      is_deeply($values, [1, 5, $BYTE_MAX, 4]);
     }
   }
   
   # new_xxx_array_data
   {
     {
-      my $sv_values = SPVM::new_byte_array_data("abc");
-      ok(SPVM::TestCase::spvm_new_byte_array_data($sv_values));
+      my $sp_values = SPVM::new_byte_array_data("abc");
+      ok(SPVM::TestCase::spvm_new_byte_array_data($sp_values));
     }
     {
       my $data = pack('c3', 97, 98, $BYTE_MAX);
       
-      my $sv_values = SPVM::new_byte_array_data($data);
-      ok(SPVM::TestCase::spvm_new_byte_array_data_pack($sv_values));
+      my $sp_values = SPVM::new_byte_array_data($data);
+      ok(SPVM::TestCase::spvm_new_byte_array_data_pack($sp_values));
     }
     {
       my $data = pack('c3', 97, 98, $BYTE_MAX);
       
-      my $sv_values = SPVM::new_byte_array_data($data);
-      ok(SPVM::TestCase::spvm_new_byte_array_data_pack($sv_values));
+      my $sp_values = SPVM::new_byte_array_data($data);
+      ok(SPVM::TestCase::spvm_new_byte_array_data_pack($sp_values));
     }
     {
       my $data = pack('s3', 97, 98, $SHORT_MAX);
       
-      my $sv_values = SPVM::new_short_array_data($data);
-      ok(SPVM::TestCase::spvm_new_short_array_data_pack($sv_values));
+      my $sp_values = SPVM::new_short_array_data($data);
+      ok(SPVM::TestCase::spvm_new_short_array_data_pack($sp_values));
     }
     {
       my $data = pack('l3', 97, 98, $INT_MAX);
       
-      my $sv_values = SPVM::new_int_array_data($data);
-      ok(SPVM::TestCase::spvm_new_int_array_data_pack($sv_values));
+      my $sp_values = SPVM::new_int_array_data($data);
+      ok(SPVM::TestCase::spvm_new_int_array_data_pack($sp_values));
     }
     {
       my $data = pack('q3', 97, 98, $LONG_MAX);
       
-      my $sv_values = SPVM::new_long_array_data($data);
-      ok(SPVM::TestCase::spvm_new_long_array_data_pack($sv_values));
+      my $sp_values = SPVM::new_long_array_data($data);
+      ok(SPVM::TestCase::spvm_new_long_array_data_pack($sp_values));
     }
     {
       my $data = pack('f3', 97, 98, $FLOAT_PRECICE);
       
-      my $sv_values = SPVM::new_float_array_data($data);
-      ok(SPVM::TestCase::spvm_new_float_array_data_pack($sv_values));
+      my $sp_values = SPVM::new_float_array_data($data);
+      ok(SPVM::TestCase::spvm_new_float_array_data_pack($sp_values));
     }
     {
       my $data = pack('d3', 97, 98, $DOUBLE_PRECICE);
       
-      my $sv_values = SPVM::new_double_array_data($data);
-      ok(SPVM::TestCase::spvm_new_double_array_data_pack($sv_values));
+      my $sp_values = SPVM::new_double_array_data($data);
+      ok(SPVM::TestCase::spvm_new_double_array_data_pack($sp_values));
     }
   }
 }
