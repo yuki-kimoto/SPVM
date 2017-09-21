@@ -771,24 +771,24 @@ set_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Object::Array::Byte::set_elements_range())");
+    croak("Index is out of range(SPVM::Object::Array::Short::set_elements_range())");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Object::Array::Byte::set_elements_range())");
+    croak("Index + count is out of range(SPVM::Object::Array::Short::set_elements_range())");
   }
   
   // Check if sv values is array reference
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece(SPVM::Object::Array::Byte::set_elements_range())");
+    croak("Values must be array refenrece(SPVM::Object::Array::Short::set_elements_range())");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
   
   // Check elements length
   if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument(SPVM::Object::Array::Byte::set_elements_range())");
+    croak("Elements length must be same as count argument(SPVM::Object::Array::Short::set_elements_range())");
   }
   
   // Elements
@@ -1035,6 +1035,71 @@ set_elements(...)
 }
 
 SV*
+set_elements_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  SV* sv_values = ST(3);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Int::set_elements_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Int::set_elements_range())");
+  }
+  
+  // Check if sv values is array reference
+  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
+    croak("Values must be array refenrece(SPVM::Object::Array::Int::set_elements_range())");
+  }
+  
+  AV* av_values = (AV*)SvRV(sv_values);
+  
+  // Check elements length
+  if (av_len(av_values) + 1 != count) {
+    croak("Elements length must be same as count argument(SPVM::Object::Array::Int::set_elements_range())");
+  }
+  
+  // Elements
+  int32_t* elements = api->get_int_array_elements(api, array);
+  
+  // Set element value
+  {
+    int32_t i;
+    
+    for (i = 0; i < count; i++) {
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[index + i] = (int32_t)SvIV(sv_value);
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
 set_data(...)
   PPCODE:
 {
@@ -1253,6 +1318,71 @@ set_elements(...)
       SV** sv_value_ptr = av_fetch(av_values, i, 0);
       SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
       elements[i] = (int64_t)SvIV(sv_value);
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+set_elements_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  SV* sv_values = ST(3);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Long::set_elements_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Long::set_elements_range())");
+  }
+  
+  // Check if sv values is array reference
+  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
+    croak("Values must be array refenrece(SPVM::Object::Array::Long::set_elements_range())");
+  }
+  
+  AV* av_values = (AV*)SvRV(sv_values);
+  
+  // Check elements length
+  if (av_len(av_values) + 1 != count) {
+    croak("Elements length must be same as count argument(SPVM::Object::Array::Long::set_elements_range())");
+  }
+  
+  // Elements
+  int64_t* elements = api->get_long_array_elements(api, array);
+  
+  // Set element value
+  {
+    int32_t i;
+    
+    for (i = 0; i < count; i++) {
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[index + i] = (int64_t)SvIV(sv_value);
     }
   }
   
@@ -1486,6 +1616,71 @@ set_elements(...)
 }
 
 SV*
+set_elements_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  SV* sv_values = ST(3);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Float::set_elements_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Float::set_elements_range())");
+  }
+  
+  // Check if sv values is array reference
+  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
+    croak("Values must be array refenrece(SPVM::Object::Array::Float::set_elements_range())");
+  }
+  
+  AV* av_values = (AV*)SvRV(sv_values);
+  
+  // Check elements length
+  if (av_len(av_values) + 1 != count) {
+    croak("Elements length must be same as count argument(SPVM::Object::Array::Float::set_elements_range())");
+  }
+  
+  // Elements
+  float* elements = api->get_float_array_elements(api, array);
+  
+  // Set element value
+  {
+    int32_t i;
+    
+    for (i = 0; i < count; i++) {
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[index + i] = (float)SvIV(sv_value);
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
 set_data(...)
   PPCODE:
 {
@@ -1705,6 +1900,71 @@ set_elements(...)
       SV** sv_value_ptr = av_fetch(av_values, i, 0);
       SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
       elements[i] = (double)SvNV(sv_value);
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+set_elements_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  SV* sv_values = ST(3);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Double::set_elements_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Double::set_elements_range())");
+  }
+  
+  // Check if sv values is array reference
+  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
+    croak("Values must be array refenrece(SPVM::Object::Array::Double::set_elements_range())");
+  }
+  
+  AV* av_values = (AV*)SvRV(sv_values);
+  
+  // Check elements length
+  if (av_len(av_values) + 1 != count) {
+    croak("Elements length must be same as count argument(SPVM::Object::Array::Double::set_elements_range())");
+  }
+  
+  // Elements
+  double* elements = api->get_double_array_elements(api, array);
+  
+  // Set element value
+  {
+    int32_t i;
+    
+    for (i = 0; i < count; i++) {
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[index + i] = (double)SvIV(sv_value);
     }
   }
   
