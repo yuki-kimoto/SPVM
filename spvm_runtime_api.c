@@ -832,7 +832,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_string(SPVM_API* api, const char* s
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array(api, length);
   
   // Copy string
-  memcpy((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), string, length);
+  if (length > 0) {
+    memcpy((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), string, length);
+  }
   
   return object;
 }
