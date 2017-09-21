@@ -704,6 +704,49 @@ to_array(...)
 }
 
 SV*
+to_array_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Byte::to_data_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Byte::to_data_range())");
+  }
+  
+  int8_t* elements = api->get_byte_array_elements(api, array);
+  
+  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count));
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
+SV*
 to_data(...)
   PPCODE:
 {

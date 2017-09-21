@@ -32,13 +32,11 @@ Method List:
 
 =item * set_elements_range
 
-=item * set_string
-
-=item * set_string_range
-
 =item * set_data
 
 =item * set_data_range
+
+=item * set_string
 
 =item * set
 
@@ -48,13 +46,11 @@ Method List:
 
 =item * to_array_range
 
-=item * to_string
-
-=item * to_string_range
-
 =item * to_data
 
 =item * to_data_range
+
+=item * to_string
 
 =back
 
