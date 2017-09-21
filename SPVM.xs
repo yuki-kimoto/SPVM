@@ -547,6 +547,58 @@ set_data(...)
 }
 
 SV*
+set_data_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  SV* sv_data = ST(3);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Byte::set_data_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Byte::set_data_range())");
+  }
+  
+  // Check data byte size
+  int32_t data_byte_size = (int32_t)sv_len(sv_data);
+  
+  if (data_byte_size != count) {
+    croak("Data byte size must be same as count argument(SPVM::Object::Array::Byte::set_data_range())");
+  }
+  
+  // Elements
+  int8_t* elements = api->get_byte_array_elements(api, array);
+  
+  // Copy data
+  memcpy(elements + index, SvPV_nolen(sv_data), count);
+  
+  XSRETURN(0);
+}
+
+SV*
 set(...)
   PPCODE:
 {
