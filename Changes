@@ -1,4 +1,4 @@
-0.0270 2017-09-21
+0.0270 2017-09-22
   - fix 0 length string bug
 0.0269 2017-09-21
   - add SPVM::Object::Array::Short::set_data()
