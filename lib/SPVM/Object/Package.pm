@@ -14,31 +14,11 @@ Method List:
 
 =over 2
 
-=item * new_len
-
-=item * set_elements
-
-=item * set_elements_range
-
-=item * set_data
-
-=item * set_data_range
-
-=item * set_string
+=item * new
 
 =item * set
 
 =item * get
-
-=item * to_array
-
-=item * to_array_range
-
-=item * to_data
-
-=item * to_data_range
-
-=item * to_string
 
 =back
 

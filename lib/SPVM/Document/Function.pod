@@ -107,6 +107,16 @@ You can set and get value by C<set> and C<get> method.
 
 =head1 Object Methods
 
+=head2 SPVM::Object::Package
+
+=head3 new
+
+=head3 set
+
+=head3 get
+
+=head2 SPVM::Object::Array
+
 =head2 SPVM::Object::Array::Byte
 
 =head3 new_len
