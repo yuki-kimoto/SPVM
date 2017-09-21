@@ -5,6 +5,21 @@
   - rename get_elements to to_array
   - rename get_string to to_string
   - rename get_data to to_data
+  - add SPVM::Object::Array::Short::set_data()
+  - add SPVM::Object::Array::Int::set_data()
+  - add SPVM::Object::Array::Long::set_data()
+  - add SPVM::Object::Array::Float::set_data()
+  - add SPVM::Object::Array::Double::set_data()
+  - add SPVM::Object::Array::Short::to_data()
+  - add SPVM::Object::Array::Int::to_data()
+  - add SPVM::Object::Array::Long::to_data()
+  - add SPVM::Object::Array::Float::to_data()
+  - add SPVM::Object::Array::Double::to_data()
+  - add SPVM::new_short_array_data()
+  - add SPVM::new_int_array_data()
+  - add SPVM::new_long_array_data()
+  - add SPVM::new_float_array_data()
+  - add SPVM::new_double_array_data()
   
 0.0267 2017-09-18
   - add .= operator
