@@ -929,7 +929,7 @@ set_data_range(...)
   int32_t data_short_size = (int32_t)sv_len(sv_data);
   
   if (data_short_size != count * 2) {
-    croak("Data short size must be same as count argument(SPVM::Object::Array::Short::set_data_range())");
+    croak("Data byte size must be same as count argument * 2(SPVM::Object::Array::Short::set_data_range())");
   }
   
   // Elements
@@ -1270,15 +1270,15 @@ set_data_range(...)
   // Check data int size
   int32_t data_int_size = (int32_t)sv_len(sv_data);
   
-  if (data_int_size != count * 2) {
-    croak("Data int size must be same as count argument(SPVM::Object::Array::Int::set_data_range())");
+  if (data_int_size != count * 4) {
+    croak("Data byte size must be same as count argument * 4(SPVM::Object::Array::Int::set_data_range())");
   }
   
   // Elements
   int32_t* elements = api->get_int_array_elements(api, array);
   
   // Copy data
-  memcpy(elements + index, SvPV_nolen(sv_data), count * 2);
+  memcpy(elements + index, SvPV_nolen(sv_data), count * 4);
   
   XSRETURN(0);
 }
@@ -1575,6 +1575,58 @@ set_data(...)
 }
 
 SV*
+set_data_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  SV* sv_data = ST(3);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Long::set_data_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Long::set_data_range())");
+  }
+  
+  // Check data long size
+  int32_t data_long_size = (int32_t)sv_len(sv_data);
+  
+  if (data_long_size != count * 8) {
+    croak("Data byte size must be same as count argument * 8(SPVM::Object::Array::Long::set_data_range())");
+  }
+  
+  // Elements
+  int64_t* elements = api->get_long_array_elements(api, array);
+  
+  // Copy data
+  memcpy(elements + index, SvPV_nolen(sv_data), count * 8);
+  
+  XSRETURN(0);
+}
+
+SV*
 set(...)
   PPCODE:
 {
@@ -1866,6 +1918,58 @@ set_data(...)
 }
 
 SV*
+set_data_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  SV* sv_data = ST(3);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Float::set_data_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Float::set_data_range())");
+  }
+  
+  // Check data float size
+  int32_t data_float_size = (int32_t)sv_len(sv_data);
+  
+  if (data_float_size != count * 4) {
+    croak("Data byte size must be same as count argument * 4(SPVM::Object::Array::Float::set_data_range())");
+  }
+  
+  // Elements
+  float* elements = api->get_float_array_elements(api, array);
+  
+  // Copy data
+  memcpy(elements + index, SvPV_nolen(sv_data), count * 4);
+  
+  XSRETURN(0);
+}
+
+SV*
 set(...)
   PPCODE:
 {
@@ -2152,6 +2256,58 @@ set_data(...)
   }
   
   memcpy(elements, SvPV_nolen(sv_data), length * 8);
+  
+  XSRETURN(0);
+}
+
+SV*
+set_data_range(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_count = ST(2);
+  SV* sv_data = ST(3);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+  
+  // Count
+  int32_t count = (int32_t)SvIV(sv_count);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = api->get_array_length(api, array);
+  
+  // Check index
+  if (index < 0 || index > length - 1) {
+    croak("Index is out of range(SPVM::Object::Array::Double::set_data_range())");
+  }
+  
+  // Check count
+  if (count < 0 || index + count > length - 1) {
+    croak("Index + count is out of range(SPVM::Object::Array::Double::set_data_range())");
+  }
+  
+  // Check data double size
+  int32_t data_double_size = (int32_t)sv_len(sv_data);
+  
+  if (data_double_size != count * 8) {
+    croak("Data byte size must be same as count argument * 8(SPVM::Object::Array::Double::set_data_range())");
+  }
+  
+  // Elements
+  double* elements = api->get_double_array_elements(api, array);
+  
+  // Copy data
+  memcpy(elements + index, SvPV_nolen(sv_data), count * 8);
   
   XSRETURN(0);
 }
