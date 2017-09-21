@@ -776,7 +776,7 @@ to_data(...)
   
   int8_t* elements = api->get_byte_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -819,7 +819,7 @@ to_data_range(...)
   
   int8_t* elements = api->get_byte_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -1217,7 +1217,7 @@ to_data(...)
   
   int16_t* elements = api->get_short_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 2));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 2));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -1260,7 +1260,7 @@ to_data_range(...)
   
   int16_t* elements = api->get_short_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 2));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 2));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -1658,7 +1658,7 @@ to_data(...)
   
   int32_t* elements = api->get_int_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 4));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 4));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -1701,7 +1701,7 @@ to_data_range(...)
   
   int32_t* elements = api->get_int_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 4));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -2099,7 +2099,7 @@ to_data(...)
   
   int64_t* elements = api->get_long_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 8));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 8));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -2142,7 +2142,7 @@ to_data_range(...)
   
   int64_t* elements = api->get_long_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 8));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -2540,7 +2540,7 @@ to_data(...)
   
   float* elements = api->get_float_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 4));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 4));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -2583,7 +2583,7 @@ to_data_range(...)
   
   float* elements = api->get_float_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 4));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -2981,7 +2981,7 @@ to_data(...)
   
   double* elements = api->get_double_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)elements, length * 8));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 8));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -3024,7 +3024,7 @@ to_data_range(...)
   
   double* elements = api->get_double_array_elements(api, array);
   
-  SV* sv_data = sv_2mortal(newSVpv((char*)(elements + index), count * 8));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -3167,7 +3167,7 @@ get(...)
   const char* array_type_name = (char*)&runtime->constant_pool[constant_pool_array_type->name_id + 1];
   
   // Element type name sv
-  SV* sv_element_type_name = sv_2mortal(newSVpv(array_type_name, strlen(array_type_name) - 2));
+  SV* sv_element_type_name = sv_2mortal(newSVpvn(array_type_name, strlen(array_type_name) - 2));
   const char* element_type_name = SvPV_nolen(sv_element_type_name);
   
   // Element type id
@@ -3338,7 +3338,7 @@ get_sub_names(...)
       int32_t sub_name_length = runtime->constant_pool[sub_name_id];
       const char* sub_name = (char*)&runtime->constant_pool[sub_name_id + 1];
       
-      SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, sub_name_length));
+      SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, sub_name_length));
       av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
     }
   }
@@ -3375,7 +3375,7 @@ get_native_sub_names(...)
         int32_t sub_name_length = runtime->constant_pool[sub_name_id];
         const char* sub_name = (char*)&runtime->constant_pool[sub_name_id + 1];
         
-        SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, sub_name_length));
+        SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, sub_name_length));
         av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
       }
     }
@@ -3415,7 +3415,7 @@ get_native_sub_names_from_package(...)
       assert(native_sub_name);
       
       int32_t native_sub_name_length = (int32_t)strlen(native_sub_name);
-      SV* sv_native_sub_name = sv_2mortal(newSVpv(native_sub_name, native_sub_name_length));
+      SV* sv_native_sub_name = sv_2mortal(newSVpvn(native_sub_name, native_sub_name_length));
       av_push(av_native_sub_names, SvREFCNT_inc(sv_native_sub_name));
     }
   }
@@ -3447,7 +3447,7 @@ get_use_package_path(...)
   const char* use_package_path = (char*)&constant_pool[package_name_id + 1];
   
   int32_t use_package_path_length = (int32_t)strlen(use_package_path);
-  SV* sv_use_package_path = sv_2mortal(newSVpv(use_package_path, use_package_path_length));
+  SV* sv_use_package_path = sv_2mortal(newSVpvn(use_package_path, use_package_path_length));
   
   XPUSHs(sv_use_package_path);
   
@@ -3788,7 +3788,7 @@ call_sub(...)
   if (exception) {
     int32_t length = api->get_array_length(api, exception);
     char* exception_bytes = (char*)api->get_byte_array_elements(api, exception);
-    SV* sv_exception = sv_2mortal(newSVpv(exception_bytes, length));
+    SV* sv_exception = sv_2mortal(newSVpvn(exception_bytes, length));
     croak("%s", SvPV_nolen(sv_exception));
   }
   
