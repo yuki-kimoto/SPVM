@@ -760,6 +760,13 @@ is_deeply(
       my @values = unpack('c3', $data);
       is_deeply(\@values, [1, 2, $BYTE_MAX]);
     }
+    {
+      my $sp_values = SPVM::new_short_array([1, 2, $SHORT_MAX]);
+      my $data = $sp_values->to_data;
+      
+      my @values = unpack('s3', $data);
+      is_deeply(\@values, [1, 2, $SHORT_MAX]);
+    }
   }
   
   # new_xxx_array_string
