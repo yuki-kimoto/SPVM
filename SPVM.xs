@@ -556,7 +556,7 @@ to_array(...)
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
