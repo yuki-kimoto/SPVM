@@ -26,3 +26,8 @@ See the following code.
     my $value = 9223372036854775807;
 
 In 32 bit integer Perl, 64bit integer value is converted to double automatically. The double value can't express long value accurately.
+
+=head2 What means SPVM
+
+SPVM means B<Static Perl Virtual Machine>.
+

@@ -496,40 +496,53 @@ sub build_spvm_subs {
 
 =head1 NAME
 
-SPVM - Fast Calculation, Static Typing, C/C++ Binding, GC, VM with perlish syntax
+SPVM - Fast Calculation and Easy C/C++ Binding with perlish syntax and static typing
 
-B<SPVM is under development! I will change implementation and specification without warnings.>
+B<SPVM is before 1.0 under development! I will change implementation and specification without warnings.>
 
 =head1 SYNOPSIS
 
-SPVM Module:
+B<Fast Array Operation> using SPVM.
 
-  # lib/SPVM/MyModule1.spvm
-  package MyModule1 {
-    has x : int;
-    has y : int;
-
-    sub sum ($x : int, $y : int) : int {
-
-      my $total = $x + $y;
-
+  # lib/SPVM/MyMath.spvm
+  package MyMath {
+    
+    # Sub Declaration
+    sub sum ($nums : int[]) : int {
+      
+      # Culcurate total
+      my $total = 0;
+      for (my $i = 0; $i < @$nums; $i++) {
+        $total += $nums->[$i];
+      }
+      
       return $total;
     }
   }
 
 Use SPVM Module from Perl
-
+  
   use FindBin;
   use lib "$FindBin::Bin/lib";
-
-  use SPVM 'MyModule1';
-
-  my $total = SPVM::MyModule1::sum(3, 5);
+  
+  # Use SPVM module
+  use SPVM 'MyMath';
+  
+  # New SPVM int array
+  my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
+  
+  # Call SPVM subroutine
+  my $total = SPVM::MyMath::sum($sp_nums);
+  
   print $total . "\n";
+
+If you know more SPVM syntax, see L<SPVM::Document::Specification>.
+
+If you know more Functions to convert Perl Data to SPVM Data, see L<SPVM::Document::Function>.
 
 =head1 DESCRIPTION
 
-Do you need B<faster Perl>? SPVM provides fast calculation to Perl.
+Do you need B<fast Perl>? SPVM provides fast calculation to Perl.
 
 =over 4
 
