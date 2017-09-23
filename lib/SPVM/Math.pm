@@ -67,3 +67,27 @@ $x - an angle, in radians.
 B<Returns:>
 
 the cosine of the argument.
+
+=head2 tan
+
+B<double tan(double $x)>
+
+Returns the trigonometric tangent of an angle. Special cases:
+
+=over 2
+
+=item* If the argument is NaN or an infinity, then the result is NaN.
+
+=item* If the argument is zero, then the result is a zero with the same sign as the argument.
+
+=back
+
+The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
+
+B<Parameters:>
+
+$x - an angle, in radians.
+
+B<Returns:>
+
+the tangent of the argument.
