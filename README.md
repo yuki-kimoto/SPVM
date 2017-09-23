@@ -42,9 +42,9 @@ Use SPVM Module from Perl
     
     print $total . "\n";
 
-If you know more SPVM syntax, see [lib/SPVM/Document/Specification.pod].
+If you know more SPVM syntax, see [SPVM::Document::Specification](lib/SPVM/Document/Specification.pod).
 
-If you know more Functions to convert Perl Data to SPVM Data, see [lib/SPVM/Document/Functions.pod].
+If you know more Functions to convert Perl Data to SPVM Data, see [SPVM::Document::Functions](lib/SPVM/Document/Functions.pod).
 
 ### C Extension using SPVM
 
@@ -59,31 +59,31 @@ SPVM Module:
 
 C Source File;
 
-  // lib/SPVM/MyMathNative.native/MyMathNative.c
-  #include <spvm_api.h>
-
-  int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+    // lib/SPVM/MyMathNative.native/MyMathNative.c
+    #include <spvm_api.h>
     
-    // First argument
-    SPVM_API_OBJECT* sp_nums = args[0].object_value;
+    int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_API_VALUE* args) {
     
-    // Array length
-    int32_t length = api->get_array_length(api, sp_nums);
-    
-    // Elements pointer
-    int32_t* nums = api->get_int_array_elements(api, sp_nums);
-    
-    // Culcurate total
-    int32_t total = 0;
-    {
-      int32_t i;
-      for (i = 0; i < length; i++) {
-        total += nums[i];
+      // First argument
+      SPVM_API_OBJECT* sp_nums = args[0].object_value;
+      
+      // Array length
+      int32_t length = api->get_array_length(api, sp_nums);
+      
+      // Elements pointer
+      int32_t* nums = api->get_int_array_elements(api, sp_nums);
+      
+      // Culcurate total
+      int32_t total = 0;
+      {
+        int32_t i;
+        for (i = 0; i < length; i++) {
+          total += nums[i];
+        }
       }
+      
+      return total;
     }
-    
-    return total;
-  }
 
 Use Extension Module from Perl:
 
@@ -101,9 +101,9 @@ Use Extension Module from Perl:
     
     print $total . "\n";
 
-If you know more SPVM Extension, see [lib/SPVM/Document/Extension.pod].
+If you know more SPVM Extension, see [SPVM::Document::Extension](lib/SPVM/Document/Extension.pod).
 
-If you know the APIs to manipulate SPVM data, see [lib/SPVM/Document/NativeAPI.pod].
+If you know the APIs to manipulate SPVM data, see [SPVM::Document::NativeAPI](lib/SPVM/Document/NativeAPI.pod).
 
 # Contributors
 
