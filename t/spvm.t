@@ -73,6 +73,7 @@ my $start_objects_count = SPVM::get_objects_count();
 {
   ok(SPVM::TestCase::sin());
   ok(SPVM::TestCase::cos());
+  ok(SPVM::TestCase::tan());
 }
 
 # Native subroutine

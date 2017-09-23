@@ -22,3 +22,10 @@ double SPVM__Math__cos(SPVM_API* api, SPVM_API_VALUE* args) {
   return value;
 }
 
+double SPVM__Math__tan(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = tan(args[0].double_value);
+  
+  return value;
+}

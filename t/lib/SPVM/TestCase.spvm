@@ -228,7 +228,7 @@ package TestCase {
   sub sin() : int {
     my $value = Math::sin(Math->PI);
     
-    if ($value < 0.000001) {
+    if ($value < 0.000001 && $value > -0.000001) {
       return 1;
     }
     return 0;
@@ -237,12 +237,23 @@ package TestCase {
   sub cos() : int {
     my $value = Math::cos(Math->PI / 2.0);
     
-    if ($value < 0.000001) {
+    if ($value < 0.000001 && $value > -0.000001) {
       return 1;
     }
     return 0;
   }
   
+  sub tan() : int {
+    my $value = Math::tan(Math->PI / 4.0);
+    
+    std::say("" . $value);
+    
+    if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+
   sub spvm_extension() : int {
     my $total = TestCase::Extension::sum(2, 3);
     
