@@ -4,10 +4,12 @@ lib/SPVM.pm
 lib/SPVM/Build.pm
 lib/SPVM/Debug.pm
 lib/SPVM/Document/Cookbook.pod
+lib/SPVM/Document/Extension.pod
 lib/SPVM/Document/FAQ.pod
-lib/SPVM/Document/Function.pod
+lib/SPVM/Document/Functions.pod
 lib/SPVM/Document/NativeAPI.pod
-lib/SPVM/Document/Spec.pod
+lib/SPVM/Document/Specification.pod
+lib/SPVM/Document/StandardLibrary.pod
 lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
 lib/SPVM/Object.pm
@@ -28,7 +30,7 @@ MANIFEST			This list of files
 native/SPVM/Math.native/Math.c
 native/SPVM/std.native/std.c
 ppport.h
-README.md
+README.pod
 solo/Main.spvm
 solo/Makefile
 solo/README.md
