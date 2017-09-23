@@ -1,114 +1,314 @@
-# SPVM - Fast Calculation and Easy C/C++ Binding with perlish syntax and static typing
+=encoding UTF-8
 
-SPVM provide Fast Culcuration and Easy way to Bind C/C++ Language to Perl.
+=head1 NAME
 
-SPVM is before 1.0 under development! I will change implementation and specification without warnings.
+SPVM - Fast Calculation and Easy C/C++ Binding with perlish syntax and static typing
 
-## Usage
+B<SPVM is before 1.0 under development! I will change implementation and specification without warnings.>
 
-### Fast Array Operation using SPVM.
+=head1 SYNOPSIS
+
+=head2 Fast Array Operation using SPVM.
 
 SPVM Module:
 
-    # lib/SPVM/MyMath.spvm
-    package MyMath {
+  # lib/SPVM/MyMath.spvm
+  package MyMath {
+    
+    # Sub Declaration
+    sub sum ($nums : int[]) : int {
       
-      # Sub Declaration
-      sub sum ($nums : int[]) : int {
-        
-        # Culcurate total
-        my $total = 0;
-        for (my $i = 0; $i < @$nums; $i++) {
-          $total += $nums->[$i];
-        }
-        
-        return $total;
+      # Culcurate total
+      my $total = 0;
+      for (my $i = 0; $i < @$nums; $i++) {
+        $total += $nums->[$i];
       }
+      
+      return $total;
     }
+  }
 
 Use SPVM Module from Perl
   
-    use FindBin;
-    use lib "$FindBin::Bin/lib";
-    
-    # Use SPVM module
-    use SPVM 'MyMath';
-    
-    # New SPVM int array
-    my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
-    
-    # Call SPVM subroutine
-    my $total = SPVM::MyMath::sum($sp_nums);
-    
-    print $total . "\n";
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+  
+  # Use SPVM module
+  use SPVM 'MyMath';
+  
+  # New SPVM int array
+  my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
+  
+  # Call SPVM subroutine
+  my $total = SPVM::MyMath::sum($sp_nums);
+  
+  print $total . "\n";
 
-If you know more SPVM syntax, see [SPVM::Document::Specification](lib/SPVM/Document/Specification.pod).
+If you know more SPVM syntax, see L<SPVM::Document::Specification>.
 
-If you know more Functions to convert Perl Data to SPVM Data, see [SPVM::Document::Functions](lib/SPVM/Document/Functions.pod).
+If you know more Functions to convert Perl Data to SPVM Data, see L<SPVM::Document::Functions>.
 
-### C Extension using SPVM
+=head2 C Extension using SPVM
 
 SPVM Module:
 
-    # lib/SPVM/MyMathNative.spvm
-    package MyMathNative {
-      
-      # Sub Declaration
-      sub sum ($nums : int[]) : native int;
-    }
+  # lib/SPVM/MyMathNative.spvm
+  package MyMathNative {
+    
+    # Sub Declaration
+    sub sum ($nums : int[]) : native int;
+  }
 
 C Source File;
 
-    // lib/SPVM/MyMathNative.native/MyMathNative.c
-    #include <spvm_api.h>
+  // lib/SPVM/MyMathNative.native/MyMathNative.c
+  #include <spvm_api.h>
+
+  int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_API_VALUE* args) {
     
-    int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+    // First argument
+    SPVM_API_OBJECT* sp_nums = args[0].object_value;
     
-      // First argument
-      SPVM_API_OBJECT* sp_nums = args[0].object_value;
-      
-      // Array length
-      int32_t length = api->get_array_length(api, sp_nums);
-      
-      // Elements pointer
-      int32_t* nums = api->get_int_array_elements(api, sp_nums);
-      
-      // Culcurate total
-      int32_t total = 0;
-      {
-        int32_t i;
-        for (i = 0; i < length; i++) {
-          total += nums[i];
-        }
+    // Array length
+    int32_t length = api->get_array_length(api, sp_nums);
+    
+    // Elements pointer
+    int32_t* nums = api->get_int_array_elements(api, sp_nums);
+    
+    // Culcurate total
+    int32_t total = 0;
+    {
+      int32_t i;
+      for (i = 0; i < length; i++) {
+        total += nums[i];
       }
-      
-      return total;
     }
+    
+    return total;
+  }
 
 Use Extension Module from Perl:
 
-    use FindBin;
-    use lib "$FindBin::Bin/lib";
-    
-    # Use SPVM module
-    use SPVM 'MyMathNative';
-    
-    # New SPVM int array
-    my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
-    
-    # Call SPVM subroutine
-    my $total = SPVM::MyMathNative::sum($sp_nums);
-    
-    print $total . "\n";
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+  
+  # Use SPVM module
+  use SPVM 'MyMathNative';
+  
+  # New SPVM int array
+  my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
+  
+  # Call SPVM subroutine
+  my $total = SPVM::MyMathNative::sum($sp_nums);
+  
+  print $total . "\n";
 
-If you know more SPVM Extension, see [SPVM::Document::Extension](lib/SPVM/Document/Extension.pod).
+If you know more SPVM Extension, see L<SPVM::Document::Extension>.
 
-If you know the APIs to manipulate SPVM data, see [SPVM::Document::NativeAPI](lib/SPVM/Document/NativeAPI.pod).
+If you know the APIs to manipulate SPVM data, see L<SPVM::Document::NativeAPI>.
 
-# Contributors
+=head1 DESCRIPTION
 
-* [akinomyoga](https://github.com/akinomyoga) (Koichi Murase)
-* [NAGAYASU Shinya](https://github.com/nagayasu-shinya)
-* [Reini Urban](https://github.com/rurban)
-* [chromatic](https://github.com/chromatic)
-* [Kazutake Hiramatsu](https://github.com/kazhiramatsu)
+SPVM provide Fast Culcuration and Easy way to Bind C/C++ Language to Perl.
+
+=over 4
+
+=item *
+
+B<Fast calculation> - The Perl's biggest weak point is the calculation performance. SPVM provides fast calculations.
+
+=item *
+
+B<GC> - You don't need to care about freeing memory
+
+=item *
+
+B<Static typing> - Static typing for performance
+
+=item *
+
+B<VM> - Byte codes are generated so that you can run them on SPVM language
+
+=item *
+
+B<Perlish syntax> - SPVM syntax is very similar to Perl
+
+=item *
+
+B<Perl module> - SPVM function can be called from Perl itself.
+
+=back
+
+=head1 SPVM Tutorial
+
+L<SPVM> is a language which is similar with Perl. SPVM is very similar to Perl, and you can write same syntax of Perl in most part.
+
+L<SPVM> communicate with Perl. You can call SPVM function directory from Perl.
+
+L<SPVM> is very fast and provide array data structure. Now SPVM array operation is about 6x faster.
+
+=head2 SPVM module
+
+At first, you can write SPVM module. 
+
+  # lib/SPVM/MyModule1.spvm
+  package MyModule1 {
+    has x : int;
+    has y : int;
+
+    sub sum ($x : int, $y : int) : int {
+
+      my $total = $x + $y;
+
+      return $total;
+    }
+  }
+
+This is same as Perl except SPVM have static type and C<has> keyword.
+
+You can define field by C<has> keyword, and specify static type by C<: type>.
+
+  has x : int;
+
+You can specify argument types and return type to subroutine by C<: type>.
+
+  sub sum ($x : int, $y : int) : int {
+
+    my $total = $x + $y;
+
+    return $total;
+  }
+
+Let's save this file by the following name
+
+  lib/SPVM/MyModule1.spvm
+
+If package name is C<MyModule1>, file name must be C<SPVM/MyModule1.spvm>.
+
+Extension is C<spvm>. And you create C<SPVM> directory.
+
+C<lib> is normal directory.
+
+=head2 Call SPVM subroutine
+
+Next you can use SPVM subroutine from Perl.
+
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+
+  use SPVM 'MyModule1';
+
+  my $total = SPVM::MyModule1::sum(3, 5);
+  print $total . "\n";
+
+At first, you add library path by L<FindBin> and L<lib> module.
+
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+
+Next, use SPVM module. C<MyModule1> is loaded.
+
+  use SPVM 'MyModule1';
+
+And call SPVM subroutine. If SPVM subroutine absolute name is C<MyModule1::sum>, you can call this subroutine by C<SPVM::MyModule1::sum>.
+
+  my $total = SPVM::MyModule1::sum(3, 5);
+  print $total . "\n";
+
+=head1 Document
+
+=head2 SPVM Functions
+
+L<SPVM::Document::Functions> - SPVM data convertion function.
+
+List of SPVM functions:
+
+=over 2
+
+=item * new_byte_array
+
+=item * new_byte_array_data
+
+=item * new_byte_array_string
+
+=item * new_short_array
+
+=item * new_int_array
+
+=item * new_long_array
+
+=item * new_float_array
+
+=item * new_double_array
+
+=item * new_object_array_len
+
+=item * new_object
+
+=back
+
+If you know Detail of SPVM Function, see L<SPVM::Document::Functions>.
+
+=head2 SPVM Language Specification
+
+L<SPVM::Document::Specification> - SPVM Language Specification
+
+=head2 SPVM Native API
+
+L<SPVM::Document::NativeAPI> - SPVM Native API.
+
+Native API is C level API. You can write programing logic using C language and SPVM Native API.
+
+=head2 SPVM Cookbook
+
+L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many examples.
+
+=head2 SPVM FAQ
+
+L<SPVM::Document::FAQ> - Oftten asked question.
+
+=head2 SUPPORT
+
+If you have problems or find bugs, comment to GitHub Issue.
+
+L<SPVM(GitHub)|https://github.com/yuki-kimoto/SPVM>.
+
+=head1 AUTHOR
+
+Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
+
+=head1 CONTRIBUTERS
+
+=over 4
+
+=item *
+
+L<akinomyoga|https://github.com/akinomyoga> (Koichi Murase)
+
+=item *
+
+L<[NAGAYASU Shinya|https://github.com/nagayasu-shinya>
+
+=item *
+
+L<Reini Urban|https://github.com/rurban>
+
+=item *
+
+L<chromatic|https://github.com/chromatic>
+
+=item *
+
+L<Kazutake Hiramatsu|https://github.com/kazhiramatsu>
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2017 by Yuki Kimoto
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.16.3 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut
