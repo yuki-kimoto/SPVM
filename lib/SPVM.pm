@@ -684,7 +684,7 @@ If you know Detail of SPVM Function, see L<SPVM::Document::Function>.
 
 =head2 SPVM Language Specification
 
-L<SPVM::Document::Spec> - SPVM Language Specification
+L<SPVM::Document::Specification> - SPVM Language Specification
 
 =head2 SPVM Native API
 
