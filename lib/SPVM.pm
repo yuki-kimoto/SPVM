@@ -496,21 +496,13 @@ sub build_spvm_subs {
 
 =head1 NAME
 
-SPVM - Fast calculation, GC, static typing, VM with perlish syntax
+SPVM - Fast Calculation, Static Typing, C/C++ Binding, GC, VM with perlish syntax
 
 B<SPVM is under development! I will change implementation and specification without warnings.>
 
 =head1 SYNOPSIS
 
-  use FindBin;
-  use lib "$FindBin::Bin/lib";
-
-  use SPVM 'MyModule2';
-
-  my $total = SPVM::MyModule2::foo(3, 5);
-  print $total . "\n";
-
-Module file
+SPVM Module:
 
   # lib/SPVM/MyModule1.spvm
   package MyModule1 {
@@ -525,21 +517,15 @@ Module file
     }
   }
 
-  # lib/SPVM/MyModule2.spvm
-  use MyModule1;
-  package MyModule2 {
+Use SPVM Module from Perl
 
-    sub foo ($x : int, $y : int) : int {
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
 
-      my $total = ($x * $y) + MyModule1::sum(2, 4);
+  use SPVM 'MyModule1';
 
-      return $total;
-    }
-  }
-
-If you want to know more syntax, see C<solo/SPVM/Test.spvm>.
-
-If you want to know SPVM language, see C<solo/README.md>
+  my $total = SPVM::MyModule1::sum(3, 5);
+  print $total . "\n";
 
 =head1 DESCRIPTION
 
