@@ -597,9 +597,13 @@ Use Extension Module from Perl:
   
   print $total . "\n";
 
+If you know more SPVM Extension, see L<SPVM::Document::Extension>.
+
+If you know the APIs to manipulate SPVM data, see L<SPVM::Document::NativeAPI>.
+
 =head1 DESCRIPTION
 
-Do you need B<fast Perl>? SPVM provides fast calculation to Perl.
+SPVM provide Fast Culcuration and Easy way to Bind C/C++ Language to Perl.
 
 =over 4
 
