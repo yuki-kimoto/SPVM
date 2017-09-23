@@ -538,7 +538,7 @@ Use SPVM Module from Perl
 
 If you know more SPVM syntax, see L<SPVM::Document::Specification>.
 
-If you know more Functions to convert Perl Data to SPVM Data, see L<SPVM::Document::Function>.
+If you know more Functions to convert Perl Data to SPVM Data, see L<SPVM::Document::Functions>.
 
 =head1 DESCRIPTION
 
@@ -652,7 +652,7 @@ And call SPVM subroutine. If SPVM subroutine absolute name is C<MyModule1::sum>,
 
 =head2 SPVM Functions
 
-L<SPVM::Document::Function> - SPVM data convertion function.
+L<SPVM::Document::Functions> - SPVM data convertion function.
 
 List of SPVM functions:
 
@@ -680,7 +680,7 @@ List of SPVM functions:
 
 =back
 
-If you know Detail of SPVM Function, see L<SPVM::Document::Function>.
+If you know Detail of SPVM Function, see L<SPVM::Document::Functions>.
 
 =head2 SPVM Language Specification
 
