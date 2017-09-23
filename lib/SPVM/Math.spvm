@@ -5,4 +5,5 @@ package Math {
   }
   
   sub sin ($value : double) : native double;
+  sub cos ($value : double) : native double;
 }
