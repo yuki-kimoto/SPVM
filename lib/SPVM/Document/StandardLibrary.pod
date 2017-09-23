@@ -1,0 +1,10 @@
+=head1 NAME
+
+SPVM::Document::StandardLibrary - SPVM Standard Library(BETA before 1.0)
+
+=head1 SPVM Language Standard Library
+
+=head2 SPVM::Math
+
+L<SPVM::Math> - Math Library
+

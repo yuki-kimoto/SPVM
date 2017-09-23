@@ -713,7 +713,7 @@ And call SPVM subroutine. If SPVM subroutine absolute name is C<MyModule1::sum>,
 
 =head2 SPVM Functions
 
-L<SPVM::Document::Functions> - SPVM data convertion function.
+L<SPVM::Document::Functions> - SPVM data convertion functions.
 
 List of SPVM functions:
 
@@ -752,6 +752,10 @@ L<SPVM::Document::Specification> - SPVM Language Specification
 L<SPVM::Document::NativeAPI> - SPVM Native API.
 
 Native API is C level API. You can write programing logic using C language and SPVM Native API.
+
+=head2 SPVM Standard Library
+
+L<SPVM::Document::StandardLibrary> - SPVM Standard Library
 
 =head2 SPVM Cookbook
 
