@@ -502,7 +502,9 @@ B<SPVM is before 1.0 under development! I will change implementation and specifi
 
 =head1 SYNOPSIS
 
-B<Fast Array Operation> using SPVM.
+=head2 Fast Array Operation using SPVM.
+
+SPVM Module:
 
   # lib/SPVM/MyMath.spvm
   package MyMath {
@@ -539,6 +541,61 @@ Use SPVM Module from Perl
 If you know more SPVM syntax, see L<SPVM::Document::Specification>.
 
 If you know more Functions to convert Perl Data to SPVM Data, see L<SPVM::Document::Functions>.
+
+=head2 C Extension using SPVM
+
+SPVM Module:
+
+  # lib/SPVM/MyMathNative.spvm
+  package MyMathNative {
+    
+    # Sub Declaration
+    sub sum ($nums : int[]) : native int;
+  }
+
+C Source File;
+
+  // lib/SPVM/MyMathNative.native/MyMathNative.c
+  #include <spvm_api.h>
+
+  int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+    
+    // First argument
+    SPVM_API_OBJECT* sp_nums = args[0].object_value;
+    
+    // Array length
+    int32_t length = api->get_array_length(api, sp_nums);
+    
+    // Elements pointer
+    int32_t* nums = api->get_int_array_elements(api, sp_nums);
+    
+    // Culcurate total
+    int32_t total = 0;
+    {
+      int32_t i;
+      for (i = 0; i < length; i++) {
+        total += nums[i];
+      }
+    }
+    
+    return total;
+  }
+
+Use Extension Module from Perl:
+
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+  
+  # Use SPVM module
+  use SPVM 'MyMathNative';
+  
+  # New SPVM int array
+  my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
+  
+  # Call SPVM subroutine
+  my $total = SPVM::MyMathNative::sum($sp_nums);
+  
+  print $total . "\n";
 
 =head1 DESCRIPTION
 
