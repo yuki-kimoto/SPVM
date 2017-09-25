@@ -1,3 +1,9 @@
+0.0272 2017-09-25
+  - add Math::tan function
+  - add Math::asin function
+  - add Math::acos function
+  - add Math::atan function
+  - add Math::to_radians function
 0.0271 2017-09-23
   - add Math::cos function
   - add Math::sin function
