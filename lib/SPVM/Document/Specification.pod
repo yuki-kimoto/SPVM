@@ -244,9 +244,11 @@ String Literal is the following.
 
   "abc"
 
-Type of String literal is C<byte[]>. You can assign string literal to variable whith type is C<byte[]>.
+Type of String literal is C<byte[]>.
 
   my $string : byte[] = "abc";
+
+Note that String Literal is Not Shared. New Byte Array is created and String literal is Copied to the byte array. 
 
 =head2 Type
 
