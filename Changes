@@ -4,6 +4,11 @@
   - add Math::acos function
   - add Math::atan function
   - add Math::to_radians function
+  - add Byte package
+  - add Byte->MAX_VALUE
+  - add Byte->MIN_VALUE
+  - add Byte->BYTES
+  - add Byte->SIZE
 0.0271 2017-09-23
   - add Math::cos function
   - add Math::sin function
