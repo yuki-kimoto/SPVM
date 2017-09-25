@@ -3,8 +3,8 @@ package Short {
   has value : short;
   
   enum {
-    MIN_VALUE = -32768,
-    MAX_VALUE = 32767,
+    MIN_VALUE = -32768s,
+    MAX_VALUE = 32767s,
     BYTES = 2,
     SIZE = 8,
   }
