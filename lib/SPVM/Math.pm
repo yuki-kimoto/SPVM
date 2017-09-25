@@ -91,3 +91,25 @@ $x - an angle, in radians.
 B<Returns:>
 
 the tangent of the argument.
+
+=head2 asin
+
+B<double asin(double $x)>
+
+Returns the arc sine of a value; the returned angle is in the range -pi/2 through pi/2. Special cases:
+
+=over 2
+
+=item * If the argument is NaN or its absolute value is greater than 1, then the result is NaN.
+
+=item * If the argument is zero, then the result is a zero with the same sign as the argument.
+
+The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
+
+B<Parameters:>
+
+$x - the value whose arc sine is to be returned.
+
+B<Returns:>
+
+the arc sine of the argument.
