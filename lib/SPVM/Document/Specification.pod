@@ -157,11 +157,42 @@ Rest characters is consist of Upper case, Lower case, Number and Under score C<_
 
 If Variable Declaration is done, you can use variable after the declaration.
 
-C<type_name> is a <Type>. Type is explained L</"Type"> section.
+C<type_name> is a <Type>. Type is explained at L</"Type"> section.
 
 You can Initialize the variable as same time as Variable Declaration.
 
   my $num : int = 3;
+
+B<Variable Declaration Example:>
+  
+  # Primitive Type
+  my $value : byte;
+  my $value : short;
+  my $value : int;
+  my $value : long;
+  my $value : float;
+  my $value : double;
+  
+  # Array Type
+  my $values : byte[];
+  my $values : short[];
+  my $values : int[];
+  my $values : long[];
+  my $values : float[];
+  my $values : double[];
+  my $values : PackageName[];
+
+  # Multiple Dimension Array Type
+  my $values : byte[][];
+  my $values : short[][];
+  my $values : int[][];
+  my $values : long[][];
+  my $values : float[][];
+  my $values : double[][];
+  my $values : PackageName[][];
+
+  # Package Type
+  my $obj : PackageName;
 
 =head2 Type Inference
 
@@ -177,9 +208,9 @@ Above is same as the following.
   my $obj : Foo = new Foo;
   my $nums : int[3] = new int[3];
 
-=head2 Number literal
+=head2 Number Literal
 
-Default number literal type is C<int>.
+Default Number Literal Type is C<int>.
 
   123
 
@@ -266,10 +297,11 @@ A character preceded by a backslash (\) is an escape sequence and has special me
 
 =head2 Type
 
-=head3 Numeric type
+=head3 Primitive Type
 
-Numeric types are byte, short, int, long, float, double.
-
+Primitive types are C<byte>, C<short>, C<int>, C<long>, C<float>, C<double>.
+  
+  [Type]  [Type Description]      [Type Byte Size]
   byte    signed integer          1byte
   short   signed integer          2byte
   int     signed integer          4byte
@@ -277,7 +309,7 @@ Numeric types are byte, short, int, long, float, double.
   float   floating-point number   4byte
   double  floating-point number   8byte
 
-Declaration
+Varialbe Declaration with Type is the following.
 
   my $value : byte;
   my $value : short;
@@ -286,59 +318,73 @@ Declaration
   my $value : float;
   my $value : double;
 
-=head3 Reference type
+If you know more Variable Declaration, see L</"Variable Declaration"> section.
 
-Reference types are `array` and `object`.
+=head3 Array Type
 
-B<Object type>
+Array Type describe multiple values.
 
-    PackageName
+  [Type]         [Type Description]
+  byte[]         byte array
+  short[]        short array
+  int[]          int array array
+  long[]         long array
+  float[]        float array
+  doube[]        double array
+  PackageName[]  object array
 
-Declaration
+Array Type is a Object Type. You can create Array by C<new> keyword.
 
-    my $object : PackageName;
+  my $values : int[] = new int[3];
 
-B<Array type>
+If you know more Array Creating, see L</"New Array"> section.
 
-  byte[]   byte array
-  short[]  short array
-  int[]    int array array
-  long[]   long array
-  float[]  float array
-  doube[]  double array
-  PackageName[] object array
+=head3 Multiple Dimention Array Type
 
-Declaration
+Multiple Dimention Array Type is a Array Type.
+  
+  [Two Dimension Array Type]
+  byte[][];
+  short[][];
+  int[][];
+  long[][];
+  float[][];
+  double[][];
+  PackageName[][];
+  
+  [Three Dimension Array Type]
+  byte[][][];
+  short[][][];
+  int[][][];
+  long[][][];
+  float[][][];
+  double[][][];
+  PackageName[][][];
+  
+Max Dimension is C<255>.
 
-  my $values : byte[];
-  my $values : short[];
-  my $values : int[];
-  my $values : long[];
-  my $values : float[];
-  my $values : double[];
-  my $values : PackageName[];
+You can create Multiple Dimension Array by C<new> keyword.
 
-B<Multiple array type>
+  my $values : int[][] = new int[][3];
 
-  my $values : byte[][];
-  my $values : short[][];
-  my $values : int[][];
-  my $values : long[][];
-  my $values : float[][];
-  my $values : double[][];
-  my $values : PackageName[][];
+This mean that Multiple Dimension Array is created, the multiple dimension array have 3 C<int[]> type array.
+The elements is initialized by C<undef>.
 
-  my $values : byte[][][];
-  my $values : short[][][];
-  my $values : int[][][];
-  my $values : long[][][];
-  my $values : float[][][];
-  my $values : double[][][];
-  my $values : PackageName[][][];
+If you know Multiple Dimension Array Creating, see L</"New Multiple Dimention Array">.
 
-=head2 Array
+=head3 Package Type
 
-=head3 Create array
+If you declare package, Package name is used as Package Type.
+
+  PackageName
+
+If you know more Package Declaration, see L</"Package Declaration"> section.
+
+You can create Package Type Object by C<new> keyword.
+
+  my $obj : PackageName = new PackageName;
+
+=head2 New Array
 
 Array is created by new. Elements values is not initialized.
 
@@ -349,16 +395,24 @@ Array is created by new. Elements values is not initialized.
   my $nums = new float[3];
   my $nums = new double[3];
 
-=head3 Get array length
+=head2 Array Manipulation
 
-  my $len = @$nums;
-  my $len = @{$nums};
-  my $len = len $nums;
+=head3 Get Array Length
 
-=head3 Get and set array element
+You can use the three ways to get Array Length.
+
+  @$nums;
+  @{$nums};
+  len $nums;
+
+=head3 Get and Set Array Element
+
+Get Array Element:
 
   # Get
-  my $num = $nums->[0];
+  $nums->[0];
+
+Set Array Element:
 
   # Set
   $nums->[0] = 5;
@@ -392,33 +446,6 @@ Array is created by new. Elements values is not initialized.
     $nums->[$i] = 0;
   }
 
-=head2 Constant
-
-=head3 Constant type
-
-Type of constant default integral value is `int`.
-
-  # int type
-  1;
-  3;
-
-Type of constant default floating-point value is `double`.
-
-  # double
-  1.2
-  5.3
-
-Type of constant is specified by type specifier.
-
-  # long
-  3L
-
-  # float
-  3.2f
-
-  # double
-  3.2d
-
 =head2 POD
 
   =pod
@@ -431,70 +458,21 @@ Type of constant is specified by type specifier.
 
 =head2 Exception
 
-=head3 Exception occur
+=head3 Throw Exception
 
   die "Error";
 
-=head3 Catch exception
+=head3 Catch Exception
 
   eval {
     die "Error";
   };
 
-=head3 Exception message
+=head3 Exception Message
 
   $@;
 
-=head2 Name
-
-=head3 Package name
-
-Package name is a combination of alphabets, numbers, and `::`. Numbers should not appear as the first character. `_` can't be used in class name.
-
-  # OK
-  Foo
-  Foo::Bar
-  Foo1::Bar1
-
-  # Not OK
-  1Foo
-  Foo::2Bar
-  Foo_Bar;
-
-=head3 Subroutine name
-
-Subroutine name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in subroutine name.
-
-  # OK
-  foo
-  foo1
-  foo_bar
-
-  # Not OK
-  1foo
-  foo__bar
-
-=head3 Field name
-
-Field name is a combination of alphabets, numbers, and `_` separators. Continual `_`(For example `__`) can't be used in field name.
-
-  # OK
-  foo
-  foo1
-  foo_bar
-
-  # Not OK
-  1foo
-  foo__bar
-
-=head3 Absolute name
-
-Absolute name is combination of package name and subroutine name, or package name and field name.
-
-  PackageName1::foo
-  PackageName1::PackageName2::foo_bar
-
-=head2 Weak reference
+=head2 Weak Reference
 
 Using weak reference, recursive reference is resolved.
 
@@ -519,7 +497,7 @@ Destructor.
     }
   }
 
-=head2 enumeration
+=head2 Enumeration
 
 Enumeration.
 
@@ -540,15 +518,4 @@ Enumeration.
 
   package TestCase::Extension {
     sub sum($num1 : int, $num2 : int) : native int;
-  }
-
-  __NATIVE__
-
-  #include <spvm_api.h>
-
-  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_API_VALUE* args) {
-
-    int32_t total = args[0].int_value + args[1].int_value;
-    
-    return total;
   }
