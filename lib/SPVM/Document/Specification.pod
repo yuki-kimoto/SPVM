@@ -159,6 +159,18 @@ If Variable Declaration is done, you can use variable after the declaration.
 
 C<type_name> is a <Type>. Type is explained L</"Type"> section.
 
+=head2 Type Inference
+
+If type of right value is known, Type Inference is done.
+
+  my $num = 2;
+  my $obj = new Foo;
+
+Above is same as the following.
+
+  my $num : int = 2;
+  my $obj : Foo = new Foo;
+
 =head2 Number literal
 
 Default number literal type is C<int>.
