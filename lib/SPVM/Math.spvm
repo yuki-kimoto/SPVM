@@ -9,5 +9,6 @@ package Math {
   sub tan ($value : double) : native double;
   sub asin ($value : double) : native double;
   sub acos ($value : double) : native double;
+  sub atan ($value : double) : native double;
 
 }

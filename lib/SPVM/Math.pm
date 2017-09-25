@@ -116,7 +116,7 @@ the arc sine of the argument.
 
 =head2 acos
 
-B<public static double acos(double a)>
+B<public static double acos(double $x)>
 
 Returns the arc cosine of a value; the returned angle is in the range 0.0 through pi. Special case:
 
@@ -130,9 +130,33 @@ The computed result must be within 1 ulp of the exact result. Results must be se
 
 B<Parameters:>
 
-a - the value whose arc cosine is to be returned.
+$x - the value whose arc cosine is to be returned.
 
 B<Returns:>
 
 the arc cosine of the argument.
+
+=head2 atan
+
+B<double atan(double $x)>
+
+Returns the arc tangent of a value; the returned angle is in the range -pi/2 through pi/2. Special cases:
+
+=over 2
+
+=item * If the argument is NaN, then the result is NaN.
+
+=item * If the argument is zero, then the result is a zero with the same sign as the argument.
+
+=back
+
+The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
+
+B<Parameters:>
+
+$x - the value whose arc tangent is to be returned.
+
+B<Returns:>
+
+the arc tangent of the argument.
 
