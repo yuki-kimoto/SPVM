@@ -187,7 +187,7 @@ You can use hex number literal by start C<0x>. C<A>, C<B>, C<C>, C<D>, C<E>, C<F
 
   0xAF
 
-If you use C<.> in number literal, the number is floating point literal.
+If you use C<.> in number literal, the number is floating point literal. Default type of floating point value is C<double>.
 
   1.23
 
@@ -203,7 +203,7 @@ You can use under line C<_> in number literal. Under line is meanless, only for 
   123_456
   0xAB_CD
 
-You can use specifier to specify number leteral type
+You can use type specifier to specify number leteral type
 
 =over 2
 
@@ -233,6 +233,8 @@ You can use specifier to specify number leteral type
   123d
 
 =back
+
+Note that C<b> is type specifiler, not hex literal. This means C<b> can't be used as hex number C<11>. You must use C<B> to express hex number C<11>.
 
 =head2 String Literal
 
