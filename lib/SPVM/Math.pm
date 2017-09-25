@@ -113,3 +113,26 @@ $x - the value whose arc sine is to be returned.
 B<Returns:>
 
 the arc sine of the argument.
+
+=head2 acos
+
+B<public static double acos(double a)>
+
+Returns the arc cosine of a value; the returned angle is in the range 0.0 through pi. Special case:
+
+=over 2
+
+=item * If the argument is NaN or its absolute value is greater than 1, then the result is NaN.
+
+=back
+
+The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
+
+B<Parameters:>
+
+a - the value whose arc cosine is to be returned.
+
+B<Returns:>
+
+the arc cosine of the argument.
+
