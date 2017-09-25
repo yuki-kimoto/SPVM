@@ -1,0 +1,11 @@
+package Integer {
+  
+  has value : int;
+  
+  enum {
+    MIN_VALUE = -2147483648,
+    MAX_VALUE = 2147483647,
+    BYTES = 4,
+    SIZE = 32,
+  }
+}
