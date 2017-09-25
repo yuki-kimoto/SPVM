@@ -161,15 +161,17 @@ C<type_name> is a <Type>. Type is explained L</"Type"> section.
 
 =head2 Type Inference
 
-If type of right value is known, Type Inference is done.
+If the Type of right value is known, the type of left value is automatically decided.
 
   my $num = 2;
   my $obj = new Foo;
+  my $nums = new int[3];
 
 Above is same as the following.
 
   my $num : int = 2;
   my $obj : Foo = new Foo;
+  my $nums : int[3] = new int[3];
 
 =head2 Number literal
 
