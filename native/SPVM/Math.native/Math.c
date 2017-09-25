@@ -53,3 +53,11 @@ double SPVM__Math__atan(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+double SPVM__Math__to_radians(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = args[0].double_value * atan(1.0) * 4.0 / 180.0;
+  
+  return value;
+}

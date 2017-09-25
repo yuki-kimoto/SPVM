@@ -10,5 +10,6 @@ package Math {
   sub asin ($value : double) : native double;
   sub acos ($value : double) : native double;
   sub atan ($value : double) : native double;
+  sub to_radians ($value : double) : native double;
 
 }

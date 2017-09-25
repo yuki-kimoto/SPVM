@@ -160,3 +160,16 @@ B<Returns:>
 
 the arc tangent of the argument.
 
+=head2 to_radians
+
+B<double toRadians(double angdeg)>
+
+Converts an angle measured in degrees to an approximately equivalent angle measured in radians. The conversion from degrees to radians is generally inexact.
+
+B<Parameters:>
+
+angdeg - an angle, in degrees
+
+B<Returns:>
+
+the measurement of the angle angdeg in radians.
