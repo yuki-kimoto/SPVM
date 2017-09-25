@@ -1,0 +1,12 @@
+package Short {
+  
+  has value : short;
+  
+  enum {
+    MIN_VALUE = -32768,
+    MAX_VALUE = 32767,
+    BYTES = 2,
+    SIZE = 8,
+    BYTES = 2
+  }
+}
