@@ -159,6 +159,10 @@ If Variable Declaration is done, you can use variable after the declaration.
 
 C<type_name> is a <Type>. Type is explained L</"Type"> section.
 
+You can Initialize the variable as same time as Variable Declaration.
+
+  my $num : int = 3;
+
 =head2 Type Inference
 
 If the Type of right value is known, the type of left value is automatically decided.
@@ -311,22 +315,6 @@ B<Multiple array type>
   my $values : float[][][];
   my $values : double[][][];
   my $values : PackageName[][][];
-
-=head2 Type inference
-
-If the type of right value is known, the type of left value is automatically decided.
-
-  # Type of $value2 is byte.
-  my $value1 : byte;
-  my $value2 = $value1;
-
-  # Type of $values2 is int[]
-  my $values1 = new int[3];
-  my $values2 = $values1;
-
-  # Type of $object2 is PackageName
-  my $object1 = new PackageName
-  my $object2 = $object1;
 
 =head2 Array
 
