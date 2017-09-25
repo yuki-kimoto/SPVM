@@ -250,6 +250,20 @@ Type of String literal is C<byte[]>.
 
 Note that String Literal is Not Shared. New Byte Array is created and String literal is Copied to the byte array. 
 
+=head3 Escape Sequences
+
+A character preceded by a backslash (\) is an escape sequence and has special meaning to the compiler. The following table shows the SPVM escape sequences:
+
+  [Escape Sequences]    [Escape Sequence	Description]
+  \t                    Insert a tab in the text at this point.
+  \b                    Insert a backspace in the text at this point.
+  \n                   	Insert a newline in the text at this point.
+  \r                    Insert a carriage return in the text at this point.
+  \f                    Insert a formfeed in the text at this point.
+  \'                    Insert a single quote character in the text at this point.
+  \"                    Insert a double quote character in the text at this point.
+  \\                    Insert a backslash character in the text at this point.
+
 =head2 Type
 
 =head3 Numeric type
