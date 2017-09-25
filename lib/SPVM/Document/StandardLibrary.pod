@@ -8,6 +8,26 @@ SPVM::Document::StandardLibrary - SPVM Standard Library(BETA before 1.0)
 
 L<SPVM::Byte> - Byte Utility
 
+=head2 SPVM::Short
+
+L<SPVM::Short> - Short Utility
+
+=head2 SPVM::Integer
+
+L<SPVM::Integer> - Integer Utility
+
+=head2 SPVM::Long
+
+L<SPVM::Long> - Long Utility
+
+=head2 SPVM::Float
+
+L<SPVM::Float> - Float Utility
+
+=head2 SPVM::Double
+
+L<SPVM::Double> - Double Utility
+
 =head2 SPVM::Math
 
 L<SPVM::Math> - Math Library
