@@ -234,6 +234,8 @@ You can use type specifier to specify number leteral type
 
 =back
 
+If you know more Type, see L</"Type"> section.
+
 Note that C<b> is type specifiler, not hex literal. This means C<b> can't be used as hex number C<11>. You must use C<B> to express hex number C<11>.
 
 =head2 String Literal
