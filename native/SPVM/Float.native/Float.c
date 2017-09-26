@@ -96,11 +96,20 @@ int32_t SPVM__Float__is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
   
   float float_value = args[0].float_value;
   
-  uint32_t int_bits;
+  if (isinf(float_value)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM__Float__is_nan(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
   
-  memcpy((void*)&int_bits, (void*)&float_value, sizeof(float));
+  float float_value = args[0].float_value;
   
-  if (int_bits == 0x7f800000 || int_bits == 0xff800000) {
+  if (isnan(float_value)) {
     return 1;
   }
   else {
