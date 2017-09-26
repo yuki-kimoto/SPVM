@@ -163,10 +163,9 @@ sub bind_native_subs {
     my $native_func_name_spvm = "SPVM::$native_func_name";
     my $native_address = get_sub_native_address($native_func_name_spvm);
     unless ($native_address) {
-      my $native_func_name = $native_func_name;
-      $native_func_name =~ s/:/_/g;
-      $native_func_name = "SPVM__$native_func_name";
-      confess "Can't find native address of $native_func_name(). Native function name must be $native_func_name";
+      my $native_func_name_c = $native_func_name_spvm;
+      $native_func_name_c =~ s/:/_/g;
+      confess "Can't find native address of $native_func_name_spvm(). Native function name must be $native_func_name_c";
     }
     bind_native_sub($native_func_name, $native_address);
   }
