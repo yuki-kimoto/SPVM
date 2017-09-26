@@ -39,6 +39,11 @@ my $DOUBLE_PRECICE = 65536.5;
 
 use SPVM::std;
 
+# SPVM::Float
+{
+  1;
+}
+
 # .
 {
   {

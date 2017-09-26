@@ -64,7 +64,7 @@ sub import {
 
 sub _get_dll_file {
   my $package_name = shift;
-  
+
   # DLL file name
   my $dll_base_name = $package_name;
   $dll_base_name =~ s/^.*:://;
@@ -96,6 +96,7 @@ sub search_native_address {
     if ($dll_libref) {
       my $sub_abs_name_c = $sub_abs_name;
       $sub_abs_name_c =~ s/:/_/g;
+      
       $native_address = DynaLoader::dl_find_symbol($dll_libref, $sub_abs_name_c);
     }
     else {
@@ -121,6 +122,7 @@ sub get_sub_native_address {
   
   my $dll_package_name = $package_name;
   my $shared_lib_file = _get_dll_file($dll_package_name);
+
   my $native_address = search_native_address($shared_lib_file, $sub_abs_name);
   
   # Try runtime compile
@@ -177,7 +179,11 @@ CHECK {
   XSLoader::load('SPVM', $VERSION);
   
   # Load standard library
-  my @dll_file_bases = ('std', 'Math');
+  my @dll_file_bases = (
+    'std',
+    'Math',
+    'Float'
+  );
   for my $shared_lib_file_base (@dll_file_bases) {
     my $shared_lib_file_rel = "auto/SPVM/$shared_lib_file_base.native/$shared_lib_file_base.$Config{dlext}";
     for my $module_dir (@INC) {

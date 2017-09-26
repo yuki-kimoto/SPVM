@@ -3,6 +3,7 @@ use TestCase::Minimal;
 use TestCase::Destructor;
 use TestCase::Extension;
 use TestCase::Extension2;
+use Float;
 use Math;
 
 package TestCase {
