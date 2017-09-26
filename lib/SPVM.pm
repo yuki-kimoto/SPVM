@@ -184,7 +184,7 @@ CHECK {
     Math
     Byte
     Short
-    Intger
+    Integer
     Long
     Float
     Double
