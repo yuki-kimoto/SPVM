@@ -39,6 +39,11 @@ package TestCase {
     DOUBLE_PRECICE = 65536.5,
   }
   
+  # SPVM::Float
+  sub POSITIVE_INFINITY() : int {
+    Float->POSITIVE_INFINITY;
+  }
+  
   # SPVM set and get
   sub spvm_set_and_get_byte($nums : byte[]) : int {
     

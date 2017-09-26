@@ -3,11 +3,14 @@ package Float {
   has value : float;
   
   enum {
-    MIN_VALUE = -128,
-    MAX_VALUE = 127,
-    BYTES = 1,
-    SIZE = 8,
+    BYTES = 4,
+    SIZE = 32,
+    MAX_EXPONENT = 127,
+    MIN_EXPONENT = -126,
   }
   
   sub POSITIVE_INFINITY() : native float;
+  sub NEGATIVE_INFINITY() : native float;
+  sub NaN : native float;
+  sub is_infinite($x : float) : native int;
 }

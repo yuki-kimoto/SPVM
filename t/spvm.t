@@ -41,7 +41,7 @@ use SPVM::std;
 
 # SPVM::Float
 {
-  1;
+  SPVM::TestCase::POSITIVE_INFINITY();
 }
 
 # .
