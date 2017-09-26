@@ -179,10 +179,15 @@ CHECK {
   XSLoader::load('SPVM', $VERSION);
   
   # Load standard library
-  my @dll_file_bases = (
-    'std',
-    'Math',
-    'Float'
+  my @dll_file_bases = qw(
+    std
+    Math
+    Byte
+    Short
+    Intger
+    Long
+    Float
+    Double
   );
   for my $shared_lib_file_base (@dll_file_bases) {
     my $shared_lib_file_rel = "auto/SPVM/$shared_lib_file_base.native/$shared_lib_file_base.$Config{dlext}";
