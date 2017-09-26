@@ -43,7 +43,12 @@ sub MY::postamble {
     module_names => [qw(
       SPVM::std
       SPVM::Math
+      SPVM::Byte
+      SPVM::Short
+      SPVM::Integer
+      SPVM::Long
       SPVM::Float
+      SPVM::Double
     )]
   );
   
