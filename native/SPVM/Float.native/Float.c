@@ -10,7 +10,7 @@
 float SPVM__Float__POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  int32_t positive_infinity_bits = 0x7f800000;
+  uint32_t positive_infinity_bits = 0x7f800000;
   
   float positive_infinity;
   
@@ -22,7 +22,7 @@ float SPVM__Float__POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
 float SPVM__Float__NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  int32_t negative_infinity_bits = 0xff800000;
+  uint32_t negative_infinity_bits = 0xff800000;
   
   float negative_infinity;
   
@@ -34,7 +34,7 @@ float SPVM__Float__NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
 float SPVM__Float__NaN(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  int32_t nan_bits = 0x7fc00000;
+  uint32_t nan_bits = 0x7fc00000;
   
   float nan;
   
@@ -46,7 +46,7 @@ float SPVM__Float__NaN(SPVM_API* api, SPVM_API_VALUE* args) {
 float SPVM__Float__MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  int32_t max_value_bits = 0x7f7fffff;
+  uint32_t max_value_bits = 0x7f7fffff;
   
   float max_value;
   
@@ -58,7 +58,7 @@ float SPVM__Float__MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
 float SPVM__Float__MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  int32_t min_normal_bits = 0x00800000;
+  uint32_t min_normal_bits = 0x00800000;
   
   float min_normal;
   
@@ -70,7 +70,7 @@ float SPVM__Float__MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
 float SPVM__Float__MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  int32_t min_value_bits = 0x1;
+  uint32_t min_value_bits = 0x1;
   
   float min_value;
   
@@ -82,7 +82,7 @@ float SPVM__Float__MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
 float SPVM__Float__MAX_EXPONENT(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  int32_t max_exponent_bits = 0x1;
+  uint32_t max_exponent_bits = 0x1;
   
   float max_exponent;
   
@@ -96,11 +96,11 @@ int32_t SPVM__Float__is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
   
   float float_value = args[0].float_value;
   
-  int32_t int_value;
+  uint32_t int_bits;
   
-  memcpy((void*)&int_value, (void*)&float_value, sizeof(float));
+  memcpy((void*)&int_bits, (void*)&float_value, sizeof(float));
   
-  if (int_value == 0x7f800000 || int_value == 0xff800000) {
+  if (int_bits == 0x7f800000 || int_bits == 0xff800000) {
     return 1;
   }
   else {
@@ -114,14 +114,15 @@ int32_t SPVM__Float__float_to_int_bits(SPVM_API* api, SPVM_API_VALUE* args) {
   float float_value = args[0].float_value;
   
   if (isnan(float_value)) {
-    return 0x7fc00000;
+    uint32_t bits = 0x7fc00000;
+    return (int32_t)bits;
   }
   else {
-    int32_t int_value;
+    uint32_t int_bits;
     
-    memcpy((void*)&int_value, (void*)&float_value, sizeof(float));
+    memcpy((void*)&int_bits, (void*)&float_value, sizeof(float));
     
-    return int_value;
+    return (int32_t)int_bits;
   }
 }
 
@@ -130,9 +131,25 @@ int32_t SPVM__Float__float_to_raw_int_bits(SPVM_API* api, SPVM_API_VALUE* args) 
   
   float float_value = args[0].float_value;
   
-  int32_t int_value;
+  uint32_t int_bits;
   
-  memcpy((void*)&int_value, (void*)&float_value, sizeof(float));
+  memcpy((void*)&int_bits, (void*)&float_value, sizeof(float));
   
-  return int_value;
+  return (int32_t)int_bits;
+}
+
+int32_t SPVM__Float__int_bits_to_float(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  uint32_t int_bits = (uint32_t)args[0].int_value;
+  
+  if ((int_bits >= 0x7f800001 && int_bits <= 0x7fffffff) || (int_bits >= 0xff800001 && int_bits <= 0xffffffff)) {
+    int_bits = 0x7fc00000;
+  }
+  
+  float float_value;
+  
+  memcpy((void*)&float_value, (void*)&int_bits, sizeof(float));
+  
+  return float_value;
 }
