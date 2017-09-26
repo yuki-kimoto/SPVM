@@ -40,11 +40,11 @@ WriteMakefile(
 # Build shared library
 sub MY::postamble {
   my $postamble = SPVM::Build::create_postamble(
-    module_names => [
-      'SPVM::std',
-      'SPVM::Math',
-      'SPVM::Float',
-    ]
+    module_names => [qw(
+      SPVM::std
+      SPVM::Math
+      SPVM::Float
+    )]
   );
   
   return $postamble;
