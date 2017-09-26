@@ -137,11 +137,19 @@ sub get_sub_native_address {
     $module_dir =~ s/$module_name_slash$//;
     $module_dir =~ s/\/$//;
     
-    my $shared_lib_file = SPVM::Build::build_shared_lib(
-      module_dir => $module_dir,
-      module_name => "SPVM::$module_name"
-    );
-    if ($shared_lib_file) {
+    my $shared_lib_file;
+    
+    eval {
+      $shared_lib_file = SPVM::Build::build_shared_lib(
+        module_dir => $module_dir,
+        module_name => "SPVM::$module_name"
+      );
+    };
+    
+    if ($@) {
+      return;
+    }
+    else {
       $native_address = search_native_address($shared_lib_file, $sub_abs_name);
     }
   }
@@ -155,7 +163,10 @@ sub bind_native_subs {
     my $native_func_name_spvm = "SPVM::$native_func_name";
     my $native_address = get_sub_native_address($native_func_name_spvm);
     unless ($native_address) {
-      confess "Can't find native address($native_func_name())";
+      my $native_func_name = $native_func_name;
+      $native_func_name =~ s/:/_/g;
+      $native_func_name = "SPVM__$native_func_name";
+      confess "Can't find native address of $native_func_name(). Native function name must be $native_func_name";
     }
     bind_native_sub($native_func_name, $native_address);
   }
