@@ -203,8 +203,16 @@ sub build_shared_lib {
     push @$object_files, $object_file;
   }
   
+  
   my $dlext = $Config{dlext};
   my $native_func_names = SPVM::Build::get_native_func_names($module_dir, $module_name);
+
+  # This is dummy to suppress boot strap function
+  # This is bad hack
+  unless (@$native_func_names) {
+    push @$native_func_names, '';
+  }
+
   my $lib_file = $cbuilder->link(
     objects => $object_files,
     module_name => $module_name,
