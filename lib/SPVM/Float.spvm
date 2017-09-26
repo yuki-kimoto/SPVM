@@ -11,6 +11,9 @@ package Float {
   
   sub POSITIVE_INFINITY() : native float;
   sub NEGATIVE_INFINITY() : native float;
-  sub NaN : native float;
+  sub NaN() : native float;
   sub is_infinite($x : float) : native int;
+  
+  sub float_to_int_bits($x : float) : native int;
+  sub float_to_raw_int_bits($x : float) : native int;
 }

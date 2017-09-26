@@ -107,3 +107,32 @@ int32_t SPVM__Float__is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
     return 0;
   }
 }
+
+int32_t SPVM__Float__float_to_int_bits(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+
+  float float_value = args[0].float_value;
+  
+  if (isnan(float_value)) {
+    return 0x7fc00000;
+  }
+  else {
+    int32_t int_value;
+    
+    memcpy((void*)&int_value, (void*)&float_value, sizeof(float));
+    
+    return int_value;
+  }
+}
+
+int32_t SPVM__Float__float_to_raw_int_bits(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  float float_value = args[0].float_value;
+  
+  int32_t int_value;
+  
+  memcpy((void*)&int_value, (void*)&float_value, sizeof(float));
+  
+  return int_value;
+}
