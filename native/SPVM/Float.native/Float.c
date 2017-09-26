@@ -104,6 +104,19 @@ int32_t SPVM__Float__is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
+int32_t SPVM__Float__is_finite(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  float float_value = args[0].float_value;
+  
+  if (isfinite(float_value)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM__Float__is_nan(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
