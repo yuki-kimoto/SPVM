@@ -23,6 +23,4 @@ package Double {
   sub double_to_long_bits($x : double) : native long;
   sub double_to_raw_long_bits($x : double) : native long;
   sub long_bits_to_double($x : long) : native double;
-
 }
-

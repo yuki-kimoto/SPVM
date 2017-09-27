@@ -344,8 +344,6 @@ package TestCase {
   sub tan() : int {
     my $value = Math::tan(Math->PI / 4.0);
     
-    std::say("" . $value);
-    
     if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
       return 1;
     }

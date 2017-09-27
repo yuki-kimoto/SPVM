@@ -66,6 +66,9 @@ use SPVM 'Float';
 {
   ok(SPVM::TestCase::spvm_float_constant());
 
+  is(SPVM::Float::POSITIVE_INFINITY(), 'inf');;
+  is(SPVM::Float::NEGATIVE_INFINITY(), '-inf');;
+  
   # Check not Inf or NaN in Perl value
   like(SPVM::Float::MAX_VALUE(), qr/[0-9]/);
   like(SPVM::Float::MIN_VALUE(), qr/[0-9]/);
@@ -75,7 +78,10 @@ use SPVM 'Float';
 # SPVM::Double
 {
   ok(SPVM::TestCase::spvm_double_constant());
-
+  
+  is(SPVM::Double::POSITIVE_INFINITY(), 'inf');;
+  is(SPVM::Double::NEGATIVE_INFINITY(), '-inf');;
+  
   # Check not Inf or NaN in Perl value
   like(SPVM::Double::MAX_VALUE(), qr/[0-9]/);
   like(SPVM::Double::MIN_VALUE(), qr/[0-9]/);
