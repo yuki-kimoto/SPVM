@@ -1,0 +1,17 @@
+use Byte;
+
+package TestCase::Byte {
+  sub constant() : int {
+    if (Byte->MIN_VALUE == -128b) {
+      if (Byte->MAX_VALUE == 127b) {
+        if (Byte->BYTES == 1) {
+          if (Byte->SIZE == 8) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+}

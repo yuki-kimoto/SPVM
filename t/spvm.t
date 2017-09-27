@@ -62,7 +62,7 @@ use SPVM 'Float';
 
 # SPVM::Byte
 {
-  ok(SPVM::TestCase::spvm_byte_constant());
+  ok(SPVM::TestCase::Byte::constant());
 }
 
 # SPVM::Short
