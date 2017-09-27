@@ -67,17 +67,17 @@ use SPVM 'Float';
 
 # SPVM::Short
 {
-  ok(SPVM::TestCase::spvm_short_constant());
+  ok(SPVM::TestCase::Short::constant());
 }
 
 # SPVM::Integer
 {
-  ok(SPVM::TestCase::spvm_integer_constant());
+  ok(SPVM::TestCase::Integer::constant());
 }
 
 # SPVM::Long
 {
-  ok(SPVM::TestCase::spvm_long_constant());
+  ok(SPVM::TestCase::Long::constant());
 }
 
 # SPVM::Float
@@ -102,11 +102,11 @@ use SPVM 'Float';
 
 # SPVM::Double
 {
-  ok(SPVM::TestCase::spvm_double_pass_positive_infinity($POSITIVE_INFINITY));
-  ok(SPVM::TestCase::spvm_double_pass_negative_infinity($NEGATIVE_INFINITY));
-  ok(SPVM::TestCase::spvm_double_pass_nan($NaN));
+  ok(SPVM::TestCase::Double::pass_positive_infinity($POSITIVE_INFINITY));
+  ok(SPVM::TestCase::Double::pass_negative_infinity($NEGATIVE_INFINITY));
+  ok(SPVM::TestCase::Double::pass_nan($NaN));
   
-  ok(SPVM::TestCase::spvm_double_constant());
+  ok(SPVM::TestCase::Double::constant());
   
   is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
