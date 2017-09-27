@@ -1,7 +1,5 @@
 package Byte {
   
-  has value : byte;
-  
   enum {
     MIN_VALUE = -128b,
     MAX_VALUE = 127b,

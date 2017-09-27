@@ -1,7 +1,5 @@
 package Float {
   
-  has value : float;
-  
   enum {
     BYTES = 4,
     SIZE = 32,

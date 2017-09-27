@@ -1,7 +1,5 @@
 package Long {
   
-  has value : long;
-  
   enum {
     MIN_VALUE = -9223372036854775808L,
     MAX_VALUE = 9223372036854775807L,

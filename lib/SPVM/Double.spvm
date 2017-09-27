@@ -1,7 +1,5 @@
 package Double {
   
-  has value : double;
-  
   enum {
     BYTES = 8,
     SIZE = 64,
