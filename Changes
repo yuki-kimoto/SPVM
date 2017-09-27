@@ -1,14 +1,16 @@
-0.0272 2017-09-25
+0.0272 2017-09-27
   - add Math::tan function
   - add Math::asin function
   - add Math::acos function
   - add Math::atan function
   - add Math::to_radians function
   - add Byte package
-  - add Byte->MAX_VALUE
-  - add Byte->MIN_VALUE
-  - add Byte->BYTES
-  - add Byte->SIZE
+  - add Short package
+  - add Integer package
+  - add Long package
+  - add Float package
+  - add Double package
+  - fix call native long function bug
 0.0271 2017-09-23
   - add Math::cos function
   - add Math::sin function
