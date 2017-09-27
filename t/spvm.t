@@ -38,17 +38,27 @@ my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
 # Positive infinity(unix like system : inf, Windows : 1.#INF)
-my $POSITIVE_INFINITY = 9**9**9;
+my $POSITIVE_INFINITY = SPVM::POSITIVE_INFINITY();
 
 # Negative infinity(unix like system : -inf, Windows : -1.#INF)
-my $NEGATIVE_INFINITY = -9**9**9;
+my $NEGATIVE_INFINITY = SPVM::NEGATIVE_INFINITY();
 
-my $NaN = -sin(9**9**9);
+my $NaN = SPVM::NaN();
 
 use SPVM::std;
 
 use SPVM 'Double';
 use SPVM 'Float';
+
+{
+  like($POSITIVE_INFINITY, qr/inf/i);
+  cmp_ok($POSITIVE_INFINITY, '>', 0);
+  
+  like($NEGATIVE_INFINITY, qr/inf/i);
+  cmp_ok($NEGATIVE_INFINITY, '<', 0);
+  
+  like($NaN, qr/(nan|ind)/i);
+}
 
 # SPVM::Byte
 {

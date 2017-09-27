@@ -3223,6 +3223,60 @@ MODULE = SPVM::Object::Array		PACKAGE = SPVM::Object::Array
 MODULE = SPVM		PACKAGE = SPVM
 
 SV*
+POSITIVE_INFINITY(...)
+  PPCODE :
+{
+  (void)RETVAL;
+
+  uint64_t positive_infinity_bits = 0x7ff0000000000000L;
+  
+  double positive_infinity;
+  
+  memcpy((void*)&positive_infinity, (void*)&positive_infinity_bits, sizeof(double));
+  
+  SV* sv_positive_infinity = sv_2mortal(newSVnv((NV)positive_infinity));
+  
+  XPUSHs(sv_positive_infinity);
+  XSRETURN(1);
+}
+
+SV*
+NEGATIVE_INFINITY(...)
+  PPCODE :
+{
+  (void)RETVAL;
+
+  uint64_t negative_infinity_bits = 0xfff0000000000000L;
+  
+  double negative_infinity;
+  
+  memcpy((void*)&negative_infinity, (void*)&negative_infinity_bits, sizeof(double));
+
+  SV* sv_negative_infinity = sv_2mortal(newSVnv((NV)negative_infinity));
+
+  XPUSHs(sv_negative_infinity);
+  XSRETURN(1);
+}
+
+SV*
+NaN(...)
+  PPCODE :
+{
+  (void)RETVAL;
+
+  uint64_t nan_bits = 0x7ff8000000000000L;
+  
+  double nan;
+  
+  memcpy((void*)&nan, (void*)&nan_bits, sizeof(double));
+  
+  SV* sv_nan = sv_2mortal(newSVnv((NV)nan));
+  
+  XPUSHs(sv_nan);
+  XSRETURN(1);
+}
+
+SV*
 get_objects_count(...)
   PPCODE:
 {
