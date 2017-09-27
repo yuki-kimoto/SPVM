@@ -39,17 +39,6 @@ package TestCase {
   has minimal : TestCase::Minimal;
   
   enum {
-    BYTE_MAX = 127b,
-    BYTE_MIN = -128b,
-    SHORT_MAX = 32767s,
-    SHORT_MIN = -32768s,
-    INT_MAX = 2147483647,
-    INT_MIN = -2147483648,
-    LONG_MAX = 9223372036854775807L,
-    LONG_MIN = -9223372036854775808L
-  }
-  
-  enum {
     FLOAT_PRECICE = 16384.5f,
     DOUBLE_PRECICE = 65536.5,
   }
@@ -68,7 +57,7 @@ package TestCase {
   sub spvm_set_and_get_short($nums : short[]) : int {
     
     if ($nums->[0] == 0s) {
-      if ($nums->[1] == TestCase->SHORT_MAX) {
+      if ($nums->[1] == Short->MAX_VALUE) {
         return 1;
       }
     }
@@ -78,7 +67,7 @@ package TestCase {
   sub spvm_set_and_get_int($nums : int[]) : int {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == TestCase->INT_MAX) {
+      if ($nums->[1] == Integer->MAX_VALUE) {
         return 1;
       }
     }
@@ -88,7 +77,7 @@ package TestCase {
   sub spvm_set_and_get_long($nums : long[]) : int {
     
     if ($nums->[0] == 0L) {
-      if ($nums->[1] == TestCase->LONG_MAX) {
+      if ($nums->[1] == Long->MAX_VALUE) {
         return 1;
       }
     }
@@ -1014,18 +1003,18 @@ package TestCase {
     my $test_case = new TestCase;
     
     $test_case->{x_byte} = Byte->MAX_VALUE;
-    $test_case->{x_short} = TestCase->SHORT_MAX;
-    $test_case->{x_int} = TestCase->INT_MAX;
-    $test_case->{x_long} = TestCase->LONG_MAX;
+    $test_case->{x_short} = Short->MAX_VALUE;
+    $test_case->{x_int} = Integer->MAX_VALUE;
+    $test_case->{x_long} = Long->MAX_VALUE;
     $test_case->{x_float} = TestCase->FLOAT_PRECICE;
     $test_case->{x_double} = TestCase->DOUBLE_PRECICE;
     my $minimal = new TestCase::Minimal;
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
     if ($test_case->{x_byte} == Byte->MAX_VALUE) {
-      if ($test_case->{x_short} == TestCase->SHORT_MAX) {
-        if ($test_case->{x_int} == TestCase->INT_MAX) {
-          if ($test_case->{x_long} == TestCase->LONG_MAX) {
+      if ($test_case->{x_short} == Short->MAX_VALUE) {
+        if ($test_case->{x_int} == Integer->MAX_VALUE) {
+          if ($test_case->{x_long} == Long->MAX_VALUE) {
             if ($test_case->{x_float} == TestCase->FLOAT_PRECICE) {
               if ($test_case->{x_double} == TestCase->DOUBLE_PRECICE) {
                 if ($test_case->{minimal}{x} == 3) {
@@ -1045,9 +1034,9 @@ package TestCase {
     my $test_case = new TestCase;
     
     $test_case->{x_byte} = Byte->MAX_VALUE;
-    $test_case->{x_short} = TestCase->SHORT_MAX;
-    $test_case->{x_int} = TestCase->INT_MAX;
-    $test_case->{x_long} = TestCase->LONG_MAX;
+    $test_case->{x_short} = Short->MAX_VALUE;
+    $test_case->{x_int} = Integer->MAX_VALUE;
+    $test_case->{x_long} = Long->MAX_VALUE;
     $test_case->{x_float} = TestCase->FLOAT_PRECICE;
     $test_case->{x_double} = TestCase->DOUBLE_PRECICE;
     my $minimal = new TestCase::Minimal;
@@ -1055,17 +1044,17 @@ package TestCase {
     $test_case->{minimal} = $minimal;
 
     $test_case->{x_byte} = Byte->MAX_VALUE;
-    $test_case->{x_short} = TestCase->SHORT_MAX;
-    $test_case->{x_int} = TestCase->INT_MAX;
-    $test_case->{x_long} = TestCase->LONG_MAX;
+    $test_case->{x_short} = Short->MAX_VALUE;
+    $test_case->{x_int} = Integer->MAX_VALUE;
+    $test_case->{x_long} = Long->MAX_VALUE;
     $test_case->{x_float} = TestCase->FLOAT_PRECICE;
     $test_case->{x_double} = TestCase->DOUBLE_PRECICE;
     $test_case->{minimal} = $minimal;
 
     if ($test_case->{x_byte} == Byte->MAX_VALUE) {
-      if ($test_case->{x_short} == TestCase->SHORT_MAX) {
-        if ($test_case->{x_int} == TestCase->INT_MAX) {
-          if ($test_case->{x_long} == TestCase->LONG_MAX) {
+      if ($test_case->{x_short} == Short->MAX_VALUE) {
+        if ($test_case->{x_int} == Integer->MAX_VALUE) {
+          if ($test_case->{x_long} == Long->MAX_VALUE) {
             if ($test_case->{x_float} == TestCase->FLOAT_PRECICE) {
               if ($test_case->{x_double} == TestCase->DOUBLE_PRECICE) {
                 if ($test_case->{minimal}{x} == 3) {
@@ -2244,7 +2233,7 @@ package TestCase {
     
     if ($values->[0] == (short)97) {
       if ($values->[1] == (short)98) {
-        if ($values->[2] == (short)TestCase->SHORT_MAX) {
+        if ($values->[2] == (short)Short->MAX_VALUE) {
            if (@$values == 3) {
              return 1;
            }
@@ -2259,7 +2248,7 @@ package TestCase {
     
     if ($values->[0] == (int)97) {
       if ($values->[1] == (int)98) {
-        if ($values->[2] == (int)TestCase->INT_MAX) {
+        if ($values->[2] == (int)Integer->MAX_VALUE) {
            if (@$values == 3) {
              return 1;
            }
@@ -2274,7 +2263,7 @@ package TestCase {
     
     if ($values->[0] == (long)97) {
       if ($values->[1] == (long)98) {
-        if ($values->[2] == (long)TestCase->LONG_MAX) {
+        if ($values->[2] == (long)Long->MAX_VALUE) {
            if (@$values == 3) {
              return 1;
            }
