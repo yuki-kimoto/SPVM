@@ -120,6 +120,22 @@ package TestCase {
     
     return 0;
   }
+
+  sub spvm_float_pass_positive_infinity($value : float) : int {
+    if ($value == Float->POSITIVE_INFINITY) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub spvm_float_pass_negative_infinity($value : float) : int {
+    if ($value == Float->NEGATIVE_INFINITY) {
+      return 1;
+    }
+    
+    return 0;
+  }
   
   # SPVM::Double
   sub spvm_double_constant() : int {
@@ -136,16 +152,16 @@ package TestCase {
     return 0;
   }
 
-  sub spvm_double_pass_positive_infinity($value : float) : int {
-    if ($value == Float->POSITIVE_INFINITY) {
+  sub spvm_double_pass_positive_infinity($value : double) : int {
+    if ($value == Double->POSITIVE_INFINITY) {
       return 1;
     }
     
     return 0;
   }
 
-  sub spvm_double_pass_negative_infinity($value : float) : int {
-    if ($value == Float->NEGATIVE_INFINITY) {
+  sub spvm_double_pass_negative_infinity($value : double) : int {
+    if ($value == Double->NEGATIVE_INFINITY) {
       return 1;
     }
     
