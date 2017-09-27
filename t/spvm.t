@@ -88,6 +88,7 @@ use SPVM 'Float';
   
   ok(SPVM::TestCase::Float::constant());
   ok(SPVM::TestCase::Float::is_infinite());
+  ok(SPVM::TestCase::Float::is_finite());
   
   is(SPVM::Float::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Float::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
