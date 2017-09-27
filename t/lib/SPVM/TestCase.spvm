@@ -90,13 +90,43 @@ package TestCase {
     
     return 0;
   }
-
+  
   # SPVM::Long
   sub spvm_long_constant() : int {
     if (Long->MIN_VALUE == -9223372036854775808L) {
       if (Long->MAX_VALUE == 9223372036854775807L) {
         if (Long->BYTES == 8) {
           if (Long->SIZE == 64) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  # SPVM::Float
+  sub spvm_float_constant() : int {
+    if (Float->MIN_EXPONENT == -126) {
+      if (Float->MAX_EXPONENT == 127) {
+        if (Float->BYTES == 4) {
+          if (Float->SIZE == 32) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  # SPVM::Double
+  sub spvm_double_constant() : int {
+    if (Double->MIN_EXPONENT == -1022) {
+      if (Double->MAX_EXPONENT == 1023) {
+        if (Double->BYTES == 8) {
+          if (Double->SIZE == 64) {
             return 1;
           }
         }

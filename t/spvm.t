@@ -62,20 +62,24 @@ use SPVM 'Float';
   ok(SPVM::TestCase::spvm_long_constant());
 }
 
-# SPVM::Double
-{
-  # Check not Inf or NaN in Perl value
-  like(SPVM::Double::MAX_VALUE(), qr/[0-9]/);
-  like(SPVM::Double::MIN_VALUE(), qr/[0-9]/);
-  like(SPVM::Double::MIN_NORMAL(), qr/[0-9]/);
-}
-
 # SPVM::Float
 {
+  ok(SPVM::TestCase::spvm_float_constant());
+
   # Check not Inf or NaN in Perl value
   like(SPVM::Float::MAX_VALUE(), qr/[0-9]/);
   like(SPVM::Float::MIN_VALUE(), qr/[0-9]/);
   like(SPVM::Float::MIN_NORMAL(), qr/[0-9]/);
+}
+
+# SPVM::Double
+{
+  ok(SPVM::TestCase::spvm_double_constant());
+
+  # Check not Inf or NaN in Perl value
+  like(SPVM::Double::MAX_VALUE(), qr/[0-9]/);
+  like(SPVM::Double::MIN_VALUE(), qr/[0-9]/);
+  like(SPVM::Double::MIN_NORMAL(), qr/[0-9]/);
 }
 
 # .
