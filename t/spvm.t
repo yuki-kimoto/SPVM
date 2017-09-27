@@ -82,12 +82,12 @@ use SPVM 'Float';
 
 # SPVM::Float
 {
-  ok(SPVM::TestCase::spvm_float_pass_positive_infinity($POSITIVE_INFINITY));
-  ok(SPVM::TestCase::spvm_float_pass_negative_infinity($NEGATIVE_INFINITY));
-  ok(SPVM::TestCase::spvm_float_pass_nan($NaN));
+  ok(SPVM::TestCase::Float::pass_positive_infinity($POSITIVE_INFINITY));
+  ok(SPVM::TestCase::Float::pass_negative_infinity($NEGATIVE_INFINITY));
+  ok(SPVM::TestCase::Float::pass_nan($NaN));
   
-  ok(SPVM::TestCase::spvm_float_constant());
-  ok(SPVM::TestCase::spvm_float_is_infinite());
+  ok(SPVM::TestCase::Float::constant());
+  ok(SPVM::TestCase::Float::is_infinite());
   
   is(SPVM::Float::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Float::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);

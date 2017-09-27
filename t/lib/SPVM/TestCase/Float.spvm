@@ -1,0 +1,59 @@
+use Float;
+
+package TestCase::Float {
+
+  # SPVM::Float
+  sub constant() : int {
+    if (Float->MIN_EXPONENT == -126) {
+      if (Float->MAX_EXPONENT == 127) {
+        if (Float->BYTES == 4) {
+          if (Float->SIZE == 32) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub is_infinite() : int {
+    if (Float->is_infinite(Float->POSITIVE_INFINITY)) {
+      if (Float->is_infinite(Float->NEGATIVE_INFINITY)) {
+        if (!Float->is_infinite(Float->NaN)) {
+          if (!Float->is_infinite(0.1f)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub pass_positive_infinity($value : float) : int {
+    if ($value == Float->POSITIVE_INFINITY) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub pass_negative_infinity($value : float) : int {
+    if ($value == Float->NEGATIVE_INFINITY) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub pass_nan($value : float) : int {
+    if (Float->is_nan($value)) {
+      if (Float->float_to_raw_int_bits($value) == 0x7FC00000) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+}

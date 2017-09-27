@@ -3,12 +3,12 @@ use TestCase::Minimal;
 use TestCase::Destructor;
 use TestCase::Extension;
 use TestCase::Extension2;
+use TestCase::Float;
 
 use Byte;
 use Short;
 use Integer;
 use Long;
-use Float;
 use Double;
 
 use Math;
@@ -100,61 +100,6 @@ package TestCase {
             return 1;
           }
         }
-      }
-    }
-    
-    return 0;
-  }
-  
-  # SPVM::Float
-  sub spvm_float_constant() : int {
-    if (Float->MIN_EXPONENT == -126) {
-      if (Float->MAX_EXPONENT == 127) {
-        if (Float->BYTES == 4) {
-          if (Float->SIZE == 32) {
-            return 1;
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-  
-  sub spvm_float_is_infinite() : int {
-    if (Float->is_infinite(Float->POSITIVE_INFINITY)) {
-      if (Float->is_infinite(Float->NEGATIVE_INFINITY)) {
-        if (!Float->is_infinite(Float->NaN)) {
-          if (!Float->is_infinite(0.1f)) {
-            return 1;
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-  
-  sub spvm_float_pass_positive_infinity($value : float) : int {
-    if ($value == Float->POSITIVE_INFINITY) {
-      return 1;
-    }
-    
-    return 0;
-  }
-  
-  sub spvm_float_pass_negative_infinity($value : float) : int {
-    if ($value == Float->NEGATIVE_INFINITY) {
-      return 1;
-    }
-    
-    return 0;
-  }
-  
-  sub spvm_float_pass_nan($value : float) : int {
-    if (Float->is_nan($value)) {
-      if (Float->float_to_raw_int_bits($value) == 0x7FC00000) {
-        return 1;
       }
     }
     
