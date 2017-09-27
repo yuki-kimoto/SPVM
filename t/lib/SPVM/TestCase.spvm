@@ -47,8 +47,13 @@ package TestCase {
   }
   
   # SPVM::Float
-  sub POSITIVE_INFINITY() : int {
-    Float->POSITIVE_INFINITY;
+  sub spvm_float_POSITIVE_INFINITY() : float {
+    return Float->POSITIVE_INFINITY;
+  }
+  
+  # SPVM::Double
+  sub spvm_double_POSITIVE_INFINITY() : double {
+    return Double->POSITIVE_INFINITY;
   }
   
   # SPVM set and get

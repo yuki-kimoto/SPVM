@@ -92,6 +92,19 @@ int32_t SPVM__Double__is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
+int32_t SPVM__Double__is_nan(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double double_value = args[0].double_value;
+  
+  if (isnan(double_value)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM__Double__is_finite(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
