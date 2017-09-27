@@ -39,9 +39,23 @@ my $DOUBLE_PRECICE = 65536.5;
 
 use SPVM::std;
 
+use SPVM 'Double';
+use SPVM 'Float';
+
+# SPVM::Double
+{
+  # Check not Inf or NaN in Perl value
+  like(SPVM::Double::MAX_VALUE(), qr/[0-9]/);
+  like(SPVM::Double::MIN_VALUE(), qr/[0-9]/);
+  like(SPVM::Double::MIN_NORMAL(), qr/[0-9]/);
+}
+
 # SPVM::Float
 {
-  SPVM::TestCase::spvm_double_POSITIVE_INFINITY();
+  # Check not Inf or NaN in Perl value
+  like(SPVM::Float::MAX_VALUE(), qr/[0-9]/);
+  like(SPVM::Float::MIN_VALUE(), qr/[0-9]/);
+  like(SPVM::Float::MIN_NORMAL(), qr/[0-9]/);
 }
 
 # .

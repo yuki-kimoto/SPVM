@@ -13,6 +13,10 @@ package Float {
   sub NEGATIVE_INFINITY() : native float;
   sub NaN() : native float;
   
+  sub MAX_VALUE() : native float;
+  sub MIN_NORMAL() : native float;
+  sub MIN_VALUE() : native float;
+  
   sub is_infinite($x : float) : native int;
   sub is_finite($x : float) : native int;
   sub float_to_int_bits($x : float) : native int;

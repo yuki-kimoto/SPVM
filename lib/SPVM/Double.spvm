@@ -13,6 +13,10 @@ package Double {
   sub NEGATIVE_INFINITY() : native double;
   sub NaN() : native double;
   
+  sub MAX_VALUE() : native double;
+  sub MIN_NORMAL() : native double;
+  sub MIN_VALUE() : native double;
+  
   sub is_infinite($x : double) : native int;
   sub is_finite($x : double) : native int;
   sub is_nan($x : double) : native int;
