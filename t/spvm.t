@@ -84,6 +84,7 @@ use SPVM 'Float';
 {
   ok(SPVM::TestCase::spvm_float_pass_positive_infinity($POSITIVE_INFINITY));
   ok(SPVM::TestCase::spvm_float_pass_negative_infinity($NEGATIVE_INFINITY));
+  ok(SPVM::TestCase::spvm_float_pass_nan($NaN));
   
   ok(SPVM::TestCase::spvm_float_constant());
   
