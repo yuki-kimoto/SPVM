@@ -222,6 +222,18 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         call_stack[operand_stack_top].int_value = return_value;
         goto case_SPVM_BYTECODE_C_CODE_RETURN_INT;
       }
+      case SPVM_TYPE_C_CODE_LONG: {
+        int64_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
+        int64_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
+
+        if (runtime->exception) {
+          return_value = 0;
+        }
+
+        operand_stack_top++;
+        call_stack[operand_stack_top].long_value = return_value;
+        goto case_SPVM_BYTECODE_C_CODE_RETURN_LONG;
+      }
       case SPVM_TYPE_C_CODE_FLOAT: {
         float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
         float return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
@@ -1805,6 +1817,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     call_stack[operand_stack_top - 1].int_value
       = (call_stack[operand_stack_top - 1].long_value > call_stack[operand_stack_top].long_value)
       + (call_stack[operand_stack_top - 1].long_value < call_stack[operand_stack_top].long_value) * -1;
+    
+    
     operand_stack_top--;
     pc++;
     goto *jump[*pc];
