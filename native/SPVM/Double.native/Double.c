@@ -10,7 +10,7 @@
 double SPVM__Double__POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  uint32_t positive_infinity_bits = 0x7f800000;
+  uint64_t positive_infinity_bits = 0x7ff0000000000000L;
   
   double positive_infinity;
   
@@ -22,7 +22,7 @@ double SPVM__Double__POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
 double SPVM__Double__NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  uint32_t negative_infinity_bits = 0xff800000;
+  uint64_t negative_infinity_bits = 0xfff0000000000000L;
   
   double negative_infinity;
   
@@ -34,7 +34,7 @@ double SPVM__Double__NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
 double SPVM__Double__NaN(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  uint32_t nan_bits = 0x7fc00000;
+  uint64_t nan_bits = 0x7ff8000000000000L;
   
   double nan;
   
@@ -46,7 +46,7 @@ double SPVM__Double__NaN(SPVM_API* api, SPVM_API_VALUE* args) {
 double SPVM__Double__MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  uint32_t max_value_bits = 0x7f7fffff;
+  uint64_t max_value_bits = 0x7fefffffffffffffL;
   
   double max_value;
   
@@ -58,7 +58,7 @@ double SPVM__Double__MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
 double SPVM__Double__MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  uint32_t min_normal_bits = 0x00800000;
+  uint64_t min_normal_bits = 0x0010000000000000L;
   
   double min_normal;
   
@@ -70,7 +70,7 @@ double SPVM__Double__MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
 double SPVM__Double__MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  uint32_t min_value_bits = 0x1;
+  uint64_t min_value_bits = 0x1L;
   
   double min_value;
   
@@ -79,28 +79,12 @@ double SPVM__Double__MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   return min_value;
 }
 
-double SPVM__Double__MAX_EXPONENT(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  uint32_t max_exponent_bits = 0x1;
-  
-  double max_exponent;
-  
-  memcpy((void*)&max_exponent, (void*)&max_exponent_bits, sizeof(double));
-  
-  return max_exponent;
-}
-
 int32_t SPVM__Double__is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double double_value = args[0].double_value;
   
-  uint32_t int_bits;
-  
-  memcpy((void*)&int_bits, (void*)&double_value, sizeof(double));
-  
-  if (int_bits == 0x7f800000 || int_bits == 0xff800000) {
+  if (isinf(double_value)) {
     return 1;
   }
   else {
@@ -108,48 +92,61 @@ int32_t SPVM__Double__is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-int32_t SPVM__Double__double_to_int_bits(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Double__is_finite(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double double_value = args[0].double_value;
+  
+  if (isfinite(double_value)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int64_t SPVM__Double__double_to_long_bits(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
 
   double double_value = args[0].double_value;
   
   if (isnan(double_value)) {
-    uint32_t bits = 0x7fc00000;
-    return (int32_t)bits;
+    uint64_t bits = 0x7ff8000000000000L;
+    return (int64_t)bits;
   }
   else {
-    uint32_t int_bits;
+    uint64_t long_bits;
     
-    memcpy((void*)&int_bits, (void*)&double_value, sizeof(double));
+    memcpy((void*)&long_bits, (void*)&double_value, sizeof(double));
     
-    return (int32_t)int_bits;
+    return (int64_t)long_bits;
   }
 }
 
-int32_t SPVM__Double__double_to_raw_int_bits(SPVM_API* api, SPVM_API_VALUE* args) {
+int64_t SPVM__Double__double_to_raw_long_bits(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double double_value = args[0].double_value;
   
-  uint32_t int_bits;
+  uint64_t long_bits;
   
-  memcpy((void*)&int_bits, (void*)&double_value, sizeof(double));
+  memcpy((void*)&long_bits, (void*)&double_value, sizeof(double));
   
-  return (int32_t)int_bits;
+  return (int64_t)long_bits;
 }
 
-int32_t SPVM__Double__int_bits_to_double(SPVM_API* api, SPVM_API_VALUE* args) {
+int64_t SPVM__Double__long_bits_to_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  uint32_t int_bits = (uint32_t)args[0].int_value;
+  uint64_t long_bits = (uint64_t)args[0].int_value;
   
-  if ((int_bits >= 0x7f800001 && int_bits <= 0x7fffffff) || (int_bits >= 0xff800001 && int_bits <= 0xffffffff)) {
-    int_bits = 0x7fc00000;
+  if ((long_bits >= 0x7ff0000000000001L && long_bits <= 0x7fffffffffffffffL) || (long_bits >= 0xfff0000000000001L && long_bits <= 0xffffffffffffffffL)) {
+    long_bits = 0x7ff8000000000000L;
   }
   
   double double_value;
   
-  memcpy((void*)&double_value, (void*)&int_bits, sizeof(double));
+  memcpy((void*)&double_value, (void*)&long_bits, sizeof(double));
   
   return double_value;
 }

@@ -3,9 +3,22 @@ package Double {
   has value : double;
   
   enum {
-    MIN_VALUE = -128,
-    MAX_VALUE = 127,
-    BYTES = 1,
-    SIZE = 8,
+    BYTES = 8,
+    SIZE = 64,
+    MAX_EXPONENT = 1023,
+    MIN_EXPONENT = -1022,
   }
+  
+  sub POSITIVE_INFINITY() : native double;
+  sub NEGATIVE_INFINITY() : native double;
+  sub NaN() : native double;
+  
+  sub is_infinite($x : double) : native int;
+  sub is_finite($x : double) : native int;
+  sub is_nan($x : double) : native int;
+  sub double_to_long_bits($x : double) : native long;
+  sub double_to_raw_long_bits($x : double) : native long;
+  sub long_bits_to_double($x : long) : native double;
+
 }
+
