@@ -61,6 +61,21 @@ package TestCase {
     return 0;
   }
   
+  # SPVM::Short
+  sub spvm_short_constant() : int {
+    if (Short->MIN_VALUE == -32768s) {
+      if (Short->MAX_VALUE == 32767s) {
+        if (Short->BYTES == 2) {
+          if (Short->SIZE == 8) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   # SPVM set and get
   sub spvm_set_and_get_byte($nums : byte[]) : int {
     

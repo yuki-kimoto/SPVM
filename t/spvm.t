@@ -47,6 +47,11 @@ use SPVM 'Float';
   ok(SPVM::TestCase::spvm_byte_constant());
 }
 
+# SPVM::Short
+{
+  ok(SPVM::TestCase::spvm_short_constant());
+}
+
 # SPVM::Double
 {
   # Check not Inf or NaN in Perl value
