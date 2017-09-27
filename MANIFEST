@@ -149,7 +149,9 @@ spvm_yacc.h
 spvm_yacc_util.c
 spvm_yacc_util.h
 t/lib/SPVM/TestCase.spvm
+t/lib/SPVM/TestCase/Byte.spvm
 t/lib/SPVM/TestCase/Destructor.spvm
+t/lib/SPVM/TestCase/Double.spvm
 t/lib/SPVM/TestCase/Extension.native/Extension.c
 t/lib/SPVM/TestCase/Extension.spvm
 t/lib/SPVM/TestCase/Extension2.native/Extension.c
@@ -157,7 +159,11 @@ t/lib/SPVM/TestCase/Extension2.native/Extension2.config
 t/lib/SPVM/TestCase/Extension2.native/Extension2_util.c
 t/lib/SPVM/TestCase/Extension2.native/Extension2_util.h
 t/lib/SPVM/TestCase/Extension2.spvm
+t/lib/SPVM/TestCase/Float.spvm
+t/lib/SPVM/TestCase/Integer.spvm
+t/lib/SPVM/TestCase/Long.spvm
 t/lib/SPVM/TestCase/Minimal.spvm
+t/lib/SPVM/TestCase/Short.spvm
 t/lib/SPVM/TestCase/Weaken.spvm
 t/lib/SPVM/TestCase/Weaken2.spvm
 t/spvm-debug.t
