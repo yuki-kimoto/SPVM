@@ -14,6 +14,48 @@ package TestCase::Double {
     
     return 0;
   }
+
+  sub is_infinite() : int {
+    if (Double->is_infinite(Double->POSITIVE_INFINITY)) {
+      if (Double->is_infinite(Double->NEGATIVE_INFINITY)) {
+        if (!Double->is_infinite(Double->NaN)) {
+          if (!Double->is_infinite(0.1)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub is_finite() : int {
+    if (!Double->is_finite(Double->POSITIVE_INFINITY)) {
+      if (!Double->is_finite(Double->NEGATIVE_INFINITY)) {
+        if (!Double->is_finite(Double->NaN)) {
+          if (Double->is_finite(0.1)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub is_nan() : int {
+    if (!Double->is_nan(Double->POSITIVE_INFINITY)) {
+      if (!Double->is_nan(Double->NEGATIVE_INFINITY)) {
+        if (Double->is_nan(Double->NaN)) {
+          if (!Double->is_nan(0.1)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
   
   sub pass_nan($value : double) : int {
     if (Double->is_nan($value)) {

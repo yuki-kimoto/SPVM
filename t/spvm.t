@@ -109,6 +109,9 @@ use SPVM 'Float';
   ok(SPVM::TestCase::Double::pass_nan($NaN));
   
   ok(SPVM::TestCase::Double::constant());
+  ok(SPVM::TestCase::Double::is_infinite());
+  ok(SPVM::TestCase::Double::is_finite());
+  ok(SPVM::TestCase::Double::is_nan());
   
   is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
