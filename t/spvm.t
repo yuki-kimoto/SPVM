@@ -43,6 +43,8 @@ my $POSITIVE_INFINITY = 9**9**9;
 # Negative infinity(unix like system : -inf, Windows : -1.#INF)
 my $NEGATIVE_INFINITY = -9**9**9;
 
+my $NaN = -sin(9**9**9);
+
 use SPVM::std;
 
 use SPVM 'Double';
@@ -75,9 +77,11 @@ use SPVM 'Float';
   
   ok(SPVM::TestCase::spvm_float_constant());
   
-  is(SPVM::Float::POSITIVE_INFINITY(), $POSITIVE_INFINITY);;
-  is(SPVM::Float::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);;
-  
+  is(SPVM::Float::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
+  is(SPVM::Float::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
+
+  cmp_ok(SPVM::Float::NaN(), 'eq', $NaN);
+
   # Check not Inf or NaN in Perl value
   like(SPVM::Float::MAX_VALUE(), qr/[0-9]/);
   like(SPVM::Float::MIN_VALUE(), qr/[0-9]/);
@@ -93,6 +97,8 @@ use SPVM 'Float';
   
   is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
+  
+  cmp_ok(SPVM::Double::NaN(), 'eq', $NaN);
   
   # Check not Inf or NaN in Perl value
   like(SPVM::Double::MAX_VALUE(), qr/[0-9]/);
