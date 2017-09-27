@@ -37,6 +37,12 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
+# Positive infinity(unix like system : inf, Windows : 1.#INF)
+my $POSITIVE_INFINITY = 9**9**9;
+
+# Negative infinity(unix like system : -inf, Windows : -1.#INF)
+my $NEGATIVE_INFINITY = -9**9**9;
+
 use SPVM::std;
 
 use SPVM 'Double';
@@ -66,8 +72,8 @@ use SPVM 'Float';
 {
   ok(SPVM::TestCase::spvm_float_constant());
 
-  is(SPVM::Float::POSITIVE_INFINITY(), 'inf');;
-  is(SPVM::Float::NEGATIVE_INFINITY(), '-inf');;
+  is(SPVM::Float::POSITIVE_INFINITY(), $POSITIVE_INFINITY);;
+  is(SPVM::Float::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);;
   
   # Check not Inf or NaN in Perl value
   like(SPVM::Float::MAX_VALUE(), qr/[0-9]/);
@@ -79,8 +85,8 @@ use SPVM 'Float';
 {
   ok(SPVM::TestCase::spvm_double_constant());
   
-  is(SPVM::Double::POSITIVE_INFINITY(), 'inf');;
-  is(SPVM::Double::NEGATIVE_INFINITY(), '-inf');;
+  is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
+  is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
   
   # Check not Inf or NaN in Perl value
   like(SPVM::Double::MAX_VALUE(), qr/[0-9]/);
