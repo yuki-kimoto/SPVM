@@ -83,7 +83,8 @@ use SPVM 'Float';
 
 # SPVM::Double
 {
-  ok(SPVM::TestCase::spvm_double_constant());
+  ok(SPVM::TestCase::spvm_double_pass_positive_infinity($POSITIVE_INFINITY));
+  ok(SPVM::TestCase::spvm_double_pass_negative_infinity($NEGATIVE_INFINITY));
   
   is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
