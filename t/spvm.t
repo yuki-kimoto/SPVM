@@ -122,7 +122,10 @@ use SPVM 'Float';
   ok(SPVM::TestCase::Double::long_bits_to_double_nan_first_condition_is_nan());
   ok(SPVM::TestCase::Double::long_bits_to_double_nan_second_condition());
   ok(SPVM::TestCase::Double::long_bits_to_double_nan_second_condition_is_nan());
-
+  
+  ok(SPVM::TestCase::Double::double_to_raw_long_bits());
+  ok(SPVM::TestCase::Double::double_to_raw_long_bits_nan());
+  
   is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
   
