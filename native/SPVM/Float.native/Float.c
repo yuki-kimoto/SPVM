@@ -160,7 +160,7 @@ int32_t SPVM__Float__float_to_raw_int_bits(SPVM_API* api, SPVM_API_VALUE* args) 
   return (int32_t)int_bits;
 }
 
-int32_t SPVM__Float__int_bits_to_float(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Float__int_bits_to_float(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   uint32_t int_bits = (uint32_t)args[0].int_value;
