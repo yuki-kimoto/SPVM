@@ -11,6 +11,9 @@
   - add Float package
   - add Double package
   - fix call native long function bug
+  - change byte constatant specifier b to y
+    124b -> 124y
+  - a, b, c, d, e, f become hex character.
 0.0271 2017-09-23
   - add Math::cos function
   - add Math::sin function
