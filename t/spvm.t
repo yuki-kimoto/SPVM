@@ -91,6 +91,7 @@ use SPVM 'Float';
   ok(SPVM::TestCase::Float::is_finite());
   ok(SPVM::TestCase::Float::is_nan());
   ok(SPVM::TestCase::Float::int_bits_to_float());
+  ok(SPVM::TestCase::Float::int_bits_to_float_nan_first_condition());
   
   is(SPVM::Float::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Float::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
