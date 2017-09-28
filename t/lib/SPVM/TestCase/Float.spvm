@@ -17,6 +17,62 @@ package TestCase::Float {
     return 0;
   }
 
+  sub float_to_raw_int_bits() : int {
+    
+    my $float_value = 0.5f;
+    
+    my $int_bits = Float->float_to_raw_int_bits($float_value);
+    
+    if ($int_bits == 0x3F000000) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub float_to_raw_int_bits_nan() : int {
+    
+    my $float_value = 0.0f / 0.0f;
+    
+    if (Float->is_nan($float_value)) {
+      my $int_bits = Float->float_to_raw_int_bits($float_value);
+      
+      if ($int_bits != 0x7FC00000) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub float_to_int_bits() : int {
+    
+    my $float_value = 0.5f;
+    
+    my $int_bits = Float->float_to_int_bits($float_value);
+    
+    if ($int_bits == 0x3F000000) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub float_to_int_bits_nan() : int {
+    
+    my $float_value = 0.0f / 0.0f;
+    
+    if (Float->is_nan($float_value)) {
+      my $int_bits = Float->float_to_int_bits($float_value);
+      
+      if ($int_bits == 0x7FC00000) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+    
   sub int_bits_to_float() : int {
     
     my $int_bits = 0x3F000000;
@@ -29,7 +85,7 @@ package TestCase::Float {
     
     return 0;
   }
-
+  
   sub int_bits_to_float_nan_first_condition() : int {
     
     if (Float->float_to_raw_int_bits(Float->int_bits_to_float(0x7F800000)) == 0x7F800000) {
