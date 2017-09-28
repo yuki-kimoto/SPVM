@@ -106,8 +106,8 @@ package TestCase::Float {
     
     return 0;
   }
-=cut
 
+=cut
   sub is_infinite() : int {
     if (Float->is_infinite(Float->POSITIVE_INFINITY)) {
       if (Float->is_infinite(Float->NEGATIVE_INFINITY)) {
