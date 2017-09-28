@@ -90,12 +90,13 @@ use SPVM 'Float';
   ok(SPVM::TestCase::Float::is_infinite());
   ok(SPVM::TestCase::Float::is_finite());
   ok(SPVM::TestCase::Float::is_nan());
+  ok(SPVM::TestCase::Float::int_bits_to_float());
   
   is(SPVM::Float::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Float::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
-
+  
   cmp_ok(SPVM::Float::NaN(), 'eq', $NaN);
-
+  
   # Check not Inf or NaN in Perl value
   like(SPVM::Float::MAX_VALUE(), qr/[0-9]/);
   like(SPVM::Float::MIN_VALUE(), qr/[0-9]/);
@@ -114,8 +115,10 @@ use SPVM 'Float';
   ok(SPVM::TestCase::Double::is_nan());
   ok(SPVM::TestCase::Double::long_bits_to_double());
   ok(SPVM::TestCase::Double::long_bits_to_double_nan_first_condition());
+  ok(SPVM::TestCase::Double::long_bits_to_double_nan_first_condition_is_nan());
   ok(SPVM::TestCase::Double::long_bits_to_double_nan_second_condition());
-  
+  ok(SPVM::TestCase::Double::long_bits_to_double_nan_second_condition_is_nan());
+
   is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
   
