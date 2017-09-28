@@ -30,8 +30,8 @@ package TestCase {
   has x_double : double;
 
   enum {
-    BYTE_MAX = 127b,
-    BYTE_MIN = -128b,
+    BYTE_MAX = 127y,
+    BYTE_MIN = -128y,
     SHORT_MAX = 32767s,
     SHORT_MIN = -32768s,
     INT_MAX = 2147483647,

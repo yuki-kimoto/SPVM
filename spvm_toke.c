@@ -822,6 +822,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->bufptr += 2;
             while(
               isdigit(*compiler->bufptr)
+              || *compiler->bufptr == 'a' || *compiler->bufptr == 'b' || *compiler->bufptr == 'c' || *compiler->bufptr == 'd' || *compiler->bufptr == 'e' || *compiler->bufptr == 'f'
               || *compiler->bufptr == 'A' || *compiler->bufptr == 'B' || *compiler->bufptr == 'C' || *compiler->bufptr == 'D' || *compiler->bufptr == 'E' || *compiler->bufptr == 'F'
               || *compiler->bufptr == '_'
             )
@@ -861,7 +862,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Constant
           SPVM_TYPE* constant_type;
           
-          if (*compiler->bufptr == 'b')  {
+          if (*compiler->bufptr == 'y')  {
             constant_type = SPVM_TYPE_get_byte_type(compiler);
             compiler->bufptr++;
           }

@@ -1,8 +1,8 @@
 package Byte {
   
   enum {
-    MIN_VALUE = -128b,
-    MAX_VALUE = 127b,
+    MIN_VALUE = -128y,
+    MAX_VALUE = 127y,
     BYTES = 1,
     SIZE = 8,
   }

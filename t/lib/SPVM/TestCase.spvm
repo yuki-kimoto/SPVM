@@ -46,7 +46,7 @@ package TestCase {
   # SPVM set and get
   sub spvm_set_and_get_byte($nums : byte[]) : int {
     
-    if ($nums->[0] == 0b) {
+    if ($nums->[0] == 0y) {
       if ($nums->[1] == Byte->MAX_VALUE) {
         return 1;
       }
@@ -1084,8 +1084,8 @@ package TestCase {
     my $values_float = new float[1000000];
     my $values_double = new double[1000000];
     my $values_object = new TestCase[1000000];
-    if ($values_byte->[0] == 0b) {
-      if ($values_byte->[999999] == 0b) {
+    if ($values_byte->[0] == 0y) {
+      if ($values_byte->[999999] == 0y) {
         if ($values_short->[0] == 0s) {
           if ($values_short->[999999] == 0s) {
             if ($values_int->[0] == 0) {
@@ -1121,8 +1121,8 @@ package TestCase {
     my $values_float = new float[10];
     my $values_double = new double[10];
     my $values_object = new TestCase[10];
-    if ($values_byte->[0] == 0b) {
-      if ($values_byte->[9] == 0b) {
+    if ($values_byte->[0] == 0y) {
+      if ($values_byte->[9] == 0y) {
         if ($values_short->[0] == 0s) {
           if ($values_short->[9] == 0s) {
             if ($values_int->[0] == 0) {
@@ -1151,11 +1151,11 @@ package TestCase {
     return 0;
   }
   sub array_init_byte() : int {
-    my $nums = [1b, 2b, 3b];
+    my $nums = [1y, 2y, 3y];
     
-    if ($nums->[0] == 1b) {
-      if ($nums->[1] == 2b) {
-        if ($nums->[2] == 3b) {
+    if ($nums->[0] == 1y) {
+      if ($nums->[1] == 2y) {
+        if ($nums->[2] == 3y) {
           return 1;
         }
       }
@@ -1237,12 +1237,12 @@ package TestCase {
   }
 
   enum {
-    BYTE_ZERO = 0b,
+    BYTE_ZERO = 0y,
     BYTE_ONE,
-    BYTE_THREE = 3b,
+    BYTE_THREE = 3y,
     BYTE_FOUR,
-    BYTE_SIX = 6b,
-    BYTE_MINUS_MAX = -128b
+    BYTE_SIX = 6y,
+    BYTE_MINUS_MAX = -128y
   }
   sub enum_byte () : int {
     if (TestCase->BYTE_ZERO == (byte)0) {
@@ -3923,9 +3923,9 @@ package TestCase {
     my $value1 = 255f;
     my $value2 = 255d;
     my $value3 = 255L;
-    my $value4 = -128b;
+    my $value4 = -128y;
     my $value5 = -32768s;
-    my $value6 = 127b;
+    my $value6 = 127y;
     my $value7 = -128s;
     
     if ($value1 == (float)255) {
@@ -3948,24 +3948,18 @@ package TestCase {
   }
   
   sub number_literal_hex_specifier() : int {
-    my $value1 = 0xFFf;
-    my $value2 = 0xFFd;
     my $value3 = 0xFFL;
-    my $value4 = 0xFFb;
+    my $value4 = 0xFFy;
     my $value5 = 0xFFFFs;
-    my $value6 = 0x7Fb;
+    my $value6 = 0x7Fy;
     my $value7 = 0x7FFFs;
     
-    if ($value1 == (float)255) {
-      if ($value2 == (double)255) {
-        if ($value3 == (long)255) {
-          if ($value4 == (byte)-1) {
-            if ($value5 == (short)-1) {
-              if ($value6 == (byte)127) {
-                if ($value7 == (short)32767) {
-                  return 1;
-                }
-              }
+    if ($value3 == (long)255) {
+      if ($value4 == (byte)-1) {
+        if ($value5 == (short)-1) {
+          if ($value6 == (byte)127) {
+            if ($value7 == (short)32767) {
+              return 1;
             }
           }
         }
