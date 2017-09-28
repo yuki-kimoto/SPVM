@@ -125,6 +125,8 @@ use SPVM 'Float';
   
   ok(SPVM::TestCase::Double::double_to_raw_long_bits());
   ok(SPVM::TestCase::Double::double_to_raw_long_bits_nan());
+  ok(SPVM::TestCase::Double::double_to_long_bits());
+  ok(SPVM::TestCase::Double::double_to_long_bits_nan());
   
   is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
