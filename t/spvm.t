@@ -112,6 +112,7 @@ use SPVM 'Float';
   ok(SPVM::TestCase::Double::is_infinite());
   ok(SPVM::TestCase::Double::is_finite());
   ok(SPVM::TestCase::Double::is_nan());
+  ok(SPVM::TestCase::Double::long_bits_to_double());
   
   is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);

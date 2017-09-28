@@ -152,7 +152,7 @@ int64_t SPVM__Double__double_to_raw_long_bits(SPVM_API* api, SPVM_API_VALUE* arg
 int64_t SPVM__Double__long_bits_to_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  uint64_t long_bits = (uint64_t)args[0].int_value;
+  uint64_t long_bits = (uint64_t)args[0].long_value;
   
   if ((long_bits >= 0x7ff0000000000001L && long_bits <= 0x7fffffffffffffffL) || (long_bits >= 0xfff0000000000001L && long_bits <= 0xffffffffffffffffL)) {
     long_bits = 0x7ff8000000000000L;

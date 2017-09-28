@@ -14,6 +14,19 @@ package TestCase::Double {
     
     return 0;
   }
+  
+  sub long_bits_to_double() : int {
+    
+    my $long_bits = 0x3FE0000000000000L;
+    
+    my $double_value = Double->long_bits_to_double($long_bits);
+    
+    if ($double_value == 0.5) {
+      return 1;
+    }
+    
+    return 0;
+  }
 
   sub is_infinite() : int {
     if (Double->is_infinite(Double->POSITIVE_INFINITY)) {
