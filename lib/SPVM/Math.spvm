@@ -14,5 +14,5 @@ package Math {
   sub to_degrees ($value : double) : native double;
   sub exp ($value : double) : native double;
   sub log ($value : double) : native double;
-
+  sub log10 ($value : double) : native double;
 }

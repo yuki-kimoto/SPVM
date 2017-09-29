@@ -85,3 +85,11 @@ double SPVM__Math__log(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+double SPVM__Math__log10(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = log10(args[0].double_value);
+  
+  return value;
+}
