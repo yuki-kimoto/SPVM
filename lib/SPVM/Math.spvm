@@ -24,5 +24,6 @@ package Math {
   sub atan2($y : double, $x : double) : native double;
   sub pow($x : double, $y : double) : native double;
   sub round($x : double) : native double;
+  sub abs($x : int) : native int;
   
 }

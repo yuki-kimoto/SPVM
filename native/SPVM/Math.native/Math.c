@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <math.h>
+#include <stdlib.h>
 
 #include "spvm_api.h"
 
@@ -163,6 +164,14 @@ double SPVM__Math__round(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double value = round(args[0].double_value);
+  
+  return value;
+}
+
+int32_t SPVM__Math__abs(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  int32_t value = (int32_t)labs((long)args[0].int_value);
   
   return value;
 }
