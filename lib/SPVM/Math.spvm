@@ -4,23 +4,23 @@ package Math {
     E = 2.718281828459045
   }
   
-  sub sin($value : double) : native double;
-  sub cos($value : double) : native double;
-  sub tan($value : double) : native double;
-  sub asin($value : double) : native double;
-  sub acos($value : double) : native double;
-  sub atan($value : double) : native double;
-  sub to_radians($value : double) : native double;
-  sub to_degrees($value : double) : native double;
-  sub exp($value : double) : native double;
-  sub log($value : double) : native double;
-  sub log10($value : double) : native double;
-  sub sqrt($value : double) : native double;
-  sub cbrt($value : double) : native double;
-  sub IEEE_remainder($value1 : double, $value2 : double) : native double;
-  sub ceil($value : double) : native double;
-  sub floor($value : double) : native double;
-  sub rint($value : double) : native double;
-  sub atan2($value1 : double, $value2 : double) : native double;
+  sub sin($x : double) : native double;
+  sub cos($x : double) : native double;
+  sub tan($x : double) : native double;
+  sub asin($x : double) : native double;
+  sub acos($x : double) : native double;
+  sub atan($x : double) : native double;
+  sub to_radians($x : double) : native double;
+  sub to_degrees($x : double) : native double;
+  sub exp($x : double) : native double;
+  sub log($x : double) : native double;
+  sub log10($x : double) : native double;
+  sub sqrt($x : double) : native double;
+  sub cbrt($x : double) : native double;
+  sub IEEE_remainder($x1 : double, $x2 : double) : native double;
+  sub ceil($x : double) : native double;
+  sub floor($x : double) : native double;
+  sub rint($x : double) : native double;
+  sub atan2($y : double, $x : double) : native double;
   
 }
