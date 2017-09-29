@@ -150,3 +150,11 @@ double SPVM__Math__atan2(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+double SPVM__Math__pow(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = pow(args[0].double_value, args[1].double_value);
+  
+  return value;
+}
