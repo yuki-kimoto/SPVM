@@ -4,17 +4,20 @@ package Math {
     E = 2.718281828459045
   }
   
-  sub sin ($value : double) : native double;
-  sub cos ($value : double) : native double;
-  sub tan ($value : double) : native double;
-  sub asin ($value : double) : native double;
-  sub acos ($value : double) : native double;
-  sub atan ($value : double) : native double;
-  sub to_radians ($value : double) : native double;
-  sub to_degrees ($value : double) : native double;
-  sub exp ($value : double) : native double;
-  sub log ($value : double) : native double;
-  sub log10 ($value : double) : native double;
-  sub sqrt ($value : double) : native double;
-  sub cbrt ($value : double) : native double;
+  sub sin($value : double) : native double;
+  sub cos($value : double) : native double;
+  sub tan($value : double) : native double;
+  sub asin($value : double) : native double;
+  sub acos($value : double) : native double;
+  sub atan($value : double) : native double;
+  sub to_radians($value : double) : native double;
+  sub to_degrees($value : double) : native double;
+  sub exp($value : double) : native double;
+  sub log($value : double) : native double;
+  sub log10($value : double) : native double;
+  sub sqrt($value : double) : native double;
+  sub cbrt($value : double) : native double;
+  # IEEEremainer depend
+  sub ceil($value : double) : native double;
+  
 }
