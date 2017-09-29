@@ -19,5 +19,6 @@ package Math {
   sub cbrt($value : double) : native double;
   # IEEEremainer depend
   sub ceil($value : double) : native double;
+  sub floor($value : double) : native double;
   
 }

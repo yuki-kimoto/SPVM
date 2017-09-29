@@ -118,3 +118,12 @@ double SPVM__Math__ceil(SPVM_API* api, SPVM_API_VALUE* args) {
   return value;
 }
 
+double SPVM__Math__floor(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = floor(args[0].double_value);
+  
+  return value;
+}
+
+
