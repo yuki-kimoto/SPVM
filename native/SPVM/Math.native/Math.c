@@ -175,3 +175,11 @@ int32_t SPVM__Math__abs(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+int64_t SPVM__Math__abs_long(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  int64_t value = (int64_t)labs((long long)args[0].long_value);
+  
+  return value;
+}

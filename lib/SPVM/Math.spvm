@@ -25,5 +25,6 @@ package Math {
   sub pow($x : double, $y : double) : native double;
   sub round($x : double) : native double;
   sub abs($x : int) : native int;
+  sub abs_long($x : long) : native long;
   
 }
