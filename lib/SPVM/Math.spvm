@@ -16,4 +16,5 @@ package Math {
   sub log ($value : double) : native double;
   sub log10 ($value : double) : native double;
   sub sqrt ($value : double) : native double;
+  sub cbrt ($value : double) : native double;
 }
