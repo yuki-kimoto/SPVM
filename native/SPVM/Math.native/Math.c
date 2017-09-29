@@ -69,3 +69,11 @@ double SPVM__Math__to_degrees(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+double SPVM__Math__exp(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = exp(args[0].double_value);
+  
+  return value;
+}
