@@ -20,5 +20,7 @@ package Math {
   sub IEEE_remainder($value1 : double, $value2 : double) : native double;
   sub ceil($value : double) : native double;
   sub floor($value : double) : native double;
+  sub rint($value : double) : native double;
+  sub atan2($value1 : double, $value2 : double) : native double;
   
 }

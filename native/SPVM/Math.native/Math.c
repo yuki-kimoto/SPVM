@@ -135,4 +135,18 @@ double SPVM__Math__floor(SPVM_API* api, SPVM_API_VALUE* args) {
   return value;
 }
 
+double SPVM__Math__rint(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = rint(args[0].double_value);
+  
+  return value;
+}
 
+double SPVM__Math__atan2(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = atan2(args[0].double_value, args[1].double_value);
+  
+  return value;
+}
