@@ -118,6 +118,15 @@ double SPVM__Math__ceil(SPVM_API* api, SPVM_API_VALUE* args) {
   return value;
 }
 
+double SPVM__Math__IEEE_remainder(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  // x - Math.Round(x / y) * y
+  double value = args[0].double_value - round(args[0].double_value / args[1].double_value) * args[1].double_value;
+
+  return value;
+}
+
 double SPVM__Math__floor(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   

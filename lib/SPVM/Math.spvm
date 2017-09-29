@@ -17,7 +17,7 @@ package Math {
   sub log10($value : double) : native double;
   sub sqrt($value : double) : native double;
   sub cbrt($value : double) : native double;
-  # IEEEremainer depend
+  sub IEEE_remainder($value1 : double, $value2 : double) : native double;
   sub ceil($value : double) : native double;
   sub floor($value : double) : native double;
   
