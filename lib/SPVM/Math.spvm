@@ -27,5 +27,5 @@ package Math {
   sub abs($x : int) : native int;
   sub abs_long($x : long) : native long;
   sub abs_float($x : float) : native float;
-  
+  sub abs_double($x : double) : native double;
 }
