@@ -199,3 +199,11 @@ double SPVM__Math__abs_double(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+double SPVM__Math__sinh(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = sinh(args[0].double_value);
+  
+  return value;
+}
