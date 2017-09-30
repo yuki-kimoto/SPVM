@@ -117,7 +117,7 @@ package Math {
       return 0.0;
     }
   }
-
+  
   sub signum_float($x : float) : float {
     if (Float->is_nan($x)) {
       return Float->NaN;
@@ -133,5 +133,7 @@ package Math {
     }
   }
   sub sinh($x : double) : native double;
+  sub cosh($x : double) : native double;
+  sub tanh($x : double) : native double;
 
 }

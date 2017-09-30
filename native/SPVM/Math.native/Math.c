@@ -207,3 +207,19 @@ double SPVM__Math__sinh(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+double SPVM__Math__cosh(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = cosh(args[0].double_value);
+  
+  return value;
+}
+
+double SPVM__Math__tanh(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = tanh(args[0].double_value);
+  
+  return value;
+}
