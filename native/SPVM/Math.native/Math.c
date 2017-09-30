@@ -223,3 +223,11 @@ double SPVM__Math__tanh(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+double SPVM__Math__hypot(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = hypot(args[0].double_value, args[1].double_value);
+  
+  return value;
+}

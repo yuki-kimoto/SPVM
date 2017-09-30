@@ -135,5 +135,6 @@ package Math {
   sub sinh($x : double) : native double;
   sub cosh($x : double) : native double;
   sub tanh($x : double) : native double;
+  sub hypot($x : double, $y : double) : native double;
 
 }
