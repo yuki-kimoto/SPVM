@@ -140,5 +140,12 @@ package Math {
   sub log1p($x : double) : native double;
   sub copy_sign($magnitude : double, $sign : double) : native double;
   sub copy_sign_float($magnitude : float, $sign : float) : native float;
-
+  
+  # TODO
+  # ulp
+  # getExponent
+  # nextAfter
+  # nextUp
+  # nextDown
+  # scalb
 }
