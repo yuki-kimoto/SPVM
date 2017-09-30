@@ -1,3 +1,5 @@
+use Double;
+
 package Math {
   enum {
     PI = 3.141592653589793,
@@ -98,6 +100,36 @@ package Math {
     }
     else {
       return $y;
+    }
+  }
+  
+  sub signum($x : double) : double {
+    if (Double->is_nan($x)) {
+      return Double->NaN;
+    }
+    elsif ($x > 0.0) {
+      return 1.0;
+    }
+    elsif ($x < 0.0) {
+      return -1.0;
+    }
+    else {
+      return 0.0;
+    }
+  }
+
+  sub signum_float($x : float) : float {
+    if (Float->is_nan($x)) {
+      return Float->NaN;
+    }
+    elsif ($x > 0.0f) {
+      return 1.0f;
+    }
+    elsif ($x < 0.0f) {
+      return -1.0f;
+    }
+    else {
+      return 0.0f;
     }
   }
 
