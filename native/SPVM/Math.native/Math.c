@@ -255,3 +255,11 @@ double SPVM__Math__copy_sign(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+float SPVM__Math__copy_sign_float(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  float value = copysign(args[0].float_value, args[1].float_value);
+  
+  return value;
+}
