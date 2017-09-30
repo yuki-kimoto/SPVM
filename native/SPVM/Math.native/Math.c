@@ -247,3 +247,11 @@ double SPVM__Math__log1p(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+double SPVM__Math__copy_sign(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = copysign(args[0].double_value, args[1].double_value);
+  
+  return value;
+}
