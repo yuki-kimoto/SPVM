@@ -65,4 +65,40 @@ package Math {
     }
   }
 
+  sub min($x : int, $y : int) : int {
+    if ($x < $y) {
+      return $x;
+    }
+    else {
+      return $y;
+    }
+  }
+
+  sub min_long($x : long, $y : long) : long {
+    if ($x < $y) {
+      return $x;
+    }
+    else {
+      return $y;
+    }
+  }
+
+  sub min_float($x : float, $y : float) : float {
+    if ($x < $y) {
+      return $x;
+    }
+    else {
+      return $y;
+    }
+  }
+
+  sub min_double($x : double, $y : double) : double {
+    if ($x < $y) {
+      return $x;
+    }
+    else {
+      return $y;
+    }
+  }
+
 }
