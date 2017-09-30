@@ -231,3 +231,11 @@ double SPVM__Math__hypot(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+double SPVM__Math__expm1(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = expm1(args[0].double_value);
+  
+  return value;
+}
