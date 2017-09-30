@@ -183,3 +183,11 @@ int64_t SPVM__Math__abs_long(SPVM_API* api, SPVM_API_VALUE* args) {
   
   return value;
 }
+
+float SPVM__Math__abs_float(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  float value = fabsf(args[0].float_value);
+  
+  return value;
+}
