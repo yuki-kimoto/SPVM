@@ -363,6 +363,12 @@ A character preceded by a backslash (\) is an escape sequence and has special me
   \"                    Insert a double quote character in the text at this point.
   \\                    Insert a backslash character in the text at this point.
 
+=head3 Undefined Literal
+
+Undefined Literal is:
+
+  undef
+
 =head2 Type
 
 =head3 Primitive Type
