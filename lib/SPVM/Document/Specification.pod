@@ -4,8 +4,6 @@ SPVM::Document::Specification - SPVM Language Specification(BETA before 1.0)
 
 =head1 SPVM Language Specification
 
-=head1 1. Introduction
-
 SPVM is designed to help Perl week points. Perl week points is:
 
 =over 2
@@ -370,6 +368,12 @@ Undefined Literal is:
   undef
 
 =head2 Type
+
+The SPVM programming language is a statically typed language, which means that every variable and every expression has a type that is known at compile time.
+
+The SPVM programming language is also a strongly typed language, because types limit the values that a variable can hold or that an expression can produce, limit the operations supported on those values, and determine the meaning of the operations. Strong static typing helps detect errors at compile time.
+
+The types of the SPVM programming language are divided into two categories: primitive types and reference types. The primitive types are the numeric types. The numeric types are the integral types byte, short, int, long, and the floating-point types float and double. The reference types are package types, and array types. There is also a special undef type. An object is a dynamically created instance of a package type or a dynamically created array. The values of a reference type are references to objects. String literals are represented by array of byte.
 
 =head3 Primitive Type
 
