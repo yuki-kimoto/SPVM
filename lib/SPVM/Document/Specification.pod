@@ -27,8 +27,8 @@ For example:
 AI, Machine Learning, Deep Learning, Statistics, IoT, Image Recognition, Voice Recognition, 
 Signal Processing.
 
-SPVM have Primitive Type, Array Type, Package Type. Primitive Type is byte, short, int, long, float, double.
-You can calcurate number by these types. Array Type is Contiguous Area of primitive type. Package Type have, for example, x, y field.
+SPVM have Numeric Type, Array Type, Package Type. Numeric Type is byte, short, int, long, float, double.
+You can calcurate number by these types. Array Type is Contiguous Area of numeric type. Package Type have, for example, x, y field.
 
 SPVM have Type Inference, GC, Memory Safety, Destructor, Package Template. GC is Reference Count GC. Template Package is like C++ Class Template.
 
@@ -195,7 +195,7 @@ You can Initialize the variable as same time as Variable Declaration.
 
 B<Variable Declaration Example:>
   
-  # Primitive Type
+  # Numeric Type
   my $value : byte;
   my $value : short;
   my $value : int;
@@ -373,19 +373,41 @@ The SPVM programming language is a statically typed language, which means that e
 
 The SPVM programming language is also a strongly typed language, because types limit the values that a variable can hold or that an expression can produce, limit the operations supported on those values, and determine the meaning of the operations. Strong static typing helps detect errors at compile time.
 
-The types of the SPVM programming language are divided into two categories: primitive types and reference types. The primitive types are the numeric types. The numeric types are the integral types byte, short, int, long, and the floating-point types float and double. The reference types are package types, and array types. There is also a special undef type. An object is a dynamically created instance of a package type or a dynamically created array. The values of a reference type are references to objects. String literals are represented by array of byte.
+The types of the SPVM programming language are divided into two categories: numeric types and reference types. The numeric types are the numeric types. The numeric types are the integral types byte, short, int, long, and the floating-point types float and double. The reference types are package types, and array types. There is also a special undef type. An object is a dynamically created instance of a package type or a dynamically created array. The values of a reference type are references to objects. String literals are represented by array of byte.
 
-=head3 Primitive Type
+=head3 Numeric Type
 
-Primitive types are C<byte>, C<short>, C<int>, C<long>, C<float>, C<double>.
+Numeric types are C<byte>, C<short>, C<int>, C<long>, C<float>, C<double>.
   
-  [Type]  [Type Description]      [Type Byte Size]
-  byte    signed integer          1byte
-  short   signed integer          2byte
-  int     signed integer          4byte
-  long    signed integer          8byte
-  float   floating-point number   4byte
-  double  floating-point number   8byte
+  [Type]  [Type Description]   [Type Bit Size]
+  byte    Integral type        8-bit
+  short   Integral type        16-bit
+  int     Integral type        32-bit
+  long    Integral type        64-bit
+  float   floating-point type  32-bit
+  double  floating-point type  64-bit
+
+Numeric values do not share state with other numeric values.
+
+The numeric types are the integral types and the floating-point types.
+
+The integral types are byte, short, int, and long, whose values are 8-bit, 16-bit, 32-bit and 64-bit
+signed two's-complement integers.
+
+The floating-point types are float, whose values include the 32-bit IEEE 754 floating-point numbers, and double,
+whose values include the 64-bit IEEE 754 floating-point numbers.
+
+B<The values of the integral types are integers in the following ranges:>
+
+For byte, from -128 to 127, inclusive
+
+For short, from -32768 to 32767, inclusive
+
+For int, from -2147483648 to 2147483647, inclusive
+
+For long, from -9223372036854775808 to 9223372036854775807, inclusive
+
+B<Varialbe Declaration>
 
 Varialbe Declaration with Type is the following.
 
