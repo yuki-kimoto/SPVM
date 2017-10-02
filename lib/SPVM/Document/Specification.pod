@@ -34,48 +34,6 @@ You can calcurate number by these types. Array Type is Contiguous Area of primit
 
 SPVM have Type Inference, GC, Memory Safety, Destructor, Package Template. GC is Reference Count GC. Template Package is like C++ Class Template.
 
-=head2 1.1. Organization of the Specification
-
-Chapter 2
-
-Chapter 3
-
-Chapter 4
-
-Chapter 5
-
-Chapter 6
-
-Chapter 7
-
-Chapter 8
-
-Chapter 9
-
-=head2 1.2. Example Programs
-
-Most of the example programs given in the text are ready to be executed and are similar in form to:
-
-  # lib/SPVM/Foo.spvm
-  package Foo {
-    sub bar() : void {
-      std::say("Hello, world.");
-    }
-  }
-
-You can use this class from Perl directory.
-  
-  use FindBin;
-  use lib "$FindBin::Bin/lib";
-  use SPVM 'Foo';
-  
-  # Call SVPM subroutine
-  SPVM::Foo::bar();
-
-producing the output:
-
-  Hello, world.
-
 =head1 Syntax
 
 =head2 Package Declaration
@@ -531,13 +489,24 @@ Set Array Element:
     $nums->[$i] = 0;
   }
 
+=head2 Comment
+
+Comment:
+
+  # Comment
+
 =head2 POD
+
+Pod syntax:
 
   =pod
     AAAA
+    BBBB
   =cut
 
 =head2 __END__
+
+Script Ending:
 
   __END__
 
@@ -545,9 +514,13 @@ Set Array Element:
 
 =head3 Throw Exception
 
+Throw Exception:
+
   die "Error";
 
 =head3 Catch Exception
+
+Catch Exception:
 
   eval {
     die "Error";
