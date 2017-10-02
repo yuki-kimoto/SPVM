@@ -4,9 +4,9 @@ SPVM::Document::Specification - SPVM Language Specification(BETA before 1.0)
 
 =head1 SPVM Language Specification
 
-=head2 1. Introduction
+=head1 1. Introduction
 
-PVM is designed to help Perl week point. Perl week points is:
+SPVM is designed to help Perl week points. Perl week points is:
 
 =over 2
 
@@ -29,6 +29,54 @@ For example:
 AI, Machine Learning, Deep Learning, Statistics, IoT, Image Recognition, Voice Recognition, 
 Signal Processing.
 
+SPVM have Primitive Type, Array Type, Package Type. Primitive Type is byte, short, int, long, float, double.
+You can calcurate number by these types. Array Type is Contiguous Area of primitive type. Package Type have, for example, x, y field.
+
+SPVM have Type Inference, GC, Memory Safety, Destructor, Package Template. GC is Reference Count GC. Template Package is like C++ Class Template.
+
+=head2 1.1. Organization of the Specification
+
+Chapter 2
+
+Chapter 3
+
+Chapter 4
+
+Chapter 5
+
+Chapter 6
+
+Chapter 7
+
+Chapter 8
+
+Chapter 9
+
+=head2 1.2. Example Programs
+
+Most of the example programs given in the text are ready to be executed and are similar in form to:
+
+  # lib/SPVM/Foo.spvm
+  package Foo {
+    sub bar() : void {
+      std::say("Hello, world.");
+    }
+  }
+
+You can use this class from Perl directory.
+  
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+  use SPVM 'Foo';
+  
+  # Call SVPM subroutine
+  SPVM::Foo::bar();
+
+producing the output:
+
+  Hello, world.
+
+=head1 Syntax
 
 =head2 Package Declaration
 
