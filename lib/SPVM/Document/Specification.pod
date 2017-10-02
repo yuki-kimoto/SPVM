@@ -246,10 +246,20 @@ Above is same as the following.
 
 Integer Literal is composed of 
 
-   [+|-][0x|0|0q|0b][0123456789ABCDEF]...[U|u|L|l]
+   [+|-][0x][0123456789abcdefABCDEF]...[y|s|L|f|d]
+
+For example:
+
+  123
+  -123
+  0xff
+  0xFF
+  123L
+  123d
 
 Default Number Literal Type is C<int>.
-
+  
+  # Type is int
   123
 
 You can use hex number literal by start C<0x>.
@@ -264,20 +274,7 @@ You can use under line C<_> in number literal. Under line is meanless, only for 
   123_456
   0xAB_CD
 
-=head3 Floating Point Literal
-
-If you use C<.> in number literal, the number is floating point literal. Default type of floating point value is C<double>.
-
-  1.23
-
-You can use C<E> or C<e> to specify exponential notation.
-
-  1.23E+12
-  1.23E-12
-  1.23e+12
-  1.23e-12
-
-You can use type specifier to specify number leteral type
+You can use type specifier to specify integer leteral type.
 
 =over 2
 
@@ -308,9 +305,37 @@ You can use type specifier to specify number leteral type
 
 =back
 
-If you know more Type, see L</"Type"> section.
+=head3 Floating Point Literal
 
-Note that C<b> is type specifiler, not hex literal. This means C<b> can't be used as hex number C<11>. You must use C<B> to express hex number C<11>.
+If you use C<.> in number literal, the number is floating point literal. Default type of floating point value is C<double>.
+
+  1.23
+  -1.23
+
+You can use C<E> or C<e> to specify exponential notation.
+
+  1.23E+12
+  1.23E-12
+  1.23e+12
+  1.23e-12
+
+You can use type specifier to specify integer leteral type.
+
+=over 2
+
+=item * f
+  
+  # Float
+  1.23f
+
+=item * d
+
+  # Double
+  1.23d
+
+=back
+
+If you know more Type, see L</"Type"> section.
 
 =head2 String Literal
 
