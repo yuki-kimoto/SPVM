@@ -4,6 +4,32 @@ SPVM::Document::Specification - SPVM Language Specification(BETA before 1.0)
 
 =head1 SPVM Language Specification
 
+=head2 1. Introduction
+
+PVM is designed to help Perl week point. Perl week points is:
+
+=over 2
+
+=item * Perl numeric and array operation is slow because Perl can't have Static Type.
+
+=item * Perl can't calcurate number correctly, for exampele, float operation, bit operation of integral type, etc.
+
+=item * Perl can't bind C/C++ library easily becuase Perl don't have type semaintics.
+
+=back
+
+SPVM provide Fast and Correct Numeric and Array operation, and C/C++ binding become much easy.
+
+SPVM Module is used from Perl directory. SPVM is not single language. You can call SPVM subroutine easily from Perl .
+
+If you use SPVM, you can create module which need numeric and array operation.
+
+For example:
+
+AI, Machine Learning, Deep Learning, Statistics, IoT, Image Recognition, Voice Recognition, 
+Signal Processing.
+
+
 =head2 Package Declaration
 
 Package declaration is the following.
@@ -210,13 +236,29 @@ Above is same as the following.
 
 =head2 Number Literal
 
+=head3 Integer Literal
+
+Integer Literal is composed of 
+
+   [+|-][0x|0|0q|0b][0123456789ABCDEF]...[U|u|L|l]
+
 Default Number Literal Type is C<int>.
 
   123
 
-You can use hex number literal by start C<0x>. C<A>, C<B>, C<C>, C<D>, C<E>, C<F> must be upper case.
+You can use hex number literal by start C<0x>.
+
+C<a>, C<b>, C<c>, C<d>, C<e>, C<f>, C<A>, C<B>, C<C>, C<D>, C<E>, C<F> is used as hex number.
 
   0xAF
+  0xaf
+
+You can use under line C<_> in number literal. Under line is meanless, only for visuality.
+
+  123_456
+  0xAB_CD
+
+=head3 Floating Point Literal
 
 If you use C<.> in number literal, the number is floating point literal. Default type of floating point value is C<double>.
 
@@ -229,19 +271,14 @@ You can use C<E> or C<e> to specify exponential notation.
   1.23e+12
   1.23e-12
 
-You can use under line C<_> in number literal. Under line is meanless, only for visuality.
-
-  123_456
-  0xAB_CD
-
 You can use type specifier to specify number leteral type
 
 =over 2
 
-=item * b
+=item * y
 
   # Byte
-  123b
+  123y
 
 =item * s
   
