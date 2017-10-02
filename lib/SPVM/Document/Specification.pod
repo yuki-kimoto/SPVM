@@ -363,7 +363,7 @@ A character preceded by a backslash (\) is an escape sequence and has special me
   \"                    Insert a double quote character in the text at this point.
   \\                    Insert a backslash character in the text at this point.
 
-=head3 Undefined Literal
+=head2 Undefined Literal
 
 Undefined Literal is:
 
@@ -608,3 +608,61 @@ Enumeration.
   package TestCase::Extension {
     sub sum($num1 : int, $num2 : int) : native int;
   }
+
+=head2 Operators
+
+=head3 Assign Operator
+
+  =
+
+B<Special Assign Operator>
+
+  +=
+  -=
+  *=
+  /=
+  &=
+  |=
+  ^=
+  %=
+  <<=
+  >>=
+  >>>=
+
+=head2 Basic Operator
+
+  +
+  -
+  *
+  /
+  %
+
+=head3 Comparison Operator
+
+  ==
+  !=
+  >
+  <
+  <=
+  >=
+
+=head3 Logical Operator
+
+  &&
+  ||
+  !
+
+=head3 Bit Operator
+
+  <<
+  >>
+  >>>
+  &
+  |
+  ^
+  ~
+
+=head3 Increment/Decrement Operator
+
+  ++
+  --
