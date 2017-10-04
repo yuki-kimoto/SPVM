@@ -819,6 +819,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (*(compiler->bufptr + 1) == 'x') {
               digit = 16;
             }
+            else if (*(compiler->bufptr + 1) == 'b') {
+              digit = 2;
+            }
             else if (isdigit(*(compiler->bufptr + 1))) {
               digit = 8;
             }
@@ -843,7 +846,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->bufptr++;
             }
           }
-          else if (digit == 8) {
+          else if (digit == 8 || digit == 2) {
             compiler->bufptr += 1;
             while(
               isdigit(*compiler->bufptr)

@@ -3947,6 +3947,17 @@ package TestCase {
     return 0;
   }
   
+  sub number_literal_underline() : int {
+    my $value = 123_123;
+    
+    if ($value == 123123) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
   sub number_literal_hex_specifier() : int {
     my $value3 = 0xFFL;
     my $value4 = 0xFFy;
@@ -3982,16 +3993,6 @@ package TestCase {
     }
     
     return 0;
-  }
-  sub number_literal_underline() : int {
-    my $value = 123_123;
-    
-    if ($value == 123123) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
   }
 
   sub number_literal_underline_hex() : int {
