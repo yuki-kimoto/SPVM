@@ -47,6 +47,7 @@ native/SPVM/Float.native/Float.config
 native/SPVM/Integer.native/Integer.c
 native/SPVM/Long.native/Long.c
 native/SPVM/Math.native/Math.c
+native/SPVM/Math.native/Math.config
 native/SPVM/Short.native/Short.c
 native/SPVM/std.native/std.c
 ppport.h
