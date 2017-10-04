@@ -977,23 +977,40 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           // short
           else if (constant_type->code == SPVM_TYPE_C_CODE_SHORT) {
-            int32_t num;
+            int64_t num;
             errno = 0;
+            _Bool out_of_range = 0;
+            _Bool invalid = 0;
+            
             if (digit == 16 || digit == 8) {
-              num = (int64_t)(uint64_t)strtoull(num_str, &end, 16);
+              num = (uint64_t)strtoull(num_str, &end, digit);
+              if (*end != '\0') {
+                invalid = 1;
+              }
+              else if (num > UINT16_MAX || errno == ERANGE) {
+                out_of_range = 1;
+              }
+              num = (int64_t)num;
             }
             else {
-              num = (int32_t)strtoll(num_str, &end, 10);
+              num = (int64_t)strtoll(num_str, &end, 10);
+              if (*end != '\0') {
+                invalid = 1;
+              }
+              else if (num < INT16_MIN || num > INT16_MAX || errno == ERANGE) {
+                out_of_range = 1;
+              }
             }
-            if (*end != '\0') {
+            
+            if (invalid) {
               fprintf(stderr, "Invalid short literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            else if (num < INT16_MIN || num > UINT16_MAX || errno == ERANGE) {
-              fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+            else if (out_of_range) {
+              fprintf(stderr, "short literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            op_constant = SPVM_OP_new_op_constant_short(compiler, (int16_t)num, compiler->cur_file, compiler->cur_line);
+            op_constant = SPVM_OP_new_op_constant_short(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // int
           else if (constant_type->code == SPVM_TYPE_C_CODE_INT) {
@@ -1036,21 +1053,37 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else if (constant_type->code == SPVM_TYPE_C_CODE_LONG) {
             int64_t num;
             errno = 0;
+            _Bool out_of_range = 0;
+            _Bool invalid = 0;
+            
             if (digit == 16 || digit == 8) {
-              num = (int64_t)(uint64_t)strtoull(num_str, &end, 16);
+              num = (uint64_t)strtoull(num_str, &end, digit);
+              if (*end != '\0') {
+                invalid = 1;
+              }
+              else if (num > UINT64_MAX || errno == ERANGE) {
+                out_of_range = 1;
+              }
+              num = (int64_t)num;
             }
             else {
               num = (int64_t)strtoll(num_str, &end, 10);
+              if (*end != '\0') {
+                invalid = 1;
+              }
+              else if (num < INT64_MIN || num > INT64_MAX || errno == ERANGE) {
+                out_of_range = 1;
+              }
             }
-            if (*end != '\0') {
+            
+            if (invalid) {
               fprintf(stderr, "Invalid long literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            else if (errno == ERANGE) {
-              fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+            else if (out_of_range) {
+              fprintf(stderr, "long literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            
             op_constant = SPVM_OP_new_op_constant_long(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           else {
