@@ -945,7 +945,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             _Bool out_of_range = 0;
             _Bool invalid = 0;
             
-            if (digit == 16 || digit == 8) {
+            if (digit == 16 || digit == 8 || digit == 2) {
               num = (uint64_t)strtoull(num_str, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
@@ -982,7 +982,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             _Bool out_of_range = 0;
             _Bool invalid = 0;
             
-            if (digit == 16 || digit == 8) {
+            if (digit == 16 || digit == 8 || digit == 2) {
               num = (uint64_t)strtoull(num_str, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
@@ -1019,7 +1019,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             _Bool out_of_range = 0;
             _Bool invalid = 0;
             
-            if (digit == 16 || digit == 8) {
+            if (digit == 16 || digit == 8 || digit == 2) {
               num = (uint64_t)strtoull(num_str, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
@@ -1056,7 +1056,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             _Bool out_of_range = 0;
             _Bool invalid = 0;
             
-            if (digit == 16 || digit == 8) {
+            if (digit == 16 || digit == 8 || digit == 2) {
               num = (uint64_t)strtoull(num_str, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
