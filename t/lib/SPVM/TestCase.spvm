@@ -4079,27 +4079,20 @@ package TestCase {
     return 0;
   }
 
-=pod
   sub number_literal_octal_all_number() : int {
-    my $value1 = 0x01234567;
-    my $value2 = 0x00ABCDEF;
-    my $value3 = 0x00abcdef;
+    my $value1 = 0110642547;
     
     if ($value1 == 19088743) {
-      if ($value2 == 11259375) {
-        if ($value3 == 11259375) {
-          return 1;
-        }
-      }
+      return 1;
     }
     
     return 0;
   }
 
   sub number_literal_underline_octal() : int {
-    my $value = 0xFF_FF;
+    my $value = 0177_777;
     
-    if ($value == 0xFFFF) {
+    if ($value == 0177777) {
       return 1;
     }
     else {
@@ -4108,7 +4101,7 @@ package TestCase {
   }
   
   sub number_literal_octal_int() : int {
-    my $value = 0xFF;
+    my $value = 0377;
     
     if ($value == 255) {
       return 1;
@@ -4119,7 +4112,7 @@ package TestCase {
   }
   sub number_literal_octal_int_max() : int {
     # 11111111 11111111 11111111 11111111
-    my $value = 0xFFFFFFFF;
+    my $value = 037777777777;
     
     if ($value == -1) {
       return 1;
@@ -4130,7 +4123,7 @@ package TestCase {
   }
   sub number_literal_octal_long_max() : int {
     # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
-    my $value = 0xFFFFFFFFFFFFFFFFL;
+    my $value = 01777777777777777777777L;
     
     if ($value == -1L) {
       return 1;
@@ -4139,19 +4132,6 @@ package TestCase {
       return 0;
     }
   }
-=cut
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   # Bit shift left
   sub bit_shift_left_byte() : int {
