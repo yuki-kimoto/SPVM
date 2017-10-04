@@ -817,12 +817,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           int32_t digit = 0;
           if (*(compiler->bufptr) == '0') {
             if (*(compiler->bufptr + 1) == 'x') {
+              cur_token_ptr = compiler->bufptr + 2;
               digit = 16;
             }
             else if (*(compiler->bufptr + 1) == 'b') {
+              cur_token_ptr = compiler->bufptr + 2;
               digit = 2;
             }
             else if (isdigit(*(compiler->bufptr + 1))) {
+              cur_token_ptr = compiler->bufptr + 1;
               digit = 8;
             }
           }
@@ -949,14 +952,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             _Bool invalid = 0;
             
             if (digit == 16 || digit == 8 || digit == 2) {
-              num = (uint64_t)strtoull(num_str, &end, digit);
+              uint64_t unum = (uint64_t)strtoull(num_str, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
               }
-              else if (num > UINT8_MAX || errno == ERANGE) {
+              else if (unum > UINT8_MAX || errno == ERANGE) {
                 out_of_range = 1;
               }
-              num = (int64_t)num;
+              num = (int64_t)unum;
             }
             else {
               num = (int64_t)strtoll(num_str, &end, 10);
@@ -986,14 +989,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             _Bool invalid = 0;
             
             if (digit == 16 || digit == 8 || digit == 2) {
-              num = (uint64_t)strtoull(num_str, &end, digit);
+              uint64_t unum = (uint64_t)strtoull(num_str, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
               }
-              else if (num > UINT16_MAX || errno == ERANGE) {
+              else if (unum > UINT16_MAX || errno == ERANGE) {
                 out_of_range = 1;
               }
-              num = (int64_t)num;
+              num = (int64_t)unum;
             }
             else {
               num = (int64_t)strtoll(num_str, &end, 10);
@@ -1023,14 +1026,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             _Bool invalid = 0;
             
             if (digit == 16 || digit == 8 || digit == 2) {
-              num = (uint64_t)strtoull(num_str, &end, digit);
+              uint64_t unum = (uint64_t)strtoull(num_str, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
               }
-              else if (num > UINT32_MAX || errno == ERANGE) {
+              else if (unum > UINT32_MAX || errno == ERANGE) {
                 out_of_range = 1;
               }
-              num = (int64_t)num;
+              num = (int64_t)unum;
             }
             else {
               num = (int64_t)strtoll(num_str, &end, 10);
@@ -1060,14 +1063,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             _Bool invalid = 0;
             
             if (digit == 16 || digit == 8 || digit == 2) {
-              num = (uint64_t)strtoull(num_str, &end, digit);
+              uint64_t unum = (uint64_t)strtoull(num_str, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
               }
-              else if (num > UINT64_MAX || errno == ERANGE) {
+              else if (unum > UINT64_MAX || errno == ERANGE) {
                 out_of_range = 1;
               }
-              num = (int64_t)num;
+              num = (int64_t)unum;
             }
             else {
               num = (int64_t)strtoll(num_str, &end, 10);
