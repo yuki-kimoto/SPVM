@@ -168,6 +168,13 @@ t/lib/SPVM/TestCase/Short.spvm
 t/lib/SPVM/TestCase/Template.spvm
 t/lib/SPVM/TestCase/Weaken.spvm
 t/lib/SPVM/TestCase/Weaken2.spvm
+t/load/Byte.t
+t/load/Double.t
+t/load/Float.t
+t/load/Integer.t
+t/load/Long.t
+t/load/Math.t
+t/load/Short.t
 t/spvm-debug.t
 t/spvm.t
 yacc/bison.sh
