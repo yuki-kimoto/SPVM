@@ -986,7 +986,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             _Bool invalid = 0;
             
             if (digit == 16 || digit == 8) {
-              num = (uint64_t)strtoull(num_str, &end, 16);
+              num = (uint64_t)strtoull(num_str, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
               }
