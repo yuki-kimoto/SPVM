@@ -245,7 +245,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '-':
         compiler->bufptr++;
         
-        if (isdigit(*compiler->bufptr)) {
+        // 10 digit literal or floating point literal allow minus
+        if (
+          isdigit(*compiler->bufptr)
+          &&
+          (
+            (*compiler->bufptr != '0')
+            || ((*compiler->bufptr == '0') && (*(compiler->bufptr + 1) == '.')))
+          )
+        {
           minus = 1;
           continue;
         }
