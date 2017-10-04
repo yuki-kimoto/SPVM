@@ -946,7 +946,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               num = (int32_t)(uint32_t)strtoull(num_str, &end, 16);
             }
             else {
-              num = (int32_t)strtol(num_str, &end, 10);
+              num = (int32_t)strtoll(num_str, &end, 10);
             }
             if (*end != '\0') {
               fprintf(stderr, "Invalid byte literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
@@ -966,7 +966,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               num = (int32_t)(uint32_t)strtoull(num_str, &end, 16);
             }
             else {
-              num = (int32_t)strtol(num_str, &end, 10);
+              num = (int32_t)strtoll(num_str, &end, 10);
             }
             if (*end != '\0') {
               fprintf(stderr, "Invalid short literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
@@ -986,7 +986,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               num = (int32_t)(uint32_t)strtoull(num_str, &end, 16);
             }
             else {
-              num = (int32_t)strtol(num_str, &end, 10);
+              num = (int32_t)strtoll(num_str, &end, 10);
             }
             if (*end != '\0') {
               fprintf(stderr, "Invalid int literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
