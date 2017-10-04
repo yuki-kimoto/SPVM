@@ -813,20 +813,20 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             cur_token_ptr = compiler->bufptr;
           }
           
-          // Hex number
-          _Bool hex;
+          // Digit
+          int32_t digit;
           if (*(compiler->bufptr) == '0' && *(compiler->bufptr + 1) == 'x') {
-            hex = 1;
+            digit = 16;
           }
           else {
-            hex = 0;
+            digit = 10;
           }
           
           _Bool is_floating_number = 0;
           
           compiler->bufptr++;
           // Scan number
-          if (hex) {
+          if (digit == 16) {
             compiler->bufptr += 2;
             while(
               isdigit(*compiler->bufptr)
@@ -838,7 +838,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->bufptr++;
             }
           }
-          else {
+          else if (digit == 10) {
             while(
               isdigit(*compiler->bufptr)
               || *compiler->bufptr == '.' || *compiler->bufptr == '-' || *compiler->bufptr == '+' || *compiler->bufptr == 'e' || *compiler->bufptr == 'E'
@@ -850,6 +850,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               compiler->bufptr++;
             }
+          }
+          else {
+            assert(0);
           }
           
           // Number literal(first is space for sign)
