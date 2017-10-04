@@ -60,6 +60,11 @@ use SPVM 'Float';
   like($NaN, qr/(nan|ind)/i);
 }
 
+# Template
+{
+  ok(SPVM::TestCase::template());
+}
+
 # SPVM::Byte
 {
   ok(SPVM::TestCase::Byte::constant());

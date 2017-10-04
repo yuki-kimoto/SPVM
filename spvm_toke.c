@@ -37,6 +37,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   compiler->befbufptr = compiler->bufptr;
   _Bool before_is_comma = compiler->before_is_comma;
   compiler->before_is_comma = 0;
+
+  _Bool before_is_package = compiler->before_is_package;
+  compiler->before_is_package = 0;
   
   // Constant minus sign
   int32_t minus = 0;
@@ -140,6 +143,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               
               compiler->cur_file = cur_file;
               compiler->cur_package_name_with_template_args = op_use->uv.use->package_name_with_template_args;
+              compiler->cur_op_use = op_use;
+              
               
               // Read file content
               fseek(fh, 0, SEEK_END);
@@ -1341,6 +1346,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 compiler->current_package_count++;
                 
+                compiler->before_is_package = 1;
+                
                 yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_PACKAGE);
                 return PACKAGE;
               }
@@ -1407,6 +1414,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             fprintf(stderr, "Can't contain __ in package, subroutine or field name at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
             exit(EXIT_FAILURE);
           }
+          
+          // Package name must be same as use package name
+          if (before_is_package) {
+            
+            SPVM_OP* op_use = compiler->cur_op_use;
+            SPVM_USE* use = op_use->uv.use;
+            
+            // warn("AAAAAAAAAA %s %s", use->package_name, use->package_name_with_template_args);
+            
+          }
+          
+          
           
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
           op->uv.name = keyword;

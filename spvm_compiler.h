@@ -128,6 +128,11 @@ struct SPVM_compiler {
   // Before is camma
   _Bool before_is_comma;
   
+  // Before is package
+  _Bool before_is_package;
+  
+  SPVM_OP* cur_op_use;
+  
   _Bool debug;
 };
 
