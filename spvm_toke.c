@@ -940,23 +940,40 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           // byte
           else if (constant_type->code == SPVM_TYPE_C_CODE_BYTE) {
-            int32_t num;
+            int64_t num;
             errno = 0;
+            _Bool out_of_range = 0;
+            _Bool invalid = 0;
+            
             if (digit == 16 || digit == 8) {
-              num = (int64_t)(uint64_t)strtoull(num_str, &end, 16);
+              num = (uint64_t)strtoull(num_str, &end, digit);
+              if (*end != '\0') {
+                invalid = 1;
+              }
+              else if (num > UINT8_MAX || errno == ERANGE) {
+                out_of_range = 1;
+              }
+              num = (int64_t)num;
             }
             else {
               num = (int64_t)strtoll(num_str, &end, 10);
+              if (*end != '\0') {
+                invalid = 1;
+              }
+              else if (num < INT8_MIN || num > INT8_MAX || errno == ERANGE) {
+                out_of_range = 1;
+              }
             }
-            if (*end != '\0') {
+            
+            if (invalid) {
               fprintf(stderr, "Invalid byte literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            else if (num < INT8_MIN || num > UINT8_MAX || errno == ERANGE) {
-              fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+            else if (out_of_range) {
+              fprintf(stderr, "byte literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            op_constant = SPVM_OP_new_op_constant_byte(compiler, (int8_t)num, compiler->cur_file, compiler->cur_line);
+            op_constant = SPVM_OP_new_op_constant_byte(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // short
           else if (constant_type->code == SPVM_TYPE_C_CODE_SHORT) {
