@@ -943,7 +943,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t num;
             errno = 0;
             if (digit == 16 || digit == 8) {
-              num = (int32_t)(uint32_t)strtoul(num_str, &end, 16);
+              num = (int32_t)(uint32_t)strtoull(num_str, &end, 16);
             }
             else {
               num = (int32_t)strtol(num_str, &end, 10);
@@ -963,7 +963,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t num;
             errno = 0;
             if (digit == 16 || digit == 8) {
-              num = (int32_t)(uint32_t)strtoul(num_str, &end, 16);
+              num = (int32_t)(uint32_t)strtoull(num_str, &end, 16);
             }
             else {
               num = (int32_t)strtol(num_str, &end, 10);
@@ -983,7 +983,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t num;
             errno = 0;
             if (digit == 16 || digit == 8) {
-              num = (int32_t)(uint32_t)strtoul(num_str, &end, 16);
+              num = (int32_t)(uint32_t)strtoull(num_str, &end, 16);
             }
             else {
               num = (int32_t)strtol(num_str, &end, 10);
