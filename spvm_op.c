@@ -1475,9 +1475,13 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
   
+  // Statements
+  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_name->file, op_name->line);
+  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
+
   // Block
   SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_name->file, op_name->line);
-  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_return);
+  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
   
   // sub
   SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUB, op_name->file, op_name->line);
@@ -1490,6 +1494,9 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   
   // Build subroutine
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, NULL, NULL, op_return_type, op_block);
+  
+  // Set constant
+  op_sub->uv.sub->op_constant = op_constant;
   
   // Subroutine is constant
   op_sub->uv.sub->is_constant = 1;

@@ -159,7 +159,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
       assert(sub->abs_name);
       assert(sub->file_name);
       
-      if (sub->is_constant || sub->is_native) {
+      if (sub->is_native) {
         continue;
       }
       
@@ -1777,6 +1777,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 }
                 
                 _Bool bytecode_set = 0;
+                
                 if (constant->type->code == SPVM_TYPE_C_CODE_BYTE) {
                   if (constant->value.byte_value == 0) {
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONSTANT_BYTE_0);
@@ -1815,6 +1816,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else if (constant->type->code == SPVM_TYPE_C_CODE_INT) {
+                  
                   if (constant->value.int_value == -1) {
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONSTANT_INT_M1);
                     bytecode_set = 1;
