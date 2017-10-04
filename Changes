@@ -1,4 +1,7 @@
-0.0273 2017-09-27
+0.0274 2017-10-04
+  - add package name check
+  - fix enum call bug
+0.0273 2017-10-03
   - support octal literal
   - support binary literal
 0.0272 2017-09-27

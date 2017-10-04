@@ -165,6 +165,7 @@ t/lib/SPVM/TestCase/Integer.spvm
 t/lib/SPVM/TestCase/Long.spvm
 t/lib/SPVM/TestCase/Minimal.spvm
 t/lib/SPVM/TestCase/Short.spvm
+t/lib/SPVM/TestCase/Template.spvm
 t/lib/SPVM/TestCase/Weaken.spvm
 t/lib/SPVM/TestCase/Weaken2.spvm
 t/spvm-debug.t
