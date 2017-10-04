@@ -814,9 +814,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           // Digit
-          int32_t digit;
-          if (*(compiler->bufptr) == '0' && *(compiler->bufptr + 1) == 'x') {
-            digit = 16;
+          int32_t digit = 0;
+          if (*(compiler->bufptr) == '0') {
+            if (*(compiler->bufptr + 1) == 'x') {
+              digit = 16;
+            }
+            else if (isdigit(*(compiler->bufptr + 1))) {
+              digit = 8;
+            }
           }
           else {
             digit = 10;
@@ -838,7 +843,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->bufptr++;
             }
           }
-          else if (digit == 10) {
+          else if (digit == 8) {
+            compiler->bufptr += 1;
+            while(
+              isdigit(*compiler->bufptr)
+              || *compiler->bufptr == '_'
+            )
+            {
+              compiler->bufptr++;
+            }
+          }
+          else {
             while(
               isdigit(*compiler->bufptr)
               || *compiler->bufptr == '.' || *compiler->bufptr == '-' || *compiler->bufptr == '+' || *compiler->bufptr == 'e' || *compiler->bufptr == 'E'
@@ -850,9 +865,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               compiler->bufptr++;
             }
-          }
-          else {
-            assert(0);
           }
           
           // Number literal(first is space for sign)
