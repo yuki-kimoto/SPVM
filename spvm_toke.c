@@ -943,10 +943,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t num;
             errno = 0;
             if (digit == 16 || digit == 8) {
-              num = (int32_t)(uint32_t)strtoull(num_str, &end, 16);
+              num = (int64_t)(uint64_t)strtoull(num_str, &end, 16);
             }
             else {
-              num = (int32_t)strtoll(num_str, &end, 10);
+              num = (int64_t)strtoll(num_str, &end, 10);
             }
             if (*end != '\0') {
               fprintf(stderr, "Invalid byte literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
@@ -963,7 +963,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t num;
             errno = 0;
             if (digit == 16 || digit == 8) {
-              num = (int32_t)(uint32_t)strtoull(num_str, &end, 16);
+              num = (int64_t)(uint64_t)strtoull(num_str, &end, 16);
             }
             else {
               num = (int32_t)strtoll(num_str, &end, 10);
@@ -980,20 +980,37 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           // int
           else if (constant_type->code == SPVM_TYPE_C_CODE_INT) {
-            int32_t num;
+            int64_t num;
             errno = 0;
+            _Bool out_of_range = 0;
+            _Bool invalid = 0;
+            
             if (digit == 16 || digit == 8) {
-              num = (int32_t)(uint32_t)strtoull(num_str, &end, 16);
+              num = (uint64_t)strtoull(num_str, &end, 16);
+              if (*end != '\0') {
+                invalid = 1;
+              }
+              else if (num > UINT32_MAX || errno == ERANGE) {
+                out_of_range = 1;
+              }
+              num = (int64_t)num;
             }
             else {
-              num = (int32_t)strtoll(num_str, &end, 10);
+              num = (int64_t)strtoll(num_str, &end, 10);
+              if (*end != '\0') {
+                invalid = 1;
+              }
+              else if (num < INT32_MIN || num > INT32_MAX || errno == ERANGE) {
+                out_of_range = 1;
+              }
             }
-            if (*end != '\0') {
+            
+            if (invalid) {
               fprintf(stderr, "Invalid int literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
-            else if (errno == ERANGE) {
-              fprintf(stderr, "Number literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+            else if (out_of_range) {
+              fprintf(stderr, "int literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
             op_constant = SPVM_OP_new_op_constant_int(compiler, num, compiler->cur_file, compiler->cur_line);
