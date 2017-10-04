@@ -1,3 +1,5 @@
+0.0275 2017-10-04
+  - fix Math.spvm loading bug
 0.0274 2017-10-04
   - add package name check
   - fix enum call bug

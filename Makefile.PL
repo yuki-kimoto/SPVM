@@ -33,7 +33,8 @@ WriteMakefile(
     CCFLAGS => $ccflags,
     OPTIMIZE => '-O3',
     OBJECT            => '$(O_FILES)', # link all the C files too
-    $debug ? (DEFINE => '-DDEBUG') : ()
+    $debug ? (DEFINE => '-DDEBUG') : (),
+    test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
 );
 
 
