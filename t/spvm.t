@@ -1476,6 +1476,8 @@ is_deeply(
   ok(SPVM::TestCase::number_literal_hex_int());
   ok(SPVM::TestCase::number_literal_hex_int_max());
   ok(SPVM::TestCase::number_literal_hex_long_max());
+
+  ok(SPVM::TestCase::number_literal_octal_specifier());
 }
 
 # Bit shift left
