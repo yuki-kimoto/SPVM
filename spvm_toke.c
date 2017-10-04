@@ -942,7 +942,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else if (constant_type->code == SPVM_TYPE_C_CODE_BYTE) {
             int32_t num;
             errno = 0;
-            if (num_str[0] == '0' && num_str[1] == 'x') {
+            if (digit == 16 || digit == 8) {
               num = (int32_t)(uint32_t)strtoul(num_str, &end, 16);
             }
             else {
@@ -962,7 +962,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else if (constant_type->code == SPVM_TYPE_C_CODE_SHORT) {
             int32_t num;
             errno = 0;
-            if (num_str[0] == '0' && num_str[1] == 'x') {
+            if (digit == 16 || digit == 8) {
               num = (int32_t)(uint32_t)strtoul(num_str, &end, 16);
             }
             else {
@@ -982,7 +982,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else if (constant_type->code == SPVM_TYPE_C_CODE_INT) {
             int32_t num;
             errno = 0;
-            if (num_str[0] == '0' && num_str[1] == 'x') {
+            if (digit == 16 || digit == 8) {
               num = (int32_t)(uint32_t)strtoul(num_str, &end, 16);
             }
             else {
@@ -1002,7 +1002,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else if (constant_type->code == SPVM_TYPE_C_CODE_LONG) {
             int64_t num;
             errno = 0;
-            if (num_str[0] == '0' && num_str[1] == 'x') {
+            if (digit == 16 || digit == 8) {
               num = (int64_t)(uint64_t)strtoull(num_str, &end, 16);
             }
             else {
