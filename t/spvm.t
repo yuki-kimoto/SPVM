@@ -434,8 +434,9 @@ is_deeply(
   ok(SPVM::TestCase::enum_float());
   ok(SPVM::TestCase::enum_double());
 
+  is(SPVM::TestCase::INT_VALUE(), 127);
+
 =pod
-  is(SPVM::TestCase::BYTE_MAX(), 127);
   is(SPVM::TestCase::BYTE_MIN(), -128);
   is(SPVM::TestCase::SHORT_MAX(), 32767);
   is(SPVM::TestCase::SHORT_MIN(), -32768);
