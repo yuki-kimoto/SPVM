@@ -267,6 +267,16 @@ C<a>, C<b>, C<c>, C<d>, C<e>, C<f>, C<A>, C<B>, C<C>, C<D>, C<E>, C<F> is used a
   0xAF
   0xaf
 
+You can use octal number literal by start C<0>.
+
+  0x177
+  0x777
+
+You can use binary number literal by start C<0b>.
+
+  0b101
+  0b001
+
 You can use under line C<_> in number literal. Under line is meanless, only for visuality.
 
   123_456

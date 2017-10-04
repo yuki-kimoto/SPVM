@@ -1476,6 +1476,18 @@ is_deeply(
   ok(SPVM::TestCase::number_literal_hex_int());
   ok(SPVM::TestCase::number_literal_hex_int_max());
   ok(SPVM::TestCase::number_literal_hex_long_max());
+
+  ok(SPVM::TestCase::number_literal_octal_specifier());
+  ok(SPVM::TestCase::number_literal_octal_all_number());
+  ok(SPVM::TestCase::number_literal_octal_int());
+  ok(SPVM::TestCase::number_literal_octal_int_max());
+  ok(SPVM::TestCase::number_literal_octal_long_max());
+
+  ok(SPVM::TestCase::number_literal_binary_specifier());
+  ok(SPVM::TestCase::number_literal_binary_all_number());
+  ok(SPVM::TestCase::number_literal_binary_int());
+  ok(SPVM::TestCase::number_literal_binary_int_max());
+  ok(SPVM::TestCase::number_literal_binary_long_max());
 }
 
 # Bit shift left

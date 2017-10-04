@@ -1,3 +1,6 @@
+0.0273 2017-09-27
+  - support octal literal
+  - support binary literal
 0.0272 2017-09-27
   - add Math::tan function
   - add Math::asin function
