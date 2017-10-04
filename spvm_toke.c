@@ -1136,6 +1136,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           memcpy(keyword, cur_token_ptr, str_len);
           keyword[str_len] = '\0';
           
+          char* original_keyword = keyword;
+          
           // Replace template variable
           const char* found_template_var = strstr(keyword, "type");
           if (found_template_var) {
@@ -1421,11 +1423,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_OP* op_use = compiler->cur_op_use;
             SPVM_USE* use = op_use->uv.use;
             
-            // warn("AAAAAAAAAA %s %s", use->package_name, use->package_name_with_template_args);
-            
+            if (strcmp(keyword, use->package_name_with_template_args) != 0) {
+              fprintf(stderr, "Package name \"%s\" must be match corresponding file path at %s line %" PRId32 "\n", original_keyword, compiler->cur_file, compiler->cur_line);
+              exit(EXIT_FAILURE);
+            }
           }
-          
-          
           
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
           op->uv.name = keyword;
