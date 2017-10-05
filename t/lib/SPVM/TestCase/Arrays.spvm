@@ -86,4 +86,99 @@ package TestCase::Arrays {
     
     return 0;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  sub copy_of_short() : int {
+    
+    my $values = [0s, 1s, 2s];
+    
+    my $values2 = Arrays::copy_of_short($values, len $values);
+    
+    if (@$values2 == 3) {
+      if ($values2->[0] == 0s) {
+        if ($values2->[1] == 1s) {
+          if ($values2->[2] == 2s) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_short_over() : int {
+    
+    my $values = [0s, 1s, 2s];
+    
+    my $values2 = Arrays::copy_of_short($values, len $values + 1);
+    
+    if (@$values2 == 4) {
+      if ($values2->[0] == 0s) {
+        if ($values2->[1] == 1s) {
+          if ($values2->[2] == 2s) {
+            if ($values2->[3] == 0s) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_short_less() : int {
+    
+    my $values = [0s, 1s, 2s];
+    
+    my $values2 = Arrays::copy_of_short($values, len $values - 1);
+    
+    if (@$values2 == 2) {
+      if ($values2->[0] == 0s) {
+        if ($values2->[1] == 1s) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_short_undef() : int {
+    
+    eval {
+      Arrays::copy_of_short(undef, 1);
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_short_negative() : int {
+    
+    eval {
+      my $values = [0s, 1s, 2s];
+      Arrays::copy_of_short(undef, -1);
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
 }
