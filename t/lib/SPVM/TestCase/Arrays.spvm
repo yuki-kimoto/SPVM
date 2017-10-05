@@ -1,0 +1,22 @@
+use Arrays;
+use Byte;
+
+package TestCase::Arrays {
+
+  sub copy_of_byte() : int {
+    
+    my $values = [0y, 1y, 2y];
+    
+    my $values2 = Arrays::copy_of_byte($values, len $values);
+    
+    if ($values2->[0] == 0y) {
+      if ($values2->[1] == 1y) {
+        if ($values2->[2] == 2y) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+}

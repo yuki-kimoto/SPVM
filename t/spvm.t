@@ -17,6 +17,7 @@ use SPVM 'std'; my $use_std_line = __LINE__;
 
 use SPVM 'TestCase::Extension';
 use SPVM 'TestCase::Extension2';
+use SPVM 'TestCase::Arrays';
 
 use POSIX ();
 
@@ -49,6 +50,12 @@ use SPVM::std;
 
 use SPVM 'Double';
 use SPVM 'Float';
+
+# SPVM::Arrays;
+{
+  # ok(SPVM::TestCase::Arrays::copy_of_byte());
+  1;
+}
 
 {
   like($POSITIVE_INFINITY, qr/inf/i);
