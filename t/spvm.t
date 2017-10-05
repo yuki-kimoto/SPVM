@@ -60,6 +60,7 @@ use SPVM 'Float';
   ok(SPVM::TestCase::Extension::call_long_sub_exception());
   ok(SPVM::TestCase::Extension::call_float_sub_exception());
   ok(SPVM::TestCase::Extension::call_double_sub_exception());
+  ok(SPVM::TestCase::Extension::call_object_sub_exception());
 }
 
 # SPVM::Arrays;

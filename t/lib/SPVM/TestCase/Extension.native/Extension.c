@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include <spvm_api.h>
 
 int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_API_VALUE* args) {
@@ -77,4 +79,11 @@ double SPVM__TestCase__Extension__call_double_sub_exception_native(SPVM_API* api
   SPVM_API_OBJECT* exception = api->new_byte_array_string(api, "Exception");
   api->set_exception(api, exception);
   return 0;
+}
+
+SPVM_API_OBJECT* SPVM__TestCase__Extension__call_object_sub_exception_native(SPVM_API* api, SPVM_API_VALUE* args) {
+  
+  SPVM_API_OBJECT* exception = api->new_byte_array_string(api, "Exception");
+  api->set_exception(api, exception);
+  return NULL;
 }
