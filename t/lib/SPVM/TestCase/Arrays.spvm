@@ -9,12 +9,79 @@ package TestCase::Arrays {
     
     my $values2 = Arrays::copy_of_byte($values, len $values);
     
-    if ($values2->[0] == 0y) {
-      if ($values2->[1] == 1y) {
-        if ($values2->[2] == 2y) {
+    if (@$values2 == 3) {
+      if ($values2->[0] == 0y) {
+        if ($values2->[1] == 1y) {
+          if ($values2->[2] == 2y) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_byte_over() : int {
+    
+    my $values = [0y, 1y, 2y];
+    
+    my $values2 = Arrays::copy_of_byte($values, len $values + 1);
+    
+    if (@$values2 == 4) {
+      if ($values2->[0] == 0y) {
+        if ($values2->[1] == 1y) {
+          if ($values2->[2] == 2y) {
+            if ($values2->[3] == 0y) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_byte_less() : int {
+    
+    my $values = [0y, 1y, 2y];
+    
+    my $values2 = Arrays::copy_of_byte($values, len $values - 1);
+    
+    if (@$values2 == 2) {
+      if ($values2->[0] == 0y) {
+        if ($values2->[1] == 1y) {
           return 1;
         }
       }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_byte_undef() : int {
+    
+    eval {
+      Arrays::copy_of_byte(undef, 1);
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_byte_negative() : int {
+    
+    eval {
+      my $values = [0y, 1y, 2y];
+      Arrays::copy_of_byte(undef, -1);
+    };
+    
+    if ($@) {
+      return 1;
     }
     
     return 0;

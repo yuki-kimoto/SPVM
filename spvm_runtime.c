@@ -174,13 +174,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   if (constant_pool_sub->is_native) {
     // Set runtimeironment
     SPVM_CONSTANT_POOL_TYPE* constant_pool_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[constant_pool_sub->return_type_id];
-
     
     // Call native subroutine
     switch (constant_pool_sub_return_type->code) {
       case SPVM_TYPE_C_CODE_VOID: {
         void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
         (*native_address)(api, (SPVM_API_VALUE*)call_stack);
+        
+        if (runtime->exception) {
+          goto case_SPVM_BYTECODE_C_CODE_DIE;
+        }
         
         goto case_SPVM_BYTECODE_C_CODE_RETURN_VOID;
       }
@@ -189,7 +192,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int8_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
-          return_value = 0;
+          goto case_SPVM_BYTECODE_C_CODE_DIE;
         }
         
         operand_stack_top++;
@@ -201,7 +204,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int16_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
-          return_value = 0;
+          goto case_SPVM_BYTECODE_C_CODE_DIE;
         }
 
         operand_stack_top++;
@@ -215,7 +218,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
-          return_value = 0;
+          goto case_SPVM_BYTECODE_C_CODE_DIE;
         }
 
         operand_stack_top++;
@@ -227,7 +230,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int64_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
-          return_value = 0;
+          goto case_SPVM_BYTECODE_C_CODE_DIE;
         }
 
         operand_stack_top++;
@@ -239,7 +242,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         float return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
-          return_value = 0;
+          goto case_SPVM_BYTECODE_C_CODE_DIE;
         }
         
         operand_stack_top++;
@@ -251,7 +254,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         double return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
-          return_value = 0;
+          goto case_SPVM_BYTECODE_C_CODE_DIE;
         }
         
         operand_stack_top++;
@@ -263,7 +266,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         SPVM_OBJECT* return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
         if (runtime->exception) {
-          return_value = NULL;
+          goto case_SPVM_BYTECODE_C_CODE_DIE;
         }
         
         operand_stack_top++;

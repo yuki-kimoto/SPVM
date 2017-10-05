@@ -1,3 +1,6 @@
+0.0277 2017-10-05
+  - add Arrays package
+  - fix native subroutine exception bugs
 0.0276 2017-10-05
   - rename back to_array to get_elements
 0.0275 2017-10-04

@@ -51,9 +51,24 @@ use SPVM::std;
 use SPVM 'Double';
 use SPVM 'Float';
 
+# Native Exception
+{
+  ok(SPVM::TestCase::Extension::call_void_sub_exception());
+  ok(SPVM::TestCase::Extension::call_byte_sub_exception());
+  ok(SPVM::TestCase::Extension::call_short_sub_exception());
+  ok(SPVM::TestCase::Extension::call_int_sub_exception());
+  ok(SPVM::TestCase::Extension::call_long_sub_exception());
+  ok(SPVM::TestCase::Extension::call_float_sub_exception());
+  ok(SPVM::TestCase::Extension::call_double_sub_exception());
+}
+
 # SPVM::Arrays;
 {
-  # ok(SPVM::TestCase::Arrays::copy_of_byte());
+  ok(SPVM::TestCase::Arrays::copy_of_byte());
+  ok(SPVM::TestCase::Arrays::copy_of_byte_over());
+  ok(SPVM::TestCase::Arrays::copy_of_byte_less());
+  ok(SPVM::TestCase::Arrays::copy_of_byte_undef());
+  ok(SPVM::TestCase::Arrays::copy_of_byte_negative());
   1;
 }
 

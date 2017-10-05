@@ -2,4 +2,97 @@ package TestCase::Extension {
   sub sum($num1 : int, $num2 : int) : native int;
   
   sub add_int_array($nums1 : int[], $nums2 : int[]) : native int[];
+
+  sub call_void_sub_exception() : int {
+    eval {
+      call_void_sub_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_byte_sub_exception() : int {
+    eval {
+      call_byte_sub_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_short_sub_exception() : int {
+    eval {
+      call_short_sub_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_int_sub_exception() : int {
+    eval {
+      call_int_sub_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_long_sub_exception() : int {
+    eval {
+      call_long_sub_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_float_sub_exception() : int {
+    eval {
+      call_float_sub_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_double_sub_exception() : int {
+    eval {
+      call_double_sub_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub call_void_sub_exception_native() : native void;
+  sub call_byte_sub_exception_native() : native byte;
+  sub call_short_sub_exception_native() : native short;
+  sub call_int_sub_exception_native() : native int;
+  sub call_long_sub_exception_native() : native long;
+  sub call_float_sub_exception_native() : native float;
+  sub call_double_sub_exception_native() : native double;
+  
 }
