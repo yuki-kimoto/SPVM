@@ -31,3 +31,7 @@ L<SPVM::Double> - Double Utility
 =head2 SPVM::Math
 
 L<SPVM::Math> - Math Library
+
+=head2 SPVM::Arrays
+
+L<SPVM::Arrays> - Arrays Utility
