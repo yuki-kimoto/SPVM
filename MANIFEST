@@ -1,6 +1,8 @@
 build_shared_lib.pl
 Changes
 lib/SPVM.pm
+lib/SPVM/Arrays.pm
+lib/SPVM/Arrays.spvm
 lib/SPVM/Build.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
@@ -39,6 +41,7 @@ lib/SPVM/std.pm
 lib/SPVM/std.spvm
 Makefile.PL
 MANIFEST			This list of files
+native/SPVM/Arrays.native/Arrays.c
 native/SPVM/Byte.native/Byte.c
 native/SPVM/Double.native/Double.c
 native/SPVM/Double.native/Double.config
@@ -150,6 +153,7 @@ spvm_yacc.h
 spvm_yacc_util.c
 spvm_yacc_util.h
 t/lib/SPVM/TestCase.spvm
+t/lib/SPVM/TestCase/Arrays.spvm
 t/lib/SPVM/TestCase/Byte.spvm
 t/lib/SPVM/TestCase/Destructor.spvm
 t/lib/SPVM/TestCase/Double.spvm
@@ -168,6 +172,7 @@ t/lib/SPVM/TestCase/Short.spvm
 t/lib/SPVM/TestCase/Template.spvm
 t/lib/SPVM/TestCase/Weaken.spvm
 t/lib/SPVM/TestCase/Weaken2.spvm
+t/load/Arrays.t
 t/load/Byte.t
 t/load/Double.t
 t/load/Float.t
