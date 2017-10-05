@@ -50,6 +50,7 @@ sub MY::postamble {
       SPVM::Long
       SPVM::Float
       SPVM::Double
+      SPVM::Arrays
     )]
   );
   

@@ -1,0 +1,12 @@
+package Arrays {
+  sub copy_of_byte($original : byte[], $new_length : int[]) : native byte[];
+
+=pod
+  sub copy_of_short($original : short[], $new_length : int[]) : native short[];
+  sub copy_of_int($original : int[], $new_length : int[]) : native int[];
+  sub copy_of_long($original : long[], $new_length : int[]) : native long[];
+  sub copy_of_float($original : float[], $new_length : int[]) : native float[];
+  sub copy_of_double($original : double[], $new_length : int[]) : native double[];
+=cut
+
+}

@@ -28,7 +28,7 @@ use Encode 'encode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0275';
+our $VERSION = '0.0276';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
@@ -188,6 +188,7 @@ CHECK {
     Long
     Float
     Double
+    Arrays
   );
   for my $shared_lib_file_base (@dll_file_bases) {
     my $shared_lib_file_rel = "auto/SPVM/$shared_lib_file_base.native/$shared_lib_file_base.$Config{dlext}";
