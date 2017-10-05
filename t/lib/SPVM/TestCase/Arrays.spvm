@@ -339,4 +339,172 @@ package TestCase::Arrays {
     
     return 0;
   }
+
+  sub copy_of_float() : int {
+    
+    my $values = [0f, 1f, 2f];
+    
+    my $values2 = Arrays::copy_of_float($values, len $values);
+    
+    if (@$values2 == 3) {
+      if ($values2->[0] == 0f) {
+        if ($values2->[1] == 1f) {
+          if ($values2->[2] == 2f) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_float_over() : int {
+    
+    my $values = [0f, 1f, 2f];
+    
+    my $values2 = Arrays::copy_of_float($values, len $values + 1);
+    
+    if (@$values2 == 4) {
+      if ($values2->[0] == 0f) {
+        if ($values2->[1] == 1f) {
+          if ($values2->[2] == 2f) {
+            if ($values2->[3] == 0f) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_float_less() : int {
+    
+    my $values = [0f, 1f, 2f];
+    
+    my $values2 = Arrays::copy_of_float($values, len $values - 1);
+    
+    if (@$values2 == 2) {
+      if ($values2->[0] == 0f) {
+        if ($values2->[1] == 1f) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_float_undef() : int {
+    
+    eval {
+      Arrays::copy_of_float(undef, 1);
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_float_negative() : int {
+    
+    eval {
+      my $values = [0f, 1f, 2f];
+      Arrays::copy_of_float(undef, -1);
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_double() : int {
+    
+    my $values = [0d, 1d, 2d];
+    
+    my $values2 = Arrays::copy_of_double($values, len $values);
+    
+    if (@$values2 == 3) {
+      if ($values2->[0] == 0d) {
+        if ($values2->[1] == 1d) {
+          if ($values2->[2] == 2d) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_double_over() : int {
+    
+    my $values = [0d, 1d, 2d];
+    
+    my $values2 = Arrays::copy_of_double($values, len $values + 1);
+    
+    if (@$values2 == 4) {
+      if ($values2->[0] == 0d) {
+        if ($values2->[1] == 1d) {
+          if ($values2->[2] == 2d) {
+            if ($values2->[3] == 0d) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_double_less() : int {
+    
+    my $values = [0d, 1d, 2d];
+    
+    my $values2 = Arrays::copy_of_double($values, len $values - 1);
+    
+    if (@$values2 == 2) {
+      if ($values2->[0] == 0d) {
+        if ($values2->[1] == 1d) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_double_undef() : int {
+    
+    eval {
+      Arrays::copy_of_double(undef, 1);
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub copy_of_double_negative() : int {
+    
+    eval {
+      my $values = [0d, 1d, 2d];
+      Arrays::copy_of_double(undef, -1);
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
 }

@@ -124,7 +124,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_int(SPVM_API* api, SPVM_API_VALUE* args) 
   int32_t* copy_elements = api->get_int_array_elements(api, copy);
   
   if (copy_length > 0) {
-    memcpy(copy_elements, original_elements, copy_length * sizeof(int16_t));
+    memcpy(copy_elements, original_elements, copy_length * sizeof(int32_t));
   }
   
   return copy;
@@ -166,7 +166,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_long(SPVM_API* api, SPVM_API_VALUE* args)
   int64_t* copy_elements = api->get_long_array_elements(api, copy);
   
   if (copy_length > 0) {
-    memcpy(copy_elements, original_elements, copy_length * sizeof(int16_t));
+    memcpy(copy_elements, original_elements, copy_length * sizeof(int64_t));
   }
   
   return copy;
@@ -208,7 +208,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_float(SPVM_API* api, SPVM_API_VALUE* args
   float* copy_elements = api->get_float_array_elements(api, copy);
   
   if (copy_length > 0) {
-    memcpy(copy_elements, original_elements, copy_length * sizeof(int16_t));
+    memcpy(copy_elements, original_elements, copy_length * sizeof(float));
   }
   
   return copy;
@@ -250,7 +250,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_double(SPVM_API* api, SPVM_API_VALUE* arg
   double* copy_elements = api->get_double_array_elements(api, copy);
   
   if (copy_length > 0) {
-    memcpy(copy_elements, original_elements, copy_length * sizeof(int16_t));
+    memcpy(copy_elements, original_elements, copy_length * sizeof(double));
   }
   
   return copy;
