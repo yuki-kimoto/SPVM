@@ -1,5 +1,5 @@
 package Arrays {
-  sub copy_of_byte($original : byte[], $new_length : int[]) : native byte[];
+  sub copy_of_byte($original : byte[], $new_length : int) : native byte[];
 
 =pod
   sub copy_of_short($original : short[], $new_length : int[]) : native short[];
