@@ -16,9 +16,9 @@ Create byte array.
 
   my $array = SPVM::new_byte_array([1, 2, 3]);
 
-If you get perl values, you can use C<to_array> methods.
+If you get perl values, you can use C<get_elements> methods.
 
-  my $values = $array->to_array;
+  my $values = $array->get_elements;
 
 =head2 new_byte_array_data
 
@@ -39,9 +39,9 @@ Create short array
 
   my $array = SPVM::new_short_array([1, 2, 3]);
 
-If you get perl values, you can use C<to_array> methods.
+If you get perl values, you can use C<get_elements> methods.
 
-  my $values = $array->to_array;
+  my $values = $array->get_elements;
 
 =head2 new_int_array
 
@@ -49,9 +49,9 @@ Create int array
 
   my $array = SPVM::new_int_array([1, 2, 3]);
 
-If you get perl values, you can use C<to_array> methods.
+If you get perl values, you can use C<get_elements> methods.
 
-  my $values = $array->to_array;
+  my $values = $array->get_elements;
 
 =head2 new_long_array
 
@@ -59,9 +59,9 @@ Create long array
 
   my $array = SPVM::new_long_array([1, 2, 3]);
 
-If you get perl values, you can use C<to_array> methods.
+If you get perl values, you can use C<get_elements> methods.
 
-  my $values = $array->to_array;
+  my $values = $array->get_elements;
 
 =head2 new_float_array
 
@@ -69,9 +69,9 @@ Create float array
 
   my $array = SPVM::new_float_array([1, 2, 3]);
 
-If you get perl values, you can use C<to_array> methods.
+If you get perl values, you can use C<get_elements> methods.
 
-  my $values = $array->to_array;
+  my $values = $array->get_elements;
 
 =head2 new_double_array
 
@@ -79,9 +79,9 @@ Create double array
 
   my $array = SPVM::new_double_array([1, 2, 3]);
 
-If you get perl values, you can use C<to_array> methods.
+If you get perl values, you can use C<get_elements> methods.
 
-  my $values = $array->to_array;
+  my $values = $array->get_elements;
   
 =head2 new_object_array_len
 
@@ -135,9 +135,9 @@ You can set and get value by C<set> and C<get> method.
 
 =head3 get
 
-=head3 to_array
+=head3 get_elements
 
-=head3 to_array_range
+=head3 get_elements_range
 
 =head3 to_data
 
@@ -161,9 +161,9 @@ You can set and get value by C<set> and C<get> method.
 
 =head3 get
 
-=head3 to_array
+=head3 get_elements
 
-=head3 to_array_range
+=head3 get_elements_range
 
 =head3 to_data
 
@@ -185,9 +185,9 @@ You can set and get value by C<set> and C<get> method.
 
 =head3 get
 
-=head3 to_array
+=head3 get_elements
 
-=head3 to_array_range
+=head3 get_elements_range
 
 =head3 to_data
 
@@ -209,9 +209,9 @@ You can set and get value by C<set> and C<get> method.
 
 =head3 get
 
-=head3 to_array
+=head3 get_elements
 
-=head3 to_array_range
+=head3 get_elements_range
 
 =head3 to_data
 
@@ -233,9 +233,9 @@ You can set and get value by C<set> and C<get> method.
 
 =head3 get
 
-=head3 to_array
+=head3 get_elements
 
-=head3 to_array_range
+=head3 get_elements_range
 
 =head3 to_data
 
@@ -257,9 +257,9 @@ You can set and get value by C<set> and C<get> method.
 
 =head3 get
 
-=head3 to_array
+=head3 get_elements
 
-=head3 to_array_range
+=head3 get_elements_range
 
 =head3 to_data
 

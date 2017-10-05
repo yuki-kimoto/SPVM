@@ -523,8 +523,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->to_array, [1, 2, 3]);
-    is_deeply($object2_get->to_array, [4, 5, 6]);
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
   }
 
   # element short array
@@ -539,8 +539,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->to_array, [1, 2, 3]);
-    is_deeply($object2_get->to_array, [4, 5, 6]);
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
   }
 
   # element int array
@@ -555,8 +555,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->to_array, [1, 2, 3]);
-    is_deeply($object2_get->to_array, [4, 5, 6]);
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
   }
 
   # element long array
@@ -571,8 +571,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->to_array, [1, 2, 3]);
-    is_deeply($object2_get->to_array, [4, 5, 6]);
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
   }
 
   # element float array
@@ -587,8 +587,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->to_array, [1, 2, 3]);
-    is_deeply($object2_get->to_array, [4, 5, 6]);
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
   }
 
   # element double array
@@ -603,8 +603,8 @@ is_deeply(
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->to_array, [1, 2, 3]);
-    is_deeply($object2_get->to_array, [4, 5, 6]);
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
   }
 
   # element object array
@@ -822,70 +822,70 @@ is_deeply(
 
 # SPVM Functions
 {
-  # to_array
+  # get_elements
   {
     {
       my $sp_values = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
     }
     {
       my $sp_values = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
     }
     {
       my $sp_values = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, $INT_MAX, $INT_MIN]);
     }
     {
       my $sp_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
     }
     {
       my $sp_values = SPVM::new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, $FLOAT_MAX, $FLOAT_MIN]);
     }
     {
       my $sp_values = SPVM::new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
     }
   }
 
-  # to_array_range
+  # get_elements_range
   {
     {
       my $sp_values = SPVM::new_byte_array([1, 2, $BYTE_MAX, 4]);
-      my $values = $sp_values->to_array_range(1, 2);
+      my $values = $sp_values->get_elements_range(1, 2);
       is_deeply($values, [2, $BYTE_MAX]);
     }
     {
       my $sp_values = SPVM::new_short_array([1, 2, $SHORT_MAX, 4]);
-      my $values = $sp_values->to_array_range(1, 2);
+      my $values = $sp_values->get_elements_range(1, 2);
       is_deeply($values, [2, $SHORT_MAX]);
     }
     {
       my $sp_values = SPVM::new_int_array([1, 2, $INT_MAX, 4]);
-      my $values = $sp_values->to_array_range(1, 2);
+      my $values = $sp_values->get_elements_range(1, 2);
       is_deeply($values, [2, $INT_MAX]);
     }
     {
       my $sp_values = SPVM::new_long_array([1, 2, $LONG_MAX, 4]);
-      my $values = $sp_values->to_array_range(1, 2);
+      my $values = $sp_values->get_elements_range(1, 2);
       is_deeply($values, [2, $LONG_MAX]);
     }
     {
       my $sp_values = SPVM::new_float_array([1, 2, $FLOAT_PRECICE, 4]);
-      my $values = $sp_values->to_array_range(1, 2);
+      my $values = $sp_values->get_elements_range(1, 2);
       is_deeply($values, [2, $FLOAT_PRECICE]);
     }
     {
       my $sp_values = SPVM::new_double_array([1, 2, $DOUBLE_PRECICE, 4]);
-      my $values = $sp_values->to_array_range(1, 2);
+      my $values = $sp_values->get_elements_range(1, 2);
       is_deeply($values, [2, $DOUBLE_PRECICE]);
     }
   }
@@ -1111,7 +1111,7 @@ is_deeply(
       my $sp_values = SPVM::new_byte_array([1, 2, 3, 4]);
       $sp_values->set_data_range(1, 2, $data);
       
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, 5, $BYTE_MAX, 4]);
     }
     {
@@ -1119,7 +1119,7 @@ is_deeply(
       my $sp_values = SPVM::new_short_array([1, 2, 3, 4]);
       $sp_values->set_data_range(1, 2, $data);
       
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, 5, $SHORT_MAX, 4]);
     }
     {
@@ -1127,7 +1127,7 @@ is_deeply(
       my $sp_values = SPVM::new_int_array([1, 2, 3, 4]);
       $sp_values->set_data_range(1, 2, $data);
       
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, 5, $INT_MAX, 4]);
     }
     {
@@ -1135,7 +1135,7 @@ is_deeply(
       my $sp_values = SPVM::new_long_array([1, 2, 3, 4]);
       $sp_values->set_data_range(1, 2, $data);
       
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, 5, $LONG_MAX, 4]);
     }
     {
@@ -1143,7 +1143,7 @@ is_deeply(
       my $sp_values = SPVM::new_float_array([1, 2, 3, 4]);
       $sp_values->set_data_range(1, 2, $data);
       
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, 5, $FLOAT_PRECICE, 4]);
     }
     {
@@ -1151,7 +1151,7 @@ is_deeply(
       my $sp_values = SPVM::new_double_array([1, 2, 3, 4]);
       $sp_values->set_data_range(1, 2, $data);
       
-      my $values = $sp_values->to_array;
+      my $values = $sp_values->get_elements;
       is_deeply($values, [1, 5, $DOUBLE_PRECICE, 4]);
     }
   }

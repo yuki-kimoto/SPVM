@@ -676,7 +676,7 @@ get(...)
 }
 
 SV*
-to_array(...)
+get_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -708,7 +708,7 @@ to_array(...)
 }
 
 SV*
-to_array_range(...)
+get_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -734,12 +734,12 @@ to_array_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Object::Array::Byte::to_array_range())");
+    croak("Index is out of range(SPVM::Object::Array::Byte::get_elements_range())");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Object::Array::Byte::to_array_range())");
+    croak("Index + count is out of range(SPVM::Object::Array::Byte::get_elements_range())");
   }
   
   int8_t* elements = api->get_byte_array_elements(api, array);
@@ -1117,7 +1117,7 @@ get(...)
 }
 
 SV*
-to_array(...)
+get_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1149,7 +1149,7 @@ to_array(...)
 }
 
 SV*
-to_array_range(...)
+get_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1175,12 +1175,12 @@ to_array_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Object::Array::Short::to_array_range())");
+    croak("Index is out of range(SPVM::Object::Array::Short::get_elements_range())");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Object::Array::Short::to_array_range())");
+    croak("Index + count is out of range(SPVM::Object::Array::Short::get_elements_range())");
   }
   
   int16_t* elements = api->get_short_array_elements(api, array);
@@ -1558,7 +1558,7 @@ get(...)
 }
 
 SV*
-to_array(...)
+get_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1590,7 +1590,7 @@ to_array(...)
 }
 
 SV*
-to_array_range(...)
+get_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1616,12 +1616,12 @@ to_array_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Object::Array::Int::to_array_range())");
+    croak("Index is out of range(SPVM::Object::Array::Int::get_elements_range())");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Object::Array::Int::to_array_range())");
+    croak("Index + count is out of range(SPVM::Object::Array::Int::get_elements_range())");
   }
   
   int32_t* elements = api->get_int_array_elements(api, array);
@@ -1999,7 +1999,7 @@ get(...)
 }
 
 SV*
-to_array(...)
+get_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2031,7 +2031,7 @@ to_array(...)
 }
 
 SV*
-to_array_range(...)
+get_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2057,12 +2057,12 @@ to_array_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Object::Array::Long::to_array_range())");
+    croak("Index is out of range(SPVM::Object::Array::Long::get_elements_range())");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Object::Array::Long::to_array_range())");
+    croak("Index + count is out of range(SPVM::Object::Array::Long::get_elements_range())");
   }
   
   int64_t* elements = api->get_long_array_elements(api, array);
@@ -2440,7 +2440,7 @@ get(...)
 }
 
 SV*
-to_array(...)
+get_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2472,7 +2472,7 @@ to_array(...)
 }
 
 SV*
-to_array_range(...)
+get_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2498,12 +2498,12 @@ to_array_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Object::Array::Float::to_array_range())");
+    croak("Index is out of range(SPVM::Object::Array::Float::get_elements_range())");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Object::Array::Float::to_array_range())");
+    croak("Index + count is out of range(SPVM::Object::Array::Float::get_elements_range())");
   }
   
   float* elements = api->get_float_array_elements(api, array);
@@ -2881,7 +2881,7 @@ get(...)
 }
 
 SV*
-to_array(...)
+get_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2913,7 +2913,7 @@ to_array(...)
 }
 
 SV*
-to_array_range(...)
+get_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2939,12 +2939,12 @@ to_array_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Object::Array::Double::to_array_range())");
+    croak("Index is out of range(SPVM::Object::Array::Double::get_elements_range())");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Object::Array::Double::to_array_range())");
+    croak("Index + count is out of range(SPVM::Object::Array::Double::get_elements_range())");
   }
   
   double* elements = api->get_double_array_elements(api, array);

@@ -42,9 +42,9 @@ Method List:
 
 =item * get
 
-=item * to_array
+=item * get_elements
 
-=item * to_array_range
+=item * get_elements_range
 
 =item * to_data
 
