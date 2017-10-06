@@ -283,8 +283,8 @@ package TestCase {
   }
 
   sub spvm_extension_add_int_array() : int {
-    my $nums1 = [1, 2, 3];
-    my $nums2 = [4, 5, 6];
+    my $nums1 : int[] = [1, 2, 3];
+    my $nums2 : int[] = [4, 5, 6];
     
     my $nums3 = TestCase::Extension::add_int_array($nums1, $nums2);
     
@@ -705,7 +705,7 @@ package TestCase {
     $nums->[0] = 5;
   }
   sub call_void() : int {
-    my $nums = [1];
+    my $nums : int[] = [1];
     
     call_void_sub($nums);
     
@@ -1166,7 +1166,7 @@ package TestCase {
     return 0;
   }
   sub array_init_byte() : int {
-    my $nums = [1y, 2y, 3y];
+    my $nums : byte[] = [1y, 2y, 3y];
     
     if ($nums->[0] == 1y) {
       if ($nums->[1] == 2y) {
@@ -1178,7 +1178,7 @@ package TestCase {
     return 0;
   }
   sub array_init_short() : int {
-    my $nums = [1s, 2s, 3s];
+    my $nums : short[] = [1s, 2s, 3s];
     
     if ($nums->[0] == 1s) {
       if ($nums->[1] == 2s) {
@@ -1190,7 +1190,7 @@ package TestCase {
     return 0;
   }
   sub array_init_int () : int {
-    my $nums = [1, 2, 3];
+    my $nums : int[] = [1, 2, 3];
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
@@ -1202,7 +1202,7 @@ package TestCase {
     return 0;
   }
   sub array_init_long() : int {
-    my $nums = [1L, 2L, 3L];
+    my $nums : long[] = [1L, 2L, 3L];
     
     if ($nums->[0] == 1L) {
       if ($nums->[1] == 2L) {
@@ -1214,7 +1214,7 @@ package TestCase {
     return 0;
   }
   sub array_init_float() : int {
-    my $nums = [1f, 2f, 3f];
+    my $nums : float[] = [1f, 2f, 3f];
     
     if ($nums->[0] == 1f) {
       if ($nums->[1] == 2f) {
@@ -1226,7 +1226,7 @@ package TestCase {
     return 0;
   }
   sub array_init_double() : int {
-    my $nums = [1d, 2d, 3d];
+    my $nums : double[] = [1d, 2d, 3d];
     
     if ($nums->[0] == 1d) {
       if ($nums->[1] == 2d) {

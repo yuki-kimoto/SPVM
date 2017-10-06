@@ -5,7 +5,7 @@ package TestCase::Arrays {
 
   sub copy_of_byte() : int {
     
-    my $values = [0y, 1y, 2y];
+    my $values : byte[] = [0y, 1y, 2y];
     
     my $values2 = Arrays::copy_of_byte($values, len $values);
     
@@ -24,7 +24,7 @@ package TestCase::Arrays {
 
   sub copy_of_byte_over() : int {
     
-    my $values = [0y, 1y, 2y];
+    my $values : byte[] = [0y, 1y, 2y];
     
     my $values2 = Arrays::copy_of_byte($values, len $values + 1);
     
@@ -45,7 +45,7 @@ package TestCase::Arrays {
 
   sub copy_of_byte_less() : int {
     
-    my $values = [0y, 1y, 2y];
+    my $values : byte[] = [0y, 1y, 2y];
     
     my $values2 = Arrays::copy_of_byte($values, len $values - 1);
     
@@ -76,7 +76,7 @@ package TestCase::Arrays {
   sub copy_of_byte_negative() : int {
     
     eval {
-      my $values = [0y, 1y, 2y];
+      my $values : byte[] = [0y, 1y, 2y];
       Arrays::copy_of_byte(undef, -1);
     };
     
@@ -89,7 +89,7 @@ package TestCase::Arrays {
 
   sub copy_of_short() : int {
     
-    my $values = [0s, 1s, 2s];
+    my $values : short[] = [0s, 1s, 2s];
     
     my $values2 = Arrays::copy_of_short($values, len $values);
     
@@ -108,7 +108,7 @@ package TestCase::Arrays {
 
   sub copy_of_short_over() : int {
     
-    my $values = [0s, 1s, 2s];
+    my $values : short[] = [0s, 1s, 2s];
     
     my $values2 = Arrays::copy_of_short($values, len $values + 1);
     
@@ -129,7 +129,7 @@ package TestCase::Arrays {
 
   sub copy_of_short_less() : int {
     
-    my $values = [0s, 1s, 2s];
+    my $values : short[] = [0s, 1s, 2s];
     
     my $values2 = Arrays::copy_of_short($values, len $values - 1);
     
@@ -160,7 +160,7 @@ package TestCase::Arrays {
   sub copy_of_short_negative() : int {
     
     eval {
-      my $values = [0s, 1s, 2s];
+      my $values : short[] = [0s, 1s, 2s];
       Arrays::copy_of_short(undef, -1);
     };
     
@@ -174,7 +174,7 @@ package TestCase::Arrays {
 
   sub copy_of_int() : int {
     
-    my $values = [0, 1, 2];
+    my $values : int[] = [0, 1, 2];
     
     my $values2 = Arrays::copy_of_int($values, len $values);
     
@@ -193,7 +193,7 @@ package TestCase::Arrays {
 
   sub copy_of_int_over() : int {
     
-    my $values = [0, 1, 2];
+    my $values : int[] = [0, 1, 2];
     
     my $values2 = Arrays::copy_of_int($values, len $values + 1);
     
@@ -214,7 +214,7 @@ package TestCase::Arrays {
 
   sub copy_of_int_less() : int {
     
-    my $values = [0, 1, 2];
+    my $values : int[] = [0, 1, 2];
     
     my $values2 = Arrays::copy_of_int($values, len $values - 1);
     
@@ -245,7 +245,7 @@ package TestCase::Arrays {
   sub copy_of_int_negative() : int {
     
     eval {
-      my $values = [0, 1, 2];
+      my $values : int[] = [0, 1, 2];
       Arrays::copy_of_int(undef, -1);
     };
     
@@ -258,7 +258,7 @@ package TestCase::Arrays {
 
   sub copy_of_long() : int {
     
-    my $values = [0L, 1L, 2L];
+    my $values : long[] = [0L, 1L, 2L];
     
     my $values2 = Arrays::copy_of_long($values, len $values);
     
@@ -277,7 +277,7 @@ package TestCase::Arrays {
 
   sub copy_of_long_over() : int {
     
-    my $values = [0L, 1L, 2L];
+    my $values : long[] = [0L, 1L, 2L];
     
     my $values2 = Arrays::copy_of_long($values, len $values + 1);
     
@@ -298,7 +298,7 @@ package TestCase::Arrays {
 
   sub copy_of_long_less() : int {
     
-    my $values = [0L, 1L, 2L];
+    my $values : long[] = [0L, 1L, 2L];
     
     my $values2 = Arrays::copy_of_long($values, len $values - 1);
     
@@ -329,7 +329,7 @@ package TestCase::Arrays {
   sub copy_of_long_negative() : int {
     
     eval {
-      my $values = [0L, 1L, 2L];
+      my $values : long[] = [0L, 1L, 2L];
       Arrays::copy_of_long(undef, -1);
     };
     
@@ -342,7 +342,7 @@ package TestCase::Arrays {
 
   sub copy_of_float() : int {
     
-    my $values = [0f, 1f, 2f];
+    my $values : float[] = [0f, 1f, 2f];
     
     my $values2 = Arrays::copy_of_float($values, len $values);
     
@@ -361,7 +361,7 @@ package TestCase::Arrays {
 
   sub copy_of_float_over() : int {
     
-    my $values = [0f, 1f, 2f];
+    my $values : float[] = [0f, 1f, 2f];
     
     my $values2 = Arrays::copy_of_float($values, len $values + 1);
     
@@ -382,7 +382,7 @@ package TestCase::Arrays {
 
   sub copy_of_float_less() : int {
     
-    my $values = [0f, 1f, 2f];
+    my $values : float[] = [0f, 1f, 2f];
     
     my $values2 = Arrays::copy_of_float($values, len $values - 1);
     
@@ -413,7 +413,7 @@ package TestCase::Arrays {
   sub copy_of_float_negative() : int {
     
     eval {
-      my $values = [0f, 1f, 2f];
+      my $values : float[] = [0f, 1f, 2f];
       Arrays::copy_of_float(undef, -1);
     };
     
@@ -426,7 +426,7 @@ package TestCase::Arrays {
 
   sub copy_of_double() : int {
     
-    my $values = [0d, 1d, 2d];
+    my $values : double[] = [0d, 1d, 2d];
     
     my $values2 = Arrays::copy_of_double($values, len $values);
     
@@ -445,7 +445,7 @@ package TestCase::Arrays {
 
   sub copy_of_double_over() : int {
     
-    my $values = [0d, 1d, 2d];
+    my $values : double[] = [0d, 1d, 2d];
     
     my $values2 = Arrays::copy_of_double($values, len $values + 1);
     
@@ -466,7 +466,7 @@ package TestCase::Arrays {
 
   sub copy_of_double_less() : int {
     
-    my $values = [0d, 1d, 2d];
+    my $values : double[] = [0d, 1d, 2d];
     
     my $values2 = Arrays::copy_of_double($values, len $values - 1);
     
@@ -497,7 +497,7 @@ package TestCase::Arrays {
   sub copy_of_double_negative() : int {
     
     eval {
-      my $values = [0d, 1d, 2d];
+      my $values : double[] = [0d, 1d, 2d];
       Arrays::copy_of_double(undef, -1);
     };
     
