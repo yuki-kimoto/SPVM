@@ -193,7 +193,7 @@ package TestCase {
        $result->[64] = 0;
     }
     
-    my $ppp = [1, 2, 3];
+    my $ppp : int[] = [1, 2, 3];
     std::say_float(TestCase->ONE);
     
     # Logical or
@@ -950,7 +950,7 @@ package TestCase {
     $nums->[0] = 5;
   }
   sub call_void() : int {
-    my $nums = [1];
+    my $nums : int[] = [1];
     
     call_void_sub($nums);
     
