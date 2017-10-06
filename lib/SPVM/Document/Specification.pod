@@ -505,6 +505,15 @@ Array is created by new. Elements values is not initialized.
   my $nums = new float[3];
   my $nums = new double[3];
 
+=head2 Array Initialization
+
+Array Initialization Syntax:
+
+  my $nums : int[] = [1, 2, 3];
+  my $points : Point[] = [new Point, new Point, new Point];
+  
+Note that array initialization syntax don't support type inference. You must write type declaration.
+
 =head2 Array Manipulation
 
 =head3 Get Array Length

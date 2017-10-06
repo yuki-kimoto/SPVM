@@ -1,4 +1,4 @@
-0.0277 2017-10-05
+0.0277 2017-10-06
   - add Arrays package
   - add Arrays::copy_of_byte
   - add Arrays::copy_of_short
@@ -7,6 +7,7 @@
   - add Arrays::copy_of_float
   - add Arrays::copy_of_double
   - fix native subroutine exception bugs
+  - array initialization allow all terms, and need type declaration
 0.0276 2017-10-05
   - rename back to_array to get_elements
 0.0275 2017-10-04
