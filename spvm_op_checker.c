@@ -129,7 +129,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         new_type->op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
         
         op_type->uv.type = new_type;
-
       }
     }
   }

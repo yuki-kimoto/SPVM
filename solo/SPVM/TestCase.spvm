@@ -193,7 +193,11 @@ package TestCase {
        $result->[64] = 0;
     }
     
-    my $ppp : int[] = [1, 2, 3];
+    my $ppp : int[] = [
+      1,
+      2,
+      3
+    ];
     std::say_float(TestCase->ONE);
     
     # Logical or
