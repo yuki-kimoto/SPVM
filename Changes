@@ -1,5 +1,5 @@
 0.0278 2017-10-10
-  - Throw exception when get array length of undef value
+  - throw exception when get array length of undef value
   - SPVM::new_xxx_array return undef if argument is undef
   - allow SPVM::call_sub undef argument
   - add std::say_err ($value : byte[]) : native void;
