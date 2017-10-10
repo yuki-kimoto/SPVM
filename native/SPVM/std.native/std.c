@@ -2,8 +2,18 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
+#include <time.h>
 
 #include "spvm_api.h"
+
+int64_t SPVM__std__time(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+
+  int64_t timer_value = (int64_t)time(NULL);
+  
+  
+  return timer_value;
+}
 
 int32_t SPVM__std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;

@@ -30,6 +30,8 @@ package std {
   sub print_err_long ($value : long) : native void;
   sub print_err_float ($value : float) : native void;
   sub print_err_double ($value : double) : native void;
+
+  sub time () : native long;
   
   sub sum_int($values : int[]) : native int;
   sub test1($num1 : int, $num2 : int) : native int;

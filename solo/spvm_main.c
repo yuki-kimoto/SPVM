@@ -142,6 +142,9 @@ int main(int argc, char *argv[])
       else if (strcmp(sub_abs_name, "std::print_err_double") == 0) {
         constant_pool_sub.native_address = SPVM__std__print_err_double;
       }
+      else if (strcmp(sub_abs_name, "std::time") == 0) {
+        constant_pool_sub.native_address = SPVM__std__time;
+      }
       else if (strcmp(sub_abs_name, "std::sum_int") == 0) {
         constant_pool_sub.native_address = SPVM__std__sum_int;
       }

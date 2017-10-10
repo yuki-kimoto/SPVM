@@ -46,10 +46,14 @@ my $NEGATIVE_INFINITY = SPVM::NEGATIVE_INFINITY();
 
 my $NaN = SPVM::NaN();
 
-use SPVM::std;
-
 use SPVM 'Double';
 use SPVM 'Float';
+use SPVM 'std';
+
+# time
+{
+  cmp_ok(abs(time - SPVM::std::time()), '<', 2);
+}
 
 # Native Exception
 {

@@ -174,3 +174,8 @@ Print double value to stderr.
 
   sub print_err_double ($value : double) : native void;
 
+=head2 time
+
+Get epoch time.
+
+  sub time () : native long;
