@@ -3677,66 +3677,71 @@ call_sub(...)
 
       int32_t arg_type_code = constant_pool_arg_type->code;
       
-      if (sv_isobject(sv_value)) {
-        SV* sv_base_object = sv_value;
-        if (sv_derived_from(sv_base_object, "SPVM::Object")) {
-          
-          SPVM_OBJECT* base_object = SPVM_XS_UTIL_get_object(sv_base_object);
-          
-          int32_t base_object_type_id = base_object->type_id;
-          
-          SPVM_CONSTANT_POOL_TYPE* constant_pool_base_object_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[base_object_type_id];
-          
-          int32_t base_object_type_code =constant_pool_base_object_type->code;
-          
-          if (base_object_type_code != arg_type_code) {
-            const char* base_object_type_name = (char*)&runtime->constant_pool[constant_pool_base_object_type->name_id + 1];
-            const char* arg_type_name = (char*)&runtime->constant_pool[constant_pool_arg_type->name_id + 1];
-            
-            croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
-          }
-          
-          call_sub_args[arg_index].object_value = base_object;
+      switch (arg_type_code) {
+        case SPVM_TYPE_C_CODE_BYTE : {
+          int8_t value = (int8_t)SvIV(sv_value);
+          call_sub_args[arg_index].byte_value = value;
+          break;
         }
-        else {
-          croak("Object must be derived from SPVM::Object");
+        case  SPVM_TYPE_C_CODE_SHORT : {
+          int16_t value = (int16_t)SvIV(sv_value);
+          call_sub_args[arg_index].short_value = value;
+          break;
         }
-      }
-      else {
-        switch (arg_type_code) {
-          case SPVM_TYPE_C_CODE_BYTE : {
-            int8_t value = (int8_t)SvIV(sv_value);
-            call_sub_args[arg_index].byte_value = value;
-            break;
-          }
-          case  SPVM_TYPE_C_CODE_SHORT : {
-            int16_t value = (int16_t)SvIV(sv_value);
-            call_sub_args[arg_index].short_value = value;
-            break;
-          }
-          case  SPVM_TYPE_C_CODE_INT : {
-            int32_t value = (int32_t)SvIV(sv_value);
-            call_sub_args[arg_index].int_value = value;
-            break;
-          }
-          case  SPVM_TYPE_C_CODE_LONG : {
-            int64_t value = (int64_t)SvIV(sv_value);
-            call_sub_args[arg_index].long_value = value;
-            break;
-          }
-          case  SPVM_TYPE_C_CODE_FLOAT : {
-            float value = (float)SvNV(sv_value);
-            call_sub_args[arg_index].float_value = value;
-            break;
-          }
-          case  SPVM_TYPE_C_CODE_DOUBLE : {
-            double value = (double)SvNV(sv_value);
-            call_sub_args[arg_index].double_value = value;
-            break;
-          }
-          default :
-            croak("Argument must be numeric value or SPVM::Object subclass");
+        case  SPVM_TYPE_C_CODE_INT : {
+          int32_t value = (int32_t)SvIV(sv_value);
+          call_sub_args[arg_index].int_value = value;
+          break;
         }
+        case  SPVM_TYPE_C_CODE_LONG : {
+          int64_t value = (int64_t)SvIV(sv_value);
+          call_sub_args[arg_index].long_value = value;
+          break;
+        }
+        case  SPVM_TYPE_C_CODE_FLOAT : {
+          float value = (float)SvNV(sv_value);
+          call_sub_args[arg_index].float_value = value;
+          break;
+        }
+        case  SPVM_TYPE_C_CODE_DOUBLE : {
+          double value = (double)SvNV(sv_value);
+          call_sub_args[arg_index].double_value = value;
+          break;
+        }
+        default :
+          if (!SvOK(sv_value)) {
+            call_sub_args[arg_index].object_value = NULL;
+          }
+          else {
+            if (sv_isobject(sv_value)) {
+              SV* sv_base_object = sv_value;
+              if (sv_derived_from(sv_base_object, "SPVM::Object")) {
+                
+                SPVM_OBJECT* base_object = SPVM_XS_UTIL_get_object(sv_base_object);
+                
+                int32_t base_object_type_id = base_object->type_id;
+                
+                SPVM_CONSTANT_POOL_TYPE* constant_pool_base_object_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[base_object_type_id];
+                
+                int32_t base_object_type_code =constant_pool_base_object_type->code;
+                
+                if (base_object_type_code != arg_type_code) {
+                  const char* base_object_type_name = (char*)&runtime->constant_pool[constant_pool_base_object_type->name_id + 1];
+                  const char* arg_type_name = (char*)&runtime->constant_pool[constant_pool_arg_type->name_id + 1];
+                  
+                  croak("Argument base_object type need %s, but %s", arg_type_name, base_object_type_name);
+                }
+                
+                call_sub_args[arg_index].object_value = base_object;
+              }
+              else {
+                croak("Object must be derived from SPVM::Object");
+              }
+            }
+            else {
+              croak("Argument must be numeric value or SPVM::Object subclass");
+            }
+          }
       }
     }
   }

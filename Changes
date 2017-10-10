@@ -1,6 +1,7 @@
 0.0278 2017-10-10
 
   - SPVM::new_xxx_array return undef if argument is undef
+  - allow SPVM::call_sub undef argument
   - add std::say_err ($value : byte[]) : native void;
   - add std::say_err_byte ($value : byte) : native void;
   - add std::say_err_short ($value : short) : native void;

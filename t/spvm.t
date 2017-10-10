@@ -253,7 +253,9 @@ my $start_objects_count = SPVM::get_objects_count();
 # Call subroutine
 {
   ok(SPVM::TestCase::call_sub_last_camma());
+  ok(SPVM::TestCase::call_sub_undef(undef));
 }
+
 # Destructor
 {
   ok(SPVM::TestCase::destructor());
