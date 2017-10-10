@@ -4,6 +4,10 @@ SPVM::Document::StandardLibrary - SPVM Standard Library(BETA before 1.0)
 
 =head1 SPVM Language Standard Library
 
+=head2 SPVM::std
+
+L<SPVM::std> - Default libraray
+
 =head2 SPVM::Byte
 
 L<SPVM::Byte> - Byte Utility
