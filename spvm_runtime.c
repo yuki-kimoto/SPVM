@@ -2211,9 +2211,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
   }
   case_SPVM_BYTECODE_C_CODE_ARRAY_LENGTH:
-    call_stack[operand_stack_top].int_value = (int32_t)((SPVM_OBJECT*)call_stack[operand_stack_top].object_value)->length;
-    pc++;
-    goto *jump[*pc];
+    if (call_stack[operand_stack_top].object_value == NULL) {
+      SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_byte_array_string(api, "Can't get array length of undef value.");
+      SPVM_RUNTIME_API_set_exception(api, exception);
+      goto case_SPVM_BYTECODE_C_CODE_DIE;
+    }
+    else {
+      call_stack[operand_stack_top].int_value = (int32_t)((SPVM_OBJECT*)call_stack[operand_stack_top].object_value)->length;
+      pc++;
+      goto *jump[*pc];
+    }
   case_SPVM_BYTECODE_C_CODE_WIDE:
     // iload, fload, aload, lload, dload, istore, fstore, astore, lstore, dstore, or iinc
     
