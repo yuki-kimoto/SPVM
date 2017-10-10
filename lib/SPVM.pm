@@ -231,6 +231,8 @@ sub new_byte_array_len {
 sub new_byte_array {
   my $elements = shift;
   
+  return undef unless defined $elements;
+  
   if (ref $elements ne 'ARRAY') {
     confess "Argument must be array reference";
   }
@@ -246,7 +248,9 @@ sub new_byte_array {
 
 sub new_short_array {
   my $elements = shift;
-  
+
+  return undef unless defined $elements;
+
   if (ref $elements ne 'ARRAY') {
     confess "Argument must be array reference";
   }
@@ -320,7 +324,9 @@ sub new_int_array_len {
 
 sub new_int_array {
   my $elements = shift;
-  
+
+  return undef unless defined $elements;
+
   if (ref $elements ne 'ARRAY') {
     confess "Argument must be array reference";
   }
@@ -362,7 +368,9 @@ sub new_long_array_len {
 
 sub new_long_array {
   my $elements = shift;
-  
+
+  return undef unless defined $elements;
+
   if (ref $elements ne 'ARRAY') {
     confess "Argument must be array reference";
   }
@@ -404,7 +412,9 @@ sub new_float_array_len {
 
 sub new_float_array {
   my $elements = shift;
-  
+
+  return undef unless defined $elements;
+
   if (ref $elements ne 'ARRAY') {
     confess "Argument must be array reference";
   }
@@ -446,6 +456,8 @@ sub new_double_array_len {
 
 sub new_double_array {
   my $elements = shift;
+  
+  return undef unless defined $elements;
   
   if (ref $elements ne 'ARRAY') {
     confess "Argument must be array reference";
