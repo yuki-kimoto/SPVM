@@ -187,6 +187,8 @@ void SPVM__std__say_err(SPVM_API* api, SPVM_API_VALUE* args) {
   SPVM_API_OBJECT* array = args[0].object_value;
 
   int8_t* string = api->get_byte_array_elements(api, array);
+  
+  warn("AAAAAAAAAAAAA");
 
   fprintf(stderr, "%s\n", (char*)string);
 }

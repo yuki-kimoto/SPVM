@@ -44,7 +44,22 @@ package TestCase {
   
   sub main($mvar : int) : int {
     
-    
+    std::say_err("PPPPPP");
+    std::say_err_byte(1y);
+    std::say_err_short(1s);
+    std::say_err_int(1);
+    std::say_err_long(1L);
+    std::say_err_float(0.5f);
+    std::say_err_double(0.5);
+
+    std::print_err("PPPPPP");
+    std::print_err_byte(1y);
+    std::print_err_short(1s);
+    std::print_err_int(1);
+    std::print_err_long(1L);
+    std::print_err_float(0.5f);
+    std::print_err_double(0.5);
+
     # .
     {
       {
