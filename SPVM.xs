@@ -3735,7 +3735,7 @@ call_sub(...)
             break;
           }
           default :
-            assert(0);
+            croak("Argument must be numeric value or SPVM::Object subclass");
         }
       }
     }
