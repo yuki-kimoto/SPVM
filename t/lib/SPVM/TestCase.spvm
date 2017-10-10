@@ -46,6 +46,27 @@ package TestCase {
     DOUBLE_PRECICE = 65536.5,
   }
   
+  # Resorved word
+  sub int($obj : TestCase) : int {
+    
+    return 5;
+  }
+  
+  sub use_reserved_word() : int {
+    
+    my $test_case = new TestCase;
+    
+    if (TestCase->int($test_case) == 5) {
+      if (TestCase::int($test_case) == 5) {
+        if ($test_case->int == 5) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   # Package Template
   sub template() : int {
     my $value = TestCase::Template_int_long::sum(1, 2, 3L);

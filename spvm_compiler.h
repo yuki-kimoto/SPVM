@@ -131,6 +131,9 @@ struct SPVM_compiler {
   // Before is package
   _Bool before_is_package;
   
+  // Expect name
+  _Bool expect_name;
+  
   SPVM_OP* cur_op_use;
   
   _Bool debug;
