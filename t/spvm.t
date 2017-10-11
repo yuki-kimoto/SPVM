@@ -69,6 +69,8 @@ use SPVM 'std';
 
 # SPVM::Arrays;
 {
+  ok(SPVM::TestCase::Arrays::equals_byte());
+
   ok(SPVM::TestCase::Arrays::copy_of_byte());
   ok(SPVM::TestCase::Arrays::copy_of_byte_over());
   ok(SPVM::TestCase::Arrays::copy_of_byte_less());

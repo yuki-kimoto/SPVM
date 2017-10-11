@@ -3,6 +3,26 @@ use Byte;
 
 package TestCase::Arrays {
 
+  sub equals_byte() : int {
+    my $x1 : byte[] = [1y, 2y, 3y];
+    my $x2 : byte[] = [1y, 2y, 3y];
+    my $x3 : byte[] = [1y, 2y];
+    
+    if (Arrays::equals_byte($x1, $x2)) {
+      if (!Arrays::equals_byte($x1, $x3)) {
+        if (Arrays::equals_byte(undef, undef)) {
+          if (!Arrays::equals_byte($x1, undef)) {
+            if (!Arrays::equals_byte(undef, $x1)) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
   sub copy_of_byte() : int {
     
     my $values : byte[] = [0y, 1y, 2y];
