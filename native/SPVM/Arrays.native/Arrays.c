@@ -4,6 +4,42 @@
 
 #include "spvm_api.h"
 
+int32_t SPVM__Arrays__equals_byte(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  SPVM_API_OBJECT* x1 = args[0].object_value;
+  SPVM_API_OBJECT* x2 = args[1].object_value;
+  
+  if (x1 == NULL && x2 == NULL) {
+    return 1;
+  }
+  else if (x1 == NULL) {
+    return 0;
+  }
+  else if (x2 == NULL) {
+    return 0;
+  }
+  else {
+    int32_t x1_length = api->get_array_length(api, x1);
+    int32_t x2_length = api->get_array_length(api, x2);
+    
+    if (x1_length == x2_length) {
+      SPVM_API_OBJECT* x1_elements = api->get_byte_array_elements(api, x1);
+      SPVM_API_OBJECT* x2_elements = api->get_byte_array_elements(api, x2);
+      
+      if (memcmp(x1_elements, x2_elements, sizeof(int8_t) * x1_length) == 0) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+}
+
 SPVM_API_OBJECT* SPVM__Arrays__copy_of_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
