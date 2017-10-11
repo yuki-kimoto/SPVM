@@ -70,6 +70,11 @@ use SPVM 'std';
 # SPVM::Arrays;
 {
   ok(SPVM::TestCase::Arrays::equals_byte());
+  ok(SPVM::TestCase::Arrays::equals_short());
+  ok(SPVM::TestCase::Arrays::equals_int());
+  ok(SPVM::TestCase::Arrays::equals_long());
+  ok(SPVM::TestCase::Arrays::equals_float());
+  ok(SPVM::TestCase::Arrays::equals_double());
 
   ok(SPVM::TestCase::Arrays::copy_of_byte());
   ok(SPVM::TestCase::Arrays::copy_of_byte_over());

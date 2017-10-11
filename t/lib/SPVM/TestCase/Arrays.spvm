@@ -23,6 +23,106 @@ package TestCase::Arrays {
     return 0;
   }
 
+  sub equals_short() : int {
+    my $x1 : short[] = [1s, 2s, 3s];
+    my $x2 : short[] = [1s, 2s, 3s];
+    my $x3 : short[] = [1s, 2s];
+    
+    if (Arrays::equals_short($x1, $x2)) {
+      if (!Arrays::equals_short($x1, $x3)) {
+        if (Arrays::equals_short(undef, undef)) {
+          if (!Arrays::equals_short($x1, undef)) {
+            if (!Arrays::equals_short(undef, $x1)) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub equals_int() : int {
+    my $x1 : int[] = [1, 2, 3];
+    my $x2 : int[] = [1, 2, 3];
+    my $x3 : int[] = [1, 2];
+    
+    if (Arrays::equals_int($x1, $x2)) {
+      if (!Arrays::equals_int($x1, $x3)) {
+        if (Arrays::equals_int(undef, undef)) {
+          if (!Arrays::equals_int($x1, undef)) {
+            if (!Arrays::equals_int(undef, $x1)) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub equals_long() : int {
+    my $x1 : long[] = [1L, 2L, 3L];
+    my $x2 : long[] = [1L, 2L, 3L];
+    my $x3 : long[] = [1L, 2L];
+    
+    if (Arrays::equals_long($x1, $x2)) {
+      if (!Arrays::equals_long($x1, $x3)) {
+        if (Arrays::equals_long(undef, undef)) {
+          if (!Arrays::equals_long($x1, undef)) {
+            if (!Arrays::equals_long(undef, $x1)) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub equals_float() : int {
+    my $x1 : float[] = [1f, 0.5f, 0.025f];
+    my $x2 : float[] = [1f, 0.5f, 0.025f];
+    my $x3 : float[] = [1f, 0.5f];
+    
+    if (Arrays::equals_float($x1, $x2)) {
+      if (!Arrays::equals_float($x1, $x3)) {
+        if (Arrays::equals_float(undef, undef)) {
+          if (!Arrays::equals_float($x1, undef)) {
+            if (!Arrays::equals_float(undef, $x1)) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub equals_double() : int {
+    my $x1 : double[] = [1d, 0.5d, 0.025d];
+    my $x2 : double[] = [1d, 0.5d, 0.025d];
+    my $x3 : double[] = [1d, 0.5d];
+    
+    if (Arrays::equals_double($x1, $x2)) {
+      if (!Arrays::equals_double($x1, $x3)) {
+        if (Arrays::equals_double(undef, undef)) {
+          if (!Arrays::equals_double($x1, undef)) {
+            if (!Arrays::equals_double(undef, $x1)) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
   sub copy_of_byte() : int {
     
     my $values : byte[] = [0y, 1y, 2y];
