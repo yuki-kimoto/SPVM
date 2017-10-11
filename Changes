@@ -17,6 +17,12 @@
   - add std::print_err_float ($value : float) : native void;
   - add std::print_err_double ($value : double) : native void;
   - add std::time()
+  - add Array::equals_byte()
+  - add Array::equals_short()
+  - add Array::equals_int()
+  - add Array::equals_long()
+  - add Array::equals_float()
+  - add Array::equals_double()
 
 0.0277 2017-10-10
   - allow resorved word for subroutine name
