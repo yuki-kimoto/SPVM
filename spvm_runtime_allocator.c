@@ -20,8 +20,8 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   
   SPVM_RUNTIME_ALLOCATOR* allocator = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_ALLOCATOR));
 
-  // use memory pool max reference byte size(default is page size)
-  allocator->object_max_byte_size_use_memory_pool = 4096;
+  // use memory pool max reference byte size
+  allocator->object_max_byte_size_use_memory_pool = 0xFFFF;
   
   // Memory pool
   allocator->memory_pool = SPVM_MEMORY_POOL_new(allocator->object_max_byte_size_use_memory_pool);
