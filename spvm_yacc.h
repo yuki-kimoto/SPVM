@@ -60,7 +60,7 @@
      DESCRIPTOR = 276,
      CORETYPE = 277,
      UNDEF = 278,
-     DIE = 279,
+     CROAK = 279,
      SWITCH = 280,
      CASE = 281,
      DEFAULT = 282,
@@ -117,7 +117,7 @@
 #define DESCRIPTOR 276
 #define CORETYPE 277
 #define UNDEF 278
-#define DIE 279
+#define CROAK 279
 #define SWITCH 280
 #define CASE 281
 #define DEFAULT 282

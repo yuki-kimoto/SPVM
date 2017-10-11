@@ -1253,8 +1253,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return DEFAULT;
                 }
                 else if (strcmp(keyword, "die") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DIE);
-                  return DIE;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CROAK);
+                  return CROAK;
                 }
                 else if (strcmp(keyword, "double") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DOUBLE);

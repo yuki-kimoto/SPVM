@@ -102,7 +102,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "UNDEF",
   "ARRAY_LENGTH",
   "CONDITION",
-  "DIE",
+  "CROAK",
   "SWITCH",
   "CASE",
   "DEFAULT",

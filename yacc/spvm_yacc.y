@@ -15,7 +15,7 @@
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW
-%token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF DIE
+%token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK
 %token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
@@ -391,11 +391,11 @@ expression
     {
       $$ = SPVM_OP_build_return(compiler, $1, $2);
     }
-  | DIE
+  | CROAK
     {
       $$ = SPVM_OP_build_die(compiler, $1, NULL);
     }
-  | DIE term
+  | CROAK term
     {
       $$ = SPVM_OP_build_die(compiler, $1, $2);
     }

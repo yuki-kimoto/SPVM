@@ -1280,7 +1280,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
-                case SPVM_OP_C_CODE_DIE: {
+                case SPVM_OP_C_CODE_CROAK: {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   
                   if (!first_type || first_type->code != SPVM_TYPE_C_CODE_BYTE_ARRAY) {

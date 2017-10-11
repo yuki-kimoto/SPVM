@@ -613,7 +613,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 }
                 // Rethrow exception
                 else {
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_DIE);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CROAK);
                   
                   // Padding
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
@@ -622,7 +622,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
-              case SPVM_OP_C_CODE_DIE: {
+              case SPVM_OP_C_CODE_CROAK: {
                 //  Goto exception handler
                 if (eval_stack->length > 0) {
                   // Goto end of evel block
@@ -637,7 +637,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 }
                 // Throw exception
                 else {
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_DIE);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CROAK);
                 }
                 break;
               }
