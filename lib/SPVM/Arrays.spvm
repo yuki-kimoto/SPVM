@@ -7,13 +7,10 @@ package Arrays {
   sub copy_of_double($original : double[], $new_length : int) : native double[];
 
   sub equals_byte($x1 : byte[], $x2 : byte[]) : native int;
-
-=pod
   sub equals_short($x1 : short[], $x2 : short[]) : native int;
   sub equals_int($x1 : int[], $x2 : int[]) : native int;
   sub equals_long($x1 : long[], $x2 : long[]) : native int;
   sub equals_float($x1 : float[], $x2 : float[]) : native int;
   sub equals_double($x1 : double[], $x2 : double[]) : native int;
-=cut
 
 }

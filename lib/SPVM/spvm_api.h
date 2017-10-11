@@ -21,10 +21,12 @@ union SPVM_API_value {
 // spvm_api.h
 typedef union SPVM_API_value SPVM_API_VALUE;
 
-
-
-
-
+typedef int8_t SPVM_API_byte;
+typedef int16_t SPVM_API_short;
+typedef int32_t SPVM_API_int;
+typedef int64_t SPVM_API_long;
+typedef float SPVM_API_float;
+typedef double SPVM_API_double;
 
 struct SPVM_api {
   int32_t (*get_array_length)(SPVM_API*, SPVM_API_OBJECT*);

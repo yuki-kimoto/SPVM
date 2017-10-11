@@ -4,7 +4,7 @@
 
 #include "spvm_api.h"
 
-int32_t SPVM__Arrays__equals_byte(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Arrays__equals_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -20,14 +20,194 @@ int32_t SPVM__Arrays__equals_byte(SPVM_API* api, SPVM_API_VALUE* args) {
     return 0;
   }
   else {
-    int32_t x1_length = api->get_array_length(api, x1);
-    int32_t x2_length = api->get_array_length(api, x2);
+    SPVM_API_int x1_length = api->get_array_length(api, x1);
+    SPVM_API_int x2_length = api->get_array_length(api, x2);
     
     if (x1_length == x2_length) {
       SPVM_API_OBJECT* x1_elements = api->get_byte_array_elements(api, x1);
       SPVM_API_OBJECT* x2_elements = api->get_byte_array_elements(api, x2);
       
-      if (memcmp(x1_elements, x2_elements, sizeof(int8_t) * x1_length) == 0) {
+      if (memcmp(x1_elements, x2_elements, sizeof(SPVM_API_byte) * x1_length) == 0) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+}
+
+SPVM_API_int SPVM__Arrays__equals_short(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  SPVM_API_OBJECT* x1 = args[0].object_value;
+  SPVM_API_OBJECT* x2 = args[1].object_value;
+  
+  if (x1 == NULL && x2 == NULL) {
+    return 1;
+  }
+  else if (x1 == NULL) {
+    return 0;
+  }
+  else if (x2 == NULL) {
+    return 0;
+  }
+  else {
+    SPVM_API_int x1_length = api->get_array_length(api, x1);
+    SPVM_API_int x2_length = api->get_array_length(api, x2);
+    
+    if (x1_length == x2_length) {
+      SPVM_API_OBJECT* x1_elements = api->get_short_array_elements(api, x1);
+      SPVM_API_OBJECT* x2_elements = api->get_short_array_elements(api, x2);
+      
+      if (memcmp(x1_elements, x2_elements, sizeof(SPVM_API_short) * x1_length) == 0) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+}
+
+SPVM_API_int SPVM__Arrays__equals_int(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  SPVM_API_OBJECT* x1 = args[0].object_value;
+  SPVM_API_OBJECT* x2 = args[1].object_value;
+  
+  if (x1 == NULL && x2 == NULL) {
+    return 1;
+  }
+  else if (x1 == NULL) {
+    return 0;
+  }
+  else if (x2 == NULL) {
+    return 0;
+  }
+  else {
+    SPVM_API_int x1_length = api->get_array_length(api, x1);
+    SPVM_API_int x2_length = api->get_array_length(api, x2);
+    
+    if (x1_length == x2_length) {
+      SPVM_API_OBJECT* x1_elements = api->get_int_array_elements(api, x1);
+      SPVM_API_OBJECT* x2_elements = api->get_int_array_elements(api, x2);
+      
+      if (memcmp(x1_elements, x2_elements, sizeof(SPVM_API_int) * x1_length) == 0) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+}
+
+SPVM_API_int SPVM__Arrays__equals_long(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  SPVM_API_OBJECT* x1 = args[0].object_value;
+  SPVM_API_OBJECT* x2 = args[1].object_value;
+  
+  if (x1 == NULL && x2 == NULL) {
+    return 1;
+  }
+  else if (x1 == NULL) {
+    return 0;
+  }
+  else if (x2 == NULL) {
+    return 0;
+  }
+  else {
+    SPVM_API_int x1_length = api->get_array_length(api, x1);
+    SPVM_API_int x2_length = api->get_array_length(api, x2);
+    
+    if (x1_length == x2_length) {
+      SPVM_API_OBJECT* x1_elements = api->get_long_array_elements(api, x1);
+      SPVM_API_OBJECT* x2_elements = api->get_long_array_elements(api, x2);
+      
+      if (memcmp(x1_elements, x2_elements, sizeof(SPVM_API_long) * x1_length) == 0) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+}
+
+SPVM_API_int SPVM__Arrays__equals_float(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  SPVM_API_OBJECT* x1 = args[0].object_value;
+  SPVM_API_OBJECT* x2 = args[1].object_value;
+  
+  if (x1 == NULL && x2 == NULL) {
+    return 1;
+  }
+  else if (x1 == NULL) {
+    return 0;
+  }
+  else if (x2 == NULL) {
+    return 0;
+  }
+  else {
+    SPVM_API_int x1_length = api->get_array_length(api, x1);
+    SPVM_API_int x2_length = api->get_array_length(api, x2);
+    
+    if (x1_length == x2_length) {
+      SPVM_API_OBJECT* x1_elements = api->get_float_array_elements(api, x1);
+      SPVM_API_OBJECT* x2_elements = api->get_float_array_elements(api, x2);
+      
+      if (memcmp(x1_elements, x2_elements, sizeof(SPVM_API_float) * x1_length) == 0) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+}
+
+SPVM_API_int SPVM__Arrays__equals_double(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  SPVM_API_OBJECT* x1 = args[0].object_value;
+  SPVM_API_OBJECT* x2 = args[1].object_value;
+  
+  if (x1 == NULL && x2 == NULL) {
+    return 1;
+  }
+  else if (x1 == NULL) {
+    return 0;
+  }
+  else if (x2 == NULL) {
+    return 0;
+  }
+  else {
+    SPVM_API_int x1_length = api->get_array_length(api, x1);
+    SPVM_API_int x2_length = api->get_array_length(api, x2);
+    
+    if (x1_length == x2_length) {
+      SPVM_API_OBJECT* x1_elements = api->get_double_array_elements(api, x1);
+      SPVM_API_OBJECT* x2_elements = api->get_double_array_elements(api, x2);
+      
+      if (memcmp(x1_elements, x2_elements, sizeof(SPVM_API_double) * x1_length) == 0) {
         return 1;
       }
       else {
