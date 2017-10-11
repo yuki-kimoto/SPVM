@@ -393,11 +393,11 @@ expression
     }
   | CROAK
     {
-      $$ = SPVM_OP_build_die(compiler, $1, NULL);
+      $$ = SPVM_OP_build_croak(compiler, $1, NULL);
     }
   | CROAK term
     {
-      $$ = SPVM_OP_build_die(compiler, $1, $2);
+      $$ = SPVM_OP_build_croak(compiler, $1, $2);
     }
   | call_field ASSIGN term
     {

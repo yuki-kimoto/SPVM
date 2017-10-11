@@ -521,7 +521,7 @@ package TestCase {
       
       sum0(3, 4);
       
-      die "Catch error";
+      croak "Catch error";
       
       1;
     };
@@ -962,7 +962,7 @@ package TestCase {
     }
 
     # my $error : byte[] = "Error";
-    # die $error;
+    # croak $error;
     
     return $mvar + 3;
   }
@@ -1049,7 +1049,7 @@ package TestCase {
   }
   
   sub sum2 ($num1 : int, $num2 : int) : int {
-    # die "Error";
+    # croak "Error";
     
     my $num3 = sum0($num1, $num2);
     
@@ -1094,7 +1094,7 @@ package TestCase {
       
       my $obj_error1 = "Error1";
       
-      die $obj_error1;
+      croak $obj_error1;
     };
     
     {
@@ -1106,7 +1106,7 @@ package TestCase {
       
       my $obj_error2 = "Error2";
       
-      die $obj_error2;
+      croak $obj_error2;
     }
   }
   sub array_new() : int {
@@ -1142,7 +1142,7 @@ package TestCase {
   }
   
   sub error() : int {
-    die "ERROR";
+    croak "ERROR";
   }
   
   sub error_call_stack() : int {
@@ -1151,7 +1151,7 @@ package TestCase {
 
   sub error_eval() : int {
     eval {
-      die "ERROR";
+      croak "ERROR";
     };
     
     if ($@) {

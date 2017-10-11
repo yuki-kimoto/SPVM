@@ -1898,11 +1898,11 @@ SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_
   return op_return;
 }
 
-SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP* op_term) {
   
   if (!op_term) {
     // Default error message
-    op_term =SPVM_OP_new_op_constant_byte_array_string(compiler, "Error", op_die->file, op_die->line);;
+    op_term =SPVM_OP_new_op_constant_byte_array_string(compiler, "Error", op_croak->file, op_croak->line);;
   }
   
   // Exception variable
@@ -1916,9 +1916,9 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   op_assign->first->lvalue = 1;
   op_assign->last->rvalue = 1;
   
-  SPVM_OP_insert_child(compiler, op_die, op_die->last, op_assign);
+  SPVM_OP_insert_child(compiler, op_croak, op_croak->last, op_assign);
   
-  return op_die;
+  return op_croak;
 }
 
 SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void) {

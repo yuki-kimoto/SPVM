@@ -1246,15 +1246,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   return DESCRIPTOR;
                 }
+                else if (strcmp(keyword, "croak") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CROAK);
+                  return CROAK;
+                }
                 break;
               case 'd' :
                 if (strcmp(keyword, "default") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DEFAULT);
                   return DEFAULT;
-                }
-                else if (strcmp(keyword, "die") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CROAK);
-                  return CROAK;
                 }
                 else if (strcmp(keyword, "double") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DOUBLE);
