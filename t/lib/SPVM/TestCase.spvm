@@ -4431,8 +4431,6 @@ package TestCase {
     
     my $nums : int[] = undef;
 
-    std::say_err("AAAAAAAAAAAA");
-    
     eval {
       @$nums;
     };

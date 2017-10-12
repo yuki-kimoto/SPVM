@@ -1601,7 +1601,7 @@ is_deeply(
   {
     ok(SPVM::TestCase::get_array_length_at());
     ok(SPVM::TestCase::get_array_length_len());
-    # ok(SPVM::TestCase::get_array_length_undef());
+    ok(SPVM::TestCase::get_array_length_undef());
   }
 
   # array - set and get array element, first element
