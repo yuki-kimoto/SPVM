@@ -5,4 +5,3 @@ package SPVM::String;
 =head1 NAME
 
 SPVM::String - String
-
