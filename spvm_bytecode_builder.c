@@ -700,7 +700,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_exception_handler_bytecode_index_stack);
                   int32_t bytecode_index = *bytecode_index_ptr;
                   
-                  int32_t jump_offset_abs = bytecode_array->length;
+                  int32_t jump_offset_abs = bytecode_array->length - sub->bytecode_base;
+                  
+                  warn("AAAAAAAAAAAAAAAA %d", jump_offset_abs);
                   
                   bytecode_array->values[bytecode_index + 1] = (jump_offset_abs >> 8) & 0xFF;
                   bytecode_array->values[bytecode_index + 2] = jump_offset_abs & 0xFF;

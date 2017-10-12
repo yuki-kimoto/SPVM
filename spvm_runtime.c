@@ -694,8 +694,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     // Catch exception
     if (exception_handler_stack_top > -1) {
+      
       int16_t jump_offset_abs = exception_handler_stack[exception_handler_stack_top];
       exception_handler_stack_top--;
+
+      warn("CCCCCCCCCCC %d", jump_offset_abs);
       
       goto *jump[*(pc_start + jump_offset_abs)];
     }
