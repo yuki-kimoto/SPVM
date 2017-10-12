@@ -125,6 +125,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Program counter
   register uint8_t* pc = NULL;
   
+  uint8_t* pc_start = NULL;
+  
   // Constant pool subroutine
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
@@ -142,6 +144,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   SPVM_OBJECT* call_stack_array = SPVM_RUNTIME_API_new_value_array(api, call_stack_length);
   call_stack_array->ref_count++;
   SPVM_VALUE* call_stack = SPVM_RUNTIME_API_get_value_array_elements(api, call_stack_array);
+
+  // Exception handler stack
+  int16_t exception_handler_stack[255];
+  
+  // Exception handler stack top
+  int32_t exception_handler_stack_top = -1;
 
   register int32_t success;
   int32_t current_line = 0;
@@ -278,6 +286,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Call normal sub
   else {
     pc = &runtime->bytecodes[constant_pool_sub->bytecode_base];
+    pc_start = pc;
   }
   
   // Jump table for direct threaded code
@@ -509,10 +518,30 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_LONG,
     &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_FLOAT,
     &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE,
+    &&case_SPVM_BYTECODE_C_CODE_PUSH_EXCEPTION_HANDLER,
+    &&case_SPVM_BYTECODE_C_CODE_POP_EXCEPTION_HANDLER,
   };
   
   goto *jump[*pc];
-  
+
+  case_SPVM_BYTECODE_C_CODE_PUSH_EXCEPTION_HANDLER: {
+    // Next operation
+    int16_t jump_offset_abs = (int16_t)((*(pc + 1) << 8) +  *(pc + 2));
+    
+    exception_handler_stack_top++;
+    exception_handler_stack[exception_handler_stack_top] = jump_offset_abs;
+    
+    pc += 3;
+    
+    goto *jump[*pc];
+  }
+  case_SPVM_BYTECODE_C_CODE_POP_EXCEPTION_HANDLER: {
+    exception_handler_stack_top--;
+    
+    pc++;
+    
+    goto *jump[*pc];
+  }
   case_SPVM_BYTECODE_C_CODE_CALL_SUB: {
     // Get subroutine ID
     sub_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
@@ -530,12 +559,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
     
     if (api->get_exception(api)) {
-      memset(&return_value, 0, sizeof(SPVM_VALUE));
-      
-      // Exception handler
-      pc += 5 + (debug * 5);
-      
-      goto *jump[*pc];
+      goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
       if (!constant_pool_sub_called->is_void) {
@@ -544,7 +568,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       
       // Next operation
-      pc += 5 + (debug * 5) + 3;
+      pc += 5 + (debug * 5);
       
       goto *jump[*pc];
     }
@@ -667,6 +691,15 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CROAK: {
+    
+    // Catch exception
+    if (exception_handler_stack_top > -1) {
+      int16_t jump_offset_abs = exception_handler_stack[exception_handler_stack_top];
+      exception_handler_stack_top--;
+      
+      goto *jump[*(pc_start + jump_offset_abs)];
+    }
+    
     // Decrement object my vars reference count
     int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
     int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;

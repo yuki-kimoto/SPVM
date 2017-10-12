@@ -183,10 +183,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
       SPVM_DYNAMIC_ARRAY* goto_loop_start_bytecode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // GOTO bytecode index for exception handler
-      SPVM_DYNAMIC_ARRAY* goto_exception_handler_bytecode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      
-      // eval stack
-      SPVM_DYNAMIC_ARRAY* eval_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_DYNAMIC_ARRAY* push_exception_handler_bytecode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
       // Switch stack
       SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -209,7 +206,15 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
             }
             else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-              SPVM_DYNAMIC_ARRAY_push(eval_stack, op_cur);
+              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_PUSH_EXCEPTION_HANDLER);
+              
+              int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+              *bytecode_index_ptr = bytecode_array->length - 1;
+              
+              SPVM_DYNAMIC_ARRAY_push(push_exception_handler_bytecode_index_stack, bytecode_index_ptr);
+              
+              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
             }
           }
         }
@@ -600,45 +605,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, op_cur->line & 0xFF);
                 }
                 
-                //  Goto exception handler
-                if (eval_stack->length > 0) {
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
-                  
-                  int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                  *bytecode_index_ptr = bytecode_array->length - 1;
-                  SPVM_DYNAMIC_ARRAY_push(goto_exception_handler_bytecode_index_stack, bytecode_index_ptr);
-                  
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
-                }
-                // Rethrow exception
-                else {
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CROAK);
-                  
-                  // Padding
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                }
-                
                 break;
               }
               case SPVM_OP_C_CODE_CROAK: {
-                //  Goto exception handler
-                if (eval_stack->length > 0) {
-                  // Goto end of evel block
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
-                  
-                  int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                  *bytecode_index_ptr = bytecode_array->length - 1;
-                  SPVM_DYNAMIC_ARRAY_push(goto_exception_handler_bytecode_index_stack, bytecode_index_ptr);
-                  
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
-                }
-                // Throw exception
-                else {
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CROAK);
-                }
+                
+                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CROAK);
+                
                 break;
               }
               case SPVM_OP_C_CODE_LAST: {
@@ -723,25 +695,15 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   bytecode_array->values[goto_loop_start_bytecode_index + 2] = goto_loop_start_offset & 0xFF;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-                  if (eval_stack->length > 0) {
-                    SPVM_DYNAMIC_ARRAY_pop(eval_stack);
-                  }
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_POP_EXCEPTION_HANDLER);
                   
-                  int32_t pop_count = goto_exception_handler_bytecode_index_stack->length;
-                  {
-                    int32_t i;
-                    for (i = 0; i < pop_count; i++) {
-                      assert(goto_exception_handler_bytecode_index_stack->length > 0);
-                      
-                      int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(goto_exception_handler_bytecode_index_stack);
-                      int32_t bytecode_index = *bytecode_index_ptr;
-                      
-                      int32_t jump_offset = bytecode_array->length - bytecode_index;
-                      
-                      bytecode_array->values[bytecode_index + 1] = (jump_offset >> 8) & 0xFF;
-                      bytecode_array->values[bytecode_index + 2] = jump_offset & 0xFF;
-                    }
-                  }
+                  int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_exception_handler_bytecode_index_stack);
+                  int32_t bytecode_index = *bytecode_index_ptr;
+                  
+                  int32_t jump_offset_abs = bytecode_array->length;
+                  
+                  bytecode_array->values[bytecode_index + 1] = (jump_offset_abs >> 8) & 0xFF;
+                  bytecode_array->values[bytecode_index + 2] = jump_offset_abs & 0xFF;
                 }
                 break;
               }
