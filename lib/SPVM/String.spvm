@@ -1,6 +1,6 @@
-package Long {
+package String {
 
-  has value : long;
+  has value : byte[];
 
   enum {
     MIN_VALUE = -9223372036854775808L,

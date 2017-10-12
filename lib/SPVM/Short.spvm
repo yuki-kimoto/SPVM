@@ -1,5 +1,7 @@
 package Short {
   
+  has value : short;
+  
   enum {
     MIN_VALUE = -32768s,
     MAX_VALUE = 32767s,
