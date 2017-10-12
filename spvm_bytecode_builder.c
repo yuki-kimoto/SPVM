@@ -702,8 +702,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t jump_offset_abs = bytecode_array->length - sub->bytecode_base;
                   
-                  warn("AAAAAAAAAAAAAAAA %d", jump_offset_abs);
-                  
                   bytecode_array->values[bytecode_index + 1] = (jump_offset_abs >> 8) & 0xFF;
                   bytecode_array->values[bytecode_index + 2] = jump_offset_abs & 0xFF;
                 }
