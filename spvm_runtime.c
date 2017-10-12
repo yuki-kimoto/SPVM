@@ -145,11 +145,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   call_stack_array->ref_count++;
   SPVM_VALUE* call_stack = SPVM_RUNTIME_API_get_value_array_elements(api, call_stack_array);
 
-  // Exception handler stack
-  int16_t exception_handler_stack[255];
+  // Catch stack
+  int16_t catch_exception_stack[255];
   
-  // Exception handler stack top
-  int32_t exception_handler_stack_top = -1;
+  // Catch stack top
+  int32_t catch_exception_stack_top = -1;
 
   register int32_t success;
   int32_t current_line = 0;
@@ -518,25 +518,25 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_LONG,
     &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_FLOAT,
     &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE,
-    &&case_SPVM_BYTECODE_C_CODE_PUSH_EXCEPTION_HANDLER,
-    &&case_SPVM_BYTECODE_C_CODE_POP_EXCEPTION_HANDLER,
+    &&case_SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION,
+    &&case_SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION,
   };
   
   goto *jump[*pc];
 
-  case_SPVM_BYTECODE_C_CODE_PUSH_EXCEPTION_HANDLER: {
+  case_SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION: {
     // Next operation
     int16_t jump_offset_abs = (int16_t)((*(pc + 1) << 8) +  *(pc + 2));
     
-    exception_handler_stack_top++;
-    exception_handler_stack[exception_handler_stack_top] = jump_offset_abs;
+    catch_exception_stack_top++;
+    catch_exception_stack[catch_exception_stack_top] = jump_offset_abs;
     
     pc += 3;
     
     goto *jump[*pc];
   }
-  case_SPVM_BYTECODE_C_CODE_POP_EXCEPTION_HANDLER: {
-    exception_handler_stack_top--;
+  case_SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION: {
+    catch_exception_stack_top--;
     
     pc++;
     
@@ -693,10 +693,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_CROAK: {
     
     // Catch exception
-    if (exception_handler_stack_top > -1) {
+    if (catch_exception_stack_top > -1) {
       
-      int16_t jump_offset_abs = exception_handler_stack[exception_handler_stack_top];
-      exception_handler_stack_top--;
+      int16_t jump_offset_abs = catch_exception_stack[catch_exception_stack_top];
+      catch_exception_stack_top--;
       
       pc = (uint8_t*)((intptr_t)pc_start + jump_offset_abs);
       

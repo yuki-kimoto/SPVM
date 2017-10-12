@@ -183,7 +183,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
       SPVM_DYNAMIC_ARRAY* goto_loop_start_bytecode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // GOTO bytecode index for exception handler
-      SPVM_DYNAMIC_ARRAY* push_exception_handler_bytecode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_DYNAMIC_ARRAY* push_catch_exception_bytecode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
       // Switch stack
       SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -206,12 +206,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
             }
             else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_PUSH_EXCEPTION_HANDLER);
+              SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION);
               
               int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *bytecode_index_ptr = bytecode_array->length - 1;
               
-              SPVM_DYNAMIC_ARRAY_push(push_exception_handler_bytecode_index_stack, bytecode_index_ptr);
+              SPVM_DYNAMIC_ARRAY_push(push_catch_exception_bytecode_index_stack, bytecode_index_ptr);
               
               SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
               SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, 0);
@@ -695,9 +695,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   bytecode_array->values[goto_loop_start_bytecode_index + 2] = goto_loop_start_offset & 0xFF;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_POP_EXCEPTION_HANDLER);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION);
                   
-                  int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_exception_handler_bytecode_index_stack);
+                  int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_catch_exception_bytecode_index_stack);
                   int32_t bytecode_index = *bytecode_index_ptr;
                   
                   int32_t jump_offset_abs = bytecode_array->length - sub->bytecode_base;
