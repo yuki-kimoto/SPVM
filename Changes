@@ -1,4 +1,6 @@
-0.0278 2017-10-10
+0.0279 2017-10-12
+  - fix catch exception bug that runtime exception can't be cached
+0.0278 2017-10-11
   - throw exception when get array length of undef value
   - SPVM::new_xxx_array return undef if argument is undef
   - allow SPVM::call_sub undef argument
