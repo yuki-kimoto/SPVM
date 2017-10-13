@@ -1,3 +1,8 @@
+0.0280 2017-10-13
+  - add String type again
+  - add Native API new_string
+  - add Native API get_string_length
+  - add Native API get_string_chars
 0.0279 2017-10-12
   - fix catch exception bug that runtime exception can't be cached
 0.0278 2017-10-11
