@@ -34,11 +34,14 @@ lib/SPVM/Object/Array/Long.pm
 lib/SPVM/Object/Array/Object.pm
 lib/SPVM/Object/Array/Short.pm
 lib/SPVM/Object/Package.pm
+lib/SPVM/Object/Package/String.pm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/spvm_api.h
 lib/SPVM/std.pm
 lib/SPVM/std.spvm
+lib/SPVM/String.pm
+lib/SPVM/String.spvm
 Makefile.PL
 MANIFEST			This list of files
 native/SPVM/Arrays.native/Arrays.c
