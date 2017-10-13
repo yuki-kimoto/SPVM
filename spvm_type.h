@@ -6,7 +6,7 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_TYPE_C_CORE_LENGTH = 13
+  SPVM_TYPE_C_CORE_LENGTH = 14
 };
 
 enum {
@@ -68,5 +68,6 @@ SPVM_TYPE* SPVM_TYPE_get_long_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_float_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler);
 
 #endif
