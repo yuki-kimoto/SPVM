@@ -250,7 +250,7 @@ package TestCase {
     # Convert to string to byte[]
     {
       my $string = "abc";
-      my $byte = $string->[0];
+      # my $byte = $string->[0];
     }
     
     # MIN long constant;
@@ -961,7 +961,7 @@ package TestCase {
       std::say_short($num3);
     }
 
-    # my $error : byte[] = "Error";
+    # my $error : String = "Error";
     # croak $error;
     
     return $mvar + 3;

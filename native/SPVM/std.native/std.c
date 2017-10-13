@@ -8,6 +8,7 @@
 
 int64_t SPVM__std__time(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
+  (void)args;
 
   int64_t timer_value = (int64_t)time(NULL);
   
@@ -68,9 +69,14 @@ int32_t SPVM__std__test2(SPVM_API* api, SPVM_API_VALUE* args) {
 void SPVM__std__say(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  SPVM_API_OBJECT* array = args[0].object_value;
-
-  int8_t* string = api->get_byte_array_elements(api, array);
+  SPVM_API_OBJECT* object = args[0].object_value;
+  
+  static int32_t value_field_id;
+  value_field_id = api->get_field_id(api, object, "value");
+  
+  SPVM_API_OBJECT* value = api->get_object_field(api, object, value_field_id);
+  
+  int8_t* string = api->get_byte_array_elements(api, value);
 
   printf("%s\n", (char*)string);
 }
@@ -126,9 +132,14 @@ void SPVM__std__say_double(SPVM_API* api, SPVM_API_VALUE* args) {
 void SPVM__std__print(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  SPVM_API_OBJECT* array = args[0].object_value;
-
-  int8_t* string = api->get_byte_array_elements(api, array);
+  SPVM_API_OBJECT* object = args[0].object_value;
+  
+  static int32_t value_field_id;
+  value_field_id = api->get_field_id(api, object, "value");
+  
+  SPVM_API_OBJECT* value = api->get_object_field(api, object, value_field_id);
+  
+  int8_t* string = api->get_byte_array_elements(api, value);
   
   printf("%s\n", (char*)string);
 }
@@ -184,9 +195,14 @@ void SPVM__std__print_double(SPVM_API* api, SPVM_API_VALUE* args) {
 void SPVM__std__print_err(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  SPVM_API_OBJECT* array = args[0].object_value;
-
-  int8_t* string = api->get_byte_array_elements(api, array);
+  SPVM_API_OBJECT* object = args[0].object_value;
+  
+  static int32_t value_field_id;
+  value_field_id = api->get_field_id(api, object, "value");
+  
+  SPVM_API_OBJECT* value = api->get_object_field(api, object, value_field_id);
+  
+  int8_t* string = api->get_byte_array_elements(api, value);
   
   fprintf(stderr, "%s\n", (char*)string);
 }
@@ -194,11 +210,14 @@ void SPVM__std__print_err(SPVM_API* api, SPVM_API_VALUE* args) {
 void SPVM__std__say_err(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  SPVM_API_OBJECT* array = args[0].object_value;
-
-  int8_t* string = api->get_byte_array_elements(api, array);
+  SPVM_API_OBJECT* object = args[0].object_value;
   
-  warn("AAAAAAAAAAAAA");
+  static int32_t value_field_id;
+  value_field_id = api->get_field_id(api, object, "value");
+  
+  SPVM_API_OBJECT* value = api->get_object_field(api, object, value_field_id);
+  
+  int8_t* string = api->get_byte_array_elements(api, value);
 
   fprintf(stderr, "%s\n", (char*)string);
 }
