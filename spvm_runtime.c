@@ -2232,11 +2232,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_NEW_STRING: {
     int32_t name_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
     
-    SPVM_OBJECT* array = SPVM_RUNTIME_API_new_string(api, (char*)&constant_pool[name_id + 1], constant_pool[name_id]);
-    if (__builtin_expect(array != NULL, 1)) {
+    SPVM_OBJECT* string = SPVM_RUNTIME_API_new_string(api, (char*)&constant_pool[name_id + 1], constant_pool[name_id]);
+    if (__builtin_expect(string != NULL, 1)) {
       // Set string
       operand_stack_top++;
-      call_stack[operand_stack_top].object_value = (SPVM_OBJECT*)array;
+      call_stack[operand_stack_top].object_value = string;
       
       pc += 5;
       goto *jump[*pc];

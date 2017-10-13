@@ -1,4 +1,3 @@
 package String {
-
   has value : byte[];
 }

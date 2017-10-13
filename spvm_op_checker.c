@@ -71,6 +71,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   SPVM_DYNAMIC_ARRAY* op_types = compiler->op_types;
   
+  // Resolve String type
+  SPVM_TYPE* type_string = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_STRING);
+  type_string->op_package = SPVM_HASH_search(compiler->op_package_symtable, "String", strlen("String"));
+  
   // Resolve types
   {
     int32_t i;
