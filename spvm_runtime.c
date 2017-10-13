@@ -761,13 +761,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     char* new_exception_chars = api->get_string_chars(api, new_exception);
     
     memcpy(
-      (void*)((intptr_t)new_exception_chars),
-      (void*)((intptr_t)exception_chars),
+      (void*)(new_exception_chars),
+      (void*)(exception_chars),
       exception_length
     );
     if (debug) {
       sprintf(
-        (char*)((intptr_t)new_exception_chars + exception_length),
+        new_exception_chars + exception_length,
         "%s%s%s%s%s%" PRId32,
         from,
         sub_name,
@@ -779,7 +779,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
     else {
       sprintf(
-        (char*)((intptr_t)new_exception_chars + exception_length),
+        new_exception_chars + exception_length,
         "%s%s%s%s",
         from,
         sub_name,

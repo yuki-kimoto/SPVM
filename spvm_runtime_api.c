@@ -439,12 +439,15 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* chars, int32
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
+  if (length == 0) {
+    if (chars != NULL) {
+      length = strlen(chars);
+    }
+  }
+  
   SPVM_OBJECT* value = SPVM_RUNTIME_API_new_byte_array(api, length);
   
-  if (length == 0) {
-    length = strlen(chars);
-  }
-  else if (length > 0) {
+  if (length > 0) {
     if (chars == NULL) {
       memset((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), 0, length);
     }
