@@ -143,7 +143,7 @@ package TestCase {
   }
   
   # Concat
-  sub concat_string_special_assign() : byte[] {
+  sub concat_string_special_assign() : String {
     
     my $value = "a";
     
@@ -152,7 +152,7 @@ package TestCase {
     return $value;
   }
   
-  sub concat_string_string() : byte[] {
+  sub concat_string_string() : String {
     "a" . "b";
     
     my $value = "a" . "b";
@@ -160,13 +160,13 @@ package TestCase {
     return $value;
   }
   
-  sub concat_string_byte() : byte[] {
+  sub concat_string_byte() : String {
     my $value = "a" . 3;
     
     return $value;
   }
 
-  sub concat_string_short() : byte[] {
+  sub concat_string_short() : String {
     "a" . 3s;
     
     my $value = "a" . 3s;
@@ -174,7 +174,7 @@ package TestCase {
     return $value;
   }
 
-  sub concat_string_int() : byte[] {
+  sub concat_string_int() : String {
     "a" . 3;
     
     my $value = "a" . 3;
@@ -182,7 +182,7 @@ package TestCase {
     return $value;
   }
   
-  sub concat_string_long() : byte[] {
+  sub concat_string_long() : String {
     "a" . 3L;
     
     my $value = "a" . 3L;
@@ -190,7 +190,7 @@ package TestCase {
     return $value;
   }
   
-  sub concat_string_float() : byte[] {
+  sub concat_string_float() : String {
     "a" . 3.0f;
     
     my $value = "a" . 3.0f;
@@ -198,7 +198,7 @@ package TestCase {
     return $value;
   }
   
-  sub concat_string_double() : byte[] {
+  sub concat_string_double() : String {
     "a" . 3.0;
     
     my $value = "a" . 3.0;
@@ -207,12 +207,12 @@ package TestCase {
   }
   
   # String
-  sub string_utf8() : byte[] {
+  sub string_utf8() : String {
     my $value = "あいうえお";
     
     return $value;
   }
-  sub string_empty() : byte[] {
+  sub string_empty() : String {
     my $value = "";
     
     return $value;

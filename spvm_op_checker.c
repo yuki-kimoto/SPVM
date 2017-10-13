@@ -1072,14 +1072,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
                   // First value must be numeric or byte array
-                  if (!(SPVM_TYPE_is_numeric(compiler, first_type) || SPVM_TYPE_is_byte_array(compiler, first_type))) {
+                  if (!(SPVM_TYPE_is_numeric(compiler, first_type) || SPVM_TYPE_is_string(compiler, first_type))) {
                     SPVM_yyerror_format(compiler, ". operator left value must be numeric or string at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                   
                   // First value must be numeric or byte array
-                  if (!(SPVM_TYPE_is_numeric(compiler, last_type) || SPVM_TYPE_is_byte_array(compiler, last_type))) {
+                  if (!(SPVM_TYPE_is_numeric(compiler, last_type) || SPVM_TYPE_is_string(compiler, last_type))) {
                     SPVM_yyerror_format(compiler, ". operator right value must be numeric or string at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1087,7 +1087,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   if (!op_cur->rvalue) {
                     // Create temporary variable
-                    SPVM_TYPE* var_type = SPVM_TYPE_get_byte_array_type(compiler);
+                    SPVM_TYPE* var_type = SPVM_TYPE_get_string_type(compiler);
                     SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
                     if (op_var_tmp == NULL) {
                       return;
@@ -1120,7 +1120,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         term2
                   */
                   
-                  if (!SPVM_TYPE_is_byte_array(compiler, first_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, first_type)) {
                     SPVM_OP* op_concat_string1 = op_cur;
                     SPVM_OP* op_concat_string2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONCAT_STRING, op_concat_string1->file, op_concat_string1->line);
 
@@ -1139,7 +1139,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     {
                       // Create temporary variable for concat_string2
-                      SPVM_TYPE* var_type = SPVM_TYPE_get_byte_array_type(compiler);
+                      SPVM_TYPE* var_type = SPVM_TYPE_get_string_type(compiler);
                       SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
                       if (op_var_tmp == NULL) {
                         return;
@@ -1158,7 +1158,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                     {
                       // Create temporary variable for new
-                      SPVM_TYPE* var_type = SPVM_TYPE_get_byte_array_type(compiler);
+                      SPVM_TYPE* var_type = SPVM_TYPE_get_string_type(compiler);
                       SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
                       if (op_var_tmp == NULL) {
                         return;
@@ -1283,8 +1283,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_CROAK: {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   
-                  if (!first_type || first_type->code != SPVM_TYPE_C_CODE_BYTE_ARRAY) {
-                    SPVM_yyerror_format(compiler, "croak argument type must be byte[] at %s line %d\n", op_cur->file, op_cur->line);
+                  if (!first_type || first_type->code != SPVM_TYPE_C_CODE_STRING) {
+                    SPVM_yyerror_format(compiler, "croak argument type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }

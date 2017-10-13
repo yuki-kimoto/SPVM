@@ -200,10 +200,10 @@ _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   return type->dimension > 0;
 }
 
-_Bool SPVM_TYPE_is_byte_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_string(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  return type->code == SPVM_TYPE_C_CODE_BYTE_ARRAY;
+  return type->code == SPVM_TYPE_C_CODE_STRING;
 }
 
 _Bool SPVM_TYPE_is_package(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
