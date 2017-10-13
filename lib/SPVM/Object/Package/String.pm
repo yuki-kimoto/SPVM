@@ -1,6 +1,6 @@
 package SPVM::Object::Package::String;
 
-use base 'SPVM::Package';
+use base 'SPVM::Object::Package';
 
 use Encode 'decode';
 

@@ -358,6 +358,11 @@ get(...)
           XPUSHs(sv_array);
           break;
         }
+        case SPVM_TYPE_C_CODE_STRING : {
+          SV* sv_string = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Package::String");
+          XPUSHs(sv_string);
+          break;
+        }
         default : {
           const char* field_type_name =  (char*)&runtime->constant_pool[constant_pool_field_type->name_id + 1];
           
@@ -3257,6 +3262,9 @@ get(...)
     case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Double");
       break;
+    case SPVM_TYPE_C_CODE_STRING :
+      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Package::String");
+      break;
     default : {
       if (element_type->dimension > 0) {
         sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Object");
@@ -3880,6 +3888,9 @@ call_sub(...)
             break;
           case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Double");
+            break;
+          case SPVM_TYPE_C_CODE_STRING :
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Package::String");
             break;
           default : {
             if (return_type->dimension > 0) {
