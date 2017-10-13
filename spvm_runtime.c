@@ -733,10 +733,15 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     // stack trace strings
     const char* from = "\n  from ";
     const char* at = "() at ";
+
+    // Exception
+    SPVM_API_OBJECT* exception = api->get_exception(api);
+    char* exception_chars = api->get_string_chars(api, exception);
+    int32_t exception_length = api->get_string_length(api, exception);
     
     // Total string length
     int32_t total_length = 0;
-    total_length += SPVM_RUNTIME_API_get_array_length(api, runtime->exception);
+    total_length += exception_length;
     total_length += strlen(from);
     total_length += strlen(sub_name);
     total_length += strlen(at);
@@ -751,11 +756,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       total_length += strlen(line_str);
     }
     
-    // Exception
-    SPVM_API_OBJECT* exception = api->get_exception(api);
-    char* exception_chars = api->get_string_chars(api, exception);
-    int32_t exception_length = api->get_string_length(api, exception);
-    
     // Create exception message
     SPVM_OBJECT* new_exception = SPVM_RUNTIME_API_new_string(api, NULL, total_length);
     char* new_exception_chars = api->get_string_chars(api, new_exception);
@@ -767,7 +767,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     );
     if (debug) {
       sprintf(
-        (char*)((intptr_t)new_exception + sizeof(SPVM_OBJECT) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
+        (char*)((intptr_t)new_exception_chars + exception_length),
         "%s%s%s%s%s%" PRId32,
         from,
         sub_name,
@@ -779,7 +779,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
     else {
       sprintf(
-        (char*)((intptr_t)new_exception + sizeof(SPVM_OBJECT) + SPVM_RUNTIME_API_get_array_length(api, runtime->exception)),
+        (char*)((intptr_t)new_exception_chars + exception_length),
         "%s%s%s%s",
         from,
         sub_name,
