@@ -434,10 +434,55 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_OBJECT* object) {
   return object->length;
 }
 
+SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* chars, int32_t length) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  SPVM_OBJECT* value = SPVM_RUNTIME_API_new_byte_array(api, length);
+  
+  if (length == 0) {
+    length = strlen(chars);
+  }
+  
+  // Copy string
+  if (length > 0) {
+    if (chars == NULL) {
+      memset((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), 0, length);
+    }
+    else {
+      memcpy((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), chars, length);
+    }
+  }
+
+  int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
+  int32_t string_type_id = type_code_to_id[SPVM_TYPE_C_CODE_STRING];
+
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_type_id);
+  
+  SPVM_RUNTIME_API_set_object_field(api, object, 1, value);
+  
+  return object;
+}
+
 int32_t SPVM_RUNTIME_API_get_string_length(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
-  return object->length;
+  SPVM_OBJECT* value = SPVM_RUNTIME_API_get_object_field(api, object, 1);
+  
+  int32_t length = SPVM_RUNTIME_API_get_array_length(api, value);
+  
+  return length;
+}
+
+char* SPVM_RUNTIME_API_get_string_chars(SPVM_API* api, SPVM_OBJECT* object) {
+  (void)api;
+  
+  SPVM_OBJECT* value = SPVM_RUNTIME_API_get_object_field(api, object, 1);
+  
+  char* chars = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value);
+  
+  return chars;
 }
 
 // Use only internal
@@ -451,12 +496,6 @@ int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_OBJECT* obj
   (void)api;
 
   return (int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT));
-}
-
-char* SPVM_RUNTIME_API_get_string_bytes(SPVM_API* api, SPVM_OBJECT* object) {
-  (void)api;
-  
-  return (char*)((intptr_t)object + sizeof(SPVM_OBJECT));
 }
 
 int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_API* api, SPVM_OBJECT* object) {
@@ -823,32 +862,6 @@ int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* 
   int64_t byte_size = sizeof(SPVM_OBJECT) + (object->length + 1) * object->element_byte_size;
   
   return byte_size;
-}
-
-SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* string) {
-  (void)api;
-
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-
-  int32_t length = strlen(string);
-  SPVM_OBJECT* value = SPVM_RUNTIME_API_new_byte_array(api, length);
-  
-  // Copy string
-  if (length > 0) {
-    memcpy((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), string, length);
-  }
-
-  int32_t* type_code_to_id = (int32_t*)&runtime->constant_pool[runtime->type_code_to_id_base];
-  int32_t string_type_id = type_code_to_id[SPVM_TYPE_C_CODE_STRING];
-
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_type_id);
-  
-  static int32_t value_field_id;
-  value_field_id = SPVM_RUNTIME_API_get_field_id(api, object, "value");
-  
-  SPVM_RUNTIME_API_set_object_field(api, object, value_field_id, value);
-  
-  return object;
 }
 
 SPVM_VALUE* SPVM_RUNTIME_API_get_fields(SPVM_API* api, SPVM_OBJECT* object) {
