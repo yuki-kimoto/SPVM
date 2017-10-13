@@ -379,6 +379,61 @@ get(...)
   XSRETURN(1);
 }
 
+
+MODULE = SPVM::Object::Package::String		PACKAGE = SPVM::Object::Package::String
+
+SV*
+new_string(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_class = ST(0);
+  (void)sv_class;
+  
+  SV* sv_chars = ST(1);
+  int32_t length = sv_len(sv_chars);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // New string
+  SPVM_API_OBJECT* string =  api->new_string(api, SvPV_nolen(sv_chars), length);
+  
+  // Increment reference count
+  api->inc_ref_count(api, string);
+  
+  // New sv string
+  SV* sv_string = SPVM_XS_UTIL_new_sv_object(string, "SPVM::Object::Package::String");
+  
+  XPUSHs(sv_string);
+  XSRETURN(1);
+}
+
+SV*
+to_data(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_string = ST(0);
+
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  // Get object
+  SPVM_API_OBJECT* string = SPVM_XS_UTIL_get_object(sv_string);
+  
+  int32_t string_length = api->get_string_length(api, string);
+  
+  char* chars = api->get_string_chars(api, string);
+  
+  SV* sv_data = sv_2mortal(newSVpvn(chars, string_length));
+  
+  XPUSHs(sv_data);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
 
 SV*
