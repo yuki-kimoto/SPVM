@@ -3911,9 +3911,9 @@ call_sub(...)
   }
   SPVM_API_OBJECT* exception = api->get_exception(api);
   if (exception) {
-    int32_t length = api->get_array_length(api, exception);
-    char* exception_bytes = (char*)api->get_byte_array_elements(api, exception);
-    SV* sv_exception = sv_2mortal(newSVpvn(exception_bytes, length));
+    int32_t length = api->get_string_length(api, exception);
+    char* exception_chars = (char*)api->get_string_chars(api, exception);
+    SV* sv_exception = sv_2mortal(newSVpvn(exception_chars, length));
     croak("%s", SvPV_nolen(sv_exception));
   }
   

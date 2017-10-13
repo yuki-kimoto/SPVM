@@ -204,9 +204,9 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
   if (runtime->exception) {
     void* message_object = runtime->exception;
-    int8_t* message = api->get_byte_array_elements(api, message_object);
+    char* message = api->get_string_chars(api, message_object);
     
-    printf("%s", (char*)message);
+    printf("%s", message);
     printf("\n");
   }
   else {
