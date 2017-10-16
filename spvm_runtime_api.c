@@ -461,15 +461,21 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* chars, int32
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_type_id);
   
-  SPVM_RUNTIME_API_set_object_field(api, object, 1, value);
+  static int32_t field_id;
+  field_id = SPVM_RUNTIME_API_get_field_id(api, object, "value");
+  
+  SPVM_RUNTIME_API_set_object_field(api, object, field_id, value);
   
   return object;
 }
 
 int32_t SPVM_RUNTIME_API_get_string_length(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
-  
-  SPVM_OBJECT* value = SPVM_RUNTIME_API_get_object_field(api, object, 1);
+
+  static int32_t field_id;
+  field_id = SPVM_RUNTIME_API_get_field_id(api, object, "value");
+
+  SPVM_OBJECT* value = SPVM_RUNTIME_API_get_object_field(api, object, field_id);
   
   int32_t length = SPVM_RUNTIME_API_get_array_length(api, value);
   
@@ -478,8 +484,11 @@ int32_t SPVM_RUNTIME_API_get_string_length(SPVM_API* api, SPVM_OBJECT* object) {
 
 char* SPVM_RUNTIME_API_get_string_chars(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
-  
-  SPVM_OBJECT* value = SPVM_RUNTIME_API_get_object_field(api, object, 1);
+
+  static int32_t field_id;
+  field_id = SPVM_RUNTIME_API_get_field_id(api, object, "value");
+
+  SPVM_OBJECT* value = SPVM_RUNTIME_API_get_object_field(api, object, field_id);
   
   char* chars = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value);
   
@@ -728,12 +737,12 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   const char* type_name = (char*)&constant_pool[constant_pool_type_name_id + 1];
   
   // Constant pool field symbol table
-  SPVM_HASH* field_id_symtable = runtime->field_id_symtable;
-  SPVM_HASH* field_info_symtable = SPVM_HASH_search(field_id_symtable, type_name, strlen(type_name));
+  SPVM_HASH* field_info_id_symtable = runtime->field_info_id_symtable;
+  SPVM_HASH* field_name_symtable = SPVM_HASH_search(field_info_id_symtable, type_name, strlen(type_name));
   
-  int32_t field_id = (int32_t)(intptr_t)SPVM_HASH_search(field_info_symtable, name, strlen(name));
+  int32_t field_info_id = (int32_t)(intptr_t)SPVM_HASH_search(field_name_symtable, name, strlen(name));
   
-  return field_id;
+  return field_info_id;
 }
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
@@ -761,99 +770,197 @@ int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
 }
 
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  int8_t byte_value = fields[field_id - 1].byte_value;
+  int8_t byte_value = fields[index].byte_value;
   
   return byte_value;
 }
 
 int16_t SPVM_RUNTIME_API_get_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  int16_t short_value = fields[field_id - 1].short_value;
+  int16_t short_value = fields[index].short_value;
   
   return short_value;
 }
 
 int32_t SPVM_RUNTIME_API_get_int_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  int32_t int_value = fields[field_id - 1].int_value;
+  int32_t int_value = fields[index].int_value;
   
   return int_value;
 }
 
 int64_t SPVM_RUNTIME_API_get_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  int64_t long_value = fields[field_id - 1].long_value;
+  int64_t long_value = fields[index].long_value;
   
   return long_value;
 }
 
 float SPVM_RUNTIME_API_get_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  float float_value = fields[field_id - 1].float_value;
+  float float_value = fields[index].float_value;
   
   return float_value;
 }
 
 double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  double double_value = fields[field_id - 1].double_value;
+  double double_value = fields[index].double_value;
   
   return double_value;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  SPVM_OBJECT* object_value = fields[field_id - 1].object_value;
+  SPVM_OBJECT* object_value = fields[index].object_value;
   
   return object_value;
 }
 
 void SPVM_RUNTIME_API_set_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, int8_t value) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  fields[field_id - 1].byte_value = value;
+  fields[index].byte_value = value;
 }
 
 void SPVM_RUNTIME_API_set_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, int16_t value) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  fields[field_id - 1].short_value = value;
+  fields[index].short_value = value;
 }
 
 void SPVM_RUNTIME_API_set_int_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, int32_t value) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  fields[field_id - 1].int_value = value;
+  fields[index].int_value = value;
 }
 
 void SPVM_RUNTIME_API_set_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, int64_t value) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  fields[field_id - 1].long_value = value;
+  fields[index].long_value = value;
 }
 
 void SPVM_RUNTIME_API_set_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, float value) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+  
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  fields[field_id - 1].float_value = value;
+  fields[index].float_value = value;
 }
 
 void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, double value) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
-  fields[field_id - 1].double_value = value;
+  fields[index].double_value = value;
 }
 
 void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, SPVM_OBJECT* value) {
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  
+  // Index
+  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field_info->index;
+  
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   
-  if(fields[field_id - 1].object_value != NULL) {
+  if(fields[index].object_value != NULL) {
     // If object is weak, unweaken
-    if (SPVM_RUNTIME_API_isweak(api, fields[field_id - 1].object_value)) {
-      SPVM_RUNTIME_API_unweaken(api, (SPVM_OBJECT**)&fields[field_id - 1]);
+    if (SPVM_RUNTIME_API_isweak(api, fields[index].object_value)) {
+      SPVM_RUNTIME_API_unweaken(api, (SPVM_OBJECT**)&fields[index]);
     }
-    api->dec_ref_count(api, fields[field_id - 1].object_value);
+    api->dec_ref_count(api, fields[index].object_value);
   }
   
-  fields[field_id - 1].object_value = value;
+  fields[index].object_value = value;
   
-  if(fields[field_id - 1].object_value != NULL) {
-    api->inc_ref_count(api, fields[field_id - 1].object_value);
+  if(fields[index].object_value != NULL) {
+    api->inc_ref_count(api, fields[index].object_value);
   }
 }
 

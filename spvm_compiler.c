@@ -75,7 +75,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
           SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
           const char* field_name = field_info->op_name->uv.name;
           
-          SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)(field_info->index + 1));
+          SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)(field_info->index));
         }
       }
       

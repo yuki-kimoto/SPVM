@@ -2337,9 +2337,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
       call_stack[operand_stack_top].byte_value
-        = *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1));
+        = *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       pc += 3;
       goto *jump[*pc];
     }
@@ -2352,9 +2352,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
       call_stack[operand_stack_top].short_value
-        = *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1));
+        = *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       pc += 3;
       goto *jump[*pc];
     }
@@ -2367,9 +2367,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
       call_stack[operand_stack_top].int_value
-        = *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1));
+        = *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       pc += 3;
       goto *jump[*pc];
     }
@@ -2382,9 +2382,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
       call_stack[operand_stack_top].long_value
-        = *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1));
+        = *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       pc += 3;
       goto *jump[*pc];
     }
@@ -2397,9 +2397,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
       call_stack[operand_stack_top].float_value
-        = *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1));
+        = *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+      
       pc += 3;
       goto *jump[*pc];
     }
@@ -2412,9 +2413,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
       call_stack[operand_stack_top].double_value
-        = *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1));
+        = *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       pc += 3;
       goto *jump[*pc];
     }
@@ -2427,9 +2428,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
       call_stack[operand_stack_top].object_value
-        = *(void**)((intptr_t)call_stack[operand_stack_top].object_value + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1));
+        = *(void**)((intptr_t)call_stack[operand_stack_top].object_value + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       pc += 3;
       goto *jump[*pc];
     }
@@ -2442,8 +2443,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
-      SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1));
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
+      SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       
       // Weaken object field
       if (*object_address != NULL) {
@@ -2462,8 +2463,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
-      *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1))
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
+      *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
         = call_stack[operand_stack_top].byte_value;
       operand_stack_top -= 2;
       pc += 3;
@@ -2478,8 +2479,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
-      *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1))
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
+      *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
         = call_stack[operand_stack_top].short_value;
       operand_stack_top -= 2;
       pc += 3;
@@ -2494,8 +2495,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
-      *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1))
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
+      *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
         = call_stack[operand_stack_top].int_value;
       
       operand_stack_top -= 2;
@@ -2511,8 +2512,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
-      *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1))
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
+      *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
         = call_stack[operand_stack_top].long_value;
       operand_stack_top -= 2;
       pc += 3;
@@ -2527,8 +2528,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
-      *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1))
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
+      *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
         = call_stack[operand_stack_top].float_value;
       operand_stack_top -= 2;
       pc += 3;
@@ -2543,8 +2544,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
-      *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1))
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
+      *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
         = call_stack[operand_stack_top].double_value;
       operand_stack_top -= 2;
       pc += 3;
@@ -2559,8 +2560,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       goto case_SPVM_BYTECODE_C_CODE_CROAK;
     }
     else {
-      int32_t field_id = (*(pc + 1) << 8) + *(pc + 2);
-      SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * (field_id - 1));
+      int32_t index = (*(pc + 1) << 8) + *(pc + 2);
+      SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
       
       if (*object_address != NULL) {
         // If object is weak, unweaken

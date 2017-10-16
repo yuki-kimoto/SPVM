@@ -201,8 +201,10 @@ set(...)
       break;
     }
     case SPVM_TYPE_C_CODE_FLOAT : {
+      
       float value = (float)SvNV(sv_value);
       api->set_float_field(api, object, field_id, value);
+
       break;
     }
     case SPVM_TYPE_C_CODE_DOUBLE : {
