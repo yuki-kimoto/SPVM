@@ -1560,10 +1560,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Check field name
                   SPVM_OP_resolve_call_field(compiler, op_cur);
+                  
+                  SPVM_FIELD_INFO* field_info = op_cur->uv.call_field->field_info;
 
                   if (!op_cur->uv.call_field->field_info) {
-                    SPVM_yyerror_format(compiler, "unknown field \"%s\" at %s line %d\n",
-                      op_cur->uv.call_field->resolved_name, op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "unknown field \"%s\" \"%s\" at %s line %d\n",
+                      field_info->op_package->uv.package->op_name->uv.name, field_info->op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1572,13 +1574,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 case SPVM_OP_C_CODE_WEAKEN_FIELD: {
                   SPVM_OP* op_call_field = op_cur->first;
-                  const char* field_abs_name = op_call_field->uv.call_field->resolved_name;
+                  
+                  SPVM_FIELD_INFO* field_info = op_call_field->uv.call_field->field_info;
                   
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
                   
                   if (type->code <= SPVM_TYPE_C_CODE_DOUBLE) {
-                    SPVM_yyerror_format(compiler, "weaken is only used for object field \"%s\" at %s line %d\n",
-                      field_abs_name, op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d\n",
+                      field_info->op_package->uv.package->op_name->uv.name, field_info->op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     break;
                   }
