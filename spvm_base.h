@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_call_sub.h
+struct SPVM_sub_call_sub;
+typedef struct SPVM_sub_call_sub SPVM_SUB_CALL_SUB;
+
 // spvm_sub_check_info.h
 struct SPVM_sub_check_info;
 typedef struct SPVM_sub_check_info SPVM_SUB_CHECK_INFO;
