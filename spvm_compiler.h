@@ -69,9 +69,6 @@ struct SPVM_compiler {
   // Field absolute name symbol table
   SPVM_HASH* op_field_symtable;
 
-  // Field absolute name symbol table
-  SPVM_HASH* op_fields;
-  
   // use symbol table
   SPVM_HASH* op_use_symtable;
   
