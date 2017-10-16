@@ -668,7 +668,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return type;
 }
 
-void SPVM_OP_resolve_sub_name(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name) {
+void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name) {
   
   SPVM_CALL_SUB* call_sub = op_name->uv.call_sub;
   
@@ -690,7 +690,7 @@ void SPVM_OP_resolve_sub_name(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM
   call_sub->resolved_name = sub_abs_name;
 }
 
-void SPVM_OP_resolve_field_name(SPVM_COMPILER* compiler, SPVM_OP* op_field) {
+void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_field) {
   
   SPVM_OP* op_term_invoker = op_field->first;
   SPVM_OP* op_name = op_field->last;

@@ -1434,7 +1434,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_CALL_SUB: {
                   
                   // Check sub name
-                  SPVM_OP_resolve_sub_name(compiler, op_package, op_cur);
+                  SPVM_OP_resolve_call_sub(compiler, op_package, op_cur);
                   
                   SPVM_OP* op_list_args = op_cur->last;
                   
@@ -1562,7 +1562,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Check field name
-                  SPVM_OP_resolve_field_name(compiler, op_cur);
+                  SPVM_OP_resolve_call_field(compiler, op_cur);
                   
                   const char* field_abs_name = op_cur->uv.call_field->resolved_name;
                   
