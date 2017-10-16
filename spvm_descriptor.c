@@ -6,6 +6,7 @@
 const char* const SPVM_DESCRIPTOR_C_CODE_NAMES[] = {
   "native",
   "const",
+  "private",
 };
 
 SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_COMPILER* compiler) {

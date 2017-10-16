@@ -1277,7 +1277,18 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   
   // Type
   field->op_type = op_type;
-  
+
+  // Descriptors
+  SPVM_OP* op_descriptor = op_descriptors->first;
+  while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
+    if (op_descriptor->code == SPVM_DESCRIPTOR_C_CODE_PRIVATE) {
+      field->is_private = 1;
+    }
+    else {
+      SPVM_yyerror_format(compiler, "invalid field descriptor %s", SPVM_DESCRIPTOR_C_CODE_NAMES[op_descriptor->code], op_descriptors->file, op_descriptors->line);
+    }
+  }
+
   // Set field informaiton
   op_field->uv.field = field;
   
@@ -1319,7 +1330,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       sub->is_native = 1;
     }
     else {
-      SPVM_yyerror_format(compiler, "invalid descriptor %s", SPVM_DESCRIPTOR_C_CODE_NAMES[op_descriptor->code], op_descriptors->file, op_descriptors->line);
+      SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_CODE_NAMES[op_descriptor->code], op_descriptors->file, op_descriptors->line);
     }
   }
   

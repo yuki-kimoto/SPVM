@@ -10,6 +10,7 @@ struct SPVM_field_info {
   const char* abs_name;
   int32_t id;
   int32_t index;
+  _Bool is_private;
 };
 
 SPVM_FIELD_INFO* SPVM_FIELD_INFO_new(SPVM_COMPILER* compiler);
