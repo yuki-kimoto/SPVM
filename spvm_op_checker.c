@@ -1542,19 +1542,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_CALL_FIELD: {
-                  SPVM_OP* op_term = op_cur->first;
+                  SPVM_OP* op_term_invocker = op_cur->first;
                   SPVM_OP* op_name = op_cur->last;
                   
-                  if (op_term->code == SPVM_OP_C_CODE_ASSIGN_PROCESS) {
-                    op_term = op_term->first;
+                  if (op_term_invocker->code == SPVM_OP_C_CODE_ASSIGN_PROCESS) {
+                    op_term_invocker = op_term_invocker->first;
                   }
                   
-                  if (op_term->code != SPVM_OP_C_CODE_VAR
-                    && op_term->code != SPVM_OP_C_CODE_ARRAY_ELEM
-                    && op_term->code != SPVM_OP_C_CODE_CALL_FIELD
-                    && op_term->code != SPVM_OP_C_CODE_CALL_SUB
-                    && op_term->code != SPVM_OP_C_CODE_NEW)
-                  {
+                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term_invocker);
+                  
+                  if (!(type && type->op_package)) {
                     SPVM_yyerror_format(compiler, "field invoker is invalid \"%s\" at %s line %d\n",
                       op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
