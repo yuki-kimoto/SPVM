@@ -289,9 +289,6 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   // Add length
   constant_pool->length += extend_length;
   
-  // Add field abs name to constant pool
-  constant_pool_field.abs_name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->abs_name);
-  
   // Add field name to constant pool
   constant_pool_field.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->op_name->uv.name);
   
