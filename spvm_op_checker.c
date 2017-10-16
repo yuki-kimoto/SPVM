@@ -165,7 +165,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
-          SPVM_FIELD_INFO* field = op_field->uv.field;
+          SPVM_FIELD_INFO* field = op_field->uv.field_info;
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
           if (SPVM_TYPE_is_numeric(compiler, field_type)) {
@@ -211,7 +211,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
-          SPVM_FIELD_INFO* field = op_field->uv.field;
+          SPVM_FIELD_INFO* field = op_field->uv.field_info;
           field->index = field_pos;
         }
       }
@@ -1560,17 +1560,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Check field name
                   SPVM_OP_resolve_call_field(compiler, op_cur);
-                  
-                  const char* field_abs_name = op_cur->uv.call_field->resolved_name;
-                  
-                  SPVM_OP* found_op_field= SPVM_HASH_search(
-                    compiler->op_field_symtable,
-                    field_abs_name,
-                    strlen(field_abs_name)
-                  );
-                  if (!found_op_field) {
+
+                  if (!op_cur->uv.call_field->field_info) {
                     SPVM_yyerror_format(compiler, "unknown field \"%s\" at %s line %d\n",
-                      field_abs_name, op_cur->file, op_cur->line);
+                      op_cur->uv.call_field->resolved_name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }

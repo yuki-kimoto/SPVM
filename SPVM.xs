@@ -3629,15 +3629,15 @@ build_field_symtable(...)
         int32_t field_index;
         for (field_index = 0; field_index < op_fields->length; field_index++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_index);
-          SPVM_FIELD_INFO* field = op_field->uv.field;
-          const char* field_name = field->op_name->uv.name;
+          SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
+          const char* field_name = field_info->op_name->uv.name;
           
           // Field type id
-          int32_t field_type_id = field->op_type->uv.type->id;
+          int32_t field_type_id = field_info->op_type->uv.type->id;
           SV* sv_field_type_id = sv_2mortal(newSViv(field_type_id));
 
           // Field id
-          int32_t field_id = field->index;
+          int32_t field_id = field_info->index;
           SV* sv_field_id = sv_2mortal(newSViv(field_id));
           
           HV* hv_field_info = (HV*)sv_2mortal((SV*)newHV());

@@ -27,7 +27,7 @@ int32_t SPVM_PACKAGE_get_object_fields_length(SPVM_COMPILER* compiler, SPVM_PACK
   int32_t field_pos;
   for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
     SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
-    SPVM_FIELD_INFO* field = op_field->uv.field;
+    SPVM_FIELD_INFO* field = op_field->uv.field_info;
     SPVM_TYPE* field_type = field->op_type->uv.type;
     
     if (!SPVM_TYPE_is_numeric(compiler, field_type)) {

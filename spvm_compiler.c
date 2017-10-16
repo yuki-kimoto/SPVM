@@ -72,7 +72,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
         int32_t op_field_index;
         for (op_field_index = 0; op_field_index < op_fields->length; op_field_index++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, op_field_index);
-          SPVM_FIELD_INFO* field_info = op_field->uv.field;
+          SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
           const char* field_name = field_info->op_name->uv.name;
           
           SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)(field_info->index + 1));
@@ -97,7 +97,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
         int32_t op_field_index;
         for (op_field_index = 0; op_field_index < op_fields->length; op_field_index++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, op_field_index);
-          SPVM_FIELD_INFO* field_info = op_field->uv.field;
+          SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
           const char* field_name = field_info->op_name->uv.name;
           
           SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)field_info->id);

@@ -195,7 +195,7 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_p
         int32_t j;
         for (j = 0; j < op_fields->length; j++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, j);
-          SPVM_FIELD_INFO* field = op_field->uv.field;
+          SPVM_FIELD_INFO* field = op_field->uv.field_info;
           printf("    field%" PRId32 "\n", j);
           SPVM_DUMPER_dump_field(compiler, field);
         }

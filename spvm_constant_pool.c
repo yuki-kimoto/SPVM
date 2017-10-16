@@ -161,7 +161,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
     constant_pool_package.fields_base = constant_pool->length;
     for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
-      SPVM_FIELD_INFO* field = op_field->uv.field;
+      SPVM_FIELD_INFO* field = op_field->uv.field_info;
       SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->id);
     }
   }
