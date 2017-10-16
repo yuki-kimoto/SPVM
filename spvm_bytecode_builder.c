@@ -20,6 +20,7 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_package.h"
 #include "spvm_name_info.h"
+#include "spvm_call_sub.h"
 #include "spvm_hash.h"
 #include "spvm_field_info.h"
 #include "spvm_switch_info.h"
@@ -584,8 +585,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 // Call subroutine
                 SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_SUB);
-                SPVM_NAME_INFO* name_info = op_cur->uv.name_info;
-                const char* sub_name = name_info->resolved_name;
+                SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
+                const char* sub_name = call_sub->resolved_name;
                 
                 SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
                 SPVM_SUB* sub = op_sub->uv.sub;

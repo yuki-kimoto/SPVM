@@ -22,6 +22,7 @@
 #include "spvm_enumeration.h"
 #include "spvm_package.h"
 #include "spvm_name_info.h"
+#include "spvm_call_sub.h"
 #include "spvm_type.h"
 #include "spvm_switch_info.h"
 #include "spvm_limit.h"
@@ -313,7 +314,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (op_cur->first->code == SPVM_OP_C_CODE_CALL_SUB) {
                     SPVM_OP* op_call_sub = op_cur->first;
                     
-                    const char* sub_name = op_call_sub->uv.name_info->resolved_name;
+                    const char* sub_name = op_call_sub->uv.call_sub->resolved_name;
                     
                     SPVM_OP* op_sub= SPVM_HASH_search(
                       compiler->op_sub_symtable,
@@ -1437,9 +1438,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   SPVM_OP* op_list_args = op_cur->last;
                   
-                  SPVM_NAME_INFO* name_info = op_cur->uv.name_info;
+                  SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
                   
-                  const char* sub_abs_name = name_info->resolved_name;
+                  const char* sub_abs_name = call_sub->resolved_name;
                   
                   SPVM_OP* found_op_sub= SPVM_HASH_search(
                     compiler->op_sub_symtable,
@@ -1533,7 +1534,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // Convert cur call_sub op to var
                     SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                    op_call_sub->uv.name_info = name_info;
+                    op_call_sub->uv.call_sub = call_sub;
                     
                     op_cur = op_call_sub;
                   }
