@@ -30,9 +30,6 @@ struct SPVM_runtime {
   SPVM_HASH* type_id_symtable;
   
   // Constant pool type symbol table
-  SPVM_HASH* field_id_symtable;
-  
-  // Constant pool type symbol table
   SPVM_HASH* field_info_id_symtable;
   
   // Module include symbol table
