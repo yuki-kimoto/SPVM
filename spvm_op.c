@@ -712,9 +712,9 @@ SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM
   return op_array_elem;
 }
 
-SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_name_field) {
-  SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_FIELD, op_var->file, op_var->line);
-  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_var);
+SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_term_invoker, SPVM_OP* op_name_field) {
+  SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_FIELD, op_term_invoker->file, op_term_invoker->line);
+  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_term_invoker);
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
   
   SPVM_CALL_FIELD* call_field = SPVM_CALL_FIELD_new(compiler);
@@ -724,7 +724,7 @@ SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM
       op_name_field, op_name_field->file, op_name_field->line);
   }
   
-  call_field->op_var = op_var;
+  call_field->op_term_invoker = op_term_invoker;
   call_field->op_name = op_name_field;
   op_field->uv.call_field = call_field;
   

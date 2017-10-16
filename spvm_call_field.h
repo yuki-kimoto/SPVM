@@ -4,7 +4,7 @@
 #include "spvm_base.h"
 
 struct SPVM_call_field {
-  SPVM_OP* op_var;
+  SPVM_OP* op_term_invoker;
   SPVM_OP* op_name;
   const char* resolved_name;
   int32_t id;
