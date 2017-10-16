@@ -20,7 +20,7 @@
 #include "spvm_type.h"
 #include "spvm_enumeration.h"
 #include "spvm_package.h"
-#include "spvm_name_info.h"
+#include "spvm_call_field.h"
 #include "spvm_call_sub.h"
 #include "spvm_type.h"
 #include "spvm_bytecode_builder.h"
@@ -656,8 +656,8 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_CODE_CALL_FIELD: {
-      SPVM_NAME_INFO* name_info = op->uv.name_info;
-      const char* abs_name = name_info->resolved_name;
+      SPVM_CALL_FIELD* call_field = op->uv.call_field;
+      const char* abs_name = call_field->resolved_name;
       SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, abs_name, strlen(abs_name));
       SPVM_FIELD_INFO* field = op_field->uv.field;
       type = field->op_type->uv.type;
@@ -673,15 +673,15 @@ void SPVM_OP_resolve_sub_name(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM
   SPVM_CALL_SUB* call_sub = op_name->uv.call_sub;
   
   const char* sub_abs_name = NULL;
-  if (call_sub->code == SPVM_NAME_INFO_C_CODE_VARBASENAME) {
+  if (call_sub->code == SPVM_CALL_FIELD_C_CODE_VARBASENAME) {
     const char* package_name = call_sub->op_var->uv.var->op_my_var->uv.my_var->op_type->uv.type->name;
     const char* sub_name = call_sub->op_name->uv.name;
     sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
   }
-  else if (call_sub->code == SPVM_NAME_INFO_C_CODE_ABSNAME) {
+  else if (call_sub->code == SPVM_CALL_FIELD_C_CODE_ABSNAME) {
     sub_abs_name = call_sub->op_name->uv.name;
   }
-  else if (call_sub->code == SPVM_NAME_INFO_C_CODE_BASENAME) {
+  else if (call_sub->code == SPVM_CALL_FIELD_C_CODE_BASENAME) {
     const char* package_name = op_package->uv.package->op_name->uv.name;
     const char* sub_name = call_sub->op_name->uv.name;
     sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
@@ -700,7 +700,7 @@ void SPVM_OP_resolve_field_name(SPVM_COMPILER* compiler, SPVM_OP* op_field) {
   const char* field_name = op_name->uv.name;
   const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
   
-  op_field->uv.name_info->resolved_name = field_abs_name;
+  op_field->uv.call_field->resolved_name = field_abs_name;
 }
 
 SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term) {
@@ -717,17 +717,17 @@ SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_var);
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
   
-  SPVM_NAME_INFO* name_info = SPVM_NAME_INFO_new(compiler);
+  SPVM_CALL_FIELD* call_field = SPVM_CALL_FIELD_new(compiler);
   
   if (strchr(op_name_field->uv.name, ':')) {
     SPVM_yyerror_format(compiler, "field name \"%s\" can't contain :: at %s line %d\n",
       op_name_field, op_name_field->file, op_name_field->line);
   }
   
-  name_info->code = SPVM_NAME_INFO_C_CODE_VARBASENAME;
-  name_info->op_var = op_var;
-  name_info->op_name = op_name_field;
-  op_field->uv.name_info = name_info;
+  call_field->code = SPVM_CALL_FIELD_C_CODE_VARBASENAME;
+  call_field->op_var = op_var;
+  call_field->op_name = op_name_field;
+  op_field->uv.call_field = call_field;
   
   return op_field;
 }
@@ -1545,7 +1545,7 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
   SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_name_sub);
   SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_terms);
   
-  SPVM_CALL_SUB* call_sub = SPVM_NAME_INFO_new(compiler);
+  SPVM_CALL_SUB* call_sub = SPVM_CALL_FIELD_new(compiler);
   
   const char* sub_name = op_name_sub->uv.name;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_invocant->file, op_invocant->line);
@@ -1555,14 +1555,14 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     // Absolute
     // P::m();
     if (strstr(sub_name, ":")) {
-      call_sub->code = SPVM_NAME_INFO_C_CODE_ABSNAME;
+      call_sub->code = SPVM_CALL_FIELD_C_CODE_ABSNAME;
       op_name->uv.name = sub_name;
       call_sub->op_name = op_name;
     }
     // Base name
     // m();
     else {
-      call_sub->code = SPVM_NAME_INFO_C_CODE_BASENAME;
+      call_sub->code = SPVM_CALL_FIELD_C_CODE_BASENAME;
       op_name->uv.name = sub_name;
       call_sub->op_name = op_name;
     }
@@ -1572,14 +1572,14 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     // Absolute
     // $var->P::m();
     if (strstr(sub_name, ":")) {
-      call_sub->code = SPVM_NAME_INFO_C_CODE_ABSNAME;
+      call_sub->code = SPVM_CALL_FIELD_C_CODE_ABSNAME;
       op_name->uv.name = sub_name;
       call_sub->op_name = op_name;
     }
     // Base name
     // $var->m();
     else {
-      call_sub->code = SPVM_NAME_INFO_C_CODE_VARBASENAME;
+      call_sub->code = SPVM_CALL_FIELD_C_CODE_VARBASENAME;
       call_sub->op_var = op_invocant;
       call_sub->op_name = op_name_sub;
     }
@@ -1605,7 +1605,7 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
       op_abs_name->uv.name = abs_name;
       
       // Set abs name
-      call_sub->code = SPVM_NAME_INFO_C_CODE_ABSNAME;
+      call_sub->code = SPVM_CALL_FIELD_C_CODE_ABSNAME;
       call_sub->op_name = op_abs_name;
     }
   }

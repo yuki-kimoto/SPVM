@@ -21,7 +21,7 @@
 #include "spvm_type.h"
 #include "spvm_enumeration.h"
 #include "spvm_package.h"
-#include "spvm_name_info.h"
+#include "spvm_call_field.h"
 #include "spvm_call_sub.h"
 #include "spvm_type.h"
 #include "spvm_switch_info.h"
@@ -1564,7 +1564,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // Check field name
                   SPVM_OP_resolve_field_name(compiler, op_cur);
                   
-                  const char* field_abs_name = op_cur->uv.name_info->resolved_name;
+                  const char* field_abs_name = op_cur->uv.call_field->resolved_name;
                   
                   SPVM_OP* found_op_field= SPVM_HASH_search(
                     compiler->op_field_symtable,
@@ -1582,7 +1582,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 case SPVM_OP_C_CODE_WEAKEN_FIELD: {
                   SPVM_OP* op_call_field = op_cur->first;
-                  const char* field_abs_name = op_call_field->uv.name_info->resolved_name;
+                  const char* field_abs_name = op_call_field->uv.call_field->resolved_name;
                   
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
                   

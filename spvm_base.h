@@ -109,8 +109,8 @@ struct SPVM_package;
 typedef struct SPVM_package SPVM_PACKAGE;
 
 /* spvm_type.h */
-struct SPVM_name_info;
-typedef struct SPVM_name_info SPVM_NAME_INFO;
+struct SPVM_call_field;
+typedef struct SPVM_call_field SPVM_CALL_FIELD;
 
 /* spvm_type.h */
 struct SPVM_type;

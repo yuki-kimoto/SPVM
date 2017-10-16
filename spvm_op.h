@@ -188,7 +188,6 @@ struct SPVM_op {
     SPVM_MY_VAR* my_var;
     SPVM_SUB* sub;
     SPVM_CONSTANT* constant;
-    SPVM_NAME_INFO* name_info;
     SPVM_TYPE* type;
     SPVM_VAR* var;
     SPVM_FIELD_INFO* field;
@@ -197,6 +196,7 @@ struct SPVM_op {
     SPVM_SWITCH_INFO* switch_info;
     SPVM_USE* use;
     SPVM_CALL_SUB* call_sub;
+    SPVM_CALL_FIELD* call_field;
   } uv;
   int32_t code;
   int32_t flag;

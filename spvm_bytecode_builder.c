@@ -19,7 +19,7 @@
 #include "spvm_my_var.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_package.h"
-#include "spvm_name_info.h"
+#include "spvm_call_field.h"
 #include "spvm_call_sub.h"
 #include "spvm_hash.h"
 #include "spvm_field_info.h"
@@ -567,8 +567,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     }
                   }
                   
-                  SPVM_NAME_INFO* name_info = op_cur->uv.name_info;
-                  const char* field_name = name_info->resolved_name;
+                  SPVM_CALL_FIELD* call_field = op_cur->uv.call_field;
+                  const char* field_name = call_field->resolved_name;
                   SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_name, strlen(field_name));
                   SPVM_FIELD_INFO* field = op_field->uv.field;
                   
@@ -1329,8 +1329,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                   
                   // Call subroutine
-                  SPVM_NAME_INFO* name_info = op_cur->first->uv.name_info;
-                  const char* field_name = name_info->resolved_name;
+                  SPVM_CALL_FIELD* call_field = op_cur->first->uv.call_field;
+                  const char* field_name = call_field->resolved_name;
                   SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_name, strlen(field_name));
                   SPVM_FIELD_INFO* field = op_field->uv.field;
 
