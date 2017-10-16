@@ -343,9 +343,9 @@ else_statement
     }
 
 field
-  : HAS field_name ':' type ';'
+  : HAS field_name ':' opt_descriptors type ';'
     {
-      $$ = SPVM_OP_build_field(compiler, $1, $2, $4);
+      $$ = SPVM_OP_build_field(compiler, $1, $2, $4, $5);
     }
 
 sub

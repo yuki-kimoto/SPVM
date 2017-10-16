@@ -1258,10 +1258,15 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
+
+  if (op_descriptors == NULL) {
+    op_descriptors = SPVM_OP_new_op_list(compiler, op_field->file, op_field->line);
+  }
   
   // Build OP
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
+  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_descriptors);
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_type);
   
   // Create field information
