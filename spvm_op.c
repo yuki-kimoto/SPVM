@@ -657,9 +657,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_CODE_CALL_FIELD: {
       SPVM_CALL_FIELD* call_field = op->uv.call_field;
-      const char* abs_name = call_field->resolved_name;
-      SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, abs_name, strlen(abs_name));
-      SPVM_FIELD_INFO* field = op_field->uv.field_info;
+      SPVM_FIELD_INFO* field = call_field->field_info;
       type = field->op_type->uv.type;
       break;
     }
@@ -696,20 +694,17 @@ void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field)
   SPVM_OP* op_name = op_call_field->last;
   
   SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_term_invoker);
-  const char* package_name = invoker_type->name;
+  SPVM_PACKAGE* package = invoker_type->op_package->uv.package;
   const char* field_name = op_name->uv.name;
-  const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
-
+  
   SPVM_OP* found_op_field_info = SPVM_HASH_search(
-    compiler->op_field_symtable,
-    field_abs_name,
-    strlen(field_abs_name)
+    package->op_field_symtable,
+    field_name,
+    strlen(field_name)
   );
   if (found_op_field_info) {
     op_call_field->uv.call_field->field_info = found_op_field_info->uv.field_info;
   }
-  
-  op_call_field->uv.call_field->resolved_name = field_abs_name;
 }
 
 SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term) {
@@ -1100,8 +1095,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
         const char* field_name = field_info->op_name->uv.name;
         
-        const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
-        SPVM_OP* found_op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* found_op_field = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
         
         assert(op_fields->length <= SPVM_LIMIT_C_FIELDS);
         
@@ -1117,9 +1111,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           // Add op package
           field_info->op_package = op_package;
-          
-          // Add op field symtable
-          SPVM_HASH_insert(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name), op_field);
         }
       }
     }
