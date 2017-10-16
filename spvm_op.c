@@ -1097,8 +1097,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       for (i = 0; i < op_fields->length; i++) {
         SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, i);
         
-        SPVM_FIELD_INFO* field = op_field->uv.field_info;
-        const char* field_name = field->op_name->uv.name;
+        SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
+        const char* field_name = field_info->op_name->uv.name;
         
         const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
         SPVM_OP* found_op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
@@ -1114,7 +1114,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         }
         else {
           const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
-          field->abs_name = field_abs_name;
+          field_info->abs_name = field_abs_name;
+          
+          // Add op package
+          field_info->op_package = op_package;
           
           // Add op field symtable
           SPVM_HASH_insert(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name), op_field);
