@@ -284,6 +284,7 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   memset(&constant_pool_field, 0, sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
   constant_pool_field.index = field->index;
   constant_pool_field.type_id = field->op_type->uv.type->id;
+  constant_pool_field.is_private = field->is_private;
   
   // Add length
   constant_pool->length += extend_length;

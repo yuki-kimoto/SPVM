@@ -9,6 +9,7 @@ struct SPVM_constant_pool_field_info {
   int32_t name_id;
   int32_t index;
   int32_t type_id;
+  _Bool is_private;
 };
 
 #endif

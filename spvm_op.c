@@ -1288,7 +1288,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
       SPVM_yyerror_format(compiler, "invalid field descriptor %s", SPVM_DESCRIPTOR_C_CODE_NAMES[op_descriptor->code], op_descriptors->file, op_descriptors->line);
     }
   }
-
+  
   // Set field informaiton
   op_field->uv.field = field;
   
