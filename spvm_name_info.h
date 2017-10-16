@@ -7,6 +7,7 @@ struct SPVM_call_field {
   SPVM_OP* op_var;
   SPVM_OP* op_name;
   const char* resolved_name;
+  int32_t code;
   int32_t id;
 };
 
