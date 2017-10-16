@@ -567,10 +567,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     }
                   }
                   
-                  SPVM_CALL_FIELD* call_field = op_cur->uv.call_field;
-                  const char* field_name = call_field->resolved_name;
-                  SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_name, strlen(field_name));
-                  SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
+                  SPVM_FIELD_INFO* field_info = op_cur->uv.call_field->field_info;
                   
                   SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field;
                   memcpy(&constant_pool_field, &compiler->constant_pool->values[field_info->id], sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
@@ -1328,11 +1325,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT);
                   }
                   
-                  // Call subroutine
+                  // Call field
                   SPVM_CALL_FIELD* call_field = op_cur->first->uv.call_field;
-                  const char* field_name = call_field->resolved_name;
-                  SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_name, strlen(field_name));
-                  SPVM_FIELD_INFO* field = op_field->uv.field_info;
+                  SPVM_FIELD_INFO* field = call_field->field_info;
 
                   SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field;
                   memcpy(&constant_pool_field, &compiler->constant_pool->values[field->id], sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
