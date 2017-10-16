@@ -14,7 +14,7 @@
 #include "spvm_op.h"
 #include "spvm_sub.h"
 #include "spvm_constant.h"
-#include "spvm_field_info.h"
+#include "spvm_field.h"
 #include "spvm_my_var.h"
 #include "spvm_var.h"
 #include "spvm_enumeration_value.h"
@@ -165,7 +165,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
-          SPVM_FIELD_INFO* field = op_field->uv.field_info;
+          SPVM_FIELD* field = op_field->uv.field;
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
           if (SPVM_TYPE_is_numeric(compiler, field_type)) {
@@ -211,7 +211,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
-          SPVM_FIELD_INFO* field = op_field->uv.field_info;
+          SPVM_FIELD* field = op_field->uv.field;
           field->index = field_pos;
         }
       }
@@ -1561,11 +1561,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // Check field name
                   SPVM_OP_resolve_call_field(compiler, op_cur);
                   
-                  SPVM_FIELD_INFO* field_info = op_cur->uv.call_field->field_info;
+                  SPVM_FIELD* field = op_cur->uv.call_field->field;
 
-                  if (!op_cur->uv.call_field->field_info) {
+                  if (!op_cur->uv.call_field->field) {
                     SPVM_yyerror_format(compiler, "unknown field \"%s\" \"%s\" at %s line %d\n",
-                      field_info->op_package->uv.package->op_name->uv.name, field_info->op_name->uv.name, op_cur->file, op_cur->line);
+                      field->op_package->uv.package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1575,13 +1575,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_WEAKEN_FIELD: {
                   SPVM_OP* op_call_field = op_cur->first;
                   
-                  SPVM_FIELD_INFO* field_info = op_call_field->uv.call_field->field_info;
+                  SPVM_FIELD* field = op_call_field->uv.call_field->field;
                   
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
                   
                   if (type->code <= SPVM_TYPE_C_CODE_DOUBLE) {
                     SPVM_yyerror_format(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d\n",
-                      field_info->op_package->uv.package->op_name->uv.name, field_info->op_name->uv.name, op_cur->file, op_cur->line);
+                      field->op_package->uv.package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     break;
                   }

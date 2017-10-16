@@ -13,7 +13,7 @@
 #include "spvm_op.h"
 #include "spvm_sub.h"
 #include "spvm_constant.h"
-#include "spvm_field_info.h"
+#include "spvm_field.h"
 #include "spvm_my_var.h"
 #include "spvm_var.h"
 #include "spvm_enumeration_value.h"
@@ -657,7 +657,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_CODE_CALL_FIELD: {
       SPVM_CALL_FIELD* call_field = op->uv.call_field;
-      SPVM_FIELD_INFO* field = call_field->field_info;
+      SPVM_FIELD* field = call_field->field;
       type = field->op_type->uv.type;
       break;
     }
@@ -697,13 +697,13 @@ void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field)
   SPVM_PACKAGE* package = invoker_type->op_package->uv.package;
   const char* field_name = op_name->uv.name;
   
-  SPVM_OP* found_op_field_info = SPVM_HASH_search(
+  SPVM_OP* found_op_field = SPVM_HASH_search(
     package->op_field_symtable,
     field_name,
     strlen(field_name)
   );
-  if (found_op_field_info) {
-    op_call_field->uv.call_field->field_info = found_op_field_info->uv.field_info;
+  if (found_op_field) {
+    op_call_field->uv.call_field->field = found_op_field->uv.field;
   }
 }
 
@@ -909,7 +909,7 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
         int32_t field_index;
         for (field_index = 0; field_index < package->op_fields->length; field_index++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_index);
-          SPVM_FIELD_INFO* field = op_field->uv.field_info;
+          SPVM_FIELD* field = op_field->uv.field;
           
           // Add field to constant pool
           field->id = SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
@@ -1092,8 +1092,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       for (i = 0; i < op_fields->length; i++) {
         SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, i);
         
-        SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
-        const char* field_name = field_info->op_name->uv.name;
+        SPVM_FIELD* field = op_field->uv.field;
+        const char* field_name = field->op_name->uv.name;
         
         SPVM_OP* found_op_field = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
         
@@ -1110,7 +1110,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_HASH_insert(package->op_field_symtable, field_name, strlen(field_name), op_field);
           
           // Add op package
-          field_info->op_package = op_package;
+          field->op_package = op_package;
         }
       }
     }
@@ -1272,7 +1272,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_type);
   
   // Create field information
-  SPVM_FIELD_INFO* field = SPVM_FIELD_INFO_new(compiler);
+  SPVM_FIELD* field = SPVM_FIELD_new(compiler);
   
   // Name
   field->op_name = op_name_field;
@@ -1292,7 +1292,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   }
   
   // Set field informaiton
-  op_field->uv.field_info = field;
+  op_field->uv.field = field;
   
   return op_field;
 }

@@ -26,11 +26,11 @@
 #include "spvm_sub.h"
 #include "spvm_my_var.h"
 #include "spvm_type.h"
-#include "spvm_field_info.h"
+#include "spvm_field.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_package.h"
-#include "spvm_constant_pool_field_info.h"
+#include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
 #include "spvm_api.h"
@@ -165,10 +165,10 @@ set(...)
   
   // Field type
   const char* field_name = SvPV_nolen(sv_field_name);
-  SPVM_HASH* field_name_symtable = SPVM_HASH_search(runtime->field_info_id_symtable, package_name, strlen(package_name));
+  SPVM_HASH* field_name_symtable = SPVM_HASH_search(runtime->field_id_symtable, package_name, strlen(package_name));
   int32_t filed_info_id = (int32_t)(intptr_t)SPVM_HASH_search(field_name_symtable, field_name, strlen(field_name));
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[filed_info_id];
-  int32_t field_type_id =constant_pool_field_info->type_id;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[filed_info_id];
+  int32_t field_type_id =constant_pool_field->type_id;
   SPVM_CONSTANT_POOL_TYPE* constant_pool_field_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[field_type_id];
   
   int32_t field_type_code = constant_pool_field_type->code;
@@ -270,10 +270,10 @@ get(...)
   const char* field_name = SvPV_nolen(sv_field_name);
   
   // Field type
-  SPVM_HASH* field_name_symtable = SPVM_HASH_search(runtime->field_info_id_symtable, package_name, strlen(package_name));
+  SPVM_HASH* field_name_symtable = SPVM_HASH_search(runtime->field_id_symtable, package_name, strlen(package_name));
   int32_t filed_info_id = (int32_t)(intptr_t)SPVM_HASH_search(field_name_symtable, field_name, strlen(field_name));
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[filed_info_id];
-  int32_t field_type_id =constant_pool_field_info->type_id;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[filed_info_id];
+  int32_t field_type_id =constant_pool_field->type_id;
   SPVM_CONSTANT_POOL_TYPE* constant_pool_field_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[field_type_id];
   
   int32_t field_type_code = constant_pool_field_type->code;
@@ -3631,24 +3631,24 @@ build_field_symtable(...)
         int32_t field_index;
         for (field_index = 0; field_index < op_fields->length; field_index++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_index);
-          SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
-          const char* field_name = field_info->op_name->uv.name;
+          SPVM_FIELD* field = op_field->uv.field;
+          const char* field_name = field->op_name->uv.name;
           
           // Field type id
-          int32_t field_type_id = field_info->op_type->uv.type->id;
+          int32_t field_type_id = field->op_type->uv.type->id;
           SV* sv_field_type_id = sv_2mortal(newSViv(field_type_id));
 
           // Field id
-          int32_t field_id = field_info->index;
+          int32_t field_id = field->index;
           SV* sv_field_id = sv_2mortal(newSViv(field_id));
           
-          HV* hv_field_info = (HV*)sv_2mortal((SV*)newHV());
-          (void)hv_store(hv_field_info, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
-          (void)hv_store(hv_field_info, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
-          (void)hv_store(hv_field_info, "type_id", strlen("type_id"), SvREFCNT_inc(sv_field_type_id), 0);
-          SV* sv_field_info = sv_2mortal(newRV_inc((SV*)hv_field_info));
+          HV* hv_field = (HV*)sv_2mortal((SV*)newHV());
+          (void)hv_store(hv_field, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
+          (void)hv_store(hv_field, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
+          (void)hv_store(hv_field, "type_id", strlen("type_id"), SvREFCNT_inc(sv_field_type_id), 0);
+          SV* sv_field = sv_2mortal(newRV_inc((SV*)hv_field));
           
-          (void)hv_store(hv_package_info, field_name, strlen(field_name), SvREFCNT_inc(sv_field_info), 0);
+          (void)hv_store(hv_package_info, field_name, strlen(field_name), SvREFCNT_inc(sv_field), 0);
         }
       }
       

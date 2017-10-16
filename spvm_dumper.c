@@ -10,7 +10,7 @@
 #include "spvm_dynamic_array.h"
 #include "spvm_hash.h"
 #include "spvm_constant.h"
-#include "spvm_field_info.h"
+#include "spvm_field.h"
 #include "spvm_sub.h"
 #include "spvm_my_var.h"
 #include "spvm_var.h"
@@ -195,7 +195,7 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_DYNAMIC_ARRAY* op_p
         int32_t j;
         for (j = 0; j < op_fields->length; j++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, j);
-          SPVM_FIELD_INFO* field = op_field->uv.field_info;
+          SPVM_FIELD* field = op_field->uv.field;
           printf("    field%" PRId32 "\n", j);
           SPVM_DUMPER_dump_field(compiler, field);
         }
@@ -556,7 +556,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   }
 }
 
-void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD_INFO* field) {
+void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
   (void)compiler;
   
   if (field) {
@@ -566,7 +566,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD_INFO* field) {
     
     SPVM_TYPE* type = field->op_type->uv.type;
     printf("      type => \"%s\"\n", type->name);
-    printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_INFO_get_byte_size(compiler, field));
+    printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_get_byte_size(compiler, field));
     
     printf("      id => \"%" PRId32 "\"\n", field->id);
   }

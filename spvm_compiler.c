@@ -20,7 +20,7 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 #include "spvm_sub.h"
-#include "spvm_field_info.h"
+#include "spvm_field.h"
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
@@ -72,14 +72,14 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
         int32_t op_field_index;
         for (op_field_index = 0; op_field_index < op_fields->length; op_field_index++) {
           SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, op_field_index);
-          SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
-          const char* field_name = field_info->op_name->uv.name;
+          SPVM_FIELD* field = op_field->uv.field;
+          const char* field_name = field->op_name->uv.name;
           
-          SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)field_info->id);
+          SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)field->id);
         }
       }
       
-      SPVM_HASH_insert(runtime->field_info_id_symtable, package_name, strlen(package_name), field_name_symtable);
+      SPVM_HASH_insert(runtime->field_id_symtable, package_name, strlen(package_name), field_name_symtable);
     }
   }
   

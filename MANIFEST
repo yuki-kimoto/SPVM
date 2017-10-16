@@ -83,6 +83,10 @@ spvm_bytecode_array.c
 spvm_bytecode_array.h
 spvm_bytecode_builder.c
 spvm_bytecode_builder.h
+spvm_call_field.c
+spvm_call_field.h
+spvm_call_sub.c
+spvm_call_sub.h
 spvm_compiler.c
 spvm_compiler.h
 spvm_compiler_allocator.c
@@ -91,7 +95,7 @@ spvm_constant.c
 spvm_constant.h
 spvm_constant_pool.c
 spvm_constant_pool.h
-spvm_constant_pool_field_info.h
+spvm_constant_pool_field.h
 spvm_constant_pool_package.h
 spvm_constant_pool_sub.h
 spvm_constant_pool_type.h
@@ -105,8 +109,8 @@ spvm_enumeration.c
 spvm_enumeration.h
 spvm_enumeration_value.c
 spvm_enumeration_value.h
-spvm_field_info.c
-spvm_field_info.h
+spvm_field.c
+spvm_field.h
 spvm_global.h
 spvm_hash.c
 spvm_hash.h
@@ -119,7 +123,6 @@ spvm_memory_pool.c
 spvm_memory_pool.h
 spvm_my_var.c
 spvm_my_var.h
-spvm_name_info.c
 spvm_name_info.h
 spvm_object.h
 spvm_op.c

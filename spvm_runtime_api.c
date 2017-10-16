@@ -8,7 +8,7 @@
 #include "spvm_value.h"
 #include "spvm_runtime_api.h"
 #include "spvm_constant_pool_sub.h"
-#include "spvm_constant_pool_field_info.h"
+#include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
@@ -737,12 +737,12 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   const char* type_name = (char*)&constant_pool[constant_pool_type_name_id + 1];
   
   // Constant pool field symbol table
-  SPVM_HASH* field_info_id_symtable = runtime->field_info_id_symtable;
-  SPVM_HASH* field_name_symtable = SPVM_HASH_search(field_info_id_symtable, type_name, strlen(type_name));
+  SPVM_HASH* field_id_symtable = runtime->field_id_symtable;
+  SPVM_HASH* field_name_symtable = SPVM_HASH_search(field_id_symtable, type_name, strlen(type_name));
   
-  int32_t field_info_id = (int32_t)(intptr_t)SPVM_HASH_search(field_name_symtable, name, strlen(name));
+  int32_t field_id = (int32_t)(intptr_t)SPVM_HASH_search(field_name_symtable, name, strlen(name));
   
-  return field_info_id;
+  return field_id;
 }
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
@@ -774,8 +774,8 @@ int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   int8_t byte_value = fields[index].byte_value;
@@ -788,8 +788,8 @@ int16_t SPVM_RUNTIME_API_get_short_field(SPVM_API* api, SPVM_OBJECT* object, int
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   int16_t short_value = fields[index].short_value;
@@ -802,8 +802,8 @@ int32_t SPVM_RUNTIME_API_get_int_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   int32_t int_value = fields[index].int_value;
@@ -816,8 +816,8 @@ int64_t SPVM_RUNTIME_API_get_long_field(SPVM_API* api, SPVM_OBJECT* object, int3
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   int64_t long_value = fields[index].long_value;
@@ -830,8 +830,8 @@ float SPVM_RUNTIME_API_get_float_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   float float_value = fields[index].float_value;
@@ -844,8 +844,8 @@ double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_OBJECT* object, int
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   double double_value = fields[index].double_value;
@@ -858,8 +858,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* objec
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   SPVM_OBJECT* object_value = fields[index].object_value;
@@ -872,8 +872,8 @@ void SPVM_RUNTIME_API_set_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].byte_value = value;
@@ -884,8 +884,8 @@ void SPVM_RUNTIME_API_set_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].short_value = value;
@@ -896,8 +896,8 @@ void SPVM_RUNTIME_API_set_int_field(SPVM_API* api, SPVM_OBJECT* object, int32_t 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].int_value = value;
@@ -908,8 +908,8 @@ void SPVM_RUNTIME_API_set_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].long_value = value;
@@ -920,8 +920,8 @@ void SPVM_RUNTIME_API_set_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
   
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].float_value = value;
@@ -932,8 +932,8 @@ void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
 
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
 
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].double_value = value;
@@ -944,8 +944,8 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   
   // Index
-  SPVM_CONSTANT_POOL_FIELD_INFO* constant_pool_field_info = (SPVM_CONSTANT_POOL_FIELD_INFO*)&runtime->constant_pool[field_id];
-  int32_t index = constant_pool_field_info->index;
+  SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
+  int32_t index = constant_pool_field->index;
   
   SPVM_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   

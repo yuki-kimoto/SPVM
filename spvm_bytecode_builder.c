@@ -22,13 +22,13 @@
 #include "spvm_call_field.h"
 #include "spvm_call_sub.h"
 #include "spvm_hash.h"
-#include "spvm_field_info.h"
+#include "spvm_field.h"
 #include "spvm_switch_info.h"
 #include "spvm_constant_pool.h"
 #include "spvm_type.h"
 #include "spvm_limit.h"
 #include "spvm_constant_pool_sub.h"
-#include "spvm_constant_pool_field_info.h"
+#include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_object.h"
 
@@ -567,10 +567,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     }
                   }
                   
-                  SPVM_FIELD_INFO* field_info = op_cur->uv.call_field->field_info;
+                  SPVM_FIELD* field = op_cur->uv.call_field->field;
                   
-                  SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field;
-                  memcpy(&constant_pool_field, &compiler->constant_pool->values[field_info->id], sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
+                  SPVM_CONSTANT_POOL_FIELD constant_pool_field;
+                  memcpy(&constant_pool_field, &compiler->constant_pool->values[field->id], sizeof(SPVM_CONSTANT_POOL_FIELD));
                   
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, ((constant_pool_field.index) >> 8) & 0xFF);
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_field.index) & 0xFF);
@@ -1327,10 +1327,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   // Call field
                   SPVM_CALL_FIELD* call_field = op_cur->first->uv.call_field;
-                  SPVM_FIELD_INFO* field = call_field->field_info;
+                  SPVM_FIELD* field = call_field->field;
 
-                  SPVM_CONSTANT_POOL_FIELD_INFO constant_pool_field;
-                  memcpy(&constant_pool_field, &compiler->constant_pool->values[field->id], sizeof(SPVM_CONSTANT_POOL_FIELD_INFO));
+                  SPVM_CONSTANT_POOL_FIELD constant_pool_field;
+                  memcpy(&constant_pool_field, &compiler->constant_pool->values[field->id], sizeof(SPVM_CONSTANT_POOL_FIELD));
                   
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, ((constant_pool_field.index) >> 8) & 0xFF);
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant_pool_field.index) & 0xFF);
