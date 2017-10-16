@@ -58,31 +58,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Build field id symtable
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      const char* package_name = package->op_name->uv.name;
-      
-      SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
-      SPVM_HASH* field_name_symtable = SPVM_HASH_new(0);
-      {
-        int32_t op_field_index;
-        for (op_field_index = 0; op_field_index < op_fields->length; op_field_index++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, op_field_index);
-          SPVM_FIELD_INFO* field_info = op_field->uv.field_info;
-          const char* field_name = field_info->op_name->uv.name;
-          
-          SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)(field_info->index));
-        }
-      }
-      
-      SPVM_HASH_insert(runtime->field_id_symtable, package_name, strlen(package_name), field_name_symtable);
-    }
-  }
-
   // Build field info id symtable
   {
     int32_t package_index;
