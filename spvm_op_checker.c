@@ -1439,25 +1439,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_list_args = op_cur->last;
                   
                   SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
-                  
-                  const char* sub_abs_name = call_sub->resolved_name;
-                  
-                  SPVM_OP* found_op_sub= SPVM_HASH_search(
-                    compiler->op_sub_symtable,
-                    sub_abs_name,
-                    strlen(sub_abs_name)
-                  );
-                  if (!found_op_sub) {
+
+                  if (!call_sub->sub) {
                     SPVM_yyerror_format(compiler, "unknown sub \"%s\" at %s line %d\n",
-                      sub_abs_name, op_cur->file, op_cur->line);
+                      call_sub->resolved_name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                   
-                  // Constant
-                  SPVM_SUB* found_sub = found_op_sub->uv.sub;
-
-                  int32_t sub_args_count = found_sub->op_args->length;
+                  const char* sub_abs_name = call_sub->sub->abs_name;
+                  
+                  int32_t sub_args_count = call_sub->sub->op_args->length;
                   SPVM_OP* op_term = op_list_args->first;
                   int32_t call_sub_args_count = 0;
                   while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
@@ -1470,7 +1462,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     _Bool is_invalid = 0;
                     
-                    SPVM_OP* op_sub_arg_my_var = SPVM_DYNAMIC_ARRAY_fetch(found_sub->op_args, call_sub_args_count - 1);
+                    SPVM_OP* op_sub_arg_my_var = SPVM_DYNAMIC_ARRAY_fetch(call_sub->sub->op_args, call_sub_args_count - 1);
                     
                     SPVM_TYPE* sub_arg_type = SPVM_OP_get_type(compiler, op_sub_arg_my_var);
                     
@@ -1502,23 +1494,23 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Constant subroutine
-                  if (found_sub->is_constant) {
+                  if (call_sub->sub->is_constant) {
                     // Replace sub to constant
                     op_cur->code = SPVM_OP_C_CODE_CONSTANT;
-                    op_cur->uv.constant = found_sub->op_constant->uv.constant;
+                    op_cur->uv.constant = call_sub->sub->op_constant->uv.constant;
                     
                     op_cur->first = NULL;
                     op_cur->last = NULL;
                     break;
                   }
                   
-                  SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, found_op_sub->uv.sub->op_return_type);
+                  SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, call_sub->sub->op_return_type);
                   
                   // If CALL_SUB is is not rvalue and return type is object, temparary variable is created, and assinged.
                   if (!op_cur->rvalue && (return_type->code != SPVM_TYPE_C_CODE_VOID && !SPVM_TYPE_is_numeric(compiler, return_type))) {
 
                     // Create temporary variable
-                    SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, found_sub->op_return_type);
+                    SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, call_sub->sub->op_return_type);
                     SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
                     if (op_var_tmp == NULL) {
                       return;

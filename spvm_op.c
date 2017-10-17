@@ -686,6 +686,15 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM
   }
   
   call_sub->resolved_name = sub_abs_name;
+  
+  SPVM_OP* found_op_sub= SPVM_HASH_search(
+    compiler->op_sub_symtable,
+    sub_abs_name,
+    strlen(sub_abs_name)
+  );
+  if (found_op_sub) {
+    call_sub->sub = found_op_sub->uv.sub;
+  }
 }
 
 void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field) {
