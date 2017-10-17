@@ -128,6 +128,43 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "CONCAT_STRING",
 };
 
+SPVM_OP* SPVM_OP_build_default_new(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
+  
+  // New op
+  SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_type->file, op_type->line);
+  
+  // New type
+  SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);
+  op_type_new->uv.type = op_type->uv.type;
+  SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
+  
+  // Return
+  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_type->file, op_type->line);
+  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_new);
+  
+  // Statements
+  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_type->file, op_type->line);
+  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
+  
+  // Block
+  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_type->file, op_type->line);
+  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
+  
+  // sub
+  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUB, op_type->file, op_type->line);
+  op_sub->file = op_type->file;
+  op_sub->line = op_type->line;
+  
+  // Type
+  SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);
+  op_return_type->uv.type = op_type->uv.type;
+  
+  // Build subroutine
+  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_type, NULL, NULL, op_return_type, op_block);
+  
+  return op_sub;
+}
+
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   (void)compiler;
   
