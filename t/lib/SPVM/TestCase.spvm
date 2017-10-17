@@ -47,6 +47,30 @@ package TestCase {
     DOUBLE_PRECICE = 65536.5,
   }
   
+  sub set_x_int($self : TestCase, $value : int) : void {
+    $self->{x_int} = $value;
+  }
+  
+  sub get_x_int($self : TestCase) : int {
+    return $self->{x_int};
+  }
+
+  sub set_x_int_array($self : TestCase, $value : int[]) : void {
+    $self->{x_int_array} = $value;
+  }
+  
+  sub get_x_int_array($self : TestCase) : int[] {
+    return $self->{x_int_array};
+  }
+
+  sub set_x_string($self : TestCase, $value : byte[]) : void {
+    $self->{x_string} = $value;
+  }
+  
+  sub get_x_string($self : TestCase) : byte[] {
+    return $self->{x_string};
+  }
+  
   sub private_field() : int {
     my $test_case = new TestCase;
     $test_case->{private_field};
