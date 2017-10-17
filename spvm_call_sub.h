@@ -10,7 +10,7 @@ enum {
 };
 
 struct SPVM_call_sub {
-  SPVM_OP* op_var;
+  SPVM_OP* op_term;
   SPVM_OP* op_name;
   const char* resolved_name;
   int32_t code;

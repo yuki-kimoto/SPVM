@@ -672,7 +672,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM
   
   const char* sub_abs_name = NULL;
   if (call_sub->code == SPVM_CALL_SUB_C_CODE_VARBASENAME) {
-    const char* package_name = call_sub->op_var->uv.var->op_my_var->uv.my_var->op_type->uv.type->name;
+    const char* package_name = call_sub->op_term->uv.var->op_my_var->uv.my_var->op_type->uv.type->name;
     const char* sub_name = call_sub->op_name->uv.name;
     sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
   }
@@ -1581,7 +1581,7 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     // $var->m();
     else {
       call_sub->code = SPVM_CALL_SUB_C_CODE_VARBASENAME;
-      call_sub->op_var = op_invocant;
+      call_sub->op_term = op_invocant;
       call_sub->op_name = op_name_sub;
     }
     SPVM_OP_insert_child(compiler, op_terms, op_terms->last, op_invocant);
