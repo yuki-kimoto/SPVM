@@ -28,6 +28,7 @@ package TestCase {
   has x_long : long;
   has x_float : float;
   has x_double : double;
+  has private_field : private int;
 
   enum {
     BYTE_MAX = 127y,
@@ -43,6 +44,18 @@ package TestCase {
   }
   
   sub main($mvar : int) : int {
+
+=pod
+    {
+      my $simple1 = new TestCase::Simple;
+      $simple1->{private_field};
+    }
+=cut
+
+    {
+      my $test_case = new TestCase;
+      $test_case->{private_field};
+    }
     
     {
       my $time = std::time();

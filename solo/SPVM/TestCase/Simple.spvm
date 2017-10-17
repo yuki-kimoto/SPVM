@@ -8,6 +8,7 @@ package TestCase::Simple {
   has message : byte[];
   # has c : TestCase::Simple;
   # has d : TestCase::Simple[];
+  has private_field : private int;
   
   has title : int;
   
