@@ -517,10 +517,13 @@ sub build_spvm_subs {
     no strict 'refs';
     
     # Declare package
-    my ($package_name) = $abs_name =~ /^(.+::)/;
+    my ($package_name) = $abs_name =~ /^(?:(.+)::)/;
     $package_name = "SPVM::$package_name";
     unless ($package_name_h->{$package_name}) {
-      eval "package $package_name; our \@ISA = ('SPVM::Object::Package');";
+      
+      my $code = "package $package_name; our \@ISA = ('SPVM::Object::Package');";
+      eval $code;
+      
       if (my $error = $@) {
         confess $error;
       }

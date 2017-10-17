@@ -2983,7 +2983,12 @@ get(...)
         sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Array::Object");
       }
       else {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Object::Package");
+        int32_t element_type_name_id = element_type->name_id;
+        const char* element_type_name = (char*)&runtime->constant_pool[element_type_name_id + 1];
+        SV* sv_element_type_name = sv_2mortal(newSVpv("SPVM::", 0));
+        sv_catpv(sv_element_type_name, element_type_name);
+        
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, SvPV_nolen(sv_element_type_name));
       }
     }
   }
@@ -3610,7 +3615,12 @@ call_sub(...)
               sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Object");
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Package");
+              int32_t return_type_name_id = return_type->name_id;
+              const char* return_type_name = (char*)&runtime->constant_pool[return_type_name_id + 1];
+              SV* sv_return_type_name = sv_2mortal(newSVpv("SPVM::", 0));
+              sv_catpv(sv_return_type_name, return_type_name);
+              
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
             }
           }
         }

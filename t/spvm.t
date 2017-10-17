@@ -677,7 +677,8 @@ is_deeply(
   {
     my $object_array = SPVM::new_object_array_len("TestCase", 3);
     my $object1 = SPVM::TestCase::new();
-    $object1->SPVM::TestCase::set_x_int(1);
+    
+    $object1->set_x_int(1);
     $object_array->set(0, $object1);
     my $object2 = SPVM::TestCase::new();
     $object2->SPVM::TestCase::set_x_int(2);
