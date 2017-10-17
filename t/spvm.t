@@ -676,10 +676,10 @@ is_deeply(
   # element object array
   {
     my $object_array = SPVM::new_object_array_len("TestCase", 3);
-    my $object1 = SPVM::new_object("TestCase");
+    my $object1 = SPVM::TestCase::new();
     $object1->set('x_int', 1);
     $object_array->set(0, $object1);
-    my $object2 = SPVM::new_object("TestCase");
+    my $object2 = SPVM::TestCase::new();
     $object2->set('x_int', 2);
     $object_array->set(1, $object2);
     ok(SPVM::TestCase::spvm_new_object_array_len_element_object_array($object_array));
@@ -696,14 +696,14 @@ is_deeply(
 {
   # Create object
   {
-    my $object = SPVM::new_object("TestCase");
+    my $object = SPVM::TestCase::new();
     $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
     $object->set(x_string => SPVM::new_byte_array_data("abc"));
     ok(SPVM::TestCase::spvm_object_set_object($object));
   }
   # Create object
   {
-    my $object = SPVM::new_object("TestCase");
+    my $object = SPVM::TestCase::new();
     $object->set(x_byte => $BYTE_MAX);
     $object->set(x_short => $SHORT_MAX);
     $object->set(x_int => $INT_MAX);
@@ -712,7 +712,7 @@ is_deeply(
     $object->set(x_double => $DOUBLE_PRECICE);
     $object->set(x_int_array => SPVM::new_int_array([1, 2, 3, 4]));
     $object->set(x_string => SPVM::new_byte_array_string("Hello"));
-    my $minimal = SPVM::new_object("TestCase::Minimal");
+    my $minimal = SPVM::TestCase::Minimal::new();
     $minimal->set(x => 3);
     $object->set(minimal => $minimal);
     

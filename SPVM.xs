@@ -99,45 +99,6 @@ DESTROY(...)
 MODULE = SPVM::Object::Package		PACKAGE = SPVM::Object::Package
 
 SV*
-new(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_class = ST(0);
-  (void)sv_class;
-  
-  SV* sv_package_name = ST(1);
-  
-  // API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  if (!SvOK(sv_package_name)) {
-    croak("Type must be specified(SPVM::Object::Package::new_object)");
-  }
-  
-  const char* package_name = SvPV_nolen(sv_package_name);
-  
-  int32_t type_id = api->get_type_id(api, package_name);
-  
-  if (type_id <= 0) {
-    croak("Unkown package \"%s\"(SPVM::Object::Package::new_object", package_name);
-  }
-  
-  // New array
-  SPVM_API_OBJECT* object =  api->new_object(api, type_id);
-  
-  // Increment
-  api->inc_ref_count(api, object);
-
-  // New sv object
-  SV* sv_object = SPVM_XS_UTIL_new_sv_object(object, "SPVM::Object::Package");
-  
-  XPUSHs(sv_object);
-  XSRETURN(1);
-}
-
-SV*
 set(...)
   PPCODE:
 {

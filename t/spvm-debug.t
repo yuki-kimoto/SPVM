@@ -21,6 +21,7 @@ use SPVM 'std'; my $use_std_line = __LINE__;
 
 use SPVM 'TestCase::Extension';
 use SPVM 'TestCase::Extension2';
+use SPVM 'TestCase::Arrays';
 
 use POSIX ();
 
@@ -49,10 +50,73 @@ my $NEGATIVE_INFINITY = SPVM::NEGATIVE_INFINITY();
 
 my $NaN = SPVM::NaN();
 
-use SPVM::std;
-
 use SPVM 'Double';
 use SPVM 'Float';
+use SPVM 'std';
+
+# time
+{
+  cmp_ok(abs(time - SPVM::std::time()), '<', 2);
+}
+
+# Native Exception
+{
+  ok(SPVM::TestCase::Extension::call_void_sub_exception());
+  ok(SPVM::TestCase::Extension::call_byte_sub_exception());
+  ok(SPVM::TestCase::Extension::call_short_sub_exception());
+  ok(SPVM::TestCase::Extension::call_int_sub_exception());
+  ok(SPVM::TestCase::Extension::call_long_sub_exception());
+  ok(SPVM::TestCase::Extension::call_float_sub_exception());
+  ok(SPVM::TestCase::Extension::call_double_sub_exception());
+  ok(SPVM::TestCase::Extension::call_object_sub_exception());
+}
+
+# SPVM::Arrays;
+{
+  ok(SPVM::TestCase::Arrays::equals_byte());
+  ok(SPVM::TestCase::Arrays::equals_short());
+  ok(SPVM::TestCase::Arrays::equals_int());
+  ok(SPVM::TestCase::Arrays::equals_long());
+  ok(SPVM::TestCase::Arrays::equals_float());
+  ok(SPVM::TestCase::Arrays::equals_double());
+
+  ok(SPVM::TestCase::Arrays::copy_of_byte());
+  ok(SPVM::TestCase::Arrays::copy_of_byte_over());
+  ok(SPVM::TestCase::Arrays::copy_of_byte_less());
+  ok(SPVM::TestCase::Arrays::copy_of_byte_undef());
+  ok(SPVM::TestCase::Arrays::copy_of_byte_negative());
+
+  ok(SPVM::TestCase::Arrays::copy_of_short());
+  ok(SPVM::TestCase::Arrays::copy_of_short_over());
+  ok(SPVM::TestCase::Arrays::copy_of_short_less());
+  ok(SPVM::TestCase::Arrays::copy_of_short_undef());
+  ok(SPVM::TestCase::Arrays::copy_of_short_negative());
+
+  ok(SPVM::TestCase::Arrays::copy_of_int());
+  ok(SPVM::TestCase::Arrays::copy_of_int_over());
+  ok(SPVM::TestCase::Arrays::copy_of_int_less());
+  ok(SPVM::TestCase::Arrays::copy_of_int_undef());
+  ok(SPVM::TestCase::Arrays::copy_of_int_negative());
+
+  ok(SPVM::TestCase::Arrays::copy_of_long());
+  ok(SPVM::TestCase::Arrays::copy_of_long_over());
+  ok(SPVM::TestCase::Arrays::copy_of_long_less());
+  ok(SPVM::TestCase::Arrays::copy_of_long_undef());
+  ok(SPVM::TestCase::Arrays::copy_of_long_negative());
+
+  ok(SPVM::TestCase::Arrays::copy_of_float());
+  ok(SPVM::TestCase::Arrays::copy_of_float_over());
+  ok(SPVM::TestCase::Arrays::copy_of_float_less());
+  ok(SPVM::TestCase::Arrays::copy_of_float_undef());
+  ok(SPVM::TestCase::Arrays::copy_of_float_negative());
+
+  ok(SPVM::TestCase::Arrays::copy_of_double());
+  ok(SPVM::TestCase::Arrays::copy_of_double_over());
+  ok(SPVM::TestCase::Arrays::copy_of_double_less());
+  ok(SPVM::TestCase::Arrays::copy_of_double_undef());
+  ok(SPVM::TestCase::Arrays::copy_of_double_negative());
+  1;
+}
 
 {
   like($POSITIVE_INFINITY, qr/inf/i);
@@ -62,6 +126,11 @@ use SPVM 'Float';
   cmp_ok($NEGATIVE_INFINITY, '<', 0);
   
   like($NaN, qr/(nan|ind)/i);
+}
+
+# Template
+{
+  ok(SPVM::TestCase::template());
 }
 
 # SPVM::Byte
@@ -92,12 +161,24 @@ use SPVM 'Float';
   
   ok(SPVM::TestCase::Float::constant());
   ok(SPVM::TestCase::Float::is_infinite());
+  ok(SPVM::TestCase::Float::is_finite());
+  ok(SPVM::TestCase::Float::is_nan());
+  ok(SPVM::TestCase::Float::int_bits_to_float());
+  ok(SPVM::TestCase::Float::int_bits_to_float_nan_first_condition());
+  ok(SPVM::TestCase::Float::int_bits_to_float_nan_first_condition_is_nan());
+  ok(SPVM::TestCase::Float::int_bits_to_float_nan_second_condition());
+  ok(SPVM::TestCase::Float::int_bits_to_float_nan_second_condition_is_nan());
+
+  ok(SPVM::TestCase::Float::float_to_raw_int_bits());
+  ok(SPVM::TestCase::Float::float_to_raw_int_bits_nan());
+  ok(SPVM::TestCase::Float::float_to_int_bits());
+  ok(SPVM::TestCase::Float::float_to_int_bits_nan());
   
   is(SPVM::Float::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Float::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
-
+  
   cmp_ok(SPVM::Float::NaN(), 'eq', $NaN);
-
+  
   # Check not Inf or NaN in Perl value
   like(SPVM::Float::MAX_VALUE(), qr/[0-9]/);
   like(SPVM::Float::MIN_VALUE(), qr/[0-9]/);
@@ -111,6 +192,19 @@ use SPVM 'Float';
   ok(SPVM::TestCase::Double::pass_nan($NaN));
   
   ok(SPVM::TestCase::Double::constant());
+  ok(SPVM::TestCase::Double::is_infinite());
+  ok(SPVM::TestCase::Double::is_finite());
+  ok(SPVM::TestCase::Double::is_nan());
+  ok(SPVM::TestCase::Double::long_bits_to_double());
+  ok(SPVM::TestCase::Double::long_bits_to_double_nan_first_condition());
+  ok(SPVM::TestCase::Double::long_bits_to_double_nan_first_condition_is_nan());
+  ok(SPVM::TestCase::Double::long_bits_to_double_nan_second_condition());
+  ok(SPVM::TestCase::Double::long_bits_to_double_nan_second_condition_is_nan());
+  
+  ok(SPVM::TestCase::Double::double_to_raw_long_bits());
+  ok(SPVM::TestCase::Double::double_to_raw_long_bits_nan());
+  ok(SPVM::TestCase::Double::double_to_long_bits());
+  ok(SPVM::TestCase::Double::double_to_long_bits_nan());
   
   is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
@@ -170,7 +264,9 @@ my $start_objects_count = SPVM::get_objects_count();
 # Call subroutine
 {
   ok(SPVM::TestCase::call_sub_last_camma());
+  ok(SPVM::TestCase::call_sub_undef(undef));
 }
+
 # Destructor
 {
   ok(SPVM::TestCase::destructor());
@@ -408,8 +504,9 @@ is_deeply(
   ok(SPVM::TestCase::enum_float());
   ok(SPVM::TestCase::enum_double());
 
+  is(SPVM::TestCase::INT_VALUE(), 127);
+
 =pod
-  is(SPVM::TestCase::BYTE_MAX(), 127);
   is(SPVM::TestCase::BYTE_MIN(), -128);
   is(SPVM::TestCase::SHORT_MAX(), 32767);
   is(SPVM::TestCase::SHORT_MIN(), -32768);
@@ -583,10 +680,10 @@ is_deeply(
   # element object array
   {
     my $object_array = SPVM::new_object_array_len("TestCase", 3);
-    my $object1 = SPVM::new_object("TestCase");
+    my $object1 = SPVM::TestCase::new();
     $object1->set('x_int', 1);
     $object_array->set(0, $object1);
-    my $object2 = SPVM::new_object("TestCase");
+    my $object2 = SPVM::TestCase::new();
     $object2->set('x_int', 2);
     $object_array->set(1, $object2);
     ok(SPVM::TestCase::spvm_new_object_array_len_element_object_array($object_array));
@@ -603,14 +700,14 @@ is_deeply(
 {
   # Create object
   {
-    my $object = SPVM::new_object("TestCase");
+    my $object = SPVM::TestCase::new();
     $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
     $object->set(x_string => SPVM::new_byte_array_data("abc"));
     ok(SPVM::TestCase::spvm_object_set_object($object));
   }
   # Create object
   {
-    my $object = SPVM::new_object("TestCase");
+    my $object = SPVM::TestCase::new();
     $object->set(x_byte => $BYTE_MAX);
     $object->set(x_short => $SHORT_MAX);
     $object->set(x_int => $INT_MAX);
@@ -619,7 +716,7 @@ is_deeply(
     $object->set(x_double => $DOUBLE_PRECICE);
     $object->set(x_int_array => SPVM::new_int_array([1, 2, 3, 4]));
     $object->set(x_string => SPVM::new_byte_array_string("Hello"));
-    my $minimal = SPVM::new_object("TestCase::Minimal");
+    my $minimal = SPVM::TestCase::Minimal::new();
     $minimal->set(x => 3);
     $object->set(minimal => $minimal);
     
@@ -1455,6 +1552,18 @@ is_deeply(
   ok(SPVM::TestCase::number_literal_hex_int());
   ok(SPVM::TestCase::number_literal_hex_int_max());
   ok(SPVM::TestCase::number_literal_hex_long_max());
+
+  ok(SPVM::TestCase::number_literal_octal_specifier());
+  ok(SPVM::TestCase::number_literal_octal_all_number());
+  ok(SPVM::TestCase::number_literal_octal_int());
+  ok(SPVM::TestCase::number_literal_octal_int_max());
+  ok(SPVM::TestCase::number_literal_octal_long_max());
+
+  ok(SPVM::TestCase::number_literal_binary_specifier());
+  ok(SPVM::TestCase::number_literal_binary_all_number());
+  ok(SPVM::TestCase::number_literal_binary_int());
+  ok(SPVM::TestCase::number_literal_binary_int_max());
+  ok(SPVM::TestCase::number_literal_binary_long_max());
 }
 
 # Bit shift left
@@ -1496,6 +1605,7 @@ is_deeply(
   {
     ok(SPVM::TestCase::get_array_length_at());
     ok(SPVM::TestCase::get_array_length_len());
+    ok(SPVM::TestCase::get_array_length_undef());
   }
 
   # array - set and get array element, first element
