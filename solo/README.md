@@ -16,20 +16,7 @@ For compile, bison command is needed.
   
 ## Test
     
-   yacc/bison.sh && make -f solo/Makefile DEFINE=-DDEBUG test
-
-## Types
-
-Use the following types in source codes. This is defined in the standard header `<stdint.h>`.
-
-    _Bool
-    uint8_t
-    int8_t
-    int16_t
-    int32_t
-    int64_t
-    float
-    double
+  yacc/bison.sh && make -f solo/Makefile DEFINE=-DDEBUG test
 
 # Contributors
 

@@ -1554,12 +1554,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP_resolve_call_field(compiler, op_cur);
                   
                   SPVM_FIELD* field = op_cur->uv.call_field->field;
-
-                  if (!op_cur->uv.call_field->field) {
+                  
+                  if (!field) {
                     SPVM_yyerror_format(compiler, "unknown field \"%s\" \"%s\" at %s line %d\n",
-                      field->op_package->uv.package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                      type->name, op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
+                  }
+                  
+                  if (field->is_private) {
+                    SPVM_yyerror_format(compiler, "Field is private \"%s\" \"%s\" at %s line %d\n",
+                      field->op_package->uv.package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                   }
                   
                   break;

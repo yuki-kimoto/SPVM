@@ -15,6 +15,7 @@
 #include "spvm_op.h"
 #include "spvm_sub.h"
 #include "spvm_dumper.h"
+#include "spvm_yacc_util.h"
 
 #include "native/SPVM/std.native/std.c"
 
@@ -22,6 +23,9 @@
 
 int main(int argc, char *argv[])
 {
+  // If this is set to 1, you can see yacc parsing result
+  SPVM_yydebug = 0;
+
   if (argc < 2) {
     fprintf(stderr, "Not script\n");
     exit(1);
