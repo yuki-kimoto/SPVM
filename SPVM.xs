@@ -96,8 +96,6 @@ DESTROY(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Object::Package		PACKAGE = SPVM::Object::Package
-
 MODULE = SPVM::Object::Package::String		PACKAGE = SPVM::Object::Package::String
 
 SV*

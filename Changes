@@ -1,6 +1,14 @@
 0.0281 2017-10-17
   - add private descripter to has syntax
     has x : private int
+  - remove SPVM::new_object
+  - remove SPVM::Object::Package::set
+  - remove SPVM::Object::Package::get
+  - can call method directory from SPVM object
+    my $object = SPVM::TestCase::new();
+    $object->set_x_byte($BYTE_MAX);
+    $object->set_x_short($SHORT_MAX);
+  
 0.0280 2017-10-13
   - add String type again
   - add Native API new_string
