@@ -12,9 +12,9 @@ enum {
 struct SPVM_call_sub {
   SPVM_OP* op_term;
   SPVM_OP* op_name;
+  SPVM_OP* sub;
   const char* resolved_name;
   int32_t code;
-  int32_t id;
 };
 
 SPVM_CALL_SUB* SPVM_CALL_SUB_new(SPVM_COMPILER* compiler);
