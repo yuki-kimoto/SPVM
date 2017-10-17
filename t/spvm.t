@@ -704,16 +704,16 @@ is_deeply(
   # Create object
   {
     my $object = SPVM::TestCase::new();
-    $object->set(x_byte => $BYTE_MAX);
-    $object->set(x_short => $SHORT_MAX);
-    $object->set(x_int => $INT_MAX);
-    $object->set(x_long => $LONG_MAX);
-    $object->set(x_float => $FLOAT_PRECICE);
-    $object->set(x_double => $DOUBLE_PRECICE);
-    $object->set(x_int_array => SPVM::new_int_array([1, 2, 3, 4]));
-    $object->set(x_string => SPVM::new_byte_array_string("Hello"));
+    $object->SPVM::TestCase::set_x_byte($BYTE_MAX);
+    $object->SPVM::TestCase::set_x_short($SHORT_MAX);
+    $object->SPVM::TestCase::set_x_int($INT_MAX);
+    $object->SPVM::TestCase::set_x_long($LONG_MAX);
+    $object->SPVM::TestCase::set_x_float($FLOAT_PRECICE);
+    $object->SPVM::TestCase::set_x_double($DOUBLE_PRECICE);
+    $object->SPVM::TestCase::set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
+    $object->SPVM::TestCase::set_x_string(SPVM::new_byte_array_string("Hello"));
     my $minimal = SPVM::TestCase::Minimal::new();
-    $minimal->set(x => 3);
+    $minimal->SPVM::TestCase::Minimal::set_x(3);
     $object->set(minimal => $minimal);
     
     ok(SPVM::TestCase::spvm_object_set($object));
