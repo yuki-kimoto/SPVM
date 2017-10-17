@@ -714,17 +714,17 @@ is_deeply(
     $object->SPVM::TestCase::set_x_string(SPVM::new_byte_array_string("Hello"));
     my $minimal = SPVM::TestCase::Minimal::new();
     $minimal->SPVM::TestCase::Minimal::set_x(3);
-    $object->set(minimal => $minimal);
+    $object->SPVM::TestCase::set_minimal($minimal);
     
     ok(SPVM::TestCase::spvm_object_set($object));
     
-    is($object->get('x_byte'), $BYTE_MAX);
-    is($object->get('x_short'), $SHORT_MAX);
-    is($object->get('x_int'), $INT_MAX);
-    is($object->get('x_long'), $LONG_MAX);
-    is($object->get('x_float'), $FLOAT_PRECICE);
-    is($object->get('x_double'), $DOUBLE_PRECICE);
-    is($object->get('minimal')->get('x'), 3);
+    is($object->SPVM::TestCase::get_x_byte,$BYTE_MAX);
+    is($object->SPVM::TestCase::get_x_short, $SHORT_MAX);
+    is($object->SPVM::TestCase::get_x_int, $INT_MAX);
+    is($object->SPVM::TestCase::get_x_long, $LONG_MAX);
+    is($object->SPVM::TestCase::get_x_float, $FLOAT_PRECICE);
+    is($object->SPVM::TestCase::get_x_double, $DOUBLE_PRECICE);
+    is($object->SPVM::TestCase::get_minimal->SPVM::TestCase::Minimal::get_x, 3);
   }
   
 }

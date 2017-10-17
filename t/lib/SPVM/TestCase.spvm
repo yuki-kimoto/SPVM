@@ -116,6 +116,14 @@ package TestCase {
     $test_case->{private_field};
   }
 
+  sub get_minimal($self : TestCase) : TestCase::Minimal {
+    return $self->{minimal};
+  }
+
+  sub set_minimal($self : TestCase, $value : TestCase::Minimal) : void {
+    $self->{minimal} = $value;
+  }
+
   # Resorved word
   sub int($obj : TestCase) : int {
     
