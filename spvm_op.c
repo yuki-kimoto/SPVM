@@ -138,6 +138,8 @@ SPVM_OP* SPVM_OP_build_default_new(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   op_type_new->uv.type = op_type->uv.type;
   SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
   
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_new);
+  
   // Return
   SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_type->file, op_type->line);
   SPVM_OP_insert_child(compiler, op_return, op_return->last, op_new);
@@ -158,6 +160,7 @@ SPVM_OP* SPVM_OP_build_default_new(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   // Type
   SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);
   op_return_type->uv.type = op_type->uv.type;
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_return_type);
   
   // Build subroutine
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_type, NULL, NULL, op_return_type, op_block);
@@ -1175,11 +1178,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
         
-        assert(op_subs->length <= SPVM_LIMIT_C_SUBS);
+        assert(op_subs->length <= SPVM_LIMIT_C_SUBS - 1);
         if (found_op_sub) {
           SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
         }
-        else if (op_subs->length == SPVM_LIMIT_C_SUBS) {
+        else if (op_subs->length == SPVM_LIMIT_C_SUBS - 1) {
           SPVM_yyerror_format(compiler, "Too many subroutines at %s line %d\n", sub_name, op_sub->file, op_sub->line);
           compiler->fatal_error = 1;
         }
@@ -1208,7 +1211,21 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         }
       }
     }
+
+    const char* sub_abs_name_new = SPVM_OP_create_abs_name(compiler, package_name, "new");
+    SPVM_OP* found_op_sub_new = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_new, strlen(sub_abs_name_new));
+    if (!found_op_sub_new) {
+      SPVM_OP* op_sub_new = SPVM_OP_build_default_new(compiler, package->op_type);
+      SPVM_SUB* sub_new = op_sub_new->uv.sub;
+      sub_new->abs_name = sub_abs_name_new;
+      sub_new->file_name = op_package->file;
+      sub_new->op_package = op_package;
+      
+      SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_new);
+      SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_new, strlen(sub_abs_name_new), op_sub_new);
+    }
     
+    // Add op fields
     package->op_fields = op_fields;
     
     // Add package
