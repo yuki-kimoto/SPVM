@@ -681,18 +681,18 @@ is_deeply(
   {
     my $object_array = SPVM::new_object_array_len("TestCase", 3);
     my $object1 = SPVM::TestCase::new();
-    $object1->set('x_int', 1);
+    $object1->SPVM::TestCase::set_x_int(1);
     $object_array->set(0, $object1);
     my $object2 = SPVM::TestCase::new();
-    $object2->set('x_int', 2);
+    $object2->SPVM::TestCase::set_x_int(2);
     $object_array->set(1, $object2);
     ok(SPVM::TestCase::spvm_new_object_array_len_element_object_array($object_array));
     
     my $object1_get = $object_array->get(0);
     my $object2_get = $object_array->get(1);
     
-    is_deeply($object1_get->get('x_int'), 1);
-    is_deeply($object2_get->get('x_int'), 2);
+    is_deeply($object1_get->SPVM::TestCase::get_x_int, 1);
+    is_deeply($object2_get->SPVM::TestCase::get_x_int, 2);
   }
 }
 
@@ -701,34 +701,34 @@ is_deeply(
   # Create object
   {
     my $object = SPVM::TestCase::new();
-    $object->set(x_int_array => SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    $object->set(x_string => SPVM::new_byte_array_data("abc"));
+    $object->SPVM::TestCase::set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
+    $object->SPVM::TestCase::set_x_string(SPVM::new_byte_array_data("abc"));
     ok(SPVM::TestCase::spvm_object_set_object($object));
   }
   # Create object
   {
     my $object = SPVM::TestCase::new();
-    $object->set(x_byte => $BYTE_MAX);
-    $object->set(x_short => $SHORT_MAX);
-    $object->set(x_int => $INT_MAX);
-    $object->set(x_long => $LONG_MAX);
-    $object->set(x_float => $FLOAT_PRECICE);
-    $object->set(x_double => $DOUBLE_PRECICE);
-    $object->set(x_int_array => SPVM::new_int_array([1, 2, 3, 4]));
-    $object->set(x_string => SPVM::new_byte_array_string("Hello"));
+    $object->SPVM::TestCase::set_x_byte($BYTE_MAX);
+    $object->SPVM::TestCase::set_x_short($SHORT_MAX);
+    $object->SPVM::TestCase::set_x_int($INT_MAX);
+    $object->SPVM::TestCase::set_x_long($LONG_MAX);
+    $object->SPVM::TestCase::set_x_float($FLOAT_PRECICE);
+    $object->SPVM::TestCase::set_x_double($DOUBLE_PRECICE);
+    $object->SPVM::TestCase::set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
+    $object->SPVM::TestCase::set_x_string(SPVM::new_byte_array_string("Hello"));
     my $minimal = SPVM::TestCase::Minimal::new();
-    $minimal->set(x => 3);
-    $object->set(minimal => $minimal);
+    $minimal->SPVM::TestCase::Minimal::set_x(3);
+    $object->SPVM::TestCase::set_minimal($minimal);
     
     ok(SPVM::TestCase::spvm_object_set($object));
     
-    is($object->get('x_byte'), $BYTE_MAX);
-    is($object->get('x_short'), $SHORT_MAX);
-    is($object->get('x_int'), $INT_MAX);
-    is($object->get('x_long'), $LONG_MAX);
-    is($object->get('x_float'), $FLOAT_PRECICE);
-    is($object->get('x_double'), $DOUBLE_PRECICE);
-    is($object->get('minimal')->get('x'), 3);
+    is($object->SPVM::TestCase::get_x_byte,$BYTE_MAX);
+    is($object->SPVM::TestCase::get_x_short, $SHORT_MAX);
+    is($object->SPVM::TestCase::get_x_int, $INT_MAX);
+    is($object->SPVM::TestCase::get_x_long, $LONG_MAX);
+    is($object->SPVM::TestCase::get_x_float, $FLOAT_PRECICE);
+    is($object->SPVM::TestCase::get_x_double, $DOUBLE_PRECICE);
+    is($object->SPVM::TestCase::get_minimal->SPVM::TestCase::Minimal::get_x, 3);
   }
   
 }
