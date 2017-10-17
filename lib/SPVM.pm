@@ -217,7 +217,7 @@ CHECK {
   # Bind native subroutines
   bind_native_subs();
   
-  # Build SPVM subroutine
+  # Build SPVM subroutines
   build_spvm_subs();
 }
 
@@ -507,12 +507,27 @@ sub new_object {
   return $object;
 }
 
+my $package_name_h = {};
+
 sub build_spvm_subs {
   my $sub_names = get_sub_names();
   
   for my $abs_name (@$sub_names) {
     # Define SPVM subroutine
     no strict 'refs';
+    
+    # Declare package
+    my ($package_name) = $abs_name =~ /^(.+::)/;
+    $package_name = "SPVM::$package_name";
+    unless ($package_name_h->{$package_name}) {
+      eval "package $package_name; our \@ISA = ('SPVM::Object::Package');";
+      if (my $error = $@) {
+        confess $error;
+      }
+      $package_name_h->{$package_name} = 1;
+    }
+    
+    # Declare subroutine
     *{"SPVM::$abs_name"} = sub {
       my $return_value;
       eval { $return_value = SPVM::call_sub("$abs_name", @_) };
