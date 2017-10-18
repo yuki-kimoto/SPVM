@@ -357,14 +357,7 @@ sub
      {
        $$ = SPVM_OP_build_sub(compiler, $1, $2, $4, $7, $8, NULL);
      }
- | SUB NEW '(' opt_args ')' ':' opt_descriptors type_or_void block
-     {
-       $$ = SPVM_OP_build_sub(compiler, $1, $2, $4, $7, $8, $9);
-     }
- | SUB NEW '(' opt_args ')' ':' opt_descriptors type_or_void ';'
-     {
-       $$ = SPVM_OP_build_sub(compiler, $1, $2, $4, $7, $8, NULL);
-     }
+
 enumeration
   : ENUM enumeration_block
     {

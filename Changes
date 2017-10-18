@@ -8,7 +8,7 @@
     my $object = SPVM::TestCase::new();
     $object->set_x_byte($BYTE_MAX);
     $object->set_x_short($SHORT_MAX);
-  
+  - remove Package->name syntax because Perl subroutine call correspoing to SPVM subroutine call completely
 0.0280 2017-10-13
   - add String type again
   - add Native API new_string
