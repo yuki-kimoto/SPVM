@@ -2,10 +2,10 @@ use Byte;
 
 package TestCase::Byte {
   sub constant() : int {
-    if (Byte->MIN_VALUE == -128y) {
-      if (Byte->MAX_VALUE == 127y) {
-        if (Byte->BYTES == 1) {
-          if (Byte->SIZE == 8) {
+    if (Byte::MIN_VALUE() == -128y) {
+      if (Byte::MAX_VALUE() == 127y) {
+        if (Byte::BYTES() == 1) {
+          if (Byte::SIZE() == 8) {
             return 1;
           }
         }

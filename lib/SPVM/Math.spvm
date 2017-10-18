@@ -105,8 +105,8 @@ package Math {
   }
   
   sub signum($x : double) : double {
-    if (Double->is_nan($x)) {
-      return Double->NaN;
+    if (Double::is_nan($x)) {
+      return Double::NaN();
     }
     elsif ($x > 0.0) {
       return 1.0;
@@ -120,8 +120,8 @@ package Math {
   }
   
   sub signum_float($x : float) : float {
-    if (Float->is_nan($x)) {
-      return Float->NaN;
+    if (Float::is_nan($x)) {
+      return Float::NaN();
     }
     elsif ($x > 0.0f) {
       return 1.0f;

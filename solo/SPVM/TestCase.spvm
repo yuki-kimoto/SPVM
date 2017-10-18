@@ -181,12 +181,12 @@ package TestCase {
     {
       my $test = new TestCase;
       
-      $test->{x_byte} = TestCase->BYTE_MAX;
-      $test->{x_short} = TestCase->SHORT_MAX;
-      $test->{x_int} = TestCase->INT_MAX;
-      $test->{x_long} = TestCase->LONG_MAX;
-      $test->{x_float} = TestCase->FLOAT_PRECICE;
-      $test->{x_double} = TestCase->DOUBLE_PRECICE;
+      $test->{x_byte} = TestCase::BYTE_MAX();
+      $test->{x_short} = TestCase::SHORT_MAX();
+      $test->{x_int} = TestCase::INT_MAX();
+      $test->{x_long} = TestCase::LONG_MAX();
+      $test->{x_float} = TestCase::FLOAT_PRECICE();
+      $test->{x_double} = TestCase::DOUBLE_PRECICE();
     }
     
     # Weaken
@@ -233,7 +233,7 @@ package TestCase {
       2,
       3
     ];
-    std::say_float(TestCase->ONE);
+    std::say_float(TestCase::ONE());
     
     # Logical or
     {
@@ -302,7 +302,7 @@ package TestCase {
     # $array->[0]{x}
     {
       my $objs = new TestCase::Minimal[3];
-      $objs->[0] = TestCase::Minimal->new;
+      $objs->[0] = TestCase::Minimal::new();
       $objs->[0]{x} = 111;
       std::say_int($objs->[0]{x});
     }
@@ -329,20 +329,20 @@ package TestCase {
     
     # Create temporary varialbe
     {
-      TestCase::Minimal->new;
-      TestCase::Minimal->new;
-      TestCase::Minimal->new->{x};
+      TestCase::Minimal::new();
+      TestCase::Minimal::new();
+      TestCase::Minimal::new()->{x};
     }
     
-    my $obj1 = TestCase::Minimal->new;
+    my $obj1 = TestCase::Minimal::new();
     
     # last
     {
       while (1) {
-        my $obj1 = TestCase::Minimal->new;
-        my $obj2 = TestCase::Minimal->new;
+        my $obj1 = TestCase::Minimal::new();
+        my $obj2 = TestCase::Minimal::new();
         {
-          my $obj3 = TestCase::Minimal->new;
+          my $obj3 = TestCase::Minimal::new();
           last;
           next;
         }
@@ -390,8 +390,8 @@ package TestCase {
       my $nums : int[][];
     }
     
-    std::say_int(TestCase::EnumD->THREE);
-    std::say_int(TestCase::EnumD->FORE);
+    std::say_int(TestCase::EnumD::THREE());
+    std::say_int(TestCase::EnumD::FORE());
     
     # Core functions
     {
@@ -484,11 +484,11 @@ package TestCase {
     #}
     
     {
-      TestCase::Minimal->new;
+      TestCase::Minimal::new();
     }
     
     {
-      my $obj1 = TestCase::Minimal->new;
+      my $obj1 = TestCase::Minimal::new();
       
       my $obj2 : TestCase::Minimal;
       
@@ -578,7 +578,7 @@ package TestCase {
     
     # get and set field
     {
-      my $m = TestCase::Minimal->new;
+      my $m = TestCase::Minimal::new();
       
       $m->{x} = 99;
       $m->{y} = 100;
@@ -589,8 +589,8 @@ package TestCase {
 
     # Free when assignment
     {
-      my $m = TestCase::Minimal->new;
-      $m = TestCase::Minimal->new;
+      my $m = TestCase::Minimal::new();
+      $m = TestCase::Minimal::new();
     }
 
     # left is object, right is undef
@@ -693,10 +693,10 @@ package TestCase {
       my $num = 3;
       
       switch($num) {
-        case TestCase::EnumD->THREE:
+        case TestCase::EnumD::THREE():
           std::say_int(1);
           last;
-        case TestCase::EnumD->FORE:
+        case TestCase::EnumD::FORE():
           std::say_int(2);
           last;
         case 5:
@@ -877,8 +877,8 @@ package TestCase {
     TestCase::EnumA::ONE();
     TestCase::EnumA::TWO();
     
-    TestCase::EnumA->ONE();
-    TestCase::EnumA->ONE;
+    TestCase::EnumA::ONE();
+    TestCase::EnumA::ONE();
     
     # Basic operation byte
     {
@@ -1071,21 +1071,21 @@ package TestCase {
 
   sub increfcount($test : TestCase::Minimal, $num : int) : int {
     
-    my $aaa = TestCase::Minimal->new;
+    my $aaa = TestCase::Minimal::new();
   }
 
   sub decinctest ($num1 : TestCase::Minimal, $num2 : int, $num3 : TestCase::Minimal) : int {
     {
-      my $num4 = TestCase::Minimal->new;
-      my $num5 = TestCase::Minimal->new;
+      my $num4 = TestCase::Minimal::new();
+      my $num5 = TestCase::Minimal::new();
     }
     return 2;
   }
 
   sub return_object() : TestCase::Minimal {
-    my $obj0 = TestCase::Minimal->new;
+    my $obj0 = TestCase::Minimal::new();
     {
-      my $obj1 = TestCase::Minimal->new;
+      my $obj1 = TestCase::Minimal::new();
       
       my $obj2 : TestCase::Minimal;
       
@@ -1096,10 +1096,10 @@ package TestCase {
   }
 
   sub eval_block() : void {
-    my $obj0 = TestCase::Minimal->new;
+    my $obj0 = TestCase::Minimal::new();
     
     eval {
-      my $obj1 = TestCase::Minimal->new;
+      my $obj1 = TestCase::Minimal::new();
       
       my $obj2 : TestCase::Minimal;
       
@@ -1111,7 +1111,7 @@ package TestCase {
     };
     
     {
-      my $obj4 = TestCase::Minimal->new;
+      my $obj4 = TestCase::Minimal::new();
       
       my $obj5 : TestCase::Minimal;
       
@@ -1140,7 +1140,7 @@ package TestCase {
     
   }
   sub weaken_reference_count1_object() : int {
-    my $minimal = TestCase::Minimal->new;
+    my $minimal = TestCase::Minimal::new();
     my $test = new TestCase;
     
     $test->{minimal} = $minimal;

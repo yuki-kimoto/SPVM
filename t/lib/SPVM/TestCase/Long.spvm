@@ -2,10 +2,10 @@ use Long;
 
 package TestCase::Long {
   sub constant() : int {
-    if (Long->MIN_VALUE == -9223372036854775808L) {
-      if (Long->MAX_VALUE == 9223372036854775807L) {
-        if (Long->BYTES == 8) {
-          if (Long->SIZE == 64) {
+    if (Long::MIN_VALUE() == -9223372036854775808L) {
+      if (Long::MAX_VALUE() == 9223372036854775807L) {
+        if (Long::BYTES() == 8) {
+          if (Long::SIZE() == 64) {
             return 1;
           }
         }
