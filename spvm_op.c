@@ -128,6 +128,16 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "CONCAT_STRING",
 };
 
+SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_field) {
+  
+  return NULL;
+}
+
+SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_field) {
+  
+  return NULL;
+}
+
 SPVM_OP* SPVM_OP_build_default_new(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
   // New op
@@ -1076,6 +1086,27 @@ const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package
   return abs_name;
 }
 
+const char* SPVM_OP_create_getter_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
+  // Foo::set_bar
+  int32_t length = (int32_t)(strlen(package_name) + 6 + strlen(name));
+  
+  char* abs_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+  
+  sprintf(abs_name, "%s::get_%s", package_name, name);
+  
+  return abs_name;
+}
+
+const char* SPVM_OP_create_setter_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
+  int32_t length = (int32_t)(strlen(package_name) + 6 + strlen(name));
+  
+  char* abs_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+  
+  sprintf(abs_name, "%s::set_%s", package_name, name);
+  
+  return abs_name;
+}
+
 SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block) {
   
   SPVM_OP_insert_child(compiler, op_package, op_package->last, op_name_package);
@@ -1158,9 +1189,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           // Add op package
           field->op_package = op_package;
+          
+          
         }
       }
     }
+    
+    // Subroutine limit rest. new and getter and setter
+    int32_t sub_limit_rest = 1 + op_fields->length * 2;
     
     // Register subrotuine
     {
@@ -1176,11 +1212,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
         
-        assert(op_subs->length <= SPVM_LIMIT_C_SUBS - 1);
         if (found_op_sub) {
           SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
         }
-        else if (op_subs->length == SPVM_LIMIT_C_SUBS - 1) {
+        else if (op_subs->length == SPVM_LIMIT_C_SUBS - sub_limit_rest) {
           SPVM_yyerror_format(compiler, "Too many subroutines at %s line %d\n", sub_name, op_sub->file, op_sub->line);
           compiler->fatal_error = 1;
         }
@@ -1210,6 +1245,62 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
 
+    // Create gettter and setter
+    {
+      int32_t i;
+      for (i = 0; i < op_fields->length; i++) {
+        SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, i);
+        
+        SPVM_FIELD* field = op_field->uv.field;
+        
+        if (field->has_getter || field->has_setter) {
+          const char* field_name = field->op_name->uv.name;
+          
+          SPVM_OP* op_package = field->op_package;
+          const char* package_name = op_package->uv.package->op_name->uv.name;
+          
+          if (field->has_getter) {
+            const char* sub_abs_name_getter = SPVM_OP_create_getter_name(compiler, package_name, field_name);
+            
+            SPVM_OP* found_op_sub_getter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter));
+            
+            if (!found_op_sub_getter) {
+              SPVM_OP* op_sub_getter = SPVM_OP_build_sub_getter(compiler, op_package, op_field);
+              /*
+              SPVM_SUB* sub_getter = op_sub_getter->uv.sub;
+              sub_getter->abs_name = sub_abs_name_getter;
+              sub_getter->file_name = op_package->file;
+              sub_getter->op_package = op_package;
+              
+              SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_getter);
+              SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter), op_sub_getter);
+              */
+            }
+          }
+          
+          if (field->has_setter) {
+            const char* sub_abs_name_setter = SPVM_OP_create_setter_name(compiler, package_name, field_name);
+
+            SPVM_OP* found_op_sub_setter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter));
+            
+            if (!found_op_sub_setter) {
+              SPVM_OP* op_sub_setter = SPVM_OP_build_sub_setter(compiler, op_package, op_field);
+              /*
+              SPVM_SUB* sub_setter = op_sub_setter->uv.sub;
+              sub_setter->abs_name = sub_abs_name_setter;
+              sub_setter->file_name = op_package->file;
+              sub_setter->op_package = op_package;
+              
+              SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_setter);
+              SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter), op_sub_setter);
+              */
+            }
+          }
+        }
+      }
+    }
+    
+    // Add default constructor
     const char* sub_abs_name_new = SPVM_OP_create_abs_name(compiler, package_name, "new");
     SPVM_OP* found_op_sub_new = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_new, strlen(sub_abs_name_new));
     if (!found_op_sub_new) {
