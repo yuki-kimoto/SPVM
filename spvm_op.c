@@ -711,18 +711,16 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM
   SPVM_CALL_SUB* call_sub = op_name->uv.call_sub;
   
   const char* sub_abs_name = NULL;
-  if (call_sub->code == SPVM_CALL_SUB_C_CODE_VARBASENAME) {
+  if (call_sub->code == SPVM_CALL_SUB_C_CODE_METHOD_CALL) {
     const char* package_name = call_sub->op_term->uv.var->op_my_var->uv.my_var->op_type->uv.type->name;
     const char* sub_name = call_sub->op_name->uv.name;
     sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
   }
-  else if (call_sub->code == SPVM_CALL_SUB_C_CODE_ABSNAME) {
+  else if (call_sub->code == SPVM_CALL_SUB_C_CODE_SUB_CALL) {
     sub_abs_name = call_sub->op_name->uv.name;
   }
-  else if (call_sub->code == SPVM_CALL_SUB_C_CODE_BASENAME) {
-    const char* package_name = op_package->uv.package->op_name->uv.name;
-    const char* sub_name = call_sub->op_name->uv.name;
-    sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
+  else {
+    assert(0);
   }
   
   call_sub->resolved_name = sub_abs_name;
@@ -1616,37 +1614,16 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
   
   // Normal call
   if (op_invocant->code == SPVM_OP_C_CODE_NULL) {
-    // Absolute
-    // P::m();
-    if (strstr(sub_name, ":")) {
-      call_sub->code = SPVM_CALL_SUB_C_CODE_ABSNAME;
-      op_name->uv.name = sub_name;
-      call_sub->op_name = op_name;
-    }
-    // Base name
-    // m();
-    else {
-      call_sub->code = SPVM_CALL_SUB_C_CODE_BASENAME;
-      op_name->uv.name = sub_name;
-      call_sub->op_name = op_name;
-    }
+    call_sub->code = SPVM_CALL_SUB_C_CODE_SUB_CALL;
+    op_name->uv.name = sub_name;
+    call_sub->op_name = op_name;
   }
   // Method call
   else if (op_invocant->code == SPVM_OP_C_CODE_VAR) {
-    // Absolute
-    // $var->P::m();
-    if (strstr(sub_name, ":")) {
-      call_sub->code = SPVM_CALL_SUB_C_CODE_ABSNAME;
-      op_name->uv.name = sub_name;
-      call_sub->op_name = op_name;
-    }
-    // Base name
-    // $var->m();
-    else {
-      call_sub->code = SPVM_CALL_SUB_C_CODE_VARBASENAME;
-      call_sub->op_term = op_invocant;
-      call_sub->op_name = op_name_sub;
-    }
+    call_sub->code = SPVM_CALL_SUB_C_CODE_METHOD_CALL;
+    call_sub->op_term = op_invocant;
+    call_sub->op_name = op_name_sub;
+    
     SPVM_OP_insert_child(compiler, op_terms, op_terms->last, op_invocant);
   }
   // Method call
@@ -1669,7 +1646,7 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
       op_abs_name->uv.name = abs_name;
       
       // Set abs name
-      call_sub->code = SPVM_CALL_SUB_C_CODE_ABSNAME;
+      call_sub->code = SPVM_CALL_SUB_C_CODE_SUB_CALL;
       call_sub->op_name = op_abs_name;
     }
   }

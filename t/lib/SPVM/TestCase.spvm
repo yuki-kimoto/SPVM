@@ -421,7 +421,7 @@ package TestCase {
   
   sub exception_eval_call_sub() : int {
     eval {
-      exception_croak_return_int();
+      TestCase::exception_croak_return_int();
     };
     
     if ($@) {
@@ -432,7 +432,7 @@ package TestCase {
   }
   
   sub exception_call_stack() : int {
-    exception_croak_return_int();
+    TestCase::exception_croak_return_int();
   }
   
   sub exception_croak_return_byte() : byte {
@@ -491,7 +491,7 @@ package TestCase {
 
   sub call_sub_last_camma() : int {
     
-    my $total = sum_int(3, 4,);
+    my $total = TestCase::sum_int(3, 4,);
     
     if ($total == 7) {
       return 1;
@@ -502,7 +502,7 @@ package TestCase {
   
   sub destructor() : int {
     my $minimal = new TestCase::Minimal;
-    destructor_call($minimal);
+    TestCase::destructor_call($minimal);
     
     if ($minimal->{x} == 3) {
       return 1;
@@ -815,7 +815,7 @@ package TestCase {
   sub call_void() : int {
     my $nums : int[] = [1];
     
-    call_void_sub($nums);
+    TestCase::call_void_sub($nums);
     
     if ($nums->[0] == 5) {
       return 1;
@@ -831,8 +831,8 @@ package TestCase {
   # Default return value empty
   sub default_return_value_byte() : int {
     
-    if (default_return_value_byte_sub() == (byte)0) {
-      if (default_return_value_byte_sub_empty() == (byte)0) {
+    if (TestCase::default_return_value_byte_sub() == (byte)0) {
+      if (TestCase::default_return_value_byte_sub_empty() == (byte)0) {
         return 1;
       }
     }
@@ -847,8 +847,8 @@ package TestCase {
   }
   sub default_return_value_short() : int {
     
-    if (default_return_value_short_sub() == (short)0) {
-      if (default_return_value_short_sub_empty() == (short)0) {
+    if (TestCase::default_return_value_short_sub() == (short)0) {
+      if (TestCase::default_return_value_short_sub_empty() == (short)0) {
         return 1;
       }
     }
@@ -863,8 +863,8 @@ package TestCase {
   }
   sub default_return_value_int() : int {
     
-    if (default_return_value_int_sub() == (int)0) {
-      if (default_return_value_int_sub_empty() == (int)0) {
+    if (TestCase::default_return_value_int_sub() == (int)0) {
+      if (TestCase::default_return_value_int_sub_empty() == (int)0) {
         return 1;
       }
     }
@@ -879,8 +879,8 @@ package TestCase {
   }
   sub default_return_value_long() : int {
     
-    if (default_return_value_long_sub() == (long)0) {
-      if (default_return_value_long_sub_empty() == (long)0) {
+    if (TestCase::default_return_value_long_sub() == (long)0) {
+      if (TestCase::default_return_value_long_sub_empty() == (long)0) {
         return 1;
       }
     }
@@ -895,8 +895,8 @@ package TestCase {
   }
   sub default_return_value_float() : int {
     
-    if (default_return_value_float_sub() == (float)0) {
-      if (default_return_value_float_sub_empty() == (float)0) {
+    if (TestCase::default_return_value_float_sub() == (float)0) {
+      if (TestCase::default_return_value_float_sub_empty() == (float)0) {
         return 1;
       }
     }
@@ -911,8 +911,8 @@ package TestCase {
   }
   sub default_return_value_double() : int {
     
-    if (default_return_value_double_sub() == (double)0) {
-      if (default_return_value_double_sub_empty() == (double)0) {
+    if (TestCase::default_return_value_double_sub() == (double)0) {
+      if (TestCase::default_return_value_double_sub_empty() == (double)0) {
         return 1;
       }
     }
@@ -927,8 +927,8 @@ package TestCase {
   }
   sub default_return_value_object() : int {
     
-    if (default_return_value_object_sub() == undef) {
-      if (default_return_value_object_sub_empty() == undef) {
+    if (TestCase::default_return_value_object_sub() == undef) {
+      if (TestCase::default_return_value_object_sub_empty() == undef) {
         return 1;
       }
     }
@@ -1347,7 +1347,7 @@ package TestCase {
   }
 
   sub get_object_from_freelist () : int {
-    get_object_from_freelist_check();
+    TestCase::get_object_from_freelist_check();
     
     my $result = new int[65];
     $result->[64] = 0;

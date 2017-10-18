@@ -149,7 +149,7 @@ package TestCase {
     }
     
     {
-      error_eval_call();
+      TestCase::error_eval_call();
     }
     
     {
@@ -157,25 +157,25 @@ package TestCase {
     }
     
     {
-      my $ret = error_eval();
+      my $ret = TestCase::error_eval();
       
       std::say_int($ret);
     }
     
-    error_eval();
+    TestCase::error_eval();
     
     my $dest = new TestCase::Destructor;
     
     # enum
     {
-      BYTE_MAX();
-      BYTE_MIN();
-      SHORT_MAX();
-      SHORT_MIN();
-      INT_MAX();
-      INT_MIN();
-      LONG_MAX();
-      LONG_MIN();
+      TestCase::BYTE_MAX();
+      TestCase::BYTE_MIN();
+      TestCase::SHORT_MAX();
+      TestCase::SHORT_MIN();
+      TestCase::INT_MAX();
+      TestCase::INT_MIN();
+      TestCase::LONG_MAX();
+      TestCase::LONG_MIN();
     }
     # Field set and get
     {
@@ -191,7 +191,7 @@ package TestCase {
     
     # Weaken
     {
-      my $num = weaken_reference_count1_object();
+      my $num = TestCase::weaken_reference_count1_object();
     }
     
     # Weaken
@@ -203,13 +203,13 @@ package TestCase {
       weaken $test->{next_test};
     }
     
-    call_void();
+    TestCase::call_void();
     
     std::say("a");
     
     # Default return value object
-    if (default_return_value_object_sub() == undef) {
-      if (default_return_value_object_sub_empty() == undef) {
+    if (TestCase::default_return_value_object_sub() == undef) {
+      if (TestCase::default_return_value_object_sub_empty() == undef) {
         1;
       }
     }
@@ -222,7 +222,7 @@ package TestCase {
 
     # Get object from freelist
     {
-       check_freelist();
+       TestCase::check_freelist();
        
        my $result = new int[65];
        $result->[64] = 0;
@@ -318,7 +318,7 @@ package TestCase {
     # Call new subroutine without variable
     {
       TestCase::Minimal::new();
-      sum0(1, 3);
+      TestCase::sum0(1, 3);
     }
     
     # Subroutine call from native
@@ -528,11 +528,11 @@ package TestCase {
     }
     
     eval {
-      sum0(1, 2);
+      TestCase::sum0(1, 2);
       
       3;
       
-      sum0(3, 4);
+      TestCase::sum0(3, 4);
       
       croak "Catch error";
       
@@ -540,7 +540,7 @@ package TestCase {
     };
     
     {
-      sum0(5, 6);
+      TestCase::sum0(5, 6);
       2;
       std::say("Error");
     }
@@ -615,8 +615,8 @@ package TestCase {
     }
     7;
     
-    std::say_int(sum0(1, 1));
-    std::say_int(sum2(1, 2));
+    std::say_int(TestCase::sum0(1, 1));
+    std::say_int(TestCase::sum2(1, 2));
 
     # Constant float
     std::say_float(0.3f);
@@ -943,9 +943,9 @@ package TestCase {
     undef;
     
     TestCase::sum0(1, 2);
-    sum0(1, 2);
+    TestCase::sum0(1, 2);
     
-    test1();
+    TestCase::test1();
     
     while (1) {
       1;
@@ -991,7 +991,7 @@ package TestCase {
   sub call_void() : int {
     my $nums : int[] = [1];
     
-    call_void_sub($nums);
+    TestCase::call_void_sub($nums);
     
     if ($nums->[0] == 5) {
       return 1;
@@ -1049,7 +1049,7 @@ package TestCase {
       
     }
     
-    array_new();
+    TestCase::array_new();
     
     return 2;
   }
@@ -1064,7 +1064,7 @@ package TestCase {
   sub sum2 ($num1 : int, $num2 : int) : int {
     # croak "Error";
     
-    my $num3 = sum0($num1, $num2);
+    my $num3 = TestCase::sum0($num1, $num2);
     
     return $num3 + 3;
   }
@@ -1159,7 +1159,7 @@ package TestCase {
   }
   
   sub error_call_stack() : int {
-    error();
+    TestCase::error();
   }
 
   sub error_eval() : int {
@@ -1177,7 +1177,7 @@ package TestCase {
 
   sub error_eval_call() : int {
     eval {
-      error();
+      TestCase::error();
     };
     
     if ($@) {

@@ -5,7 +5,7 @@ package TestCase::Extension {
 
   sub call_void_sub_exception() : int {
     eval {
-      call_void_sub_exception_native();
+      TestCase::Extension::call_void_sub_exception_native();
     };
     
     if ($@) {
@@ -17,7 +17,7 @@ package TestCase::Extension {
 
   sub call_byte_sub_exception() : int {
     eval {
-      call_byte_sub_exception_native();
+      TestCase::Extension::call_byte_sub_exception_native();
     };
     
     if ($@) {
@@ -29,7 +29,7 @@ package TestCase::Extension {
 
   sub call_short_sub_exception() : int {
     eval {
-      call_short_sub_exception_native();
+      TestCase::Extension::call_short_sub_exception_native();
     };
     
     if ($@) {
@@ -41,7 +41,7 @@ package TestCase::Extension {
 
   sub call_int_sub_exception() : int {
     eval {
-      call_int_sub_exception_native();
+      TestCase::Extension::call_int_sub_exception_native();
     };
     
     if ($@) {
@@ -53,7 +53,7 @@ package TestCase::Extension {
 
   sub call_long_sub_exception() : int {
     eval {
-      call_long_sub_exception_native();
+      TestCase::Extension::call_long_sub_exception_native();
     };
     
     if ($@) {
@@ -65,7 +65,7 @@ package TestCase::Extension {
 
   sub call_float_sub_exception() : int {
     eval {
-      call_float_sub_exception_native();
+      TestCase::Extension::call_float_sub_exception_native();
     };
     
     if ($@) {
@@ -77,7 +77,7 @@ package TestCase::Extension {
 
   sub call_double_sub_exception() : int {
     eval {
-      call_double_sub_exception_native();
+      TestCase::Extension::call_double_sub_exception_native();
     };
     
     if ($@) {
@@ -86,11 +86,10 @@ package TestCase::Extension {
     
     return 0;
   }
-
-
+  
   sub call_object_sub_exception() : int {
     eval {
-      call_object_sub_exception_native();
+      TestCase::Extension::call_object_sub_exception_native();
     };
     
     if ($@) {
