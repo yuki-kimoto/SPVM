@@ -128,7 +128,42 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "CONCAT_STRING",
 };
 
+SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line) {
+  
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
+  
+  op_name->uv.name = name;
+  
+  return op_name;
+}
+
+SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
+  
+  SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_name->file, op_name->line);
+
+  SPVM_VAR* var = SPVM_VAR_new(compiler);
+  var->op_name = op_name;
+  op_var->uv.var = var;
+  
+  return op_var;
+}
+
 SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_field) {
+  
+  /*
+    sub get_x($self : Point) { return $self->{x} }
+  */
+  
+  SPVM_FIELD* field = op_field->uv.field;
+  
+  // Argument type
+  SPVM_OP* op_name_arg_type = SPVM_OP_new_op_name(compiler, field->op_type->uv.type->name, op_field->file, op_field->line);
+  SPVM_OP* op_type_arg = SPVM_OP_build_type_name(compiler, op_name_arg_type);
+  
+  // Argument name
+  SPVM_OP* op_name_arg = SPVM_OP_new_op_name(compiler, "$self", op_field->file, op_field->line);
+  
+  // SPVM_OP_build_my_var(compiler, SPVM_OP* op_my_var, SPVM_OP* op_var, SPVM_OP* op_type) {
   
   return NULL;
 }

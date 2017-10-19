@@ -795,18 +795,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             memcpy(var_name, cur_token_ptr, str_len);
             var_name[str_len] = '\0';
 
-            // 
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_VAR);
-            SPVM_VAR* var = SPVM_VAR_new(compiler);
-            
             // Name OP
-            SPVM_OP* op_name = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
-            op_name->uv.name = var_name;
+            SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
             
-            var->op_name = op_name;
-            
-            op->uv.var = var;
-            yylvalp->opval = op;
+            // Var OP
+            SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name);
+
+            yylvalp->opval = op_var;
             
             return VAR;
           }
@@ -1475,9 +1470,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NAME);
-          op->uv.name = keyword;
-          yylvalp->opval = op;
+          SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);
+          
+          yylvalp->opval = op_name;
           
           return NAME;
         }
