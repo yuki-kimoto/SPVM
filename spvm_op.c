@@ -195,7 +195,7 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   sprintf(sub_name, "get_%s", field_name);  
   SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, sub_name, file, line);
 
-  // Object variable
+  // Variable Object argument
   SPVM_OP* op_name_object_arg = SPVM_OP_new_op_name(compiler, "$self", file, line);
   SPVM_OP* op_var_object_arg = SPVM_OP_new_op_var(compiler, op_name_object_arg);
   
@@ -207,6 +207,13 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   
   // Return type
   SPVM_OP* op_type_return = SPVM_OP_clone_op_type(compiler, op_type_field);
+  
+  // Variable Object invocant
+  SPVM_OP* op_name_object_invocant = SPVM_OP_new_op_name(compiler, "$self", file, line);
+  SPVM_OP* op_var_object_invocant = SPVM_OP_new_op_var(compiler, op_name_object_invocant);
+  
+  // Field name
+  SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, field_name, file, line);
   
   /*
   
