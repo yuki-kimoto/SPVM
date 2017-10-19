@@ -1380,8 +1380,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
               
               SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_getter);
               SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter), op_sub_getter);
-              
-              warn("BBBBBBB %s", sub_abs_name_getter);
             }
           }
           
