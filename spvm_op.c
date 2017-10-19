@@ -137,7 +137,7 @@ SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   // Add types
   SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_new);
   
-  return op_type;
+  return op_type_new;
 }
 
 SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line) {
@@ -171,14 +171,14 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   const char* package_name = package->op_name->uv.name;
   
   // Package type
-  SPVM_OP* op_type_package = package->op_type;
+  SPVM_OP* op_type_package = SPVM_OP_clone_op_type(compiler, package->op_type);
   
   // Field name
   SPVM_FIELD* field = op_field->uv.field;
   const char* field_name = field->op_name->uv.name;
   
   // Field type
-  SPVM_OP* op_type_field = field->op_type;
+  SPVM_OP* op_type_field = SPVM_OP_clone_op_type(compiler, field->op_type);
   
   // File
   const char* file = op_field->file;
@@ -200,7 +200,7 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP* op_var_object_arg = SPVM_OP_new_op_var(compiler, op_name_object_arg);
   
   // Object type
-  SPVM_OP* op_type_object_arg = SPVM_OP_clone_op_type(compiler, op_type_package);
+  SPVM_OP* op_type_object_arg = op_type_package;
   
   // Argument
   SPVM_OP* op_var_arg = SPVM_OP_build_my_var(compiler, op_var_object_arg, op_type_object_arg);
@@ -210,7 +210,7 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, op_var_arg);
   
   // Return type
-  SPVM_OP* op_type_return = SPVM_OP_clone_op_type(compiler, op_type_field);
+  SPVM_OP* op_type_return = op_type_field;
   
   // Variable Object invocant
   SPVM_OP* op_name_object_invocant = SPVM_OP_new_op_name(compiler, "$self", file, line);
@@ -233,15 +233,10 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   // Block
   SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, file, line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
+
+  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_list_args, NULL, op_type_return, op_block);
   
-  /*
-  
-  // Build subroutine
-  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_type, NULL, NULL, op_type_return, op_block);
-  
-  */
-  
-  return NULL;
+  return op_sub;
 }
 
 SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_field) {
@@ -1305,6 +1300,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         }
       }
     }
+
+    // Add package
+    op_package->uv.package = package;
     
     // Subroutine limit rest. new and getter and setter
     int32_t sub_limit_rest = 1 + op_fields->length * 2;
@@ -1367,9 +1365,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         if (field->has_getter || field->has_setter) {
           const char* field_name = field->op_name->uv.name;
           
-          SPVM_OP* op_package = field->op_package;
-          const char* package_name = op_package->uv.package->op_name->uv.name;
-          
           if (field->has_getter) {
             const char* sub_abs_name_getter = SPVM_OP_create_getter_name(compiler, package_name, field_name);
             
@@ -1377,7 +1372,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             
             if (!found_op_sub_getter) {
               SPVM_OP* op_sub_getter = SPVM_OP_build_sub_getter(compiler, op_package, op_field);
-              /*
+              
               SPVM_SUB* sub_getter = op_sub_getter->uv.sub;
               sub_getter->abs_name = sub_abs_name_getter;
               sub_getter->file_name = op_package->file;
@@ -1385,7 +1380,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
               
               SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_getter);
               SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter), op_sub_getter);
-              */
+              
+              warn("BBBBBBB %s", sub_abs_name_getter);
             }
           }
           
@@ -1428,8 +1424,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Add op fields
     package->op_fields = op_fields;
     
-    // Add package
-    op_package->uv.package = package;
     SPVM_DYNAMIC_ARRAY_push(compiler->op_packages, op_package);
     SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
   }
