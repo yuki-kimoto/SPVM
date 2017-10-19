@@ -128,6 +128,18 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "CONCAT_STRING",
 };
 
+SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
+  
+  SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);
+  
+  op_type_new->uv.type = op_type->uv.type;
+  
+  // Add types
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_types, op_type_new);
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line) {
   
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
@@ -190,6 +202,10 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   
   // Argument
   SPVM_OP* op_var_arg = SPVM_OP_build_my_var(compiler, op_var_object, op_type_object);
+  
+  // Return type
+  SPVM_OP* op_name_return_type = SPVM_OP_new_op_name(compiler, field->op_type->uv.type->name, file, line);
+  SPVM_OP* op_type_return = SPVM_OP_build_type_name(compiler, op_name_object_type);
   
   return NULL;
 }
