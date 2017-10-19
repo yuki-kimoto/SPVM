@@ -963,7 +963,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     // Normal
                     else if (op_term) {
                       if (first_type->code != sub_return_type->code) {
-                        warn("AAAAAAAAA %d %d", first_type->code, sub_return_type->code);
                         is_invalid = 1;
                       }
                     }
