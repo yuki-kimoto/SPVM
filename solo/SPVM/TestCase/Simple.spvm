@@ -8,13 +8,12 @@ package TestCase::Simple {
   has message : byte[];
   # has c : TestCase::Simple;
   # has d : TestCase::Simple[];
-  has private_field : private int;
+  has private_field : int;
   
   has title : int;
   
-  sub get_x ($self : TestCase::Simple) : int {
-    return $self->{x};
-  }
+  get x, y, values1;
+  set x, y;
   
   sub get2 () : int {
     1;

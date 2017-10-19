@@ -28,7 +28,7 @@ package TestCase {
   has x_long : long;
   has x_float : float;
   has x_double : double;
-  has private_field : private int;
+  has private_field : int;
   
   get x_int, x_long;
   set x_int, x_long;
@@ -307,7 +307,7 @@ package TestCase {
       my $objs = new TestCase::Minimal[3];
       $objs->[0] = TestCase::Minimal::new();
       $objs->[0]{x} = 111;
-      std::say_int($objs->[0]{x});
+      std::say_int($objs->[0]->{x});
     }
     
     # $obj->{x}[0]

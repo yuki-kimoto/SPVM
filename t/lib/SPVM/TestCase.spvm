@@ -39,7 +39,7 @@ package TestCase {
   has weaken3 : TestCase::Weaken;
   has weaken4 : TestCase::Weaken;
   has minimal : TestCase::Minimal;
-  has private_field : private int;
+  has private_field : int;
   
   set x_int, x_long;
   get x_int, x_long;

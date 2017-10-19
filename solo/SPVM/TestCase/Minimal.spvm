@@ -3,6 +3,9 @@ package TestCase::Minimal {
   has y : int;
   has tests : TestCase[];
   
+  set x, y;
+  get x, y;
+  
   sub new() : TestCase::Minimal {
     
     return new TestCase::Minimal;
