@@ -126,6 +126,8 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "WEAKEN_FIELD",
   "SPECIAL_ASSIGN",
   "CONCAT_STRING",
+  "SET",
+  "GET",
 };
 
 SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
