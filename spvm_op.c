@@ -1931,11 +1931,6 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
 
 SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_sub, SPVM_OP* op_terms) {
   
-  if (op_name_sub->code == SPVM_OP_C_CODE_NEW) {
-    op_name_sub->code = SPVM_OP_C_CODE_NAME;
-    op_name_sub->uv.name = "new";
-  }
-  
   // Build OP_SUB
   SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_SUB, op_name_sub->file, op_name_sub->line);
   SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_name_sub);
@@ -1953,36 +1948,12 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     call_sub->op_name = op_name;
   }
   // Method call
-  else if (op_invocant->code == SPVM_OP_C_CODE_VAR) {
+  else {
     call_sub->code = SPVM_CALL_SUB_C_CODE_METHOD_CALL;
     call_sub->op_term = op_invocant;
     call_sub->op_name = op_name_sub;
     
     SPVM_OP_insert_child(compiler, op_terms, op_terms->last, op_invocant);
-  }
-  // Method call
-  else if (op_invocant->code == SPVM_OP_C_CODE_NAME) {
-    // Absolute
-    // P->Q::m;
-    if (strstr(sub_name, ":")) {
-      SPVM_yyerror_format(compiler, "package name is ambiguas %s line %d\n", op_invocant->file, op_invocant->line);
-    }
-    // Base name
-    else {
-      const char* package_name = op_invocant->uv.name;
-      const char* name = op_name_sub->uv.name;
-      
-      // Create abs name
-      const char* abs_name = SPVM_OP_create_abs_name(compiler, package_name, name);
-      
-      // Create op abs name
-      SPVM_OP* op_abs_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_invocant->file, op_invocant->line);
-      op_abs_name->uv.name = abs_name;
-      
-      // Set abs name
-      call_sub->code = SPVM_CALL_SUB_C_CODE_SUB_CALL;
-      call_sub->op_name = op_abs_name;
-    }
   }
   
   op_call_sub->uv.call_sub = call_sub;
