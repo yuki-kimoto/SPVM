@@ -795,8 +795,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     assert(0);
                   }
                   
-                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
-                  
                   // If NEW is not rvalue, temparary variable is created, and assinged.
                   if (!op_cur->rvalue) {
                     
