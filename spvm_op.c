@@ -151,17 +151,42 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
 SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_field) {
   
   /*
-    sub get_x($self : Point) { return $self->{x} }
+    sub get_x($self : Point) : int { return $self->{x} }
   */
   
+  // Package name
+  SPVM_PACKAGE* package = op_package->uv.package;
+  const char* package_name = package->op_name->uv.name;
+  
+  // Field name
   SPVM_FIELD* field = op_field->uv.field;
+  const char* field_name = field->op_name->uv.name;
   
-  // Argument type
-  SPVM_OP* op_name_arg_type = SPVM_OP_new_op_name(compiler, field->op_type->uv.type->name, op_field->file, op_field->line);
-  SPVM_OP* op_type_arg = SPVM_OP_build_type_name(compiler, op_name_arg_type);
+  // Field type
+  SPVM_OP* op_type_field = field->op_type;
   
-  // Argument name
-  SPVM_OP* op_name_arg = SPVM_OP_new_op_name(compiler, "$self", op_field->file, op_field->line);
+  // File
+  const char* file = op_field->file;
+  
+  // Line
+  int32_t line = op_field->line;
+  
+  // sub
+  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUB, file, line);
+  
+  // Subroutine name
+  int32_t sub_name_length = (int32_t)(4 + strlen(field_name));
+  char* sub_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, sub_name_length);
+  sprintf(sub_name, "get_%s", field_name);  
+  SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, sub_name, file, line);
+
+  // Object name
+  SPVM_OP* op_name_object = SPVM_OP_new_op_name(compiler, "$self", file, line);
+  
+  // Object type
+  SPVM_OP* op_name_object_type = SPVM_OP_new_op_name(compiler, package_name, file, line);
+  SPVM_OP* op_type_object = SPVM_OP_build_type_name(compiler, op_name_object_type);
+  
   
   // SPVM_OP_build_my_var(compiler, SPVM_OP* op_my_var, SPVM_OP* op_var, SPVM_OP* op_type) {
   
