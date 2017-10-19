@@ -196,17 +196,36 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, sub_name, file, line);
 
   // Object variable
-  SPVM_OP* op_name_object = SPVM_OP_new_op_name(compiler, "$self", file, line);
-  SPVM_OP* op_var_object = SPVM_OP_new_op_var(compiler, op_name_object);
+  SPVM_OP* op_name_object_arg = SPVM_OP_new_op_name(compiler, "$self", file, line);
+  SPVM_OP* op_var_object_arg = SPVM_OP_new_op_var(compiler, op_name_object_arg);
   
   // Object type
-  SPVM_OP* op_type_object = SPVM_OP_clone_op_type(compiler, op_type_package);
+  SPVM_OP* op_type_object_arg = SPVM_OP_clone_op_type(compiler, op_type_package);
   
   // Argument
-  SPVM_OP* op_var_arg = SPVM_OP_build_my_var(compiler, op_var_object, op_type_object);
+  SPVM_OP* op_var_arg = SPVM_OP_build_my_var(compiler, op_var_object_arg, op_type_object_arg);
   
   // Return type
   SPVM_OP* op_type_return = SPVM_OP_clone_op_type(compiler, op_type_field);
+  
+  /*
+  
+  // Return
+  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_type->file, op_type->line);
+  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_new);
+
+  // Statements
+  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_type->file, op_type->line);
+  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
+  
+  // Block
+  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_type->file, op_type->line);
+  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
+
+  // Build subroutine
+  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_type, NULL, NULL, op_type_return, op_block);
+  
+  */
   
   return NULL;
 }
