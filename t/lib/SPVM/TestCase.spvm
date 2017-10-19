@@ -26,7 +26,7 @@ use Math;
 package TestCase {
   has x_byte : byte;
   has x_short : short;
-  has x_int : ro int;
+  has x_int : rw int;
   has x_long : long;
   has x_float : float;
   has x_double : double;
@@ -85,10 +85,6 @@ package TestCase {
   
   sub get_x_double($self : TestCase) : double {
     return $self->{x_double};
-  }
-
-  sub set_x_int($self : TestCase, $value : int) : void {
-    $self->{x_int} = $value;
   }
   
   sub set_x_int_array($self : TestCase, $value : int[]) : void {

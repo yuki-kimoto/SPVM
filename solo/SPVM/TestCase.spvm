@@ -24,7 +24,7 @@ package TestCase {
   has minimal : TestCase::Minimal;
   has x_byte : byte;
   has x_short : short;
-  has x_int : ro int;
+  has x_int : rw int;
   has x_long : long;
   has x_float : float;
   has x_double : double;

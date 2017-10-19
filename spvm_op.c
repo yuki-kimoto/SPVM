@@ -321,13 +321,9 @@ SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   
   SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_call_field, op_var_assigned_value);
   
-  // Return
-  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, file, line);
-  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_build_assign);
-
   // Statements
   SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, file, line);
-  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
+  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_build_assign);
   
   // Block
   SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, file, line);

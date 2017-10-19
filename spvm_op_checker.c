@@ -948,6 +948,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     _Bool is_invalid = 0;
                     
+                    
                     // Undef
                     if (op_term->code == SPVM_OP_C_CODE_UNDEF) {
                       if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
@@ -962,6 +963,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     // Normal
                     else if (op_term) {
                       if (first_type->code != sub_return_type->code) {
+                        warn("AAAAAAAAA %d %d", first_type->code, sub_return_type->code);
                         is_invalid = 1;
                       }
                     }
