@@ -208,6 +208,10 @@ struct SPVM_op {
   _Bool rvalue;
 };
 
+SPVM_OP* SPVM_OP_build_setters(SPVM_COMPILER* compiler, SPVM_OP* op_set, SPVM_OP* op_names);
+SPVM_OP* SPVM_OP_build_getters(SPVM_COMPILER* compiler, SPVM_OP* op_get, SPVM_OP* op_names);
+
+
 SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line);
 SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name);
 

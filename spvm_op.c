@@ -130,6 +130,20 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "GET",
 };
 
+SPVM_OP* SPVM_OP_build_setters(SPVM_COMPILER* compiler, SPVM_OP* op_set, SPVM_OP* op_names) {
+  
+  SPVM_OP_insert_child(compiler, op_set, op_set->last, op_names);
+  
+  return op_set;
+}
+
+SPVM_OP* SPVM_OP_build_getters(SPVM_COMPILER* compiler, SPVM_OP* op_get, SPVM_OP* op_names) {
+
+  SPVM_OP_insert_child(compiler, op_get, op_get->last, op_names);
+  
+  return op_get;
+}
+
 SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
   SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);
