@@ -1382,20 +1382,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_RETURN);
                   return RETURN;
                 }
-                else if (strcmp(keyword, "rw") == 0) {
-                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DESCRIPTOR);
-                  op->code = SPVM_DESCRIPTOR_C_CODE_RW;
-                  yylvalp->opval = op;
-                  
-                  return DESCRIPTOR;
-                }
-                else if (strcmp(keyword, "ro") == 0) {
-                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DESCRIPTOR);
-                  op->code = SPVM_DESCRIPTOR_C_CODE_RO;
-                  yylvalp->opval = op;
-                  
-                  return DESCRIPTOR;
-                }
                 break;
               case 's' :
                 if (strcmp(keyword, "switch") == 0) {
@@ -1445,13 +1431,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "weaken") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_WEAKEN);
                   return WEAKEN;
-                }
-                else if (strcmp(keyword, "wo") == 0) {
-                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DESCRIPTOR);
-                  op->code = SPVM_DESCRIPTOR_C_CODE_WO;
-                  yylvalp->opval = op;
-                  
-                  return DESCRIPTOR;
                 }
                 break;
               case '_':

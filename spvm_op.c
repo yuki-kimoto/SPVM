@@ -1690,16 +1690,6 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
     if (op_descriptor->code == SPVM_DESCRIPTOR_C_CODE_PRIVATE) {
       field->is_private = 1;
     }
-    else if (op_descriptor->code == SPVM_DESCRIPTOR_C_CODE_RO) {
-      field->has_getter = 1;
-    }
-    else if (op_descriptor->code == SPVM_DESCRIPTOR_C_CODE_WO) {
-      field->has_setter = 1;
-    }
-    else if (op_descriptor->code == SPVM_DESCRIPTOR_C_CODE_RW) {
-      field->has_getter = 1;
-      field->has_setter = 1;
-    }
     else {
       SPVM_yyerror_format(compiler, "invalid field descriptor %s", SPVM_DESCRIPTOR_C_CODE_NAMES[op_descriptor->code], op_descriptors->file, op_descriptors->line);
     }
