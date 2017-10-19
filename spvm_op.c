@@ -205,6 +205,10 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   // Argument
   SPVM_OP* op_var_arg = SPVM_OP_build_my_var(compiler, op_var_object_arg, op_type_object_arg);
   
+  // Arguments
+  SPVM_OP* op_list_args = SPVM_OP_new_op_list(compiler, file, line);
+  SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, op_var_arg);
+  
   // Return type
   SPVM_OP* op_type_return = SPVM_OP_clone_op_type(compiler, op_type_field);
   
@@ -231,8 +235,10 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
   
   /*
+  
   // Build subroutine
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_type, NULL, NULL, op_type_return, op_block);
+  
   */
   
   return NULL;
