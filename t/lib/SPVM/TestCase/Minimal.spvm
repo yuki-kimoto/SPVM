@@ -1,20 +1,8 @@
 package TestCase::Minimal {
   has x : int;
   has y : int;
-
-  sub set_x($self : TestCase::Minimal, $value : int) : void {
-    $self->{x} = $value;
-  }
   
-  sub get_x($self : TestCase::Minimal) : int {
-    return $self->{x};
-  }
+  set x, y;
+  get x, y;
 
-  sub set_y($self : TestCase::Minimal, $value : int) : void {
-    $self->{y} = $value;
-  }
-  
-  sub get_y($self : TestCase::Minimal) : int {
-    return $self->{y};
-  }
 }

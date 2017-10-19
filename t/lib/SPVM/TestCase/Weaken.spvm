@@ -5,4 +5,11 @@ package TestCase::Weaken {
   has test_case : TestCase;
   has weaken2 : TestCase::Weaken2;
   has test_cases : TestCase[];
+  
+  set test_case, weaken2, x1;
+  get test_case, weaken2, x1;
+  
+  sub weaken_test_case($self : TestCase::Weaken) : void {
+    weaken $self->{test_case};
+  }
 }

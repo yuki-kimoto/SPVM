@@ -1489,14 +1489,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_field_found = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
         
         if (!op_field_found) {
-          SPVM_yyerror_format(compiler, "Can't create get accessor get_%s because %s field is not declared in %s package",
+          SPVM_yyerror_format(compiler, "Can't create get accessor get_%s because %s field is not declared in %s package at %s line %d\n",
             field_name, field_name, package_name, op_name->file, op_name->line);
         }
         else {
           SPVM_OP* found_op_sub_getter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter));
           
           if (found_op_sub_getter) {
-            SPVM_yyerror_format(compiler, "Can't create get accessor get_%s because %s subroutine is already declared in %s package",
+            SPVM_yyerror_format(compiler, "Can't create get accessor get_%s because get_%s subroutine is already declared in %s package at %s line %d\n",
               field_name, field_name, package_name, op_name->file, op_name->line);
           }
           else {
@@ -1527,14 +1527,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_field_found = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
         
         if (!op_field_found) {
-          SPVM_yyerror_format(compiler, "Can't create set accessor set_%s because %s field is not declared in %s package",
+          SPVM_yyerror_format(compiler, "Can't create set accessor set_%s because %s field is not declared in %s package at %s line %d\n",
             field_name, field_name, package_name, op_name->file, op_name->line);
         }
         else {
           SPVM_OP* found_op_sub_setter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter));
           
           if (found_op_sub_setter) {
-            SPVM_yyerror_format(compiler, "Can't create set accessor set_%s because %s subroutine is already declared in %s package",
+            SPVM_yyerror_format(compiler, "Can't create set accessor set_%s because set_%s subroutine is already declared in %s package at %s line %d\n",
               field_name, field_name, package_name, op_name->file, op_name->line);
           }
           else {
