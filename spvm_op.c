@@ -241,7 +241,101 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
 
 SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_field) {
   
-  return NULL;
+  /*
+    sub set_x($self : Point, $value : int) : void { $self->{x} = $value }
+  */
+  
+  // Package name
+  SPVM_PACKAGE* package = op_package->uv.package;
+  const char* package_name = package->op_name->uv.name;
+  
+  // Package type
+  SPVM_OP* op_type_package = SPVM_OP_clone_op_type(compiler, package->op_type);
+  
+  // Field name
+  SPVM_FIELD* field = op_field->uv.field;
+  const char* field_name = field->op_name->uv.name;
+  
+  // Field type
+  SPVM_OP* op_type_field = SPVM_OP_clone_op_type(compiler, field->op_type);
+  
+  // File
+  const char* file = op_field->file;
+  
+  // Line
+  int32_t line = op_field->line;
+  
+  // sub
+  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUB, file, line);
+  
+  // Subroutine name
+  int32_t sub_name_length = (int32_t)(4 + strlen(field_name));
+  char* sub_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, sub_name_length);
+  sprintf(sub_name, "set_%s", field_name);  
+  SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, sub_name, file, line);
+
+  // Variable Object argument
+  SPVM_OP* op_name_object_arg = SPVM_OP_new_op_name(compiler, "$self", file, line);
+  SPVM_OP* op_var_object_arg = SPVM_OP_new_op_var(compiler, op_name_object_arg);
+  
+  // Object type
+  SPVM_OP* op_type_object_arg = op_type_package;
+
+  // Variable Value argument
+  SPVM_OP* op_name_value_arg = SPVM_OP_new_op_name(compiler, "$value", file, line);
+  SPVM_OP* op_var_value_arg = SPVM_OP_new_op_var(compiler, op_name_value_arg);
+  
+  // Value type
+  SPVM_OP* op_type_value_arg = op_type_field;
+
+  // Argument object
+  SPVM_OP* op_var_arg_object = SPVM_OP_build_my_var(compiler, op_var_object_arg, op_type_object_arg);
+
+  // Argument value
+  SPVM_OP* op_var_arg_value = SPVM_OP_build_my_var(compiler, op_var_value_arg, op_type_value_arg);
+  
+  // Arguments
+  SPVM_OP* op_list_args = SPVM_OP_new_op_list(compiler, file, line);
+  SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, op_var_arg_object);
+  SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, op_var_arg_value);
+  
+  // Return type
+  SPVM_OP* op_type_return = SPVM_OP_build_void(compiler, op_field);
+  
+  // Assign
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, file, line);
+  
+  // Variable Object invocant
+  SPVM_OP* op_name_object_invocant = SPVM_OP_new_op_name(compiler, "$self", file, line);
+  SPVM_OP* op_var_object_invocant = SPVM_OP_new_op_var(compiler, op_name_object_invocant);
+  
+  // Field name
+  SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, field_name, file, line);
+  
+  // Call field
+  SPVM_OP* op_call_field = SPVM_OP_build_call_field(compiler, op_var_object_invocant, op_name_field);
+  
+  // Variable assinged Value
+  SPVM_OP* op_name_assigned_value = SPVM_OP_new_op_name(compiler, "$value", file, line);
+  SPVM_OP* op_var_assigned_value = SPVM_OP_new_op_var(compiler, op_name_assigned_value);
+  
+  SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_call_field, op_var_assigned_value);
+  
+  // Return
+  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, file, line);
+  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_build_assign);
+
+  // Statements
+  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, file, line);
+  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
+  
+  // Block
+  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, file, line);
+  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
+
+  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_list_args, NULL, op_type_return, op_block);
+  
+  return op_sub;
 }
 
 SPVM_OP* SPVM_OP_build_default_new(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
@@ -1390,7 +1484,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             
             if (!found_op_sub_setter) {
               SPVM_OP* op_sub_setter = SPVM_OP_build_sub_setter(compiler, op_package, op_field);
-              /*
               SPVM_SUB* sub_setter = op_sub_setter->uv.sub;
               sub_setter->abs_name = sub_abs_name_setter;
               sub_setter->file_name = op_package->file;
@@ -1398,7 +1491,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
               
               SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_setter);
               SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter), op_sub_setter);
-              */
             }
           }
         }
