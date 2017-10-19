@@ -215,23 +215,24 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   // Field name
   SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, field_name, file, line);
   
-  /*
+  // Call field
+  SPVM_OP* op_call_field = SPVM_OP_build_call_field(compiler, op_var_object_invocant, op_name_field);
   
   // Return
-  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_type->file, op_type->line);
-  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_new);
+  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, file, line);
+  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_call_field);
 
   // Statements
-  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_type->file, op_type->line);
+  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, file, line);
   SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
   
   // Block
-  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_type->file, op_type->line);
+  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, file, line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
-
+  
+  /*
   // Build subroutine
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_type, NULL, NULL, op_type_return, op_block);
-  
   */
   
   return NULL;
