@@ -188,7 +188,7 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP* op_type_object = SPVM_OP_build_type_name(compiler, op_name_object_type);
   
   
-  // SPVM_OP_build_my_var(compiler, SPVM_OP* op_my_var, SPVM_OP* op_var, SPVM_OP* op_type) {
+  // SPVM_OP_build_my_var(compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
   
   return NULL;
 }
@@ -1443,7 +1443,9 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   return op_use;
 }
 
-SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_OP* op_var, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
+  
+  SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_var->file, op_var->line);
   
   // Create my var information
   SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
@@ -1451,7 +1453,7 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_my_var, SPVM_
     my_var->op_type = op_type;
   }
   else {
-    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_my_var->file, op_my_var->line);
+    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
     my_var->op_type = op_type;
   }
   

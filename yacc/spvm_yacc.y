@@ -367,11 +367,11 @@ enumeration
 my_var
   : MY VAR ':' type
     {
-      $$ = SPVM_OP_build_my_var(compiler, $1, $2, $4);
+      $$ = SPVM_OP_build_my_var(compiler, $2, $4);
     }
   | MY VAR
     {
-      $$ = SPVM_OP_build_my_var(compiler, $1, $2, NULL);
+      $$ = SPVM_OP_build_my_var(compiler, $2, NULL);
     }
 
 expression
@@ -693,7 +693,7 @@ args
 arg
   : VAR ':' type
     {
-      $$ = SPVM_OP_build_my_var(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, $1->file, $1->line), $1, $3);
+      $$ = SPVM_OP_build_my_var(compiler, $1, $3);
     }
 
 opt_descriptors
