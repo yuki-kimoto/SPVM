@@ -170,6 +170,9 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_PACKAGE* package = op_package->uv.package;
   const char* package_name = package->op_name->uv.name;
   
+  // Package type
+  SPVM_OP* op_type_package = package->op_type;
+  
   // Field name
   SPVM_FIELD* field = op_field->uv.field;
   const char* field_name = field->op_name->uv.name;
@@ -197,15 +200,13 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP* op_var_object = SPVM_OP_new_op_var(compiler, op_name_object);
   
   // Object type
-  SPVM_OP* op_name_object_type = SPVM_OP_new_op_name(compiler, package_name, file, line);
-  SPVM_OP* op_type_object = SPVM_OP_build_type_name(compiler, op_name_object_type);
+  SPVM_OP* op_type_object = SPVM_OP_clone_op_type(compiler, op_type_package);
   
   // Argument
   SPVM_OP* op_var_arg = SPVM_OP_build_my_var(compiler, op_var_object, op_type_object);
   
   // Return type
-  SPVM_OP* op_name_return_type = SPVM_OP_new_op_name(compiler, field->op_type->uv.type->name, file, line);
-  SPVM_OP* op_type_return = SPVM_OP_build_type_name(compiler, op_name_object_type);
+  SPVM_OP* op_type_return = SPVM_OP_clone_op_type(compiler, op_type_field);
   
   return NULL;
 }
