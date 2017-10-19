@@ -167,7 +167,7 @@ package TestCase {
     
     TestCase::error_eval();
     
-    my $dest = new TestCase::Destructor;
+    my $dest = TestCase::Destructor::new();
     
     # enum
     {
@@ -312,7 +312,7 @@ package TestCase {
     
     # $obj->{x}[0]
     {
-      my $obj = new TestCase::Simple;
+      my $obj = TestCase::Simple::new();
       $obj->set_values1(new int[5]);
       $obj->get_values1->[0] = 221;
       std::say_int($obj->get_values1->[0]);
@@ -748,7 +748,7 @@ package TestCase {
     }
     6;
 
-    my $simple3 : TestCase::Simple = new TestCase::Simple;
+    my $simple3 : TestCase::Simple = TestCase::Simple::new();
     
     std::say_int($simple3->get_x());
     $simple3->get_x;
@@ -757,7 +757,7 @@ package TestCase {
     $simple3->get_x;
     $simple3->get_y;
 
-    my $simple2 : TestCase::Simple = new TestCase::Simple;
+    my $simple2 : TestCase::Simple = TestCase::Simple::new();
     
     if (1) { }
     
@@ -861,7 +861,7 @@ package TestCase {
       my $nums_length : int = @$nums;
     }
     
-    my $simple : TestCase::Simple = new TestCase::Simple;
+    my $simple : TestCase::Simple = TestCase::Simple::new();
     
     
     my $v1 : int;

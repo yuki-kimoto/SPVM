@@ -782,6 +782,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         compiler->fatal_error = 1;
                         return;
                       }
+                      else if (strcmp(type->name, op_package->uv.package->op_name->uv.name) != 0) {
+                        SPVM_yyerror_format(compiler,
+                          "new operator is private at %s line %d\n", op_cur->file, op_cur->line);
+                      }
                     }
                   }
                   else if (op_cur->first->code == SPVM_OP_C_CODE_CONSTANT) {
@@ -790,6 +794,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   else {
                     assert(0);
                   }
+                  
+                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
                   
                   // If NEW is not rvalue, temparary variable is created, and assinged.
                   if (!op_cur->rvalue) {

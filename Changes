@@ -13,6 +13,7 @@
     set x, y;
     get x, y;
   - field become private
+  - new keyword become private
 0.0280 2017-10-13
   - add String type again
   - add Native API new_string
