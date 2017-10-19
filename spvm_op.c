@@ -180,15 +180,16 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   sprintf(sub_name, "get_%s", field_name);  
   SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, sub_name, file, line);
 
-  // Object name
+  // Object variable
   SPVM_OP* op_name_object = SPVM_OP_new_op_name(compiler, "$self", file, line);
+  SPVM_OP* op_var_object = SPVM_OP_new_op_var(compiler, op_name_object);
   
   // Object type
   SPVM_OP* op_name_object_type = SPVM_OP_new_op_name(compiler, package_name, file, line);
   SPVM_OP* op_type_object = SPVM_OP_build_type_name(compiler, op_name_object_type);
   
-  
-  // SPVM_OP_build_my_var(compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
+  // Argument
+  SPVM_OP* op_var_arg = SPVM_OP_build_my_var(compiler, op_var_object, op_type_object);
   
   return NULL;
 }
