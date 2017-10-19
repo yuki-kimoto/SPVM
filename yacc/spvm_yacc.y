@@ -148,8 +148,8 @@ declaration_in_package
   : field
   | sub
   | enumeration
-  | setters
-  | getters
+  | setters ';'
+  | getters ';'
 
 package_block
   : '{' opt_declarations_in_package '}'
@@ -367,7 +367,7 @@ setters
     }
 
 getters
-  : SET opt_names
+  : GET opt_names
     {
       $$ = SPVM_OP_build_getters(compiler, $1, $2);
     }

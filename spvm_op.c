@@ -184,7 +184,6 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   
   // Package name
   SPVM_PACKAGE* package = op_package->uv.package;
-  const char* package_name = package->op_name->uv.name;
   
   // Package type
   SPVM_OP* op_type_package = SPVM_OP_clone_op_type(compiler, package->op_type);
@@ -263,7 +262,6 @@ SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   
   // Package name
   SPVM_PACKAGE* package = op_package->uv.package;
-  const char* package_name = package->op_name->uv.name;
   
   // Package type
   SPVM_OP* op_type_package = SPVM_OP_clone_op_type(compiler, package->op_type);
@@ -929,6 +927,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
 }
 
 void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name) {
+  (void)op_package;
   
   SPVM_CALL_SUB* call_sub = op_name->uv.call_sub;
   
@@ -1377,14 +1376,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       else if (op_decl->code == SPVM_OP_C_CODE_SET) {
         SPVM_OP* op_list = op_decl->first;
         SPVM_OP* op_name = op_list->first;
-        while (op_name = SPVM_OP_sibling(compiler, op_name)) {
+        while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
           SPVM_DYNAMIC_ARRAY_push(op_names_set_field, op_name);
         }
       }
       else if (op_decl->code == SPVM_OP_C_CODE_GET) {
         SPVM_OP* op_list = op_decl->first;
         SPVM_OP* op_name = op_list->first;
-        while (op_name = SPVM_OP_sibling(compiler, op_name)) {
+        while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
           SPVM_DYNAMIC_ARRAY_push(op_names_get_field, op_name);
         }
       }
@@ -1477,50 +1476,77 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
 
-    // Create gettter and setter
+    // Create gettter
     {
       int32_t i;
-      for (i = 0; i < op_fields->length; i++) {
-        SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, i);
+      for (i = 0; i < op_names_get_field->length; i++) {
+        SPVM_OP* op_name = SPVM_DYNAMIC_ARRAY_fetch(op_names_get_field, i);
         
-        SPVM_FIELD* field = op_field->uv.field;
+        const char* field_name = op_name->uv.name;
         
-        if (field->has_getter || field->has_setter) {
-          const char* field_name = field->op_name->uv.name;
+        const char* sub_abs_name_getter = SPVM_OP_create_getter_name(compiler, package_name, field_name);
+        
+        SPVM_OP* op_field_found = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
+        
+        if (!op_field_found) {
+          SPVM_yyerror_format(compiler, "Can't create get accessor get_%s because %s field is not declared in %s package",
+            field_name, field_name, package_name, op_name->file, op_name->line);
+        }
+        else {
+          SPVM_OP* found_op_sub_getter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter));
           
-          if (field->has_getter) {
-            const char* sub_abs_name_getter = SPVM_OP_create_getter_name(compiler, package_name, field_name);
-            
-            SPVM_OP* found_op_sub_getter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter));
-            
-            if (!found_op_sub_getter) {
-              SPVM_OP* op_sub_getter = SPVM_OP_build_sub_getter(compiler, op_package, op_field);
-              
-              SPVM_SUB* sub_getter = op_sub_getter->uv.sub;
-              sub_getter->abs_name = sub_abs_name_getter;
-              sub_getter->file_name = op_package->file;
-              sub_getter->op_package = op_package;
-              
-              SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_getter);
-              SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter), op_sub_getter);
-            }
+          if (found_op_sub_getter) {
+            SPVM_yyerror_format(compiler, "Can't create get accessor get_%s because %s subroutine is already declared in %s package",
+              field_name, field_name, package_name, op_name->file, op_name->line);
           }
-          
-          if (field->has_setter) {
-            const char* sub_abs_name_setter = SPVM_OP_create_setter_name(compiler, package_name, field_name);
-
-            SPVM_OP* found_op_sub_setter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter));
+          else {
+            SPVM_OP* op_sub_getter = SPVM_OP_build_sub_getter(compiler, op_package, op_field_found);
             
-            if (!found_op_sub_setter) {
-              SPVM_OP* op_sub_setter = SPVM_OP_build_sub_setter(compiler, op_package, op_field);
-              SPVM_SUB* sub_setter = op_sub_setter->uv.sub;
-              sub_setter->abs_name = sub_abs_name_setter;
-              sub_setter->file_name = op_package->file;
-              sub_setter->op_package = op_package;
-              
-              SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_setter);
-              SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter), op_sub_setter);
-            }
+            SPVM_SUB* sub_getter = op_sub_getter->uv.sub;
+            sub_getter->abs_name = sub_abs_name_getter;
+            sub_getter->file_name = op_package->file;
+            sub_getter->op_package = op_package;
+            
+            SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_getter);
+            SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter), op_sub_getter);
+          }
+        }
+      }
+    }
+
+    // Create setter
+    {
+      int32_t i;
+      for (i = 0; i < op_names_set_field->length; i++) {
+        SPVM_OP* op_name = SPVM_DYNAMIC_ARRAY_fetch(op_names_set_field, i);
+        
+        const char* field_name = op_name->uv.name;
+        
+        const char* sub_abs_name_setter = SPVM_OP_create_setter_name(compiler, package_name, field_name);
+        
+        SPVM_OP* op_field_found = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
+        
+        if (!op_field_found) {
+          SPVM_yyerror_format(compiler, "Can't create set accessor set_%s because %s field is not declared in %s package",
+            field_name, field_name, package_name, op_name->file, op_name->line);
+        }
+        else {
+          SPVM_OP* found_op_sub_setter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter));
+          
+          if (found_op_sub_setter) {
+            SPVM_yyerror_format(compiler, "Can't create set accessor set_%s because %s subroutine is already declared in %s package",
+              field_name, field_name, package_name, op_name->file, op_name->line);
+          }
+          else {
+            SPVM_OP* op_sub_setter = SPVM_OP_build_sub_setter(compiler, op_package, op_field_found);
+            
+            SPVM_SUB* sub_setter = op_sub_setter->uv.sub;
+            sub_setter->abs_name = sub_abs_name_setter;
+            sub_setter->file_name = op_package->file;
+            sub_setter->op_package = op_package;
+            
+            SPVM_DYNAMIC_ARRAY_push(compiler->op_subs, op_sub_setter);
+            SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter), op_sub_setter);
           }
         }
       }

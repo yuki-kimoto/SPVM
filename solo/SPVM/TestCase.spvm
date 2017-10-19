@@ -29,7 +29,10 @@ package TestCase {
   has x_float : float;
   has x_double : double;
   has private_field : private int;
-
+  
+  get x_int, x_long;
+  set x_int, x_long;
+  
   enum {
     BYTE_MAX = 127y,
     BYTE_MIN = -128y,
