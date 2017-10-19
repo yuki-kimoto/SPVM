@@ -13,7 +13,7 @@ package TestCase::Simple {
   has title : int;
   
   get x, y, values1;
-  set x, y;
+  set x, y, values1;
   
   sub get2 () : int {
     1;

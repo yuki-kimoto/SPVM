@@ -1,6 +1,4 @@
-0.0281 2017-10-17
-  - add private descripter to has syntax
-    has x : private int
+0.0281 2017-10-19
   - remove SPVM::new_object
   - remove SPVM::Object::Package::set
   - remove SPVM::Object::Package::get
@@ -10,6 +8,11 @@
     $object->set_x_short($SHORT_MAX);
   - remove Package->name syntax because Perl subroutine call correspoing to SPVM subroutine call completely
   - remove relative name subroutine call because future keyword adding don't break backward compatible
+  - fix method call bug
+  - add getter and setter syntax
+    set x, y;
+    get x, y;
+  - field become private
 0.0280 2017-10-13
   - add String type again
   - add Native API new_string

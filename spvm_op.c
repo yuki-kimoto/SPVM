@@ -926,16 +926,16 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return type;
 }
 
-void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name) {
-  (void)op_package;
+void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub) {
   
-  SPVM_CALL_SUB* call_sub = op_name->uv.call_sub;
+  SPVM_CALL_SUB* call_sub = op_call_sub->uv.call_sub;
   
   const char* sub_abs_name = NULL;
   if (call_sub->code == SPVM_CALL_SUB_C_CODE_METHOD_CALL) {
-    const char* package_name = call_sub->op_term->uv.var->op_my_var->uv.my_var->op_type->uv.type->name;
+    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_term);
+    const char* type_name = type->name;
     const char* sub_name = call_sub->op_name->uv.name;
-    sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
+    sub_abs_name = SPVM_OP_create_abs_name(compiler, type_name, sub_name);
   }
   else if (call_sub->code == SPVM_CALL_SUB_C_CODE_SUB_CALL) {
     sub_abs_name = call_sub->op_name->uv.name;
@@ -1683,8 +1683,9 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   
   // Type
   field->op_type = op_type;
-
-  // field->is_private = 1;
+  
+  // Field is private
+  field->is_private = 1;
   
   // Set field informaiton
   op_field->uv.field = field;
@@ -1953,7 +1954,7 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     call_sub->op_term = op_invocant;
     call_sub->op_name = op_name_sub;
     
-    SPVM_OP_insert_child(compiler, op_terms, op_terms->last, op_invocant);
+    SPVM_OP_insert_child(compiler, op_terms, op_terms->first, op_invocant);
   }
   
   op_call_sub->uv.call_sub = call_sub;

@@ -30,8 +30,8 @@ package TestCase {
   has x_double : double;
   has private_field : int;
   
-  get x_int, x_long;
-  set x_int, x_long;
+  get x_byte, x_int, x_long;
+  set x_byte, x_int, x_long;
   
   enum {
     BYTE_MAX = 127y,
@@ -184,7 +184,7 @@ package TestCase {
     {
       my $test = new TestCase;
       
-      $test->{x_byte} = TestCase::BYTE_MAX();
+      $test->set_x_byte(TestCase::BYTE_MAX());
       $test->{x_short} = TestCase::SHORT_MAX();
       $test->{x_int} = TestCase::INT_MAX();
       $test->{x_long} = TestCase::LONG_MAX();
@@ -306,16 +306,16 @@ package TestCase {
     {
       my $objs = new TestCase::Minimal[3];
       $objs->[0] = TestCase::Minimal::new();
-      $objs->[0]{x} = 111;
-      std::say_int($objs->[0]->{x});
+      $objs->[0]->set_x(111);
+      std::say_int($objs->[0]->get_x);
     }
     
     # $obj->{x}[0]
     {
       my $obj = new TestCase::Simple;
-      $obj->{values1} = new int[5];
-      $obj->{values1}[0] = 221;
-      std::say_int($obj->{values1}[0]);
+      $obj->set_values1(new int[5]);
+      $obj->get_values1->[0] = 221;
+      std::say_int($obj->get_values1->[0]);
     }
     
     # Call new subroutine without variable
@@ -334,7 +334,7 @@ package TestCase {
     {
       TestCase::Minimal::new();
       TestCase::Minimal::new();
-      TestCase::Minimal::new()->{x};
+      TestCase::Minimal::new()->get_x;
     }
     
     my $obj1 = TestCase::Minimal::new();
@@ -583,11 +583,11 @@ package TestCase {
     {
       my $m = TestCase::Minimal::new();
       
-      $m->{x} = 99;
-      $m->{y} = 100;
+      $m->set_x(99);
+      $m->set_y(100);
       
-      std::say_int($m->{x});
-      std::say_int($m->{y});
+      std::say_int($m->get_x);
+      std::say_int($m->get_y);
     }
 
     # Free when assignment
@@ -753,9 +753,9 @@ package TestCase {
     std::say_int($simple3->get_x());
     $simple3->get_x;
     
-    $simple3->{y} = 2;
-    $simple3->{x};
-    $simple3->{y};
+    $simple3->set_y(2);
+    $simple3->get_x;
+    $simple3->get_y;
 
     my $simple2 : TestCase::Simple = new TestCase::Simple;
     
