@@ -26,7 +26,7 @@ use Math;
 package TestCase {
   has x_byte : byte;
   has x_short : short;
-  has x_int : rw int;
+  has x_int : int;
   has x_long : long;
   has x_float : float;
   has x_double : double;
@@ -41,6 +41,8 @@ package TestCase {
   has minimal : TestCase::Minimal;
   has private_field : private int;
   
+  set x_int, x_long;
+  get x_int, x_long;
   
   enum {
     INT_VALUE = 127,
@@ -62,14 +64,6 @@ package TestCase {
   
   sub get_x_short($self : TestCase) : short {
     return $self->{x_short};
-  }
-
-  sub set_x_long($self : TestCase, $value : long) : void {
-    $self->{x_long} = $value;
-  }
-  
-  sub get_x_long($self : TestCase) : long {
-    return $self->{x_long};
   }
 
   sub set_x_float($self : TestCase, $value : float) : void {
