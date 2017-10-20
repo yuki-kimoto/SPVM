@@ -34,9 +34,9 @@ SPVM have Type Inference, GC, Memory Safety, Destructor, Package Template. GC is
 
 =head1 Syntax
 
-=head2 Package Declaration
+=head2 Package Definition
 
-Package declaration is the following.
+Package Definition is the following.
 
   package PackageName {
     
@@ -64,7 +64,7 @@ Under Score is used for C<Package Template>.
   2Foo
   Foo_Bar
 
-Package Declaration must be just under file itself.
+Package Definition must be just under file itself.
 
   # Legal
   package PackageName {
@@ -78,9 +78,9 @@ Package Declaration must be just under file itself.
     }
   }
 
-=head2 Field Declaration
+=head2 Field Definition
 
-Field declaration is the following.
+Field Definition is the following.
 
   has field_name : type_name;
 
@@ -101,7 +101,7 @@ Field name must not start with Number. Under score must not continue more than o
 
 C<type_name> is a type. Type is explained in L</"Type"> section.
 
-Field Declaration must be just under Package Declaration.
+Field Definition must be just under Package Definition.
 
   # Legal
   package PackageName {
@@ -114,9 +114,35 @@ Field Declaration must be just under Package Declaration.
     has field_name : type_name
   }
 
+=head3 Accessor Decralation
+
+Accessor is a subroutine to get and set field.
+
+B<Set Accessor Definition:>
+
+  set x, y;
+
+This is same as the following Subroutine Definition if x and y is int field of Point package.
+
+  sub set_x($self : Point, $value : int) : void { $self->{x} = $value }
+  sub set_y($self : Point, $value : int) : void { $self->{y} = $value }
+  
+If field is not exsit or same name subroutine is defined, Accessor Definition is compile error.
+
+B<Get Accessor Definition:>
+
+  get x, y;
+
+This is same as the following Subroutine Definition if x and y is int field of Point package.
+
+  sub get_x($self : Point) : int { return $self->{x} }
+  sub get_y($self : Point) : int { return $self->{y} }
+
+If field is not exsit or same name subroutine is defined, Accessor Definition is compile error.
+
 =head2 Subroutine Decralation
 
-Subroutine declaration is the following.
+Subroutine Definition is the following.
 
   sub sub_name(arg_name : type_name, ...) : descripter_name return_type_name {
     
@@ -137,7 +163,7 @@ Subroutine name must not start with Number. Under score must not continue more t
   2foo
   foo__bar
 
-C<arg_name> is Argument Name. This is Variable name. Variable name is explained in L</"Variable Declaration"> section,
+C<arg_name> is Argument Name. This is Variable name. Variable name is explained in L</"Variable Definition"> section,
 
 C<type_name> is a Type. Type is explained L</"Type"> section.
 
@@ -154,7 +180,7 @@ Native subroutine is explained in L</"Native Subroutine">.
 C<return_type_name> is a Type or C<void>. C<void> mean the subroutine don't have return value.
 Type is explained L</"Type"> section.
 
-Subroutine Declaration must be just under Package Declaration.
+Subroutine Definition must be just under Package Definition.
 
   # Legal
   package PackageName {
@@ -170,9 +196,9 @@ Subroutine Declaration must be just under Package Declaration.
     }
   }
 
-=head2 Variable Declaration
+=head2 Variable Definition
 
-Variable Declaration is the following.
+Variable Definition is the following.
 
   my var_name : type_name;
 
@@ -185,15 +211,15 @@ Rest characters is consist of Upper case, Lower case, Number and Under score C<_
   $foo2
   $foo_bar
 
-If Variable Declaration is done, you can use variable after the declaration.
+If Variable Definition is done, you can use variable after the Definition.
 
 C<type_name> is a <Type>. Type is explained at L</"Type"> section.
 
-You can Initialize the variable as same time as Variable Declaration.
+You can Initialize the variable as same time as Variable Definition.
 
   my $num : int = 3;
 
-B<Variable Declaration Example:>
+B<Variable Definition Example:>
   
   # Numeric Type
   my $value : byte;
@@ -417,9 +443,9 @@ For int, from -2147483648 to 2147483647, inclusive
 
 For long, from -9223372036854775808 to 9223372036854775807, inclusive
 
-B<Varialbe Declaration>
+B<Varialbe Definition>
 
-Varialbe Declaration with Type is the following.
+Varialbe Definition with Type is the following.
 
   my $value : byte;
   my $value : short;
@@ -428,7 +454,7 @@ Varialbe Declaration with Type is the following.
   my $value : float;
   my $value : double;
 
-If you know more Variable Declaration, see L</"Variable Declaration"> section.
+If you know more Variable Definition, see L</"Variable Definition"> section.
 
 =head3 Array Type
 
@@ -484,13 +510,13 @@ If you know Multiple Dimension Array Creating, see L</"New Multiple Dimention Ar
 
 =head3 Package Type
 
-If you declare package, Package name is used as Package Type.
+If Package is defined, Package name is used as Type.
 
   PackageName
 
-If you know more Package Declaration, see L</"Package Declaration"> section.
+If you know more Package Definition, see L</"Package Definition"> section.
 
-You can create Package Type Object by C<new> keyword.
+You can create Object by C<new> keyword.
 
   my $obj : PackageName = new PackageName;
 
@@ -512,7 +538,7 @@ Array Initialization Syntax:
   my $nums : int[] = [1, 2, 3];
   my $points : Point[] = [new Point, new Point, new Point];
   
-Note that array initialization syntax don't support type inference. You must write type declaration.
+Note that array initialization syntax don't support type inference. You must write type Definition.
 
 =head2 Array Manipulation
 
@@ -535,6 +561,26 @@ Set Array Element:
 
   # Set
   $nums->[0] = 5;
+
+=head2 Object Manipulation
+
+=head3 Field Access
+
+Get field:
+
+  # Get field
+  $object->{foo};
+
+Set field:
+
+  # Set field;
+  $object->{foo} = 5;
+
+Field value is private. You can only use Field Access from self package.
+
+If you want to get and set field value from other package, you must define Accessor.
+
+see L</"Accessor Definition">.
 
 =head2 Condition branch
 
@@ -619,6 +665,26 @@ Using weak reference, recursive reference is resolved.
   
   # Weak reference
   weaken $foo->{bar};
+
+=head2 Constructor
+
+=head3 new operator
+
+Constructor is C<new> operator.
+
+  new Point;
+
+C<new> operator is private. C<new> operator is only used in same package.
+
+=head3 Default Constructor
+
+If C<new> subroutine is not defined, Default Constructor is defined automatically.
+
+  sub new () { return new Point }
+
+This is used from other package.
+
+  my $point = Point::new();
 
 =head2 Destructor
 
