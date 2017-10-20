@@ -1665,6 +1665,40 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP*
   return op_var;
 }
 
+SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
+  
+  /*
+  SPVM_OP* op_our_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_OUR, op_var->file, op_var->line);
+  
+  // Create my var information
+  SPVM_OUR_VAR* our_var = SPVM_OUR_VAR_new(compiler);
+  if (op_type) {
+    our_var->op_type = op_type;
+  }
+  else {
+    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
+    our_var->op_type = op_type;
+  }
+  
+  // Name OP
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_var->file, op_var->line);
+  op_name->uv.name = op_var->uv.var->op_name->uv.name;
+  our_var->op_name = op_name;
+
+  // Add our_var information to op
+  op_our_var->uv.our_var = our_var;
+  
+  op_var->uv.var->op_our_var = op_our_var;
+  
+  SPVM_OP_insert_child(compiler, op_var, op_var->last, op_our_var);
+  
+  assert(op_var->first);
+  
+  */
+  
+  return NULL;
+}
+
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
 
   if (op_descriptors == NULL) {
