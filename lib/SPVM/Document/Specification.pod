@@ -163,7 +163,7 @@ Subroutine name must not start with Number. Under score must not continue more t
   2foo
   foo__bar
 
-C<arg_name> is Argument Name. This is Variable name. Variable name is explained in L</"Variable Definition"> section,
+C<arg_name> is Argument Name. This is Variable name. Variable name is explained in L</"Variable Declaration"> section,
 
 C<type_name> is a Type. Type is explained L</"Type"> section.
 
@@ -196,9 +196,9 @@ Subroutine Definition must be just under Package Definition.
     }
   }
 
-=head2 Variable Definition
+=head2 Variable Declaration
 
-Variable Definition is the following.
+Variable Declaration is the following.
 
   my var_name : type_name;
 
@@ -211,15 +211,15 @@ Rest characters is consist of Upper case, Lower case, Number and Under score C<_
   $foo2
   $foo_bar
 
-If Variable Definition is done, you can use variable after the Definition.
+If Variable Declaration is done, you can use variable after the Definition.
 
 C<type_name> is a <Type>. Type is explained at L</"Type"> section.
 
-You can Initialize the variable as same time as Variable Definition.
+You can Initialize the variable as same time as Variable Declaration.
 
   my $num : int = 3;
 
-B<Variable Definition Example:>
+B<Variable Declaration Example:>
   
   # Numeric Type
   my $value : byte;
@@ -454,7 +454,7 @@ Varialbe Definition with Type is the following.
   my $value : float;
   my $value : double;
 
-If you know more Variable Definition, see L</"Variable Definition"> section.
+If you know more Variable Declaration, see L</"Variable Declaration"> section.
 
 =head3 Array Type
 
@@ -479,7 +479,8 @@ If you know more Array Creating, see L</"New Array"> section.
 
 Multiple Dimention Array Type is a Array Type.
   
-  [Two Dimension Array Type]
+B<Two Dimension Array Type>
+
   byte[][];
   short[][];
   int[][];
@@ -488,7 +489,8 @@ Multiple Dimention Array Type is a Array Type.
   double[][];
   PackageName[][];
   
-  [Three Dimension Array Type]
+B<Three Dimension Array Type>
+
   byte[][][];
   short[][][];
   int[][][];
@@ -516,9 +518,9 @@ If Package is defined, Package name is used as Type.
 
 If you know more Package Definition, see L</"Package Definition"> section.
 
-You can create Object by C<new> keyword.
+You can create Object by C<new> subroutine. This is Default Constructor.
 
-  my $obj : PackageName = new PackageName;
+  my $obj : PackageName = PackageName::new();
 
 =head2 New Array
 
@@ -536,9 +538,9 @@ Array is created by new. Elements values is not initialized.
 Array Initialization Syntax:
 
   my $nums : int[] = [1, 2, 3];
-  my $points : Point[] = [new Point, new Point, new Point];
+  my $points : Point[] = [Point::new(), Point::new(), Point::new()];
   
-Note that array initialization syntax don't support type inference. You must write type Definition.
+Note that Array Initialization syntax don't support Type Inference. You must write Type.
 
 =head2 Array Manipulation
 
@@ -594,16 +596,16 @@ see L</"Accessor Definition">.
 
   }
 
-=head2 Loop
+=head2 Loop Syntax
 
-=head3 for
+=head3 for statement
 
   my $nums = new int[10];
   for (my $i = 0; $i < @$nums; $i++) {
     $nums->[$i] = 0;
   }
 
-=head3 while
+=head3 while statement
 
   my $nums = new int[10];
   my $i = 0;
@@ -652,20 +654,6 @@ Catch Exception:
 
   $@;
 
-=head2 Weak Reference
-
-Using weak reference, recursive reference is resolved.
-
-  my $foo = new Foo;
-  my $bar = new Bar;
-  
-  # Recursive reference
-  $foo->{bar} = $foo;
-  $bar->{foo} = $foo;
-  
-  # Weak reference
-  weaken $foo->{bar};
-
 =head2 Constructor
 
 =head3 new operator
@@ -713,6 +701,35 @@ Enumeration.
       FIVE,
     }
   }
+
+=head2 Weak Reference
+
+=head3 weaken operator
+
+Using Weak Reference, recursive reference is resolved.
+
+  my $foo = Foo::new();
+  my $bar = Bar::new();
+  
+  # Recursive reference
+  $foo->set_bar($foo);
+  $bar->set_foo($bar);
+  
+  # Weak reference
+  $foo->weaken_bar;
+
+Foo package;
+
+  package Foo {
+    has bar;
+    
+    set bar;
+    
+    sub wekan_bar() : void {
+      weaken $foo->{bar};
+    }
+  }
+
 
 =head2 Extension native function
 

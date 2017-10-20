@@ -128,6 +128,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "CONCAT_STRING",
   "SET",
   "GET",
+  "OUR_VAR",
 };
 
 SPVM_OP* SPVM_OP_build_setters(SPVM_COMPILER* compiler, SPVM_OP* op_set, SPVM_OP* op_names) {

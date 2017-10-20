@@ -127,6 +127,7 @@ enum {
   SPVM_OP_C_CODE_CONCAT_STRING,
   SPVM_OP_C_CODE_SET,
   SPVM_OP_C_CODE_GET,
+  SPVM_OP_C_CODE_OUR_VAR,
 };
 
 extern const char* const SPVM_OP_C_CODE_NAMES[];
