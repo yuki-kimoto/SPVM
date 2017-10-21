@@ -1461,6 +1461,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         else {
           SPVM_HASH_insert(package->op_our_symtable, package_var_name, strlen(package_var_name), op_our);
           
+          compiler->package_var_length++;
+          our->id = compiler->package_var_length;
+          
           // Add op package
           our->op_package = op_package;
         }

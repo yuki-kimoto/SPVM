@@ -113,6 +113,9 @@ struct SPVM_compiler {
   // Subroutine indexes constant pool index
   int32_t subs_base;
   
+  // Package Variable id
+  int32_t package_var_length;
+  
   // Native subroutines
   SPVM_DYNAMIC_ARRAY* native_subs;
   
