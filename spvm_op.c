@@ -906,6 +906,13 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
+    case SPVM_OP_C_CODE_PACKAGE_VAR: {
+      SPVM_OUR* our = op->uv.our;
+      if (our->op_type) {
+        type = our->op_type->uv.type;
+      }
+      break;
+    }
     case SPVM_OP_C_CODE_EXCEPTION_VAR: {
       type = SPVM_TYPE_get_string_type(compiler);
       break;
