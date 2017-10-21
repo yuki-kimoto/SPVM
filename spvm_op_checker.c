@@ -1541,6 +1541,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 case SPVM_OP_C_CODE_PACKAGE_VAR: {
                   SPVM_OUR* our = op_cur->uv.our;
+
+                  // Check field name
+                  SPVM_OP_resolve_package_var(compiler, op_cur);
                   
                   if (package != our->op_package->uv.package) {
                     SPVM_yyerror_format(compiler, "Package variable is private \"%s\" \"%s\" at %s line %d\n",
