@@ -49,7 +49,9 @@ package TestCase {
   }
   
   sub main($mvar : int) : int {
-
+    
+    $TestCase::PACKAGE_VAR;
+    
 =pod
     {
       my $simple1 = new TestCase::Simple;

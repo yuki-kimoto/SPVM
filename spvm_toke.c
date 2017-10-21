@@ -786,8 +786,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Lexical variable
           else {
             /* Next is graph */
-            while(isalnum(*compiler->bufptr) || (*compiler->bufptr) == '_') {
-              compiler->bufptr++;
+            while (
+              isalnum(*compiler->bufptr)
+              || (*compiler->bufptr) == '_'
+              || (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':')
+            )
+            {
+              if ((*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':')) {
+                compiler->bufptr += 2;
+              }
+              else {
+                compiler->bufptr++;
+              }
             }
             
             int32_t str_len = (compiler->bufptr - cur_token_ptr);
@@ -801,7 +811,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Package variable
             if (strchr(var_name, ':')) {
               
-              _Bool is_invalid;
+              _Bool is_invalid = 0;
               int32_t length = (int32_t)strlen(var_name);
               
               {
@@ -819,11 +829,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           break;
                         }
                         else {
-                          i += 3;
+                          i += 2;
                           continue;
                         }
                       }
                     }
+                  }
+                  else {
+                    break;
                   }
                   i++;
                 }

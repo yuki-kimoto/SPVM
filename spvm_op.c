@@ -135,10 +135,11 @@ void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_va
   
   SPVM_OP* op_name = op_package_var->uv.package_var->op_name;
   
-  SPVM_OP* op_our = SPVM_HASH_search(compiler->op_our_symtable, op_name->uv.name, strlen(op_name->uv.name));
   
+  SPVM_OP* op_our = SPVM_HASH_search(compiler->op_our_symtable, op_name->uv.name, strlen(op_name->uv.name));
+
   if (op_our) {
-    op_package_var->uv.package_var->op_our;
+    op_package_var->uv.package_var->op_our = op_our;
   }
 }
 
@@ -918,7 +919,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_CODE_PACKAGE_VAR: {
-      SPVM_OUR* our = op->uv.our;
+      SPVM_OUR* our = op->uv.package_var->op_our->uv.our;
       if (our->op_type) {
         type = our->op_type->uv.type;
       }
@@ -1326,6 +1327,16 @@ const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package
   return abs_name;
 }
 
+const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
+  int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
+  
+  char* abs_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+  
+  sprintf(abs_name, "$%s::%s", package_name, &name[1]);
+  
+  return abs_name;
+}
+
 const char* SPVM_OP_create_getter_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
   // Foo::set_bar
   int32_t length = (int32_t)(strlen(package_name) + 6 + strlen(name));
@@ -1481,7 +1492,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         else {
           SPVM_HASH_insert(package->op_our_symtable, package_var_name, strlen(package_var_name), op_our);
           
-          const char* package_var_name_abs = SPVM_OP_create_abs_name(compiler, package_name, package_var_name);
+          const char* package_var_name_abs = SPVM_OP_create_package_var_abs_name(compiler, package_name, package_var_name);
           SPVM_HASH_insert(compiler->op_our_symtable, package_var_name_abs, strlen(package_var_name_abs), op_our);
           
           compiler->package_var_length++;

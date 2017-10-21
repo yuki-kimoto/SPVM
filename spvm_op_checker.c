@@ -901,6 +901,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Check left term
                   if (op_cur->first->code == SPVM_OP_C_CODE_VAR
+                    || op_cur->first->code == SPVM_OP_C_CODE_PACKAGE_VAR
                     || op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM
                     || op_cur->first->code == SPVM_OP_C_CODE_CALL_FIELD
                     || op_cur->first->code == SPVM_OP_C_CODE_EXCEPTION_VAR
@@ -1541,8 +1542,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_PACKAGE_VAR: {
-                  SPVM_OUR* our = op_cur->uv.our;
-
+                  
                   // Check field name
                   SPVM_OP_resolve_package_var(compiler, op_cur);
                   if (!op_cur->uv.package_var->op_our) {
@@ -1551,6 +1551,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     compiler->fatal_error = 1;
                     return;
                   }
+                  
+                  SPVM_OUR* our = op_cur->uv.package_var->op_our->uv.our;
                   
                   if (package != our->op_package->uv.package) {
                     SPVM_yyerror_format(compiler, "Package variable is private \"%s\" \"%s\" at %s line %d\n",

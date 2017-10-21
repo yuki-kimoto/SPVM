@@ -515,6 +515,7 @@ array_length
 
 term
   : VAR
+  | PACKAGE_VAR
   | EXCEPTION_VAR
   | CONSTANT
     {
