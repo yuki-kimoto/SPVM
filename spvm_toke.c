@@ -798,12 +798,24 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Name OP
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
             
-            // Var OP
-            SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name);
-
-            yylvalp->opval = op_var;
-            
-            return VAR;
+            // Package variable
+            if (strchr(var_name, ':')) {
+              // Var OP
+              SPVM_OP* op_package_var = SPVM_OP_new_op_package_var(compiler, op_name);
+              
+              yylvalp->opval = op_package_var;
+              
+              return PACKAGE_VAR;
+            }
+            // Lexical variable
+            else {
+              // Var OP
+              SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name);
+              
+              yylvalp->opval = op_var;
+              
+              return VAR;
+            }
           }
         }
         /* Number literal */

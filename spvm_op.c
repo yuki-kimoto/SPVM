@@ -34,9 +34,7 @@
 #include "spvm_constant_pool_type.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_our.h"
-
-
-
+#include "spvm_package_var.h"
 
 const char* const SPVM_OP_C_CODE_NAMES[] = {
   "IF",
@@ -130,7 +128,18 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "SET",
   "GET",
   "OUR_VAR",
+  "PACKAGE_VAR",
 };
+
+SPVM_OP* SPVM_OP_new_op_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
+  SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PACKAGE_VAR, op_name->file, op_name->line);
+
+  SPVM_PACKAGE_VAR* package_var = SPVM_PACKAGE_VAR_new(compiler);
+  package_var->op_name = op_name;
+  op_package_var->uv.package_var = package_var;
+  
+  return op_package_var;
+}
 
 SPVM_OP* SPVM_OP_build_setters(SPVM_COMPILER* compiler, SPVM_OP* op_set, SPVM_OP* op_names) {
   

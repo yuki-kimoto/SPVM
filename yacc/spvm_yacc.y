@@ -15,7 +15,7 @@
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW SET GET OUR
-%token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK
+%token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK PACKAGE_VAR
 %token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
@@ -667,6 +667,14 @@ binop
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | VAR SPECIAL_ASSIGN term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
+  | PACKAGE_VAR ASSIGN term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
+  | PACKAGE_VAR SPECIAL_ASSIGN term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
