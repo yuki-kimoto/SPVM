@@ -135,6 +135,8 @@ void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_va
   
   SPVM_OP* op_name = op_package_var->uv.package_var->op_name;
   
+  
+  
 }
 
 SPVM_OP* SPVM_OP_new_op_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {

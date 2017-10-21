@@ -54,6 +54,9 @@ struct SPVM_compiler {
   // OP package symtable
   SPVM_HASH* op_package_symtable;
   
+  // OP our symtable
+  SPVM_HASH* op_our_symtable;
+  
   // Class loading stack
   SPVM_DYNAMIC_ARRAY* op_use_stack;
   
