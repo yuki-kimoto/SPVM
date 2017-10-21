@@ -121,6 +121,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Constant pool
   int32_t* constant_pool = runtime->constant_pool;
   
+  // Package variables
+  SPVM_VALUE* package_vars = runtime->package_vars;
+  
   // Program counter
   register uint8_t* pc = NULL;
   
@@ -528,16 +531,46 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   
   case_SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
+    // Get subroutine ID
+    int32_t package_var_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+
+    operand_stack_top++;
+    call_stack[operand_stack_top] = package_vars[package_var_id];
+    
     pc += 5;
     
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR: {
+    // Get subroutine ID
+    int32_t package_var_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+
+    package_vars[package_var_id] = call_stack[operand_stack_top];
+    operand_stack_top--;
+
     pc += 5;
     
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
+    // Get subroutine ID
+    int32_t package_var_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    
+    // Decrement reference count
+    if (package_vars[package_var_id].object_value != NULL) {
+      SPVM_RUNTIME_API_dec_ref_count(api, package_vars[package_var_id].object_value);
+    }
+    
+    // Store object
+    package_vars[package_var_id].object_value = call_stack[operand_stack_top].object_value;
+    
+    // Increment new value reference count
+    if (package_vars[package_var_id].object_value != NULL) {
+      package_vars[package_var_id].object_value->ref_count++;
+    }
+    
+    operand_stack_top--;
+
     pc += 5;
     
     goto *jump[*pc];
