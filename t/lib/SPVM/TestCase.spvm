@@ -53,7 +53,6 @@ package TestCase {
     DOUBLE_PRECICE = 65536.5,
   }
 
-=pod
   sub package_var() : int {
     if ($TestCase::PACKAGE_VAR_INT == 0) {
       $TestCase::PACKAGE_VAR_INT = 1;
@@ -63,7 +62,6 @@ package TestCase {
     }
     return 0;
   }
-=cut
 
   sub set_x_byte($self : TestCase, $value : byte) : void {
     $self->{x_byte} = $value;

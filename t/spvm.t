@@ -55,6 +55,13 @@ use SPVM 'std';
   cmp_ok(abs(time - SPVM::std::time()), '<', 2);
 }
 
+# Package variable
+=pod
+{
+  ok(SPVM::TestCase::package_var());
+}
+=cut
+
 # Native Exception
 {
   ok(SPVM::TestCase::Extension::call_void_sub_exception());

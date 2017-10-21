@@ -20,7 +20,7 @@ SPVM::Test - SPVM test module
 =cut
 
 package TestCase {
-  our $PACKAGE_VAR : int;
+  our $PACKAGE_VAR_INT : int;
   
   has next_test : TestCase;
   has minimal : TestCase::Minimal;
@@ -51,9 +51,16 @@ package TestCase {
   sub main($mvar : int) : int {
     
     {
-      my $var = $TestCase::PACKAGE_VAR;
+      my $var = $TestCase::PACKAGE_VAR_INT;
       
-      # $TestCase::PACKAGE_VAR = 1;
+      $TestCase::PACKAGE_VAR_INT = 1;
+
+      if ($TestCase::PACKAGE_VAR_INT == 0) {
+        $TestCase::PACKAGE_VAR_INT = 1;
+        if ($TestCase::PACKAGE_VAR_INT == 1) {
+          return 1;
+        }
+      }
     }
     
     
