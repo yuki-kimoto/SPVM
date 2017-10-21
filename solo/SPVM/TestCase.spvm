@@ -50,7 +50,12 @@ package TestCase {
   
   sub main($mvar : int) : int {
     
-    $TestCase::PACKAGE_VAR;
+    {
+      my $var = $TestCase::PACKAGE_VAR;
+      
+      # $TestCase::PACKAGE_VAR = 1;
+    }
+    
     
 =pod
     {

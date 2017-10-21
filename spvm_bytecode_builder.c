@@ -1271,9 +1271,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
-                  SPVM_PACKAGE_VAR* package_var = op_cur->uv.package_var;
+                  SPVM_OP* op_package_var = op_cur->first;
+                  
+                  SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
 
-                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, package_var->op_our);
+                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_package_var);
 
                   if (SPVM_TYPE_is_numeric(compiler, type)) {
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE);
