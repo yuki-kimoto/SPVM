@@ -27,6 +27,7 @@
 #include "spvm_switch_info.h"
 #include "spvm_limit.h"
 #include "spvm_sub_check_info.h"
+#include "spvm_our.h"
 
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_SUB_CHECK_INFO* sub_check_info, const char* file, int32_t line) {
 
@@ -1534,6 +1535,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     op_call_sub->uv.call_sub = call_sub;
                     
                     op_cur = op_call_sub;
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_CODE_PACKAGE_VAR: {
+                  SPVM_OUR* our = op_cur->uv.our;
+                  
+                  if (package != our->op_package->uv.package) {
+                    SPVM_yyerror_format(compiler, "Package variable is private \"%s\" \"%s\" at %s line %d\n",
+                      our->op_package->uv.package->op_name->uv.name, our->op_var->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
                   }
                   
                   break;
