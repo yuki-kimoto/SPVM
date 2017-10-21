@@ -32,6 +32,7 @@
 #include "spvm_constant_pool_package.h"
 #include "spvm_object.h"
 #include "spvm_our.h"
+#include "spvm_package_var.h"
 
 
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
@@ -1270,9 +1271,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
-                  SPVM_OUR* our = op_cur->uv.our;
+                  SPVM_PACKAGE_VAR* package_var = op_cur->uv.package_var;
 
-                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, package_var->op_our);
 
                   if (SPVM_TYPE_is_numeric(compiler, type)) {
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE);
@@ -1281,7 +1282,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_OBJECT);
                   }
                                     
-                  int32_t package_var_id = our->id;
+                  int32_t package_var_id = package_var->op_our->uv.our->id;
 
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (package_var_id >> 24) & 0xFF);
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (package_var_id >> 16) & 0xFF);
@@ -1743,7 +1744,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   break;
                 }
                 
-                SPVM_OUR* our = op_cur->uv.our;
+                SPVM_OUR* our = op_cur->uv.package_var->op_our->uv.our;
                 
                 int32_t package_var_id = our->id;
 
