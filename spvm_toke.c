@@ -800,6 +800,40 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             // Package variable
             if (strchr(var_name, ':')) {
+              
+              _Bool is_invalid;
+              int32_t length = (int32_t)strlen(var_name);
+              
+              {
+                int32_t i = 0;
+                while (1) {
+                  if (i < length) {
+                    if (var_name[i] == ':') {
+                      if (var_name[i + 1] != ':') {
+                        is_invalid = 1;
+                        break;
+                      }
+                      else {
+                        if (!isalpha(var_name[i + 2])) {
+                          is_invalid = 1;
+                          break;
+                        }
+                        else {
+                          i += 3;
+                          continue;
+                        }
+                      }
+                    }
+                  }
+                  i++;
+                }
+              }
+              
+              if (is_invalid) {
+                fprintf(stderr, "Invalid package variable name %s at %s line %" PRId32 "\n", var_name, compiler->cur_file, compiler->cur_line);
+                exit(EXIT_FAILURE);
+              }
+
               // Var OP
               SPVM_OP* op_package_var = SPVM_OP_new_op_package_var(compiler, op_name);
               
