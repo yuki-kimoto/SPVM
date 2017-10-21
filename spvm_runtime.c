@@ -519,10 +519,29 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     &&case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE,
     &&case_SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION,
     &&case_SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION,
+    &&case_SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR,
+    &&case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR,
+    &&case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT,
   };
   
   goto *jump[*pc];
-
+  
+  
+  case_SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
+    pc += 5;
+    
+    goto *jump[*pc];
+  }
+  case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR: {
+    pc += 5;
+    
+    goto *jump[*pc];
+  }
+  case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
+    pc += 5;
+    
+    goto *jump[*pc];
+  }
   case_SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION: {
     // Next operation
     int16_t jump_offset_abs = (int16_t)((*(pc + 1) << 8) +  *(pc + 2));
