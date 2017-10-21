@@ -1478,6 +1478,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         else {
           SPVM_HASH_insert(package->op_our_symtable, package_var_name, strlen(package_var_name), op_our);
           
+          const char* package_var_name_abs = SPVM_OP_create_abs_name(compiler, package_name, package_var_name);
+          SPVM_HASH_insert(compiler->op_our_symtable, package_var_name_abs, strlen(package_var_name_abs), op_our);
+          
           compiler->package_var_length++;
           our->id = compiler->package_var_length;
           
