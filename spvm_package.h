@@ -8,6 +8,7 @@ struct SPVM_package {
   SPVM_OP* op_type;
   SPVM_DYNAMIC_ARRAY* op_fields;
   SPVM_HASH* op_field_symtable;
+  SPVM_HASH* op_our_symtable;
   int32_t id;
   SPVM_OP* op_sub_destructor;
   SPVM_DYNAMIC_ARRAY* native_subs;

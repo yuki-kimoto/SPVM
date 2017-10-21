@@ -6,6 +6,9 @@
 enum {
   /* Fields count limit */
   SPVM_LIMIT_C_FIELDS = 0xFFFF,
+
+  /* Fields count our */
+  SPVM_LIMIT_C_OURS = 0xFFFF,
   
   /* Lexical variables count limit */
   SPVM_LIMIT_C_MY_VARS = 0xFFFF,

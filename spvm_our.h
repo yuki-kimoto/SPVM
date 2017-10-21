@@ -6,7 +6,7 @@
 // Field information
 struct SPVM_our {
   SPVM_OP* op_package;
-  SPVM_OP* op_name;
+  SPVM_OP* op_var;
   SPVM_OP* op_type;
   int32_t id;
   int32_t index;

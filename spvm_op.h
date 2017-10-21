@@ -200,6 +200,7 @@ struct SPVM_op {
     SPVM_USE* use;
     SPVM_CALL_SUB* call_sub;
     SPVM_CALL_FIELD* call_field;
+    SPVM_OUR* our;
   } uv;
   int32_t code;
   int32_t flag;

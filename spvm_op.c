@@ -33,6 +33,7 @@
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_constant_pool_package.h"
+#include "spvm_our.h"
 
 
 
@@ -1353,6 +1354,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     SPVM_DYNAMIC_ARRAY* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
     SPVM_DYNAMIC_ARRAY* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+    SPVM_DYNAMIC_ARRAY* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
     
     SPVM_DYNAMIC_ARRAY* op_names_set_field = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
     SPVM_DYNAMIC_ARRAY* op_names_get_field = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -1387,6 +1389,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
           SPVM_DYNAMIC_ARRAY_push(op_names_get_field, op_name);
         }
+      }
+      else if (op_decl->code == SPVM_OP_C_CODE_OUR) {
+        SPVM_DYNAMIC_ARRAY_push(op_ours, op_decl);
       }
       else {
         assert(0);
@@ -1424,6 +1429,35 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
 
+    // Register package variable
+    {
+      int32_t i;
+      for (i = 0; i < op_ours->length; i++) {
+        SPVM_OP* op_our = SPVM_DYNAMIC_ARRAY_fetch(op_ours, i);
+        
+        SPVM_OUR* our = op_our->uv.our;
+        const char* package_var_name = our->op_var->uv.var->op_name->uv.name;
+        
+        SPVM_OP* found_op_our = SPVM_HASH_search(package->op_our_symtable, package_var_name, strlen(package_var_name));
+        
+        assert(op_ours->length <= SPVM_LIMIT_C_OURS);
+        
+        if (found_op_our) {
+          SPVM_yyerror_format(compiler, "Redeclaration of our \"%s::%s\" at %s line %d\n", package_name, package_var_name, op_our->file, op_our->line);
+        }
+        else if (op_ours->length == SPVM_LIMIT_C_OURS) {
+          SPVM_yyerror_format(compiler, "Too many ours, our \"%s\" ignored at %s line %d\n", package_var_name, op_our->file, op_our->line);
+          compiler->fatal_error = 1;
+        }
+        else {
+          SPVM_HASH_insert(package->op_our_symtable, package_var_name, strlen(package_var_name), op_our);
+          
+          // Add op package
+          our->op_package = op_package;
+        }
+      }
+    }
+    
     // Add package
     op_package->uv.package = package;
     
@@ -1667,36 +1701,16 @@ SPVM_OP* SPVM_OP_build_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP*
 
 SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
   
-  /*
-  SPVM_OP* op_our_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_OUR, op_var->file, op_var->line);
+  SPVM_OP* op_our = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_OUR, op_var->file, op_var->line);
+  SPVM_OUR* our = SPVM_OUR_new(compiler);
   
-  // Create my var information
-  SPVM_OUR_VAR* our_var = SPVM_OUR_VAR_new(compiler);
-  if (op_type) {
-    our_var->op_type = op_type;
-  }
-  else {
-    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
-    our_var->op_type = op_type;
-  }
+  SPVM_OP_insert_child(compiler, op_our, op_our->last, op_var);
+  SPVM_OP_insert_child(compiler, op_our, op_our->last, op_type);
   
-  // Name OP
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_var->file, op_var->line);
-  op_name->uv.name = op_var->uv.var->op_name->uv.name;
-  our_var->op_name = op_name;
-
-  // Add our_var information to op
-  op_our_var->uv.our_var = our_var;
+  our->op_var = op_var;
+  our->op_type = op_type;
   
-  op_var->uv.var->op_our_var = op_our_var;
-  
-  SPVM_OP_insert_child(compiler, op_var, op_var->last, op_our_var);
-  
-  assert(op_var->first);
-  
-  */
-  
-  return NULL;
+  return op_our;
 }
 
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
@@ -1718,9 +1732,6 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   
   // Type
   field->op_type = op_type;
-  
-  // Field is private
-  field->is_private = 1;
   
   // Set field informaiton
   op_field->uv.field = field;
