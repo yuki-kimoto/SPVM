@@ -20,6 +20,8 @@ SPVM::Test - SPVM test module
 =cut
 
 package TestCase {
+  our $PACKAGE_VAR : int;
+  
   has next_test : TestCase;
   has minimal : TestCase::Minimal;
   has x_byte : byte;

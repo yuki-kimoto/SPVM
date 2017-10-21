@@ -23,6 +23,8 @@
 #include "spvm_constant_pool.h"
 #include "spvm_bytecode.h"
 #include "spvm_bytecode_array.h"
+#include "spvm_our.h"
+#include "spvm_package_var.h"
 
 void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   int32_t depth = 0;
@@ -73,6 +75,11 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       SPVM_MY_VAR* my_var = op_cur->uv.my_var;
       printf(" \"%s\"", my_var->op_name->uv.name);
       printf(" (my_var->index:%d)", my_var->index);
+    }
+    else if (code == SPVM_OP_C_CODE_OUR) {
+      SPVM_OUR* our = op_cur->uv.our;
+      printf(" \"%s\"", our->op_var->uv.var->op_name->uv.name);
+      printf(" (id :%d)", our->id);
     }
     else if (code == SPVM_OP_C_CODE_VAR) {
       SPVM_VAR* var = op_cur->uv.var;

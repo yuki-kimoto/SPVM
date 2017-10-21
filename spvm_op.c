@@ -127,7 +127,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "CONCAT_STRING",
   "SET",
   "GET",
-  "OUR_VAR",
+  "OUR",
   "PACKAGE_VAR",
 };
 
@@ -1449,10 +1449,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     {
       int32_t i;
       for (i = 0; i < op_ours->length; i++) {
+
         SPVM_OP* op_our = SPVM_DYNAMIC_ARRAY_fetch(op_ours, i);
         
         SPVM_OUR* our = op_our->uv.our;
         const char* package_var_name = our->op_var->uv.var->op_name->uv.name;
+        
         
         SPVM_OP* found_op_our = SPVM_HASH_search(package->op_our_symtable, package_var_name, strlen(package_var_name));
         
@@ -1723,11 +1725,10 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   SPVM_OP* op_our = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_OUR, op_var->file, op_var->line);
   SPVM_OUR* our = SPVM_OUR_new(compiler);
   
-  SPVM_OP_insert_child(compiler, op_our, op_our->last, op_var);
-  SPVM_OP_insert_child(compiler, op_our, op_our->last, op_type);
-  
   our->op_var = op_var;
   our->op_type = op_type;
+  
+  op_our->uv.our = our;
   
   return op_our;
 }

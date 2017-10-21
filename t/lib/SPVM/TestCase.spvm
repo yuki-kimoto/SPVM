@@ -24,6 +24,9 @@ use Double;
 use Math;
 
 package TestCase {
+  our $PACKAGE_VAR_INT : int;
+  our $PACKAGE_VAR_MINIMAL : TestCase::Minimal;
+
   has x_byte : byte;
   has x_short : short;
   has x_int : int;
