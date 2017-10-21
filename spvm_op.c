@@ -135,8 +135,11 @@ void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_va
   
   SPVM_OP* op_name = op_package_var->uv.package_var->op_name;
   
+  SPVM_OP* op_our = SPVM_HASH_search(compiler->op_our_symtable, op_name->uv.name, strlen(op_name->uv.name));
   
-  
+  if (op_our) {
+    op_package_var->uv.package_var->op_our;
+  }
 }
 
 SPVM_OP* SPVM_OP_new_op_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {

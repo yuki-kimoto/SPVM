@@ -28,6 +28,7 @@
 #include "spvm_limit.h"
 #include "spvm_sub_check_info.h"
 #include "spvm_our.h"
+#include "spvm_package_var.h"
 
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_SUB_CHECK_INFO* sub_check_info, const char* file, int32_t line) {
 
@@ -1544,6 +1545,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                   // Check field name
                   SPVM_OP_resolve_package_var(compiler, op_cur);
+                  if (!op_cur->uv.package_var->op_our) {
+                    SPVM_yyerror_format(compiler, "Package variable not found \"%s\" at %s line %d\n",
+                      op_cur->uv.package_var->op_name->uv.name, op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
                   
                   if (package != our->op_package->uv.package) {
                     SPVM_yyerror_format(compiler, "Package variable is private \"%s\" \"%s\" at %s line %d\n",
