@@ -129,7 +129,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "GET",
   "OUR",
   "PACKAGE_VAR",
-  "OBJECT",
 };
 
 void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var) {
@@ -337,7 +336,7 @@ SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, op_var_arg_value);
   
   // Return type
-  SPVM_OP* op_type_return = SPVM_OP_build_void(compiler, op_field);
+  SPVM_OP* op_type_return = SPVM_OP_new_op_void(compiler, file, line);
   
   // Assign
   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, file, line);
@@ -2384,10 +2383,10 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   return op_croak;
 }
 
-SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void) {
+SPVM_OP* SPVM_OP_new_op_void(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_void->file, op_void->line);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, file, line);
   
   op_type->uv.type = SPVM_TYPE_get_void_type(compiler);
   

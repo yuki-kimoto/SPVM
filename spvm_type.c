@@ -28,6 +28,7 @@ const char* const SPVM_TYPE_C_CODE_NAMES[] = {
   "float[]",
   "double[]",
   "String",
+  "Object",
 };
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {

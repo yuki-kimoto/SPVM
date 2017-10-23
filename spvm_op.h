@@ -129,7 +129,6 @@ enum {
   SPVM_OP_C_CODE_GET,
   SPVM_OP_C_CODE_OUR,
   SPVM_OP_C_CODE_PACKAGE_VAR,
-  SPVM_OP_C_CODE_OBJECT,
 };
 
 extern const char* const SPVM_OP_C_CODE_NAMES[];
@@ -229,7 +228,7 @@ void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** o
 void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler);
 SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target);
 void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace);
-SPVM_OP* SPVM_OP_build_void(SPVM_COMPILER* compiler, SPVM_OP* op_void);
+SPVM_OP* SPVM_OP_new_op_void(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
 SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_term);
 

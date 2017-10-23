@@ -6,7 +6,7 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_TYPE_C_CORE_LENGTH = 14
+  SPVM_TYPE_C_CORE_LENGTH = 15
 };
 
 enum {
@@ -32,6 +32,7 @@ enum {
   SPVM_TYPE_C_CODE_FLOAT_ARRAY,
   SPVM_TYPE_C_CODE_DOUBLE_ARRAY,
   SPVM_TYPE_C_CODE_STRING,
+  SPVM_TYPE_C_CODE_OBJECT,
 };
 
 extern const char* const SPVM_TYPE_C_CODE_NAMES[];
