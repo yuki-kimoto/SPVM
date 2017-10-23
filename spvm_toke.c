@@ -1413,6 +1413,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 
                 break;
+              case 'O' :
+                if (strcmp(keyword, "Object") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_OBJECT);
+                  return OBJECT;
+                }
+                
+                break;
               case 'p' :
                 if (strcmp(keyword, "package") == 0) {
                   // File can contains only one package
