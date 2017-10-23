@@ -1571,7 +1571,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 }
                 else {
                   if (src_type->code == SPVM_TYPE_C_CODE_OBJECT || dist_type->code == SPVM_TYPE_C_CODE_OBJECT) {
-                    
+                    if (dist_type->code != SPVM_TYPE_C_CODE_OBJECT) {
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CHECK_CONVERT);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (dist_type->id >> 24) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (dist_type->id >> 16) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (dist_type->id >> 8) & 0xFF);
+                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, dist_type->id & 0xFF);
+                    }
                   }
                   else {
                     assert(0);
