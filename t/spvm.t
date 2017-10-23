@@ -56,11 +56,9 @@ use SPVM 'std';
 }
 
 # Package variable
-=pod
 {
   ok(SPVM::TestCase::package_var());
 }
-=cut
 
 # Native Exception
 {

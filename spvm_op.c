@@ -2336,6 +2336,14 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_list_new);
     }
   }
+  else if (op_first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+    SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PACKAGE_VAR, op_assign->file, op_assign->line);
+    op_package_var->uv.package_var = op_first->uv.package_var;
+    
+    SPVM_OP_insert_child(compiler, op_package_var, op_package_var->last, op_assign);
+    
+    SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_package_var);
+  }
   else {
     SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_assign);
   }

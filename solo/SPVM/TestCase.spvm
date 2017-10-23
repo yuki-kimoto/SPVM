@@ -54,13 +54,14 @@ package TestCase {
       my $var = $TestCase::PACKAGE_VAR_INT;
       
       $TestCase::PACKAGE_VAR_INT = 1;
-
+      
       if ($TestCase::PACKAGE_VAR_INT == 0) {
         $TestCase::PACKAGE_VAR_INT = 1;
         if ($TestCase::PACKAGE_VAR_INT == 1) {
           return 1;
         }
       }
+      my $str = "" . $TestCase::PACKAGE_VAR_INT;
     }
     
     
