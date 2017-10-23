@@ -1632,7 +1632,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     if (SPVM_TYPE_is_package(compiler, term_type)
                       && SPVM_TYPE_is_package(compiler, type_type))
                     {
-                      if (term_type->code == SPVM_TYPE_C_CODE_OBJECT || term_type->code == SPVM_TYPE_C_CODE_OBJECT) {
+                      if (term_type->code == SPVM_TYPE_C_CODE_OBJECT || type_type->code == SPVM_TYPE_C_CODE_OBJECT) {
                         can_convert = 1;
                       }
                     }

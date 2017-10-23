@@ -235,11 +235,16 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   SPVM_OP* op_use_std = SPVM_OP_new_op_use_from_package_name(compiler, "std", "CORE", 0);
   SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use_std);
   SPVM_HASH_insert(compiler->op_use_symtable, "std", strlen("std"), op_use_std);
-
+  
   // use String module
   SPVM_OP* op_use_string = SPVM_OP_new_op_use_from_package_name(compiler, "String", "CORE", 0);
   SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use_string);
   SPVM_HASH_insert(compiler->op_use_symtable, "String", strlen("String"), op_use_string);
+  
+  // use Object module
+  SPVM_OP* op_use_object = SPVM_OP_new_op_use_from_package_name(compiler, "Object", "CORE", 0);
+  SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use_object);
+  SPVM_HASH_insert(compiler->op_use_symtable, "Object", strlen("Object"), op_use_object);
   
   /* call SPVM_yyparse */
   int32_t parse_success = SPVM_yyparse(compiler);

@@ -51,6 +51,16 @@ package TestCase {
   sub main($mvar : int) : int {
     
     {
+      my $obj : Object;
+      
+      my $string = "abcde";
+      
+      $obj = (Object)$string;
+      
+      std::say((String)$obj);
+    }
+    
+    {
       my $var = $TestCase::PACKAGE_VAR_INT;
       
       $TestCase::PACKAGE_VAR_INT = 1;

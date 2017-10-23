@@ -1570,7 +1570,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else {
-                  assert(0);
+                  if (src_type->code == SPVM_TYPE_C_CODE_OBJECT || dist_type->code == SPVM_TYPE_C_CODE_OBJECT) {
+                    
+                  }
+                  else {
+                    assert(0);
+                  }
                 }
                 
                 break;
