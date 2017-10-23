@@ -1,3 +1,2 @@
 package Object {
-  has type_id : int;
 }
