@@ -129,8 +129,12 @@ spvm_op.c
 spvm_op.h
 spvm_op_checker.c
 spvm_op_checker.h
+spvm_our.c
+spvm_our.h
 spvm_package.c
 spvm_package.h
+spvm_package_var.c
+spvm_package_var.h
 spvm_runtime.c
 spvm_runtime.h
 spvm_runtime_allocator.c
