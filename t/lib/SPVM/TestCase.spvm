@@ -25,6 +25,7 @@ use Math;
 
 package TestCase {
   our $PACKAGE_VAR_INT : int;
+  our $PACKAGE_VAR_LONG : long;
   our $PACKAGE_VAR_MINIMAL : TestCase::Minimal;
 
   has x_byte : byte;
@@ -55,9 +56,12 @@ package TestCase {
 
   sub package_var() : int {
     if ($TestCase::PACKAGE_VAR_INT == 0) {
-      $TestCase::PACKAGE_VAR_INT = 1;
-      if ($TestCase::PACKAGE_VAR_INT == 1) {
-        return 1;
+      $TestCase::PACKAGE_VAR_INT = Integer::MAX_VALUE();
+      if ($TestCase::PACKAGE_VAR_INT == Integer::MAX_VALUE()) {
+        $TestCase::PACKAGE_VAR_LONG = Long::MAX_VALUE();
+        if ($TestCase::PACKAGE_VAR_LONG == Long::MAX_VALUE()) {
+          return 1;
+        }
       }
     }
     return 0;
