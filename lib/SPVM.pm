@@ -6,17 +6,17 @@ use warnings;
 
 use Config;
 
-use SPVM::Object;
-use SPVM::Object::Array;
-use SPVM::Object::Array::Byte;
-use SPVM::Object::Array::Short;
-use SPVM::Object::Array::Int;
-use SPVM::Object::Array::Long;
-use SPVM::Object::Array::Float;
-use SPVM::Object::Array::Double;
-use SPVM::Object::Array::Object;
-use SPVM::Object::Package;
-use SPVM::Object::Package::String;
+use SPVM::Core::Object;
+use SPVM::Core::Object::Array;
+use SPVM::Core::Object::Array::Byte;
+use SPVM::Core::Object::Array::Short;
+use SPVM::Core::Object::Array::Int;
+use SPVM::Core::Object::Array::Long;
+use SPVM::Core::Object::Array::Float;
+use SPVM::Core::Object::Array::Double;
+use SPVM::Core::Object::Array::Object;
+use SPVM::Core::Object::Package;
+use SPVM::Core::Object::Package::String;
 
 use File::Temp 'tempdir';
 use ExtUtils::CBuilder;
@@ -224,7 +224,7 @@ CHECK {
 sub new_byte_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Byte->new_len($length);
+  my $array = SPVM::Core::Object::Array::Byte->new_len($length);
   
   return $array;
 }
@@ -240,7 +240,7 @@ sub new_byte_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Byte->new_len($length);
+  my $array = SPVM::Core::Object::Array::Byte->new_len($length);
   
   $array->set_elements($elements);
   
@@ -258,7 +258,7 @@ sub new_short_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Short->new_len($length);
+  my $array = SPVM::Core::Object::Array::Short->new_len($length);
   
   $array->set_elements($elements);
   
@@ -270,7 +270,7 @@ sub new_byte_array_data {
   
   my $length = length $data;
   
-  my $array = SPVM::Object::Array::Byte->new_len($length);
+  my $array = SPVM::Core::Object::Array::Byte->new_len($length);
   
   $array->set_data($data);
   
@@ -281,7 +281,7 @@ sub new_byte_array_data {
 sub new_short_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Short->new_len($length);
+  my $array = SPVM::Core::Object::Array::Short->new_len($length);
   
   return $array;
 }
@@ -308,7 +308,7 @@ sub new_short_array_data {
   
   my $length = int($byte_length / 2);
   
-  my $array = SPVM::Object::Array::Short->new_len($length);
+  my $array = SPVM::Core::Object::Array::Short->new_len($length);
   
   $array->set_data($data);
   
@@ -318,7 +318,7 @@ sub new_short_array_data {
 sub new_int_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Int->new_len($length);
+  my $array = SPVM::Core::Object::Array::Int->new_len($length);
   
   return $array;
 }
@@ -334,7 +334,7 @@ sub new_int_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Int->new_len($length);
+  my $array = SPVM::Core::Object::Array::Int->new_len($length);
   
   $array->set_elements($elements);
   
@@ -352,7 +352,7 @@ sub new_int_array_data {
   
   my $length = int($byte_length / 4);
   
-  my $array = SPVM::Object::Array::Int->new_len($length);
+  my $array = SPVM::Core::Object::Array::Int->new_len($length);
   
   $array->set_data($data);
   
@@ -362,7 +362,7 @@ sub new_int_array_data {
 sub new_long_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Long->new_len($length);
+  my $array = SPVM::Core::Object::Array::Long->new_len($length);
   
   return $array;
 }
@@ -378,7 +378,7 @@ sub new_long_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Long->new_len($length);
+  my $array = SPVM::Core::Object::Array::Long->new_len($length);
   
   $array->set_elements($elements);
   
@@ -396,7 +396,7 @@ sub new_long_array_data {
   
   my $length = $byte_length / 8;
   
-  my $array = SPVM::Object::Array::Long->new_len($length);
+  my $array = SPVM::Core::Object::Array::Long->new_len($length);
   
   $array->set_data($data);
   
@@ -406,7 +406,7 @@ sub new_long_array_data {
 sub new_float_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Float->new_len($length);
+  my $array = SPVM::Core::Object::Array::Float->new_len($length);
   
   return $array;
 }
@@ -422,7 +422,7 @@ sub new_float_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Float->new_len($length);
+  my $array = SPVM::Core::Object::Array::Float->new_len($length);
   
   $array->set_elements($elements);
   
@@ -440,7 +440,7 @@ sub new_float_array_data {
   
   my $length = $byte_length / 4;
   
-  my $array = SPVM::Object::Array::Float->new_len($length);
+  my $array = SPVM::Core::Object::Array::Float->new_len($length);
   
   $array->set_data($data);
   
@@ -450,7 +450,7 @@ sub new_float_array_data {
 sub new_double_array_len {
   my $length = shift;
   
-  my $array = SPVM::Object::Array::Double->new_len($length);
+  my $array = SPVM::Core::Object::Array::Double->new_len($length);
   
   return $array;
 }
@@ -466,7 +466,7 @@ sub new_double_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Double->new_len($length);
+  my $array = SPVM::Core::Object::Array::Double->new_len($length);
   
   $array->set_elements($elements);
   
@@ -484,7 +484,7 @@ sub new_double_array_data {
   
   my $length = $byte_length / 8;
   
-  my $array = SPVM::Object::Array::Double->new_len($length);
+  my $array = SPVM::Core::Object::Array::Double->new_len($length);
   
   $array->set_data($data);
   
@@ -494,7 +494,7 @@ sub new_double_array_data {
 sub new_object_array_len {
   my ($type_name, $length) = @_;
   
-  my $array = SPVM::Object::Array::Object->new_len($type_name, $length);
+  my $array = SPVM::Core::Object::Array::Object->new_len($type_name, $length);
   
   return $array;
 }
@@ -502,7 +502,7 @@ sub new_object_array_len {
 sub new_object {
   my $package_name = shift;
   
-  my $object = SPVM::Object::Package->new($package_name);
+  my $object = SPVM::Core::Object::Package->new($package_name);
   
   return $object;
 }
@@ -521,7 +521,7 @@ sub build_spvm_subs {
     $package_name = "SPVM::$package_name";
     unless ($package_name_h->{$package_name}) {
       
-      my $code = "package $package_name; our \@ISA = ('SPVM::Object::Package');";
+      my $code = "package $package_name; our \@ISA = ('SPVM::Core::Object::Package');";
       eval $code;
       
       if (my $error = $@) {
@@ -591,9 +591,9 @@ Use SPVM Module from Perl
   
   print $total . "\n";
 
-If you know more SPVM syntax, see L<SPVM::Document::Specification>.
+If you know more SPVM syntax, see L<SPVM::Core::Document::Specification>.
 
-If you know more Functions to convert Perl Data to SPVM Data, see L<SPVM::Document::Functions>.
+If you know more Functions to convert Perl Data to SPVM Data, see L<SPVM::Core::Document::Functions>.
 
 =head2 C Extension using SPVM
 
@@ -650,9 +650,9 @@ Use Extension Module from Perl:
   
   print $total . "\n";
 
-If you know more SPVM Extension, see L<SPVM::Document::Extension>.
+If you know more SPVM Extension, see L<SPVM::Core::Document::Extension>.
 
-If you know the APIs to manipulate SPVM data, see L<SPVM::Document::NativeAPI>.
+If you know the APIs to manipulate SPVM data, see L<SPVM::Core::Document::NativeAPI>.
 
 =head1 DESCRIPTION
 
@@ -766,7 +766,7 @@ And call SPVM subroutine. If SPVM subroutine absolute name is C<MyModule1::sum>,
 
 =head2 SPVM Functions
 
-L<SPVM::Document::Functions> - SPVM data convertion functions.
+L<SPVM::Core::Document::Functions> - SPVM data convertion functions.
 
 List of SPVM functions:
 
@@ -794,29 +794,29 @@ List of SPVM functions:
 
 =back
 
-If you know Detail of SPVM Function, see L<SPVM::Document::Functions>.
+If you know Detail of SPVM Function, see L<SPVM::Core::Document::Functions>.
 
 =head2 SPVM Language Specification
 
-L<SPVM::Document::Specification> - SPVM Language Specification
+L<SPVM::Core::Document::Specification> - SPVM Language Specification
 
 =head2 SPVM Native API
 
-L<SPVM::Document::NativeAPI> - SPVM Native API.
+L<SPVM::Core::Document::NativeAPI> - SPVM Native API.
 
 Native API is C level API. You can write programing logic using C language and SPVM Native API.
 
 =head2 SPVM Standard Library
 
-L<SPVM::Document::StandardLibrary> - SPVM Standard Library
+L<SPVM::Core::Document::StandardLibrary> - SPVM Standard Library
 
 =head2 SPVM Cookbook
 
-L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many examples.
+L<SPVM::Core::Document::Cookbook> - SPVM Cookbook, advanced technique and many examples.
 
 =head2 SPVM FAQ
 
-L<SPVM::Document::FAQ> - Oftten asked question.
+L<SPVM::Core::Document::FAQ> - Oftten asked question.
 
 =head2 SUPPORT
 

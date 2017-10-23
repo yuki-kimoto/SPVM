@@ -1,0 +1,41 @@
+=head1 NAME
+
+SPVM::Core::Document::StandardLibrary - SPVM Standard Library(BETA before 1.0)
+
+=head1 SPVM Language Standard Library
+
+=head2 SPVM::std
+
+L<SPVM::std> - Default libraray
+
+=head2 SPVM::Byte
+
+L<SPVM::Byte> - Byte Utility
+
+=head2 SPVM::Short
+
+L<SPVM::Short> - Short Utility
+
+=head2 SPVM::Integer
+
+L<SPVM::Integer> - Integer Utility
+
+=head2 SPVM::Long
+
+L<SPVM::Long> - Long Utility
+
+=head2 SPVM::Float
+
+L<SPVM::Float> - Float Utility
+
+=head2 SPVM::Double
+
+L<SPVM::Double> - Double Utility
+
+=head2 SPVM::Math
+
+L<SPVM::Math> - Math Library
+
+=head2 SPVM::Arrays
+
+L<SPVM::Arrays> - Arrays Utility
