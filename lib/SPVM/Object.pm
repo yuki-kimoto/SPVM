@@ -4,4 +4,4 @@ package SPVM::Object;
 
 =head1 NAME
 
-SPVM::Object - object
+SPVM::Object - Object
