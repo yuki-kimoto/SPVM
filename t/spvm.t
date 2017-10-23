@@ -57,7 +57,10 @@ use SPVM 'std';
 
 # Package variable
 {
+  my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::package_var());
+  my $end_objects_count = SPVM::get_objects_count();
+  is($start_objects_count, $end_objects_count);
 }
 
 # Native Exception

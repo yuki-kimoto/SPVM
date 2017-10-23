@@ -60,7 +60,14 @@ package TestCase {
       if ($TestCase::PACKAGE_VAR_INT == Integer::MAX_VALUE()) {
         $TestCase::PACKAGE_VAR_LONG = Long::MAX_VALUE();
         if ($TestCase::PACKAGE_VAR_LONG == Long::MAX_VALUE()) {
-          return 1;
+          $TestCase::PACKAGE_VAR_MINIMAL = TestCase::Minimal::new();
+          
+          $TestCase::PACKAGE_VAR_MINIMAL->set_x(4);
+          
+          if ($TestCase::PACKAGE_VAR_MINIMAL->get_x == 4) {
+            $TestCase::PACKAGE_VAR_MINIMAL = undef;
+            return 1;
+          }
         }
       }
     }
