@@ -27,8 +27,8 @@ const char* const SPVM_TYPE_C_CODE_NAMES[] = {
   "long[]",
   "float[]",
   "double[]",
-  "String",
   "Object",
+  "String",
 };
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
@@ -210,7 +210,7 @@ _Bool SPVM_TYPE_is_string(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
 _Bool SPVM_TYPE_is_package(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  _Bool is_package = type->dimension == 0 && type->code > SPVM_TYPE_C_CODE_DOUBLE;
+  _Bool is_package = type->dimension == 0 && type->code >= SPVM_TYPE_C_CODE_STRING;
   
   return is_package;
 }
