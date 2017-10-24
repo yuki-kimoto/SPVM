@@ -1364,6 +1364,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_INT);
                   return INT;
                 }
+                else if (strcmp(keyword, "is") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_IS);
+                  return IS;
+                }
                 break;
               case 'l' :
                 if (strcmp(keyword, "last") == 0) {

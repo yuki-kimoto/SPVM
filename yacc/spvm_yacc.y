@@ -14,11 +14,11 @@
   #include "spvm_type.h"
 %}
 
-%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW SET GET OUR
+%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW SET GET OUR IS
 %token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK PACKAGE_VAR
 %token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
-%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
+%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement is_type
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
 %type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package
 %type <opval> enumeration_values enumeration_value weaken_field names opt_names setters getters our_var
@@ -531,6 +531,13 @@ term
   | new_object
   | array_length
   | my_var
+  | is_type
+
+is_type
+  : term IS type
+    {
+      $$ = SPVM_OP_build_is_type(compiler, $2, $1, $3);
+    }
 
 new_object
   : NEW type_name
