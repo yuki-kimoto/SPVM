@@ -581,7 +581,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_IS: {
-                SPVM_OP* op_term = op_cur->first;
                 SPVM_OP* op_type = op_cur->last;
                 
                 int32_t type_id = op_type->uv.type->id;
