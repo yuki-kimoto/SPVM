@@ -887,6 +887,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
+    case SPVM_OP_C_CODE_IS: {
+      type = SPVM_TYPE_get_int_type(compiler);
+      break;
+    }
     case SPVM_OP_C_CODE_CONVERT: {
       SPVM_OP* op_type = op->last;
       type = SPVM_OP_get_type(compiler, op_type);

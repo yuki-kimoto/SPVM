@@ -1,5 +1,6 @@
 0.0283 2017-10-23
   - add Object type
+  - add is operator
 0.0282 2017-10-23
   - support package variable
 0.0281 2017-10-19

@@ -51,6 +51,14 @@ package TestCase {
   sub main($mvar : int) : int {
     
     {
+      my $minimal = TestCase::Minimal::new();
+      
+      if ($minimal is TestCase::Minimal) {
+        std::say("is Test::Minimal");
+      }
+    }
+    
+    {
       my $obj : Object;
       
       my $string = "abcde";
