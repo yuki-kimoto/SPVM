@@ -62,6 +62,30 @@ You can call Native API from this object, and First Argument of Native API is al
     int32_t length = api->get_array_length(api, args[0].object_value);
   }
 
+=head1 Functions
+
+=head2 get_type_id
+
+  int32_t get_type_id(SPVM_API api, const char *name);
+
+Get type id.
+
+B<LINKAGE:>
+
+B<PARAMETERS:>
+
+api: SPVM_API object.
+
+name: type name, for example, B<Math>, B<String>, B<String[]>.
+
+B<RETURNS:>
+
+Returns a type id, or C<0> if type can't be found.
+
+B<THROWS:>
+
+1. if no definition for a requested type can be found.
+
 =head1 Native API List
 
   int32_t (*get_array_length)(SPVM_API*, SPVM_API_OBJECT*);

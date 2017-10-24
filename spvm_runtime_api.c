@@ -765,7 +765,15 @@ int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   SPVM_HASH* type_id_symtable = runtime->type_id_symtable;
   int32_t constant_pool_type_id = (int32_t)(intptr_t)SPVM_HASH_search(type_id_symtable, name, strlen(name));
-
+  
+  // Can't find type id
+  if (constant_pool_type_id == 0) {
+    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Unknown type(SPVM_RUNTIME_API_get_type_id())", 0);
+    SPVM_RUNTIME_API_set_exception(api, exception);
+    
+    return 0;
+  }
+  
   return constant_pool_type_id;
 }
 
