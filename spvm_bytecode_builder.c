@@ -580,6 +580,21 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
+              case SPVM_OP_C_CODE_IS: {
+                SPVM_OP* op_term = op_cur->first;
+                SPVM_OP* op_type = op_cur->last;
+                
+                int32_t type_id = op_type->uv.type->id;
+                
+                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IS);
+                
+                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 24) & 0xFF);
+                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 16) & 0xFF);
+                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 8) & 0xFF);
+                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, type_id & 0xFF);
+                
+                break;
+              }
               case SPVM_OP_C_CODE_CALL_SUB: {
                 
                 // Call subroutine
