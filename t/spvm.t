@@ -55,6 +55,11 @@ use SPVM 'std';
   cmp_ok(abs(time - SPVM::std::time()), '<', 2);
 }
 
+# Object Convertion
+{
+  ok(SPVM::TestCase::object_convert());
+}
+
 # Package variable
 {
   my $start_objects_count = SPVM::get_objects_count();
