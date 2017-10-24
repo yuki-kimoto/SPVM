@@ -6,7 +6,7 @@ SPVM::Core::Document::NativeAPI - SPVM Native API(BETA before 1.0)
 
 SPVM Native API is the API to Manipulate Array and Object, and call Subroutine in C Level.
 
-To mprove peformance, you can write programing logic by C language and Native API.
+To improve peformance, you can write programing logic by C language and Native API.
 
 You can do the following by SPVM Native API.
 
@@ -86,7 +86,29 @@ B<THROWS:>
 
 1. if no definition for a requested type can be found.
 
-=head1 Native API List
+=head2 new_object
+
+  SPVM_API_OBJECT* new_object(SPVM_API* api, int32_t type_id);
+
+Constructs a new SPVM object. C<type_id> must be obtained by L</"get_type_id">.
+
+C<type_id> must refer to package type(not array type, not numeric type, not void type, not invalid type id).
+
+If not package type id is specified, unexpected behavior occur.
+
+B<LINKAGE:>
+
+B<PARAMETERS:>
+
+api: SPVM_API object.
+
+type_id: type id.
+
+B<RETURNS:>
+
+Returns a SPVM_API_OBJECT object.
+
+=head1 Native API List(TODO)
 
   int32_t (*get_array_length)(SPVM_API*, SPVM_API_OBJECT*);
   int8_t* (*get_byte_array_elements)(SPVM_API*, SPVM_API_OBJECT*);
@@ -121,8 +143,6 @@ B<THROWS:>
   float (*call_float_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   double (*call_double_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   SPVM_API_OBJECT* (*call_object_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int32_t (*get_type_id)(SPVM_API*, const char*);
-  SPVM_API_OBJECT* (*new_object)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_byte_array)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_short_array)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_int_array)(SPVM_API*, int32_t);
