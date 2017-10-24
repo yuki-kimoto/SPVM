@@ -526,9 +526,26 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     &&case_SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR,
     &&case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR,
     &&case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT,
+    &&case_SPVM_BYTECODE_C_CODE_IS,
   };
   
   goto *jump[*pc];
+
+  case_SPVM_BYTECODE_C_CODE_IS: {
+    // Get subroutine ID
+    int32_t type_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    
+    if (call_stack[operand_stack_top].object_value->type_id == type_id) {
+      call_stack[operand_stack_top].int_value = 1;
+    }
+    else {
+      call_stack[operand_stack_top].int_value = 0;
+    }
+    
+    pc += 5;
+    
+    goto *jump[*pc];
+  }
   
   case_SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
     // Get subroutine ID
