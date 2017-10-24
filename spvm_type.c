@@ -218,7 +218,9 @@ _Bool SPVM_TYPE_is_package(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
 _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  if (type && type->code >= SPVM_TYPE_C_CODE_BYTE_ARRAY && type->code <= SPVM_TYPE_C_CODE_DOUBLE_ARRAY)
+  assert(type);
+  
+  if (type->code >= SPVM_TYPE_C_CODE_BYTE_ARRAY && type->code <= SPVM_TYPE_C_CODE_DOUBLE_ARRAY)
   {
     return 1;
   }
@@ -230,7 +232,9 @@ _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
 _Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  if (type && type->code >= SPVM_TYPE_C_CODE_BYTE && type->code <= SPVM_TYPE_C_CODE_LONG) {
+  assert(type);
+  
+  if (type->code >= SPVM_TYPE_C_CODE_BYTE && type->code <= SPVM_TYPE_C_CODE_LONG) {
     return 1;
   }
   else {
@@ -241,7 +245,9 @@ _Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
 _Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  if (type && type->code >= SPVM_TYPE_C_CODE_BYTE && type->code <= SPVM_TYPE_C_CODE_DOUBLE) {
+  assert(type);
+  
+  if (type->code >= SPVM_TYPE_C_CODE_BYTE && type->code <= SPVM_TYPE_C_CODE_DOUBLE) {
     return 1;
   }
   else {
