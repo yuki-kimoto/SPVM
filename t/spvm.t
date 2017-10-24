@@ -54,15 +54,6 @@ use SPVM 'std';
 {
   cmp_ok(abs(time - SPVM::std::time()), '<', 2);
 }
-# is
-{
-  ok(SPVM::TestCase::is());
-}
-
-# Object Convertion
-{
-  ok(SPVM::TestCase::object_convert());
-}
 
 # Package variable
 {

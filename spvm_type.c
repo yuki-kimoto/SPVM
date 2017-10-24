@@ -15,7 +15,6 @@
 
 const char* const SPVM_TYPE_C_CODE_NAMES[] = {
   "void",
-  "Object",
   "byte",
   "short",
   "int",

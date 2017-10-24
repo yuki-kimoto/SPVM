@@ -53,38 +53,6 @@ package TestCase {
     FLOAT_PRECICE = 16384.5f,
     DOUBLE_PRECICE = 65536.5,
   }
-
-  sub is() : int {
-    my $minimal = TestCase::Minimal::new();
-    $minimal->set_x(2);
-    
-    my $obj = (Object)$minimal;
-    $obj = (Object)$obj;
-    
-    my $minimal2 = (TestCase::Minimal)$obj;
-    
-    if ($obj is TestCase::Minimal && $minimal2 is TestCase::Minimal) {
-      return 1;
-    }
-    
-    return 0;
-  }
-  
-  sub object_convert() : int {
-    my $minimal = TestCase::Minimal::new();
-    $minimal->set_x(2);
-    
-    my $obj = (Object)$minimal;
-    $obj = (Object)$obj;
-    
-    my $minimal2 = (TestCase::Minimal)$obj;
-    
-    if ($minimal2->get_x == 2) {
-      return 1;
-    }
-    
-    return 0;
-  }
   
   sub package_var() : int {
     if ($TestCase::PACKAGE_VAR_INT == 0) {

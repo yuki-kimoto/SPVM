@@ -129,7 +129,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "GET",
   "OUR",
   "PACKAGE_VAR",
-  "IS",
 };
 
 void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var) {
@@ -885,10 +884,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       if (op->first) {
         type = SPVM_OP_get_type(compiler, op->first);
       }
-      break;
-    }
-    case SPVM_OP_C_CODE_IS: {
-      type = SPVM_TYPE_get_int_type(compiler);
       break;
     }
     case SPVM_OP_C_CODE_CONVERT: {
@@ -2063,15 +2058,6 @@ SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP*
   SPVM_OP_insert_child(compiler, op_unary, op_unary->last, op_first);
   
   return op_unary;
-}
-
-SPVM_OP* SPVM_OP_build_is_type(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_term, SPVM_OP* op_type) {
-  
-  // Build op
-  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_term);
-  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_type);
-  
-  return op_is;
 }
 
 SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {

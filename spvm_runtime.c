@@ -418,7 +418,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     &&case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_INT,
     &&case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_LONG,
     &&case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_FLOAT,
-    &&case_SPVM_BYTECODE_C_CODE_CHECK_CONVERT,
     &&case_SPVM_BYTECODE_C_CODE_INC_BYTE,
     &&case_SPVM_BYTECODE_C_CODE_INC_SHORT,
     &&case_SPVM_BYTECODE_C_CODE_INC_INT,
@@ -526,27 +525,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     &&case_SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR,
     &&case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR,
     &&case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT,
-    &&case_SPVM_BYTECODE_C_CODE_IS,
   };
   
   goto *jump[*pc];
 
-  case_SPVM_BYTECODE_C_CODE_IS: {
-    // Get subroutine ID
-    int32_t type_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
-    
-    if (call_stack[operand_stack_top].object_value->type_id == type_id) {
-      call_stack[operand_stack_top].int_value = 1;
-    }
-    else {
-      call_stack[operand_stack_top].int_value = 0;
-    }
-    
-    pc += 5;
-    
-    goto *jump[*pc];
-  }
-  
   case_SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
     // Get subroutine ID
     int32_t package_var_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
@@ -1909,22 +1891,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     call_stack[operand_stack_top].short_value = (int16_t)call_stack[operand_stack_top].byte_value;
     pc++;
     goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_CHECK_CONVERT: {
-    
-    if (call_stack[operand_stack_top].object_value != NULL) {
-      int32_t dist_type_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
-      
-      int32_t src_type_id = call_stack[operand_stack_top].object_value->type_id;
-      
-      if (src_type_id != dist_type_id) {
-        SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Can't convert to different type", 0);
-        SPVM_RUNTIME_API_set_exception(api, exception);
-        goto case_SPVM_BYTECODE_C_CODE_CROAK;
-      }
-    }
-    pc += 5;
-    goto *jump[*pc];
-  }
   case_SPVM_BYTECODE_C_CODE_CMP_BYTE:
     // z = (x > y) + (x < y) * -1
     call_stack[operand_stack_top - 1].int_value

@@ -114,7 +114,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // Nothing
         }
         else {
-          SPVM_yyerror_format(compiler, "unknown package \"%s\" at %s line %d\n", base_name, op_type->file, op_type->line);
+          SPVM_yyerror_format(compiler, "Unknown package \"%s\" at %s line %d\n", base_name, op_type->file, op_type->line);
           compiler->fatal_error = 1;
           return;
         }
@@ -1561,23 +1561,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
-                case SPVM_OP_C_CODE_IS: {
-                  
-                  SPVM_OP* op_term = op_cur->first;
-                  SPVM_OP* op_type = op_cur->last;
-                  
-                  if (op_term->code == SPVM_OP_C_CODE_UNDEF) {
-                    SPVM_yyerror_format(compiler, "is left value must be not undef at %s line %d\n",
-                      op_cur->uv.package_var->op_name->uv.name, op_cur->file, op_cur->line);
-                  }
-                  
-                  if (!SPVM_TYPE_is_ref(compiler, op_type->uv.type)) {
-                    SPVM_yyerror_format(compiler, "is right type must be package or array type \"%s\" at %s line %d\n",
-                      op_cur->uv.package_var->op_name->uv.name, op_cur->file, op_cur->line);
-                  }
-                  
-                  break;
-                }
                 case SPVM_OP_C_CODE_CALL_FIELD: {
                   SPVM_OP* op_term_invocker = op_cur->first;
                   SPVM_OP* op_name = op_cur->last;
@@ -1644,17 +1627,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   _Bool can_convert = 0;
                   if (SPVM_TYPE_is_numeric(compiler, term_type) && SPVM_TYPE_is_numeric(compiler, type_type)) {
                     can_convert = 1;
-                  }
-                  else {
-                    if (term_type->code == SPVM_TYPE_C_CODE_OBJECT && type_type->code == SPVM_TYPE_C_CODE_OBJECT) {
-                      can_convert = 1;
-                    }
-                    else if (SPVM_TYPE_is_package(compiler, term_type) && type_type->code == SPVM_TYPE_C_CODE_OBJECT) {
-                      can_convert = 1;
-                    }
-                    else if (term_type->code == SPVM_TYPE_C_CODE_OBJECT && SPVM_TYPE_is_package(compiler, type_type)) {
-                      can_convert = 1;
-                    }
                   }
                   
                   if (!can_convert) {
