@@ -1421,32 +1421,32 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_ADD_BYTE:
     call_stack[operand_stack_top - 1].byte_value += call_stack[operand_stack_top].byte_value;
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ADD_SHORT:
     call_stack[operand_stack_top - 1].short_value += call_stack[operand_stack_top].short_value;
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ADD_INT:
     call_stack[operand_stack_top - 1].int_value += call_stack[operand_stack_top].int_value;
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ADD_LONG:
     call_stack[operand_stack_top - 1].long_value += call_stack[operand_stack_top].long_value;
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ADD_FLOAT:
     call_stack[operand_stack_top - 1].float_value += call_stack[operand_stack_top].float_value;
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ADD_DOUBLE:
     call_stack[operand_stack_top - 1].double_value += call_stack[operand_stack_top].double_value;
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_SUBTRACT_BYTE:
     call_stack[operand_stack_top - 1].byte_value -= call_stack[operand_stack_top].byte_value;
