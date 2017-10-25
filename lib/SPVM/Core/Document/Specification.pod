@@ -184,7 +184,7 @@ Subroutine Definition must be just under Package Definition.
 
   # Legal
   package PackageName {
-    sub foo($nums : int[]) : int {
+    sub foo($values : int[]) : int {
     
     }
   }
@@ -256,13 +256,13 @@ If the Type of right value is known, the type of left value is automatically dec
 
   my $num = 2;
   my $obj = new Foo;
-  my $nums = new int[3];
+  my $values = new int[3];
 
 Above is same as the following.
 
   my $num : int = 2;
   my $obj : Foo = new Foo;
-  my $nums : int[3] = new int[3];
+  my $values : int[3] = new int[3];
 
 =head2 Number Literal
 
@@ -526,21 +526,19 @@ You can create Object by C<new> subroutine. This is Default Constructor.
 
 Array is created by new. Elements values is not initialized.
 
-  my $nums = new byte[3];
-  my $nums = new short[3];
-  my $nums = new int[3];
-  my $nums = new long[3];
-  my $nums = new float[3];
-  my $nums = new double[3];
+  my $values = new byte[3];
+  my $values = new short[3];
+  my $values = new int[3];
+  my $values = new long[3];
+  my $values = new float[3];
+  my $values = new double[3];
 
 =head2 Array Initialization
 
 Array Initialization Syntax:
 
-  my $nums : int[] = [1, 2, 3];
-  my $points : Point[] = [Point::new(), Point::new(), Point::new()];
-  
-Note that Array Initialization syntax don't support Type Inference. You must write Type.
+  my $values = new int[] {1, 2, 3};
+  my $points = new Point[] {Point::new(), Point::new(), Point::new()};
 
 =head2 Array Manipulation
 
@@ -548,21 +546,21 @@ Note that Array Initialization syntax don't support Type Inference. You must wri
 
 You can use the three ways to get Array Length.
 
-  @$nums;
-  @{$nums};
-  len $nums;
+  @$values;
+  @{$values};
+  len $values;
 
 =head3 Get and Set Array Element
 
 Get Array Element:
 
   # Get
-  $nums->[0];
+  $values->[0];
 
 Set Array Element:
 
   # Set
-  $nums->[0] = 5;
+  $values->[0] = 5;
 
 =head2 Object Manipulation
 
@@ -600,17 +598,17 @@ see L</"Accessor Definition">.
 
 =head3 for statement
 
-  my $nums = new int[10];
-  for (my $i = 0; $i < @$nums; $i++) {
-    $nums->[$i] = 0;
+  my $values = new int[10];
+  for (my $i = 0; $i < @$values; $i++) {
+    $values->[$i] = 0;
   }
 
 =head3 while statement
 
-  my $nums = new int[10];
+  my $values = new int[10];
   my $i = 0;
-  while ($i < @$nums) {
-    $nums->[$i] = 0;
+  while ($i < @$values) {
+    $values->[$i] = 0;
   }
 
 =head2 Comment
