@@ -1753,19 +1753,19 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_INC_BYTE:
     call_stack[*(pc + 1)].byte_value += (int8_t)*(pc + 2);
-    pc += 3;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_INC_SHORT:
     call_stack[*(pc + 1)].short_value += (int8_t)*(pc + 2);
-    pc += 3;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_INC_INT:
     call_stack[*(pc + 1)].int_value += (int8_t)*(pc + 2);
-    pc += 3;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_INC_LONG:
     call_stack[*(pc + 1)].long_value += (int8_t)*(pc + 2);
-    pc += 3;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG:
     call_stack[operand_stack_top].long_value = (int64_t)call_stack[operand_stack_top].int_value;

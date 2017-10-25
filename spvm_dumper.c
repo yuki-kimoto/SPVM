@@ -297,10 +297,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         
         // Have tow operands
-        case SPVM_BYTECODE_C_CODE_INC_BYTE:
-        case SPVM_BYTECODE_C_CODE_INC_SHORT:
-        case SPVM_BYTECODE_C_CODE_INC_INT:
-        case SPVM_BYTECODE_C_CODE_INC_LONG:
         case SPVM_BYTECODE_C_CODE_PUSH_SHORT:
         case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_INT:
         case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_LONG:
@@ -409,6 +405,10 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_BIT_XOR_SHORT:
         case SPVM_BYTECODE_C_CODE_BIT_XOR_INT:
         case SPVM_BYTECODE_C_CODE_BIT_XOR_LONG:
+        case SPVM_BYTECODE_C_CODE_INC_BYTE:
+        case SPVM_BYTECODE_C_CODE_INC_SHORT:
+        case SPVM_BYTECODE_C_CODE_INC_INT:
+        case SPVM_BYTECODE_C_CODE_INC_LONG:
         {
           i++;
           bytecode = bytecode_array->values[i];
