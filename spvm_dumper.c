@@ -255,42 +255,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
       
       // Operand
       switch (bytecode) {
-        case SPVM_BYTECODE_C_CODE_WIDE: {
-          i++;
-          bytecode = bytecode_array->values[i];
-          
-          switch (bytecode) {
-            // Have tow operand]
-            case SPVM_BYTECODE_C_CODE_STORE:
-            case SPVM_BYTECODE_C_CODE_STORE_OBJECT:
-            case SPVM_BYTECODE_C_CODE_LOAD:
-            {
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-              
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-              
-              break;
-            }
-          }
-          
-          break;
-        }
-        
-        // Have one operand
-        case SPVM_BYTECODE_C_CODE_STORE:
-        case SPVM_BYTECODE_C_CODE_STORE_OBJECT:
-        case SPVM_BYTECODE_C_CODE_LOAD:
-        {
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          break;
-        }
         
         // Have tow operands
         case SPVM_BYTECODE_C_CODE_IF_EQ_CMP:
@@ -398,10 +362,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_BIT_XOR_SHORT:
         case SPVM_BYTECODE_C_CODE_BIT_XOR_INT:
         case SPVM_BYTECODE_C_CODE_BIT_XOR_LONG:
-        case SPVM_BYTECODE_C_CODE_INC_BYTE:
-        case SPVM_BYTECODE_C_CODE_INC_SHORT:
-        case SPVM_BYTECODE_C_CODE_INC_INT:
-        case SPVM_BYTECODE_C_CODE_INC_LONG:
         case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG:
         case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_FLOAT:
         case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_DOUBLE:
@@ -495,6 +455,13 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_LONG:
         case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
         case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
+        case SPVM_BYTECODE_C_CODE_STORE:
+        case SPVM_BYTECODE_C_CODE_STORE_OBJECT:
+        case SPVM_BYTECODE_C_CODE_LOAD:
+        case SPVM_BYTECODE_C_CODE_INC_BYTE:
+        case SPVM_BYTECODE_C_CODE_INC_SHORT:
+        case SPVM_BYTECODE_C_CODE_INC_INT:
+        case SPVM_BYTECODE_C_CODE_INC_LONG:
         {
           i++;
           bytecode = bytecode_array->values[i];
