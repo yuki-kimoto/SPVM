@@ -1416,7 +1416,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_POP:
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ADD_BYTE:
     call_stack[operand_stack_top - 1].byte_value += call_stack[operand_stack_top].byte_value;
