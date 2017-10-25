@@ -1285,7 +1285,7 @@ package TestCase {
     return 0;
   }
   sub array_init_byte() : int {
-    my $nums : byte[] = [1y, 2y, Byte::MAX_VALUE()];
+    my $nums = new byte[] {1y, 2y, Byte::MAX_VALUE()};
     
     if ($nums->[0] == 1y) {
       if ($nums->[1] == 2y) {
@@ -1297,7 +1297,7 @@ package TestCase {
     return 0;
   }
   sub array_init_short() : int {
-    my $nums : short[] = [1s, 2s, 3s];
+    my $nums = new short[] {1s, 2s, 3s};
     
     if ($nums->[0] == 1s) {
       if ($nums->[1] == 2s) {
@@ -1309,7 +1309,7 @@ package TestCase {
     return 0;
   }
   sub array_init_int () : int {
-    my $nums : int[] = [1, 2, 3];
+    my $nums = new int[] {1, 2, 3};
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
@@ -1321,7 +1321,7 @@ package TestCase {
     return 0;
   }
   sub array_init_long() : int {
-    my $nums : long[] = [1L, 2L, 3L];
+    my $nums = new long[] {1L, 2L, 3L};
     
     if ($nums->[0] == 1L) {
       if ($nums->[1] == 2L) {
@@ -1333,7 +1333,7 @@ package TestCase {
     return 0;
   }
   sub array_init_float() : int {
-    my $nums : float[] = [1f, 2f, 3f];
+    my $nums = new float[] {1f, 2f, 3f};
     
     if ($nums->[0] == 1f) {
       if ($nums->[1] == 2f) {
@@ -1345,7 +1345,7 @@ package TestCase {
     return 0;
   }
   sub array_init_double() : int {
-    my $nums : double[] = [1d, 2d, 3d];
+    my $nums = new double[] {1d, 2d, 3d};
     
     if ($nums->[0] == 1d) {
       if ($nums->[1] == 2d) {
