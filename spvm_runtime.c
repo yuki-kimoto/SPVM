@@ -832,42 +832,49 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   case_SPVM_BYTECODE_C_CODE_UNDEF:
     operand_stack_top++;
     call_stack[operand_stack_top].object_value = (void*)NULL;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_BYTE:
+    pc += 4;
     operand_stack_top++;
-    call_stack[operand_stack_top].byte_value = (int8_t)*(pc + 1);
-    pc += 2;
+    call_stack[operand_stack_top].byte_value = (int8_t)*(pc);
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_SHORT:
+    pc += 4;
     operand_stack_top++;
-    call_stack[operand_stack_top].short_value = (int16_t)(int8_t)*(pc + 1);
-    pc += 2;
+    call_stack[operand_stack_top].short_value = (int16_t)(int8_t)*(pc);
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_SHORT:
+    pc += 4;
     operand_stack_top++;
-    call_stack[operand_stack_top].short_value = (int16_t)((*(pc + 1) << 8) +  *(pc + 2));
-    pc += 3;
+    call_stack[operand_stack_top].short_value = (int16_t)((*(pc) << 8) +  *(pc + 1));
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_INT:
+    pc += 4;
     operand_stack_top++;
-    call_stack[operand_stack_top].int_value = (int32_t)(int8_t)*(pc + 1);
-    pc += 2;
+    call_stack[operand_stack_top].int_value = (int32_t)(int8_t)*(pc);
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_LONG:
+    pc += 4;
     operand_stack_top++;
-    call_stack[operand_stack_top].long_value = (int64_t)(int16_t)((*(pc + 1) << 8) +  *(pc + 2));
-    pc += 3;
+    call_stack[operand_stack_top].long_value = (int64_t)(int16_t)((*(pc) << 8) +  *(pc + 1));
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_LONG:
+    pc += 4;
     operand_stack_top++;
-    call_stack[operand_stack_top].long_value = (int64_t)(int8_t)*(pc + 1);
-    pc += 2;
+    call_stack[operand_stack_top].long_value = (int64_t)(int8_t)*(pc);
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_INT:
+    pc += 4;
     operand_stack_top++;
-    call_stack[operand_stack_top].int_value = (int32_t)(int16_t)((*(pc + 1) << 8) +  *(pc + 2));
-    pc += 3;
+    call_stack[operand_stack_top].int_value = (int32_t)(int16_t)((*(pc) << 8) +  *(pc + 1));
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
     operand_stack_top++;
