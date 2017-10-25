@@ -346,6 +346,23 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
           
           break;
         }
+
+        // Have three operands
+        case SPVM_BYTECODE_C_CODE_POP: {
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
+          
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
+          
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
+          
+          break;
+        }
         
         // Have four operands
         case SPVM_BYTECODE_C_CODE_CALL_SUB:
