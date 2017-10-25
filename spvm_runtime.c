@@ -400,15 +400,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     &&case_SPVM_BYTECODE_C_CODE_INC_INT,
     &&case_SPVM_BYTECODE_C_CODE_INC_LONG,
     &&case_SPVM_BYTECODE_C_CODE_LOAD,
-    &&case_SPVM_BYTECODE_C_CODE_LOAD_0,
-    &&case_SPVM_BYTECODE_C_CODE_LOAD_1,
-    &&case_SPVM_BYTECODE_C_CODE_LOAD_2,
-    &&case_SPVM_BYTECODE_C_CODE_LOAD_3,
     &&case_SPVM_BYTECODE_C_CODE_STORE,
-    &&case_SPVM_BYTECODE_C_CODE_STORE_0,
-    &&case_SPVM_BYTECODE_C_CODE_STORE_1,
-    &&case_SPVM_BYTECODE_C_CODE_STORE_2,
-    &&case_SPVM_BYTECODE_C_CODE_STORE_3,
     &&case_SPVM_BYTECODE_C_CODE_STORE_OBJECT,
     &&case_SPVM_BYTECODE_C_CODE_POP,
     &&case_SPVM_BYTECODE_C_CODE_NEW_OBJECT,
@@ -893,26 +885,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     call_stack[operand_stack_top] = call_stack[*(pc + 1)];
     pc += 2;
     goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_LOAD_0:
-    operand_stack_top++;
-    call_stack[operand_stack_top] = call_stack[0];
-    pc++;
-    goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_LOAD_1:
-    operand_stack_top++;
-    call_stack[operand_stack_top] = call_stack[1];
-    pc++;
-    goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_LOAD_2:
-    operand_stack_top++;
-    call_stack[operand_stack_top] = call_stack[2];
-    pc++;
-    goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_LOAD_3:
-    operand_stack_top++;
-    call_stack[operand_stack_top] = call_stack[3];
-    pc++;
-    goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_ARRAY_LOAD_BYTE: {
     SPVM_OBJECT* array = (SPVM_OBJECT*)call_stack[operand_stack_top - 1].object_value;
     int32_t index = call_stack[operand_stack_top].int_value;
@@ -1245,26 +1217,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     call_stack[*(pc + 1)] = call_stack[operand_stack_top];
     operand_stack_top--;
     pc += 2;
-    goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_STORE_0:
-    call_stack[0] = call_stack[operand_stack_top];
-    operand_stack_top--;
-    pc++;
-    goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_STORE_1:
-    call_stack[1] = call_stack[operand_stack_top];
-    operand_stack_top--;
-    pc++;
-    goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_STORE_2:
-    call_stack[2] = call_stack[operand_stack_top];
-    operand_stack_top--;
-    pc++;
-    goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_STORE_3:
-    call_stack[3] = call_stack[operand_stack_top];
-    operand_stack_top--;
-    pc++;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_STORE_OBJECT: {
     int32_t index = *(pc + 1);

@@ -120,22 +120,8 @@ void SPVM_BYTECODE_BUILDER_push_load_bytecode(SPVM_COMPILER* compiler, SPVM_BYTE
   }
   
   _Bool has_operand = 0;
-  if (my_var_index == 0) {
-    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_0);
-  }
-  else if (my_var_index == 1) {
-    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_1);
-  }
-  else if (my_var_index == 2) {
-    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_2);
-  }
-  else if (my_var_index == 3) {
-    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_3);
-  }
-  else {
-    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD);
-    has_operand = 1;
-  }
+  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD);
+  has_operand = 1;
   
   if (has_operand) {
     if (my_var_index > 0xFF) {
@@ -1426,22 +1412,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   _Bool has_operand = 0;
                   
                   if (SPVM_TYPE_is_numeric(compiler, type)) {
-                    if (my_var_index == 0) {
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_0);
-                    }
-                    else if (my_var_index == 1) {
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_1);
-                    }
-                    else if (my_var_index == 2) {
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_2);
-                    }
-                    else if (my_var_index == 3) {
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_3);
-                    }
-                    else {
-                      SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE);
-                      has_operand = 1;
-                    }
+                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE);
+                    has_operand = 1;
                   }
                   else {
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_OBJECT);
