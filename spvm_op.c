@@ -129,7 +129,18 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "GET",
   "OUR",
   "PACKAGE_VAR",
+  "ARRAY_INIT",
 };
+
+SPVM_OP* SPVM_OP_build_array_init2(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term) {
+  
+  SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_INIT, op_type->file, op_type->line);
+  
+  SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_type);
+  SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_term);
+  
+  return op_array_init;
+}
 
 void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var) {
   

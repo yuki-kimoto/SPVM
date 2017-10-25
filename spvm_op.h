@@ -129,6 +129,7 @@ enum {
   SPVM_OP_C_CODE_GET,
   SPVM_OP_C_CODE_OUR,
   SPVM_OP_C_CODE_PACKAGE_VAR,
+  SPVM_OP_C_CODE_ARRAY_INIT,
 };
 
 extern const char* const SPVM_OP_C_CODE_NAMES[];
@@ -211,6 +212,8 @@ struct SPVM_op {
   _Bool lvalue;
   _Bool rvalue;
 };
+
+SPVM_OP* SPVM_OP_build_array_init2(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term);
 
 void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var);
 
