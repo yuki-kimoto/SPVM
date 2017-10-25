@@ -655,10 +655,6 @@ binop
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | my_var ASSIGN '[' opt_terms ']'
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $4);
-    }
   | my_var ASSIGN array_init
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
@@ -699,7 +695,7 @@ binop
 array_init
   : NEW type_array '{' opt_terms '}'
     {
-      $$ = SPVM_OP_build_array_init2(compiler, $2, $4);
+      $$ = SPVM_OP_build_array_init(compiler, $2, $4);
     }
     
 array_elem
