@@ -1898,7 +1898,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       + (call_stack[operand_stack_top - 1].byte_value < call_stack[operand_stack_top].byte_value) * -1;
     
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_SHORT:
     // z = (x > y) + (x < y) * -1
@@ -1906,7 +1906,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       = (call_stack[operand_stack_top - 1].short_value > call_stack[operand_stack_top].short_value)
       + (call_stack[operand_stack_top - 1].short_value < call_stack[operand_stack_top].short_value) * -1;
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_LONG:
     // z = (x > y) + (x < y) * -1
@@ -1916,7 +1916,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_FLOAT_L:
     call_stack[operand_stack_top - 1].int_value
@@ -1927,7 +1927,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         | isnan(call_stack[operand_stack_top - 1].float_value)
       );
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_FLOAT_G:
     call_stack[operand_stack_top - 1].int_value
@@ -1938,7 +1938,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         | isnan(call_stack[operand_stack_top - 1].float_value)
       );
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_DOUBLE_L:
     call_stack[operand_stack_top - 1].int_value
@@ -1949,7 +1949,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         | isnan(call_stack[operand_stack_top].double_value)
       );
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_DOUBLE_G:
     call_stack[operand_stack_top - 1].int_value
@@ -1960,7 +1960,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         | isnan(call_stack[operand_stack_top].double_value)
       );
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
     success = call_stack[operand_stack_top].int_value == 0;
