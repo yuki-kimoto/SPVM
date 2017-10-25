@@ -49,7 +49,12 @@ package TestCase {
   }
   
   sub main($mvar : int) : int {
-    
+    {
+      my $values = new int[] {1, 2, 3};
+      
+      std::say("" . $values->[0]);
+    }
+
     {
       my $var = $TestCase::PACKAGE_VAR_INT;
       
