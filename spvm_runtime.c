@@ -1769,127 +1769,127 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG:
     call_stack[operand_stack_top].long_value = (int64_t)call_stack[operand_stack_top].int_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_FLOAT:
     call_stack[operand_stack_top].float_value = (float)call_stack[operand_stack_top].int_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_DOUBLE:
     call_stack[operand_stack_top].double_value = (double)call_stack[operand_stack_top].int_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_INT:
     call_stack[operand_stack_top].int_value = (int32_t)call_stack[operand_stack_top].long_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_FLOAT:
     call_stack[operand_stack_top].float_value = (float)call_stack[operand_stack_top].long_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_DOUBLE:
     call_stack[operand_stack_top].double_value = (double)call_stack[operand_stack_top].long_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_INT:
     call_stack[operand_stack_top].int_value = (int32_t)call_stack[operand_stack_top].float_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_LONG:
     call_stack[operand_stack_top].long_value = (int64_t)call_stack[operand_stack_top].float_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_DOUBLE:
     call_stack[operand_stack_top].double_value = (double)call_stack[operand_stack_top].float_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_INT:
     call_stack[operand_stack_top].int_value = (int32_t)call_stack[operand_stack_top].double_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_LONG:
     call_stack[operand_stack_top].long_value = (int64_t)call_stack[operand_stack_top].double_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_FLOAT:
     call_stack[operand_stack_top].float_value = (float)call_stack[operand_stack_top].double_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_BYTE:
     call_stack[operand_stack_top].byte_value = (int8_t)(call_stack[operand_stack_top].int_value);
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_SHORT:
     call_stack[operand_stack_top].short_value = (int16_t)(call_stack[operand_stack_top].int_value);
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_INT:
     call_stack[operand_stack_top].int_value = (int32_t)call_stack[operand_stack_top].byte_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_INT:
     call_stack[operand_stack_top].int_value = (int32_t)call_stack[operand_stack_top].short_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_LONG:
     call_stack[operand_stack_top].long_value = (int64_t)call_stack[operand_stack_top].byte_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_FLOAT:
     call_stack[operand_stack_top].float_value = (float)call_stack[operand_stack_top].byte_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_DOUBLE:
     call_stack[operand_stack_top].double_value = (double)call_stack[operand_stack_top].byte_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_BYTE:
     call_stack[operand_stack_top].byte_value = (int8_t)call_stack[operand_stack_top].short_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_LONG:
     call_stack[operand_stack_top].long_value = (int64_t)call_stack[operand_stack_top].short_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_FLOAT:
     call_stack[operand_stack_top].float_value = (float)call_stack[operand_stack_top].short_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_DOUBLE:
     call_stack[operand_stack_top].double_value = (double)call_stack[operand_stack_top].short_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_BYTE:
     call_stack[operand_stack_top].byte_value = (int8_t)call_stack[operand_stack_top].long_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_SHORT:
     call_stack[operand_stack_top].short_value = (int16_t)call_stack[operand_stack_top].long_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_BYTE:
     // TODO
     call_stack[operand_stack_top].byte_value = (int8_t)call_stack[operand_stack_top].float_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_SHORT:
     // TODO
     call_stack[operand_stack_top].short_value = (int16_t)call_stack[operand_stack_top].float_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_BYTE:
     // TODO
     call_stack[operand_stack_top].byte_value = (int8_t)call_stack[operand_stack_top].double_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_SHORT:
     // TODO
     call_stack[operand_stack_top].short_value = (int16_t)call_stack[operand_stack_top].double_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_SHORT:
     call_stack[operand_stack_top].short_value = (int16_t)call_stack[operand_stack_top].byte_value;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_CMP_BYTE:
     // z = (x > y) + (x < y) * -1
