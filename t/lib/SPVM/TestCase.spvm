@@ -393,8 +393,8 @@ package TestCase {
   }
 
   sub spvm_extension_add_int_array() : int {
-    my $nums1 : int[] = [1, 2, 3];
-    my $nums2 : int[] = [4, 5, 6];
+    my $nums1 = new int[] {1, 2, 3};
+    my $nums2 = new int[] {4, 5, 6};
     
     my $nums3 = TestCase::Extension::add_int_array($nums1, $nums2);
     
@@ -824,7 +824,7 @@ package TestCase {
     $nums->[0] = 5;
   }
   sub call_void() : int {
-    my $nums : int[] = [1];
+    my $nums = new int[] {1};
     
     TestCase::call_void_sub($nums);
     
