@@ -877,14 +877,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
+    pc += 4;
     operand_stack_top++;
-    memcpy(&call_stack[operand_stack_top], &constant_pool[(*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4)], sizeof(int32_t));
-    pc += 5;
+    memcpy(&call_stack[operand_stack_top], &constant_pool[(*(pc) << 24) + (*(pc + 1) << 16) + (*(pc + 2) << 8) + *(pc + 3)], sizeof(int32_t));
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
+    pc += 4;
     operand_stack_top++;
-    memcpy(&call_stack[operand_stack_top], &constant_pool[(*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4)], sizeof(int64_t));
-    pc += 5;
+    memcpy(&call_stack[operand_stack_top], &constant_pool[(*(pc) << 24) + (*(pc + 1) << 16) + (*(pc + 2) << 8) + *(pc + 3)], sizeof(int64_t));
+    pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_LOAD:
     operand_stack_top++;

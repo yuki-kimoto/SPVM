@@ -457,8 +457,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         
         // Have four operands
-        case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
-        case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
         case SPVM_BYTECODE_C_CODE_NEW_STRING:
         case SPVM_BYTECODE_C_CODE_NEW_OBJECT:
         case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
@@ -495,6 +493,8 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_PUSH_SHORT:
         case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_INT:
         case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_LONG:
+        case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
+        case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
         {
           i++;
           bytecode = bytecode_array->values[i];
