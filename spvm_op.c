@@ -2345,6 +2345,68 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       
       SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_list_new);
     }
+    else if (op_first->code == SPVM_OP_C_CODE_ARRAY_INIT) {
+      SPVM_OP* op_type_new = op_first->first;
+      SPVM_OP* op_list = op_first->last;
+      
+      op_list->moresib = 0;
+      op_list->sibparent = NULL;
+      
+      // Length term
+      int32_t length = 0;
+      SPVM_OP* op_term = op_list->first;
+      while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+        length++;
+      }
+      SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, op_list->file, op_list->line);
+      
+      // New
+      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_list->file, op_list->line);
+      SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
+      
+      op_assign->last = op_new;
+      op_new->moresib = 0;
+      op_new->sibparent = op_assign;
+      op_first->sibparent = op_new;
+      
+      // Add length term
+      SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
+      
+      // Assign array element
+      SPVM_OP* op_list_new = SPVM_OP_new_op_list(compiler, op_list->file, op_list->line);
+      SPVM_DYNAMIC_ARRAY* op_terms = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      op_term = op_list->first;
+      while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+        SPVM_DYNAMIC_ARRAY_push(op_terms, op_term);
+      }
+      {
+        int32_t i;
+        for (i = 0; i < op_terms->length; i++) {
+          SPVM_OP* op_term = SPVM_DYNAMIC_ARRAY_fetch(op_terms, i);
+          
+          SPVM_OP* op_assign_array = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_list->file, op_list->line);
+          SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_ELEM, op_list->file, op_list->line);
+          SPVM_OP* op_var_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_list->file, op_list->line);
+          op_var_array_elem->uv.var = op_first->uv.var;
+          SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_array_elem);
+          
+          SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, i, op_list->file, op_list->line);
+          SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
+          
+          SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_array_elem);
+          op_term->moresib = 0;
+          op_term->sibparent = NULL;
+          SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_term);
+          
+          op_assign_array->first->lvalue = 1;
+          op_assign_array->last->rvalue = 1;
+          
+          SPVM_OP_insert_child(compiler, op_list_new, op_list_new->last, op_assign_array);
+        }
+      }
+      
+      SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_list_new);
+    }
   }
   else if (op_first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
     SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PACKAGE_VAR, op_assign->file, op_assign->line);
