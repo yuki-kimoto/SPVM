@@ -1112,19 +1112,11 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
         case SPVM_TYPE_C_CODE_FLOAT: {
           float value = constant->value.float_value;
           
-          if (value == 0 || value == 1 || value == 2) {
-            break;
-          }
-          
           constant->id = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
           break;
         }
         case SPVM_TYPE_C_CODE_DOUBLE: {
           double value = constant->value.double_value;
-          
-          if (value == 0 || value == 1) {
-            break;
-          }
           
           constant->id = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
           break;
