@@ -1205,6 +1205,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_CONSTANT* constant = op_cur->first->uv.constant;
                   
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_STRING);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
+                  
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 24) & 0xFF);
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 16) & 0xFF);
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 8) & 0xFF);

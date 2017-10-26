@@ -403,7 +403,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         
         // Have four operands
-        case SPVM_BYTECODE_C_CODE_NEW_STRING:
         case SPVM_BYTECODE_C_CODE_NEW_OBJECT:
         case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
         case SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY:
@@ -431,6 +430,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
 
         // Have seven operands
+        case SPVM_BYTECODE_C_CODE_NEW_STRING:
         case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION:
         case SPVM_BYTECODE_C_CODE_CALL_SUB:
         case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
