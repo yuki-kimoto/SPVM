@@ -1090,11 +1090,7 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
           break;
         }
         case SPVM_TYPE_C_CODE_INT: {
-          
           int32_t value = constant->value.int_value;
-          if (value >= -32768 && value <= 32767) {
-            break;
-          }
           
           constant->id = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, (int32_t)value);
           break;
