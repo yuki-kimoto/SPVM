@@ -1928,7 +1928,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       // Set array
       call_stack[operand_stack_top].object_value = object;
       
-      pc++;
+      pc += 4;
       goto *jump[*pc];
     }
   }
@@ -1947,7 +1947,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       // Set array
       call_stack[operand_stack_top].object_value = object;
       
-      pc++;
+      pc += 4;
       goto *jump[*pc];
     }
   }
@@ -1966,7 +1966,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       // Set array
       call_stack[operand_stack_top].object_value = object;
       
-      pc++;
+      pc += 4;
       goto *jump[*pc];
     }
   }
@@ -1985,7 +1985,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       // Set array
       call_stack[operand_stack_top].object_value = object;
       
-      pc++;
+      pc += 4;
       goto *jump[*pc];
     }
   }
@@ -2004,7 +2004,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       // Set array
       call_stack[operand_stack_top].object_value = object;
       
-      pc++;
+      pc += 4;
       goto *jump[*pc];
     }
   }
@@ -2023,7 +2023,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       // Set array
       call_stack[operand_stack_top].object_value = object;
       
-      pc++;
+      pc += 4;
       goto *jump[*pc];
     }
   }
@@ -2081,7 +2081,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
     else {
       call_stack[operand_stack_top].int_value = (int32_t)((SPVM_OBJECT*)call_stack[operand_stack_top].object_value)->length;
-      pc++;
+      pc += 4;
       goto *jump[*pc];
     }
   case_SPVM_BYTECODE_C_CODE_IF_NULL:
