@@ -721,6 +721,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
+                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
                   
                   int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_catch_exception_bytecode_index_stack);
                   int32_t bytecode_index = *bytecode_index_ptr;
