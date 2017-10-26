@@ -492,29 +492,29 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
   case_SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
     // Get subroutine ID
-    int32_t package_var_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    int32_t package_var_id = (*(pc + 4) << 24) + (*(pc + 4 + 1) << 16) + (*(pc + 4 + 2) << 8) + *(pc + 4 + 3);
     
     operand_stack_top++;
     call_stack[operand_stack_top] = package_vars[package_var_id];
     
-    pc += 5;
+    pc += 8;
     
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR: {
     // Get subroutine ID
-    int32_t package_var_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    int32_t package_var_id = (*(pc + 4) << 24) + (*(pc + 4 + 1) << 16) + (*(pc + 4 + 2) << 8) + *(pc + 4 + 3);
 
     package_vars[package_var_id] = call_stack[operand_stack_top];
     operand_stack_top--;
 
-    pc += 5;
+    pc += 8;
     
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
     // Get subroutine ID
-    int32_t package_var_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    int32_t package_var_id = (*(pc + 4) << 24) + (*(pc + 4 + 1) << 16) + (*(pc + 4 + 2) << 8) + *(pc + 4 + 3);
     
     // Decrement reference count
     if (package_vars[package_var_id].object_value != NULL) {
@@ -531,7 +531,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     operand_stack_top--;
 
-    pc += 5;
+    pc += 8;
     
     goto *jump[*pc];
   }
