@@ -100,7 +100,6 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "NOP",
   "UNDEF",
   "PUSH_BYTE",
-  "PUSH_BYTE_TO_SHORT",
   "PUSH_SHORT",
   "PUSH_BYTE_TO_INT",
   "PUSH_SHORT_TO_INT",

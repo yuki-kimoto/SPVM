@@ -297,7 +297,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     &&case_SPVM_BYTECODE_C_CODE_NOP,
     &&case_SPVM_BYTECODE_C_CODE_UNDEF,
     &&case_SPVM_BYTECODE_C_CODE_PUSH_BYTE,
-    &&case_SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_SHORT,
     &&case_SPVM_BYTECODE_C_CODE_PUSH_SHORT,
     &&case_SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_INT,
     &&case_SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_INT,
@@ -829,12 +828,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     pc += 4;
     operand_stack_top++;
     call_stack[operand_stack_top].byte_value = (int8_t)*(pc);
-    pc += 4;
-    goto *jump[*pc];
-  case_SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_SHORT:
-    pc += 4;
-    operand_stack_top++;
-    call_stack[operand_stack_top].short_value = (int16_t)(int8_t)*(pc);
     pc += 4;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_PUSH_SHORT:
