@@ -554,10 +554,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CALL_SUB: {
-    pc += 4;
-    
     // Get subroutine ID
-    sub_id = (*(pc) << 24) + (*(pc + 1) << 16) + (*(pc + 2) << 8) + *(pc + 3);
+    sub_id = (*(pc + 4) << 24) + (*(pc + 4 + 1) << 16) + (*(pc + 4 + 2) << 8) + *(pc + 4 + 3);
     
     SPVM_CONSTANT_POOL_SUB* constant_pool_sub_called = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
     
@@ -581,7 +579,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       
       // Next operation
-      pc += 4 + (debug * 5);
+      pc += 8 + (debug * 5);
       
       goto *jump[*pc];
     }
