@@ -579,7 +579,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       
       // Next operation
-      pc += 8 + (debug * 5);
+      pc += 8 + (debug * 8);
       
       goto *jump[*pc];
     }
@@ -2568,8 +2568,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   
   case_SPVM_BYTECODE_C_CODE_CURRENT_LINE:
-    current_line = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
-    pc += 5;
+    current_line = (*(pc + 4) << 24) + (*(pc + 4 + 1) << 16) + (*(pc + 4 + 2) << 8) + *(pc + 4 + 3);
+    pc += 8;
     goto *jump[*pc];
 }
 
