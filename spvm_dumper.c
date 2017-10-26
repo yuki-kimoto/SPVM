@@ -447,7 +447,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         // Have seven operands
         case SPVM_BYTECODE_C_CODE_CALL_SUB:
         case SPVM_BYTECODE_C_CODE_PUSH_BYTE:
-        case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_INT:
         case SPVM_BYTECODE_C_CODE_PUSH_BYTE_TO_LONG:
         case SPVM_BYTECODE_C_CODE_PUSH_SHORT:
         case SPVM_BYTECODE_C_CODE_PUSH_SHORT_TO_INT:
