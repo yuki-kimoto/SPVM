@@ -296,6 +296,34 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   return id;
 }
 
+int32_t SPVM_CONSTANT_POOL_push_byte(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int8_t value) {
+  (void)compiler;
+  
+  int32_t id = constant_pool->length;
+  
+  // Add int value
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(int32_t));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
+  memcpy(&constant_pool->values[constant_pool->length], &value, sizeof(int8_t));
+  constant_pool->length += extend_length;
+  
+  return id;
+}
+
+int32_t SPVM_CONSTANT_POOL_push_short(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int16_t value) {
+  (void)compiler;
+  
+  int32_t id = constant_pool->length;
+  
+  // Add int value
+  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(int32_t));
+  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
+  memcpy(&constant_pool->values[constant_pool->length], &value, sizeof(int16_t));
+  constant_pool->length += extend_length;
+  
+  return id;
+}
+
 int32_t SPVM_CONSTANT_POOL_push_int(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int32_t value) {
   (void)compiler;
 
