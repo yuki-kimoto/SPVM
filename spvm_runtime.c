@@ -689,7 +689,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     operand_stack_top++;
     call_stack[operand_stack_top].object_value = (SPVM_OBJECT*)runtime->exception;
     
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_STORE_EXCEPTION: {
@@ -698,7 +698,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     
     operand_stack_top--;
     
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CROAK: {
