@@ -2104,29 +2104,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 _Bool bytecode_set = 0;
                 
                 if (constant->type->code == SPVM_TYPE_C_CODE_BYTE) {
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_PUSH_BYTE);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant->value.byte_value);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  bytecode_set = 1;
+                  // Nothing
                 }
                 else if (constant->type->code == SPVM_TYPE_C_CODE_SHORT) {
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_PUSH_SHORT);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->value.short_value >> 8) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant->value.short_value & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
-
-                  bytecode_set = 1;
+                  // Nothing
                 }
                 else if (constant->type->code == SPVM_TYPE_C_CODE_INT) {
                   // Nothing
@@ -2146,7 +2127,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 }
                 
                 if (!bytecode_set) {
-                  if (constant->type->code == SPVM_TYPE_C_CODE_INT || constant->type->code == SPVM_TYPE_C_CODE_FLOAT) {
+                  if (constant->type->code == SPVM_TYPE_C_CODE_BYTE
+                    || constant->type->code == SPVM_TYPE_C_CODE_SHORT
+                    || constant->type->code == SPVM_TYPE_C_CODE_INT
+                    || constant->type->code == SPVM_TYPE_C_CODE_FLOAT)
+                  {
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_CONSTANT);
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
                     SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
