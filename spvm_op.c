@@ -1098,10 +1098,6 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
         case SPVM_TYPE_C_CODE_LONG: {
           int64_t value = constant->value.long_value;
           
-          if (value >= -32768 && value <= 32767) {
-            break;
-          }
-          
           constant->id = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
           break;
         }
