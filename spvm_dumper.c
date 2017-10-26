@@ -274,7 +274,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_IF_NON_NULL:
         case SPVM_BYTECODE_C_CODE_IF_NULL:
         case SPVM_BYTECODE_C_CODE_GOTO:
-        case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION:
         {
           i++;
           bytecode = bytecode_array->values[i];
@@ -432,6 +431,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
 
         // Have seven operands
+        case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION:
         case SPVM_BYTECODE_C_CODE_CALL_SUB:
         case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
         case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:

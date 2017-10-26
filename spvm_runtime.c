@@ -537,12 +537,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION: {
     // Next operation
-    int16_t jump_offset_abs = (int16_t)((*(pc + 1) << 8) +  *(pc + 2));
+    int16_t jump_offset_abs = (int16_t)((*(pc + 4) << 8) +  *(pc + 4 + 1));
     
     catch_exception_stack_top++;
     catch_exception_stack[catch_exception_stack_top] = jump_offset_abs;
     
-    pc += 3;
+    pc += 8;
     
     goto *jump[*pc];
   }
