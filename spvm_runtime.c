@@ -1888,7 +1888,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_NEW_OBJECT: {
     // Get subroutine ID
-    int32_t type_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    int32_t type_id = (*(pc + 4) << 24) + (*(pc + 4 + 1) << 16) + (*(pc + 4 + 2) << 8) + *(pc + 4 + 3);
     
     SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, type_id);
 
@@ -1910,7 +1910,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     operand_stack_top++;
     call_stack[operand_stack_top].object_value = (SPVM_OBJECT*)object;
     
-    pc += 5;
+    pc += 8;
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY: {
@@ -2028,7 +2028,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
   }
   case_SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY: {
-    int32_t element_type_id = (*(pc + 1) << 24) + (*(pc + 2) << 16) + (*(pc + 3) << 8) + *(pc + 4);
+    int32_t element_type_id = (*(pc + 4) << 24) + (*(pc + 4 + 1) << 16) + (*(pc + 4 + 2) << 8) + *(pc + 4 + 3);
     
     // length
     int32_t length = call_stack[operand_stack_top].int_value;
@@ -2043,7 +2043,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       // Set object
       call_stack[operand_stack_top].object_value = object;
       
-      pc += 5;
+      pc += 8;
       goto *jump[*pc];
     }
   }
