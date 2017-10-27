@@ -2381,7 +2381,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       
       case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
-        current_line = (bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3];
+        current_line = *(int32_t*)&bytecodes[bytecode_index + 4];
         bytecode_index += 8;
         break;
     }
