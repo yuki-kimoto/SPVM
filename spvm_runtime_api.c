@@ -76,6 +76,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_objects_count,
   SPVM_RUNTIME_API_get_runtime,
   SPVM_RUNTIME_API_get_object_header_byte_size,
+  SPVM_RUNTIME_API_dec_ref_count_only,
 };
 
 void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime) {
@@ -676,6 +677,16 @@ void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_OBJECT* objec
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   SPVM_RUNTIME_API_inc_ref_count(api, object);
   SPVM_RUNTIME_API_dec_ref_count(api, object);
+}
+
+void SPVM_RUNTIME_API_dec_ref_count_only(SPVM_API* api, SPVM_OBJECT* object) {
+  (void)api;
+  
+  if (object != NULL) {
+    assert(object->ref_count > 0);
+    // Increment reference count
+    object->ref_count--;
+  }
 }
 
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {

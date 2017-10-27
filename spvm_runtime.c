@@ -368,9 +368,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             }
           }
 
-          // Increment ref count of return value not to release by decrement
+          // Decrement ref count of return value
           if (return_value.object_value != NULL) {
-            return_value.object_value->ref_count--;
+            api->dec_ref_count_only(api, return_value.object_value);
           }
           
           api->dec_ref_count(api, call_stack_array);
