@@ -75,6 +75,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_inc_dec_ref_count,
   SPVM_RUNTIME_API_get_objects_count,
   SPVM_RUNTIME_API_get_runtime,
+  SPVM_RUNTIME_API_get_object_header_byte_size,
 };
 
 void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime) {
@@ -86,6 +87,10 @@ void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime) {
   SPVM_RUNTIME_ALLOCATOR_free(runtime, runtime->allocator);
 
   free(runtime);
+}
+
+int32_t SPVM_RUNTIME_API_get_object_header_byte_size(SPVM_API* api) {
+  return sizeof(SPVM_OBJECT);
 }
 
 SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
