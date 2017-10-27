@@ -250,13 +250,13 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
     int32_t i;
     for (i = start_pos; i <= end_pos; i++) {
       
-      uint8_t bytecode = bytecode_array->values[i];
+      int32_t bytecode = bytecode_array->values[i];
       printf("        [%" PRId32 "] %s\n", i, SPVM_BYTECODE_C_CODE_NAMES[bytecode]);
       
       // Operand
       switch (bytecode) {
         
-        // Have three operands
+        // Have no operands
         case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_BYTE:
         case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_SHORT:
         case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_INT:
@@ -397,22 +397,10 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_RETURN_OBJECT:
         case SPVM_BYTECODE_C_CODE_CROAK:
         {
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
           break;
         }
         
-        // Have seven operands
+        // Have one operands
         case SPVM_BYTECODE_C_CODE_IF_EQ_CMP:
         case SPVM_BYTECODE_C_CODE_IF_NE_CMP:
         case SPVM_BYTECODE_C_CODE_IF_LT_CMP:
@@ -462,34 +450,10 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
           
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
           break;
         }
 
-        // Have eleven operands
+        // Have two operands
         case SPVM_BYTECODE_C_CODE_INC_BYTE:
         case SPVM_BYTECODE_C_CODE_INC_SHORT:
         case SPVM_BYTECODE_C_CODE_INC_INT:
@@ -503,96 +467,38 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
           
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
           break;
         }
         
         case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
 
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
           // Default
           {
-            int32_t j;
-            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-            }
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
           }
           
           // Low
           int32_t min = *(int32_t*)&bytecode_array->values[i + 1];
           {
-            int32_t j;
-            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-            }
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
           }
           
           // High
           int32_t max = *(int32_t*)&bytecode_array->values[i + 1];
           {
-            int32_t j;
-            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-            }
+            i++;
+            bytecode = bytecode_array->values[i];
           }
           
           // Addresses
           int32_t length = max - min + 1;
           {
             int32_t j;
-            for (j = 0; j < length * (int32_t)sizeof(int32_t); j++) {
+            for (j = 0; j < length; j++) {
               i++;
               bytecode = bytecode_array->values[i];
               printf("        [%" PRId32 "] %d\n", i, bytecode);
@@ -603,43 +509,25 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
 
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
           // Default
           {
-            int32_t j;
-            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-            }
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
           }
           
           // Count
           int32_t length = *(int32_t*)&bytecode_array->values[i + 1];
           {
-            int32_t j;
-            for (j = 0; j < (int32_t)sizeof(int32_t); j++) {
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-            }
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
           }
           
           // Addresses
           {
             int32_t j;
-            for (j = 0; j < length * (int32_t)sizeof(int32_t) * 2; j++) {
+            for (j = 0; j < length * 2; j++) {
               i++;
               bytecode = bytecode_array->values[i];
               printf("        [%" PRId32 "] %d\n", i, bytecode);

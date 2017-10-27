@@ -16,7 +16,7 @@ struct SPVM_runtime {
   SPVM_OBJECT* exception;
   
   // Bytecodes
-  uint8_t* bytecodes;
+  int32_t* bytecodes;
   
   // Constant pool
   int32_t* constant_pool;

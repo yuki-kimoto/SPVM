@@ -5,7 +5,7 @@
 
 // Array
 struct SPVM_bytecode_array {
-  uint8_t* values;
+  int32_t* values;
   int32_t length;
   int32_t capacity;
 };
