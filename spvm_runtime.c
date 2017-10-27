@@ -290,7 +290,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   
   while (1) {
-    switch (bytecodes[bytecode_index]) {
+    switch (*(int32_t*)&bytecodes[bytecode_index]) {
       case SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
         // Get subroutine ID
         int32_t package_var_id = *(int32_t*)&bytecodes[bytecode_index + 4];
