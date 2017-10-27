@@ -1773,13 +1773,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     operand_stack_top -= 2;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_IF_LT_CMP:
-
     success = call_stack[operand_stack_top - 1].int_value < call_stack[operand_stack_top].int_value;
     pc += success * (int16_t)((*(pc + 4) << 8) +  *(pc + 4 + 1)) + (~success & 1) * 8;
     operand_stack_top -= 2;
-    
-    
-    
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_IF_GE_CMP:
     success = call_stack[operand_stack_top - 1].int_value >= call_stack[operand_stack_top].int_value;
@@ -2090,13 +2086,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
   case_SPVM_BYTECODE_C_CODE_IF_NULL:
     success = call_stack[operand_stack_top].object_value == (void*)NULL;
-    pc += success * (int16_t)((*(pc + 1) << 8) +  *(pc + 2)) + (~success & 1) * 8;
+    pc += success * (int16_t)((*(pc + 4) << 8) +  *(pc + 4 + 1)) + (~success & 1) * 8;
     operand_stack_top--;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_IF_NON_NULL:
     
     success = call_stack[operand_stack_top].object_value != (void*)NULL;
-    pc += success * (int16_t)((*(pc + 1) << 8) +  *(pc + 2)) + (~success & 1) * 8;
+    pc += success * (int16_t)((*(pc + 4) << 8) +  *(pc + 4 + 1)) + (~success & 1) * 8;
     operand_stack_top--;
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE: {
@@ -2575,6 +2571,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     current_line = (*(pc + 4) << 24) + (*(pc + 4 + 1) << 16) + (*(pc + 4 + 2) << 8) + *(pc + 4 + 3);
     pc += 8;
     goto *jump[*pc];
+    
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
