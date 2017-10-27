@@ -1611,7 +1611,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Get subroutine ID
         int32_t type_id = bytecodes[bytecode_index + 1];
         
-        SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, type_id);
+        SPVM_OBJECT* object = api->new_object(api, type_id);
 
         // Memory allocation error
         if (__builtin_expect(!object, 0)) {
@@ -1639,7 +1639,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // length
         int32_t length = call_stack[operand_stack_top].int_value;
         
-        SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array(api, length);
+        SPVM_OBJECT* object = api->new_byte_array(api, length);
         
         if (__builtin_expect(object == NULL, 0)) {
           // Throw exception
@@ -1658,7 +1658,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // length
         int32_t length = call_stack[operand_stack_top].int_value;
         
-        SPVM_OBJECT* object = SPVM_RUNTIME_API_new_short_array(api, length);
+        SPVM_OBJECT* object = api->new_short_array(api, length);
         
         if (__builtin_expect(object == NULL, 0)) {
           // Throw exception
@@ -1677,7 +1677,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // length
         int32_t length = call_stack[operand_stack_top].int_value;
         
-        SPVM_OBJECT* object = SPVM_RUNTIME_API_new_int_array(api, length);
+        SPVM_OBJECT* object = api->new_int_array(api, length);
         
         if (__builtin_expect(object == NULL, 0)) {
           // Throw exception
@@ -1696,7 +1696,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // length
         int32_t length = call_stack[operand_stack_top].int_value;
         
-        SPVM_OBJECT* object = SPVM_RUNTIME_API_new_long_array(api, length);
+        SPVM_OBJECT* object = api->new_long_array(api, length);
         
         if (__builtin_expect(object == NULL, 0)) {
           // Throw exception
@@ -1715,7 +1715,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // length
         int32_t length = call_stack[operand_stack_top].int_value;
         
-        SPVM_OBJECT* object = SPVM_RUNTIME_API_new_float_array(api, length);
+        SPVM_OBJECT* object = api->new_float_array(api, length);
         
         if (__builtin_expect(object == NULL, 0)) {
           // Throw exception
@@ -1734,7 +1734,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // length
         int32_t length = call_stack[operand_stack_top].int_value;
         
-        SPVM_OBJECT* object = SPVM_RUNTIME_API_new_double_array(api, length);
+        SPVM_OBJECT* object = api->new_double_array(api, length);
         
         if (__builtin_expect(object == NULL, 0)) {
           // Throw exception
@@ -1754,7 +1754,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // length
         int32_t length = call_stack[operand_stack_top].int_value;
         
-        SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object_array(api, element_type_id, length);
+        SPVM_OBJECT* object = api->new_object_array(api, element_type_id, length);
         
         if (__builtin_expect(object == NULL, 0)) {
           // Throw exception
