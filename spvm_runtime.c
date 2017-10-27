@@ -1806,21 +1806,18 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     pc += (int16_t)((*(pc + 4) << 8) +  *(pc + 4 + 1));
     goto *jump[*pc];
   case_SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
-    // Padding
-    int32_t padding = (sizeof(int32_t) - 1) - ((intptr_t)pc % sizeof(int32_t));
-    
     // default offset
-    int32_t default_offset = *(int32_t*)(pc + padding + 1);
+    int32_t default_offset = *(int32_t*)(pc + 4);
     
     // min
-    int32_t min = *(int32_t*)(pc + padding + sizeof(int32_t) + 1);
+    int32_t min = *(int32_t*)(pc + 4 + sizeof(int32_t));
     
     // max
-    int32_t max = *(int32_t*)(pc + padding + sizeof(int32_t) * 2 + 1);
+    int32_t max = *(int32_t*)(pc + 4 + sizeof(int32_t) * 2);
     
     if (call_stack[operand_stack_top].int_value >= min && call_stack[operand_stack_top].int_value <= max) {
       int32_t branch_offset
-        = *(int32_t*)((pc + padding + sizeof(int32_t) * 3 + 1) + (call_stack[operand_stack_top].int_value - min) * sizeof(int32_t));
+        = *(int32_t*)((pc + 4 + sizeof(int32_t) * 3) + (call_stack[operand_stack_top].int_value - min) * sizeof(int32_t));
       pc += branch_offset;
     }
     else {
@@ -1831,9 +1828,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   case_SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
 
-    // Padding
-    int32_t padding = (sizeof(int32_t) - 1) - ((intptr_t)pc % sizeof(int32_t));
-
     /*
     1  default
     5  npare
@@ -1843,16 +1837,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     */
     
     // default offset
-    int32_t default_offset = *(int32_t*)(pc + padding + 1);
+    int32_t default_offset = *(int32_t*)(pc + 4);
     
     // npare
-    int32_t pair_count = *(int32_t*)(pc + padding + sizeof(int32_t) + 1);
+    int32_t pair_count = *(int32_t*)(pc + 4 + sizeof(int32_t));
     
     // min
-    int32_t min = *(int32_t*)(pc + padding + sizeof(int32_t) * 2 + 1);
+    int32_t min = *(int32_t*)(pc + 4 + sizeof(int32_t) * 2);
     
     // max
-    int32_t max = *(int32_t*)(pc + padding + sizeof(int32_t) * 2 + 1 + ((pair_count - 1) * sizeof(int32_t) * 2));
+    int32_t max = *(int32_t*)(pc + 4 + sizeof(int32_t) * 2 + ((pair_count - 1) * sizeof(int32_t) * 2));
     
     if (call_stack[operand_stack_top].int_value >= min && call_stack[operand_stack_top].int_value <= max) {
       // 2 branch searching
@@ -1865,7 +1859,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto *jump[*pc];
         }
         int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-        int32_t cur_half = *(int32_t*)(pc + padding + sizeof(int32_t) * 2 + 1 + (cur_half_pos * sizeof(int32_t) * 2));
+        int32_t cur_half = *(int32_t*)(pc + 4 + sizeof(int32_t) * 2 + (cur_half_pos * sizeof(int32_t) * 2));
         
         if (call_stack[operand_stack_top].int_value > cur_half) {
           cur_min_pos = cur_half_pos + 1;
@@ -1874,7 +1868,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           cur_max_pos = cur_half_pos - 1;
         }
         else {
-          int32_t branch_offset = *(int32_t*)(pc + padding + sizeof(int32_t) * 2 + 1 + (cur_half_pos * sizeof(int32_t) * 2) + sizeof(int32_t));
+          int32_t branch_offset = *(int32_t*)(pc + 4 + sizeof(int32_t) * 2 + (cur_half_pos * sizeof(int32_t) * 2) + sizeof(int32_t));
           pc += branch_offset;
           goto *jump[*pc];
         }

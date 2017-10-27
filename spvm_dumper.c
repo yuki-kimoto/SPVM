@@ -543,21 +543,18 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         
         case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
+
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
           
-          // Bytecode index to calculate padding
-          int32_t pc = i;
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
           
-          // Padding
-          int32_t padding = (sizeof(int32_t) - 1) - (pc % sizeof(int32_t));
-          
-          {
-            int32_t j;
-            for (j = 0; j < padding; j++) {
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-            }
-          }
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
           
           // Default
           {
@@ -605,21 +602,18 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
           break;
         }
         case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
+
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
           
-          // Bytecode index to calculate padding
-          int32_t pc = i;
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
           
-          // Padding
-          int32_t padding = (sizeof(int32_t) - 1) - (pc % sizeof(int32_t));
-          
-          {
-            int32_t j;
-            for (j = 0; j < padding; j++) {
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-            }
-          }
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
           
           // Default
           {
