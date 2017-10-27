@@ -356,7 +356,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_CALL_SUB: {
         // Get subroutine ID
-        sub_id = (bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3];
+        sub_id = *(int32_t*)&bytecodes[bytecode_index + 4];
         
         SPVM_CONSTANT_POOL_SUB* constant_pool_sub_called = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
         
