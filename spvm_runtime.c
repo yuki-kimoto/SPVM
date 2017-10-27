@@ -2088,8 +2088,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
-        int32_t string1_length = SPVM_RUNTIME_API_get_string_length(api, string1);
-        int32_t string2_length = SPVM_RUNTIME_API_get_string_length(api, string2);
+        int32_t string1_length = api->get_string_length(api, string1);
+        int32_t string2_length = api->get_string_length(api, string2);
         
         int32_t string3_length = string1_length + string2_length;
         SPVM_OBJECT* string3 = api->new_string(api, NULL, string3_length);
@@ -2119,7 +2119,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         sprintf(tmp_string, "%" PRId8, string2);
         
-        int32_t string1_length = SPVM_RUNTIME_API_get_string_length(api, string1);
+        int32_t string1_length = api->get_string_length(api, string1);
         int32_t tmp_string_length = strlen(tmp_string);
         
         int32_t string3_length = string1_length + tmp_string_length;
@@ -2149,7 +2149,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         sprintf(tmp_string, "%" PRId16, string2);
         
-        int32_t string1_length = SPVM_RUNTIME_API_get_string_length(api, string1);
+        int32_t string1_length = api->get_string_length(api, string1);
         int32_t tmp_string_length = strlen(tmp_string);
         
         int32_t string3_length = string1_length + tmp_string_length;
@@ -2179,7 +2179,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         sprintf(tmp_string, "%" PRId32, string2);
         
-        int32_t string1_length = SPVM_RUNTIME_API_get_string_length(api, string1);
+        int32_t string1_length = api->get_string_length(api, string1);
         int32_t tmp_string_length = strlen(tmp_string);
         
         int32_t string3_length = string1_length + tmp_string_length;
@@ -2209,7 +2209,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         sprintf(tmp_string, "%" PRId64, string2);
         
-        int32_t string1_length = SPVM_RUNTIME_API_get_string_length(api, string1);
+        int32_t string1_length = api->get_string_length(api, string1);
         int32_t tmp_string_length = strlen(tmp_string);
         
         int32_t string3_length = string1_length + tmp_string_length;
@@ -2239,7 +2239,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         sprintf(tmp_string, "%f", string2);
         
-        int32_t string1_length = SPVM_RUNTIME_API_get_string_length(api, string1);
+        int32_t string1_length = api->get_string_length(api, string1);
         int32_t tmp_string_length = strlen(tmp_string);
         
         int32_t string3_length = string1_length + tmp_string_length;
@@ -2269,7 +2269,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         sprintf(tmp_string, "%f", string2);
         
-        int32_t string1_length = SPVM_RUNTIME_API_get_string_length(api, string1);
+        int32_t string1_length = api->get_string_length(api, string1);
         int32_t tmp_string_length = strlen(tmp_string);
         
         int32_t string3_length = string1_length + tmp_string_length;
