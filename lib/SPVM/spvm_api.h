@@ -87,5 +87,6 @@ struct SPVM_api {
   SPVM_API_RUNTIME* (*get_runtime)(SPVM_API* api);
   int32_t (*get_object_header_byte_size)(SPVM_API* api);
   void (*dec_ref_count_only)(SPVM_API* api, SPVM_API_OBJECT* base_object);
+  int32_t (*get_object_header_length_offset)(SPVM_API* api);
 };
 #endif

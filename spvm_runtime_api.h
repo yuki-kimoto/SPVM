@@ -6,6 +6,7 @@
 
 SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime();
 void SPVM_RUNTIME_API_dec_ref_count_only(SPVM_API* api, SPVM_OBJECT* object);
+int32_t SPVM_RUNTIME_API_get_object_header_length_offset(SPVM_API* api);
 
 // Array functions
 int32_t SPVM_RUNTIME_API_get_object_header_byte_size(SPVM_API* api);

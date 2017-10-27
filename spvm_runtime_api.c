@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stddef.h>
 
 #include "spvm_value.h"
 #include "spvm_runtime_api.h"
@@ -77,7 +78,12 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_runtime,
   SPVM_RUNTIME_API_get_object_header_byte_size,
   SPVM_RUNTIME_API_dec_ref_count_only,
+  SPVM_RUNTIME_API_get_object_header_length_offset,
 };
+
+int32_t SPVM_RUNTIME_API_get_object_header_length_offset(SPVM_API* api) {
+  return (int32_t)offsetof(SPVM_OBJECT, length);
+}
 
 void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime) {
 
