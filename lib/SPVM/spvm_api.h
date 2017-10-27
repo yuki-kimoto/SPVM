@@ -16,6 +16,9 @@ union SPVM_API_value {
   float float_value;
   double double_value;
   SPVM_API_OBJECT* object_value;
+  SPVM_API_OBJECT** object_address_value;
+  char* string_value;
+  void* pointer_value;
 };
 
 // spvm_api.h

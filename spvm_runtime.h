@@ -36,7 +36,7 @@ struct SPVM_runtime {
   SPVM_HASH* use_package_path_id_symtable;
   
   // Package variables
-  SPVM_VALUE* package_vars;
+  SPVM_API_VALUE* package_vars;
   
   // Packages length
   int32_t packages_length;
@@ -68,6 +68,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_new();
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
 SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime);
 
-SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
 
 #endif

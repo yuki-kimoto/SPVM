@@ -13,7 +13,6 @@ union SPVM_value {
   double double_value;
   SPVM_OBJECT* object_value;
   SPVM_OBJECT** object_address_value;
-  uint8_t* address_value;
   char* string_value;
 };
 
