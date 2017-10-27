@@ -2094,9 +2094,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t string3_length = string1_length + string2_length;
         SPVM_OBJECT* string3 = api->new_string(api, NULL, string3_length);
         
-        char* string1_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string1);
-        char* string2_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string2);
-        char* string3_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string3);
+        char* string1_chars = (char*)api->get_string_chars(api, string1);
+        char* string2_chars = (char*)api->get_string_chars(api, string2);
+        char* string3_chars = (char*)api->get_string_chars(api, string3);
         
         memcpy(string3_chars, string1_chars, string1_length);
         memcpy(string3_chars + string1_length, string2_chars, string2_length);
@@ -2125,8 +2125,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t string3_length = string1_length + tmp_string_length;
         SPVM_OBJECT* string3 = api->new_string(api, NULL, string3_length);
         
-        char* string1_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string1);
-        char* string3_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string3);
+        char* string1_chars = (char*)api->get_string_chars(api, string1);
+        char* string3_chars = (char*)api->get_string_chars(api, string3);
         
         memcpy(string3_chars, string1_chars, string1_length);
         memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
@@ -2155,8 +2155,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t string3_length = string1_length + tmp_string_length;
         SPVM_OBJECT* string3 = api->new_string(api, NULL, string3_length);
         
-        char* string1_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string1);
-        char* string3_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string3);
+        char* string1_chars = (char*)api->get_string_chars(api, string1);
+        char* string3_chars = (char*)api->get_string_chars(api, string3);
         
         memcpy(string3_chars, string1_chars, string1_length);
         memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
@@ -2185,8 +2185,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t string3_length = string1_length + tmp_string_length;
         SPVM_OBJECT* string3 = api->new_string(api, NULL, string3_length);
         
-        char* string1_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string1);
-        char* string3_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string3);
+        char* string1_chars = (char*)api->get_string_chars(api, string1);
+        char* string3_chars = (char*)api->get_string_chars(api, string3);
         
         memcpy(string3_chars, string1_chars, string1_length);
         memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
@@ -2215,8 +2215,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t string3_length = string1_length + tmp_string_length;
         SPVM_OBJECT* string3 = api->new_string(api, NULL, string3_length);
         
-        char* string1_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string1);
-        char* string3_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string3);
+        char* string1_chars = (char*)api->get_string_chars(api, string1);
+        char* string3_chars = (char*)api->get_string_chars(api, string3);
         
         memcpy(string3_chars, string1_chars, string1_length);
         memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
@@ -2245,8 +2245,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t string3_length = string1_length + tmp_string_length;
         SPVM_OBJECT* string3 = api->new_string(api, NULL, string3_length);
         
-        char* string1_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string1);
-        char* string3_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string3);
+        char* string1_chars = (char*)api->get_string_chars(api, string1);
+        char* string3_chars = (char*)api->get_string_chars(api, string3);
         
         memcpy(string3_chars, string1_chars, string1_length);
         memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
@@ -2275,8 +2275,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t string3_length = string1_length + tmp_string_length;
         SPVM_OBJECT* string3 = api->new_string(api, NULL, string3_length);
         
-        char* string1_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string1);
-        char* string3_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string3);
+        char* string1_chars = (char*)api->get_string_chars(api, string1);
+        char* string3_chars = (char*)api->get_string_chars(api, string3);
         
         memcpy(string3_chars, string1_chars, string1_length);
         memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
