@@ -79,9 +79,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       int32_t i;
       for (i = 0; i < object_args_length; i++) {
         int32_t arg_index = constant_pool[object_args_base + i];
-        SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[arg_index].object_value;
+        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[arg_index].object_value;
         if (object != NULL) {
-          object->ref_count++;
+          api->inc_ref_count(api, object);
         }
       }
     }
@@ -238,7 +238,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Increment new value reference count
         if (package_vars[package_var_id].object_value != NULL) {
-          package_vars[package_var_id].object_value->ref_count++;
+          api->inc_ref_count(api, package_vars[package_var_id].object_value);;
         }
         
         operand_stack_top--;
@@ -348,7 +348,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           
           // Increment ref count of return value not to release by decrement
           if (return_value.object_value != NULL) {
-            return_value.object_value->ref_count++;
+            api->inc_ref_count(api, return_value.object_value);
           }
           
           // Decrement object my vars reference count
@@ -880,7 +880,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
             // Increment new object reference count
             if (*object_address != NULL) {
-              (*object_address)->ref_count++;
+              api->inc_ref_count(api, *object_address);
             }
             
             operand_stack_top -= 3;
@@ -907,7 +907,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Increment new value reference count
         if (call_stack[index].object_value != NULL) {
-          call_stack[index].object_value->ref_count++;
+          api->inc_ref_count(api, call_stack[index].object_value);
         }
         
         operand_stack_top--;
@@ -2068,7 +2068,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           
           // Increment new object reference count
           if (*object_address != NULL) {
-            (*object_address)->ref_count++;
+            api->inc_ref_count(api, *object_address);
           }
           
           operand_stack_top -= 2;
