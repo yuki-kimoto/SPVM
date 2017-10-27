@@ -19,6 +19,7 @@
 #include "spvm_global.h"
 #include "spvm_type.h"
 #include "spvm_hash.h"
+#include "spvm_util_allocator.h"
 
 static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_array_length,
@@ -75,6 +76,17 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_objects_count,
   SPVM_RUNTIME_API_get_runtime,
 };
+
+void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime) {
+
+  // Free exception
+  SPVM_RUNTIME_API_set_exception(runtime->api, NULL);
+  
+  // Free runtime allocator
+  SPVM_RUNTIME_ALLOCATOR_free(runtime, runtime->allocator);
+
+  free(runtime);
+}
 
 SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   

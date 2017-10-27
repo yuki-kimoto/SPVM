@@ -8,19 +8,16 @@
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
-#include "spvm_runtime_allocator.h"
 #include "spvm_bytecode.h"
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
-#include "spvm_util_allocator.h"
 #include "spvm_value.h"
 #include "spvm_api.h"
 #include "spvm_type.h"
 #include "spvm_hash.h"
-#include "spvm_dynamic_array.h"
 
 SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   (void)api;
@@ -2298,15 +2295,4 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
     }
   }
-}
-
-void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
-
-  // Free exception
-  SPVM_RUNTIME_API_set_exception(runtime->api, NULL);
-  
-  // Free runtime allocator
-  SPVM_RUNTIME_ALLOCATOR_free(runtime, runtime->allocator);
-
-  free(runtime);
 }
