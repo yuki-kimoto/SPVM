@@ -979,12 +979,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_BYTECODE_C_CODE_STORE:
-        call_stack[(bytecodes[bytecode_index + 4] << 8) + bytecodes[bytecode_index + 4 + 1]] = call_stack[operand_stack_top];
+        call_stack[*(int32_t*)&bytecodes[bytecode_index + 4]] = call_stack[operand_stack_top];
         operand_stack_top--;
         bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_STORE_OBJECT: {
-        int32_t index = (bytecodes[bytecode_index + 4] << 8) + bytecodes[bytecode_index + 4 + 1];
+        int32_t index = *(int32_t*)&bytecodes[bytecode_index + 4];
         
         // Decrement reference count
         if (call_stack[index].object_value != NULL) {
