@@ -1228,10 +1228,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
                   SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
                   
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 24) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 16) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 8) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant->id & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, constant->id);
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_TYPE) {
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
@@ -1280,10 +1277,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
                         SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
                         
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type->id >> 24) & 0xFF);
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type->id >> 16) & 0xFF);
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type->id >> 8) & 0xFF);
-                        SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, type->id & 0xFF);
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, type->id);
                     }
                   }
                   else {
@@ -1295,10 +1289,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     int32_t type_id = op_cur->first->uv.type->id;
                     assert(type_id);
                     
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 24) & 0xFF);
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 16) & 0xFF);
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (type_id >> 8) & 0xFF);
-                    SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, type_id & 0xFF);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, type_id);
                   }
                 }
                 else {
@@ -1538,10 +1529,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                                     
                   int32_t package_var_id = package_var->op_our->uv.our->id;
 
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (package_var_id >> 24) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (package_var_id >> 16) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (package_var_id >> 8) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, package_var_id & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, package_var_id);
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                   
@@ -2300,10 +2288,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
                 SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NOP);
 
-                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (package_var_id >> 24) & 0xFF);
-                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (package_var_id >> 16) & 0xFF);
-                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (package_var_id >> 8) & 0xFF);
-                SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, package_var_id & 0xFF);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, package_var_id);
                 
                 break;
               }
@@ -2374,10 +2359,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   assert(constant->id != -1);
                   
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 24) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 16) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, (constant->id >> 8) & 0xFF);
-                  SPVM_BYTECODE_ARRAY_push(compiler, bytecode_array, constant->id & 0xFF);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, constant->id);
                 }
                 
                 break;

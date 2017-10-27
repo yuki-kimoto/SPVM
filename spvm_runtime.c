@@ -293,7 +293,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     switch (bytecodes[bytecode_index]) {
       case SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
         // Get subroutine ID
-        int32_t package_var_id = (bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3];
+        int32_t package_var_id = *(int32_t*)&bytecodes[bytecode_index + 4];
         
         operand_stack_top++;
         call_stack[operand_stack_top] = package_vars[package_var_id];
@@ -304,7 +304,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR: {
         // Get subroutine ID
-        int32_t package_var_id = (bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3];
+        int32_t package_var_id = *(int32_t*)&bytecodes[bytecode_index + 4];
 
         package_vars[package_var_id] = call_stack[operand_stack_top];
         operand_stack_top--;
@@ -315,7 +315,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
         // Get subroutine ID
-        int32_t package_var_id = (bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3];
+        int32_t package_var_id = *(int32_t*)&bytecodes[bytecode_index + 4];
         
         // Decrement reference count
         if (package_vars[package_var_id].object_value != NULL) {
@@ -637,12 +637,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
         operand_stack_top++;
-        memcpy(&call_stack[operand_stack_top], &constant_pool[(bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3]], sizeof(int32_t));
+        memcpy(&call_stack[operand_stack_top], &constant_pool[*(int32_t*)&bytecodes[bytecode_index + 4]], sizeof(int32_t));
         bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
         operand_stack_top++;
-        memcpy(&call_stack[operand_stack_top], &constant_pool[(bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3]], sizeof(int64_t));
+        memcpy(&call_stack[operand_stack_top], &constant_pool[*(int32_t*)&bytecodes[bytecode_index + 4]], sizeof(int64_t));
         bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LOAD:
@@ -1701,7 +1701,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_NEW_OBJECT: {
         // Get subroutine ID
-        int32_t type_id = (bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3];
+        int32_t type_id = *(int32_t*)&bytecodes[bytecode_index + 4];
         
         SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, type_id);
 
@@ -1841,7 +1841,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY: {
-        int32_t element_type_id = (bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3];
+        int32_t element_type_id = *(int32_t*)&bytecodes[bytecode_index + 4];
         
         // length
         int32_t length = call_stack[operand_stack_top].int_value;
@@ -1861,7 +1861,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_BYTECODE_C_CODE_NEW_STRING: {
-        int32_t name_id = (bytecodes[bytecode_index + 4] << 24) + (bytecodes[bytecode_index + 4 + 1] << 16) + (bytecodes[bytecode_index + 4 + 2] << 8) + bytecodes[bytecode_index + 4 + 3];
+        int32_t name_id = *(int32_t*)&bytecodes[bytecode_index + 4];
         
         SPVM_OBJECT* string = SPVM_RUNTIME_API_new_string(api, (char*)&constant_pool[name_id + 1], constant_pool[name_id]);
         if (__builtin_expect(string != NULL, 1)) {
