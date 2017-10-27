@@ -395,6 +395,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
         case SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
         case SPVM_BYTECODE_C_CODE_RETURN_OBJECT:
+        case SPVM_BYTECODE_C_CODE_CROAK:
         {
           i++;
           bytecode = bytecode_array->values[i];
