@@ -22,7 +22,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   (void)api;
   
   // Runtime
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
   
   _Bool debug = runtime->debug ? 1 : 0;
   
@@ -227,7 +227,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Decrement reference count
         if (package_vars[package_var_id].object_value != NULL) {
-          SPVM_RUNTIME_API_dec_ref_count(api, package_vars[package_var_id].object_value);
+          api->dec_ref_count(api, package_vars[package_var_id].object_value);
         }
         
         // Store object
@@ -323,13 +323,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
                 SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[my_var_index].object_value;
                 
                 if (object != NULL) {
-                  SPVM_RUNTIME_API_dec_ref_count(api, object);
+                  api->dec_ref_count(api, object);
                 }
               }
             }
           }
           
-          SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+          api->dec_ref_count(api, call_stack_array);
           
           // No exception
           api->set_exception(api, NULL);
@@ -359,7 +359,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
                 SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[my_var_index].object_value;
                 
                 if (object != NULL) {
-                  SPVM_RUNTIME_API_dec_ref_count(api, object);
+                  api->dec_ref_count(api, object);
                 }
               }
             }
@@ -370,7 +370,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             return_value.object_value->ref_count--;
           }
           
-          SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+          api->dec_ref_count(api, call_stack_array);
           
           // No exception
           api->set_exception(api, NULL);
@@ -396,13 +396,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
                 SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[my_var_index].object_value;
                 
                 if (object != NULL) {
-                  SPVM_RUNTIME_API_dec_ref_count(api, object);
+                  api->dec_ref_count(api, object);
                 }
               }
             }
           }
           
-          SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+          api->dec_ref_count(api, call_stack_array);
           
           // No exception
           api->set_exception(api, NULL);
@@ -452,7 +452,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
               SPVM_OBJECT* object = (SPVM_OBJECT*)call_stack[my_var_index].object_value;
               
               if (object != NULL) {
-                SPVM_RUNTIME_API_dec_ref_count(api, object);
+                api->dec_ref_count(api, object);
               }
             }
           }
@@ -531,7 +531,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         memset(&return_value, 0, sizeof(SPVM_VALUE));
         
-        SPVM_RUNTIME_API_dec_ref_count(api, call_stack_array);
+        api->dec_ref_count(api, call_stack_array);
         
         return return_value;
       }
@@ -869,7 +869,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             
             // Decrement old object reference count
             if (*object_address != NULL) {
-              SPVM_RUNTIME_API_dec_ref_count(api, *object_address);
+              api->dec_ref_count(api, *object_address);
             }
             
             // Store address
@@ -896,7 +896,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Decrement reference count
         if (call_stack[index].object_value != NULL) {
-          SPVM_RUNTIME_API_dec_ref_count(api, call_stack[index].object_value);
+          api->dec_ref_count(api, call_stack[index].object_value);
         }
         
         // Store object
@@ -2057,7 +2057,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             }
             
             // Decrement old ojbect reference count
-            SPVM_RUNTIME_API_dec_ref_count(api, *object_address);
+            api->dec_ref_count(api, *object_address);
           }
           
           // Store object
