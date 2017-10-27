@@ -1341,19 +1341,19 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         bytecode_index += 4;
         break;
       case SPVM_BYTECODE_C_CODE_INC_BYTE:
-        call_stack[(bytecodes[bytecode_index + 4] << 8) + bytecodes[bytecode_index + 4 + 1]].byte_value += (int8_t)((bytecodes[bytecode_index + 8] << 8) + bytecodes[bytecode_index + 8 + 1]);
+        call_stack[*(int32_t*)&bytecodes[bytecode_index + 4]].byte_value += (int8_t)(*(int32_t*)&bytecodes[bytecode_index + 8]);
         bytecode_index += 12;
         break;
       case SPVM_BYTECODE_C_CODE_INC_SHORT:
-        call_stack[(bytecodes[bytecode_index + 4] << 8) + bytecodes[bytecode_index + 4 + 1]].short_value += (int16_t)((bytecodes[bytecode_index + 8] << 8) + bytecodes[bytecode_index + 8 + 1]);
+        call_stack[*(int32_t*)&bytecodes[bytecode_index + 4]].short_value += (int16_t)(*(int32_t*)&bytecodes[bytecode_index + 8]);
         bytecode_index += 12;
         break;
       case SPVM_BYTECODE_C_CODE_INC_INT:
-        call_stack[(bytecodes[bytecode_index + 4] << 8) + bytecodes[bytecode_index + 4 + 1]].int_value += (int32_t)((bytecodes[bytecode_index + 8] << 8) + bytecodes[bytecode_index + 8 + 1]);
+        call_stack[*(int32_t*)&bytecodes[bytecode_index + 4]].int_value += (int32_t)(*(int32_t*)&bytecodes[bytecode_index + 8]);
         bytecode_index += 12;
         break;
       case SPVM_BYTECODE_C_CODE_INC_LONG:
-        call_stack[(bytecodes[bytecode_index + 4] << 8) + bytecodes[bytecode_index + 4 + 1]].long_value += (int64_t)((bytecodes[bytecode_index + 8] << 8) + bytecodes[bytecode_index + 8 + 1]);
+        call_stack[*(int32_t*)&bytecodes[bytecode_index + 4]].long_value += (int64_t)(*(int32_t*)&bytecodes[bytecode_index + 8]);
         bytecode_index += 12;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG:
