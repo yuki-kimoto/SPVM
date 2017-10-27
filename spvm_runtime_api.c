@@ -20,6 +20,90 @@
 #include "spvm_type.h"
 #include "spvm_hash.h"
 
+static const void* SPVM_NATIVE_INTERFACE[]  = {
+  SPVM_RUNTIME_API_get_array_length,
+  SPVM_RUNTIME_API_get_byte_array_elements,
+  SPVM_RUNTIME_API_get_short_array_elements,
+  SPVM_RUNTIME_API_get_int_array_elements,
+  SPVM_RUNTIME_API_get_long_array_elements,
+  SPVM_RUNTIME_API_get_float_array_elements,
+  SPVM_RUNTIME_API_get_double_array_elements,
+  SPVM_RUNTIME_API_get_object_array_element,
+  SPVM_RUNTIME_API_set_object_array_element,
+  SPVM_RUNTIME_API_get_field_id,
+  SPVM_RUNTIME_API_get_byte_field,
+  SPVM_RUNTIME_API_get_short_field,
+  SPVM_RUNTIME_API_get_int_field,
+  SPVM_RUNTIME_API_get_long_field,
+  SPVM_RUNTIME_API_get_float_field,
+  SPVM_RUNTIME_API_get_double_field,
+  SPVM_RUNTIME_API_get_object_field,
+  SPVM_RUNTIME_API_set_byte_field,
+  SPVM_RUNTIME_API_set_short_field,
+  SPVM_RUNTIME_API_set_int_field,
+  SPVM_RUNTIME_API_set_long_field,
+  SPVM_RUNTIME_API_set_float_field,
+  SPVM_RUNTIME_API_set_double_field,
+  SPVM_RUNTIME_API_set_object_field,
+  SPVM_RUNTIME_API_get_sub_id,
+  SPVM_RUNTIME_API_call_void_sub,
+  SPVM_RUNTIME_API_call_byte_sub,
+  SPVM_RUNTIME_API_call_short_sub,
+  SPVM_RUNTIME_API_call_int_sub,
+  SPVM_RUNTIME_API_call_long_sub,
+  SPVM_RUNTIME_API_call_float_sub,
+  SPVM_RUNTIME_API_call_double_sub,
+  SPVM_RUNTIME_API_call_object_sub,
+  SPVM_RUNTIME_API_get_type_id,
+  SPVM_RUNTIME_API_new_object,
+  SPVM_RUNTIME_API_new_byte_array,
+  SPVM_RUNTIME_API_new_short_array,
+  SPVM_RUNTIME_API_new_int_array,
+  SPVM_RUNTIME_API_new_long_array,
+  SPVM_RUNTIME_API_new_float_array,
+  SPVM_RUNTIME_API_new_double_array,
+  SPVM_RUNTIME_API_new_object_array,
+  SPVM_RUNTIME_API_new_string,
+  SPVM_RUNTIME_API_get_string_length,
+  SPVM_RUNTIME_API_get_string_chars,
+  SPVM_RUNTIME_API_get_exception,
+  SPVM_RUNTIME_API_set_exception,
+  SPVM_RUNTIME_API_get_ref_count,
+  SPVM_RUNTIME_API_inc_ref_count,
+  SPVM_RUNTIME_API_dec_ref_count,
+  SPVM_RUNTIME_API_inc_dec_ref_count,
+  SPVM_RUNTIME_API_get_objects_count,
+  SPVM_RUNTIME_API_get_runtime,
+};
+
+SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
+  
+  SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
+  
+  // Runtime memory allocator
+  runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
+  
+  SPVM_API* api = (SPVM_API*)SPVM_NATIVE_INTERFACE;
+  
+  runtime->api = api;
+  
+  // Constant pool subroutine symbol table
+  runtime->sub_id_symtable = SPVM_HASH_new(0);
+  
+  // Constant pool type symbol table
+  runtime->type_id_symtable = SPVM_HASH_new(0);
+  
+  // Constant pool type symbol table
+  runtime->field_id_symtable = SPVM_HASH_new(0);
+  
+  // Constant pool type symbol table
+  runtime->use_package_path_id_symtable = SPVM_HASH_new(0);
+  
+  runtime->native_sub_name_ids_symtable = SPVM_HASH_new(0);
+  
+  return runtime;
+}
+
 SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime(SPVM_API* api) {
   (void)api;
   

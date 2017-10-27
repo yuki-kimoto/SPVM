@@ -22,10 +22,11 @@
 #include "spvm_sub.h"
 #include "spvm_field.h"
 #include "spvm_value.h"
+#include "spvm_api.h"
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_new_runtime();
   
   // Set global runtime
   SPVM_RUNTIME_API_set_runtime(runtime->api, runtime);
