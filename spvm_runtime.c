@@ -17,7 +17,6 @@
 #include "spvm_value.h"
 #include "spvm_api.h"
 #include "spvm_type.h"
-#include "spvm_hash.h"
 
 SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   (void)api;
