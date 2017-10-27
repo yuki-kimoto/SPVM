@@ -272,7 +272,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
 
                   int32_t const length = switch_info->op_cases->length;
-                  *(int32_t*)&bytecode_array->values[bytecode_array->length - 1] = length;
+                  bytecode_array->values[bytecode_array->length - 1] = length;
                   
                   int32_t size_of_match_offset_pairs = length * 2;
                   {
@@ -303,13 +303,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else {
                     default_offset = default_bytecode_index - switch_bytecode_index;
                   }
-                  *(int32_t*)&bytecode_array->values[switch_bytecode_index + 1] = default_offset;
+                  bytecode_array->values[switch_bytecode_index + 1] = default_offset;
                   
                   // min
-                  int32_t min = *(int32_t*)&bytecode_array->values[switch_bytecode_index + 1 + 1];
+                  int32_t min = bytecode_array->values[switch_bytecode_index + 1 + 1];
                   
                   // max
-                  int32_t max = *(int32_t*)&bytecode_array->values[switch_bytecode_index + 1 + 1 * 2];
+                  int32_t max = bytecode_array->values[switch_bytecode_index + 1 + 1 * 2];
                   
                   int32_t length = (int32_t)(max - min + 1);
                   
@@ -325,13 +325,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         int32_t case_bytecode_index = *case_bytecode_index_ptr;
                         int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                         
-                        *(int32_t*)&bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + 1 * i] = case_offset;
+                        bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + 1 * i] = case_offset;
                         
                         case_pos++;
                       }
                       else {
                         // Default
-                        *(int32_t*)&bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + (1 * i)] = default_offset;
+                        bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + (1 * i)] = default_offset;
                       }
                     }
                   }
@@ -346,7 +346,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else {
                     default_offset = default_bytecode_index - switch_bytecode_index;
                   }
-                  *(int32_t*)&bytecode_array->values[switch_bytecode_index + 1] = default_offset;
+                  bytecode_array->values[switch_bytecode_index + 1] = default_offset;
                   
                   int32_t const length = (int32_t) switch_info->op_cases->length;
                   
@@ -406,10 +406,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                       
                       // Match
-                      *(int32_t*)&bytecode_array->values[switch_bytecode_index + 1 + 1 * 2 + (1 * 2 * i)] = match;
+                      bytecode_array->values[switch_bytecode_index + 1 + 1 * 2 + (1 * 2 * i)] = match;
 
                       // Offset
-                      *(int32_t*)&bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + (1 * 2 * i)] = case_offset;
+                      bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + (1 * 2 * i)] = case_offset;
                     }
                   }
                 }
@@ -423,7 +423,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = bytecode_array->length - goto_last_bytecode_index;
                   
-                  *(int32_t*)&bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
+                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
                 }
                 
                 break;
@@ -615,7 +615,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = bytecode_array->length - bytecode_index;
                   
                   // Set jump offset
-                  *(int32_t*)&bytecode_array->values[bytecode_index + 1] = jump_offset;
+                  bytecode_array->values[bytecode_index + 1] = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_TRUE) {
                   
@@ -628,7 +628,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = bytecode_array->length - bytecode_index;
                   
                   // Set jump offset
-                  *(int32_t*)&bytecode_array->values[bytecode_index + 1] = jump_offset;
+                  bytecode_array->values[bytecode_index + 1] = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
                   
@@ -638,7 +638,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Jump offset
                   int32_t goto_loop_start_offset = bytecode_array->length - goto_loop_start_bytecode_index;
                   
-                  *(int32_t*)&bytecode_array->values[goto_loop_start_bytecode_index + 1] = goto_loop_start_offset;
+                  bytecode_array->values[goto_loop_start_bytecode_index + 1] = goto_loop_start_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION);
@@ -651,7 +651,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t jump_offset_abs = bytecode_array->length - sub->bytecode_base;
                   
-                  *(int32_t*)&bytecode_array->values[bytecode_index + 1] = jump_offset_abs;
+                  bytecode_array->values[bytecode_index + 1] = jump_offset_abs;
                 }
                 break;
               }
@@ -666,7 +666,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = bytecode_array->length - goto_last_bytecode_index;
                   
-                  *(int32_t*)&bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
+                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
                 }
                 
                 break;
