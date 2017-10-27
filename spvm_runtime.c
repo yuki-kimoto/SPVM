@@ -21,6 +21,9 @@
 SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   (void)api;
   
+  // SPVM Object header byte size
+  int32_t object_header_byte_size = api->get_object_header_byte_size(api);
+  
   // Runtime
   SPVM_RUNTIME* runtime = api->get_runtime(api);
   
@@ -574,7 +577,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             call_stack[operand_stack_top - 1].byte_value
-              = *(int8_t*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(int8_t) * index);
+              = *(int8_t*)((intptr_t)array + object_header_byte_size + sizeof(int8_t) * index);
             operand_stack_top--;
             bytecode_index++;;
             break;
@@ -597,7 +600,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             call_stack[operand_stack_top - 1].short_value
-              = *(int16_t*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(int16_t) * index);
+              = *(int16_t*)((intptr_t)array + object_header_byte_size + sizeof(int16_t) * index);
             operand_stack_top--;
             bytecode_index++;;
             break;
@@ -619,7 +622,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[operand_stack_top - 1].int_value = *(int32_t*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(int32_t) * index);
+            call_stack[operand_stack_top - 1].int_value = *(int32_t*)((intptr_t)array + object_header_byte_size + sizeof(int32_t) * index);
             operand_stack_top--;
             bytecode_index++;;
             break;
@@ -641,7 +644,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[operand_stack_top - 1].long_value = *(int64_t*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(int64_t) * index);
+            call_stack[operand_stack_top - 1].long_value = *(int64_t*)((intptr_t)array + object_header_byte_size + sizeof(int64_t) * index);
             operand_stack_top--;
             bytecode_index++;;
             break;
@@ -663,7 +666,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[operand_stack_top - 1].float_value = *(float*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(float) * index);
+            call_stack[operand_stack_top - 1].float_value = *(float*)((intptr_t)array + object_header_byte_size + sizeof(float) * index);
             operand_stack_top--;
             bytecode_index++;;
             break;
@@ -685,7 +688,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[operand_stack_top - 1].double_value = *(double*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(double) * index);
+            call_stack[operand_stack_top - 1].double_value = *(double*)((intptr_t)array + object_header_byte_size + sizeof(double) * index);
             operand_stack_top--;
             bytecode_index++;;
             break;
@@ -707,7 +710,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[operand_stack_top - 1] = *(SPVM_VALUE*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+            call_stack[operand_stack_top - 1] = *(SPVM_VALUE*)((intptr_t)array + object_header_byte_size + sizeof(SPVM_VALUE) * index);
             operand_stack_top--;
             bytecode_index++;;
             break;
@@ -729,7 +732,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(int8_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + sizeof(SPVM_OBJECT) + sizeof(int8_t) * call_stack[operand_stack_top - 1].int_value)
+            *(int8_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + object_header_byte_size + sizeof(int8_t) * call_stack[operand_stack_top - 1].int_value)
               = call_stack[operand_stack_top].byte_value;
             operand_stack_top -= 3;
             bytecode_index++;;
@@ -752,7 +755,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(int16_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + sizeof(SPVM_OBJECT) + sizeof(int16_t) * call_stack[operand_stack_top - 1].int_value)
+            *(int16_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + object_header_byte_size + sizeof(int16_t) * call_stack[operand_stack_top - 1].int_value)
               = call_stack[operand_stack_top].short_value;
             operand_stack_top -= 3;
             bytecode_index++;;
@@ -775,7 +778,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(int32_t*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(int32_t) * index) = call_stack[operand_stack_top].int_value;
+            *(int32_t*)((intptr_t)array + object_header_byte_size + sizeof(int32_t) * index) = call_stack[operand_stack_top].int_value;
             operand_stack_top -= 3;
             bytecode_index++;;
             break;
@@ -797,7 +800,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(int64_t*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(int64_t) * index) = call_stack[operand_stack_top].long_value;
+            *(int64_t*)((intptr_t)array + object_header_byte_size + sizeof(int64_t) * index) = call_stack[operand_stack_top].long_value;
             operand_stack_top -= 3;
             bytecode_index++;;
             break;
@@ -819,7 +822,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(float*)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(float) * index) = call_stack[operand_stack_top].float_value;
+            *(float*)((intptr_t)array + object_header_byte_size + sizeof(float) * index) = call_stack[operand_stack_top].float_value;
             operand_stack_top -= 3;
             bytecode_index++;;
             break;
@@ -841,7 +844,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(double*)((intptr_t)call_stack[operand_stack_top - 2].object_value + sizeof(SPVM_OBJECT) + sizeof(double) * call_stack[operand_stack_top - 1].int_value)
+            *(double*)((intptr_t)call_stack[operand_stack_top - 2].object_value + object_header_byte_size + sizeof(double) * call_stack[operand_stack_top - 1].int_value)
               = call_stack[operand_stack_top].double_value;
             operand_stack_top -= 3;
             bytecode_index++;;
@@ -865,7 +868,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)array + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+            SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)array + object_header_byte_size + sizeof(SPVM_VALUE) * index);
             
             // Decrement old object reference count
             if (*object_address != NULL) {
@@ -1826,7 +1829,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           int32_t index = bytecodes[bytecode_index + 1];
           call_stack[operand_stack_top].byte_value
-            = *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+            = *(int8_t*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index);
           bytecode_index += 2;
           break;
         }
@@ -1841,7 +1844,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           int32_t index = bytecodes[bytecode_index + 1];
           call_stack[operand_stack_top].short_value
-            = *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+            = *(int16_t*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index);
           bytecode_index += 2;
           break;
         }
@@ -1856,7 +1859,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           int32_t index = bytecodes[bytecode_index + 1];
           call_stack[operand_stack_top].int_value
-            = *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+            = *(int32_t*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index);
           bytecode_index += 2;
           break;
         }
@@ -1871,7 +1874,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           int32_t index = bytecodes[bytecode_index + 1];
           call_stack[operand_stack_top].long_value
-            = *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+            = *(int64_t*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index);
           bytecode_index += 2;
           break;
         }
@@ -1886,7 +1889,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           int32_t index = bytecodes[bytecode_index + 1];
           call_stack[operand_stack_top].float_value
-            = *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+            = *(float*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index);
           
           bytecode_index += 2;
           break;
@@ -1902,7 +1905,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           int32_t index = bytecodes[bytecode_index + 1];
           call_stack[operand_stack_top].double_value
-            = *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+            = *(double*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index);
           bytecode_index += 2;
           break;
         }
@@ -1917,7 +1920,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           int32_t index = bytecodes[bytecode_index + 1];
           call_stack[operand_stack_top].object_value
-            = *(void**)((intptr_t)call_stack[operand_stack_top].object_value + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+            = *(void**)((intptr_t)call_stack[operand_stack_top].object_value + object_header_byte_size + sizeof(SPVM_VALUE) * index);
           bytecode_index += 2;
           break;
         }
@@ -1931,7 +1934,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           int32_t index = bytecodes[bytecode_index + 1];
-          SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+          SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index);
           
           // Weaken object field
           if (*object_address != NULL) {
@@ -1951,7 +1954,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           int32_t index = bytecodes[bytecode_index + 1];
-          *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
+          *(int8_t*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index)
             = call_stack[operand_stack_top].byte_value;
           operand_stack_top -= 2;
           bytecode_index += 2;
@@ -1967,7 +1970,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           int32_t index = bytecodes[bytecode_index + 1];
-          *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
+          *(int16_t*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index)
             = call_stack[operand_stack_top].short_value;
           operand_stack_top -= 2;
           bytecode_index += 2;
@@ -1983,7 +1986,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           int32_t index = bytecodes[bytecode_index + 1];
-          *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
+          *(int32_t*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index)
             = call_stack[operand_stack_top].int_value;
           
           operand_stack_top -= 2;
@@ -2000,7 +2003,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           int32_t index = bytecodes[bytecode_index + 1];
-          *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
+          *(int64_t*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index)
             = call_stack[operand_stack_top].long_value;
           operand_stack_top -= 2;
           bytecode_index += 2;
@@ -2016,7 +2019,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           int32_t index = bytecodes[bytecode_index + 1];
-          *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
+          *(float*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index)
             = call_stack[operand_stack_top].float_value;
           operand_stack_top -= 2;
           bytecode_index += 2;
@@ -2032,7 +2035,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           int32_t index = bytecodes[bytecode_index + 1];
-          *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index)
+          *(double*)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index)
             = call_stack[operand_stack_top].double_value;
           operand_stack_top -= 2;
           bytecode_index += 2;
@@ -2048,7 +2051,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           int32_t index = bytecodes[bytecode_index + 1];
-          SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+          SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + object_header_byte_size + sizeof(SPVM_VALUE) * index);
           
           if (*object_address != NULL) {
             // If object is weak, unweaken
