@@ -98,7 +98,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
         (*native_address)(api, (SPVM_API_VALUE*)call_stack);
         
-        if (runtime->exception) {
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -108,7 +108,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int8_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
         int8_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
-        if (runtime->exception) {
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -120,7 +120,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int16_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
         int16_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
-        if (runtime->exception) {
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
 
@@ -134,7 +134,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         int32_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
-        if (runtime->exception) {
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
 
@@ -146,7 +146,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int64_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
         int64_t return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
-        if (runtime->exception) {
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
 
@@ -158,7 +158,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
         float return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
-        if (runtime->exception) {
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -170,7 +170,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
         double return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
-        if (runtime->exception) {
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -182,7 +182,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         SPVM_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = constant_pool_sub->native_address;
         SPVM_OBJECT* return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
 
-        if (runtime->exception) {
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -412,7 +412,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION: {
         operand_stack_top++;
-        call_stack[operand_stack_top].object_value = (SPVM_OBJECT*)runtime->exception;
+        call_stack[operand_stack_top].object_value = (SPVM_OBJECT*)api->get_exception(api);
         
         bytecode_index++;;
         break;
