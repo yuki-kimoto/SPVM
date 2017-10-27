@@ -12,7 +12,6 @@ struct SPVM_bytecode_array {
 
 // Array function
 SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM_COMPILER* compiler);
-void SPVM_BYTECODE_ARRAY_push(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecodes, uint8_t value);
 void SPVM_BYTECODE_ARRAY_free(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecodes);
 void SPVM_BYTECODE_ARRAY_push_int(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecodes, int32_t value);
 
