@@ -2383,7 +2383,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     call_stack[operand_stack_top - 1].object_value = string3;
     
     operand_stack_top--;
-    pc++;
+    pc += 4;
     goto *jump[*pc];
   }
   case_SPVM_BYTECODE_C_CODE_CONCAT_STRING_BYTE: {

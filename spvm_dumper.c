@@ -420,6 +420,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         
         // Have seven operands
+        case SPVM_BYTECODE_C_CODE_CONCAT_STRING_STRING:
         case SPVM_BYTECODE_C_CODE_ARRAY_LENGTH:
         case SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY:
         case SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY:
