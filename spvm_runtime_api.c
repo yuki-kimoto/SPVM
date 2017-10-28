@@ -95,6 +95,8 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_package_vars,
   SPVM_RUNTIME_API_is_debug,
   SPVM_RUNTIME_API_get_type_code,
+  SPVM_RUNTIME_API_get_sub_name_id,
+  SPVM_RUNTIME_API_get_sub_file_name_id,
 };
 
 int32_t SPVM_RUNTIME_API_get_sub_name_id(SPVM_API* api, int32_t sub_id) {
