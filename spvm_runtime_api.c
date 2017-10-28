@@ -94,7 +94,21 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_bytecodes,
   SPVM_RUNTIME_API_get_package_vars,
   SPVM_RUNTIME_API_is_debug,
+  SPVM_RUNTIME_API_get_type_code,
 };
+
+int32_t SPVM_RUNTIME_API_get_type_code (SPVM_API* api, int32_t type_id) {
+  
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[type_id];
+  
+  int32_t type_code = constant_pool_sub_return_type->code;
+  
+  return type_code;
+}
 
 int32_t* SPVM_RUNTIME_API_get_constant_pool(SPVM_API* api) {
   (void)api;

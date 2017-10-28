@@ -103,5 +103,6 @@ struct SPVM_api {
   int32_t* (*get_bytecodes)(SPVM_API* api);
   SPVM_API_VALUE* (*get_package_vars)(SPVM_API* api);
   int32_t (*is_debug)(SPVM_API* api);
+  int32_t (*get_type_code)(SPVM_API* api, int32_t type_id);
 };
 #endif
