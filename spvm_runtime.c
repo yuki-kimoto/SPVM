@@ -7,7 +7,6 @@
 #include <inttypes.h>
 
 #include "spvm_api.h"
-#include "spvm_runtime.h"
 #include "spvm_bytecode.h"
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
