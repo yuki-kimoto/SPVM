@@ -88,7 +88,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   // If arg is object, increment reference count
   if (api->get_sub_object_args_length(api, sub_id)) {
-    int32_t object_args_base = constant_pool_sub->object_args_base;
+    int32_t object_args_base = api->get_sub_object_args_base(api, sub_id);
     int32_t object_args_length = api->get_sub_object_args_length(api, sub_id);
     {
       int32_t i;
@@ -106,9 +106,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   api->set_exception(api, NULL);
   
   // Call native sub
-  if (constant_pool_sub->is_native) {
+  if (api->get_sub_is_native(api, sub_id)) {
     // Set runtimeironment
-    int32_t return_type_code = api->get_type_code(api, constant_pool_sub->return_type_id);
+    int32_t return_type_code = api->get_type_code(api, api->get_sub_return_type_id(api, sub_id));
     
     // Call native subroutine
     if (return_type_code == VOID_TYPE_CODE) {
@@ -210,7 +210,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   }
   // Call normal sub
   else {
-    bytecode_index = constant_pool_sub->bytecode_base;
+    bytecode_index = api->get_sub_bytecode_base(api, sub_id);
   }
   
   while (1) {
@@ -282,9 +282,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Get subroutine ID
         int32_t call_sub_id = bytecodes[bytecode_index + 1];
         
-        SPVM_CONSTANT_POOL_SUB* constant_pool_sub_called = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
-        
-        int32_t args_length = constant_pool_sub_called->args_length;
+        int32_t args_length = api->get_sub_args_length(api, call_sub_id);
         
         operand_stack_top -= args_length;
         
@@ -298,7 +296,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         else {
-          if (!constant_pool_sub_called->is_void) {
+          if (!api->get_sub_is_void(api, call_sub_id)) {
             operand_stack_top++;
             call_stack[operand_stack_top] = return_value;
           }
