@@ -1959,6 +1959,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         api->set_byte_field(api, object, field_id, value);
         
+        if (api->get_exception(api)) {
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        
         operand_stack_top -= 2;
         bytecode_index += 2;
         break;
@@ -1969,6 +1973,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = bytecodes[bytecode_index + 1];
         
         api->set_short_field(api, object, field_id, value);
+        
+        if (api->get_exception(api)) {
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
         
         operand_stack_top -= 2;
         bytecode_index += 2;
@@ -1981,6 +1989,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         api->set_int_field(api, object, field_id, value);
         
+        if (api->get_exception(api)) {
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+
         operand_stack_top -= 2;
         bytecode_index += 2;
         break;
@@ -1991,6 +2003,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = bytecodes[bytecode_index + 1];
         
         api->set_long_field(api, object, field_id, value);
+
+        if (api->get_exception(api)) {
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
         
         operand_stack_top -= 2;
         bytecode_index += 2;
@@ -2002,6 +2018,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = bytecodes[bytecode_index + 1];
         
         api->set_float_field(api, object, field_id, value);
+
+        if (api->get_exception(api)) {
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
         
         operand_stack_top -= 2;
         bytecode_index += 2;
@@ -2013,6 +2033,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = bytecodes[bytecode_index + 1];
         
         api->set_double_field(api, object, field_id, value);
+
+        if (api->get_exception(api)) {
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
         
         operand_stack_top -= 2;
         bytecode_index += 2;
@@ -2024,6 +2048,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = bytecodes[bytecode_index + 1];
         
         api->set_object_field(api, object, field_id, value);
+
+        if (api->get_exception(api)) {
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
         
         operand_stack_top -= 2;
         bytecode_index += 2;

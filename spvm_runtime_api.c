@@ -1514,6 +1514,12 @@ void SPVM_RUNTIME_API_set_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
 
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(set_byte_field).", 0);
+    api->set_exception(api, exception);
+    return;
+  }
+
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].byte_value = value;
 }
@@ -1525,6 +1531,12 @@ void SPVM_RUNTIME_API_set_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_
   // Index
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
+
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(set_short_field).", 0);
+    api->set_exception(api, exception);
+    return;
+  }
 
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].short_value = value;
@@ -1538,6 +1550,12 @@ void SPVM_RUNTIME_API_set_int_field(SPVM_API* api, SPVM_OBJECT* object, int32_t 
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
 
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(set_int_field).", 0);
+    api->set_exception(api, exception);
+    return;
+  }
+
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].int_value = value;
 }
@@ -1550,6 +1568,12 @@ void SPVM_RUNTIME_API_set_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
 
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(set_long_field).", 0);
+    api->set_exception(api, exception);
+    return;
+  }
+
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].long_value = value;
 }
@@ -1561,6 +1585,12 @@ void SPVM_RUNTIME_API_set_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_
   // Index
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
+
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(set_float_field).", 0);
+    api->set_exception(api, exception);
+    return;
+  }
   
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].float_value = value;
@@ -1574,6 +1604,12 @@ void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
 
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(set_double_field).", 0);
+    api->set_exception(api, exception);
+    return;
+  }
+
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   fields[index].double_value = value;
 }
@@ -1585,7 +1621,13 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
   // Index
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
-  
+
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(set_object_field).", 0);
+    api->set_exception(api, exception);
+    return;
+  }
+
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   
   if(fields[index].object_value != NULL) {
