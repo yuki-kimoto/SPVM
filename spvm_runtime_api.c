@@ -1416,6 +1416,12 @@ int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
 
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+    api->set_exception(api, exception);
+    return 0;
+  }
+
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   int8_t byte_value = fields[index].byte_value;
   
@@ -1429,6 +1435,12 @@ int16_t SPVM_RUNTIME_API_get_short_field(SPVM_API* api, SPVM_OBJECT* object, int
   // Index
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
+
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_short_field).", 0);
+    api->set_exception(api, exception);
+    return 0;
+  }
 
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   int16_t short_value = fields[index].short_value;
@@ -1444,6 +1456,12 @@ int32_t SPVM_RUNTIME_API_get_int_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
 
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_int_field).", 0);
+    api->set_exception(api, exception);
+    return 0;
+  }
+
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   int32_t int_value = fields[index].int_value;
   
@@ -1457,6 +1475,12 @@ int64_t SPVM_RUNTIME_API_get_long_field(SPVM_API* api, SPVM_OBJECT* object, int3
   // Index
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
+
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_long_field).", 0);
+    api->set_exception(api, exception);
+    return 0;
+  }
 
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   int64_t long_value = fields[index].long_value;
@@ -1472,6 +1496,12 @@ float SPVM_RUNTIME_API_get_float_field(SPVM_API* api, SPVM_OBJECT* object, int32
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
 
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_float_field).", 0);
+    api->set_exception(api, exception);
+    return 0;
+  }
+
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   float float_value = fields[index].float_value;
   
@@ -1486,6 +1516,12 @@ double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_OBJECT* object, int
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
 
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_double_field).", 0);
+    api->set_exception(api, exception);
+    return 0;
+  }
+
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   double double_value = fields[index].double_value;
   
@@ -1499,6 +1535,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* objec
   // Index
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
+
+  if (__builtin_expect(object == NULL, 0)) {
+    SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_object_field).", 0);
+    api->set_exception(api, exception);
+    return NULL;
+  }
 
   SPVM_API_VALUE* fields = SPVM_RUNTIME_API_get_fields(api, object);
   SPVM_OBJECT* object_value = fields[index].object_value;
