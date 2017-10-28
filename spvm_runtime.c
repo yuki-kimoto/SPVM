@@ -1828,109 +1828,108 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       case SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to get an byte field must not be undefined.", 0);
-          api->set_exception(api, exception);
+        int32_t field_id = bytecodes[bytecode_index + 1];
+
+        int8_t value = api->get_byte_field(api, object, field_id);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          call_stack[operand_stack_top].byte_value
-            = *(int8_t*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-          bytecode_index += 2;
-          break;
-        }
+        
+        call_stack[operand_stack_top].byte_value = value;
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to get an short field must not be undefined.", 0);
-          api->set_exception(api, exception);
+        int32_t field_id = bytecodes[bytecode_index + 1];
+
+        int16_t value = api->get_short_field(api, object, field_id);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          call_stack[operand_stack_top].short_value
-            = *(int16_t*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-          bytecode_index += 2;
-          break;
-        }
+        
+        call_stack[operand_stack_top].short_value = value;
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_INT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to get an int field must not be undefined.", 0);
-          api->set_exception(api, exception);
+        int32_t field_id = bytecodes[bytecode_index + 1];
+
+        int32_t value = api->get_int_field(api, object, field_id);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          call_stack[operand_stack_top].int_value
-            = *(int32_t*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-          bytecode_index += 2;
-          break;
-        }
+        
+        call_stack[operand_stack_top].int_value = value;
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_LONG: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to get an long field must not be undefined.", 0);
-          api->set_exception(api, exception);
+        int32_t field_id = bytecodes[bytecode_index + 1];
+
+        int64_t value = api->get_long_field(api, object, field_id);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          call_stack[operand_stack_top].long_value
-            = *(int64_t*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-          bytecode_index += 2;
-          break;
-        }
+        
+        call_stack[operand_stack_top].long_value = value;
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to get an float field must not be undefined.", 0);
-          api->set_exception(api, exception);
+        int32_t field_id = bytecodes[bytecode_index + 1];
+
+        float value = api->get_float_field(api, object, field_id);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          call_stack[operand_stack_top].float_value
-            = *(float*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-          
-          bytecode_index += 2;
-          break;
-        }
+        
+        call_stack[operand_stack_top].float_value = value;
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to get an double field must not be undefined.", 0);
-          api->set_exception(api, exception);
+        int32_t field_id = bytecodes[bytecode_index + 1];
+
+        double value = api->get_double_field(api, object, field_id);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          call_stack[operand_stack_top].double_value
-            = *(double*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-          bytecode_index += 2;
-          break;
-        }
+        
+        call_stack[operand_stack_top].double_value = value;
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to get an object field must not be undefined.", 0);
-          api->set_exception(api, exception);
+        int32_t field_id = bytecodes[bytecode_index + 1];
+
+        SPVM_API_OBJECT* value = api->get_object_field(api, object, field_id);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          call_stack[operand_stack_top].object_value
-            = *(void**)((intptr_t)call_stack[operand_stack_top].object_value + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-          bytecode_index += 2;
-          break;
-        }
+        
+        call_stack[operand_stack_top].object_value = value;
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
