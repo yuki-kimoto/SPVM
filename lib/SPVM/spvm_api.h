@@ -117,5 +117,6 @@ struct SPVM_api {
   int32_t (*get_sub_bytecode_base)(SPVM_API* api, int32_t sub_id);
   int32_t (*get_sub_is_void)(SPVM_API* api, int32_t sub_id);
   int32_t (*get_sub_object_my_vars_base)(SPVM_API* api, int32_t sub_id);
+  int32_t (*get_sub_object_my_vars_length)(SPVM_API* api, int32_t sub_id);
 };
 #endif

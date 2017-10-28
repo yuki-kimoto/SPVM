@@ -328,8 +328,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           SPVM_API_VALUE return_value = call_stack[operand_stack_top];
           
           // Decrement object my vars reference count
-          int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
-          int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
+          int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
+          int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
           
           if (object_my_vars_length) {
             {
@@ -365,8 +365,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           }
           
           // Decrement object my vars reference count
-          int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
-          int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
+          int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
+          int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
           if (object_my_vars_length) {
             {
               int32_t i;
@@ -402,8 +402,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           memset(&return_value, 0, sizeof(SPVM_API_VALUE));
           
           // Decrement object my vars reference count
-          int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
-          int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
+          int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
+          int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
           if (object_my_vars_length) {
             {
               int32_t i;
@@ -452,14 +452,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           int16_t jump_offset_abs = catch_exception_stack[catch_exception_stack_top];
           catch_exception_stack_top--;
           
-          bytecode_index = constant_pool_sub->bytecode_base + jump_offset_abs;
+          bytecode_index = api->get_sub_bytecode_base(api, sub_id) + jump_offset_abs;
           
           break;
         }
         
         // Decrement object my vars reference count
-        int32_t object_my_vars_length = constant_pool_sub->object_my_vars_length;
-        int32_t object_my_vars_base = constant_pool_sub->object_my_vars_base;
+        int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
+        int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
         if (object_my_vars_length) {
           {
             int32_t i;

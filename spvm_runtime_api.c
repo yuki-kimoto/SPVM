@@ -108,7 +108,22 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_sub_bytecode_base,
   SPVM_RUNTIME_API_get_sub_is_void,
   SPVM_RUNTIME_API_get_sub_object_my_vars_base,
+  SPVM_RUNTIME_API_get_sub_object_my_vars_length,
 };
+
+int32_t SPVM_RUNTIME_API_get_sub_object_my_vars_length(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_object_my_vars_length = constant_pool_sub->object_my_vars_length;
+  
+  return sub_object_my_vars_length;
+}
 
 int32_t SPVM_RUNTIME_API_get_sub_object_args_base(SPVM_API* api, int32_t sub_id) {
   (void)api;
