@@ -1954,134 +1954,80 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_BYTE: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to set an byte field must not be undefined.", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          *(int8_t*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index)
-            = call_stack[operand_stack_top].byte_value;
-          operand_stack_top -= 2;
-          bytecode_index += 2;
-          break;
-        }
+        int8_t value = call_stack[operand_stack_top].byte_value;
+        int32_t field_id = bytecodes[bytecode_index + 1];
+        
+        api->set_byte_field(api, object, field_id, value);
+        
+        operand_stack_top -= 2;
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_SHORT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to set an short field must not be undefined.", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          *(int16_t*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index)
-            = call_stack[operand_stack_top].short_value;
-          operand_stack_top -= 2;
-          bytecode_index += 2;
-          break;
-        }
+        int16_t value = call_stack[operand_stack_top].short_value;
+        int32_t field_id = bytecodes[bytecode_index + 1];
+        
+        api->set_short_field(api, object, field_id, value);
+        
+        operand_stack_top -= 2;
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_INT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to set an int field must not be undefined.", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          *(int32_t*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index)
-            = call_stack[operand_stack_top].int_value;
-          
-          operand_stack_top -= 2;
-          bytecode_index += 2;
-          break;
-        }
+        int32_t value = call_stack[operand_stack_top].int_value;
+        int32_t field_id = bytecodes[bytecode_index + 1];
+        
+        api->set_int_field(api, object, field_id, value);
+        
+        operand_stack_top -= 2;
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_LONG: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to set an long field must not be undefined.", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          *(int64_t*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index)
-            = call_stack[operand_stack_top].long_value;
-          operand_stack_top -= 2;
-          bytecode_index += 2;
-          break;
-        }
+        int64_t value = call_stack[operand_stack_top].long_value;
+        int32_t field_id = bytecodes[bytecode_index + 1];
+        
+        api->set_long_field(api, object, field_id, value);
+        
+        operand_stack_top -= 2;
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_FLOAT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to set an float field must not be undefined.", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          *(float*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index)
-            = call_stack[operand_stack_top].float_value;
-          operand_stack_top -= 2;
-          bytecode_index += 2;
-          break;
-        }
+        float value = call_stack[operand_stack_top].float_value;
+        int32_t field_id = bytecodes[bytecode_index + 1];
+        
+        api->set_float_field(api, object, field_id, value);
+        
+        operand_stack_top -= 2;
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to set an double field must not be undefined.", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          *(double*)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index)
-            = call_stack[operand_stack_top].double_value;
-          operand_stack_top -= 2;
-          bytecode_index += 2;
-          break;
-        }
+        double value = call_stack[operand_stack_top].double_value;
+        int32_t field_id = bytecodes[bytecode_index + 1];
+        
+        api->set_double_field(api, object, field_id, value);
+        
+        operand_stack_top -= 2;
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to set an object field must not be undefined", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-          
-          if (*object_address != NULL) {
-            // If object is weak, unweaken
-            if (api->isweak(api, *object_address)) {
-              api->unweaken(api, object_address);
-            }
-            
-            // Decrement old ojbect reference count
-            api->dec_ref_count(api, *object_address);
-          }
-          
-          // Store object
-          *object_address = call_stack[operand_stack_top].object_value;
-          
-          // Increment new object reference count
-          if (*object_address != NULL) {
-            api->inc_ref_count(api, *object_address);
-          }
-          
-          operand_stack_top -= 2;
-          bytecode_index += 2;
-          break;
-        }
+        SPVM_API_OBJECT* value = call_stack[operand_stack_top].object_value;
+        int32_t field_id = bytecodes[bytecode_index + 1];
+        
+        api->set_object_field(api, object, field_id, value);
+        
+        operand_stack_top -= 2;
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_STRING: {
         SPVM_API_OBJECT* string1 = call_stack[operand_stack_top - 1].object_value;
