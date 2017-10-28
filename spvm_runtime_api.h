@@ -4,6 +4,14 @@
 #include "spvm_base.h"
 #include "spvm_api.h"
 
+int32_t SPVM_RUNTIME_API_get_void_type_code(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_get_byte_type_code(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_get_short_type_code(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_get_int_type_code(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_get_long_type_code(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_get_float_type_code(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_get_double_type_code(SPVM_API* api);
+
 SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime();
 void SPVM_RUNTIME_API_dec_ref_count_only(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_get_object_header_length_offset(SPVM_API* api);

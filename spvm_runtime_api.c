@@ -79,6 +79,13 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_object_header_byte_size,
   SPVM_RUNTIME_API_dec_ref_count_only,
   SPVM_RUNTIME_API_get_object_header_length_offset,
+  SPVM_RUNTIME_API_get_void_type_code,
+  SPVM_RUNTIME_API_get_byte_type_code,
+  SPVM_RUNTIME_API_get_short_type_code,
+  SPVM_RUNTIME_API_get_int_type_code,
+  SPVM_RUNTIME_API_get_long_type_code,
+  SPVM_RUNTIME_API_get_float_type_code,
+  SPVM_RUNTIME_API_get_double_type_code,
 };
 
 int32_t SPVM_RUNTIME_API_get_void_type_code(SPVM_API* api) {
