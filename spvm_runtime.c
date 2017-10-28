@@ -475,11 +475,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         
         // Sub name
-        int32_t sub_name_id = constant_pool_sub->abs_name_id;
+        int32_t sub_name_id = api->get_sub_name_id(api, sub_id);
         const char* sub_name = (char*)&constant_pool[sub_name_id + 1];
         
         // File name
-        int32_t file_name_id = constant_pool_sub->file_name_id;
+        int32_t file_name_id = api->get_sub_file_name_id(api, sub_id);
         const char* file_name = (char*)&constant_pool[file_name_id + 1];
         
         // stack trace strings
@@ -1632,11 +1632,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Memory allocation error
         if (__builtin_expect(!object, 0)) {
           // Sub name
-          int32_t abs_name_id = api->get_sub_name_id(api, sub_id);;
+          int32_t abs_name_id = api->get_sub_name_id(api, sub_id);
           const char* sub_name = (char*)&constant_pool[abs_name_id + 1];
           
           // File name
-          int32_t file_name_id = constant_pool_sub->file_name_id;
+          int32_t file_name_id = api->get_sub_file_name_id(api, sub_id);
           const char* file_name = (char*)&constant_pool[file_name_id + 1];
           
           fprintf(stderr, "Failed to allocate memory(new package) from %s at %s\n", sub_name, file_name);
