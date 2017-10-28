@@ -106,5 +106,6 @@ struct SPVM_api {
   int32_t (*get_type_code)(SPVM_API* api, int32_t type_id);
   int32_t (*get_sub_name_id)(SPVM_API* api, int32_t sub_id);
   int32_t (*get_sub_file_name_id)(SPVM_API* api, int32_t sub_id);
+  int32_t (*get_sub_args_length)(SPVM_API* api, int32_t sub_id);
 };
 #endif

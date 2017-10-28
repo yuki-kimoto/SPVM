@@ -58,7 +58,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
   // Args length
-  int32_t args_length = constant_pool_sub->args_length;
+  int32_t args_length = api->get_sub_args_length(api, sub_id);
   
   // Lexical varialbe length
   int32_t my_vars_length = constant_pool_sub->my_vars_length;
