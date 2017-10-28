@@ -280,9 +280,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_BYTECODE_C_CODE_CALL_SUB: {
         // Get subroutine ID
-        sub_id = bytecodes[bytecode_index + 1];
+        int32_t call_sub_id = bytecodes[bytecode_index + 1];
         
-        SPVM_CONSTANT_POOL_SUB* constant_pool_sub_called = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+        SPVM_CONSTANT_POOL_SUB* constant_pool_sub_called = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
         
         int32_t args_length = constant_pool_sub_called->args_length;
         
@@ -292,7 +292,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
         
         // Call subroutine
-        SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
+        SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
         
         if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
