@@ -95,5 +95,8 @@ struct SPVM_api {
   int32_t (*get_long_type_code)(SPVM_API* api);
   int32_t (*get_float_type_code)(SPVM_API* api);
   int32_t (*get_double_type_code)(SPVM_API* api);
+  int32_t (*isweak)(SPVM_API* api, SPVM_API_OBJECT* object);
+  void (*unweaken)(SPVM_API* api, SPVM_API_OBJECT** object_address);
+  SPVM_API_OBJECT* (*new_value_array)(SPVM_API* api, int32_t length);
 };
 #endif

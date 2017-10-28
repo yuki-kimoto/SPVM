@@ -74,7 +74,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   int32_t call_stack_length = my_vars_length + constant_pool_sub->operand_stack_max;
   
   // Call stack
-  SPVM_API_OBJECT* call_stack_array = SPVM_RUNTIME_API_new_value_array(api, call_stack_length);
+  SPVM_API_OBJECT* call_stack_array = api->new_value_array(api, call_stack_length);
   api->inc_ref_count(api, call_stack_array);
   SPVM_API_VALUE* call_stack = SPVM_RUNTIME_API_get_value_array_elements(api, (SPVM_API_OBJECT*)call_stack_array);
 
@@ -2074,8 +2074,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           
           if (*object_address != NULL) {
             // If object is weak, unweaken
-            if (SPVM_RUNTIME_API_isweak(api, *object_address)) {
-              SPVM_RUNTIME_API_unweaken(api, object_address);
+            if (api->isweak(api, *object_address)) {
+              api->unweaken(api, object_address);
             }
             
             // Decrement old ojbect reference count

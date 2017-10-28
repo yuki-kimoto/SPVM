@@ -86,6 +86,9 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_long_type_code,
   SPVM_RUNTIME_API_get_float_type_code,
   SPVM_RUNTIME_API_get_double_type_code,
+  SPVM_RUNTIME_API_isweak,
+  SPVM_RUNTIME_API_unweaken,
+  SPVM_RUNTIME_API_new_value_array,
 };
 
 int32_t SPVM_RUNTIME_API_get_void_type_code(SPVM_API* api) {
@@ -268,10 +271,10 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   object->weaken_back_refs_length++;
 }
 
-_Bool SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_OBJECT* object) {
+int32_t SPVM_RUNTIME_API_isweak(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
-  _Bool isweak = (intptr_t)object & 1;
+  int32_t isweak = (intptr_t)object & 1;
   
   return isweak;
 }
