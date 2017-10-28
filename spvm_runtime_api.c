@@ -97,6 +97,34 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_type_code,
 };
 
+int32_t SPVM_RUNTIME_API_get_sub_name_id(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_name_id = constant_pool_sub->abs_name_id;
+  
+  return sub_name_id;
+}
+
+int32_t SPVM_RUNTIME_API_get_sub_file_name_id(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_file_name_id = constant_pool_sub->file_name_id;
+  
+  return sub_file_name_id;
+}
+
 int32_t SPVM_RUNTIME_API_get_type_code (SPVM_API* api, int32_t type_id) {
   
   SPVM_RUNTIME* runtime = api->get_runtime(api);
