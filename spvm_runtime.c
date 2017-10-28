@@ -2087,29 +2087,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         SPVM_API_OBJECT* string1 = call_stack[operand_stack_top - 1].object_value;
         SPVM_API_OBJECT* string2 = call_stack[operand_stack_top].object_value;
         
-        if (string1 == NULL) {
-          SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . string)", 0);
-          api->set_exception(api, exception);
+        SPVM_API_OBJECT* string3 = api->concat_string_string(api, string1, string2);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else if (string2 == NULL) {
-          SPVM_API_OBJECT* exception = api->new_string(api, ". operater right string must be defined(string . string)", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        
-        int32_t string1_length = api->get_string_length(api, string1);
-        int32_t string2_length = api->get_string_length(api, string2);
-        
-        int32_t string3_length = string1_length + string2_length;
-        SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
-        
-        char* string1_chars = (char*)api->get_string_chars(api, string1);
-        char* string2_chars = (char*)api->get_string_chars(api, string2);
-        char* string3_chars = (char*)api->get_string_chars(api, string3);
-        
-        memcpy(string3_chars, string1_chars, string1_length);
-        memcpy(string3_chars + string1_length, string2_chars, string2_length);
         
         call_stack[operand_stack_top - 1].object_value = string3;
         

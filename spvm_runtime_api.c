@@ -116,7 +116,38 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_concat_string_long,
   SPVM_RUNTIME_API_concat_string_float,
   SPVM_RUNTIME_API_concat_string_double,
+  SPVM_RUNTIME_API_concat_string_string,
 };
+
+SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_string(SPVM_API* api, SPVM_API_OBJECT* string1, SPVM_API_OBJECT* string2) {
+  (void)api;
+
+  if (string1 == NULL) {
+    SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . string)", 0);
+    api->set_exception(api, exception);
+    return NULL;
+  }
+  else if (string2 == NULL) {
+    SPVM_API_OBJECT* exception = api->new_string(api, ". operater right string must be defined(string . string)", 0);
+    api->set_exception(api, exception);
+    return NULL;
+  }
+  
+  int32_t string1_length = api->get_string_length(api, string1);
+  int32_t string2_length = api->get_string_length(api, string2);
+  
+  int32_t string3_length = string1_length + string2_length;
+  SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
+  
+  char* string1_chars = (char*)api->get_string_chars(api, string1);
+  char* string2_chars = (char*)api->get_string_chars(api, string2);
+  char* string3_chars = (char*)api->get_string_chars(api, string3);
+  
+  memcpy(string3_chars, string1_chars, string1_length);
+  memcpy(string3_chars + string1_length, string2_chars, string2_length);
+  
+  return string3;
+}
 
 SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_byte(SPVM_API* api, SPVM_API_OBJECT* string1, int8_t string2) {
   (void)api;

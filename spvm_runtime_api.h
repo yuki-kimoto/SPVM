@@ -10,6 +10,7 @@ SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_int(SPVM_API* api, SPVM_API_OBJE
 SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_long(SPVM_API* api, SPVM_API_OBJECT* string1, int64_t string2);
 SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_float(SPVM_API* api, SPVM_API_OBJECT* string1, float string2);
 SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_double(SPVM_API* api, SPVM_API_OBJECT* string1, double string2);
+SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_string(SPVM_API* api, SPVM_API_OBJECT* string1, SPVM_API_OBJECT* string2);
 
 int32_t SPVM_RUNTIME_API_get_sub_object_my_vars_length(SPVM_API* api, int32_t sub_id);
 int32_t SPVM_RUNTIME_API_get_sub_object_args_base(SPVM_API* api, int32_t sub_id);
