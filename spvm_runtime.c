@@ -2089,7 +2089,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* string3 = api->concat_string_string(api, string1, string2);
         
-        if (api->get_exception(api)) {
+        if (string3 == NULL) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -2105,7 +2105,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* string3 = api->concat_string_byte(api, string1, string2);
         
-        if (api->get_exception(api)) {
+        if (string3 == NULL) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -2121,7 +2121,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* string3 = api->concat_string_short(api, string1, string2);
         
-        if (api->get_exception(api)) {
+        if (string3 == NULL) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -2137,7 +2137,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* string3 = api->concat_string_int(api, string1, string2);
         
-        if (api->get_exception(api)) {
+        if (string3 == NULL) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -2153,7 +2153,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* string3 = api->concat_string_long(api, string1, string2);
         
-        if (api->get_exception(api)) {
+        if (string3 == NULL) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -2169,7 +2169,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* string3 = api->concat_string_float(api, string1, string2);
         
-        if (api->get_exception(api)) {
+        if (string3 == NULL) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -2185,7 +2185,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* string3 = api->concat_string_double(api, string1, string2);
         
-        if (api->get_exception(api)) {
+        if (string3 == NULL) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
