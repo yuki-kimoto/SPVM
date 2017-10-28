@@ -98,5 +98,6 @@ struct SPVM_api {
   int32_t (*isweak)(SPVM_API* api, SPVM_API_OBJECT* object);
   void (*unweaken)(SPVM_API* api, SPVM_API_OBJECT** object_address);
   SPVM_API_OBJECT* (*new_value_array)(SPVM_API* api, int32_t length);
+  SPVM_API_VALUE* (*get_value_array_elements)(SPVM_API* api, SPVM_API_OBJECT* object);
 };
 #endif
