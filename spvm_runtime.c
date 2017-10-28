@@ -10,7 +10,6 @@
 #include "spvm_bytecode.h"
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
-#include "spvm_constant_pool_package.h"
 
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;

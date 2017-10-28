@@ -1,3 +1,5 @@
+0.0284 2017-10-28
+  - simplify SPVM internal to implement JIT compile
 0.0283 2017-10-23
   - cleanup SPVM modules
   - implement get_type_id correctory
