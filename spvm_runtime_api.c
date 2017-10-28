@@ -103,6 +103,104 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_sub_object_args_length,
 };
 
+int32_t SPVM_RUNTIME_API_get_sub_object_args_base(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_object_args_base = constant_pool_sub->object_args_base;
+  
+  return sub_object_args_base;
+}
+
+int32_t SPVM_RUNTIME_API_get_sub_is_native(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_is_native = constant_pool_sub->is_native;
+  
+  return sub_is_native;
+}
+
+int32_t SPVM_RUNTIME_API_get_sub_return_type_id(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
+  
+  return sub_return_type_id;
+}
+
+void* SPVM_RUNTIME_API_get_sub_native_address(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_native_address = constant_pool_sub->native_address;
+  
+  return sub_native_address;
+}
+
+int32_t SPVM_RUNTIME_API_get_sub_bytecode_base(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_bytecode_base = constant_pool_sub->bytecode_base;
+  
+  return sub_bytecode_base;
+}
+
+int32_t SPVM_RUNTIME_API_get_sub_is_void(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_is_void = constant_pool_sub->is_void;
+  
+  return sub_is_void;
+}
+
+int32_t SPVM_RUNTIME_API_get_sub_object_my_vars_base(SPVM_API* api, int32_t sub_id) {
+  (void)api;
+
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  int32_t sub_object_my_vars_base = constant_pool_sub->object_my_vars_base;
+  
+  return sub_object_my_vars_base;
+}
+
 int32_t SPVM_RUNTIME_API_get_sub_object_args_length(SPVM_API* api, int32_t sub_id) {
   (void)api;
 
