@@ -4,6 +4,11 @@
 #include "spvm_base.h"
 #include "spvm_api.h"
 
+int32_t* SPVM_RUNTIME_API_get_constant_pool(SPVM_API* api);
+int32_t* SPVM_RUNTIME_API_get_bytecodes(SPVM_API* api);
+SPVM_API_VALUE* SPVM_RUNTIME_API_get_package_vars(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_is_debug(SPVM_API* api);
+
 int32_t SPVM_RUNTIME_API_get_void_type_code(SPVM_API* api);
 int32_t SPVM_RUNTIME_API_get_byte_type_code(SPVM_API* api);
 int32_t SPVM_RUNTIME_API_get_short_type_code(SPVM_API* api);

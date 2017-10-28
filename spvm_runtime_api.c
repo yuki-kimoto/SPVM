@@ -90,7 +90,45 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_unweaken,
   SPVM_RUNTIME_API_new_value_array,
   SPVM_RUNTIME_API_get_value_array_elements,
+  SPVM_RUNTIME_API_get_constant_pool,
+  SPVM_RUNTIME_API_get_bytecodes,
+  SPVM_RUNTIME_API_get_package_vars,
+  SPVM_RUNTIME_API_is_debug,
 };
+
+int32_t* SPVM_RUNTIME_API_get_constant_pool(SPVM_API* api) {
+  (void)api;
+  
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* constant_pool = runtime->constant_pool;
+  
+  return constant_pool;
+}
+
+int32_t* SPVM_RUNTIME_API_get_bytecodes(SPVM_API* api) {
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* bytecodes = runtime->bytecodes;
+  
+  return bytecodes;
+}
+
+SPVM_API_VALUE* SPVM_RUNTIME_API_get_package_vars(SPVM_API* api) {
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* package_vars = runtime->package_vars;
+  
+  return package_vars;
+}
+
+int32_t SPVM_RUNTIME_API_is_debug(SPVM_API* api) {
+  SPVM_RUNTIME* runtime = api->get_runtime(api);
+  
+  int32_t* debug = runtime->debug;
+  
+  return debug;
+}
 
 int32_t SPVM_RUNTIME_API_get_void_type_code(SPVM_API* api) {
   (void)api;
