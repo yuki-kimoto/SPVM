@@ -101,6 +101,13 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_sub_operand_stack_max,
   SPVM_RUNTIME_API_get_sub_my_vars_length,
   SPVM_RUNTIME_API_get_sub_object_args_length,
+  SPVM_RUNTIME_API_get_sub_object_args_base,
+  SPVM_RUNTIME_API_get_sub_is_native,
+  SPVM_RUNTIME_API_get_sub_return_type_id,
+  SPVM_RUNTIME_API_get_sub_native_address,
+  SPVM_RUNTIME_API_get_sub_bytecode_base,
+  SPVM_RUNTIME_API_get_sub_is_void,
+  SPVM_RUNTIME_API_get_sub_object_my_vars_base,
 };
 
 int32_t SPVM_RUNTIME_API_get_sub_object_args_base(SPVM_API* api, int32_t sub_id) {
