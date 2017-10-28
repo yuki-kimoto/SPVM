@@ -6,14 +6,13 @@
 #include <stdio.h>
 #include <inttypes.h>
 
+#include "spvm_api.h"
 #include "spvm_runtime.h"
-#include "spvm_runtime_api.h"
 #include "spvm_bytecode.h"
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_type.h"
-#include "spvm_api.h"
 
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
