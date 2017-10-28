@@ -2121,25 +2121,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         SPVM_API_OBJECT* string1 = call_stack[operand_stack_top - 1].object_value;
         int8_t string2 = call_stack[operand_stack_top].byte_value;
         
-        if (string1 == NULL) {
-          SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . byte)", 0);
-          api->set_exception(api, exception);
+        SPVM_API_OBJECT* string3 = api->concat_string_byte(api, string1, string2);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        
-        sprintf(tmp_string, "%" PRId8, string2);
-        
-        int32_t string1_length = api->get_string_length(api, string1);
-        int32_t tmp_string_length = strlen(tmp_string);
-        
-        int32_t string3_length = string1_length + tmp_string_length;
-        SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
-        
-        char* string1_chars = (char*)api->get_string_chars(api, string1);
-        char* string3_chars = (char*)api->get_string_chars(api, string3);
-        
-        memcpy(string3_chars, string1_chars, string1_length);
-        memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
         
         call_stack[operand_stack_top - 1].object_value = string3;
         
@@ -2151,25 +2137,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         SPVM_API_OBJECT* string1 = call_stack[operand_stack_top - 1].object_value;
         int16_t string2 = call_stack[operand_stack_top].short_value;
         
-        if (string1 == NULL) {
-          SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . short)", 0);
-          api->set_exception(api, exception);
+        SPVM_API_OBJECT* string3 = api->concat_string_short(api, string1, string2);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        
-        sprintf(tmp_string, "%" PRId16, string2);
-        
-        int32_t string1_length = api->get_string_length(api, string1);
-        int32_t tmp_string_length = strlen(tmp_string);
-        
-        int32_t string3_length = string1_length + tmp_string_length;
-        SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
-        
-        char* string1_chars = (char*)api->get_string_chars(api, string1);
-        char* string3_chars = (char*)api->get_string_chars(api, string3);
-        
-        memcpy(string3_chars, string1_chars, string1_length);
-        memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
         
         call_stack[operand_stack_top - 1].object_value = string3;
         
@@ -2181,25 +2153,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         SPVM_API_OBJECT* string1 = call_stack[operand_stack_top - 1].object_value;
         int32_t string2 = call_stack[operand_stack_top].int_value;
         
-        if (string1 == NULL) {
-          SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . int)", 0);
-          api->set_exception(api, exception);
+        SPVM_API_OBJECT* string3 = api->concat_string_int(api, string1, string2);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        
-        sprintf(tmp_string, "%" PRId32, string2);
-        
-        int32_t string1_length = api->get_string_length(api, string1);
-        int32_t tmp_string_length = strlen(tmp_string);
-        
-        int32_t string3_length = string1_length + tmp_string_length;
-        SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
-        
-        char* string1_chars = (char*)api->get_string_chars(api, string1);
-        char* string3_chars = (char*)api->get_string_chars(api, string3);
-        
-        memcpy(string3_chars, string1_chars, string1_length);
-        memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
         
         call_stack[operand_stack_top - 1].object_value = string3;
         
@@ -2211,25 +2169,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         SPVM_API_OBJECT* string1 = call_stack[operand_stack_top - 1].object_value;
         int64_t string2 = call_stack[operand_stack_top].long_value;
         
-        if (string1 == NULL) {
-          SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . long)", 0);
-          api->set_exception(api, exception);
+        SPVM_API_OBJECT* string3 = api->concat_string_long(api, string1, string2);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        
-        sprintf(tmp_string, "%" PRId64, string2);
-        
-        int32_t string1_length = api->get_string_length(api, string1);
-        int32_t tmp_string_length = strlen(tmp_string);
-        
-        int32_t string3_length = string1_length + tmp_string_length;
-        SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
-        
-        char* string1_chars = (char*)api->get_string_chars(api, string1);
-        char* string3_chars = (char*)api->get_string_chars(api, string3);
-        
-        memcpy(string3_chars, string1_chars, string1_length);
-        memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
         
         call_stack[operand_stack_top - 1].object_value = string3;
         
@@ -2241,25 +2185,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         SPVM_API_OBJECT* string1 = call_stack[operand_stack_top - 1].object_value;
         float string2 = call_stack[operand_stack_top].float_value;
         
-        if (string1 == NULL) {
-          SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . float)", 0);
-          api->set_exception(api, exception);
+        SPVM_API_OBJECT* string3 = api->concat_string_float(api, string1, string2);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        
-        sprintf(tmp_string, "%f", string2);
-        
-        int32_t string1_length = api->get_string_length(api, string1);
-        int32_t tmp_string_length = strlen(tmp_string);
-        
-        int32_t string3_length = string1_length + tmp_string_length;
-        SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
-        
-        char* string1_chars = (char*)api->get_string_chars(api, string1);
-        char* string3_chars = (char*)api->get_string_chars(api, string3);
-        
-        memcpy(string3_chars, string1_chars, string1_length);
-        memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
         
         call_stack[operand_stack_top - 1].object_value = string3;
         
