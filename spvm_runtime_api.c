@@ -81,7 +81,45 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_object_header_length_offset,
 };
 
+int32_t SPVM_RUNTIME_API_get_void_type_code(SPVM_API* api) {
+  (void)api;
+  
+  return SPVM_TYPE_C_CODE_VOID;
+}
+int32_t SPVM_RUNTIME_API_get_byte_type_code(SPVM_API* api) {
+  (void)api;
+  
+  return SPVM_TYPE_C_CODE_BYTE;
+}
+int32_t SPVM_RUNTIME_API_get_short_type_code(SPVM_API* api) {
+  (void)api;
+  
+  return SPVM_TYPE_C_CODE_SHORT;
+}
+int32_t SPVM_RUNTIME_API_get_int_type_code(SPVM_API* api) {
+  (void)api;
+  
+  return SPVM_TYPE_C_CODE_INT;
+}
+int32_t SPVM_RUNTIME_API_get_long_type_code(SPVM_API* api) {
+  (void)api;
+  
+  return SPVM_TYPE_C_CODE_LONG;
+}
+int32_t SPVM_RUNTIME_API_get_float_type_code(SPVM_API* api) {
+  (void)api;
+  
+  return SPVM_TYPE_C_CODE_FLOAT;
+}
+int32_t SPVM_RUNTIME_API_get_double_type_code(SPVM_API* api) {
+  (void)api;
+  
+  return SPVM_TYPE_C_CODE_DOUBLE;
+}
+
 int32_t SPVM_RUNTIME_API_get_object_header_length_offset(SPVM_API* api) {
+  (void)api;
+  
   return (int32_t)offsetof(SPVM_OBJECT, length);
 }
 
@@ -97,6 +135,8 @@ void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime) {
 }
 
 int32_t SPVM_RUNTIME_API_get_object_header_byte_size(SPVM_API* api) {
+  (void)api;
+  
   return sizeof(SPVM_OBJECT);
 }
 

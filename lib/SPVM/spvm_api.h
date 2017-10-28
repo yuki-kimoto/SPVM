@@ -88,5 +88,12 @@ struct SPVM_api {
   int32_t (*get_object_header_byte_size)(SPVM_API* api);
   void (*dec_ref_count_only)(SPVM_API* api, SPVM_API_OBJECT* base_object);
   int32_t (*get_object_header_length_offset)(SPVM_API* api);
+  int32_t (*get_void_type_code)(SPVM_API* api);
+  int32_t (*get_byte_type_code)(SPVM_API* api);
+  int32_t (*get_short_type_code)(SPVM_API* api);
+  int32_t (*get_int_type_code)(SPVM_API* api);
+  int32_t (*get_long_type_code)(SPVM_API* api);
+  int32_t (*get_float_type_code)(SPVM_API* api);
+  int32_t (*get_double_type_code)(SPVM_API* api);
 };
 #endif
