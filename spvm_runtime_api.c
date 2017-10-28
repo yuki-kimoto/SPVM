@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <inttypes.h>
 
 #include "spvm_value.h"
 #include "spvm_runtime_api.h"
@@ -109,8 +110,148 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_sub_is_void,
   SPVM_RUNTIME_API_get_sub_object_my_vars_base,
   SPVM_RUNTIME_API_get_sub_object_my_vars_length,
+  SPVM_RUNTIME_API_concat_string_byte,
+  SPVM_RUNTIME_API_concat_string_short,
+  SPVM_RUNTIME_API_concat_string_int,
+  SPVM_RUNTIME_API_concat_string_long,
+  SPVM_RUNTIME_API_concat_string_float,
   SPVM_RUNTIME_API_concat_string_double,
 };
+
+SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_byte(SPVM_API* api, SPVM_API_OBJECT* string1, int8_t string2) {
+  (void)api;
+
+  if (string1 == NULL) {
+    SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . byte)", 0);
+    api->set_exception(api, exception);
+    return NULL;
+  }
+  
+  char tmp_string[30];
+  sprintf(tmp_string, "%" PRId8, string2);
+  
+  int32_t string1_length = api->get_string_length(api, string1);
+  int32_t tmp_string_length = strlen(tmp_string);
+  
+  int32_t string3_length = string1_length + tmp_string_length;
+  SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
+  
+  char* string1_chars = (char*)api->get_string_chars(api, string1);
+  char* string3_chars = (char*)api->get_string_chars(api, string3);
+  
+  memcpy(string3_chars, string1_chars, string1_length);
+  memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
+  
+  return string3;
+}
+
+SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_short(SPVM_API* api, SPVM_API_OBJECT* string1, int16_t string2) {
+  (void)api;
+
+  if (string1 == NULL) {
+    SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . short)", 0);
+    api->set_exception(api, exception);
+    return NULL;
+  }
+  
+  char tmp_string[30];
+  sprintf(tmp_string, "%" PRId16, string2);
+  
+  int32_t string1_length = api->get_string_length(api, string1);
+  int32_t tmp_string_length = strlen(tmp_string);
+  
+  int32_t string3_length = string1_length + tmp_string_length;
+  SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
+  
+  char* string1_chars = (char*)api->get_string_chars(api, string1);
+  char* string3_chars = (char*)api->get_string_chars(api, string3);
+  
+  memcpy(string3_chars, string1_chars, string1_length);
+  memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
+  
+  return string3;
+}
+
+SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_int(SPVM_API* api, SPVM_API_OBJECT* string1, int32_t string2) {
+  (void)api;
+
+  if (string1 == NULL) {
+    SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . int)", 0);
+    api->set_exception(api, exception);
+    return NULL;
+  }
+  
+  char tmp_string[30];
+  sprintf(tmp_string, "%" PRId32, string2);
+  
+  int32_t string1_length = api->get_string_length(api, string1);
+  int32_t tmp_string_length = strlen(tmp_string);
+  
+  int32_t string3_length = string1_length + tmp_string_length;
+  SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
+  
+  char* string1_chars = (char*)api->get_string_chars(api, string1);
+  char* string3_chars = (char*)api->get_string_chars(api, string3);
+  
+  memcpy(string3_chars, string1_chars, string1_length);
+  memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
+  
+  return string3;
+}
+
+SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_long(SPVM_API* api, SPVM_API_OBJECT* string1, int64_t string2) {
+  (void)api;
+  
+  if (string1 == NULL) {
+    SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . long)", 0);
+    api->set_exception(api, exception);
+    return NULL;
+  }
+  
+  char tmp_string[30];
+  sprintf(tmp_string, "%" PRId64, string2);
+  
+  int32_t string1_length = api->get_string_length(api, string1);
+  int32_t tmp_string_length = strlen(tmp_string);
+  
+  int32_t string3_length = string1_length + tmp_string_length;
+  SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
+  
+  char* string1_chars = (char*)api->get_string_chars(api, string1);
+  char* string3_chars = (char*)api->get_string_chars(api, string3);
+  
+  memcpy(string3_chars, string1_chars, string1_length);
+  memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
+  
+  return string3;
+}
+
+SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_float(SPVM_API* api, SPVM_API_OBJECT* string1, float string2) {
+  (void)api;
+
+  if (string1 == NULL) {
+    SPVM_API_OBJECT* exception = api->new_string(api, ". operater left string must be defined(string . float)", 0);
+    api->set_exception(api, exception);
+    return NULL;
+  }
+  
+  char tmp_string[30];
+  sprintf(tmp_string, "%f", string2);
+  
+  int32_t string1_length = api->get_string_length(api, string1);
+  int32_t tmp_string_length = strlen(tmp_string);
+  
+  int32_t string3_length = string1_length + tmp_string_length;
+  SPVM_API_OBJECT* string3 = api->new_string(api, NULL, string3_length);
+  
+  char* string1_chars = (char*)api->get_string_chars(api, string1);
+  char* string3_chars = (char*)api->get_string_chars(api, string3);
+  
+  memcpy(string3_chars, string1_chars, string1_length);
+  memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
+  
+  return string3;
+}
 
 SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_double(SPVM_API* api, SPVM_API_OBJECT* string1, double string2) {
   (void)api;
