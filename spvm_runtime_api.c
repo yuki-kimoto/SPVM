@@ -176,7 +176,7 @@ void* SPVM_RUNTIME_API_get_sub_native_address(SPVM_API* api, int32_t sub_id) {
   
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
-  int32_t sub_native_address = constant_pool_sub->native_address;
+  void* sub_native_address = constant_pool_sub->native_address;
   
   return sub_native_address;
 }
