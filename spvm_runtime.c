@@ -44,18 +44,17 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Double type code
   const int32_t DOUBLE_TYPE_CODE = api->get_double_type_code(api);
   
-  // Runtime
-  SPVM_RUNTIME* runtime = api->get_runtime(api);
-  
-  _Bool debug = runtime->debug ? 1 : 0;
+  // Debug
+  const int32_t debug = api->is_debug(api) ? 1 : 0;
   
   // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
+  const int32_t* constant_pool = api->get_constant_pool(api);
   
   // Package variables
-  SPVM_API_VALUE* package_vars = runtime->package_vars;
+  SPVM_API_VALUE* package_vars = api->get_package_vars(api);
   
-  int32_t* bytecodes = runtime->bytecodes;
+  // Bytecodes
+  const int32_t* bytecodes = api->get_bytecodes(api);
   
   int32_t bytecode_index = 0;
 
