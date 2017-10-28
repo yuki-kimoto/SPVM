@@ -4,6 +4,7 @@
 #include "spvm_base.h"
 #include "spvm_api.h"
 
+int32_t SPVM_RUNTIME_API_get_sub_object_args_length(SPVM_API* api, int32_t sub_id);
 int32_t SPVM_RUNTIME_API_get_sub_operand_stack_max(SPVM_API* api, int32_t sub_id);
 int32_t SPVM_RUNTIME_API_get_sub_my_vars_length(SPVM_API* api, int32_t sub_id);
 int32_t SPVM_RUNTIME_API_get_sub_args_length(SPVM_API* api, int32_t sub_id);

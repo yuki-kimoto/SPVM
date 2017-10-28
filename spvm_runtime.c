@@ -87,9 +87,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   memcpy(call_stack, args, args_length * sizeof(SPVM_API_VALUE));
   
   // If arg is object, increment reference count
-  if (constant_pool_sub->object_args_length) {
+  if (api->get_sub_object_args_length(api, sub_id)) {
     int32_t object_args_base = constant_pool_sub->object_args_base;
-    int32_t object_args_length = constant_pool_sub->object_args_length;
+    int32_t object_args_length = api->get_sub_object_args_length(api, sub_id);
     {
       int32_t i;
       for (i = 0; i < object_args_length; i++) {

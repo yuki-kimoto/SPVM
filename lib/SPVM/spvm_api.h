@@ -109,5 +109,6 @@ struct SPVM_api {
   int32_t (*get_sub_args_length)(SPVM_API* api, int32_t sub_id);
   int32_t (*get_sub_operand_stack_max)(SPVM_API* api, int32_t sub_id);
   int32_t (*get_sub_my_vars_length)(SPVM_API* api, int32_t sub_id);
+  int32_t (*get_sub_object_args_length)(SPVM_API* api, int32_t sub_id);
 };
 #endif
