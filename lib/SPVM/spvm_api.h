@@ -118,5 +118,6 @@ struct SPVM_api {
   int32_t (*get_sub_is_void)(SPVM_API* api, int32_t sub_id);
   int32_t (*get_sub_object_my_vars_base)(SPVM_API* api, int32_t sub_id);
   int32_t (*get_sub_object_my_vars_length)(SPVM_API* api, int32_t sub_id);
+  SPVM_API_OBJECT* (*concat_string_double)(SPVM_API* api, SPVM_API_OBJECT* string1, double string2);
 };
 #endif

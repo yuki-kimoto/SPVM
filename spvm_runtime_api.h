@@ -4,6 +4,8 @@
 #include "spvm_base.h"
 #include "spvm_api.h"
 
+SPVM_API_OBJECT* SPVM_RUNTIME_API_concat_string_double(SPVM_API* api, SPVM_API_OBJECT* string1, double string2);
+
 int32_t SPVM_RUNTIME_API_get_sub_object_my_vars_length(SPVM_API* api, int32_t sub_id);
 int32_t SPVM_RUNTIME_API_get_sub_object_args_base(SPVM_API* api, int32_t sub_id);
 int32_t SPVM_RUNTIME_API_get_sub_is_native(SPVM_API* api, int32_t sub_id);
