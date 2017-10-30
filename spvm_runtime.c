@@ -303,239 +303,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           break;
         }
       }
-      case SPVM_BYTECODE_C_CODE_RETURN_BYTE:
-      case SPVM_BYTECODE_C_CODE_RETURN_SHORT:
-      case SPVM_BYTECODE_C_CODE_RETURN_INT:
-      case SPVM_BYTECODE_C_CODE_RETURN_LONG:
-      case SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
-      case SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
-      {
-        label_SPVM_BYTECODE_C_CODE_RETURN_BYTE:
-        label_SPVM_BYTECODE_C_CODE_RETURN_SHORT:
-        label_SPVM_BYTECODE_C_CODE_RETURN_INT:
-        label_SPVM_BYTECODE_C_CODE_RETURN_LONG:
-        label_SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
-        label_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
-        {
-        
-          // Get return value
-          SPVM_API_VALUE return_value = call_stack[operand_stack_top];
-          
-          // Decrement object my vars reference count
-          if (object_my_vars_length) {
-            {
-              int32_t i;
-              for (i = 0; i < object_my_vars_length; i++) {
-                int32_t my_var_index = constant_pool[object_my_vars_base + i];
-                SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
-                
-                if (object != NULL) {
-                  api->dec_ref_count(api, object);
-                }
-              }
-            }
-          }
-          
-          api->dec_ref_count(api, call_stack_array);
-          
-          // No exception
-          api->set_exception(api, NULL);
-          
-          return return_value;
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
-
-        label_SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
-        
-          SPVM_API_VALUE return_value = call_stack[operand_stack_top];
-          
-          // Increment ref count of return value not to release by decrement
-          if (return_value.object_value != NULL) {
-            api->inc_ref_count(api, return_value.object_value);
-          }
-          
-          // Decrement object my vars reference count
-          if (object_my_vars_length) {
-            {
-              int32_t i;
-              for (i = 0; i < object_my_vars_length; i++) {
-                int32_t my_var_index = constant_pool[object_my_vars_base + i];
-                SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
-                
-                if (object != NULL) {
-                  api->dec_ref_count(api, object);
-                }
-              }
-            }
-          }
-
-          // Decrement ref count of return value
-          if (return_value.object_value != NULL) {
-            api->dec_ref_count_only(api, return_value.object_value);
-          }
-          
-          api->dec_ref_count(api, call_stack_array);
-          
-          // No exception
-          api->set_exception(api, NULL);
-          
-          return return_value;
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_RETURN_VOID: {
-
-        label_SPVM_BYTECODE_C_CODE_RETURN_VOID: {
-
-          SPVM_API_VALUE return_value;
-          memset(&return_value, 0, sizeof(SPVM_API_VALUE));
-          
-          // Decrement object my vars reference count
-          if (object_my_vars_length) {
-            {
-              int32_t i;
-              for (i = 0; i < object_my_vars_length; i++) {
-                int32_t my_var_index = constant_pool[object_my_vars_base + i];
-                SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
-                
-                if (object != NULL) {
-                  api->dec_ref_count(api, object);
-                }
-              }
-            }
-          }
-          
-          api->dec_ref_count(api, call_stack_array);
-          
-          // No exception
-          api->set_exception(api, NULL);
-
-          return return_value;
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION: {
-        operand_stack_top++;
-        call_stack[operand_stack_top].object_value = (SPVM_API_OBJECT*)api->get_exception(api);
-        
-        bytecode_index++;;
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_STORE_EXCEPTION: {
-        
-        api->set_exception(api, (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value);
-        
-        operand_stack_top--;
-        
-        bytecode_index++;;
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_CROAK: {
-        
-        label_SPVM_BYTECODE_C_CODE_CROAK:
-        
-        // Catch exception
-        if (catch_exception_stack_top > -1) {
-          
-          int32_t jump_offset_abs = catch_exception_stack[catch_exception_stack_top];
-          catch_exception_stack_top--;
-          
-          bytecode_index = api->get_sub_bytecode_base(api, sub_id) + jump_offset_abs;
-          
-          break;
-        }
-        
-        // Decrement object my vars reference count
-        if (object_my_vars_length) {
-          {
-            int32_t i;
-            for (i = 0; i < object_my_vars_length; i++) {
-              int32_t my_var_index = constant_pool[object_my_vars_base + i];
-              SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
-              
-              if (object != NULL) {
-                api->dec_ref_count(api, object);
-              }
-            }
-          }
-        }
-        
-        // Sub name
-        int32_t sub_name_id = api->get_sub_name_id(api, sub_id);
-        const char* sub_name = (char*)&constant_pool[sub_name_id + 1];
-        
-        // File name
-        int32_t file_name_id = api->get_sub_file_name_id(api, sub_id);
-        const char* file_name = (char*)&constant_pool[file_name_id + 1];
-        
-        // stack trace strings
-        const char* from = "\n  from ";
-        const char* at = "() at ";
-
-        // Exception
-        SPVM_API_OBJECT* exception = api->get_exception(api);
-        char* exception_chars = api->get_string_chars(api, exception);
-        int32_t exception_length = api->get_string_length(api, exception);
-        
-        // Total string length
-        int32_t total_length = 0;
-        total_length += exception_length;
-        total_length += strlen(from);
-        total_length += strlen(sub_name);
-        total_length += strlen(at);
-        total_length += strlen(file_name);
-
-        const char* line = " line ";
-        char line_str[20];
-        
-        if (debug) {
-          sprintf(line_str, "%" PRId32, current_line);
-          total_length += strlen(line);
-          total_length += strlen(line_str);
-        }
-        
-        // Create exception message
-        SPVM_API_OBJECT* new_exception = api->new_string(api, NULL, total_length);
-        char* new_exception_chars = api->get_string_chars(api, new_exception);
-        
-        memcpy(
-          (void*)(new_exception_chars),
-          (void*)(exception_chars),
-          exception_length
-        );
-        if (debug) {
-          sprintf(
-            new_exception_chars + exception_length,
-            "%s%s%s%s%s%" PRId32,
-            from,
-            sub_name,
-            at,
-            file_name,
-            line,
-            current_line
-          );
-        }
-        else {
-          sprintf(
-            new_exception_chars + exception_length,
-            "%s%s%s%s",
-            from,
-            sub_name,
-            at,
-            file_name
-          );
-        }
-        
-        // Set exception
-        api->set_exception(api, new_exception);
-        
-        SPVM_API_VALUE return_value;
-        
-        memset(&return_value, 0, sizeof(SPVM_API_VALUE));
-        
-        api->dec_ref_count(api, call_stack_array);
-        
-        return return_value;
-      }
       case SPVM_BYTECODE_C_CODE_NOP:
         // Not used
         assert(0);
@@ -2117,11 +1884,244 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index++;
         break;
       }
-      
+      case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION: {
+        operand_stack_top++;
+        call_stack[operand_stack_top].object_value = (SPVM_API_OBJECT*)api->get_exception(api);
+        
+        bytecode_index++;;
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_STORE_EXCEPTION: {
+        
+        api->set_exception(api, (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value);
+        
+        operand_stack_top--;
+        
+        bytecode_index++;;
+        break;
+      }
       case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
         current_line = bytecodes[bytecode_index + 1];
         bytecode_index += 2;
         break;
+
+      case SPVM_BYTECODE_C_CODE_RETURN_BYTE:
+      case SPVM_BYTECODE_C_CODE_RETURN_SHORT:
+      case SPVM_BYTECODE_C_CODE_RETURN_INT:
+      case SPVM_BYTECODE_C_CODE_RETURN_LONG:
+      case SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
+      case SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
+      {
+        label_SPVM_BYTECODE_C_CODE_RETURN_BYTE:
+        label_SPVM_BYTECODE_C_CODE_RETURN_SHORT:
+        label_SPVM_BYTECODE_C_CODE_RETURN_INT:
+        label_SPVM_BYTECODE_C_CODE_RETURN_LONG:
+        label_SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
+        label_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
+        {
+        
+          // Get return value
+          SPVM_API_VALUE return_value = call_stack[operand_stack_top];
+          
+          // Decrement object my vars reference count
+          if (object_my_vars_length) {
+            {
+              int32_t i;
+              for (i = 0; i < object_my_vars_length; i++) {
+                int32_t my_var_index = constant_pool[object_my_vars_base + i];
+                SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
+                
+                if (object != NULL) {
+                  api->dec_ref_count(api, object);
+                }
+              }
+            }
+          }
+          
+          api->dec_ref_count(api, call_stack_array);
+          
+          // No exception
+          api->set_exception(api, NULL);
+          
+          return return_value;
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
+
+        label_SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
+        
+          SPVM_API_VALUE return_value = call_stack[operand_stack_top];
+          
+          // Increment ref count of return value not to release by decrement
+          if (return_value.object_value != NULL) {
+            api->inc_ref_count(api, return_value.object_value);
+          }
+          
+          // Decrement object my vars reference count
+          if (object_my_vars_length) {
+            {
+              int32_t i;
+              for (i = 0; i < object_my_vars_length; i++) {
+                int32_t my_var_index = constant_pool[object_my_vars_base + i];
+                SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
+                
+                if (object != NULL) {
+                  api->dec_ref_count(api, object);
+                }
+              }
+            }
+          }
+
+          // Decrement ref count of return value
+          if (return_value.object_value != NULL) {
+            api->dec_ref_count_only(api, return_value.object_value);
+          }
+          
+          api->dec_ref_count(api, call_stack_array);
+          
+          // No exception
+          api->set_exception(api, NULL);
+          
+          return return_value;
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_RETURN_VOID: {
+
+        label_SPVM_BYTECODE_C_CODE_RETURN_VOID: {
+
+          SPVM_API_VALUE return_value;
+          memset(&return_value, 0, sizeof(SPVM_API_VALUE));
+          
+          // Decrement object my vars reference count
+          if (object_my_vars_length) {
+            {
+              int32_t i;
+              for (i = 0; i < object_my_vars_length; i++) {
+                int32_t my_var_index = constant_pool[object_my_vars_base + i];
+                SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
+                
+                if (object != NULL) {
+                  api->dec_ref_count(api, object);
+                }
+              }
+            }
+          }
+          
+          api->dec_ref_count(api, call_stack_array);
+          
+          // No exception
+          api->set_exception(api, NULL);
+
+          return return_value;
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_CROAK: {
+        
+        label_SPVM_BYTECODE_C_CODE_CROAK:
+        
+        // Catch exception
+        if (catch_exception_stack_top > -1) {
+          
+          int32_t jump_offset_abs = catch_exception_stack[catch_exception_stack_top];
+          catch_exception_stack_top--;
+          
+          bytecode_index = api->get_sub_bytecode_base(api, sub_id) + jump_offset_abs;
+          
+          break;
+        }
+        
+        // Decrement object my vars reference count
+        if (object_my_vars_length) {
+          {
+            int32_t i;
+            for (i = 0; i < object_my_vars_length; i++) {
+              int32_t my_var_index = constant_pool[object_my_vars_base + i];
+              SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
+              
+              if (object != NULL) {
+                api->dec_ref_count(api, object);
+              }
+            }
+          }
+        }
+        
+        // Sub name
+        int32_t sub_name_id = api->get_sub_name_id(api, sub_id);
+        const char* sub_name = (char*)&constant_pool[sub_name_id + 1];
+        
+        // File name
+        int32_t file_name_id = api->get_sub_file_name_id(api, sub_id);
+        const char* file_name = (char*)&constant_pool[file_name_id + 1];
+        
+        // stack trace strings
+        const char* from = "\n  from ";
+        const char* at = "() at ";
+
+        // Exception
+        SPVM_API_OBJECT* exception = api->get_exception(api);
+        char* exception_chars = api->get_string_chars(api, exception);
+        int32_t exception_length = api->get_string_length(api, exception);
+        
+        // Total string length
+        int32_t total_length = 0;
+        total_length += exception_length;
+        total_length += strlen(from);
+        total_length += strlen(sub_name);
+        total_length += strlen(at);
+        total_length += strlen(file_name);
+
+        const char* line = " line ";
+        char line_str[20];
+        
+        if (debug) {
+          sprintf(line_str, "%" PRId32, current_line);
+          total_length += strlen(line);
+          total_length += strlen(line_str);
+        }
+        
+        // Create exception message
+        SPVM_API_OBJECT* new_exception = api->new_string(api, NULL, total_length);
+        char* new_exception_chars = api->get_string_chars(api, new_exception);
+        
+        memcpy(
+          (void*)(new_exception_chars),
+          (void*)(exception_chars),
+          exception_length
+        );
+        if (debug) {
+          sprintf(
+            new_exception_chars + exception_length,
+            "%s%s%s%s%s%" PRId32,
+            from,
+            sub_name,
+            at,
+            file_name,
+            line,
+            current_line
+          );
+        }
+        else {
+          sprintf(
+            new_exception_chars + exception_length,
+            "%s%s%s%s",
+            from,
+            sub_name,
+            at,
+            file_name
+          );
+        }
+        
+        // Set exception
+        api->set_exception(api, new_exception);
+        
+        SPVM_API_VALUE return_value;
+        
+        memset(&return_value, 0, sizeof(SPVM_API_VALUE));
+        
+        api->dec_ref_count(api, call_stack_array);
+        
+        return return_value;
+      }
     }
   }
 }
