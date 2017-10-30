@@ -129,7 +129,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address);
 
 // Global information
 int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_API* api);
-SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime(SPVM_API* api);
+SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime();
 void SPVM_RUNTIME_API_set_runtime(SPVM_API* api, SPVM_RUNTIME* runtime);
 void SPVM_RUNTIME_API_free_runtime(SPVM_API* api, SPVM_RUNTIME* runtime);
 

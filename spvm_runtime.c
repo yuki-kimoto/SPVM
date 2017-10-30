@@ -101,7 +101,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   // Call native sub
   if (api->get_sub_is_native(api, sub_id)) {
-    // Set runtimeironment
     int32_t return_type_code = api->get_type_code(api, api->get_sub_return_type_id(api, sub_id));
     
     // Call native subroutine
@@ -148,7 +147,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       if (api->get_exception(api)) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
-
+      
       operand_stack_top++;
       call_stack[operand_stack_top].int_value = return_value;
       goto label_SPVM_BYTECODE_C_CODE_RETURN_INT;
