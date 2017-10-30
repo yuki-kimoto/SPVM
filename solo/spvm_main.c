@@ -16,6 +16,7 @@
 #include "spvm_sub.h"
 #include "spvm_dumper.h"
 #include "spvm_yacc_util.h"
+#include "spvm_runtime_api.h"
 
 #include "native/SPVM/std.native/std.c"
 
@@ -218,7 +219,7 @@ int main(int argc, char *argv[])
   }
 #endif
   
-  SPVM_RUNTIME_free(runtime);
+  SPVM_RUNTIME_API_free_runtime(api, runtime);
   
   return 0;
 }
