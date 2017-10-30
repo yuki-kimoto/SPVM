@@ -1619,20 +1619,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t type_id = bytecodes[bytecode_index + 1];
         
         SPVM_API_OBJECT* object = api->new_object(api, type_id);
-
-        // Memory allocation error
-        if (__builtin_expect(!object, 0)) {
-          // Sub name
-          int32_t abs_name_id = api->get_sub_name_id(api, sub_id);
-          const char* sub_name = (char*)&constant_pool[abs_name_id + 1];
-          
-          // File name
-          int32_t file_name_id = api->get_sub_file_name_id(api, sub_id);
-          const char* file_name = (char*)&constant_pool[file_name_id + 1];
-          
-          fprintf(stderr, "Failed to allocate memory(new package) from %s at %s\n", sub_name, file_name);
-          abort();
-        }
         
         // Push object
         operand_stack_top++;
@@ -1652,13 +1638,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           // Throw exception
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          // Set array
-          call_stack[operand_stack_top].object_value = object;
-          
-          bytecode_index++;;
-          break;
-        }
+
+        // Set array
+        call_stack[operand_stack_top].object_value = object;
+        
+        bytecode_index++;;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY: {
         
@@ -1671,13 +1656,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           // Throw exception
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          // Set array
-          call_stack[operand_stack_top].object_value = object;
-          
-          bytecode_index++;;
-          break;
-        }
+
+        // Set array
+        call_stack[operand_stack_top].object_value = object;
+        
+        bytecode_index++;;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_INT_ARRAY: {
         
@@ -1690,13 +1674,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           // Throw exception
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          // Set array
-          call_stack[operand_stack_top].object_value = object;
-          
-          bytecode_index++;;
-          break;
-        }
+
+        // Set array
+        call_stack[operand_stack_top].object_value = object;
+        
+        bytecode_index++;;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY: {
         
@@ -1709,13 +1692,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           // Throw exception
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          // Set array
-          call_stack[operand_stack_top].object_value = object;
-          
-          bytecode_index++;;
-          break;
-        }
+
+        // Set array
+        call_stack[operand_stack_top].object_value = object;
+        
+        bytecode_index++;;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY: {
         
@@ -1728,13 +1710,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           // Throw exception
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          // Set array
-          call_stack[operand_stack_top].object_value = object;
-          
-          bytecode_index++;;
-          break;
-        }
+
+        // Set array
+        call_stack[operand_stack_top].object_value = object;
+        
+        bytecode_index++;;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY: {
         
@@ -1747,13 +1728,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           // Throw exception
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          // Set array
-          call_stack[operand_stack_top].object_value = object;
-          
-          bytecode_index++;;
-          break;
-        }
+
+        // Set array
+        call_stack[operand_stack_top].object_value = object;
+        
+        bytecode_index++;;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY: {
         int32_t element_type_id = bytecodes[bytecode_index + 1];
@@ -1767,39 +1747,24 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           // Throw exception
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          // Set object
-          call_stack[operand_stack_top].object_value = object;
-          
-          bytecode_index += 2;
-          break;
-        }
+
+        // Set object
+        call_stack[operand_stack_top].object_value = object;
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_STRING: {
         int32_t name_id = bytecodes[bytecode_index + 1];
         
         SPVM_API_OBJECT* string = api->new_string(api, (char*)&constant_pool[name_id + 1], constant_pool[name_id]);
-        if (__builtin_expect(string != NULL, 1)) {
-          // Set string
-          operand_stack_top++;
-          call_stack[operand_stack_top].object_value = string;
-          
-          bytecode_index += 2;
-          break;
-        }
-        // Memory allocation error
-        else {
-          // Sub name
-          int32_t abs_name_id = api->get_sub_name_id(api, sub_id);
-          const char* sub_name = (char*)&constant_pool[abs_name_id + 1];
-          
-          // File name
-          int32_t file_name_id = api->get_sub_file_name_id(api, sub_id);
-          const char* file_name = (char*)&constant_pool[file_name_id + 1];
-          
-          fprintf(stderr, "Failed to allocate memory(new string) from %s at %s\n", sub_name, file_name);
-          abort();
-        }
+
+        // Set string
+        operand_stack_top++;
+        call_stack[operand_stack_top].object_value = string;
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_ARRAY_LENGTH:
         if (call_stack[operand_stack_top].object_value == NULL) {
