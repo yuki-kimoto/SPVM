@@ -87,6 +87,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_long_type_code,
   SPVM_RUNTIME_API_get_float_type_code,
   SPVM_RUNTIME_API_get_double_type_code,
+  SPVM_RUNTIME_API_weaken,
   SPVM_RUNTIME_API_isweak,
   SPVM_RUNTIME_API_unweaken,
   SPVM_RUNTIME_API_new_value_array,

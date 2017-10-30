@@ -77,8 +77,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   register int32_t success;
   int32_t current_line = 0;
   
-  char tmp_string[30];
-
   // Copy arguments
   memcpy(call_stack, args, args_length * sizeof(SPVM_API_VALUE));
   
@@ -1944,7 +1942,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           
           // Weaken object field
           if (*object_address != NULL) {
-            SPVM_RUNTIME_API_weaken(api, object_address);
+            api->weaken(api, object_address);
           }
           
           bytecode_index += 2;
