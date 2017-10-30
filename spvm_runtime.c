@@ -69,7 +69,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   SPVM_API_VALUE* call_stack = api->get_value_array_elements(api, (SPVM_API_OBJECT*)call_stack_array);
 
   // Catch stack
-  int16_t catch_exception_stack[255];
+  int32_t catch_exception_stack[255];
   
   // Catch stack top
   int32_t catch_exception_stack_top = -1;
@@ -440,7 +440,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Catch exception
         if (catch_exception_stack_top > -1) {
           
-          int16_t jump_offset_abs = catch_exception_stack[catch_exception_stack_top];
+          int32_t jump_offset_abs = catch_exception_stack[catch_exception_stack_top];
           catch_exception_stack_top--;
           
           bytecode_index = api->get_sub_bytecode_base(api, sub_id) + jump_offset_abs;
