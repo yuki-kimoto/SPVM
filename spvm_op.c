@@ -35,6 +35,7 @@
 #include "spvm_constant_pool_package.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
+#include "spvm_cbuilder.h"
 
 const char* const SPVM_OP_C_CODE_NAMES[] = {
   "IF",
@@ -1313,6 +1314,7 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
     return NULL;
   }
   
+  // Build bytecode
   SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
   
   return op_grammar;
