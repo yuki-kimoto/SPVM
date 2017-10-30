@@ -20,6 +20,7 @@ struct SPVM_constant_pool_sub {
   _Bool is_native;
   _Bool is_destructor;
   _Bool is_void;
+  _Bool is_jit;
 };
 
 #endif

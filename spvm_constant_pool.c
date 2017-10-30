@@ -192,6 +192,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   constant_pool_sub.args_length = sub->op_args->length;
   constant_pool_sub.is_native = sub->is_native;
   constant_pool_sub.is_destructor = sub->is_destructor;
+  constant_pool_sub.is_jit = sub->is_jit;
   
   if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
     constant_pool_sub.is_void = 1;

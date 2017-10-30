@@ -22,6 +22,7 @@ struct SPVM_sub {
   _Bool is_native;
   _Bool is_constant;
   _Bool is_destructor;
+  _Bool is_jit;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
