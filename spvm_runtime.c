@@ -208,478 +208,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   while (1) {
     switch (bytecodes[bytecode_index]) {
-      case SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
-        // Get subroutine ID
-        int32_t package_var_id = bytecodes[bytecode_index + 1];
-        
-        operand_stack_top++;
-        call_stack[operand_stack_top] = package_vars[package_var_id];
-        
-        bytecode_index += 2;
-        
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR: {
-        // Get subroutine ID
-        int32_t package_var_id = bytecodes[bytecode_index + 1];
-
-        package_vars[package_var_id] = call_stack[operand_stack_top];
-        operand_stack_top--;
-
-        bytecode_index += 2;
-        
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
-        // Get subroutine ID
-        int32_t package_var_id = bytecodes[bytecode_index + 1];
-        
-        // Decrement reference count
-        if (package_vars[package_var_id].object_value != NULL) {
-          api->dec_ref_count(api, package_vars[package_var_id].object_value);
-        }
-        
-        // Store object
-        package_vars[package_var_id].object_value = call_stack[operand_stack_top].object_value;
-        
-        // Increment new value reference count
-        if (package_vars[package_var_id].object_value != NULL) {
-          api->inc_ref_count(api, package_vars[package_var_id].object_value);;
-        }
-        
-        operand_stack_top--;
-
-        bytecode_index += 2;
-        
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION: {
-        // Next operation
-        int16_t jump_offset_abs = bytecodes[bytecode_index + 1];
-        
-        catch_exception_stack_top++;
-        catch_exception_stack[catch_exception_stack_top] = jump_offset_abs;
-        
-        bytecode_index += 2;
-        
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION: {
-        catch_exception_stack_top--;
-        
-        bytecode_index++;;
-        
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_CALL_SUB: {
-        // Get subroutine ID
-        int32_t call_sub_id = bytecodes[bytecode_index + 1];
-        
-        int32_t args_length = api->get_sub_args_length(api, call_sub_id);
-        
-        operand_stack_top -= args_length;
-        
-        SPVM_API_VALUE args[255];
-        memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
-        
-        // Call subroutine
-        SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
-        
-        if (api->get_exception(api)) {
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (!api->get_sub_is_void(api, call_sub_id)) {
-            operand_stack_top++;
-            call_stack[operand_stack_top] = return_value;
-          }
-          
-          // Next operation
-          bytecode_index += 2 + (debug * 2);
-          
-          break;
-        }
-      }
       case SPVM_BYTECODE_C_CODE_NOP:
         // Not used
         assert(0);
-      case SPVM_BYTECODE_C_CODE_UNDEF:
-        operand_stack_top++;
-        call_stack[operand_stack_top].object_value = (void*)NULL;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
-        operand_stack_top++;
-        memcpy(&call_stack[operand_stack_top], &constant_pool[bytecodes[bytecode_index + 1]], sizeof(int32_t));
-        bytecode_index += 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
-        operand_stack_top++;
-        memcpy(&call_stack[operand_stack_top], &constant_pool[bytecodes[bytecode_index + 1]], sizeof(int64_t));
-        bytecode_index += 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_LOAD:
-        operand_stack_top++;
-        call_stack[operand_stack_top] = call_stack[bytecodes[bytecode_index + 1]];
-        bytecode_index += 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_BYTE: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int32_t index = call_stack[operand_stack_top].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "BYTE_ARRAY must not be undef(BYTE_ARRAY->[INDEX])", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(BYTE_ARRAY->[INDEX])", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            call_stack[operand_stack_top - 1].byte_value
-              = *(int8_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
-            operand_stack_top--;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_SHORT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int32_t index = call_stack[operand_stack_top].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "SHORT_ARRAY must not be undef(SHORT_ARRAY->[INDEX])", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(SHORT_ARRAY->[INDEX])", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            call_stack[operand_stack_top - 1].short_value
-              = *(int16_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index);
-            operand_stack_top--;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_INT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int32_t index = call_stack[operand_stack_top].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "INT_ARRAY must not be undef(INT_ARRAY->[INDEX])", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(INT_ARRAY->[INDEX])", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            call_stack[operand_stack_top - 1].int_value = *(int32_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index);
-            operand_stack_top--;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_LONG: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int32_t index = call_stack[operand_stack_top].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "LONG_ARRAY must not be undef(LONG_ARRAY->[INDEX])", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(LONG_ARRAY->[INDEX])", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            call_stack[operand_stack_top - 1].long_value = *(int64_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index);
-            operand_stack_top--;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_FLOAT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int32_t index = call_stack[operand_stack_top].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "FLOAT_ARRAY must not be undef(FLOAT_ARRAY->[INDEX])", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(FLOAT_ARRAY->[INDEX])", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            call_stack[operand_stack_top - 1].float_value = *(float*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index);
-            operand_stack_top--;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_DOUBLE: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int32_t index = call_stack[operand_stack_top].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "DOUBLE_ARRAY must not be undef(DOUBLE_ARRAY->[INDEX])", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(DOUBLE_ARRAY->[INDEX])", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            call_stack[operand_stack_top - 1].double_value = *(double*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index);
-            operand_stack_top--;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_OBJECT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int32_t index = call_stack[operand_stack_top].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "OBJECT_ARRAY must not be undef(OBJECT_ARRAY->[INDEX])", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(OBJECT_ARRAY->[INDEX])", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            call_stack[operand_stack_top - 1] = *(SPVM_API_VALUE*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-            operand_stack_top--;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_BYTE: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-        int32_t index = call_stack[operand_stack_top - 1].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "BYTE_ARRAY must not be undef(BYTE_ARRAY->[INDEX] = VALUE)", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(BYTE_ARRAY->[INDEX] = VALUE)", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            *(int8_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * call_stack[operand_stack_top - 1].int_value)
-              = call_stack[operand_stack_top].byte_value;
-            operand_stack_top -= 3;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_SHORT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-        int32_t index = call_stack[operand_stack_top - 1].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "SHORT_ARRAY must not be undef(SHORT_ARRAY->[INDEX] = VALUE)", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(SHORT_ARRAY->[INDEX] = VALUE)", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            *(int16_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * call_stack[operand_stack_top - 1].int_value)
-              = call_stack[operand_stack_top].short_value;
-            operand_stack_top -= 3;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_INT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-        int32_t index = call_stack[operand_stack_top - 1].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "INT_ARRAY must not be undef(INT_ARRAY->[INDEX] = VALUE)", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(INT_ARRAY->[INDEX] = VALUE)", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            *(int32_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index) = call_stack[operand_stack_top].int_value;
-            operand_stack_top -= 3;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_LONG: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-        int32_t index = call_stack[operand_stack_top - 1].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "LONG_ARRAY must not be undef(LONG_ARRAY->[INDEX] = VALUE)", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(LONG_ARRAY->[INDEX] = VALUE)", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            *(int64_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index) = call_stack[operand_stack_top].long_value;
-            operand_stack_top -= 3;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_FLOAT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-        int32_t index = call_stack[operand_stack_top - 1].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "FLOAT_ARRAY must not be undef(FLOAT_ARRAY->[INDEX] = VALUE)", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(FLOAT_ARRAY->[INDEX] = VALUE)", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            *(float*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index) = call_stack[operand_stack_top].float_value;
-            operand_stack_top -= 3;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_DOUBLE: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-        int32_t index = call_stack[operand_stack_top - 1].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "DOUBLE_ARRAY must not be undef(DOUBLE_ARRAY->[INDEX] = VALUE)", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(DOUBLE_ARRAY->[INDEX] = VALUE)", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            *(double*)((intptr_t)call_stack[operand_stack_top - 2].object_value + OBJECT_HEADER_BYTE_SIZE + sizeof(double) * call_stack[operand_stack_top - 1].int_value)
-              = call_stack[operand_stack_top].double_value;
-            operand_stack_top -= 3;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT: {
-        
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
-        int32_t index = call_stack[operand_stack_top - 1].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "OBJECT_ARRAY must not be undef(OBJECT_ARRAY->[INDEX] = VALUE)", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(OBJECT_ARRAY->[INDEX] = VALUE)", 0);
-            api->set_exception(api, exception);
-            goto label_SPVM_BYTECODE_C_CODE_CROAK;
-          }
-          else {
-            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-            
-            // Decrement old object reference count
-            if (*object_address != NULL) {
-              api->dec_ref_count(api, *object_address);
-            }
-            
-            // Store address
-            *object_address = call_stack[operand_stack_top].object_value;
-
-            // Increment new object reference count
-            if (*object_address != NULL) {
-              api->inc_ref_count(api, *object_address);
-            }
-            
-            operand_stack_top -= 3;
-            bytecode_index++;;
-            break;
-          }
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_STORE:
-        call_stack[bytecodes[bytecode_index + 1]] = call_stack[operand_stack_top];
-        operand_stack_top--;
-        bytecode_index += 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_STORE_OBJECT: {
-        int32_t index = bytecodes[bytecode_index + 1];
-        
-        // Decrement reference count
-        if (call_stack[index].object_value != NULL) {
-          api->dec_ref_count(api, call_stack[index].object_value);
-        }
-        
-        // Store object
-        call_stack[index].object_value = call_stack[operand_stack_top].object_value;
-        
-        // Increment new value reference count
-        if (call_stack[index].object_value != NULL) {
-          api->inc_ref_count(api, call_stack[index].object_value);
-        }
-        
-        operand_stack_top--;
-        bytecode_index += 2;
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_POP:
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
       case SPVM_BYTECODE_C_CODE_ADD_BYTE:
         call_stack[operand_stack_top - 1].byte_value += call_stack[operand_stack_top].byte_value;
         operand_stack_top--;
@@ -1153,223 +684,377 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         call_stack[operand_stack_top].short_value = (int16_t)call_stack[operand_stack_top].byte_value;
         bytecode_index++;;
         break;
-      case SPVM_BYTECODE_C_CODE_CMP_BYTE:
-        // z = (x > y) + (x < y) * -1
-        call_stack[operand_stack_top - 1].int_value
-          = (call_stack[operand_stack_top - 1].byte_value > call_stack[operand_stack_top].byte_value)
-          + (call_stack[operand_stack_top - 1].byte_value < call_stack[operand_stack_top].byte_value) * -1;
-        
-        operand_stack_top--;
+      case SPVM_BYTECODE_C_CODE_UNDEF:
+        operand_stack_top++;
+        call_stack[operand_stack_top].object_value = (void*)NULL;
         bytecode_index++;;
         break;
-      case SPVM_BYTECODE_C_CODE_CMP_SHORT:
-        // z = (x > y) + (x < y) * -1
-        call_stack[operand_stack_top - 1].int_value
-          = (call_stack[operand_stack_top - 1].short_value > call_stack[operand_stack_top].short_value)
-          + (call_stack[operand_stack_top - 1].short_value < call_stack[operand_stack_top].short_value) * -1;
-        operand_stack_top--;
-        bytecode_index++;;
+      case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
+        operand_stack_top++;
+        memcpy(&call_stack[operand_stack_top], &constant_pool[bytecodes[bytecode_index + 1]], sizeof(int32_t));
+        bytecode_index += 2;
         break;
-      case SPVM_BYTECODE_C_CODE_CMP_LONG:
-        // z = (x > y) + (x < y) * -1
-        call_stack[operand_stack_top - 1].int_value
-          = (call_stack[operand_stack_top - 1].long_value > call_stack[operand_stack_top].long_value)
-          + (call_stack[operand_stack_top - 1].long_value < call_stack[operand_stack_top].long_value) * -1;
-        
-        
-        operand_stack_top--;
-        bytecode_index++;;
+      case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
+        operand_stack_top++;
+        memcpy(&call_stack[operand_stack_top], &constant_pool[bytecodes[bytecode_index + 1]], sizeof(int64_t));
+        bytecode_index += 2;
         break;
-      case SPVM_BYTECODE_C_CODE_CMP_FLOAT_L:
-        call_stack[operand_stack_top - 1].int_value
-          = (call_stack[operand_stack_top - 1].float_value > call_stack[operand_stack_top].float_value)
-          + (call_stack[operand_stack_top - 1].float_value < call_stack[operand_stack_top].float_value) * -1
-          + -!!(
-            isnan(call_stack[operand_stack_top - 1].float_value)
-            | isnan(call_stack[operand_stack_top - 1].float_value)
-          );
-        operand_stack_top--;
-        bytecode_index++;;
+      case SPVM_BYTECODE_C_CODE_LOAD:
+        operand_stack_top++;
+        call_stack[operand_stack_top] = call_stack[bytecodes[bytecode_index + 1]];
+        bytecode_index += 2;
         break;
-      case SPVM_BYTECODE_C_CODE_CMP_FLOAT_G:
-        call_stack[operand_stack_top - 1].int_value
-          = (call_stack[operand_stack_top - 1].float_value > call_stack[operand_stack_top].float_value)
-          + (call_stack[operand_stack_top - 1].float_value < call_stack[operand_stack_top].float_value) * -1
-          + !!(
-            isnan(call_stack[operand_stack_top - 1].float_value)
-            | isnan(call_stack[operand_stack_top - 1].float_value)
-          );
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_CMP_DOUBLE_L:
-        call_stack[operand_stack_top - 1].int_value
-          = (call_stack[operand_stack_top - 1].double_value > call_stack[operand_stack_top].double_value)
-          + (call_stack[operand_stack_top - 1].double_value < call_stack[operand_stack_top].double_value) * -1
-          + -!!(
-            isnan(call_stack[operand_stack_top - 1].double_value)
-            | isnan(call_stack[operand_stack_top].double_value)
-          );
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_CMP_DOUBLE_G:
-        call_stack[operand_stack_top - 1].int_value
-          = (call_stack[operand_stack_top - 1].double_value > call_stack[operand_stack_top].double_value)
-          + (call_stack[operand_stack_top - 1].double_value < call_stack[operand_stack_top].double_value) * -1
-          + !!(
-            isnan(call_stack[operand_stack_top - 1].double_value)
-            | isnan(call_stack[operand_stack_top].double_value)
-          );
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
-        success = call_stack[operand_stack_top].int_value == 0;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
-        success = call_stack[operand_stack_top].int_value != 0;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_LT_ZERO:
-        success = call_stack[operand_stack_top].int_value < 0;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_GE_ZERO:
-        success = call_stack[operand_stack_top].int_value >= 0;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_GT_ZERO:
-        success = call_stack[operand_stack_top].int_value > 0;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_LE_ZERO:
-        success = call_stack[operand_stack_top].int_value <= 0;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_EQ_CMP:
-        success = call_stack[operand_stack_top - 1].int_value == call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_NE_CMP:
-        success = call_stack[operand_stack_top - 1].int_value != call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_LT_CMP:
-        success = call_stack[operand_stack_top - 1].int_value < call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_GE_CMP:
-        success = call_stack[operand_stack_top - 1].int_value >= call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_GT_CMP:
-        success = call_stack[operand_stack_top - 1].int_value > call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_LE_CMP:
-        success = call_stack[operand_stack_top - 1].int_value <= call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_EQ_CMP_OBJECT:
-        success = call_stack[operand_stack_top - 1].object_value == call_stack[operand_stack_top].object_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_NE_CMP_OBJECT:
-        success = call_stack[operand_stack_top - 1].object_value != call_stack[operand_stack_top].object_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_GOTO:
-        bytecode_index += bytecodes[bytecode_index + 1];
-        break;
-      case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
-        // default offset
-        int32_t default_offset = bytecodes[bytecode_index + 1];
-        
-        // min
-        int32_t min = bytecodes[bytecode_index + 2];
-        
-        // max
-        int32_t max = bytecodes[bytecode_index + 3];
-        
-        if (call_stack[operand_stack_top].int_value >= min && call_stack[operand_stack_top].int_value <= max) {
-          int32_t branch_offset
-            = *(int32_t*)((&bytecodes[bytecode_index + 4]) + (call_stack[operand_stack_top].int_value - min));
-          bytecode_index += branch_offset;
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_BYTE: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+        int32_t index = call_stack[operand_stack_top].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "BYTE_ARRAY must not be undef(BYTE_ARRAY->[INDEX])", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         else {
-          bytecode_index += default_offset;
-        }
-        
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
-
-        /*
-        1  default
-        5  npare
-        9  match  13 branch // min
-        17 match 21 branch
-        25 match 29 branch // max
-        */
-        
-        // default offset
-        int32_t default_offset = bytecodes[bytecode_index + 1];
-        
-        // npare
-        int32_t pair_count = bytecodes[bytecode_index + 2];
-        
-        // min
-        int32_t min = bytecodes[bytecode_index + 3];
-        
-        // max
-        int32_t max = bytecodes[bytecode_index + 3 + (pair_count - 1) * 2];
-        
-        if (call_stack[operand_stack_top].int_value >= min && call_stack[operand_stack_top].int_value <= max) {
-          // 2 branch searching
-          int32_t cur_min_pos = 0;
-          int32_t cur_max_pos = pair_count - 1;
-
-          while (1) {
-            if (cur_max_pos < cur_min_pos) {
-              bytecode_index += default_offset;
-              break;
-            }
-            int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-            int32_t cur_half = bytecodes[bytecode_index + 3 + (cur_half_pos * 2)];
-            
-            if (call_stack[operand_stack_top].int_value > cur_half) {
-              cur_min_pos = cur_half_pos + 1;
-            }
-            else if (call_stack[operand_stack_top].int_value < cur_half) {
-              cur_max_pos = cur_half_pos - 1;
-            }
-            else {
-              int32_t branch_offset = bytecodes[bytecode_index + 3 + (cur_half_pos * 2) + 1];
-              bytecode_index += branch_offset;
-              break;
-            }
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(BYTE_ARRAY->[INDEX])", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            call_stack[operand_stack_top - 1].byte_value
+              = *(int8_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
+            operand_stack_top--;
+            bytecode_index++;;
+            break;
           }
         }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_SHORT: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+        int32_t index = call_stack[operand_stack_top].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "SHORT_ARRAY must not be undef(SHORT_ARRAY->[INDEX])", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
         else {
-          bytecode_index += default_offset;
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(SHORT_ARRAY->[INDEX])", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            call_stack[operand_stack_top - 1].short_value
+              = *(int16_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index);
+            operand_stack_top--;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_INT: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+        int32_t index = call_stack[operand_stack_top].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "INT_ARRAY must not be undef(INT_ARRAY->[INDEX])", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(INT_ARRAY->[INDEX])", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            call_stack[operand_stack_top - 1].int_value = *(int32_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index);
+            operand_stack_top--;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_LONG: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+        int32_t index = call_stack[operand_stack_top].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "LONG_ARRAY must not be undef(LONG_ARRAY->[INDEX])", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(LONG_ARRAY->[INDEX])", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            call_stack[operand_stack_top - 1].long_value = *(int64_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index);
+            operand_stack_top--;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_FLOAT: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+        int32_t index = call_stack[operand_stack_top].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "FLOAT_ARRAY must not be undef(FLOAT_ARRAY->[INDEX])", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(FLOAT_ARRAY->[INDEX])", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            call_stack[operand_stack_top - 1].float_value = *(float*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index);
+            operand_stack_top--;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_DOUBLE: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+        int32_t index = call_stack[operand_stack_top].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "DOUBLE_ARRAY must not be undef(DOUBLE_ARRAY->[INDEX])", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(DOUBLE_ARRAY->[INDEX])", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            call_stack[operand_stack_top - 1].double_value = *(double*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index);
+            operand_stack_top--;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_OBJECT: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
+        int32_t index = call_stack[operand_stack_top].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "OBJECT_ARRAY must not be undef(OBJECT_ARRAY->[INDEX])", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(OBJECT_ARRAY->[INDEX])", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            call_stack[operand_stack_top - 1] = *(SPVM_API_VALUE*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
+            operand_stack_top--;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_BYTE: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
+        int32_t index = call_stack[operand_stack_top - 1].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "BYTE_ARRAY must not be undef(BYTE_ARRAY->[INDEX] = VALUE)", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(BYTE_ARRAY->[INDEX] = VALUE)", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            *(int8_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * call_stack[operand_stack_top - 1].int_value)
+              = call_stack[operand_stack_top].byte_value;
+            operand_stack_top -= 3;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_SHORT: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
+        int32_t index = call_stack[operand_stack_top - 1].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "SHORT_ARRAY must not be undef(SHORT_ARRAY->[INDEX] = VALUE)", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(SHORT_ARRAY->[INDEX] = VALUE)", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            *(int16_t*)((intptr_t)call_stack[operand_stack_top - 2].object_value + OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * call_stack[operand_stack_top - 1].int_value)
+              = call_stack[operand_stack_top].short_value;
+            operand_stack_top -= 3;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_INT: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
+        int32_t index = call_stack[operand_stack_top - 1].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "INT_ARRAY must not be undef(INT_ARRAY->[INDEX] = VALUE)", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(INT_ARRAY->[INDEX] = VALUE)", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            *(int32_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index) = call_stack[operand_stack_top].int_value;
+            operand_stack_top -= 3;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_LONG: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
+        int32_t index = call_stack[operand_stack_top - 1].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "LONG_ARRAY must not be undef(LONG_ARRAY->[INDEX] = VALUE)", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(LONG_ARRAY->[INDEX] = VALUE)", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            *(int64_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index) = call_stack[operand_stack_top].long_value;
+            operand_stack_top -= 3;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_FLOAT: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
+        int32_t index = call_stack[operand_stack_top - 1].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "FLOAT_ARRAY must not be undef(FLOAT_ARRAY->[INDEX] = VALUE)", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(FLOAT_ARRAY->[INDEX] = VALUE)", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            *(float*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index) = call_stack[operand_stack_top].float_value;
+            operand_stack_top -= 3;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_DOUBLE: {
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
+        int32_t index = call_stack[operand_stack_top - 1].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "DOUBLE_ARRAY must not be undef(DOUBLE_ARRAY->[INDEX] = VALUE)", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(DOUBLE_ARRAY->[INDEX] = VALUE)", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            *(double*)((intptr_t)call_stack[operand_stack_top - 2].object_value + OBJECT_HEADER_BYTE_SIZE + sizeof(double) * call_stack[operand_stack_top - 1].int_value)
+              = call_stack[operand_stack_top].double_value;
+            operand_stack_top -= 3;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT: {
+        
+        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 2].object_value;
+        int32_t index = call_stack[operand_stack_top - 1].int_value;
+        if (__builtin_expect(!array, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "OBJECT_ARRAY must not be undef(OBJECT_ARRAY->[INDEX] = VALUE)", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + OBJECT_HEADER_LENGTH_OFFSET), 0)) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(OBJECT_ARRAY->[INDEX] = VALUE)", 0);
+            api->set_exception(api, exception);
+            goto label_SPVM_BYTECODE_C_CODE_CROAK;
+          }
+          else {
+            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
+            
+            // Decrement old object reference count
+            if (*object_address != NULL) {
+              api->dec_ref_count(api, *object_address);
+            }
+            
+            // Store address
+            *object_address = call_stack[operand_stack_top].object_value;
+
+            // Increment new object reference count
+            if (*object_address != NULL) {
+              api->inc_ref_count(api, *object_address);
+            }
+            
+            operand_stack_top -= 3;
+            bytecode_index++;;
+            break;
+          }
+        }
+      }
+      case SPVM_BYTECODE_C_CODE_STORE:
+        call_stack[bytecodes[bytecode_index + 1]] = call_stack[operand_stack_top];
+        operand_stack_top--;
+        bytecode_index += 2;
+        break;
+      case SPVM_BYTECODE_C_CODE_STORE_OBJECT: {
+        int32_t index = bytecodes[bytecode_index + 1];
+        
+        // Decrement reference count
+        if (call_stack[index].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[index].object_value);
         }
         
+        // Store object
+        call_stack[index].object_value = call_stack[operand_stack_top].object_value;
+        
+        // Increment new value reference count
+        if (call_stack[index].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[index].object_value);
+        }
+        
+        operand_stack_top--;
+        bytecode_index += 2;
         break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_OBJECT: {
@@ -1535,17 +1220,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           bytecode_index++;;
           break;
         }
-      case SPVM_BYTECODE_C_CODE_IF_NULL:
-        success = call_stack[operand_stack_top].object_value == (void*)NULL;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_NON_NULL:
-        
-        success = call_stack[operand_stack_top].object_value != (void*)NULL;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
       case SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
         int32_t field_id = bytecodes[bytecode_index + 1];
@@ -1881,6 +1555,69 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index++;
         break;
       }
+      case SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
+        // Get subroutine ID
+        int32_t package_var_id = bytecodes[bytecode_index + 1];
+        
+        operand_stack_top++;
+        call_stack[operand_stack_top] = package_vars[package_var_id];
+        
+        bytecode_index += 2;
+        
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR: {
+        // Get subroutine ID
+        int32_t package_var_id = bytecodes[bytecode_index + 1];
+
+        package_vars[package_var_id] = call_stack[operand_stack_top];
+        operand_stack_top--;
+
+        bytecode_index += 2;
+        
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
+        // Get subroutine ID
+        int32_t package_var_id = bytecodes[bytecode_index + 1];
+        
+        // Decrement reference count
+        if (package_vars[package_var_id].object_value != NULL) {
+          api->dec_ref_count(api, package_vars[package_var_id].object_value);
+        }
+        
+        // Store object
+        package_vars[package_var_id].object_value = call_stack[operand_stack_top].object_value;
+        
+        // Increment new value reference count
+        if (package_vars[package_var_id].object_value != NULL) {
+          api->inc_ref_count(api, package_vars[package_var_id].object_value);;
+        }
+        
+        operand_stack_top--;
+
+        bytecode_index += 2;
+        
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION: {
+        // Next operation
+        int16_t jump_offset_abs = bytecodes[bytecode_index + 1];
+        
+        catch_exception_stack_top++;
+        catch_exception_stack[catch_exception_stack_top] = jump_offset_abs;
+        
+        bytecode_index += 2;
+        
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION: {
+        catch_exception_stack_top--;
+        
+        bytecode_index++;;
+        
+        break;
+      }
       case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION: {
         operand_stack_top++;
         call_stack[operand_stack_top].object_value = (SPVM_API_OBJECT*)api->get_exception(api);
@@ -1901,7 +1638,35 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         current_line = bytecodes[bytecode_index + 1];
         bytecode_index += 2;
         break;
-
+      case SPVM_BYTECODE_C_CODE_CALL_SUB: {
+        // Get subroutine ID
+        int32_t call_sub_id = bytecodes[bytecode_index + 1];
+        
+        int32_t args_length = api->get_sub_args_length(api, call_sub_id);
+        
+        operand_stack_top -= args_length;
+        
+        SPVM_API_VALUE args[255];
+        memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
+        
+        // Call subroutine
+        SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
+        
+        if (api->get_exception(api)) {
+          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        else {
+          if (!api->get_sub_is_void(api, call_sub_id)) {
+            operand_stack_top++;
+            call_stack[operand_stack_top] = return_value;
+          }
+          
+          // Next operation
+          bytecode_index += 2 + (debug * 2);
+          
+          break;
+        }
+      }
       case SPVM_BYTECODE_C_CODE_RETURN_BYTE:
       case SPVM_BYTECODE_C_CODE_RETURN_SHORT:
       case SPVM_BYTECODE_C_CODE_RETURN_INT:
@@ -2118,6 +1883,240 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         api->dec_ref_count(api, call_stack_array);
         
         return return_value;
+      }
+      case SPVM_BYTECODE_C_CODE_POP:
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_CMP_BYTE:
+        // z = (x > y) + (x < y) * -1
+        call_stack[operand_stack_top - 1].int_value
+          = (call_stack[operand_stack_top - 1].byte_value > call_stack[operand_stack_top].byte_value)
+          + (call_stack[operand_stack_top - 1].byte_value < call_stack[operand_stack_top].byte_value) * -1;
+        
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_CMP_SHORT:
+        // z = (x > y) + (x < y) * -1
+        call_stack[operand_stack_top - 1].int_value
+          = (call_stack[operand_stack_top - 1].short_value > call_stack[operand_stack_top].short_value)
+          + (call_stack[operand_stack_top - 1].short_value < call_stack[operand_stack_top].short_value) * -1;
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_CMP_LONG:
+        // z = (x > y) + (x < y) * -1
+        call_stack[operand_stack_top - 1].int_value
+          = (call_stack[operand_stack_top - 1].long_value > call_stack[operand_stack_top].long_value)
+          + (call_stack[operand_stack_top - 1].long_value < call_stack[operand_stack_top].long_value) * -1;
+        
+        
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_CMP_FLOAT_L:
+        call_stack[operand_stack_top - 1].int_value
+          = (call_stack[operand_stack_top - 1].float_value > call_stack[operand_stack_top].float_value)
+          + (call_stack[operand_stack_top - 1].float_value < call_stack[operand_stack_top].float_value) * -1
+          + -!!(
+            isnan(call_stack[operand_stack_top - 1].float_value)
+            | isnan(call_stack[operand_stack_top - 1].float_value)
+          );
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_CMP_FLOAT_G:
+        call_stack[operand_stack_top - 1].int_value
+          = (call_stack[operand_stack_top - 1].float_value > call_stack[operand_stack_top].float_value)
+          + (call_stack[operand_stack_top - 1].float_value < call_stack[operand_stack_top].float_value) * -1
+          + !!(
+            isnan(call_stack[operand_stack_top - 1].float_value)
+            | isnan(call_stack[operand_stack_top - 1].float_value)
+          );
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_CMP_DOUBLE_L:
+        call_stack[operand_stack_top - 1].int_value
+          = (call_stack[operand_stack_top - 1].double_value > call_stack[operand_stack_top].double_value)
+          + (call_stack[operand_stack_top - 1].double_value < call_stack[operand_stack_top].double_value) * -1
+          + -!!(
+            isnan(call_stack[operand_stack_top - 1].double_value)
+            | isnan(call_stack[operand_stack_top].double_value)
+          );
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_CMP_DOUBLE_G:
+        call_stack[operand_stack_top - 1].int_value
+          = (call_stack[operand_stack_top - 1].double_value > call_stack[operand_stack_top].double_value)
+          + (call_stack[operand_stack_top - 1].double_value < call_stack[operand_stack_top].double_value) * -1
+          + !!(
+            isnan(call_stack[operand_stack_top - 1].double_value)
+            | isnan(call_stack[operand_stack_top].double_value)
+          );
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
+        success = call_stack[operand_stack_top].int_value == 0;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top--;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
+        success = call_stack[operand_stack_top].int_value != 0;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top--;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_LT_ZERO:
+        success = call_stack[operand_stack_top].int_value < 0;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top--;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_GE_ZERO:
+        success = call_stack[operand_stack_top].int_value >= 0;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top--;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_GT_ZERO:
+        success = call_stack[operand_stack_top].int_value > 0;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top--;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_LE_ZERO:
+        success = call_stack[operand_stack_top].int_value <= 0;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top--;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_EQ_CMP:
+        success = call_stack[operand_stack_top - 1].int_value == call_stack[operand_stack_top].int_value;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top -= 2;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_NE_CMP:
+        success = call_stack[operand_stack_top - 1].int_value != call_stack[operand_stack_top].int_value;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top -= 2;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_LT_CMP:
+        success = call_stack[operand_stack_top - 1].int_value < call_stack[operand_stack_top].int_value;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top -= 2;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_GE_CMP:
+        success = call_stack[operand_stack_top - 1].int_value >= call_stack[operand_stack_top].int_value;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top -= 2;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_GT_CMP:
+        success = call_stack[operand_stack_top - 1].int_value > call_stack[operand_stack_top].int_value;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top -= 2;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_LE_CMP:
+        success = call_stack[operand_stack_top - 1].int_value <= call_stack[operand_stack_top].int_value;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top -= 2;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_EQ_CMP_OBJECT:
+        success = call_stack[operand_stack_top - 1].object_value == call_stack[operand_stack_top].object_value;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top -= 2;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_NE_CMP_OBJECT:
+        success = call_stack[operand_stack_top - 1].object_value != call_stack[operand_stack_top].object_value;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top -= 2;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_NULL:
+        success = call_stack[operand_stack_top].object_value == (void*)NULL;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top--;
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_NON_NULL:
+        
+        success = call_stack[operand_stack_top].object_value != (void*)NULL;
+        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
+        operand_stack_top--;
+        break;
+      case SPVM_BYTECODE_C_CODE_GOTO:
+        bytecode_index += bytecodes[bytecode_index + 1];
+        break;
+      case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
+        // default offset
+        int32_t default_offset = bytecodes[bytecode_index + 1];
+        
+        // min
+        int32_t min = bytecodes[bytecode_index + 2];
+        
+        // max
+        int32_t max = bytecodes[bytecode_index + 3];
+        
+        if (call_stack[operand_stack_top].int_value >= min && call_stack[operand_stack_top].int_value <= max) {
+          int32_t branch_offset
+            = *(int32_t*)((&bytecodes[bytecode_index + 4]) + (call_stack[operand_stack_top].int_value - min));
+          bytecode_index += branch_offset;
+        }
+        else {
+          bytecode_index += default_offset;
+        }
+        
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
+
+        /*
+        1  default
+        5  npare
+        9  match  13 branch // min
+        17 match 21 branch
+        25 match 29 branch // max
+        */
+        
+        // default offset
+        int32_t default_offset = bytecodes[bytecode_index + 1];
+        
+        // npare
+        int32_t pair_count = bytecodes[bytecode_index + 2];
+        
+        // min
+        int32_t min = bytecodes[bytecode_index + 3];
+        
+        // max
+        int32_t max = bytecodes[bytecode_index + 3 + (pair_count - 1) * 2];
+        
+        if (call_stack[operand_stack_top].int_value >= min && call_stack[operand_stack_top].int_value <= max) {
+          // 2 branch searching
+          int32_t cur_min_pos = 0;
+          int32_t cur_max_pos = pair_count - 1;
+
+          while (1) {
+            if (cur_max_pos < cur_min_pos) {
+              bytecode_index += default_offset;
+              break;
+            }
+            int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
+            int32_t cur_half = bytecodes[bytecode_index + 3 + (cur_half_pos * 2)];
+            
+            if (call_stack[operand_stack_top].int_value > cur_half) {
+              cur_min_pos = cur_half_pos + 1;
+            }
+            else if (call_stack[operand_stack_top].int_value < cur_half) {
+              cur_max_pos = cur_half_pos - 1;
+            }
+            else {
+              int32_t branch_offset = bytecodes[bytecode_index + 3 + (cur_half_pos * 2) + 1];
+              bytecode_index += branch_offset;
+              break;
+            }
+          }
+        }
+        else {
+          bytecode_index += default_offset;
+        }
+        
+        break;
       }
     }
   }
