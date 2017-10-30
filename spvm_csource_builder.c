@@ -6,7 +6,7 @@
 
 
 #include "spvm_compiler.h"
-#include "spvm_cbuilder.h"
+#include "spvm_csource_builder.h"
 #include "spvm_bytecode.h"
 #include "spvm_bytecode_array.h"
 #include "spvm_constant.h"
@@ -35,7 +35,7 @@
 #include "spvm_package_var.h"
 
 
-void SPVM_CBUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
+void SPVM_CSOURCE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
   
   SPVM_VAR* var = op_inc->first->uv.var;
   SPVM_MY_VAR* my_var = var->op_my_var->uv.my_var;
@@ -83,7 +83,7 @@ void SPVM_CBUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
   }
 }
 
-void SPVM_CBUILDER_push_load_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_var) {
+void SPVM_CSOURCE_BUILDER_push_load_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_var) {
   
   (void)compiler;
   
@@ -99,7 +99,7 @@ void SPVM_CBUILDER_push_load_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARR
   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var_index);
 }
 
-void SPVM_CBUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
+void SPVM_CSOURCE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
   
   // Bytecode
   SPVM_BYTECODE_ARRAY* bytecode_array = compiler->bytecode_array;
@@ -1221,26 +1221,26 @@ void SPVM_CBUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_PRE_INC: {
-                SPVM_CBUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, 1);
-                SPVM_CBUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
+                SPVM_CSOURCE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, 1);
+                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
                 
                 break;
               }
               case SPVM_OP_C_CODE_POST_INC: {
-                SPVM_CBUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
-                SPVM_CBUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, 1);
+                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
+                SPVM_CSOURCE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, 1);
                 
                 break;
               }
               case SPVM_OP_C_CODE_PRE_DEC: {
-                SPVM_CBUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, -1);
-                SPVM_CBUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
+                SPVM_CSOURCE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, -1);
+                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
                 
                 break;
               }
               case SPVM_OP_C_CODE_POST_DEC: {
-                SPVM_CBUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
-                SPVM_CBUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, -1);
+                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
+                SPVM_CSOURCE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, -1);
                 
                 break;
               }
@@ -2172,7 +2172,7 @@ void SPVM_CBUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   break;
                 }
                 
-                SPVM_CBUILDER_push_load_bytecode(compiler, bytecode_array, op_cur);
+                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur);
                 
                 break;
               }
