@@ -38,7 +38,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
   // Double type code
   const int32_t DOUBLE_TYPE_CODE = api->get_double_type_code(api);
-  
+
+  const int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
+  const int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
+
   // Debug
   const int32_t debug = api->is_debug(api) ? 1 : 0;
   
@@ -319,9 +322,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           SPVM_API_VALUE return_value = call_stack[operand_stack_top];
           
           // Decrement object my vars reference count
-          int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
-          int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
-          
           if (object_my_vars_length) {
             {
               int32_t i;
@@ -356,8 +356,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           }
           
           // Decrement object my vars reference count
-          int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
-          int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
           if (object_my_vars_length) {
             {
               int32_t i;
@@ -393,8 +391,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           memset(&return_value, 0, sizeof(SPVM_API_VALUE));
           
           // Decrement object my vars reference count
-          int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
-          int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
           if (object_my_vars_length) {
             {
               int32_t i;
@@ -449,8 +445,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         
         // Decrement object my vars reference count
-        int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
-        int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
         if (object_my_vars_length) {
           {
             int32_t i;
