@@ -99,9 +99,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     }
   }
   
-  // Set exception to undef at top of call_sub
-  api->set_exception(api, NULL);
-  
   // Call native sub
   if (api->get_sub_is_native(api, sub_id)) {
     int32_t return_type_code = api->get_type_code(api, api->get_sub_return_type_id(api, sub_id));
