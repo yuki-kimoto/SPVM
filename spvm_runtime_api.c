@@ -1683,7 +1683,7 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
   fields[index].object_value = value;
   
   if(fields[index].object_value != NULL) {
-    api->inc_ref_count(api, fields[index].object_value);
+    SPVM_RUNTIME_API_inc_ref_count(api, fields[index].object_value);
   }
 }
 
