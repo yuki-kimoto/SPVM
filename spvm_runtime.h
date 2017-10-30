@@ -36,7 +36,7 @@ struct SPVM_runtime {
   SPVM_HASH* use_package_path_id_symtable;
   
   // Package variables
-  SPVM_API_VALUE* package_vars;
+  SPVM_VALUE* package_vars;
   
   // Packages length
   int32_t packages_length;
