@@ -66,7 +66,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Call stack
   SPVM_API_OBJECT* call_stack_array = api->new_value_array(api, call_stack_length);
   api->inc_ref_count(api, call_stack_array);
-  SPVM_API_VALUE* call_stack = SPVM_RUNTIME_API_get_value_array_elements(api, (SPVM_API_OBJECT*)call_stack_array);
+  SPVM_API_VALUE* call_stack = api->get_value_array_elements(api, (SPVM_API_OBJECT*)call_stack_array);
 
   // Catch stack
   int16_t catch_exception_stack[255];
