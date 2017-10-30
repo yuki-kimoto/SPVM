@@ -453,16 +453,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Weaken field
                   if (op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT);
-                    
-                  
-                    SPVM_FIELD* field = op_cur->uv.call_field->field;
-                    
-                    SPVM_CONSTANT_POOL_FIELD constant_pool_field;
-                    memcpy(&constant_pool_field, &compiler->constant_pool->values[field->id], sizeof(SPVM_CONSTANT_POOL_FIELD));
-                    
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, constant_pool_field.index);
-                    
-                    
                   }
                   // Get field
                   else {
@@ -508,12 +498,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       
                       
                     }
-
-                    SPVM_FIELD* field = op_cur->uv.call_field->field;
-                    
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, field->id);
-
                   }
+
+                  SPVM_FIELD* field = op_cur->uv.call_field->field;
+                  
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, field->id);
                 }
                 
                 break;

@@ -126,5 +126,6 @@ struct SPVM_api {
   SPVM_API_OBJECT* (*concat_string_float)(SPVM_API* api, SPVM_API_OBJECT* string1, float string2);
   SPVM_API_OBJECT* (*concat_string_double)(SPVM_API* api, SPVM_API_OBJECT* string1, double string2);
   SPVM_API_OBJECT* (*concat_string_string)(SPVM_API* api, SPVM_API_OBJECT* string1, SPVM_API_OBJECT* string2);
+  void (*weaken_object_field)(SPVM_API* api, SPVM_API_OBJECT* object, int32_t field_id);
 };
 #endif

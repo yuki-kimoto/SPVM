@@ -1930,23 +1930,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
-        if (__builtin_expect(!object, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object to weaken an object field must not be undefined.", 0);
-          api->set_exception(api, exception);
+        int32_t field_id = bytecodes[bytecode_index + 1];
+        
+        api->weaken_object_field(api, object, field_id);
+        
+        if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
-        else {
-          int32_t index = bytecodes[bytecode_index + 1];
-          SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)object + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
-          
-          // Weaken object field
-          if (*object_address != NULL) {
-            api->weaken(api, object_address);
-          }
-          
-          bytecode_index += 2;
-          break;
-        }
+        
+        bytecode_index += 2;
+        break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_BYTE: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
