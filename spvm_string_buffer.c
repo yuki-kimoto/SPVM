@@ -30,8 +30,6 @@ void SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, char* string) {
   
   int32_t string_length = strlen(string);
   
-  assert(byte_size > 0);
-  
   int32_t new_length = string_buffer->length + string_length;
   
   // Extend
@@ -43,7 +41,7 @@ void SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, char* string) {
     string_buffer->buffer = new_buffer;
   }
   
-  memcpy(string_buffer->buffer + string_buffer_length, string, string_length);
+  memcpy(string_buffer->buffer + string_buffer->length, string, string_length);
   
   return;
 }

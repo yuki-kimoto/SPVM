@@ -37,6 +37,8 @@
 
 void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
   
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
+  
   // Bytecode
   SPVM_BYTECODE_ARRAY* bytecode_array = compiler->bytecode_array;
   
