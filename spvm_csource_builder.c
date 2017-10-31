@@ -33,6 +33,7 @@
 #include "spvm_object.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
+#include "spvm_string_buffer.h"
 
 void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
   

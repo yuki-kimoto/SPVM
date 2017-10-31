@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_string_buffer.h
+struct SPVM_string_buffer;
+typedef struct SPVM_string_buffer SPVM_STRING_BUFFER;
+
 // spvm_package_var.h
 struct SPVM_package_var;
 typedef struct SPVM_package_var SPVM_PACKAGE_VAR;
