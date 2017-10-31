@@ -13,8 +13,6 @@ struct SPVM_sub_check_info {
 
   // block my variable base position stack
   SPVM_DYNAMIC_ARRAY* block_my_var_base_stack;
-  
-  int32_t block_my_var_base;
 
   // try block my variable base position stack
   SPVM_DYNAMIC_ARRAY* try_block_my_var_base_stack;
