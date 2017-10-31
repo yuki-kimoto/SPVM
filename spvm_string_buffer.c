@@ -8,12 +8,16 @@
 #include "spvm_util_allocator.h"
 #include "spvm_value.h"
 
-SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(int32_t page_byte_size) {
+SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(int32_t capacity) {
+  
+  if (capacity == 0) {
+    capacity = 0xFFFF;
+  }
   
   SPVM_STRING_BUFFER* string_buffer = (SPVM_STRING_BUFFER*) SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_STRING_BUFFER));
   
-  string_buffer->capacity = 0xFFFF;
-  string_buffer->buffer = (char*)SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_buffer->capacity);
+  string_buffer->capacity = capacity;
+  string_buffer->buffer = (char*)SPVM_UTIL_ALLOCATOR_safe_malloc_zero(capacity);
   
   return string_buffer;
 }
