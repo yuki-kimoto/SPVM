@@ -453,7 +453,9 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::switch_table_switch());
 }
 
+# my variable
 {
+  ok(SPVM::TestCase::my_var_initialized_zero());
   ok(SPVM::TestCase::my_var_initialized_zero());
 }
 

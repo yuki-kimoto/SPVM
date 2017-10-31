@@ -1218,6 +1218,57 @@ package TestCase {
     
     return 0;
   }
+
+  sub my_var_scope() : int {
+    my $ok1 = 0;
+    my $ok2 = 0;
+    my $ok3 = 0;
+    
+    my $var1 = 1;
+    my $var2 = 2;
+    
+    if ($var1 == 1) {
+      if ($var2 == 2) {
+        $ok1 = 1;
+      }
+    }
+    
+    {
+      my $var1 = 3;
+      my $var2 = 4;
+      my $var3 = 5;
+      
+      if ($var1 == 3) {
+        if ($var2 == 4) {
+          if ($var3 == 5) {
+            $ok2 = 1;
+          }
+        }
+      }
+    }
+    
+    my $var3 = 6;
+    
+    std::say("AAAAAAAAAAAAAAAAAA" . $var1);
+    
+    if ($var1 == 1) {
+      if ($var2 == 2) {
+        if ($var3 == 6) {
+          $ok3 = 1;
+        }
+      }
+    }
+    
+    if ($ok1) {
+      if ($ok2) {
+        if ($ok3) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
   
   # My variable is initialized zero
   sub my_var_initialized_zero() : int {

@@ -1333,6 +1333,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   assert(sub_check_info->block_my_var_base_stack->length > 0);
                   int32_t* block_my_var_base_ptr = SPVM_DYNAMIC_ARRAY_pop(sub_check_info->block_my_var_base_stack);
                   int32_t block_my_var_base = *block_my_var_base_ptr;
+                    
+                  int32_t my_var_stack_pop_count = sub_check_info->op_my_var_stack->length - block_my_var_base;
+                  
+                  {
+                    int32_t i;
+                    for (i = 0; i < my_var_stack_pop_count; i++) {
+                      SPVM_DYNAMIC_ARRAY_pop(sub_check_info->op_my_var_stack);
+                    }
+                  }
 
                   // Pop loop block my variable base
                   if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
@@ -1343,14 +1352,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                     assert(sub_check_info->try_block_my_var_base_stack->length > 0);
                     SPVM_DYNAMIC_ARRAY_pop(sub_check_info->try_block_my_var_base_stack);
-                  }
-                  
-                  if (sub_check_info->block_my_var_base_stack->length > 0) {
-                    int32_t* before_block_my_var_base_ptr = SPVM_DYNAMIC_ARRAY_fetch(
-                      sub_check_info->block_my_var_base_stack,
-                      sub_check_info->block_my_var_base_stack->length - 1
-                    );
-                    int32_t before_block_my_var_base = *before_block_my_var_base_ptr;
                   }
                   
                   break;

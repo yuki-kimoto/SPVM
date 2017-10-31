@@ -1302,6 +1302,10 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   // Check syntax and data validity
   SPVM_OP_CHECKER_check(compiler);
   
+  if (compiler->fatal_error) {
+    return NULL;
+  }
+  
   // Build constant pool
   SPVM_OP_build_constant_pool(compiler);
   
