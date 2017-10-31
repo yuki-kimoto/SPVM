@@ -36,12 +36,12 @@ void SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, char* string) {
   if (new_length > string_buffer->capacity) {
     char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_length + 1);
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
-    
-    string_buffer->length = new_length;
     string_buffer->buffer = new_buffer;
   }
   
   memcpy(string_buffer->buffer + string_buffer->length, string, string_length);
+  
+  string_buffer->length = new_length;
   
   return;
 }

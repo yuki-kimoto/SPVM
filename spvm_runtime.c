@@ -404,22 +404,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         call_stack[operand_stack_top].short_value = -call_stack[operand_stack_top].short_value;
         bytecode_index++;;
         break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_INT:
-        call_stack[operand_stack_top].int_value = -call_stack[operand_stack_top].int_value;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_LONG:
-        call_stack[operand_stack_top].long_value = -call_stack[operand_stack_top].long_value;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_FLOAT:
-        call_stack[operand_stack_top].float_value = -call_stack[operand_stack_top].float_value;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_DOUBLE:
-        call_stack[operand_stack_top].double_value = -call_stack[operand_stack_top].double_value;
-        bytecode_index++;;
-        break;
       case SPVM_BYTECODE_C_CODE_LEFT_SHIFT_BYTE:
         call_stack[operand_stack_top - 1].byte_value <<= call_stack[operand_stack_top].int_value;
         operand_stack_top--;
@@ -542,6 +526,22 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_BYTECODE_C_CODE_BIT_XOR_LONG:
         call_stack[operand_stack_top - 1].long_value ^= call_stack[operand_stack_top].long_value;
         operand_stack_top--;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_NEGATE_INT:
+        call_stack[operand_stack_top].int_value = -call_stack[operand_stack_top].int_value;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_NEGATE_LONG:
+        call_stack[operand_stack_top].long_value = -call_stack[operand_stack_top].long_value;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_NEGATE_FLOAT:
+        call_stack[operand_stack_top].float_value = -call_stack[operand_stack_top].float_value;
+        bytecode_index++;;
+        break;
+      case SPVM_BYTECODE_C_CODE_NEGATE_DOUBLE:
+        call_stack[operand_stack_top].double_value = -call_stack[operand_stack_top].double_value;
         bytecode_index++;;
         break;
       case SPVM_BYTECODE_C_CODE_INC_BYTE:
