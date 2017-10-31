@@ -1317,6 +1317,9 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   // Build bytecode
   SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
   
+  // Build C source code
+  SPVM_CSOURCE_BUILDER_build_csource(compiler);
+  
   return op_grammar;
 }
 

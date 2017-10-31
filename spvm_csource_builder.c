@@ -39,8 +39,7 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
   
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
-  // Bytecode
-  SPVM_BYTECODE_ARRAY* bytecode_array = compiler->bytecode_array;
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
   
   {
     int32_t sub_pos;
@@ -58,8 +57,6 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
       if (sub->is_native) {
         continue;
       }
-      
-      sub->bytecode_base = bytecode_array->length;
       
       // Run OPs
       SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
@@ -97,7 +94,6 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
               
               
               int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *bytecode_index_ptr = bytecode_array->length - 1;
               
               SPVM_DYNAMIC_ARRAY_push(goto_loop_start_bytecode_index_stack, bytecode_index_ptr);
               
@@ -106,11 +102,7 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
             else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
               // TODO SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION);
               
-              
-              
-              
               int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *bytecode_index_ptr = bytecode_array->length - 1;
               
               SPVM_DYNAMIC_ARRAY_push(push_catch_exception_bytecode_index_stack, bytecode_index_ptr);
               
@@ -163,62 +155,11 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  // TODO SPVM_BYTECODE_C_CODE_TABLE_SWITCH);
-                  
-                  // Switch bytecode index
-                  int32_t switch_bytecode_index = bytecode_array->length - 1;
-                  
-                  // Push switch information stack
-                  switch_info->bytecode_index = switch_bytecode_index;
-                  SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
-                  
-                  // Default
-                  // TODO 0);
-                  
-                  // Minimal
-                  // TODO switch_info->min);
-                  
-                  // Max
                   // TODO switch_info->max);
-                  
-                  // Offsets
-                  {
-                    int32_t i;
-                    for (i = 0; i < (switch_info->max - switch_info->min + 1); i++) {
-                      // TODO 0);
-                    }
-                  }
                 }
                 // lookupswitch
                 else if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH) {
-                  // TODO SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH);
-                  
-                  
-                  
-                  
-                  // Switch bytecode index
-                  int32_t switch_bytecode_index = bytecode_array->length - 1;
-                  
-                  // Push switch information stack
-                  switch_info->bytecode_index = switch_bytecode_index;
-                  SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
-                  
-                  // Default
-                  // TODO 0);
-                  
-                  // Case count
-                  // TODO 0);
-
-                  int32_t const length = switch_info->op_cases->length;
-                  bytecode_array->values[bytecode_array->length - 1] = length;
-                  
-                  int32_t size_of_match_offset_pairs = length * 2;
-                  {
-                    int32_t i;
-                    for (i = 0; i < size_of_match_offset_pairs; i++) {
-                      // TODO 0);
-                    }
-                  }
+                  // TODO
                 }
                 
                 break;
@@ -233,154 +174,26 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  // Default offset
-                  int32_t default_offset;
-                  if (!default_bytecode_index) {
-                    default_offset = bytecode_array->length - switch_bytecode_index;
-                  }
-                  else {
-                    default_offset = default_bytecode_index - switch_bytecode_index;
-                  }
-                  bytecode_array->values[switch_bytecode_index + 1] = default_offset;
-                  
-                  // min
-                  int32_t min = bytecode_array->values[switch_bytecode_index + 1 + 1];
-                  
-                  // max
-                  int32_t max = bytecode_array->values[switch_bytecode_index + 1 + 1 * 2];
-                  
-                  int32_t length = (int32_t)(max - min + 1);
-                  
-                  int32_t case_pos = 0;
-                  {
-                    int32_t i;
-                    for (i = 0; i < length; i++) {
-                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(switch_info->op_cases, case_pos);
-                      SPVM_OP* op_constant = op_case->first;
-                      if (op_constant->uv.constant->value.int_value - min == i) {
-                        // Case
-                        int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_bytecode_indexes, case_pos);
-                        int32_t case_bytecode_index = *case_bytecode_index_ptr;
-                        int32_t case_offset = case_bytecode_index - switch_bytecode_index;
-                        
-                        bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + 1 * i] = case_offset;
-                        
-                        case_pos++;
-                      }
-                      else {
-                        // Default
-                        bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + (1 * i)] = default_offset;
-                      }
-                    }
-                  }
+                  // TODO
                 }
                 // lookupswitch
                 else if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH) {
-                  // Default offset
-                  int32_t default_offset;
-                  if (!default_bytecode_index) {
-                    default_offset = bytecode_array->length - switch_bytecode_index;
-                  }
-                  else {
-                    default_offset = default_bytecode_index - switch_bytecode_index;
-                  }
-                  bytecode_array->values[switch_bytecode_index + 1] = default_offset;
-                  
-                  int32_t const length = (int32_t) switch_info->op_cases->length;
-                  
-                  SPVM_DYNAMIC_ARRAY* ordered_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-                  {
-                    int32_t i;
-                    for (i = 0; i < length; i++) {
-                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(switch_info->op_cases, i);
-                      SPVM_DYNAMIC_ARRAY_push(ordered_op_cases, op_case);
-                    }
-                  }
-                  SPVM_DYNAMIC_ARRAY* ordered_case_bytecode_indexes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-                  {
-                    int32_t i;
-                    for (i = 0; i < length; i++) {
-                      int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_bytecode_indexes, i);
-                      SPVM_DYNAMIC_ARRAY_push(ordered_case_bytecode_indexes, case_bytecode_index_ptr);
-                    }
-                  }
-                  
-                  // sort by asc order
-                  {
-                    int32_t i;
-                    for (i = 0; i < length; i++) {
-                      int32_t j;
-                      {
-                        for (j = i + 1; j < length; j++) {
-                          SPVM_OP* op_case_i = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, i);
-                          SPVM_OP* op_case_j = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, j);
-                          int32_t match_i = op_case_i->first->uv.constant->value.int_value;
-                          int32_t match_j = op_case_j->first->uv.constant->value.int_value;
-                          
-                          int32_t* case_bytecode_index_i = SPVM_DYNAMIC_ARRAY_fetch(ordered_case_bytecode_indexes, i);
-                          int32_t* case_bytecode_index_j = SPVM_DYNAMIC_ARRAY_fetch(ordered_case_bytecode_indexes, j);
-                          
-                          if (match_i > match_j) {
-                            SPVM_DYNAMIC_ARRAY_store(ordered_op_cases, i, op_case_j);
-                            SPVM_DYNAMIC_ARRAY_store(ordered_op_cases, j, op_case_i);
-                            
-                            SPVM_DYNAMIC_ARRAY_store(ordered_case_bytecode_indexes, i, case_bytecode_index_j);
-                            SPVM_DYNAMIC_ARRAY_store(ordered_case_bytecode_indexes, j, case_bytecode_index_i);
-                          }
-                        }
-                      }
-                    }
-                  }
-                  
-                  {
-                    int32_t i;
-                    for (i = 0; i < length; i++) {
-                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, i);
-                      SPVM_OP* op_constant = op_case->first;
-                      int32_t match = op_constant->uv.constant->value.int_value;
-
-                      int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(ordered_case_bytecode_indexes, i);
-                      int32_t case_bytecode_index = *case_bytecode_index_ptr;
-                      int32_t case_offset = case_bytecode_index - switch_bytecode_index;
-                      
-                      // Match
-                      bytecode_array->values[switch_bytecode_index + 1 + 1 * 2 + (1 * 2 * i)] = match;
-
-                      // Offset
-                      bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + (1 * 2 * i)] = case_offset;
-                    }
-                  }
+                  // TODO
                 }
                 
                 // Set last position
                 while (goto_last_bytecode_index_stack->length > 0) {
-                  
-                  int32_t* goto_last_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(goto_last_bytecode_index_stack);
-                  int32_t goto_last_bytecode_index = *goto_last_bytecode_index_ptr;
-                  
-                  // Last offset
-                  int32_t goto_last_offset = bytecode_array->length - goto_last_bytecode_index;
-                  
-                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
+                  // TODO
                 }
                 
                 break;
               }
               case SPVM_OP_C_CODE_CASE: {
-                if (switch_info_stack->length > 0) {
-                  SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_fetch(switch_info_stack, switch_info_stack->length - 1);
-                  int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                  *bytecode_index_ptr = bytecode_array->length;
-                  
-                  SPVM_DYNAMIC_ARRAY_push(switch_info->case_bytecode_indexes, bytecode_index_ptr);
-                }
+                // TODO
                 break;
               }
               case SPVM_OP_C_CODE_DEFAULT: {
-                if (switch_info_stack->length > 0) {
-                  SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_fetch(switch_info_stack, switch_info_stack->length - 1);
-                  switch_info->default_bytecode_index = bytecode_array->length;
-                }
+                // TODO
                 break;
               }
               case SPVM_OP_C_CODE_CALL_FIELD: {
@@ -484,20 +297,7 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_LAST: {
-                // Add goto
-                // TODO SPVM_BYTECODE_C_CODE_GOTO);
-                
-                
-                
-                
-                int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                *bytecode_index_ptr = bytecode_array->length - 1;
-                
-                SPVM_DYNAMIC_ARRAY_push(goto_last_bytecode_index_stack, bytecode_index_ptr);
-                
-                // TODO 0);
-                
-                
+                // TODO
 
                 break;
               }
@@ -505,85 +305,22 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(goto_loop_start_bytecode_index_stack, goto_loop_start_bytecode_index_stack->length - 1);
                 int32_t bytecode_index = *bytecode_index_ptr;
                 
-                // Add "goto"
-                // TODO SPVM_BYTECODE_C_CODE_GOTO);
-                
-                
-                
-                
-                // Jump offset
-                int32_t jump_offset = bytecode_index - (bytecode_array->length - 1) + 2;
-                
-                // TODO jump_offset);
+                // TODO
                 
                 break;
               }
               case SPVM_OP_C_CODE_BLOCK: {
                 if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
-                  
-                  {
-                    // Prepare to jump to end of true block
-                    // TODO SPVM_BYTECODE_C_CODE_GOTO);
-                    
-                    
-                    
-                    
-                    int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                    *bytecode_index_ptr = bytecode_array->length - 1;
-                    SPVM_DYNAMIC_ARRAY_push(goto_if_block_end_bytecode_index_stack, bytecode_index_ptr);
-                    
-                    // TODO 0);
-                    
-                    
-                  }
-
-                  assert(if_bytecode_index_stack->length > 0);
-
-                  // Set if jump bytecode index
-                  int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(if_bytecode_index_stack);
-                  int32_t bytecode_index = *bytecode_index_ptr;
-                  
-                  // Jump offset
-                  int32_t jump_offset = bytecode_array->length - bytecode_index;
-                  
-                  // Set jump offset
-                  bytecode_array->values[bytecode_index + 1] = jump_offset;
+                  // TODO
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_TRUE) {
-                  
-                  assert(goto_if_block_end_bytecode_index_stack->length > 0);
-                  
-                  int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(goto_if_block_end_bytecode_index_stack);
-                  int32_t bytecode_index = *bytecode_index_ptr;
-                  
-                  // Jump offset
-                  int32_t jump_offset = bytecode_array->length - bytecode_index;
-                  
-                  // Set jump offset
-                  bytecode_array->values[bytecode_index + 1] = jump_offset;
+                  // TODO
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
-                  
-                  int32_t* goto_loop_start_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(goto_loop_start_bytecode_index_stack, goto_loop_start_bytecode_index_stack->length - 1);
-                  int32_t goto_loop_start_bytecode_index = *goto_loop_start_bytecode_index_ptr;
-                  
-                  // Jump offset
-                  int32_t goto_loop_start_offset = bytecode_array->length - goto_loop_start_bytecode_index;
-                  
-                  bytecode_array->values[goto_loop_start_bytecode_index + 1] = goto_loop_start_offset;
+                  // TODO
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-                  // TODO SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION);
-                  
-                  
-                  
-                  
-                  int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_catch_exception_bytecode_index_stack);
-                  int32_t bytecode_index = *bytecode_index_ptr;
-                  
-                  int32_t jump_offset_abs = bytecode_array->length - sub->bytecode_base;
-                  
-                  bytecode_array->values[bytecode_index + 1] = jump_offset_abs;
+                  // TODO
                 }
                 break;
               }
@@ -591,14 +328,7 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 
                 // Set last position
                 while (goto_last_bytecode_index_stack->length > 0) {
-                  
-                  int32_t* goto_last_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(goto_last_bytecode_index_stack);
-                  int32_t goto_last_bytecode_index = *goto_last_bytecode_index_ptr;
-                  
-                  // Last offset
-                  int32_t goto_last_offset = bytecode_array->length - goto_last_bytecode_index;
-                  
-                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
+                  // TODO
                 }
                 
                 break;
@@ -940,33 +670,11 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                   }
                 }
 
-                
-                
-                
-
-                int32_t bytecode_index = bytecode_array->length - 1;
-                
                 if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_IF) {
-                  int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                  *bytecode_index_ptr = bytecode_index;
-                  
-                  SPVM_DYNAMIC_ARRAY_push(if_bytecode_index_stack, bytecode_index_ptr);
-                  
-                  // Prepare for bytecode position of branch
-                  // TODO 0);
-                  
-                  
+                  // TODO
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
-                  assert(goto_loop_start_bytecode_index_stack->length > 0);
-                  
-                  int32_t* goto_loop_start_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(goto_loop_start_bytecode_index_stack);
-                  int32_t goto_loop_start_bytecode_index = *goto_loop_start_bytecode_index_ptr;
-                  
-                  // Jump offset
-                  int32_t goto_loop_start_offset = goto_loop_start_bytecode_index - (bytecode_array->length - 1) + 2;
-                  
-                  // TODO goto_loop_start_offset);
+                  // TODO
                 }
                 
                 break;
@@ -2225,14 +1933,6 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
           }
         }
       }
-      sub->bytecode_length = bytecode_array->length - sub->bytecode_base;
-      
-      // Set bytecode base to sub
-      SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-      memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub->id], sizeof(SPVM_CONSTANT_POOL_SUB));
-      constant_pool_sub.bytecode_base = sub->bytecode_base;
-      memcpy(&compiler->constant_pool->values[sub->id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
-      
     }
   }
 }
