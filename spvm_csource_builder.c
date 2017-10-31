@@ -34,72 +34,7 @@
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 
-
-void SPVM_CSOURCE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
-  
-  SPVM_VAR* var = op_inc->first->uv.var;
-  SPVM_MY_VAR* my_var = var->op_my_var->uv.my_var;
-  
-  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_inc);
-  if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_BYTE);
-    
-    
-    
-
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var->index);
-
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
-  }
-  else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_SHORT);
-    
-    
-    
-
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var->index);
-
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
-  }
-  else if (type->code == SPVM_TYPE_C_CODE_INT) {
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_INT);
-    
-    
-    
-
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var->index);
-
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
-  }
-  else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_LONG);
-    
-    
-    
-    
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var->index);
-
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
-  }
-}
-
-void SPVM_CSOURCE_BUILDER_push_load_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_var) {
-  
-  (void)compiler;
-  
-  SPVM_VAR* var = op_var->uv.var;
-  
-  int32_t my_var_index = var->op_my_var->uv.my_var->index;
-
-  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD);
-  
-  
-  
-  
-  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var_index);
-}
-
-void SPVM_CSOURCE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
+void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
   
   // Bytecode
   SPVM_BYTECODE_ARRAY* bytecode_array = compiler->bytecode_array;
@@ -1221,26 +1156,18 @@ void SPVM_CSOURCE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_PRE_INC: {
-                SPVM_CSOURCE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, 1);
-                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
                 
                 break;
               }
               case SPVM_OP_C_CODE_POST_INC: {
-                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
-                SPVM_CSOURCE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, 1);
                 
                 break;
               }
               case SPVM_OP_C_CODE_PRE_DEC: {
-                SPVM_CSOURCE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, -1);
-                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
                 
                 break;
               }
               case SPVM_OP_C_CODE_POST_DEC: {
-                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
-                SPVM_CSOURCE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, -1);
                 
                 break;
               }
@@ -2172,8 +2099,6 @@ void SPVM_CSOURCE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   break;
                 }
                 
-                SPVM_CSOURCE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur);
-                
                 break;
               }
               case SPVM_OP_C_CODE_PACKAGE_VAR: {
@@ -2250,10 +2175,7 @@ void SPVM_CSOURCE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                   }
                   else if (constant->type->code == SPVM_TYPE_C_CODE_LONG || constant->type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2);
-                    
-                    
-                    
+
                   }
                   else {
                     assert(0);
@@ -2261,7 +2183,6 @@ void SPVM_CSOURCE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   assert(constant->id != -1);
                   
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, constant->id);
                 }
                 
                 break;
