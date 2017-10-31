@@ -10,7 +10,7 @@ struct SPVM_sub_check_info {
 
   // my variable stack
   SPVM_DYNAMIC_ARRAY* op_my_var_stack;
-
+  
   // block my variable base position stack
   SPVM_DYNAMIC_ARRAY* block_my_var_base_stack;
 
