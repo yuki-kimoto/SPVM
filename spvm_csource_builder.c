@@ -1156,18 +1156,26 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_PRE_INC: {
+                // TODO
+                
                 
                 break;
               }
               case SPVM_OP_C_CODE_POST_INC: {
                 
+                // TODO
+                
                 break;
               }
               case SPVM_OP_C_CODE_PRE_DEC: {
+                // TODO
+                
                 
                 break;
               }
               case SPVM_OP_C_CODE_POST_DEC: {
+                
+                // TODO
                 
                 break;
               }
@@ -2098,6 +2106,8 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 if (op_cur->lvalue) {
                   break;
                 }
+                
+                // TODO
                 
                 break;
               }
