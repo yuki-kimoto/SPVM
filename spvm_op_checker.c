@@ -1612,7 +1612,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 else if (op_cur->code == SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED) {
                   create_tmp_var = 1;
                 }
-
+                else if (op_cur->code == SPVM_OP_C_CODE_COMPLEMENT) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_NEGATE) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_PLUS) {
+                  create_tmp_var = 1;
+                }
+                
                 // CALL_SUB which return value don't void
                 else if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
                   if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
