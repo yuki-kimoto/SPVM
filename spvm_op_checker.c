@@ -806,6 +806,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // Convert cur new op to var
                     SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                    op_new->uv = op_cur->uv;
                     
                     op_cur = op_new;
                   }
