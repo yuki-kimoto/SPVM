@@ -815,13 +815,14 @@ package TestCase {
   }
 
   sub spvm_new_object_array_len_element_byte_array($nums : byte[][]) : int {
+    
     if ($nums->[0][0] == (byte)1) {
       if ($nums->[0][1] == (byte)2) {
         if ($nums->[0][2] == (byte)3) {
           if ($nums->[1][0] == (byte)4) {
             if ($nums->[1][1] == (byte)5) {
               if ($nums->[1][2] == (byte)6) {
-                return ;
+                return 1;
               }
             }
           }
@@ -839,7 +840,7 @@ package TestCase {
           if ($nums->[1][0] == (short)4) {
             if ($nums->[1][1] == (short)5) {
               if ($nums->[1][2] == (short)6) {
-                return ;
+                return 1;
               }
             }
           }
@@ -857,7 +858,7 @@ package TestCase {
           if ($nums->[1][0] == 4) {
             if ($nums->[1][1] == 5) {
               if ($nums->[1][2] == 6) {
-                return ;
+                return 1;
               }
             }
           }
@@ -875,7 +876,7 @@ package TestCase {
           if ($nums->[1][0] == (long)4) {
             if ($nums->[1][1] == (long)5) {
               if ($nums->[1][2] == (long)6) {
-                return ;
+                return 1;
               }
             }
           }
@@ -893,7 +894,7 @@ package TestCase {
           if ($nums->[1][0] == (float)4) {
             if ($nums->[1][1] == (float)5) {
               if ($nums->[1][2] == (float)6) {
-                return ;
+                return 1;
               }
             }
           }
@@ -911,7 +912,7 @@ package TestCase {
           if ($nums->[1][0] == (double)4) {
             if ($nums->[1][1] == (double)5) {
               if ($nums->[1][2] == (double)6) {
-                return ;
+                return 1;
               }
             }
           }

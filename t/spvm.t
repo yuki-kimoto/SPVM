@@ -50,6 +50,22 @@ use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'std';
 
+  # element short array
+  {
+    my $object_array = SPVM::new_object_array_len("short[]", 3);
+    my $object1 = SPVM::new_short_array([1, 2, 3]);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::new_short_array([4, 5, 6]);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_short_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
+  }
+__END__
 # time
 {
   cmp_ok(abs(time - SPVM::std::time()), '<', 2);
