@@ -1573,9 +1573,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 if (op_cur->code == SPVM_OP_C_CODE_NEW) {
                   create_tmp_var = 1;
                 }
-                // CALL_SUB which return object
+                // CALL_SUB which return value don't void
                 else if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
-                  if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID && !SPVM_TYPE_is_numeric(compiler, tmp_var_type)) {
+                  if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
                     create_tmp_var = 1;
                   }
                 }
