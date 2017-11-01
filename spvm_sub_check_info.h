@@ -26,8 +26,6 @@ struct SPVM_sub_check_info {
   // op count
   int32_t op_count;
 
-  int32_t my_var_length;
-
   int32_t my_var_tmp_index;
 };
 

@@ -5,13 +5,13 @@
 
 enum {
   /* Fields count limit */
-  SPVM_LIMIT_C_FIELDS = 0xFFFF,
+  SPVM_LIMIT_C_FIELDS = INT32_MAX,
 
   /* Fields count our */
-  SPVM_LIMIT_C_OURS = 0xFFFF,
+  SPVM_LIMIT_C_OURS = INT32_MAX,
   
   /* Lexical variables count limit */
-  SPVM_LIMIT_C_MY_VARS = 0xFFFF,
+  SPVM_LIMIT_C_MY_VARS = INT32_MAX,
 
   /* Subroutines count limit */
   SPVM_LIMIT_C_SUBS = INT32_MAX,

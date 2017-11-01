@@ -32,13 +32,6 @@
 
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_SUB_CHECK_INFO* sub_check_info, const char* file, int32_t line) {
 
-  assert(sub_check_info->my_var_length <= SPVM_LIMIT_C_MY_VARS);
-  if (sub_check_info->my_var_length == SPVM_LIMIT_C_MY_VARS) {
-    SPVM_yyerror_format(compiler, "too many lexical variables(Temparay variable is created in new) at %s line %d\n", file, line);
-    compiler->fatal_error = 1;
-    return NULL;
-  }
-                    
   // Create temporary variable
   // my_var
   SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
@@ -55,7 +48,7 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   my_var->op_type->uv.type = type;
 
   // Index
-  my_var->index = sub_check_info->my_var_length++;
+  my_var->index = sub_check_info->op_my_vars->length;
 
   // op my_var
   SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, file, line);
@@ -1391,13 +1384,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_MY: {
                   SPVM_MY_VAR* my_var = op_cur->uv.my_var;
                   
-                  assert(sub_check_info->my_var_length <= SPVM_LIMIT_C_MY_VARS);
-                  if (sub_check_info->my_var_length == SPVM_LIMIT_C_MY_VARS) {
-                    SPVM_yyerror_format(compiler, "too many lexical variables, my \"%s\" ignored at %s line %d\n", my_var->op_name->uv.name, op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
                   // Search same name variable
                   _Bool found = 0;
                   
@@ -1424,7 +1410,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   else {
-                    my_var->index = sub_check_info->my_var_length++;
+                    my_var->index = sub_check_info->op_my_vars->length;
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_cur);
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_var_stack, op_cur);
                   }
