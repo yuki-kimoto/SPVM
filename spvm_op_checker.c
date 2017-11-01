@@ -1367,8 +1367,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     int32_t i;
                     for (i = sub_check_info->op_my_var_stack->length - 1; i >= 0; i--) {
                       SPVM_OP* op_my_var = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_var_stack, i);
-                      SPVM_MY_VAR* my_var_tmp = op_my_var->uv.my_var;
-                      if (strcmp(var->op_name->uv.name, my_var_tmp->op_name->uv.name) == 0) {
+                      SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
+                      if (strcmp(var->op_name->uv.name, my_var->op_name->uv.name) == 0) {
                         found_op_my_var = op_my_var;
                         break;
                       }
