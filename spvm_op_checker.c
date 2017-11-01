@@ -1506,7 +1506,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, call_sub->sub->op_return_type);
                   
                   // If CALL_SUB is is not rvalue and return type is object, temparary variable is created, and assinged.
-                  if (!op_cur->rvalue && (return_type->code != SPVM_TYPE_C_CODE_VOID && !SPVM_TYPE_is_numeric(compiler, return_type))) {
+                  if (!op_cur->rvalue && (return_type->code != SPVM_TYPE_C_CODE_VOID)) {
 
                     // Create temporary variable
                     SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, call_sub->sub->op_return_type);
