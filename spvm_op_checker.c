@@ -790,8 +790,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (!op_cur->rvalue) {
                     
                     // Create temporary variable
-                    SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_cur->first);
-                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
+                    SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
+                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, tmp_var_type, sub_check_info, op_cur->file, op_cur->line);
                     if (op_var_tmp == NULL) {
                       return;
                     }
