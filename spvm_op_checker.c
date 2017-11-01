@@ -790,18 +790,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     
                     // Cut new op
-                    SPVM_OP* op_new = op_cur;
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_new);
+                    SPVM_OP* op_target = op_cur;
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
 
                     // Assing op
                     SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                    SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_new);
+                    SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
                     
                     // Convert cur new op to var
                     SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                    op_new->uv = op_cur->uv;
+                    op_target->uv = op_cur->uv;
                     
-                    op_cur = op_new;
+                    op_cur = op_target;
                   }
 
                   break;
