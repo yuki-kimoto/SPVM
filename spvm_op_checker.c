@@ -1592,31 +1592,31 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   op_cur = op_target;
                 }
                 
-                // If CALL_SUB is is not rvalue and return type is object, temparary variable is created, and assinged.
-                if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB && !op_cur->rvalue && (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID && !SPVM_TYPE_is_numeric(compiler, tmp_var_type))) {
+                else if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
+                  if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID && !SPVM_TYPE_is_numeric(compiler, tmp_var_type)) {
+                    
+                    // Create temporary variable
+                    SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_cur);
+                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
+                    if (op_var_tmp == NULL) {
+                      return;
+                    }
+                    
+                    // Call sub op
+                    SPVM_OP* op_target = op_cur;
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
 
-                  // Create temporary variable
-                  SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_cur);
-                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
-                  if (op_var_tmp == NULL) {
-                    return;
+                    // Assing op
+                    SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
+                    SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
+                    
+                    // Convert cur call_sub op to var
+                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                    op_target->uv = op_cur->uv;
+                    
+                    op_cur = op_target;
                   }
-                  
-                  // Call sub op
-                  SPVM_OP* op_target = op_cur;
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
-
-                  // Assing op
-                  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                  SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
-                  
-                  // Convert cur call_sub op to var
-                  SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                  op_target->uv = op_cur->uv;
-                  
-                  op_cur = op_target;
                 }
-                
               }
               
               // [END]Postorder traversal position
