@@ -190,6 +190,18 @@ SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   return op_type_new;
 }
 
+SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+
+  // Temparary variable name
+  char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@@tmp2147483647"));
+  sprintf(name, "@@tmp%d", compiler->tmp_var_index++);
+  SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, name, file, line);
+  
+  SPVM_OP* op_var_tmp = SPVM_OP_new_op_var(compiler, op_name);
+  
+  return op_var_tmp;
+}
+
 SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line) {
   
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);

@@ -119,6 +119,8 @@ struct SPVM_compiler {
   // Package Variable id
   int32_t package_var_length;
   
+  int32_t tmp_var_index;
+  
   // Native subroutines
   SPVM_DYNAMIC_ARRAY* native_subs;
   
