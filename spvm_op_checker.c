@@ -1362,22 +1362,22 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_VAR* var = op_cur->uv.var;
                   
                   // Search same name variable
-                  SPVM_OP* found_op_my_var = NULL;
+                  SPVM_OP* op_my_var = NULL;
                   {
                     int32_t i;
                     for (i = sub_check_info->op_my_var_stack->length - 1; i >= 0; i--) {
-                      SPVM_OP* op_my_var = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_var_stack, i);
-                      SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
-                      if (strcmp(var->op_name->uv.name, my_var->op_name->uv.name) == 0) {
-                        found_op_my_var = op_my_var;
+                      SPVM_OP* op_my_var_tmp = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_var_stack, i);
+                      SPVM_MY_VAR* my_var_tmp = op_my_var_tmp->uv.my_var;
+                      if (strcmp(var->op_name->uv.name, my_var_tmp->op_name->uv.name) == 0) {
+                        op_my_var = op_my_var_tmp;
                         break;
                       }
                     }
                   }
                   
-                  if (found_op_my_var) {
+                  if (op_my_var) {
                     // Add my var information to var
-                    var->op_my_var = found_op_my_var;
+                    var->op_my_var = op_my_var;
                   }
                   else {
                     // Error
@@ -1515,7 +1515,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       return;
                     }
                     
-                    // New op
+                    // Call sub op
                     SPVM_OP* op_call_sub = op_cur;
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_call_sub);
 
@@ -1525,7 +1525,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // Convert cur call_sub op to var
                     SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                    op_call_sub->uv.call_sub = call_sub;
+                    op_call_sub->uv = op_cur->uv;
                     
                     op_cur = op_call_sub;
                   }
