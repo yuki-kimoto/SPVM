@@ -778,31 +778,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   else {
                     assert(0);
                   }
-                  
-                  // If NEW is not rvalue, temparary variable is created, and assinged.
-                  if (!op_cur->rvalue) {
-                    
-                    // Create temporary variable
-                    SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
-                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, tmp_var_type, sub_check_info, op_cur->file, op_cur->line);
-                    if (op_var_tmp == NULL) {
-                      return;
-                    }
-                    
-                    // Cut new op
-                    SPVM_OP* op_target = op_cur;
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
-
-                    // Assing op
-                    SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                    SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
-                    
-                    // Convert cur new op to var
-                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                    op_target->uv = op_cur->uv;
-                    
-                    op_cur = op_target;
-                  }
 
                   break;
                 }
@@ -1615,6 +1590,37 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                 }
                 break;
+              }
+              
+              // Create temporary variable for no rvalue term witch is not variable
+              if (!op_cur->rvalue) {
+                int32_t create_tmp_var = 0;
+                if (op_cur->code == SPVM_OP_C_CODE_NEW) {
+                  create_tmp_var = 1;
+                }
+                
+                if (create_tmp_var) {
+                  // Create temporary variable
+                  SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
+                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, tmp_var_type, sub_check_info, op_cur->file, op_cur->line);
+                  if (op_var_tmp == NULL) {
+                    return;
+                  }
+                  
+                  // Cut new op
+                  SPVM_OP* op_target = op_cur;
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
+
+                  // Assing op
+                  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
+                  SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
+                  
+                  // Convert cur new op to var
+                  SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                  op_target->uv = op_cur->uv;
+                  
+                  op_cur = op_target;
+                }
               }
               
               // [END]Postorder traversal position
