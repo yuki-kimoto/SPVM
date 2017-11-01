@@ -108,6 +108,10 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_MACRO_BIT_XOR_INT(x, y) ((int32_t)x ^ (int32_t)y)\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_MACRO_BIT_XOR_LONG(x, y) ((int64_t)x ^ (int64_t)y)\n");
 
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_MACRO_AND(x, y) ((x) && (y))\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_MACRO_OR(x, y) ((x) || (y))\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_MACRO_NOT(x) (!(x))\n");
+
   // warn("AAAAAAAA\n%s", string_buffer->buffer);
   
   {
