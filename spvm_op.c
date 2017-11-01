@@ -899,11 +899,14 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_CODE_BIT_AND:
     case SPVM_OP_C_CODE_PLUS:
     case SPVM_OP_C_CODE_NEGATE:
-    case SPVM_OP_C_CODE_ASSIGN:
     case SPVM_OP_C_CODE_NEW:
     case SPVM_OP_C_CODE_ARRAY_INIT:
     {
       type = SPVM_OP_get_type(compiler, op->first);
+      break;
+    }
+    case SPVM_OP_C_CODE_ASSIGN: {
+      type = SPVM_OP_get_type(compiler, op->last);
       break;
     }
     case SPVM_OP_C_CODE_RETURN: {
