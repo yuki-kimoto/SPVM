@@ -437,8 +437,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_first = op_cur->first;
                   SPVM_OP* op_last = op_cur->last;
                   
+                  // undef == undef
+                  if (op_first->code == SPVM_OP_C_CODE_UNDEF && op_first->code == SPVM_OP_C_CODE_UNDEF) {
+                    // Replace to 1
+                    SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
+                    
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
+                  }
                   // term == term
-                  if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
+                  else if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                     SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                     
