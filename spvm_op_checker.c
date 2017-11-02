@@ -524,6 +524,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_first = op_cur->first;
                   SPVM_OP* op_last = op_cur->last;
 
+                  // undef == undef
+                  if (op_first->code == SPVM_OP_C_CODE_UNDEF && op_last->code == SPVM_OP_C_CODE_UNDEF) {
+                    // Replace to 0
+                    SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
+                    
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
+                    
+                    op_cur = op_constant_true;
+                  }
                   // term != term
                   if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
@@ -559,6 +569,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       compiler->fatal_error = 1;
                       return;
                     }
+
+                    // Cut term
+                    SPVM_OP_cut_op(compiler, op_first);
+                    
+                    // Replace ne op to op_first
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    SPVM_OP_replace_op(compiler, op_stab, op_first);
+                    
+                    op_cur = op_first;
                   }
                   // undef != term
                   else if (op_first->code == SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
@@ -569,6 +588,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       compiler->fatal_error = 1;
                       return;
                     }
+                    
+                    // Cut term
+                    SPVM_OP_cut_op(compiler, op_last);
+                    
+                    // Replace ne op to op_last
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    SPVM_OP_replace_op(compiler, op_stab, op_last);
+                    
+                    op_cur = op_last;
                   }
                   
                   break;
