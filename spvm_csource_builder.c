@@ -201,7 +201,6 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_BLOCK:
                 case SPVM_OP_C_CODE_NAME:
                 case SPVM_OP_C_CODE_MY:
-                case SPVM_OP_C_CODE_ASSIGN_PROCESS:
                 case SPVM_OP_C_CODE_TYPE:
                 case SPVM_OP_C_CODE_POP:
                   is_operation = 0;

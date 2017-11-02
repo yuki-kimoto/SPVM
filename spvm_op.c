@@ -112,7 +112,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "EVAL",
   "BLOCK_END",
   "EXCEPTION_VAR",
-  "ASSIGN_PROCESS",
   "NEW",
   "STAB",
   "BYTE",
@@ -885,9 +884,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   switch (op->code) {
     case SPVM_OP_C_CODE_CONCAT_STRING:
       type = SPVM_TYPE_get_string_type(compiler);
-      break;
-    case SPVM_OP_C_CODE_ASSIGN_PROCESS:
-      type = SPVM_OP_get_type(compiler, op->first);
       break;
     case SPVM_OP_C_CODE_ARRAY_LENGTH:
       type = SPVM_TYPE_get_int_type(compiler);
@@ -2290,9 +2286,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
     op_assign->code = SPVM_OP_C_CODE_ASSIGN;
   }
   
-  // Stab to add after process
-  SPVM_OP* op_assign_process = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN_PROCESS, op_assign->file, op_assign->line);
-  
   // Build op
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_first);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_last);
@@ -2300,14 +2293,14 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   op_assign->first->lvalue = 1;
   op_assign->last->rvalue = 1;
   
+  SPVM_OP* op_parent;
+  
   // Return variable if first children is var
   if (op_first->code == SPVM_OP_C_CODE_VAR) {
     SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
     op_var->uv.var = op_first->uv.var;
     SPVM_OP_insert_child(compiler, op_var, op_var->last, op_assign);
     
-    SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_var);
-
     // Array initialization
     if (op_last->code == SPVM_OP_C_CODE_ARRAY_INIT) {
       
@@ -2371,7 +2364,10 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
         SPVM_OP_insert_to_most_left_deep_child(compiler, op_list_new, op_assign);
       }
       
-      SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_list_new);
+      op_parent = op_list_new;
+    }
+    else {
+      op_parent = op_var;
     }
   }
   else if (op_first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
@@ -2380,13 +2376,13 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
     
     SPVM_OP_insert_child(compiler, op_package_var, op_package_var->last, op_assign);
     
-    SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_package_var);
+    op_parent = op_package_var;
   }
   else {
-    SPVM_OP_insert_child(compiler, op_assign_process, op_assign_process->last, op_assign);
+    op_parent = op_assign;
   }
   
-  return op_assign_process;
+  return op_parent;
 }
 
 

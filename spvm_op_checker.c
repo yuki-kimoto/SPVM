@@ -1471,7 +1471,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_term_invocker = op_cur->first;
                   SPVM_OP* op_name = op_cur->last;
                   
-                  if (op_term_invocker->code == SPVM_OP_C_CODE_ASSIGN_PROCESS) {
+                  if (op_term_invocker->code == SPVM_OP_C_CODE_ASSIGN) {
                     op_term_invocker = op_term_invocker->first;
                   }
                   
