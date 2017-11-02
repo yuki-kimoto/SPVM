@@ -503,6 +503,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       compiler->fatal_error = 1;
                       return;
                     }
+
+                    // Cut term
+                    SPVM_OP_cut_op(compiler, op_last);
+                    
+                    // Replace to not op
+                    SPVM_OP* op_not = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NOT, op_cur->file, op_cur->line);
+
+                    op_not = SPVM_OP_build_not(compiler, op_not, op_last);
+
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    SPVM_OP_replace_op(compiler, op_stab, op_not);
+                    
+                    op_cur = op_not;
                   }
                   
                   break;
