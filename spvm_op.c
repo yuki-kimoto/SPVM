@@ -2292,6 +2292,8 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   
   SPVM_OP* op_parent;
   
+  op_assign->last->is_assign_right = 1;
+  
   // Return variable if first children is var
   if (op_first->code == SPVM_OP_C_CODE_VAR) {
     op_assign->last->is_var_assign_right = 1;
