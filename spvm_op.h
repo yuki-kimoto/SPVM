@@ -208,7 +208,7 @@ struct SPVM_op {
   int32_t flag;
   int32_t line;
   _Bool moresib;
-  _Bool lvalue;
+  _Bool is_assign_left;
   _Bool rvalue;
 };
 

@@ -1247,7 +1247,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_POST_DEC: {
                   SPVM_OP* op_first = op_cur->first;
                   if (op_first->code != SPVM_OP_C_CODE_VAR) {
-                    SPVM_yyerror_format(compiler, "invalid lvalue in increment at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "invalid is_assign_left in increment at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1260,7 +1260,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  op_cur->first->lvalue = 1;
+                  op_cur->first->is_assign_left = 1;
                   
                   break;
                 }

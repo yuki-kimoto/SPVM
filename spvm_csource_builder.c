@@ -270,7 +270,7 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_CODE_CALL_FIELD: {
                 
-                if (!op_cur->lvalue) {
+                if (!op_cur->is_assign_left) {
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                   
                   // Weaken field
@@ -1055,7 +1055,7 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_CODE_ARRAY_ELEM: {
                 
-                if (op_cur->lvalue) {
+                if (op_cur->is_assign_left) {
                   break;
                 }
                 
@@ -1887,7 +1887,7 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_VAR: {
-                if (op_cur->lvalue) {
+                if (op_cur->is_assign_left) {
                   break;
                 }
                 
@@ -1896,7 +1896,7 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_PACKAGE_VAR: {
-                if (op_cur->lvalue) {
+                if (op_cur->is_assign_left) {
                   break;
                 }
                 
@@ -1914,7 +1914,7 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_EXCEPTION_VAR: {
-                if (op_cur->lvalue) {
+                if (op_cur->is_assign_left) {
                   break;
                 }
                 
