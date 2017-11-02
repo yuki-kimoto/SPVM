@@ -1559,6 +1559,7 @@ is_deeply(
   ok(SPVM::TestCase::if_ne_double_different());
   ok(SPVM::TestCase::if_ne_object_same());
   ok(SPVM::TestCase::if_ne_object_different());
+  ok(SPVM::TestCase::if_ne_undef());
 }
 
 # Number literal
