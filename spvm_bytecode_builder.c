@@ -784,28 +784,20 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_NE_ZERO);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_GT_CMP);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GT_INT);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_NE_ZERO);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CMP_LONG);
-                    
-                    
-                    
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_GT_ZERO);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GT_LONG);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_NE_ZERO);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CMP_FLOAT_L);
-                    
-                    
-                    
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_GT_ZERO);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GT_FLOAT);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_NE_ZERO);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CMP_DOUBLE_L);
-                    
-                    
-                    
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_GT_ZERO);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GT_DOUBLE);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_NE_ZERO);
                   }
                   else {
                     assert(0);
