@@ -395,38 +395,6 @@ our_var
       $$ = SPVM_OP_build_our(compiler, $2, $4);
     }
 
-expression
-  : LAST
-  | NEXT
-  | RETURN {
-      $$ = SPVM_OP_build_return(compiler, $1, NULL);
-    }
-  | RETURN term
-    {
-      $$ = SPVM_OP_build_return(compiler, $1, $2);
-    }
-  | CROAK
-    {
-      $$ = SPVM_OP_build_croak(compiler, $1, NULL);
-    }
-  | CROAK term
-    {
-      $$ = SPVM_OP_build_croak(compiler, $1, $2);
-    }
-  | call_field ASSIGN term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | array_elem ASSIGN term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | EXCEPTION_VAR ASSIGN term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | weaken_field
-
 opt_terms
   :	/* Empty */
     {
@@ -531,6 +499,38 @@ term
   | new_object
   | array_length
   | my_var
+
+expression
+  : LAST
+  | NEXT
+  | RETURN {
+      $$ = SPVM_OP_build_return(compiler, $1, NULL);
+    }
+  | RETURN term
+    {
+      $$ = SPVM_OP_build_return(compiler, $1, $2);
+    }
+  | CROAK
+    {
+      $$ = SPVM_OP_build_croak(compiler, $1, NULL);
+    }
+  | CROAK term
+    {
+      $$ = SPVM_OP_build_croak(compiler, $1, $2);
+    }
+  | call_field ASSIGN term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
+  | array_elem ASSIGN term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
+  | EXCEPTION_VAR ASSIGN term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
+  | weaken_field
 
 new_object
   : NEW type_name

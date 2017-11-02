@@ -133,6 +133,26 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "ARRAY_INIT",
 };
 
+void SPVM_OP_add_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op_parent, SPVM_OP* op_child) {
+  
+  assert(op_parent);
+  assert(op_parent->first);
+  
+  SPVM_OP* op_most_left_deep_child_of_parent = op_parent->first;
+  
+  while (1) {
+    if (op_parent->first) {
+      op_most_left_deep_child_of_parent = op_parent->first;
+      continue;
+    }
+    else {
+      break;
+    }
+  }
+  
+  SPVM_OP_insert_child(compiler, op_most_left_deep_child_of_parent, op_most_left_deep_child_of_parent->last, op_child);
+}
+
 SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term) {
   
   SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_INIT, op_type->file, op_type->line);
