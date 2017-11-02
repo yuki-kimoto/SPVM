@@ -209,7 +209,7 @@ struct SPVM_op {
   int32_t line;
   _Bool moresib;
   _Bool is_assign_left;
-  _Bool rvalue;
+  _Bool is_var_assign_right;
 };
 
 void SPVM_OP_insert_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op_parent, SPVM_OP* op_child);

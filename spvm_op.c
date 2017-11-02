@@ -2290,7 +2290,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_last);
   
   op_assign->first->is_assign_left = 1;
-  op_assign->last->rvalue = 1;
+  op_assign->last->is_var_assign_right = 1;
   
   SPVM_OP* op_parent;
   
@@ -2356,7 +2356,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
           SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_term);
           
           op_assign_array->first->is_assign_left = 1;
-          op_assign_array->last->rvalue = 1;
+          op_assign_array->last->is_var_assign_right = 1;
           
           SPVM_OP_insert_child(compiler, op_list_new, op_list_new->last, op_assign_array);
         }
@@ -2402,7 +2402,7 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_term);
   
   op_assign->first->is_assign_left = 1;
-  op_assign->last->rvalue = 1;
+  op_assign->last->is_var_assign_right = 1;
   
   SPVM_OP_insert_child(compiler, op_croak, op_croak->last, op_assign);
   
