@@ -3101,9 +3101,15 @@ package TestCase {
   }
 
   # If a == b
-  sub if_eq_undef_undef () : int {
+  sub if_eq_undef () : int {
+    my $test_case : TestCase = undef;
+    
     if (undef == undef) {
-      return 1;
+      if ($test_case == undef) {
+        if (undef == $test_case) {
+          return 1;
+        }
+      }
     }
     
     return 0;

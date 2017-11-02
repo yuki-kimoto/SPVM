@@ -2227,7 +2227,6 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
   return op_if;
 }
 
-
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   if (op_assign->code == SPVM_OP_C_CODE_SPECIAL_ASSIGN) {
