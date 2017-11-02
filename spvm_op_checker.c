@@ -1548,7 +1548,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               // Create temporary variable for no is_var_assign_right term witch is not variable
               int32_t create_tmp_var = 0;
               SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
-              if (!op_cur->is_var_assign_right) {
+              if (!op_cur->is_assign_left && !op_cur->is_var_assign_right) {
                 // Numeric constant
                 if (op_cur->code == SPVM_OP_C_CODE_CONSTANT) {
                   if (SPVM_TYPE_is_numeric(compiler, tmp_var_type) && op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
