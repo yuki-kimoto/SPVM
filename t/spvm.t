@@ -1540,6 +1540,7 @@ is_deeply(
   ok(SPVM::TestCase::if_eq_double_different());
   ok(SPVM::TestCase::if_eq_object_same());
   ok(SPVM::TestCase::if_eq_object_different());
+  ok(SPVM::TestCase::if_eq_undef_undef());
 }
 
 # If a != b
