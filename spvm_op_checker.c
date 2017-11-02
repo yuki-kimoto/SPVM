@@ -1551,7 +1551,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               if (!op_cur->rvalue) {
                 // Numeric constant
                 if (op_cur->code == SPVM_OP_C_CODE_CONSTANT) {
-                  if (SPVM_TYPE_is_numeric(compiler, tmp_var_type)) {
+                  if (SPVM_TYPE_is_numeric(compiler, tmp_var_type) && op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
                     create_tmp_var = 1;
                   }
                 }
