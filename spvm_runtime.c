@@ -219,6 +219,46 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index++;;
         break;
       }
+      case SPVM_BYTECODE_C_CODE_GT_SHORT: {
+        int32_t success = call_stack[operand_stack_top - 1].short_value > call_stack[operand_stack_top].short_value;
+        call_stack[operand_stack_top - 1].int_value = success;
+        
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_GT_INT: {
+        int32_t success = call_stack[operand_stack_top - 1].int_value > call_stack[operand_stack_top].int_value;
+        call_stack[operand_stack_top - 1].int_value = success;
+        
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_GT_LONG: {
+        int32_t success = call_stack[operand_stack_top - 1].long_value > call_stack[operand_stack_top].long_value;
+        call_stack[operand_stack_top - 1].int_value = success;
+        
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_GT_FLOAT: {
+        int32_t success = call_stack[operand_stack_top - 1].float_value > call_stack[operand_stack_top].float_value;
+        call_stack[operand_stack_top - 1].int_value = success;
+        
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_GT_DOUBLE: {
+        int32_t success = call_stack[operand_stack_top - 1].double_value > call_stack[operand_stack_top].double_value;
+        call_stack[operand_stack_top - 1].int_value = success;
+        
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      }
       case SPVM_BYTECODE_C_CODE_ADD_BYTE:
         call_stack[operand_stack_top - 1].byte_value += call_stack[operand_stack_top].byte_value;
         operand_stack_top--;
