@@ -531,6 +531,14 @@ expression
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | weaken_field
+  | PACKAGE_VAR ASSIGN term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
+  | PACKAGE_VAR SPECIAL_ASSIGN term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
 
 new_object
   : NEW type_name
@@ -668,14 +676,6 @@ binop
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | VAR SPECIAL_ASSIGN term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | PACKAGE_VAR ASSIGN term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | PACKAGE_VAR SPECIAL_ASSIGN term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
