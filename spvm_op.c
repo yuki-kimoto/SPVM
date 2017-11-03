@@ -812,15 +812,15 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   return op_block_outer;
 }
 
-SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_while, SPVM_OP* op_term, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_while, SPVM_OP* op_term_condition, SPVM_OP* op_block) {
   
   // Loop
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LOOP, op_while->file, op_while->line);
   
   // Condition
-  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION_NOT, op_term->file, op_term->line);
+  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION_NOT, op_term_condition->file, op_term_condition->line);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
-  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term);
+  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
   
   // Set block flag
   op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
@@ -836,7 +836,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   return op_block_outer;
 }
 
-SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_term, SPVM_OP* op_block_true, SPVM_OP* op_block_false) {
+SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_term_condition, SPVM_OP* op_block_true, SPVM_OP* op_block_false) {
   
   // ELSIF is same as IF
   if (op_if->code == SPVM_OP_C_CODE_ELSIF) {
@@ -844,9 +844,9 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   }
   
   // Condition
-  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION, op_term->file, op_term->line);
+  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION, op_term_condition->file, op_term_condition->line);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
-  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term);
+  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
 
   // Create true block if needed
   if (op_block_true->code != SPVM_OP_C_CODE_BLOCK) {
