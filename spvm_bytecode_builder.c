@@ -580,7 +580,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_BLOCK: {
-                if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
+                if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_TRUE) {
                   
                   {
                     // Prepare to jump to end of true block
@@ -610,7 +610,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Set jump offset
                   bytecode_array->values[bytecode_index + 1] = jump_offset;
                 }
-                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_TRUE) {
+                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
                   
                   assert(goto_if_block_end_bytecode_index_stack->length > 0);
                   
