@@ -1439,6 +1439,11 @@ is_deeply(
 # a > b
 {
   ok(SPVM::TestCase::gt_byte());
+  ok(SPVM::TestCase::gt_short());
+  ok(SPVM::TestCase::gt_int());
+  ok(SPVM::TestCase::gt_long());
+  ok(SPVM::TestCase::gt_float());
+  ok(SPVM::TestCase::gt_double());
 }
 
 # If a > b

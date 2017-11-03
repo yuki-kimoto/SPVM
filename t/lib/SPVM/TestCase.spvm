@@ -3117,9 +3117,84 @@ package TestCase {
 
   # If a > b
   sub gt_byte () : int {
-    my $ret1 = 2y > 1y;
-    my $ret2 = 2y > 2y;
-    my $ret3 = 2y > 3y;
+    my $ret1 = (byte)2 > (byte)1;
+    my $ret2 = (byte)2 > (byte)2;
+    my $ret3 = (byte)2 > (byte)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub gt_short () : int {
+    my $ret1 = (short)2 > (short)1;
+    my $ret2 = (short)2 > (short)2;
+    my $ret3 = (short)2 > (short)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub gt_int () : int {
+    my $ret1 = (int)2 > (int)1;
+    my $ret2 = (int)2 > (int)2;
+    my $ret3 = (int)2 > (int)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub gt_long () : int {
+    my $ret1 = (long)2 > (long)1;
+    my $ret2 = (long)2 > (long)2;
+    my $ret3 = (long)2 > (long)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub gt_float () : int {
+    my $ret1 = (float)2 > (float)1;
+    my $ret2 = (float)2 > (float)2;
+    my $ret3 = (float)2 > (float)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub gt_double () : int {
+    my $ret1 = (double)2 > (double)1;
+    my $ret2 = (double)2 > (double)2;
+    my $ret3 = (double)2 > (double)3;
     
     if ($ret1 == 1) {
       if ($ret2 == 0) {
