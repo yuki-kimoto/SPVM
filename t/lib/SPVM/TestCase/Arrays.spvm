@@ -168,7 +168,8 @@ package TestCase::Arrays {
     
     my $values = new byte[] {0y, 1y, 2y};
     
-    my $values2 = Arrays::copy_of_byte($values, len $values - 1);
+    my $length = len $values - 1;
+    my $values2 = Arrays::copy_of_byte($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0y) {
@@ -253,7 +254,8 @@ package TestCase::Arrays {
     
     my $values = new short[] {0s, 1s, 2s};
     
-    my $values2 = Arrays::copy_of_short($values, len $values - 1);
+    my $length = len $values - 1;
+    my $values2 = Arrays::copy_of_short($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0s) {
@@ -339,7 +341,8 @@ package TestCase::Arrays {
     
     my $values = new int[] {0, 1, 2};
     
-    my $values2 = Arrays::copy_of_int($values, len $values - 1);
+    my $length = len $values - 1;
+    my $values2 = Arrays::copy_of_int($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0) {
@@ -424,7 +427,8 @@ package TestCase::Arrays {
     
     my $values = new long[] {0L, 1L, 2L};
     
-    my $values2 = Arrays::copy_of_long($values, len $values - 1);
+    my $length = len $values - 1;
+    my $values2 = Arrays::copy_of_long($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0L) {
@@ -509,7 +513,8 @@ package TestCase::Arrays {
     
     my $values = new float[] {0f, 1f, 2f};
     
-    my $values2 = Arrays::copy_of_float($values, len $values - 1);
+    my $length = len $values - 1;
+    my $values2 = Arrays::copy_of_float($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0f) {
@@ -594,7 +599,8 @@ package TestCase::Arrays {
     
     my $values = new double[] {0d, 1d, 2d};
     
-    my $values2 = Arrays::copy_of_double($values, len $values - 1);
+    my $length = len $values - 1;
+    my $values2 = Arrays::copy_of_double($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0d) {

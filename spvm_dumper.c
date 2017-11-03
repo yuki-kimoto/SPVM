@@ -503,6 +503,12 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_REG_ADD_LONG:
         case SPVM_BYTECODE_C_CODE_REG_ADD_FLOAT:
         case SPVM_BYTECODE_C_CODE_REG_ADD_DOUBLE:
+        case SPVM_BYTECODE_C_CODE_REG_SUBTRACT_BYTE:
+        case SPVM_BYTECODE_C_CODE_REG_SUBTRACT_SHORT:
+        case SPVM_BYTECODE_C_CODE_REG_SUBTRACT_INT:
+        case SPVM_BYTECODE_C_CODE_REG_SUBTRACT_LONG:
+        case SPVM_BYTECODE_C_CODE_REG_SUBTRACT_FLOAT:
+        case SPVM_BYTECODE_C_CODE_REG_SUBTRACT_DOUBLE:
         {
           i++;
           bytecode = bytecode_array->values[i];
