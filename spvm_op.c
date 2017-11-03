@@ -522,6 +522,11 @@ void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** o
 void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace) {
   (void)compiler;
 
+  // Get parent op
+  SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
+  
+  _Bool op_target_is_last_child = op_parent->last == op_target;
+
   // Get before op
   _Bool next_is_child;
   SPVM_OP* op_before;
@@ -544,10 +549,19 @@ void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op
   }
   op_replace->moresib = op_target->moresib;
   op_replace->sibparent = op_target->sibparent;
+
+  if (op_target_is_last_child) {
+    op_parent->last = op_replace;
+  }
 }
 
 // Cut op and insert stab into original position and return stab
 SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
+  // Get parent op
+  SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
+  
+  _Bool op_target_is_last_child = op_parent->last == op_target;
+
   // Get before op
   _Bool next_is_child;
   SPVM_OP* op_before;
@@ -576,6 +590,10 @@ SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   // Clear target
   op_target->moresib = 0;
   op_target->sibparent = NULL;
+  
+  if (op_target_is_last_child) {
+    op_parent->last = op_stab;
+  }
   
   return op_stab;
 }
