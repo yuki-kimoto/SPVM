@@ -516,27 +516,27 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_BYTECODE_C_CODE_BOOL_BYTE:
-        call_stack[operand_stack_top - 1].int_value = !!call_stack[operand_stack_top].byte_value;
+        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].byte_value;
         bytecode_index++;;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_SHORT:
-        call_stack[operand_stack_top - 1].int_value = !!call_stack[operand_stack_top].short_value;
+        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].short_value;
         bytecode_index++;;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_INT:
-        call_stack[operand_stack_top - 1].int_value = !!call_stack[operand_stack_top].int_value;
+        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].int_value;
         bytecode_index++;;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_LONG:
-        call_stack[operand_stack_top - 1].int_value = !!call_stack[operand_stack_top].long_value;
+        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].long_value;
         bytecode_index++;;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_FLOAT:
-        call_stack[operand_stack_top - 1].int_value = !!call_stack[operand_stack_top].float_value;
+        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].float_value;
         bytecode_index++;;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_DOUBLE:
-        call_stack[operand_stack_top - 1].int_value = !!call_stack[operand_stack_top].double_value;
+        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].double_value;
         bytecode_index++;;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_OBJECT:
