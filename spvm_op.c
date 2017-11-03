@@ -131,7 +131,22 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "OUR",
   "PACKAGE_VAR",
   "ARRAY_INIT",
+  "BOOL",
 };
+
+_Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  switch (op->code) {
+    case SPVM_OP_C_CODE_EQ:
+    case SPVM_OP_C_CODE_NE:
+    case SPVM_OP_C_CODE_GT:
+    case SPVM_OP_C_CODE_GE:
+    case SPVM_OP_C_CODE_LT:
+    case SPVM_OP_C_CODE_LE:
+      return 1;
+  }
+  
+  return 0;
+}
 
 void SPVM_OP_insert_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op_parent, SPVM_OP* op_child) {
   

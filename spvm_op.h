@@ -130,6 +130,7 @@ enum {
   SPVM_OP_C_CODE_OUR,
   SPVM_OP_C_CODE_PACKAGE_VAR,
   SPVM_OP_C_CODE_ARRAY_INIT,
+  SPVM_OP_C_CODE_BOOL,
 };
 
 extern const char* const SPVM_OP_C_CODE_NAMES[];
