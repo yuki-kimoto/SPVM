@@ -891,29 +891,35 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         bytecode_index += 4;
         break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_BYTE:
-        call_stack[operand_stack_top].byte_value = -call_stack[operand_stack_top].byte_value;
-        bytecode_index++;;
+      case SPVM_BYTECODE_C_CODE_REG_NEGATE_BYTE:
+        call_stack[bytecodes[bytecode_index + 1]].byte_value = -call_stack[bytecodes[bytecode_index + 2]].byte_value;
+        
+        bytecode_index += 3;
         break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_SHORT:
-        call_stack[operand_stack_top].short_value = -call_stack[operand_stack_top].short_value;
-        bytecode_index++;;
+      case SPVM_BYTECODE_C_CODE_REG_NEGATE_SHORT:
+        call_stack[bytecodes[bytecode_index + 1]].short_value = -call_stack[bytecodes[bytecode_index + 2]].short_value;
+        
+        bytecode_index += 3;
         break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_INT:
-        call_stack[operand_stack_top].int_value = -call_stack[operand_stack_top].int_value;
-        bytecode_index++;;
+      case SPVM_BYTECODE_C_CODE_REG_NEGATE_INT:
+        call_stack[bytecodes[bytecode_index + 1]].int_value = -call_stack[bytecodes[bytecode_index + 2]].int_value;
+        
+        bytecode_index += 3;
         break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_LONG:
-        call_stack[operand_stack_top].long_value = -call_stack[operand_stack_top].long_value;
-        bytecode_index++;;
+      case SPVM_BYTECODE_C_CODE_REG_NEGATE_LONG:
+        call_stack[bytecodes[bytecode_index + 1]].long_value = -call_stack[bytecodes[bytecode_index + 2]].long_value;
+        
+        bytecode_index += 3;
         break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_FLOAT:
-        call_stack[operand_stack_top].float_value = -call_stack[operand_stack_top].float_value;
-        bytecode_index++;;
+      case SPVM_BYTECODE_C_CODE_REG_NEGATE_FLOAT:
+        call_stack[bytecodes[bytecode_index + 1]].float_value = -call_stack[bytecodes[bytecode_index + 2]].float_value;
+        
+        bytecode_index += 3;
         break;
-      case SPVM_BYTECODE_C_CODE_NEGATE_DOUBLE:
-        call_stack[operand_stack_top].double_value = -call_stack[operand_stack_top].double_value;
-        bytecode_index++;;
+      case SPVM_BYTECODE_C_CODE_REG_NEGATE_DOUBLE:
+        call_stack[bytecodes[bytecode_index + 1]].double_value = -call_stack[bytecodes[bytecode_index + 2]].double_value;
+        
+        bytecode_index += 3;
         break;
       case SPVM_BYTECODE_C_CODE_REG_INC_BYTE:
         call_stack[bytecodes[bytecode_index + 1]].byte_value += (int8_t)(bytecodes[bytecode_index + 2]);
