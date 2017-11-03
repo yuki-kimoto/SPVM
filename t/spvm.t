@@ -1446,6 +1446,56 @@ is_deeply(
   ok(SPVM::TestCase::gt_double());
 }
 
+# a >= b
+{
+  ok(SPVM::TestCase::ge_byte());
+  ok(SPVM::TestCase::ge_short());
+  ok(SPVM::TestCase::ge_int());
+  ok(SPVM::TestCase::ge_long());
+  ok(SPVM::TestCase::ge_float());
+  ok(SPVM::TestCase::ge_double());
+}
+
+# a < b
+{
+  ok(SPVM::TestCase::lt_byte());
+  ok(SPVM::TestCase::lt_short());
+  ok(SPVM::TestCase::lt_int());
+  ok(SPVM::TestCase::lt_long());
+  ok(SPVM::TestCase::lt_float());
+  ok(SPVM::TestCase::lt_double());
+}
+
+# a <= b
+{
+  ok(SPVM::TestCase::le_byte());
+  ok(SPVM::TestCase::le_short());
+  ok(SPVM::TestCase::le_int());
+  ok(SPVM::TestCase::le_long());
+  ok(SPVM::TestCase::le_float());
+  ok(SPVM::TestCase::le_double());
+}
+
+# a == b
+{
+  ok(SPVM::TestCase::eq_byte());
+  ok(SPVM::TestCase::eq_short());
+  ok(SPVM::TestCase::eq_int());
+  ok(SPVM::TestCase::eq_long());
+  ok(SPVM::TestCase::eq_float());
+  ok(SPVM::TestCase::eq_double());
+}
+
+# a != b
+{
+  ok(SPVM::TestCase::ne_byte());
+  ok(SPVM::TestCase::ne_short());
+  ok(SPVM::TestCase::ne_int());
+  ok(SPVM::TestCase::ne_long());
+  ok(SPVM::TestCase::ne_float());
+  ok(SPVM::TestCase::ne_double());
+}
+
 # If a > b
 {
   ok(SPVM::TestCase::if_gt_byte_left_big());
