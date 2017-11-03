@@ -3575,6 +3575,38 @@ package TestCase {
     return 0;
   }
 
+  sub eq_object () : int {
+    my $test_case1 = new TestCase;
+    my $test_case2 = new TestCase;
+    my $test_case3 : TestCase;
+    
+    my $ret1 = $test_case1 == $test_case1;
+    my $ret2 = $test_case1 == $test_case2;
+    my $ret3 = $test_case1 == undef;
+    my $ret4 = undef == $test_case1;
+    my $ret5 = $test_case2 == undef;
+    my $ret6 = undef == $test_case2;
+    my $ret7 = undef == undef;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 0) {
+          if ($ret4 == 0) {
+            if ($ret5 == 1) {
+              if ($ret6 == 1) {
+                if ($ret7 == 1) {
+                  return 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
   # a != b
   sub ne_byte () : int {
     my $ret1 = (byte)2 != (byte)1;
