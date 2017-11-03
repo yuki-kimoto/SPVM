@@ -1399,6 +1399,37 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
                   }
+                  else if (op_cur->last->code == SPVM_OP_C_CODE_REMAINDER) {
+                    
+                    SPVM_OP* op_last = op_cur->last;
+
+                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_REMAINDER_BYTE);
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_REMAINDER_SHORT);
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_REMAINDER_INT);
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_LONG) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_REMAINDER_LONG);
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_REMAINDER_FLOAT);
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_REMAINDER_DOUBLE);
+                    }
+                    
+                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
+                  }
                   else {
                     if (SPVM_TYPE_is_numeric(compiler, type)) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE);
@@ -1997,48 +2028,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 }
                 else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_DIVIDE_DOUBLE);
-                  
-                  
-                  
-                }
-                
-                break;
-              }
-              case SPVM_OP_C_CODE_REMAINDER: {
-                
-                SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REMAINDER_BYTE);
-                  
-                  
-                  
-                }
-                else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REMAINDER_SHORT);
-                  
-                  
-                  
-                }
-                else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REMAINDER_INT);
-                  
-                  
-                  
-                }
-                else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REMAINDER_LONG);
-                  
-                  
-                  
-                }
-                else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REMAINDER_FLOAT);
-                  
-                  
-                  
-                }
-                else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REMAINDER_DOUBLE);
                   
                   
                   
