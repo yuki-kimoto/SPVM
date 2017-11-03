@@ -771,43 +771,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         bytecode_index += 4;
         break;
-      case SPVM_BYTECODE_C_CODE_REMAINDER_BYTE:
-        call_stack[operand_stack_top - 1].byte_value
-          = call_stack[operand_stack_top - 1].byte_value % call_stack[operand_stack_top].byte_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_REMAINDER_SHORT:
-        call_stack[operand_stack_top - 1].short_value
-          = call_stack[operand_stack_top - 1].short_value % call_stack[operand_stack_top].short_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_REMAINDER_INT:
-        call_stack[operand_stack_top - 1].int_value
-          = call_stack[operand_stack_top - 1].int_value % call_stack[operand_stack_top].int_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_REMAINDER_LONG:
-        // z = a - (a/b) * b;
-        call_stack[operand_stack_top - 1].long_value
-          = call_stack[operand_stack_top - 1].long_value % call_stack[operand_stack_top].long_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_REMAINDER_FLOAT:
-        call_stack[operand_stack_top - 1].float_value
-          = (float)fmod((double)call_stack[operand_stack_top - 1].float_value, (double)call_stack[operand_stack_top].float_value);
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_REMAINDER_DOUBLE:
-        call_stack[operand_stack_top - 1].double_value
-          = fmod(call_stack[operand_stack_top - 1].double_value, call_stack[operand_stack_top].double_value);
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
       case SPVM_BYTECODE_C_CODE_NEGATE_BYTE:
         call_stack[operand_stack_top].byte_value = -call_stack[operand_stack_top].byte_value;
         bytecode_index++;;
