@@ -515,6 +515,12 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_REG_MULTIPLY_LONG:
         case SPVM_BYTECODE_C_CODE_REG_MULTIPLY_FLOAT:
         case SPVM_BYTECODE_C_CODE_REG_MULTIPLY_DOUBLE:
+        case SPVM_BYTECODE_C_CODE_REG_DIVIDE_BYTE:
+        case SPVM_BYTECODE_C_CODE_REG_DIVIDE_SHORT:
+        case SPVM_BYTECODE_C_CODE_REG_DIVIDE_INT:
+        case SPVM_BYTECODE_C_CODE_REG_DIVIDE_LONG:
+        case SPVM_BYTECODE_C_CODE_REG_DIVIDE_FLOAT:
+        case SPVM_BYTECODE_C_CODE_REG_DIVIDE_DOUBLE:
         {
           i++;
           bytecode = bytecode_array->values[i];
