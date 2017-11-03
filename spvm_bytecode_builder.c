@@ -33,6 +33,7 @@
 #include "spvm_object.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
+#include "spvm_dumper.h"
 
 
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
@@ -1268,6 +1269,17 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_CODE_ASSIGN: {
                 
+                if (op_cur->last->code == SPVM_OP_C_CODE_ADD) {
+                  
+                  SPVM_OP* op_last = op_cur->last;
+                  
+                  int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                  int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                  int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                  
+                  
+                }
+                
                 if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
                   SPVM_OP* op_var = op_cur->first;
                   int32_t my_var_index = op_var->uv.var->op_my_var->uv.my_var->index;
@@ -1785,39 +1797,21 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 assert(type);
                 if (type->code == SPVM_TYPE_C_CODE_BYTE) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ADD_BYTE);
-                  
-                  
-                  
                 }
                 else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ADD_SHORT);
-                  
-                  
-                  
                 }
                 else if (type->code == SPVM_TYPE_C_CODE_INT) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ADD_INT);
-                  
-                  
-                  
                 }
                 else if (type->code == SPVM_TYPE_C_CODE_LONG) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ADD_LONG);
-                  
-                  
-                  
                 }
                 else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ADD_FLOAT);
-                  
-                  
-                  
                 }
                 else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ADD_DOUBLE);
-                  
-                  
-                  
                 }
                 
                 break;
