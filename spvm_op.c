@@ -791,7 +791,15 @@ SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_term_condi
     code = SPVM_OP_C_CODE_CONDITION;
   }
   SPVM_OP* op_condition = SPVM_OP_new_op(compiler, code, op_term_condition->file, op_term_condition->line);
-  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
+  
+  if (SPVM_OP_is_rel_op(compiler, op_term_condition)) {
+    SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
+  }
+  else {
+    SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_term_condition->file, op_term_condition->line);
+    SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_term_condition);
+    SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_bool);
+  }
   
   return op_condition;
 }
