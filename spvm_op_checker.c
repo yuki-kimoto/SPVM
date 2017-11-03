@@ -1274,6 +1274,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   op_block_loop->sibparent = op_condition;
                   op_condition->moresib = 0;
                   op_condition->sibparent = op_cur;
+                  
+                  
+                  
                   break;
                 }
                 // End of scope

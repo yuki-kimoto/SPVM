@@ -103,6 +103,7 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "UNDEF",
   "ARRAY_LENGTH",
   "CONDITION",
+  "CONDITION_NOT",
   "CROAK",
   "SWITCH",
   "CASE",
@@ -775,7 +776,7 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LOOP, op_for->file, op_for->line);
   
   // Condition
-  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION, op_term_condition->file, op_term_condition->line);
+  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION_NOT, op_term_condition->file, op_term_condition->line);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
   SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
   
@@ -802,7 +803,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LOOP, op_while->file, op_while->line);
   
   // Condition
-  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION, op_term->file, op_term->line);
+  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION_NOT, op_term->file, op_term->line);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
   SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term);
   
@@ -841,7 +842,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_true, op_block_true->last, op_list);
   }
-  op_block_true->flag |= SPVM_OP_C_FLAG_BLOCK_IF_TRUE;
+  op_block_true->flag |= SPVM_OP_C_FLAG_BLOCK_IF_FALSE;
   
   // Create false block if needed
   if (op_block_false->code != SPVM_OP_C_CODE_BLOCK) {
@@ -853,11 +854,11 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_false, op_block_false->last, op_list);
   }
-  op_block_false->flag |= SPVM_OP_C_FLAG_BLOCK_IF_FALSE;
+  op_block_false->flag |= SPVM_OP_C_FLAG_BLOCK_IF_TRUE;
   
   SPVM_OP_insert_child(compiler, op_if, op_if->last, op_condition);
-  SPVM_OP_insert_child(compiler, op_if, op_if->last, op_block_false);
   SPVM_OP_insert_child(compiler, op_if, op_if->last, op_block_true);
+  SPVM_OP_insert_child(compiler, op_if, op_if->last, op_block_false);
   
   return op_if;
 }
