@@ -3099,14 +3099,31 @@ package TestCase {
       return 0;
     }
   }
-
-  # If a == b
+  
+  # eq 
   sub if_eq_undef () : int {
     my $test_case : TestCase = undef;
     
     if (undef == undef) {
       if ($test_case == undef) {
         if (undef == $test_case) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  # If a > b
+  sub gt_byte () : int {
+    my $ret1 = 2y > 1y;
+    my $ret2 = 2y > 2y;
+    my $ret3 = 2y > 3y;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 0) {
           return 1;
         }
       }

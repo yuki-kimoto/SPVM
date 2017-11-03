@@ -1436,6 +1436,11 @@ is_deeply(
   
 }
 
+# a > b
+{
+  ok(SPVM::TestCase::gt_byte());
+}
+
 # If a > b
 {
   ok(SPVM::TestCase::if_gt_byte_left_big());
