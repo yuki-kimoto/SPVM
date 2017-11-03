@@ -1568,6 +1568,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 else if (op_cur->code == SPVM_OP_C_CODE_MULTIPLY) {
                   create_tmp_var = 1;
                 }
+                else if (op_cur->code == SPVM_OP_C_CODE_DIVIDE) {
+                  create_tmp_var = 1;
+                }
                 else if (op_cur->code == SPVM_OP_C_CODE_BIT_AND) {
                   create_tmp_var = 1;
                 }
