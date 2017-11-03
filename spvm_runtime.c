@@ -771,76 +771,60 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         bytecode_index += 4;
         break;
+      case SPVM_BYTECODE_C_CODE_REG_RIGHT_SHIFT_BYTE:
+        call_stack[bytecodes[bytecode_index + 1]].byte_value
+          = call_stack[bytecodes[bytecode_index + 2]].byte_value >> call_stack[bytecodes[bytecode_index + 3]].byte_value;
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_RIGHT_SHIFT_SHORT:
+        call_stack[bytecodes[bytecode_index + 1]].short_value
+          = call_stack[bytecodes[bytecode_index + 2]].short_value >> call_stack[bytecodes[bytecode_index + 3]].short_value;
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_RIGHT_SHIFT_INT:
+        call_stack[bytecodes[bytecode_index + 1]].int_value
+          = call_stack[bytecodes[bytecode_index + 2]].int_value >> call_stack[bytecodes[bytecode_index + 3]].int_value;
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_RIGHT_SHIFT_LONG:
+        call_stack[bytecodes[bytecode_index + 1]].long_value
+          = call_stack[bytecodes[bytecode_index + 2]].long_value >> call_stack[bytecodes[bytecode_index + 3]].long_value;
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_RIGHT_SHIFT_UNSIGNED_BYTE:
+        call_stack[bytecodes[bytecode_index + 1]].byte_value
+          = (int8_t)((uint8_t)call_stack[bytecodes[bytecode_index + 2]].byte_value >> call_stack[bytecodes[bytecode_index + 3]].byte_value);
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_RIGHT_SHIFT_UNSIGNED_SHORT:
+        call_stack[bytecodes[bytecode_index + 1]].short_value
+          = (int16_t)((uint16_t)call_stack[bytecodes[bytecode_index + 2]].short_value >> call_stack[bytecodes[bytecode_index + 3]].short_value);
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_RIGHT_SHIFT_UNSIGNED_INT:
+        call_stack[bytecodes[bytecode_index + 1]].int_value
+          = (int32_t)((uint32_t)call_stack[bytecodes[bytecode_index + 2]].int_value >> call_stack[bytecodes[bytecode_index + 3]].int_value);
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_RIGHT_SHIFT_UNSIGNED_LONG:
+        call_stack[bytecodes[bytecode_index + 1]].long_value
+          = (int64_t)((uint64_t)call_stack[bytecodes[bytecode_index + 2]].long_value >> call_stack[bytecodes[bytecode_index + 3]].long_value);
+        
+        bytecode_index += 4;
+        break;
       case SPVM_BYTECODE_C_CODE_NEGATE_BYTE:
         call_stack[operand_stack_top].byte_value = -call_stack[operand_stack_top].byte_value;
         bytecode_index++;;
         break;
       case SPVM_BYTECODE_C_CODE_NEGATE_SHORT:
         call_stack[operand_stack_top].short_value = -call_stack[operand_stack_top].short_value;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_LEFT_SHIFT_BYTE:
-        call_stack[operand_stack_top - 1].byte_value <<= call_stack[operand_stack_top].int_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_LEFT_SHIFT_SHORT:
-        call_stack[operand_stack_top - 1].short_value <<= call_stack[operand_stack_top].int_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_LEFT_SHIFT_INT:
-        call_stack[operand_stack_top - 1].int_value <<= call_stack[operand_stack_top].int_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_LEFT_SHIFT_LONG:
-        call_stack[operand_stack_top - 1].long_value <<= call_stack[operand_stack_top].int_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_BYTE:
-        call_stack[operand_stack_top - 1].byte_value >>= call_stack[operand_stack_top].int_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_SHORT:
-        call_stack[operand_stack_top - 1].short_value >>= call_stack[operand_stack_top].int_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_INT:
-        call_stack[operand_stack_top - 1].int_value >>= call_stack[operand_stack_top].int_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_LONG:
-        call_stack[operand_stack_top - 1].long_value >>= call_stack[operand_stack_top].int_value;
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_BYTE:
-        call_stack[operand_stack_top - 1].byte_value
-          = (int8_t)(((uint8_t)call_stack[operand_stack_top - 1].byte_value) >> call_stack[operand_stack_top].int_value);
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_SHORT:
-        call_stack[operand_stack_top - 1].short_value
-          = (int16_t)(((uint16_t)call_stack[operand_stack_top - 1].short_value) >> call_stack[operand_stack_top].int_value);
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_INT:
-        call_stack[operand_stack_top - 1].int_value
-          = (int32_t)(((uint32_t)call_stack[operand_stack_top - 1].int_value) >> call_stack[operand_stack_top].int_value);
-        operand_stack_top--;
-        bytecode_index++;;
-        break;
-      case SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_LONG:
-        call_stack[operand_stack_top - 1].long_value
-          = (int64_t)(((uint64_t)call_stack[operand_stack_top - 1].long_value) >> call_stack[operand_stack_top].int_value);
-        operand_stack_top--;
         bytecode_index++;;
         break;
       case SPVM_BYTECODE_C_CODE_BIT_AND_BYTE:
