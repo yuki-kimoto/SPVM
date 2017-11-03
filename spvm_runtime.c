@@ -189,7 +189,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       goto label_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE;
     }
     else {
+      
       SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = api->get_sub_native_address(api, sub_id);
+
       SPVM_API_OBJECT* return_value = (*native_address)(api, (SPVM_API_VALUE*)call_stack);
       
       if (api->get_exception(api)) {
