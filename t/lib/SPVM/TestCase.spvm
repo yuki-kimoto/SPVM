@@ -3483,6 +3483,190 @@ package TestCase {
     return 0;
   }
 
+  # a == b
+  sub eq_byte () : int {
+    my $ret1 = (byte)2 == (byte)1;
+    my $ret2 = (byte)2 == (byte)2;
+    my $ret3 = (byte)2 == (byte)3;
+    
+    if ($ret1 == 0) {
+      if ($ret2 == 1) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub eq_short () : int {
+    my $ret1 = (short)2 == (short)1;
+    my $ret2 = (short)2 == (short)2;
+    my $ret3 = (short)2 == (short)3;
+    
+    if ($ret1 == 0) {
+      if ($ret2 == 1) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub eq_int () : int {
+    my $ret1 = (int)2 == (int)1;
+    my $ret2 = (int)2 == (int)2;
+    my $ret3 = (int)2 == (int)3;
+    
+    if ($ret1 == 0) {
+      if ($ret2 == 1) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub eq_long () : int {
+    my $ret1 = (long)2 == (long)1;
+    my $ret2 = (long)2 == (long)2;
+    my $ret3 = (long)2 == (long)3;
+    
+    if ($ret1 == 0) {
+      if ($ret2 == 1) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub eq_float () : int {
+    my $ret1 = (float)2 == (float)1;
+    my $ret2 = (float)2 == (float)2;
+    my $ret3 = (float)2 == (float)3;
+    
+    if ($ret1 == 0) {
+      if ($ret2 == 1) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub eq_double () : int {
+    my $ret1 = (double)2 == (double)1;
+    my $ret2 = (double)2 == (double)2;
+    my $ret3 = (double)2 == (double)3;
+    
+    if ($ret1 == 0) {
+      if ($ret2 == 1) {
+        if ($ret3 == 0) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  # a != b
+  sub ne_byte () : int {
+    my $ret1 = (byte)2 != (byte)1;
+    my $ret2 = (byte)2 != (byte)2;
+    my $ret3 = (byte)2 != (byte)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 1) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub ne_short () : int {
+    my $ret1 = (short)2 != (short)1;
+    my $ret2 = (short)2 != (short)2;
+    my $ret3 = (short)2 != (short)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 1) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub ne_int () : int {
+    my $ret1 = (int)2 != (int)1;
+    my $ret2 = (int)2 != (int)2;
+    my $ret3 = (int)2 != (int)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 1) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub ne_long () : int {
+    my $ret1 = (long)2 != (long)1;
+    my $ret2 = (long)2 != (long)2;
+    my $ret3 = (long)2 != (long)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 1) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub ne_float () : int {
+    my $ret1 = (float)2 != (float)1;
+    my $ret2 = (float)2 != (float)2;
+    my $ret3 = (float)2 != (float)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 1) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub ne_double () : int {
+    my $ret1 = (double)2 != (double)1;
+    my $ret2 = (double)2 != (double)2;
+    my $ret3 = (double)2 != (double)3;
+    
+    if ($ret1 == 1) {
+      if ($ret2 == 0) {
+        if ($ret3 == 1) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
   sub if_eq_byte_same () : int {
     
     if ((byte)3 == (byte)3) {
