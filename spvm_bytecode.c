@@ -312,4 +312,11 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "LE_LONG",
   "LE_FLOAT",
   "LE_DOUBLE",
+  "BOOL_BYTE",
+  "BOOL_SHORT",
+  "BOOL_INT",
+  "BOOL_LONG",
+  "BOOL_FLOAT",
+  "BOOL_DOUBLE",
+  "BOOL_OBJECT",
 };
