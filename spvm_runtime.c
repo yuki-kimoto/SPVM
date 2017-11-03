@@ -443,6 +443,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index++;;
         break;
       }
+      case SPVM_BYTECODE_C_CODE_EQ_OBJECT: {
+        int32_t success = call_stack[operand_stack_top - 1].object_value == call_stack[operand_stack_top].object_value;
+        call_stack[operand_stack_top - 1].int_value = success;
+        
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      }
       case SPVM_BYTECODE_C_CODE_NE_BYTE: {
         int32_t success = call_stack[operand_stack_top - 1].byte_value != call_stack[operand_stack_top].byte_value;
         call_stack[operand_stack_top - 1].int_value = success;
@@ -485,6 +493,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_BYTECODE_C_CODE_NE_DOUBLE: {
         int32_t success = call_stack[operand_stack_top - 1].double_value != call_stack[operand_stack_top].double_value;
+        call_stack[operand_stack_top - 1].int_value = success;
+        
+        operand_stack_top--;
+        bytecode_index++;;
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_NE_OBJECT: {
+        int32_t success = call_stack[operand_stack_top - 1].object_value != call_stack[operand_stack_top].object_value;
         call_stack[operand_stack_top - 1].int_value = success;
         
         operand_stack_top--;
