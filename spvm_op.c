@@ -781,6 +781,21 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case,
   return op_case;
 }
 
+SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_term_condition, int32_t is_not) {
+  // Condition
+  int32_t code;
+  if (is_not) {
+    code = SPVM_OP_C_CODE_CONDITION_NOT;
+  }
+  else {
+    code = SPVM_OP_C_CODE_CONDITION;
+  }
+  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, code, op_term_condition->file, op_term_condition->line);
+  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
+  
+  return op_condition;
+}
+
 SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, SPVM_OP* op_statement_init, SPVM_OP* op_term_condition, SPVM_OP* op_term_next_value, SPVM_OP* op_block) {
   
   // Outer block for initialize loop variable
@@ -791,9 +806,8 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LOOP, op_for->file, op_for->line);
   
   // Condition
-  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION_NOT, op_term_condition->file, op_term_condition->line);
+  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 1);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
-  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
   
   // Set block flag
   op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
@@ -818,9 +832,8 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LOOP, op_while->file, op_while->line);
   
   // Condition
-  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION_NOT, op_term_condition->file, op_term_condition->line);
+  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 1);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
-  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
   
   // Set block flag
   op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
@@ -844,9 +857,8 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   }
   
   // Condition
-  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONDITION, op_term_condition->file, op_term_condition->line);
+  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 0);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
-  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
 
   // Create true block if needed
   if (op_block_true->code != SPVM_OP_C_CODE_BLOCK) {
