@@ -43,7 +43,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_inc);
   if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_BYTE);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_INC_BYTE);
     
     
     
@@ -53,7 +53,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
   }
   else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_SHORT);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_INC_SHORT);
     
     
     
@@ -63,7 +63,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
   }
   else if (type->code == SPVM_TYPE_C_CODE_INT) {
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_INT);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_INC_INT);
     
     
     
@@ -73,7 +73,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
   }
   else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_LONG);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_INC_LONG);
     
     
     
