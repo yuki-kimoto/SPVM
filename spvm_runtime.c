@@ -747,6 +747,30 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         bytecode_index += 4;
         break;
+      case SPVM_BYTECODE_C_CODE_REG_LEFT_SHIFT_BYTE:
+        call_stack[bytecodes[bytecode_index + 1]].byte_value
+          = call_stack[bytecodes[bytecode_index + 2]].byte_value << call_stack[bytecodes[bytecode_index + 3]].byte_value;
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_LEFT_SHIFT_SHORT:
+        call_stack[bytecodes[bytecode_index + 1]].short_value
+          = call_stack[bytecodes[bytecode_index + 2]].short_value << call_stack[bytecodes[bytecode_index + 3]].short_value;
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_LEFT_SHIFT_INT:
+        call_stack[bytecodes[bytecode_index + 1]].int_value
+          = call_stack[bytecodes[bytecode_index + 2]].int_value << call_stack[bytecodes[bytecode_index + 3]].int_value;
+        
+        bytecode_index += 4;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_LEFT_SHIFT_LONG:
+        call_stack[bytecodes[bytecode_index + 1]].long_value
+          = call_stack[bytecodes[bytecode_index + 2]].long_value << call_stack[bytecodes[bytecode_index + 3]].long_value;
+        
+        bytecode_index += 4;
+        break;
 
       case SPVM_BYTECODE_C_CODE_ADD_BYTE:
         call_stack[operand_stack_top - 1].byte_value += call_stack[operand_stack_top].byte_value;
