@@ -668,7 +668,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 SPVM_OP* op_condition_target = op_cur->first;
 
                 if (op_condition_target->code == SPVM_OP_C_CODE_UNDEF) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_NON_NULL);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_OBJECT);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IF_NE_ZERO);
                 }
                 else if (op_condition_target->code == SPVM_OP_C_CODE_EQ) {
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_condition_target->first);
