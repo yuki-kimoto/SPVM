@@ -917,6 +917,15 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_TYPE*  type = NULL;
   
   switch (op->code) {
+    case SPVM_OP_C_CODE_EQ:
+    case SPVM_OP_C_CODE_NE:
+    case SPVM_OP_C_CODE_GT:
+    case SPVM_OP_C_CODE_GE:
+    case SPVM_OP_C_CODE_LT:
+    case SPVM_OP_C_CODE_LE:
+    case SPVM_OP_C_CODE_BOOL:
+      type = SPVM_TYPE_get_int_type(compiler);
+      break;
     case SPVM_OP_C_CODE_CONCAT_STRING:
       type = SPVM_TYPE_get_string_type(compiler);
       break;

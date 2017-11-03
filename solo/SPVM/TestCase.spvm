@@ -50,6 +50,9 @@ package TestCase {
   
   sub main($mvar : int) : int {
     {
+      my $bool = 1 < 2;
+    }
+    {
       my $values = new int[] {1, 2, 3};
       
       std::say("" . $values->[0]);

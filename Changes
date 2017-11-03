@@ -1,6 +1,7 @@
 0.0285 2017-10-31
   - fix bug that my variable type can't be detected.
   - fix my var scope bug
+  - relative operator can be used as term
 0.0284 2017-10-30
   - simplify SPVM internal to implement JIT compile
 0.0283 2017-10-23
