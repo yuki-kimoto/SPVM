@@ -1978,18 +1978,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
-              case SPVM_OP_C_CODE_ADD: {
-                
-                break;
-              }
-              case SPVM_OP_C_CODE_SUBTRACT: {
-                
-                break;
-              }
-              case SPVM_OP_C_CODE_MULTIPLY: {
-                
-                break;
-              }
               case SPVM_OP_C_CODE_DIVIDE: {
                 
                 SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
