@@ -1495,6 +1495,7 @@ is_deeply(
   ok(SPVM::TestCase::ne_long());
   ok(SPVM::TestCase::ne_float());
   ok(SPVM::TestCase::ne_double());
+  ok(SPVM::TestCase::ne_object());
 }
 
 # If a > b

@@ -3699,6 +3699,38 @@ package TestCase {
     return 0;
   }
 
+  sub ne_object () : int {
+    my $test_case1 = new TestCase;
+    my $test_case2 = new TestCase;
+    my $test_case3 : TestCase;
+    
+    my $ret1 = $test_case1 != $test_case1;
+    my $ret2 = $test_case1 != $test_case2;
+    my $ret3 = $test_case1 != undef;
+    my $ret4 = undef != $test_case1;
+    my $ret5 = $test_case3 != undef;
+    my $ret6 = undef != $test_case3;
+    my $ret7 = undef != undef;
+    
+    if ($ret1 == 0) {
+      if ($ret2 == 1) {
+        if ($ret3 == 1) {
+          if ($ret4 == 1) {
+            if ($ret5 == 0) {
+              if ($ret6 == 0) {
+                if ($ret7 == 0) {
+                  return 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
   sub if_eq_byte_same () : int {
     
     if ((byte)3 == (byte)3) {
