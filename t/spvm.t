@@ -1484,6 +1484,7 @@ is_deeply(
   ok(SPVM::TestCase::eq_long());
   ok(SPVM::TestCase::eq_float());
   ok(SPVM::TestCase::eq_double());
+  ok(SPVM::TestCase::eq_object());
 }
 
 # a != b

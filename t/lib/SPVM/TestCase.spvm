@@ -3584,8 +3584,8 @@ package TestCase {
     my $ret2 = $test_case1 == $test_case2;
     my $ret3 = $test_case1 == undef;
     my $ret4 = undef == $test_case1;
-    my $ret5 = $test_case2 == undef;
-    my $ret6 = undef == $test_case2;
+    my $ret5 = $test_case3 == undef;
+    my $ret6 = undef == $test_case3;
     my $ret7 = undef == undef;
     
     if ($ret1 == 1) {
