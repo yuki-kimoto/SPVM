@@ -2222,46 +2222,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
         operand_stack_top--;
         break;
-      case SPVM_BYTECODE_C_CODE_IF_EQ_CMP:
-        success = call_stack[operand_stack_top - 1].int_value == call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_NE_CMP:
-        success = call_stack[operand_stack_top - 1].int_value != call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_LT_CMP:
-        success = call_stack[operand_stack_top - 1].int_value < call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_GE_CMP:
-        success = call_stack[operand_stack_top - 1].int_value >= call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_GT_CMP:
-        success = call_stack[operand_stack_top - 1].int_value > call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_LE_CMP:
-        success = call_stack[operand_stack_top - 1].int_value <= call_stack[operand_stack_top].int_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_EQ_CMP_OBJECT:
-        success = call_stack[operand_stack_top - 1].object_value == call_stack[operand_stack_top].object_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_NE_CMP_OBJECT:
-        success = call_stack[operand_stack_top - 1].object_value != call_stack[operand_stack_top].object_value;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top -= 2;
-        break;
       case SPVM_BYTECODE_C_CODE_IF_NULL:
         success = call_stack[operand_stack_top].object_value == (void*)NULL;
         bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;

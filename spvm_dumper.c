@@ -432,20 +432,12 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         
         // Have one operands
-        case SPVM_BYTECODE_C_CODE_IF_EQ_CMP:
-        case SPVM_BYTECODE_C_CODE_IF_NE_CMP:
-        case SPVM_BYTECODE_C_CODE_IF_LT_CMP:
-        case SPVM_BYTECODE_C_CODE_IF_GE_CMP:
-        case SPVM_BYTECODE_C_CODE_IF_GT_CMP:
-        case SPVM_BYTECODE_C_CODE_IF_LE_CMP:
         case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_LT_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_GE_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_GT_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_LE_ZERO:
-        case SPVM_BYTECODE_C_CODE_IF_EQ_CMP_OBJECT:
-        case SPVM_BYTECODE_C_CODE_IF_NE_CMP_OBJECT:
         case SPVM_BYTECODE_C_CODE_IF_NON_NULL:
         case SPVM_BYTECODE_C_CODE_IF_NULL:
         case SPVM_BYTECODE_C_CODE_GOTO:
