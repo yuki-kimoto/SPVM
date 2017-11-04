@@ -937,6 +937,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         call_stack[bytecodes[bytecode_index + 1]].long_value += (int64_t)(bytecodes[bytecode_index + 2]);
         bytecode_index += 3;
         break;
+      case SPVM_BYTECODE_C_CODE_REG_LOAD_CONSTANT:
+        operand_stack_top++;
+        memcpy(&call_stack[bytecodes[bytecode_index + 1]], &constant_pool[bytecodes[bytecode_index + 2]], sizeof(int32_t));
+        bytecode_index += 3;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_LOAD_CONSTANT2:
+        operand_stack_top++;
+        memcpy(&call_stack[bytecodes[bytecode_index + 1]], &constant_pool[bytecodes[bytecode_index + 2]], sizeof(int64_t));
+        bytecode_index += 3;
+        break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG:
         call_stack[operand_stack_top].long_value = (int64_t)call_stack[operand_stack_top].int_value;
         bytecode_index++;;
