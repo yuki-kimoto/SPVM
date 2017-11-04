@@ -2365,10 +2365,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   if (op_first->code == SPVM_OP_C_CODE_VAR) {
     op_assign->last->is_var_assign_right = 1;
     
-    SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
-    op_var->uv.var = op_first->uv.var;
-    SPVM_OP_insert_child(compiler, op_var, op_var->last, op_assign);
-    
     // Array initialization
     if (op_last->code == SPVM_OP_C_CODE_ARRAY_INIT) {
       
@@ -2434,6 +2430,10 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       op_parent = op_list_new;
     }
     else {
+      SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
+      op_var->uv.var = op_first->uv.var;
+      SPVM_OP_insert_child(compiler, op_var, op_var->last, op_assign);
+    
       op_parent = op_var;
     }
   }
