@@ -1735,14 +1735,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_LEFT_SHIFT:
                 case SPVM_OP_C_CODE_RIGHT_SHIFT:
                 case SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED:
-                case SPVM_OP_C_CODE_COMPLEMENT:
                 {
-                  
                   assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
                   assert(op_cur->last->code == SPVM_OP_C_CODE_VAR);
                   
                   op_cur->first->uv.var->no_load = 1;
                   op_cur->last->uv.var->no_load = 1;
+                  
+                  break;
+                }
+                case SPVM_OP_C_CODE_NEGATE:
+                case SPVM_OP_C_CODE_PLUS:
+                {
+                  assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
+                  
+                  op_cur->first->uv.var->no_load = 1;
                   
                   break;
                 }

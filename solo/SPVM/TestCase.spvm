@@ -1,54 +1,10 @@
-=pod
-
-ABCDE
-
-=cut ppppp
-
-use TestCase::EnumA;
-use TestCase::EnumB;
-use TestCase::EnumC;
-use TestCase::EnumD;
-use TestCase::Simple;
-use TestCase::Minimal;
-use TestCase::Template_int_long;
-use TestCase::Destructor;
-
-=head1 NAME
-
-SPVM::Test - SPVM test module
-
-=cut
-
 package TestCase {
-  our $PACKAGE_VAR_INT : int;
-  
-  has next_test : TestCase;
-  has minimal : TestCase::Minimal;
-  has x_byte : byte;
-  has x_short : short;
-  has x_int : int;
-  has x_long : long;
-  has x_float : float;
-  has x_double : double;
-  has private_field : int;
-  
-  get x_byte, x_int, x_long;
-  set x_byte, x_int, x_long;
-  
-  enum {
-    BYTE_MAX = 127y,
-    BYTE_MIN = -128y,
-    SHORT_MAX = 32767s,
-    SHORT_MIN = -32768s,
-    INT_MAX = 2147483647,
-    INT_MIN = -2147483648,
-    LONG_MAX = 9223372036854775807L,
-    LONG_MIN = -9223372036854775808L,
-    FLOAT_PRECICE = 32767f,
-    DOUBLE_PRECICE = 2147483647.0,
-  }
-  
   sub main($mvar : int) : int {
+    my $num = 1 + 2;
+    
+  }
+}
+__END__
     {
       my $bool = 1 < 2;
     }
