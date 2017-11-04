@@ -938,15 +938,54 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index += 3;
         break;
       case SPVM_BYTECODE_C_CODE_REG_LOAD_CONSTANT:
-        operand_stack_top++;
         memcpy(&call_stack[bytecodes[bytecode_index + 1]], &constant_pool[bytecodes[bytecode_index + 2]], sizeof(int32_t));
         bytecode_index += 3;
         break;
       case SPVM_BYTECODE_C_CODE_REG_LOAD_CONSTANT2:
-        operand_stack_top++;
         memcpy(&call_stack[bytecodes[bytecode_index + 1]], &constant_pool[bytecodes[bytecode_index + 2]], sizeof(int64_t));
         bytecode_index += 3;
         break;
+      case SPVM_BYTECODE_C_CODE_REG_LOAD_PACKAGE_VAR: {
+        // Get subroutine ID
+        int32_t package_var_id = bytecodes[bytecode_index + 2];
+        
+        call_stack[bytecodes[bytecode_index + 1]] = package_vars[package_var_id];
+        
+        bytecode_index += 3;
+        
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_REG_STORE_PACKAGE_VAR: {
+        // Get subroutine ID
+        int32_t package_var_id = bytecodes[bytecode_index + 1];
+
+        package_vars[package_var_id] = call_stack[bytecodes[bytecode_index + 2]];
+
+        bytecode_index += 3;
+        
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_REG_STORE_PACKAGE_VAR_OBJECT: {
+        // Get subroutine ID
+        int32_t package_var_id = bytecodes[bytecode_index + 1];
+        
+        // Decrement reference count
+        if (package_vars[package_var_id].object_value != NULL) {
+          api->dec_ref_count(api, package_vars[package_var_id].object_value);
+        }
+        
+        // Store object
+        package_vars[package_var_id].object_value = call_stack[bytecodes[bytecode_index + 2]].object_value;
+        
+        // Increment new value reference count
+        if (package_vars[package_var_id].object_value != NULL) {
+          api->inc_ref_count(api, package_vars[package_var_id].object_value);;
+        }
+
+        bytecode_index += 3;
+        
+        break;
+      }
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG:
         call_stack[operand_stack_top].long_value = (int64_t)call_stack[operand_stack_top].int_value;
         bytecode_index++;;
