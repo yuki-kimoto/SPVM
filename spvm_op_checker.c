@@ -1723,8 +1723,27 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             while (1) {
               // [START]Postorder traversal position
               switch (op_cur->code) {
-                case SPVM_OP_C_CODE_ADD: {
-
+                case SPVM_OP_C_CODE_ADD:
+                case SPVM_OP_C_CODE_SUBTRACT:
+                case SPVM_OP_C_CODE_MULTIPLY:
+                case SPVM_OP_C_CODE_DIVIDE:
+                case SPVM_OP_C_CODE_BIT_AND:
+                case SPVM_OP_C_CODE_BIT_OR:
+                case SPVM_OP_C_CODE_BIT_XOR:
+                case SPVM_OP_C_CODE_BIT_NOT:
+                case SPVM_OP_C_CODE_REMAINDER:
+                case SPVM_OP_C_CODE_LEFT_SHIFT:
+                case SPVM_OP_C_CODE_RIGHT_SHIFT:
+                case SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED:
+                case SPVM_OP_C_CODE_COMPLEMENT:
+                {
+                  
+                  assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
+                  assert(op_cur->last->code == SPVM_OP_C_CODE_VAR);
+                  
+                  op_cur->first->uv.var->no_load = 1;
+                  op_cur->last->uv.var->no_load = 1;
+                  
                   break;
                 }
               }
