@@ -423,6 +423,8 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
 
         // Have two operands
+        case SPVM_BYTECODE_C_CODE_REG_LOAD_CONSTANT:
+        case SPVM_BYTECODE_C_CODE_REG_LOAD_CONSTANT2:
         case SPVM_BYTECODE_C_CODE_REG_INC_BYTE:
         case SPVM_BYTECODE_C_CODE_REG_INC_SHORT:
         case SPVM_BYTECODE_C_CODE_REG_INC_INT:
