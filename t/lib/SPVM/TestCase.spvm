@@ -1752,9 +1752,9 @@ package TestCase {
     return 0;
   }
   sub convert_double_to_float() : int {
-    my $value = (float)346638529e+38;
+    my $value = (float)0.5;
     
-    if ($value == (float)346638529e+38f) {
+    if ($value == 0.5f) {
       return 1;
     }
     

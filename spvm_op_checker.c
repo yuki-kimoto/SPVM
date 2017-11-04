@@ -1746,6 +1746,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 case SPVM_OP_C_CODE_NEGATE:
                 case SPVM_OP_C_CODE_PLUS:
+                case SPVM_OP_C_CODE_CONVERT:
                 {
                   assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
                   
