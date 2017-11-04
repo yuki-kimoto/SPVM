@@ -1955,7 +1955,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_VAR: {
-                if (op_cur->is_assign_left) {
+                if (op_cur->is_assign_left || op_cur->uv.var->no_load) {
                   break;
                 }
                 
