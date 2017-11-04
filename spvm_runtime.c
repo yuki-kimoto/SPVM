@@ -986,6 +986,130 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         break;
       }
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_INT_TO_LONG:
+        call_stack[bytecodes[bytecode_index + 1]].long_value = (int64_t)call_stack[bytecodes[bytecode_index + 2]].int_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_INT_TO_FLOAT:
+        call_stack[bytecodes[bytecode_index + 1]].float_value = (float)call_stack[bytecodes[bytecode_index + 2]].int_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_INT_TO_DOUBLE:
+        call_stack[bytecodes[bytecode_index + 1]].double_value = (double)call_stack[bytecodes[bytecode_index + 2]].int_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_LONG_TO_INT:
+        call_stack[bytecodes[bytecode_index + 1]].int_value = (int32_t)call_stack[bytecodes[bytecode_index + 2]].long_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_LONG_TO_FLOAT:
+        call_stack[bytecodes[bytecode_index + 1]].float_value = (float)call_stack[bytecodes[bytecode_index + 2]].long_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_LONG_TO_DOUBLE:
+        call_stack[bytecodes[bytecode_index + 1]].double_value = (double)call_stack[bytecodes[bytecode_index + 2]].long_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_FLOAT_TO_INT:
+        call_stack[bytecodes[bytecode_index + 1]].int_value = (int32_t)call_stack[bytecodes[bytecode_index + 2]].float_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_FLOAT_TO_LONG:
+        call_stack[bytecodes[bytecode_index + 1]].long_value = (int64_t)call_stack[bytecodes[bytecode_index + 2]].float_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_FLOAT_TO_DOUBLE:
+        call_stack[bytecodes[bytecode_index + 1]].double_value = (double)call_stack[bytecodes[bytecode_index + 2]].float_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_DOUBLE_TO_INT:
+        call_stack[bytecodes[bytecode_index + 1]].int_value = (int32_t)call_stack[bytecodes[bytecode_index + 2]].double_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_DOUBLE_TO_LONG:
+        call_stack[bytecodes[bytecode_index + 1]].long_value = (int64_t)call_stack[bytecodes[bytecode_index + 2]].double_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_DOUBLE_TO_FLOAT:
+        call_stack[bytecodes[bytecode_index + 1]].float_value = (float)call_stack[bytecodes[bytecode_index + 2]].double_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_INT_TO_BYTE:
+        call_stack[bytecodes[bytecode_index + 1]].byte_value = (int8_t)(call_stack[bytecodes[bytecode_index + 2]].int_value);
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_INT_TO_SHORT:
+        call_stack[bytecodes[bytecode_index + 1]].short_value = (int16_t)(call_stack[bytecodes[bytecode_index + 2]].int_value);
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_BYTE_TO_INT:
+        call_stack[bytecodes[bytecode_index + 1]].int_value = (int32_t)call_stack[bytecodes[bytecode_index + 2]].byte_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_SHORT_TO_INT:
+        call_stack[bytecodes[bytecode_index + 1]].int_value = (int32_t)call_stack[bytecodes[bytecode_index + 2]].short_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_BYTE_TO_LONG:
+        call_stack[bytecodes[bytecode_index + 1]].long_value = (int64_t)call_stack[bytecodes[bytecode_index + 2]].byte_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_BYTE_TO_FLOAT:
+        call_stack[bytecodes[bytecode_index + 1]].float_value = (float)call_stack[bytecodes[bytecode_index + 2]].byte_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_BYTE_TO_DOUBLE:
+        call_stack[bytecodes[bytecode_index + 1]].double_value = (double)call_stack[bytecodes[bytecode_index + 2]].byte_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_SHORT_TO_BYTE:
+        call_stack[bytecodes[bytecode_index + 1]].byte_value = (int8_t)call_stack[bytecodes[bytecode_index + 2]].short_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_SHORT_TO_LONG:
+        call_stack[bytecodes[bytecode_index + 1]].long_value = (int64_t)call_stack[bytecodes[bytecode_index + 2]].short_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_SHORT_TO_FLOAT:
+        call_stack[bytecodes[bytecode_index + 1]].float_value = (float)call_stack[bytecodes[bytecode_index + 2]].short_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_SHORT_TO_DOUBLE:
+        call_stack[bytecodes[bytecode_index + 1]].double_value = (double)call_stack[bytecodes[bytecode_index + 2]].short_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_LONG_TO_BYTE:
+        call_stack[bytecodes[bytecode_index + 1]].byte_value = (int8_t)call_stack[bytecodes[bytecode_index + 2]].long_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_LONG_TO_SHORT:
+        call_stack[bytecodes[bytecode_index + 1]].short_value = (int16_t)call_stack[bytecodes[bytecode_index + 2]].long_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_FLOAT_TO_BYTE:
+        // TODO
+        call_stack[bytecodes[bytecode_index + 1]].byte_value = (int8_t)call_stack[bytecodes[bytecode_index + 2]].float_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_FLOAT_TO_SHORT:
+        // TODO
+        call_stack[bytecodes[bytecode_index + 1]].short_value = (int16_t)call_stack[bytecodes[bytecode_index + 2]].float_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_DOUBLE_TO_BYTE:
+        // TODO
+        call_stack[bytecodes[bytecode_index + 1]].byte_value = (int8_t)call_stack[bytecodes[bytecode_index + 2]].double_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_DOUBLE_TO_SHORT:
+        // TODO
+        call_stack[bytecodes[bytecode_index + 1]].short_value = (int16_t)call_stack[bytecodes[bytecode_index + 2]].double_value;
+        bytecode_index += 3;;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_CONVERT_BYTE_TO_SHORT:
+        call_stack[bytecodes[bytecode_index + 1]].short_value = (int16_t)call_stack[bytecodes[bytecode_index + 2]].byte_value;
+        bytecode_index += 3;;
+        break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG:
         call_stack[operand_stack_top].long_value = (int64_t)call_stack[operand_stack_top].int_value;
         bytecode_index++;;
