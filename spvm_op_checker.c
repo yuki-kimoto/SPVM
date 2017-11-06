@@ -438,7 +438,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_last = op_cur->last;
                   
                   // term == term
-                  if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
+                  if (op_first->code == SPVM_OP_C_CODE_UNDEF && op_last->code == SPVM_OP_C_CODE_UNDEF) {
+                    
+                    SPVM_OP* op_true = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
+                    SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_first->file, op_first->line);
+                    
+                    SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_true);
+                    
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    
+                    SPVM_OP_replace_op(compiler, op_stab, op_bool);
+                    
+                    op_cur = op_bool;
+                  }
+                  else if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                     SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                     
@@ -489,7 +502,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_last = op_cur->last;
 
                   // term != term
-                  if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
+                  if (op_first->code == SPVM_OP_C_CODE_UNDEF && op_last->code == SPVM_OP_C_CODE_UNDEF) {
+                    
+                    SPVM_OP* op_false = SPVM_OP_new_op_constant_int(compiler, 0, op_first->file, op_first->line);
+                    SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_first->file, op_first->line);
+                    
+                    SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_false);
+                    
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    
+                    SPVM_OP_replace_op(compiler, op_stab, op_bool);
+                    
+                    op_cur = op_bool;
+                  }
+                  else if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                     SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
 
