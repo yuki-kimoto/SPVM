@@ -1761,16 +1761,29 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_LEFT_SHIFT:
                 case SPVM_OP_C_CODE_RIGHT_SHIFT:
                 case SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED:
+                case SPVM_OP_C_CODE_EQ:
+                case SPVM_OP_C_CODE_NE:
                 case SPVM_OP_C_CODE_GT:
                 case SPVM_OP_C_CODE_GE:
                 case SPVM_OP_C_CODE_LT:
                 case SPVM_OP_C_CODE_LE:
                 {
-                  assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
-                  assert(op_cur->last->code == SPVM_OP_C_CODE_VAR);
-                  
-                  op_cur->first->uv.var->no_load = 1;
-                  op_cur->last->uv.var->no_load = 1;
+                  if (op_cur->code == SPVM_OP_C_CODE_EQ || op_cur->code == SPVM_OP_C_CODE_NE) {
+                    if (op_cur->first->code != SPVM_OP_C_CODE_UNDEF) {
+                      assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
+                      op_cur->first->uv.var->no_load = 1;
+                    }
+                    if (op_cur->last->code != SPVM_OP_C_CODE_UNDEF) {
+                      assert(op_cur->last->code == SPVM_OP_C_CODE_VAR);
+                      op_cur->last->uv.var->no_load = 1;
+                    }
+                  }
+                  else {
+                    assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
+                    assert(op_cur->last->code == SPVM_OP_C_CODE_VAR);
+                    op_cur->first->uv.var->no_load = 1;
+                    op_cur->last->uv.var->no_load = 1;
+                  }
                   
                   break;
                 }
