@@ -444,6 +444,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
                     
                     SPVM_OP_replace_op(compiler, op_stab, op_false);
+                    
+                    op_cur = op_false;
                   }
                   
                   break;
@@ -464,7 +466,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     SPVM_OP_replace_op(compiler, op_stab, op_bool);
                     
-                    op_cur = op_bool;
+                    op_cur = op_true;
                   }
                   else if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
@@ -528,7 +530,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     SPVM_OP_replace_op(compiler, op_stab, op_bool);
                     
-                    op_cur = op_bool;
+                    op_cur = op_false;
                   }
                   else if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
@@ -1687,6 +1689,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 else if (op_cur->code == SPVM_OP_C_CODE_NE) {
                   create_tmp_var = 1;
                 }
+                else if (op_cur->code == SPVM_OP_C_CODE_BOOL) {
+                  create_tmp_var = 1;
+                }
 
                 // CALL_SUB which return value don't void
                 else if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
@@ -1805,10 +1810,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_NEGATE:
                 case SPVM_OP_C_CODE_PLUS:
                 case SPVM_OP_C_CODE_CONVERT:
+                case SPVM_OP_C_CODE_BOOL:
                 {
-                  assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
-                  
-                  op_cur->first->uv.var->no_load = 1;
+                  if (SPVM_OP_C_CODE_BOOL) {
+                    assert(op_cur->first->code == SPVM_OP_C_CODE_VAR || op_cur->first->code == SPVM_OP_C_CODE_IF);
+                    if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
+                      op_cur->first->uv.var->no_load = 1;
+                    }
+                  }
+                  else {
+                    assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
+                    op_cur->first->uv.var->no_load = 1;
+                  }
                   
                   break;
                 }
