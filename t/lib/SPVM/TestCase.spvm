@@ -3195,6 +3195,10 @@ package TestCase {
     my $ret1 = (double)2 > (double)1;
     my $ret2 = (double)2 > (double)2;
     my $ret3 = (double)2 > (double)3;
+
+    std::say("AAAAAA" . $ret1);
+    std::say("BBBBBB" . $ret2);
+    std::say("CCCCCC" . $ret3);
     
     if ($ret1 == 1) {
       if ($ret2 == 0) {

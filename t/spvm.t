@@ -50,6 +50,10 @@ use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'std';
 
+  ok(SPVM::TestCase::gt_double());
+
+__END__
+
 # time
 {
   cmp_ok(abs(time - SPVM::std::time()), '<', 2);

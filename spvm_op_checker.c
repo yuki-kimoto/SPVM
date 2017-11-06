@@ -1735,6 +1735,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_LEFT_SHIFT:
                 case SPVM_OP_C_CODE_RIGHT_SHIFT:
                 case SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED:
+                case SPVM_OP_C_CODE_GT:
+                case SPVM_OP_C_CODE_GE:
+                case SPVM_OP_C_CODE_LT:
+                case SPVM_OP_C_CODE_LE:
                 {
                   assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
                   assert(op_cur->last->code == SPVM_OP_C_CODE_VAR);
