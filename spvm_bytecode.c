@@ -322,4 +322,6 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "REG_LE_LONG",
   "REG_LE_FLOAT",
   "REG_LE_DOUBLE",
+  "REG_IS_UNDEF",
+  "REG_IS_NOT_UNDEF",
 };

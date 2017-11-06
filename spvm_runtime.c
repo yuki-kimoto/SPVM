@@ -355,6 +355,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].object_value;
         bytecode_index++;
         break;
+      case SPVM_BYTECODE_C_CODE_REG_IS_UNDEF:
+        call_stack[bytecodes[bytecode_index + 1]].int_value = call_stack[bytecodes[bytecode_index + 2]].object_value == NULL;
+        
+        bytecode_index += 3;
+        break;
+      case SPVM_BYTECODE_C_CODE_REG_IS_NOT_UNDEF:
+        call_stack[bytecodes[bytecode_index + 1]].int_value = call_stack[bytecodes[bytecode_index + 2]].object_value != NULL;
+        
+        bytecode_index += 3;
+        break;
       case SPVM_BYTECODE_C_CODE_REG_GT_BYTE:
         call_stack[bytecodes[bytecode_index + 1]].int_value
           = call_stack[bytecodes[bytecode_index + 2]].byte_value > call_stack[bytecodes[bytecode_index + 3]].byte_value;
