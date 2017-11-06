@@ -433,6 +433,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   break;
                 }
+                case SPVM_OP_C_CODE_BOOL: {
+                  SPVM_OP* op_first = op_cur->first;
+
+                  // undef
+                  if (op_first->code == SPVM_OP_C_CODE_UNDEF) {
+                    
+                    SPVM_OP* op_false = SPVM_OP_new_op_constant_int(compiler, 0, op_first->file, op_first->line);
+                    
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
+                    
+                    SPVM_OP_replace_op(compiler, op_stab, op_false);
+                  }
+                  
+                  break;
+                }
                 case SPVM_OP_C_CODE_EQ: {
                   SPVM_OP* op_first = op_cur->first;
                   SPVM_OP* op_last = op_cur->last;
