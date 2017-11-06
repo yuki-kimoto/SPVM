@@ -215,34 +215,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_BYTECODE_C_CODE_NOP:
         // Not used
         assert(0);
-      case SPVM_BYTECODE_C_CODE_BOOL_BYTE:
-        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].byte_value;
-        bytecode_index++;
-        break;
-      case SPVM_BYTECODE_C_CODE_BOOL_SHORT:
-        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].short_value;
-        bytecode_index++;
-        break;
-      case SPVM_BYTECODE_C_CODE_BOOL_INT:
-        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].int_value;
-        bytecode_index++;
-        break;
-      case SPVM_BYTECODE_C_CODE_BOOL_LONG:
-        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].long_value;
-        bytecode_index++;
-        break;
-      case SPVM_BYTECODE_C_CODE_BOOL_FLOAT:
-        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].float_value;
-        bytecode_index++;
-        break;
-      case SPVM_BYTECODE_C_CODE_BOOL_DOUBLE:
-        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].double_value;
-        bytecode_index++;
-        break;
-      case SPVM_BYTECODE_C_CODE_BOOL_OBJECT:
-        call_stack[operand_stack_top].int_value = !!call_stack[operand_stack_top].object_value;
-        bytecode_index++;
-        break;
       case SPVM_BYTECODE_C_CODE_REG_IS_UNDEF:
         call_stack[bytecodes[bytecode_index + 1]].int_value = call_stack[bytecodes[bytecode_index + 2]].object_value == NULL;
         
