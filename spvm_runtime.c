@@ -1659,9 +1659,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_SET_FIELD_BYTE: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int8_t value = call_stack[operand_stack_top].byte_value;
-        int32_t field_id = bytecodes[bytecode_index + 1];
+        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value;
+        int32_t field_id = bytecodes[bytecode_index + 2];
+        int8_t value = call_stack[bytecodes[bytecode_index + 3]].byte_value;
         
         api->set_byte_field(api, object, field_id, value);
         
@@ -1669,14 +1669,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
-        operand_stack_top -= 2;
-        bytecode_index += 2;
+        bytecode_index += 4;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_SET_FIELD_SHORT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int16_t value = call_stack[operand_stack_top].short_value;
-        int32_t field_id = bytecodes[bytecode_index + 1];
+        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value;
+        int32_t field_id = bytecodes[bytecode_index + 2];
+        int16_t value = call_stack[bytecodes[bytecode_index + 3]].short_value;
         
         api->set_short_field(api, object, field_id, value);
         
@@ -1684,14 +1683,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
-        operand_stack_top -= 2;
-        bytecode_index += 2;
+        bytecode_index += 4;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_SET_FIELD_INT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int32_t value = call_stack[operand_stack_top].int_value;
-        int32_t field_id = bytecodes[bytecode_index + 1];
+        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value;
+        int32_t field_id = bytecodes[bytecode_index + 2];
+        int32_t value = call_stack[bytecodes[bytecode_index + 3]].int_value;
         
         api->set_int_field(api, object, field_id, value);
         
@@ -1699,14 +1697,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
 
-        operand_stack_top -= 2;
-        bytecode_index += 2;
+        bytecode_index += 4;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_SET_FIELD_LONG: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        int64_t value = call_stack[operand_stack_top].long_value;
-        int32_t field_id = bytecodes[bytecode_index + 1];
+        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value;
+        int32_t field_id = bytecodes[bytecode_index + 2];
+        int64_t value = call_stack[bytecodes[bytecode_index + 3]].long_value;
         
         api->set_long_field(api, object, field_id, value);
 
@@ -1714,14 +1711,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
-        operand_stack_top -= 2;
-        bytecode_index += 2;
+        bytecode_index += 4;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_SET_FIELD_FLOAT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        float value = call_stack[operand_stack_top].float_value;
-        int32_t field_id = bytecodes[bytecode_index + 1];
+        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value;
+        int32_t field_id = bytecodes[bytecode_index + 2];
+        float value = call_stack[bytecodes[bytecode_index + 3]].float_value;
         
         api->set_float_field(api, object, field_id, value);
 
@@ -1729,14 +1725,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
-        operand_stack_top -= 2;
-        bytecode_index += 2;
+        bytecode_index += 4;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_SET_FIELD_DOUBLE: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        double value = call_stack[operand_stack_top].double_value;
-        int32_t field_id = bytecodes[bytecode_index + 1];
+        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value;
+        int32_t field_id = bytecodes[bytecode_index + 2];
+        double value = call_stack[bytecodes[bytecode_index + 3]].double_value;
         
         api->set_double_field(api, object, field_id, value);
 
@@ -1744,14 +1739,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
-        operand_stack_top -= 2;
-        bytecode_index += 2;
+        bytecode_index += 4;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_SET_FIELD_OBJECT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top - 1].object_value;
-        SPVM_API_OBJECT* value = call_stack[operand_stack_top].object_value;
-        int32_t field_id = bytecodes[bytecode_index + 1];
+        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value;
+        int32_t field_id = bytecodes[bytecode_index + 2];
+        SPVM_API_OBJECT* value = call_stack[bytecodes[bytecode_index + 3]].object_value;
         
         api->set_object_field(api, object, field_id, value);
 
@@ -1759,8 +1753,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
-        operand_stack_top -= 2;
-        bytecode_index += 2;
+        bytecode_index += 4;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_CONCAT_STRING_STRING: {
