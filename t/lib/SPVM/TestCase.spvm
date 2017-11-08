@@ -2337,6 +2337,39 @@ package TestCase {
     return 0;
   }
   
+  # Negate
+  sub negate() : int {
+    my $num_byte = 1y;
+    my $num_short = 1s;
+    my $num_int = 1;
+    my $num_long = 1L;
+    my $num_float = 1f;
+    my $num_double = 1d;
+    
+    my $num_byte_negate = -$num_byte;
+    my $num_short_negate = -$num_short;
+    my $num_int_negate = -$num_int;
+    my $num_long_negate = -$num_long;
+    my $num_float_negate = -$num_float;
+    my $num_double_negate = -$num_double;
+    
+    if ($num_byte_negate == -1y) {
+      if ($num_short_negate == -1s) {
+        if ($num_int_negate == -1) {
+          if ($num_long_negate == -1L) {
+            if ($num_float_negate == -1f) {
+              if ($num_double_negate == -1d) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   # Add
   sub add_byte_max() : byte {
     return (byte)126 + (byte)1;

@@ -750,7 +750,10 @@ is_deeply(
   is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
 }
 
-
+# Negate
+{
+  ok(SPVM::TestCase::negate());
+}
 
 # get and set
 {

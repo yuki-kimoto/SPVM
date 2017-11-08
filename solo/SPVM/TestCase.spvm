@@ -50,6 +50,10 @@ package TestCase {
   
   sub main($mvar : int) : int {
     {
+      my $num = 0xFFFFFFF0;
+      my $num2 = ~$num;
+    }
+    {
       my $bool = 1 < 2;
     }
     {

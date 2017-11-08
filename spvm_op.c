@@ -979,6 +979,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_CODE_BIT_XOR:
     case SPVM_OP_C_CODE_BIT_OR:
     case SPVM_OP_C_CODE_BIT_AND:
+    case SPVM_OP_C_CODE_COMPLEMENT:
     case SPVM_OP_C_CODE_PLUS:
     case SPVM_OP_C_CODE_NEGATE:
     case SPVM_OP_C_CODE_NEW:
