@@ -3458,16 +3458,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         operand_stack_top--;
         bytecode_index++;
         break;
-      case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
-        success = call_stack[operand_stack_top].int_value == 0;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
-      case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
-        success = call_stack[operand_stack_top].int_value != 0;
-        bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
-        break;
       case SPVM_BYTECODE_C_CODE_GOTO:
         bytecode_index += bytecodes[bytecode_index + 1];
         break;
