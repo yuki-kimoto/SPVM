@@ -755,6 +755,11 @@ is_deeply(
   ok(SPVM::TestCase::negate());
 }
 
+# Complement
+{
+  ok(SPVM::TestCase::complement());
+}
+
 # get and set
 {
   {

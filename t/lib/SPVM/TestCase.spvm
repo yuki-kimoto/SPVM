@@ -2369,6 +2369,31 @@ package TestCase {
     
     return 0;
   }
+
+  # Complement
+  sub complement() : int {
+    my $num_byte = 0xF0y;
+    my $num_short = 0xFFF0s;
+    my $num_int = 0xFFFFFFF0;
+    my $num_long = 0xFFFFFFFFFFFFFFF0L;
+    
+    my $num_byte_complement = ~$num_byte;
+    my $num_short_complement = ~$num_short;
+    my $num_int_complement = ~$num_int;
+    my $num_long_complement = ~$num_long;
+    
+    if ($num_byte_complement == 0xFy) {
+      if ($num_short_complement == 0xFs) {
+        if ($num_int_complement == 0xF) {
+          if ($num_long_complement == 0xFL) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
   
   # Add
   sub add_byte_max() : byte {
