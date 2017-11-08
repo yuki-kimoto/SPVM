@@ -994,7 +994,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Must be numeric type
                   if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "Type of - operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "- operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_CODE_COMPLEMENT: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  
+                  // Must be numeric type
+                  if (!SPVM_TYPE_is_integral(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "~ operator right value must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1006,7 +1018,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Must be numeric type
                   if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "Type of + operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "+ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1033,14 +1045,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Must be same type
                   if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "Type of + operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "+ operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                                                   
                   // Value must be numeric type
                   if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "Type of + operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "+ operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1067,14 +1079,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Must be same type
                   if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "Type of - operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "- operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                                                   
                   // Value must be numeric type
                   if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "Type of - operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "- operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1192,14 +1204,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Must be same type
                   if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "Type of * operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "* operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                                                   
                   // Value must be numeric type
                   if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "Type of * operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "* operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1226,14 +1238,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Must be same type
                   if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "Type of / operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "/ operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                                                   
                   // Value must be numeric type
                   if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "Type of / operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "/ operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1260,14 +1272,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Must be same type
                   if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "Type of % operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "% operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                                                   
                   // Value must be numeric type
                   if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "Type of % operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "% operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1298,7 +1310,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Only int or long
                   if (first_type->code > SPVM_TYPE_C_CODE_LONG) {
-                    SPVM_yyerror_format(compiler, "Type of increment or decrement target must be integral at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "increment or decrement target must be integral at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1468,7 +1480,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                     }
                     if (is_invalid) {
-                      SPVM_yyerror_format(compiler, "Type of %d argument must be %s(%s()) at %s line %d\n", (int)call_sub_args_count, sub_arg_type->name, sub_abs_name, op_cur->file, op_cur->line);
+                      SPVM_yyerror_format(compiler, "%d argument must be %s(%s()) at %s line %d\n", (int)call_sub_args_count, sub_arg_type->name, sub_abs_name, op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
                     }
@@ -1806,6 +1818,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_NEGATE:
                 case SPVM_OP_C_CODE_PLUS:
                 case SPVM_OP_C_CODE_CONVERT:
+                case SPVM_OP_C_CODE_COMPLEMENT:
                 {
                   assert(op_cur->first->code == SPVM_OP_C_CODE_VAR);
                   

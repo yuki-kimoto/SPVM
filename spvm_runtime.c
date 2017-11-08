@@ -213,8 +213,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   while (1) {
     switch (bytecodes[bytecode_index]) {
       case SPVM_BYTECODE_C_CODE_NOP:
-        // Not used
-        assert(0);
+        abort();
       case SPVM_BYTECODE_C_CODE_GT_BYTE: {
         int32_t success = call_stack[operand_stack_top - 1].byte_value > call_stack[operand_stack_top].byte_value;
         call_stack[operand_stack_top - 1].int_value = success;

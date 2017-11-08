@@ -1242,6 +1242,29 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
+                  else if (op_cur->last->code == SPVM_OP_C_CODE_COMPLEMENT) {
+                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_COMPLEMENT_BYTE);
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_COMPLEMENT_SHORT);
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_COMPLEMENT_INT);
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_LONG) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_COMPLEMENT_LONG);
+                    }
+                    else {
+                      assert(0);
+                    }
+                    
+                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                    
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                  }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_NEGATE) {
                     
                     if (type->code == SPVM_TYPE_C_CODE_BYTE) {
