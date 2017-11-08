@@ -2204,28 +2204,37 @@ SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op
       IF            if2
         CONDITION
           last
-        1           true1
-        0           false1
-      0             false2
+        BOOL
+          1           true1
+        BOOL
+          0           false1
+      BOOL
+        0             false2
   */
   
   SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_and->file, op_and->line);
   
   // Constant true
+  SPVM_OP* op_bool_true = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if1->file, op_if1->line);
-
+  SPVM_OP_insert_child(compiler, op_bool_true, op_bool_true->last, op_constant_true);
+  
   // Constant false 1
+  SPVM_OP* op_bool_false1 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_false1 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
+  SPVM_OP_insert_child(compiler, op_bool_false1, op_bool_false1->last, op_constant_false1);
   
   // Constant false 2
+  SPVM_OP* op_bool_false2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_false2 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
+  SPVM_OP_insert_child(compiler, op_bool_false2, op_bool_false2->last, op_constant_false2);
   
   // if2
   SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_if1->file, op_if1->line);
   
   // Build if tree
-  SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_constant_true, op_constant_false1);
-  SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_if2, op_constant_false2);
+  SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_bool_true, op_bool_false1);
+  SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_if2, op_bool_false2);
   
   return op_if1;
 }
@@ -2241,22 +2250,31 @@ SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_f
   // after 
   //  IF      if1
   //    first
-  //    1     true1
+  //    BOOL
+  //      1     true1
   //    IF    if2
   //      last
-  //      1   true2
-  //      0   false
+  //      BOOL
+  //        1   true2
+  //      BOOL
+  //        0   false
   
   SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_or->file, op_or->line);
   
   // Constant true 1
+  SPVM_OP* op_bool_true1 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_true1 = SPVM_OP_new_op_constant_int(compiler, 1, op_if1->file, op_if1->line);
+  SPVM_OP_insert_child(compiler, op_bool_true1, op_bool_true1->last, op_constant_true1);
   
   // Constant true 2
+  SPVM_OP* op_bool_true2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_true2 = SPVM_OP_new_op_constant_int(compiler, 1, op_if1->file, op_if1->line);
+  SPVM_OP_insert_child(compiler, op_bool_true2, op_bool_true2->last, op_constant_true2);
   
   // Constant false
+  SPVM_OP* op_bool_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
+  SPVM_OP_insert_child(compiler, op_bool_false, op_bool_false->last, op_constant_false);
   
   // if2
   SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_if1->file, op_if1->line);
@@ -2278,19 +2296,25 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
   // after 
   //  IF
   //    first
-  //    0
-  //    1
+  //    BOOL
+  //      0
+  //    BOOL
+  //      1
   
   SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_not->file, op_not->line);
   
   // Constant false
+  SPVM_OP* op_bool_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if->file, op_if->line);
   SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_if->file, op_if->line);
+  SPVM_OP_insert_child(compiler, op_bool_false, op_bool_false->last, op_constant_false);
 
   // Constant true
+  SPVM_OP* op_bool_true = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if->file, op_if->line);
   SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if->file, op_if->line);
+  SPVM_OP_insert_child(compiler, op_bool_true, op_bool_true->last, op_constant_true);
   
   // Build if tree
-  SPVM_OP_build_if_statement(compiler, op_if, op_first, op_constant_false, op_constant_true);
+  SPVM_OP_build_if_statement(compiler, op_if, op_first, op_bool_false, op_bool_true);
   
   return op_if;
 }
