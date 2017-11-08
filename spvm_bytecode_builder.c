@@ -665,6 +665,36 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
+              case SPVM_OP_C_CODE_BOOL: {
+                SPVM_OP* type = SPVM_OP_get_type(compiler, op_cur->first);
+                
+                if (!type) {
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_OBJECT);
+                }
+                else if (type->code == SPVM_TYPE_C_CODE_BYTE) {
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_BYTE);
+                }
+                else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_SHORT);
+                }
+                else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                  
+                }
+                else if (type->code == SPVM_TYPE_C_CODE_LONG) {
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_LONG);
+                }
+                else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_FLOAT);
+                }
+                else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_DOUBLE);
+                }
+                else {
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_OBJECT);
+                }
+                
+                break;
+              }
               case SPVM_OP_C_CODE_CONDITION:
               case SPVM_OP_C_CODE_CONDITION_NOT:
               {
@@ -1518,119 +1548,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_EQ) {
-                    
-                    SPVM_OP* op_last = op_cur->last;
-                    
-                    if (op_last->first->code == SPVM_OP_C_CODE_UNDEF || op_last->last->code == SPVM_OP_C_CODE_UNDEF) {
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_IS_UNDEF);
-                      if (op_last->first->code == SPVM_OP_C_CODE_UNDEF) {
-                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->last);
-                        
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
-                      }
-                      else {
-                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                        
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
-                      }
-                    }
-                    else {
-                      
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_last->first);
-                      
-                      if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_BYTE);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_SHORT);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_INT);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_LONG);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_FLOAT);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_DOUBLE);
-                      }
-                      else {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_OBJECT);
-                      }
-                      int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                      int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                      int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
-                      
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
-                      
-                    }
-                    break;
-                  }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_NE) {
-                    
-                    SPVM_OP* op_last = op_cur->last;
-                    
-                    if (op_last->first->code == SPVM_OP_C_CODE_UNDEF || op_last->last->code == SPVM_OP_C_CODE_UNDEF) {
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_IS_NOT_UNDEF);
-                      if (op_last->first->code == SPVM_OP_C_CODE_UNDEF) {
-                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->last);
-                        
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
-                      }
-                      else {
-                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                        
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
-                      }
-                    }
-                    else {
-                      
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_last->first);
-                      
-                      if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_BYTE);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_SHORT);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_INT);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_LONG);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_FLOAT);
-                      }
-                      else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_DOUBLE);
-                      }
-                      else {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_OBJECT);
-                      }
-                      int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                      int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                      int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
-                      
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
-                    }
-                    break;
-                  }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_GT) {
                     
                     SPVM_OP* op_last = op_cur->last;
@@ -1779,7 +1696,119 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-
+                  else if (op_cur->last->code == SPVM_OP_C_CODE_EQ) {
+                    
+                    SPVM_OP* op_last = op_cur->last;
+                    
+                    if (op_last->first->code == SPVM_OP_C_CODE_UNDEF || op_last->last->code == SPVM_OP_C_CODE_UNDEF) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_IS_UNDEF);
+                      if (op_last->first->code == SPVM_OP_C_CODE_UNDEF) {
+                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                        
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                      }
+                      else {
+                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                        
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                      }
+                    }
+                    else {
+                      
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_last->first);
+                      
+                      if (type->code == SPVM_TYPE_C_CODE_BYTE) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_BYTE);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_SHORT);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_INT);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_LONG) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_LONG);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_FLOAT);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_DOUBLE);
+                      }
+                      else {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_EQ_OBJECT);
+                      }
+                      int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                      int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                      int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                      
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
+                      
+                    }
+                    break;
+                  }
+                  else if (op_cur->last->code == SPVM_OP_C_CODE_NE) {
+                    
+                    SPVM_OP* op_last = op_cur->last;
+                    
+                    if (op_last->first->code == SPVM_OP_C_CODE_UNDEF || op_last->last->code == SPVM_OP_C_CODE_UNDEF) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_IS_NOT_UNDEF);
+                      if (op_last->first->code == SPVM_OP_C_CODE_UNDEF) {
+                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                        
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                      }
+                      else {
+                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                        
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                      }
+                    }
+                    else {
+                      
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_last->first);
+                      
+                      if (type->code == SPVM_TYPE_C_CODE_BYTE) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_BYTE);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_SHORT);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_INT);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_LONG) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_LONG);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_FLOAT);
+                      }
+                      else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_DOUBLE);
+                      }
+                      else {
+                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_NE_OBJECT);
+                      }
+                      int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                      int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                      int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                      
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
+                    }
+                    break;
+                  }
                   else {
                     if (SPVM_TYPE_is_numeric(compiler, type)) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE);

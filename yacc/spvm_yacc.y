@@ -20,7 +20,7 @@
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
-%type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package
+%type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package arithmetic_term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field names opt_names setters getters our_var
 %type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar
@@ -492,13 +492,14 @@ term
   | UNDEF
   | call_sub
   | call_field
-  | unop
-  | binop
   | array_elem
   | convert_type
   | new_object
   | array_length
   | my_var
+  | relative_term
+  | logical_term
+  | arithmetic_term
 
 expression
   : LAST
@@ -611,10 +612,6 @@ unop
     {
       $$ = SPVM_OP_build_unop(compiler, $1, $2);
     }
-  | NOT term
-    {
-      $$ = SPVM_OP_build_not(compiler, $1, $2);
-    }
 
 binop
   : term '+' term
@@ -659,10 +656,6 @@ binop
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | term REL term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
   | my_var ASSIGN array_init
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
@@ -683,13 +676,29 @@ binop
     {
       $$ = $2;
     }
-  | term OR term
+
+arithmetic_term
+  : binop
+  | unop
+
+relative_term
+  : term REL term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+
+logical_term
+  : term OR term
     {
       $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
     }
   | term AND term
     {
       $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
+    }
+  | NOT term
+    {
+      $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
 
 array_init
