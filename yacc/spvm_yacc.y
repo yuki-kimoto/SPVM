@@ -20,7 +20,7 @@
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
-%type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package arithmetic_term logical_term relative_term
+%type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package assignable_term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field names opt_names setters getters our_var
 %type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar
@@ -482,6 +482,11 @@ array_length
     }
 
 term
+  : assignable_term
+  | relative_term
+  | logical_term
+
+assignable_term
   : VAR
   | PACKAGE_VAR
   | EXCEPTION_VAR
@@ -497,9 +502,8 @@ term
   | new_object
   | array_length
   | my_var
-  | relative_term
-  | logical_term
-  | arithmetic_term
+  | binop
+  | unop
 
 expression
   : LAST
@@ -676,10 +680,6 @@ binop
     {
       $$ = $2;
     }
-
-arithmetic_term
-  : binop
-  | unop
 
 relative_term
   : term REL term
