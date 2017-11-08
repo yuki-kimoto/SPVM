@@ -2501,13 +2501,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_BYTECODE_C_CODE_REG_IF_EQ_ZERO: {
         int32_t success = condition_flag == 0;
         bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_IF_NE_ZERO: {
+        
         int32_t success = condition_flag != 0;
         bytecode_index += success * bytecodes[bytecode_index + 1] + (~success & 1) * 2;
-        operand_stack_top--;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_GOTO:

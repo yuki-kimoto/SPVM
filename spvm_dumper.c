@@ -405,6 +405,8 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_REG_BOOL_OBJECT:
         case SPVM_BYTECODE_C_CODE_REG_IS_UNDEF:
         case SPVM_BYTECODE_C_CODE_REG_IS_NOT_UNDEF:
+        case SPVM_BYTECODE_C_CODE_REG_IF_EQ_ZERO:
+        case SPVM_BYTECODE_C_CODE_REG_IF_NE_ZERO:
         {
           i++;
           bytecode = bytecode_array->values[i];
