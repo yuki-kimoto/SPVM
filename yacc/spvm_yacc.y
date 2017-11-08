@@ -20,7 +20,7 @@
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
-%type <opval> opt_terms terms term args arg opt_args use declaration_in_package declarations_in_package assignable_term logical_term relative_term
+%type <opval> opt_assignable_terms assignable_terms term args arg opt_args use declaration_in_package declarations_in_package assignable_term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field names opt_names setters getters our_var
 %type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar
@@ -395,12 +395,12 @@ our_var
       $$ = SPVM_OP_build_our(compiler, $2, $4);
     }
 
-opt_terms
+opt_assignable_terms
   :	/* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	terms
+  |	assignable_terms
     {
       if ($1->code == SPVM_OP_C_CODE_LIST) {
         $$ = $1;
@@ -412,8 +412,8 @@ opt_terms
       }
     }
     
-terms
-  : terms ',' term
+assignable_terms
+  : assignable_terms ',' assignable_term
     {
       SPVM_OP* op_list;
       if ($1->code == SPVM_OP_C_CODE_LIST) {
@@ -427,11 +427,11 @@ terms
       
       $$ = op_list;
     }
-  | terms ','
+  | assignable_terms ','
     {
       $$ = $1
     }
-  | term
+  | assignable_term
 
 opt_names
   :	/* Empty */
@@ -702,7 +702,7 @@ logical_term
     }
 
 array_init
-  : NEW type_array '{' opt_terms '}'
+  : NEW type_array '{' opt_assignable_terms '}'
     {
       $$ = SPVM_OP_build_array_init(compiler, $2, $4);
     }
@@ -722,11 +722,11 @@ array_elem
     }
 
 call_sub
-  : sub_name '(' opt_terms  ')'
+  : sub_name '(' opt_assignable_terms  ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, $1->file, $1->line), $1, $3);
     }
-  | term ARROW sub_name '(' opt_terms ')'
+  | term ARROW sub_name '(' opt_assignable_terms ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
     }
