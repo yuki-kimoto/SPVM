@@ -54,9 +54,6 @@ package TestCase {
       my $num2 = ~$num;
     }
     {
-      my $bool = 1 < 2;
-    }
-    {
       my $values = new int[] {1, 2, 3};
       
       std::say("" . $values->[0]);
