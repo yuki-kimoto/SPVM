@@ -440,7 +440,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 case SPVM_OP_C_CODE_BOOL: {
                   SPVM_OP* op_first = op_cur->first;
-
+                  
                   // undef
                   if (op_first->code == SPVM_OP_C_CODE_UNDEF) {
                     
@@ -1686,7 +1686,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 else if (op_cur->code == SPVM_OP_C_CODE_CALL_FIELD) {
                   create_tmp_var = 1;
                 }
-
+                else if (op_cur->code == SPVM_OP_C_CODE_UNDEF) {
+                  if (op_cur->uv.undef->type) {
+                    create_tmp_var = 1;
+                  }
+                }
                 // CALL_SUB which return value don't void
                 else if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
                   if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
