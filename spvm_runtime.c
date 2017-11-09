@@ -3150,40 +3150,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         break;
       }
-      case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR: {
-        // Get subroutine ID
-        int32_t package_var_id = bytecodes[bytecode_index + 1];
-
-        package_vars[package_var_id] = call_stack[operand_stack_top];
-        operand_stack_top--;
-
-        bytecode_index += 2;
-        
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
-        // Get subroutine ID
-        int32_t package_var_id = bytecodes[bytecode_index + 1];
-        
-        // Decrement reference count
-        if (package_vars[package_var_id].object_value != NULL) {
-          api->dec_ref_count(api, package_vars[package_var_id].object_value);
-        }
-        
-        // Store object
-        package_vars[package_var_id].object_value = call_stack[operand_stack_top].object_value;
-        
-        // Increment new value reference count
-        if (package_vars[package_var_id].object_value != NULL) {
-          api->inc_ref_count(api, package_vars[package_var_id].object_value);
-        }
-        
-        operand_stack_top--;
-
-        bytecode_index += 2;
-        
-        break;
-      }
       case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION: {
         // Next operation
         int16_t jump_offset_abs = bytecodes[bytecode_index + 1];
