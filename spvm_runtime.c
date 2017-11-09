@@ -3139,17 +3139,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index++;
         break;
       }
-      case SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
-        // Get subroutine ID
-        int32_t package_var_id = bytecodes[bytecode_index + 1];
-        
-        operand_stack_top++;
-        call_stack[operand_stack_top] = package_vars[package_var_id];
-        
-        bytecode_index += 2;
-        
-        break;
-      }
       case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION: {
         // Next operation
         int16_t jump_offset_abs = bytecodes[bytecode_index + 1];
