@@ -1552,6 +1552,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+                  // PACKAGE_VAR = VAR
+                  
                   SPVM_OP* op_package_var = op_cur->first;
                   
                   SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
@@ -1559,15 +1561,17 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_package_var);
 
                   if (SPVM_TYPE_is_numeric(compiler, type)) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_STORE_PACKAGE_VAR);
                   }
                   else {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_STORE_PACKAGE_VAR_OBJECT);
                   }
                                     
                   int32_t package_var_id = package_var->op_our->uv.our->id;
-
+                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                  
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, package_var_id);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                   
