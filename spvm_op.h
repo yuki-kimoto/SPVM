@@ -205,6 +205,7 @@ struct SPVM_op {
     SPVM_CALL_FIELD* call_field;
     SPVM_OUR* our;
     SPVM_PACKAGE_VAR* package_var;
+    SPVM_UNDEF* undef;
   } uv;
   int32_t code;
   int32_t flag;
