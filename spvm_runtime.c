@@ -77,7 +77,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Catch stack top
   int32_t catch_exception_stack_top = -1;
   
-  register condition_flag = 0;
+  register int32_t condition_flag = 0;
   
   int32_t success;
   int32_t current_line = 0;
@@ -1846,6 +1846,20 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t package_var_id = bytecodes[bytecode_index + 2];
         
         call_stack[bytecodes[bytecode_index + 1]] = package_vars[package_var_id];
+        
+        bytecode_index += 3;
+        
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_REG_LOAD_PACKAGE_VAR_OBJECT: {
+        // Get subroutine ID
+        int32_t package_var_id = bytecodes[bytecode_index + 2];
+        
+        call_stack[bytecodes[bytecode_index + 1]].object_value = package_vars[package_var_id].object_value;
+        
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 3;
         
