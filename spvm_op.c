@@ -1024,7 +1024,12 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_CODE_UNDEF : {
-      type = NULL;
+      if (op->uv.undef->type) {
+        type = op->uv.undef->type;
+      }
+      else {
+        type = NULL;
+      }
       break;
     }
     case SPVM_OP_C_CODE_CONSTANT: {
@@ -2022,7 +2027,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       }
       else {
         // Undef
-        SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, op_list_statement->file, op_list_statement->line);
+        SPVM_OP* op_undef = SPVM_OP_new_op_undef(compiler, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_undef);
       }
       
