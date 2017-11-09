@@ -919,11 +919,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_MY_VAR* my_var = op_var->uv.var->op_my_var->uv.my_var;
                       my_var->op_type->uv.type = first_type;
                     }
-                    else {
-                      SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_cur->first->file, op_cur->first->line);
-                      compiler->fatal_error = 1;
-                      return;
-                    }
+                  }
+                  
+                  // Type can't be detected
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_cur->first->file, op_cur->first->line);
+                    compiler->fatal_error = 1;
+                    return;
                   }
                   
                   // It is OK that left type is object and right is undef
