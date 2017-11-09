@@ -1698,9 +1698,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 else if (op_cur->code == SPVM_OP_C_CODE_CALL_FIELD) {
                   create_tmp_var = 1;
                 }
-                else if (op_cur->code == SPVM_OP_C_CODE_UNDEF) {
-                  if (op_cur->uv.undef->type) {
-                    create_tmp_var = 1;
+                else if (op_cur->code == SPVM_OP_C_CODE_ASSIGN) {
+                  if (op_cur->first->code != SPVM_OP_C_CODE_VAR) {
+                    if (op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
+                      create_tmp_var = 1;
+                      op_cur = op_cur->last;
+                    }
                   }
                 }
                 // CALL_SUB which return value don't void

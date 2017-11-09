@@ -21,6 +21,7 @@ SPVM::Test - SPVM test module
 
 package TestCase {
   our $PACKAGE_VAR_INT : int;
+  our $PACKAGE_VAR_TEST_CASE : TestCase;
   
   has next_test : TestCase;
   has minimal : TestCase::Minimal;
@@ -49,6 +50,10 @@ package TestCase {
   }
   
   sub main($mvar : int) : int {
+    {
+      $TestCase::PACKAGE_VAR_TEST_CASE = undef;
+    }
+
     {
       my $num = 0xFFFFFFF0;
       my $num2 = ~$num;
