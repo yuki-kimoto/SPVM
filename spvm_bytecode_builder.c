@@ -885,8 +885,30 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t my_var_index = op_var->uv.var->op_my_var->uv.my_var->index;
                   
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
+                  if (0) {
+                    
+                  }
+                  else if (op_cur->last->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+                    // VAR = PACKAGE_VAR
+                    SPVM_OUR* our = op_cur->last->uv.package_var->op_our->uv.our;
+                    
+                    int32_t package_var_id = our->id;
+                    
+                    if (SPVM_TYPE_is_numeric(compiler, type)) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_LOAD_PACKAGE_VAR);
+                    }
+                    else {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_LOAD_PACKAGE_VAR_OBJECT);
+                    }
 
-                  if (op_cur->last->code == SPVM_OP_C_CODE_ADD) {
+                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, package_var_id);
+                    
+                    break;
+                  }
+                  else if (op_cur->last->code == SPVM_OP_C_CODE_ADD) {
                     
                     SPVM_OP* op_last = op_cur->last;
 
@@ -2072,24 +2094,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 }
                 
                 SPVM_BYTECODE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur);
-                
-                break;
-              }
-              case SPVM_OP_C_CODE_PACKAGE_VAR: {
-                if (op_cur->is_assign_left) {
-                  break;
-                }
-                
-                SPVM_OUR* our = op_cur->uv.package_var->op_our->uv.our;
-                
-                int32_t package_var_id = our->id;
-
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR);
-                
-                
-                
-
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, package_var_id);
                 
                 break;
               }
