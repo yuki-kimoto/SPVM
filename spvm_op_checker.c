@@ -928,13 +928,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  // It is OK that left type is object and right is undef
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type) && !last_type) {
-                    // OK
-                    op_cur->last->uv.undef->type = first_type;
+                  // Can't assign undef to numeric value
+                  if (SPVM_TYPE_is_numeric(compiler, first_type) && op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
+                    SPVM_yyerror_format(compiler, "Can't assign undef to numeric type at %s line %d\n", op_cur->first->file, op_cur->first->line);
+                    compiler->fatal_error = 1;
+                    return;
                   }
-                  // Invalid type
-                  else if (first_type->code != last_type->code) {
+                  
+                  // Copy left type to undef
+                  if (op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
+                    last_type = first_type;
+                    op_cur->last->uv.undef->type = last_type;
+                  }
+                  
+                  // Invalid if left type is different to right value
+                  if (first_type->code != last_type->code) {
                     SPVM_yyerror_format(compiler, "Invalid type value is assigned at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
