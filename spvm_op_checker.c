@@ -29,6 +29,7 @@
 #include "spvm_sub_check_info.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
+#include "spvm_undef.h"
 
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_SUB_CHECK_INFO* sub_check_info, const char* file, int32_t line) {
 
@@ -934,6 +935,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     // It is OK that left type is object and right is undef
                     if (!SPVM_TYPE_is_numeric(compiler, first_type) && !last_type) {
                       // OK
+                      op_cur->last->uv.undef->type = first_type;
                     }
                     // Invalid type
                     else if (first_type->code != last_type->code) {

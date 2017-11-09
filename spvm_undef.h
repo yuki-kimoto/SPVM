@@ -5,7 +5,7 @@
 
 // Field information
 struct SPVM_undef {
-  SPVM_OP* op_type;
+  SPVM_TYPE* type;
 };
 
 SPVM_UNDEF* SPVM_UNDEF_new(SPVM_COMPILER* compiler);
