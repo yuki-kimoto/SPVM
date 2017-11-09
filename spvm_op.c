@@ -36,6 +36,7 @@
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 #include "spvm_csource_builder.h"
+#include "spvm_undef.h"
 
 const char* const SPVM_OP_C_CODE_NAMES[] = {
   "IF",
@@ -191,6 +192,15 @@ void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_va
   if (op_our) {
     op_package_var->uv.package_var->op_our = op_our;
   }
+}
+
+SPVM_OP* SPVM_OP_new_op_undef(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, file, line);
+  
+  SPVM_UNDEF* undef = SPVM_UNDEF_new(compiler);
+  op_undef->uv.undef = undef;
+  
+  return op_undef;
 }
 
 SPVM_OP* SPVM_OP_new_op_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
