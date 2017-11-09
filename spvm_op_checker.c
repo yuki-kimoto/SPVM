@@ -958,6 +958,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         if (SPVM_TYPE_is_numeric(compiler, sub_return_type)) {
                           is_invalid = 1;
                         }
+                        else {
+                          op_term->uv.undef->type = sub_return_type;
+                        }
                       }
                     }
                     // Normal
@@ -1279,12 +1282,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_CROAK: {
-                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                  
-                  if (!first_type || first_type->code != SPVM_TYPE_C_CODE_STRING) {
-                    SPVM_yyerror_format(compiler, "croak argument type must be String at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
+                  if (op_cur->first->code == SPVM_OP_C_CODE_UNDEF) {
+                    op_cur->first->uv.undef->type = SPVM_TYPE_get_string_type(compiler);
+                  }
+                  else {
+                    SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                    if (first_type->code != SPVM_TYPE_C_CODE_STRING) {
+                      SPVM_yyerror_format(compiler, "croak argument type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                      compiler->fatal_error = 1;
+                      return;
+                    }
                   }
                   break;
                 }
