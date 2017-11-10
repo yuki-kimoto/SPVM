@@ -50,6 +50,14 @@ use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'std';
 
+  # call_sub byte_array
+  {
+    my $sp_values = SPVM::new_byte_array([1, 2, 3]);
+    is(SPVM::TestCase::call_sub_byte_array($sp_values), 6);
+  }
+
+__END__
+
 # time
 {
   cmp_ok(abs(time - SPVM::std::time()), '<', 2);
