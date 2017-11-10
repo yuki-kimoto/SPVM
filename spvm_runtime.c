@@ -3143,24 +3143,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index++;
         break;
       }
-      case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION: {
-        // Next operation
-        int16_t jump_offset_abs = bytecodes[bytecode_index + 1];
-        
-        catch_exception_stack_top++;
-        catch_exception_stack[catch_exception_stack_top] = jump_offset_abs;
-        
-        bytecode_index += 2;
-        
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION: {
-        catch_exception_stack_top--;
-        
-        bytecode_index++;
-        
-        break;
-      }
       case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
         current_line = bytecodes[bytecode_index + 1];
         bytecode_index += 2;
