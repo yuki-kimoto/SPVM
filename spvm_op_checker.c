@@ -1782,6 +1782,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             while (1) {
               // [START]Postorder traversal position
               switch (op_cur->code) {
+                case SPVM_OP_C_CODE_ASSIGN: {
+                  if (op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
+                    if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
+                      op_cur->last->uv.var->no_load = 1;
+                    }
+                  }
+                  
+                  break;
+                }
                 case SPVM_OP_C_CODE_ADD:
                 case SPVM_OP_C_CODE_SUBTRACT:
                 case SPVM_OP_C_CODE_MULTIPLY:
