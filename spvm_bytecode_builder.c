@@ -696,11 +696,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
-              case SPVM_OP_C_CODE_ARRAY_LENGTH : {
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ARRAY_LENGTH);
-                
-                break;
-              }
               case SPVM_OP_C_CODE_NEW: {
                 if (op_cur->first->code == SPVM_OP_C_CODE_CONSTANT) {
                   SPVM_CONSTANT* constant = op_cur->first->uv.constant;
@@ -823,6 +818,17 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
                   if (0) {
                     
+                  }
+                  else if (op_cur->last->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_ARRAY_LENGTH);
+                    
+                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last->first);
+                    
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                    
+                    break;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                     

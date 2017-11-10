@@ -2475,17 +2475,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index += 2;
         break;
       }
-      case SPVM_BYTECODE_C_CODE_ARRAY_LENGTH:
-        if (call_stack[operand_stack_top].object_value == NULL) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Can't get array length of undef value.", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
-        }
-        else {
-          call_stack[operand_stack_top].int_value = *(int32_t*)((intptr_t)call_stack[operand_stack_top].object_value + OBJECT_HEADER_LENGTH_OFFSET);
-          bytecode_index++;
-          break;
-        }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[operand_stack_top].object_value;
         int32_t field_id = bytecodes[bytecode_index + 1];
