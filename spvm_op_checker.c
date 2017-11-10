@@ -1844,13 +1844,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
-                case SPVM_OP_C_CODE_RETURN:
-                {
-                  if (op_cur->first) {
-                    op_cur->first->uv.var->no_load = 1;
-                  }
-                  break;
-                }
                 case SPVM_OP_C_CODE_BOOL:
                 {
                   if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
