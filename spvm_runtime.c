@@ -1914,13 +1914,17 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         break;
       }
-      case SPVM_BYTECODE_C_CODE_REG_LOAD_EXCEPTION: {
+      case SPVM_BYTECODE_C_CODE_REG_LOAD_EXCEPTION_VAR: {
         call_stack[bytecodes[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)api->get_exception(api);
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 2;
         break;
       }
-      case SPVM_BYTECODE_C_CODE_REG_STORE_EXCEPTION: {
+      case SPVM_BYTECODE_C_CODE_REG_STORE_EXCEPTION_VAR: {
         
         api->set_exception(api, (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value);
         
