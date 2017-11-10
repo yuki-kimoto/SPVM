@@ -1044,6 +1044,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           else {
             call_stack[bytecode_index + 1].byte_value
               = *(int8_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
+
             bytecode_index += 4;
             break;
           }
@@ -1086,7 +1087,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
           }
           else {
-            call_stack[bytecodes[bytecode_index + 3]].int_value = *(int32_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index);
+            call_stack[bytecodes[bytecode_index + 1]].int_value = *(int32_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index);
             bytecode_index += 4;
             break;
           }
@@ -1171,6 +1172,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           }
           else {
             call_stack[bytecodes[bytecode_index + 1]] = *(SPVM_API_VALUE*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
+            
+            if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+              api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+            }
+            
             bytecode_index += 4;
             break;
           }
@@ -1178,7 +1184,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_BYTECODE_C_CODE_REG_ARRAY_STORE_BYTE: {
         SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value;
-        int32_t index = call_stack[bytecodes[bytecode_index + 3]].int_value;
+        int32_t index = call_stack[bytecodes[bytecode_index + 2]].int_value;
         if (__builtin_expect(!array, 0)) {
           SPVM_API_OBJECT* exception = api->new_string(api, "BYTE_ARRAY must not be undef(BYTE_ARRAY->[INDEX] = VALUE)", 0);
           api->set_exception(api, exception);
