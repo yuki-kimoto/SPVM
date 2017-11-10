@@ -82,6 +82,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   int32_t success;
   int32_t current_line = 0;
   
+  SPVM_API_VALUE return_value;
+  
   // Copy arguments
   memcpy(call_stack, args, args_length * sizeof(SPVM_API_VALUE));
   
@@ -1959,7 +1961,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
         
         // Call subroutine
-        SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
+        return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
         
         if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
@@ -1991,7 +1993,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
         
           // Get return value
-          SPVM_API_VALUE return_value = call_stack[bytecodes[bytecode_index + 1]];
+          return_value = call_stack[bytecodes[bytecode_index + 1]];
           
           // Decrement object my vars reference count
           if (object_my_vars_length) {
@@ -2020,7 +2022,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
         label_SPVM_BYTECODE_C_CODE_REG_RETURN_OBJECT: {
         
-          SPVM_API_VALUE return_value = call_stack[bytecodes[bytecode_index + 1]];
+          return_value = call_stack[bytecodes[bytecode_index + 1]];
           
           // Increment ref count of return value not to release by decrement
           if (return_value.object_value != NULL) {
@@ -2059,7 +2061,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
         label_SPVM_BYTECODE_C_CODE_REG_RETURN_VOID: {
 
-          SPVM_API_VALUE return_value;
           memset(&return_value, 0, sizeof(SPVM_API_VALUE));
           
           // Decrement object my vars reference count
@@ -2183,8 +2184,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         // Set exception
         api->set_exception(api, new_exception);
-        
-        SPVM_API_VALUE return_value;
         
         memset(&return_value, 0, sizeof(SPVM_API_VALUE));
         
@@ -2605,7 +2604,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
         
         // Call subroutine
-        SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
+        return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
         
         if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
@@ -2638,7 +2637,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
         
           // Get return value
-          SPVM_API_VALUE return_value = call_stack[operand_stack_top];
+          return_value = call_stack[operand_stack_top];
           
           // Decrement object my vars reference count
           if (object_my_vars_length) {
@@ -2667,7 +2666,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
         label_SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
         
-          SPVM_API_VALUE return_value = call_stack[operand_stack_top];
+          return_value = call_stack[operand_stack_top];
           
           // Increment ref count of return value not to release by decrement
           if (return_value.object_value != NULL) {
@@ -2706,7 +2705,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
         label_SPVM_BYTECODE_C_CODE_RETURN_VOID: {
 
-          SPVM_API_VALUE return_value;
           memset(&return_value, 0, sizeof(SPVM_API_VALUE));
           
           // Decrement object my vars reference count
@@ -2830,8 +2828,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         // Set exception
         api->set_exception(api, new_exception);
-        
-        SPVM_API_VALUE return_value;
         
         memset(&return_value, 0, sizeof(SPVM_API_VALUE));
         
