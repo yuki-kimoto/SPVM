@@ -119,7 +119,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_VOID;
+      goto label_SPVM_BYTECODE_C_CODE_REG_RETURN_VOID;
     }
     else if (return_type_code == BYTE_TYPE_CODE) {
       int8_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = api->get_sub_native_address(api, sub_id);
@@ -130,7 +130,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_BYTE;
+      goto label_SPVM_BYTECODE_C_CODE_REG_RETURN_BYTE;
     }
     else if (return_type_code == SHORT_TYPE_CODE) {
       int16_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = api->get_sub_native_address(api, sub_id);
@@ -141,7 +141,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
 
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_SHORT;
+      goto label_SPVM_BYTECODE_C_CODE_REG_RETURN_SHORT;
     }
     else if (return_type_code == INT_TYPE_CODE) {
         
@@ -154,7 +154,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_INT;
+      goto label_SPVM_BYTECODE_C_CODE_REG_RETURN_INT;
     }
     else if (return_type_code == LONG_TYPE_CODE) {
       int64_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = api->get_sub_native_address(api, sub_id);
@@ -165,7 +165,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
 
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_LONG;
+      goto label_SPVM_BYTECODE_C_CODE_REG_RETURN_LONG;
     }
     else if (return_type_code == FLOAT_TYPE_CODE) {
       float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = api->get_sub_native_address(api, sub_id);
@@ -176,7 +176,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_FLOAT;
+      goto label_SPVM_BYTECODE_C_CODE_REG_RETURN_FLOAT;
     }
     else if (return_type_code == DOUBLE_TYPE_CODE) {
       double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = api->get_sub_native_address(api, sub_id);
@@ -187,7 +187,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE;
+      goto label_SPVM_BYTECODE_C_CODE_REG_RETURN_DOUBLE;
     }
     else {
       
@@ -200,7 +200,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_OBJECT;
+      goto label_SPVM_BYTECODE_C_CODE_REG_RETURN_OBJECT;
     }
   }
   // Call normal sub
@@ -2615,116 +2615,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           bytecode_index += 2 + (debug * 2);
           
           break;
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_RETURN_BYTE:
-      case SPVM_BYTECODE_C_CODE_RETURN_SHORT:
-      case SPVM_BYTECODE_C_CODE_RETURN_INT:
-      case SPVM_BYTECODE_C_CODE_RETURN_LONG:
-      case SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
-      case SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
-      {
-        // Get return value
-        return_value = call_stack[operand_stack_top];
-        
-        label_SPVM_BYTECODE_C_CODE_RETURN_BYTE:
-        label_SPVM_BYTECODE_C_CODE_RETURN_SHORT:
-        label_SPVM_BYTECODE_C_CODE_RETURN_INT:
-        label_SPVM_BYTECODE_C_CODE_RETURN_LONG:
-        label_SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
-        label_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
-        {
-        
-          
-          // Decrement object my vars reference count
-          if (object_my_vars_length) {
-            {
-              int32_t i;
-              for (i = 0; i < object_my_vars_length; i++) {
-                int32_t my_var_index = constant_pool[object_my_vars_base + i];
-                SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
-                
-                if (object != NULL) {
-                  api->dec_ref_count(api, object);
-                }
-              }
-            }
-          }
-          
-          api->dec_ref_count(api, call_stack_array);
-          
-          // No exception
-          api->set_exception(api, NULL);
-          
-          return return_value;
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
-          return_value = call_stack[operand_stack_top];
-
-        label_SPVM_BYTECODE_C_CODE_RETURN_OBJECT: {
-        
-          
-          // Increment ref count of return value not to release by decrement
-          if (return_value.object_value != NULL) {
-            api->inc_ref_count(api, return_value.object_value);
-          }
-          
-          // Decrement object my vars reference count
-          if (object_my_vars_length) {
-            {
-              int32_t i;
-              for (i = 0; i < object_my_vars_length; i++) {
-                int32_t my_var_index = constant_pool[object_my_vars_base + i];
-                SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
-                
-                if (object != NULL) {
-                  api->dec_ref_count(api, object);
-                }
-              }
-            }
-          }
-
-          // Decrement ref count of return value
-          if (return_value.object_value != NULL) {
-            api->dec_ref_count_only(api, return_value.object_value);
-          }
-          
-          api->dec_ref_count(api, call_stack_array);
-          
-          // No exception
-          api->set_exception(api, NULL);
-          
-          return return_value;
-        }
-      }
-      case SPVM_BYTECODE_C_CODE_RETURN_VOID: {
-
-        label_SPVM_BYTECODE_C_CODE_RETURN_VOID: {
-
-          memset(&return_value, 0, sizeof(SPVM_API_VALUE));
-          
-          // Decrement object my vars reference count
-          if (object_my_vars_length) {
-            {
-              int32_t i;
-              for (i = 0; i < object_my_vars_length; i++) {
-                int32_t my_var_index = constant_pool[object_my_vars_base + i];
-                SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
-                
-                if (object != NULL) {
-                  api->dec_ref_count(api, object);
-                }
-              }
-            }
-          }
-          
-          api->dec_ref_count(api, call_stack_array);
-          
-          // No exception
-          api->set_exception(api, NULL);
-
-          return return_value;
         }
       }
       case SPVM_BYTECODE_C_CODE_CROAK: {
