@@ -214,7 +214,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   while (1) {
     switch (bytecodes[bytecode_index]) {
-      case SPVM_BYTECODE_C_CODE_NOP:
+      case SPVM_BYTECODE_C_CODE_REG_NOP:
         abort();
       case SPVM_BYTECODE_C_CODE_REG_BOOL_BYTE:
         condition_flag = !!call_stack[bytecodes[bytecode_index + 1]].byte_value;

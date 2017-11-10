@@ -97,7 +97,7 @@
 
 
 const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
-  "NOP",
+  "REG_NOP",
   "UNDEF",
   "LOAD",
   "STORE",
@@ -315,7 +315,6 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "REG_BOOL_FLOAT",
   "REG_BOOL_DOUBLE",
   "REG_BOOL_OBJECT",
-  "REG_NOP",
   "REG_UNDEF",
   "REG_LOAD",
   "REG_STORE",
