@@ -3143,10 +3143,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index++;
         break;
       }
-      case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
-        current_line = bytecodes[bytecode_index + 1];
-        bytecode_index += 2;
-        break;
       case SPVM_BYTECODE_C_CODE_CALL_SUB: {
         // Get subroutine ID
         int32_t call_sub_id = bytecodes[bytecode_index + 1];
