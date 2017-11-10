@@ -307,6 +307,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         
         // Have one operands
+        case SPVM_BYTECODE_C_CODE_REG_GOTO:
         case SPVM_BYTECODE_C_CODE_REG_RETURN_BYTE:
         case SPVM_BYTECODE_C_CODE_REG_RETURN_SHORT:
         case SPVM_BYTECODE_C_CODE_REG_RETURN_INT:
@@ -351,6 +352,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT:
         case SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT:
         case SPVM_BYTECODE_C_CODE_CALL_SUB:
+        case SPVM_BYTECODE_C_CODE_REG_PUSH_CATCH_EXCEPTION:
         {
           i++;
           bytecode = bytecode_array->values[i];
@@ -407,7 +409,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_REG_LOAD:
         case SPVM_BYTECODE_C_CODE_REG_NEW_OBJECT:
         case SPVM_BYTECODE_C_CODE_REG_NEW_STRING:
-        case SPVM_BYTECODE_C_CODE_REG_PUSH_CATCH_EXCEPTION:
         case SPVM_BYTECODE_C_CODE_REG_LOAD_PACKAGE_VAR:
         case SPVM_BYTECODE_C_CODE_REG_STORE_PACKAGE_VAR:
         case SPVM_BYTECODE_C_CODE_REG_STORE_PACKAGE_VAR_OBJECT:
