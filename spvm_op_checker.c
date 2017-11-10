@@ -1696,7 +1696,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   create_tmp_var = 1;
                 }
                 else if (op_cur->code == SPVM_OP_C_CODE_CALL_FIELD) {
-                  create_tmp_var = 1;
+                  if (!(op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN)) {
+                    create_tmp_var = 1;
+                  }
                 }
                 else if (op_cur->code == SPVM_OP_C_CODE_ASSIGN) {
                   if (op_cur->first->code != SPVM_OP_C_CODE_VAR) {
@@ -1783,7 +1785,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               // [START]Postorder traversal position
               switch (op_cur->code) {
                 case SPVM_OP_C_CODE_ASSIGN: {
-                  if (op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
+                  if (op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM || op_cur->first->code == SPVM_OP_C_CODE_CALL_FIELD) {
                     if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
                       op_cur->last->uv.var->no_load = 1;
                     }
@@ -1810,6 +1812,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_EQ:
                 case SPVM_OP_C_CODE_NE:
                 case SPVM_OP_C_CODE_ARRAY_ELEM:
+                case SPVM_OP_C_CODE_CALL_FIELD:
                 {
                   if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
                     op_cur->first->uv.var->no_load = 1;

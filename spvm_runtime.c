@@ -1619,7 +1619,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_BYTECODE_C_CODE_REG_GET_FIELD_OBJECT: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 2]].object_value;
         int32_t field_id = bytecodes[bytecode_index + 3];
-
+        
         SPVM_API_OBJECT* value = api->get_object_field(api, object, field_id);
         
         if (api->get_exception(api)) {
@@ -1628,14 +1628,20 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         call_stack[bytecodes[bytecode_index + 1]].object_value = value;
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+        
         bytecode_index += 4;
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_WEAKEN_FIELD_OBJECT: {
+        
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 1]].object_value;
         int32_t field_id = bytecodes[bytecode_index + 2];
         
         api->weaken_object_field(api, object, field_id);
+
         
         if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
