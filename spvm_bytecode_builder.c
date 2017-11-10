@@ -154,7 +154,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
           case SPVM_OP_C_CODE_BLOCK: {
             if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
               // Add goto
-              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_GOTO);
               
               
               
@@ -544,7 +544,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_CODE_LAST: {
                 // Add goto
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_GOTO);
                 
                 
                 
@@ -565,7 +565,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 int32_t bytecode_index = *bytecode_index_ptr;
                 
                 // Add "goto"
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_GOTO);
                 
                 
                 
@@ -582,7 +582,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   {
                     // Prepare to jump to end of true block
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_GOTO);
                     
                     
                     
