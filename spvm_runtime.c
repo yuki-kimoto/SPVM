@@ -1961,14 +1961,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
         
         // Call subroutine
-        return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
+        SPVM_API_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
         
         if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         else {
           if (!api->get_sub_is_void(api, call_sub_id)) {
-            call_stack[bytecodes[bytecode_index + 1]] = return_value;
+            call_stack[bytecodes[bytecode_index + 1]] = call_sub_return_value;
           }
           
           // Next operation
@@ -2604,7 +2604,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
         
         // Call subroutine
-        return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
+        SPVM_API_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
         
         if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
@@ -2612,7 +2612,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         else {
           if (!api->get_sub_is_void(api, call_sub_id)) {
             operand_stack_top++;
-            call_stack[operand_stack_top] = return_value;
+            call_stack[operand_stack_top] = call_sub_return_value;
           }
           
           // Next operation
