@@ -278,7 +278,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY:
         case SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY:
         case SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY:
-        case SPVM_BYTECODE_C_CODE_CROAK:
         {
           break;
         }
