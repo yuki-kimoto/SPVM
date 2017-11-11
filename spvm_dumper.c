@@ -550,6 +550,84 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
           
           break;
         }
+        case SPVM_BYTECODE_C_CODE_REG_TABLE_SWITCH: {
+          // variable index
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+
+          // Default
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          
+          // Low
+          int32_t min = *(int32_t*)&bytecode_array->values[i + 1];
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          
+          // High
+          int32_t max = *(int32_t*)&bytecode_array->values[i + 1];
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+          }
+          
+          // Addresses
+          int32_t length = max - min + 1;
+          {
+            int32_t j;
+            for (j = 0; j < length; j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          break;
+        }
+        case SPVM_BYTECODE_C_CODE_REG_LOOKUP_SWITCH: {
+          // variable index
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+
+          // Default
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          
+          // Count
+          int32_t length = *(int32_t*)&bytecode_array->values[i + 1];
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          
+          // Addresses
+          {
+            int32_t j;
+            for (j = 0; j < length * 2; j++) {
+              i++;
+              bytecode = bytecode_array->values[i];
+              printf("        [%" PRId32 "] %d\n", i, bytecode);
+            }
+          }
+          
+          break;
+        }
         
         case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
 

@@ -222,10 +222,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_TABLE_SWITCH);
-                  
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_TABLE_SWITCH);
+
                   // Switch bytecode index
                   int32_t switch_bytecode_index = bytecode_array->length - 1;
+
+                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   
                   // Push switch information stack
                   switch_info->bytecode_index = switch_bytecode_index;
@@ -250,13 +253,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 }
                 // lookupswitch
                 else if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH);
-                  
-                  
-                  
-                  
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_LOOKUP_SWITCH);
+
                   // Switch bytecode index
                   int32_t switch_bytecode_index = bytecode_array->length - 1;
+
+                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   
                   // Push switch information stack
                   switch_info->bytecode_index = switch_bytecode_index;
@@ -300,13 +303,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else {
                     default_offset = default_bytecode_index - switch_bytecode_index;
                   }
-                  bytecode_array->values[switch_bytecode_index + 1] = default_offset;
+                  bytecode_array->values[switch_bytecode_index + 2] = default_offset;
                   
                   // min
-                  int32_t min = bytecode_array->values[switch_bytecode_index + 1 + 1];
+                  int32_t min = bytecode_array->values[switch_bytecode_index + 2 + 1];
                   
                   // max
-                  int32_t max = bytecode_array->values[switch_bytecode_index + 1 + 1 * 2];
+                  int32_t max = bytecode_array->values[switch_bytecode_index + 2 + 1 * 2];
                   
                   int32_t length = (int32_t)(max - min + 1);
                   
@@ -322,13 +325,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         int32_t case_bytecode_index = *case_bytecode_index_ptr;
                         int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                         
-                        bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + 1 * i] = case_offset;
+                        bytecode_array->values[switch_bytecode_index + 2 + 1 * 3 + 1 * i] = case_offset;
                         
                         case_pos++;
                       }
                       else {
                         // Default
-                        bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + (1 * i)] = default_offset;
+                        bytecode_array->values[switch_bytecode_index + 2 + 1 * 3 + (1 * i)] = default_offset;
                       }
                     }
                   }
@@ -343,7 +346,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else {
                     default_offset = default_bytecode_index - switch_bytecode_index;
                   }
-                  bytecode_array->values[switch_bytecode_index + 1] = default_offset;
+                  bytecode_array->values[switch_bytecode_index + 2] = default_offset;
                   
                   int32_t const length = (int32_t) switch_info->op_cases->length;
                   
@@ -403,10 +406,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                       
                       // Match
-                      bytecode_array->values[switch_bytecode_index + 1 + 1 * 2 + (1 * 2 * i)] = match;
+                      bytecode_array->values[switch_bytecode_index + 2 + 1 * 2 + (1 * 2 * i)] = match;
 
                       // Offset
-                      bytecode_array->values[switch_bytecode_index + 1 + 1 * 3 + (1 * 2 * i)] = case_offset;
+                      bytecode_array->values[switch_bytecode_index + 2 + 1 * 3 + (1 * 2 * i)] = case_offset;
                     }
                   }
                 }

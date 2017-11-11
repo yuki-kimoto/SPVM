@@ -2207,17 +2207,17 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       case SPVM_BYTECODE_C_CODE_REG_TABLE_SWITCH: {
         // default offset
-        int32_t default_offset = bytecodes[bytecode_index + 1];
+        int32_t default_offset = bytecodes[bytecode_index + 2];
         
         // min
-        int32_t min = bytecodes[bytecode_index + 2];
+        int32_t min = bytecodes[bytecode_index + 3];
         
         // max
-        int32_t max = bytecodes[bytecode_index + 3];
+        int32_t max = bytecodes[bytecode_index + 4];
         
-        if (call_stack[operand_stack_top].int_value >= min && call_stack[operand_stack_top].int_value <= max) {
+        if (call_stack[bytecodes[bytecode_index + 1]].int_value >= min && call_stack[bytecodes[bytecode_index + 1]].int_value <= max) {
           int32_t branch_offset
-            = *(int32_t*)((&bytecodes[bytecode_index + 4]) + (call_stack[operand_stack_top].int_value - min));
+            = *(int32_t*)((&bytecodes[bytecode_index + 5]) + (call_stack[bytecodes[bytecode_index + 1]].int_value - min));
           bytecode_index += branch_offset;
         }
         else {
@@ -2237,18 +2237,18 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         */
         
         // default offset
-        int32_t default_offset = bytecodes[bytecode_index + 1];
+        int32_t default_offset = bytecodes[bytecode_index + 2];
         
         // npare
-        int32_t pair_count = bytecodes[bytecode_index + 2];
+        int32_t pair_count = bytecodes[bytecode_index + 3];
         
         // min
-        int32_t min = bytecodes[bytecode_index + 3];
+        int32_t min = bytecodes[bytecode_index + 4];
         
         // max
-        int32_t max = bytecodes[bytecode_index + 3 + (pair_count - 1) * 2];
+        int32_t max = bytecodes[bytecode_index + 4 + (pair_count - 1) * 2];
         
-        if (call_stack[operand_stack_top].int_value >= min && call_stack[operand_stack_top].int_value <= max) {
+        if (call_stack[bytecodes[bytecode_index + 1]].int_value >= min && call_stack[bytecodes[bytecode_index + 1]].int_value <= max) {
           // 2 branch searching
           int32_t cur_min_pos = 0;
           int32_t cur_max_pos = pair_count - 1;
@@ -2259,16 +2259,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
               break;
             }
             int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-            int32_t cur_half = bytecodes[bytecode_index + 3 + (cur_half_pos * 2)];
+            int32_t cur_half = bytecodes[bytecode_index + 4 + (cur_half_pos * 2)];
             
-            if (call_stack[operand_stack_top].int_value > cur_half) {
+            if (call_stack[bytecodes[bytecode_index + 1]].int_value > cur_half) {
               cur_min_pos = cur_half_pos + 1;
             }
-            else if (call_stack[operand_stack_top].int_value < cur_half) {
+            else if (call_stack[bytecodes[bytecode_index + 1]].int_value < cur_half) {
               cur_max_pos = cur_half_pos - 1;
             }
             else {
-              int32_t branch_offset = bytecodes[bytecode_index + 3 + (cur_half_pos * 2) + 1];
+              int32_t branch_offset = bytecodes[bytecode_index + 4 + (cur_half_pos * 2) + 1];
               bytecode_index += branch_offset;
               break;
             }
