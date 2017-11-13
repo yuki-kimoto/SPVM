@@ -1725,6 +1725,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 else if (op_cur->code == SPVM_OP_C_CODE_SWITCH_CONDITION) {
                   create_tmp_var = 1;
                 }
+                else if (op_cur->code == SPVM_OP_C_CODE_UNDEF) {
+                  if (op_cur->uv.undef->type) {
+                    create_tmp_var = 1;
+                  }
+                }
               }
 
               // Create temporary variable
