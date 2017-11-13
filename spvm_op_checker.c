@@ -1671,8 +1671,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               if (!op_cur->is_assign_left && !op_cur->is_var_assign_right) {
                 switch (op_cur->code) {
                   case SPVM_OP_C_CODE_ADD:
-                    create_tmp_var = 1;
-                    break;
                   case SPVM_OP_C_CODE_SUBTRACT:
                   case SPVM_OP_C_CODE_MULTIPLY:
                   case SPVM_OP_C_CODE_DIVIDE:
@@ -1684,23 +1682,25 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_CODE_LEFT_SHIFT:
                   case SPVM_OP_C_CODE_RIGHT_SHIFT:
                   case SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED:
+                  case SPVM_OP_C_CODE_COMPLEMENT:
+                  case SPVM_OP_C_CODE_NEGATE:
+                  case SPVM_OP_C_CODE_PLUS:
+                  case SPVM_OP_C_CODE_CONVERT:
+                  case SPVM_OP_C_CODE_ARRAY_LENGTH:
+                  case SPVM_OP_C_CODE_NEW:
+                  case SPVM_OP_C_CODE_CONCAT_STRING:
+                  case SPVM_OP_C_CODE_EXCEPTION_VAR:
+                  case SPVM_OP_C_CODE_PACKAGE_VAR:
+                  case SPVM_OP_C_CODE_ARRAY_ELEM:
+                  case SPVM_OP_C_CODE_SWITCH_CONDITION:
+                    create_tmp_var = 1;
+                    break;
                   case SPVM_OP_C_CODE_GT:
                   case SPVM_OP_C_CODE_GE:
                   case SPVM_OP_C_CODE_LT:
                   case SPVM_OP_C_CODE_LE:
                   case SPVM_OP_C_CODE_EQ:
                   case SPVM_OP_C_CODE_NE:
-                  case SPVM_OP_C_CODE_ARRAY_ELEM:
-                  case SPVM_OP_C_CODE_CALL_FIELD:
-                  {
-                    break;
-                  }
-                  case SPVM_OP_C_CODE_NEGATE:
-                  case SPVM_OP_C_CODE_PLUS:
-                  case SPVM_OP_C_CODE_CONVERT:
-                  case SPVM_OP_C_CODE_COMPLEMENT:
-                  case SPVM_OP_C_CODE_ARRAY_LENGTH:
-                  case SPVM_OP_C_CODE_SWITCH_CONDITION:
                   {
                     break;
                   }
@@ -1724,70 +1724,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (SPVM_TYPE_is_numeric(compiler, tmp_var_type) && op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
                     create_tmp_var = 1;
                   }
-                }
-                // New
-                else if (op_cur->code == SPVM_OP_C_CODE_SUBTRACT) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_MULTIPLY) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_DIVIDE) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_BIT_AND) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_BIT_OR) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_BIT_XOR) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_BIT_NOT) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_REMAINDER) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_LEFT_SHIFT) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_RIGHT_SHIFT) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_COMPLEMENT) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_NEGATE) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_PLUS) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_CONVERT) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_NEW) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_CONCAT_STRING) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
-                  create_tmp_var = 1;
                 }
                 else if (op_cur->code == SPVM_OP_C_CODE_CALL_FIELD) {
                   if (!(op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN)) {
@@ -1815,9 +1751,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
                     create_tmp_var = 1;
                   }
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_SWITCH_CONDITION) {
-                  create_tmp_var = 1;
                 }
                 else if (op_cur->code == SPVM_OP_C_CODE_UNDEF) {
                   if (op_cur->uv.undef->type) {
