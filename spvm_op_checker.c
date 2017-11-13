@@ -1695,25 +1695,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_CODE_SWITCH_CONDITION:
                     create_tmp_var = 1;
                     break;
-                  case SPVM_OP_C_CODE_GT:
-                  case SPVM_OP_C_CODE_GE:
-                  case SPVM_OP_C_CODE_LT:
-                  case SPVM_OP_C_CODE_LE:
-                  case SPVM_OP_C_CODE_EQ:
-                  case SPVM_OP_C_CODE_NE:
-                  {
-                    break;
-                  }
-                  case SPVM_OP_C_CODE_RETURN:
-                  {
-                    break;
-                  }
-                  case SPVM_OP_C_CODE_BOOL:
-                  {
-                    break;
-                  }
                   case SPVM_OP_C_CODE_UNDEF: {
                     if (op_cur->uv.undef->type) {
+                      create_tmp_var = 1;
+                    }
+                    break;
+                  }
+                  case SPVM_OP_C_CODE_CONSTANT: {
+                    if (SPVM_TYPE_is_numeric(compiler, tmp_var_type) && op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
                       create_tmp_var = 1;
                     }
                     break;
@@ -1721,9 +1710,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
               }
               
-              
               // [END]Postorder traversal position
-
               if (!op_cur->is_assign_left && !op_cur->is_var_assign_right) {
                 // Numeric constant
                 if (op_cur->code == SPVM_OP_C_CODE_CONSTANT) {
