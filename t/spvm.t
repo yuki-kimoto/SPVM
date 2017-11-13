@@ -222,6 +222,13 @@ my $start_objects_count = SPVM::get_objects_count();
 {
   ok(SPVM::TestCase::call_sub_last_camma());
   ok(SPVM::TestCase::call_sub_undef(undef));
+  
+  {
+    my $start_objects_count = SPVM::get_objects_count();
+    SPVM::TestCase::call_sub_assign();
+    my $end_objects_count = SPVM::get_objects_count();
+    is($start_objects_count, $end_objects_count);
+  }
 }
 
 # Destructor

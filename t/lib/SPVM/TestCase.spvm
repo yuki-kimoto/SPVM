@@ -604,6 +604,11 @@ package TestCase {
     return 0;
   }
 
+  sub call_sub_assign() : int {
+    my $m = TestCase::Minimal::new();
+    $m = TestCase::Minimal::new();
+  }
+  
   sub call_sub_undef($value : TestCase) : int {
     
     if ($value == undef) {
