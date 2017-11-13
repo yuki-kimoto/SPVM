@@ -1712,6 +1712,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   {
                     break;
                   }
+                  case SPVM_OP_C_CODE_UNDEF: {
+                    if (op_cur->uv.undef->type) {
+                      create_tmp_var = 1;
+                    }
+                    break;
+                  }
                 }
               }
               
@@ -1730,30 +1736,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     create_tmp_var = 1;
                   }
                 }
-                else if (op_cur->code == SPVM_OP_C_CODE_ASSIGN) {
-                  if (op_cur->first->code != SPVM_OP_C_CODE_VAR) {
-                    if (op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
-                      create_tmp_var = 1;
-                      op_cur = op_cur->last;
-                    }
-                  }
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_RETURN) {
-                  if (op_cur->first) {
-                    if (op_cur->first->code == SPVM_OP_C_CODE_UNDEF) {
-                      create_tmp_var = 1;
-                      op_cur = op_cur->first;
-                    }
-                  }
-                }
                 // CALL_SUB which return value don't void
                 else if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
                   if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
-                    create_tmp_var = 1;
-                  }
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_UNDEF) {
-                  if (op_cur->uv.undef->type) {
                     create_tmp_var = 1;
                   }
                 }
