@@ -462,35 +462,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
-              case SPVM_OP_C_CODE_CALL_SUB: {
-                
-                // Call subroutine
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_SUB);
-                
-                
-                
-
-                SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
-                const char* sub_name = call_sub->resolved_name;
-                
-                SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
-                SPVM_SUB* sub = op_sub->uv.sub;
-                
-                int32_t id = sub->id;
-                
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, id);
-                
-                if (compiler->debug) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_CURRENT_LINE);
-                  
-                  
-                  
-
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, op_cur->line);
-                }
-                
-                break;
-              }
               case SPVM_OP_C_CODE_CROAK: {
                 
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_CROAK);
@@ -773,6 +744,35 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
                   if (0) {
                     
+                  }
+                  else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
+                    
+                    SPVM_CALL_SUB* call_sub = op_cur->last->uv.call_sub;
+                    const char* sub_name = call_sub->resolved_name;
+                    
+                    SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
+                    SPVM_SUB* sub = op_sub->uv.sub;
+                    SPVM_TYPE* return_type = sub->op_return_type->uv.type;
+
+                    // Call subroutine
+                    if (SPVM_TYPE_is_numeric(compiler, return_type)) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_CALL_SUB);
+                    }
+                    else {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_CALL_OBJECT_SUB);
+                    }
+                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                    
+                    int32_t id = sub->id;
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, id);
+                    
+                    if (compiler->debug) {
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_CURRENT_LINE);
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, op_cur->line);
+                    }
+                    
+                    break;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_ARRAY_LENGTH);
@@ -1945,6 +1945,28 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->first);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                }
+                
+                break;
+              }
+              case SPVM_OP_C_CODE_CALL_SUB: {
+                SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
+                const char* sub_name = call_sub->resolved_name;
+                
+                SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
+                SPVM_SUB* sub = op_sub->uv.sub;
+                
+                if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
+                  // Call subroutine
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_CALL_VOID_SUB);
+                  
+                  int32_t id = sub->id;
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, id);
+                  
+                  if (compiler->debug) {
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_CURRENT_LINE);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, op_cur->line);
+                  }
                 }
                 
                 break;

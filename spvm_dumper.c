@@ -314,6 +314,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_LOAD:
         case SPVM_BYTECODE_C_CODE_CALL_SUB:
         case SPVM_BYTECODE_C_CODE_REG_PUSH_CATCH_EXCEPTION:
+        case SPVM_BYTECODE_C_CODE_REG_CALL_VOID_SUB:
         {
           i++;
           bytecode = bytecode_array->values[i];
@@ -362,6 +363,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_REG_LE_FLOAT:
         case SPVM_BYTECODE_C_CODE_REG_LE_DOUBLE:
         case SPVM_BYTECODE_C_CODE_REG_CALL_SUB:
+        case SPVM_BYTECODE_C_CODE_REG_CALL_OBJECT_SUB:
         case SPVM_BYTECODE_C_CODE_REG_PUSH_ARG:
         case SPVM_BYTECODE_C_CODE_REG_POP_ARGS:
         case SPVM_BYTECODE_C_CODE_REG_STORE:

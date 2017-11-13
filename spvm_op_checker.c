@@ -1812,6 +1812,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   break;
                 }
+                case SPVM_OP_C_CODE_CALL_SUB:
+                {
+                  /*
+                  SPVM_OP* op_terms = op_cur->last;
+                  SPVM_OP* op_term = op_terms->first;
+                  while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+                    assert(op_term->code == SPVM_OP_C_CODE_VAR);
+                    op_term->uv.var->no_load = 1;
+                  }
+                  */
+                }
               }
               
               // [END]Postorder traversal position
