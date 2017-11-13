@@ -2644,35 +2644,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index++;
         break;
       }
-      case SPVM_BYTECODE_C_CODE_CALL_SUB: {
-        // Get subroutine ID
-        int32_t call_sub_id = bytecodes[bytecode_index + 1];
-        
-        int32_t args_length = api->get_sub_args_length(api, call_sub_id);
-        
-        operand_stack_top -= args_length;
-        
-        SPVM_API_VALUE args[255];
-        memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
-        
-        // Call subroutine
-        SPVM_API_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
-        
-        if (api->get_exception(api)) {
-          goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
-        }
-        else {
-          if (!api->get_sub_is_void(api, call_sub_id)) {
-            operand_stack_top++;
-            call_stack[operand_stack_top] = call_sub_return_value;
-          }
-          
-          // Next operation
-          bytecode_index += 2 + (debug * 2);
-          
-          break;
-        }
-      }
       case SPVM_BYTECODE_C_CODE_POP:
         operand_stack_top--;
         bytecode_index++;
