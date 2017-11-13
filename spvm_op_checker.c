@@ -1150,44 +1150,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP_insert_child(compiler, op_concat_string2, op_concat_string2->last, op_term1);
                     
                     SPVM_OP_replace_op(compiler, op_stab, op_concat_string2);
-                    
-                    {
-                      // Create temporary variable for concat_string2
-                      SPVM_TYPE* var_type = SPVM_TYPE_get_string_type(compiler);
-                      SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
-                      if (op_var_tmp == NULL) {
-                        return;
-                      }
-                      
-                      // Cut new op
-                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_concat_string2);
-
-                      // Assing op
-                      SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                      SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_concat_string2);
-                      
-                      // Convert cur new op to var
-                      SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                    }
-
-                    {
-                      // Create temporary variable for new
-                      SPVM_TYPE* var_type = SPVM_TYPE_get_string_type(compiler);
-                      SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, var_type, sub_check_info, op_cur->file, op_cur->line);
-                      if (op_var_tmp == NULL) {
-                        return;
-                      }
-                      
-                      // Cut new op
-                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_build_constant);
-
-                      // Assing op
-                      SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                      SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_build_constant);
-                      
-                      // Convert cur new op to var
-                      SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                    }                    
                   }
                   
                   break;
