@@ -1619,6 +1619,96 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 break;
               }
               
+              // [END]Postorder traversal position
+              
+              if (op_cur == op_base) {
+
+                // Finish
+                finish = 1;
+                
+                break;
+              }
+              
+              // Next sibling
+              if (op_cur->moresib) {
+                op_cur = SPVM_OP_sibling(compiler, op_cur);
+                break;
+              }
+              // Next is parent
+              else {
+                op_cur = op_cur->sibparent;
+              }
+            }
+            if (finish) {
+              break;
+            }
+          }
+        }
+        // Set my var information
+        sub->op_my_vars = sub_check_info->op_my_vars;
+        
+        // Operand stack max
+        sub->operand_stack_max = sub_check_info->op_count * 2;
+      }
+
+      if (!sub->is_native) {
+        // Run OPs
+        SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
+        SPVM_OP* op_cur = op_base;
+        _Bool finish = 0;
+        while (op_cur) {
+          
+          if (op_cur->first) {
+            op_cur = op_cur->first;
+          }
+          else {
+            while (1) {
+              // [START]Postorder traversal position
+              switch (op_cur->code) {
+                case SPVM_OP_C_CODE_ADD:
+                case SPVM_OP_C_CODE_SUBTRACT:
+                case SPVM_OP_C_CODE_MULTIPLY:
+                case SPVM_OP_C_CODE_DIVIDE:
+                case SPVM_OP_C_CODE_BIT_AND:
+                case SPVM_OP_C_CODE_BIT_OR:
+                case SPVM_OP_C_CODE_BIT_XOR:
+                case SPVM_OP_C_CODE_BIT_NOT:
+                case SPVM_OP_C_CODE_REMAINDER:
+                case SPVM_OP_C_CODE_LEFT_SHIFT:
+                case SPVM_OP_C_CODE_RIGHT_SHIFT:
+                case SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED:
+                case SPVM_OP_C_CODE_GT:
+                case SPVM_OP_C_CODE_GE:
+                case SPVM_OP_C_CODE_LT:
+                case SPVM_OP_C_CODE_LE:
+                case SPVM_OP_C_CODE_EQ:
+                case SPVM_OP_C_CODE_NE:
+                case SPVM_OP_C_CODE_ARRAY_ELEM:
+                case SPVM_OP_C_CODE_CALL_FIELD:
+                {
+                  break;
+                }
+                case SPVM_OP_C_CODE_NEGATE:
+                case SPVM_OP_C_CODE_PLUS:
+                case SPVM_OP_C_CODE_CONVERT:
+                case SPVM_OP_C_CODE_COMPLEMENT:
+                case SPVM_OP_C_CODE_ARRAY_LENGTH:
+                case SPVM_OP_C_CODE_SWITCH_CONDITION:
+                {
+                  break;
+                }
+                case SPVM_OP_C_CODE_RETURN:
+                {
+                  break;
+                }
+                case SPVM_OP_C_CODE_BOOL:
+                {
+                  break;
+                }
+              }
+              
+              // [END]Postorder traversal position
+
               // Create temporary variable for no is_var_assign_right term witch is not variable
               int32_t create_tmp_var = 0;
               SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
@@ -1631,6 +1721,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 // New
                 else if (op_cur->code == SPVM_OP_C_CODE_ADD) {
+                  create_tmp_var = 1;
                 }
                 else if (op_cur->code == SPVM_OP_C_CODE_SUBTRACT) {
                   create_tmp_var = 1;
@@ -1729,186 +1820,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (op_cur->uv.undef->type) {
                     create_tmp_var = 1;
                   }
-                }
-              }
-
-              // Create temporary variable
-              if (create_tmp_var) {
-                SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, tmp_var_type, sub_check_info, op_cur->file, op_cur->line);
-                if (op_var_tmp == NULL) {
-                  return;
-                }
-                
-                // Cut new op
-                SPVM_OP* op_target = op_cur;
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
-
-                // Assing op
-                SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
-                SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
-                
-                // Convert cur new op to var
-                SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                op_target->uv = op_cur->uv;
-                
-                op_cur = op_target;
-              }
-              
-              // [END]Postorder traversal position
-              
-              if (op_cur == op_base) {
-
-                // Finish
-                finish = 1;
-                
-                break;
-              }
-              
-              // Next sibling
-              if (op_cur->moresib) {
-                op_cur = SPVM_OP_sibling(compiler, op_cur);
-                break;
-              }
-              // Next is parent
-              else {
-                op_cur = op_cur->sibparent;
-              }
-            }
-            if (finish) {
-              break;
-            }
-          }
-        }
-        // Set my var information
-        sub->op_my_vars = sub_check_info->op_my_vars;
-        
-        // Operand stack max
-        sub->operand_stack_max = sub_check_info->op_count * 2;
-      }
-
-      if (!sub->is_native) {
-        // Run OPs
-        SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
-        SPVM_OP* op_cur = op_base;
-        _Bool finish = 0;
-        while (op_cur) {
-          
-          if (op_cur->first) {
-            op_cur = op_cur->first;
-          }
-          else {
-            while (1) {
-              // [START]Postorder traversal position
-              switch (op_cur->code) {
-                case SPVM_OP_C_CODE_ADD:
-                case SPVM_OP_C_CODE_SUBTRACT:
-                case SPVM_OP_C_CODE_MULTIPLY:
-                case SPVM_OP_C_CODE_DIVIDE:
-                case SPVM_OP_C_CODE_BIT_AND:
-                case SPVM_OP_C_CODE_BIT_OR:
-                case SPVM_OP_C_CODE_BIT_XOR:
-                case SPVM_OP_C_CODE_BIT_NOT:
-                case SPVM_OP_C_CODE_REMAINDER:
-                case SPVM_OP_C_CODE_LEFT_SHIFT:
-                case SPVM_OP_C_CODE_RIGHT_SHIFT:
-                case SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED:
-                case SPVM_OP_C_CODE_GT:
-                case SPVM_OP_C_CODE_GE:
-                case SPVM_OP_C_CODE_LT:
-                case SPVM_OP_C_CODE_LE:
-                case SPVM_OP_C_CODE_EQ:
-                case SPVM_OP_C_CODE_NE:
-                case SPVM_OP_C_CODE_ARRAY_ELEM:
-                case SPVM_OP_C_CODE_CALL_FIELD:
-                {
-                  break;
-                }
-                case SPVM_OP_C_CODE_NEGATE:
-                case SPVM_OP_C_CODE_PLUS:
-                case SPVM_OP_C_CODE_CONVERT:
-                case SPVM_OP_C_CODE_COMPLEMENT:
-                case SPVM_OP_C_CODE_ARRAY_LENGTH:
-                case SPVM_OP_C_CODE_SWITCH_CONDITION:
-                {
-                  break;
-                }
-                case SPVM_OP_C_CODE_RETURN:
-                {
-                  break;
-                }
-                case SPVM_OP_C_CODE_BOOL:
-                {
-                  break;
-                }
-              }
-              
-              // [END]Postorder traversal position
-
-              // Create temporary variable for no is_var_assign_right term witch is not variable
-              int32_t create_tmp_var = 0;
-              SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
-              if (!op_cur->is_assign_left && !op_cur->is_var_assign_right) {
-                // Numeric constant
-                if (op_cur->code == SPVM_OP_C_CODE_CONSTANT) {
-                }
-                // New
-                else if (op_cur->code == SPVM_OP_C_CODE_ADD) {
-                  create_tmp_var = 1;
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_SUBTRACT) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_MULTIPLY) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_DIVIDE) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_BIT_AND) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_BIT_OR) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_BIT_XOR) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_BIT_NOT) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_REMAINDER) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_LEFT_SHIFT) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_RIGHT_SHIFT) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_COMPLEMENT) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_NEGATE) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_PLUS) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_CONVERT) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_NEW) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_CONCAT_STRING) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_CALL_FIELD) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_ASSIGN) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_RETURN) {
-                }
-                // CALL_SUB which return value don't void
-                else if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_SWITCH_CONDITION) {
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_UNDEF) {
                 }
               }
 
