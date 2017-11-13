@@ -1707,24 +1707,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     break;
                   }
+                  case SPVM_OP_C_CODE_CALL_FIELD: {
+                    if (!(op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN)) {
+                      create_tmp_var = 1;
+                    }
+                  }
                 }
               }
               
               // [END]Postorder traversal position
               if (!op_cur->is_assign_left && !op_cur->is_var_assign_right) {
                 // Numeric constant
-                if (op_cur->code == SPVM_OP_C_CODE_CONSTANT) {
-                  if (SPVM_TYPE_is_numeric(compiler, tmp_var_type) && op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
-                    create_tmp_var = 1;
-                  }
-                }
-                else if (op_cur->code == SPVM_OP_C_CODE_CALL_FIELD) {
-                  if (!(op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN)) {
-                    create_tmp_var = 1;
-                  }
-                }
                 // CALL_SUB which return value don't void
-                else if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
+                if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
                   if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
                     create_tmp_var = 1;
                   }
