@@ -1800,7 +1800,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             while (1) {
               // [START]Postorder traversal position
               switch (op_cur->code) {
-                case SPVM_OP_C_CODE_ASSIGN:
                 case SPVM_OP_C_CODE_ADD:
                 case SPVM_OP_C_CODE_SUBTRACT:
                 case SPVM_OP_C_CODE_MULTIPLY:
@@ -1821,6 +1820,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_NE:
                 case SPVM_OP_C_CODE_ARRAY_ELEM:
                 case SPVM_OP_C_CODE_CALL_FIELD:
+                {
+                  break;
+                }
                 case SPVM_OP_C_CODE_NEGATE:
                 case SPVM_OP_C_CODE_PLUS:
                 case SPVM_OP_C_CODE_CONVERT:
@@ -1830,10 +1832,155 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 {
                   break;
                 }
+                case SPVM_OP_C_CODE_RETURN:
+                {
+                  break;
+                }
+                case SPVM_OP_C_CODE_BOOL:
+                {
+                  break;
+                }
               }
               
               // [END]Postorder traversal position
-              
+
+              // Create temporary variable for no is_var_assign_right term witch is not variable
+              int32_t create_tmp_var = 0;
+              SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
+              if (!op_cur->is_assign_left && !op_cur->is_var_assign_right) {
+                // Numeric constant
+                if (op_cur->code == SPVM_OP_C_CODE_CONSTANT) {
+                  if (SPVM_TYPE_is_numeric(compiler, tmp_var_type) && op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
+                    create_tmp_var = 1;
+                  }
+                }
+                // New
+                else if (op_cur->code == SPVM_OP_C_CODE_ADD) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_SUBTRACT) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_MULTIPLY) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_DIVIDE) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_BIT_AND) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_BIT_OR) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_BIT_XOR) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_BIT_NOT) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_REMAINDER) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_LEFT_SHIFT) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_RIGHT_SHIFT) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_COMPLEMENT) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_NEGATE) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_PLUS) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_CONVERT) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_NEW) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_CONCAT_STRING) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_CALL_FIELD) {
+                  if (!(op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN)) {
+                    create_tmp_var = 1;
+                  }
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_ASSIGN) {
+                  if (op_cur->first->code != SPVM_OP_C_CODE_VAR) {
+                    if (op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
+                      create_tmp_var = 1;
+                      op_cur = op_cur->last;
+                    }
+                  }
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_RETURN) {
+                  if (op_cur->first) {
+                    if (op_cur->first->code == SPVM_OP_C_CODE_UNDEF) {
+                      create_tmp_var = 1;
+                      op_cur = op_cur->first;
+                    }
+                  }
+                }
+                // CALL_SUB which return value don't void
+                else if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
+                  if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
+                    create_tmp_var = 1;
+                  }
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_SWITCH_CONDITION) {
+                  create_tmp_var = 1;
+                }
+                else if (op_cur->code == SPVM_OP_C_CODE_UNDEF) {
+                  if (op_cur->uv.undef->type) {
+                    create_tmp_var = 1;
+                  }
+                }
+              }
+
+/*
+              // Create temporary variable
+              if (create_tmp_var) {
+                SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, tmp_var_type, sub_check_info, op_cur->file, op_cur->line);
+                if (op_var_tmp == NULL) {
+                  return;
+                }
+                
+                // Cut new op
+                SPVM_OP* op_target = op_cur;
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
+
+                // Assing op
+                SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
+                SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
+                
+                // Convert cur new op to var
+                SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                op_target->uv = op_cur->uv;
+                
+                op_cur = op_target;
+              }
+*/
               if (op_cur == op_base) {
 
                 // Finish
@@ -1858,7 +2005,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
         }
       }
-
 
       if (!sub->is_native) {
         // Run OPs
