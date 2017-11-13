@@ -243,11 +243,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_yyerror_format(compiler, "DESTROY argument type must be %s\n", package->op_name->uv.name, op_sub->file, op_sub->line);
         }
       }
+
+        
+      SPVM_SUB_CHECK_INFO* sub_check_info = SPVM_SUB_CHECK_INFO_new(compiler);
       
       // Only process normal subroutine
       if (!sub->is_native) {
-        
-        SPVM_SUB_CHECK_INFO* sub_check_info = SPVM_SUB_CHECK_INFO_new(compiler);
         
         // Run OPs
         SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
@@ -1911,7 +1912,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
               }
 
-/*
               // Create temporary variable
               if (create_tmp_var) {
                 SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, tmp_var_type, sub_check_info, op_cur->file, op_cur->line);
@@ -1933,7 +1933,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 
                 op_cur = op_target;
               }
-*/
+
               if (op_cur == op_base) {
 
                 // Finish
