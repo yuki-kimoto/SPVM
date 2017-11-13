@@ -1711,17 +1711,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     if (!(op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN)) {
                       create_tmp_var = 1;
                     }
+                    break;
                   }
-                }
-              }
-              
-              // [END]Postorder traversal position
-              if (!op_cur->is_assign_left && !op_cur->is_var_assign_right) {
-                // Numeric constant
-                // CALL_SUB which return value don't void
-                if (op_cur->code == SPVM_OP_C_CODE_CALL_SUB) {
-                  if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
-                    create_tmp_var = 1;
+                  case SPVM_OP_C_CODE_CALL_SUB: {
+                    if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
+                      create_tmp_var = 1;
+                    }
+                    break;
                   }
                 }
               }
