@@ -1813,17 +1813,40 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   break;
                 }
-                case SPVM_OP_C_CODE_CALL_SUB:
-                {
-                  /*
-                  SPVM_OP* op_terms = op_cur->last;
-                  SPVM_OP* op_term = op_terms->first;
-                  while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-                    assert(op_term->code == SPVM_OP_C_CODE_VAR);
-                    op_term->uv.var->no_load = 1;
+                case SPVM_OP_C_CODE_NEW: {
+                  if (op_cur->first->code == SPVM_OP_C_CODE_CONSTANT) {
+                    // New string
                   }
-                  */
+                  else if (op_cur->first->code == SPVM_OP_C_CODE_TYPE) {
+                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
+                    
+                    if (SPVM_TYPE_is_array(compiler, type)) {
+                      switch (type->code) {
+                        case SPVM_TYPE_C_CODE_BYTE_ARRAY:
+                        case SPVM_TYPE_C_CODE_SHORT_ARRAY:
+                        case SPVM_TYPE_C_CODE_INT_ARRAY:
+                        case SPVM_TYPE_C_CODE_LONG_ARRAY:
+                        case SPVM_TYPE_C_CODE_FLOAT_ARRAY:
+                        case SPVM_TYPE_C_CODE_DOUBLE_ARRAY:
+                          // New numeric array
+                          
+                          break;
+                        default: {
+                          // New object array
+                        }
+                      }
+                    }
+                    else {
+                      // New object
+                    }
+                  }
+                  else {
+                    assert(0);
+                  }
+                  
+                  break;
                 }
+
               }
               
               // [END]Postorder traversal position
