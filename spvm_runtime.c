@@ -1016,6 +1016,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       
       /* TODO */
       case SPVM_BYTECODE_C_CODE_REG_UNDEF:
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         call_stack[bytecodes[bytecode_index + 1]].object_value = NULL;
         bytecode_index += 2;
         break;

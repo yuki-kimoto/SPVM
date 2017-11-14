@@ -701,16 +701,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
-              
-              case SPVM_OP_C_CODE_UNDEF: {
-                
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_UNDEF);
-                
-                
-                
-                
-                break;
-              }
               case SPVM_OP_C_CODE_PRE_INC: {
                 SPVM_BYTECODE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_cur, 1);
                 SPVM_BYTECODE_BUILDER_push_load_bytecode(compiler, bytecode_array, op_cur->first);
@@ -744,6 +734,15 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
                   if (0) {
                     
+                  }
+                  else if (op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
+
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_UNDEF);
+                    
+                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
+                    
+                    break;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
                     
