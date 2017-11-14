@@ -98,7 +98,6 @@
 
 const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "REG_NOP",
-  "UNDEF",
   "LOAD",
   "STORE",
   "STORE_OBJECT",
