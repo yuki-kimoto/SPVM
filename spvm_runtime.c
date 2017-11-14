@@ -1370,8 +1370,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* object = api->new_object(api, type_id);
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+        
         // Push object
         call_stack[bytecodes[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)object;
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 3;
         break;
@@ -1388,8 +1396,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
 
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+        
         // Set array
         call_stack[bytecodes[bytecode_index + 1]].object_value = object;
+        
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 3;
         break;
@@ -1406,8 +1422,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
 
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         // Set array
         call_stack[bytecodes[bytecode_index + 1]].object_value = object;
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 3;
         break;
@@ -1424,8 +1448,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
 
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+        
         // Set array
         call_stack[bytecodes[bytecode_index + 1]].object_value = object;
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 3;
         break;
@@ -1442,8 +1474,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
 
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         // Set array
         call_stack[bytecodes[bytecode_index + 1]].object_value = object;
+        
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 3;
         break;
@@ -1460,8 +1500,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
 
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         // Set array
         call_stack[bytecodes[bytecode_index + 1]].object_value = object;
+        
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 3;
         break;
@@ -1478,9 +1526,17 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
 
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         // Set array
         call_stack[bytecodes[bytecode_index + 1]].object_value = object;
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         bytecode_index += 3;
         break;
       }
@@ -1497,9 +1553,17 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
 
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         // Set object
         call_stack[bytecodes[bytecode_index + 1]].object_value = object;
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         bytecode_index += 4;
         break;
       }
@@ -1508,9 +1572,17 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* string = api->new_string(api, (char*)&constant_pool[name_id + 1], constant_pool[name_id]);
 
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         // Set string
         call_stack[bytecodes[bytecode_index + 1]].object_value = string;
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         bytecode_index += 3;
         break;
       }
@@ -1756,8 +1828,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         if (string3 == NULL) {
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         call_stack[bytecodes[bytecode_index + 1]].object_value = string3;
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 4;
         break;
@@ -1772,7 +1852,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         call_stack[bytecodes[bytecode_index + 1]].object_value = string3;
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 4;
         break;
@@ -1787,7 +1875,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         call_stack[bytecodes[bytecode_index + 1]].object_value = string3;
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 4;
         break;
@@ -1802,8 +1898,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         call_stack[bytecodes[bytecode_index + 1]].object_value = string3;
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         bytecode_index += 4;
         break;
       }
@@ -1817,8 +1921,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         call_stack[bytecodes[bytecode_index + 1]].object_value = string3;
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         bytecode_index += 4;
         break;
       }
@@ -1832,7 +1944,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
         
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+
         call_stack[bytecodes[bytecode_index + 1]].object_value = string3;
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 4;
         break;
@@ -1846,8 +1966,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         if (string3 == NULL) {
           goto label_SPVM_BYTECODE_C_CODE_REG_CROAK;
         }
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         call_stack[bytecodes[bytecode_index + 1]].object_value = string3;
+
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
         
         bytecode_index += 4;
         break;
