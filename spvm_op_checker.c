@@ -1774,6 +1774,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_NE:
                 case SPVM_OP_C_CODE_ARRAY_ELEM:
                 case SPVM_OP_C_CODE_CALL_FIELD:
+                case SPVM_OP_C_CODE_CONCAT_STRING:
                 {
                   if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
                     op_cur->first->uv.var->no_load = 1;
