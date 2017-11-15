@@ -2047,6 +2047,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
                 SPVM_SUB* sub = op_sub->uv.sub;
+                 
+                SPVM_OP* op_args = sub->op_args;
+                
                 
                 if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
                   // Call subroutine

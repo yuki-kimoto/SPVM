@@ -2467,6 +2467,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         break;
       }
+      case SPVM_BYTECODE_C_CODE_REG_PUSH_ARG:
+        operand_stack_top++;
+        call_stack[operand_stack_top].int_value = bytecodes[bytecode_index + 1];
+        bytecode_index += 2;
+        break;
       case SPVM_BYTECODE_C_CODE_LOAD:
         operand_stack_top++;
         call_stack[operand_stack_top] = call_stack[bytecodes[bytecode_index + 1]];

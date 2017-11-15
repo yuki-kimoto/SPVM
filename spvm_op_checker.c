@@ -1840,7 +1840,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
-
               }
               
               // [END]Postorder traversal position
