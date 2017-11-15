@@ -61,7 +61,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   // Lexical varialbe length
   int32_t my_vars_length = api->get_sub_my_vars_length(api, sub_id);
-  register int32_t operand_stack_top = -1 + my_vars_length;
+  register int32_t operand_stack_top = my_vars_length;
   
   // Call_stack_max
   int32_t call_stack_length = my_vars_length + api->get_sub_operand_stack_max(api, sub_id);
@@ -2080,10 +2080,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         int32_t args_length = api->get_sub_args_length(api, call_sub_id);
         
-        operand_stack_top -= args_length;
-        
         SPVM_API_VALUE args[255];
-        memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
+        {
+          int32_t i;
+          for (i = 0; i < args_length; i++) {
+            int32_t var_index = call_stack[operand_stack_top - args_length + i].int_value;
+            args[i] = call_stack[var_index];
+          }
+        }
+        
+        operand_stack_top -= args_length;
         
         // Call subroutine
         SPVM_API_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
@@ -2109,7 +2115,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         operand_stack_top -= args_length;
         
         SPVM_API_VALUE args[255];
-        memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
+        {
+          int32_t i;
+          for (i = 0; i < args_length; i++) {
+            int32_t var_index = call_stack[operand_stack_top - args_length + i].int_value;
+            args[i] = call_stack[var_index];
+          }
+        }
         
         // Call subroutine
         SPVM_API_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
@@ -2143,7 +2155,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         operand_stack_top -= args_length;
         
         SPVM_API_VALUE args[255];
-        memcpy(args, &call_stack[operand_stack_top + 1], sizeof(SPVM_API_VALUE) * args_length);
+        {
+          int32_t i;
+          for (i = 0; i < args_length; i++) {
+            int32_t var_index = call_stack[operand_stack_top - args_length + i].int_value;
+            args[i] = call_stack[var_index];
+          }
+        }
         
         // Call subroutine
         SPVM_API_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
@@ -2468,13 +2486,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_BYTECODE_C_CODE_REG_PUSH_ARG:
-        // operand_stack_top++;
-        // call_stack[operand_stack_top].int_value = bytecodes[bytecode_index + 1];
+        call_stack[operand_stack_top].int_value = bytecodes[bytecode_index + 1];
+        operand_stack_top++;
+        
         bytecode_index += 2;
         break;
       case SPVM_BYTECODE_C_CODE_LOAD:
-        operand_stack_top++;
-        call_stack[operand_stack_top] = call_stack[bytecodes[bytecode_index + 1]];
+        // operand_stack_top++;
+        // call_stack[operand_stack_top] = call_stack[bytecodes[bytecode_index + 1]];
         bytecode_index += 2;
         break;
       case SPVM_BYTECODE_C_CODE_POP:

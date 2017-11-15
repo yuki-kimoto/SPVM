@@ -318,6 +318,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
                     
+                    
                     SPVM_CALL_SUB* call_sub = op_cur->last->uv.call_sub;
                     const char* sub_name = call_sub->resolved_name;
                     
@@ -326,11 +327,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_TYPE* return_type = sub->op_return_type->uv.type;
 
                     // Push args
-                    SPVM_OP* op_args = sub->op_args;
+                    SPVM_OP* op_args = op_cur->last->last;
                     SPVM_OP* op_arg = op_args->first;
                     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_PUSH_ARG);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, op_arg->uv.my_var->index);
+                      int32_t index_arg = SPVM_OP_get_my_var_index(compiler, op_arg);
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_arg);
                     }
 
                     // Call subroutine
@@ -2098,15 +2100,16 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
                 SPVM_SUB* sub = op_sub->uv.sub;
                 
-                // Push args
-                SPVM_OP* op_args = sub->op_args;
-                SPVM_OP* op_arg = op_args->first;
-                while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_PUSH_ARG);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, op_arg->uv.my_var->index);
-                }
-                
                 if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
+                  // Push args
+                  SPVM_OP* op_args = op_cur->last;
+                  SPVM_OP* op_arg = op_args->first;
+                  while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_PUSH_ARG);
+                    int32_t index_arg = SPVM_OP_get_my_var_index(compiler, op_arg);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_arg);
+                  }
+                  
                   // Call subroutine
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_CALL_VOID_SUB);
                   
