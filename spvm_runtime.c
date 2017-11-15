@@ -1023,10 +1023,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         call_stack[bytecodes[bytecode_index + 1]].object_value = NULL;
         bytecode_index += 2;
         break;
-      case SPVM_BYTECODE_C_CODE_REG_LOAD:
-        call_stack[bytecodes[bytecode_index + 1]] = call_stack[bytecodes[bytecode_index + 2]];
-        bytecode_index += 2;
-        break;
       case SPVM_BYTECODE_C_CODE_REG_ARRAY_LOAD_BYTE: {
         SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)call_stack[bytecodes[bytecode_index + 2]].object_value;
         int32_t index = call_stack[bytecodes[bytecode_index + 3]].int_value;
@@ -2490,11 +2486,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         operand_stack_top++;
         call_stack[operand_stack_top].int_value = bytecodes[bytecode_index + 1];
         
-        bytecode_index += 2;
-        break;
-      case SPVM_BYTECODE_C_CODE_LOAD:
-        // operand_stack_top++;
-        // call_stack[operand_stack_top] = call_stack[bytecodes[bytecode_index + 1]];
         bytecode_index += 2;
         break;
       case SPVM_BYTECODE_C_CODE_POP:

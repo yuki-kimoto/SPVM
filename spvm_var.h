@@ -6,8 +6,6 @@
 struct SPVM_var {
   SPVM_OP* op_name;
   SPVM_OP* op_my_var;
-  _Bool no_load;
-  _Bool load;
 };
 
 SPVM_VAR* SPVM_VAR_new(SPVM_COMPILER* compiler);
