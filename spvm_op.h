@@ -182,7 +182,6 @@ enum {
   SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN = 1
 };
 
-
 /* Binary operation */
 struct SPVM_op {
   SPVM_OP* first;
