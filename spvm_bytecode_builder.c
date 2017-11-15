@@ -213,26 +213,23 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else if (op_cur->last->code == SPVM_OP_C_CODE_PRE_INC) {
                     SPVM_OP* op_last = op_cur->last;
                     SPVM_BYTECODE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_last, 1);
-
-                    SPVM_VAR* var = op_last->first->uv.var;
                     
-                    int32_t my_var_index = var->op_my_var->uv.my_var->index;
-
+                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                    
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD);
                     
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var_index);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                     
                     break;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_POST_INC) {
                     SPVM_OP* op_last = op_cur->last;
-                    SPVM_VAR* var = op_last->first->uv.var;
-                    
-                    int32_t my_var_index = var->op_my_var->uv.my_var->index;
+
+                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
 
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD);
                     
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var_index);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
 
                     SPVM_BYTECODE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_last, 1);
                     
@@ -242,25 +239,22 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_last = op_cur->last;
                     SPVM_BYTECODE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_last, -1);
                     
-                    SPVM_VAR* var = op_last->first->uv.var;
-                    
-                    int32_t my_var_index = var->op_my_var->uv.my_var->index;
+                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
 
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD);
                     
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var_index);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                     
                     break;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_POST_DEC) {
                     SPVM_OP* op_last = op_cur->last;
-                    SPVM_VAR* var = op_last->first->uv.var;
-                    
-                    int32_t my_var_index = var->op_my_var->uv.my_var->index;
+
+                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
 
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD);
                     
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var_index);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
 
                     SPVM_BYTECODE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_last, -1);
                     
