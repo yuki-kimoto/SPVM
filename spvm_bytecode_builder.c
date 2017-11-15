@@ -2170,21 +2170,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
-              case SPVM_OP_C_CODE_VAR: {
-                if (op_cur->is_assign_left || op_cur->uv.var->no_load) {
-                  break;
-                }
-                
-                SPVM_VAR* var = op_cur->uv.var;
-                
-                int32_t my_var_index = var->op_my_var->uv.my_var->index;
-                
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD);
-                
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var_index);
-                
-                break;
-              }
             }
             
             // [END]Postorder traversal position
