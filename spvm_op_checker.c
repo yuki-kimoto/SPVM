@@ -1821,20 +1821,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
                     
                     if (SPVM_TYPE_is_array(compiler, type)) {
-                      switch (type->code) {
-                        case SPVM_TYPE_C_CODE_BYTE_ARRAY:
-                        case SPVM_TYPE_C_CODE_SHORT_ARRAY:
-                        case SPVM_TYPE_C_CODE_INT_ARRAY:
-                        case SPVM_TYPE_C_CODE_LONG_ARRAY:
-                        case SPVM_TYPE_C_CODE_FLOAT_ARRAY:
-                        case SPVM_TYPE_C_CODE_DOUBLE_ARRAY:
-                          // New numeric array
-                          
-                          break;
-                        default: {
-                          // New object array
-                        }
-                      }
+                      // Index
+                      assert(op_cur->first->last->code == SPVM_OP_C_CODE_VAR);
+                      op_cur->first->last->uv.var->no_load = 1;
                     }
                     else {
                       // New object
