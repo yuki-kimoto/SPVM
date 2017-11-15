@@ -1751,6 +1751,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       op_cur->last->uv.var->no_load = 1;
                     }
                   }
+                  else if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
+                    if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
+                      op_cur->last->uv.var->no_load = 1;
+                    }
+                  }
                   
                   break;
                 }
