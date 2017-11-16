@@ -1361,6 +1361,30 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         bytecode_index += 3;
         break;
       }
+      case SPVM_BYTECODE_C_CODE_REG_INC_REF_COUNT: {
+        // Increment new value reference count
+        /*
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->inc_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+        */
+
+        bytecode_index += 2;
+        
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_REG_DEC_REF_COUNT: {
+        // Decrement reference count
+        /*
+        if (call_stack[bytecodes[bytecode_index + 1]].object_value != NULL) {
+          api->dec_ref_count(api, call_stack[bytecodes[bytecode_index + 1]].object_value);
+        }
+        */
+        
+        bytecode_index += 2;
+
+        break;
+      }
       case SPVM_BYTECODE_C_CODE_REG_NEW_OBJECT: {
         // Get subroutine ID
         int32_t type_id = bytecodes[bytecode_index + 2];
