@@ -271,11 +271,6 @@ block
 
 normal_statement
   : assignable_term ';'
-    {
-      SPVM_OP* op_pop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POP, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, op_pop, op_pop->last, $1);
-      $$ = op_pop;
-    }
   | expression ';'
   | ';'
     {
@@ -284,11 +279,6 @@ normal_statement
 
 normal_statement_for_end
   : assignable_term
-    {
-      SPVM_OP* op_pop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POP, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, op_pop, op_pop->last, $1);
-      $$ = op_pop;
-    }
   | expression
 
 for_statement

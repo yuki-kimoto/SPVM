@@ -98,7 +98,6 @@
 
 const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "REG_NOP",
-  "POP",
   "REG_ADD_BYTE",
   "REG_ADD_SHORT",
   "REG_ADD_INT",
@@ -256,7 +255,6 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "REG_LOAD",
   "REG_STORE",
   "REG_STORE_OBJECT",
-  "REG_POP",
   "REG_NEW_OBJECT",
   "REG_NEW_STRING",
   "REG_NEW_OBJECT_ARRAY",

@@ -100,7 +100,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "LOOP",
   "VAR",
   "CONVERT",
-  "POP",
   "UNDEF",
   "ARRAY_LENGTH",
   "CONDITION",

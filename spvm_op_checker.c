@@ -307,36 +307,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   break;
                 }
-                case SPVM_OP_C_CODE_POP: {
-                  if (op_cur->first->code == SPVM_OP_C_CODE_CALL_SUB) {
-                    SPVM_OP* op_call_sub = op_cur->first;
-                    
-                    const char* sub_name = op_call_sub->uv.call_sub->resolved_name;
-                    
-                    SPVM_OP* op_sub= SPVM_HASH_search(
-                      compiler->op_sub_symtable,
-                      sub_name,
-                      strlen(sub_name)
-                    );
-                    SPVM_SUB* sub = op_sub->uv.sub;
-                    
-                    if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
-                      op_cur->code = SPVM_OP_C_CODE_NULL;
-                    }
-                  }
-                  else if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
-                    op_cur->code = SPVM_OP_C_CODE_NULL;
-                    op_cur->first->code = SPVM_OP_C_CODE_NULL;
-                  }
-                  else if (op_cur->first->code == SPVM_OP_C_CODE_PRE_INC
-                    || op_cur->first->code == SPVM_OP_C_CODE_PRE_DEC
-                    || op_cur->first->code == SPVM_OP_C_CODE_POST_INC
-                    || op_cur->first->code == SPVM_OP_C_CODE_POST_DEC)
-                  {
-                    op_cur->code = SPVM_OP_C_CODE_NULL;
-                  }
-                  break;
-                }
                 case SPVM_OP_C_CODE_SWITCH: {
                   
                   SPVM_OP* op_switch_condition = op_cur->first;
