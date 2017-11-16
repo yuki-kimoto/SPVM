@@ -204,16 +204,19 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
                   SPVM_OP* op_var = op_cur->first;
                   int32_t my_var_index = op_var->uv.var->op_my_var->uv.my_var->index;
+
+                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
                   
-                  // Decrement refenrece count if variable is not just after declaration
-                  if (op_cur->first->first && op_cur->first->first->code != SPVM_OP_C_CODE_MY) {
-                    int32_t index_dec_ref_count = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_DEC_REF_COUNT);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_dec_ref_count);
+                  // Decrement refenrece count if variable is object and not just after declaration
+                  if (!SPVM_TYPE_is_numeric(compiler, type)) {
+                    if (op_cur->first->first && op_cur->first->first->code != SPVM_OP_C_CODE_MY) {
+                      int32_t index_dec_ref_count = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                      
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_DEC_REF_COUNT);
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_dec_ref_count);
+                    }
                   }
                   
-                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
                   if (0) {
                     
                   }
@@ -1287,12 +1290,15 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else {
                   
                   }
-
-                  if (op_cur->last->code != SPVM_OP_C_CODE_UNDEF) {
-                    int32_t index_inc_ref_count = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_INC_REF_COUNT);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_inc_ref_count);
+                  
+                  // Increment reference count if left value is object and right value is not undef
+                  if (!SPVM_TYPE_is_numeric(compiler, type)) {
+                    if (op_cur->last->code != SPVM_OP_C_CODE_UNDEF) {
+                      int32_t index_inc_ref_count = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                      
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_INC_REF_COUNT);
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_inc_ref_count);
+                    }
                   }
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
