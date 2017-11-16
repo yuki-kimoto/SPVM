@@ -759,6 +759,8 @@ SPVM_OP* SPVM_OP_new_op_var_from_op_my_var(SPVM_COMPILER* compiler, SPVM_OP* op_
   var->op_my_var = op_my_var;
   op_var->uv.var = var;
   
+  SPVM_OP_insert_child(compiler, op_var, op_var->last, op_my_var);
+  
   return op_var;
 }
 
