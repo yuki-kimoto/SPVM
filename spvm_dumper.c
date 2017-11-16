@@ -265,6 +265,8 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         
         // Have one operands
+        case SPVM_BYTECODE_C_CODE_REG_INC_REF_COUNT:
+        case SPVM_BYTECODE_C_CODE_REG_DEC_REF_COUNT:
         case SPVM_BYTECODE_C_CODE_REG_GOTO:
         case SPVM_BYTECODE_C_CODE_REG_RETURN_BYTE:
         case SPVM_BYTECODE_C_CODE_REG_RETURN_SHORT:
