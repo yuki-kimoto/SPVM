@@ -189,9 +189,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               
               if (is_operation) {
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_CURRENT_LINE);
-                
-                
-                
 
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, op_cur->line);
               }
@@ -209,7 +206,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   // Decrement refenrece count if variable is object and not just after declaration
                   if (!SPVM_TYPE_is_numeric(compiler, type)) {
-                    if (op_cur->first->first && op_cur->first->first->code != SPVM_OP_C_CODE_MY) {
+                    if (!(op_cur->first->first && op_cur->first->first->code == SPVM_OP_C_CODE_MY)) {
                       int32_t index_dec_ref_count = SPVM_OP_get_my_var_index(compiler, op_cur->first);
                       
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REG_DEC_REF_COUNT);
