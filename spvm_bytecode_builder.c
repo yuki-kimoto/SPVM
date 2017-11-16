@@ -221,6 +221,16 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                           do_dec_ref_count = 1;
                         }
                       }
+                      else if (op_cur->last->code == SPVM_OP_C_CODE_CONCAT_STRING) {
+                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                        int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->last->first);
+                        int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last->last);
+                        
+                        // Left index is deferent from right indexes
+                        if (index_out != index_in1 && index_out != index_in2) {
+                          do_dec_ref_count = 1;
+                        }
+                      }
                       else {
                         do_dec_ref_count = 1;
                       }
@@ -1187,6 +1197,16 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
                         int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
                         if (index_out != index_in) {
+                          do_inc_ref_count = 1;
+                        }
+                      }
+                      else if (op_cur->last->code == SPVM_OP_C_CODE_CONCAT_STRING) {
+                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                        int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->last->first);
+                        int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last->last);
+                        
+                        // Left index is deferent from right indexes
+                        if (index_out != index_in1 && index_out != index_in2) {
                           do_inc_ref_count = 1;
                         }
                       }
