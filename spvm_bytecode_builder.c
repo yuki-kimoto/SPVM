@@ -205,7 +205,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
 
                   int32_t do_dec_ref_count = 0;
-                  int32_t do_inc_ref_count = 0;
                   
                   // Do decrement reference count
                   // Variable type is object
@@ -228,6 +227,24 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         
                         // Left index is deferent from right indexes
                         if (index_out != index_in1 && index_out != index_in2) {
+                          do_dec_ref_count = 1;
+                        }
+                      }
+                      else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
+                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                        
+                        // Push args
+                        SPVM_OP* op_args =op_cur->last->last;
+                        SPVM_OP* op_arg = op_args->first;
+                        int32_t has_same_index = 0;
+                        while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+                          int32_t index_arg = SPVM_OP_get_my_var_index(compiler, op_arg);
+                          if (index_arg == index_out) {
+                            has_same_index = 1;
+                            break;
+                          }
+                        }
+                        if (!has_same_index) {
                           do_dec_ref_count = 1;
                         }
                       }
@@ -1188,6 +1205,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
 
                   // Do increment reference count
+                  int32_t do_inc_ref_count = 0;
                   // Right value is not undef
                   if (op_cur->last->code != SPVM_OP_C_CODE_UNDEF) {
                     // Variable type is object
@@ -1207,6 +1225,24 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         
                         // Left index is deferent from right indexes
                         if (index_out != index_in1 && index_out != index_in2) {
+                          do_inc_ref_count = 1;
+                        }
+                      }
+                      else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
+                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                        
+                        // Push args
+                        SPVM_OP* op_args =op_cur->last->last;
+                        SPVM_OP* op_arg = op_args->first;
+                        int32_t has_same_index = 0;
+                        while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+                          int32_t index_arg = SPVM_OP_get_my_var_index(compiler, op_arg);
+                          if (index_arg == index_out) {
+                            has_same_index = 1;
+                            break;
+                          }
+                        }
+                        if (!has_same_index) {
                           do_inc_ref_count = 1;
                         }
                       }
