@@ -202,7 +202,6 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_NAME:
                 case SPVM_OP_C_CODE_MY:
                 case SPVM_OP_C_CODE_TYPE:
-                case SPVM_OP_C_CODE_POP:
                   is_operation = 0;
                   break;
                 default:
@@ -1292,15 +1291,6 @@ void SPVM_CSOURCE_BUILDER_build_csource(SPVM_COMPILER* compiler) {
                 else {
                     assert(0);
                 }
-                
-                break;
-              }
-              case SPVM_OP_C_CODE_POP: {
-                
-                // TODO SPVM_BYTECODE_C_CODE_POP);
-                
-                
-                
                 
                 break;
               }

@@ -926,6 +926,42 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
+                  if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
+                    if (op_cur->last->code == SPVM_OP_C_CODE_CONCAT_STRING) {
+                      int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                      
+                      if (op_cur->last->first->code == SPVM_OP_C_CODE_VAR) {
+                        int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->last->first);
+                        if (index_out == index_in1) {
+                          op_cur->last->first->uv.var->create_tmp_var = 1;
+                        }
+                      }
+                      
+                      if (op_cur->last->last->code == SPVM_OP_C_CODE_VAR) {
+                        int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last->last);
+                        if (index_out == index_in2) {
+                          op_cur->last->last->uv.var->create_tmp_var = 1;
+                        }
+                      }
+                    }
+                    else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
+                      int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                      
+                      // Push args
+                      SPVM_OP* op_args =op_cur->last->last;
+                      SPVM_OP* op_arg = op_args->first;
+                      while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+                        if (op_arg->code == SPVM_OP_C_CODE_VAR) {
+                          int32_t index_arg = SPVM_OP_get_my_var_index(compiler, op_arg);
+                          if (index_arg == index_out) {
+                            op_arg->uv.var->create_tmp_var = 1;
+                            break;
+                          }
+                        }
+                      }
+                    }
+                  }
+                  
                   break;
                 }
                 case SPVM_OP_C_CODE_RETURN: {
@@ -1655,6 +1691,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_CODE_CALL_SUB: {
                     if (tmp_var_type->code != SPVM_TYPE_C_CODE_VOID) {
                       create_tmp_var = 1;
+                    }
+                    break;
+                  }
+                  case SPVM_OP_C_CODE_VAR: {
+                    if (op_cur->uv.var->create_tmp_var) {
+                      if (!op_cur->uv.var->created_tmp_var) {
+                        create_tmp_var = 1;
+                        op_cur->uv.var->created_tmp_var = 1;
+                      }
                     }
                     break;
                   }

@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <inttypes.h>
 #include <ctype.h>
-
 #include "spvm_compiler.h"
 #include "spvm_dynamic_array.h"
 #include "spvm_hash.h"
@@ -37,7 +36,6 @@
 #include "spvm_package_var.h"
 #include "spvm_csource_builder.h"
 #include "spvm_undef.h"
-
 const char* const SPVM_OP_C_CODE_NAMES[] = {
   "IF",
   "ELSIF",
