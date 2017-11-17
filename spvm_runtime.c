@@ -70,7 +70,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   SPVM_API_OBJECT* call_stack_array = api->new_value_array(api, call_stack_length);
   api->inc_ref_count(api, call_stack_array);
   SPVM_API_VALUE* call_stack = api->get_value_array_elements(api, (SPVM_API_OBJECT*)call_stack_array);
-
+  
   // Catch stack
   int32_t catch_exception_stack[255];
   
@@ -79,11 +79,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   register int32_t condition_flag = 0;
   
-  int32_t success;
   int32_t current_line = 0;
   
   SPVM_API_VALUE return_value;
-  return_value.long_value = 0;
+  memset(&return_value, 0, sizeof(SPVM_API_VALUE));
   
   // Copy arguments
   memcpy(call_stack, args, args_length * sizeof(SPVM_API_VALUE));
@@ -2010,7 +2009,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         
         // Call subroutine
-        SPVM_API_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
+        SPVM_RUNTIME_call_sub(api, call_sub_id, args);
         
         if (api->get_exception(api)) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
