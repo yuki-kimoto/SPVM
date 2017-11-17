@@ -1387,10 +1387,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // Search same name variable
                   _Bool found = 0;
                   
-                  int32_t block_my_var_base = SPVM_DYNAMIC_ARRAY_fetch(
+                  int32_t* block_my_var_base_ptr = SPVM_DYNAMIC_ARRAY_fetch(
                     sub_check_info->block_my_var_base_stack,
                     sub_check_info->block_my_var_base_stack->length - 1
                   );
+                  
+                  int32_t block_my_var_base = *block_my_var_base_ptr;
                   
                   {
                     int32_t i;

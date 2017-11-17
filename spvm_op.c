@@ -133,6 +133,8 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
 };
 
 _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
   switch (op->code) {
     case SPVM_OP_C_CODE_EQ:
     case SPVM_OP_C_CODE_NE:
@@ -147,6 +149,8 @@ _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
 }
 
 int32_t SPVM_OP_get_my_var_index(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
+  (void)compiler;
+  
   return op_var->uv.var->op_my_var->uv.my_var->index;
 }
 

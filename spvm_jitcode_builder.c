@@ -10,6 +10,7 @@
 #include "spvm_string_buffer.h"
 
 void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
+  (void)compiler;
   
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
