@@ -2,7 +2,7 @@
 #define SPVM_OBJECT_H
 
 #include "spvm_base.h"
-#include "spvm_value.h"
+#include "spvm_api.h"
 
 // SPVM_OBJECT
 struct SPVM_object {

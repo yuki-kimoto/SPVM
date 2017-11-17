@@ -30,7 +30,7 @@ B<1. Add two int value:>
 
   #include <spvm_api.h>
 
-  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_VALUE* args) {
 
     int32_t total = args[0].int_value + args[1].int_value;
     
@@ -51,13 +51,13 @@ and add C<SPVM> to the top of it.
 
 SPVM Native API object. This object is always First Argument of native function .
   
-  int32_t SPVM__TestCase__Extension__array_sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__array_sum(SPVM_API* api, SPVM_VALUE* args) {
     
   }
 
 You can call Native API from this object, and First Argument of Native API is always this object.
 
-  int32_t SPVM__TestCase__Extension__array_sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__array_sum(SPVM_API* api, SPVM_VALUE* args) {
     // Call SPVM Native API
     int32_t length = api->get_array_length(api, args[0].object_value);
   }
@@ -135,14 +135,14 @@ Returns a SPVM_API_OBJECT object.
   void (*set_double_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, double);
   void (*set_object_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, SPVM_API_OBJECT*);
   int32_t (*get_sub_id)(SPVM_API*, const char*);
-  void (*call_void_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int8_t (*call_byte_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int16_t (*call_short_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int32_t (*call_int_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int64_t (*call_long_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  float (*call_float_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  double (*call_double_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  SPVM_API_OBJECT* (*call_object_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
+  void (*call_void_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  int8_t (*call_byte_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  int16_t (*call_short_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  int32_t (*call_int_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  int64_t (*call_long_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  float (*call_float_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  double (*call_double_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  SPVM_API_OBJECT* (*call_object_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
   SPVM_API_OBJECT* (*new_byte_array)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_short_array)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_int_array)(SPVM_API*, int32_t);

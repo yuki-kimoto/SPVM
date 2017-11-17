@@ -8,7 +8,7 @@ typedef struct SPVM_api SPVM_API;
 typedef void SPVM_API_OBJECT;
 typedef void SPVM_API_RUNTIME;
 
-union SPVM_API_value {
+union SPVM_value {
   int8_t byte_value;
   int16_t short_value;
   int32_t int_value;
@@ -22,7 +22,7 @@ union SPVM_API_value {
 };
 
 // spvm_api.h
-typedef union SPVM_API_value SPVM_API_VALUE;
+typedef union SPVM_value SPVM_VALUE;
 
 typedef int8_t SPVM_API_byte;
 typedef int16_t SPVM_API_short;
@@ -57,14 +57,14 @@ struct SPVM_api {
   void (*set_double_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, double);
   void (*set_object_field)(SPVM_API*, SPVM_API_OBJECT*, int32_t, SPVM_API_OBJECT*);
   int32_t (*get_sub_id)(SPVM_API*, const char*);
-  void (*call_void_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int8_t (*call_byte_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int16_t (*call_short_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int32_t (*call_int_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  int64_t (*call_long_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  float (*call_float_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  double (*call_double_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-  SPVM_API_OBJECT* (*call_object_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
+  void (*call_void_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  int8_t (*call_byte_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  int16_t (*call_short_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  int32_t (*call_int_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  int64_t (*call_long_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  float (*call_float_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  double (*call_double_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+  SPVM_API_OBJECT* (*call_object_sub)(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
   int32_t (*get_type_id)(SPVM_API*, const char*);
   SPVM_API_OBJECT* (*new_object)(SPVM_API*, int32_t);
   SPVM_API_OBJECT* (*new_byte_array)(SPVM_API*, int32_t);
@@ -99,10 +99,10 @@ struct SPVM_api {
   int32_t (*isweak)(SPVM_API* api, SPVM_API_OBJECT* object);
   void (*unweaken)(SPVM_API* api, SPVM_API_OBJECT** object_address);
   SPVM_API_OBJECT* (*new_value_array)(SPVM_API* api, int32_t length);
-  SPVM_API_VALUE* (*get_value_array_elements)(SPVM_API* api, SPVM_API_OBJECT* object);
+  SPVM_VALUE* (*get_value_array_elements)(SPVM_API* api, SPVM_API_OBJECT* object);
   int32_t* (*get_constant_pool)(SPVM_API* api);
   int32_t* (*get_bytecodes)(SPVM_API* api);
-  SPVM_API_VALUE* (*get_package_vars)(SPVM_API* api);
+  SPVM_VALUE* (*get_package_vars)(SPVM_API* api);
   int32_t (*is_debug)(SPVM_API* api);
   int32_t (*get_type_code)(SPVM_API* api, int32_t type_id);
   int32_t (*get_sub_name_id)(SPVM_API* api, int32_t sub_id);

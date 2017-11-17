@@ -52,10 +52,6 @@ typedef struct SPVM_object SPVM_OBJECT;
 struct SPVM_use;
 typedef struct SPVM_use SPVM_USE;
 
-// spvm_value.h
-union SPVM_value;
-typedef union SPVM_value SPVM_VALUE;
-
 // spvm_runtime.h
 struct SPVM_runtime;
 typedef struct SPVM_runtime SPVM_RUNTIME;

@@ -17,7 +17,7 @@ This is similar with L<Extension::C>, but L<SPVM> implement this feature by defa
   // SPVM/TestCase/Extension.native/Extension.c
   #include <spvm_api.h>
   
-  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_VALUE* args) {
     
     int32_t total = args[0].int_value + args[1].int_value;
     
@@ -43,16 +43,16 @@ Next, you write C language. You include C<spvm_api.h>.
 C Function name must be replace C<:> with <_> and add C<SPVM__> to top of SPVM subroutine name. SPVM subroutine absolute name is
 C<TestCase::Extension::sum>. C function name is C<SPVM__TestCase__Extension__sum>.
 
-  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_VALUE* args) {
 
     int32_t total = args[0].int_value + args[1].int_value;
     
     return total;
   }
 
-First argument is C<api>. This is the pointer to C<SPVM_API>. Second argument is C<args>. This is array of C<SPVM_API_VALUE>.
+First argument is C<api>. This is the pointer to C<SPVM_API>. Second argument is C<args>. This is array of C<SPVM_VALUE>.
 
-SPVM_API_VALUE is union of C language. If you want to get int value, you do the followng.
+SPVM_VALUE is union of C language. If you want to get int value, you do the followng.
 
   args[0].int_value
 

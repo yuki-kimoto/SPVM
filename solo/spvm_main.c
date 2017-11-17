@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
   // Free compiler
   SPVM_COMPILER_free(compiler);
   
-  SPVM_API_VALUE args[1];
+  SPVM_VALUE args[1];
   args[0].int_value = 2;
   
   // Run
