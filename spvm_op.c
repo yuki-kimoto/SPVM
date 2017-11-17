@@ -1111,20 +1111,29 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
     
     if (strstr(sub_name, "::")) {
       sub_abs_name = call_sub->op_name->uv.name;
+
+      call_sub->resolved_name = sub_abs_name;
+      
+      found_op_sub= SPVM_HASH_search(
+        compiler->op_sub_symtable,
+        sub_abs_name,
+        strlen(sub_abs_name)
+      );
     }
     else {
       SPVM_PACKAGE* package = op_package_current->uv.package;
       const char* package_name = package->op_name->uv.name;
       sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
+      
+      call_sub->resolved_name = sub_abs_name;
+      
+      found_op_sub= SPVM_HASH_search(
+        compiler->op_sub_symtable,
+        sub_abs_name,
+        strlen(sub_abs_name)
+      );
+
     }
-    
-    call_sub->resolved_name = sub_abs_name;
-    
-    found_op_sub= SPVM_HASH_search(
-      compiler->op_sub_symtable,
-      sub_abs_name,
-      strlen(sub_abs_name)
-    );
   }
   else {
     assert(0);
