@@ -1430,7 +1430,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                   if (!call_sub->sub) {
                     SPVM_yyerror_format(compiler, "unknown sub \"%s\" at %s line %d\n",
-                      call_sub->resolved_name, op_cur->file, op_cur->line);
+                      op_cur->first->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }

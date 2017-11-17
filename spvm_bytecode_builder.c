@@ -333,7 +333,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     
                     SPVM_CALL_SUB* call_sub = op_cur->last->uv.call_sub;
-                    const char* sub_name = call_sub->resolved_name;
+                    const char* sub_name = call_sub->sub->abs_name;
                     
                     SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
                     SPVM_SUB* sub = op_sub->uv.sub;
@@ -2004,7 +2004,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_CODE_CALL_SUB: {
                 SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
-                const char* sub_name = call_sub->resolved_name;
+                const char* sub_name = call_sub->sub->abs_name;
                 
                 SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
                 SPVM_SUB* sub = op_sub->uv.sub;
