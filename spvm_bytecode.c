@@ -252,7 +252,6 @@ const char* const SPVM_BYTECODE_C_CODE_NAMES[] = {
   "BOOL_DOUBLE",
   "BOOL_OBJECT",
   "UNDEF",
-  "LOAD",
   "MOVE",
   "NEW_OBJECT",
   "NEW_STRING",
