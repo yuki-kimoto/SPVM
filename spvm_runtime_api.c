@@ -15,7 +15,7 @@
 #include "spvm_object.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_allocator.h"
-#include "spvm_api.h"
+#include "spvm_interface.h"
 #include "spvm_global.h"
 #include "spvm_type.h"
 #include "spvm_hash.h"

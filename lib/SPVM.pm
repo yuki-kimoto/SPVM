@@ -609,7 +609,7 @@ SPVM Module:
 C Source File;
 
   // lib/SPVM/MyMathNative.native/MyMathNative.c
-  #include <spvm_api.h>
+  #include <spvm_interface.h>
 
   int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_VALUE* args) {
     

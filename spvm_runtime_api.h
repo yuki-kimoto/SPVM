@@ -2,7 +2,7 @@
 #define SPVM_RUNTIME_API_H
 
 #include "spvm_base.h"
-#include "spvm_api.h"
+#include "spvm_interface.h"
 
 SPVM_OBJECT* SPVM_RUNTIME_API_concat_string_byte(SPVM_API* api, SPVM_OBJECT* string1, int8_t string2);
 SPVM_OBJECT* SPVM_RUNTIME_API_concat_string_short(SPVM_API* api, SPVM_OBJECT* string1, int16_t string2);

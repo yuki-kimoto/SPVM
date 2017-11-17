@@ -28,7 +28,7 @@ I write some Examples for you to understand Native API.
 
 B<1. Add two int value:>
 
-  #include <spvm_api.h>
+  #include <spvm_interface.h>
 
   int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_VALUE* args) {
 
@@ -37,7 +37,7 @@ B<1. Add two int value:>
     return total;
   }
 
-You must include C<spvm_api.h> to use SPVM Native API. 
+You must include C<spvm_interface.h> to use SPVM Native API. 
 
 C Function name must be the name which Replace C<:> of SPVM subroutine with C<_>,
 and add C<SPVM> to the top of it.

@@ -15,7 +15,7 @@ This is similar with L<Extension::C>, but L<SPVM> implement this feature by defa
   }
   
   // SPVM/TestCase/Extension.native/Extension.c
-  #include <spvm_api.h>
+  #include <spvm_interface.h>
   
   int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_VALUE* args) {
     
@@ -36,9 +36,9 @@ Next, you create "SPVM/TestCase/Extension/Extension.c" file
   SPVM/TestCase/Extension.spvm
   SPVM/TestCase/Extension.native/Extension.c
 
-Next, you write C language. You include C<spvm_api.h>.
+Next, you write C language. You include C<spvm_interface.h>.
 
-  #include <spvm_api.h>
+  #include <spvm_interface.h>
 
 C Function name must be replace C<:> with <_> and add C<SPVM__> to top of SPVM subroutine name. SPVM subroutine absolute name is
 C<TestCase::Extension::sum>. C function name is C<SPVM__TestCase__Extension__sum>.

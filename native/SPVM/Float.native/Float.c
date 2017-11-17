@@ -5,7 +5,7 @@
 #include <math.h>
 #include <string.h>
 
-#include "spvm_api.h"
+#include "spvm_interface.h"
 
 float SPVM__Float__POSITIVE_INFINITY(SPVM_API* api, SPVM_VALUE* args) {
   (void)api;

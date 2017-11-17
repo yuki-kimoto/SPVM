@@ -20,7 +20,7 @@
 
 #include "native/SPVM/std.native/std.c"
 
-#include <spvm_api.h>
+#include <spvm_interface.h>
 
 int main(int argc, char *argv[])
 {

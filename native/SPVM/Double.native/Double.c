@@ -5,7 +5,7 @@
 #include <math.h>
 #include <string.h>
 
-#include "spvm_api.h"
+#include "spvm_interface.h"
 
 double SPVM__Double__POSITIVE_INFINITY(SPVM_API* api, SPVM_VALUE* args) {
   (void)api;

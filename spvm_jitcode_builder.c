@@ -15,7 +15,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
   // API header
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_interface.h>\n");
   
   // Operator macro
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_MACRO_ADD_BYTE(x, y) ((int8_t)x + (int8_t)y)\n");

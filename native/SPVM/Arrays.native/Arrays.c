@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "spvm_api.h"
+#include "spvm_interface.h"
 
 SPVM_API_int SPVM__Arrays__equals_byte(SPVM_API* api, SPVM_VALUE* args) {
   (void)api;

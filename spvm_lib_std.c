@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-#include "spvm_api.h"
+#include "spvm_interface.h"
 
 void boot_SPVM__std() {}
 

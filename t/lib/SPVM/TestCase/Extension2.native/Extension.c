@@ -1,4 +1,4 @@
-#include <spvm_api.h>
+#include <spvm_interface.h>
 
 #include <Extension2_util.h>
 

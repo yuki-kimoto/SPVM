@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "spvm_api.h"
+#include "spvm_interface.h"
 
 double SPVM__Math__sin(SPVM_API* api, SPVM_VALUE* args) {
   (void)api;

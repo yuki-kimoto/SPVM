@@ -33,7 +33,7 @@
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
-#include "spvm_api.h"
+#include "spvm_interface.h"
 
 static SPVM_VALUE call_sub_args[255];
 

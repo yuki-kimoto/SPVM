@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-#include "spvm_api.h"
+#include "spvm_interface.h"
 #include "spvm_bytecode.h"
 
 SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {

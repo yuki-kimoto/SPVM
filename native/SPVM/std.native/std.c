@@ -4,7 +4,7 @@
 #include <inttypes.h>
 #include <time.h>
 
-#include "spvm_api.h"
+#include "spvm_interface.h"
 
 int64_t SPVM__std__time(SPVM_API* api, SPVM_VALUE* args) {
   (void)api;

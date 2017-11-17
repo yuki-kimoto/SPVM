@@ -21,7 +21,7 @@ union SPVM_value {
   void* pointer_value;
 };
 
-// spvm_api.h
+// spvm_interface.h
 typedef union SPVM_value SPVM_VALUE;
 
 typedef int8_t SPVM_API_byte;

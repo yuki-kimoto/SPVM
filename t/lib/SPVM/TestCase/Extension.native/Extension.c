@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include <spvm_api.h>
+#include <spvm_interface.h>
 
 int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_VALUE* args) {
   
