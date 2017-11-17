@@ -29,7 +29,7 @@ use Encode 'encode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0284';
+our $VERSION = '0.03';
 
 our $COMPILER;
 our @PACKAGE_INFOS;
