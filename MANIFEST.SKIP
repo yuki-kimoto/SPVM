@@ -18,3 +18,4 @@
 ^spvm$
 ^solo/objs/
 \.a$
+\.o$

@@ -37,7 +37,7 @@ lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
-lib/SPVM/spvm_api.h
+lib/SPVM/spvm_interface.h
 lib/SPVM/std.pm
 lib/SPVM/std.spvm
 lib/SPVM/String.pm
@@ -71,10 +71,14 @@ solo/SPVM/TestCase/Inline.spvm
 solo/SPVM/TestCase/Minimal.spvm
 solo/SPVM/TestCase/Simple.spvm
 solo/SPVM/TestCase/Template.spvm
+solo/SPVM/TestCase/Weaken.spvm
+solo/SPVM/TestCase/Weaken2.spvm
 solo/spvm_main.c
 solo/t/spvm_t_array.c
 solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
+SPVM.bs
+SPVM.c
 SPVM.xs
 spvm_base.h
 spvm_bytecode.c
@@ -117,6 +121,8 @@ spvm_hash.h
 spvm_hash_entry.h
 spvm_hash_func.c
 spvm_hash_func.h
+spvm_jitcode_builder.c
+spvm_jitcode_builder.h
 spvm_lib_std.c
 spvm_limit.h
 spvm_memory_pool.c
@@ -141,6 +147,8 @@ spvm_runtime_allocator.c
 spvm_runtime_allocator.h
 spvm_runtime_api.c
 spvm_runtime_api.h
+spvm_string_buffer.c
+spvm_string_buffer.h
 spvm_sub.c
 spvm_sub.h
 spvm_sub_check_info.c
@@ -151,6 +159,8 @@ spvm_toke.c
 spvm_toke.h
 spvm_type.c
 spvm_type.h
+spvm_undef.c
+spvm_undef.h
 spvm_use.c
 spvm_use.h
 spvm_util_allocator.c
