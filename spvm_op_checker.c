@@ -1422,7 +1422,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_CALL_SUB: {
                   
                   // Check sub name
-                  SPVM_OP_resolve_call_sub(compiler, op_cur);
+                  SPVM_OP_resolve_call_sub(compiler, op_cur, op_package);
                   
                   SPVM_OP* op_list_args = op_cur->last;
                   

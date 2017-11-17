@@ -1085,31 +1085,51 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return type;
 }
 
-void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub) {
+void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPVM_OP* op_package_current) {
   
   SPVM_CALL_SUB* call_sub = op_call_sub->uv.call_sub;
   
   const char* sub_abs_name = NULL;
+  SPVM_OP* found_op_sub;
+  
   if (call_sub->code == SPVM_CALL_SUB_C_CODE_METHOD_CALL) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_term);
     const char* type_name = type->name;
     const char* sub_name = call_sub->op_name->uv.name;
     sub_abs_name = SPVM_OP_create_abs_name(compiler, type_name, sub_name);
+
+    call_sub->resolved_name = sub_abs_name;
+    
+    found_op_sub= SPVM_HASH_search(
+      compiler->op_sub_symtable,
+      sub_abs_name,
+      strlen(sub_abs_name)
+    );
   }
   else if (call_sub->code == SPVM_CALL_SUB_C_CODE_SUB_CALL) {
-    sub_abs_name = call_sub->op_name->uv.name;
+    const char* sub_name = call_sub->op_name->uv.name;
+    
+    if (strstr(sub_name, "::")) {
+      sub_abs_name = call_sub->op_name->uv.name;
+    }
+    else {
+      SPVM_PACKAGE* package = op_package_current->uv.package;
+      const char* package_name = package->op_name->uv.name;
+      sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
+    }
+    
+    call_sub->resolved_name = sub_abs_name;
+    
+    found_op_sub= SPVM_HASH_search(
+      compiler->op_sub_symtable,
+      sub_abs_name,
+      strlen(sub_abs_name)
+    );
   }
   else {
     assert(0);
   }
   
-  call_sub->resolved_name = sub_abs_name;
-  
-  SPVM_OP* found_op_sub= SPVM_HASH_search(
-    compiler->op_sub_symtable,
-    sub_abs_name,
-    strlen(sub_abs_name)
-  );
   if (found_op_sub) {
     call_sub->sub = found_op_sub->uv.sub;
   }
