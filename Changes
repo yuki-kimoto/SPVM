@@ -1,11 +1,11 @@
-0.0285 2017-11-16
+0.03 2017-11-17
+  - SPVM VM change Stack Based VM to Register Based VM
+    This change slow down performance temporary
+    but, this is prepared for JIT compile
   - fix bug that my variable type can't be detected.
   - fix my var scope bug
   - fix negate operator bug
   - add complement operator ~
-  - SPVM VM change Stack Based VM to Register Based VM
-    This change slow down performance temporary
-    but, this is prepared for JIT compile
 0.0284 2017-10-30
   - simplify SPVM internal to implement JIT compile
 0.0283 2017-10-23
