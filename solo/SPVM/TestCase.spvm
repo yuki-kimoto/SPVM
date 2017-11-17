@@ -50,6 +50,12 @@ package TestCase {
   }
   
   sub main($mvar : int) : int {
+    
+    {
+      my $num = sum0(1, 2);
+      say_int($num);
+    }
+    
     {
       $TestCase::PACKAGE_VAR_TEST_CASE = undef;
     }
