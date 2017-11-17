@@ -24,3 +24,5 @@ SPVM.c
 /solo/objs/solo/t/*
 !/solo/objs/solo/t/.gitkeep
 *.tar.gz
+SPVM-*/
+*.tar

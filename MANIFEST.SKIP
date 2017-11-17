@@ -18,3 +18,7 @@
 ^spvm$
 ^solo/objs/
 \.a$
+\.o$
+\.bs$
+SPVM.c
+SPVM-.*
