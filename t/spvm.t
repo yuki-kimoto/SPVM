@@ -13,7 +13,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
-use SPVM 'std'; my $use_std_line = __LINE__;
+use SPVM 'CORE'; my $use_core_line = __LINE__;
 
 use SPVM 'TestCase::Extension';
 use SPVM 'TestCase::Extension2';
@@ -48,11 +48,11 @@ my $NaN = SPVM::NaN();
 
 use SPVM 'Double';
 use SPVM 'Float';
-use SPVM 'std';
+use SPVM 'CORE';
 
 # time
 {
-  cmp_ok(abs(time - SPVM::std::time()), '<', 2);
+  cmp_ok(abs(time - SPVM::CORE::time()), '<', 2);
 }
 
 # Package variable
@@ -214,7 +214,7 @@ my $start_objects_count = SPVM::get_objects_count();
 # Native subroutine
 {
   my $sp_values = SPVM::new_int_array([1, 2, 3]);
-  my $total = SPVM::std::sum_int($sp_values);
+  my $total = SPVM::CORE::sum_int($sp_values);
   is($total, 6);
 }
 
@@ -391,7 +391,7 @@ is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
     {name => 'TestCase', file => $file, line => $use_test_line},
-    {name => 'std', file => $file, line => $use_std_line}
+    {name => 'CORE', file => $file, line => $use_core_line}
   ]
 );
 =cut

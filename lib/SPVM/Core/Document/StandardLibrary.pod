@@ -1,12 +1,12 @@
 =head1 NAME
 
-SPVM::Core::Document::StandardLibrary - SPVM Standard Library(BETA before 1.0)
+SPVM::Core::Document::StandardLibrary - SPVM Standard Module(BETA before 1.0)
 
-=head1 SPVM Language Standard Library
+=head1 SPVM Standard Module
 
-=head2 SPVM::std
+=head2 SPVM::CORE
 
-L<SPVM::std> - Default libraray
+L<SPVM::CORE> - SPVM Standard Functions
 
 =head2 SPVM::Byte
 

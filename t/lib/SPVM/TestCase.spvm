@@ -1255,7 +1255,7 @@ package TestCase {
     
     my $var3 = 6;
     
-    std::say("AAAAAAAAAAAAAAAAAA" . $var1);
+    CORE::say("AAAAAAAAAAAAAAAAAA" . $var1);
     
     if ($var1 == 1) {
       if ($var2 == 2) {

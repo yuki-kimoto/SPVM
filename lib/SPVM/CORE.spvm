@@ -1,4 +1,4 @@
-package std {
+package CORE {
   sub say ($value : String) : native void;
   sub say_byte ($value : byte) : native void;
   sub say_short ($value : short) : native void;

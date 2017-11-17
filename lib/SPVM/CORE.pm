@@ -1,10 +1,10 @@
-package SPVM::std;
+package SPVM::CORE;
 
 1;
 
 =head1 NAME
 
-SPVM::std - Default Libraray
+SPVM::CORE - Default Libraray
 
 =head1 FUNCTIONS
 

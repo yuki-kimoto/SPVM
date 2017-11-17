@@ -98,7 +98,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       printf(" \"%s\"", op_cur->uv.type->name);
     }
     else if (code == SPVM_OP_C_CODE_PACKAGE) {
-      if (strcmp(op_cur->uv.package->op_name->uv.name, "std") == 0) {
+      if (strcmp(op_cur->uv.package->op_name->uv.name, "CORE") == 0) {
         printf(" std(omit)\n");
         op_cur = op_cur->sibparent;
         continue;

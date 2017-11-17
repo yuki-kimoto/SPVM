@@ -6,7 +6,7 @@
 
 #include "spvm_api.h"
 
-int64_t SPVM__std__time(SPVM_API* api, SPVM_API_VALUE* args) {
+int64_t SPVM__CORE__time(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
 
@@ -16,7 +16,7 @@ int64_t SPVM__std__time(SPVM_API* api, SPVM_API_VALUE* args) {
   return timer_value;
 }
 
-int32_t SPVM__std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__CORE__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* array = args[0].object_value;
@@ -36,13 +36,13 @@ int32_t SPVM__std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
   return total;
 }
 
-int32_t SPVM__std__test1(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__CORE__test1(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int32_t num1 = args[0].int_value;
   int32_t num2 = args[1].int_value;
   
-  int32_t sub_id = api->get_sub_id(api, "std::test2");
+  int32_t sub_id = api->get_sub_id(api, "CORE::test2");
   
   SPVM_API_VALUE new_args[2];
   new_args[0].int_value = 5;
@@ -55,7 +55,7 @@ int32_t SPVM__std__test1(SPVM_API* api, SPVM_API_VALUE* args) {
   return num3;
 }
 
-int32_t SPVM__std__test2(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__CORE__test2(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int32_t num1 = args[0].int_value;
@@ -66,7 +66,7 @@ int32_t SPVM__std__test2(SPVM_API* api, SPVM_API_VALUE* args) {
   return num3;
 }
 
-void SPVM__std__say(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* object = args[0].object_value;
@@ -76,7 +76,7 @@ void SPVM__std__say(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%s\n", (char*)chars);
 }
 
-void SPVM__std__say_byte(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int8_t value = args[0].byte_value;
@@ -84,7 +84,7 @@ void SPVM__std__say_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId8 "\n", value);
 }
 
-void SPVM__std__say_short(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_short(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int16_t value = args[0].short_value;
@@ -92,7 +92,7 @@ void SPVM__std__say_short(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId16 "\n", value);
 }
 
-void SPVM__std__say_int(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int32_t value = args[0].int_value;
@@ -100,7 +100,7 @@ void SPVM__std__say_int(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId32 "\n", value);
 }
 
-void SPVM__std__say_long(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_long(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int64_t value = args[0].long_value;
@@ -108,7 +108,7 @@ void SPVM__std__say_long(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId64 "\n", value);
 }
 
-void SPVM__std__say_float(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_float(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   float value = args[0].float_value;
@@ -116,7 +116,7 @@ void SPVM__std__say_float(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%f\n", value);
 }
 
-void SPVM__std__say_double(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double value = args[0].double_value;
@@ -124,7 +124,7 @@ void SPVM__std__say_double(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%f\n", value);
 }
 
-void SPVM__std__print(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* object = args[0].object_value;
@@ -134,7 +134,7 @@ void SPVM__std__print(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%s\n", (char*)chars);
 }
 
-void SPVM__std__print_byte(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int8_t value = args[0].byte_value;
@@ -142,7 +142,7 @@ void SPVM__std__print_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId8, value);
 }
 
-void SPVM__std__print_short(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_short(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int16_t value = args[0].short_value;
@@ -150,7 +150,7 @@ void SPVM__std__print_short(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId16, value);
 }
 
-void SPVM__std__print_int(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int32_t value = args[0].int_value;
@@ -158,7 +158,7 @@ void SPVM__std__print_int(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId32, value);
 }
 
-void SPVM__std__print_long(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_long(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int64_t value = args[0].long_value;
@@ -166,7 +166,7 @@ void SPVM__std__print_long(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%" PRId64, value);
 }
 
-void SPVM__std__print_float(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_float(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   float value = args[0].float_value;
@@ -174,7 +174,7 @@ void SPVM__std__print_float(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%f", value);
 }
 
-void SPVM__std__print_double(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double value = args[0].double_value;
@@ -182,7 +182,7 @@ void SPVM__std__print_double(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%f", value);
 }
 
-void SPVM__std__print_err(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_err(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* object = args[0].object_value;
@@ -192,7 +192,7 @@ void SPVM__std__print_err(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%s\n", chars);
 }
 
-void SPVM__std__say_err(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_err(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* object = args[0].object_value;
@@ -202,7 +202,7 @@ void SPVM__std__say_err(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%s\n", chars);
 }
 
-void SPVM__std__say_err_byte(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_err_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int8_t value = args[0].byte_value;
@@ -210,7 +210,7 @@ void SPVM__std__say_err_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%" PRId8 "\n", value);
 }
 
-void SPVM__std__say_err_short(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_err_short(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int16_t value = args[0].short_value;
@@ -218,7 +218,7 @@ void SPVM__std__say_err_short(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%" PRId16 "\n", value);
 }
 
-void SPVM__std__say_err_int(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_err_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int32_t value = args[0].int_value;
@@ -226,7 +226,7 @@ void SPVM__std__say_err_int(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%" PRId32 "\n", value);
 }
 
-void SPVM__std__say_err_long(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_err_long(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int64_t value = args[0].long_value;
@@ -234,7 +234,7 @@ void SPVM__std__say_err_long(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%" PRId64 "\n", value);
 }
 
-void SPVM__std__say_err_float(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_err_float(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   float value = args[0].float_value;
@@ -242,7 +242,7 @@ void SPVM__std__say_err_float(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%f\n", value);
 }
 
-void SPVM__std__say_err_double(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__say_err_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double value = args[0].double_value;
@@ -250,7 +250,7 @@ void SPVM__std__say_err_double(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%f\n", value);
 }
 
-void SPVM__std__print_err_byte(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_err_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int8_t value = args[0].byte_value;
@@ -258,7 +258,7 @@ void SPVM__std__print_err_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%" PRId8, value);
 }
 
-void SPVM__std__print_err_short(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_err_short(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int16_t value = args[0].short_value;
@@ -266,7 +266,7 @@ void SPVM__std__print_err_short(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%" PRId16, value);
 }
 
-void SPVM__std__print_err_int(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_err_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int32_t value = args[0].int_value;
@@ -274,7 +274,7 @@ void SPVM__std__print_err_int(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%" PRId32, value);
 }
 
-void SPVM__std__print_err_long(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_err_long(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int64_t value = args[0].long_value;
@@ -282,7 +282,7 @@ void SPVM__std__print_err_long(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%" PRId64, value);
 }
 
-void SPVM__std__print_err_float(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_err_float(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   float value = args[0].float_value;
@@ -290,7 +290,7 @@ void SPVM__std__print_err_float(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "%f", value);
 }
 
-void SPVM__std__print_err_double(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__print_err_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double value = args[0].double_value;

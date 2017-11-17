@@ -42,7 +42,7 @@ WriteMakefile(
 sub MY::postamble {
   my $postamble = SPVM::Build::create_postamble(
     module_names => [qw(
-      SPVM::std
+      SPVM::CORE
       SPVM::Math
       SPVM::Byte
       SPVM::Short

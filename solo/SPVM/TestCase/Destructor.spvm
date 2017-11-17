@@ -3,6 +3,6 @@ package TestCase::Destructor {
   has y : int;
   
   sub DESTROY($self : TestCase::Destructor) : void {
-    std::say("DESTROY");
+    say("DESTROY");
   }
 }

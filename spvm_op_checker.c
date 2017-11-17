@@ -146,7 +146,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
 
       if (islower(package_name[0])) {
-        if (strcmp(package_name, "std") != 0) {
+        if (strcmp(package_name, "CORE") != 0) {
           SPVM_yyerror_format(compiler, "Package name \"%s\" must be start with upper case. Lowercase is reserved for core package  at %s line %d\n", package_name, op_package->file, op_package->line);
           compiler->fatal_error = 1;
           return;

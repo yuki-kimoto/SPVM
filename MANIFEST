@@ -6,6 +6,8 @@ lib/SPVM/Arrays.spvm
 lib/SPVM/Build.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
+lib/SPVM/CORE.pm
+lib/SPVM/CORE.spvm
 lib/SPVM/Core/Document/Cookbook.pod
 lib/SPVM/Core/Document/Extension.pod
 lib/SPVM/Core/Document/FAQ.pod
@@ -38,14 +40,13 @@ lib/SPVM/Math.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/spvm_api.h
-lib/SPVM/std.pm
-lib/SPVM/std.spvm
 lib/SPVM/String.pm
 lib/SPVM/String.spvm
 Makefile.PL
 MANIFEST			This list of files
 native/SPVM/Arrays.native/Arrays.c
 native/SPVM/Byte.native/Byte.c
+native/SPVM/CORE.native/CORE.c
 native/SPVM/Double.native/Double.c
 native/SPVM/Double.native/Double.config
 native/SPVM/Float.native/Float.c
@@ -55,7 +56,6 @@ native/SPVM/Long.native/Long.c
 native/SPVM/Math.native/Math.c
 native/SPVM/Math.native/Math.config
 native/SPVM/Short.native/Short.c
-native/SPVM/std.native/std.c
 ppport.h
 README.pod
 solo/Main.spvm

@@ -181,7 +181,7 @@ CHECK {
   
   # Load standard library
   my @dll_file_bases = qw(
-    std
+    CORE
     Math
     Byte
     Short
