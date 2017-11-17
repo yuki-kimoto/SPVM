@@ -2,6 +2,7 @@
   - support relative name subroutine call
     sum(0, 1);
     At first, current package is searched, next core function
+  - rename std package to CORE package
 0.03 2017-11-17
   - SPVM VM change Stack Based VM to Register Based VM
     This change slow down performance temporary
