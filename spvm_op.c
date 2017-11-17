@@ -34,7 +34,7 @@
 #include "spvm_constant_pool_package.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
-#include "spvm_csource_builder.h"
+#include "spvm_jitcode_builder.h"
 #include "spvm_undef.h"
 const char* const SPVM_OP_C_CODE_NAMES[] = {
   "IF",
@@ -1434,8 +1434,8 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   // Build bytecode
   SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
   
-  // Build C source code
-  SPVM_CSOURCE_BUILDER_build_csource(compiler);
+  // Build JIT code(This is C source code which is passed to gcc)
+  SPVM_JITCODE_BUILDER_build_jitcode(compiler);
   
   return op_grammar;
 }

@@ -200,8 +200,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
                   SPVM_OP* op_var = op_cur->first;
-                  int32_t my_var_index = op_var->uv.var->op_my_var->uv.my_var->index;
-
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
 
                   int32_t do_dec_ref_count = 0;
@@ -382,7 +380,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     // $VAR = $VAR_OBJECT->{NAME}
                     SPVM_OP* op_call_field = op_cur->last;
                     SPVM_OP* op_term_object = op_call_field->first;
-                    SPVM_OP* op_term_index = op_call_field->last;
                     
                     // Call field
                     SPVM_CALL_FIELD* call_field = op_call_field->uv.call_field;
@@ -884,9 +881,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src_term);
                     SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist_type);
                     
-                    SPVM_TYPE* src_term_type = SPVM_OP_get_type(compiler, op_src_term);
-                    
-                    _Bool has_bytecode = 0;
                     if (src_type->code == SPVM_TYPE_C_CODE_BYTE) {
                       if (dist_type->code == SPVM_TYPE_C_CODE_BYTE) {
                         SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_BYTE);
@@ -1274,7 +1268,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   SPVM_OP* op_call_field = op_cur->first;
                   SPVM_OP* op_term_object = op_call_field->first;
-                  SPVM_OP* op_term_index = op_call_field->last;
 
                   // Call field
                   SPVM_CALL_FIELD* call_field = op_call_field->uv.call_field;
@@ -1976,7 +1969,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case  SPVM_OP_C_CODE_BOOL: {
-                SPVM_OP* type = SPVM_OP_get_type(compiler, op_cur->first);
+                SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
                 
                 if (op_cur->first->code != SPVM_OP_C_CODE_IF) {
                   
