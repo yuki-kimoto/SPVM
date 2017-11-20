@@ -15,7 +15,7 @@
 #include "spvm_sub.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"
-#include "spvm_my_var.h"
+#include "spvm_my.h"
 #include "spvm_var.h"
 #include "spvm_enumeration_value.h"
 #include "spvm_type.h"
@@ -34,26 +34,26 @@
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_SUB_CHECK_INFO* sub_check_info, const char* file, int32_t line) {
 
   // Create temporary variable
-  // my_var
-  SPVM_MY_VAR* my_var = SPVM_MY_VAR_new(compiler);
+  // my
+  SPVM_MY* my = SPVM_MY_new(compiler);
 
   // Temparary variable name
   char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
-  sprintf(name, "@tmp%d", sub_check_info->my_var_tmp_index++);
+  sprintf(name, "@tmp%d", sub_check_info->my_tmp_index++);
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
   op_name->uv.name = name;
-  my_var->op_name = op_name;
+  my->op_name = op_name;
 
   // Set type to my var
-  my_var->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, file, line);
-  my_var->op_type->uv.type = type;
+  my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, file, line);
+  my->op_type->uv.type = type;
 
   // Index
-  my_var->index = sub_check_info->op_mys->length;
+  my->index = sub_check_info->op_mys->length;
 
-  // op my_var
+  // op my
   SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, file, line);
-  op_my->uv.my_var = my_var;
+  op_my->uv.my = my;
 
   // Add my var
   SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_mys, op_my);
@@ -267,16 +267,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Start scope
             case SPVM_OP_C_CODE_BLOCK: {
               
-              int32_t block_my_var_base = sub_check_info->op_my_stack->length;
-              int32_t* block_my_var_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *block_my_var_base_ptr = block_my_var_base;
-              SPVM_DYNAMIC_ARRAY_push(sub_check_info->block_my_var_base_stack, block_my_var_base_ptr);
+              int32_t block_my_base = sub_check_info->op_my_stack->length;
+              int32_t* block_my_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+              *block_my_base_ptr = block_my_base;
+              SPVM_DYNAMIC_ARRAY_push(sub_check_info->block_my_base_stack, block_my_base_ptr);
               
               if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
-                SPVM_DYNAMIC_ARRAY_push(sub_check_info->loop_block_my_var_base_stack, block_my_var_base_ptr);
+                SPVM_DYNAMIC_ARRAY_push(sub_check_info->loop_block_my_base_stack, block_my_base_ptr);
               }
               else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-                SPVM_DYNAMIC_ARRAY_push(sub_check_info->try_block_my_var_base_stack, block_my_var_base_ptr);
+                SPVM_DYNAMIC_ARRAY_push(sub_check_info->try_block_my_base_stack, block_my_base_ptr);
               }
               
               break;
@@ -292,7 +292,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               // [START]Postorder traversal position
               switch (op_cur->code) {
                 case SPVM_OP_C_CODE_NEXT: {
-                  if (sub_check_info->loop_block_my_var_base_stack->length == 0) {
+                  if (sub_check_info->loop_block_my_base_stack->length == 0) {
                     SPVM_yyerror_format(compiler, "next statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -300,7 +300,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_LAST: {
-                  if (sub_check_info->loop_block_my_var_base_stack->length == 0 && sub_check_info->op_switch_stack->length == 0) {
+                  if (sub_check_info->loop_block_my_base_stack->length == 0 && sub_check_info->op_switch_stack->length == 0) {
                     SPVM_yyerror_format(compiler, "last statement must be in loop block or switch block at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -894,8 +894,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     if (first_type) {
                       SPVM_OP* op_var = op_cur->first;
-                      SPVM_MY_VAR* my_var = op_var->uv.var->op_my->uv.my_var;
-                      my_var->op_type->uv.type = first_type;
+                      SPVM_MY* my = op_var->uv.var->op_my->uv.my;
+                      my->op_type->uv.type = first_type;
                     }
                   }
                   
@@ -928,31 +928,31 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
                     if (op_cur->last->code == SPVM_OP_C_CODE_CONCAT_STRING) {
-                      int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                       
                       if (op_cur->last->first->code == SPVM_OP_C_CODE_VAR) {
-                        int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->last->first);
+                        int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->last->first);
                         if (index_out == index_in1) {
                           op_cur->last->first->uv.var->create_tmp_var = 1;
                         }
                       }
                       
                       if (op_cur->last->last->code == SPVM_OP_C_CODE_VAR) {
-                        int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last->last);
+                        int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_cur->last->last);
                         if (index_out == index_in2) {
                           op_cur->last->last->uv.var->create_tmp_var = 1;
                         }
                       }
                     }
                     else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
-                      int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                       
                       // Push args
                       SPVM_OP* op_args =op_cur->last->last;
                       SPVM_OP* op_arg = op_args->first;
                       while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
                         if (op_arg->code == SPVM_OP_C_CODE_VAR) {
-                          int32_t index_arg = SPVM_OP_get_my_var_index(compiler, op_arg);
+                          int32_t index_arg = SPVM_OP_get_my_index(compiler, op_arg);
                           if (index_arg == index_out) {
                             op_arg->uv.var->create_tmp_var = 1;
                             break;
@@ -1324,28 +1324,28 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 // End of scope
                 case SPVM_OP_C_CODE_BLOCK: {
                   // Pop block my variable base
-                  assert(sub_check_info->block_my_var_base_stack->length > 0);
-                  int32_t* block_my_var_base_ptr = SPVM_DYNAMIC_ARRAY_pop(sub_check_info->block_my_var_base_stack);
-                  int32_t block_my_var_base = *block_my_var_base_ptr;
+                  assert(sub_check_info->block_my_base_stack->length > 0);
+                  int32_t* block_my_base_ptr = SPVM_DYNAMIC_ARRAY_pop(sub_check_info->block_my_base_stack);
+                  int32_t block_my_base = *block_my_base_ptr;
                     
-                  int32_t my_var_stack_pop_count = sub_check_info->op_my_stack->length - block_my_var_base;
+                  int32_t my_stack_pop_count = sub_check_info->op_my_stack->length - block_my_base;
                   
                   {
                     int32_t i;
-                    for (i = 0; i < my_var_stack_pop_count; i++) {
+                    for (i = 0; i < my_stack_pop_count; i++) {
                       SPVM_DYNAMIC_ARRAY_pop(sub_check_info->op_my_stack);
                     }
                   }
 
                   // Pop loop block my variable base
                   if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
-                    assert(sub_check_info->loop_block_my_var_base_stack->length > 0);
-                    SPVM_DYNAMIC_ARRAY_pop(sub_check_info->loop_block_my_var_base_stack);
+                    assert(sub_check_info->loop_block_my_base_stack->length > 0);
+                    SPVM_DYNAMIC_ARRAY_pop(sub_check_info->loop_block_my_base_stack);
                   }
                   // Pop try block my variable base
                   else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-                    assert(sub_check_info->try_block_my_var_base_stack->length > 0);
-                    SPVM_DYNAMIC_ARRAY_pop(sub_check_info->try_block_my_var_base_stack);
+                    assert(sub_check_info->try_block_my_base_stack->length > 0);
+                    SPVM_DYNAMIC_ARRAY_pop(sub_check_info->try_block_my_base_stack);
                   }
                   
                   break;
@@ -1361,8 +1361,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     int32_t i;
                     for (i = sub_check_info->op_my_stack->length - 1; i >= 0; i--) {
                       SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_stack, i);
-                      SPVM_MY_VAR* my_var = op_my->uv.my_var;
-                      if (strcmp(var->op_name->uv.name, my_var->op_name->uv.name) == 0) {
+                      SPVM_MY* my = op_my->uv.my;
+                      if (strcmp(var->op_name->uv.name, my->op_name->uv.name) == 0) {
                         found_op_my = op_my;
                         break;
                       }
@@ -1382,24 +1382,24 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_MY: {
-                  SPVM_MY_VAR* my_var = op_cur->uv.my_var;
+                  SPVM_MY* my = op_cur->uv.my;
                   
                   // Search same name variable
                   _Bool found = 0;
                   
-                  int32_t* block_my_var_base_ptr = SPVM_DYNAMIC_ARRAY_fetch(
-                    sub_check_info->block_my_var_base_stack,
-                    sub_check_info->block_my_var_base_stack->length - 1
+                  int32_t* block_my_base_ptr = SPVM_DYNAMIC_ARRAY_fetch(
+                    sub_check_info->block_my_base_stack,
+                    sub_check_info->block_my_base_stack->length - 1
                   );
                   
-                  int32_t block_my_var_base = *block_my_var_base_ptr;
+                  int32_t block_my_base = *block_my_base_ptr;
                   
                   {
                     int32_t i;
-                    for (i = block_my_var_base; i < sub_check_info->op_my_stack->length; i++) {
-                      SPVM_OP* op_bef_my_var = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_stack, i);
-                      SPVM_MY_VAR* bef_my_var = op_bef_my_var->uv.my_var;
-                      if (strcmp(my_var->op_name->uv.name, bef_my_var->op_name->uv.name) == 0) {
+                    for (i = block_my_base; i < sub_check_info->op_my_stack->length; i++) {
+                      SPVM_OP* op_bef_my = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_stack, i);
+                      SPVM_MY* bef_my = op_bef_my->uv.my;
+                      if (strcmp(my->op_name->uv.name, bef_my->op_name->uv.name) == 0) {
                         found = 1;
                         break;
                       }
@@ -1407,12 +1407,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   if (found) {
-                    SPVM_yyerror_format(compiler, "redeclaration of my \"%s\" at %s line %d\n", my_var->op_name->uv.name, op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "redeclaration of my \"%s\" at %s line %d\n", my->op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                   else {
-                    my_var->index = sub_check_info->op_mys->length;
+                    my->index = sub_check_info->op_mys->length;
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_mys, op_cur);
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_stack, op_cur);
                   }
@@ -1450,9 +1450,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     _Bool is_invalid = 0;
                     
-                    SPVM_OP* op_sub_arg_my_var = SPVM_DYNAMIC_ARRAY_fetch(call_sub->sub->op_args, call_sub_args_count - 1);
+                    SPVM_OP* op_sub_arg_my = SPVM_DYNAMIC_ARRAY_fetch(call_sub->sub->op_args, call_sub_args_count - 1);
                     
-                    SPVM_TYPE* sub_arg_type = SPVM_OP_get_type(compiler, op_sub_arg_my_var);
+                    SPVM_TYPE* sub_arg_type = SPVM_OP_get_type(compiler, op_sub_arg_my);
                     
                     // Undef
                     if (op_term->code == SPVM_OP_C_CODE_UNDEF) {

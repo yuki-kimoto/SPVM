@@ -152,9 +152,9 @@ typedef struct SPVM_memory_pool SPVM_MEMORY_POOL;
 struct SPVM_var;
 typedef struct SPVM_var SPVM_VAR;
 
-// spvm_my_var.h
-struct SPVM_my_var;
-typedef struct SPVM_my_var SPVM_MY_VAR;
+// spvm_my.h
+struct SPVM_my;
+typedef struct SPVM_my SPVM_MY;
 
 // spvm_constant.h
 struct SPVM_constant;

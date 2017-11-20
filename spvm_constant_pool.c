@@ -187,7 +187,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   memset(&constant_pool_sub, 0, sizeof(SPVM_CONSTANT_POOL_SUB));
   constant_pool_sub.native_address = sub->native_address;
   constant_pool_sub.bytecode_base = sub->bytecode_base;
-  constant_pool_sub.my_vars_length = sub->op_mys->length;
+  constant_pool_sub.mys_length = sub->op_mys->length;
   constant_pool_sub.operand_stack_max = sub->operand_stack_max;
   constant_pool_sub.args_length = sub->op_args->length;
   constant_pool_sub.is_native = sub->is_native;
@@ -242,21 +242,21 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
     constant_pool_sub.object_args_length = object_args_length;
   }
 
-  // Object my_vars length
-  int32_t object_my_vars_length = 0;
-  constant_pool_sub.object_my_vars_base = constant_pool->length;
+  // Object mys length
+  int32_t object_mys_length = 0;
+  constant_pool_sub.object_mys_base = constant_pool->length;
   {
     int32_t i;
     for (i = 0; i < sub->op_mys->length; i++) {
       SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, i);
-      SPVM_TYPE* my_var_type = SPVM_OP_get_type(compiler, op_my);
-      assert(my_var_type);
-      if (!SPVM_TYPE_is_numeric(compiler, my_var_type)) {
+      SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, op_my);
+      assert(my_type);
+      if (!SPVM_TYPE_is_numeric(compiler, my_type)) {
         SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, i);
-        object_my_vars_length++;
+        object_mys_length++;
       }
     }
-    constant_pool_sub.object_my_vars_length = object_my_vars_length;
+    constant_pool_sub.object_mys_length = object_mys_length;
   }
   
   // Push sub name to constant pool

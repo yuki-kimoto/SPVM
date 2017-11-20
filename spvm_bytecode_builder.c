@@ -16,7 +16,7 @@
 #include "spvm_dynamic_array.h"
 #include "spvm_sub.h"
 #include "spvm_var.h"
-#include "spvm_my_var.h"
+#include "spvm_my.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_package.h"
 #include "spvm_call_field.h"
@@ -39,7 +39,7 @@
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
   
   SPVM_VAR* var = op_inc->first->uv.var;
-  SPVM_MY_VAR* my_var = var->op_my->uv.my_var;
+  SPVM_MY* my = var->op_my->uv.my;
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_inc);
   if (type->code == SPVM_TYPE_C_CODE_BYTE) {
@@ -48,7 +48,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     
     
 
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var->index);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my->index);
 
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
   }
@@ -58,7 +58,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     
     
 
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var->index);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my->index);
 
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
   }
@@ -68,7 +68,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     
     
 
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var->index);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my->index);
 
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
   }
@@ -78,7 +78,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     
     
     
-    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my_var->index);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my->index);
 
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
   }
@@ -211,8 +211,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     if (!(op_cur->first->first && op_cur->first->first->code == SPVM_OP_C_CODE_MY)) {
                       // Right value is variable
                       if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
-                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                        int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                         // Left index is deferent from rithgt index
                         if (index_out != index_in) {
                           do_dec_ref_count = 1;
@@ -226,7 +226,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   // Decrement refernece count
                   if (do_dec_ref_count) {
-                    int32_t index_dec_ref_count = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_dec_ref_count = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_DEC_REF_COUNT);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_dec_ref_count);
@@ -239,8 +239,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_last = op_cur->last;
                     SPVM_BYTECODE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_last, 1);
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_last->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MOVE);
                     
@@ -250,8 +250,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else if (op_cur->last->code == SPVM_OP_C_CODE_POST_INC) {
                     SPVM_OP* op_last = op_cur->last;
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_last->first);
 
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MOVE);
                     
@@ -264,8 +264,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_last = op_cur->last;
                     SPVM_BYTECODE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_last, -1);
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_last->first);
 
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MOVE);
                     
@@ -275,8 +275,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else if (op_cur->last->code == SPVM_OP_C_CODE_POST_DEC) {
                     SPVM_OP* op_last = op_cur->last;
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_last->first);
 
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MOVE);
                     
@@ -314,9 +314,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -326,7 +326,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_UNDEF);
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
@@ -344,7 +344,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_arg = op_args->first;
                     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_PUSH_ARG);
-                      int32_t index_arg = SPVM_OP_get_my_var_index(compiler, op_arg);
+                      int32_t index_arg = SPVM_OP_get_my_index(compiler, op_arg);
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_arg);
                     }
 
@@ -355,7 +355,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     else {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_OBJECT_SUB);
                     }
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     
                     int32_t id = sub->id;
@@ -369,8 +369,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else if (op_cur->last->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ARRAY_LENGTH);
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
@@ -410,8 +410,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_term_object = SPVM_OP_get_my_var_index(compiler, op_term_object);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_object);
@@ -448,9 +448,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ARRAY_LOAD_OBJECT);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_term_array = SPVM_OP_get_my_var_index(compiler, op_term_array);
-                    int32_t index_term_index = SPVM_OP_get_my_var_index(compiler, op_term_index);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_term_array = SPVM_OP_get_my_index(compiler, op_term_array);
+                    int32_t index_term_index = SPVM_OP_get_my_index(compiler, op_term_index);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_array);
@@ -469,7 +469,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR_OBJECT);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, package_var_id);
@@ -479,7 +479,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION_VAR);
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                   }
@@ -506,9 +506,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ADD_DOUBLE);
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -537,9 +537,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_SUBTRACT_DOUBLE);
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -568,9 +568,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MULTIPLY_DOUBLE);
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -599,9 +599,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_DIVIDE_DOUBLE);
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -630,9 +630,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_REMAINDER_DOUBLE);
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -655,9 +655,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LEFT_SHIFT_LONG);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -680,9 +680,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_LONG);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -705,9 +705,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_RIGHT_SHIFT_UNSIGNED_LONG);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -733,9 +733,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -761,9 +761,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -789,9 +789,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
@@ -814,8 +814,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
@@ -841,8 +841,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEGATE_DOUBLE);
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
@@ -866,7 +866,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     assert(constant->id != -1);
 
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     
@@ -1023,8 +1023,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         assert(0);
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_dist_term);
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_src_term);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_dist_term);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_src_term);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
@@ -1036,7 +1036,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_STRING);
 
-                      int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                       
                       SPVM_CONSTANT* constant = op_last->first->uv.constant;
@@ -1059,10 +1059,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                           case SPVM_TYPE_C_CODE_BYTE_ARRAY: {
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY);
 
-                            int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
 
-                            int32_t index_index = SPVM_OP_get_my_var_index(compiler, op_last->first->last);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
                             
                             break;
@@ -1070,10 +1070,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                           case SPVM_TYPE_C_CODE_SHORT_ARRAY: {
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY);
 
-                            int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
 
-                            int32_t index_index = SPVM_OP_get_my_var_index(compiler, op_last->first->last);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
                             
                             break;
@@ -1081,10 +1081,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                           case SPVM_TYPE_C_CODE_INT_ARRAY: {
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_INT_ARRAY);
 
-                            int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
 
-                            int32_t index_index = SPVM_OP_get_my_var_index(compiler, op_last->first->last);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
                             
                             break;
@@ -1092,10 +1092,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                           case SPVM_TYPE_C_CODE_LONG_ARRAY: {
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY);
 
-                            int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
 
-                            int32_t index_index = SPVM_OP_get_my_var_index(compiler, op_last->first->last);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
                             
                             break;
@@ -1103,10 +1103,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                           case SPVM_TYPE_C_CODE_FLOAT_ARRAY: {
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY);
 
-                            int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
 
-                            int32_t index_index = SPVM_OP_get_my_var_index(compiler, op_last->first->last);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
                             
                             break;
@@ -1114,10 +1114,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                           case SPVM_TYPE_C_CODE_DOUBLE_ARRAY: {
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY);
                             
-                            int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
 
-                            int32_t index_index = SPVM_OP_get_my_var_index(compiler, op_last->first->last);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
 
                             break;
@@ -1125,13 +1125,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                           default: {
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY);
 
-                            int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                             
                             SPVM_TYPE* element_type = op_last->first->first->uv.type;
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, element_type->id);
 
-                            int32_t index_index = SPVM_OP_get_my_var_index(compiler, op_last->first->last);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
                             SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
                           }
                         }
@@ -1139,7 +1139,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       else {
                         SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_OBJECT);
                         
-                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                         SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                         
                         int32_t type_id = op_last->first->uv.type->id;
@@ -1154,10 +1154,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_MOVE);
-                    int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
 
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   }
                   else {
@@ -1172,8 +1172,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     if (!SPVM_TYPE_is_numeric(compiler, type)) {
                       // Right value is variable
                       if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
-                        int32_t index_out = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                        int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                        int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                         if (index_out != index_in) {
                           do_inc_ref_count = 1;
                         }
@@ -1185,7 +1185,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                   
                   if (do_inc_ref_count) {
-                    int32_t index_inc_ref_count = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_inc_ref_count = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_REF_COUNT);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_inc_ref_count);
@@ -1208,7 +1208,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                                     
                   int32_t package_var_id = package_var->op_our->uv.our->id;
-                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, package_var_id);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
@@ -1218,7 +1218,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_STORE_EXCEPTION_VAR);
                                     
-                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                 }
@@ -1254,9 +1254,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT);
                   }
                   
-                  int32_t index_term_array = SPVM_OP_get_my_var_index(compiler, op_term_array);
-                  int32_t index_term_index = SPVM_OP_get_my_var_index(compiler, op_term_index);
-                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                  int32_t index_term_array = SPVM_OP_get_my_index(compiler, op_term_array);
+                  int32_t index_term_index = SPVM_OP_get_my_index(compiler, op_term_index);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_array);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_index);
@@ -1298,8 +1298,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT);
                   }
                   
-                  int32_t index_term_object = SPVM_OP_get_my_var_index(compiler, op_term_object);
-                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                  int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_object);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, field_id);
@@ -1322,7 +1322,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Switch bytecode index
                   int32_t switch_bytecode_index = bytecode_array->length - 1;
 
-                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   
                   // Push switch information stack
@@ -1353,7 +1353,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Switch bytecode index
                   int32_t switch_bytecode_index = bytecode_array->length - 1;
 
-                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   
                   // Push switch information stack
@@ -1549,7 +1549,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t field_id = field->id;
                   
                   SPVM_OP* op_term_object = op_cur->first;
-                  int32_t index_term_object = SPVM_OP_get_my_var_index(compiler, op_term_object);
+                  int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
                     
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_object);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, field_id);
@@ -1766,8 +1766,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 else {
                   assert(0);
                 }
-                int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->first);
+                int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_cur->last);
                 
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
@@ -1799,8 +1799,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 else {
                   assert(0);
                 }
-                int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->first);
+                int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_cur->last);
                 
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
@@ -1831,8 +1831,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 else {
                   assert(0);
                 }
-                int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->first);
+                int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_cur->last);
                 
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
@@ -1864,8 +1864,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 else {
                   assert(0);
                 }
-                int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->first);
+                int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_cur->last);
                 
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
@@ -1876,12 +1876,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 if (op_cur->first->code == SPVM_OP_C_CODE_UNDEF || op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IS_UNDEF);
                   if (op_cur->first->code == SPVM_OP_C_CODE_UNDEF) {
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   }
                   else {
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   }
@@ -1911,8 +1911,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_EQ_OBJECT);
                   }
-                  int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                  int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                  int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->first);
+                  int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_cur->last);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
@@ -1925,12 +1925,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 if (op_cur->first->code == SPVM_OP_C_CODE_UNDEF || op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_IS_NOT_UNDEF);
                   if (op_cur->first->code == SPVM_OP_C_CODE_UNDEF) {
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   }
                   else {
-                    int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   }
@@ -1960,8 +1960,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NE_OBJECT);
                   }
-                  int32_t index_in1 = SPVM_OP_get_my_var_index(compiler, op_cur->first);
-                  int32_t index_in2 = SPVM_OP_get_my_var_index(compiler, op_cur->last);
+                  int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->first);
+                  int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_cur->last);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
@@ -1995,7 +1995,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_OBJECT);
                   }
 
-                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                 }
@@ -2015,7 +2015,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_arg = op_args->first;
                   while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_PUSH_ARG);
-                    int32_t index_arg = SPVM_OP_get_my_var_index(compiler, op_arg);
+                    int32_t index_arg = SPVM_OP_get_my_index(compiler, op_arg);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_arg);
                   }
                   
@@ -2063,7 +2063,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_RETURN_OBJECT);
                   }
                   
-                  int32_t index_in = SPVM_OP_get_my_var_index(compiler, op_cur->first);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                 }

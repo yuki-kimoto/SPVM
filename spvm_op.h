@@ -189,7 +189,7 @@ struct SPVM_op {
   const char* file;
   union {
     const char* name;
-    SPVM_MY_VAR* my_var;
+    SPVM_MY* my;
     SPVM_SUB* sub;
     SPVM_CONSTANT* constant;
     SPVM_TYPE* type;
@@ -216,7 +216,7 @@ struct SPVM_op {
 
 SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name);
 
-int32_t SPVM_OP_get_my_var_index(SPVM_COMPILER* compiler, SPVM_OP* op_var);
+int32_t SPVM_OP_get_my_index(SPVM_COMPILER* compiler, SPVM_OP* op_var);
 
 void SPVM_OP_insert_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op_parent, SPVM_OP* op_child);
 

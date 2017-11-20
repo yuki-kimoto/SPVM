@@ -24,7 +24,7 @@
 #include "spvm_sub.h"
 #include "spvm_package.h"
 #include "spvm_sub.h"
-#include "spvm_my_var.h"
+#include "spvm_my.h"
 #include "spvm_type.h"
 #include "spvm_field.h"
 #include "spvm_constant_pool.h"

@@ -12,7 +12,7 @@
 #include "spvm_constant.h"
 #include "spvm_field.h"
 #include "spvm_sub.h"
-#include "spvm_my_var.h"
+#include "spvm_my.h"
 #include "spvm_var.h"
 #include "spvm_op.h"
 #include "spvm_enumeration_value.h"
@@ -72,9 +72,9 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       printf(" (index %" PRId32 ")", constant->id);
     }
     else if (code == SPVM_OP_C_CODE_MY) {
-      SPVM_MY_VAR* my_var = op_cur->uv.my_var;
-      printf(" \"%s\"", my_var->op_name->uv.name);
-      printf(" (my_var->index:%d)", my_var->index);
+      SPVM_MY* my = op_cur->uv.my;
+      printf(" \"%s\"", my->op_name->uv.name);
+      printf(" (my->index:%d)", my->index);
     }
     else if (code == SPVM_OP_C_CODE_OUR) {
       SPVM_OUR* our = op_cur->uv.our;
@@ -84,7 +84,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (code == SPVM_OP_C_CODE_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
       printf(" \"%s\"", var->op_name->uv.name);
-      printf(" (my_var->index:%d)", var->op_my->uv.my_var->index);
+      printf(" (my->index:%d)", var->op_my->uv.my->index);
     }
     else if (code == SPVM_OP_C_CODE_PACKAGE_VAR) {
       SPVM_PACKAGE_VAR* package_var = op_cur->uv.package_var;
@@ -655,22 +655,22 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       int32_t i;
       for (i = 0; i < op_args->length; i++) {
         SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
-        SPVM_MY_VAR* my_var = op_arg->uv.my_var;
+        SPVM_MY* my = op_arg->uv.my;
         printf("        arg[%" PRId32 "]\n", i);
-        SPVM_DUMPER_dump_my_var(compiler, my_var);
+        SPVM_DUMPER_dump_my(compiler, my);
       }
     }
     
     if (!sub->is_native) {
-      printf("      my_vars\n");
+      printf("      mys\n");
       SPVM_DYNAMIC_ARRAY* op_mys = sub->op_mys;
       {
         int32_t i;
         for (i = 0; i < op_mys->length; i++) {
           SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, i);
-          SPVM_MY_VAR* my_var = op_my->uv.my_var;
-          printf("        my_var[%" PRId32 "]\n", i);
-          SPVM_DUMPER_dump_my_var(compiler, my_var);
+          SPVM_MY* my = op_my->uv.my;
+          printf("        my[%" PRId32 "]\n", i);
+          SPVM_DUMPER_dump_my(compiler, my);
         }
       }
       
@@ -718,13 +718,13 @@ void SPVM_DUMPER_dump_enumeration_value(SPVM_COMPILER* compiler, SPVM_ENUMERATIO
   }
 }
 
-void SPVM_DUMPER_dump_my_var(SPVM_COMPILER* compiler, SPVM_MY_VAR* my_var) {
+void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
   (void)compiler;
 
-  if (my_var) {
-    printf("          name => \"%s\"\n", my_var->op_name->uv.name);
+  if (my) {
+    printf("          name => \"%s\"\n", my->op_name->uv.name);
     
-    SPVM_TYPE* type = my_var->op_type->uv.type;
+    SPVM_TYPE* type = my->op_type->uv.type;
     printf("          type => \"%s\"\n", type->name);
     
   }
