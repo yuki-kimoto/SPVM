@@ -785,7 +785,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           // Lexical variable
           else {
-            /* Next is graph */
+            /* Next is alphabet */
             while (
               isalnum(*compiler->bufptr)
               || (*compiler->bufptr) == '_'
@@ -809,11 +809,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
             
             // Package variable
-            if (strchr(var_name, ':')) {
+            if (isupper(var_name[0]) || strchr(var_name, ':')) {
               
               _Bool is_invalid = 0;
               int32_t length = (int32_t)strlen(var_name);
               
+              // only allow two colon
               {
                 int32_t i = 0;
                 while (1) {
