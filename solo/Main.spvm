@@ -6,7 +6,7 @@ package Main {
     
     my $num3 = sum($num1, $num2);
     
-    CORE::say_int($num3);
+    say_int($num3);
     
     return 0;
   }

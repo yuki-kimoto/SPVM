@@ -1951,31 +1951,38 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
   
-  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_var->file, op_var->line);
-  
-  // Create my var information
-  SPVM_MY* my = SPVM_MY_new(compiler);
-  if (op_type) {
-    my->op_type = op_type;
+  if (op_var->code == SPVM_OP_C_CODE_VAR) {
+    SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_var->file, op_var->line);
+    
+    // Create my var information
+    SPVM_MY* my = SPVM_MY_new(compiler);
+    if (op_type) {
+      my->op_type = op_type;
+    }
+    else {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
+      my->op_type = op_type;
+    }
+    
+    // Name OP
+    SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_var->file, op_var->line);
+    op_name->uv.name = op_var->uv.var->op_name->uv.name;
+    my->op_name = op_name;
+
+    // Add my information to op
+    op_my->uv.my = my;
+    
+    op_var->uv.var->op_my = op_my;
+    
+    SPVM_OP_insert_child(compiler, op_var, op_var->last, op_my);
+    
+    assert(op_var->first);
   }
   else {
-    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
-    my->op_type = op_type;
+    const char* name = SPVM_OP_get_var_name(compiler, op_var);
+    SPVM_yyerror_format(compiler, "Invalid lexical variable name %s at %s line %d\n", name, op_var->file, op_var->line);
+    compiler->fatal_error = 1;
   }
-  
-  // Name OP
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_var->file, op_var->line);
-  op_name->uv.name = op_var->uv.var->op_name->uv.name;
-  my->op_name = op_name;
-
-  // Add my information to op
-  op_my->uv.my = my;
-  
-  op_var->uv.var->op_my = op_my;
-  
-  SPVM_OP_insert_child(compiler, op_var, op_var->last, op_my);
-  
-  assert(op_var->first);
   
   return op_var;
 }

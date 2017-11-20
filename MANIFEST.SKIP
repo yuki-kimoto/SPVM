@@ -22,3 +22,4 @@
 \.bs$
 SPVM.c
 SPVM-.*
+^core\.

@@ -50,6 +50,12 @@ package TestCase {
   }
   
   sub main($mvar : int) : int {
+
+=pod
+    {
+      my $NUM = 0;
+    }
+=cut
     
     {
       my $num = sum0(1, 2);

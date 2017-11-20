@@ -126,8 +126,8 @@ spvm_lib_std.c
 spvm_limit.h
 spvm_memory_pool.c
 spvm_memory_pool.h
-spvm_my_var.c
-spvm_my_var.h
+spvm_my.c
+spvm_my.h
 spvm_name_info.h
 spvm_object.h
 spvm_op.c
