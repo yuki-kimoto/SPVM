@@ -1513,7 +1513,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   if (package != our->op_package->uv.package) {
                     SPVM_yyerror_format(compiler, "Package variable is private \"%s\" \"%s\" at %s line %d\n",
-                      our->op_package->uv.package->op_name->uv.name, our->op_var->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
+                      our->op_package->uv.package->op_name->uv.name, our->op_package_var->uv.package_var->op_name->uv.name, op_cur->file, op_cur->line);
                   }
                   
                   break;

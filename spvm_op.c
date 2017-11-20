@@ -1702,8 +1702,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_our = SPVM_DYNAMIC_ARRAY_fetch(op_ours, i);
         
         SPVM_OUR* our = op_our->uv.our;
-        const char* package_var_name = our->op_var->uv.var->op_name->uv.name;
-        
+        const char* package_var_name = our->op_package_var->uv.package_var->op_name->uv.name;
         
         SPVM_OP* found_op_our = SPVM_HASH_search(package->op_our_symtable, package_var_name, strlen(package_var_name));
         
@@ -1972,12 +1971,12 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPVM_OP* op_type) {
   
-  SPVM_OP* op_our = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_OUR, op_var->file, op_var->line);
+  SPVM_OP* op_our = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_OUR, op_package_var->file, op_package_var->line);
   SPVM_OUR* our = SPVM_OUR_new(compiler);
   
-  our->op_var = op_var;
+  our->op_package_var = op_package_var;
   our->op_type = op_type;
   
   op_our->uv.our = our;

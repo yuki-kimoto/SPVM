@@ -78,7 +78,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     }
     else if (code == SPVM_OP_C_CODE_OUR) {
       SPVM_OUR* our = op_cur->uv.our;
-      printf(" \"%s\"", our->op_var->uv.var->op_name->uv.name);
+      printf(" \"%s\"", our->op_package_var->uv.package_var->op_name->uv.name);
       printf(" (id :%d)", our->id);
     }
     else if (code == SPVM_OP_C_CODE_VAR) {
