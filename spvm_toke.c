@@ -853,7 +853,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               
               yylvalp->opval = op_package_var;
               
-              return PACKAGE_VAR;
+              return VAR;
             }
             // Lexical variable
             else {
