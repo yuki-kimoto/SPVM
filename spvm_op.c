@@ -2017,6 +2017,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
 }
 
 const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
+  (void)compiler;
   
   const char* name;
   if (op_var->code == SPVM_OP_C_CODE_VAR) {
