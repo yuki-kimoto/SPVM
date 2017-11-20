@@ -70,33 +70,32 @@
      DEFAULT = 286,
      VOID = 287,
      EVAL = 288,
-     EXCEPTION_VAR = 289,
-     BYTE = 290,
-     SHORT = 291,
-     INT = 292,
-     LONG = 293,
-     FLOAT = 294,
-     DOUBLE = 295,
-     STRING = 296,
-     WEAKEN = 297,
-     SPECIAL_ASSIGN = 298,
-     ASSIGN = 299,
-     OR = 300,
-     AND = 301,
-     BIT_XOR = 302,
-     BIT_OR = 303,
-     BIT_AND = 304,
-     REL = 305,
-     SHIFT = 306,
-     REMAINDER = 307,
-     DIVIDE = 308,
-     MULTIPLY = 309,
-     UMINUS = 310,
-     ARRAY_LENGTH = 311,
-     NOT = 312,
-     DEC = 313,
-     INC = 314,
-     ARROW = 315
+     BYTE = 289,
+     SHORT = 290,
+     INT = 291,
+     LONG = 292,
+     FLOAT = 293,
+     DOUBLE = 294,
+     STRING = 295,
+     WEAKEN = 296,
+     SPECIAL_ASSIGN = 297,
+     ASSIGN = 298,
+     OR = 299,
+     AND = 300,
+     BIT_XOR = 301,
+     BIT_OR = 302,
+     BIT_AND = 303,
+     REL = 304,
+     SHIFT = 305,
+     REMAINDER = 306,
+     DIVIDE = 307,
+     MULTIPLY = 308,
+     UMINUS = 309,
+     ARRAY_LENGTH = 310,
+     NOT = 311,
+     DEC = 312,
+     INC = 313,
+     ARROW = 314
    };
 #endif
 /* Tokens.  */
@@ -131,33 +130,32 @@
 #define DEFAULT 286
 #define VOID 287
 #define EVAL 288
-#define EXCEPTION_VAR 289
-#define BYTE 290
-#define SHORT 291
-#define INT 292
-#define LONG 293
-#define FLOAT 294
-#define DOUBLE 295
-#define STRING 296
-#define WEAKEN 297
-#define SPECIAL_ASSIGN 298
-#define ASSIGN 299
-#define OR 300
-#define AND 301
-#define BIT_XOR 302
-#define BIT_OR 303
-#define BIT_AND 304
-#define REL 305
-#define SHIFT 306
-#define REMAINDER 307
-#define DIVIDE 308
-#define MULTIPLY 309
-#define UMINUS 310
-#define ARRAY_LENGTH 311
-#define NOT 312
-#define DEC 313
-#define INC 314
-#define ARROW 315
+#define BYTE 289
+#define SHORT 290
+#define INT 291
+#define LONG 292
+#define FLOAT 293
+#define DOUBLE 294
+#define STRING 295
+#define WEAKEN 296
+#define SPECIAL_ASSIGN 297
+#define ASSIGN 298
+#define OR 299
+#define AND 300
+#define BIT_XOR 301
+#define BIT_OR 302
+#define BIT_AND 303
+#define REL 304
+#define SHIFT 305
+#define REMAINDER 306
+#define DIVIDE 307
+#define MULTIPLY 308
+#define UMINUS 309
+#define ARRAY_LENGTH 310
+#define NOT 311
+#define DEC 312
+#define INC 313
+#define ARROW 314
 
 
 

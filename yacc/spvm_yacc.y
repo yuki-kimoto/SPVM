@@ -16,7 +16,7 @@
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW SET GET OUR
 %token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK PACKAGE_VAR
-%token <opval> SWITCH CASE DEFAULT VOID EVAL EXCEPTION_VAR BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
+%token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
@@ -479,7 +479,6 @@ term
 assignable_term
   : VAR
   | PACKAGE_VAR
-  | EXCEPTION_VAR
   | CONSTANT
     {
       $$ = SPVM_OP_build_constant(compiler, $1);
@@ -518,10 +517,6 @@ expression
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | array_elem ASSIGN assignable_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | EXCEPTION_VAR ASSIGN assignable_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }

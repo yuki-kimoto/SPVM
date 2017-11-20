@@ -781,7 +781,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_OP* op_exception_var = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EXCEPTION_VAR);
             yylvalp->opval = op_exception_var;
             
-            return EXCEPTION_VAR;
+            return VAR;
           }
           // Lexical variable
           else {
