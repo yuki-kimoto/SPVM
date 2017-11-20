@@ -1,6 +1,6 @@
 =head1 NAME
 
-SPVM::Core::Document::Cookbook - SPVM Cookbook, Many Examples(BETA before 1.0)
+SPVM::Document::Cookbook - SPVM Cookbook, Many Examples(BETA before 1.0)
 
 =head1 Debug mode
 

@@ -591,9 +591,9 @@ Use SPVM Module from Perl
   
   print $total . "\n";
 
-If you know more SPVM syntax, see L<SPVM::Core::Document::Specification>.
+If you know more SPVM syntax, see L<SPVM::Document::Specification>.
 
-If you know more Functions to convert Perl Data to SPVM Data, see L<SPVM::Core::Document::Functions>.
+If you know more Functions to convert Perl Data to SPVM Data, see L<SPVM::Document::DataConversionAPI>.
 
 =head2 C Extension using SPVM
 
@@ -650,9 +650,9 @@ Use Extension Module from Perl:
   
   print $total . "\n";
 
-If you know more SPVM Extension, see L<SPVM::Core::Document::Extension>.
+If you know more SPVM Extension, see L<SPVM::Document::Extension>.
 
-If you know the APIs to manipulate SPVM data, see L<SPVM::Core::Document::NativeAPI>.
+If you know the APIs to manipulate SPVM data, see L<SPVM::Document::NativeAPI>.
 
 =head1 DESCRIPTION
 
@@ -766,7 +766,7 @@ And call SPVM subroutine. If SPVM subroutine absolute name is C<MyModule1::sum>,
 
 =head2 SPVM Functions
 
-L<SPVM::Core::Document::Functions> - SPVM data convertion functions.
+L<SPVM::Document::DataConversionAPI> - SPVM data convertion functions.
 
 List of SPVM functions:
 
@@ -794,29 +794,33 @@ List of SPVM functions:
 
 =back
 
-If you know Detail of SPVM Function, see L<SPVM::Core::Document::Functions>.
+If you know Detail of SPVM Function, see L<SPVM::Document::DataConversionAPI>.
 
 =head2 SPVM Language Specification
 
-L<SPVM::Core::Document::Specification> - SPVM Language Specification
+L<SPVM::Document::LanguageSpecification> - SPVM Language Specification
 
-=head2 SPVM Native API
+=head2 SPVM Native Interface
 
-L<SPVM::Core::Document::NativeAPI> - SPVM Native API.
+L<SPVM::Document::NativeInterface> - SPVM Native Interface.
 
 Native API is C level API. You can write programing logic using C language and SPVM Native API.
 
-=head2 SPVM Standard Library
+=head2 SPVM Standard Function
 
-L<SPVM::Core::Document::StandardLibrary> - SPVM Standard Library
+L<SPVM::Document::StandardFunction> - SPVM Standard Function
+
+=head2 SPVM Standard Module
+
+L<SPVM::Document::StandardModule> - SPVM Standard Module
 
 =head2 SPVM Cookbook
 
-L<SPVM::Core::Document::Cookbook> - SPVM Cookbook, advanced technique and many examples.
+L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many examples.
 
 =head2 SPVM FAQ
 
-L<SPVM::Core::Document::FAQ> - Oftten asked question.
+L<SPVM::Document::FAQ> - Oftten asked question.
 
 =head2 SUPPORT
 

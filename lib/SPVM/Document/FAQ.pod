@@ -1,6 +1,6 @@
 =head1 NAME
 
-SPVM::Core::Document::FAQ - SPVM FAQ(BETA)
+SPVM::Document::FAQ - SPVM FAQ(BETA)
 
 =head1 FAQ
 

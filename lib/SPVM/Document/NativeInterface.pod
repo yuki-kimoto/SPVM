@@ -1,14 +1,14 @@
 =head1 NAME
 
-SPVM::Core::Document::NativeAPI - SPVM Native API(BETA before 1.0)
+SPVM::Document::NativeInterface - SPVM Native Interface(BETA before 1.0)
 
-=head1 What is SPVM Native API
+=head1 What is SPVM Native Interface
 
-SPVM Native API is the API to Manipulate Array and Object, and call Subroutine in C Level.
+SPVM Native Interface is the API to Manipulate Array and Object, and call Subroutine in C Level.
 
-To improve peformance, you can write programing logic by C language and Native API.
+To improve peformance, you can write programing logic by C language and Native Interface.
 
-You can do the following by SPVM Native API.
+You can do the following by SPVM Native Interface.
 
 =over 2
 
@@ -24,7 +24,7 @@ You can do the following by SPVM Native API.
 
 =back
 
-I write some Examples for you to understand Native API.
+I write some Examples for you to understand Native Interface.
 
 B<1. Add two int value:>
 
@@ -37,7 +37,7 @@ B<1. Add two int value:>
     return total;
   }
 
-You must include C<spvm_api.h> to use SPVM Native API. 
+You must include C<spvm_api.h> to use SPVM Native Interface. 
 
 C Function name must be the name which Replace C<:> of SPVM subroutine with C<_>,
 and add C<SPVM> to the top of it.
@@ -49,16 +49,16 @@ and add C<SPVM> to the top of it.
 
 =head2 SPVM_API
 
-SPVM Native API object. This object is always First Argument of native function .
+SPVM Native Interface object. This object is always First Argument of native function .
   
   int32_t SPVM__TestCase__Extension__array_sum(SPVM_API* api, SPVM_API_VALUE* args) {
     
   }
 
-You can call Native API from this object, and First Argument of Native API is always this object.
+You can call Native Interface from this object, and First Argument of Native Interface is always this object.
 
   int32_t SPVM__TestCase__Extension__array_sum(SPVM_API* api, SPVM_API_VALUE* args) {
-    // Call SPVM Native API
+    // Call SPVM Native Interface
     int32_t length = api->get_array_length(api, args[0].object_value);
   }
 
@@ -108,7 +108,7 @@ B<RETURNS:>
 
 Returns a SPVM_API_OBJECT object.
 
-=head1 Native API List(TODO)
+=head1 Native Interface List(TODO)
 
   int32_t (*get_array_length)(SPVM_API*, SPVM_API_OBJECT*);
   int8_t* (*get_byte_array_elements)(SPVM_API*, SPVM_API_OBJECT*);

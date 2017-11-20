@@ -1,6 +1,6 @@
 =head1 NAME
 
-SPVM::Core::Document::Specification - SPVM Language Specification(BETA before 1.0)
+SPVM::Document::LanguageSpecification - SPVM Language Specification(BETA before 1.0)
 
 =head1 SPVM Language Specification
 

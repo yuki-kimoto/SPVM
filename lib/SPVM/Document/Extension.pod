@@ -1,6 +1,6 @@
 =head1 NAME
 
-SPVM::Core::Document::Extension - C/C++ Binding using SPVM Extension(BETA before 1.0)
+SPVM::Document::Extension - C/C++ Binding using SPVM Extension(BETA before 1.0)
 
 =head1 Tutorial
 
