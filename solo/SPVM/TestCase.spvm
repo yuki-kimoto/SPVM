@@ -71,6 +71,20 @@ package TestCase {
     }
 
     {
+      my $var = $PACKAGE_VAR_INT;
+      
+      $PACKAGE_VAR_INT = 1;
+      
+      if ($PACKAGE_VAR_INT == 0) {
+        $PACKAGE_VAR_INT = 1;
+        if ($PACKAGE_VAR_INT == 1) {
+          return 1;
+        }
+      }
+      my $str = "" . $PACKAGE_VAR_INT;
+    }
+    
+    {
       my $var = $TestCase::PACKAGE_VAR_INT;
       
       $TestCase::PACKAGE_VAR_INT = 1;

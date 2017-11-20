@@ -1501,7 +1501,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_PACKAGE_VAR: {
                   
                   // Check field name
-                  SPVM_OP_resolve_package_var(compiler, op_cur);
+                  SPVM_OP_resolve_package_var(compiler, op_cur, op_package);
                   if (!op_cur->uv.package_var->op_our) {
                     SPVM_yyerror_format(compiler, "Package variable not found \"%s\" at %s line %d\n",
                       op_cur->uv.package_var->op_name->uv.name, op_cur->file, op_cur->line);

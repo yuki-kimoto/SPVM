@@ -252,11 +252,20 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
   return op_var_ret;
 }
 
-void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var) {
+void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPVM_OP* op_package) {
   
   SPVM_OP* op_name = op_package_var->uv.package_var->op_name;
   
-  SPVM_OP* op_our = SPVM_HASH_search(compiler->op_our_symtable, op_name->uv.name, strlen(op_name->uv.name));
+  const char* name = op_name->uv.name;
+  const char* abs_name;
+  if (strchr(name, ':')) {
+    abs_name = name;
+  }
+  else {
+    abs_name = SPVM_OP_create_package_var_abs_name(compiler, op_package->uv.package->op_name->uv.name, name);
+  }
+  
+  SPVM_OP* op_our = SPVM_HASH_search(compiler->op_our_symtable, abs_name, strlen(abs_name));
   
   if (op_our) {
     op_package_var->uv.package_var->op_our = op_our;
