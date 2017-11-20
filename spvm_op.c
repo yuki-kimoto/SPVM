@@ -1976,9 +1976,25 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
   SPVM_OP* op_our = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_OUR, op_package_var->file, op_package_var->line);
   SPVM_OUR* our = SPVM_OUR_new(compiler);
   
+  const char* name = SPVM_OP_get_var_name(compiler, op_package_var);
+  
+  _Bool invalid_name = 0;
+  if (op_package_var->code != SPVM_OP_C_CODE_PACKAGE_VAR) {
+    invalid_name = 1;
+  }
+  else {
+    if (strchr(name, ':')) {
+      invalid_name = 1;
+    }
+  }
+  
+  if (invalid_name) {
+    SPVM_yyerror_format(compiler, "Invalid package variable name %s at %s line %d\n", name, op_package_var->file, op_package_var->line);
+    compiler->fatal_error = 1;
+  }
+  
   our->op_package_var = op_package_var;
   our->op_type = op_type;
-  
   op_our->uv.our = our;
   
   return op_our;
