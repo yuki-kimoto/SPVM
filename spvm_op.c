@@ -194,7 +194,7 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
   // Exception variable
   if (var_name_length == 2 && var_name[1] == '@') {
     // Exception variable
-    SPVM_OP* op_exception_var = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EXCEPTION_VAR);
+    SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_EXCEPTION_VAR, op_var_name->file, op_var_name->line);
     op_var_ret = op_exception_var;
   }
   // Package variable
