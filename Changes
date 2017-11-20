@@ -4,6 +4,8 @@
     At first, current package is searched, next core function
   - rename std package to CORE package
   - package variable must be start upper case
+  - lexical variable must be start lower case
+  - support relative name package variable
 0.03 2017-11-17
   - SPVM VM change Stack Based VM to Register Based VM
     This change slow down performance temporary

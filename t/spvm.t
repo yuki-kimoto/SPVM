@@ -55,6 +55,14 @@ use SPVM 'CORE';
   cmp_ok(abs(time - SPVM::CORE::time()), '<', 2);
 }
 
+# Package variable relative name
+{
+  my $start_objects_count = SPVM::get_objects_count();
+  ok(SPVM::TestCase::package_var_rel_name());
+  my $end_objects_count = SPVM::get_objects_count();
+  is($start_objects_count, $end_objects_count);
+}
+
 # Package variable
 {
   my $start_objects_count = SPVM::get_objects_count();
