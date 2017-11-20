@@ -49,17 +49,17 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   my_var->op_type->uv.type = type;
 
   // Index
-  my_var->index = sub_check_info->op_my_vars->length;
+  my_var->index = sub_check_info->op_mys->length;
 
   // op my_var
-  SPVM_OP* op_my_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, file, line);
-  op_my_var->uv.my_var = my_var;
+  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, file, line);
+  op_my->uv.my_var = my_var;
 
   // Add my var
-  SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_my_var);
-  SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_var_stack, op_my_var);
+  SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_mys, op_my);
+  SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_stack, op_my);
   
-  SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my_var(compiler, op_my_var);
+  SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my(compiler, op_my);
   
   return op_var;
 }
@@ -267,7 +267,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Start scope
             case SPVM_OP_C_CODE_BLOCK: {
               
-              int32_t block_my_var_base = sub_check_info->op_my_var_stack->length;
+              int32_t block_my_var_base = sub_check_info->op_my_stack->length;
               int32_t* block_my_var_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *block_my_var_base_ptr = block_my_var_base;
               SPVM_DYNAMIC_ARRAY_push(sub_check_info->block_my_var_base_stack, block_my_var_base_ptr);
@@ -894,7 +894,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     if (first_type) {
                       SPVM_OP* op_var = op_cur->first;
-                      SPVM_MY_VAR* my_var = op_var->uv.var->op_my_var->uv.my_var;
+                      SPVM_MY_VAR* my_var = op_var->uv.var->op_my->uv.my_var;
                       my_var->op_type->uv.type = first_type;
                     }
                   }
@@ -1328,12 +1328,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   int32_t* block_my_var_base_ptr = SPVM_DYNAMIC_ARRAY_pop(sub_check_info->block_my_var_base_stack);
                   int32_t block_my_var_base = *block_my_var_base_ptr;
                     
-                  int32_t my_var_stack_pop_count = sub_check_info->op_my_var_stack->length - block_my_var_base;
+                  int32_t my_var_stack_pop_count = sub_check_info->op_my_stack->length - block_my_var_base;
                   
                   {
                     int32_t i;
                     for (i = 0; i < my_var_stack_pop_count; i++) {
-                      SPVM_DYNAMIC_ARRAY_pop(sub_check_info->op_my_var_stack);
+                      SPVM_DYNAMIC_ARRAY_pop(sub_check_info->op_my_stack);
                     }
                   }
 
@@ -1356,22 +1356,22 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_VAR* var = op_cur->uv.var;
                   
                   // Search same name variable
-                  SPVM_OP* found_op_my_var = NULL;
+                  SPVM_OP* found_op_my = NULL;
                   {
                     int32_t i;
-                    for (i = sub_check_info->op_my_var_stack->length - 1; i >= 0; i--) {
-                      SPVM_OP* op_my_var = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_var_stack, i);
-                      SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
+                    for (i = sub_check_info->op_my_stack->length - 1; i >= 0; i--) {
+                      SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_stack, i);
+                      SPVM_MY_VAR* my_var = op_my->uv.my_var;
                       if (strcmp(var->op_name->uv.name, my_var->op_name->uv.name) == 0) {
-                        found_op_my_var = op_my_var;
+                        found_op_my = op_my;
                         break;
                       }
                     }
                   }
                   
-                  if (found_op_my_var) {
+                  if (found_op_my) {
                     // Add my var information to var
-                    var->op_my_var = found_op_my_var;
+                    var->op_my = found_op_my;
                   }
                   else {
                     // Error
@@ -1396,8 +1396,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   {
                     int32_t i;
-                    for (i = block_my_var_base; i < sub_check_info->op_my_var_stack->length; i++) {
-                      SPVM_OP* op_bef_my_var = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_var_stack, i);
+                    for (i = block_my_var_base; i < sub_check_info->op_my_stack->length; i++) {
+                      SPVM_OP* op_bef_my_var = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_stack, i);
                       SPVM_MY_VAR* bef_my_var = op_bef_my_var->uv.my_var;
                       if (strcmp(my_var->op_name->uv.name, bef_my_var->op_name->uv.name) == 0) {
                         found = 1;
@@ -1412,9 +1412,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   else {
-                    my_var->index = sub_check_info->op_my_vars->length;
-                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_vars, op_cur);
-                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_var_stack, op_cur);
+                    my_var->index = sub_check_info->op_mys->length;
+                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_mys, op_cur);
+                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_stack, op_cur);
                   }
                   
                   break;
@@ -1622,7 +1622,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
         }
         // Set my var information
-        sub->op_my_vars = sub_check_info->op_my_vars;
+        sub->op_mys = sub_check_info->op_mys;
         
         // Operand stack max
         sub->operand_stack_max = sub_check_info->op_count * 2;

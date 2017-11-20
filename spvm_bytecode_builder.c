@@ -39,7 +39,7 @@
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
   
   SPVM_VAR* var = op_inc->first->uv.var;
-  SPVM_MY_VAR* my_var = var->op_my_var->uv.my_var;
+  SPVM_MY_VAR* my_var = var->op_my->uv.my_var;
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_inc);
   if (type->code == SPVM_TYPE_C_CODE_BYTE) {

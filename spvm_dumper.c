@@ -84,7 +84,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (code == SPVM_OP_C_CODE_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
       printf(" \"%s\"", var->op_name->uv.name);
-      printf(" (my_var->index:%d)", var->op_my_var->uv.my_var->index);
+      printf(" (my_var->index:%d)", var->op_my->uv.my_var->index);
     }
     else if (code == SPVM_OP_C_CODE_PACKAGE_VAR) {
       SPVM_PACKAGE_VAR* package_var = op_cur->uv.package_var;
@@ -663,12 +663,12 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     
     if (!sub->is_native) {
       printf("      my_vars\n");
-      SPVM_DYNAMIC_ARRAY* op_my_vars = sub->op_my_vars;
+      SPVM_DYNAMIC_ARRAY* op_mys = sub->op_mys;
       {
         int32_t i;
-        for (i = 0; i < op_my_vars->length; i++) {
-          SPVM_OP* op_my_var = SPVM_DYNAMIC_ARRAY_fetch(sub->op_my_vars, i);
-          SPVM_MY_VAR* my_var = op_my_var->uv.my_var;
+        for (i = 0; i < op_mys->length; i++) {
+          SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, i);
+          SPVM_MY_VAR* my_var = op_my->uv.my_var;
           printf("        my_var[%" PRId32 "]\n", i);
           SPVM_DUMPER_dump_my_var(compiler, my_var);
         }
