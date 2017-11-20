@@ -2172,14 +2172,14 @@ yyreduce:
   case 64:
 #line 374 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_my_var(compiler, (yyvsp[(2) - (4)].opval), (yyvsp[(4) - (4)].opval));
+      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(2) - (4)].opval), (yyvsp[(4) - (4)].opval));
     ;}
     break;
 
   case 65:
 #line 378 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_my_var(compiler, (yyvsp[(2) - (2)].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(2) - (2)].opval), NULL);
     ;}
     break;
 
@@ -2680,7 +2680,7 @@ yyreduce:
   case 148:
 #line 754 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_my_var(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
+      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
     ;}
     break;
 
