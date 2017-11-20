@@ -1994,7 +1994,7 @@ const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
     name = op_var->uv.package_var->op_name->uv.name;
   }
   else if (op_var->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
-    return "$@";
+    name = "$@";
   }
   else {
     assert(0);
