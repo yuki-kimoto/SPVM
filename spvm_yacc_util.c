@@ -111,9 +111,9 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
       fprintf(file, "\"%s\"", yylval.opval->uv.name);
       break;
     }
-    case VAR: {
-      SPVM_VAR* var = yylval.opval->uv.var;
-      fprintf(file, "\"%s\"", var->op_name->uv.name);
+    case VAR_NAME: {
+      const char* var_name = yylval.opval->uv.name;
+      fprintf(file, "\"%s\"", var_name);
       break;
     }
     case CONSTANT: {

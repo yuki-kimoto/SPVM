@@ -184,6 +184,74 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPV
   return op_array_init;
 }
 
+SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
+      
+  const char* var_name = op_var_name->uv.name;
+  int32_t var_name_length = (int32_t)strlen(var_name);
+  
+  SPVM_OP* op_var_ret;
+  
+  // Exception variable
+  if (var_name_length == 2 && var_name[1] == '@') {
+    // Exception variable
+    SPVM_OP* op_exception_var = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EXCEPTION_VAR);
+    op_var_ret = op_exception_var;
+  }
+  // Package variable
+  else if (isupper(var_name[1]) || strchr(var_name, ':')) {
+    
+    _Bool is_invalid = 0;
+    int32_t length = (int32_t)strlen(var_name);
+    
+    // only allow two colon
+    {
+      int32_t i = 0;
+      while (1) {
+        if (i < length) {
+          if (var_name[i] == ':') {
+            if (var_name[i + 1] != ':') {
+              is_invalid = 1;
+              break;
+            }
+            else {
+              if (!isalpha(var_name[i + 2])) {
+                is_invalid = 1;
+                break;
+              }
+              else {
+                i += 2;
+                continue;
+              }
+            }
+          }
+        }
+        else {
+          break;
+        }
+        i++;
+      }
+    }
+    
+    if (is_invalid) {
+      fprintf(stderr, "Invalid package variable name %s at %s line %" PRId32 "\n", var_name, compiler->cur_file, compiler->cur_line);
+      exit(EXIT_FAILURE);
+    }
+    
+    // Var OP
+    SPVM_OP* op_package_var = SPVM_OP_new_op_package_var(compiler, op_var_name);
+    
+    op_var_ret = op_package_var;
+  }
+  // Lexical variable
+  else {
+    // Var OP
+    SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_var_name);
+    op_var_ret = op_var;
+  }
+  
+  return op_var_ret;
+}
+
 void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var) {
   
   SPVM_OP* op_name = op_package_var->uv.package_var->op_name;

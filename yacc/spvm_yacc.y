@@ -15,7 +15,7 @@
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW SET GET OUR
-%token <opval> LAST NEXT NAME VAR CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK
+%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME
 %token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
@@ -23,7 +23,7 @@
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field names opt_names setters getters our_var
 %type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
-%type <opval> for_statement while_statement expression opt_declarations_in_grammar
+%type <opval> for_statement while_statement expression opt_declarations_in_grammar var
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement type_array_with_length
 %type <opval> ';' opt_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
@@ -370,17 +370,17 @@ enumeration
     }
 
 my_var
-  : MY VAR ':' type
+  : MY var ':' type
     {
       $$ = SPVM_OP_build_my_var(compiler, $2, $4);
     }
-  | MY VAR
+  | MY var
     {
       $$ = SPVM_OP_build_my_var(compiler, $2, NULL);
     }
 
 our_var
-  : OUR VAR ':' type
+  : OUR var ':' type
     {
       $$ = SPVM_OP_build_our(compiler, $2, $4);
     }
@@ -477,7 +477,7 @@ term
   | logical_term
 
 assignable_term
-  : VAR
+  : var
   | CONSTANT
     {
       $$ = SPVM_OP_build_constant(compiler, $1);
@@ -644,11 +644,11 @@ binop
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
-  | VAR ASSIGN assignable_term
+  | var ASSIGN assignable_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
-  | VAR SPECIAL_ASSIGN assignable_term
+  | var SPECIAL_ASSIGN assignable_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
@@ -750,7 +750,7 @@ args
   | arg
 
 arg
-  : VAR ':' type
+  : var ':' type
     {
       $$ = SPVM_OP_build_my_var(compiler, $1, $3);
     }
@@ -857,6 +857,12 @@ type_or_void
 field_name : NAME
 sub_name : NAME
 package_name : NAME
+
+var
+  : VAR_NAME
+    {
+      $$ = SPVM_OP_build_var(compiler, $1);
+    }
 
 eval_block
   : EVAL block

@@ -57,13 +57,13 @@
      LAST = 273,
      NEXT = 274,
      NAME = 275,
-     VAR = 276,
-     CONSTANT = 277,
-     ENUM = 278,
-     DESCRIPTOR = 279,
-     CORETYPE = 280,
-     UNDEF = 281,
-     CROAK = 282,
+     CONSTANT = 276,
+     ENUM = 277,
+     DESCRIPTOR = 278,
+     CORETYPE = 279,
+     UNDEF = 280,
+     CROAK = 281,
+     VAR_NAME = 282,
      SWITCH = 283,
      CASE = 284,
      DEFAULT = 285,
@@ -116,13 +116,13 @@
 #define LAST 273
 #define NEXT 274
 #define NAME 275
-#define VAR 276
-#define CONSTANT 277
-#define ENUM 278
-#define DESCRIPTOR 279
-#define CORETYPE 280
-#define UNDEF 281
-#define CROAK 282
+#define CONSTANT 276
+#define ENUM 277
+#define DESCRIPTOR 278
+#define CORETYPE 279
+#define UNDEF 280
+#define CROAK 281
+#define VAR_NAME 282
 #define SWITCH 283
 #define CASE 284
 #define DEFAULT 285
