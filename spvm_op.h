@@ -214,6 +214,8 @@ struct SPVM_op {
   _Bool is_var_assign_right;
 };
 
+const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var);
+
 SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name);
 
 int32_t SPVM_OP_get_my_index(SPVM_COMPILER* compiler, SPVM_OP* op_var);

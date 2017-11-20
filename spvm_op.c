@@ -1985,6 +1985,25 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   return op_our;
 }
 
+const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
+  
+  const char* name;
+  if (op_var->code == SPVM_OP_C_CODE_VAR) {
+    name = op_var->uv.var->op_name->uv.name;
+  }
+  else if (op_var->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+    name = op_var->uv.package_var->op_name->uv.name;
+  }
+  else if (op_var->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
+    return "$@";
+  }
+  else {
+    assert(0);
+  }
+  
+  return name;
+}
+
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
 
   if (op_descriptors == NULL) {
