@@ -85,16 +85,7 @@ struct SPVM_api {
   void (*inc_dec_ref_count)(SPVM_API* api, SPVM_API_OBJECT* base_object);
   int32_t (*get_objects_count)(SPVM_API* api);
   SPVM_API_RUNTIME* (*get_runtime)(SPVM_API* api);
-  int32_t (*get_object_header_byte_size)(SPVM_API* api);
   void (*dec_ref_count_only)(SPVM_API* api, SPVM_API_OBJECT* base_object);
-  int32_t (*get_object_header_length_offset)(SPVM_API* api);
-  int32_t (*get_void_type_code)(SPVM_API* api);
-  int32_t (*get_byte_type_code)(SPVM_API* api);
-  int32_t (*get_short_type_code)(SPVM_API* api);
-  int32_t (*get_int_type_code)(SPVM_API* api);
-  int32_t (*get_long_type_code)(SPVM_API* api);
-  int32_t (*get_float_type_code)(SPVM_API* api);
-  int32_t (*get_double_type_code)(SPVM_API* api);
   void (*weaken)(SPVM_API* api, SPVM_API_OBJECT** object_address);
   int32_t (*isweak)(SPVM_API* api, SPVM_API_OBJECT* object);
   void (*unweaken)(SPVM_API* api, SPVM_API_OBJECT** object_address);
