@@ -53,6 +53,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Subroutine object my base index
   int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_base;
   
+  // Subroutine name id
+  int32_t SPVM_INFO_SUB_XXX_ABS_NAME_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->abs_name_id;
+  
+  // Subroutine File name id
+  int32_t SPVM_INFO_SUB_XXX_FILE_NAME_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->file_name_id;
+  
   // Bytecodes
   int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
   
@@ -113,7 +119,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   
   api->set_exception(api, NULL);
-  
+
   // Call native sub
   if (api->get_sub_is_native(api, sub_id)) {
     int32_t return_type_code = api->get_type_code(api, api->get_sub_return_type_id(api, sub_id));
@@ -2162,11 +2168,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         
         // Sub name
-        int32_t sub_name_id = api->get_sub_name_id(api, sub_id);
+        int32_t sub_name_id = SPVM_INFO_SUB_XXX_ABS_NAME_ID;
         const char* sub_name = (char*)&SPVM_INFO_CONSTANT_POOL[sub_name_id + 1];
         
         // File name
-        int32_t file_name_id = api->get_sub_file_name_id(api, sub_id);
+        int32_t file_name_id = SPVM_INFO_SUB_XXX_FILE_NAME_ID;
         const char* file_name = (char*)&SPVM_INFO_CONSTANT_POOL[file_name_id + 1];
         
         // stack trace strings
