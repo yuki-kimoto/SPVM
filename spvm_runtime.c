@@ -13,6 +13,8 @@
 #include "spvm_type.h"
 #include "spvm_value.h"
 #include "spvm_runtime.h"
+#include "spvm_constant_pool.h"
+#include "spvm_constant_pool_sub.h"
 
 #define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
 #define SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET (int32_t)offsetof(SPVM_OBJECT, length)
@@ -26,15 +28,24 @@
 
 SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   (void)api;
+  
+  // Runtime
+  SPVM_RUNTIME* SPVM_INFO_RUNTIME = SPVM_RUNTIME_API_get_runtime(api);
+  
+  // Constant pool
+  const int32_t* SPVM_INFO_CONSTANT_POOL = SPVM_INFO_RUNTIME->constant_pool;
 
-  const int32_t object_my_vars_length = api->get_sub_object_my_vars_length(api, sub_id);
+  // Constant pool sub
+  SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[sub_id];
+  
+  int32_t sub_object_mys_length = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_length;
+
+  const int32_t object_my_vars_length = sub_object_mys_length;
+  
   const int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
 
   // Debug
   const int32_t debug = api->is_debug(api) ? 1 : 0;
-  
-  // Constant pool
-  const int32_t* constant_pool = api->get_constant_pool(api);
   
   // Package variables
   SPVM_VALUE* package_vars = api->get_package_vars(api);
@@ -82,7 +93,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     {
       int32_t i;
       for (i = 0; i < object_args_length; i++) {
-        int32_t arg_index = constant_pool[object_args_base + i];
+        int32_t arg_index = SPVM_INFO_CONSTANT_POOL[object_args_base + i];
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[arg_index].object_value;
         if (object != NULL) {
           api->inc_ref_count(api, object);
@@ -850,11 +861,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         bytecode_index += 3;
         break;
       case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
-        memcpy(&call_stack[bytecodes[bytecode_index + 1]], &constant_pool[bytecodes[bytecode_index + 2]], sizeof(int32_t));
+        memcpy(&call_stack[bytecodes[bytecode_index + 1]], &SPVM_INFO_CONSTANT_POOL[bytecodes[bytecode_index + 2]], sizeof(int32_t));
         bytecode_index += 3;
         break;
       case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
-        memcpy(&call_stack[bytecodes[bytecode_index + 1]], &constant_pool[bytecodes[bytecode_index + 2]], sizeof(int64_t));
+        memcpy(&call_stack[bytecodes[bytecode_index + 1]], &SPVM_INFO_CONSTANT_POOL[bytecodes[bytecode_index + 2]], sizeof(int64_t));
         bytecode_index += 3;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG:
@@ -1486,7 +1497,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_NEW_STRING: {
         int32_t name_id = bytecodes[bytecode_index + 2];
         
-        SPVM_API_OBJECT* string = api->new_string(api, (char*)&constant_pool[name_id + 1], constant_pool[name_id]);
+        SPVM_API_OBJECT* string = api->new_string(api, (char*)&SPVM_INFO_CONSTANT_POOL[name_id + 1], SPVM_INFO_CONSTANT_POOL[name_id]);
 
         // Set string
         call_stack[bytecodes[bytecode_index + 1]].object_value = string;
@@ -2033,7 +2044,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             {
               int32_t i;
               for (i = 0; i < object_my_vars_length; i++) {
-                int32_t my_var_index = constant_pool[object_my_vars_base + i];
+                int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[object_my_vars_base + i];
                 SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
                 
                 if (object != NULL) {
@@ -2068,7 +2079,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             {
               int32_t i;
               for (i = 0; i < object_my_vars_length; i++) {
-                int32_t my_var_index = constant_pool[object_my_vars_base + i];
+                int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[object_my_vars_base + i];
                 SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
                 
                 if (object != NULL) {
@@ -2102,7 +2113,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             {
               int32_t i;
               for (i = 0; i < object_my_vars_length; i++) {
-                int32_t my_var_index = constant_pool[object_my_vars_base + i];
+                int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[object_my_vars_base + i];
                 SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
                 
                 if (object != NULL) {
@@ -2140,7 +2151,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           {
             int32_t i;
             for (i = 0; i < object_my_vars_length; i++) {
-              int32_t my_var_index = constant_pool[object_my_vars_base + i];
+              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[object_my_vars_base + i];
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
               
               if (object != NULL) {
@@ -2152,11 +2163,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Sub name
         int32_t sub_name_id = api->get_sub_name_id(api, sub_id);
-        const char* sub_name = (char*)&constant_pool[sub_name_id + 1];
+        const char* sub_name = (char*)&SPVM_INFO_CONSTANT_POOL[sub_name_id + 1];
         
         // File name
         int32_t file_name_id = api->get_sub_file_name_id(api, sub_id);
-        const char* file_name = (char*)&constant_pool[file_name_id + 1];
+        const char* file_name = (char*)&SPVM_INFO_CONSTANT_POOL[file_name_id + 1];
         
         // stack trace strings
         const char* from = "\n  from ";
