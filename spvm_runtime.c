@@ -57,8 +57,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Subroutine name id
   int32_t SPVM_INFO_SUB_XXX_ABS_NAME_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->abs_name_id;
   
-  // Subroutine File name id
+  // Subroutine file name id
   int32_t SPVM_INFO_SUB_XXX_FILE_NAME_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->file_name_id;
+  
+  // Subroutine return type id
+  int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->return_type_id;
   
   // Bytecodes
   int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
@@ -129,7 +132,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
   // Call native sub
   if (api->get_sub_is_native(api, sub_id)) {
-    int32_t return_type_code = api->get_type_code(api, api->get_sub_return_type_id(api, sub_id));
+    int32_t return_type_code = api->get_type_code(api, SPVM_INFO_SUB_XXX_RETURN_TYPE_ID);
     
     // Call native subroutine
     if (return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
