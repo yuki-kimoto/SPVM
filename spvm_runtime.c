@@ -33,14 +33,15 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   SPVM_RUNTIME* SPVM_INFO_RUNTIME = SPVM_RUNTIME_API_get_runtime(api);
   
   // Constant pool
-  const int32_t* SPVM_INFO_CONSTANT_POOL = SPVM_INFO_RUNTIME->constant_pool;
+  int32_t* SPVM_INFO_CONSTANT_POOL = SPVM_INFO_RUNTIME->constant_pool;
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[sub_id];
   
-  int32_t SPVM_INFO_SUB_OBJECT_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_length;
+  // Object my length
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_length;
   
-  const int32_t object_my_vars_base = api->get_sub_object_my_vars_base(api, sub_id);
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_base;
 
   // Debug
   const int32_t debug = api->is_debug(api) ? 1 : 0;
@@ -2039,8 +2040,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           
           {
             int32_t i;
-            for (i = 0; i < SPVM_INFO_SUB_OBJECT_MYS_LENGTH; i++) {
-              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[object_my_vars_base + i];
+            for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
+              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
               
               if (object != NULL) {
@@ -2072,8 +2073,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           // Decrement object my vars reference count
           {
             int32_t i;
-            for (i = 0; i < SPVM_INFO_SUB_OBJECT_MYS_LENGTH; i++) {
-              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[object_my_vars_base + i];
+            for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
+              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
               
               if (object != NULL) {
@@ -2104,8 +2105,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           // Decrement object my vars reference count
           {
             int32_t i;
-            for (i = 0; i < SPVM_INFO_SUB_OBJECT_MYS_LENGTH; i++) {
-              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[object_my_vars_base + i];
+            for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
+              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
               
               if (object != NULL) {
@@ -2139,8 +2140,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         {
           int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[object_my_vars_base + i];
+          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
+            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[my_var_index].object_value;
             
             if (object != NULL) {
