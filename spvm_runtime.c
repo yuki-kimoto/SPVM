@@ -8,12 +8,12 @@
 
 #include "spvm_api.h"
 #include "spvm_bytecode.h"
+#include "spvm_object.h"
+
+#define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
 
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
-  
-  // SPVM Object header byte size
-  const int32_t OBJECT_HEADER_BYTE_SIZE = api->get_object_header_byte_size(api);
   
   // SPVM Object header length offset
   const int32_t OBJECT_HEADER_LENGTH_OFFSET = api->get_object_header_length_offset(api);
@@ -1035,7 +1035,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           }
           else {
             call_stack[bytecodes[bytecode_index + 1]].byte_value
-              = *(int8_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
+              = *(int8_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
             
             bytecode_index += 4;
             break;
@@ -1058,7 +1058,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           }
           else {
             call_stack[bytecodes[bytecode_index + 1]].short_value
-              = *(int16_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index);
+              = *(int16_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index);
             bytecode_index += 4;
             break;
           }
@@ -1079,7 +1079,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[bytecodes[bytecode_index + 1]].int_value = *(int32_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index);
+            call_stack[bytecodes[bytecode_index + 1]].int_value = *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index);
             bytecode_index += 4;
             break;
           }
@@ -1100,7 +1100,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[bytecodes[bytecode_index + 1]].long_value = *(int64_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index);
+            call_stack[bytecodes[bytecode_index + 1]].long_value = *(int64_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index);
             bytecode_index += 4;
             break;
           }
@@ -1121,7 +1121,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[bytecodes[bytecode_index + 1]].float_value = *(float*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index);
+            call_stack[bytecodes[bytecode_index + 1]].float_value = *(float*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index);
             bytecode_index += 4;
             break;
           }
@@ -1142,7 +1142,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[bytecodes[bytecode_index + 1]].double_value = *(double*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index);
+            call_stack[bytecodes[bytecode_index + 1]].double_value = *(double*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index);
             bytecode_index += 4;
             break;
           }
@@ -1163,7 +1163,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            call_stack[bytecodes[bytecode_index + 1]] = *(SPVM_API_VALUE*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
+            call_stack[bytecodes[bytecode_index + 1]] = *(SPVM_API_VALUE*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
             
             bytecode_index += 4;
             break;
@@ -1185,7 +1185,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(int8_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index) = call_stack[bytecodes[bytecode_index + 3]].byte_value;
+            *(int8_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index) = call_stack[bytecodes[bytecode_index + 3]].byte_value;
             bytecode_index += 4;
             break;
           }
@@ -1206,7 +1206,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(int16_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index) = call_stack[bytecodes[bytecode_index + 3]].short_value;
+            *(int16_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index) = call_stack[bytecodes[bytecode_index + 3]].short_value;
             bytecode_index += 4;
             break;
           }
@@ -1227,7 +1227,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(int32_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index) = call_stack[bytecodes[bytecode_index + 3]].int_value;
+            *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index) = call_stack[bytecodes[bytecode_index + 3]].int_value;
             bytecode_index += 4;
             break;
           }
@@ -1248,7 +1248,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(int64_t*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index) = call_stack[bytecodes[bytecode_index + 3]].long_value;
+            *(int64_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index) = call_stack[bytecodes[bytecode_index + 3]].long_value;
             bytecode_index += 4;
             break;
           }
@@ -1269,7 +1269,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(float*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index) = call_stack[bytecodes[bytecode_index + 3]].float_value;
+            *(float*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index) = call_stack[bytecodes[bytecode_index + 3]].float_value;
             bytecode_index += 4;
             break;
           }
@@ -1290,7 +1290,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            *(double*)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index) = call_stack[bytecodes[bytecode_index + 3]].double_value;
+            *(double*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index) = call_stack[bytecodes[bytecode_index + 3]].double_value;
             bytecode_index += 4;
             break;
           }
@@ -1312,7 +1312,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             goto label_SPVM_BYTECODE_C_CODE_CROAK;
           }
           else {
-            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
+            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * index);
             
             // Decrement old object reference count
             if (*object_address != NULL) {
