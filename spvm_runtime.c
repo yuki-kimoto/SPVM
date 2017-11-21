@@ -106,7 +106,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t arg_index = SPVM_INFO_CONSTANT_POOL[object_args_base + i];
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[arg_index].object_value;
         if (object != NULL) {
-          api->inc_ref_count(api, object);
+          SPVM_MACRO_INC_REF_COUNT(object);
         }
       }
     }
@@ -1333,7 +1333,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
             // Increment new object reference count
             if (*object_address != NULL) {
-              api->inc_ref_count(api, *object_address);
+              SPVM_MACRO_INC_REF_COUNT(*object_address);
             }
             
             bytecode_index += 4;
@@ -1348,7 +1348,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_INC_REF_COUNT: {
         // Increment new value reference count
         if (call_stack[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value != NULL) {
-          api->inc_ref_count(api, call_stack[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value);
+          SPVM_MACRO_INC_REF_COUNT(call_stack[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value);
         }
 
         bytecode_index += 2;
@@ -1893,7 +1893,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Increment new value reference count
         if (SPVM_INFO_PACKAGE_VARS[package_var_id].object_value != NULL) {
-          api->inc_ref_count(api, SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
+          SPVM_MACRO_INC_REF_COUNT(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
         }
 
         bytecode_index += 3;
@@ -2078,7 +2078,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           
           // Increment ref count of return value not to release by decrement
           if (return_value.object_value != NULL) {
-            api->inc_ref_count(api, return_value.object_value);
+            SPVM_MACRO_INC_REF_COUNT(return_value.object_value);
           }
           
           // Decrement object my vars reference count
