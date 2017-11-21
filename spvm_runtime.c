@@ -62,6 +62,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Bytecodes
   int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
   
+  // Bytecode base
+  int32_t SPVM_INFO_SUB_XXX_BYTECODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->bytecode_base;
+  
   // Args length
   int32_t args_length = SPVM_INFO_CONSTANT_POOL_SUB_XXX->args_length;
   
@@ -219,7 +222,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   }
   // Call normal sub
   else {
-    bytecode_index = api->get_sub_bytecode_base(api, sub_id);
+    bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE;
   }
   
   while (1) {
@@ -2150,7 +2153,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           int32_t jump_offset_abs = catch_exception_stack[catch_exception_stack_top];
           catch_exception_stack_top--;
           
-          bytecode_index = api->get_sub_bytecode_base(api, sub_id) + jump_offset_abs;
+          bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE + jump_offset_abs;
           
           break;
         }
