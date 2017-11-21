@@ -18,6 +18,7 @@
 
 #define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
 #define SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET (int32_t)offsetof(SPVM_OBJECT, length)
+#define SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET (int32_t)offsetof(SPVM_OBJECT, ref_count)
 #define SPVM_INFO_TYPE_CODE_VOID SPVM_TYPE_C_CODE_VOID
 #define SPVM_INFO_TYPE_CODE_BYTE SPVM_TYPE_C_CODE_BYTE
 #define SPVM_INFO_TYPE_CODE_SHORT SPVM_TYPE_C_CODE_SHORT
@@ -25,6 +26,8 @@
 #define SPVM_INFO_TYPE_CODE_LONG SPVM_TYPE_C_CODE_LONG
 #define SPVM_INFO_TYPE_CODE_FLOAT SPVM_TYPE_C_CODE_FLOAT
 #define SPVM_INFO_TYPE_CODE_DOUBLE SPVM_TYPE_C_CODE_DOUBLE
+
+#define SPVM_MACRO_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)
 
 SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   (void)api;
@@ -64,7 +67,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   // Call stack
   SPVM_API_OBJECT* call_stack_array = api->new_value_array(api, call_stack_length);
-  api->inc_ref_count(api, call_stack_array);
+  
+  SPVM_MACRO_INC_REF_COUNT(call_stack_array);
+  
   SPVM_VALUE* call_stack = api->get_value_array_elements(api, (SPVM_API_OBJECT*)call_stack_array);
   
   // Catch stack
