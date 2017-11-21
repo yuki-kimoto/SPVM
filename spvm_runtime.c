@@ -37,14 +37,15 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[sub_id];
-  
-  // Object my length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_length;
-  
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_base;
 
   // Debug
-  const int32_t debug = api->is_debug(api) ? 1 : 0;
+  int32_t SPVM_INFO_DEBUG = SPVM_INFO_RUNTIME->debug ? 1 : 0;
+  
+  // Subroutine object my length
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_length;
+  
+  // Subroutine object my base index
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_base;
   
   // Package variables
   SPVM_VALUE* package_vars = api->get_package_vars(api);
@@ -1951,7 +1952,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           call_stack[bytecodes[bytecode_index + 1]] = call_sub_return_value;
           
           // Next operation
-          bytecode_index += 3 + (debug * 2);
+          bytecode_index += 3 + (SPVM_INFO_DEBUG * 2);
           
           break;
         }
@@ -1984,7 +1985,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           call_stack[bytecodes[bytecode_index + 1]] = call_sub_return_value;
           
           // Next operation
-          bytecode_index += 3 + (debug * 2);
+          bytecode_index += 3 + (SPVM_INFO_DEBUG * 2);
           
           break;
         }
@@ -2014,7 +2015,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           // Next operation
-          bytecode_index += 2 + (debug * 2);
+          bytecode_index += 2 + (SPVM_INFO_DEBUG * 2);
           
           break;
         }
@@ -2178,7 +2179,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         const char* line = " line ";
         char line_str[20];
         
-        if (debug) {
+        if (SPVM_INFO_DEBUG) {
           sprintf(line_str, "%" PRId32, current_line);
           total_length += strlen(line);
           total_length += strlen(line_str);
@@ -2193,7 +2194,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           (void*)(exception_chars),
           exception_length
         );
-        if (debug) {
+        if (SPVM_INFO_DEBUG) {
           sprintf(
             new_exception_chars + exception_length,
             "%s%s%s%s%s%" PRId32,
