@@ -60,7 +60,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   int32_t SPVM_INFO_SUB_XXX_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->mys_length;
   
   // Call_stack_max
-  int32_t call_stack_length = SPVM_INFO_SUB_XXX_MYS_LENGTH + api->get_sub_operand_stack_max(api, sub_id);
+  int32_t call_stack_length = SPVM_INFO_SUB_XXX_MYS_LENGTH + SPVM_INFO_CONSTANT_POOL_SUB_XXX->operand_stack_max + 1;
   
   // Call stack
   SPVM_API_OBJECT* call_stack_array = api->new_value_array(api, call_stack_length);

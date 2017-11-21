@@ -50,6 +50,11 @@ use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'CORE';
 
+# Field
+{
+  ok(SPVM::TestCase::object_field_set_and_get());
+}
+
 # time
 {
   cmp_ok(abs(time - SPVM::CORE::time()), '<', 2);

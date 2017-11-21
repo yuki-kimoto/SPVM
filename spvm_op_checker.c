@@ -1496,6 +1496,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     break;
                   }
                   
+                  // Update operand stack max
+                  if (sub->operand_stack_max > call_sub_args_count) {
+                    sub->operand_stack_max = call_sub_args_count;
+                  }
+                  
                   break;
                 }
                 case SPVM_OP_C_CODE_PACKAGE_VAR: {
@@ -1623,9 +1628,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
         // Set my var information
         sub->op_mys = sub_check_info->op_mys;
-        
-        // Operand stack max
-        sub->operand_stack_max = sub_check_info->op_count * 2;
       }
 
       if (!sub->is_native) {
