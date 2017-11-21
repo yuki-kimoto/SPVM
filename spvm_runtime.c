@@ -37,6 +37,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[sub_id];
+  
+  // Package variables
+  SPVM_VALUE* SPVM_INFO_PACKAGE_VARS = SPVM_INFO_RUNTIME->package_vars;
 
   // Debug
   int32_t SPVM_INFO_DEBUG = SPVM_INFO_RUNTIME->debug ? 1 : 0;
@@ -46,9 +49,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   // Subroutine object my base index
   int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_base;
-  
-  // Package variables
-  SPVM_VALUE* package_vars = api->get_package_vars(api);
   
   // Bytecodes
   const int32_t* bytecodes = api->get_bytecodes(api);
@@ -1843,7 +1843,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Get subroutine ID
         int32_t package_var_id = bytecodes[bytecode_index + 2];
         
-        call_stack[bytecodes[bytecode_index + 1]] = package_vars[package_var_id];
+        call_stack[bytecodes[bytecode_index + 1]] = SPVM_INFO_PACKAGE_VARS[package_var_id];
         
         bytecode_index += 3;
         
@@ -1853,7 +1853,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Get subroutine ID
         int32_t package_var_id = bytecodes[bytecode_index + 2];
         
-        call_stack[bytecodes[bytecode_index + 1]].object_value = package_vars[package_var_id].object_value;
+        call_stack[bytecodes[bytecode_index + 1]].object_value = SPVM_INFO_PACKAGE_VARS[package_var_id].object_value;
         
         bytecode_index += 3;
         
@@ -1863,7 +1863,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Get subroutine ID
         int32_t package_var_id = bytecodes[bytecode_index + 1];
 
-        package_vars[package_var_id] = call_stack[bytecodes[bytecode_index + 2]];
+        SPVM_INFO_PACKAGE_VARS[package_var_id] = call_stack[bytecodes[bytecode_index + 2]];
 
         bytecode_index += 3;
         
@@ -1874,16 +1874,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t package_var_id = bytecodes[bytecode_index + 1];
         
         // Decrement reference count
-        if (package_vars[package_var_id].object_value != NULL) {
-          api->dec_ref_count(api, package_vars[package_var_id].object_value);
+        if (SPVM_INFO_PACKAGE_VARS[package_var_id].object_value != NULL) {
+          api->dec_ref_count(api, SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
         }
         
         // Store object
-        package_vars[package_var_id].object_value = call_stack[bytecodes[bytecode_index + 2]].object_value;
+        SPVM_INFO_PACKAGE_VARS[package_var_id].object_value = call_stack[bytecodes[bytecode_index + 2]].object_value;
         
         // Increment new value reference count
-        if (package_vars[package_var_id].object_value != NULL) {
-          api->inc_ref_count(api, package_vars[package_var_id].object_value);
+        if (SPVM_INFO_PACKAGE_VARS[package_var_id].object_value != NULL) {
+          api->inc_ref_count(api, SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
         }
 
         bytecode_index += 3;
