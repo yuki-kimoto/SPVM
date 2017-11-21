@@ -63,6 +63,15 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Subroutine return type id
   int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->return_type_id;
   
+  // Subroutine is native
+  int32_t SPVM_INFO_SUB_XXX_IS_NATIVE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->is_native;
+  
+  // Subroutine object args length
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_args_length;
+
+  // Subroutine object args length
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_args_base;
+  
   // Bytecodes
   int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
   
@@ -113,17 +122,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   memcpy(call_stack, args, args_length * sizeof(SPVM_VALUE));
   
   // If arg is object, increment reference count
-  if (api->get_sub_object_args_length(api, sub_id)) {
-    int32_t object_args_base = api->get_sub_object_args_base(api, sub_id);
-    int32_t object_args_length = api->get_sub_object_args_length(api, sub_id);
-    {
-      int32_t i;
-      for (i = 0; i < object_args_length; i++) {
-        int32_t arg_index = SPVM_INFO_CONSTANT_POOL[object_args_base + i];
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[arg_index].object_value;
-        if (object != NULL) {
-          SPVM_MACRO_INC_REF_COUNT(object);
-        }
+  {
+    int32_t i;
+    for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
+      int32_t arg_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE + i];
+      SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)call_stack[arg_index].object_value;
+      if (object != NULL) {
+        SPVM_MACRO_INC_REF_COUNT(object);
       }
     }
   }
@@ -131,7 +136,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   api->set_exception(api, NULL);
 
   // Call native sub
-  if (api->get_sub_is_native(api, sub_id)) {
+  if (SPVM_INFO_SUB_XXX_IS_NATIVE) {
     int32_t return_type_code = api->get_type_code(api, SPVM_INFO_SUB_XXX_RETURN_TYPE_ID);
     
     // Call native subroutine
