@@ -53,18 +53,14 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Bytecodes
   int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
   
-  // Bytecode index
-  int32_t bytecode_index = 0;
-  
   // Args length
-  int32_t args_length = api->get_sub_args_length(api, sub_id);
+  int32_t args_length = SPVM_INFO_CONSTANT_POOL_SUB_XXX->args_length;
   
   // Lexical varialbe length
-  int32_t my_vars_length = api->get_sub_my_vars_length(api, sub_id);
-  register int32_t operand_stack_top = my_vars_length - 1;
+  int32_t SPVM_INFO_SUB_XXX_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->mys_length;
   
   // Call_stack_max
-  int32_t call_stack_length = my_vars_length + api->get_sub_operand_stack_max(api, sub_id);
+  int32_t call_stack_length = SPVM_INFO_SUB_XXX_MYS_LENGTH + api->get_sub_operand_stack_max(api, sub_id);
   
   // Call stack
   SPVM_API_OBJECT* call_stack_array = api->new_value_array(api, call_stack_length);
@@ -77,9 +73,17 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Catch stack top
   int32_t catch_exception_stack_top = -1;
   
-  register int32_t condition_flag = 0;
-  
+  // Current line
   int32_t current_line = 0;
+  
+  // Operand stack top
+  register int32_t operand_stack_top = SPVM_INFO_SUB_XXX_MYS_LENGTH - 1;
+  
+  // Condition flag
+  register int32_t condition_flag = 0;
+
+  // Bytecode index
+  int32_t bytecode_index = 0;
   
   SPVM_VALUE return_value;
   memset(&return_value, 0, sizeof(SPVM_VALUE));
