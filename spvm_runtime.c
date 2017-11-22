@@ -43,6 +43,9 @@
   } \
   while (0) \
 
+#define SPVM_MACRO_ISWEAK(object) ((intptr_t)object & 1)
+
+
 SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
   (void)api;
   
@@ -1869,7 +1872,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         if((*field_address).object_value != NULL) {
           // If object is weak, unweaken
-          if (api->isweak(api, (*field_address).object_value)) {
+          if (SPVM_MACRO_ISWEAK((*field_address).object_value)) {
             api->unweaken(api, (SPVM_OBJECT**)field_address);
           }
           api->dec_ref_count(api, (*field_address).object_value);
