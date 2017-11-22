@@ -2007,9 +2007,26 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         if (SPVM_INFO_SUB_YYY_IS_VOID) {
           api->call_void_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
+        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = api->call_byte_sub(api, call_sub_id, args);
+        }
+        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = api->call_short_sub(api, call_sub_id, args);
+        }
+        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = api->call_int_sub(api, call_sub_id, args);
+        }
+        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = api->call_long_sub(api, call_sub_id, args);
+        }
+        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = api->call_float_sub(api, call_sub_id, args);
+        }
+        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = api->call_double_sub(api, call_sub_id, args);
+        }
         else {
-          SPVM_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
-          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]] = call_sub_return_value;
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = api->call_object_sub(api, call_sub_id, args);
         }
         
         if (SPVM_MACRO_EXCEPTION) {
