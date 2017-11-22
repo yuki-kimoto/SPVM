@@ -31,6 +31,7 @@
 #define SPVM_INFO_TYPE_CODE_DOUBLE (SPVM_TYPE_C_CODE_DOUBLE)
 
 #define SPVM_MACRO_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)
+#define SPVM_MACRO_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
 #define SPVM_MACRO_EXCEPTION (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))
 #define SPVM_MACRO_SET_EXCEPTION_NULL \
   do { \
@@ -2142,7 +2143,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
           // Decrement ref count of return value
           if (return_value.object_value != NULL) {
-            api->dec_ref_count_only(api, return_value.object_value);
+            SPVM_MACRO_DEC_REF_COUNT_ONLY(return_value.object_value);
           }
           
           SPVM_MACRO_SET_EXCEPTION_NULL;
