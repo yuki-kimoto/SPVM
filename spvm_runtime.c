@@ -1959,15 +1959,19 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_CALL_SUB: {
         // Get subroutine ID
         int32_t call_sub_id = SPVM_INFO_BYTECODES[bytecode_index + 2];
-        
-        int32_t args_length = api->get_sub_args_length(api, call_sub_id);
 
-        operand_stack_top -= args_length;
+        // Constant pool sub
+        SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_YYY = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[call_sub_id];
+        
+        // Subroutine argument length
+        int32_t SPVM_INFO_SUB_YYY_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_YYY->args_length;
+        
+        operand_stack_top -= SPVM_INFO_SUB_YYY_ARGS_LENGTH;
         
         SPVM_VALUE args[255];
         {
           int32_t i;
-          for (i = 0; i < args_length; i++) {
+          for (i = 0; i < SPVM_INFO_SUB_YYY_ARGS_LENGTH; i++) {
             int32_t var_index = call_stack[operand_stack_top + 1 + i].int_value;
             args[i] = call_stack[var_index];
           }
@@ -1992,14 +1996,18 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Get subroutine ID
         int32_t call_sub_id = SPVM_INFO_BYTECODES[bytecode_index + 2];
         
-        int32_t args_length = api->get_sub_args_length(api, call_sub_id);
+        // Constant pool sub
+        SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_YYY = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[call_sub_id];
         
-        operand_stack_top -= args_length;
+        // Subroutine argument length
+        int32_t SPVM_INFO_SUB_YYY_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_YYY->args_length;
+        
+        operand_stack_top -= SPVM_INFO_SUB_YYY_ARGS_LENGTH;
         
         SPVM_VALUE args[255];
         {
           int32_t i;
-          for (i = 0; i < args_length; i++) {
+          for (i = 0; i < SPVM_INFO_SUB_YYY_ARGS_LENGTH; i++) {
             int32_t var_index = call_stack[operand_stack_top + 1 + i].int_value;
             args[i] = call_stack[var_index];
           }
@@ -2025,14 +2033,18 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Get subroutine ID
         int32_t call_sub_id = SPVM_INFO_BYTECODES[bytecode_index + 1];
         
-        int32_t args_length = api->get_sub_args_length(api, call_sub_id);
+        // Constant pool sub
+        SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_YYY = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[call_sub_id];
         
-        operand_stack_top -= args_length;
+        // Subroutine argument length
+        int32_t SPVM_INFO_SUB_YYY_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_YYY->args_length;
+        
+        operand_stack_top -= SPVM_INFO_SUB_YYY_ARGS_LENGTH;
         
         SPVM_VALUE args[255];
         {
           int32_t i;
-          for (i = 0; i < args_length; i++) {
+          for (i = 0; i < SPVM_INFO_SUB_YYY_ARGS_LENGTH; i++) {
             int32_t var_index = call_stack[operand_stack_top + 1 + i].int_value;
             args[i] = call_stack[var_index];
           }
