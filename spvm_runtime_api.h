@@ -12,8 +12,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat_string_float(SPVM_API* api, SPVM_OBJECT* st
 SPVM_OBJECT* SPVM_RUNTIME_API_concat_string_double(SPVM_API* api, SPVM_OBJECT* string1, double string2);
 SPVM_OBJECT* SPVM_RUNTIME_API_concat_string_string(SPVM_API* api, SPVM_OBJECT* string1, SPVM_OBJECT* string2);
 
-int32_t SPVM_RUNTIME_API_get_type_code (SPVM_API* api, int32_t type_id);
-
 int32_t SPVM_RUNTIME_API_is_debug(SPVM_API* api);
 
 int32_t SPVM_RUNTIME_API_get_void_type_code(SPVM_API* api);

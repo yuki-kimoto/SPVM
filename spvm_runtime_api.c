@@ -83,7 +83,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_unweaken,
   SPVM_RUNTIME_API_new_value_array,
   SPVM_RUNTIME_API_get_value_array_elements,
-  SPVM_RUNTIME_API_get_type_code,
   SPVM_RUNTIME_API_concat_string_byte,
   SPVM_RUNTIME_API_concat_string_short,
   SPVM_RUNTIME_API_concat_string_int,
@@ -284,20 +283,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat_string_double(SPVM_API* api, SPVM_OBJECT* s
   memcpy(string3_chars + string1_length, tmp_string, tmp_string_length);
   
   return string3;
-}
-
-int32_t SPVM_RUNTIME_API_get_type_code (SPVM_API* api, int32_t type_id) {
-  (void)api;
-  
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  
-  int32_t* constant_pool = runtime->constant_pool;
-
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[type_id];
-  
-  int32_t type_code = constant_pool_sub_return_type->code;
-  
-  return type_code;
 }
 
 void SPVM_RUNTIME_API_free_runtime(SPVM_API* api, SPVM_RUNTIME* runtime) {
