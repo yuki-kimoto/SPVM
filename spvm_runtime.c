@@ -31,13 +31,13 @@
 #define SPVM_INFO_TYPE_CODE_DOUBLE (SPVM_TYPE_C_CODE_DOUBLE)
 
 #define SPVM_MACRO_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)
-#define SPVM_MACRO_EXCEPTION ((SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))
-#define SVPM_MACRO_SET_EXCEPTION_NULL \
+#define SPVM_MACRO_EXCEPTION (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))
+#define SPVM_MACRO_SET_EXCEPTION_NULL \
   do { \
-    if (*SPVM_MACRO_EXCEPTION != NULL) { \
+    if (SPVM_MACRO_EXCEPTION != NULL) { \
       api->dec_ref_count(api, SPVM_MACRO_EXCEPTION); \
     } \
-    *SPVM_MACRO_EXCEPTION = NULL; \
+    SPVM_MACRO_EXCEPTION = NULL; \
   } \
   while (0) \
 
@@ -150,7 +150,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
   }
   
-  api->set_exception(api, NULL);
+  SPVM_MACRO_SET_EXCEPTION_NULL;
 
   // Call native sub
   if (SPVM_INFO_SUB_XXX_IS_NATIVE) {
@@ -2110,7 +2110,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           
           // No exception
-          api->set_exception(api, NULL);
+          SPVM_MACRO_SET_EXCEPTION_NULL;
           
           return return_value;
         }
@@ -2145,7 +2145,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             api->dec_ref_count_only(api, return_value.object_value);
           }
           
-          SVPM_MACRO_SET_EXCEPTION_NULL;
+          SPVM_MACRO_SET_EXCEPTION_NULL;
           
           return return_value;
         }
@@ -2170,7 +2170,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           
           // No exception
-          api->set_exception(api, NULL);
+          SPVM_MACRO_SET_EXCEPTION_NULL;
 
           return return_value;
         }

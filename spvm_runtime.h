@@ -5,15 +5,14 @@
 #include "spvm_api.h"
 
 struct SPVM_runtime {
+  // Exception
+  SPVM_OBJECT* exception;
   
   // Runtime memory allocator
   SPVM_RUNTIME_ALLOCATOR* allocator;
 
   // Env
   SPVM_API* api;
-  
-  // Exception
-  SPVM_OBJECT* exception;
   
   // Bytecodes
   int32_t* bytecodes;
