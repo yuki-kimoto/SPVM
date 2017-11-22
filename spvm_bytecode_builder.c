@@ -2021,6 +2021,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   // Call subroutine
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_VOID_SUB);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   
                   int32_t id = sub->id;
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, id);
