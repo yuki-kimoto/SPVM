@@ -7,7 +7,7 @@
 #include <inttypes.h>
 #include <stddef.h>
 
-#include "spvm_api.h"
+#include "spvm_runtime_api.h"
 #include "spvm_bytecode.h"
 #include "spvm_object.h"
 #include "spvm_type.h"
@@ -15,6 +15,7 @@
 #include "spvm_runtime.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
+#include "spvm_constant_pool_type.h"
 
 #define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
 #define SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, length))
@@ -87,6 +88,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Native address
   void* SPVM_INFO_SUB_XXX_NATIVE_ADDRESS = SPVM_INFO_CONSTANT_POOL_SUB_XXX->native_address;
   
+  // Constant pool type
+  SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_XXX_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_RETURN_TYPE_ID];
+
+  // Return type code
+  int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE = SPVM_INFO_SUB_XXX_RETURN_TYPE->code;
+  
   // Call_stack_max
   int32_t vars_length = SPVM_INFO_SUB_XXX_MYS_LENGTH;
   
@@ -137,10 +144,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
   // Call native sub
   if (SPVM_INFO_SUB_XXX_IS_NATIVE) {
-    int32_t return_type_code = api->get_type_code(api, SPVM_INFO_SUB_XXX_RETURN_TYPE_ID);
-    
     // Call native subroutine
-    if (return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
+    if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_VOID) {
       void (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
       (*native_address)(api, (SPVM_VALUE*)vars);
       
@@ -150,7 +155,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       
       goto label_SPVM_BYTECODE_C_CODE_RETURN_VOID;
     }
-    else if (return_type_code == SPVM_INFO_TYPE_CODE_BYTE) {
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
       int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
       int8_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.byte_value = return_value_native;
@@ -161,7 +166,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       
       goto label_SPVM_BYTECODE_C_CODE_RETURN_BYTE;
     }
-    else if (return_type_code == SPVM_INFO_TYPE_CODE_SHORT) {
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
       int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
       int16_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.short_value = return_value_native;
@@ -172,7 +177,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
       goto label_SPVM_BYTECODE_C_CODE_RETURN_SHORT;
     }
-    else if (return_type_code == SPVM_INFO_TYPE_CODE_INT) {
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
         
       int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
       
@@ -185,7 +190,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       
       goto label_SPVM_BYTECODE_C_CODE_RETURN_INT;
     }
-    else if (return_type_code == SPVM_INFO_TYPE_CODE_LONG) {
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
       int64_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
       int64_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.long_value = return_value_native;
@@ -196,7 +201,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
       goto label_SPVM_BYTECODE_C_CODE_RETURN_LONG;
     }
-    else if (return_type_code == SPVM_INFO_TYPE_CODE_FLOAT) {
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
       float (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
       float return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.float_value = return_value_native;
@@ -207,7 +212,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       
       goto label_SPVM_BYTECODE_C_CODE_RETURN_FLOAT;
     }
-    else if (return_type_code == SPVM_INFO_TYPE_CODE_DOUBLE) {
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
       double (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
       double return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.double_value = return_value_native;
