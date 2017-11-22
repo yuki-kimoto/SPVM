@@ -1970,8 +1970,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         bytecode_index += 2;
         break;
       case SPVM_BYTECODE_C_CODE_CALL_SUB:
-      case SPVM_BYTECODE_C_CODE_CALL_OBJECT_SUB:
-      case SPVM_BYTECODE_C_CODE_CALL_VOID_SUB:
       {
         // Get subroutine ID
         int32_t call_sub_id = SPVM_INFO_BYTECODES[bytecode_index + 2];

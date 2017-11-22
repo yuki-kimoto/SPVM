@@ -353,7 +353,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_SUB);
                     }
                     else {
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_OBJECT_SUB);
+                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_SUB);
                     }
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
@@ -2020,7 +2020,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   }
                   
                   // Call subroutine
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_VOID_SUB);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_SUB);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   
                   int32_t id = sub->id;
