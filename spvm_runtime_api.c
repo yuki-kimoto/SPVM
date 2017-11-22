@@ -83,9 +83,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_unweaken,
   SPVM_RUNTIME_API_new_value_array,
   SPVM_RUNTIME_API_get_value_array_elements,
-  SPVM_RUNTIME_API_get_constant_pool,
-  SPVM_RUNTIME_API_get_bytecodes,
-  SPVM_RUNTIME_API_get_package_vars,
   SPVM_RUNTIME_API_get_type_code,
   SPVM_RUNTIME_API_concat_string_byte,
   SPVM_RUNTIME_API_concat_string_short,
@@ -301,36 +298,6 @@ int32_t SPVM_RUNTIME_API_get_type_code (SPVM_API* api, int32_t type_id) {
   int32_t type_code = constant_pool_sub_return_type->code;
   
   return type_code;
-}
-
-int32_t* SPVM_RUNTIME_API_get_constant_pool(SPVM_API* api) {
-  (void)api;
-  
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  
-  int32_t* constant_pool = runtime->constant_pool;
-  
-  return constant_pool;
-}
-
-int32_t* SPVM_RUNTIME_API_get_bytecodes(SPVM_API* api) {
-  (void)api;
-  
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  
-  int32_t* bytecodes = runtime->bytecodes;
-  
-  return bytecodes;
-}
-
-SPVM_VALUE* SPVM_RUNTIME_API_get_package_vars(SPVM_API* api) {
-  (void)api;
-  
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  
-  SPVM_VALUE* package_vars = runtime->package_vars;
-  
-  return package_vars;
 }
 
 void SPVM_RUNTIME_API_free_runtime(SPVM_API* api, SPVM_RUNTIME* runtime) {

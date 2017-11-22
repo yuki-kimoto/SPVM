@@ -14,9 +14,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat_string_string(SPVM_API* api, SPVM_OBJECT* s
 
 int32_t SPVM_RUNTIME_API_get_type_code (SPVM_API* api, int32_t type_id);
 
-int32_t* SPVM_RUNTIME_API_get_constant_pool(SPVM_API* api);
-int32_t* SPVM_RUNTIME_API_get_bytecodes(SPVM_API* api);
-SPVM_VALUE* SPVM_RUNTIME_API_get_package_vars(SPVM_API* api);
 int32_t SPVM_RUNTIME_API_is_debug(SPVM_API* api);
 
 int32_t SPVM_RUNTIME_API_get_void_type_code(SPVM_API* api);

@@ -91,9 +91,6 @@ struct SPVM_api {
   void (*unweaken)(SPVM_API* api, SPVM_API_OBJECT** object_address);
   SPVM_API_OBJECT* (*new_value_array)(SPVM_API* api, int32_t length);
   SPVM_API_VALUE* (*get_value_array_elements)(SPVM_API* api, SPVM_API_OBJECT* object);
-  int32_t* (*get_constant_pool)(SPVM_API* api);
-  int32_t* (*get_bytecodes)(SPVM_API* api);
-  SPVM_API_VALUE* (*get_package_vars)(SPVM_API* api);
   int32_t (*get_type_code)(SPVM_API* api, int32_t type_id);
   SPVM_API_OBJECT* (*concat_string_byte)(SPVM_API* api, SPVM_API_OBJECT* string1, int8_t string2);
   SPVM_API_OBJECT* (*concat_string_short)(SPVM_API* api, SPVM_API_OBJECT* string1, int16_t string2);
