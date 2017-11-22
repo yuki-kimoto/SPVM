@@ -1873,7 +1873,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         if((*field_address).object_value != NULL) {
           // If object is weak, unweaken
           if (SPVM_INLINE_ISWEAK((*field_address).object_value)) {
-            api->unweaken(api, (SPVM_OBJECT**)field_address);
+            api->unweaken(api, (SPVM_API_OBJECT**)field_address);
           }
           api->dec_ref_count(api, (*field_address).object_value);
         }
@@ -2117,25 +2117,25 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           api->call_void_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
-          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = api->call_byte_sub(api, call_sub_id, args);
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = api->call_byte_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
-          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = api->call_short_sub(api, call_sub_id, args);
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = api->call_short_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
-          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = api->call_int_sub(api, call_sub_id, args);
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = api->call_int_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
-          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = api->call_long_sub(api, call_sub_id, args);
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = api->call_long_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
-          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = api->call_float_sub(api, call_sub_id, args);
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = api->call_float_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
-          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = api->call_double_sub(api, call_sub_id, args);
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = api->call_double_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         else {
-          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = api->call_object_sub(api, call_sub_id, args);
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = api->call_object_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         
         if (SPVM_INLINE_GET_EXCEPTION()) {
