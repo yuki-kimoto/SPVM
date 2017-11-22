@@ -16,6 +16,7 @@
 #include "spvm_runtime.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
+#include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_type.h"
 
 #define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
@@ -1563,15 +1564,21 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].object_value;
+
         int32_t field_id = SPVM_INFO_BYTECODES[bytecode_index + 3];
 
-        int8_t value = api->get_byte_field(api, object, field_id);
-        
-        if (SPVM_MACRO_EXCEPTION) {
+        // Index
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+
+        if (__builtin_expect(object == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+          api->set_exception(api, exception);
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
-        vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = value;
+        vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = *(int8_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         
         bytecode_index += 4;
         break;
