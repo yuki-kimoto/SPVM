@@ -1674,7 +1674,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t field_id = SPVM_INFO_BYTECODES[bytecode_index + 2];
         
         api->weaken_object_field(api, object, field_id);
-
         
         if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
@@ -2030,14 +2029,14 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         
         // Call subroutine
-        SPVM_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
+        SPVM_OBJECT* call_sub_return_value = api->call_object_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         
         if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         else {
           
-          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]] = call_sub_return_value;
+          vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = call_sub_return_value;
           
           // Next operation
           bytecode_index += 3 + (SPVM_INFO_DEBUG * 2);
@@ -2067,7 +2066,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         
         // Call subroutine
-        SPVM_RUNTIME_call_sub(api, call_sub_id, args);
+        api->call_void_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         
         if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
