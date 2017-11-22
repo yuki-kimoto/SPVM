@@ -1853,11 +1853,32 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value;
         int32_t field_id = SPVM_INFO_BYTECODES[bytecode_index + 2];
         SPVM_API_OBJECT* value = vars[SPVM_INFO_BYTECODES[bytecode_index + 3]].object_value;
-        
-        api->set_object_field(api, object, field_id, value);
 
-        if (SPVM_MACRO_EXCEPTION) {
+        // Index
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+          api->set_exception(api, exception);
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        }
+        
+        SPVM_API_VALUE* field_address = (SPVM_API_VALUE*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        
+        if((*field_address).object_value != NULL) {
+          // If object is weak, unweaken
+          if (api->isweak(api, (*field_address).object_value)) {
+            api->unweaken(api, (SPVM_OBJECT**)field_address);
+          }
+          api->dec_ref_count(api, (*field_address).object_value);
+        }
+        
+        (*field_address).object_value = value;
+        
+        if((*field_address).object_value != NULL) {
+          SPVM_MACRO_INC_REF_COUNT((*field_address).object_value);
         }
         
         bytecode_index += 4;
