@@ -1971,6 +1971,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       case SPVM_BYTECODE_C_CODE_CALL_SUB:
       case SPVM_BYTECODE_C_CODE_CALL_OBJECT_SUB:
+      case SPVM_BYTECODE_C_CODE_CALL_VOID_SUB:
       {
         // Get subroutine ID
         int32_t call_sub_id = SPVM_INFO_BYTECODES[bytecode_index + 2];
@@ -1978,8 +1979,20 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Constant pool sub
         SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_YYY = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[call_sub_id];
         
+        // Call subroutine return type id
+        int32_t SPVM_INFO_SUB_YYY_RETURN_TYPE_ID = SPVM_INFO_CONSTANT_POOL_SUB_YYY->return_type_id;
+        
+        // Constant pool type
+        SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_YYY_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_YYY_RETURN_TYPE_ID];
+        
+        // Return type code
+        int32_t SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE = SPVM_INFO_SUB_YYY_RETURN_TYPE->code;
+        
         // Subroutine argument length
         int32_t SPVM_INFO_SUB_YYY_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_YYY->args_length;
+
+        // Subroutine argument length
+        int32_t SPVM_INFO_SUB_YYY_IS_VOID = SPVM_INFO_CONSTANT_POOL_SUB_YYY->is_void;
         
         call_sub_arg_stack_top -= SPVM_INFO_SUB_YYY_ARGS_LENGTH;
         
@@ -1993,43 +2006,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         
         // Call subroutine
-        SPVM_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
-        
-        if (SPVM_MACRO_EXCEPTION) {
-          goto label_SPVM_BYTECODE_C_CODE_CROAK;
+        if (SPVM_INFO_SUB_YYY_IS_VOID) {
+          api->call_void_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         else {
+          SPVM_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
           vars[SPVM_INFO_BYTECODES[bytecode_index + 1]] = call_sub_return_value;
-          
-          // Next operation
-          bytecode_index += 3 + (SPVM_INFO_DEBUG * 2);
-          
-          break;
         }
-      }
-      case SPVM_BYTECODE_C_CODE_CALL_VOID_SUB: {
-        // Get subroutine ID
-        int32_t call_sub_id = SPVM_INFO_BYTECODES[bytecode_index + 2];
-        
-        // Constant pool sub
-        SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_YYY = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[call_sub_id];
-        
-        // Subroutine argument length
-        int32_t SPVM_INFO_SUB_YYY_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_YYY->args_length;
-        
-        call_sub_arg_stack_top -= SPVM_INFO_SUB_YYY_ARGS_LENGTH;
-        
-        SPVM_VALUE args[255];
-        {
-          int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_YYY_ARGS_LENGTH; i++) {
-            int32_t var_index = call_sub_arg_stack[call_sub_arg_stack_top + 1 + i].int_value;
-            args[i] = vars[var_index];
-          }
-        }
-        
-        // Call subroutine
-        api->call_void_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         
         if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
@@ -2037,9 +2020,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           // Next operation
           bytecode_index += 3 + (SPVM_INFO_DEBUG * 2);
-          
-          break;
         }
+        
+        break;
       }
       case SPVM_BYTECODE_C_CODE_RETURN_BYTE:
       case SPVM_BYTECODE_C_CODE_RETURN_SHORT:
