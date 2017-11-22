@@ -81,7 +81,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_weaken,
   SPVM_RUNTIME_API_isweak,
   SPVM_RUNTIME_API_unweaken,
-  SPVM_RUNTIME_API_new_value_array,
   SPVM_RUNTIME_API_concat_string_byte,
   SPVM_RUNTIME_API_concat_string_short,
   SPVM_RUNTIME_API_concat_string_int,
