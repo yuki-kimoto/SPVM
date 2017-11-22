@@ -17,7 +17,7 @@ struct SPVM_sub {
   const char* file_name;
   int32_t bytecode_base;
   int32_t bytecode_length;
-  int32_t operand_stack_max;
+  int32_t call_sub_arg_stack_max;
   int32_t id;
   _Bool is_native;
   _Bool is_constant;

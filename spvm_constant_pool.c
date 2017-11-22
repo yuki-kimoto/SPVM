@@ -188,7 +188,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   constant_pool_sub.native_address = sub->native_address;
   constant_pool_sub.bytecode_base = sub->bytecode_base;
   constant_pool_sub.mys_length = sub->op_mys->length;
-  constant_pool_sub.operand_stack_max = sub->operand_stack_max;
+  constant_pool_sub.call_sub_arg_stack_max = sub->call_sub_arg_stack_max;
   constant_pool_sub.args_length = sub->op_args->length;
   constant_pool_sub.is_native = sub->is_native;
   constant_pool_sub.is_destructor = sub->is_destructor;

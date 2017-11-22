@@ -8,7 +8,7 @@ struct SPVM_constant_pool_sub {
   int32_t bytecode_base;
   int32_t file_name_id;
   int32_t abs_name_id;
-  int32_t operand_stack_max;
+  int32_t call_sub_arg_stack_max;
   int32_t mys_length;
   int32_t args_length;
   int32_t object_args_length;

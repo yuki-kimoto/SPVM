@@ -674,7 +674,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
         }
       }
       
-      printf("      operand_stack_max => %" PRId32 "\n", sub->operand_stack_max);
+      printf("      call_sub_arg_stack_max => %" PRId32 "\n", sub->call_sub_arg_stack_max);
       
       printf("      bytecode_array\n");
       SPVM_DUMPER_dump_bytecode_array(compiler, compiler->bytecode_array, sub->bytecode_base, sub->bytecode_length);
