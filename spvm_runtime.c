@@ -159,7 +159,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       void (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
       (*native_address)(api, (SPVM_VALUE*)vars);
       
-      if (api->get_exception(api)) {
+      if (SPVM_MACRO_EXCEPTION) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -170,7 +170,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       int8_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.byte_value = return_value_native;
 
-      if (api->get_exception(api)) {
+      if (SPVM_MACRO_EXCEPTION) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -181,7 +181,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       int16_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.short_value = return_value_native;
 
-      if (api->get_exception(api)) {
+      if (SPVM_MACRO_EXCEPTION) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
 
@@ -194,7 +194,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       int32_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.int_value = return_value_native;
       
-      if (api->get_exception(api)) {
+      if (SPVM_MACRO_EXCEPTION) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -205,7 +205,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       int64_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.long_value = return_value_native;
 
-      if (api->get_exception(api)) {
+      if (SPVM_MACRO_EXCEPTION) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
 
@@ -216,7 +216,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       float return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.float_value = return_value_native;
 
-      if (api->get_exception(api)) {
+      if (SPVM_MACRO_EXCEPTION) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -227,7 +227,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       double return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.double_value = return_value_native;
 
-      if (api->get_exception(api)) {
+      if (SPVM_MACRO_EXCEPTION) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -240,7 +240,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.object_value = return_value_native;
       
-      if (api->get_exception(api)) {
+      if (SPVM_MACRO_EXCEPTION) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -1568,7 +1568,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
         int8_t value = api->get_byte_field(api, object, field_id);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1583,7 +1583,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
         int16_t value = api->get_short_field(api, object, field_id);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1598,7 +1598,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
         int32_t value = api->get_int_field(api, object, field_id);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1613,7 +1613,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
         int64_t value = api->get_long_field(api, object, field_id);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1628,7 +1628,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
         float value = api->get_float_field(api, object, field_id);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1643,7 +1643,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
         double value = api->get_double_field(api, object, field_id);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1658,7 +1658,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         SPVM_API_OBJECT* value = api->get_object_field(api, object, field_id);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1675,7 +1675,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         api->weaken_object_field(api, object, field_id);
 
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1689,7 +1689,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         api->set_byte_field(api, object, field_id, value);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1703,7 +1703,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         api->set_short_field(api, object, field_id, value);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1717,7 +1717,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         api->set_int_field(api, object, field_id, value);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
 
@@ -1731,7 +1731,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         api->set_long_field(api, object, field_id, value);
 
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1745,7 +1745,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         api->set_float_field(api, object, field_id, value);
 
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1759,7 +1759,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         api->set_double_field(api, object, field_id, value);
 
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1773,7 +1773,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         api->set_object_field(api, object, field_id, value);
 
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1955,7 +1955,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION_VAR: {
-        vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)api->get_exception(api);
+        vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)SPVM_MACRO_EXCEPTION;
         
         bytecode_index += 2;
         break;
@@ -1995,7 +1995,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Call subroutine
         SPVM_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         else {
@@ -2031,7 +2031,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Call subroutine
         SPVM_VALUE call_sub_return_value = SPVM_RUNTIME_call_sub(api, call_sub_id, args);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         else {
@@ -2068,7 +2068,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Call subroutine
         SPVM_RUNTIME_call_sub(api, call_sub_id, args);
         
-        if (api->get_exception(api)) {
+        if (SPVM_MACRO_EXCEPTION) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         else {
@@ -2215,7 +2215,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         const char* at = "() at ";
 
         // Exception
-        SPVM_API_OBJECT* exception = api->get_exception(api);
+        SPVM_API_OBJECT* exception = SPVM_MACRO_EXCEPTION;
         char* exception_chars = api->get_string_chars(api, exception);
         int32_t exception_length = api->get_string_length(api, exception);
         
