@@ -105,12 +105,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Return type code
   int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE = SPVM_INFO_SUB_XXX_RETURN_TYPE->code;
   
-  // Call_stack_max
-  int32_t vars_length = SPVM_INFO_SUB_XXX_MYS_LENGTH;
-  
   // Call stack
   SPVM_VALUE vars[65535];
-  memset(vars, 0, sizeof(SPVM_VALUE) * vars_length);
+  memset(vars, 0, sizeof(SPVM_VALUE) * SPVM_INFO_SUB_XXX_MYS_LENGTH);
   
   // Eval stack
   int32_t eval_stack[255];
@@ -131,8 +128,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   register int32_t condition_flag = 0;
 
   // Bytecode index
-  int32_t bytecode_index = 0;
+  register int32_t bytecode_index = 0;
   
+  // Return value
   SPVM_VALUE return_value;
   memset(&return_value, 0, sizeof(SPVM_VALUE));
   
