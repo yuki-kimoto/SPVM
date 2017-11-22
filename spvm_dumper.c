@@ -257,7 +257,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
       switch (bytecode) {
         
         // Have no operands
-        case SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION:
+        case SPVM_BYTECODE_C_CODE_POP_EVAL:
         case SPVM_BYTECODE_C_CODE_RETURN_VOID:
         case SPVM_BYTECODE_C_CODE_CROAK:
         {
@@ -290,7 +290,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_IS_NOT_UNDEF:
         case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
-        case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION:
+        case SPVM_BYTECODE_C_CODE_PUSH_EVAL:
         case SPVM_BYTECODE_C_CODE_CALL_VOID_SUB:
         case SPVM_BYTECODE_C_CODE_PUSH_ARG:
         {

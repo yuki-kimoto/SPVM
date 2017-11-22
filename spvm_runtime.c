@@ -98,10 +98,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   SPVM_VALUE* call_stack = api->get_value_array_elements(api, (SPVM_API_OBJECT*)call_stack_array);
   
   // Catch stack
-  int32_t catch_exception_stack[255];
+  int32_t eval_stack[255];
   
   // Catch stack top
-  int32_t catch_exception_stack_top = -1;
+  int32_t eval_stack_top = -1;
   
   // Current line
   int32_t current_line = 0;
@@ -1921,19 +1921,19 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         break;
       }
-      case SPVM_BYTECODE_C_CODE_PUSH_CATCH_EXCEPTION: {
+      case SPVM_BYTECODE_C_CODE_PUSH_EVAL: {
         // Next operation
         int16_t jump_offset_abs = SPVM_INFO_BYTECODES[bytecode_index + 1];
         
-        catch_exception_stack_top++;
-        catch_exception_stack[catch_exception_stack_top] = jump_offset_abs;
+        eval_stack_top++;
+        eval_stack[eval_stack_top] = jump_offset_abs;
         
         bytecode_index += 2;
         
         break;
       }
-      case SPVM_BYTECODE_C_CODE_POP_CATCH_EXCEPTION: {
-        catch_exception_stack_top--;
+      case SPVM_BYTECODE_C_CODE_POP_EVAL: {
+        eval_stack_top--;
         
         bytecode_index++;
         
@@ -2172,10 +2172,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         label_SPVM_BYTECODE_C_CODE_CROAK:
         
         // Catch exception
-        if (catch_exception_stack_top > -1) {
+        if (eval_stack_top > -1) {
           
-          int32_t jump_offset_abs = catch_exception_stack[catch_exception_stack_top];
-          catch_exception_stack_top--;
+          int32_t jump_offset_abs = eval_stack[eval_stack_top];
+          eval_stack_top--;
           
           bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE + jump_offset_abs;
           
