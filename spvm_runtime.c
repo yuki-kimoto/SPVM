@@ -33,8 +33,8 @@
 
 #define SPVM_INLINE_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)
 #define SPVM_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
-#define SPVM_INLINE_GET_EXCEPTION (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))
-#define SPVM_INLINE_SET_EXCEPTION_NULL \
+#define SPVM_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))
+#define SPVM_INLINE_SET_EXCEPTION_NULL() \
   do { \
     if ((*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)) != NULL) { \
       api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))); \
@@ -153,7 +153,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
   }
   
-  SPVM_INLINE_SET_EXCEPTION_NULL;
+  SPVM_INLINE_SET_EXCEPTION_NULL();
 
   // Call native sub
   if (SPVM_INFO_SUB_XXX_IS_NATIVE) {
@@ -162,7 +162,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       void (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
       (*native_address)(api, (SPVM_VALUE*)vars);
       
-      if (SPVM_INLINE_GET_EXCEPTION) {
+      if (SPVM_INLINE_GET_EXCEPTION()) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -173,7 +173,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       int8_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.byte_value = return_value_native;
 
-      if (SPVM_INLINE_GET_EXCEPTION) {
+      if (SPVM_INLINE_GET_EXCEPTION()) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -184,7 +184,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       int16_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.short_value = return_value_native;
 
-      if (SPVM_INLINE_GET_EXCEPTION) {
+      if (SPVM_INLINE_GET_EXCEPTION()) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
 
@@ -197,7 +197,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       int32_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.int_value = return_value_native;
       
-      if (SPVM_INLINE_GET_EXCEPTION) {
+      if (SPVM_INLINE_GET_EXCEPTION()) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -208,7 +208,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       int64_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.long_value = return_value_native;
 
-      if (SPVM_INLINE_GET_EXCEPTION) {
+      if (SPVM_INLINE_GET_EXCEPTION()) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
 
@@ -219,7 +219,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       float return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.float_value = return_value_native;
 
-      if (SPVM_INLINE_GET_EXCEPTION) {
+      if (SPVM_INLINE_GET_EXCEPTION()) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -230,7 +230,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       double return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.double_value = return_value_native;
 
-      if (SPVM_INLINE_GET_EXCEPTION) {
+      if (SPVM_INLINE_GET_EXCEPTION()) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -243,7 +243,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
       return_value.object_value = return_value_native;
       
-      if (SPVM_INLINE_GET_EXCEPTION) {
+      if (SPVM_INLINE_GET_EXCEPTION()) {
         goto label_SPVM_BYTECODE_C_CODE_CROAK;
       }
       
@@ -1719,7 +1719,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         api->weaken_object_field(api, object, field_id);
         
-        if (SPVM_INLINE_GET_EXCEPTION) {
+        if (SPVM_INLINE_GET_EXCEPTION()) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -2062,7 +2062,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION_VAR: {
-        vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)SPVM_INLINE_GET_EXCEPTION;
+        vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)SPVM_INLINE_GET_EXCEPTION();
         
         bytecode_index += 2;
         break;
@@ -2138,7 +2138,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = api->call_object_sub(api, call_sub_id, args);
         }
         
-        if (SPVM_INLINE_GET_EXCEPTION) {
+        if (SPVM_INLINE_GET_EXCEPTION()) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         else {
@@ -2180,7 +2180,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           
           // No exception
-          SPVM_INLINE_SET_EXCEPTION_NULL;
+          SPVM_INLINE_SET_EXCEPTION_NULL();
           
           return return_value;
         }
@@ -2215,7 +2215,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
           }
           
-          SPVM_INLINE_SET_EXCEPTION_NULL;
+          SPVM_INLINE_SET_EXCEPTION_NULL();
           
           return return_value;
         }
@@ -2240,7 +2240,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           
           // No exception
-          SPVM_INLINE_SET_EXCEPTION_NULL;
+          SPVM_INLINE_SET_EXCEPTION_NULL();
 
           return return_value;
         }
@@ -2285,7 +2285,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         const char* at = "() at ";
 
         // Exception
-        SPVM_API_OBJECT* exception = SPVM_INLINE_GET_EXCEPTION;
+        SPVM_API_OBJECT* exception = SPVM_INLINE_GET_EXCEPTION();
         char* exception_chars = api->get_string_chars(api, exception);
         int32_t exception_length = api->get_string_length(api, exception);
         
