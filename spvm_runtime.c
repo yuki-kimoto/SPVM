@@ -2165,11 +2165,24 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         label_SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
         label_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
         {
-        
           
+          // Decrement my vars which is arguments - decrement only
           {
             int32_t i;
-            for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
+            for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
+              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+              SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
+              
+              if (object != NULL) {
+                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+              }
+            }
+          }
+
+          // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
+          {
+            int32_t i;
+            for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
               int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
               
@@ -2197,10 +2210,23 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
           }
           
-          // Decrement object my vars reference count
+          // Decrement my vars which is arguments - decrement only
           {
             int32_t i;
-            for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
+            for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
+              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+              SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
+              
+              if (object != NULL) {
+                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+              }
+            }
+          }
+
+          // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
+          {
+            int32_t i;
+            for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
               int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
               
@@ -2229,7 +2255,18 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           // Decrement object my vars reference count
           {
             int32_t i;
-            for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
+            for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
+              int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+              SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
+              
+              if (object != NULL) {
+                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+              }
+            }
+          }
+          {
+            int32_t i;
+            for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
               int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
               
@@ -2260,9 +2297,23 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           break;
         }
         
+        // Decrement my vars which is arguments - decrement only
         {
           int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
+          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
+            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+            SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
+            
+            if (object != NULL) {
+              SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+            }
+          }
+        }
+
+        // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
+        {
+          int32_t i;
+          for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
             int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
             
