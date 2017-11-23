@@ -1677,26 +1677,8 @@ is($end_objects_count, $start_objects_count);
   }
   
   {
-    eval { SPVM::TestCase::exception_call_stack() };
-    like($@, qr/Error/);
-    like($@, qr/exception_croak_return_int/);
-    like($@, qr/exception_call_stack/);
-  }
-
-  {
-    eval { SPVM::TestCase::exception_croak_return_byte() };
-    like($@, qr/Error/);
-    like($@, qr/exception_croak_return_byte/);
-  }
-  {
     eval { SPVM::TestCase::exception_croak_return_short() };
     like($@, qr/Error/);
-  }
-  {
-    eval { SPVM::TestCase::exception_croak_return_int() };
-    like($@, qr/Error/);
-    like($@, qr/exception_croak_return_int/);
-    like($@, qr/TestCase\.spvm/);
   }
   {
     eval { SPVM::TestCase::exception_croak_return_long() };

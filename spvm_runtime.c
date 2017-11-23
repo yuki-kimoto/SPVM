@@ -2323,74 +2323,72 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
         }
         
-        // Sub name
-        int32_t sub_name_id = SPVM_INFO_SUB_XXX_ABS_NAME_ID;
-        const char* sub_name = (char*)&SPVM_INFO_CONSTANT_POOL[sub_name_id + 1];
-        
-        // File name
-        int32_t file_name_id = SPVM_INFO_SUB_XXX_FILE_NAME_ID;
-        const char* file_name = (char*)&SPVM_INFO_CONSTANT_POOL[file_name_id + 1];
-        
-        // stack trace strings
-        const char* from = "\n  from ";
-        const char* at = "() at ";
-
-        // Exception
-        SPVM_API_OBJECT* exception = SPVM_INLINE_GET_EXCEPTION();
-        char* exception_chars = api->get_string_chars(api, exception);
-        int32_t exception_length = api->get_string_length(api, exception);
-        
-        // Total string length
-        int32_t total_length = 0;
-        total_length += exception_length;
-        total_length += strlen(from);
-        total_length += strlen(sub_name);
-        total_length += strlen(at);
-        total_length += strlen(file_name);
-
-        const char* line = " line ";
-        char line_str[20];
-        
         if (SPVM_INFO_DEBUG) {
+          // Sub name
+          const char* sub_name = (char*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_ABS_NAME_ID + 1];
+          
+          // File name
+          const char* file_name = (char*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_FILE_NAME_ID + 1];
+          
+          // stack trace strings
+          const char* from = "\n  from ";
+          const char* at = "() at ";
+
+          // Exception
+          SPVM_API_OBJECT* exception = SPVM_INLINE_GET_EXCEPTION();
+          char* exception_chars = api->get_string_chars(api, exception);
+          int32_t exception_length = api->get_string_length(api, exception);
+          
+          // Total string length
+          int32_t total_length = 0;
+          total_length += exception_length;
+          total_length += strlen(from);
+          total_length += strlen(sub_name);
+          total_length += strlen(at);
+          total_length += strlen(file_name);
+
+          const char* line = " line ";
+          char line_str[20];
+          
           sprintf(line_str, "%" PRId32, current_line);
           total_length += strlen(line);
           total_length += strlen(line_str);
-        }
-        
-        // Create exception message
-        SPVM_API_OBJECT* new_exception = api->new_string(api, NULL, total_length);
-        char* new_exception_chars = api->get_string_chars(api, new_exception);
-        
-        memcpy(
-          (void*)(new_exception_chars),
-          (void*)(exception_chars),
-          exception_length
-        );
-        if (SPVM_INFO_DEBUG) {
-          sprintf(
-            new_exception_chars + exception_length,
-            "%s%s%s%s%s%" PRId32,
-            from,
-            sub_name,
-            at,
-            file_name,
-            line,
-            current_line
+          
+          // Create exception message
+          SPVM_API_OBJECT* new_exception = api->new_string(api, NULL, total_length);
+          char* new_exception_chars = api->get_string_chars(api, new_exception);
+          
+          memcpy(
+            (void*)(new_exception_chars),
+            (void*)(exception_chars),
+            exception_length
           );
+          if (SPVM_INFO_DEBUG) {
+            sprintf(
+              new_exception_chars + exception_length,
+              "%s%s%s%s%s%" PRId32,
+              from,
+              sub_name,
+              at,
+              file_name,
+              line,
+              current_line
+            );
+          }
+          else {
+            sprintf(
+              new_exception_chars + exception_length,
+              "%s%s%s%s",
+              from,
+              sub_name,
+              at,
+              file_name
+            );
+          }
+          
+          // Set exception
+          api->set_exception(api, new_exception);
         }
-        else {
-          sprintf(
-            new_exception_chars + exception_length,
-            "%s%s%s%s",
-            from,
-            sub_name,
-            at,
-            file_name
-          );
-        }
-        
-        // Set exception
-        api->set_exception(api, new_exception);
         
         memset(&return_value, 0, sizeof(SPVM_VALUE));
         
