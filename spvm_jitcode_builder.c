@@ -136,7 +136,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
 
-  // Function prototype
+  // Function definition
   {
     int32_t sub_pos;
     for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
@@ -231,6 +231,18 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         }
       }
       SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      
+      // Eval stack
+      if (sub->eval_stack_max_length > 0) {
+        // Eval stack
+        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack[");
+        SPVM_STRING_BUFFER_add_int(string_buffer, sub->eval_stack_max_length);
+        SPVM_STRING_BUFFER_add(string_buffer, "]\n");
+        
+        // Eval stack top
+        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack_top = -1;\n");
+      }
+      
       SPVM_STRING_BUFFER_add(string_buffer, "}\n");
       
       SPVM_STRING_BUFFER_add(string_buffer, "\n");
