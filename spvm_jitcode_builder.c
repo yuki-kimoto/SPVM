@@ -22,6 +22,20 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
+  // Inline macro function
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)))\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL()\\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  do { \\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if ((*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)) != NULL) { \\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))); \\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    } \\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)) = NULL; \\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  } \\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  while (0) \\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_ISWEAK(object) ((intptr_t)object & 1)\n");
+
   // Function prototype
   {
     int32_t sub_pos;
@@ -223,7 +237,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
   
-  warn("%s", string_buffer->buffer);
+  // warn("%s", string_buffer->buffer);
   
 /*
   while (1) {
@@ -1342,7 +1356,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
 
             // Increment new object reference count
             if (*object_address != NULL) {
-              SPVM_INLINE_INC_REF_COUNT(*object_address);
+              SPVM_JITCODE_INLINE_INC_REF_COUNT(*object_address);
             }
             
             bytecode_index += 4;
@@ -1357,7 +1371,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       case SPVM_BYTECODE_C_CODE_INC_REF_COUNT: {
         // Increment new value reference count
         if (vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT(vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value);
+          SPVM_JITCODE_INLINE_INC_REF_COUNT(vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value);
         }
 
         bytecode_index += 2;
@@ -1689,7 +1703,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         
         api->weaken_object_field(api, object, field_id);
         
-        if (SPVM_INLINE_GET_EXCEPTION()) {
+        if (SPVM_JITCODE_INLINE_GET_EXCEPTION()) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
@@ -1842,7 +1856,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         
         if((*field_address).object_value != NULL) {
           // If object is weak, unweaken
-          if (SPVM_INLINE_ISWEAK((*field_address).object_value)) {
+          if (SPVM_JITCODE_INLINE_ISWEAK((*field_address).object_value)) {
             api->unweaken(api, (SPVM_API_OBJECT**)field_address);
           }
           api->dec_ref_count(api, (*field_address).object_value);
@@ -1851,7 +1865,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         (*field_address).object_value = value;
         
         if((*field_address).object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT((*field_address).object_value);
+          SPVM_JITCODE_INLINE_INC_REF_COUNT((*field_address).object_value);
         }
         
         bytecode_index += 4;
@@ -2006,7 +2020,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         
         // Increment new value reference count
         if (SPVM_INFO_PACKAGE_VARS[package_var_id].object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
+          SPVM_JITCODE_INLINE_INC_REF_COUNT(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
         }
 
         bytecode_index += 3;
@@ -2032,7 +2046,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         break;
       }
       case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION_VAR: {
-        vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)SPVM_INLINE_GET_EXCEPTION();
+        vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)SPVM_JITCODE_INLINE_GET_EXCEPTION();
         
         bytecode_index += 2;
         break;
@@ -2108,7 +2122,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
           vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = api->call_object_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         
-        if (SPVM_INLINE_GET_EXCEPTION()) {
+        if (SPVM_JITCODE_INLINE_GET_EXCEPTION()) {
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         else {
@@ -2144,7 +2158,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
               
               if (object != NULL) {
-                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+                SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object);
               }
             }
           }
@@ -2163,7 +2177,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
           }
           
           // No exception
-          SPVM_INLINE_SET_EXCEPTION_NULL();
+          SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();
           
           return return_value;
         }
@@ -2177,7 +2191,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
           
           // Increment ref count of return value not to release by decrement
           if (return_value.object_value != NULL) {
-            SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
+            SPVM_JITCODE_INLINE_INC_REF_COUNT(return_value.object_value);
           }
           
           // Decrement my vars which is arguments - decrement only
@@ -2188,7 +2202,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
               
               if (object != NULL) {
-                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+                SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object);
               }
             }
           }
@@ -2208,10 +2222,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
 
           // Decrement ref count of return value
           if (return_value.object_value != NULL) {
-            SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
+            SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
           }
           
-          SPVM_INLINE_SET_EXCEPTION_NULL();
+          SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();
           
           return return_value;
         }
@@ -2230,7 +2244,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
               
               if (object != NULL) {
-                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+                SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object);
               }
             }
           }
@@ -2247,7 +2261,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
           }
           
           // No exception
-          SPVM_INLINE_SET_EXCEPTION_NULL();
+          SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();
 
           return return_value;
         }
@@ -2275,7 +2289,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
             
             if (object != NULL) {
-              SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+              SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object);
             }
           }
         }
@@ -2305,7 +2319,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
           const char* at = "() at ";
 
           // Exception
-          SPVM_API_OBJECT* exception = SPVM_INLINE_GET_EXCEPTION();
+          SPVM_API_OBJECT* exception = SPVM_JITCODE_INLINE_GET_EXCEPTION();
           char* exception_chars = api->get_string_chars(api, exception);
           int32_t exception_length = api->get_string_length(api, exception);
           
