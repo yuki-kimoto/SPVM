@@ -1,4 +1,6 @@
-0.0301 2017-11-17
+0.0302 2017-11-27
+  - add eval block stack max length
+0.0301 2017-11-20
   - support relative name subroutine call
     sum(0, 1);
     At first, current package is searched, next core function

@@ -19,6 +19,7 @@ struct SPVM_sub {
   int32_t bytecode_length;
   int32_t call_sub_arg_stack_max;
   int32_t id;
+  int32_t eval_stack_max_length;
   _Bool is_native;
   _Bool is_constant;
   _Bool is_destructor;

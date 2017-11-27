@@ -223,6 +223,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_OP* op_package = sub->op_package;
       SPVM_PACKAGE* package = op_package->uv.package;
       
+      int32_t eval_stack_length = 0;
+      
       // Destructor must receive own package object
       if (sub->is_destructor) {
         // DESTROY argument must be 0
@@ -276,7 +278,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 SPVM_DYNAMIC_ARRAY_push(sub_check_info->loop_block_my_base_stack, block_my_base_ptr);
               }
               else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-                SPVM_DYNAMIC_ARRAY_push(sub_check_info->try_block_my_base_stack, block_my_base_ptr);
+                SPVM_DYNAMIC_ARRAY_push(sub_check_info->eval_block_my_base_stack, block_my_base_ptr);
+                
+                // Eval block max length
+                eval_stack_length++;
+                if (eval_stack_length > sub->eval_stack_max_length) {
+                  sub->eval_stack_max_length = eval_stack_length;
+                }
               }
               
               break;
@@ -1344,8 +1352,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   // Pop try block my variable base
                   else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-                    assert(sub_check_info->try_block_my_base_stack->length > 0);
-                    SPVM_DYNAMIC_ARRAY_pop(sub_check_info->try_block_my_base_stack);
+                    assert(sub_check_info->eval_block_my_base_stack->length > 0);
+                    SPVM_DYNAMIC_ARRAY_pop(sub_check_info->eval_block_my_base_stack);
+                    eval_stack_length--;
                   }
                   
                   break;
