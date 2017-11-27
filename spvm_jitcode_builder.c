@@ -79,7 +79,37 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       {
         int32_t i;
         for (i = 0; i < args_length; i++) {
-          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE arg");
+          SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
+          
+          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+          
+          // Argument type
+          if (arg_type->code ==  SPVM_TYPE_C_CODE_VOID) {
+            SPVM_STRING_BUFFER_add(string_buffer, "void ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_BYTE) {
+            SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_SHORT) {
+            SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_INT) {
+            SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_LONG) {
+            SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_FLOAT) {
+            SPVM_STRING_BUFFER_add(string_buffer, "float ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_DOUBLE) {
+            SPVM_STRING_BUFFER_add(string_buffer, "double ");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+          }
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "arg");
           SPVM_STRING_BUFFER_add_int(string_buffer, i);
           if (i != args_length - 1) {
             SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -149,7 +179,37 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       {
         int32_t i;
         for (i = 0; i < args_length; i++) {
-          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE arg");
+          SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
+          
+          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+          
+          // Argument type
+          if (arg_type->code ==  SPVM_TYPE_C_CODE_VOID) {
+            SPVM_STRING_BUFFER_add(string_buffer, "void ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_BYTE) {
+            SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_SHORT) {
+            SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_INT) {
+            SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_LONG) {
+            SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_FLOAT) {
+            SPVM_STRING_BUFFER_add(string_buffer, "float ");
+          }
+          else if (arg_type->code ==  SPVM_TYPE_C_CODE_DOUBLE) {
+            SPVM_STRING_BUFFER_add(string_buffer, "double ");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+          }
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "arg");
           SPVM_STRING_BUFFER_add_int(string_buffer, i);
           if (i != args_length - 1) {
             SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -163,7 +223,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
   
-  // warn("%s", string_buffer->buffer);
+  warn("%s", string_buffer->buffer);
   
 /*
   while (1) {
@@ -2394,3 +2454,4 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
     */
 }
+
