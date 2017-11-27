@@ -57,6 +57,37 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       else {
         SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
       }
+      
+      // Subroutine name. Replace : to _
+      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
+      {
+        int32_t index = string_buffer->length - strlen(sub->abs_name);
+        
+        while (index < string_buffer->length) {
+          if (string_buffer->buffer[index] == ':') {
+            string_buffer->buffer[index] = '_';
+          }
+          index++;
+        }
+      }
+      
+      // Arguments
+      SPVM_STRING_BUFFER_add(string_buffer, "(");
+      int32_t args_length = sub->op_args->length;
+      {
+        int32_t i;
+        for (i = 0; i < args_length; i++) {
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE arg");
+          SPVM_STRING_BUFFER_add_int(string_buffer, i);
+          if (i != args_length - 1) {
+            SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          }
+        }
+      }
+      SPVM_STRING_BUFFER_add(string_buffer, ");");
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
     }
   }
   

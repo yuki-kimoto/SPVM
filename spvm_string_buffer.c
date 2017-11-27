@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+#include <inttypes.h>
 
 #include "spvm_string_buffer.h"
 #include "spvm_util_allocator.h"
@@ -42,6 +43,26 @@ void SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, char* string) {
   memcpy(string_buffer->buffer + string_buffer->length, string, string_length);
   
   string_buffer->length = new_length;
+  
+  return;
+}
+
+void SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t value) {
+  
+  int32_t max_length = 20;
+  
+  int32_t new_max_length = string_buffer->length + max_length;
+  
+  // Extend
+  if (new_max_length > string_buffer->capacity) {
+    char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_max_length + 1);
+    memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
+    string_buffer->buffer = new_buffer;
+  }
+  
+  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId32, value);
+  
+  string_buffer->length += write_length;
   
   return;
 }
