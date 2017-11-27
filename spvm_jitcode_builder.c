@@ -21,7 +21,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   // API header
   SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
-
+  
+  // Function prototype
   {
     int32_t sub_pos;
     for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
@@ -86,6 +87,77 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         }
       }
       SPVM_STRING_BUFFER_add(string_buffer, ");");
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+    }
+  }
+
+  // Function prototype
+  {
+    int32_t sub_pos;
+    for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
+      
+      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_pos);
+      SPVM_SUB* sub = op_sub->uv.sub;
+      
+      SPVM_OP* op_return_type = sub->op_return_type;
+      SPVM_TYPE* return_type = op_return_type->uv.type;
+      
+      // Return type
+      if (return_type->code ==  SPVM_TYPE_C_CODE_VOID) {
+        SPVM_STRING_BUFFER_add(string_buffer, "void ");
+      }
+      else if (return_type->code ==  SPVM_TYPE_C_CODE_BYTE) {
+        SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
+      }
+      else if (return_type->code ==  SPVM_TYPE_C_CODE_SHORT) {
+        SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
+      }
+      else if (return_type->code ==  SPVM_TYPE_C_CODE_INT) {
+        SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+      }
+      else if (return_type->code ==  SPVM_TYPE_C_CODE_LONG) {
+        SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
+      }
+      else if (return_type->code ==  SPVM_TYPE_C_CODE_FLOAT) {
+        SPVM_STRING_BUFFER_add(string_buffer, "float ");
+      }
+      else if (return_type->code ==  SPVM_TYPE_C_CODE_DOUBLE) {
+        SPVM_STRING_BUFFER_add(string_buffer, "double ");
+      }
+      else {
+        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+      }
+      
+      // Subroutine name. Replace : to _
+      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
+      {
+        int32_t index = string_buffer->length - strlen(sub->abs_name);
+        
+        while (index < string_buffer->length) {
+          if (string_buffer->buffer[index] == ':') {
+            string_buffer->buffer[index] = '_';
+          }
+          index++;
+        }
+      }
+      
+      // Arguments
+      SPVM_STRING_BUFFER_add(string_buffer, "(");
+      int32_t args_length = sub->op_args->length;
+      {
+        int32_t i;
+        for (i = 0; i < args_length; i++) {
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE arg");
+          SPVM_STRING_BUFFER_add_int(string_buffer, i);
+          if (i != args_length - 1) {
+            SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          }
+        }
+      }
+      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "}\n");
       
       SPVM_STRING_BUFFER_add(string_buffer, "\n");
     }
