@@ -141,6 +141,54 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Copy arguments
   memcpy(vars, args, args_length * sizeof(SPVM_VALUE));
   
+  SPVM_INLINE_SET_EXCEPTION_NULL();
+  
+  // Call native sub
+  if (SPVM_INFO_SUB_XXX_IS_NATIVE) {
+    // Call native subroutine
+    if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_VOID) {
+      void (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      (*native_address)(api, (SPVM_VALUE*)vars);
+    }
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
+      int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      int8_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      return_value.byte_value = return_value_native;
+    }
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
+      int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      int16_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      return_value.short_value = return_value_native;
+    }
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
+      int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      int32_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      return_value.int_value = return_value_native;
+    }
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
+      int64_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      int64_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      return_value.long_value = return_value_native;
+    }
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
+      float (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      float return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      return_value.float_value = return_value_native;
+    }
+    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
+      double (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      double return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      return_value.double_value = return_value_native;
+    }
+    else {
+      SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      return_value.object_value = return_value_native;
+    }
+    return return_value;
+  }
+
+  // Call normal sub
   // If arg is object, increment reference count
   {
     int32_t i;
@@ -154,107 +202,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
   }
   
-  SPVM_INLINE_SET_EXCEPTION_NULL();
-
-  // Call native sub
-  if (SPVM_INFO_SUB_XXX_IS_NATIVE) {
-    // Call native subroutine
-    if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_VOID) {
-      void (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      (*native_address)(api, (SPVM_VALUE*)vars);
-      
-      if (SPVM_INLINE_GET_EXCEPTION()) {
-        goto label_SPVM_BYTECODE_C_CODE_CROAK;
-      }
-      
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_VOID;
-    }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
-      int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int8_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
-      return_value.byte_value = return_value_native;
-
-      if (SPVM_INLINE_GET_EXCEPTION()) {
-        goto label_SPVM_BYTECODE_C_CODE_CROAK;
-      }
-      
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_BYTE;
-    }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
-      int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int16_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
-      return_value.short_value = return_value_native;
-
-      if (SPVM_INLINE_GET_EXCEPTION()) {
-        goto label_SPVM_BYTECODE_C_CODE_CROAK;
-      }
-
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_SHORT;
-    }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
-        
-      int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      
-      int32_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
-      return_value.int_value = return_value_native;
-      
-      if (SPVM_INLINE_GET_EXCEPTION()) {
-        goto label_SPVM_BYTECODE_C_CODE_CROAK;
-      }
-      
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_INT;
-    }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
-      int64_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int64_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
-      return_value.long_value = return_value_native;
-
-      if (SPVM_INLINE_GET_EXCEPTION()) {
-        goto label_SPVM_BYTECODE_C_CODE_CROAK;
-      }
-
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_LONG;
-    }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
-      float (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      float return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
-      return_value.float_value = return_value_native;
-
-      if (SPVM_INLINE_GET_EXCEPTION()) {
-        goto label_SPVM_BYTECODE_C_CODE_CROAK;
-      }
-      
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_FLOAT;
-    }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
-      double (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      double return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
-      return_value.double_value = return_value_native;
-
-      if (SPVM_INLINE_GET_EXCEPTION()) {
-        goto label_SPVM_BYTECODE_C_CODE_CROAK;
-      }
-      
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_DOUBLE;
-    }
-    else {
-      
-      SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-
-      SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
-      return_value.object_value = return_value_native;
-      
-      if (SPVM_INLINE_GET_EXCEPTION()) {
-        goto label_SPVM_BYTECODE_C_CODE_CROAK;
-      }
-      
-      goto label_SPVM_BYTECODE_C_CODE_RETURN_OBJECT;
-    }
-  }
-  // Call normal sub
-  else {
-    bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE;
-  }
+  bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE;
   
   while (1) {
     
