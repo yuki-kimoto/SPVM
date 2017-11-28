@@ -51,11 +51,20 @@ grammar
   : opt_declarations_in_grammar
     {
       $$ = SPVM_OP_build_grammar(compiler, $1);
-
+      
       // Syntax error
       if (compiler->error_count) {
         YYABORT;
       }
+      
+      // Build constant pool
+      SPVM_OP_build_constant_pool(compiler);
+      
+      // Build bytecode
+      SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
+      
+      // Build JIT code(This is C source code which is passed to gcc)
+      SPVM_JITCODE_BUILDER_build_jitcode(compiler);
     }
 
 opt_declarations_in_grammar
