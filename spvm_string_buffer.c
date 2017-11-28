@@ -35,9 +35,11 @@ void SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, char* string) {
   
   // Extend
   if (new_length > string_buffer->capacity) {
-    char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_length + 1);
+    int32_t new_capacity = string_buffer->capacity * 2;
+    char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_capacity);
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
     string_buffer->buffer = new_buffer;
+    string_buffer->capacity = new_capacity;
   }
   
   memcpy(string_buffer->buffer + string_buffer->length, string, string_length);
@@ -55,9 +57,11 @@ void SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t value
   
   // Extend
   if (new_max_length > string_buffer->capacity) {
-    char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_max_length + 1);
+    int32_t new_capacity = string_buffer->capacity * 2;
+    char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_capacity);
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
     string_buffer->buffer = new_buffer;
+    string_buffer->capacity = new_capacity;
   }
   
   int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId32, value);
