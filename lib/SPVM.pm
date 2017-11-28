@@ -211,9 +211,6 @@ CHECK {
   # Free compiler
   free_compiler();
   
-  # Compile extension native subroutine
-  # compile_extension_native_subs();
-  
   # Bind native subroutines
   bind_native_subs();
   

@@ -1532,9 +1532,6 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
     return NULL;
   }
   
-  // Build constant pool
-  SPVM_OP_build_constant_pool(compiler);
-  
   if (compiler->fatal_error) {
     return NULL;
   }
@@ -1543,6 +1540,9 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   if (compiler->error_count > 0) {
     return NULL;
   }
+
+  // Build constant pool
+  SPVM_OP_build_constant_pool(compiler);
   
   // Build bytecode
   SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
