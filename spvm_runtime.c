@@ -146,6 +146,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     int32_t i;
     for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
       int32_t arg_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE + i];
+      
       SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[arg_index].object_value;
       if (object != NULL) {
         SPVM_INLINE_INC_REF_COUNT(object);

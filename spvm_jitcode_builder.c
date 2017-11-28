@@ -306,13 +306,36 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack_top = -1;\n");
       }
       
-      SPVM_STRING_BUFFER_add(string_buffer, "}\n");
+      // If arg is object, increment reference count
+      {
+        int32_t var_index;
+        for (var_index = 0; var_index < args_length; var_index++) {
+          SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, var_index);
+          
+          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+          
+          if (!SPVM_TYPE_is_numeric(compiler, arg_type)) {
+            SPVM_STRING_BUFFER_add(string_buffer, "  if (var");
+            SPVM_STRING_BUFFER_add_int(string_buffer, var_index);
+            SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
+            
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_INC_REF_COUNT(var");
+            SPVM_STRING_BUFFER_add_int(string_buffer, var_index);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+            
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+          }
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "\n");
+      }
       
+      // Set exception to NULL
+      SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
       SPVM_STRING_BUFFER_add(string_buffer, "\n");
     }
   }
   
-  //warn("%s", string_buffer->buffer);
+  warn("%s", string_buffer->buffer);
   
 /*
   while (1) {
