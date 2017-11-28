@@ -34,6 +34,8 @@
 #include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
 #include "spvm_api.h"
+#include "spvm_bytecode_builder.h"
+#include "spvm_jitcode_builder.h"
 
 static SPVM_API_VALUE call_sub_args[255];
 
@@ -3136,6 +3138,15 @@ compile(...)
   if (compiler->error_count > 0) {
     croak("SPVM compile error %d", compiler->error_count);
   }
+
+  // Build constant pool
+  SPVM_OP_build_constant_pool(compiler);
+  
+  // Build bytecode
+  SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
+  
+  // Build JIT code(This is C source code which is passed to gcc)
+  SPVM_JITCODE_BUILDER_build_jitcode(compiler);
   
   // Set compiler
   size_t iv_compiler = PTR2IV(compiler);
