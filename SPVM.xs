@@ -3139,6 +3139,24 @@ compile(...)
     croak("SPVM compile error %d", compiler->error_count);
   }
 
+  // Set compiler
+  size_t iv_compiler = PTR2IV(compiler);
+  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
+  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
+  sv_setsv(get_sv("SPVM::COMPILER", 0), sv_compiler);
+  
+  XSRETURN(0);
+}
+
+SV*
+build_bytecode(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  // Get compiler
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+  
   // Build constant pool
   SPVM_OP_build_constant_pool(compiler);
   
@@ -3147,12 +3165,6 @@ compile(...)
   
   // Build JIT code(This is C source code which is passed to gcc)
   SPVM_JITCODE_BUILDER_build_jitcode(compiler);
-  
-  // Set compiler
-  size_t iv_compiler = PTR2IV(compiler);
-  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
-  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
-  sv_setsv(get_sv("SPVM::COMPILER", 0), sv_compiler);
   
   XSRETURN(0);
 }

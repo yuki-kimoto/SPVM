@@ -205,6 +205,9 @@ CHECK {
   # Compile SPVM source code
   compile();
   
+  # Build bytecode
+  build_bytecode();
+
   # Build run-time
   build_runtime();
   
