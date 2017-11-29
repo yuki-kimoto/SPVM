@@ -45,42 +45,46 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
   if (type->code == SPVM_TYPE_C_CODE_BYTE) {
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_BYTE);
     
-    
-    
-
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my->index);
-
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
   }
   else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_SHORT);
     
-    
-    
-
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my->index);
-
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
   }
   else if (type->code == SPVM_TYPE_C_CODE_INT) {
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_INT);
     
-    
-    
-
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my->index);
-
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
   }
   else if (type->code == SPVM_TYPE_C_CODE_LONG) {
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_LONG);
     
-    
-    
-    
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, my->index);
-
     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, value);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
   }
 }
 
@@ -869,6 +873,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_NEGATE) {
                     
@@ -896,6 +905,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_CONSTANT) {
                     SPVM_CONSTANT* constant = op_cur->last->uv.constant;
