@@ -3175,6 +3175,18 @@ build_bytecode(...)
   // Build bytecode
   SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
   
+  XSRETURN(0);
+}
+
+SV*
+build_jitcode(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  // Get compiler
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+  
   // Build JIT code(This is C source code which is passed to gcc)
   SPVM_JITCODE_BUILDER_build_jitcode(compiler);
   

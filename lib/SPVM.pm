@@ -211,6 +211,9 @@ CHECK {
   # Build bytecode
   build_bytecode();
 
+  # Build JIT code
+  build_jitcode();
+  
   # Build run-time
   build_runtime();
   
