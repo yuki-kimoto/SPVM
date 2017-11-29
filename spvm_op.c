@@ -1502,7 +1502,7 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
       }
     }
   }
-
+  
   // Set destcutor sub id to package
   {
     int32_t package_index;

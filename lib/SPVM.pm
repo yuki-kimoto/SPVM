@@ -224,7 +224,7 @@ CHECK {
   build_spvm_subs();
   
   # Free compiler
-  free_compiler();
+  # free_compiler();
 }
 
 sub new_byte_array_len {
