@@ -2007,7 +2007,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_POP_EVAL: {
         eval_stack_top--;
         
-        bytecode_index++;
+        bytecode_index += 8;
         
         break;
       }
