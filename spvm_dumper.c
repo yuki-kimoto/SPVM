@@ -282,20 +282,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
 
         // Have two operands
-        case SPVM_BYTECODE_C_CODE_EQ_BYTE:
-        case SPVM_BYTECODE_C_CODE_EQ_SHORT:
-        case SPVM_BYTECODE_C_CODE_EQ_INT:
-        case SPVM_BYTECODE_C_CODE_EQ_LONG:
-        case SPVM_BYTECODE_C_CODE_EQ_FLOAT:
-        case SPVM_BYTECODE_C_CODE_EQ_DOUBLE:
-        case SPVM_BYTECODE_C_CODE_EQ_OBJECT:
-        case SPVM_BYTECODE_C_CODE_NE_BYTE:
-        case SPVM_BYTECODE_C_CODE_NE_SHORT:
-        case SPVM_BYTECODE_C_CODE_NE_INT:
-        case SPVM_BYTECODE_C_CODE_NE_LONG:
-        case SPVM_BYTECODE_C_CODE_NE_FLOAT:
-        case SPVM_BYTECODE_C_CODE_NE_DOUBLE:
-        case SPVM_BYTECODE_C_CODE_NE_OBJECT:
         case SPVM_BYTECODE_C_CODE_GT_BYTE:
         case SPVM_BYTECODE_C_CODE_GT_SHORT:
         case SPVM_BYTECODE_C_CODE_GT_INT:
@@ -506,6 +492,20 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
           break;
         }
         // Have seven operands
+        case SPVM_BYTECODE_C_CODE_EQ_BYTE:
+        case SPVM_BYTECODE_C_CODE_EQ_SHORT:
+        case SPVM_BYTECODE_C_CODE_EQ_INT:
+        case SPVM_BYTECODE_C_CODE_EQ_LONG:
+        case SPVM_BYTECODE_C_CODE_EQ_FLOAT:
+        case SPVM_BYTECODE_C_CODE_EQ_DOUBLE:
+        case SPVM_BYTECODE_C_CODE_EQ_OBJECT:
+        case SPVM_BYTECODE_C_CODE_NE_BYTE:
+        case SPVM_BYTECODE_C_CODE_NE_SHORT:
+        case SPVM_BYTECODE_C_CODE_NE_INT:
+        case SPVM_BYTECODE_C_CODE_NE_LONG:
+        case SPVM_BYTECODE_C_CODE_NE_FLOAT:
+        case SPVM_BYTECODE_C_CODE_NE_DOUBLE:
+        case SPVM_BYTECODE_C_CODE_NE_OBJECT:
         case SPVM_BYTECODE_C_CODE_BOOL_BYTE:
         case SPVM_BYTECODE_C_CODE_BOOL_SHORT:
         case SPVM_BYTECODE_C_CODE_BOOL_INT:

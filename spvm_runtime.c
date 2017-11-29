@@ -258,74 +258,74 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_EQ_BYTE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_SHORT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_INT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_LONG:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_FLOAT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_DOUBLE:
       
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_OBJECT:
       
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].object_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_BYTE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_SHORT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_INT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_LONG:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_FLOAT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_DOUBLE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_OBJECT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].object_value;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GT_BYTE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value > vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
