@@ -256,13 +256,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
       // Operand
       switch (bytecode) {
         
-        // Have no operands
-        case SPVM_BYTECODE_C_CODE_RETURN_VOID:
-        case SPVM_BYTECODE_C_CODE_CROAK:
-        {
-          break;
-        }
-        
         // Have one operands
         case SPVM_BYTECODE_C_CODE_INC_REF_COUNT:
         case SPVM_BYTECODE_C_CODE_DEC_REF_COUNT:
@@ -525,6 +518,8 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
         // Have seven operands
         case SPVM_BYTECODE_C_CODE_POP_EVAL:
+        case SPVM_BYTECODE_C_CODE_RETURN_VOID:
+        case SPVM_BYTECODE_C_CODE_CROAK:
         {
           i++;
           bytecode = bytecode_array->values[i];

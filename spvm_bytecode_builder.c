@@ -1560,6 +1560,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               case SPVM_OP_C_CODE_CROAK: {
                 
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CROAK);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                 
                 break;
               }
@@ -2048,6 +2055,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 SPVM_TYPE* return_type = op_return_type->uv.type;
                 if (return_type->code == SPVM_TYPE_C_CODE_VOID) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_RETURN_VOID);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                 }
                 else {
                   if (return_type->code == SPVM_TYPE_C_CODE_BYTE) {
