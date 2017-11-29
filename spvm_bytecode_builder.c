@@ -1906,11 +1906,23 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                   else {
                     int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                 }
                 else {
@@ -2025,6 +2037,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                 }
                 
                 break;
