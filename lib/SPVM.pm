@@ -204,6 +204,9 @@ CHECK {
   
   # Compile SPVM source code
   compile();
+
+  # Build bytecode
+  build_constant_pool();
   
   # Build bytecode
   build_bytecode();

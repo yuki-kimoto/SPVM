@@ -3149,7 +3149,7 @@ compile(...)
 }
 
 SV*
-build_bytecode(...)
+build_constant_pool(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3159,6 +3159,18 @@ build_bytecode(...)
   
   // Build constant pool
   SPVM_OP_build_constant_pool(compiler);
+  
+  XSRETURN(0);
+}
+
+SV*
+build_bytecode(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  // Get compiler
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
   
   // Build bytecode
   SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
