@@ -230,6 +230,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_DEC_REF_COUNT);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_dec_ref_count);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                   
                   if (0) {
@@ -1189,6 +1195,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_INC_REF_COUNT);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_inc_ref_count);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {

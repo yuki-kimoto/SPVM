@@ -1340,7 +1340,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           SPVM_INLINE_INC_REF_COUNT(vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value);
         }
 
-        bytecode_index += 2;
+        bytecode_index += 8;
         
         break;
       }
@@ -1350,7 +1350,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           api->dec_ref_count(api, vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value);
         }
         
-        bytecode_index += 2;
+        bytecode_index += 8;
 
         break;
       }
