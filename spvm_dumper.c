@@ -282,30 +282,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
 
         // Have two operands
-        case SPVM_BYTECODE_C_CODE_GT_BYTE:
-        case SPVM_BYTECODE_C_CODE_GT_SHORT:
-        case SPVM_BYTECODE_C_CODE_GT_INT:
-        case SPVM_BYTECODE_C_CODE_GT_LONG:
-        case SPVM_BYTECODE_C_CODE_GT_FLOAT:
-        case SPVM_BYTECODE_C_CODE_GT_DOUBLE:
-        case SPVM_BYTECODE_C_CODE_GE_BYTE:
-        case SPVM_BYTECODE_C_CODE_GE_SHORT:
-        case SPVM_BYTECODE_C_CODE_GE_INT:
-        case SPVM_BYTECODE_C_CODE_GE_LONG:
-        case SPVM_BYTECODE_C_CODE_GE_FLOAT:
-        case SPVM_BYTECODE_C_CODE_GE_DOUBLE:
-        case SPVM_BYTECODE_C_CODE_LT_BYTE:
-        case SPVM_BYTECODE_C_CODE_LT_SHORT:
-        case SPVM_BYTECODE_C_CODE_LT_INT:
-        case SPVM_BYTECODE_C_CODE_LT_LONG:
-        case SPVM_BYTECODE_C_CODE_LT_FLOAT:
-        case SPVM_BYTECODE_C_CODE_LT_DOUBLE:
-        case SPVM_BYTECODE_C_CODE_LE_BYTE:
-        case SPVM_BYTECODE_C_CODE_LE_SHORT:
-        case SPVM_BYTECODE_C_CODE_LE_INT:
-        case SPVM_BYTECODE_C_CODE_LE_LONG:
-        case SPVM_BYTECODE_C_CODE_LE_FLOAT:
-        case SPVM_BYTECODE_C_CODE_LE_DOUBLE:
         case SPVM_BYTECODE_C_CODE_CALL_SUB:
         case SPVM_BYTECODE_C_CODE_MOVE:
         case SPVM_BYTECODE_C_CODE_NEW_OBJECT:
@@ -422,6 +398,22 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_ARRAY_STORE_FLOAT:
         case SPVM_BYTECODE_C_CODE_ARRAY_STORE_DOUBLE:
         case SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT:
+        {
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
+          
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
+
+          i++;
+          bytecode = bytecode_array->values[i];
+          printf("        [%" PRId32 "] %d\n", i, bytecode);
+          
+          break;
+        }
+        // Have seven operands
         case SPVM_BYTECODE_C_CODE_ADD_BYTE:
         case SPVM_BYTECODE_C_CODE_ADD_SHORT:
         case SPVM_BYTECODE_C_CODE_ADD_INT:
@@ -476,22 +468,30 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         case SPVM_BYTECODE_C_CODE_BIT_XOR_SHORT:
         case SPVM_BYTECODE_C_CODE_BIT_XOR_INT:
         case SPVM_BYTECODE_C_CODE_BIT_XOR_LONG:
-        {
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          break;
-        }
-        // Have seven operands
+        case SPVM_BYTECODE_C_CODE_GT_BYTE:
+        case SPVM_BYTECODE_C_CODE_GT_SHORT:
+        case SPVM_BYTECODE_C_CODE_GT_INT:
+        case SPVM_BYTECODE_C_CODE_GT_LONG:
+        case SPVM_BYTECODE_C_CODE_GT_FLOAT:
+        case SPVM_BYTECODE_C_CODE_GT_DOUBLE:
+        case SPVM_BYTECODE_C_CODE_GE_BYTE:
+        case SPVM_BYTECODE_C_CODE_GE_SHORT:
+        case SPVM_BYTECODE_C_CODE_GE_INT:
+        case SPVM_BYTECODE_C_CODE_GE_LONG:
+        case SPVM_BYTECODE_C_CODE_GE_FLOAT:
+        case SPVM_BYTECODE_C_CODE_GE_DOUBLE:
+        case SPVM_BYTECODE_C_CODE_LT_BYTE:
+        case SPVM_BYTECODE_C_CODE_LT_SHORT:
+        case SPVM_BYTECODE_C_CODE_LT_INT:
+        case SPVM_BYTECODE_C_CODE_LT_LONG:
+        case SPVM_BYTECODE_C_CODE_LT_FLOAT:
+        case SPVM_BYTECODE_C_CODE_LT_DOUBLE:
+        case SPVM_BYTECODE_C_CODE_LE_BYTE:
+        case SPVM_BYTECODE_C_CODE_LE_SHORT:
+        case SPVM_BYTECODE_C_CODE_LE_INT:
+        case SPVM_BYTECODE_C_CODE_LE_LONG:
+        case SPVM_BYTECODE_C_CODE_LE_FLOAT:
+        case SPVM_BYTECODE_C_CODE_LE_DOUBLE:
         case SPVM_BYTECODE_C_CODE_EQ_BYTE:
         case SPVM_BYTECODE_C_CODE_EQ_SHORT:
         case SPVM_BYTECODE_C_CODE_EQ_INT:
