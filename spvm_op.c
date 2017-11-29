@@ -32,6 +32,7 @@
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_constant_pool_package.h"
+#include "spvm_constant_pool_sub.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 #include "spvm_jitcode_builder.h"
@@ -1482,6 +1483,8 @@ void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
       SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       sub->id = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
+      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&compiler->constant_pool->values[sub->id];
+      constant_pool_sub->native_address = sub->native_address;
     }
   }
 

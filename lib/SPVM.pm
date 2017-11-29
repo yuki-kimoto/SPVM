@@ -204,7 +204,10 @@ CHECK {
   
   # Compile SPVM source code
   compile();
-
+  
+  # Bind native subroutines
+  bind_native_subs();
+  
   # Build bytecode
   build_constant_pool();
   
@@ -216,9 +219,6 @@ CHECK {
   
   # Build run-time
   build_runtime();
-  
-  # Bind native subroutines
-  bind_native_subs();
   
   # Build SPVM subroutines
   build_spvm_subs();
