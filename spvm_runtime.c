@@ -861,155 +861,155 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT:
         memcpy(&vars[SPVM_INFO_BYTECODES[bytecode_index + 1]], &SPVM_INFO_CONSTANT_POOL[SPVM_INFO_BYTECODES[bytecode_index + 2]], sizeof(int32_t));
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LOAD_CONSTANT2:
         memcpy(&vars[SPVM_INFO_BYTECODES[bytecode_index + 1]], &SPVM_INFO_CONSTANT_POOL[SPVM_INFO_BYTECODES[bytecode_index + 2]], sizeof(int64_t));
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = (int64_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_FLOAT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = (float)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_DOUBLE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = (double)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_INT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = (int32_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_FLOAT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = (float)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_DOUBLE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = (double)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_INT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = (int32_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_LONG:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = (int64_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_DOUBLE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = (double)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_INT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = (int32_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_LONG:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = (int64_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_FLOAT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = (float)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_BYTE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = (int8_t)(vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value);
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_SHORT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = (int16_t)(vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value);
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_INT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = (int32_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_INT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = (int32_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_LONG:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = (int64_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_FLOAT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = (float)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_DOUBLE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = (double)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_BYTE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = (int8_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_LONG:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = (int64_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_FLOAT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = (float)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_DOUBLE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = (double)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_BYTE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = (int8_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_SHORT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = (int16_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_BYTE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = (int8_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_SHORT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = (int16_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_BYTE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = (int8_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_SHORT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = (int16_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_SHORT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = (int16_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_BYTE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_SHORT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_INT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_LONG:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_FLOAT:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_DOUBLE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       
       /* TODO */
