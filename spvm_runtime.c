@@ -206,44 +206,30 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE;
   
   while (1) {
-    
+    int32_t original_bytecode = SPVM_INFO_BYTECODES[bytecode_index];
     switch (SPVM_INFO_BYTECODES[bytecode_index]) {
       case SPVM_BYTECODE_C_CODE_NOP:
         abort();
       case SPVM_BYTECODE_C_CODE_BOOL_BYTE:
         condition_flag = !!vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_SHORT:
         condition_flag = !!vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_INT:
         condition_flag = !!vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_LONG:
         condition_flag = !!vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_FLOAT:
         condition_flag = !!vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_DOUBLE:
         condition_flag = !!vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_BOOL_OBJECT:
         condition_flag = !!vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_IS_UNDEF:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value == NULL;
@@ -2402,6 +2388,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         current_line = SPVM_INFO_BYTECODES[bytecode_index + 1];
         bytecode_index += 8;
         break;
+    }
+    switch (original_bytecode) {
+      case SPVM_BYTECODE_C_CODE_BOOL_BYTE:
+      case SPVM_BYTECODE_C_CODE_BOOL_SHORT:
+      case SPVM_BYTECODE_C_CODE_BOOL_INT:
+      case SPVM_BYTECODE_C_CODE_BOOL_LONG:
+      case SPVM_BYTECODE_C_CODE_BOOL_FLOAT:
+      case SPVM_BYTECODE_C_CODE_BOOL_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_BOOL_OBJECT:
+        bytecode_index += 8;
     }
   }
 }
