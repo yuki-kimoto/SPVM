@@ -144,14 +144,17 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               // Add goto
               SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
               
-              
-              
-              
               int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *bytecode_index_ptr = bytecode_array->length - 1;
               
               SPVM_DYNAMIC_ARRAY_push(goto_loop_start_bytecode_index_stack, bytecode_index_ptr);
               
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
               SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
             }
             else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
@@ -1800,18 +1803,19 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 // Add goto
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
                 
-                
-                
-                
                 int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
                 *bytecode_index_ptr = bytecode_array->length - 1;
                 
                 SPVM_DYNAMIC_ARRAY_push(goto_last_bytecode_index_stack, bytecode_index_ptr);
                 
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                
-                
-
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+ 
                 break;
               }
               case SPVM_OP_C_CODE_NEXT: {
@@ -1821,13 +1825,16 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 // Add "goto"
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
                 
-                
-                
-                
                 // Jump offset
-                int32_t jump_offset = bytecode_index - (bytecode_array->length - 1) + 2;
+                int32_t jump_offset = bytecode_index - (bytecode_array->length - 1) + 8;
                 
                 SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, jump_offset);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                 
                 break;
               }
@@ -1838,16 +1845,17 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     // Prepare to jump to end of true block
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_GOTO);
                     
-                    
-                    
-                    
                     int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
                     *bytecode_index_ptr = bytecode_array->length - 1;
                     SPVM_DYNAMIC_ARRAY_push(goto_if_block_end_bytecode_index_stack, bytecode_index_ptr);
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    
-                    
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
 
                   assert(if_bytecode_index_stack->length > 0);
@@ -1956,7 +1964,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_loop_start_bytecode_index = *goto_loop_start_bytecode_index_ptr;
                   
                   // Jump offset
-                  int32_t goto_loop_start_offset = goto_loop_start_bytecode_index - (bytecode_array->length - 1) + 2;
+                  int32_t goto_loop_start_offset = goto_loop_start_bytecode_index - (bytecode_array->length - 1) + 8;
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, goto_loop_start_offset);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);

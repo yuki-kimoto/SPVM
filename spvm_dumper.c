@@ -255,18 +255,9 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
       
       // Operand
       switch (bytecode) {
-        
-        // Have one operands
-        case SPVM_BYTECODE_C_CODE_GOTO:
-        {
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          break;
-        }
 
         // Have seven operands
+        case SPVM_BYTECODE_C_CODE_GOTO:
         case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
         case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
