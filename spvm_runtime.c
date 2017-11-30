@@ -2080,7 +2080,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_GOTO:
         bytecode_index += SPVM_INFO_BYTECODES[bytecode_index + 1];
-        break;
+        continue;
       case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO: {
         if (condition_flag == 0) {
           bytecode_index += SPVM_INFO_BYTECODES[bytecode_index + 1];
