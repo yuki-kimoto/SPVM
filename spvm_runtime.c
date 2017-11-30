@@ -1780,10 +1780,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           // Next operation
-          bytecode_index += 8 + (SPVM_INFO_DEBUG * 8);
+          bytecode_index += 8;
         }
         
-        break;
+        continue;
       }
       case SPVM_BYTECODE_C_CODE_RETURN_BYTE:
       case SPVM_BYTECODE_C_CODE_RETURN_SHORT:
