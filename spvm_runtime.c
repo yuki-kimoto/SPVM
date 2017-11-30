@@ -753,7 +753,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       case SPVM_BYTECODE_C_CODE_UNDEF:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = NULL;
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_BYTE: {
         SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].object_value;
@@ -772,8 +771,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           else {
             vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value
               = *(int8_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
-            
-            bytecode_index += 8;
             break;
           }
         }
@@ -795,7 +792,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           else {
             vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value
               = *(int16_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index);
-            bytecode_index += 8;
             break;
           }
         }
@@ -816,7 +812,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index);
-            bytecode_index += 8;
             break;
           }
         }
@@ -837,7 +832,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = *(int64_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index);
-            bytecode_index += 8;
             break;
           }
         }
@@ -858,7 +852,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = *(float*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index);
-            bytecode_index += 8;
             break;
           }
         }
@@ -879,7 +872,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = *(double*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index);
-            bytecode_index += 8;
             break;
           }
         }
@@ -900,8 +892,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             vars[SPVM_INFO_BYTECODES[bytecode_index + 1]] = *(SPVM_VALUE*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * index);
-            
-            bytecode_index += 8;
             break;
           }
         }
@@ -922,7 +912,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             *(int8_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index) = vars[SPVM_INFO_BYTECODES[bytecode_index + 3]].byte_value;
-            bytecode_index += 8;
             break;
           }
         }
@@ -943,7 +932,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             *(int16_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index) = vars[SPVM_INFO_BYTECODES[bytecode_index + 3]].short_value;
-            bytecode_index += 8;
             break;
           }
         }
@@ -964,7 +952,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index) = vars[SPVM_INFO_BYTECODES[bytecode_index + 3]].int_value;
-            bytecode_index += 8;
             break;
           }
         }
@@ -985,7 +972,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             *(int64_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index) = vars[SPVM_INFO_BYTECODES[bytecode_index + 3]].long_value;
-            bytecode_index += 8;
             break;
           }
         }
@@ -1006,7 +992,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             *(float*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index) = vars[SPVM_INFO_BYTECODES[bytecode_index + 3]].float_value;
-            bytecode_index += 8;
             break;
           }
         }
@@ -1027,7 +1012,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             *(double*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index) = vars[SPVM_INFO_BYTECODES[bytecode_index + 3]].double_value;
-            bytecode_index += 8;
             break;
           }
         }
@@ -1062,8 +1046,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             if (*object_address != NULL) {
               SPVM_INLINE_INC_REF_COUNT(*object_address);
             }
-            
-            bytecode_index += 8;
             break;
           }
         }
@@ -2295,6 +2277,21 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_LONG:
       case SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_FLOAT:
       case SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_UNDEF:
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_BYTE:
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_SHORT:
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_INT:
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_LONG:
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_FLOAT:
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_ARRAY_LOAD_OBJECT:
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_BYTE:
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_SHORT:
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_INT:
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_LONG:
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_FLOAT:
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_ARRAY_STORE_OBJECT:
         bytecode_index += 8;
     }
   }
