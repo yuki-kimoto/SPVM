@@ -1513,8 +1513,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = string3;
-        
-        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_BYTE: {
@@ -1528,8 +1526,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
 
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = string3;
-        
-        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_SHORT: {
@@ -1543,8 +1539,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
 
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = string3;
-        
-        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_INT: {
@@ -1558,8 +1552,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
 
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = string3;
-
-        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_LONG: {
@@ -1573,8 +1565,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
 
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = string3;
-
-        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_FLOAT: {
@@ -1588,8 +1578,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
 
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = string3;
-        
-        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE: {
@@ -1603,8 +1591,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = string3;
-        
-        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR: {
@@ -2268,6 +2254,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_SET_FIELD_FLOAT:
       case SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE:
       case SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT:
+      case SPVM_BYTECODE_C_CODE_CONCAT_STRING_STRING:
+      case SPVM_BYTECODE_C_CODE_CONCAT_STRING_BYTE:
+      case SPVM_BYTECODE_C_CODE_CONCAT_STRING_SHORT:
+      case SPVM_BYTECODE_C_CODE_CONCAT_STRING_INT:
+      case SPVM_BYTECODE_C_CODE_CONCAT_STRING_LONG:
+      case SPVM_BYTECODE_C_CODE_CONCAT_STRING_FLOAT:
+      case SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE:
         bytecode_index += 8;
     }
   }
