@@ -2389,13 +2389,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO: {
         int32_t success = condition_flag == 0;
-        bytecode_index += success * SPVM_INFO_BYTECODES[bytecode_index + 1] + (~success & 1) * 2;
+        bytecode_index += success * SPVM_INFO_BYTECODES[bytecode_index + 1] + (~success & 1) * 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_IF_NE_ZERO: {
         
         int32_t success = condition_flag != 0;
-        bytecode_index += success * SPVM_INFO_BYTECODES[bytecode_index + 1] + (~success & 1) * 2;
+        bytecode_index += success * SPVM_INFO_BYTECODES[bytecode_index + 1] + (~success & 1) * 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
