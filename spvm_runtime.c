@@ -1208,7 +1208,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = *(int32_t*)((intptr_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].object_value + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET);
-          bytecode_index += 8;
           break;
         }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE: {
@@ -1915,8 +1914,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           eval_stack_top--;
           
           bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE + jump_offset_abs;
-          
-          break;
+          continue;
         }
         
         // Decrement my vars which is arguments - decrement only
@@ -2280,6 +2278,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY:
       case SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY:
       case SPVM_BYTECODE_C_CODE_NEW_STRING:
+      case SPVM_BYTECODE_C_CODE_ARRAY_LENGTH:
         bytecode_index += 8;
     }
   }
