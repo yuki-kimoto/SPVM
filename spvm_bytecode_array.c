@@ -19,6 +19,9 @@ SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM_COMPILER* compiler) {
   
   // Add 4 byte because 0 mean no bytecode
   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
   
   return bytecodes;
 }

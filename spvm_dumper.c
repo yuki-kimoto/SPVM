@@ -251,11 +251,13 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
     for (i = start_pos; i <= end_pos; i++) {
       
       int32_t bytecode = bytecode_array->values[i];
-      printf("        [%" PRId32 "] %s\n", i, SPVM_BYTECODE_C_CODE_NAMES[bytecode]);
+      printf("        [%" PRId32 "] %-20s", i, SPVM_BYTECODE_C_CODE_NAMES[bytecode]);
       
       // Operand
       switch (bytecode) {
         case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
+          printf("\n");
+          
           // variable index
           {
             i++;
@@ -299,6 +301,8 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
           break;
         }
         case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
+          printf("\n");
+
           // variable index
           {
             i++;
@@ -336,33 +340,8 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         default :
         // Have seven operands
         {
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
+          printf(" %d %d %d %d %d %d %d\n", bytecode_array->values[i + 1], bytecode_array->values[i + 2], bytecode_array->values[i + 3], bytecode_array->values[i + 4], bytecode_array->values[i + 5], bytecode_array->values[i + 6], bytecode_array->values[i + 7]);
+          i += 7;
 
           break;
         }

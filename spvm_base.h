@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_opcode.h
+struct SPVM_opcode;
+typedef struct SPVM_opcode SPVM_OPCODE;
+
 // spvm_undef.h
 struct SPVM_undef;
 typedef struct SPVM_undef SPVM_UNDEF;
