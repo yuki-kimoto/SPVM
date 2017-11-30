@@ -16,6 +16,9 @@ struct SPVM_compiler {
   // Bytecodes
   SPVM_BYTECODE_ARRAY* bytecode_array;
 
+  // Opcodes
+  SPVM_OPCODE_ARRAY* opcode_array;
+
   // Entry point package name
   const char* entry_point_package_name;
   
