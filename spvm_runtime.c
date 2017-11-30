@@ -2004,14 +2004,14 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION_VAR: {
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)SPVM_INLINE_GET_EXCEPTION();
         
-        bytecode_index += 2;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_STORE_EXCEPTION_VAR: {
         
         api->set_exception(api, (SPVM_API_OBJECT*)vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value);
         
-        bytecode_index += 2;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
