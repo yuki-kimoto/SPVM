@@ -1332,7 +1332,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_MOVE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]] = vars[SPVM_INFO_BYTECODES[bytecode_index + 2]];
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_INC_REF_COUNT: {
         // Increment new value reference count
