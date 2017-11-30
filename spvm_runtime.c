@@ -2014,9 +2014,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         bytecode_index += 8;
         break;
       }
-      case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
-        current_line = SPVM_INFO_BYTECODES[bytecode_index + 1];
-        bytecode_index += 2;
+      case SPVM_BYTECODE_C_CODE_PUSH_ARG:
+        call_sub_arg_stack_top++;
+        call_sub_arg_stack[call_sub_arg_stack_top].int_value = SPVM_INFO_BYTECODES[bytecode_index + 1];
+        
+        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CALL_SUB:
       {
@@ -2083,7 +2085,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           // Next operation
-          bytecode_index += 3 + (SPVM_INFO_DEBUG * 2);
+          bytecode_index += 8 + (SPVM_INFO_DEBUG * 2);
         }
         
         break;
@@ -2318,20 +2320,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         return return_value;
       }
-      case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO: {
-        int32_t success = condition_flag == 0;
-        bytecode_index += success * SPVM_INFO_BYTECODES[bytecode_index + 1] + (~success & 1) * 2;
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_IF_NE_ZERO: {
-        
-        int32_t success = condition_flag != 0;
-        bytecode_index += success * SPVM_INFO_BYTECODES[bytecode_index + 1] + (~success & 1) * 2;
-        break;
-      }
-      case SPVM_BYTECODE_C_CODE_GOTO:
-        bytecode_index += SPVM_INFO_BYTECODES[bytecode_index + 1];
-        break;
       case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
         // default offset
         int32_t default_offset = SPVM_INFO_BYTECODES[bytecode_index + 2];
@@ -2407,10 +2395,22 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         break;
       }
-      case SPVM_BYTECODE_C_CODE_PUSH_ARG:
-        call_sub_arg_stack_top++;
-        call_sub_arg_stack[call_sub_arg_stack_top].int_value = SPVM_INFO_BYTECODES[bytecode_index + 1];
+      case SPVM_BYTECODE_C_CODE_GOTO:
+        bytecode_index += SPVM_INFO_BYTECODES[bytecode_index + 1];
+        break;
+      case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO: {
+        int32_t success = condition_flag == 0;
+        bytecode_index += success * SPVM_INFO_BYTECODES[bytecode_index + 1] + (~success & 1) * 2;
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_IF_NE_ZERO: {
         
+        int32_t success = condition_flag != 0;
+        bytecode_index += success * SPVM_INFO_BYTECODES[bytecode_index + 1] + (~success & 1) * 2;
+        break;
+      }
+      case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
+        current_line = SPVM_INFO_BYTECODES[bytecode_index + 1];
         bytecode_index += 2;
         break;
     }

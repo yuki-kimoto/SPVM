@@ -258,32 +258,10 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         
         // Have one operands
         case SPVM_BYTECODE_C_CODE_GOTO:
-        case SPVM_BYTECODE_C_CODE_RETURN_BYTE:
-        case SPVM_BYTECODE_C_CODE_RETURN_SHORT:
-        case SPVM_BYTECODE_C_CODE_RETURN_INT:
-        case SPVM_BYTECODE_C_CODE_RETURN_LONG:
-        case SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
-        case SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
-        case SPVM_BYTECODE_C_CODE_RETURN_OBJECT:
         case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
         case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
-        case SPVM_BYTECODE_C_CODE_PUSH_ARG:
         {
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
-          break;
-        }
-
-        // Have two operands
-        case SPVM_BYTECODE_C_CODE_CALL_SUB:
-        {
-          i++;
-          bytecode = bytecode_array->values[i];
-          printf("        [%" PRId32 "] %d\n", i, bytecode);
-          
           i++;
           bytecode = bytecode_array->values[i];
           printf("        [%" PRId32 "] %d\n", i, bytecode);
@@ -292,6 +270,15 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
 
         // Have seven operands
+        case SPVM_BYTECODE_C_CODE_PUSH_ARG:
+        case SPVM_BYTECODE_C_CODE_CALL_SUB:
+        case SPVM_BYTECODE_C_CODE_RETURN_BYTE:
+        case SPVM_BYTECODE_C_CODE_RETURN_SHORT:
+        case SPVM_BYTECODE_C_CODE_RETURN_INT:
+        case SPVM_BYTECODE_C_CODE_RETURN_LONG:
+        case SPVM_BYTECODE_C_CODE_RETURN_FLOAT:
+        case SPVM_BYTECODE_C_CODE_RETURN_DOUBLE:
+        case SPVM_BYTECODE_C_CODE_RETURN_OBJECT:
         case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION_VAR:
         case SPVM_BYTECODE_C_CODE_STORE_EXCEPTION_VAR:
         case SPVM_BYTECODE_C_CODE_PUSH_EVAL:
