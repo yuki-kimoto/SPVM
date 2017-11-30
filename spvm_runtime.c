@@ -1990,7 +1990,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         eval_stack_top++;
         eval_stack[eval_stack_top] = jump_offset_abs;
         
-        bytecode_index += 2;
+        bytecode_index += 8;
         
         break;
       }

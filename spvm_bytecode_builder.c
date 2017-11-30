@@ -163,6 +163,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               SPVM_DYNAMIC_ARRAY_push(push_catch_exception_bytecode_index_stack, bytecode_index_ptr);
               
               SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+              SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
             }
           }
         }
