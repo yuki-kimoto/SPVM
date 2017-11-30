@@ -1599,8 +1599,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]] = SPVM_INFO_PACKAGE_VARS[package_var_id];
         
-        bytecode_index += 8;
-        
         break;
       }
       case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR: {
@@ -1609,8 +1607,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
         SPVM_INFO_PACKAGE_VARS[package_var_id] = vars[SPVM_INFO_BYTECODES[bytecode_index + 2]];
 
-        bytecode_index += 8;
-        
         break;
       }
       case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
@@ -1630,8 +1626,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           SPVM_INLINE_INC_REF_COUNT(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
         }
 
-        bytecode_index += 8;
-        
         break;
       }
       case SPVM_BYTECODE_C_CODE_PUSH_EVAL: {
@@ -1641,35 +1635,28 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         eval_stack_top++;
         eval_stack[eval_stack_top] = jump_offset_abs;
         
-        bytecode_index += 8;
-        
         break;
       }
       case SPVM_BYTECODE_C_CODE_POP_EVAL: {
         eval_stack_top--;
-        
-        bytecode_index += 8;
         
         break;
       }
       case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION_VAR: {
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)SPVM_INLINE_GET_EXCEPTION();
         
-        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_STORE_EXCEPTION_VAR: {
         
         api->set_exception(api, (SPVM_API_OBJECT*)vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value);
         
-        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_PUSH_ARG:
         call_sub_arg_stack_top++;
         call_sub_arg_stack[call_sub_arg_stack_top].int_value = SPVM_INFO_BYTECODES[bytecode_index + 1];
         
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_CALL_SUB:
       {
@@ -2261,6 +2248,14 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_LONG:
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_FLOAT:
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR:
+      case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR:
+      case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR_OBJECT:
+      case SPVM_BYTECODE_C_CODE_PUSH_EVAL:
+      case SPVM_BYTECODE_C_CODE_POP_EVAL:
+      case SPVM_BYTECODE_C_CODE_LOAD_EXCEPTION_VAR:
+      case SPVM_BYTECODE_C_CODE_STORE_EXCEPTION_VAR:
+      case SPVM_BYTECODE_C_CODE_PUSH_ARG:
         bytecode_index += 8;
     }
   }
