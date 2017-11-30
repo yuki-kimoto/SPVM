@@ -1363,7 +1363,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Push object
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = (SPVM_API_OBJECT*)object;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY: {
@@ -1381,7 +1381,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Set array
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = object;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY: {
@@ -1399,7 +1399,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Set array
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = object;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_INT_ARRAY: {
@@ -1417,7 +1417,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Set array
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = object;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY: {
@@ -1435,7 +1435,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Set array
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = object;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY: {
@@ -1453,7 +1453,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Set array
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = object;
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY: {
@@ -1471,7 +1471,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Set array
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = object;
 
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY: {
@@ -1490,7 +1490,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Set object
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = object;
 
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_NEW_STRING: {
@@ -1501,7 +1501,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         // Set string
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = string;
 
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_ARRAY_LENGTH:
