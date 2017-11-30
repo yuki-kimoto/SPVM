@@ -1952,16 +1952,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         break;
       }
-      case SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR_OBJECT: {
-        // Get subroutine ID
-        int32_t package_var_id = SPVM_INFO_BYTECODES[bytecode_index + 2];
-        
-        vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = SPVM_INFO_PACKAGE_VARS[package_var_id].object_value;
-        
-        bytecode_index += 8;
-        
-        break;
-      }
       case SPVM_BYTECODE_C_CODE_STORE_PACKAGE_VAR: {
         // Get subroutine ID
         int32_t package_var_id = SPVM_INFO_BYTECODES[bytecode_index + 1];

@@ -515,12 +515,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     int32_t package_var_id = our->id;
                     
-                    if (SPVM_TYPE_is_numeric(compiler, type)) {
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR);
-                    }
-                    else {
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR_OBJECT);
-                    }
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_LOAD_PACKAGE_VAR);
 
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
