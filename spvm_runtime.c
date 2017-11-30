@@ -2085,7 +2085,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           // Next operation
-          bytecode_index += 8 + (SPVM_INFO_DEBUG * 2);
+          bytecode_index += 8 + (SPVM_INFO_DEBUG * 8);
         }
         
         break;
@@ -2289,28 +2289,17 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             (void*)(exception_chars),
             exception_length
           );
-          if (SPVM_INFO_DEBUG) {
-            sprintf(
-              new_exception_chars + exception_length,
-              "%s%s%s%s%s%" PRId32,
-              from,
-              sub_name,
-              at,
-              file_name,
-              line,
-              current_line
-            );
-          }
-          else {
-            sprintf(
-              new_exception_chars + exception_length,
-              "%s%s%s%s",
-              from,
-              sub_name,
-              at,
-              file_name
-            );
-          }
+
+          sprintf(
+            new_exception_chars + exception_length,
+            "%s%s%s%s%s%" PRId32,
+            from,
+            sub_name,
+            at,
+            file_name,
+            line,
+            current_line
+          );
           
           // Set exception
           api->set_exception(api, new_exception);
@@ -2411,7 +2400,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
         current_line = SPVM_INFO_BYTECODES[bytecode_index + 1];
-        bytecode_index += 2;
+        bytecode_index += 8;
         break;
     }
   }

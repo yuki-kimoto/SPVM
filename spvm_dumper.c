@@ -258,7 +258,6 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         
         // Have one operands
         case SPVM_BYTECODE_C_CODE_GOTO:
-        case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
         case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO:
         case SPVM_BYTECODE_C_CODE_IF_NE_ZERO:
         {
@@ -270,6 +269,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         }
 
         // Have seven operands
+        case SPVM_BYTECODE_C_CODE_CURRENT_LINE:
         case SPVM_BYTECODE_C_CODE_PUSH_ARG:
         case SPVM_BYTECODE_C_CODE_CALL_SUB:
         case SPVM_BYTECODE_C_CODE_RETURN_BYTE:
