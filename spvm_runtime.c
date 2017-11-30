@@ -1512,7 +1512,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = *(int32_t*)((intptr_t)vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].object_value + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET);
-          bytecode_index += 3;
+          bytecode_index += 8;
           break;
         }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_BYTE: {
@@ -1533,7 +1533,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value = *(int8_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_SHORT: {
@@ -1554,7 +1554,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value = *(int16_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_INT: {
@@ -1575,7 +1575,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value = *(int32_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_LONG: {
@@ -1596,7 +1596,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value = *(int64_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_FLOAT: {
@@ -1617,7 +1617,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value = *(float*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_DOUBLE: {
@@ -1638,7 +1638,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value = *(double*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_GET_FIELD_OBJECT: {
@@ -1659,7 +1659,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value = *(SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT: {
@@ -1673,7 +1673,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_BYTECODE_C_CODE_CROAK;
         }
         
-        bytecode_index += 3;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_BYTE: {
@@ -1694,7 +1694,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         *(int8_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_SHORT: {
@@ -1715,7 +1715,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         *(int16_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_INT: {
@@ -1736,7 +1736,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         *(int32_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
 
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_LONG: {
@@ -1757,7 +1757,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         *(int64_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_FLOAT: {
@@ -1778,7 +1778,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         *(float*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_DOUBLE: {
@@ -1799,7 +1799,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         *(double*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_SET_FIELD_OBJECT: {
@@ -1834,7 +1834,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           SPVM_INLINE_INC_REF_COUNT((*field_address).object_value);
         }
         
-        bytecode_index += 4;
+        bytecode_index += 8;
         break;
       }
       case SPVM_BYTECODE_C_CODE_CONCAT_STRING_STRING: {

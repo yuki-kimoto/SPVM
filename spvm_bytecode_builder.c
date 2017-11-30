@@ -410,6 +410,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_FIELD) {
                     
@@ -452,6 +457,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_object);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, field_id);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                     
@@ -1467,6 +1476,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_object);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, field_id);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                 }
                 else {
                   assert(0);
@@ -1716,6 +1729,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_object);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, field_id);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                 }
                 
                 break;
