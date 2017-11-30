@@ -233,205 +233,123 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       case SPVM_BYTECODE_C_CODE_IS_UNDEF:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value == NULL;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_IS_NOT_UNDEF:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value != NULL;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_BYTE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_SHORT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_INT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_LONG:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_FLOAT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_DOUBLE:
-      
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_EQ_OBJECT:
-      
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value == vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].object_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_BYTE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_SHORT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_INT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_LONG:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_FLOAT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_DOUBLE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_NE_OBJECT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].object_value != vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].object_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GT_BYTE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value > vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GT_SHORT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value > vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GT_INT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value > vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GT_LONG:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value > vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GT_FLOAT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value > vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GT_DOUBLE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value > vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GE_BYTE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value >= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GE_SHORT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value >= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GE_INT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value >= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GE_LONG:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value >= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GE_FLOAT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value >= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_GE_DOUBLE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value >= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LT_BYTE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value < vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LT_SHORT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value < vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LT_INT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value < vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LT_LONG:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value < vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LT_FLOAT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value < vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LT_DOUBLE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value < vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LE_BYTE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value <= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].byte_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LE_SHORT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].short_value <= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].short_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LE_INT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value <= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].int_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LE_LONG:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].long_value <= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].long_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LE_FLOAT:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].float_value <= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].float_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_LE_DOUBLE:
         condition_flag = vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].double_value <= vars[SPVM_INFO_BYTECODES[bytecode_index + 2]].double_value;
-        
-        bytecode_index += 8;
         break;
       case SPVM_BYTECODE_C_CODE_ADD_BYTE:
         vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].byte_value
@@ -2397,6 +2315,46 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_BOOL_FLOAT:
       case SPVM_BYTECODE_C_CODE_BOOL_DOUBLE:
       case SPVM_BYTECODE_C_CODE_BOOL_OBJECT:
+      case SPVM_BYTECODE_C_CODE_IS_UNDEF:
+      case SPVM_BYTECODE_C_CODE_IS_NOT_UNDEF:
+      case SPVM_BYTECODE_C_CODE_EQ_BYTE:
+      case SPVM_BYTECODE_C_CODE_EQ_SHORT:
+      case SPVM_BYTECODE_C_CODE_EQ_INT:
+      case SPVM_BYTECODE_C_CODE_EQ_LONG:
+      case SPVM_BYTECODE_C_CODE_EQ_FLOAT:
+      case SPVM_BYTECODE_C_CODE_EQ_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_EQ_OBJECT:
+      case SPVM_BYTECODE_C_CODE_NE_BYTE:
+      case SPVM_BYTECODE_C_CODE_NE_SHORT:
+      case SPVM_BYTECODE_C_CODE_NE_INT:
+      case SPVM_BYTECODE_C_CODE_NE_LONG:
+      case SPVM_BYTECODE_C_CODE_NE_FLOAT:
+      case SPVM_BYTECODE_C_CODE_NE_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_NE_OBJECT:
+      case SPVM_BYTECODE_C_CODE_GT_BYTE:
+      case SPVM_BYTECODE_C_CODE_GT_SHORT:
+      case SPVM_BYTECODE_C_CODE_GT_INT:
+      case SPVM_BYTECODE_C_CODE_GT_LONG:
+      case SPVM_BYTECODE_C_CODE_GT_FLOAT:
+      case SPVM_BYTECODE_C_CODE_GT_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_GE_BYTE:
+      case SPVM_BYTECODE_C_CODE_GE_SHORT:
+      case SPVM_BYTECODE_C_CODE_GE_INT:
+      case SPVM_BYTECODE_C_CODE_GE_LONG:
+      case SPVM_BYTECODE_C_CODE_GE_FLOAT:
+      case SPVM_BYTECODE_C_CODE_GE_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_LT_BYTE:
+      case SPVM_BYTECODE_C_CODE_LT_SHORT:
+      case SPVM_BYTECODE_C_CODE_LT_INT:
+      case SPVM_BYTECODE_C_CODE_LT_LONG:
+      case SPVM_BYTECODE_C_CODE_LT_FLOAT:
+      case SPVM_BYTECODE_C_CODE_LT_DOUBLE:
+      case SPVM_BYTECODE_C_CODE_LE_BYTE:
+      case SPVM_BYTECODE_C_CODE_LE_SHORT:
+      case SPVM_BYTECODE_C_CODE_LE_INT:
+      case SPVM_BYTECODE_C_CODE_LE_LONG:
+      case SPVM_BYTECODE_C_CODE_LE_FLOAT:
+      case SPVM_BYTECODE_C_CODE_LE_DOUBLE:
         bytecode_index += 8;
     }
   }
