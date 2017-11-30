@@ -351,6 +351,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in1);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in2);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
 
@@ -522,6 +526,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
                     SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, package_var_id);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
                     // VAR = EXCEPTION_VAR
@@ -1380,6 +1389,11 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, package_var_id);
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
                   // EXCEPTION_VAR = VAR
