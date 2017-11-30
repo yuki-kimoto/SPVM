@@ -1,18 +1,18 @@
-#ifndef SPVM_BYTECODE_ARRAY_H
-#define SPVM_BYTECODE_ARRAY_H
+#ifndef SPVM_OPCODE_ARRAY_H
+#define SPVM_OPCODE_ARRAY_H
 
 #include "spvm_base.h"
 
 // Array
-struct SPVM_bytecode_array {
-  int32_t* values;
+struct SPVM_opcode_array {
+  SPVM_OPCODE* values;
   int32_t length;
   int32_t capacity;
 };
 
 // Array function
-SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM_COMPILER* compiler);
-void SPVM_BYTECODE_ARRAY_free(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecodes);
-void SPVM_BYTECODE_ARRAY_push_int(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecodes, int32_t value);
+SPVM_OPCODE_ARRAY* SPVM_OPCODE_ARRAY_new(SPVM_COMPILER* compiler);
+void SPVM_OPCODE_ARRAY_free(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcodes);
+void SPVM_OPCODE_ARRAY_push_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcodes, SPVM_OPCODE* opcode);
 
 #endif
