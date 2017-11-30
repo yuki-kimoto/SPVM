@@ -2022,7 +2022,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           bytecode_index += default_offset;
         }
         
-        break;
+        continue;
       }
       case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
 
@@ -2075,8 +2075,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           bytecode_index += default_offset;
         }
-        
-        break;
+        continue;
       }
       case SPVM_BYTECODE_C_CODE_GOTO:
         bytecode_index += SPVM_INFO_BYTECODES[bytecode_index + 1];
