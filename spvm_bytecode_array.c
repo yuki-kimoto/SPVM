@@ -5,6 +5,7 @@
 #include "spvm_bytecode_array.h"
 #include "spvm_util_allocator.h"
 #include "spvm_compiler.h"
+#include "spvm_opcode.h"
 
 SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM_COMPILER* compiler) {
   (void)compiler;
@@ -45,6 +46,19 @@ void SPVM_BYTECODE_ARRAY_push_int(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* 
   }
   *(int32_t*)&bytecodes->values[length] = value;
   bytecodes->length++;
+}
+
+void SPVM_BYTECODE_ARRAY_push_opcode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecodes, SPVM_OPCODE* opcode) {
+  (void)compiler;
+  
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->code);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand0);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand1);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand2);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->jit_operand0);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->jit_operand1);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->jit_operand2);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->dummy);
 }
 
 void SPVM_BYTECODE_ARRAY_free(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecodes) {

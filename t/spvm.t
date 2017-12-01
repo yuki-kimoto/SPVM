@@ -722,6 +722,14 @@ is_deeply(
 {
   ok(SPVM::TestCase::special_assign());
 }
+
+# Increment
+{
+  ok(SPVM::TestCase::pre_inc());
+  ok(SPVM::TestCase::post_inc());
+}
+
+
 # Add
 {
   is(SPVM::TestCase::add_byte_max(), 127);
