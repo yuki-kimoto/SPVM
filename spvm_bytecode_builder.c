@@ -1192,19 +1192,19 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_last = op_cur->last;
 
                     if (op_last->first->code == SPVM_OP_C_CODE_CONSTANT) {
+
+                      SPVM_OPCODE opcode;
+                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_STRING);
+                      opcode.code = SPVM_BYTECODE_C_CODE_NEW_STRING;
 
                       int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                      
                       SPVM_CONSTANT* constant = op_last->first->uv.constant;
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, constant->id);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+
+                      opcode.operand0 = index_out;
+                      opcode.operand1 = constant->id;
+
+                      SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                     }
                     else if (op_last->first->code == SPVM_OP_C_CODE_TYPE) {
                       
