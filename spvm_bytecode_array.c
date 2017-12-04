@@ -18,7 +18,11 @@ SPVM_BYTECODE_ARRAY* SPVM_BYTECODE_ARRAY_new(SPVM_COMPILER* compiler) {
   int32_t* values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(values_byte_size);
   bytecodes->values = values;
   
-  // Add 4 byte because 0 mean no bytecode
+  // 8 byte alignment because 0 mean no bytecode
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);
   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, 0);

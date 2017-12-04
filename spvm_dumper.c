@@ -315,6 +315,12 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
             }
           }
           
+          while ((i + 1) % 8 != 0) {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          
           break;
         }
         case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {

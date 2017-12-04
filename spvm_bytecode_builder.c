@@ -1540,6 +1540,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                     }
                   }
+                  
+                  while (bytecode_array->length % 8 != 0) {
+                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  }
                 }
                 // lookupswitch
                 else if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH) {
