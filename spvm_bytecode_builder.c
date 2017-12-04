@@ -1752,20 +1752,16 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT);
+                  opcode.code = SPVM_BYTECODE_C_CODE_WEAKEN_FIELD_OBJECT;
                   SPVM_FIELD* field = op_cur->uv.call_field->field;
                   int32_t field_id = field->id;
                   
                   SPVM_OP* op_term_object = op_cur->first;
                   int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
                     
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_term_object);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, field_id);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  opcode.operand0 = index_term_object;
+                  opcode.operand1 = field_id;
+                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                 }
                 
                 break;
@@ -1774,14 +1770,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 SPVM_OPCODE opcode;
                 memset(&opcode, 0, sizeof(SPVM_OPCODE));
                 
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CROAK);
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                opcode.code = SPVM_BYTECODE_C_CODE_CROAK;
+                
+                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                 
                 break;
               }
