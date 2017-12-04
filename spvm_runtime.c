@@ -1957,7 +1957,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         if (vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value >= min && vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value <= max) {
           int32_t branch_offset
-            = *(int32_t*)((&SPVM_INFO_BYTECODES[bytecode_index + 5]) + (vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value - min));
+            = *(int32_t*)((&SPVM_INFO_BYTECODES[bytecode_index + 8]) + (vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value - min));
           bytecode_index += branch_offset;
         }
         else {

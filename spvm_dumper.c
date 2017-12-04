@@ -285,6 +285,23 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
           {
             i++;
             bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
           }
           
           // Addresses
