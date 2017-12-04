@@ -1034,25 +1034,28 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src_term);
                     SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist_type);
+
+                    SPVM_OPCODE opcode;
+                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
                     if (src_type->code == SPVM_TYPE_C_CODE_BYTE) {
                       if (dist_type->code == SPVM_TYPE_C_CODE_BYTE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_BYTE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_BYTE;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_SHORT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_SHORT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_SHORT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_INT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_INT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_INT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_LONG) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_LONG);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_LONG;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_FLOAT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_FLOAT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_DOUBLE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_BYTE_TO_DOUBLE;
                       }
                       else {
                         assert(0);
@@ -1060,22 +1063,22 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (src_type->code == SPVM_TYPE_C_CODE_SHORT) {
                       if (dist_type->code == SPVM_TYPE_C_CODE_BYTE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_BYTE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_BYTE;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_SHORT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_SHORT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_SHORT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_INT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_INT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_INT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_LONG) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_LONG);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_LONG;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_FLOAT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_FLOAT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_DOUBLE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_SHORT_TO_DOUBLE;
                       }
                       else {
                         assert(0);
@@ -1083,22 +1086,22 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (src_type->code == SPVM_TYPE_C_CODE_INT) {
                       if (dist_type->code == SPVM_TYPE_C_CODE_BYTE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_BYTE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_BYTE;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_SHORT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_SHORT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_SHORT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_INT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_INT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_INT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_LONG) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_LONG;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_FLOAT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_FLOAT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_DOUBLE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_INT_TO_DOUBLE;
                       }
                       else {
                         assert(0);
@@ -1106,22 +1109,22 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (src_type->code == SPVM_TYPE_C_CODE_LONG) {
                       if (dist_type->code == SPVM_TYPE_C_CODE_BYTE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_BYTE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_BYTE;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_SHORT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_SHORT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_SHORT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_INT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_INT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_INT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_LONG) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_LONG);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_LONG;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_FLOAT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_FLOAT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_DOUBLE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_LONG_TO_DOUBLE;
                       }
                       else {
                         assert(0);
@@ -1129,22 +1132,22 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (src_type->code == SPVM_TYPE_C_CODE_FLOAT) {
                       if (dist_type->code == SPVM_TYPE_C_CODE_BYTE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_BYTE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_BYTE;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_SHORT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_SHORT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_SHORT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_INT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_INT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_INT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_LONG) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_LONG);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_LONG;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_FLOAT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_FLOAT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_DOUBLE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_FLOAT_TO_DOUBLE;
                       }
                       else {
                         assert(0);
@@ -1152,22 +1155,22 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (src_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
                       if (dist_type->code == SPVM_TYPE_C_CODE_BYTE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_BYTE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_BYTE;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_SHORT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_SHORT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_SHORT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_INT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_INT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_INT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_LONG) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_LONG);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_LONG;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_FLOAT);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_FLOAT;
                       }
                       else if (dist_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_DOUBLE);
+                        opcode.code = SPVM_BYTECODE_C_CODE_CONVERT_DOUBLE_TO_DOUBLE;
                       }
                       else {
                         assert(0);
@@ -1180,13 +1183,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_dist_term);
                     int32_t index_in = SPVM_OP_get_my_index(compiler, op_src_term);
                     
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    opcode.operand0 = index_out;
+                    opcode.operand1 = index_in;
+                    
+                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_NEW) {
                     SPVM_OP* op_last = op_cur->last;
