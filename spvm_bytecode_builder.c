@@ -1511,15 +1511,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_TABLE_SWITCH);
 
-                  // Switch bytecode index
-                  int32_t switch_bytecode_index = bytecode_array->length - 1;
-
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   
-                  // Push switch information stack
-                  switch_info->bytecode_index = switch_bytecode_index;
-                  SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
+                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
                   
                   // Default
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
@@ -1529,7 +1523,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   // Max
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, switch_info->max);
-                  
+
+                  // Switch bytecode index
+                  int32_t switch_bytecode_index = bytecode_array->length - 5;
+                  switch_info->bytecode_index = switch_bytecode_index;
+                  SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
+
                   // Offsets
                   {
                     int32_t i;
