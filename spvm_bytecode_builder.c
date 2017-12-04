@@ -2260,36 +2260,32 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   
                   if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_BYTE);
+                    opcode.code = SPVM_BYTECODE_C_CODE_BOOL_BYTE;
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_SHORT);
+                    opcode.code = SPVM_BYTECODE_C_CODE_BOOL_SHORT;
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_INT);
+                    opcode.code = SPVM_BYTECODE_C_CODE_BOOL_INT;
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_LONG);
+                    opcode.code = SPVM_BYTECODE_C_CODE_BOOL_LONG;
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_FLOAT);
+                    opcode.code = SPVM_BYTECODE_C_CODE_BOOL_FLOAT;
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_DOUBLE);
+                    opcode.code = SPVM_BYTECODE_C_CODE_BOOL_DOUBLE;
                   }
                   else {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_BOOL_OBJECT);
+                    opcode.code = SPVM_BYTECODE_C_CODE_BOOL_OBJECT;
                   }
 
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  opcode.operand0 = index_in;
+
+                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                 }
                 
                 break;
@@ -2309,28 +2305,23 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_PUSH_ARG);
+                    opcode.code = SPVM_BYTECODE_C_CODE_PUSH_ARG;
+
                     int32_t index_arg = SPVM_OP_get_my_index(compiler, op_arg);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_arg);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    opcode.operand0 = index_arg;
+                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                   }
                   
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
                   // Call subroutine
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_CALL_SUB);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  opcode.code = SPVM_BYTECODE_C_CODE_CALL_SUB;
                   
                   int32_t id = sub->id;
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, id);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  opcode.operand1 = id;
+
+                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                   
                   if (compiler->debug) {
                     SPVM_OPCODE opcode;
