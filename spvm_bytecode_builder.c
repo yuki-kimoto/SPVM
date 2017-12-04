@@ -1192,7 +1192,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_last = op_cur->last;
 
                     if (op_last->first->code == SPVM_OP_C_CODE_CONSTANT) {
-
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       
@@ -1217,138 +1216,133 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                                ELEMENT_TYPE op_last->first->first
                                INDEX op_last->first->last
                         */
-                    
-
+                        
                         switch (type->code) {
                           case SPVM_TYPE_C_CODE_BYTE_ARRAY: {
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY);
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                            opcode.code = SPVM_BYTECODE_C_CODE_NEW_BYTE_ARRAY;
 
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-
                             int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+
+                            opcode.operand0 = index_out;
+                            opcode.operand1 = index_index;
+
+                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                             
                             break;
                           }
                           case SPVM_TYPE_C_CODE_SHORT_ARRAY: {
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY);
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                            opcode.code = SPVM_BYTECODE_C_CODE_NEW_SHORT_ARRAY;
 
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-
                             int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                            
+                            opcode.operand0 = index_out;
+                            opcode.operand1 = index_index;
+
+                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                             
                             break;
                           }
                           case SPVM_TYPE_C_CODE_INT_ARRAY: {
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_INT_ARRAY);
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                            opcode.code = SPVM_BYTECODE_C_CODE_NEW_INT_ARRAY;
 
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-
                             int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+
+                            opcode.operand0 = index_out;
+                            opcode.operand1 = index_index;
+
+                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                             
                             break;
                           }
                           case SPVM_TYPE_C_CODE_LONG_ARRAY: {
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY);
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                            opcode.code = SPVM_BYTECODE_C_CODE_NEW_LONG_ARRAY;
 
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-
                             int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+
+                            opcode.operand0 = index_out;
+                            opcode.operand1 = index_index;
+
+                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                             
                             break;
                           }
                           case SPVM_TYPE_C_CODE_FLOAT_ARRAY: {
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY);
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                            opcode.code = SPVM_BYTECODE_C_CODE_NEW_FLOAT_ARRAY;
 
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-
                             int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+
+                            opcode.operand0 = index_out;
+                            opcode.operand1 = index_index;
+
+                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                             
                             break;
                           }
                           case SPVM_TYPE_C_CODE_DOUBLE_ARRAY: {
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY);
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                            opcode.code = SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY;
                             
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-
                             int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+
+                            opcode.operand0 = index_out;
+                            opcode.operand1 = index_index;
+
+                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
 
                             break;
                           }
                           default: {
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_OBJECT_ARRAY);
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                            opcode.code = SPVM_BYTECODE_C_CODE_NEW_DOUBLE_ARRAY;
 
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                            
                             SPVM_TYPE* element_type = op_last->first->first->uv.type;
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, element_type->id);
-
                             int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_index);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                            SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+
+                            opcode.operand0 = index_out;
+                            opcode.operand1 = element_type->id;
+                            opcode.operand2 = index_index;
+
+                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                           }
                         }
                       }
                       else {
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_NEW_OBJECT);
+                        SPVM_OPCODE opcode;
+                        memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                        opcode.code = SPVM_BYTECODE_C_CODE_NEW_OBJECT;
                         
                         int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_out);
-                        
                         int32_t type_id = op_last->first->uv.type->id;
                         assert(type_id);
                         
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, type_id);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                        SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                        opcode.operand0 = index_out;
+                        opcode.operand1 = type_id;
+                        SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                       }
                     }
                     else {
