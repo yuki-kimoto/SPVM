@@ -1972,6 +1972,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         continue;
       }
       case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
+        int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
+        int32_t intcode_index = opcode_index * SPVM_INFO_OPCODE_UNIT;
+
         int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
         
         /*
@@ -1983,16 +1986,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         */
         
         // default offset
-        int32_t default_offset = SPVM_INFO_BYTECODES[(opcode_index * SPVM_INFO_OPCODE_UNIT) + 2];
+        int32_t default_offset = intcodes[intcode_index + 2];
         
         // npare
-        int32_t pair_count = SPVM_INFO_BYTECODES[(opcode_index * SPVM_INFO_OPCODE_UNIT) + 3];
+        int32_t pair_count = intcodes[intcode_index + 3];
         
         // min
-        int32_t min = SPVM_INFO_BYTECODES[(opcode_index * SPVM_INFO_OPCODE_UNIT) + 8];
+        int32_t min = intcodes[intcode_index + 8];
         
         // max
-        int32_t max = SPVM_INFO_BYTECODES[(opcode_index * SPVM_INFO_OPCODE_UNIT) + 8 + (pair_count - 1) * 2];
+        int32_t max = intcodes[intcode_index + 8 + (pair_count - 1) * 2];
         
         if (vars[opcode->operand0].int_value >= min && vars[opcode->operand0].int_value <= max) {
           // 2 branch searching
@@ -2005,7 +2008,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
               break;
             }
             int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-            int32_t cur_half = SPVM_INFO_BYTECODES[(opcode_index * SPVM_INFO_OPCODE_UNIT) + 8 + (cur_half_pos * 2)];
+            int32_t cur_half = intcodes[intcode_index + 8 + (cur_half_pos * 2)];
             
             if (vars[opcode->operand0].int_value > cur_half) {
               cur_min_pos = cur_half_pos + 1;
@@ -2014,7 +2017,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
               cur_max_pos = cur_half_pos - 1;
             }
             else {
-              int32_t branch_offset = SPVM_INFO_BYTECODES[(opcode_index * SPVM_INFO_OPCODE_UNIT) + 8 + (cur_half_pos * 2) + 1];
+              int32_t branch_offset = SPVM_INFO_BYTECODES[intcode_index + 8 + (cur_half_pos * 2) + 1];
               opcode_index += branch_offset / SPVM_INFO_OPCODE_UNIT;
               break;
             }
