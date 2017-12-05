@@ -1728,6 +1728,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           // Next operation
           bytecode_index += 8;
+          opcode_index = bytecode_index / 8;
         }
         
         continue;
@@ -1861,6 +1862,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           eval_stack_top--;
           
           bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE + jump_offset_abs;
+          opcode_index = bytecode_index / 8;
           continue;
         }
         
@@ -1971,6 +1973,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           bytecode_index += default_offset;
         }
         
+        opcode_index = bytecode_index / 8;
+        
         continue;
       }
       case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
@@ -2025,14 +2029,19 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         else {
           bytecode_index += default_offset;
         }
+        
+        opcode_index = bytecode_index / 8;
+        
         continue;
       }
       case SPVM_BYTECODE_C_CODE_GOTO:
         bytecode_index += opcode->operand0;
+        opcode_index = bytecode_index / 8;
         continue;
       case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO: {
         if (condition_flag == 0) {
           bytecode_index += opcode->operand0;
+          opcode_index = bytecode_index / 8;
           continue;
         }
         break;
@@ -2040,6 +2049,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_IF_NE_ZERO: {
         if (condition_flag) {
           bytecode_index += opcode->operand0;
+          opcode_index = bytecode_index / 8;
           continue;
         }
         break;
@@ -2049,6 +2059,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
     }
     bytecode_index += 8;
-    opcode_index++;
+    opcode_index = bytecode_index / 8;
   }
 }
