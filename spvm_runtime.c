@@ -92,8 +92,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Bytecodes
   SPVM_OPCODE* SPVM_INFO_OPCODES = (SPVM_OPCODE*)SPVM_INFO_RUNTIME->bytecodes;
   
-  // Bytecode base
-  int32_t SPVM_INFO_SUB_XXX_BYTECODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->bytecode_base;
+  // Opcode base
+  int32_t SPVM_INFO_SUB_XXX_OPCODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->opcode_base;
   
   // Args length
   int32_t args_length = SPVM_INFO_CONSTANT_POOL_SUB_XXX->args_length;
@@ -203,7 +203,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   int32_t SPVM_INFO_OPCODE_UNIT = 8;
   
-  register int32_t opcode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE / SPVM_INFO_OPCODE_UNIT;
+  register int32_t opcode_index = SPVM_INFO_SUB_XXX_OPCODE_BASE;
   
   while (1) {
     SPVM_OPCODE* opcode = &(SPVM_INFO_OPCODES[opcode_index]);
@@ -1857,7 +1857,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           int32_t jump_offset_abs = eval_stack[eval_stack_top];
           eval_stack_top--;
           
-          opcode_index = (SPVM_INFO_SUB_XXX_BYTECODE_BASE / 8) + jump_offset_abs;
+          opcode_index = SPVM_INFO_SUB_XXX_OPCODE_BASE + jump_offset_abs;
           continue;
         }
         
