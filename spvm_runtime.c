@@ -2034,14 +2034,14 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         continue;
       case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO: {
         if (condition_flag == 0) {
-          opcode_index += opcode->operand0 / SPVM_INFO_OPCODE_UNIT;
+          opcode_index += opcode->operand0;
           continue;
         }
         break;
       }
       case SPVM_BYTECODE_C_CODE_IF_NE_ZERO: {
         if (condition_flag) {
-          opcode_index += opcode->operand0 / SPVM_INFO_OPCODE_UNIT;
+          opcode_index += opcode->operand0;
           continue;
         }
         break;
