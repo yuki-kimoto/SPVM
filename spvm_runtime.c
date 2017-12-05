@@ -201,8 +201,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
   }
   
-  int32_t SPVM_INFO_OPCODE_UNIT = 8;
-  
   register int32_t opcode_index = SPVM_INFO_SUB_XXX_OPCODE_BASE;
   
   while (1) {
@@ -1949,7 +1947,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
         int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
-        int32_t intcode_index = opcode_index * SPVM_INFO_OPCODE_UNIT;
+        int32_t intcode_index = opcode_index * 8;
         
         // default offset
         int32_t default_offset = intcodes[intcode_index + 2];
@@ -1973,7 +1971,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
         int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
-        int32_t intcode_index = opcode_index * SPVM_INFO_OPCODE_UNIT;
+        int32_t intcode_index = opcode_index * 8;
 
         int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
         
