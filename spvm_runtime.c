@@ -209,7 +209,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   int32_t opcode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE / 8;
   
   while (1) {
-    SPVM_OPCODE* opcode = &(SPVM_INFO_OPCODES[bytecode_index / 8]);
+    SPVM_OPCODE* opcode = &(SPVM_INFO_OPCODES[opcode_index]);
     
     switch (opcode->code) {
       case SPVM_BYTECODE_C_CODE_NOP:
