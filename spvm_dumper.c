@@ -315,6 +315,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
             }
           }
           
+          // 8 byte alignment
           while ((i + 1) % 8 != 0) {
             i++;
             bytecode = bytecode_array->values[i];
@@ -348,6 +349,29 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
             printf("        [%" PRId32 "] %d\n", i, bytecode);
           }
           
+          // 8 byte alignment
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+          {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          }
+
+          
           // Addresses
           {
             int32_t j;
@@ -356,6 +380,13 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
               bytecode = bytecode_array->values[i];
               printf("        [%" PRId32 "] %d\n", i, bytecode);
             }
+          }
+          
+          // 8 byte alignment
+          while ((i + 1) % 8 != 0) {
+            i++;
+            bytecode = bytecode_array->values[i];
+            printf("        [%" PRId32 "] %d\n", i, bytecode);
           }
           
           break;

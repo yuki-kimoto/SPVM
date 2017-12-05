@@ -1967,13 +1967,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         continue;
       }
       case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
-
+        
         /*
         1  default
         5  npare
-        9  match  13 branch // min
-        17 match 21 branch
-        25 match 29 branch // max
+        9  match1 offset1 // min
+        17 match2 offset2
+        25 match3 offset3 // max
         */
         
         // default offset
@@ -1983,10 +1983,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t pair_count = SPVM_INFO_BYTECODES[bytecode_index + 3];
         
         // min
-        int32_t min = SPVM_INFO_BYTECODES[bytecode_index + 4];
+        int32_t min = SPVM_INFO_BYTECODES[bytecode_index + 8];
         
         // max
-        int32_t max = SPVM_INFO_BYTECODES[bytecode_index + 4 + (pair_count - 1) * 2];
+        int32_t max = SPVM_INFO_BYTECODES[bytecode_index + 8 + (pair_count - 1) * 2];
         
         if (vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value >= min && vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value <= max) {
           // 2 branch searching
@@ -1999,7 +1999,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
               break;
             }
             int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-            int32_t cur_half = SPVM_INFO_BYTECODES[bytecode_index + 4 + (cur_half_pos * 2)];
+            int32_t cur_half = SPVM_INFO_BYTECODES[bytecode_index + 8 + (cur_half_pos * 2)];
             
             if (vars[SPVM_INFO_BYTECODES[bytecode_index + 1]].int_value > cur_half) {
               cur_min_pos = cur_half_pos + 1;
@@ -2008,7 +2008,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
               cur_max_pos = cur_half_pos - 1;
             }
             else {
-              int32_t branch_offset = SPVM_INFO_BYTECODES[bytecode_index + 4 + (cur_half_pos * 2) + 1];
+              int32_t branch_offset = SPVM_INFO_BYTECODES[bytecode_index + 8 + (cur_half_pos * 2) + 1];
               bytecode_index += branch_offset;
               break;
             }
