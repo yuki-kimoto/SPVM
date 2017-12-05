@@ -38,7 +38,7 @@
 #include "spvm_opcode_array.h"
 
 
-void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, SPVM_OP* op_inc, int32_t value) {
+void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcode_array, SPVM_OP* op_inc, int32_t value) {
   
   SPVM_VAR* var = op_inc->first->uv.var;
   SPVM_MY* my = var->op_my->uv.my;
@@ -52,7 +52,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     opcode.operand0 = my->index;
     opcode.operand1 = value;
     
-    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+    SPVM_BYTECODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
   }
   else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
     SPVM_OPCODE opcode;
@@ -62,7 +62,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     opcode.operand0 = my->index;
     opcode.operand1 = value;
     
-    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+    SPVM_BYTECODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
   }
   else if (type->code == SPVM_TYPE_C_CODE_INT) {
     SPVM_OPCODE opcode;
@@ -72,7 +72,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     opcode.operand0 = my->index;
     opcode.operand1 = value;
     
-    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+    SPVM_BYTECODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
   }
   else if (type->code == SPVM_TYPE_C_CODE_LONG) {
     SPVM_OPCODE opcode;
@@ -82,7 +82,7 @@ void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_BYTEC
     opcode.operand0 = my->index;
     opcode.operand1 = value;
     
-    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+    SPVM_BYTECODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
   }
 }
 
@@ -149,7 +149,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
               
               int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *bytecode_index_ptr = bytecode_array->length - 8;
+              *bytecode_index_ptr = bytecode_array->length - OPCODE_UNIT;
               
               SPVM_DYNAMIC_ARRAY_push(goto_loop_start_bytecode_index_stack, bytecode_index_ptr);
               
@@ -161,7 +161,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
               
               int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *bytecode_index_ptr = bytecode_array->length - 8;
+              *bytecode_index_ptr = bytecode_array->length - OPCODE_UNIT;
               
               SPVM_DYNAMIC_ARRAY_push(push_catch_exception_bytecode_index_stack, bytecode_index_ptr);
             }
@@ -1532,7 +1532,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
 
                   // Switch bytecode index
-                  int32_t switch_bytecode_index = bytecode_array->length - 8;
+                  int32_t switch_bytecode_index = bytecode_array->length - OPCODE_UNIT;
                   switch_info->bytecode_index = switch_bytecode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
 
@@ -1568,7 +1568,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
 
                   // Switch bytecode index
-                  int32_t switch_bytecode_index = bytecode_array->length - 8;
+                  int32_t switch_bytecode_index = bytecode_array->length - OPCODE_UNIT;
                   switch_info->bytecode_index = switch_bytecode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
                   
@@ -1787,7 +1787,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                 
                 int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                *bytecode_index_ptr = bytecode_array->length - 8;
+                *bytecode_index_ptr = bytecode_array->length - OPCODE_UNIT;
                 
                 SPVM_DYNAMIC_ARRAY_push(goto_last_bytecode_index_stack, bytecode_index_ptr);
                 
@@ -1822,7 +1822,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                     
                     int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                    *bytecode_index_ptr = bytecode_array->length - 8;
+                    *bytecode_index_ptr = bytecode_array->length - OPCODE_UNIT;
                     SPVM_DYNAMIC_ARRAY_push(goto_if_block_end_bytecode_index_stack, bytecode_index_ptr);
                   }
 
