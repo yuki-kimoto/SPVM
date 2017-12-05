@@ -1723,7 +1723,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = bytecode_array->length - goto_last_bytecode_index;
                   
-                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
+                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset / 8;
                 }
                 
                 break;
@@ -1847,7 +1847,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = bytecode_array->length - bytecode_index;
                   
                   // Set jump offset
-                  bytecode_array->values[bytecode_index + 1] = jump_offset;
+                  bytecode_array->values[bytecode_index + 1] = jump_offset / 8;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
                   
@@ -1857,7 +1857,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Jump offset
                   int32_t goto_loop_start_offset = bytecode_array->length - goto_loop_start_bytecode_index;
                   
-                  bytecode_array->values[goto_loop_start_bytecode_index + 1] = goto_loop_start_offset;
+                  bytecode_array->values[goto_loop_start_bytecode_index + 1] = goto_loop_start_offset / 8;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                   SPVM_OPCODE opcode;
@@ -1888,7 +1888,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = bytecode_array->length - goto_last_bytecode_index;
                   
-                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
+                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset / 8;
                 }
                 
                 break;
