@@ -1857,7 +1857,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           int32_t jump_offset_abs = eval_stack[eval_stack_top];
           eval_stack_top--;
           
-          opcode_index = (SPVM_INFO_SUB_XXX_BYTECODE_BASE + jump_offset_abs) / SPVM_INFO_OPCODE_UNIT;
+          opcode_index = (SPVM_INFO_SUB_XXX_BYTECODE_BASE / 8) + jump_offset_abs;
           continue;
         }
         
