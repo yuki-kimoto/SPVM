@@ -1603,7 +1603,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else {
                     default_offset = default_bytecode_index - switch_bytecode_index;
                   }
-                  bytecode_array->values[switch_bytecode_index + 2] = default_offset;
+                  bytecode_array->values[switch_bytecode_index + 2] = default_offset / 8;
                   
                   // min
                   int32_t min = bytecode_array->values[switch_bytecode_index + 2 + 1];
@@ -1625,13 +1625,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         int32_t case_bytecode_index = *case_bytecode_index_ptr;
                         int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                         
-                        bytecode_array->values[switch_bytecode_index + 8 + i] = case_offset;
+                        bytecode_array->values[switch_bytecode_index + 8 + i] = case_offset / 8;
                         
                         case_pos++;
                       }
                       else {
                         // Default
-                        bytecode_array->values[switch_bytecode_index + 8 + i] = default_offset;
+                        bytecode_array->values[switch_bytecode_index + 8 + i] = default_offset / 8;
                       }
                     }
                   }

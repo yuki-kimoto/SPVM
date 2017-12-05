@@ -1962,10 +1962,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         if (vars[opcode->operand0].int_value >= min && vars[opcode->operand0].int_value <= max) {
           int32_t branch_offset
             = *(int32_t*)((&SPVM_INFO_BYTECODES[(opcode_index * SPVM_INFO_OPCODE_UNIT) + 8]) + (vars[opcode->operand0].int_value - min));
-          opcode_index += branch_offset / SPVM_INFO_OPCODE_UNIT;
+          opcode_index += branch_offset;
         }
         else {
-          opcode_index += default_offset / SPVM_INFO_OPCODE_UNIT;
+          opcode_index += default_offset;
         }
         
         continue;
