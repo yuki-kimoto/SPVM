@@ -1972,8 +1972,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
         int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
         int32_t intcode_index = opcode_index * 8;
-
-        int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
         
         /*
         1  default
@@ -2015,7 +2013,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
               cur_max_pos = cur_half_pos - 1;
             }
             else {
-              int32_t branch_offset = SPVM_INFO_BYTECODES[intcode_index + 8 + (cur_half_pos * 2) + 1];
+              int32_t branch_offset = intcodes[intcode_index + 8 + (cur_half_pos * 2) + 1];
               opcode_index += branch_offset;
               break;
             }
