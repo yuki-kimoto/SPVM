@@ -1952,10 +1952,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
         // default offset
-        int32_t default_offset = opcode->operand1;
+        int32_t default_offset = SPVM_INFO_BYTECODES[bytecode_index + 2];
         
         // min
-        int32_t min = opcode->operand2;
+        int32_t min = SPVM_INFO_BYTECODES[bytecode_index + 3];
         
         // max
         int32_t max = SPVM_INFO_BYTECODES[bytecode_index + 4];
@@ -1982,10 +1982,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         */
         
         // default offset
-        int32_t default_offset = opcode->operand1;
+        int32_t default_offset = SPVM_INFO_BYTECODES[bytecode_index + 2];
         
         // npare
-        int32_t pair_count = opcode->operand2;
+        int32_t pair_count = SPVM_INFO_BYTECODES[bytecode_index + 3];
         
         // min
         int32_t min = SPVM_INFO_BYTECODES[bytecode_index + 8];
