@@ -210,6 +210,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   while (1) {
     SPVM_OPCODE* opcode = &(SPVM_INFO_OPCODES[opcode_index]);
+    bytecode_index = opcode_index * 8;
     
     switch (opcode->code) {
       case SPVM_BYTECODE_C_CODE_NOP:
@@ -1727,8 +1728,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           // Next operation
-          bytecode_index += 8;
-          opcode_index = bytecode_index / 8;
+          opcode_index++;
         }
         
         continue;
@@ -1861,8 +1861,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           int32_t jump_offset_abs = eval_stack[eval_stack_top];
           eval_stack_top--;
           
-          bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE + jump_offset_abs;
-          opcode_index = bytecode_index / 8;
+          opcode_index = (SPVM_INFO_SUB_XXX_BYTECODE_BASE + jump_offset_abs) / 8;
           continue;
         }
         
@@ -1954,7 +1953,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
         int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
-
+        
         // default offset
         int32_t default_offset = SPVM_INFO_BYTECODES[bytecode_index + 2];
         
@@ -2035,21 +2034,18 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         continue;
       }
       case SPVM_BYTECODE_C_CODE_GOTO:
-        bytecode_index += opcode->operand0;
-        opcode_index = bytecode_index / 8;
+        opcode_index += opcode->operand0 / 8;
         continue;
       case SPVM_BYTECODE_C_CODE_IF_EQ_ZERO: {
         if (condition_flag == 0) {
-          bytecode_index += opcode->operand0;
-          opcode_index = bytecode_index / 8;
+          opcode_index += opcode->operand0 / 8;
           continue;
         }
         break;
       }
       case SPVM_BYTECODE_C_CODE_IF_NE_ZERO: {
         if (condition_flag) {
-          bytecode_index += opcode->operand0;
-          opcode_index = bytecode_index / 8;
+          opcode_index += opcode->operand0 / 8;
           continue;
         }
         break;
@@ -2058,7 +2054,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         current_line = opcode->operand0;
         break;
     }
-    bytecode_index += 8;
-    opcode_index = bytecode_index / 8;
+    opcode_index++;
   }
 }
