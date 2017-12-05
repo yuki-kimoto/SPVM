@@ -132,9 +132,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Condition flag
   register int32_t condition_flag = 0;
 
-  // Bytecode index
-  register int32_t bytecode_index = 0;
-  
   // Return value
   SPVM_VALUE return_value;
   memset(&return_value, 0, sizeof(SPVM_VALUE));
@@ -204,9 +201,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
   }
   
-  bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE;
+  // Bytecode index
+  int32_t bytecode_index = 0;
   
-  int32_t opcode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE / 8;
+  register int32_t opcode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE / 8;
   
   while (1) {
     SPVM_OPCODE* opcode = &(SPVM_INFO_OPCODES[opcode_index]);
