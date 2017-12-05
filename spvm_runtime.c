@@ -92,6 +92,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Bytecodes
   int32_t* SPVM_INFO_BYTECODES = SPVM_INFO_RUNTIME->bytecodes;
   
+  SPVM_OPCODE* SPVM_INFO_OPCODES = (SPVM_OPCODE*)SPVM_INFO_RUNTIME->bytecodes;
+  
   // Bytecode base
   int32_t SPVM_INFO_SUB_XXX_BYTECODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->bytecode_base;
   
@@ -206,10 +208,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   bytecode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE;
   
-  int32_t opcode_index = bytecode_index % 8;
+  int32_t opcode_index = SPVM_INFO_SUB_XXX_BYTECODE_BASE / 8;
   
   while (1) {
-    SPVM_OPCODE* opcode = &SPVM_INFO_BYTECODES[bytecode_index];
+    SPVM_OPCODE* opcode = &(SPVM_INFO_OPCODES[bytecode_index / 8]);
     
     switch (opcode->code) {
       case SPVM_BYTECODE_C_CODE_NOP:
