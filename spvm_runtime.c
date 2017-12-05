@@ -2004,7 +2004,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
           while (1) {
             if (cur_max_pos < cur_min_pos) {
-              opcode_index += default_offset / SPVM_INFO_OPCODE_UNIT;
+              opcode_index += default_offset;
               break;
             }
             int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
@@ -2018,13 +2018,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             }
             else {
               int32_t branch_offset = SPVM_INFO_BYTECODES[intcode_index + 8 + (cur_half_pos * 2) + 1];
-              opcode_index += branch_offset / SPVM_INFO_OPCODE_UNIT;
+              opcode_index += branch_offset;
               break;
             }
           }
         }
         else {
-          opcode_index += default_offset / SPVM_INFO_OPCODE_UNIT;
+          opcode_index += default_offset;
         }
         
         continue;
