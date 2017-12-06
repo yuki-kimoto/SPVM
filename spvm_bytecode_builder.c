@@ -1848,7 +1848,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = (bytecode_array->length / OPCODE_UNIT) - bytecode_index;
                   
                   // Set jump offset
-                  bytecode_array->values[bytecode_index * OPCODE_UNIT + 1] = jump_offset;
+                  bytecode_array->values[(bytecode_index * OPCODE_UNIT) + 1] = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
                   
