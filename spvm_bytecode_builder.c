@@ -1829,13 +1829,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
 
                   // Set if jump bytecode index
                   int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(if_bytecode_index_stack);
-                  int32_t bytecode_index = *bytecode_index_ptr;
+                  int32_t bytecode_index = *bytecode_index_ptr / OPCODE_UNIT;
                   
                   // Jump offset
-                  int32_t jump_offset = bytecode_array->length - bytecode_index;
+                  int32_t jump_offset = (bytecode_array->length / OPCODE_UNIT) - bytecode_index;
                   
                   // Set jump offset
-                  bytecode_array->values[bytecode_index + 1] = jump_offset / OPCODE_UNIT;
+                  bytecode_array->values[(bytecode_index * OPCODE_UNIT) + 1] = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
                   
