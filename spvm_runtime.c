@@ -93,7 +93,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   SPVM_OPCODE* SPVM_INFO_OPCODES = (SPVM_OPCODE*)SPVM_INFO_RUNTIME->bytecodes;
   
   // Opcode base
-  int32_t SPVM_INFO_SUB_XXX_OPCODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->opcode_base;
+  int32_t SPVM_INFO_SUB_XXX_OPCODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->bytecode_base / 8;
   
   // Args length
   int32_t args_length = SPVM_INFO_CONSTANT_POOL_SUB_XXX->args_length;

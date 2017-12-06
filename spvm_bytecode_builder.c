@@ -111,7 +111,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
       }
       
       sub->bytecode_base = bytecode_array->length;
-      sub->opcode_base = bytecode_array->length / OPCODE_UNIT;
       
       // Run OPs
       SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
@@ -1872,7 +1871,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t* bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_catch_exception_bytecode_index_stack);
                   int32_t bytecode_index = *bytecode_index_ptr;
                   
-                  int32_t jump_offset_abs = (bytecode_array->length / OPCODE_UNIT) - sub->opcode_base;
+                  int32_t jump_offset_abs = (bytecode_array->length / OPCODE_UNIT) - (sub->bytecode_base / OPCODE_UNIT);
                   
                   bytecode_array->values[bytecode_index + 1] = jump_offset_abs;
 
@@ -2370,7 +2369,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
         }
       }
       sub->bytecode_length = bytecode_array->length - sub->bytecode_base;
-      sub->opcode_length = (bytecode_array->length / OPCODE_UNIT) - sub->opcode_base;
       
       // Set bytecode base to sub
       SPVM_CONSTANT_POOL_SUB constant_pool_sub;
