@@ -160,7 +160,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
               
               int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *bytecode_index_ptr = ((bytecode_array->length / OPCODE_UNIT) - 1) * OPCODE_UNIT;
+              *bytecode_index_ptr = ((bytecode_array->length / OPCODE_UNIT) - 1);
               
               SPVM_DYNAMIC_ARRAY_push(push_catch_exception_bytecode_index_stack, bytecode_index_ptr);
             }
@@ -1873,7 +1873,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t jump_offset_abs = (bytecode_array->length / OPCODE_UNIT) - (sub->bytecode_base / OPCODE_UNIT);
                   
-                  bytecode_array->values[bytecode_index + 1] = jump_offset_abs;
+                  bytecode_array->values[(bytecode_index * OPCODE_UNIT) + 1] = jump_offset_abs;
 
                 }
                 break;
