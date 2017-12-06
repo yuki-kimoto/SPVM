@@ -1623,7 +1623,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       if (op_constant->uv.constant->value.int_value - min == i) {
                         // Case
                         int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_bytecode_indexes, case_pos);
-                        int32_t case_bytecode_index = *case_bytecode_index_ptr / OPCODE_UNIT;
+                        int32_t case_bytecode_index = *case_bytecode_index_ptr;
                         int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                         
                         bytecode_array->values[(switch_bytecode_index * OPCODE_UNIT) + OPCODE_UNIT + i] = case_offset;
@@ -1703,7 +1703,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       int32_t match = op_constant->uv.constant->value.int_value;
 
                       int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(ordered_case_bytecode_indexes, i);
-                      int32_t case_bytecode_index = *case_bytecode_index_ptr / OPCODE_UNIT;
+                      int32_t case_bytecode_index = *case_bytecode_index_ptr;
                       int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                       
                       // Match
@@ -1733,7 +1733,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 if (switch_info_stack->length > 0) {
                   SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_fetch(switch_info_stack, switch_info_stack->length - 1);
                   int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                  *bytecode_index_ptr = bytecode_array->length;
+                  *bytecode_index_ptr = bytecode_array->length / OPCODE_UNIT;
                   
                   SPVM_DYNAMIC_ARRAY_push(switch_info->case_bytecode_indexes, bytecode_index_ptr);
                 }
