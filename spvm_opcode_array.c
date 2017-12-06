@@ -44,7 +44,6 @@ void SPVM_OPCODE_ARRAY_push_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
   }
   
   assert(opcode);
-  warn("AAAAAAAAAAAAAA %d %p %p", length, &opcodes->values[length], opcode);
   memcpy(&opcodes->values[length], opcode, sizeof(SPVM_OPCODE));
 
   opcodes->length++;
