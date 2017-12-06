@@ -1591,7 +1591,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 // Pop switch information
                 SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_pop(switch_info_stack);
                 int32_t switch_bytecode_index = switch_info->bytecode_index;
-                int32_t default_bytecode_index = switch_info->default_bytecode_index / OPCODE_UNIT;
+                int32_t default_bytecode_index = switch_info->default_bytecode_index;
                 SPVM_DYNAMIC_ARRAY* case_bytecode_indexes = switch_info->case_bytecode_indexes;
                 
                 // tableswitch
@@ -1742,7 +1742,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               case SPVM_OP_C_CODE_DEFAULT: {
                 if (switch_info_stack->length > 0) {
                   SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_fetch(switch_info_stack, switch_info_stack->length - 1);
-                  switch_info->default_bytecode_index = bytecode_array->length;
+                  switch_info->default_bytecode_index = (bytecode_array->length / OPCODE_UNIT);
                 }
                 break;
               }
