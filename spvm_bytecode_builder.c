@@ -37,6 +37,8 @@
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
 
+#define OPCODE_ARRAY_LENGTH (bytecode_array->length / OPCODE_UNIT)
+#define SPVM_OPCODE_ARRAY_PUSH_OPCODE SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
 
 void SPVM_BYTECODE_BUILDER_push_inc_bytecode(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcode_array, SPVM_OP* op_inc, int32_t value) {
   
@@ -145,10 +147,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               memset(&opcode, 0, sizeof(SPVM_OPCODE));
               // Add goto
               opcode.code = SPVM_BYTECODE_C_CODE_GOTO;
-              SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+              SPVM_OPCODE_ARRAY_PUSH_OPCODE;
               
               int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *opcode_index_ptr = (bytecode_array->length / OPCODE_UNIT) - 1;
+              *opcode_index_ptr = OPCODE_ARRAY_LENGTH - 1;
               
               SPVM_DYNAMIC_ARRAY_push(goto_loop_start_opcode_index_stack, opcode_index_ptr);
             }
@@ -156,10 +158,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               SPVM_OPCODE opcode;
               memset(&opcode, 0, sizeof(SPVM_OPCODE));
               opcode.code = SPVM_BYTECODE_C_CODE_PUSH_EVAL;
-              SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+              SPVM_OPCODE_ARRAY_PUSH_OPCODE;
               
               int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *opcode_index_ptr = (bytecode_array->length / OPCODE_UNIT) - 1;
+              *opcode_index_ptr = OPCODE_ARRAY_LENGTH - 1;
               
               SPVM_DYNAMIC_ARRAY_push(push_catch_exception_opcode_index_stack, opcode_index_ptr);
             }
@@ -196,7 +198,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 opcode.code = SPVM_BYTECODE_C_CODE_CURRENT_LINE;
                 opcode.operand0 = op_cur->line;
                 
-                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                SPVM_OPCODE_ARRAY_PUSH_OPCODE;
               }
             }
             
@@ -239,7 +241,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.code = SPVM_BYTECODE_C_CODE_DEC_REF_COUNT;
                     opcode.operand0 = index_dec_ref_count;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   
                   if (0) {
@@ -258,7 +260,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_POST_INC) {
                     SPVM_OP* op_last = op_cur->last;
@@ -272,7 +274,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
 
                     SPVM_BYTECODE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_last, 1);
                   }
@@ -289,7 +291,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_POST_DEC) {
                     SPVM_OP* op_last = op_cur->last;
@@ -303,7 +305,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
 
                     SPVM_BYTECODE_BUILDER_push_inc_bytecode(compiler, bytecode_array, op_last, -1);
                   }
@@ -346,7 +348,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
 
@@ -357,7 +359,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     opcode.operand0 = index_out;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
                     
@@ -381,7 +383,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       
                       opcode.operand0 = index_arg;
                       
-                      SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                      SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                     }
 
                     // Call subroutine
@@ -395,7 +397,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = id;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                     
                     if (compiler->debug) {
                       SPVM_OPCODE opcode;
@@ -403,7 +405,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_BYTECODE_C_CODE_CURRENT_LINE;
                       opcode.operand0 = op_cur->line;
                       
-                      SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                      SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                     }
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
@@ -417,7 +419,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_FIELD) {
                     
@@ -463,7 +465,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_term_object;
                     opcode.operand2 = field_id;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                     
@@ -506,7 +508,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_term_array;
                     opcode.operand2 = index_term_index;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
                     // VAR = PACKAGE_VAR
@@ -523,7 +525,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = package_var_id;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
                     // VAR = EXCEPTION_VAR
@@ -536,7 +538,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     opcode.operand0 = index_out;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_ADD) {
                     
@@ -572,7 +574,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_SUBTRACT) {
                     
@@ -608,7 +610,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_MULTIPLY) {
                     
@@ -644,7 +646,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_DIVIDE) {
                     
@@ -680,7 +682,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_REMAINDER) {
                     
@@ -716,7 +718,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_LEFT_SHIFT) {
 
@@ -746,7 +748,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_RIGHT_SHIFT) {
 
@@ -776,7 +778,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED) {
 
@@ -806,7 +808,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_BIT_AND) {
 
@@ -839,7 +841,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_BIT_OR) {
 
@@ -872,7 +874,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_BIT_XOR) {
 
@@ -905,7 +907,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = index_in1;
                     opcode.operand2 = index_in2;
 
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_COMPLEMENT) {
 
@@ -934,7 +936,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_NEGATE) {
 
@@ -966,7 +968,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_CONSTANT) {
                     SPVM_CONSTANT* constant = op_cur->last->uv.constant;
@@ -995,7 +997,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = constant->id;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_CONVERT) {
                     
@@ -1157,7 +1159,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_NEW) {
                     SPVM_OP* op_last = op_cur->last;
@@ -1174,7 +1176,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       opcode.operand0 = index_out;
                       opcode.operand1 = constant->id;
 
-                      SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                      SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                     }
                     else if (op_last->first->code == SPVM_OP_C_CODE_TYPE) {
                       
@@ -1200,7 +1202,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
 
-                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                            SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                             
                             break;
                           }
@@ -1215,7 +1217,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
 
-                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                            SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                             
                             break;
                           }
@@ -1231,7 +1233,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
 
-                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                            SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                             
                             break;
                           }
@@ -1247,7 +1249,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
 
-                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                            SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                             
                             break;
                           }
@@ -1263,7 +1265,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
 
-                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                            SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                             
                             break;
                           }
@@ -1279,7 +1281,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
 
-                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                            SPVM_OPCODE_ARRAY_PUSH_OPCODE;
 
                             break;
                           }
@@ -1297,7 +1299,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                             opcode.operand1 = element_type->id;
                             opcode.operand2 = index_index;
 
-                            SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                            SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                           }
                         }
                       }
@@ -1313,7 +1315,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         
                         opcode.operand0 = index_out;
                         opcode.operand1 = type_id;
-                        SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                        SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                       }
                     }
                     else {
@@ -1332,7 +1334,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else {
                     break;
@@ -1365,7 +1367,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                     opcode.code = SPVM_BYTECODE_C_CODE_INC_REF_COUNT;
                     opcode.operand0 = index_inc_ref_count;
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
@@ -1392,7 +1394,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   opcode.operand0 = package_var_id;
                   opcode.operand1 = index_in;
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
                   // EXCEPTION_VAR = VAR
@@ -1405,7 +1407,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                   
                   opcode.operand0 = index_in;
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                   
@@ -1449,7 +1451,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   opcode.operand0 = index_term_array;
                   opcode.operand1 = index_term_index;
                   opcode.operand2 = index_in;
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 else if (op_cur->first->code == SPVM_OP_C_CODE_CALL_FIELD) {
                   
@@ -1496,7 +1498,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   opcode.operand0 = index_term_object;
                   opcode.operand1 = field_id;
                   opcode.operand2 = index_in;
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 else {
                   assert(0);
@@ -1530,7 +1532,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
 
                   // Switch bytecode index
-                  int32_t switch_opcode_index = (bytecode_array->length / OPCODE_UNIT) - 1;
+                  int32_t switch_opcode_index = OPCODE_ARRAY_LENGTH - 1;
                   switch_info->opcode_index = switch_opcode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
 
@@ -1566,7 +1568,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
 
                   // Switch bytecode index
-                  int32_t switch_opcode_index = (bytecode_array->length / OPCODE_UNIT) - 1;
+                  int32_t switch_opcode_index = OPCODE_ARRAY_LENGTH - 1;
                   switch_info->opcode_index = switch_opcode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
                   
@@ -1598,7 +1600,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Default offset
                   int32_t default_offset;
                   if (!default_opcode_index) {
-                    default_offset = (bytecode_array->length / OPCODE_UNIT) - switch_opcode_index;
+                    default_offset = OPCODE_ARRAY_LENGTH - switch_opcode_index;
                   }
                   else {
                     default_offset = default_opcode_index - switch_opcode_index;
@@ -1641,7 +1643,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Default offset
                   int32_t default_offset;
                   if (!default_opcode_index) {
-                    default_offset = (bytecode_array->length / OPCODE_UNIT) - switch_opcode_index;
+                    default_offset = OPCODE_ARRAY_LENGTH - switch_opcode_index;
                   }
                   else {
                     default_offset = default_opcode_index - switch_opcode_index;
@@ -1721,7 +1723,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_last_opcode_index = *goto_last_opcode_index_ptr;
                   
                   // Last offset
-                  int32_t goto_last_offset = (bytecode_array->length / OPCODE_UNIT) - goto_last_opcode_index;
+                  int32_t goto_last_offset = OPCODE_ARRAY_LENGTH - goto_last_opcode_index;
                   
                   bytecode_array->values[(goto_last_opcode_index * OPCODE_UNIT) + 1] = goto_last_offset;
                 }
@@ -1741,7 +1743,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               case SPVM_OP_C_CODE_DEFAULT: {
                 if (switch_info_stack->length > 0) {
                   SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_fetch(switch_info_stack, switch_info_stack->length - 1);
-                  switch_info->default_opcode_index = (bytecode_array->length / OPCODE_UNIT);
+                  switch_info->default_opcode_index = OPCODE_ARRAY_LENGTH;
                 }
                 break;
               }
@@ -1761,7 +1763,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     
                   opcode.operand0 = index_term_object;
                   opcode.operand1 = field_id;
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 
                 break;
@@ -1772,7 +1774,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 opcode.code = SPVM_BYTECODE_C_CODE_CROAK;
                 
-                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 
                 break;
               }
@@ -1782,10 +1784,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
 
                 // Add goto
                 opcode.code = SPVM_BYTECODE_C_CODE_GOTO;
-                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 
                 int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                *opcode_index_ptr = (bytecode_array->length / OPCODE_UNIT) - 1;
+                *opcode_index_ptr = OPCODE_ARRAY_LENGTH - 1;
                 
                 SPVM_DYNAMIC_ARRAY_push(goto_last_opcode_index_stack, opcode_index_ptr);
                 
@@ -1817,10 +1819,10 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
                     opcode.code = SPVM_BYTECODE_C_CODE_GOTO;
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                     
                     int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                    *opcode_index_ptr = (bytecode_array->length / OPCODE_UNIT) - 1;
+                    *opcode_index_ptr = OPCODE_ARRAY_LENGTH - 1;
                     SPVM_DYNAMIC_ARRAY_push(goto_if_block_end_opcode_index_stack, opcode_index_ptr);
                   }
 
@@ -1831,7 +1833,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t opcode_index = *opcode_index_ptr;
                   
                   // Jump offset
-                  int32_t jump_offset = (bytecode_array->length / OPCODE_UNIT) - opcode_index;
+                  int32_t jump_offset = OPCODE_ARRAY_LENGTH - opcode_index;
                   
                   // Set jump offset
                   bytecode_array->values[(opcode_index * OPCODE_UNIT) + 1] = jump_offset;
@@ -1844,7 +1846,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t opcode_index = *opcode_index_ptr;
                   
                   // Jump offset
-                  int32_t jump_offset = (bytecode_array->length / OPCODE_UNIT) - opcode_index;
+                  int32_t jump_offset = OPCODE_ARRAY_LENGTH - opcode_index;
                   
                   // Set jump offset
                   bytecode_array->values[(opcode_index * OPCODE_UNIT) + 1] = jump_offset;
@@ -1855,7 +1857,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_loop_start_opcode_index = *goto_loop_start_opcode_index_ptr;
                   
                   // Jump offset
-                  int32_t goto_loop_start_offset = (bytecode_array->length / OPCODE_UNIT) - goto_loop_start_opcode_index;
+                  int32_t goto_loop_start_offset = OPCODE_ARRAY_LENGTH - goto_loop_start_opcode_index;
                   
                   bytecode_array->values[(goto_loop_start_opcode_index * OPCODE_UNIT) + 1] = goto_loop_start_offset;
                 }
@@ -1870,7 +1872,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t* opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_catch_exception_opcode_index_stack);
                   int32_t opcode_index = *opcode_index_ptr;
                   
-                  int32_t jump_offset_abs = (bytecode_array->length / OPCODE_UNIT) - (sub->bytecode_base / OPCODE_UNIT);
+                  int32_t jump_offset_abs = OPCODE_ARRAY_LENGTH - (sub->bytecode_base / OPCODE_UNIT);
                   
                   bytecode_array->values[(opcode_index * OPCODE_UNIT) + 1] = jump_offset_abs;
                 }
@@ -1885,7 +1887,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_last_opcode_index = *goto_last_opcode_index_ptr;
                   
                   // Last offset
-                  int32_t goto_last_offset = (bytecode_array->length / OPCODE_UNIT) - goto_last_opcode_index;
+                  int32_t goto_last_offset = OPCODE_ARRAY_LENGTH - goto_last_opcode_index;
                   
                   bytecode_array->values[(goto_last_opcode_index * OPCODE_UNIT) + 1] = goto_last_offset;
                 }
@@ -1895,7 +1897,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               case SPVM_OP_C_CODE_CONDITION:
               case SPVM_OP_C_CODE_CONDITION_NOT:
               {
-                int32_t opcode_index = (bytecode_array->length / OPCODE_UNIT);
+                int32_t opcode_index = OPCODE_ARRAY_LENGTH;
 
                 SPVM_OPCODE opcode;
                 memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1920,12 +1922,12 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_loop_start_opcode_index = *goto_loop_start_opcode_index_ptr;
                   
                   // Jump offset
-                  int32_t goto_loop_start_offset = goto_loop_start_opcode_index - (bytecode_array->length / OPCODE_UNIT) + 1;
+                  int32_t goto_loop_start_offset = goto_loop_start_opcode_index - OPCODE_ARRAY_LENGTH + 1;
                   
                   opcode.operand0 = goto_loop_start_offset;
                 }
                 
-                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 
                 break;
               }
@@ -1987,7 +1989,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 opcode.operand0 = index_in1;
                 opcode.operand1 = index_in2;
                 
-                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 
                 break;
               }
@@ -2025,7 +2027,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 opcode.operand0 = index_in1;
                 opcode.operand1 = index_in2;
                 
-                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                SPVM_OPCODE_ARRAY_PUSH_OPCODE;
 
                 break;
               }
@@ -2062,7 +2064,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 opcode.operand0 = index_in1;
                 opcode.operand1 = index_in2;
                 
-                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 
                 break;
               }
@@ -2100,7 +2102,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 opcode.operand0 = index_in1;
                 opcode.operand1 = index_in2;
 
-                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 
                 break;
               }
@@ -2114,13 +2116,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
                     
                     opcode.operand0 = index_in;
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   else {
                     int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                     
                     opcode.operand0 = index_in;
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                 }
                 else {
@@ -2157,7 +2159,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   opcode.operand0 = index_in1;
                   opcode.operand1 = index_in2;
                   
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 break;
               }
@@ -2176,7 +2178,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                     opcode.operand0 = index_in;
                   }
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 else {
                   
@@ -2212,7 +2214,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   opcode.operand0 = index_in1;
                   opcode.operand1 = index_in2;
 
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 break;
               }
@@ -2250,7 +2252,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   opcode.operand0 = index_in;
 
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 
                 break;
@@ -2274,7 +2276,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
 
                     int32_t index_arg = SPVM_OP_get_my_index(compiler, op_arg);
                     opcode.operand0 = index_arg;
-                    SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                    SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   }
                   
                   SPVM_OPCODE opcode;
@@ -2286,7 +2288,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t id = sub->id;
                   opcode.operand1 = id;
 
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                   
                   if (compiler->debug) {
                     SPVM_OPCODE opcode;
@@ -2306,7 +2308,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.code = SPVM_BYTECODE_C_CODE_RETURN_VOID;
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 else {
                   SPVM_OPCODE opcode;
@@ -2337,7 +2339,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   opcode.operand0 = index_in;
 
-                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
+                  SPVM_OPCODE_ARRAY_PUSH_OPCODE;
                 }
                 
                 break;
