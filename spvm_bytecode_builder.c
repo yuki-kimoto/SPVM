@@ -1623,8 +1623,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       if (op_constant->uv.constant->value.int_value - min == i) {
                         // Case
                         int32_t* case_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_bytecode_indexes, case_pos);
-                        int32_t case_bytecode_index = *case_bytecode_index_ptr;
-                        int32_t case_offset = case_bytecode_index / OPCODE_UNIT - switch_bytecode_index;
+                        int32_t case_bytecode_index = *case_bytecode_index_ptr / OPCODE_UNIT;
+                        int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                         
                         bytecode_array->values[(switch_bytecode_index * OPCODE_UNIT) + OPCODE_UNIT + i] = case_offset;
                         
