@@ -1591,7 +1591,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 // Pop switch information
                 SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_pop(switch_info_stack);
                 int32_t switch_bytecode_index = switch_info->bytecode_index;
-                int32_t default_bytecode_index = switch_info->default_bytecode_index;
+                int32_t default_bytecode_index = switch_info->default_bytecode_index / OPCODE_UNIT;
                 SPVM_DYNAMIC_ARRAY* case_bytecode_indexes = switch_info->case_bytecode_indexes;
                 
                 // tableswitch
@@ -1602,7 +1602,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     default_offset = (bytecode_array->length / OPCODE_UNIT) - switch_bytecode_index;
                   }
                   else {
-                    default_offset = (default_bytecode_index / OPCODE_UNIT) - switch_bytecode_index;
+                    default_offset = default_bytecode_index - switch_bytecode_index;
                   }
                   bytecode_array->values[(switch_bytecode_index * OPCODE_UNIT) + 2] = default_offset;
                   
@@ -1645,7 +1645,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     default_offset = (bytecode_array->length / OPCODE_UNIT) - switch_bytecode_index;
                   }
                   else {
-                    default_offset = (default_bytecode_index / OPCODE_UNIT) - switch_bytecode_index;
+                    default_offset = default_bytecode_index - switch_bytecode_index;
                   }
                   bytecode_array->values[(switch_bytecode_index * OPCODE_UNIT) + 2] = default_offset;
                   
