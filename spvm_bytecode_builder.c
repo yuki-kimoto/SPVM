@@ -1887,9 +1887,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_last_bytecode_index = *goto_last_bytecode_index_ptr;
                   
                   // Last offset
-                  int32_t goto_last_offset = bytecode_array->length - goto_last_bytecode_index;
+                  int32_t goto_last_offset = (bytecode_array->length / OPCODE_UNIT) - (goto_last_bytecode_index / OPCODE_UNIT);
                   
-                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset / OPCODE_UNIT;
+                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
                 }
                 
                 break;
