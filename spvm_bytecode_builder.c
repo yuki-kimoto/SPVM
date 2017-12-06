@@ -1922,9 +1922,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_loop_start_bytecode_index = *goto_loop_start_bytecode_index_ptr;
                   
                   // Jump offset
-                  int32_t goto_loop_start_offset = goto_loop_start_bytecode_index - bytecode_array->length + OPCODE_UNIT;
+                  int32_t goto_loop_start_offset = ((goto_loop_start_bytecode_index / OPCODE_UNIT) - (bytecode_array->length / OPCODE_UNIT) + 1);
                   
-                  opcode.operand0 = goto_loop_start_offset / OPCODE_UNIT;
+                  opcode.operand0 = goto_loop_start_offset;
                 }
                 
                 SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
