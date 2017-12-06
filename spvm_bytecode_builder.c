@@ -1531,7 +1531,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
 
                   // Switch bytecode index
-                  int32_t switch_bytecode_index = ((bytecode_array->length / OPCODE_UNIT) - 1) * OPCODE_UNIT;
+                  int32_t switch_bytecode_index = ((bytecode_array->length / OPCODE_UNIT) - 1);
                   switch_info->bytecode_index = switch_bytecode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
 
@@ -1567,7 +1567,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
 
                   // Switch bytecode index
-                  int32_t switch_bytecode_index = ((bytecode_array->length / OPCODE_UNIT) - 1) * OPCODE_UNIT;
+                  int32_t switch_bytecode_index = ((bytecode_array->length / OPCODE_UNIT) - 1);
                   switch_info->bytecode_index = switch_bytecode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
                   
@@ -1590,7 +1590,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 
                 // Pop switch information
                 SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_pop(switch_info_stack);
-                int32_t switch_bytecode_index = switch_info->bytecode_index / OPCODE_UNIT;
+                int32_t switch_bytecode_index = switch_info->bytecode_index;
                 int32_t default_bytecode_index = switch_info->default_bytecode_index;
                 SPVM_DYNAMIC_ARRAY* case_bytecode_indexes = switch_info->case_bytecode_indexes;
                 
