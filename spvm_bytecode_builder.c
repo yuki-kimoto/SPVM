@@ -1722,9 +1722,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_last_bytecode_index = *goto_last_bytecode_index_ptr;
                   
                   // Last offset
-                  int32_t goto_last_offset = (bytecode_array->length / OPCODE_UNIT) - (goto_last_bytecode_index / OPCODE_UNIT);
+                  int32_t goto_last_offset = (bytecode_array->length / OPCODE_UNIT) - goto_last_bytecode_index;
                   
-                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
+                  bytecode_array->values[(goto_last_bytecode_index * OPCODE_UNIT) + 1] = goto_last_offset;
                 }
                 
                 break;
@@ -1786,7 +1786,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                 
                 int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                *bytecode_index_ptr = ((bytecode_array->length / OPCODE_UNIT) - 1) * OPCODE_UNIT;
+                *bytecode_index_ptr = ((bytecode_array->length / OPCODE_UNIT) - 1);
                 
                 SPVM_DYNAMIC_ARRAY_push(goto_last_bytecode_index_stack, bytecode_index_ptr);
                 
@@ -1874,7 +1874,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset_abs = (bytecode_array->length / OPCODE_UNIT) - (sub->bytecode_base / OPCODE_UNIT);
                   
                   bytecode_array->values[(bytecode_index * OPCODE_UNIT) + 1] = jump_offset_abs;
-
                 }
                 break;
               }
@@ -1887,9 +1886,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_last_bytecode_index = *goto_last_bytecode_index_ptr;
                   
                   // Last offset
-                  int32_t goto_last_offset = (bytecode_array->length  / OPCODE_UNIT) - (goto_last_bytecode_index / OPCODE_UNIT);
+                  int32_t goto_last_offset = (bytecode_array->length  / OPCODE_UNIT) - goto_last_bytecode_index;
                   
-                  bytecode_array->values[goto_last_bytecode_index + 1] = goto_last_offset;
+                  bytecode_array->values[(goto_last_bytecode_index * OPCODE_UNIT) + 1] = goto_last_offset;
                 }
                 
                 break;
