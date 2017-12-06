@@ -1626,13 +1626,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                         int32_t case_bytecode_index = *case_bytecode_index_ptr;
                         int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                         
-                        bytecode_array->values[switch_bytecode_index + 8 + i] = case_offset / OPCODE_UNIT;
+                        bytecode_array->values[switch_bytecode_index + OPCODE_UNIT + i] = case_offset / OPCODE_UNIT;
                         
                         case_pos++;
                       }
                       else {
                         // Default
-                        bytecode_array->values[switch_bytecode_index + 8 + i] = default_offset / OPCODE_UNIT;
+                        bytecode_array->values[switch_bytecode_index + OPCODE_UNIT + i] = default_offset / OPCODE_UNIT;
                       }
                     }
                   }
@@ -1707,7 +1707,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                       int32_t case_offset = case_bytecode_index - switch_bytecode_index;
                       
                       // Match
-                      bytecode_array->values[switch_bytecode_index + 8 + (2 * i)] = match;
+                      bytecode_array->values[switch_bytecode_index + OPCODE_UNIT + (2 * i)] = match;
 
                       // Offset
                       bytecode_array->values[switch_bytecode_index + 9 + (2 * i)] = case_offset / OPCODE_UNIT;
@@ -1922,7 +1922,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_loop_start_bytecode_index = *goto_loop_start_bytecode_index_ptr;
                   
                   // Jump offset
-                  int32_t goto_loop_start_offset = goto_loop_start_bytecode_index - bytecode_array->length + 8;
+                  int32_t goto_loop_start_offset = goto_loop_start_bytecode_index - bytecode_array->length + OPCODE_UNIT;
                   
                   opcode.operand0 = goto_loop_start_offset / OPCODE_UNIT;
                 }
