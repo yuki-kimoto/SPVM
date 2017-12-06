@@ -148,7 +148,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
               
               int32_t* bytecode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *bytecode_index_ptr = ((bytecode_array->length / OPCODE_UNIT) - 1) * OPCODE_UNIT;
+              *bytecode_index_ptr = ((bytecode_array->length / OPCODE_UNIT) - 1);
               
               SPVM_DYNAMIC_ARRAY_push(goto_loop_start_bytecode_index_stack, bytecode_index_ptr);
               
@@ -1856,9 +1856,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t goto_loop_start_bytecode_index = *goto_loop_start_bytecode_index_ptr;
                   
                   // Jump offset
-                  int32_t goto_loop_start_offset = bytecode_array->length - goto_loop_start_bytecode_index;
+                  int32_t goto_loop_start_offset = (bytecode_array->length / OPCODE_UNIT) - goto_loop_start_bytecode_index;
                   
-                  bytecode_array->values[goto_loop_start_bytecode_index + 1] = goto_loop_start_offset / OPCODE_UNIT;
+                  bytecode_array->values[(goto_loop_start_bytecode_index * OPCODE_UNIT) + 1] = goto_loop_start_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                   SPVM_OPCODE opcode;
@@ -1919,7 +1919,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   assert(goto_loop_start_bytecode_index_stack->length > 0);
                   
                   int32_t* goto_loop_start_bytecode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(goto_loop_start_bytecode_index_stack);
-                  int32_t goto_loop_start_bytecode_index = *goto_loop_start_bytecode_index_ptr / OPCODE_UNIT;
+                  int32_t goto_loop_start_bytecode_index = *goto_loop_start_bytecode_index_ptr;
                   
                   // Jump offset
                   int32_t goto_loop_start_offset = goto_loop_start_bytecode_index - (bytecode_array->length / OPCODE_UNIT) + 1;
