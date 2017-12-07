@@ -1742,7 +1742,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = (bytecode_array->length / OPCODE_UNIT) - goto_last_opcode_index;
                   
-                  bytecode_array->values[(goto_last_opcode_index * OPCODE_UNIT) + 1] = goto_last_offset;
+                  SPVM_OPCODE* opcode_goto = (((SPVM_OPCODE*)bytecode_array->values) + goto_last_opcode_index);
+                  opcode_goto->operand0 = goto_last_offset;
                 }
                 
                 break;
@@ -1853,7 +1854,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = (bytecode_array->length / OPCODE_UNIT) - opcode_index;
                   
                   // Set jump offset
-                  bytecode_array->values[(opcode_index * OPCODE_UNIT) + 1] = jump_offset;
+                  SPVM_OPCODE* opcode_goto = (((SPVM_OPCODE*)bytecode_array->values) + opcode_index);
+                  opcode_goto->operand0 = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
                   
@@ -1866,7 +1868,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = (bytecode_array->length / OPCODE_UNIT) - opcode_index;
                   
                   // Set jump offset
-                  bytecode_array->values[(opcode_index * OPCODE_UNIT) + 1] = jump_offset;
+                  SPVM_OPCODE* opcode_goto = (((SPVM_OPCODE*)bytecode_array->values) + opcode_index);
+                  opcode_goto->operand0 = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
                   
@@ -1876,7 +1879,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Jump offset
                   int32_t goto_loop_start_offset = (bytecode_array->length / OPCODE_UNIT) - goto_loop_start_opcode_index;
                   
-                  bytecode_array->values[(goto_loop_start_opcode_index * OPCODE_UNIT) + 1] = goto_loop_start_offset;
+                  SPVM_OPCODE* opcode_goto_loop_start = (((SPVM_OPCODE*)bytecode_array->values) + goto_loop_start_opcode_index);
+                  opcode_goto_loop_start->operand0 = goto_loop_start_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                   SPVM_OPCODE opcode;
