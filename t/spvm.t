@@ -1618,6 +1618,11 @@ is_deeply(
   cmp_ok($total, '==', 6);
 }
 
+# next
+{
+  SPVM::TestCase::next_statement();
+}
+
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);

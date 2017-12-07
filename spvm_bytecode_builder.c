@@ -1873,16 +1873,6 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   opcode_goto->operand0 = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
-                  
-                  int32_t* goto_loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(goto_loop_start_opcode_index_stack, goto_loop_start_opcode_index_stack->length - 1);
-                  int32_t goto_loop_start_opcode_index = *goto_loop_start_opcode_index_ptr;
-                  
-                  // Jump offset
-                  int32_t goto_loop_start_offset = (bytecode_array->length / OPCODE_UNIT) - goto_loop_start_opcode_index;
-                  
-                  SPVM_OPCODE* opcode_goto_loop_start = (((SPVM_OPCODE*)bytecode_array->values) + goto_loop_start_opcode_index);
-                  opcode_goto_loop_start->operand0 = goto_loop_start_offset;
-
                   // Set next position
                   while (goto_next_opcode_index_stack->length > 0) {
                     
@@ -1895,6 +1885,16 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE* opcode_goto_next = (((SPVM_OPCODE*)bytecode_array->values) + goto_next_opcode_index);
                     opcode_goto_next->operand0 = goto_next_offset;
                   }
+                }
+                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_NEXT_STEP) {
+                  int32_t* goto_loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(goto_loop_start_opcode_index_stack, goto_loop_start_opcode_index_stack->length - 1);
+                  int32_t goto_loop_start_opcode_index = *goto_loop_start_opcode_index_ptr;
+                  
+                  // Jump offset
+                  int32_t goto_loop_start_offset = (bytecode_array->length / OPCODE_UNIT) - goto_loop_start_opcode_index;
+                  
+                  SPVM_OPCODE* opcode_goto_loop_start = (((SPVM_OPCODE*)bytecode_array->values) + goto_loop_start_opcode_index);
+                  opcode_goto_loop_start->operand0 = goto_loop_start_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                   SPVM_OPCODE opcode;

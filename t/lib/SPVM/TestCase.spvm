@@ -58,6 +58,23 @@ package TestCase {
     DOUBLE_PRECICE = 65536.5,
   }
   
+  sub next_statement() : int {
+    my $total = 0;
+    for (my $i = 0; $i < 5; $i++) {
+      if ($i == 1) {
+        next;
+      }
+      if ($i == 3) {
+        next;
+      }
+      $total += $i;
+    }
+    if ($total == 6) {
+      return 1;
+    }
+    return 0;
+  }
+  
   sub pre_inc() : int {
     my $value_byte = 0y;
     my $value_short = 0s;
