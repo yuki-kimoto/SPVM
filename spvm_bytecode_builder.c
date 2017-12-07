@@ -1534,17 +1534,25 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   int32_t switch_opcode_index = (bytecode_array->length / OPCODE_UNIT) - 1;
                   switch_info->opcode_index = switch_opcode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
-
+                  
+                  // Jump offset length
+                  int32_t jump_offset_length = switch_info->max - switch_info->min + 1;
+                  int32_t jump_offset_opcode_length;
+                  if (jump_offset_length % OPCODE_UNIT == 0) {
+                    jump_offset_opcode_length = jump_offset_length / OPCODE_UNIT;
+                  }
+                  else {
+                    jump_offset_opcode_length = (jump_offset_length / OPCODE_UNIT) + 1;
+                  }
+                  
                   // Offsets
                   {
                     int32_t i;
-                    for (i = 0; i < (switch_info->max - switch_info->min + 1); i++) {
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                    for (i = 0; i < jump_offset_opcode_length; i++) {
+                      SPVM_OPCODE opcode_jump_offset;
+                      memset(&opcode_jump_offset, 0, sizeof(SPVM_OPCODE));
+                      SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode_jump_offset);
                     }
-                  }
-                  
-                  while (bytecode_array->length % 8 != 0) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
                   }
                 }
                 // lookupswitch
