@@ -1580,15 +1580,25 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
                   
                   int32_t size_of_match_offset_pairs = length * 2;
-                  {
-                    int32_t i;
-                    for (i = 0; i < size_of_match_offset_pairs; i++) {
-                      SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                    }
+                  
+                  // Jump offset length
+                  int32_t jump_offset_length = size_of_match_offset_pairs;
+                  int32_t jump_offset_opcode_length;
+                  if (jump_offset_length % OPCODE_UNIT == 0) {
+                    jump_offset_opcode_length = jump_offset_length / OPCODE_UNIT;
+                  }
+                  else {
+                    jump_offset_opcode_length = (jump_offset_length / OPCODE_UNIT) + 1;
                   }
                   
-                  while (bytecode_array->length % 8 != 0) {
-                    SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  // Match-Offsets
+                  {
+                    int32_t i;
+                    for (i = 0; i < jump_offset_opcode_length; i++) {
+                      SPVM_OPCODE opcode_jump_offset;
+                      memset(&opcode_jump_offset, 0, sizeof(SPVM_OPCODE));
+                      SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode_jump_offset);
+                    }
                   }
                 }
                 
