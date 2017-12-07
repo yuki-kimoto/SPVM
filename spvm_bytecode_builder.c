@@ -122,6 +122,9 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
       
       // GOTO bytecode index for last
       SPVM_DYNAMIC_ARRAY* goto_last_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+
+      // GOTO bytecode index for next
+      SPVM_DYNAMIC_ARRAY* goto_next_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // GOTO bytecode index for end of if block
       SPVM_DYNAMIC_ARRAY* goto_if_block_end_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -1815,16 +1818,14 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 SPVM_OPCODE opcode;
                 memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                int32_t* opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(goto_loop_start_opcode_index_stack, goto_loop_start_opcode_index_stack->length - 1);
-                int32_t opcode_index = *opcode_index_ptr;
-                
-                // Add "goto"
+                // Add goto
                 opcode.code = SPVM_BYTECODE_C_CODE_GOTO;
+                SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode);
                 
-                // Jump offset
-                int32_t jump_offset = opcode_index - bytecode_array->length;
+                int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+                *opcode_index_ptr = (bytecode_array->length / OPCODE_UNIT) - 1;
                 
-                opcode.operand0 = jump_offset;
+                SPVM_DYNAMIC_ARRAY_push(goto_next_opcode_index_stack, opcode_index_ptr);
                 
                 break;
               }
@@ -1881,6 +1882,19 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   SPVM_OPCODE* opcode_goto_loop_start = (((SPVM_OPCODE*)bytecode_array->values) + goto_loop_start_opcode_index);
                   opcode_goto_loop_start->operand0 = goto_loop_start_offset;
+
+                  // Set next position
+                  while (goto_next_opcode_index_stack->length > 0) {
+                    
+                    int32_t* goto_next_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(goto_next_opcode_index_stack);
+                    int32_t goto_next_opcode_index = *goto_next_opcode_index_ptr;
+                    
+                    // Last offset
+                    int32_t goto_next_offset = (bytecode_array->length / OPCODE_UNIT) - goto_next_opcode_index;
+                    
+                    SPVM_OPCODE* opcode_goto_next = (((SPVM_OPCODE*)bytecode_array->values) + goto_next_opcode_index);
+                    opcode_goto_next->operand0 = goto_next_offset;
+                  }
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                   SPVM_OPCODE opcode;
