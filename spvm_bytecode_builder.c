@@ -1622,13 +1622,13 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   else {
                     default_offset = default_opcode_index - switch_opcode_index;
                   }
-                  bytecode_array->values[(switch_opcode_index * OPCODE_UNIT) + 2] = default_offset;
+                  ((SPVM_OPCODE*)bytecode_array->values + switch_opcode_index)->operand1 = default_offset;
                   
                   // min
-                  int32_t min = bytecode_array->values[(switch_opcode_index * OPCODE_UNIT) + 3];
+                  int32_t min = ((SPVM_OPCODE*)bytecode_array->values + switch_opcode_index)->operand2;
                   
                   // max
-                  int32_t max = bytecode_array->values[(switch_opcode_index * OPCODE_UNIT) + 4];
+                  int32_t max = ((SPVM_OPCODE*)bytecode_array->values + switch_opcode_index)->operand3;
                   
                   int32_t length = (int32_t)(max - min + 1);
                   
