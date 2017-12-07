@@ -1891,7 +1891,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t jump_offset_abs = (bytecode_array->length / OPCODE_UNIT) - (sub->bytecode_base / OPCODE_UNIT);
                   
-                  bytecode_array->values[(opcode_index * OPCODE_UNIT) + 1] = jump_offset_abs;
+                  SPVM_OPCODE* opcode_jump_offset_abs = (((SPVM_OPCODE*)bytecode_array->values) + opcode_index);
+                  opcode_jump_offset_abs->operand0 = jump_offset_abs;
                 }
                 break;
               }
@@ -1906,8 +1907,8 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = (bytecode_array->length / OPCODE_UNIT) - goto_last_opcode_index;
                   
-                  SPVM_OPCODE* opcode = (((SPVM_OPCODE*)bytecode_array->values) + goto_last_opcode_index);
-                  opcode->operand1 = goto_last_offset;
+                  SPVM_OPCODE* opcode_goto_last = (((SPVM_OPCODE*)bytecode_array->values) + goto_last_opcode_index);
+                  opcode_goto_last->operand0 = goto_last_offset;
                 }
                 
                 break;
