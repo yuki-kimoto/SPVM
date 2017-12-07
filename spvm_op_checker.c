@@ -1316,16 +1316,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 case SPVM_OP_C_CODE_LOOP: {
                   // Exchange condition and loop block to move condition to end of block
-                  SPVM_OP* op_condition = op_cur->first;
-                  SPVM_OP* op_block_loop = op_cur->last;
-                  op_cur->first = op_block_loop;
-                  op_cur->last = op_condition;
-                  op_block_loop->moresib = 1;
-                  op_block_loop->sibparent = op_condition;
-                  op_condition->moresib = 0;
-                  op_condition->sibparent = op_cur;
+                  SPVM_OP* op_block_outer = op_cur->first;
                   
+                  SPVM_OP* op_condition = op_block_outer->first->sibparent;
+                  SPVM_OP* op_block_loop = op_block_outer->last;
                   
+                  SPVM_OP* op_stab_condition = SPVM_OP_cut_op(compiler, op_condition);
+                  SPVM_OP* op_stab_block_loop = SPVM_OP_cut_op(compiler, op_block_loop);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab_condition, op_block_loop);
+                  SPVM_OP_replace_op(compiler, op_stab_block_loop, op_condition);
                   
                   break;
                 }

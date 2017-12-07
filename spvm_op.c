@@ -919,10 +919,6 @@ SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_term_condi
 
 SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, SPVM_OP* op_statement_init, SPVM_OP* op_term_condition, SPVM_OP* op_term_next_value, SPVM_OP* op_block) {
   
-  // Outer block for initialize loop variable
-  SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_for->file, op_for->line);
-  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_statement_init);
-  
   // Loop
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LOOP, op_for->file, op_for->line);
   
@@ -932,25 +928,27 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   
   // Set block flag
   op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
+
+  // Outer block for initialize loop variable
+  SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_for->file, op_for->line);
   
-  // Push next value to the last of statements in block
-  SPVM_OP* op_statements = op_block->first;
-  if (op_term_next_value->code != SPVM_OP_C_CODE_NULL) {
-    SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_term_next_value);
-  }
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_statement_init);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_condition);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_term_next_value);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_block);
   
-  SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_condition);
-  SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block);
+  SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_outer);
   
-  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_loop);
-  
-  return op_block_outer;
+  return op_loop;
 }
 
 SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_while, SPVM_OP* op_term_condition, SPVM_OP* op_block) {
   
   // Loop
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LOOP, op_while->file, op_while->line);
+  
+  // Init statement. This is null.
+  SPVM_OP* op_statement_init = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_while->file, op_while->line);
   
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 1);
@@ -959,15 +957,19 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   // Set block flag
   op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
   
-  SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_condition);
-  SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block);
-  
-  // while is wraped with block to allow the following syntax
-  // while (my $var = 3) { ... }
+  // Next value. This is null.
+  SPVM_OP* op_term_next_value = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_while->file, op_while->line);
+
   SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_while->file, op_while->line);
-  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_loop);
+
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_statement_init);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_condition);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_term_next_value);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_block);
   
-  return op_block_outer;
+  SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_outer);
+  
+  return op_loop;
 }
 
 SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_term_condition, SPVM_OP* op_block_true, SPVM_OP* op_block_false) {
