@@ -59,10 +59,10 @@ void SPVM_BYTECODE_ARRAY_push_opcode(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand0);
   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand1);
   SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand2);
-  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->jit_operand0);
-  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->jit_operand1);
-  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->jit_operand2);
-  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->dummy);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand3);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand4);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand5);
+  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecodes, opcode->operand6);
 }
 
 void SPVM_BYTECODE_ARRAY_free(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecodes) {

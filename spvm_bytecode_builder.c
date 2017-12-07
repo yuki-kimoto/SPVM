@@ -1507,27 +1507,28 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
               case SPVM_OP_C_CODE_SWITCH_CONDITION: {
                 
                 SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
+
+                SPVM_OPCODE opcode_switch_info;
+                memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
                 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, SPVM_BYTECODE_C_CODE_TABLE_SWITCH);
+                  opcode_switch_info.code = SPVM_BYTECODE_C_CODE_TABLE_SWITCH;
 
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, index_in);
+                  opcode_switch_info.operand0 = index_in;
                   
                   // Default
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  opcode_switch_info.operand1 = 0;
                   
                   // Minimal
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, switch_info->min);
+                  opcode_switch_info.operand2 = switch_info->min;
                   
                   // Max
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, switch_info->max);
-
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
-                  SPVM_BYTECODE_ARRAY_push_int(compiler, bytecode_array, 0);
+                  opcode_switch_info.operand3 = switch_info->max;
+                  
+                  SPVM_BYTECODE_ARRAY_push_opcode(compiler, bytecode_array, &opcode_switch_info);
 
                   // Switch bytecode index
                   int32_t switch_opcode_index = (bytecode_array->length / OPCODE_UNIT) - 1;
