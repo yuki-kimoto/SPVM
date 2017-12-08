@@ -80,12 +80,6 @@ solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
 SPVM.xs
 spvm_base.h
-spvm_bytecode.c
-spvm_bytecode.h
-spvm_bytecode_array.c
-spvm_bytecode_array.h
-spvm_bytecode_builder.c
-spvm_bytecode_builder.h
 spvm_call_field.c
 spvm_call_field.h
 spvm_call_sub.c
@@ -134,6 +128,12 @@ spvm_op.c
 spvm_op.h
 spvm_op_checker.c
 spvm_op_checker.h
+spvm_opcode.c
+spvm_opcode.h
+spvm_opcode_array.c
+spvm_opcode_array.h
+spvm_opcode_builder.c
+spvm_opcode_builder.h
 spvm_our.c
 spvm_our.h
 spvm_package.c

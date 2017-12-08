@@ -9,7 +9,7 @@
 #include "spvm_util_allocator.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
-#include "spvm_bytecode_array.h"
+#include "spvm_opcode_array.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_allocator.h"
 #include "spvm_op.h"
@@ -17,7 +17,7 @@
 #include "spvm_dumper.h"
 #include "spvm_yacc_util.h"
 #include "spvm_runtime_api.h"
-#include "spvm_bytecode_builder.h"
+#include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
 
 #include "native/SPVM/CORE.native/CORE.c"
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
   SPVM_OP_build_constant_pool(compiler);
   
   // Build bytecode
-  SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
+  SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
   
   // Build JIT code(This is C source code which is passed to gcc)
   SPVM_JITCODE_BUILDER_build_jitcode(compiler);

@@ -21,10 +21,9 @@
 #include "spvm_package.h"
 #include "spvm_type.h"
 #include "spvm_constant_pool.h"
-#include "spvm_bytecode.h"
+#include "spvm_opcode.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
-#include "spvm_bytecode.h"
 #include "spvm_opcode_array.h"
 
 void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
@@ -252,11 +251,11 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
     for (i = start_pos; i <= end_pos; i++) {
       
       SPVM_OPCODE opcode = opcode_array->values[i];
-      printf("        [%" PRId32 "] %-20s", i, SPVM_BYTECODE_C_CODE_NAMES[opcode.code]);
+      printf("        [%" PRId32 "] %-20s", i, SPVM_OPCODE_C_CODE_NAMES[opcode.code]);
       
       // Operand
       switch (opcode.code) {
-        case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
+        case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
           printf("\n");
           
           printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
@@ -287,7 +286,7 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
           
           break;
         }
-        case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
+        case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
           printf("\n");
           
           printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);

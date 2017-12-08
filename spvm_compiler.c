@@ -23,7 +23,7 @@
 #include "spvm_field.h"
 #include "spvm_value.h"
 #include "spvm_api.h"
-#include "spvm_bytecode.h"
+#include "spvm_opcode.h"
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   

@@ -211,8 +211,8 @@ CHECK {
   # Build bytecode
   build_constant_pool();
   
-  # Build bytecode
-  build_bytecode();
+  # Build opcode
+  build_opcode();
 
   # Build JIT code
   build_jitcode();

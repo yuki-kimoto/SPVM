@@ -33,7 +33,7 @@
 #include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
 #include "spvm_api.h"
-#include "spvm_bytecode_builder.h"
+#include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_dynamic_array.h"
 
@@ -3164,7 +3164,7 @@ build_constant_pool(...)
 }
 
 SV*
-build_bytecode(...)
+build_opcode(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3172,8 +3172,8 @@ build_bytecode(...)
   // Get compiler
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
   
-  // Build bytecode
-  SPVM_BYTECODE_BUILDER_build_bytecode_array(compiler);
+  // Build opcode
+  SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
   
   XSRETURN(0);
 }

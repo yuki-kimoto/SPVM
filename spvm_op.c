@@ -22,7 +22,7 @@
 #include "spvm_call_field.h"
 #include "spvm_call_sub.h"
 #include "spvm_type.h"
-#include "spvm_bytecode_builder.h"
+#include "spvm_opcode_builder.h"
 #include "spvm_op_checker.h"
 #include "spvm_switch_info.h"
 #include "spvm_descriptor.h"
