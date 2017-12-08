@@ -1755,7 +1755,7 @@ void SPVM_BYTECODE_BUILDER_build_bytecode_array(SPVM_COMPILER* compiler) {
                 if (switch_info_stack->length > 0) {
                   SPVM_SWITCH_INFO* switch_info = SPVM_DYNAMIC_ARRAY_fetch(switch_info_stack, switch_info_stack->length - 1);
                   int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                  *opcode_index_ptr = bytecode_array->length / OPCODE_UNIT;
+                  *opcode_index_ptr = (bytecode_array->length / OPCODE_UNIT);
                   
                   SPVM_DYNAMIC_ARRAY_push(switch_info->case_opcode_indexes, opcode_index_ptr);
                 }
