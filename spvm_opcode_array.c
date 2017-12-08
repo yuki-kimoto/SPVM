@@ -19,7 +19,8 @@ SPVM_OPCODE_ARRAY* SPVM_OPCODE_ARRAY_new(SPVM_COMPILER* compiler) {
   opcodes->values = values;
   
   // Add 1 opcode because 0 mean no opcode
-  SPVM_OPCODE opcode = {0};
+  SPVM_OPCODE opcode;
+  memset(&opcode, 0, sizeof(SPVM_OPCODE));
   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcodes, &opcode);
   
   return opcodes;

@@ -370,7 +370,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
                     SPVM_SUB* sub = op_sub->uv.sub;
-                    SPVM_TYPE* return_type = sub->op_return_type->uv.type;
 
                     // Push args
                     SPVM_OP* op_args = op_cur->last->last;
