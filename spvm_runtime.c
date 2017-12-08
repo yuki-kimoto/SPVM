@@ -18,7 +18,7 @@
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_type.h"
-#include "spvm_opcode.h"
+#include "spvm_bytecode.h"
 #include "spvm_opcode_array.h"
 
 #define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)

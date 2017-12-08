@@ -34,7 +34,7 @@
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 #include "spvm_dumper.h"
-#include "spvm_opcode.h"
+#include "spvm_bytecode.h"
 #include "spvm_opcode_array.h"
 
 

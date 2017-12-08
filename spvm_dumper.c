@@ -24,7 +24,7 @@
 #include "spvm_bytecode.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
-#include "spvm_opcode.h"
+#include "spvm_bytecode.h"
 #include "spvm_opcode_array.h"
 
 void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {

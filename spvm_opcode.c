@@ -1,4 +1,4 @@
-#include "spvm_opcode.h"
+#include "spvm_bytecode.h"
 
 #include "spvm_compiler_allocator.h"
 #include "spvm_compiler.h"

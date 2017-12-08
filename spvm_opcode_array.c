@@ -5,7 +5,7 @@
 #include "spvm_opcode_array.h"
 #include "spvm_util_allocator.h"
 #include "spvm_compiler.h"
-#include "spvm_opcode.h"
+#include "spvm_bytecode.h"
 
 SPVM_OPCODE_ARRAY* SPVM_OPCODE_ARRAY_new(SPVM_COMPILER* compiler) {
   (void)compiler;

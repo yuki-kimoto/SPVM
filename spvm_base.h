@@ -104,10 +104,6 @@ typedef struct SPVM_allocator SPVM_ALLOCATOR;
 struct SPVM_dumper;
 typedef struct SPVM_dumper SPVM_DUMPER;
 
-// spvm_bytecode_array.h
-struct SPVM_bytecode_array;
-typedef struct SPVM_bytecode_array SPVM_BYTECODE_ARRAY;
-
 // spvm_assign.h
 struct SPVM_bytecode;
 typedef struct SPVM_bytecode SPVM_BYTECODE;
