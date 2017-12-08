@@ -25,6 +25,8 @@
 #include "spvm_bytecode_array.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
+#include "spvm_opcode.h"
+#include "spvm_opcode_array.h"
 
 void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   int32_t depth = 0;
@@ -241,7 +243,7 @@ void SPVM_DUMPER_dump_constant_pool(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   }
 }
 
-void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRAY* bytecode_array, int32_t start_pos, int32_t length) {
+void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcode_array, int32_t start_pos, int32_t length) {
   (void)compiler;
   
   int32_t end_pos = start_pos + length - 1;
@@ -250,143 +252,65 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
     int32_t i;
     for (i = start_pos; i <= end_pos; i++) {
       
-      int32_t bytecode = bytecode_array->values[i];
-      printf("        [%" PRId32 "] %-20s", i, SPVM_BYTECODE_C_CODE_NAMES[bytecode]);
+      SPVM_OPCODE opcode = opcode_array->values[i];
+      printf("        [%" PRId32 "] %-20s", i, SPVM_BYTECODE_C_CODE_NAMES[opcode.code]);
       
       // Operand
-      switch (bytecode) {
+      switch (opcode.code) {
         case SPVM_BYTECODE_C_CODE_TABLE_SWITCH: {
           printf("\n");
           
-          // variable index
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
-
-          // Default
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
+          printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
           
-          // Low
-          int32_t min = *(int32_t*)&bytecode_array->values[i + 1];
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
+          int32_t max = opcode.operand2;
           
-          // High
-          int32_t max = *(int32_t*)&bytecode_array->values[i + 1];
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
-
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
+          int32_t min = opcode.operand3;
           
           // Addresses
           int32_t length = max - min + 1;
-          {
-            int32_t j;
-            for (j = 0; j < length; j++) {
-              i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
-            }
+          
+          int32_t offset_opcode_length;
+          if (length % 8 == 0) {
+            offset_opcode_length = length / 8;
+          }
+          else {
+            offset_opcode_length = (length / 8) + 1;
           }
           
-          // 8 byte alignment
-          while ((i + 1) % 8 != 0) {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          {
+            int32_t j;
+            for (j = 0; j < offset_opcode_length; j++) {
+              i++;
+              SPVM_OPCODE opcode = opcode_array->values[i];
+              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
+            }
           }
           
           break;
         }
         case SPVM_BYTECODE_C_CODE_LOOKUP_SWITCH: {
           printf("\n");
-
-          // variable index
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          
+          printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
+          
+          int32_t count = opcode.operand2;
+          
+          int32_t offset_opcode_length;
+          if (count % 8 == 0) {
+            offset_opcode_length = (count * 2) / 8;
           }
-
-          // Default
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
+          else {
+            offset_opcode_length = ((count * 2) / 8) + 1;
           }
           
-          // Count
-          int32_t length = *(int32_t*)&bytecode_array->values[i + 1];
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
-          
-          // 8 byte alignment
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
-          {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
-          }
-
-          
-          // Addresses
+          // Match - offset
           {
             int32_t j;
-            for (j = 0; j < length * 2; j++) {
+            for (j = 0; j < offset_opcode_length; j++) {
               i++;
-              bytecode = bytecode_array->values[i];
-              printf("        [%" PRId32 "] %d\n", i, bytecode);
+              SPVM_OPCODE opcode = opcode_array->values[i];
+              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
             }
-          }
-          
-          // 8 byte alignment
-          while ((i + 1) % 8 != 0) {
-            i++;
-            bytecode = bytecode_array->values[i];
-            printf("        [%" PRId32 "] %d\n", i, bytecode);
           }
           
           break;
@@ -394,9 +318,7 @@ void SPVM_DUMPER_dump_bytecode_array(SPVM_COMPILER* compiler, SPVM_BYTECODE_ARRA
         default :
         // Have seven operands
         {
-          printf(" %d %d %d %d %d %d %d\n", bytecode_array->values[i + 1], bytecode_array->values[i + 2], bytecode_array->values[i + 3], bytecode_array->values[i + 4], bytecode_array->values[i + 5], bytecode_array->values[i + 6], bytecode_array->values[i + 7]);
-          i += 7;
-
+          printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
           break;
         }
       }
@@ -471,8 +393,8 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       
       printf("      call_sub_arg_stack_max => %" PRId32 "\n", sub->call_sub_arg_stack_max);
       
-      printf("      bytecode_array\n");
-      SPVM_DUMPER_dump_bytecode_array(compiler, compiler->bytecode_array, sub->bytecode_base, sub->bytecode_length);
+      printf("      opcode_array\n");
+      SPVM_DUMPER_dump_opcode_array(compiler, compiler->opcode_array, sub->opcode_base, sub->opcode_length);
     }
   }
   else {

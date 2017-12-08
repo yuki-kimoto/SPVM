@@ -15,8 +15,8 @@ struct SPVM_sub {
   void* native_address;
   const char* abs_name;
   const char* file_name;
-  int32_t bytecode_base;
-  int32_t bytecode_length;
+  int32_t opcode_base;
+  int32_t opcode_length;
   int32_t call_sub_arg_stack_max;
   int32_t id;
   int32_t eval_stack_max_length;

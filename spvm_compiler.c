@@ -14,7 +14,7 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_yacc_util.h"
 #include "spvm_dynamic_array.h"
-#include "spvm_bytecode_array.h"
+#include "spvm_opcode_array.h"
 #include "spvm_sub.h"
 #include "spvm_constant_pool.h"
 #include "spvm_runtime.h"
@@ -23,6 +23,7 @@
 #include "spvm_field.h"
 #include "spvm_value.h"
 #include "spvm_api.h"
+#include "spvm_opcode.h"
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
@@ -36,10 +37,10 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_constant_pool_byte_size);
   memcpy(runtime->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
   
-  // Copy bytecodes to runtime
-  int64_t runtime_bytecodes_byte_size = (int64_t)compiler->bytecode_array->length * (int64_t)sizeof(int32_t);
-  runtime->bytecodes = SPVM_UTIL_ALLOCATOR_safe_malloc(runtime_bytecodes_byte_size);
-  memcpy(runtime->bytecodes, compiler->bytecode_array->values, compiler->bytecode_array->length * sizeof(int32_t));
+  // Copy opcodes to runtime
+  int64_t runtime_opcodes_byte_size = (int64_t)compiler->opcode_array->length * (int64_t)sizeof(SPVM_OPCODE);
+  runtime->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc(runtime_opcodes_byte_size);
+  memcpy(runtime->opcodes, compiler->opcode_array->values, compiler->opcode_array->length * sizeof(SPVM_OPCODE));
   
   // Initialize Package Variables
   SPVM_VALUE* package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_var_length + 1));
@@ -186,7 +187,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->constant_pool = SPVM_CONSTANT_POOL_new(compiler);
   
   // Bytecodes
-  compiler->bytecode_array = SPVM_BYTECODE_ARRAY_new(compiler);
+  compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   
   // Add core types
   {
@@ -256,8 +257,8 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   // Free constant pool
   SPVM_CONSTANT_POOL_free(compiler, compiler->constant_pool);
   
-  // Free bytecode array
-  SPVM_BYTECODE_ARRAY_free(compiler, compiler->bytecode_array);
+  // Free opcode array
+  SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);
   
   free(compiler);
 }

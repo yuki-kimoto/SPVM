@@ -19,6 +19,7 @@
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_opcode.h"
+#include "spvm_opcode_array.h"
 
 #define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
 #define SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, length))
@@ -90,10 +91,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_args_base;
   
   // Bytecodes
-  SPVM_OPCODE* SPVM_INFO_OPCODES = (SPVM_OPCODE*)SPVM_INFO_RUNTIME->bytecodes;
+  SPVM_OPCODE* SPVM_INFO_OPCODES = SPVM_INFO_RUNTIME->opcodes;
   
   // Opcode base
-  int32_t SPVM_INFO_SUB_XXX_OPCODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->bytecode_base / 8;
+  int32_t SPVM_INFO_SUB_XXX_OPCODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->opcode_base;
   
   // Args length
   int32_t args_length = SPVM_INFO_CONSTANT_POOL_SUB_XXX->args_length;
@@ -1973,13 +1974,11 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
         int32_t intcode_index = opcode_index * 8;
         
-        /*
-        1  default
-        5  npare
-        9  match1 offset1 // min
-        17 match2 offset2
-        25 match3 offset3 // max
-        */
+        // 1  default
+        // 5  npare
+        // 9  match1 offset1 // min
+        // 17 match2 offset2
+        // 25 match3 offset3 // max
         
         // default offset
         int32_t default_offset = intcodes[intcode_index + 2];

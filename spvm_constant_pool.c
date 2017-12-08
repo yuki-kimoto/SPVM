@@ -186,7 +186,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   memset(&constant_pool_sub, 0, sizeof(SPVM_CONSTANT_POOL_SUB));
   constant_pool_sub.native_address = sub->native_address;
-  constant_pool_sub.bytecode_base = sub->bytecode_base;
+  constant_pool_sub.opcode_base = sub->opcode_base;
   constant_pool_sub.mys_length = sub->op_mys->length;
   constant_pool_sub.call_sub_arg_stack_max = sub->call_sub_arg_stack_max;
   constant_pool_sub.args_length = sub->op_args->length;
