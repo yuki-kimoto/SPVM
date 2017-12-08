@@ -6,7 +6,6 @@
 struct SPVM_constant_pool_sub {
   void* native_address;
   int32_t bytecode_base;
-  int32_t opcode_base;
   int32_t file_name_id;
   int32_t abs_name_id;
   int32_t call_sub_arg_stack_max;
