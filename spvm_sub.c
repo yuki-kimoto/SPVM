@@ -1,11 +1,8 @@
 #include <stdlib.h>
 
 #include "spvm_sub.h"
-#include "spvm_dynamic_array.h"
-#include "spvm_hash.h"
 
 #include "spvm_compiler_allocator.h"
-#include "spvm_bytecode_array.h"
 #include "spvm_compiler.h"
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {

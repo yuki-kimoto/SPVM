@@ -22,7 +22,6 @@
 #include "spvm_type.h"
 #include "spvm_constant_pool.h"
 #include "spvm_bytecode.h"
-#include "spvm_bytecode_array.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 #include "spvm_opcode.h"
@@ -282,7 +281,7 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
             for (j = 0; j < offset_opcode_length; j++) {
               i++;
               SPVM_OPCODE opcode = opcode_array->values[i];
-              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
+              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.code, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
             }
           }
           
@@ -309,7 +308,7 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
             for (j = 0; j < offset_opcode_length; j++) {
               i++;
               SPVM_OPCODE opcode = opcode_array->values[i];
-              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
+              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.code, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
             }
           }
           
