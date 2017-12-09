@@ -100,6 +100,12 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   memset(&constant_pool_type, 0, sizeof(SPVM_CONSTANT_POOL_TYPE));
   
   constant_pool_type.code = type->code;
+  if (SPVM_TYPE_is_numeric(compiler, type)) {
+    constant_pool_type.is_numeric = 1;
+  }
+  else {
+    constant_pool_type.is_numeric = 0;
+  }
   
   // Add length
   constant_pool->length += extend_length;

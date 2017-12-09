@@ -378,11 +378,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
 
           // Argument type code
           SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
-          int32_t arg_type_code = constant_pool_arg_type->code;
           
-          SPVM_TYPE* arg_type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, arg_type_code);
-          
-          if (!SPVM_TYPE_is_numeric(compiler, arg_type)) {
+          if (!constant_pool_arg_type->is_numeric) {
             SPVM_STRING_BUFFER_add(string_buffer, "  if (var");
             SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
             SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
