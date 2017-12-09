@@ -96,29 +96,30 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       int32_t return_type_code = return_type->code;
 
       // Return type
-      if (return_type->code == SPVM_TYPE_C_CODE_VOID) {
-        SPVM_STRING_BUFFER_add(string_buffer, "void ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_BYTE) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_SHORT) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_INT) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_LONG) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-        SPVM_STRING_BUFFER_add(string_buffer, "float ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-        SPVM_STRING_BUFFER_add(string_buffer, "double ");
-      }
-      else {
-        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+      switch (return_type->code) {
+        case SPVM_TYPE_C_CODE_VOID:
+          SPVM_STRING_BUFFER_add(string_buffer, "void ");
+          break;
+        case SPVM_TYPE_C_CODE_BYTE:
+          SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
+          break;
+        case SPVM_TYPE_C_CODE_SHORT:
+          SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
+          break;
+        case SPVM_TYPE_C_CODE_INT:
+          SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+          break;
+        case SPVM_TYPE_C_CODE_LONG:
+          SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
+          break;
+        case SPVM_TYPE_C_CODE_FLOAT:
+          SPVM_STRING_BUFFER_add(string_buffer, "float ");
+          break;
+        case SPVM_TYPE_C_CODE_DOUBLE:
+          SPVM_STRING_BUFFER_add(string_buffer, "double ");
+          break;
+        default:
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
       }
 
       // Subroutine name. Replace : to _
