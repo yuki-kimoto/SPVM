@@ -21,6 +21,7 @@
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_field.h"
+#include "spvm_constant_pool_type.h"
 
 void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   (void)compiler;
@@ -79,7 +80,15 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
       int32_t sub_name_id = constant_pool_sub->abs_name_id;
       int32_t sub_name_length = constant_pool[sub_name_id];
+      
+      // Subroutine name
       const char* sub_name = (char*)&constant_pool[sub_name_id + 1];
+      
+      // Return type code
+      int32_t return_type_id = constant_pool_sub->return_type_id;
+      SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
+      int32_t return_type_code = return_type->code;
+      
     }
   }
   
