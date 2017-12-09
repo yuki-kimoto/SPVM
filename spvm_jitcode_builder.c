@@ -196,7 +196,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         for (my_index = args_length; my_index < mys_length; my_index++) {
           int32_t my_type_id = constant_pool[my_type_ids_base + my_index];
 
-          // Argument type code
+          // My type code
           SPVM_CONSTANT_POOL_TYPE* constant_pool_my_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[my_type_id];
           int32_t my_type_code = constant_pool_my_type->code;
           
@@ -234,6 +234,45 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
       }
+      
+      // Eval stack
+      if (constant_pool_sub->eval_stack_max_length > 0) {
+        // Eval stack
+        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack[");
+        SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->eval_stack_max_length);
+        SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+        
+        // Eval stack top
+        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack_top = -1;\n");
+      }
+
+      // If arg is object, increment reference count
+      {
+        int32_t arg_index;
+        for (arg_index = 0; arg_index < args_length; arg_index++) {
+          int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
+
+          // Argument type code
+          SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
+          int32_t arg_type_code = constant_pool_arg_type->code;
+          
+          SPVM_TYPE* arg_type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, arg_type_code);
+          
+          if (!SPVM_TYPE_is_numeric(compiler, arg_type)) {
+            SPVM_STRING_BUFFER_add(string_buffer, "  if (var");
+            SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+            SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
+            
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_INC_REF_COUNT(var");
+            SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+            
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+          }
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "\n");
+      }
+      
     }
   }
   
