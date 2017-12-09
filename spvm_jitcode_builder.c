@@ -95,6 +95,12 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
       int32_t return_type_code = return_type->code;
 
+      // Mys length
+      int32_t mys_length = constant_pool_sub->mys_length;
+
+      // My type ids base
+      int32_t my_type_ids_base = constant_pool_sub->my_type_ids_base;
+
       // Return type
       switch (return_type->code) {
         case SPVM_TYPE_C_CODE_VOID:
@@ -181,6 +187,51 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
           if (arg_index != args_length - 1) {
             SPVM_STRING_BUFFER_add(string_buffer, ", ");
           }
+        }
+      }
+
+      // Lexical variables
+      {
+        int32_t my_index;
+        for (my_index = args_length; my_index < mys_length; my_index++) {
+          int32_t my_type_id = constant_pool[my_type_ids_base + my_index];
+
+          // Argument type code
+          SPVM_CONSTANT_POOL_TYPE* constant_pool_my_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[my_type_id];
+          int32_t my_type_code = constant_pool_my_type->code;
+          
+          switch (my_type_code) {
+            case SPVM_TYPE_C_CODE_BYTE : {
+              SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_SHORT : {
+              SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_INT : {
+              SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_LONG : {
+              SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_FLOAT : {
+              SPVM_STRING_BUFFER_add(string_buffer, "float ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_DOUBLE : {
+              SPVM_STRING_BUFFER_add(string_buffer, "double ");
+              break;
+            }
+            default : {
+              SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+            }
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, "var");
+          SPVM_STRING_BUFFER_add_int(string_buffer, my_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
       }
     }
