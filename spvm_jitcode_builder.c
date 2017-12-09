@@ -17,6 +17,10 @@
 #include "spvm_runtime.h"
 #include "spvm_type.h"
 #include "spvm_my.h"
+#include "spvm_constant_pool.h"
+#include "spvm_constant_pool_sub.h"
+#include "spvm_constant_pool_package.h"
+#include "spvm_constant_pool_field.h"
 
 void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   (void)compiler;
@@ -59,8 +63,26 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   SPVM_STRING_BUFFER_add(string_buffer, "  while (0) \\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_ISWEAK(object) ((intptr_t)object & 1)\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  
+  // Constant pool
+  int32_t* constant_pool = compiler->constant_pool->values;
 
-  // Function prototype
+  int32_t subs_base = compiler->subs_base;
+  int32_t subs_length = compiler->op_subs->length;
+  
+  // Create JIT code by subroutine
+  {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < subs_length; sub_index++) {
+      int32_t sub_id = constant_pool[subs_base + sub_index];
+      
+      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+      int32_t sub_name_id = constant_pool_sub->abs_name_id;
+      int32_t sub_name_length = constant_pool[sub_name_id];
+      const char* sub_name = (char*)&constant_pool[sub_name_id + 1];
+    }
+  }
+  
   {
     int32_t sub_pos;
     for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
