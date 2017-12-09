@@ -70,8 +70,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
 
   int32_t subs_base = compiler->subs_base;
   int32_t subs_length = compiler->op_subs->length;
-  
-  // Create JIT code by subroutine
+
+  // Subroutine Declaration
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < subs_length; sub_index++) {
@@ -189,18 +189,94 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
           }
         }
       }
+      SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
 
-      // Lexical variables
+  // Subroutine Implementations
+  {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < subs_length; sub_index++) {
+      int32_t sub_id = constant_pool[subs_base + sub_index];
+      
+      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+      int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
+      int32_t sub_abs_name_length = constant_pool[sub_abs_name_id];
+      
+      // Subroutine name
+      const char* sub_abs_name = (char*)&constant_pool[sub_abs_name_id + 1];
+
+      // Arguments length
+      int32_t args_length = constant_pool_sub->args_length;
+      
+      // Arguments type ids base
+      int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
+      
+      // Return type code
+      int32_t return_type_id = constant_pool_sub->return_type_id;
+      SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
+      int32_t return_type_code = return_type->code;
+
+      // Mys length
+      int32_t mys_length = constant_pool_sub->mys_length;
+
+      // My type ids base
+      int32_t my_type_ids_base = constant_pool_sub->my_type_ids_base;
+
+      // Return type
+      switch (return_type->code) {
+        case SPVM_TYPE_C_CODE_VOID:
+          SPVM_STRING_BUFFER_add(string_buffer, "void ");
+          break;
+        case SPVM_TYPE_C_CODE_BYTE:
+          SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
+          break;
+        case SPVM_TYPE_C_CODE_SHORT:
+          SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
+          break;
+        case SPVM_TYPE_C_CODE_INT:
+          SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+          break;
+        case SPVM_TYPE_C_CODE_LONG:
+          SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
+          break;
+        case SPVM_TYPE_C_CODE_FLOAT:
+          SPVM_STRING_BUFFER_add(string_buffer, "float ");
+          break;
+        case SPVM_TYPE_C_CODE_DOUBLE:
+          SPVM_STRING_BUFFER_add(string_buffer, "double ");
+          break;
+        default:
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+      }
+
+      // Subroutine name. Replace : to _
+      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_abs_name);
       {
-        int32_t my_index;
-        for (my_index = args_length; my_index < mys_length; my_index++) {
-          int32_t my_type_id = constant_pool[my_type_ids_base + my_index];
+        int32_t index = string_buffer->length - strlen(sub_abs_name);
+        
+        while (index < string_buffer->length) {
+          if (string_buffer->buffer[index] == ':') {
+            string_buffer->buffer[index] = '_';
+          }
+          index++;
+        }
+      }
 
-          // My type code
-          SPVM_CONSTANT_POOL_TYPE* constant_pool_my_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[my_type_id];
-          int32_t my_type_code = constant_pool_my_type->code;
+      // Arguments
+      SPVM_STRING_BUFFER_add(string_buffer, "(");
+      {
+        int32_t arg_index;
+        for (arg_index = 0; arg_index < args_length; arg_index++) {
+          int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
+
+          // Argument type code
+          SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
+          int32_t arg_type_code = constant_pool_arg_type->code;
           
-          switch (my_type_code) {
+          switch (arg_type_code) {
             case SPVM_TYPE_C_CODE_BYTE : {
               SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
               break;
@@ -227,6 +303,54 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             }
             default : {
               SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+            }
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, "arg");
+          SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+          if (arg_index != args_length - 1) {
+            SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          }
+        }
+      }
+      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+
+      // Lexical variables
+      {
+        int32_t my_index;
+        for (my_index = args_length; my_index < mys_length; my_index++) {
+          int32_t my_type_id = constant_pool[my_type_ids_base + my_index];
+
+          // My type code
+          SPVM_CONSTANT_POOL_TYPE* constant_pool_my_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[my_type_id];
+          int32_t my_type_code = constant_pool_my_type->code;
+          
+          switch (my_type_code) {
+            case SPVM_TYPE_C_CODE_BYTE : {
+              SPVM_STRING_BUFFER_add(string_buffer, "  int8_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_SHORT : {
+              SPVM_STRING_BUFFER_add(string_buffer, "  int16_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_INT : {
+              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_LONG : {
+              SPVM_STRING_BUFFER_add(string_buffer, "  int64_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_FLOAT : {
+              SPVM_STRING_BUFFER_add(string_buffer, "  float ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_DOUBLE : {
+              SPVM_STRING_BUFFER_add(string_buffer, "  double ");
+              break;
+            }
+            default : {
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* ");
             }
           }
           SPVM_STRING_BUFFER_add(string_buffer, "var");
@@ -272,285 +396,18 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         }
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
       }
-      
-    }
-  }
-  
-  {
-    int32_t sub_pos;
-    for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
-      
-      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_pos);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      
-      SPVM_OP* op_return_type = sub->op_return_type;
-      SPVM_TYPE* return_type = op_return_type->uv.type;
-      
-      // Return type
-      if (return_type->code == SPVM_TYPE_C_CODE_VOID) {
-        SPVM_STRING_BUFFER_add(string_buffer, "void ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_BYTE) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_SHORT) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_INT) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_LONG) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-        SPVM_STRING_BUFFER_add(string_buffer, "float ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-        SPVM_STRING_BUFFER_add(string_buffer, "double ");
-      }
-      else {
-        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
-      }
-      
-      // Subroutine name. Replace : to _
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
-      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
-      {
-        int32_t index = string_buffer->length - strlen(sub->abs_name);
-        
-        while (index < string_buffer->length) {
-          if (string_buffer->buffer[index] == ':') {
-            string_buffer->buffer[index] = '_';
-          }
-          index++;
-        }
-      }
-      
-      // Arguments
-      SPVM_STRING_BUFFER_add(string_buffer, "(");
-      int32_t args_length = sub->op_args->length;
-      {
-        int32_t i;
-        for (i = 0; i < args_length; i++) {
-          SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
-          
-          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
-          
-          // Argument type
-          if (arg_type->code == SPVM_TYPE_C_CODE_VOID) {
-            SPVM_STRING_BUFFER_add(string_buffer, "void ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_BYTE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_SHORT) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_INT) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_LONG) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-            SPVM_STRING_BUFFER_add(string_buffer, "float ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "double ");
-          }
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
-          }
-          
-          SPVM_STRING_BUFFER_add(string_buffer, "arg");
-          SPVM_STRING_BUFFER_add_int(string_buffer, i);
-          if (i != args_length - 1) {
-            SPVM_STRING_BUFFER_add(string_buffer, ", ");
-          }
-        }
-      }
-      SPVM_STRING_BUFFER_add(string_buffer, ");");
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "\n");
-    }
-  }
 
-  // Function definition
-  {
-    int32_t sub_pos;
-    for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
-      
-      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_pos);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      
-      SPVM_OP* op_return_type = sub->op_return_type;
-      SPVM_TYPE* return_type = op_return_type->uv.type;
-      
-      // Return type
-      if (return_type->code == SPVM_TYPE_C_CODE_VOID) {
-        SPVM_STRING_BUFFER_add(string_buffer, "void ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_BYTE) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_SHORT) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_INT) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_LONG) {
-        SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-        SPVM_STRING_BUFFER_add(string_buffer, "float ");
-      }
-      else if (return_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-        SPVM_STRING_BUFFER_add(string_buffer, "double ");
-      }
-      else {
-        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
-      }
-      
-      // Subroutine name. Replace : to _
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
-      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
-      {
-        int32_t index = string_buffer->length - strlen(sub->abs_name);
-        
-        while (index < string_buffer->length) {
-          if (string_buffer->buffer[index] == ':') {
-            string_buffer->buffer[index] = '_';
-          }
-          index++;
-        }
-      }
-      
-      // Arguments
-      SPVM_STRING_BUFFER_add(string_buffer, "(");
-      int32_t args_length = sub->op_args->length;
-      {
-        int32_t var_index;
-        for (var_index = 0; var_index < args_length; var_index++) {
-          SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, var_index);
-          
-          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
-          
-          // Argument type
-          if (arg_type->code == SPVM_TYPE_C_CODE_VOID) {
-            SPVM_STRING_BUFFER_add(string_buffer, "void ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_BYTE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_SHORT) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_INT) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_LONG) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-            SPVM_STRING_BUFFER_add(string_buffer, "float ");
-          }
-          else if (arg_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "double ");
-          }
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
-          }
-          
-          SPVM_STRING_BUFFER_add(string_buffer, "var");
-          SPVM_STRING_BUFFER_add_int(string_buffer, var_index);
-          if (var_index != args_length - 1) {
-            SPVM_STRING_BUFFER_add(string_buffer, ", ");
-          }
-        }
-      }
-      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-      
-      // Lexical variables
-      {
-        int32_t var_index;
-        for (var_index = sub->op_args->length; var_index < sub->op_mys->length; var_index++) {
-          
-          SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, var_index);
-          SPVM_MY* my = op_my->uv.my;
-          SPVM_TYPE* my_type = my->op_type->uv.type;
-          
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-
-          if (my_type->code == SPVM_TYPE_C_CODE_BYTE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
-          }
-          else if (my_type->code == SPVM_TYPE_C_CODE_SHORT) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
-          }
-          else if (my_type->code == SPVM_TYPE_C_CODE_INT) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
-          }
-          else if (my_type->code == SPVM_TYPE_C_CODE_LONG) {
-            SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
-          }
-          else if (my_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-            SPVM_STRING_BUFFER_add(string_buffer, "float ");
-          }
-          else if (my_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "double ");
-          }
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
-          }
-          
-          SPVM_STRING_BUFFER_add(string_buffer, "var");
-          SPVM_STRING_BUFFER_add_int(string_buffer, var_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-      }
-      
-      // Eval stack
-      if (sub->eval_stack_max_length > 0) {
-        // Eval stack
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack[");
-        SPVM_STRING_BUFFER_add_int(string_buffer, sub->eval_stack_max_length);
-        SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-        
-        // Eval stack top
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack_top = -1;\n");
-      }
-      
-      // If arg is object, increment reference count
-      {
-        int32_t var_index;
-        for (var_index = 0; var_index < args_length; var_index++) {
-          SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, var_index);
-          
-          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
-          
-          if (!SPVM_TYPE_is_numeric(compiler, arg_type)) {
-            SPVM_STRING_BUFFER_add(string_buffer, "  if (var");
-            SPVM_STRING_BUFFER_add_int(string_buffer, var_index);
-            SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
-            
-            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_INC_REF_COUNT(var");
-            SPVM_STRING_BUFFER_add_int(string_buffer, var_index);
-            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-            
-            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-          }
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "\n");
-      }
-      
       // Set exception to NULL
       SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
       SPVM_STRING_BUFFER_add(string_buffer, "\n");
+
+      // Close subroutine
+      SPVM_STRING_BUFFER_add(string_buffer, "}\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
     }
   }
   
-  // warn("%s", string_buffer->buffer);
+  warn("%s", string_buffer->buffer);
   
 /*
   while (1) {
