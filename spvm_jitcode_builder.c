@@ -85,7 +85,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       const char* sub_abs_name = (char*)&constant_pool[sub_abs_name_id + 1];
 
       // Arguments length
-      int32_t args_legnth = constant_pool_sub->args_length;
+      int32_t args_length = constant_pool_sub->args_length;
+      
+      // Arguments type ids base
+      int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
       
       // Return type code
       int32_t return_type_id = constant_pool_sub->return_type_id;
@@ -120,7 +123,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
 
       // Subroutine name. Replace : to _
       SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
-      SPVM_STRING_BUFFER_add(string_buffer, sub_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_abs_name);
       {
         int32_t index = string_buffer->length - strlen(sub_abs_name);
         
@@ -129,6 +132,54 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             string_buffer->buffer[index] = '_';
           }
           index++;
+        }
+      }
+
+      // Arguments
+      SPVM_STRING_BUFFER_add(string_buffer, "(");
+      {
+        int32_t arg_index;
+        for (arg_index = 0; arg_index < args_length; arg_index++) {
+          int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
+
+          // Argument type code
+          SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
+          int32_t arg_type_code = constant_pool_arg_type->code;
+          
+          switch (arg_type_code) {
+            case SPVM_TYPE_C_CODE_BYTE : {
+              SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_SHORT : {
+              SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_INT : {
+              SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_LONG : {
+              SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_FLOAT : {
+              SPVM_STRING_BUFFER_add(string_buffer, "float ");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_DOUBLE : {
+              SPVM_STRING_BUFFER_add(string_buffer, "double ");
+              break;
+            }
+            default : {
+              SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+            }
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, "arg");
+          SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+          if (arg_index != args_length - 1) {
+            SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          }
         }
       }
     }
