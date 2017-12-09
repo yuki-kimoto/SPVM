@@ -215,6 +215,17 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
     }
   }
 
+  // My type ids
+  constant_pool_sub.my_type_ids_base = constant_pool->length;
+  {
+    int32_t i;
+    for (i = 0; i < sub->op_mys->length; i++) {
+      SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, i);
+      SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, op_my);
+      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, my_type->id);
+    }
+  }
+
   // Arg type ids
   constant_pool_sub.arg_type_ids_base = constant_pool->length;
   {
