@@ -138,6 +138,40 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       // Switch stack
       SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
+      // Initialize lexical variable
+      {
+        int32_t my_index;
+        
+        for (my_index = sub->op_args->length; my_index < sub->op_mys->length; my_index++) {
+          SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, my_index);
+          
+          SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my);
+          
+          SPVM_OPCODE opcode;
+          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+          
+          if (type->code == SPVM_TYPE_C_CODE_BYTE
+            || type->code == SPVM_TYPE_C_CODE_SHORT
+            || type->code == SPVM_TYPE_C_CODE_INT
+            || type->code == SPVM_TYPE_C_CODE_FLOAT)
+          {
+            opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_0;
+          }
+          else if (type->code == SPVM_TYPE_C_CODE_LONG || type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+            opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT2_0;
+          }
+          else {
+            opcode.code = SPVM_OPCODE_C_CODE_UNDEF;
+          }
+          
+          int32_t index_out = op_my->uv.my->index;
+          
+          opcode.operand0 = index_out;
+          
+          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+        }
+      }
+      
       while (op_cur) {
         // [START]Preorder traversal position
         
