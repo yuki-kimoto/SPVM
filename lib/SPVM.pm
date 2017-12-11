@@ -214,11 +214,11 @@ CHECK {
   # Build opcode
   build_opcode();
 
-  # Build JIT code
-  build_jitcode();
-  
   # Build run-time
   build_runtime();
+
+  # Build JIT code
+  build_jitcode();
   
   # Build SPVM subroutines
   build_spvm_subs();

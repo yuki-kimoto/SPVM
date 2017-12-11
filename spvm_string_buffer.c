@@ -71,6 +71,28 @@ void SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t value
   return;
 }
 
+void SPVM_STRING_BUFFER_add_address(SPVM_STRING_BUFFER* string_buffer, void* value) {
+  
+  int32_t max_length = 20;
+  
+  int32_t new_max_length = string_buffer->length + max_length;
+  
+  // Extend
+  if (new_max_length > string_buffer->capacity) {
+    int32_t new_capacity = string_buffer->capacity * 2;
+    char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_capacity);
+    memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
+    string_buffer->buffer = new_buffer;
+    string_buffer->capacity = new_capacity;
+  }
+  
+  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%p", value);
+  
+  string_buffer->length += write_length;
+  
+  return;
+}
+
 void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
   
   free(string_buffer->buffer);
