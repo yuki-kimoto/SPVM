@@ -50,10 +50,8 @@ use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'CORE';
 
-# Field
-{
-  ok(SPVM::TestCase::object_field_set_and_get());
-}
+# Start objects count
+my $start_objects_count = SPVM::get_objects_count();
 
 # time
 {
@@ -213,9 +211,6 @@ use SPVM 'CORE';
     is($values->to_string, "あいうえお");
   }
 }
-
-# Start objects count
-my $start_objects_count = SPVM::get_objects_count();
 
 # Call subroutine
 {
