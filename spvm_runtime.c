@@ -33,6 +33,7 @@
 #define SPVM_INFO_TYPE_CODE_FLOAT (SPVM_TYPE_C_CODE_FLOAT)
 #define SPVM_INFO_TYPE_CODE_DOUBLE (SPVM_TYPE_C_CODE_DOUBLE)
 
+#define SPVM_INLINE_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET)))
 #define SPVM_INLINE_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)
 #define SPVM_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
 #define SPVM_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))
@@ -1037,7 +1038,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             
             // Decrement old object reference count
             if (*object_address != NULL) {
-              api->dec_ref_count(api, *object_address);
+              if (SPVM_INLINE_GET_REF_COUNT(*object_address) > 1) {
+                SPVM_INLINE_DEC_REF_COUNT_ONLY(*object_address);
+              }
+              else {
+                api->dec_ref_count(api, *object_address);
+              }
             }
             
             // Store address
@@ -1064,7 +1070,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_CODE_DEC_REF_COUNT: {
         // Decrement reference count
         if (vars[opcode->operand0].object_value != NULL) {
-          api->dec_ref_count(api, vars[opcode->operand0].object_value);
+          if (SPVM_INLINE_GET_REF_COUNT(vars[opcode->operand0].object_value) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(vars[opcode->operand0].object_value);
+          }
+          else {
+            api->dec_ref_count(api, vars[opcode->operand0].object_value);
+          }
         }
         break;
       }
@@ -1493,7 +1504,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           if (SPVM_INLINE_ISWEAK((*field_address).object_value)) {
             api->unweaken(api, (SPVM_API_OBJECT**)field_address);
           }
-          api->dec_ref_count(api, (*field_address).object_value);
+          
+          if (SPVM_INLINE_GET_REF_COUNT((*field_address).object_value) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY((*field_address).object_value);
+          }
+          else {
+            api->dec_ref_count(api, (*field_address).object_value);
+          }
         }
         
         (*field_address).object_value = value;
@@ -1616,7 +1633,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Decrement reference count
         if (SPVM_INFO_PACKAGE_VARS[package_var_id].object_value != NULL) {
-          api->dec_ref_count(api, SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
+          if (SPVM_INLINE_GET_REF_COUNT(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
+          }
+          else {
+            api->dec_ref_count(api, SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
+          }
         }
         
         // Store object
@@ -1760,7 +1782,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
             
             if (object != NULL) {
-              api->dec_ref_count(api, object);
+              if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
+                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+              }
+              else {
+                api->dec_ref_count(api, object);
+              }
             }
           }
         }
@@ -1800,7 +1827,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
             
             if (object != NULL) {
-              api->dec_ref_count(api, object);
+              if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
+                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+              }
+              else {
+                api->dec_ref_count(api, object);
+              }
             }
           }
         }
@@ -1837,7 +1869,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
             
             if (object != NULL) {
-              api->dec_ref_count(api, object);
+              if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
+                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+              }
+              else {
+                api->dec_ref_count(api, object);
+              }
             }
           }
         }
@@ -1882,7 +1919,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
             
             if (object != NULL) {
-              api->dec_ref_count(api, object);
+              if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
+                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+              }
+              else {
+                api->dec_ref_count(api, object);
+              }
             }
           }
         }
