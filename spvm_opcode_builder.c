@@ -216,20 +216,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Do decrement reference count
                   // Variable type is object
                   if (!SPVM_TYPE_is_numeric(compiler, type)) {
-                    // Variable is not initialized
-                    if (!(op_cur->first->first && op_cur->first->first->code == SPVM_OP_C_CODE_MY)) {
-                      // Right value is variable
-                      if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
-                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                        int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
-                        // Left index is deferent from rithgt index
-                        if (index_out != index_in) {
-                          do_dec_ref_count = 1;
-                        }
-                      }
-                      else {
+                    // Right value is variable
+                    if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
+                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                      int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                      // Left index is deferent from rithgt index
+                      if (index_out != index_in) {
                         do_dec_ref_count = 1;
                       }
+                    }
+                    else {
+                      do_dec_ref_count = 1;
                     }
                   }
                   
@@ -1350,10 +1347,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
                         int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                         int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                        
+                        // Right variable is different from left variable
                         if (index_out != index_in) {
                           do_inc_ref_count = 1;
                         }
                       }
+                      // Right value is not variable
                       else {
                         do_inc_ref_count = 1;
                       }
