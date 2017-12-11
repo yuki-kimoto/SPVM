@@ -981,7 +981,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT;
                     }
                     else if (type->code == SPVM_TYPE_C_CODE_LONG || type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                     opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT2;
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT2;
                     }
                     else {
                       assert(0);
