@@ -1,3 +1,5 @@
+0.0303 2017-12-11
+  - fix reference count bug in loop
 0.0302 2017-12-07
   - add eval block stack max length
   - fix next statement bug
