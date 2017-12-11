@@ -53,6 +53,13 @@ use SPVM 'CORE';
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
+{
+  my $start_objects_count = SPVM::get_objects_count();
+  SPVM::TestCase::my_var_in_loop_free();
+  my $end_objects_count = SPVM::get_objects_count();
+  is($start_objects_count, $end_objects_count);
+}
+
 # time
 {
   cmp_ok(abs(time - SPVM::CORE::time()), '<', 2);
