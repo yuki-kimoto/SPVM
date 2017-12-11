@@ -99,9 +99,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   // Args length
   int32_t args_length = SPVM_INFO_CONSTANT_POOL_SUB_XXX->args_length;
   
-  // Lexical varialbe length
-  int32_t SPVM_INFO_SUB_XXX_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->mys_length;
-  
   // Native address
   void* SPVM_INFO_SUB_XXX_NATIVE_ADDRESS = SPVM_INFO_CONSTANT_POOL_SUB_XXX->native_address;
   
@@ -113,7 +110,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   // Call stack
   SPVM_VALUE vars[65535];
-  memset(vars, 0, sizeof(SPVM_VALUE) * SPVM_INFO_SUB_XXX_MYS_LENGTH);
   
   // Eval stack
   int32_t eval_stack[255];
@@ -135,7 +131,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
   // Return value
   SPVM_VALUE return_value;
-  memset(&return_value, 0, sizeof(SPVM_VALUE));
   
   // Copy arguments
   memcpy(vars, args, args_length * sizeof(SPVM_VALUE));
