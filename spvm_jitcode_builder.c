@@ -32,6 +32,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
+  // C library
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <stdint.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <assert.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <string.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <math.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <stdlib.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <stdio.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <inttypes.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <stddef.h>\n");
+
   // API header
   SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
