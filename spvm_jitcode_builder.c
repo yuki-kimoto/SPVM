@@ -699,6 +699,154 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
+            case SPVM_OPCODE_C_CODE_SUBTRACT_BYTE:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_SHORT:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_INT:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_LONG:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_FLOAT:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_DOUBLE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " - var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_MULTIPLY_BYTE:
+            case SPVM_OPCODE_C_CODE_MULTIPLY_SHORT:
+            case SPVM_OPCODE_C_CODE_MULTIPLY_INT:
+            case SPVM_OPCODE_C_CODE_MULTIPLY_LONG:
+            case SPVM_OPCODE_C_CODE_MULTIPLY_FLOAT:
+            case SPVM_OPCODE_C_CODE_MULTIPLY_DOUBLE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " * var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_DIVIDE_BYTE:
+            case SPVM_OPCODE_C_CODE_DIVIDE_SHORT:
+            case SPVM_OPCODE_C_CODE_DIVIDE_INT:
+            case SPVM_OPCODE_C_CODE_DIVIDE_LONG:
+              // TODO
+              break;
+            case SPVM_OPCODE_C_CODE_DIVIDE_FLOAT:
+            case SPVM_OPCODE_C_CODE_DIVIDE_DOUBLE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " / var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_REMAINDER_BYTE:
+            case SPVM_OPCODE_C_CODE_REMAINDER_SHORT:
+            case SPVM_OPCODE_C_CODE_REMAINDER_INT:
+            case SPVM_OPCODE_C_CODE_REMAINDER_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " % var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_REMAINDER_FLOAT:
+            case SPVM_OPCODE_C_CODE_REMAINDER_DOUBLE:
+              // TODO
+              break;
+            case SPVM_OPCODE_C_CODE_LEFT_SHIFT_BYTE:
+            case SPVM_OPCODE_C_CODE_LEFT_SHIFT_SHORT:
+            case SPVM_OPCODE_C_CODE_LEFT_SHIFT_INT:
+            case SPVM_OPCODE_C_CODE_LEFT_SHIFT_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " << var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_BYTE:
+            case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_SHORT:
+            case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_INT:
+            case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " >> var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_BYTE:
+            case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_SHORT:
+            case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_INT:
+            case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_LONG:
+              // TODO
+              break;
+            case SPVM_OPCODE_C_CODE_BIT_AND_BYTE:
+            case SPVM_OPCODE_C_CODE_BIT_AND_SHORT:
+            case SPVM_OPCODE_C_CODE_BIT_AND_INT:
+            case SPVM_OPCODE_C_CODE_BIT_AND_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " & var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_BIT_OR_BYTE:
+            case SPVM_OPCODE_C_CODE_BIT_OR_SHORT:
+            case SPVM_OPCODE_C_CODE_BIT_OR_INT:
+            case SPVM_OPCODE_C_CODE_BIT_OR_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " | var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_BIT_XOR_BYTE:
+            case SPVM_OPCODE_C_CODE_BIT_XOR_SHORT:
+            case SPVM_OPCODE_C_CODE_BIT_XOR_INT:
+            case SPVM_OPCODE_C_CODE_BIT_XOR_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " ^ var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_NEGATE_BYTE:
+            case SPVM_OPCODE_C_CODE_NEGATE_SHORT:
+            case SPVM_OPCODE_C_CODE_NEGATE_INT:
+            case SPVM_OPCODE_C_CODE_NEGATE_LONG:
+            case SPVM_OPCODE_C_CODE_NEGATE_FLOAT:
+            case SPVM_OPCODE_C_CODE_NEGATE_DOUBLE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = -var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_COMPLEMENT_BYTE:
+            case SPVM_OPCODE_C_CODE_COMPLEMENT_SHORT:
+            case SPVM_OPCODE_C_CODE_COMPLEMENT_INT:
+            case SPVM_OPCODE_C_CODE_COMPLEMENT_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ~var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:
             case SPVM_OPCODE_C_CODE_RETURN_INT:
