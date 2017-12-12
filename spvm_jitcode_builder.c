@@ -826,10 +826,40 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
             case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_BYTE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (int8_t)((uint8_t)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " >> var)");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_SHORT:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (int16_t)((uint16_t)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " >> var)");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_INT:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (int32_t)((uint32_t)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " >> var)");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_LONG:
-              // TODO
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (int64_t)((uint64_t)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " >> var)");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
             case SPVM_OPCODE_C_CODE_BIT_AND_BYTE:
             case SPVM_OPCODE_C_CODE_BIT_AND_SHORT:
