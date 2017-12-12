@@ -685,6 +685,20 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
+            case SPVM_OPCODE_C_CODE_ADD_BYTE:
+            case SPVM_OPCODE_C_CODE_ADD_SHORT:
+            case SPVM_OPCODE_C_CODE_ADD_INT:
+            case SPVM_OPCODE_C_CODE_ADD_LONG:
+            case SPVM_OPCODE_C_CODE_ADD_FLOAT:
+            case SPVM_OPCODE_C_CODE_ADD_DOUBLE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " + var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:
             case SPVM_OPCODE_C_CODE_RETURN_INT:
