@@ -601,6 +601,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
+            case SPVM_OPCODE_C_CODE_IS_UNDEF:
+              SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " == NULL;\n");
+              break;
+            case SPVM_OPCODE_C_CODE_IS_NOT_UNDEF:
+              SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " != NULL;\n");
+              break;
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:
             case SPVM_OPCODE_C_CODE_RETURN_INT:
