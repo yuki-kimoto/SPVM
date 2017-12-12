@@ -847,6 +847,88 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
+            case SPVM_OPCODE_C_CODE_INC_BYTE:
+            case SPVM_OPCODE_C_CODE_INC_SHORT:
+            case SPVM_OPCODE_C_CODE_INC_INT:
+            case SPVM_OPCODE_C_CODE_INC_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " += ");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_CONVERT_BYTE_TO_BYTE:
+            case SPVM_OPCODE_C_CODE_CONVERT_SHORT_TO_BYTE:
+            case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_BYTE:
+            case SPVM_OPCODE_C_CODE_CONVERT_LONG_TO_BYTE:
+            case SPVM_OPCODE_C_CODE_CONVERT_FLOAT_TO_BYTE:
+            case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_BYTE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (int8_t)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_CONVERT_BYTE_TO_SHORT:
+            case SPVM_OPCODE_C_CODE_CONVERT_SHORT_TO_SHORT:
+            case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_SHORT:
+            case SPVM_OPCODE_C_CODE_CONVERT_LONG_TO_SHORT:
+            case SPVM_OPCODE_C_CODE_CONVERT_FLOAT_TO_SHORT:
+            case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_SHORT:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (int16_t)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_CONVERT_BYTE_TO_INT:
+            case SPVM_OPCODE_C_CODE_CONVERT_SHORT_TO_INT:
+            case SPVM_OPCODE_C_CODE_CONVERT_LONG_TO_INT:
+            case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_INT:
+            case SPVM_OPCODE_C_CODE_CONVERT_FLOAT_TO_INT:
+            case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_INT:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (int32_t)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+
+              break;
+            case SPVM_OPCODE_C_CODE_CONVERT_BYTE_TO_LONG:
+            case SPVM_OPCODE_C_CODE_CONVERT_SHORT_TO_LONG:
+            case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_LONG:
+            case SPVM_OPCODE_C_CODE_CONVERT_FLOAT_TO_LONG:
+            case SPVM_OPCODE_C_CODE_CONVERT_LONG_TO_LONG:
+            case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (int64_t)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
+            case SPVM_OPCODE_C_CODE_CONVERT_BYTE_TO_FLOAT:
+            case SPVM_OPCODE_C_CODE_CONVERT_SHORT_TO_FLOAT:
+            case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_FLOAT:
+            case SPVM_OPCODE_C_CODE_CONVERT_LONG_TO_FLOAT:
+            case SPVM_OPCODE_C_CODE_CONVERT_FLOAT_TO_FLOAT:
+            case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_FLOAT:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (float)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            case SPVM_OPCODE_C_CODE_CONVERT_BYTE_TO_DOUBLE:
+            case SPVM_OPCODE_C_CODE_CONVERT_SHORT_TO_DOUBLE:
+            case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_DOUBLE:
+            case SPVM_OPCODE_C_CODE_CONVERT_LONG_TO_DOUBLE:
+            case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_DOUBLE:
+            case SPVM_OPCODE_C_CODE_CONVERT_FLOAT_TO_DOUBLE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = (double)var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:
             case SPVM_OPCODE_C_CODE_RETURN_INT:
