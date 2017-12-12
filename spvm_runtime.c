@@ -420,8 +420,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           = vars[opcode->operand1].double_value * vars[opcode->operand2].double_value;
         break;
       case SPVM_OPCODE_C_CODE_DIVIDE_BYTE:
-        if (vars[opcode->operand2].byte_value == 0) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "0 division (byte / byte)", 0);
+        if (__builtin_expect(vars[opcode->operand2].byte_value == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division byte value", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
@@ -431,8 +431,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           break;
         }
       case SPVM_OPCODE_C_CODE_DIVIDE_SHORT:
-        if (vars[opcode->operand2].short_value == 0) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "0 division (short / short)", 0);
+        if (__builtin_expect(vars[opcode->operand2].short_value == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division short value", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
@@ -442,8 +442,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           break;
         }
       case SPVM_OPCODE_C_CODE_DIVIDE_INT:
-        if (vars[opcode->operand2].int_value == 0) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "0 division (int / int)", 0);
+        if (__builtin_expect(vars[opcode->operand2].int_value == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division int value", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
@@ -453,8 +453,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           break;
         }
       case SPVM_OPCODE_C_CODE_DIVIDE_LONG:
-        if (vars[opcode->operand2].long_value == 0) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "0 division (long / long)", 0);
+        if (__builtin_expect(vars[opcode->operand2].long_value == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division long value", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }

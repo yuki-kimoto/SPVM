@@ -1679,7 +1679,7 @@ is($end_objects_count, $start_objects_count);
 # Exception
 {
   eval { SPVM::TestCase::exception_zero_divide_int() }; my $line = __LINE__;
-  like($@, qr|\Q0 division (int / int)|);
+  like($@, qr|\Q0 division int value|);
   like($@, qr/\Q$file/);
   like($@, qr/$line/);
 }
