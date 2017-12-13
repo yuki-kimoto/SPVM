@@ -153,6 +153,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   memset(&constant_pool_package, 0, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   constant_pool_package.fields_length = package->op_fields->length;
   constant_pool_package.object_fields_length = SPVM_PACKAGE_get_object_fields_length(compiler, package);
+  constant_pool_package.byte_size = package->byte_size;
   
   // Add length
   constant_pool->length += extend_length;
@@ -303,6 +304,7 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   memset(&constant_pool_field, 0, sizeof(SPVM_CONSTANT_POOL_FIELD));
   constant_pool_field.index = field->index;
   constant_pool_field.type_id = field->op_type->uv.type->id;
+  constant_pool_field.byte_offset = field->byte_offset;
   
   if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
     constant_pool_field.is_object = 1;
