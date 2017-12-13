@@ -753,7 +753,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_BYTE: {
         SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
-        if (__builtin_expect(!array, 0)) {
+        if (__builtin_expect(array == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Array must not be undef", 0);
           ((SPVM_API*)api)->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
@@ -765,8 +765,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
           else {
-            vars[opcode->operand0].byte_value
-              = *(int8_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
+            vars[opcode->operand0].byte_value = *(int8_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
             break;
           }
         }
