@@ -599,7 +599,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       // Normal subroutine
       else {
         // Condition flag
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t condition_flag;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
 
         SPVM_OPCODE* opcodes = runtime->opcodes;
         int32_t opcode_index = constant_pool_sub->opcode_base;
@@ -1001,6 +1001,17 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add(string_buffer, " = (double)var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_0:
+            case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2_0:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+              break;
+            case SPVM_OPCODE_C_CODE_UNDEF:
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+              break;
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:
             case SPVM_OPCODE_C_CODE_RETURN_INT:

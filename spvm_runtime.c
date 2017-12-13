@@ -744,12 +744,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_CODE_UNDEF:
         vars[opcode->operand0].object_value = NULL;
         break;
-      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT:
-        memcpy(&vars[opcode->operand0], &SPVM_INFO_CONSTANT_POOL[opcode->operand1], sizeof(int32_t));
-        break;
-      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2:
-        memcpy(&vars[opcode->operand0], &SPVM_INFO_CONSTANT_POOL[opcode->operand1], sizeof(int64_t));
-        break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_0:
         memset(&vars[opcode->operand0], 0, sizeof(int32_t));
         break;
@@ -2086,6 +2080,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_CODE_CURRENT_LINE:
         current_line = opcode->operand0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT:
+        memcpy(&vars[opcode->operand0], &SPVM_INFO_CONSTANT_POOL[opcode->operand1], sizeof(int32_t));
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2:
+        memcpy(&vars[opcode->operand0], &SPVM_INFO_CONSTANT_POOL[opcode->operand1], sizeof(int64_t));
         break;
     }
     opcode_index++;
