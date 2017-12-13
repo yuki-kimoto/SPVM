@@ -214,14 +214,6 @@ _Bool SPVM_TYPE_is_package(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   return is_package;
 }
 
-_Bool SPVM_TYPE_is_ref(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
-  (void)compiler;
-  
-  _Bool is_ref = type->code >= SPVM_TYPE_C_CODE_STRING;
-  
-  return is_ref;
-}
-
 _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
@@ -255,6 +247,17 @@ _Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   assert(type);
   
   if (type->code >= SPVM_TYPE_C_CODE_BYTE && type->code <= SPVM_TYPE_C_CODE_DOUBLE) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+_Bool SPVM_TYPE_is_object(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+  (void)compiler;
+  
+  if (type->code > SPVM_TYPE_C_CODE_DOUBLE) {
     return 1;
   }
   else {
