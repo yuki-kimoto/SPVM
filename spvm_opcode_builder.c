@@ -249,7 +249,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   // Do decrement reference count
                   // Variable type is object
-                  if (!SPVM_TYPE_is_numeric(compiler, type)) {
+                  if (SPVM_TYPE_is_object(compiler, type)) {
                     // Right value is variable
                     if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
                       int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
@@ -1376,7 +1376,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Right value is not undef
                   if (op_cur->last->code != SPVM_OP_C_CODE_UNDEF) {
                     // Variable type is object
-                    if (!SPVM_TYPE_is_numeric(compiler, type)) {
+                    if (SPVM_TYPE_is_object(compiler, type)) {
                       // Right value is variable
                       if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
                         int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
