@@ -194,7 +194,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
   
-  // 
+  // Calculate field byte offset. This is alligned as same rule of C language.
+  
+  
   
   // Resolve package
   {

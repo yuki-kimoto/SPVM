@@ -11,6 +11,7 @@ struct SPVM_constant_pool_package {
   int32_t fields_base;
   int32_t fields_length;
   int32_t destructor_sub_id;
+  int32_t byte_size;
 };
 
 #endif
