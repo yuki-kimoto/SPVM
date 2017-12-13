@@ -304,6 +304,10 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   constant_pool_field.index = field->index;
   constant_pool_field.type_id = field->op_type->uv.type->id;
   
+  if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
+    constant_pool_field.is_object = 1;
+  }
+  
   // Add length
   constant_pool->length += extend_length;
   
