@@ -194,6 +194,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
   
+  // 
+  
   // Resolve package
   {
     int32_t package_pos;
@@ -589,12 +591,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Can receive only numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "< left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
-                  if (!SPVM_TYPE_is_numeric(compiler, last_type)) {
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, "< right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -626,12 +628,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                                   
                   // Can receive only numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "<= left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
-                  if (!SPVM_TYPE_is_numeric(compiler, last_type)) {
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, "<= right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -663,12 +665,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Can receive only numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "> left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
-                  if (!SPVM_TYPE_is_numeric(compiler, last_type)) {
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, "> right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -700,12 +702,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Can receive only numeric type
-                  if (SPVM_TYPE_is_numeric(compiler, first_type) && !SPVM_TYPE_is_numeric(compiler, last_type)) {
+                  if (SPVM_TYPE_is_numeric(compiler, first_type) && SPVM_TYPE_is_object(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, ">= left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type) && SPVM_TYPE_is_numeric(compiler, last_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type) && SPVM_TYPE_is_numeric(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, ">= right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1022,7 +1024,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   
                   // Must be numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "- operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1046,7 +1048,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   
                   // Must be numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "+ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1080,7 +1082,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                                                   
                   // Value must be numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "+ operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1114,7 +1116,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                                                   
                   // Value must be numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "- operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1201,7 +1203,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                                                   
                   // Value must be numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "* operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1235,7 +1237,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                                                   
                   // Value must be numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "/ operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1269,7 +1271,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                                                   
                   // Value must be numeric type
-                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "% operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;

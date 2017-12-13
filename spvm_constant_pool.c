@@ -252,7 +252,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
       SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
       assert(arg_type);
-      if (!SPVM_TYPE_is_numeric(compiler, arg_type)) {
+      if (SPVM_TYPE_is_object(compiler, arg_type)) {
         SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, i);
         object_args_length++;
       }
@@ -269,7 +269,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
       SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, i);
       SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, op_my);
       assert(my_type);
-      if (!SPVM_TYPE_is_numeric(compiler, my_type)) {
+      if (SPVM_TYPE_is_object(compiler, my_type)) {
         SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, i);
         object_mys_length++;
       }
