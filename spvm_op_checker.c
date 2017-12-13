@@ -196,17 +196,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Calcurate fild byte offset and package byte size
   int32_t alignment = sizeof(SPVM_VALUE);
-  int32_t current_byte_offset = 0;
   {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
-
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
       SPVM_PACKAGE* package = op_package->uv.package;
       const char* package_name = package->op_name->uv.name;
       SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
-
+      
       // Separate reference type and value type
+      int32_t next_max_byte_size = alignment;
+      int32_t current_byte_offset = 0;
       {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
@@ -214,28 +214,58 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_FIELD* field = op_field->uv.field;
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
+          int32_t field_byte_size;
           switch (field_type->code) {
             case SPVM_TYPE_C_CODE_BYTE:
+              field_byte_size = sizeof(int8_t);
               break;
             case SPVM_TYPE_C_CODE_SHORT:
+              field_byte_size = sizeof(int16_t);
               break;
             case SPVM_TYPE_C_CODE_INT:
+              field_byte_size = sizeof(int32_t);
               break;
             case SPVM_TYPE_C_CODE_LONG:
+              field_byte_size = sizeof(int64_t);
               break;
             case SPVM_TYPE_C_CODE_FLOAT:
+              field_byte_size = sizeof(float);
               break;
             case SPVM_TYPE_C_CODE_DOUBLE:
+              field_byte_size = sizeof(double);
               break;
             default: {
-              
+              field_byte_size = sizeof(SPVM_OBJECT*);
             }
+          }
+          
+          int32_t padding = 0;
+          if (current_byte_offset % field_byte_size != 0) {
+            padding = field_byte_size - (current_byte_offset % field_byte_size);
+          }
+          current_byte_offset += padding;
+          
+          if (current_byte_offset + field_byte_size <= next_max_byte_size) {
+            field->byte_offset = current_byte_offset;
+          }
+          else {
+            current_byte_offset = next_max_byte_size;
+            field->byte_offset = current_byte_offset;
+          }
+          current_byte_offset += field_byte_size;
+          if (current_byte_offset % alignment == 0) {
+            next_max_byte_size += alignment;
           }
         }
       }
+      if (current_byte_offset % alignment == 0) {
+        package->byte_size = next_max_byte_size - alignment;
+      }
+      else {
+        package->byte_size = next_max_byte_size;
+      }
     }
   }
-  
   
   // Resolve package
   {
