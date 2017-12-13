@@ -134,7 +134,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Reorder fields. Reference types place before value types.
+  // Reorder fields. Reference types place before value types. Calcurate alignment
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   {
     int32_t package_pos;
@@ -194,8 +194,47 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Calculate field byte offset. This is alligned as same rule of C language.
-  
+  // Calcurate fild byte offset and package byte size
+  int32_t alignment = sizeof(SPVM_VALUE);
+  int32_t current_byte_offset = 0;
+  {
+    int32_t package_pos;
+    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
+
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      const char* package_name = package->op_name->uv.name;
+      SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
+
+      // Separate reference type and value type
+      {
+        int32_t field_pos;
+        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
+          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_TYPE* field_type = field->op_type->uv.type;
+          
+          switch (field_type->code) {
+            case SPVM_TYPE_C_CODE_BYTE:
+              break;
+            case SPVM_TYPE_C_CODE_SHORT:
+              break;
+            case SPVM_TYPE_C_CODE_INT:
+              break;
+            case SPVM_TYPE_C_CODE_LONG:
+              break;
+            case SPVM_TYPE_C_CODE_FLOAT:
+              break;
+            case SPVM_TYPE_C_CODE_DOUBLE:
+              break;
+            default: {
+              
+            }
+          }
+        }
+      }
+    }
+  }
   
   
   // Resolve package
