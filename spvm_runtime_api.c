@@ -392,7 +392,6 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   // Extend capacity
   assert(capacity >= length);
   if (length == capacity) {
-    
     int32_t new_capacity = capacity * 2;
     SPVM_OBJECT* new_weaken_back_refs = SPVM_RUNTIME_API_new_value_array(api, new_capacity);
     new_weaken_back_refs->ref_count++;
