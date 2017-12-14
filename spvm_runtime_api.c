@@ -849,20 +849,20 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_API* api, SPVM_OBJEC
 void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* object_value) {
   (void)api;
   
-  SPVM_VALUE* values = (SPVM_VALUE*)((intptr_t)object + sizeof(SPVM_OBJECT));
+  SPVM_OBJECT** values = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT));
   
   assert(object);
   assert(index >= 0);
   assert(index <= object->length);
   
-  if(values[index].object_value != NULL) {
-    SPVM_RUNTIME_API_dec_ref_count(api, values[index].object_value);
+  if(values[index] != NULL) {
+    SPVM_RUNTIME_API_dec_ref_count(api, values[index]);
   }
   
-  values[index].object_value = object_value;
+  values[index] = object_value;
   
-  if(values[index].object_value != NULL) {
-    SPVM_RUNTIME_API_inc_ref_count(api, values[index].object_value);
+  if(values[index] != NULL) {
+    SPVM_RUNTIME_API_inc_ref_count(api, values[index]);
   }
 }
 
