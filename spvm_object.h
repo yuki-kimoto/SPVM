@@ -11,7 +11,6 @@ struct SPVM_object {
     SPVM_VALUE alignment;
   } uv;
   int32_t type_id;
-  int32_t real_type_id;
   int32_t ref_count;
   int32_t weaken_back_refs_length;
   int32_t length;
