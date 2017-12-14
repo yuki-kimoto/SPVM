@@ -29,7 +29,6 @@ int32_t SPVM_RUNTIME_API_get_object_header_length_offset(SPVM_API* api);
 // Array functions
 int32_t SPVM_RUNTIME_API_get_object_header_byte_size(SPVM_API* api);
 int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_OBJECT* array);
-SPVM_VALUE* SPVM_RUNTIME_API_get_value_array_elements(SPVM_API* api, SPVM_OBJECT* object);
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_OBJECT* array);
 int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_API* api, SPVM_OBJECT* array);
 int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_API* api, SPVM_OBJECT* array);

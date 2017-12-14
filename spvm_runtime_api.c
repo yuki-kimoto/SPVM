@@ -667,7 +667,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   
   // Allocate array
   // alloc length + 1. Last value is 0
-  int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)(length + 1) * (int64_t)sizeof(SPVM_VALUE);
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)(length + 1) * (int64_t)sizeof(SPVM_OBJECT*);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   
   ((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
@@ -686,7 +686,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   // Objects length
   object->objects_length = length;
 
-  object->element_byte_size = sizeof(SPVM_VALUE);
+  object->element_byte_size = sizeof(SPVM_OBJECT*);
   
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
@@ -794,13 +794,6 @@ char* SPVM_RUNTIME_API_get_string_chars(SPVM_API* api, SPVM_OBJECT* object) {
   char* chars = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value);
   
   return chars;
-}
-
-// Use only internal
-SPVM_VALUE* SPVM_RUNTIME_API_get_value_array_elements(SPVM_API* api, SPVM_OBJECT* object) {
-  (void)api;
-
-  return (SPVM_VALUE*)((intptr_t)object + sizeof(SPVM_OBJECT));
 }
 
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_OBJECT* object) {
