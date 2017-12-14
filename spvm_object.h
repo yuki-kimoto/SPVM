@@ -4,6 +4,13 @@
 #include "spvm_base.h"
 #include "spvm_value.h"
 
+enum {
+  SPVM_OBJECT_C_CODE_OBJECT_TYPE_OBJECT,
+  SPVM_OBJECT_C_CODE_OBJECT_TYPE_NUMERIC_ARRAY,
+  SPVM_OBJECT_C_CODE_OBJECT_TYPE_OBJECT_ARRAY,
+  SPVM_OBJECT_C_CODE_OBJECT_TYPE_ADDRESS_ARRAY,
+};
+
 // SPVM_OBJECT
 struct SPVM_object {
   union {
@@ -18,6 +25,7 @@ struct SPVM_object {
   int8_t element_byte_size;
   int8_t has_destructor;
   int8_t in_destroy;
+  int8_t object_type_code
 };
 
 #endif

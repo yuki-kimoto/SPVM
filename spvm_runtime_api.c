@@ -504,6 +504,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_address_array(SPVM_API* api, int32_t length) {
   
   object->element_byte_size = sizeof(void*);
   
+  object->object_type_code = SPVM_OBJECT_C_CODE_OBJECT_TYPE_ADDRESS_ARRAY;
+  
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
@@ -528,6 +530,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   object->length = length;
   
   object->element_byte_size = sizeof(int8_t);
+  
+  object->object_type_code = SPVM_OBJECT_C_CODE_OBJECT_TYPE_NUMERIC_ARRAY;
   
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
@@ -555,6 +559,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
 
   object->element_byte_size = sizeof(int16_t);
 
+  object->object_type_code = SPVM_OBJECT_C_CODE_OBJECT_TYPE_NUMERIC_ARRAY;
+
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
 
   return object;
@@ -579,6 +585,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
   object->length = length;
 
   object->element_byte_size = sizeof(int32_t);
+
+  object->object_type_code = SPVM_OBJECT_C_CODE_OBJECT_TYPE_NUMERIC_ARRAY;
   
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
@@ -604,7 +612,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
   object->length = length;
 
   object->element_byte_size = sizeof(int64_t);
-  
+
+  object->object_type_code = SPVM_OBJECT_C_CODE_OBJECT_TYPE_NUMERIC_ARRAY;
+
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
@@ -629,7 +639,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
   object->length = length;
 
   object->element_byte_size = sizeof(float);
-  
+
+  object->object_type_code = SPVM_OBJECT_C_CODE_OBJECT_TYPE_NUMERIC_ARRAY;
+
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
@@ -654,7 +666,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   object->length = length;
 
   object->element_byte_size = sizeof(double);
-  
+
+  object->object_type_code = SPVM_OBJECT_C_CODE_OBJECT_TYPE_NUMERIC_ARRAY;
+
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
@@ -687,7 +701,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   object->objects_length = length;
 
   object->element_byte_size = sizeof(SPVM_OBJECT*);
-  
+
+  object->object_type_code = SPVM_OBJECT_C_CODE_OBJECT_TYPE_OBJECT_ARRAY;
+
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
@@ -719,7 +735,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   object->objects_length = constant_pool_package->object_fields_length;
   
   object->element_byte_size = sizeof(SPVM_VALUE);
-  
+
+  object->object_type_code = SPVM_OBJECT_C_CODE_OBJECT_TYPE_OBJECT;
+
   if (constant_pool_package->destructor_sub_id > 0) {
     object->has_destructor = 1;
   }
@@ -761,7 +779,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* chars, int32
   int32_t string_type_id = type_code_to_id[SPVM_TYPE_C_CODE_STRING];
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_type_id);
-  
+
   static int32_t field_id;
   field_id = SPVM_RUNTIME_API_get_field_id(api, object, "value");
   
