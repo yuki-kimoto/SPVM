@@ -382,7 +382,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   
   // Create array of weaken_back_refs if need
   if (object->uv.weaken_back_refs == NULL) {
-    object->uv.weaken_back_refs = SPVM_RUNTIME_API_new_value_array(api, 1);
+    object->uv.weaken_back_refs = SPVM_RUNTIME_API_new_address_array(api, 1);
     object->uv.weaken_back_refs->ref_count++;
   }
   
@@ -393,7 +393,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
   assert(capacity >= length);
   if (length == capacity) {
     int32_t new_capacity = capacity * 2;
-    SPVM_OBJECT* new_weaken_back_refs = SPVM_RUNTIME_API_new_value_array(api, new_capacity);
+    SPVM_OBJECT* new_weaken_back_refs = SPVM_RUNTIME_API_new_address_array(api, new_capacity);
     new_weaken_back_refs->ref_count++;
     
     SPVM_OBJECT** weaken_back_refs_elements = (SPVM_OBJECT**)((intptr_t)object->uv.weaken_back_refs + sizeof(SPVM_OBJECT));
@@ -490,19 +490,19 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_API* api) {
 }
 
 // Use only internal
-SPVM_OBJECT* SPVM_RUNTIME_API_new_value_array(SPVM_API* api, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_address_array(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   // Allocate array
   // alloc length + 1. Last value is 0
-  int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)(length + 1) * (int64_t)sizeof(SPVM_VALUE);
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)(length + 1) * (int64_t)sizeof(void*);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   
   // Set array length
   object->length = length;
   
-  object->element_byte_size = sizeof(SPVM_VALUE);
+  object->element_byte_size = sizeof(void*);
   
   assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
