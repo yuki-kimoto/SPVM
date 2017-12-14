@@ -835,13 +835,13 @@ double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_OBJECT* o
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_API* api, SPVM_OBJECT* object, int32_t index) {
   (void)api;
   
-  SPVM_VALUE* values = (SPVM_VALUE*)((intptr_t)object + sizeof(SPVM_OBJECT));
+  SPVM_OBJECT** values = (SPVM_OBJECT*)((intptr_t)object + sizeof(SPVM_OBJECT));
 
   assert(object);
   assert(index >= 0);
   assert(index <= object->length);
   
-  SPVM_OBJECT* object_value = values[index].object_value;
+  SPVM_OBJECT* object_value = values[index];
   
   return object_value;
 }
