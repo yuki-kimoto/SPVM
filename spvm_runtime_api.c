@@ -939,25 +939,39 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       }
     }
     
-    int32_t objects_length = object->objects_length;
-    
-    {
-      int32_t i;
-      for (i = 0; i < objects_length; i++) {
-        SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
-        if (*object_field_address != NULL) {
-          // If object is weak, unweaken
-          if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
-            SPVM_RUNTIME_API_unweaken(api, object_field_address);
-          }
-          else {
+    if (object->object_type_code == SPVM_OBJECT_C_CODE_OBJECT_TYPE_OBJECT_ARRAY) {
+      int32_t length = object->length;
+      {
+        int32_t i;
+        for (i = 0; i < length; i++) {
+          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_OBJECT*) * i);
+          if (*object_field_address != NULL) {
             SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);
           }
         }
       }
     }
-    if (__builtin_expect(object->uv.weaken_back_refs != NULL, 0)) {
-      SPVM_RUNTIME_API_free_weaken_back_refs(api, object->uv.weaken_back_refs, object->weaken_back_refs_length);
+    else if (object->object_type_code == SPVM_OBJECT_C_CODE_OBJECT_TYPE_OBJECT) {
+      int32_t objects_length = object->objects_length;
+      
+      {
+        int32_t i;
+        for (i = 0; i < objects_length; i++) {
+          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
+          if (*object_field_address != NULL) {
+            // If object is weak, unweaken
+            if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
+              SPVM_RUNTIME_API_unweaken(api, object_field_address);
+            }
+            else {
+              SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);
+            }
+          }
+        }
+      }
+      if (__builtin_expect(object->uv.weaken_back_refs != NULL, 0)) {
+        SPVM_RUNTIME_API_free_weaken_back_refs(api, object->uv.weaken_back_refs, object->weaken_back_refs_length);
+      }
     }
     
     SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, object);
