@@ -443,7 +443,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_API* api, SPVM_OBJECT** object_address) {
 
   int32_t length = object->weaken_back_refs_length;
   
-  SPVM_OBJECT** weaken_back_refs_elements = (SPVM_OBJECT**)((intptr_t)object->uv.weaken_back_refs + sizeof(SPVM_OBJECT));
+  SPVM_OBJECT*** weaken_back_refs_elements = (SPVM_OBJECT***)((intptr_t)object->uv.weaken_back_refs + sizeof(SPVM_OBJECT));
   
   {
     int32_t i;
@@ -835,7 +835,7 @@ double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_OBJECT* o
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_API* api, SPVM_OBJECT* object, int32_t index) {
   (void)api;
   
-  SPVM_OBJECT** values = (SPVM_OBJECT*)((intptr_t)object + sizeof(SPVM_OBJECT));
+  SPVM_OBJECT** values = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT));
 
   assert(object);
   assert(index >= 0);
@@ -1215,7 +1215,7 @@ void SPVM_RUNTIME_API_weaken_object_field(SPVM_API* api, SPVM_OBJECT* object, in
   SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&runtime->constant_pool[field_id];
   int32_t index = constant_pool_field->index;
 
-  SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * index);
+  SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_OBJECT*) * index);
   
   // Weaken object field
   if (*object_address != NULL) {
