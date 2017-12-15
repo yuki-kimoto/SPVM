@@ -1,4 +1,21 @@
+use TestCase;
+
 package TestCase::Extension {
+  sub native_api_get_int_field($test_case : TestCase) : native int;
+  
+  sub native_api_get_set_field() : int {
+    
+    my $test_case = TestCase::new();
+    
+    $test_case->set_x_int(3);
+
+    my $x_int1 = native_api_get_int_field($test_case);
+    
+    if ($x_int1 == 3) {
+      return 1;
+    }
+  }
+
   sub sum($num1 : int, $num2 : int) : native int;
   
   sub add_int_array($nums1 : int[], $nums2 : int[]) : native int[];

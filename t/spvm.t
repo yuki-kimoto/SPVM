@@ -81,6 +81,11 @@ my $start_objects_count = SPVM::get_objects_count();
   is($start_objects_count, $end_objects_count);
 }
 
+# Native API
+{
+  ok(SPVM::TestCase::Extension::native_api_get_set_field());
+}
+
 # Native Exception
 {
   ok(SPVM::TestCase::Extension::call_void_sub_exception());

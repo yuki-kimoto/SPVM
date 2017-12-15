@@ -2,6 +2,17 @@
 
 #include <spvm_api.h>
 
+int32_t SPVM__TestCase__Extension__native_api_get_int_field(SPVM_API* api, SPVM_API_VALUE* args) {
+  
+  SPVM_API_OBJECT* test_case = args[0].object_value;
+  
+  int32_t field_id = api->get_field_id(api, test_case, "x_int");
+  
+  int32_t value = api->get_int_field(api, test_case, field_id);
+  
+  return value;
+}
+
 int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, SPVM_API_VALUE* args) {
   
   int32_t total = args[0].int_value + args[1].int_value;
