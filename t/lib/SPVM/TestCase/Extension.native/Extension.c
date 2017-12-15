@@ -2,6 +2,28 @@
 
 #include <spvm_api.h>
 
+int8_t SPVM__TestCase__Extension__native_api_get_byte_field(SPVM_API* api, SPVM_API_VALUE* args) {
+  
+  SPVM_API_OBJECT* test_case = args[0].object_value;
+  
+  int32_t field_id = api->get_field_id(api, test_case, "x_byte");
+  
+  int8_t value = api->get_byte_field(api, test_case, field_id);
+  
+  return value;
+}
+
+int16_t SPVM__TestCase__Extension__native_api_get_short_field(SPVM_API* api, SPVM_API_VALUE* args) {
+  
+  SPVM_API_OBJECT* test_case = args[0].object_value;
+  
+  int32_t field_id = api->get_field_id(api, test_case, "x_short");
+  
+  int16_t value = api->get_short_field(api, test_case, field_id);
+  
+  return value;
+}
+
 int32_t SPVM__TestCase__Extension__native_api_get_int_field(SPVM_API* api, SPVM_API_VALUE* args) {
   
   SPVM_API_OBJECT* test_case = args[0].object_value;
@@ -9,6 +31,50 @@ int32_t SPVM__TestCase__Extension__native_api_get_int_field(SPVM_API* api, SPVM_
   int32_t field_id = api->get_field_id(api, test_case, "x_int");
   
   int32_t value = api->get_int_field(api, test_case, field_id);
+  
+  return value;
+}
+
+int64_t SPVM__TestCase__Extension__native_api_get_long_field(SPVM_API* api, SPVM_API_VALUE* args) {
+  
+  SPVM_API_OBJECT* test_case = args[0].object_value;
+  
+  int32_t field_id = api->get_field_id(api, test_case, "x_long");
+  
+  int64_t value = api->get_long_field(api, test_case, field_id);
+  
+  return value;
+}
+
+float SPVM__TestCase__Extension__native_api_get_float_field(SPVM_API* api, SPVM_API_VALUE* args) {
+  
+  SPVM_API_OBJECT* test_case = args[0].object_value;
+  
+  int32_t field_id = api->get_field_id(api, test_case, "x_float");
+  
+  float value = api->get_float_field(api, test_case, field_id);
+  
+  return value;
+}
+
+int32_t SPVM__TestCase__Extension__native_api_get_double_field(SPVM_API* api, SPVM_API_VALUE* args) {
+  
+  SPVM_API_OBJECT* test_case = args[0].object_value;
+  
+  int32_t field_id = api->get_field_id(api, test_case, "x_double");
+  
+  double value = api->get_double_field(api, test_case, field_id);
+  
+  return value;
+}
+
+SPVM_API_OBJECT* SPVM__TestCase__Extension__native_api_get_object_field(SPVM_API* api, SPVM_API_VALUE* args) {
+  
+  SPVM_API_OBJECT* test_case = args[0].object_value;
+  
+  int32_t field_id = api->get_field_id(api, test_case, "minimal");
+  
+  SPVM_API_OBJECT* value = api->get_object_field(api, test_case, field_id);
   
   return value;
 }
