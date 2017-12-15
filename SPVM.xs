@@ -36,6 +36,7 @@
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_dynamic_array.h"
+#include "spvm_constant_pool_builder.h"
 
 static SPVM_API_VALUE call_sub_args[255];
 
@@ -3158,7 +3159,7 @@ build_constant_pool(...)
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
   
   // Build constant pool
-  SPVM_OP_build_constant_pool(compiler);
+  SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(compiler);
   
   XSRETURN(0);
 }

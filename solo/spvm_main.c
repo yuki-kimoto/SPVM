@@ -19,6 +19,7 @@
 #include "spvm_runtime_api.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
+#include "spvm_constant_pool_builder.h"
 
 #include "native/SPVM/CORE.native/CORE.c"
 
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
   SPVM_COMPILER_compile(compiler);
   
   // Build constant pool
-  SPVM_OP_build_constant_pool(compiler);
+  SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(compiler);
   
   // Build bytecode
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
