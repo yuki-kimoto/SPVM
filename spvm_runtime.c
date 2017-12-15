@@ -1222,8 +1222,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1231,7 +1230,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].byte_value = *(int8_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        vars[opcode->operand0].byte_value = *(int8_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_SHORT: {
@@ -1241,8 +1240,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1250,7 +1248,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].short_value = *(int16_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        vars[opcode->operand0].short_value = *(int16_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_INT: {
@@ -1260,8 +1258,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1269,7 +1266,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].int_value = *(int32_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        vars[opcode->operand0].int_value = *(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_LONG: {
@@ -1279,8 +1276,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1288,7 +1284,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].long_value = *(int64_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        vars[opcode->operand0].long_value = *(int64_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_FLOAT: {
@@ -1298,8 +1294,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1307,7 +1302,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].float_value = *(float*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        vars[opcode->operand0].float_value = *(float*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_DOUBLE: {
@@ -1317,8 +1312,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1326,7 +1320,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].double_value = *(double*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        vars[opcode->operand0].double_value = *(double*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_OBJECT: {
@@ -1336,8 +1330,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1345,7 +1338,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].object_value = *(SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        vars[opcode->operand0].object_value = *(SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         break;
       }
       case SPVM_OPCODE_C_CODE_WEAKEN_FIELD_OBJECT: {
@@ -1367,8 +1360,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1376,7 +1368,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(int8_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
+        *(int8_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_SHORT: {
@@ -1386,8 +1378,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1395,7 +1386,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(int16_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
+        *(int16_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_INT: {
@@ -1405,8 +1396,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1414,7 +1404,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(int32_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
+        *(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_LONG: {
@@ -1424,8 +1414,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1433,7 +1422,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(int64_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
+        *(int64_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_FLOAT: {
@@ -1443,8 +1432,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1452,7 +1440,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(float*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
+        *(float*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_DOUBLE: {
@@ -1462,8 +1450,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1471,7 +1458,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(double*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
+        *(double*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT: {
@@ -1481,8 +1468,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
 
         // Index
         SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, "Object must be not undef(get_byte_field).", 0);
@@ -1490,26 +1476,26 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        SPVM_API_VALUE* field_address = (SPVM_API_VALUE*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
         
-        if((*field_address).object_value != NULL) {
+        if(*field_address != NULL) {
           // If object is weak, unweaken
-          if (SPVM_INLINE_ISWEAK((*field_address).object_value)) {
-            ((SPVM_API*)api)->unweaken(api, (SPVM_API_OBJECT**)field_address);
+          if (SPVM_INLINE_ISWEAK(*field_address)) {
+            ((SPVM_API*)api)->unweaken(api, field_address);
           }
           
-          if (SPVM_INLINE_GET_REF_COUNT((*field_address).object_value) > 1) {
-            SPVM_INLINE_DEC_REF_COUNT_ONLY((*field_address).object_value);
+          if (SPVM_INLINE_GET_REF_COUNT(*field_address) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(*field_address);
           }
           else {
-            ((SPVM_API*)api)->dec_ref_count(api, (*field_address).object_value);
+            ((SPVM_API*)api)->dec_ref_count(api, *field_address);
           }
         }
         
-        (*field_address).object_value = value;
+        *field_address = value;
         
-        if((*field_address).object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT((*field_address).object_value);
+        if(*field_address != NULL) {
+          SPVM_INLINE_INC_REF_COUNT(*field_address);
         }
         break;
       }

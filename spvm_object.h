@@ -25,7 +25,7 @@ struct SPVM_object {
   int8_t element_byte_size;
   int8_t has_destructor;
   int8_t in_destroy;
-  int8_t object_type_code
+  int8_t object_type_code;
 };
 
 #endif
