@@ -55,9 +55,6 @@ int main(int argc, char *argv[])
   // Build bytecode
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
   
-  // Build JIT code(This is C source code which is passed to gcc)
-  SPVM_JITCODE_BUILDER_build_jitcode(compiler);
-  
   // Bind native subroutine
   {
     int32_t i;
@@ -207,7 +204,10 @@ int main(int argc, char *argv[])
     fprintf(stderr, "Can't find entry point subroutine\n");
     exit(EXIT_FAILURE);
   }
-  
+
+  // Build JIT code(This is C source code which is passed to gcc)
+  SPVM_JITCODE_BUILDER_build_jitcode(compiler);
+
   // Free compiler
   SPVM_COMPILER_free(compiler);
   
