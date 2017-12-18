@@ -133,75 +133,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
     }
   }
-  
-  // Reorder fields. Reference types place before value types. Calcurate alignment
-  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
-  {
-    int32_t package_pos;
-    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
 
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      const char* package_name = package->op_name->uv.name;
-      SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
-
-      if (islower(package_name[0])) {
-        if (strcmp(package_name, "CORE") != 0) {
-          SPVM_yyerror_format(compiler, "Package name \"%s\" must be start with upper case. Lowercase is reserved for core package  at %s line %d\n", package_name, op_package->file, op_package->line);
-          compiler->fatal_error = 1;
-          return;
-        }
-      }
-      
-      SPVM_DYNAMIC_ARRAY* op_fields_object = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      SPVM_DYNAMIC_ARRAY* op_fields_numeric = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      
-      // Separate reference type and value type
-      {
-        int32_t field_pos;
-        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
-          SPVM_TYPE* field_type = field->op_type->uv.type;
-          
-          if (SPVM_TYPE_is_numeric(compiler, field_type)) {
-            SPVM_DYNAMIC_ARRAY_push(op_fields_numeric, op_field);
-          }
-          else {
-            SPVM_DYNAMIC_ARRAY_push(op_fields_object, op_field);
-          }
-        }
-      }
-      
-      // Create ordered op fields
-      SPVM_DYNAMIC_ARRAY* ordered_op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      {
-        int32_t field_pos;
-        for (field_pos = 0; field_pos < op_fields_object->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields_object, field_pos);
-          SPVM_DYNAMIC_ARRAY_push(ordered_op_fields, op_field);
-        }
-      }
-      
-      {
-        int32_t field_pos;
-        for (field_pos = 0; field_pos < op_fields_numeric->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields_numeric, field_pos);
-          SPVM_DYNAMIC_ARRAY_push(ordered_op_fields, op_field);
-        }
-      }
-      package->op_fields = ordered_op_fields;
-    }
-  }
-  
   // Calcurate fild byte offset and package byte size
+  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
   int32_t alignment = sizeof(SPVM_VALUE);
   {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
       SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
       SPVM_PACKAGE* package = op_package->uv.package;
-      const char* package_name = package->op_name->uv.name;
       SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
       
       // Separate reference type and value type
