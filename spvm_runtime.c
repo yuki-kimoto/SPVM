@@ -886,7 +886,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
           else {
-            vars[opcode->operand0] = *(SPVM_VALUE*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * index);
+            vars[opcode->operand0].object_value = *(SPVM_API_OBJECT**)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
             break;
           }
         }
@@ -1027,7 +1027,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
           else {
-            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * index);
+            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_OBJECT*) * index);
             
             // Decrement old object reference count
             if (*object_address != NULL) {
