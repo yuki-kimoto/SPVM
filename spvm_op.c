@@ -1166,6 +1166,11 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = field->op_type->uv.type;
       break;
     }
+    case SPVM_OP_C_CODE_FIELD: {
+      SPVM_FIELD* field = op->uv.field;
+      type = field->op_type->uv.type;
+      break;
+    }
   }
   
   return type;

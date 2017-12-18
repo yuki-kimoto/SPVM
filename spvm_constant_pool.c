@@ -172,7 +172,26 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
       SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->id);
     }
   }
-  
+
+  // Push object fields constant_pool byte offsets to constant pool
+  {
+    int32_t field_pos;
+    constant_pool_package.object_field_byte_offsets_base = constant_pool->length;
+    int32_t object_field_byte_offsets_length = 0;
+    for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
+      SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
+      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
+      
+      if (SPVM_TYPE_is_object(compiler, field_type)) {
+        SPVM_FIELD* field = op_field->uv.field;
+        int32_t byte_offset = field->byte_offset;
+        SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, byte_offset);
+        object_field_byte_offsets_length++;
+      }
+    }
+    constant_pool_package.object_field_byte_offsets_length = object_field_byte_offsets_length;
+  }
+
   memcpy(&constant_pool->values[id], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   
   return id;

@@ -954,10 +954,23 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
     else if (object->object_type_code == SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT) {
       int32_t objects_length = object->objects_length;
       
+      // Constant pool
+      int32_t* constant_pool = runtime->constant_pool;
+      
+      // Type
+      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
+      
+      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[constant_pool_type->package_id];
+      
+      int32_t object_field_byte_offsets_base = constant_pool_package->object_field_byte_offsets_base;
+      int32_t object_field_byte_offsets_length = constant_pool_package->object_field_byte_offsets_length;
+      
       {
         int32_t i;
-        for (i = 0; i < objects_length; i++) {
-          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * i);
+        for (i = 0; i < object_field_byte_offsets_length; i++) {
+          int32_t field_byte_offset = constant_pool[object_field_byte_offsets_base + i];
+          
+          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
           if (*object_field_address != NULL) {
             // If object is weak, unweaken
             if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {

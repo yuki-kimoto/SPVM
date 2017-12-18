@@ -183,7 +183,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
     }
     return return_value;
   }
-
+  
   // Call normal sub
   // If arg is object, increment reference count
   {
