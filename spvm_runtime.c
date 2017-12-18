@@ -49,7 +49,7 @@
 #define SPVM_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
 
-SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
+SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
   
   // Runtime
@@ -62,7 +62,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[sub_id];
   
   // Package variables
-  SPVM_VALUE* SPVM_INFO_PACKAGE_VARS = SPVM_INFO_RUNTIME->package_vars;
+  SPVM_API_VALUE* SPVM_INFO_PACKAGE_VARS = SPVM_INFO_RUNTIME->package_vars;
 
   // Debug
   int32_t SPVM_INFO_DEBUG = SPVM_INFO_RUNTIME->debug ? 1 : 0;
@@ -110,7 +110,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE = SPVM_INFO_SUB_XXX_RETURN_TYPE->code;
   
   // Call stack
-  SPVM_VALUE vars[65535];
+  SPVM_API_VALUE vars[65535];
   
   // Eval stack
   int32_t eval_stack[255];
@@ -119,7 +119,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   int32_t eval_stack_top = -1;
   
   // Call subroutine argument stack
-  SPVM_VALUE call_sub_arg_stack[255];
+  SPVM_API_VALUE call_sub_arg_stack[255];
   
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = -1;
@@ -131,10 +131,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   register int32_t condition_flag = 0;
 
   // Return value
-  SPVM_VALUE return_value;
+  SPVM_API_VALUE return_value;
   
   // Copy arguments
-  memcpy(vars, args, args_length * sizeof(SPVM_VALUE));
+  memcpy(vars, args, args_length * sizeof(SPVM_API_VALUE));
   
   // Set exception to NULL;
   SPVM_INLINE_SET_EXCEPTION_NULL();
@@ -143,42 +143,42 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   if (SPVM_INFO_SUB_XXX_IS_NATIVE) {
     // Call native subroutine
     if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_VOID) {
-      void (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      (*native_address)(api, (SPVM_VALUE*)vars);
+      void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      (*native_address)(api, (SPVM_API_VALUE*)vars);
     }
     else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
-      int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int8_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      int8_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      int8_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.byte_value = return_value_native;
     }
     else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
-      int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int16_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      int16_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      int16_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.short_value = return_value_native;
     }
     else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
-      int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int32_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      int32_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      int32_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.int_value = return_value_native;
     }
     else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
-      int64_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int64_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      int64_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      int64_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.long_value = return_value_native;
     }
     else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
-      float (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      float return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      float return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.float_value = return_value_native;
     }
     else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
-      double (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      double return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      double return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.double_value = return_value_native;
     }
     else {
-      SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.object_value = return_value_native;
     }
     return return_value;
@@ -1685,7 +1685,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         call_sub_arg_stack_top -= SPVM_INFO_SUB_YYY_ARGS_LENGTH;
         
-        SPVM_VALUE args[255];
+        SPVM_API_VALUE args[255];
         {
           int32_t i;
           for (i = 0; i < SPVM_INFO_SUB_YYY_ARGS_LENGTH; i++) {
@@ -1827,7 +1827,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_CODE_RETURN_VOID: {
 
-        memset(&return_value, 0, sizeof(SPVM_VALUE));
+        memset(&return_value, 0, sizeof(SPVM_API_VALUE));
         
         // Decrement object my vars reference count
         {
@@ -1964,7 +1964,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           ((SPVM_API*)api)->set_exception(api, new_exception);
         }
         
-        memset(&return_value, 0, sizeof(SPVM_VALUE));
+        memset(&return_value, 0, sizeof(SPVM_API_VALUE));
         
         return return_value;
       }
