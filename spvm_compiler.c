@@ -21,7 +21,6 @@
 #include "spvm_runtime_api.h"
 #include "spvm_sub.h"
 #include "spvm_field.h"
-#include "spvm_value.h"
 #include "spvm_api.h"
 #include "spvm_opcode.h"
 
@@ -43,7 +42,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   memcpy(runtime->opcodes, compiler->opcode_array->values, compiler->opcode_array->length * sizeof(SPVM_OPCODE));
   
   // Initialize Package Variables
-  SPVM_VALUE* package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_var_length + 1));
+  SPVM_API_VALUE* package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API_VALUE) * (compiler->package_var_length + 1));
   runtime->package_vars = package_vars;
   
   // Build sub id symtable

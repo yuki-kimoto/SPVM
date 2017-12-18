@@ -2,7 +2,7 @@
 #define SPVM_OBJECT_H
 
 #include "spvm_base.h"
-#include "spvm_value.h"
+#include "spvm_api.h"
 
 enum {
   SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT,
@@ -15,7 +15,7 @@ enum {
 struct SPVM_object {
   union {
     SPVM_OBJECT* weaken_back_refs;
-    SPVM_VALUE alignment;
+    SPVM_API_VALUE alignment;
   } uv;
   int32_t type_id;
   int32_t ref_count;

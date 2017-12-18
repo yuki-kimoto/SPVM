@@ -92,6 +92,8 @@ spvm_constant.c
 spvm_constant.h
 spvm_constant_pool.c
 spvm_constant_pool.h
+spvm_constant_pool_builder.c
+spvm_constant_pool_builder.h
 spvm_constant_pool_field.h
 spvm_constant_pool_package.h
 spvm_constant_pool_sub.h
@@ -164,7 +166,6 @@ spvm_use.c
 spvm_use.h
 spvm_util_allocator.c
 spvm_util_allocator.h
-spvm_value.h
 spvm_var.c
 spvm_var.h
 spvm_yacc.c

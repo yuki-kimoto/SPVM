@@ -12,7 +12,6 @@
 #include "spvm_opcode.h"
 #include "spvm_object.h"
 #include "spvm_type.h"
-#include "spvm_value.h"
 #include "spvm_runtime.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
