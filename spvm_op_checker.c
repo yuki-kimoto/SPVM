@@ -136,7 +136,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
   // Calcurate fild byte offset and package byte size
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
-  int32_t alignment = sizeof(SPVM_VALUE);
+  int32_t alignment;
+  if (sizeof(void*) > sizeof(int64_t)) {
+    alignment = sizeof(void*);
+  }
+  else {
+    sizeof(int64_t);
+  }
+  
   {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
