@@ -697,9 +697,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   // Set array length
   object->length = length;
   
-  // Objects length
-  object->objects_length = length;
-
   object->element_byte_size = sizeof(SPVM_OBJECT*);
 
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT_ARRAY;
@@ -730,9 +727,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   object->type_id = type_id;
   
   object->length = length;
-  
-  // Objects length
-  object->objects_length = constant_pool_package->object_fields_length;
   
   object->element_byte_size = sizeof(SPVM_VALUE);
 
@@ -952,7 +946,6 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       }
     }
     else if (object->object_type_code == SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT) {
-      int32_t objects_length = object->objects_length;
       
       // Constant pool
       int32_t* constant_pool = runtime->constant_pool;
