@@ -728,7 +728,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   
   object->length = length;
   
-  object->element_byte_size = sizeof(SPVM_VALUE);
+  object->element_byte_size = sizeof(SPVM_OBJECT*);
 
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT;
 
