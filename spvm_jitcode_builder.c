@@ -80,19 +80,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_ISWEAK(object) ((intptr_t)object & 1)\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
-  // DIVIDE_INTEGRAL macro function
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_DIVIDE_INTEGRAL(api, var_index0, var_index1, var_index2) \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  do { \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(var ## var_index2 == 0, 0)) { \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, \"0 division\", 0); \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      ((SPVM_API*)api)->set_exception(api, exception); \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      goto label_SPVM_OPCODE_C_CODE_CROAK; \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } else { \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      var ## var_index0 = var ## var_index1 / var ## var_index2; \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  } \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  while (0) \\\n");
-
   // ARRAY_LOAD macro function
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_ARRAY_LOAD(api, element_type, var_index0, var_index1, var_index2) \\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  do { \\\n");
@@ -801,17 +788,25 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             case SPVM_OPCODE_C_CODE_DIVIDE_BYTE:
             case SPVM_OPCODE_C_CODE_DIVIDE_SHORT:
             case SPVM_OPCODE_C_CODE_DIVIDE_INT:
-            case SPVM_OPCODE_C_CODE_DIVIDE_LONG:
-              SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_INLINE_DIVIDE_INTEGRAL(");
-              SPVM_STRING_BUFFER_add_address(string_buffer, runtime->api);
-              SPVM_STRING_BUFFER_add(string_buffer, ", ");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, ", ");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, ", ");
+            case SPVM_OPCODE_C_CODE_DIVIDE_LONG: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
-              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* exception = ((SPVM_API*)api)->new_string(api, \"0 division\", 0); \n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    ((SPVM_API*)api)->set_exception(api, exception); \n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    goto label_SPVM_OPCODE_C_CODE_CROAK; \n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  } else { \\\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    \n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, " / var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
               break;
+            }
             case SPVM_OPCODE_C_CODE_DIVIDE_FLOAT:
             case SPVM_OPCODE_C_CODE_DIVIDE_DOUBLE:
               SPVM_STRING_BUFFER_add(string_buffer, "  var");
