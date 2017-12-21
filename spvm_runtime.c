@@ -1177,8 +1177,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         else {
           vars[opcode->operand0].int_value = *(int32_t*)((intptr_t)vars[opcode->operand1].object_value + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET);
-          break;
         }
+        break;
       case SPVM_OPCODE_C_CODE_GET_FIELD_BYTE: {
         SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
         
