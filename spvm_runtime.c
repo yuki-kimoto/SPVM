@@ -1089,11 +1089,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_byte_array(api, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        
         // Set array
         vars[opcode->operand0].object_value = object;
         break;
@@ -1105,11 +1100,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_short_array(api, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set array
         vars[opcode->operand0].object_value = object;
         break;
@@ -1120,11 +1110,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t length = vars[opcode->operand1].int_value;
         
         SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_int_array(api, length);
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
         
         // Set array
         vars[opcode->operand0].object_value = object;
@@ -1137,11 +1122,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_long_array(api, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set array
         vars[opcode->operand0].object_value = object;
         break;
@@ -1153,11 +1133,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_float_array(api, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set array
         vars[opcode->operand0].object_value = object;
         break;
@@ -1169,11 +1144,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_double_array(api, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set array
         vars[opcode->operand0].object_value = object;
         break;
@@ -1186,11 +1156,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_object_array(api, element_type_id, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set object
         vars[opcode->operand0].object_value = object;
         break;

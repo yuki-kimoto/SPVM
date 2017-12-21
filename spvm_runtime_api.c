@@ -684,9 +684,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   
   ((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
-  // Initialize by null
-  memset(object, 0, array_byte_size);
-  
   // Type id
   SPVM_CONSTANT_POOL_TYPE* element_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
   int32_t type_id = element_type->parent_type_id;
@@ -717,25 +714,22 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[package_id];
   
   // Allocate memory
-  int32_t length = constant_pool_package->fields_length;
   int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)constant_pool_package->byte_size;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
   
-  // Set type id
+  // Type id
   object->type_id = type_id;
   
-  object->length = length;
-  
-  object->element_byte_size = sizeof(SPVM_OBJECT*);
-
+  // Object type code
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT;
-
+  
+  // Has destructor
   if (constant_pool_package->destructor_sub_id > 0) {
     object->has_destructor = 1;
   }
-
+  
   assert(object_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-
+  
   return object;
 }
 

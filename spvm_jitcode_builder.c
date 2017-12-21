@@ -1222,5 +1222,5 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
   
-  warn("%s", string_buffer->buffer);
+  //warn("%s", string_buffer->buffer);
 }
