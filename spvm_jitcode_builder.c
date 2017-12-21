@@ -1204,12 +1204,13 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               break;
             }
             case SPVM_OPCODE_C_CODE_NEW_OBJECT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t type_id = \n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t type_id = ");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* object = api->new_object(api, type_id);\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  var\n");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, "  = (SPVM_API_OBJECT*)object;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  = object;\n");
               break;
             }
             case SPVM_OPCODE_C_CODE_NEW_BYTE_ARRAY:
@@ -1247,6 +1248,19 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add(string_buffer, " = object;\n");
               break;
             }
+            case SPVM_OPCODE_C_CODE_NEW_OBJECT_ARRAY: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t element_type_id = ");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, "  ;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t length = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, "  ;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_object_array(api, element_type_id, length);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, "   = object;\n");
+              break;
+            }
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:
             case SPVM_OPCODE_C_CODE_RETURN_INT:
@@ -1272,5 +1286,5 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
   
-  // warn("%s", string_buffer->buffer);
+  warn("%s", string_buffer->buffer);
 }
