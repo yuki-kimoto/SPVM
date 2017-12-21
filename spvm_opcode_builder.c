@@ -1320,7 +1320,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                            opcode.code = SPVM_OPCODE_C_CODE_NEW_DOUBLE_ARRAY;
+                            opcode.code = SPVM_OPCODE_C_CODE_NEW_OBJECT_ARRAY;
 
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                             SPVM_TYPE* element_type = op_last->first->first->uv.type;

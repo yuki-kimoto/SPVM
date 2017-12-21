@@ -1149,7 +1149,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_NEW_OBJECT_ARRAY: {
-        int32_t element_type_id = opcode->operand0;
+        int32_t element_type_id = opcode->operand1;
         
         // length
         int32_t length = vars[opcode->operand2].int_value;
