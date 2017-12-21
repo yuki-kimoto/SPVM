@@ -1197,6 +1197,104 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               break;
             }
+            case SPVM_OPCODE_C_CODE_NEW_OBJECT: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t type_id = \n");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_object(api, type_id);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  var\n");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, "  = (SPVM_API_OBJECT*)object;\n");
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_NEW_BYTE_ARRAY: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t length = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, "  ;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_byte_array(api, length);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = object;\n");
+              break;
+            }
+            /*
+            case SPVM_OPCODE_C_CODE_NEW_SHORT_ARRAY: {
+              
+              // length
+              int32_t length = vars[opcode->operand1].int_value;
+              
+              SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_short_array(api, length);
+              
+              // Set array
+              vars[opcode->operand0].object_value = object;
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_NEW_INT_ARRAY: {
+              
+              // length
+              int32_t length = vars[opcode->operand1].int_value;
+              
+              SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_int_array(api, length);
+              
+              // Set array
+              vars[opcode->operand0].object_value = object;
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_NEW_LONG_ARRAY: {
+              
+              // length
+              int32_t length = vars[opcode->operand1].int_value;
+              
+              SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_long_array(api, length);
+              
+              // Set array
+              vars[opcode->operand0].object_value = object;
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_NEW_FLOAT_ARRAY: {
+              
+              // length
+              int32_t length = vars[opcode->operand1].int_value;
+              
+              SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_float_array(api, length);
+              
+              // Set array
+              vars[opcode->operand0].object_value = object;
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_NEW_DOUBLE_ARRAY: {
+              
+              // length
+              int32_t length = vars[opcode->operand1].int_value;
+              
+              SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_double_array(api, length);
+              
+              // Set array
+              vars[opcode->operand0].object_value = object;
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_NEW_OBJECT_ARRAY: {
+              int32_t element_type_id = opcode->operand0;
+              
+              // length
+              int32_t length = vars[opcode->operand2].int_value;
+              
+              SPVM_API_OBJECT* object = ((SPVM_API*)api)->new_object_array(api, element_type_id, length);
+              
+              // Set object
+              vars[opcode->operand0].object_value = object;
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_NEW_STRING: {
+              int32_t name_id = opcode->operand1;
+              
+              SPVM_API_OBJECT* string = ((SPVM_API*)api)->new_string(api, (char*)&SPVM_INFO_CONSTANT_POOL[name_id + 1], SPVM_INFO_CONSTANT_POOL[name_id]);
+
+              // Set string
+              vars[opcode->operand0].object_value = string;
+              break;
+            }
+            */
+
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:
             case SPVM_OPCODE_C_CODE_RETURN_INT:
