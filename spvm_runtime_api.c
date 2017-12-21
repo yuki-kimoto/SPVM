@@ -504,8 +504,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_address_array(SPVM_API* api, int32_t length) {
   
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_ADDRESS_ARRAY;
   
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-  
   return object;
 }
 
@@ -530,8 +528,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   object->element_byte_size = sizeof(int8_t);
   
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_NUMERIC_ARRAY;
-  
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
 }
@@ -559,8 +555,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
 
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_NUMERIC_ARRAY;
 
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-
   return object;
 }
 
@@ -586,8 +580,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
 
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_NUMERIC_ARRAY;
   
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
-  
   return object;
 }
 
@@ -612,8 +604,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
   object->element_byte_size = sizeof(int64_t);
 
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_NUMERIC_ARRAY;
-
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
 }
@@ -639,8 +629,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
   object->element_byte_size = sizeof(float);
 
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_NUMERIC_ARRAY;
-
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
 }
@@ -666,8 +654,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   object->element_byte_size = sizeof(double);
 
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_NUMERIC_ARRAY;
-
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
 }
@@ -695,8 +681,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   object->element_byte_size = sizeof(SPVM_OBJECT*);
 
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT_ARRAY;
-
-  assert(array_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
 }
@@ -727,8 +711,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   if (constant_pool_package->destructor_sub_id > 0) {
     object->has_destructor = 1;
   }
-  
-  assert(object_byte_size == SPVM_RUNTIME_API_calcurate_object_byte_size(api, object));
   
   return object;
 }
@@ -1398,27 +1380,6 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
   if(*field_address != NULL) {
     SPVM_RUNTIME_API_inc_ref_count(api, *field_address);
   }
-}
-
-int64_t SPVM_RUNTIME_API_calcurate_object_byte_size(SPVM_API* api, SPVM_OBJECT* object) {
-  (void)api;
-  
-  int64_t byte_size;
-  switch (object->object_type_code) {
-    case SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT: {
-      // Runtime
-      SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
-      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[constant_pool_type->package_id];
-      byte_size = sizeof(SPVM_OBJECT) + constant_pool_package->byte_size;
-      break;
-    }
-    default: {
-      byte_size = sizeof(SPVM_OBJECT) + object->length * object->element_byte_size;
-    }
-  }
-  
-  return byte_size;
 }
 
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
