@@ -1142,20 +1142,24 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
                 SPVM_STRING_BUFFER_add(string_buffer, "            api->dec_ref_count(api, *object_address);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "          }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
-              }
+                
+                SPVM_STRING_BUFFER_add(string_buffer, "        *object_address = var");
+                SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+                
 
-              SPVM_STRING_BUFFER_add(string_buffer, "        *(");
-              SPVM_STRING_BUFFER_add(string_buffer, element_type);
-              SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(");
-              SPVM_STRING_BUFFER_add(string_buffer, element_type);
-              SPVM_STRING_BUFFER_add(string_buffer, ") * index) = var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-
-              if (opcode->code == SPVM_OPCODE_C_CODE_ARRAY_STORE_OBJECT) {
                 SPVM_STRING_BUFFER_add(string_buffer, "        if (*object_address != NULL) {\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_INLINE_INC_REF_COUNT(*object_address);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
+              }
+              else {
+                SPVM_STRING_BUFFER_add(string_buffer, "        *(");
+                SPVM_STRING_BUFFER_add(string_buffer, element_type);
+                SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(");
+                SPVM_STRING_BUFFER_add(string_buffer, element_type);
+                SPVM_STRING_BUFFER_add(string_buffer, ") * index) = var");
+                SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               }
 
               SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
