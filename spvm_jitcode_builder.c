@@ -1357,30 +1357,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             case SPVM_OPCODE_C_CODE_SET_FIELD_FLOAT:
             case SPVM_OPCODE_C_CODE_SET_FIELD_DOUBLE:
             {
-              char* field_type = NULL;
-              switch (opcode->code) {
-                case SPVM_OPCODE_C_CODE_SET_FIELD_BYTE:
-                  field_type = "int8_t";
-                  break;
-                case SPVM_OPCODE_C_CODE_SET_FIELD_SHORT:
-                  field_type = "int16_t";
-                  break;
-                case SPVM_OPCODE_C_CODE_SET_FIELD_INT:
-                  field_type = "int32_t";
-                  break;
-                case SPVM_OPCODE_C_CODE_SET_FIELD_LONG:
-                  field_type = "int64_t";
-                  break;
-                case SPVM_OPCODE_C_CODE_SET_FIELD_FLOAT:
-                  field_type = "float";
-                  break;
-                case SPVM_OPCODE_C_CODE_SET_FIELD_DOUBLE:
-                  field_type = "double";
-                  break;
-                case SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT:
-                  field_type = "SPVM_API_OBJECT*";
-              }
-              
               int32_t field_id = opcode->operand1;
               SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
               int32_t field_byte_offset = constant_pool_field->byte_offset;
@@ -1391,18 +1367,61 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add(string_buffer, "  ;\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(object == NULL, 0)) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* exception = api->new_string(api, \"Object must be not undef.\", 0);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, exception);");
+              SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, exception);\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    goto label_SPVM_OPCODE_C_CODE_CROAK;\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    *(");
-              SPVM_STRING_BUFFER_add(string_buffer, field_type);
-              SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + ");
-              SPVM_STRING_BUFFER_add_int(string_buffer, field_byte_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, ") = ");
-              SPVM_STRING_BUFFER_add(string_buffer, "var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              if (opcode->code == SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT) {
+                SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    if(*field_address != NULL) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      if (SPVM_INLINE_ISWEAK(*field_address)) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "        api->unweaken(api, field_address);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      if (SPVM_INLINE_GET_REF_COUNT(*field_address) > 1) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_INLINE_DEC_REF_COUNT_ONLY(*field_address);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "        api->dec_ref_count(api, *field_address);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    *field_address = var\n");
+                SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+                SPVM_STRING_BUFFER_add(string_buffer, "    ;\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    if(*field_address != NULL) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_INLINE_INC_REF_COUNT(*field_address);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+              }
+              else {
+                char* field_type = NULL;
+                switch (opcode->code) {
+                  case SPVM_OPCODE_C_CODE_SET_FIELD_BYTE:
+                    field_type = "int8_t";
+                    break;
+                  case SPVM_OPCODE_C_CODE_SET_FIELD_SHORT:
+                    field_type = "int16_t";
+                    break;
+                  case SPVM_OPCODE_C_CODE_SET_FIELD_INT:
+                    field_type = "int32_t";
+                    break;
+                  case SPVM_OPCODE_C_CODE_SET_FIELD_LONG:
+                    field_type = "int64_t";
+                    break;
+                  case SPVM_OPCODE_C_CODE_SET_FIELD_FLOAT:
+                    field_type = "float";
+                    break;
+                  case SPVM_OPCODE_C_CODE_SET_FIELD_DOUBLE:
+                    field_type = "double";
+                    break;
+                }
+                SPVM_STRING_BUFFER_add(string_buffer, "    *(");
+                SPVM_STRING_BUFFER_add(string_buffer, field_type);
+                SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + ");
+                SPVM_STRING_BUFFER_add_int(string_buffer, field_byte_offset);
+                SPVM_STRING_BUFFER_add(string_buffer, ") = ");
+                SPVM_STRING_BUFFER_add(string_buffer, "var");
+                SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              }
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               
               break;
