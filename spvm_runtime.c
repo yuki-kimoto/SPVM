@@ -1312,22 +1312,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         break;
       }
-      case SPVM_OPCODE_C_CODE_WEAKEN_FIELD_OBJECT: {
-        
-        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
-        int32_t field_id = opcode->operand1;
-        
-        api->weaken_object_field(api, object, field_id);
-        
-        if (SPVM_INLINE_GET_EXCEPTION()) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        break;
-      }
       case SPVM_OPCODE_C_CODE_SET_FIELD_BYTE: {
         SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
         int32_t field_id = opcode->operand1;
-        int8_t value = vars[opcode->operand2].byte_value;
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
@@ -1339,13 +1326,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(int8_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = value;
+        *(int8_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].byte_value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_SHORT: {
         SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
         int32_t field_id = opcode->operand1;
-        int16_t value = vars[opcode->operand2].short_value;
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
@@ -1357,13 +1343,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(int16_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = value;
+        *(int16_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].short_value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_INT: {
         SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
         int32_t field_id = opcode->operand1;
-        int32_t value = vars[opcode->operand2].int_value;
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
@@ -1375,13 +1360,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = value;
+        *(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].int_value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_LONG: {
         SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
         int32_t field_id = opcode->operand1;
-        int64_t value = vars[opcode->operand2].long_value;
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
@@ -1393,13 +1377,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(int64_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = value;
+        *(int64_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].long_value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_FLOAT: {
         SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
         int32_t field_id = opcode->operand1;
-        float value = vars[opcode->operand2].float_value;
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
@@ -1411,13 +1394,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(float*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = value;
+        *(float*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].float_value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_DOUBLE: {
         SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
         int32_t field_id = opcode->operand1;
-        double value = vars[opcode->operand2].double_value;
         
         // Index
         SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
@@ -1429,13 +1411,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        *(double*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = value;
+        *(double*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].double_value;
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT: {
         SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
         int32_t field_id = opcode->operand1;
-        SPVM_API_OBJECT* value = vars[opcode->operand2].object_value;
 
         // Index
         SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
@@ -1463,10 +1444,22 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           }
         }
         
-        *field_address = value;
+        *field_address = vars[opcode->operand2].object_value;
         
         if(*field_address != NULL) {
           SPVM_INLINE_INC_REF_COUNT(*field_address);
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_WEAKEN_FIELD_OBJECT: {
+        
+        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
+        int32_t field_id = opcode->operand1;
+        
+        api->weaken_object_field(api, object, field_id);
+        
+        if (SPVM_INLINE_GET_EXCEPTION()) {
+          goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         break;
       }
