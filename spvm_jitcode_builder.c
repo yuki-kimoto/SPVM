@@ -597,10 +597,12 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
 
         SPVM_OPCODE* opcodes = runtime->opcodes;
-        int32_t opcode_index = constant_pool_sub->opcode_base;
+        int32_t opcode_base = constant_pool_sub->opcode_base;
+        int32_t opcode_length = constant_pool_sub->opcode_length;
+        int32_t opcode_index = opcode_base;
         
         int32_t loop_break = 0;
-        while (1) {
+        while (opcode_index < opcode_base + opcode_length) {
 
           // Line label
           SPVM_STRING_BUFFER_add(string_buffer, "L");
@@ -1547,7 +1549,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add(string_buffer, "  // IF_NE_ZERO\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  if (condition_flag) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
-              warn("CCCCC %d %d", opcode_index, opcode->operand0);
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index + opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ";");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -1563,7 +1564,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             case SPVM_OPCODE_C_CODE_RETURN_VOID:
             case SPVM_OPCODE_C_CODE_CROAK:
               SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN\n");
-              loop_break = 1;
               break;
             case SPVM_OPCODE_C_CODE_TABLE_SWITCH:
             case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH:
