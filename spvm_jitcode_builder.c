@@ -1436,6 +1436,53 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               break;
             }
+            case SPVM_OPCODE_C_CODE_CONCAT_STRING_STRING:
+            case SPVM_OPCODE_C_CODE_CONCAT_STRING_BYTE:
+            case SPVM_OPCODE_C_CODE_CONCAT_STRING_SHORT:
+            case SPVM_OPCODE_C_CODE_CONCAT_STRING_INT:
+            case SPVM_OPCODE_C_CODE_CONCAT_STRING_LONG:
+            case SPVM_OPCODE_C_CODE_CONCAT_STRING_FLOAT:
+            case SPVM_OPCODE_C_CODE_CONCAT_STRING_DOUBLE:
+            {
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              
+              switch (opcode->code) {
+                case SPVM_OPCODE_C_CODE_CONCAT_STRING_STRING:
+                  SPVM_STRING_BUFFER_add(string_buffer, "   = api->concat_string_string(api, var");
+                  break;
+                case SPVM_OPCODE_C_CODE_CONCAT_STRING_BYTE:
+                  SPVM_STRING_BUFFER_add(string_buffer, "   = api->concat_string_byte(api, var");
+                  break;
+                case SPVM_OPCODE_C_CODE_CONCAT_STRING_SHORT:
+                  SPVM_STRING_BUFFER_add(string_buffer, "   = api->concat_string_short(api, var");
+                  break;
+                case SPVM_OPCODE_C_CODE_CONCAT_STRING_INT:
+                  SPVM_STRING_BUFFER_add(string_buffer, "   = api->concat_string_int(api, var");
+                  break;
+                case SPVM_OPCODE_C_CODE_CONCAT_STRING_LONG:
+                  SPVM_STRING_BUFFER_add(string_buffer, "   = api->concat_string_long(api, var");
+                  break;
+                case SPVM_OPCODE_C_CODE_CONCAT_STRING_FLOAT:
+                  SPVM_STRING_BUFFER_add(string_buffer, "   = api->concat_string_float(api, var");
+                  break;
+                case SPVM_OPCODE_C_CODE_CONCAT_STRING_DOUBLE:
+                  SPVM_STRING_BUFFER_add(string_buffer, "   = api->concat_string_double(api, var");
+                  break;
+              }
+              
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, "  , var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, "  );\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  if (var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, "   == NULL) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    goto label_SPVM_OPCODE_C_CODE_CROAK;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              
+              break;
+            }
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:
             case SPVM_OPCODE_C_CODE_RETURN_INT:
@@ -1461,5 +1508,5 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
   
-  // warn("%s", string_buffer->buffer);
+   warn("%s", string_buffer->buffer);
 }
