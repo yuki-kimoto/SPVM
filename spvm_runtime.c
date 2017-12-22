@@ -23,7 +23,7 @@
 #define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
 #define SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, length))
 #define SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, ref_count))
-#define SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET ((int32_t)offsetof(SPVM_RUNTIME, exception))
+#define runtime_EXCEPTION_BYTE_OFFSET ((int32_t)offsetof(SPVM_RUNTIME, exception))
 #define SPVM_INFO_TYPE_CODE_VOID (SPVM_TYPE_C_CODE_VOID)
 #define SPVM_INFO_TYPE_CODE_BYTE (SPVM_TYPE_C_CODE_BYTE)
 #define SPVM_INFO_TYPE_CODE_SHORT (SPVM_TYPE_C_CODE_SHORT)
@@ -35,13 +35,13 @@
 #define SPVM_INLINE_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET)))
 #define SPVM_INLINE_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)
 #define SPVM_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
-#define SPVM_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))
+#define SPVM_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)runtime + runtime_EXCEPTION_BYTE_OFFSET))
 #define SPVM_INLINE_SET_EXCEPTION_NULL() \
   do { \
-    if ((*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)) != NULL) { \
-      api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))); \
+    if ((*(SPVM_API_OBJECT**)((intptr_t)runtime + runtime_EXCEPTION_BYTE_OFFSET)) != NULL) { \
+      api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)runtime + runtime_EXCEPTION_BYTE_OFFSET))); \
     } \
-    (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)) = NULL; \
+    (*(SPVM_API_OBJECT**)((intptr_t)runtime + runtime_EXCEPTION_BYTE_OFFSET)) = NULL; \
   } \
   while (0) \
 
@@ -52,58 +52,58 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   (void)api;
   
   // Runtime
-  SPVM_RUNTIME* SPVM_INFO_RUNTIME = SPVM_RUNTIME_API_get_runtime(api);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   
   // Constant pool
-  int32_t* SPVM_INFO_CONSTANT_POOL = SPVM_INFO_RUNTIME->constant_pool;
+  int32_t* constant_pool = runtime->constant_pool;
 
   // Constant pool sub
-  SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[sub_id];
+  SPVM_CONSTANT_POOL_SUB* constant_pool_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
   // Package variables
-  SPVM_API_VALUE* SPVM_INFO_PACKAGE_VARS = SPVM_INFO_RUNTIME->package_vars;
+  SPVM_API_VALUE* SPVM_INFO_PACKAGE_VARS = runtime->package_vars;
 
   // Debug
-  int32_t SPVM_INFO_DEBUG = SPVM_INFO_RUNTIME->debug ? 1 : 0;
+  int32_t SPVM_INFO_DEBUG = runtime->debug ? 1 : 0;
   
   // Subroutine object my length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_length;
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH = constant_pool_SUB_XXX->object_mys_length;
   
   // Subroutine object my base index
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_base;
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE = constant_pool_SUB_XXX->object_mys_base;
   
   // Subroutine name id
-  int32_t SPVM_INFO_SUB_XXX_ABS_NAME_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->abs_name_id;
+  int32_t SPVM_INFO_SUB_XXX_ABS_NAME_ID = constant_pool_SUB_XXX->abs_name_id;
   
   // Subroutine file name id
-  int32_t SPVM_INFO_SUB_XXX_FILE_NAME_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->file_name_id;
+  int32_t SPVM_INFO_SUB_XXX_FILE_NAME_ID = constant_pool_SUB_XXX->file_name_id;
   
   // Subroutine return type id
-  int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->return_type_id;
+  int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_ID = constant_pool_SUB_XXX->return_type_id;
   
   // Subroutine is native
-  int32_t SPVM_INFO_SUB_XXX_IS_NATIVE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->is_native;
+  int32_t SPVM_INFO_SUB_XXX_IS_NATIVE = constant_pool_SUB_XXX->is_native;
   
   // Subroutine object args length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_args_length;
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH = constant_pool_SUB_XXX->object_args_length;
 
   // Subroutine object args length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_args_base;
+  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE = constant_pool_SUB_XXX->object_args_base;
   
   // Bytecodes
-  SPVM_OPCODE* SPVM_INFO_OPCODES = SPVM_INFO_RUNTIME->opcodes;
+  SPVM_OPCODE* SPVM_INFO_OPCODES = runtime->opcodes;
   
   // Opcode base
-  int32_t SPVM_INFO_SUB_XXX_OPCODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->opcode_base;
+  int32_t SPVM_INFO_SUB_XXX_OPCODE_BASE = constant_pool_SUB_XXX->opcode_base;
   
   // Args length
-  int32_t args_length = SPVM_INFO_CONSTANT_POOL_SUB_XXX->args_length;
+  int32_t args_length = constant_pool_SUB_XXX->args_length;
   
   // Native address
-  void* SPVM_INFO_SUB_XXX_NATIVE_ADDRESS = SPVM_INFO_CONSTANT_POOL_SUB_XXX->native_address;
+  void* SPVM_INFO_SUB_XXX_NATIVE_ADDRESS = constant_pool_SUB_XXX->native_address;
   
   // Constant pool type
-  SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_XXX_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_RETURN_TYPE_ID];
+  SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_XXX_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[SPVM_INFO_SUB_XXX_RETURN_TYPE_ID];
 
   // Return type code
   int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE = SPVM_INFO_SUB_XXX_RETURN_TYPE->code;
@@ -188,7 +188,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   {
     int32_t i;
     for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-      int32_t arg_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE + i];
+      int32_t arg_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE + i];
       
       SPVM_API_OBJECT* object = vars[arg_index].object_value;
       if (object != NULL) {
@@ -1163,7 +1163,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_NEW_STRING: {
         int32_t name_id = opcode->operand1;
         
-        SPVM_API_OBJECT* string = api->new_string(api, (char*)&SPVM_INFO_CONSTANT_POOL[name_id + 1], SPVM_INFO_CONSTANT_POOL[name_id]);
+        SPVM_API_OBJECT* string = api->new_string(api, (char*)&constant_pool[name_id + 1], constant_pool[name_id]);
 
         // Set string
         vars[opcode->operand0].object_value = string;
@@ -1185,7 +1185,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1203,7 +1203,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1221,7 +1221,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1239,7 +1239,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1257,7 +1257,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1275,7 +1275,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1293,7 +1293,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1323,7 +1323,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int8_t value = vars[opcode->operand2].byte_value;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1341,7 +1341,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int16_t value = vars[opcode->operand2].short_value;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1359,7 +1359,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t value = vars[opcode->operand2].int_value;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1377,7 +1377,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int64_t value = vars[opcode->operand2].long_value;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1395,7 +1395,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         float value = vars[opcode->operand2].float_value;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1413,7 +1413,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         double value = vars[opcode->operand2].double_value;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1431,7 +1431,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         SPVM_API_OBJECT* value = vars[opcode->operand2].object_value;
 
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
+        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
         int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_FIELD_XXX_YYY->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1630,22 +1630,22 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t call_sub_id = opcode->operand1;
 
         // Constant pool sub
-        SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_YYY = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[call_sub_id];
+        SPVM_CONSTANT_POOL_SUB* constant_pool_SUB_YYY = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
         
         // Call subroutine return type id
-        int32_t SPVM_INFO_SUB_YYY_RETURN_TYPE_ID = SPVM_INFO_CONSTANT_POOL_SUB_YYY->return_type_id;
+        int32_t SPVM_INFO_SUB_YYY_RETURN_TYPE_ID = constant_pool_SUB_YYY->return_type_id;
         
         // Constant pool type
-        SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_YYY_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_YYY_RETURN_TYPE_ID];
+        SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_YYY_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[SPVM_INFO_SUB_YYY_RETURN_TYPE_ID];
         
         // Return type code
         int32_t SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE = SPVM_INFO_SUB_YYY_RETURN_TYPE->code;
         
         // Subroutine argument length
-        int32_t SPVM_INFO_SUB_YYY_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_YYY->args_length;
+        int32_t SPVM_INFO_SUB_YYY_ARGS_LENGTH = constant_pool_SUB_YYY->args_length;
 
         // Subroutine argument length
-        int32_t SPVM_INFO_SUB_YYY_IS_VOID = SPVM_INFO_CONSTANT_POOL_SUB_YYY->is_void;
+        int32_t SPVM_INFO_SUB_YYY_IS_VOID = constant_pool_SUB_YYY->is_void;
         
         call_sub_arg_stack_top -= SPVM_INFO_SUB_YYY_ARGS_LENGTH;
         
@@ -1708,7 +1708,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
           int32_t i;
           for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1721,7 +1721,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
           int32_t i;
           for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1753,7 +1753,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
           int32_t i;
           for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1766,7 +1766,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
           int32_t i;
           for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1797,7 +1797,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
           int32_t i;
           for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1808,7 +1808,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
           int32_t i;
           for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1845,7 +1845,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
           int32_t i;
           for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1858,7 +1858,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
           int32_t i;
           for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1874,10 +1874,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         if (SPVM_INFO_DEBUG) {
           // Sub name
-          const char* sub_name = (char*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_ABS_NAME_ID + 1];
+          const char* sub_name = (char*)&constant_pool[SPVM_INFO_SUB_XXX_ABS_NAME_ID + 1];
           
           // File name
-          const char* file_name = (char*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_FILE_NAME_ID + 1];
+          const char* file_name = (char*)&constant_pool[SPVM_INFO_SUB_XXX_FILE_NAME_ID + 1];
           
           // stack trace strings
           const char* from = "\n  from ";
@@ -2031,10 +2031,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         current_line = opcode->operand0;
         break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT:
-        memcpy(&vars[opcode->operand0], &SPVM_INFO_CONSTANT_POOL[opcode->operand1], sizeof(int32_t));
+        memcpy(&vars[opcode->operand0], &constant_pool[opcode->operand1], sizeof(int32_t));
         break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2:
-        memcpy(&vars[opcode->operand0], &SPVM_INFO_CONSTANT_POOL[opcode->operand1], sizeof(int64_t));
+        memcpy(&vars[opcode->operand0], &constant_pool[opcode->operand1], sizeof(int64_t));
         break;
     }
     opcode_index++;
