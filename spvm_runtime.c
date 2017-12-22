@@ -1464,94 +1464,66 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_STRING: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        SPVM_API_OBJECT* string2 = vars[opcode->operand2].object_value;
+        vars[opcode->operand0].object_value = api->concat_string_string(api, vars[opcode->operand1].object_value, vars[opcode->operand2].object_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_string(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_BYTE: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        int8_t string2 = vars[opcode->operand2].byte_value;
+        vars[opcode->operand0].object_value = api->concat_string_byte(api, vars[opcode->operand1].object_value, vars[opcode->operand2].byte_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_byte(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
 
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_SHORT: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        int16_t string2 = vars[opcode->operand2].short_value;
+        vars[opcode->operand0].object_value = api->concat_string_short(api, vars[opcode->operand1].object_value, vars[opcode->operand2].short_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_short(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-
-        vars[opcode->operand0].object_value = string3;
+        
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_INT: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        int32_t string2 = vars[opcode->operand2].int_value;
+        vars[opcode->operand0].object_value = api->concat_string_int(api, vars[opcode->operand1].object_value, vars[opcode->operand2].int_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_int(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
 
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_LONG: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        int64_t string2 = vars[opcode->operand2].long_value;
+        vars[opcode->operand0].object_value = api->concat_string_long(api, vars[opcode->operand1].object_value, vars[opcode->operand2].long_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_long(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
 
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_FLOAT: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        float string2 = vars[opcode->operand2].float_value;
+       vars[opcode->operand0].object_value = api->concat_string_float(api, vars[opcode->operand1].object_value, vars[opcode->operand2].float_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_float(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
 
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_DOUBLE: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        double string2 = vars[opcode->operand2].double_value;
+        vars[opcode->operand0].object_value = api->concat_string_double(api, vars[opcode->operand1].object_value, vars[opcode->operand2].double_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_double(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-        
-        vars[opcode->operand0].object_value = string3;
+
         break;
       }
       case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR: {
