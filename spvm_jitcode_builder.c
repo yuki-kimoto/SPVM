@@ -601,6 +601,12 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         
         int32_t loop_break = 0;
         while (1) {
+
+          // Line label
+          SPVM_STRING_BUFFER_add(string_buffer, "L");
+          SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ":\n");
+
           SPVM_OPCODE* opcode = &(opcodes[opcode_index]);
           switch (opcode->code) {
             case SPVM_OPCODE_C_CODE_NOP:
