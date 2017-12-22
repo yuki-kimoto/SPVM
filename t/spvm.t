@@ -364,13 +364,6 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::default_return_value_object());
 }
 
-# Switch
-{
-  ok(SPVM::TestCase::switch_nest());
-  ok(SPVM::TestCase::switch_lookup_switch());
-  ok(SPVM::TestCase::switch_table_switch());
-}
-
 # my variable
 {
   ok(SPVM::TestCase::my_var_initialized_zero());
@@ -1724,5 +1717,12 @@ is($end_objects_count, $start_objects_count);
   {
     ok(SPVM::TestCase::exception_croak_return_int_eval_catch());
   }
+}
+
+# Switch
+{
+  ok(SPVM::TestCase::switch_nest());
+  ok(SPVM::TestCase::switch_lookup_switch());
+  ok(SPVM::TestCase::switch_table_switch());
 }
 
