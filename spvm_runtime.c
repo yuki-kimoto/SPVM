@@ -60,9 +60,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
-  // Package variables
-  SPVM_API_VALUE* SPVM_INFO_PACKAGE_VARS = runtime->package_vars;
-
   // Debug
   int32_t SPVM_INFO_DEBUG = runtime->debug ? 1 : 0;
   
@@ -1523,45 +1520,51 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-
+        
         break;
       }
       case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR: {
         // Get subroutine ID
         int32_t package_var_id = opcode->operand1;
         
-        vars[opcode->operand0] = SPVM_INFO_PACKAGE_VARS[package_var_id];
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        vars[opcode->operand0] = package_vars[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR: {
         // Get subroutine ID
         int32_t package_var_id = opcode->operand0;
-
-        SPVM_INFO_PACKAGE_VARS[package_var_id] = vars[opcode->operand1];
-
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        package_vars[package_var_id] = vars[opcode->operand1];
+        
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
         // Get subroutine ID
         int32_t package_var_id = opcode->operand0;
+
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
         
         // Decrement reference count
-        if (SPVM_INFO_PACKAGE_VARS[package_var_id].object_value != NULL) {
-          if (SPVM_INLINE_GET_REF_COUNT(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value) > 1) {
-            SPVM_INLINE_DEC_REF_COUNT_ONLY(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
+        if (package_vars[package_var_id].object_value != NULL) {
+          if (SPVM_INLINE_GET_REF_COUNT(package_vars[package_var_id].object_value) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(package_vars[package_var_id].object_value);
           }
           else {
-            api->dec_ref_count(api, SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
+            api->dec_ref_count(api, package_vars[package_var_id].object_value);
           }
         }
         
         // Store object
-        SPVM_INFO_PACKAGE_VARS[package_var_id].object_value = vars[opcode->operand1].object_value;
+        package_vars[package_var_id].object_value = vars[opcode->operand1].object_value;
         
         // Increment new value reference count
-        if (SPVM_INFO_PACKAGE_VARS[package_var_id].object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
+        if (package_vars[package_var_id].object_value != NULL) {
+          SPVM_INLINE_INC_REF_COUNT(package_vars[package_var_id].object_value);
         }
 
         break;
