@@ -1523,6 +1523,31 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         break;
       }
+      case SPVM_OPCODE_C_CODE_PUSH_EVAL: {
+        // Next operation
+        int16_t jump_offset_abs = opcode->operand0;
+        
+        eval_stack_top++;
+        eval_stack[eval_stack_top] = jump_offset_abs;
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_POP_EVAL: {
+        eval_stack_top--;
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR: {
+        vars[opcode->operand0].object_value = SPVM_INLINE_GET_EXCEPTION();
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_STORE_EXCEPTION_VAR: {
+        
+        api->set_exception(api, vars[opcode->operand0].object_value);
+        
+        break;
+      }
       case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR: {
         // Get subroutine ID
         int32_t package_var_id = opcode->operand1;
@@ -1546,7 +1571,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
         // Get subroutine ID
         int32_t package_var_id = opcode->operand0;
-
+        
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
         // Decrement reference count
@@ -1566,31 +1591,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         if (package_vars[package_var_id].object_value != NULL) {
           SPVM_INLINE_INC_REF_COUNT(package_vars[package_var_id].object_value);
         }
-
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_PUSH_EVAL: {
-        // Next operation
-        int16_t jump_offset_abs = opcode->operand0;
-        
-        eval_stack_top++;
-        eval_stack[eval_stack_top] = jump_offset_abs;
-        
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_POP_EVAL: {
-        eval_stack_top--;
-        
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR: {
-        vars[opcode->operand0].object_value = SPVM_INLINE_GET_EXCEPTION();
-        
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_STORE_EXCEPTION_VAR: {
-        
-        api->set_exception(api, vars[opcode->operand0].object_value);
         
         break;
       }
