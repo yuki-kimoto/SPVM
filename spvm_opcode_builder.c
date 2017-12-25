@@ -551,7 +551,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-
+                    
                     if (type->code == SPVM_TYPE_C_CODE_BYTE) {
                       opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_BYTE;
                     }
@@ -1439,8 +1439,23 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                  if (SPVM_TYPE_is_numeric(compiler, type)) {
-                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR;
+                  if (type->code == SPVM_TYPE_C_CODE_BYTE) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_BYTE;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_SHORT;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_INT;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_LONG) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_LONG;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_FLOAT;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_DOUBLE;
                   }
                   else {
                     opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_OBJECT;
