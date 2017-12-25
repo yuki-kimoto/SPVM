@@ -542,6 +542,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                   else if (op_cur->last->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->last);
+
                     // VAR = PACKAGE_VAR
                     SPVM_OUR* our = op_cur->last->uv.package_var->op_our->uv.our;
                     
@@ -549,7 +551,28 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR;
+
+                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_BYTE;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_SHORT;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_INT;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_LONG) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_LONG;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_FLOAT;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_DOUBLE;
+                    }
+                    else {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_OBJECT;
+                    }
                     
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
                     

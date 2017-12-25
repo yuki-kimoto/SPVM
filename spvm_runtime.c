@@ -1564,7 +1564,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0] = package_vars[package_var_id];
+        vars[opcode->operand0].byte_value = package_vars[package_var_id].byte_value;
         
         break;
       }
@@ -1574,7 +1574,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0] = package_vars[package_var_id];
+        vars[opcode->operand0].short_value = package_vars[package_var_id].short_value;
         
         break;
       }
@@ -1584,7 +1584,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0] = package_vars[package_var_id];
+        vars[opcode->operand0].int_value = package_vars[package_var_id].int_value;
         
         break;
       }
@@ -1594,7 +1594,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0] = package_vars[package_var_id];
+        vars[opcode->operand0].long_value = package_vars[package_var_id].long_value;
         
         break;
       }
@@ -1604,7 +1604,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0] = package_vars[package_var_id];
+        vars[opcode->operand0].float_value = package_vars[package_var_id].float_value;
         
         break;
       }
@@ -1614,7 +1614,17 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0] = package_vars[package_var_id];
+        vars[opcode->operand0].double_value = package_vars[package_var_id].double_value;
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_OBJECT: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand1;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        vars[opcode->operand0].object_value = package_vars[package_var_id].object_value;
         
         break;
       }
