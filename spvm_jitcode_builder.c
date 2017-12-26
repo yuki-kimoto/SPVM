@@ -1625,16 +1625,17 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
                   package_var_type = "SPVM_API_OBJECT*";
               }
               
-              /*
               SPVM_API_VALUE* package_vars = runtime->package_vars;
+              int32_t package_var_id = opcode->operand1;
+              SPVM_API_VALUE** package_var_address = &package_vars[package_var_id];
               
-              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t package_var_id = 
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, "\n;
-              SPVM_STRING_BUFFER_add(string_buffer, "  var
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, "   = package_vars[package_var_id].byte_value;\n");
-              */
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = *(");
+              SPVM_STRING_BUFFER_add(string_buffer, package_var_type);
+              SPVM_STRING_BUFFER_add(string_buffer, "*)");
+              SPVM_STRING_BUFFER_add_address(string_buffer, package_var_address);
+              SPVM_STRING_BUFFER_add(string_buffer, ";");
               
               break;
             }
@@ -1667,5 +1668,5 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
   
-  // warn("%s", string_buffer->buffer);
+  warn("%s", string_buffer->buffer);
 }
