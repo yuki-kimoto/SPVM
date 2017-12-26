@@ -1629,13 +1629,94 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               int32_t package_var_id = opcode->operand1;
               SPVM_API_VALUE** package_var_address = &package_vars[package_var_id];
               
-              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_PACKAGE_VAR\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT** package_var_address = ");
+              SPVM_STRING_BUFFER_add_address(string_buffer, package_var_address);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = *(");
               SPVM_STRING_BUFFER_add(string_buffer, package_var_type);
+              SPVM_STRING_BUFFER_add(string_buffer, "*)package_var_address;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_BYTE:
+            case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_SHORT:
+            case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_INT:
+            case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_LONG:
+            case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_FLOAT:
+            case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_DOUBLE:
+            {
+              char* package_var_type = NULL;
+              switch (opcode->code) {
+                case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_BYTE:
+                  package_var_type = "int8_t";
+                  break;
+                case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_SHORT:
+                  package_var_type = "int16_t";
+                  break;
+                case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_INT:
+                  package_var_type = "int32_t";
+                  break;
+                case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_LONG:
+                  package_var_type = "int64_t";
+                  break;
+                case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_FLOAT:
+                  package_var_type = "float";
+                  break;
+                case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_DOUBLE:
+                  package_var_type = "double";
+                  break;
+              }
+              
+              SPVM_API_VALUE* package_vars = runtime->package_vars;
+              int32_t package_var_id = opcode->operand0;
+              SPVM_API_VALUE** package_var_address = &package_vars[package_var_id];
+              
+              SPVM_STRING_BUFFER_add(string_buffer, "  // STORE_PACKAGE_VAR\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT** package_var_address = ");
+              SPVM_STRING_BUFFER_add_address(string_buffer, package_var_address);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    *(");
+              SPVM_STRING_BUFFER_add(string_buffer, package_var_type);
               SPVM_STRING_BUFFER_add(string_buffer, "*)");
               SPVM_STRING_BUFFER_add_address(string_buffer, package_var_address);
-              SPVM_STRING_BUFFER_add(string_buffer, ";");
+              SPVM_STRING_BUFFER_add(string_buffer, " = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
+              int32_t package_var_id = opcode->operand0;
+              SPVM_API_VALUE* package_vars = runtime->package_vars;
+              SPVM_API_OBJECT** package_var_address = &package_vars[package_var_id];
+              
+              SPVM_STRING_BUFFER_add(string_buffer, "  // STORE_PACKAGE_VAR_OBJECT\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT** package_var_address = ");
+              SPVM_STRING_BUFFER_add_address(string_buffer, package_var_address);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (*(SPVM_API_OBJECT**)package_var_address != NULL) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address) > 1) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        api->dec_ref_count(api, *(SPVM_API_OBJECT**)package_var_address);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    *(SPVM_API_OBJECT**)package_var_address = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (package_vars[package_var_id].object_value != NULL) {;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               
               break;
             }
