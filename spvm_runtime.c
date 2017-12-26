@@ -1554,7 +1554,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0].byte_value = package_vars[package_var_id].byte_value;
+        vars[opcode->operand0].byte_value = *(int8_t*)&package_vars[package_var_id];
         
         break;
       }
@@ -1564,7 +1564,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0].short_value = package_vars[package_var_id].short_value;
+        vars[opcode->operand0].short_value = *(int16_t*)&package_vars[package_var_id];
         
         break;
       }
@@ -1574,7 +1574,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0].int_value = package_vars[package_var_id].int_value;
+        vars[opcode->operand0].int_value = *(int32_t*)&package_vars[package_var_id];
         
         break;
       }
@@ -1584,7 +1584,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0].long_value = package_vars[package_var_id].long_value;
+        vars[opcode->operand0].long_value = *(int64_t*)&package_vars[package_var_id];
         
         break;
       }
@@ -1594,7 +1594,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0].float_value = package_vars[package_var_id].float_value;
+        vars[opcode->operand0].float_value = *(float*)&package_vars[package_var_id];
         
         break;
       }
@@ -1604,7 +1604,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0].double_value = package_vars[package_var_id].double_value;
+        vars[opcode->operand0].double_value = *(double*)&package_vars[package_var_id];
         
         break;
       }
@@ -1614,7 +1614,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        vars[opcode->operand0].object_value = package_vars[package_var_id].object_value;
+        vars[opcode->operand0].object_value = *(SPVM_API_OBJECT**)&package_vars[package_var_id];
         
         break;
       }
@@ -1624,7 +1624,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        package_vars[package_var_id].byte_value = vars[opcode->operand1].byte_value;
+        *(int8_t*)&package_vars[package_var_id] = vars[opcode->operand1].byte_value;
         
         break;
       }
@@ -1634,7 +1634,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        package_vars[package_var_id].short_value = vars[opcode->operand1].short_value;
+        *(int16_t*)&package_vars[package_var_id] = vars[opcode->operand1].short_value;
         
         break;
       }
@@ -1644,7 +1644,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        package_vars[package_var_id].int_value = vars[opcode->operand1].int_value;
+        *(int32_t*)&package_vars[package_var_id] = vars[opcode->operand1].int_value;
         
         break;
       }
@@ -1654,7 +1654,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        package_vars[package_var_id].long_value = vars[opcode->operand1].long_value;
+        *(int64_t*)&package_vars[package_var_id] = vars[opcode->operand1].long_value;
         
         break;
       }
@@ -1664,7 +1664,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        package_vars[package_var_id].float_value = vars[opcode->operand1].float_value;
+        *(float*)&package_vars[package_var_id] = vars[opcode->operand1].float_value;
         
         break;
       }
@@ -1674,7 +1674,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        package_vars[package_var_id].double_value = vars[opcode->operand1].double_value;
+        *(double*)&package_vars[package_var_id] = vars[opcode->operand1].double_value;
         
         break;
       }
@@ -1684,22 +1684,24 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
+        SPVM_API_OBJECT** package_var_address = &package_vars[package_var_id];
+        
         // Decrement reference count
-        if (package_vars[package_var_id].object_value != NULL) {
-          if (SPVM_INLINE_GET_REF_COUNT(package_vars[package_var_id].object_value) > 1) {
-            SPVM_INLINE_DEC_REF_COUNT_ONLY(package_vars[package_var_id].object_value);
+        if (*(SPVM_API_OBJECT**)package_var_address != NULL) {
+          if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);
           }
           else {
-            api->dec_ref_count(api, package_vars[package_var_id].object_value);
+            api->dec_ref_count(api, *(SPVM_API_OBJECT**)package_var_address);
           }
         }
         
         // Store object
-        package_vars[package_var_id].object_value = vars[opcode->operand1].object_value;
+        *(SPVM_API_OBJECT**)package_var_address = vars[opcode->operand1].object_value;
         
         // Increment new value reference count
         if (package_vars[package_var_id].object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT(package_vars[package_var_id].object_value);
+          SPVM_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address);
         }
         
         break;

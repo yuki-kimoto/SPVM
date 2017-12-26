@@ -1593,6 +1593,51 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               break;
             }
+            case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_BYTE:
+            case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_SHORT:
+            case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_INT:
+            case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_LONG:
+            case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_FLOAT:
+            case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_DOUBLE:
+            case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_OBJECT:
+            {
+              char* package_var_type = NULL;
+              switch (opcode->code) {
+                case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_BYTE:
+                  package_var_type = "int8_t";
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_SHORT:
+                  package_var_type = "int16_t";
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_INT:
+                  package_var_type = "int32_t";
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_LONG:
+                  package_var_type = "int64_t";
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_FLOAT:
+                  package_var_type = "float";
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_DOUBLE:
+                  package_var_type = "double";
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_OBJECT:
+                  package_var_type = "SPVM_API_OBJECT*";
+              }
+              
+              /*
+              SPVM_API_VALUE* package_vars = runtime->package_vars;
+              
+              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t package_var_id = 
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, "\n;
+              SPVM_STRING_BUFFER_add(string_buffer, "  var
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, "   = package_vars[package_var_id].byte_value;\n");
+              */
+              
+              break;
+            }
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:
             case SPVM_OPCODE_C_CODE_RETURN_INT:
