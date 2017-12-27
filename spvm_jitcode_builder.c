@@ -1854,13 +1854,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               
               SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-              if (!sub_is_void) {
-                SPVM_STRING_BUFFER_add(string_buffer, "    ");
-                SPVM_STRING_BUFFER_add(string_buffer, return_type);
-                SPVM_STRING_BUFFER_add(string_buffer, " return_value = var");
-                SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              }
 
               // Decrement my vars which is arguments - decrement only
               {
@@ -1901,7 +1894,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               }
               SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_SET_EXCEPTION_NULL();\n");
               if (!sub_is_void) {
-                SPVM_STRING_BUFFER_add(string_buffer, "    return return_value;\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    return");
+                SPVM_STRING_BUFFER_add(string_buffer, " var");
+                SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               }
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             }
@@ -1926,5 +1922,5 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
   
-  // warn("%s", string_buffer->buffer);
+  warn("%s", string_buffer->buffer);
 }
