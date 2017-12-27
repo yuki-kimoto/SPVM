@@ -232,13 +232,19 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       int32_t return_type_id = constant_pool_sub->return_type_id;
       SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
       int32_t return_type_code = return_type->code;
-
+      
       // Mys length
       int32_t mys_length = constant_pool_sub->mys_length;
-
+      
       // My type ids base
       int32_t my_type_ids_base = constant_pool_sub->my_type_ids_base;
-
+      
+      // Call subroutine argument stack top
+      int32_t call_sub_arg_stack_top = -1;
+      
+      // Call subroutine argument stack
+      SPVM_API_VALUE call_sub_arg_stack[255];
+      
       // Return type
       switch (return_type->code) {
         case SPVM_TYPE_C_CODE_VOID:
@@ -1717,6 +1723,12 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address);\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_PUSH_ARG: {
+              call_sub_arg_stack_top++;
+              call_sub_arg_stack[call_sub_arg_stack_top].int_value = opcode->operand0;
               
               break;
             }
