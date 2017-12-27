@@ -1730,6 +1730,78 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               call_sub_arg_stack_top++;
               call_sub_arg_stack[call_sub_arg_stack_top].int_value = opcode->operand0;
               
+              SPVM_STRING_BUFFER_add(string_buffer, "  // PUSH_ARG\n");
+              
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_CALL_SUB:
+            {
+              // Get subroutine ID
+              int32_t call_sub_id = opcode->operand1;
+              
+              // Constant pool sub
+              SPVM_CONSTANT_POOL_SUB* constant_pool_sub_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
+              
+              // Call subroutine return type id
+              int32_t call_sub_return_type_id = constant_pool_sub_call_sub->return_type_id;
+              
+              // Constant pool type
+              SPVM_CONSTANT_POOL_TYPE* call_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_return_type_id];
+              
+              // Return type code
+              int32_t call_sub_return_type_code = call_sub_return_type->code;
+              
+              // Subroutine argument length
+              int32_t call_sub_args_length = constant_pool_sub_call_sub->args_length;
+              
+              // Subroutine argument length
+              int32_t call_sub_is_void = constant_pool_sub_call_sub->is_void;
+
+              int32_t call_sub_abs_name_id = constant_pool_sub->abs_name_id;
+              int32_t call_sub_abs_name_length = constant_pool[call_sub_abs_name_id];
+              
+              // Subroutine name
+              const char* call_sub_abs_name = (char*)&constant_pool[call_sub_abs_name_id + 1];
+              
+              SPVM_STRING_BUFFER_add(string_buffer, "  // CALL_SUB\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              if (!call_sub_is_void) {
+                SPVM_STRING_BUFFER_add(string_buffer, "  var");
+                SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+                SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              }
+              
+              // Subroutine name. Replace : to _
+              SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)call_sub_abs_name);
+              {
+                int32_t index = string_buffer->length - strlen(call_sub_abs_name);
+                while (index < string_buffer->length) {
+                  if (string_buffer->buffer[index] == ':') {
+                    string_buffer->buffer[index] = '_';
+                  }
+                  index++;
+                }
+              }
+              SPVM_STRING_BUFFER_add(string_buffer, "(");
+              call_sub_arg_stack_top -= call_sub_args_length;
+              {
+                int32_t i;
+                for (i = 0; i < call_sub_args_length; i++) {
+                  SPVM_STRING_BUFFER_add(string_buffer, "var");
+                  int32_t var_index = call_sub_arg_stack[call_sub_arg_stack_top + 1 + i].int_value;
+                  SPVM_STRING_BUFFER_add_int(string_buffer, var_index);
+                  if (i != call_sub_args_length - 1) {
+                    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+                  }
+                }
+              }
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+              
+              SPVM_STRING_BUFFER_add(string_buffer, "  if (SPVM_INLINE_GET_EXCEPTION()) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    goto label_SPVM_OPCODE_C_CODE_CROAK;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              
               break;
             }
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
@@ -1761,5 +1833,5 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
   
-  //warn("%s", string_buffer->buffer);
+  warn("%s", string_buffer->buffer);
 }
