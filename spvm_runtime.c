@@ -58,52 +58,52 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   int32_t* constant_pool = runtime->constant_pool;
 
   // Constant pool sub
-  SPVM_CONSTANT_POOL_SUB* constant_pool_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
   // Debug
   int32_t SPVM_INFO_DEBUG = runtime->debug ? 1 : 0;
   
   // Subroutine object my length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH = constant_pool_SUB_XXX->object_mys_length;
+  int32_t sub_object_mys_length = constant_pool_sub->object_mys_length;
   
   // Subroutine object my base index
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE = constant_pool_SUB_XXX->object_mys_base;
+  int32_t sub_object_mys_base = constant_pool_sub->object_mys_base;
   
   // Subroutine name id
-  int32_t SPVM_INFO_SUB_XXX_ABS_NAME_ID = constant_pool_SUB_XXX->abs_name_id;
+  int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
   
   // Subroutine file name id
-  int32_t SPVM_INFO_SUB_XXX_FILE_NAME_ID = constant_pool_SUB_XXX->file_name_id;
+  int32_t sub_file_name_id = constant_pool_sub->file_name_id;
   
   // Subroutine return type id
-  int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_ID = constant_pool_SUB_XXX->return_type_id;
+  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
   
   // Subroutine is native
-  int32_t SPVM_INFO_SUB_XXX_IS_NATIVE = constant_pool_SUB_XXX->is_native;
+  int32_t sub_is_native = constant_pool_sub->is_native;
   
   // Subroutine object args length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH = constant_pool_SUB_XXX->object_args_length;
+  int32_t sub_object_args_length = constant_pool_sub->object_args_length;
 
   // Subroutine object args length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE = constant_pool_SUB_XXX->object_args_base;
+  int32_t sub_object_args_base = constant_pool_sub->object_args_base;
   
   // Bytecodes
-  SPVM_OPCODE* SPVM_INFO_OPCODES = runtime->opcodes;
+  SPVM_OPCODE* opcodes = runtime->opcodes;
   
   // Opcode base
-  int32_t SPVM_INFO_SUB_XXX_OPCODE_BASE = constant_pool_SUB_XXX->opcode_base;
+  int32_t sub_opcode_base = constant_pool_sub->opcode_base;
   
   // Args length
-  int32_t args_length = constant_pool_SUB_XXX->args_length;
+  int32_t args_length = constant_pool_sub->args_length;
   
   // Native address
-  void* SPVM_INFO_SUB_XXX_NATIVE_ADDRESS = constant_pool_SUB_XXX->native_address;
+  void* sub_native_address = constant_pool_sub->native_address;
   
   // Constant pool type
-  SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_XXX_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[SPVM_INFO_SUB_XXX_RETURN_TYPE_ID];
+  SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
 
   // Return type code
-  int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE = SPVM_INFO_SUB_XXX_RETURN_TYPE->code;
+  int32_t sub_return_type_code = sub_return_type->code;
   
   // Call stack
   SPVM_API_VALUE vars[65535];
@@ -136,44 +136,44 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   SPVM_INLINE_SET_EXCEPTION_NULL();
   
   // Call native sub
-  if (SPVM_INFO_SUB_XXX_IS_NATIVE) {
+  if (sub_is_native) {
     // Call native subroutine
-    if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_VOID) {
-      void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+    if (sub_return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
+      void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       (*native_address)(api, (SPVM_API_VALUE*)vars);
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
-      int8_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_BYTE) {
+      int8_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       int8_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.byte_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
-      int16_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_SHORT) {
+      int16_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       int16_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.short_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
-      int32_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_INT) {
+      int32_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       int32_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.int_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
-      int64_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_LONG) {
+      int64_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       int64_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.long_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
-      float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_FLOAT) {
+      float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       float return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.float_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
-      double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_DOUBLE) {
+      double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       double return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.double_value = return_value_native;
     }
     else {
-      SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
+      SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.object_value = return_value_native;
     }
@@ -184,8 +184,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // If arg is object, increment reference count
   {
     int32_t i;
-    for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-      int32_t arg_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE + i];
+    for (i = 0; i < sub_object_args_length; i++) {
+      int32_t arg_index = constant_pool[sub_object_args_base + i];
       
       SPVM_API_OBJECT* object = vars[arg_index].object_value;
       if (object != NULL) {
@@ -194,10 +194,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     }
   }
   
-  register int32_t opcode_index = SPVM_INFO_SUB_XXX_OPCODE_BASE;
+  register int32_t opcode_index = sub_opcode_base;
   
   while (1) {
-    SPVM_OPCODE* opcode = &(SPVM_INFO_OPCODES[opcode_index]);
+    SPVM_OPCODE* opcode = &(opcodes[opcode_index]);
     
     switch (opcode->code) {
       case SPVM_OPCODE_C_CODE_NOP:
@@ -1794,8 +1794,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Decrement my vars which is arguments - decrement only
         {
           int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+          for (i = 0; i < sub_object_args_length; i++) {
+            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1807,8 +1807,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
         {
           int32_t i;
-          for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+          for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
+            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1839,8 +1839,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Decrement my vars which is arguments - decrement only
         {
           int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+          for (i = 0; i < sub_object_args_length; i++) {
+            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1852,8 +1852,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
         {
           int32_t i;
-          for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+          for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
+            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1883,8 +1883,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Decrement object my vars reference count
         {
           int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+          for (i = 0; i < sub_object_args_length; i++) {
+            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1894,8 +1894,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         {
           int32_t i;
-          for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+          for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
+            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1924,15 +1924,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           int32_t jump_offset_abs = eval_stack[eval_stack_top];
           eval_stack_top--;
           
-          opcode_index = SPVM_INFO_SUB_XXX_OPCODE_BASE + jump_offset_abs;
+          opcode_index = sub_opcode_base + jump_offset_abs;
           continue;
         }
         
         // Decrement my vars which is arguments - decrement only
         {
           int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+          for (i = 0; i < sub_object_args_length; i++) {
+            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1944,8 +1944,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
         {
           int32_t i;
-          for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = constant_pool[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
+          for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
+            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
             SPVM_API_OBJECT* object = vars[my_var_index].object_value;
             
             if (object != NULL) {
@@ -1961,10 +1961,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         if (SPVM_INFO_DEBUG) {
           // Sub name
-          const char* sub_name = (char*)&constant_pool[SPVM_INFO_SUB_XXX_ABS_NAME_ID + 1];
+          const char* sub_name = (char*)&constant_pool[sub_abs_name_id + 1];
           
           // File name
-          const char* file_name = (char*)&constant_pool[SPVM_INFO_SUB_XXX_FILE_NAME_ID + 1];
+          const char* file_name = (char*)&constant_pool[sub_file_name_id + 1];
           
           // stack trace strings
           const char* from = "\n  from ";
@@ -2037,7 +2037,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
-        int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
+        int32_t* intcodes = (int32_t*)opcodes;
         int32_t intcode_index = opcode_index * 8;
         
         // default offset
@@ -2061,7 +2061,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         continue;
       }
       case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
-        int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
+        int32_t* intcodes = (int32_t*)opcodes;
         int32_t intcode_index = opcode_index * 8;
         
         // 1  default
