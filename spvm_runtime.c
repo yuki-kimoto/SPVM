@@ -1715,56 +1715,56 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       {
         // Get subroutine ID
         int32_t call_sub_id = opcode->operand1;
-
+        
         // Constant pool sub
-        SPVM_CONSTANT_POOL_SUB* constant_pool_SUB_YYY = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
+        SPVM_CONSTANT_POOL_SUB* constant_pool_sub_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
         
         // Call subroutine return type id
-        int32_t SPVM_INFO_SUB_YYY_RETURN_TYPE_ID = constant_pool_SUB_YYY->return_type_id;
+        int32_t call_sub_return_type_id = constant_pool_sub_call_sub->return_type_id;
         
         // Constant pool type
-        SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_YYY_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[SPVM_INFO_SUB_YYY_RETURN_TYPE_ID];
+        SPVM_CONSTANT_POOL_TYPE* call_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_return_type_id];
         
         // Return type code
-        int32_t SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE = SPVM_INFO_SUB_YYY_RETURN_TYPE->code;
+        int32_t call_sub_return_type_code = call_sub_return_type->code;
         
         // Subroutine argument length
-        int32_t SPVM_INFO_SUB_YYY_ARGS_LENGTH = constant_pool_SUB_YYY->args_length;
-
-        // Subroutine argument length
-        int32_t SPVM_INFO_SUB_YYY_IS_VOID = constant_pool_SUB_YYY->is_void;
+        int32_t call_sub_args_length = constant_pool_sub_call_sub->args_length;
         
-        call_sub_arg_stack_top -= SPVM_INFO_SUB_YYY_ARGS_LENGTH;
+        // Subroutine argument length
+        int32_t call_sub_is_void = constant_pool_sub_call_sub->is_void;
+        
+        call_sub_arg_stack_top -= call_sub_args_length;
         
         SPVM_API_VALUE args[255];
         {
           int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_YYY_ARGS_LENGTH; i++) {
+          for (i = 0; i < call_sub_args_length; i++) {
             int32_t var_index = call_sub_arg_stack[call_sub_arg_stack_top + 1 + i].int_value;
             args[i] = vars[var_index];
           }
         }
         
         // Call subroutine
-        if (SPVM_INFO_SUB_YYY_IS_VOID) {
+        if (call_sub_is_void) {
           api->call_void_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_BYTE) {
           vars[opcode->operand0].byte_value = api->call_byte_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_SHORT) {
           vars[opcode->operand0].short_value = api->call_short_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_INT) {
           vars[opcode->operand0].int_value = api->call_int_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_LONG) {
           vars[opcode->operand0].long_value = api->call_long_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_FLOAT) {
           vars[opcode->operand0].float_value = api->call_float_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_DOUBLE) {
           vars[opcode->operand0].double_value = api->call_double_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
         }
         else {
@@ -2019,6 +2019,23 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         return return_value;
       }
+      case SPVM_OPCODE_C_CODE_GOTO:
+        opcode_index += opcode->operand0;
+        continue;
+      case SPVM_OPCODE_C_CODE_IF_EQ_ZERO: {
+        if (condition_flag == 0) {
+          opcode_index += opcode->operand0;
+          continue;
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_IF_NE_ZERO: {
+        if (condition_flag) {
+          opcode_index += opcode->operand0;
+          continue;
+        }
+        break;
+      }
       case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
         int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
         int32_t intcode_index = opcode_index * 8;
@@ -2096,23 +2113,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         
         continue;
-      }
-      case SPVM_OPCODE_C_CODE_GOTO:
-        opcode_index += opcode->operand0;
-        continue;
-      case SPVM_OPCODE_C_CODE_IF_EQ_ZERO: {
-        if (condition_flag == 0) {
-          opcode_index += opcode->operand0;
-          continue;
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_IF_NE_ZERO: {
-        if (condition_flag) {
-          opcode_index += opcode->operand0;
-          continue;
-        }
-        break;
       }
       case SPVM_OPCODE_C_CODE_CURRENT_LINE:
         current_line = opcode->operand0;
