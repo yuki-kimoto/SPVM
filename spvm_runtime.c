@@ -740,12 +740,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_UNDEF:
         vars[opcode->operand0].object_value = NULL;
         break;
-      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_0:
-        memset(&vars[opcode->operand0], 0, sizeof(int32_t));
-        break;
-      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2_0:
-        memset(&vars[opcode->operand0], 0, sizeof(int64_t));
-        break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0:
         *(int8_t*)&vars[opcode->operand0] = (int8_t)0;
         break;
