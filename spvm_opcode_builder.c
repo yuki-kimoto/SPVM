@@ -152,22 +152,22 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           
           switch (type->code) {
             case SPVM_TYPE_C_CODE_BYTE:
-              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_0;
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0;
               break;
             case SPVM_TYPE_C_CODE_SHORT:
-              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_0;
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT_0;
               break;
             case SPVM_TYPE_C_CODE_INT:
-              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_0;
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT_0;
               break;
             case SPVM_TYPE_C_CODE_LONG:
-              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT2_0;
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG_0;
               break;
             case SPVM_TYPE_C_CODE_FLOAT:
-              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_0;
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT_0;
               break;
             case SPVM_TYPE_C_CODE_DOUBLE:
-              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT2_0;
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE_0;
               break;
             default:
               opcode.code = SPVM_OPCODE_C_CODE_UNDEF;
