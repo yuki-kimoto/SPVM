@@ -752,6 +752,24 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2:
         memcpy(&vars[opcode->operand0], &constant_pool[opcode->operand1], sizeof(int64_t));
         break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE:
+        *(int8_t*)&vars[opcode->operand0] = *(int8_t*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT:
+        *(int16_t*)&vars[opcode->operand0] = *(int16_t*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT:
+        *(int32_t*)&vars[opcode->operand0] = *(int32_t*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG:
+        *(int64_t*)&vars[opcode->operand0] = *(int64_t*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT:
+        *(float*)&vars[opcode->operand0] = *(float*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE:
+        *(double*)&vars[opcode->operand0] = *(double*)&constant_pool[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_BYTE: {
         SPVM_API_OBJECT* array = vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
@@ -1690,7 +1708,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        SPVM_API_OBJECT** package_var_address = &package_vars[package_var_id];
+        SPVM_API_OBJECT** package_var_address = (SPVM_API_OBJECT**)&package_vars[package_var_id];
         
         // Decrement reference count
         if (*(SPVM_API_OBJECT**)package_var_address != NULL) {
