@@ -746,6 +746,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2_0:
         memset(&vars[opcode->operand0], 0, sizeof(int64_t));
         break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT:
+        memcpy(&vars[opcode->operand0], &constant_pool[opcode->operand1], sizeof(int32_t));
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2:
+        memcpy(&vars[opcode->operand0], &constant_pool[opcode->operand1], sizeof(int64_t));
+        break;
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_BYTE: {
         SPVM_API_OBJECT* array = vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
@@ -1971,7 +1977,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           const char* at = "() at ";
 
           // Exception
-          SPVM_API_OBJECT* exception = SPVM_INLINE_GET_EXCEPTION();
+          SPVM_API_OBJECT* exception = api->get_exception(api);
           char* exception_chars = api->get_string_chars(api, exception);
           int32_t exception_length = api->get_string_length(api, exception);
           
@@ -2116,12 +2122,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_OPCODE_C_CODE_CURRENT_LINE:
         current_line = opcode->operand0;
-        break;
-      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT:
-        memcpy(&vars[opcode->operand0], &constant_pool[opcode->operand1], sizeof(int32_t));
-        break;
-      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2:
-        memcpy(&vars[opcode->operand0], &constant_pool[opcode->operand1], sizeof(int64_t));
         break;
     }
     opcode_index++;
