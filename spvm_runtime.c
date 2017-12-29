@@ -1741,6 +1741,23 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         call_sub_arg_stack[call_sub_arg_stack_top].int_value = opcode->operand0;
         
         break;
+      case SPVM_OPCODE_C_CODE_GOTO:
+        opcode_index += opcode->operand0;
+        continue;
+      case SPVM_OPCODE_C_CODE_IF_EQ_ZERO: {
+        if (condition_flag == 0) {
+          opcode_index += opcode->operand0;
+          continue;
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_IF_NE_ZERO: {
+        if (condition_flag) {
+          opcode_index += opcode->operand0;
+          continue;
+        }
+        break;
+      }
       case SPVM_OPCODE_C_CODE_CALL_SUB:
       {
         // Get subroutine ID
@@ -2048,23 +2065,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         memset(&return_value, 0, sizeof(SPVM_API_VALUE));
         
         return return_value;
-      }
-      case SPVM_OPCODE_C_CODE_GOTO:
-        opcode_index += opcode->operand0;
-        continue;
-      case SPVM_OPCODE_C_CODE_IF_EQ_ZERO: {
-        if (condition_flag == 0) {
-          opcode_index += opcode->operand0;
-          continue;
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_IF_NE_ZERO: {
-        if (condition_flag) {
-          opcode_index += opcode->operand0;
-          continue;
-        }
-        break;
       }
       case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
         int32_t* intcodes = (int32_t*)opcodes;
