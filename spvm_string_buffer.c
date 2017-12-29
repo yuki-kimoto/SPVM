@@ -120,14 +120,14 @@ void SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t valu
 
 void SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float value) {
   
-  int32_t max_length = 30;
+  int32_t max_length = 50;
   
   int32_t new_max_length = string_buffer->length + max_length;
   
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%f", value);
+  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.100f", value);
   
   string_buffer->length += write_length;
   
@@ -136,14 +136,14 @@ void SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float value
 
 void SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double value) {
   
-  int32_t max_length = 30;
+  int32_t max_length = 50;
   
   int32_t new_max_length = string_buffer->length + max_length;
   
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%f", value);
+  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.100f", value);
   
   string_buffer->length += write_length;
   
