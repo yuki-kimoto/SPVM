@@ -746,6 +746,24 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2_0:
         memset(&vars[opcode->operand0], 0, sizeof(int64_t));
         break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0:
+        *(int8_t*)&vars[opcode->operand0] = (int8_t)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT_0:
+        *(int16_t*)&vars[opcode->operand0] = (int16_t)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT_0:
+        *(int32_t*)&vars[opcode->operand0] = (int32_t)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG_0:
+        *(int64_t*)&vars[opcode->operand0] = (int64_t)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT_0:
+        *(float*)&vars[opcode->operand0] = (float)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE_0:
+        *(double*)&vars[opcode->operand0] = (double)0;
+        break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE:
         *(int8_t*)&vars[opcode->operand0] = *(int8_t*)&constant_pool[opcode->operand1];
         break;
