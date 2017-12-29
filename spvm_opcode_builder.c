@@ -1039,18 +1039,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    if (type->code == SPVM_TYPE_C_CODE_BYTE
-                      || type->code == SPVM_TYPE_C_CODE_SHORT
-                      || type->code == SPVM_TYPE_C_CODE_INT
-                      || type->code == SPVM_TYPE_C_CODE_FLOAT)
-                    {
-                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_LONG || type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT2;
-                    }
-                    else {
-                      assert(0);
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT;
+                        break;
+                      case SPVM_TYPE_C_CODE_SHORT:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT;
+                        break;
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT2;
+                        break;
+                      case SPVM_TYPE_C_CODE_FLOAT:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT;
+                        break;
+                      case SPVM_TYPE_C_CODE_DOUBLE:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT2;
+                        break;
+                      default:
+                        assert(0);
                     }
                     
                     assert(constant->id != -1);
