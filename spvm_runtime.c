@@ -1828,55 +1828,21 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_RETURN_LONG:
       case SPVM_OPCODE_C_CODE_RETURN_FLOAT:
       case SPVM_OPCODE_C_CODE_RETURN_DOUBLE:
+      case SPVM_OPCODE_C_CODE_RETURN_OBJECT:
+      case SPVM_OPCODE_C_CODE_RETURN_VOID:
       {
         // Get return value
-        return_value = vars[opcode->operand0];
-          
-        // Decrement my vars which is arguments - decrement only
-        {
-          int32_t i;
-          for (i = 0; i < sub_object_args_length; i++) {
-            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-            SPVM_API_OBJECT* object = vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-            }
-          }
-        }
-
-        // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
-        {
-          int32_t i;
-          for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
-            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-            SPVM_API_OBJECT* object = vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
-                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-              }
-              else {
-                api->dec_ref_count(api, object);
-              }
-            }
-          }
+        if (opcode->code != SPVM_OPCODE_C_CODE_RETURN_VOID) {
+          return_value = vars[opcode->operand0];
         }
         
-        // No exception
-        SPVM_INLINE_SET_EXCEPTION_NULL();
-        
-        return return_value;
-      }
-      case SPVM_OPCODE_C_CODE_RETURN_OBJECT: {
-
-        return_value = vars[opcode->operand0];
-          
         // Increment ref count of return value not to release by decrement
-        if (return_value.object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
+        if (opcode->code == SPVM_OPCODE_C_CODE_RETURN_OBJECT) {
+          if (return_value.object_value != NULL) {
+            SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
+          }
         }
-        
+          
         // Decrement my vars which is arguments - decrement only
         {
           int32_t i;
@@ -1909,50 +1875,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
 
         // Decrement ref count of return value
-        if (return_value.object_value != NULL) {
-          SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
-        }
-        
-        SPVM_INLINE_SET_EXCEPTION_NULL();
-        
-        return return_value;
-      }
-      case SPVM_OPCODE_C_CODE_RETURN_VOID: {
-
-        memset(&return_value, 0, sizeof(SPVM_API_VALUE));
-        
-        // Decrement object my vars reference count
-        {
-          int32_t i;
-          for (i = 0; i < sub_object_args_length; i++) {
-            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-            SPVM_API_OBJECT* object = vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-            }
-          }
-        }
-        {
-          int32_t i;
-          for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
-            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-            SPVM_API_OBJECT* object = vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
-                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-              }
-              else {
-                api->dec_ref_count(api, object);
-              }
-            }
+        if (opcode->code == SPVM_OPCODE_C_CODE_RETURN_OBJECT) {
+          if (return_value.object_value != NULL) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
           }
         }
         
         // No exception
         SPVM_INLINE_SET_EXCEPTION_NULL();
-
+        
         return return_value;
       }
       case SPVM_OPCODE_C_CODE_CROAK: {
@@ -1967,6 +1898,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           
           opcode_index = sub_opcode_base + jump_offset_abs;
           continue;
+        }
+
+        if (SPVM_INFO_DEBUG) {
+          SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
+          
+          // Set exception
+          api->set_exception(api, new_exception);
         }
         
         // Decrement my vars which is arguments - decrement only
@@ -1998,13 +1936,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
               }
             }
           }
-        }
-        
-        if (SPVM_INFO_DEBUG) {
-          SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
-          
-          // Set exception
-          api->set_exception(api, new_exception);
         }
         
         memset(&return_value, 0, sizeof(SPVM_API_VALUE));
