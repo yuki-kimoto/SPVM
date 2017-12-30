@@ -116,6 +116,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   // Condition flag
   register int32_t condition_flag = 0;
+  
+  int32_t throw_exception = 0;
 
   // Return value
   SPVM_API_VALUE return_value;
@@ -123,11 +125,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Copy arguments
   memcpy(vars, args, args_length * sizeof(SPVM_API_VALUE));
   
-  // Set exception to NULL;
-  SPVM_INLINE_SET_EXCEPTION_NULL();
-  
   // Call native sub
   if (sub_is_native) {
+    // Set exception to NULL;
+    SPVM_INLINE_SET_EXCEPTION_NULL();
+
     // Call native subroutine
     if (sub_return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
       void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
@@ -1835,20 +1837,19 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           opcode_index = sub_opcode_base + jump_offset_abs;
           continue;
         }
-        if (runtime->debug) {
-          SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
-          
-          // Set exception
-          api->set_exception(api, new_exception);
+        // Throw exception
+        else {
+          throw_exception = 1;
+          if (runtime->debug) {
+            // Exception stack trace
+            SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
+            api->set_exception(api, new_exception);
+          }
+          goto label_SPVM_OPCODE_C_CODE_RETURN;
         }
-        
-        goto label_SPVM_OPCODE_C_CODE_RETURN;
       }
       case SPVM_OPCODE_C_CODE_RETURN:
       {
-        // No exception
-        SPVM_INLINE_SET_EXCEPTION_NULL();
-
         label_SPVM_OPCODE_C_CODE_RETURN:
 
         // Get return value
@@ -1899,6 +1900,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           if (return_value.object_value != NULL) {
             SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
           }
+        }
+        
+        if (!throw_exception) {
+          // No exception
+          SPVM_INLINE_SET_EXCEPTION_NULL();
         }
         
         return return_value;
