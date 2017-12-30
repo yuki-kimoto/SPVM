@@ -1822,6 +1822,28 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         continue;
       }
+      case SPVM_OPCODE_C_CODE_CROAK: {
+        
+        label_SPVM_OPCODE_C_CODE_CROAK:
+        
+        // Catch exception
+        if (eval_stack_top > -1) {
+          
+          int32_t jump_offset_abs = eval_stack[eval_stack_top];
+          eval_stack_top--;
+          
+          opcode_index = sub_opcode_base + jump_offset_abs;
+          continue;
+        }
+        if (runtime->debug) {
+          SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
+          
+          // Set exception
+          api->set_exception(api, new_exception);
+        }
+        
+        goto label_SPVM_OPCODE_C_CODE_RETURN;
+      }
       case SPVM_OPCODE_C_CODE_RETURN:
       {
         // No exception
@@ -1853,7 +1875,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             }
           }
         }
-
+        
         // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
         {
           int32_t i;
@@ -1876,60 +1898,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
           if (return_value.object_value != NULL) {
             SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
-          }
-        }
-        
-        return return_value;
-      }
-      case SPVM_OPCODE_C_CODE_CROAK: {
-        
-        label_SPVM_OPCODE_C_CODE_CROAK:
-        
-        // Catch exception
-        if (eval_stack_top > -1) {
-          
-          int32_t jump_offset_abs = eval_stack[eval_stack_top];
-          eval_stack_top--;
-          
-          opcode_index = sub_opcode_base + jump_offset_abs;
-          continue;
-        }
-        if (runtime->debug) {
-          SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
-          
-          // Set exception
-          api->set_exception(api, new_exception);
-        }
-        memset(&return_value, 0, sizeof(SPVM_API_VALUE));
-        
-        // Decrement my vars which is arguments - decrement only
-        {
-          int32_t i;
-          for (i = 0; i < sub_object_args_length; i++) {
-            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-            SPVM_API_OBJECT* object = vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-            }
-          }
-        }
-
-        // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
-        {
-          int32_t i;
-          for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
-            int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-            SPVM_API_OBJECT* object = vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
-                SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-              }
-              else {
-                api->dec_ref_count(api, object);
-              }
-            }
           }
         }
         
