@@ -1905,34 +1905,51 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             case SPVM_OPCODE_C_CODE_RETURN_FLOAT:
             case SPVM_OPCODE_C_CODE_RETURN_DOUBLE:
             case SPVM_OPCODE_C_CODE_RETURN_OBJECT:
+            case SPVM_OPCODE_C_CODE_CROAK:
             {
-              char* return_type = NULL;
-              switch (opcode->code) {
-                case SPVM_OPCODE_C_CODE_RETURN_BYTE:
-                  return_type = "int8_t";
+              char* return_type_name = NULL;
+              switch (return_type->code) {
+                case SPVM_TYPE_C_CODE_VOID:
                   break;
-                case SPVM_OPCODE_C_CODE_RETURN_SHORT:
-                  return_type = "int16_t";
+                case SPVM_TYPE_C_CODE_BYTE:
+                  return_type_name = "int8_t";
                   break;
-                case SPVM_OPCODE_C_CODE_RETURN_INT:
-                  return_type = "int32_t";
+                case SPVM_TYPE_C_CODE_SHORT:
+                  return_type_name = "int16_t";
                   break;
-                case SPVM_OPCODE_C_CODE_RETURN_LONG:
-                  return_type = "int64_t";
+                case SPVM_TYPE_C_CODE_INT:
+                  return_type_name = "int32_t";
                   break;
-                case SPVM_OPCODE_C_CODE_RETURN_FLOAT:
-                  return_type = "float";
+                case SPVM_TYPE_C_CODE_LONG:
+                  return_type_name = "int64_t";
                   break;
-                case SPVM_OPCODE_C_CODE_RETURN_DOUBLE:
-                  return_type = "double";
+                case SPVM_TYPE_C_CODE_FLOAT:
+                  return_type_name = "float";
+                  break;
+                case SPVM_TYPE_C_CODE_DOUBLE:
+                  return_type_name = "double";
                   break;
                 default:
-                  return_type = "SPVM_API_OBJECT*";
+                  return_type_name = "SPVM_API_OBJECT*";
               }
               
               SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-
+              
+              // Catch exception
+              if (opcode->code == SPVM_OPCODE_C_CODE_CROAK) {
+                // Opcode base
+                int32_t sub_opcode_base = constant_pool_sub->opcode_base;
+                
+                SPVM_STRING_BUFFER_add(string_buffer, "  if (eval_stack_top > -1) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    int32_t jump_offset_abs = eval_stack[eval_stack_top];\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    eval_stack_top--;\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
+                // SPVM_STRING_BUFFER_add_int(string_buffer, sub_opcode_base + jump_offset_abs);
+                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              }
+              
               // Decrement my vars which is arguments - decrement only
               {
                 int32_t i;
@@ -1970,7 +1987,17 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
                   }
                 }
               }
-              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_SET_EXCEPTION_NULL();\n");
+
+              if (opcode->code == SPVM_OPCODE_C_CODE_CROAK) {
+                if (runtime->debug) {
+                  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);\n");
+                  SPVM_STRING_BUFFER_add(string_buffer, "  api->set_exception(api, new_exception);\n");
+                }
+              }
+              else {
+                SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_SET_EXCEPTION_NULL();\n");
+              }
+              
               if (!sub_is_void) {
                 SPVM_STRING_BUFFER_add(string_buffer, "    return");
                 SPVM_STRING_BUFFER_add(string_buffer, " var");
@@ -1979,9 +2006,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               }
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             }
-            case SPVM_OPCODE_C_CODE_CROAK:
-              SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN\n");
-              break;
             case SPVM_OPCODE_C_CODE_TABLE_SWITCH:
             case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH:
               loop_break = 1;
