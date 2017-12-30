@@ -1730,10 +1730,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         break;
       }
-      case SPVM_OPCODE_C_CODE_PUSH_ARG:
-        call_sub_arg_stack_top++;
-        call_sub_arg_stack[call_sub_arg_stack_top].int_value = opcode->operand0;
-        
+      case SPVM_OPCODE_C_CODE_CURRENT_LINE:
+        current_line = opcode->operand0;
         break;
       case SPVM_OPCODE_C_CODE_GOTO:
         opcode_index += opcode->operand0;
@@ -1752,6 +1750,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         break;
       }
+      case SPVM_OPCODE_C_CODE_PUSH_ARG:
+        call_sub_arg_stack_top++;
+        call_sub_arg_stack[call_sub_arg_stack_top].int_value = opcode->operand0;
+        
+        break;
       case SPVM_OPCODE_C_CODE_CALL_SUB:
       {
         // Get subroutine ID
@@ -2023,9 +2026,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         continue;
       }
-      case SPVM_OPCODE_C_CODE_CURRENT_LINE:
-        current_line = opcode->operand0;
-        break;
     }
     opcode_index++;
   }
