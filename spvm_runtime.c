@@ -1840,17 +1840,20 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Throw exception
         else {
           throw_exception = 1;
-          if (runtime->debug) {
-            // Exception stack trace
-            SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
-            api->set_exception(api, new_exception);
-          }
           goto label_SPVM_OPCODE_C_CODE_RETURN;
         }
       }
       case SPVM_OPCODE_C_CODE_RETURN:
       {
         label_SPVM_OPCODE_C_CODE_RETURN:
+
+        if (throw_exception) {
+          if (runtime->debug) {
+            // Exception stack trace
+            SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
+            api->set_exception(api, new_exception);
+          }
+        }
 
         // Get return value
         if (!constant_pool_sub->is_void) {
