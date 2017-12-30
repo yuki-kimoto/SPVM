@@ -1822,6 +1822,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         continue;
       }
+      case SPVM_OPCODE_C_CODE_RETURN:
       case SPVM_OPCODE_C_CODE_RETURN_BYTE:
       case SPVM_OPCODE_C_CODE_RETURN_SHORT:
       case SPVM_OPCODE_C_CODE_RETURN_INT:
@@ -1835,12 +1836,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         label_SPVM_OPCODE_C_CODE_RETURN:
 
         // Get return value
-        if (opcode->code != SPVM_OPCODE_C_CODE_RETURN_VOID) {
+        if (!constant_pool_sub->is_void) {
           return_value = vars[opcode->operand0];
         }
         
         // Increment ref count of return value not to release by decrement
-        if (opcode->code == SPVM_OPCODE_C_CODE_RETURN_OBJECT) {
+        if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
           if (return_value.object_value != NULL) {
             SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
           }
@@ -1878,7 +1879,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
 
         // Decrement ref count of return value
-        if (opcode->code == SPVM_OPCODE_C_CODE_RETURN_OBJECT) {
+        if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
           if (return_value.object_value != NULL) {
             SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
           }
