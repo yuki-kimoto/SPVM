@@ -2001,65 +2001,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         
         if (SPVM_INFO_DEBUG) {
-          // Constant pool sub
-          SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-          
-          // Subroutine name id
-          int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
-          
-          // Subroutine file name id
-          int32_t sub_file_name_id = constant_pool_sub->file_name_id;
-          
-          // Sub name
-          const char* sub_name = (char*)&constant_pool[sub_abs_name_id + 1];
-          
-          // File name
-          const char* file_name = (char*)&constant_pool[sub_file_name_id + 1];
-          
-          // stack trace strings
-          const char* from = "\n  from ";
-          const char* at = "() at ";
-
-          // Exception
-          SPVM_API_OBJECT* exception = api->get_exception(api);
-          char* exception_chars = api->get_string_chars(api, exception);
-          int32_t exception_length = api->get_string_length(api, exception);
-          
-          // Total string length
-          int32_t total_length = 0;
-          total_length += exception_length;
-          total_length += strlen(from);
-          total_length += strlen(sub_name);
-          total_length += strlen(at);
-          total_length += strlen(file_name);
-
-          const char* line = " line ";
-          char line_str[20];
-          
-          sprintf(line_str, "%" PRId32, current_line);
-          total_length += strlen(line);
-          total_length += strlen(line_str);
-          
-          // Create exception message
-          SPVM_API_OBJECT* new_exception = api->new_string(api, NULL, total_length);
-          char* new_exception_chars = api->get_string_chars(api, new_exception);
-          
-          memcpy(
-            (void*)(new_exception_chars),
-            (void*)(exception_chars),
-            exception_length
-          );
-
-          sprintf(
-            new_exception_chars + exception_length,
-            "%s%s%s%s%s%" PRId32,
-            from,
-            sub_name,
-            at,
-            file_name,
-            line,
-            current_line
-          );
+          SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
           
           // Set exception
           api->set_exception(api, new_exception);
