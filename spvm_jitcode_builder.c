@@ -1897,6 +1897,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               
               break;
             }
+            case SPVM_OPCODE_C_CODE_RETURN:
             case SPVM_OPCODE_C_CODE_RETURN_VOID:
             case SPVM_OPCODE_C_CODE_RETURN_BYTE:
             case SPVM_OPCODE_C_CODE_RETURN_SHORT:

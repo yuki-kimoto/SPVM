@@ -289,6 +289,7 @@ const char* const SPVM_OPCODE_C_CODE_NAMES[] = {
   "LOOKUP_SWITCH",
   "GOTO",
   "CALL_SUB",
+  "RETURN",
   "RETURN_VOID",
   "RETURN_BYTE",
   "RETURN_SHORT",
