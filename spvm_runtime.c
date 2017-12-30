@@ -1831,6 +1831,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_RETURN_OBJECT:
       case SPVM_OPCODE_C_CODE_RETURN_VOID:
       {
+
+        label_SPVM_OPCODE_C_CODE_RETURN:
+
         // Get return value
         if (opcode->code != SPVM_OPCODE_C_CODE_RETURN_VOID) {
           return_value = vars[opcode->operand0];
