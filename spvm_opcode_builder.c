@@ -2433,33 +2433,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 if (return_type->code == SPVM_TYPE_C_CODE_VOID) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.code = SPVM_OPCODE_C_CODE_RETURN_VOID;
+                  opcode.code = SPVM_OPCODE_C_CODE_RETURN;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
                 else {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  if (return_type->code == SPVM_TYPE_C_CODE_BYTE) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_BYTE;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_SHORT) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_SHORT;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_INT) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_INT;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_LONG) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_LONG;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_FLOAT;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_DOUBLE;
-                  }
-                  else {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_OBJECT;
-                  }
+                  opcode.code = SPVM_OPCODE_C_CODE_RETURN;
                   
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   

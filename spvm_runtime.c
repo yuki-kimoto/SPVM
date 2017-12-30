@@ -1823,15 +1823,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         continue;
       }
       case SPVM_OPCODE_C_CODE_RETURN:
-      case SPVM_OPCODE_C_CODE_RETURN_BYTE:
-      case SPVM_OPCODE_C_CODE_RETURN_SHORT:
-      case SPVM_OPCODE_C_CODE_RETURN_INT:
-      case SPVM_OPCODE_C_CODE_RETURN_LONG:
-      case SPVM_OPCODE_C_CODE_RETURN_FLOAT:
-      case SPVM_OPCODE_C_CODE_RETURN_DOUBLE:
-      case SPVM_OPCODE_C_CODE_RETURN_OBJECT:
-      case SPVM_OPCODE_C_CODE_RETURN_VOID:
       {
+        // No exception
+        SPVM_INLINE_SET_EXCEPTION_NULL();
 
         label_SPVM_OPCODE_C_CODE_RETURN:
 
@@ -1884,9 +1878,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
           }
         }
-        
-        // No exception
-        SPVM_INLINE_SET_EXCEPTION_NULL();
         
         return return_value;
       }
