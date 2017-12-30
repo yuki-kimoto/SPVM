@@ -54,6 +54,11 @@ use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'CORE';
 
+  {
+    eval { SPVM::TestCase::exception_croak_return_object() };
+    like($@, qr/Error/);
+  }
+
 # Field
 {
   ok(SPVM::TestCase::object_field_set_and_get());
@@ -1715,16 +1720,15 @@ is($end_objects_count, $start_objects_count);
     like($@, qr/Error/);
   }
   {
-    eval { SPVM::TestCase::exception_croak_return_object() };
-    like($@, qr/Error/);
-  }
-  {
     eval { SPVM::TestCase::exception_croak_return_void() };
     like($@, qr/Error/);
   }
-  
   {
     ok(SPVM::TestCase::exception_croak_return_int_eval_catch());
+  }
+  {
+    eval { SPVM::TestCase::exception_croak_return_object() };
+    like($@, qr/Error/);
   }
 }
 

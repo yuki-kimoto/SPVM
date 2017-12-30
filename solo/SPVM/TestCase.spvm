@@ -51,6 +51,10 @@ package TestCase {
   
   sub main($mvar : int) : int {
 
+    eval {
+      exception_croak_return_object();
+    };
+
 =pod
     {
       my $NUM = 0;
@@ -1247,7 +1251,9 @@ package TestCase {
       return 0;
     }
   }
-
+  sub exception_croak_return_object() : TestCase::Minimal {
+    croak "Error";
+  }
 }
 
 =head1 NAME

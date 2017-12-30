@@ -218,7 +218,6 @@ int main(int argc, char *argv[])
   // Run
   int32_t return_value = api->call_int_sub(api, sub_id, args);
   
-#ifdef DEBUG
   if (runtime->exception) {
     void* message_object = runtime->exception;
     char* message = api->get_string_chars(api, message_object);
@@ -229,7 +228,6 @@ int main(int argc, char *argv[])
   else {
     printf("TEST return_value: %" PRId32 "\n", return_value);
   }
-#endif
   
   SPVM_RUNTIME_API_free_runtime(api, runtime);
   

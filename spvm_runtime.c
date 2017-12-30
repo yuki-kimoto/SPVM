@@ -1840,25 +1840,18 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Throw exception
         else {
           throw_exception = 1;
+          memset(&return_value, 0, sizeof(SPVM_API_VALUE));
           goto label_SPVM_OPCODE_C_CODE_RETURN;
         }
       }
       case SPVM_OPCODE_C_CODE_RETURN:
       {
-        label_SPVM_OPCODE_C_CODE_RETURN:
-
-        if (throw_exception) {
-          if (runtime->debug) {
-            // Exception stack trace
-            SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
-            api->set_exception(api, new_exception);
-          }
-        }
-
         // Get return value
         if (!constant_pool_sub->is_void) {
           return_value = vars[opcode->operand0];
         }
+        
+        label_SPVM_OPCODE_C_CODE_RETURN:
         
         // Increment ref count of return value not to release by decrement
         if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
@@ -1879,6 +1872,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             }
           }
         }
+
         
         // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
         {
@@ -1897,7 +1891,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             }
           }
         }
-
+        
         // Decrement ref count of return value
         if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
           if (return_value.object_value != NULL) {
@@ -1905,8 +1899,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           }
         }
         
-        if (!throw_exception) {
-          // No exception
+        // Throw exception
+        if (throw_exception) {
+          if (runtime->debug) {
+            // Exception stack trace
+            SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
+            api->set_exception(api, new_exception);
+          }
+        }
+        // No exception
+        else {
           SPVM_INLINE_SET_EXCEPTION_NULL();
         }
         
