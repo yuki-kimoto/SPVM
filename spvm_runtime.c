@@ -60,9 +60,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
-  // Debug
-  int32_t SPVM_INFO_DEBUG = runtime->debug ? 1 : 0;
-  
   // Subroutine object my length
   int32_t sub_object_mys_length = constant_pool_sub->object_mys_length;
   
@@ -1905,13 +1902,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           opcode_index = sub_opcode_base + jump_offset_abs;
           continue;
         }
-
-        if (SPVM_INFO_DEBUG) {
+        if (runtime->debug) {
           SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);
           
           // Set exception
           api->set_exception(api, new_exception);
         }
+        memset(&return_value, 0, sizeof(SPVM_API_VALUE));
         
         // Decrement my vars which is arguments - decrement only
         {
@@ -1943,8 +1940,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             }
           }
         }
-        
-        memset(&return_value, 0, sizeof(SPVM_API_VALUE));
         
         return return_value;
       }
