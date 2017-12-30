@@ -259,6 +259,12 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       
       // Call subroutine argument stack
       SPVM_API_VALUE call_sub_arg_stack[255];
+
+      // Eval stack
+      int32_t eval_stack[255];
+      
+      // Eval stack top
+      int32_t eval_stack_top = -1;
       
       // Return type
       switch (return_type->code) {
@@ -1658,16 +1664,18 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             }
             case SPVM_OPCODE_C_CODE_PUSH_EVAL: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // PUSH_EVAL\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  int16_t jump_offset_abs = \n");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  eval_stack_top++;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  eval_stack[eval_stack_top] = jump_offset_abs;\n");
+              
+              int32_t jump_offset_abs = opcode->operand0;
+              eval_stack_top++;
+              eval_stack[eval_stack_top] = jump_offset_abs;
+              
               break;
             }
             case SPVM_OPCODE_C_CODE_POP_EVAL: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // POP_EVAL\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  eval_stack_top--;\n");
+              
+              eval_stack_top--;
+              
               break;
             }
             case SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR: {
