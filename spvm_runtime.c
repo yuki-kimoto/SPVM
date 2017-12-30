@@ -69,12 +69,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Subroutine object my base index
   int32_t sub_object_mys_base = constant_pool_sub->object_mys_base;
   
-  // Subroutine name id
-  int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
-  
-  // Subroutine file name id
-  int32_t sub_file_name_id = constant_pool_sub->file_name_id;
-  
   // Subroutine return type id
   int32_t sub_return_type_id = constant_pool_sub->return_type_id;
   
@@ -2007,6 +2001,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         
         if (SPVM_INFO_DEBUG) {
+          // Constant pool sub
+          SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+          
+          // Subroutine name id
+          int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
+          
+          // Subroutine file name id
+          int32_t sub_file_name_id = constant_pool_sub->file_name_id;
+          
           // Sub name
           const char* sub_name = (char*)&constant_pool[sub_abs_name_id + 1];
           
