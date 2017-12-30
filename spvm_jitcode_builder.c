@@ -1934,14 +1934,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top);
               break;
             case SPVM_OPCODE_C_CODE_RETURN:
-            case SPVM_OPCODE_C_CODE_RETURN_VOID:
-            case SPVM_OPCODE_C_CODE_RETURN_BYTE:
-            case SPVM_OPCODE_C_CODE_RETURN_SHORT:
-            case SPVM_OPCODE_C_CODE_RETURN_INT:
-            case SPVM_OPCODE_C_CODE_RETURN_LONG:
-            case SPVM_OPCODE_C_CODE_RETURN_FLOAT:
-            case SPVM_OPCODE_C_CODE_RETURN_DOUBLE:
-            case SPVM_OPCODE_C_CODE_RETURN_OBJECT:
             {
               char* return_type_name = NULL;
               switch (return_type->code) {
@@ -2046,5 +2038,5 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
     }
   }
   
-  warn("%s", string_buffer->buffer);
+  // warn("%s", string_buffer->buffer);
 }
