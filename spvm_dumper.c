@@ -264,14 +264,14 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
           
           printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
           
-          int32_t count = opcode.operand2;
+          int32_t case_length = opcode.operand2;
           
           int32_t offset_opcode_length;
-          if (count % SPVM_OPCODE_C_UNIT == 0) {
-            offset_opcode_length = (count * 2) / SPVM_OPCODE_C_UNIT;
+          if (case_length % SPVM_OPCODE_C_UNIT == 0) {
+            offset_opcode_length = (case_length * 2) / SPVM_OPCODE_C_UNIT;
           }
           else {
-            offset_opcode_length = ((count * 2) / SPVM_OPCODE_C_UNIT) + 1;
+            offset_opcode_length = ((case_length * 2) / SPVM_OPCODE_C_UNIT) + 1;
           }
           
           // Match - offset

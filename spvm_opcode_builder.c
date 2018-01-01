@@ -1617,8 +1617,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode_switch_info.operand1 = 0;
                   
                   // Case count
-                  int32_t length = switch_info->op_cases->length;
-                  opcode_switch_info.operand2 = length;
+                  int32_t case_length = switch_info->op_cases->length;
+                  opcode_switch_info.operand2 = case_length;
 
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
                   
@@ -1627,7 +1627,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   switch_info->opcode_index = switch_opcode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
                   
-                  int32_t size_of_match_offset_pairs = length * 2;
+                  int32_t size_of_match_offset_pairs = case_length * 2;
                   
                   // Jump offset length
                   int32_t jump_offset_length = size_of_match_offset_pairs;
