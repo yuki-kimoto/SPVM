@@ -1675,7 +1675,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   else {
                     default_offset = default_opcode_index - switch_opcode_index;
                   }
-                  ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand1 = default_offset;
+                  (opcode_array->values + switch_opcode_index)->operand1 = default_offset;
                   
                   int32_t length = (int32_t) switch_info->op_cases->length;
                   
@@ -1735,10 +1735,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t case_offset = case_opcode_index - switch_opcode_index;
                       
                       // Match
-                      *((int32_t*)((SPVM_OPCODE*)(opcode_array->values) + switch_opcode_index + 1) + (2 * i)) = match;
+                      *((int32_t*)(opcode_array->values + switch_opcode_index + 1) + (2 * i)) = match;
 
                       // Offset
-                      *((int32_t*)((SPVM_OPCODE*)(opcode_array->values) + switch_opcode_index + 1) + (1 + 2 * i)) = case_offset;
+                      *((int32_t*)(opcode_array->values + switch_opcode_index + 1) + (1 + 2 * i)) = case_offset;
                     }
                   }
                 }
