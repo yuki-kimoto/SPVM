@@ -1857,9 +1857,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // TABLE_SWITCH is no longer used
         assert(0);
       case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
-        int32_t* intcodes = (int32_t*)opcodes;
-        int32_t intcode_index = opcode_index * SPVM_OPCODE_C_UNIT;
-        
         // 1  default
         // 5  npare
         // 9  match1 offset1 // min
@@ -1873,10 +1870,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t pair_count = opcode->operand2;
         
         // min
-        int32_t min = intcodes[intcode_index + SPVM_OPCODE_C_UNIT];
+        int32_t min = (opcode + 1)->operand0;
         
         // max
-        int32_t max = intcodes[intcode_index + SPVM_OPCODE_C_UNIT + (pair_count - 1) * 2];
+        int32_t max = (opcode + pair_count - 1)->operand0;
         
         if (vars[opcode->operand0].int_value >= min && vars[opcode->operand0].int_value <= max) {
           // 2 branch searching
@@ -1889,7 +1886,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
               break;
             }
             int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-            int32_t cur_half = intcodes[intcode_index + SPVM_OPCODE_C_UNIT + (cur_half_pos * 2)];
+            int32_t cur_half = (opcode + cur_half_pos)->operand0;
             
             if (vars[opcode->operand0].int_value > cur_half) {
               cur_min_pos = cur_half_pos + 1;
@@ -1898,7 +1895,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
               cur_max_pos = cur_half_pos - 1;
             }
             else {
-              int32_t branch_offset = intcodes[intcode_index + SPVM_OPCODE_C_UNIT + (cur_half_pos * 2) + 1];
+              int32_t branch_offset = (opcode + cur_half_pos)->operand1;
               opcode_index += branch_offset;
               break;
             }
