@@ -1854,6 +1854,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_OPCODE_C_CODE_RETURN;
       }
       case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
+        
+        // TABLE_SWITCH is no longer used
+        assert(0);
+        
         int32_t* intcodes = (int32_t*)opcodes;
         int32_t intcode_index = opcode_index * SPVM_OPCODE_C_UNIT;
         
