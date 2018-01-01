@@ -1677,12 +1677,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   (opcode_array->values + switch_opcode_index)->operand1 = default_offset;
                   
-                  int32_t length = (int32_t) switch_info->op_cases->length;
+                  int32_t case_length = (int32_t) switch_info->op_cases->length;
                   
                   SPVM_DYNAMIC_ARRAY* ordered_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
                   {
                     int32_t i;
-                    for (i = 0; i < length; i++) {
+                    for (i = 0; i < case_length; i++) {
                       SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(switch_info->op_cases, i);
                       SPVM_DYNAMIC_ARRAY_push(ordered_op_cases, op_case);
                     }
@@ -1690,7 +1690,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_DYNAMIC_ARRAY* ordered_case_opcode_indexes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
                   {
                     int32_t i;
-                    for (i = 0; i < length; i++) {
+                    for (i = 0; i < case_length; i++) {
                       int32_t* case_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_opcode_indexes, i);
                       SPVM_DYNAMIC_ARRAY_push(ordered_case_opcode_indexes, case_opcode_index_ptr);
                     }
@@ -1699,10 +1699,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // sort by asc order
                   {
                     int32_t i;
-                    for (i = 0; i < length; i++) {
+                    for (i = 0; i < case_length; i++) {
                       int32_t j;
                       {
-                        for (j = i + 1; j < length; j++) {
+                        for (j = i + 1; j < case_length; j++) {
                           SPVM_OP* op_case_i = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, i);
                           SPVM_OP* op_case_j = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, j);
                           int32_t match_i = op_case_i->first->uv.constant->value.int_value;
@@ -1725,7 +1725,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   {
                     int32_t i;
-                    for (i = 0; i < length; i++) {
+                    for (i = 0; i < case_length; i++) {
                       SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, i);
                       SPVM_OP* op_constant = op_case->first;
                       int32_t match = op_constant->uv.constant->value.int_value;
