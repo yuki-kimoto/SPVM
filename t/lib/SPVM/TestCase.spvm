@@ -1301,10 +1301,10 @@ package TestCase {
     }
     my $success3 : int;
     switch (10000) {
-      case 1:
+      case 3:
         $success3 = 0;
         last;
-      case 3:
+      case 1:
         $success3 = 0;
         last;
       case 10000:
