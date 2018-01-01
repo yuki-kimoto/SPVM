@@ -1879,7 +1879,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
         int32_t* intcodes = (int32_t*)opcodes;
-        int32_t intcode_index = opcode_index * 8;
+        int32_t intcode_index = opcode_index * SPVM_OPCODE_C_UNIT;
         
         // 1  default
         // 5  npare
