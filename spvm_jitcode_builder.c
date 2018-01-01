@@ -1950,6 +1950,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               goto label_RETURN;
             }
             case SPVM_OPCODE_C_CODE_TABLE_SWITCH:
+              // TABLE_SWITCH is no longer used
+              assert(0);
             case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH:
               loop_break = 1;
               break;
