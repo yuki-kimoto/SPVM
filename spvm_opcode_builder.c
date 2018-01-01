@@ -1752,7 +1752,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = opcode_array->length - goto_last_opcode_index;
                   
-                  SPVM_OPCODE* opcode_goto = (((SPVM_OPCODE*)opcode_array->values) + goto_last_opcode_index);
+                  SPVM_OPCODE* opcode_goto = (opcode_array->values + goto_last_opcode_index);
                   opcode_goto->operand0 = goto_last_offset;
                 }
                 
@@ -1862,7 +1862,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = opcode_array->length - opcode_index;
                   
                   // Set jump offset
-                  SPVM_OPCODE* opcode_goto = (((SPVM_OPCODE*)opcode_array->values) + opcode_index);
+                  SPVM_OPCODE* opcode_goto = (opcode_array->values + opcode_index);
                   opcode_goto->operand0 = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
@@ -1876,7 +1876,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = opcode_array->length - opcode_index;
                   
                   // Set jump offset
-                  SPVM_OPCODE* opcode_goto = (((SPVM_OPCODE*)opcode_array->values) + opcode_index);
+                  SPVM_OPCODE* opcode_goto = (opcode_array->values + opcode_index);
                   opcode_goto->operand0 = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
@@ -1889,7 +1889,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Last offset
                     int32_t goto_next_offset = opcode_array->length - goto_next_opcode_index;
                     
-                    SPVM_OPCODE* opcode_goto_next = (((SPVM_OPCODE*)opcode_array->values) + goto_next_opcode_index);
+                    SPVM_OPCODE* opcode_goto_next = (opcode_array->values + goto_next_opcode_index);
                     opcode_goto_next->operand0 = goto_next_offset;
                   }
                 }
@@ -1900,7 +1900,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Jump offset
                   int32_t goto_loop_start_offset = opcode_array->length - goto_loop_start_opcode_index;
                   
-                  SPVM_OPCODE* opcode_goto_loop_start = (((SPVM_OPCODE*)opcode_array->values) + goto_loop_start_opcode_index);
+                  SPVM_OPCODE* opcode_goto_loop_start = (opcode_array->values + goto_loop_start_opcode_index);
                   opcode_goto_loop_start->operand0 = goto_loop_start_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
@@ -1916,7 +1916,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t jump_offset_abs = opcode_array->length - sub->opcode_base;
                   
-                  SPVM_OPCODE* opcode_jump_offset_abs = (((SPVM_OPCODE*)opcode_array->values) + opcode_index);
+                  SPVM_OPCODE* opcode_jump_offset_abs = (opcode_array->values + opcode_index);
                   opcode_jump_offset_abs->operand0 = jump_offset_abs;
                 }
                 break;
@@ -1932,7 +1932,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = opcode_array->length - goto_last_opcode_index;
                   
-                  SPVM_OPCODE* opcode_goto_last = (((SPVM_OPCODE*)opcode_array->values) + goto_last_opcode_index);
+                  SPVM_OPCODE* opcode_goto_last = (opcode_array->values + goto_last_opcode_index);
                   opcode_goto_last->operand0 = goto_last_offset;
                 }
                 
