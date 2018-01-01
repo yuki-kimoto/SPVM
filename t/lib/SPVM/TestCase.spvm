@@ -1241,7 +1241,7 @@ package TestCase {
   
   # Switch - nest
   sub switch_nest() : int {
-    my $success1;
+    my $success1 : int;
     switch (3) {
       case 1:
         $success1 = 0;
@@ -1273,7 +1273,7 @@ package TestCase {
   
   # Switch - lookup switch
   sub switch_lookup_switch() : int {
-    my $success1;
+    my $success1 : int;
     switch (1) {
       case 1:
         $success1 = 1;
@@ -1286,7 +1286,7 @@ package TestCase {
         last;
       default:
     }
-    my $success2;
+    my $success2 : int;
     switch (3) {
       case 1:
         $success2 = 0;
@@ -1299,7 +1299,7 @@ package TestCase {
         last;
       default:
     }
-    my $success3;
+    my $success3 : int;
     switch (10000) {
       case 1:
         $success3 = 0;
@@ -1312,7 +1312,7 @@ package TestCase {
         last;
       default:
     }
-    my $success4;
+    my $success4 : int;
     switch (2) {
       case 1:
         last;
@@ -1338,7 +1338,7 @@ package TestCase {
   
   # Switch - table switch
   sub switch_table_switch() : int {
-    my $success1;
+    my $success1 : int;
     
     switch(3) {
       case 3:
@@ -1353,7 +1353,7 @@ package TestCase {
       default:
     }
 
-    my $success2;
+    my $success2 : int;
     switch(4) {
       case 3:
         $success2 = 0;
@@ -1366,7 +1366,7 @@ package TestCase {
         last;
       default:
     }
-    my $success3;
+    my $success3 : int;
     switch(10) {
       case 3:
         $success3 = 0;
