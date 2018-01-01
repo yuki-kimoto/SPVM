@@ -2086,6 +2086,141 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       SPVM_STRING_BUFFER_add(string_buffer, "\n");
     }
   }
+
+  SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
-  // warn("%s", string_buffer->buffer);
+  // Define call_sub
+  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE SPVM_JITCODE_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE return_value;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  switch(sub_id) {\n");
+  {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < subs_length; sub_index++) {
+      int32_t sub_id = constant_pool[subs_base + sub_index];
+      
+      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+      int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
+      int32_t sub_abs_name_length = constant_pool[sub_abs_name_id];
+      
+      // Subroutine name
+      const char* sub_abs_name = (char*)&constant_pool[sub_abs_name_id + 1];
+
+      // Arguments length
+      int32_t args_length = constant_pool_sub->args_length;
+      
+      // Arguments type ids base
+      int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
+      
+      // Return type code
+      int32_t return_type_id = constant_pool_sub->return_type_id;
+      SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
+      int32_t return_type_code = return_type->code;
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "    case ");
+      SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
+      SPVM_STRING_BUFFER_add(string_buffer, ":\n");
+
+      SPVM_STRING_BUFFER_add(string_buffer, "      ");
+
+      // Return type
+      switch (return_type->code) {
+        case SPVM_TYPE_C_CODE_VOID:
+          break;
+        case SPVM_TYPE_C_CODE_BYTE:
+          SPVM_STRING_BUFFER_add(string_buffer, "return_value.byte_value = ");
+          break;
+        case SPVM_TYPE_C_CODE_SHORT:
+          SPVM_STRING_BUFFER_add(string_buffer, "return_value.short_value = ");
+          break;
+        case SPVM_TYPE_C_CODE_INT:
+          SPVM_STRING_BUFFER_add(string_buffer, "return_value.int_value = ");
+          break;
+        case SPVM_TYPE_C_CODE_LONG:
+          SPVM_STRING_BUFFER_add(string_buffer, "return_value.long_value = ");
+          break;
+        case SPVM_TYPE_C_CODE_FLOAT:
+          SPVM_STRING_BUFFER_add(string_buffer, "return_value.float_value = ");
+          break;
+        case SPVM_TYPE_C_CODE_DOUBLE:
+          SPVM_STRING_BUFFER_add(string_buffer, "return_value.double_value = ");
+          break;
+        default:
+          SPVM_STRING_BUFFER_add(string_buffer, "return_value.object_value = ");
+      }
+
+      // Subroutine name. Replace : to _
+      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_abs_name);
+      {
+        int32_t index = string_buffer->length - strlen(sub_abs_name);
+        
+        while (index < string_buffer->length) {
+          if (string_buffer->buffer[index] == ':') {
+            string_buffer->buffer[index] = '_';
+          }
+          index++;
+        }
+      }
+
+      // Arguments
+      SPVM_STRING_BUFFER_add(string_buffer, "(");
+      {
+        int32_t arg_index;
+        for (arg_index = 0; arg_index < args_length; arg_index++) {
+          int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
+
+          // Argument type code
+          SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
+          int32_t arg_type_code = constant_pool_arg_type->code;
+
+          SPVM_STRING_BUFFER_add(string_buffer, "args[");
+          SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+          SPVM_STRING_BUFFER_add(string_buffer, "]");
+          
+          switch (arg_type_code) {
+            case SPVM_TYPE_C_CODE_BYTE : {
+              SPVM_STRING_BUFFER_add(string_buffer, ".byte_value");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_SHORT : {
+              SPVM_STRING_BUFFER_add(string_buffer, ".short_value");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_INT : {
+              SPVM_STRING_BUFFER_add(string_buffer, ".int_value");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_LONG : {
+              SPVM_STRING_BUFFER_add(string_buffer, ".long_value");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_FLOAT : {
+              SPVM_STRING_BUFFER_add(string_buffer, ".float_value");
+              break;
+            }
+            case  SPVM_TYPE_C_CODE_DOUBLE : {
+              SPVM_STRING_BUFFER_add(string_buffer, ".double_value");
+              break;
+            }
+            default : {
+              SPVM_STRING_BUFFER_add(string_buffer, ".object_value");
+            }
+          }
+          if (arg_index != args_length - 1) {
+            SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          }
+        }
+      }
+      SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      break;\n");
+    }
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "    default:\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      fprintf(stderr, \"Unknown subroutine(SPVM_JITCODE_call_sub())\");\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      abort();\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  return return_value;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "}\n");
+  
+  warn("%s", string_buffer->buffer);
 }
