@@ -256,7 +256,7 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
       // Operand
       switch (opcode.code) {
         case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
-          printf("\n");
+          printf(" ");
           
           printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
           
@@ -280,14 +280,14 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
             for (j = 0; j < offset_opcode_length; j++) {
               i++;
               SPVM_OPCODE opcode = opcode_array->values[i];
-              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.code, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
+              printf("        [%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.code, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
             }
           }
           
           break;
         }
         case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
-          printf("\n");
+          printf(" ");
           
           printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
           
@@ -307,7 +307,7 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
             for (j = 0; j < offset_opcode_length; j++) {
               i++;
               SPVM_OPCODE opcode = opcode_array->values[i];
-              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.code, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
+              printf("        [%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.code, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
             }
           }
           
