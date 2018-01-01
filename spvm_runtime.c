@@ -1867,10 +1867,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // 25 match3 offset3 // max
         
         // default offset
-        int32_t default_offset = intcodes[intcode_index + 2];
+        int32_t default_offset = opcode->operand1;
         
         // npare
-        int32_t pair_count = intcodes[intcode_index + 3];
+        int32_t pair_count = opcode->operand2;
         
         // min
         int32_t min = intcodes[intcode_index + SPVM_OPCODE_C_UNIT];
