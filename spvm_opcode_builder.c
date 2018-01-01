@@ -1600,50 +1600,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  SPVM_OPCODE opcode_switch_info;
-                  memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
-
-                  opcode_switch_info.code = SPVM_OPCODE_C_CODE_TABLE_SWITCH;
-
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
-                  
-                  opcode_switch_info.operand0 = index_in;
-                  
-                  // Default
-                  opcode_switch_info.operand1 = 0;
-                  
-                  // Minimal
-                  opcode_switch_info.operand2 = switch_info->min;
-                  
-                  // Max
-                  opcode_switch_info.operand3 = switch_info->max;
-                  
-                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
-
-                  // Switch opcode index
-                  int32_t switch_opcode_index = opcode_array->length - 1;
-                  switch_info->opcode_index = switch_opcode_index;
-                  SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
-                  
-                  // Jump offset length
-                  int32_t jump_offset_length = switch_info->max - switch_info->min + 1;
-                  int32_t jump_offset_opcode_length;
-                  if (jump_offset_length % SPVM_OPCODE_C_UNIT == 0) {
-                    jump_offset_opcode_length = jump_offset_length / SPVM_OPCODE_C_UNIT;
-                  }
-                  else {
-                    jump_offset_opcode_length = (jump_offset_length / SPVM_OPCODE_C_UNIT) + 1;
-                  }
-                  
-                  // Offsets
-                  {
-                    int32_t i;
-                    for (i = 0; i < jump_offset_opcode_length; i++) {
-                      SPVM_OPCODE opcode_jump_offset;
-                      memset(&opcode_jump_offset, 0, sizeof(SPVM_OPCODE));
-                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_jump_offset);
-                    }
-                  }
+                  // TABLE_SWITCH is no longer used
+                  assert(0);
                 }
                 // lookupswitch
                 else if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH) {
@@ -1704,46 +1662,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  // Default offset
-                  int32_t default_offset;
-                  if (!default_opcode_index) {
-                    default_offset = opcode_array->length - switch_opcode_index;
-                  }
-                  else {
-                    default_offset = default_opcode_index - switch_opcode_index;
-                  }
-                  ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand1 = default_offset;
-                  
-                  // min
-                  int32_t min = ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand2;
-                  
-                  // max
-                  int32_t max = ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand3;
-                  
-                  int32_t length = (int32_t)(max - min + 1);
-                  
-                  int32_t case_pos = 0;
-                  {
-                    int32_t i;
-                    for (i = 0; i < length; i++) {
-                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(switch_info->op_cases, case_pos);
-                      SPVM_OP* op_constant = op_case->first;
-                      if (op_constant->uv.constant->value.int_value - min == i) {
-                        // Case
-                        int32_t* case_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_opcode_indexes, case_pos);
-                        int32_t case_opcode_index = *case_opcode_index_ptr;
-                        int32_t case_offset = case_opcode_index - switch_opcode_index;
-                        
-                        *((int32_t*)((SPVM_OPCODE*)(opcode_array->values) + switch_opcode_index + 1) + i) = case_offset;
-                        
-                        case_pos++;
-                      }
-                      else {
-                        // Default
-                        *((int32_t*)((SPVM_OPCODE*)(opcode_array->values) + switch_opcode_index + 1) + i) = default_offset;
-                      }
-                    }
-                  }
+                  // TABLE_SWITCH is no longer used
+                  assert(0);
                 }
                 // lookupswitch
                 else if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH) {

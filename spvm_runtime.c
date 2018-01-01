@@ -1853,34 +1853,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         goto label_SPVM_OPCODE_C_CODE_RETURN;
       }
-      case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
-        
+      case SPVM_OPCODE_C_CODE_TABLE_SWITCH:
         // TABLE_SWITCH is no longer used
         assert(0);
-        
-        int32_t* intcodes = (int32_t*)opcodes;
-        int32_t intcode_index = opcode_index * SPVM_OPCODE_C_UNIT;
-        
-        // default offset
-        int32_t default_offset = intcodes[intcode_index + 2];
-        
-        // min
-        int32_t min = intcodes[intcode_index + 3];
-        
-        // max
-        int32_t max = intcodes[intcode_index + 4];
-        
-        if (vars[opcode->operand0].int_value >= min && vars[opcode->operand0].int_value <= max) {
-          int32_t branch_offset
-            = *(int32_t*)((&intcodes[intcode_index + SPVM_OPCODE_C_UNIT]) + (vars[opcode->operand0].int_value - min));
-          opcode_index += branch_offset;
-        }
-        else {
-          opcode_index += default_offset;
-        }
-        
-        continue;
-      }
       case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
         int32_t* intcodes = (int32_t*)opcodes;
         int32_t intcode_index = opcode_index * SPVM_OPCODE_C_UNIT;
