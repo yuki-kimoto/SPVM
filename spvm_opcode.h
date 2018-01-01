@@ -354,6 +354,10 @@ struct SPVM_opcode {
   int32_t operand6;
 };
 
+enum {
+  SPVM_OPCODE_C_UNIT = sizeof(SPVM_OPCODE) / sizeof(int32_t)
+};
+
 SPVM_OPCODE* SPVM_OPCODE_new();
 
 #endif

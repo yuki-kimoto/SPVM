@@ -92,8 +92,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   SPVM_OPCODE_ARRAY* opcode_array = compiler->opcode_array;
   
   {
-    int32_t OPCODE_UNIT = 8;
-    
     int32_t sub_pos;
     for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
       SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_pos);
@@ -1630,11 +1628,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Jump offset length
                   int32_t jump_offset_length = switch_info->max - switch_info->min + 1;
                   int32_t jump_offset_opcode_length;
-                  if (jump_offset_length % OPCODE_UNIT == 0) {
-                    jump_offset_opcode_length = jump_offset_length / OPCODE_UNIT;
+                  if (jump_offset_length % SPVM_OPCODE_C_UNIT == 0) {
+                    jump_offset_opcode_length = jump_offset_length / SPVM_OPCODE_C_UNIT;
                   }
                   else {
-                    jump_offset_opcode_length = (jump_offset_length / OPCODE_UNIT) + 1;
+                    jump_offset_opcode_length = (jump_offset_length / SPVM_OPCODE_C_UNIT) + 1;
                   }
                   
                   // Offsets
@@ -1676,11 +1674,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Jump offset length
                   int32_t jump_offset_length = size_of_match_offset_pairs;
                   int32_t jump_offset_opcode_length;
-                  if (jump_offset_length % OPCODE_UNIT == 0) {
-                    jump_offset_opcode_length = jump_offset_length / OPCODE_UNIT;
+                  if (jump_offset_length % SPVM_OPCODE_C_UNIT == 0) {
+                    jump_offset_opcode_length = jump_offset_length / SPVM_OPCODE_C_UNIT;
                   }
                   else {
-                    jump_offset_opcode_length = (jump_offset_length / OPCODE_UNIT) + 1;
+                    jump_offset_opcode_length = (jump_offset_length / SPVM_OPCODE_C_UNIT) + 1;
                   }
                   
                   // Match-Offsets
