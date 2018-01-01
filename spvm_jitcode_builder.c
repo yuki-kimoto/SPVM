@@ -655,7 +655,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         int32_t opcode_length = constant_pool_sub->opcode_length;
         int32_t opcode_index = opcode_base;
         
-        int32_t loop_break = 0;
         SPVM_OPCODE* opcode;
         while (opcode_index < opcode_base + opcode_length) {
 
@@ -1952,12 +1951,43 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             case SPVM_OPCODE_C_CODE_TABLE_SWITCH:
               // TABLE_SWITCH is no longer used
               assert(0);
-            case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH:
-              loop_break = 1;
-              break;
-          }
-          if (loop_break) {
-            break;
+            case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
+              // 1  default
+              // 5  npare
+              // 9  match1 offset1 // min
+              // 17 match2 offset2
+              // 25 match3 offset3 // max
+              
+              // default offset
+              int32_t default_offset = opcode->operand1;
+              
+              // case count
+              int32_t case_count = opcode->operand2;
+              
+              SPVM_STRING_BUFFER_add(string_buffer, "  switch(var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+              {
+                int32_t case_index;
+                for (case_index = 0; case_index < case_count; case_index++) {
+                  int32_t match = (opcode + 1 + case_index)->operand0;
+                  int32_t branch_offset = (opcode + 1 + case_index)->operand1;
+                  
+                  SPVM_STRING_BUFFER_add(string_buffer, "    case ");
+                  SPVM_STRING_BUFFER_add_int(string_buffer, match);
+                  SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
+                  SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index + branch_offset);
+                  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+                }
+              }
+              SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index + default_offset);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+
+              opcode_index += (1 + case_count);
+              continue;
+            }
           }
           opcode_index++;
         }
