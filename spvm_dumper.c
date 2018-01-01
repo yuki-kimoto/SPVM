@@ -268,11 +268,11 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
           int32_t length = max - min + 1;
           
           int32_t offset_opcode_length;
-          if (length % 8 == 0) {
-            offset_opcode_length = length / 8;
+          if (length % SPVM_OPCODE_C_UNIT == 0) {
+            offset_opcode_length = length / SPVM_OPCODE_C_UNIT;
           }
           else {
-            offset_opcode_length = (length / 8) + 1;
+            offset_opcode_length = (length / SPVM_OPCODE_C_UNIT) + 1;
           }
           
           {
@@ -294,11 +294,11 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
           int32_t count = opcode.operand2;
           
           int32_t offset_opcode_length;
-          if (count % 8 == 0) {
-            offset_opcode_length = (count * 2) / 8;
+          if (count % SPVM_OPCODE_C_UNIT == 0) {
+            offset_opcode_length = (count * 2) / SPVM_OPCODE_C_UNIT;
           }
           else {
-            offset_opcode_length = ((count * 2) / 8) + 1;
+            offset_opcode_length = ((count * 2) / SPVM_OPCODE_C_UNIT) + 1;
           }
           
           // Match - offset
