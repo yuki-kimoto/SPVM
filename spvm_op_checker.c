@@ -246,6 +246,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       int32_t loop_block_stack_length = 0;
       
       SPVM_DYNAMIC_ARRAY* op_mys = sub->op_mys;
+      SPVM_DYNAMIC_ARRAY* op_my_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // Switch stack
       SPVM_DYNAMIC_ARRAY* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -335,7 +336,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Start scope
             case SPVM_OP_C_CODE_BLOCK: {
               
-              int32_t block_my_base = sub_check_info->op_my_stack->length;
+              int32_t block_my_base = op_my_stack->length;
               int32_t* block_my_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *block_my_base_ptr = block_my_base;
               SPVM_DYNAMIC_ARRAY_push(sub_check_info->block_my_base_stack, block_my_base_ptr);
@@ -1402,12 +1403,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   int32_t* block_my_base_ptr = SPVM_DYNAMIC_ARRAY_pop(sub_check_info->block_my_base_stack);
                   int32_t block_my_base = *block_my_base_ptr;
                     
-                  int32_t my_stack_pop_count = sub_check_info->op_my_stack->length - block_my_base;
+                  int32_t my_stack_pop_count = op_my_stack->length - block_my_base;
                   
                   {
                     int32_t i;
                     for (i = 0; i < my_stack_pop_count; i++) {
-                      SPVM_DYNAMIC_ARRAY_pop(sub_check_info->op_my_stack);
+                      SPVM_DYNAMIC_ARRAY_pop(op_my_stack);
                     }
                   }
 
@@ -1431,8 +1432,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* found_op_my = NULL;
                   {
                     int32_t i;
-                    for (i = sub_check_info->op_my_stack->length - 1; i >= 0; i--) {
-                      SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_stack, i);
+                    for (i = op_my_stack->length - 1; i >= 0; i--) {
+                      SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(op_my_stack, i);
                       SPVM_MY* my = op_my->uv.my;
                       if (strcmp(var->op_name->uv.name, my->op_name->uv.name) == 0) {
                         found_op_my = op_my;
@@ -1468,8 +1469,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   {
                     int32_t i;
-                    for (i = block_my_base; i < sub_check_info->op_my_stack->length; i++) {
-                      SPVM_OP* op_bef_my = SPVM_DYNAMIC_ARRAY_fetch(sub_check_info->op_my_stack, i);
+                    for (i = block_my_base; i < op_my_stack->length; i++) {
+                      SPVM_OP* op_bef_my = SPVM_DYNAMIC_ARRAY_fetch(op_my_stack, i);
                       SPVM_MY* bef_my = op_bef_my->uv.my;
                       if (strcmp(my->op_name->uv.name, bef_my->op_name->uv.name) == 0) {
                         found = 1;
@@ -1486,7 +1487,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   else {
                     my->index = op_mys->length;
                     SPVM_DYNAMIC_ARRAY_push(op_mys, op_cur);
-                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_stack, op_cur);
+                    SPVM_DYNAMIC_ARRAY_push(op_my_stack, op_cur);
                   }
                   
                   break;
