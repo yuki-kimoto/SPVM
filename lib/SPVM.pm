@@ -176,6 +176,13 @@ sub bind_native_subs {
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
+  my $compile_success = compile_spvm();
+  unless ($compile_success) {
+    croak("SPVM compile error");
+  }
+}
+
+sub compile_spvm {
   require XSLoader;
   XSLoader::load('SPVM', $VERSION);
   
@@ -219,18 +226,15 @@ CHECK {
 
     # Build JIT code
     build_jitcode();
-    
-    # Free compiler
-    free_compiler();
 
     # Build SPVM subroutines
     build_spvm_subs();
   }
-  else {
-    # Free compiler
-    free_compiler();
-    croak("SPVM compile error");
-  }
+  
+  # Free compiler
+  free_compiler();
+  
+  return $compile_success;
 }
 
 sub new_byte_array_len {
