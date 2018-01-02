@@ -31,7 +31,7 @@
 #include "spvm_package_var.h"
 #include "spvm_undef.h"
 
-SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_SUB_CHECK_INFO* sub_check_info, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_DYNAMIC_ARRAY* op_mys, const char* file, int32_t line) {
 
   // Create temporary variable
   // my
@@ -39,7 +39,7 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
 
   // Temparary variable name
   char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
-  sprintf(name, "@tmp%d", sub_check_info->op_mys->length);
+  sprintf(name, "@tmp%d", op_mys->length);
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
   op_name->uv.name = name;
   my->op_name = op_name;
@@ -49,14 +49,14 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   my->op_type->uv.type = type;
 
   // Index
-  my->index = sub_check_info->op_mys->length;
+  my->index = op_mys->length;
 
   // op my
   SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, file, line);
   op_my->uv.my = my;
 
   // Add my var
-  SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_mys, op_my);
+  SPVM_DYNAMIC_ARRAY_push(op_mys, op_my);
   
   SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my(compiler, op_my);
   
@@ -244,6 +244,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       
       int32_t eval_block_stack_length = 0;
       int32_t loop_block_stack_length = 0;
+      
+      SPVM_DYNAMIC_ARRAY* op_mys = sub->op_mys;
       
       // Switch stack
       SPVM_DYNAMIC_ARRAY* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -1482,8 +1484,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   else {
-                    my->index = sub_check_info->op_mys->length;
-                    SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_mys, op_cur);
+                    my->index = op_mys->length;
+                    SPVM_DYNAMIC_ARRAY_push(op_mys, op_cur);
                     SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_stack, op_cur);
                   }
                   
@@ -1696,8 +1698,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
         }
-        // Set my var information
-        sub->op_mys = sub_check_info->op_mys;
       }
 
       if (!sub->is_native) {
@@ -1782,7 +1782,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
               // Create temporary variable
               if (create_tmp_var) {
-                SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, tmp_var_type, sub_check_info, op_cur->file, op_cur->line);
+                SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, tmp_var_type, op_mys, op_cur->file, op_cur->line);
                 if (op_var_tmp == NULL) {
                   return;
                 }
