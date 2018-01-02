@@ -141,7 +141,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     alignment = sizeof(void*);
   }
   else {
-    sizeof(int64_t);
+    alignment = sizeof(int64_t);
   }
   
   {
@@ -396,8 +396,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                   }
                   
-                  double range = (double) max - (double) min;
-                  
+                  // double range = (double) max - (double) min;
                   // int32_t code;
                   // if (4.0 + range <= (3.0 + 2.0 * (double) length) * 1.5) {
                   //   code = SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH;

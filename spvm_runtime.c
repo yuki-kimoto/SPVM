@@ -189,8 +189,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   register int32_t opcode_index = sub_opcode_base;
   
-  int32_t finish = 0;
-  
   while (1) {
     SPVM_OPCODE* opcode = &(opcodes[opcode_index]);
     
@@ -1911,77 +1909,78 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     opcode_index++;
   }
 
-  SPVM_API_OBJECT* exception_save = NULL;
+  label_SPVM_OPCODE_C_CODE_RETURN: {
 
-  label_SPVM_OPCODE_C_CODE_RETURN:
-  
-  // Save exception because destructor maybe remove exception
-  if (throw_exception) {
-    exception_save = api->get_exception(api);
-    SPVM_INLINE_INC_REF_COUNT(exception_save);
-  }
-  
-  // Increment ref count of return value not to release by decrement
-  if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
-    if (return_value.object_value != NULL) {
-      SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
-    }
-  }
+    SPVM_API_OBJECT* exception_save = NULL;
     
-  // Decrement my vars which is arguments - decrement only
-  {
-    int32_t i;
-    for (i = 0; i < sub_object_args_length; i++) {
-      int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-      SPVM_API_OBJECT* object = vars[my_var_index].object_value;
-      
-      if (object != NULL) {
-        SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+    // Save exception because destructor maybe remove exception
+    if (throw_exception) {
+      exception_save = api->get_exception(api);
+      SPVM_INLINE_INC_REF_COUNT(exception_save);
+    }
+    
+    // Increment ref count of return value not to release by decrement
+    if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+      if (return_value.object_value != NULL) {
+        SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
       }
     }
-  }
-  
-  // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
-  {
-    int32_t i;
-    for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
-      int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-      SPVM_API_OBJECT* object = vars[my_var_index].object_value;
       
-      if (object != NULL) {
-        if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
+    // Decrement my vars which is arguments - decrement only
+    {
+      int32_t i;
+      for (i = 0; i < sub_object_args_length; i++) {
+        int32_t my_var_index = constant_pool[sub_object_mys_base + i];
+        SPVM_API_OBJECT* object = vars[my_var_index].object_value;
+        
+        if (object != NULL) {
           SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
         }
-        else {
-          api->dec_ref_count(api, object);
+      }
+    }
+    
+    // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
+    {
+      int32_t i;
+      for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
+        int32_t my_var_index = constant_pool[sub_object_mys_base + i];
+        SPVM_API_OBJECT* object = vars[my_var_index].object_value;
+        
+        if (object != NULL) {
+          if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+          }
+          else {
+            api->dec_ref_count(api, object);
+          }
         }
       }
     }
-  }
-  
-  // Decrement ref count of return value
-  if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
-    if (return_value.object_value != NULL) {
-      SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
+    
+    // Decrement ref count of return value
+    if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+      if (return_value.object_value != NULL) {
+        SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
+      }
     }
-  }
-  
-  // Throw exception
-  if (throw_exception) {
-    if (runtime->debug) {
-      // Exception stack trace
-      SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api, sub_id, exception_save, current_line);
-      api->set_exception(api, exception_stack_trace);
+    
+    // Throw exception
+    if (throw_exception) {
+      if (runtime->debug) {
+        // Exception stack trace
+        SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api, sub_id, exception_save, current_line);
+        api->set_exception(api, exception_stack_trace);
+      }
+      else {
+        api->set_exception(api, exception_save);
+      }
+      SPVM_INLINE_DEC_REF_COUNT_ONLY(exception_save);
     }
+    // No exception
     else {
-      api->set_exception(api, exception_save);
+      SPVM_INLINE_SET_EXCEPTION_NULL();
     }
-    SPVM_INLINE_DEC_REF_COUNT_ONLY(exception_save);
+    
+    return return_value;
   }
-  // No exception
-  else {
-    SPVM_INLINE_SET_EXCEPTION_NULL();
-  }
-  
-  return return_value;
 }

@@ -90,7 +90,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_create_exception_stack_trace,
 };
 
-SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, int32_t sub_id, SPVM_OBJECT* excetpion, int32_t current_line) {
+SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, int32_t sub_id, SPVM_OBJECT* exception, int32_t current_line) {
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
 
@@ -116,7 +116,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, int32_
   const char* at = "() at ";
 
   // Exception
-  SPVM_API_OBJECT* exception = api->get_exception(api);
   char* exception_chars = api->get_string_chars(api, exception);
   int32_t exception_length = api->get_string_length(api, exception);
   

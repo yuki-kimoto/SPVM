@@ -1,4 +1,6 @@
 #include <assert.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "spvm_constant_pool_builder.h"
 #include "spvm_constant_pool.h"
@@ -13,6 +15,7 @@
 #include "spvm_package.h"
 #include "spvm_field.h"
 #include "spvm_sub.h"
+#include "spvm_hash.h"
 
 void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
