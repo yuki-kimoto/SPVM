@@ -203,7 +203,10 @@ CHECK {
   }
   
   # Compile SPVM source code
-  compile();
+  my $compile_success = compile();
+  unless ($compile_success) {
+    croak("SPVM compile error");
+  }
   
   # Bind native subroutines
   bind_native_subs();

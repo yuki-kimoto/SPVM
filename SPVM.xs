@@ -3134,19 +3134,25 @@ compile(...)
     }
   }
   
-  // Compile SPVM
-  SPVM_COMPILER_compile(compiler);
-  if (compiler->error_count > 0) {
-    croak("SPVM compile error %d", compiler->error_count);
-  }
-
   // Set compiler
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
   sv_setsv(get_sv("SPVM::COMPILER", 0), sv_compiler);
+
+  // Compile SPVM
+  SPVM_COMPILER_compile(compiler);
+  SV* sv_compile_success;
+  if (compiler->error_count > 0) {
+    sv_compile_success = sv_2mortal(newSViv(0));
+  }
+  else {
+    sv_compile_success = sv_2mortal(newSViv(1));
+  }
   
-  XSRETURN(0);
+  XPUSHs(sv_compile_success);
+  
+  XSRETURN(1);
 }
 
 SV*
