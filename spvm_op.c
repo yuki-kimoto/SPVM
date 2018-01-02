@@ -2415,6 +2415,17 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
     op_parent = op_assign;
   }
   
+  // Assign left child is var and it has variable declaration, try type inference
+  if (op_assign->first->code == SPVM_OP_C_CODE_VAR) {
+    SPVM_OP* op_var = op_assign->first;
+    if (op_var->first && op_var->first->code == SPVM_OP_C_CODE_MY) {
+      SPVM_OP* op_my = op_var->first;
+      SPVM_MY* my = op_my->uv.my;
+      my->try_type_inference = 1;
+      my->op_term_type_inference = op_assign->last;
+    }
+  }
+  
   return op_parent;
 }
 
