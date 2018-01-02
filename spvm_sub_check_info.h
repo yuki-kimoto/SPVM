@@ -5,9 +5,6 @@
 
 // Field information
 struct SPVM_sub_check_info {
-  // my var informations
-  SPVM_DYNAMIC_ARRAY* op_mys;
-
   // my variable stack
   SPVM_DYNAMIC_ARRAY* op_my_stack;
   

@@ -11,9 +11,6 @@ SPVM_SUB_CHECK_INFO* SPVM_SUB_CHECK_INFO_new(SPVM_COMPILER* compiler) {
 
   SPVM_SUB_CHECK_INFO* sub_check_info = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_SUB_CHECK_INFO));
 
-  // my var informations
-  sub_check_info->op_mys = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  
   // my variable stack
   sub_check_info->op_my_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
