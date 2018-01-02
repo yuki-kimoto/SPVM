@@ -57,7 +57,6 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
 
   // Add my var
   SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_mys, op_my);
-  SPVM_DYNAMIC_ARRAY_push(sub_check_info->op_my_stack, op_my);
   
   SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my(compiler, op_my);
   
