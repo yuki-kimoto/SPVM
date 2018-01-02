@@ -223,11 +223,11 @@ CHECK {
   # Build JIT code
   build_jitcode();
   
-  # Build SPVM subroutines
-  build_spvm_subs();
-  
   # Free compiler
   free_compiler();
+  
+  # Build SPVM subroutines
+  build_spvm_subs();
 }
 
 sub new_byte_array_len {

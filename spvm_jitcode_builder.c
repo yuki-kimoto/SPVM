@@ -5,9 +5,7 @@
 #include <assert.h>
 #include <stddef.h>
 
-#include "spvm_compiler.h"
 #include "spvm_jitcode_builder.h"
-#include "spvm_compiler.h"
 #include "spvm_string_buffer.h"
 #include "spvm_sub.h"
 #include "spvm_op.h"
@@ -46,8 +44,7 @@ void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buf
   }
 }
 
-void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
-  (void)compiler;
+void SPVM_JITCODE_BUILDER_build_jitcode() {
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   
@@ -102,10 +99,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   // Constant pool
-  int32_t* constant_pool = compiler->constant_pool->values;
+  int32_t* constant_pool = runtime->constant_pool;
 
-  int32_t subs_base = compiler->subs_base;
-  int32_t subs_length = compiler->op_subs->length;
+  int32_t subs_base = runtime->subs_base;
+  int32_t subs_length = runtime->subs_length;
 
   // Subroutine Declaration
   {
