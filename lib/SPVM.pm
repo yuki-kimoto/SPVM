@@ -35,14 +35,11 @@ our $COMPILER;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
 our $API;
-our @INLINE_DLL_FILES;
-
-our @PACKAGE_INFOS_INLINE;
 
 sub import {
   my ($class, $package_name) = @_;
   
-  # Add package infomations
+  # Add package informations
   if (defined $package_name) {
     unless ($SPVM::PACKAGE_INFO_SYMTABLE{$package_name}) {
       my ($file, $line) = (caller)[1, 2];
@@ -176,15 +173,18 @@ sub bind_native_subs {
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
-  my $compile_success = compile_spvm();
-  unless ($compile_success) {
-    croak("SPVM compile error");
+  require XSLoader;
+  XSLoader::load('SPVM', $VERSION);
+  
+  unless ($ENV{SPVM_NO_COMPILE}) {
+    my $compile_success = compile_spvm();
+    unless ($compile_success) {
+      croak("SPVM compile error");
+    }
   }
 }
 
 sub compile_spvm {
-  require XSLoader;
-  XSLoader::load('SPVM', $VERSION);
   
   # Load standard library
   my @dll_file_bases = qw(
@@ -211,6 +211,7 @@ sub compile_spvm {
   
   # Compile SPVM source code
   my $compile_success = compile();
+  
   if ($compile_success) {
     # Bind native subroutines
     bind_native_subs();
