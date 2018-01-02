@@ -1473,7 +1473,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
                     call_sub_args_count++;
                     if (call_sub_args_count > sub_args_count) {
-                      SPVM_yyerror_format(compiler, "Too may arguments. sub \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
+                      SPVM_yyerror_format(compiler, "Too many arguments. sub \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
                     }
