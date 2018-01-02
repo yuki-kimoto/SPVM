@@ -1180,6 +1180,10 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
   
   SPVM_CALL_SUB* call_sub = op_call_sub->uv.call_sub;
   
+  if (call_sub->sub) {
+    return;
+  }
+  
   SPVM_OP* found_op_sub;
   
   if (call_sub->code == SPVM_CALL_SUB_C_CODE_METHOD_CALL) {
@@ -1239,7 +1243,13 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
 }
 
 void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field) {
-  
+
+  SPVM_CALL_FIELD* call_field = op_call_field->uv.call_field;
+
+  if (call_field->field) {
+    return;
+  }
+
   SPVM_OP* op_term = op_call_field->first;
   SPVM_OP* op_name = op_call_field->last;
   
