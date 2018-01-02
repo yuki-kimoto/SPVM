@@ -39,7 +39,7 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
 
   // Temparary variable name
   char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
-  sprintf(name, "@tmp%d", sub_check_info->my_tmp_index++);
+  sprintf(name, "@tmp%d", sub_check_info->op_mys->length);
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
   op_name->uv.name = name;
   my->op_name = op_name;
