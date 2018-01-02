@@ -23,9 +23,6 @@ struct SPVM_sub_check_info {
   // Switch information stack
   SPVM_DYNAMIC_ARRAY* op_switch_stack;
 
-  // op count
-  int32_t op_count;
-
   int32_t my_tmp_index;
 };
 

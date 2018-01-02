@@ -320,8 +320,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         SPVM_OP* op_cur = op_base;
         _Bool finish = 0;
         while (op_cur) {
-          sub_check_info->op_count++;
-          
           // [START]Preorder traversal position
           
           switch (op_cur->code) {
