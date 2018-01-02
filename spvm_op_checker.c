@@ -243,7 +243,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_OP* op_package = sub->op_package;
       SPVM_PACKAGE* package = op_package->uv.package;
       
-      int32_t eval_stack_length = 0;
+      int32_t eval_block_stack_length = 0;
       int32_t loop_block_stack_length = 0;
       
       // Destructor must receive own package object
@@ -341,9 +341,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
               else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                 // Eval block max length
-                eval_stack_length++;
-                if (eval_stack_length > sub->eval_stack_max_length) {
-                  sub->eval_stack_max_length = eval_stack_length;
+                eval_block_stack_length++;
+                if (eval_block_stack_length > sub->eval_stack_max_length) {
+                  sub->eval_stack_max_length = eval_block_stack_length;
                 }
               }
               
@@ -1413,7 +1413,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   // Pop try block my variable base
                   else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-                    eval_stack_length--;
+                    eval_block_stack_length--;
                   }
                   
                   break;
