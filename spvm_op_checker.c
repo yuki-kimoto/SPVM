@@ -269,6 +269,49 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
       SPVM_SUB_CHECK_INFO* sub_check_info = SPVM_SUB_CHECK_INFO_new(compiler);
       
+      // Resolve lexical variable names
+      if (!sub->is_native) {
+        // Run OPs
+        SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
+        SPVM_OP* op_cur = op_base;
+        _Bool finish = 0;
+        while (op_cur) {
+          
+          if (op_cur->first) {
+            op_cur = op_cur->first;
+          }
+          else {
+            while (1) {
+              // [START]Postorder traversal position
+              switch (op_cur->code) {
+                case SPVM_OP_C_CODE_VAR:
+                  break;
+              }
+              
+              if (op_cur == op_base) {
+                // Finish
+                finish = 1;
+                
+                break;
+              }
+              
+              // Next sibling
+              if (op_cur->moresib) {
+                op_cur = SPVM_OP_sibling(compiler, op_cur);
+                break;
+              }
+              // Next is parent
+              else {
+                op_cur = op_cur->sibparent;
+              }
+            }
+            if (finish) {
+              break;
+            }
+          }
+        }
+      }
+      
       // Only process normal subroutine
       if (!sub->is_native) {
         
