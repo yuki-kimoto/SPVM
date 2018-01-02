@@ -244,6 +244,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_PACKAGE* package = op_package->uv.package;
       
       int32_t eval_stack_length = 0;
+      int32_t loop_block_stack_length = 0;
       
       // Destructor must receive own package object
       if (sub->is_destructor) {
@@ -336,7 +337,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               SPVM_DYNAMIC_ARRAY_push(sub_check_info->block_my_base_stack, block_my_base_ptr);
               
               if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
-                SPVM_DYNAMIC_ARRAY_push(sub_check_info->loop_block_my_base_stack, block_my_base_ptr);
+                loop_block_stack_length++;
               }
               else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                 // Eval block max length
@@ -359,7 +360,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               // [START]Postorder traversal position
               switch (op_cur->code) {
                 case SPVM_OP_C_CODE_NEXT: {
-                  if (sub_check_info->loop_block_my_base_stack->length == 0) {
+                  if (loop_block_stack_length == 0) {
                     SPVM_yyerror_format(compiler, "next statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -367,7 +368,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_LAST: {
-                  if (sub_check_info->loop_block_my_base_stack->length == 0 && sub_check_info->op_switch_stack->length == 0) {
+                  if (loop_block_stack_length == 0 && sub_check_info->op_switch_stack->length == 0) {
                     SPVM_yyerror_format(compiler, "last statement must be in loop block or switch block at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1408,8 +1409,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                   // Pop loop block my variable base
                   if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
-                    assert(sub_check_info->loop_block_my_base_stack->length > 0);
-                    SPVM_DYNAMIC_ARRAY_pop(sub_check_info->loop_block_my_base_stack);
+                    loop_block_stack_length--;
                   }
                   // Pop try block my variable base
                   else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
