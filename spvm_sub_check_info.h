@@ -14,9 +14,6 @@ struct SPVM_sub_check_info {
   // block my variable base position stack
   SPVM_DYNAMIC_ARRAY* block_my_base_stack;
 
-  // Switch information stack
-  SPVM_DYNAMIC_ARRAY* op_switch_stack;
-
   int32_t my_tmp_index;
 };
 
