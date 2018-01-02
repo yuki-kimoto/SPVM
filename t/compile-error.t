@@ -23,7 +23,18 @@ sub init_spvm {
 
 {
   use SPVM 'TestCase::CompileError::InvalidType';
-  my $success = SPVM::compile_spvm();
-  ok($success == 0);
-  init_spvm();
+  BEGIN {
+    my $success = SPVM::compile_spvm();
+    ok($success == 0);
+    init_spvm();
+  }
+}
+
+{
+  use SPVM 'TestCase::CompileError::InvalidType';
+  BEGIN {
+    my $success = SPVM::compile_spvm();
+    ok($success == 0);
+    init_spvm();
+  }
 }

@@ -32,9 +32,12 @@ use Carp 'confess';
 our $VERSION = '0.0301';
 
 our $COMPILER;
+our $API;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
-our $API;
+
+require XSLoader;
+XSLoader::load('SPVM', $VERSION);
 
 sub import {
   my ($class, $package_name) = @_;
@@ -173,9 +176,6 @@ sub bind_native_subs {
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
-  require XSLoader;
-  XSLoader::load('SPVM', $VERSION);
-  
   unless ($ENV{SPVM_NO_COMPILE}) {
     my $compile_success = compile_spvm();
     unless ($compile_success) {
