@@ -26,7 +26,6 @@
 #include "spvm_type.h"
 #include "spvm_switch_info.h"
 #include "spvm_limit.h"
-#include "spvm_sub_check_info.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 #include "spvm_undef.h"
@@ -247,6 +246,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       
       SPVM_DYNAMIC_ARRAY* op_mys = sub->op_mys;
       SPVM_DYNAMIC_ARRAY* op_my_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_DYNAMIC_ARRAY* block_my_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // Switch stack
       SPVM_DYNAMIC_ARRAY* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -271,9 +271,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_yyerror_format(compiler, "DESTROY argument type must be %s\n", package->op_name->uv.name, op_sub->file, op_sub->line);
         }
       }
-
-        
-      SPVM_SUB_CHECK_INFO* sub_check_info = SPVM_SUB_CHECK_INFO_new(compiler);
       
       // Resolve lexical variable names
       if (!sub->is_native) {
@@ -339,7 +336,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               int32_t block_my_base = op_my_stack->length;
               int32_t* block_my_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *block_my_base_ptr = block_my_base;
-              SPVM_DYNAMIC_ARRAY_push(sub_check_info->block_my_base_stack, block_my_base_ptr);
+              SPVM_DYNAMIC_ARRAY_push(block_my_base_stack, block_my_base_ptr);
               
               if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
                 loop_block_stack_length++;
@@ -1399,8 +1396,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 // End of scope
                 case SPVM_OP_C_CODE_BLOCK: {
                   // Pop block my variable base
-                  assert(sub_check_info->block_my_base_stack->length > 0);
-                  int32_t* block_my_base_ptr = SPVM_DYNAMIC_ARRAY_pop(sub_check_info->block_my_base_stack);
+                  assert(block_my_base_stack->length > 0);
+                  int32_t* block_my_base_ptr = SPVM_DYNAMIC_ARRAY_pop(block_my_base_stack);
                   int32_t block_my_base = *block_my_base_ptr;
                     
                   int32_t my_stack_pop_count = op_my_stack->length - block_my_base;
@@ -1461,8 +1458,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   _Bool found = 0;
                   
                   int32_t* block_my_base_ptr = SPVM_DYNAMIC_ARRAY_fetch(
-                    sub_check_info->block_my_base_stack,
-                    sub_check_info->block_my_base_stack->length - 1
+                    block_my_base_stack,
+                    block_my_base_stack->length - 1
                   );
                   
                   int32_t block_my_base = *block_my_base_ptr;
