@@ -24,13 +24,14 @@
 #include "spvm_constant_pool_type.h"
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
+#include "spvm_runtime_api.h"
 
 void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buffer, int32_t sub_opcode_base, int32_t* eval_stack, int32_t* eval_stack_top) {
   
   // Catch exception
-  if (eval_stack_top > -1) {
+  if (*eval_stack_top > -1) {
     int32_t jump_offset_abs = eval_stack[*eval_stack_top];
-    *eval_stack_top--;
+    (*eval_stack_top)--;
     int32_t jump_line = sub_opcode_base + jump_offset_abs;
     
     SPVM_STRING_BUFFER_add(string_buffer, "      goto L");
@@ -114,7 +115,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       
       SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
       int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
-      int32_t sub_abs_name_length = constant_pool[sub_abs_name_id];
       
       // Subroutine name
       const char* sub_abs_name = (char*)&constant_pool[sub_abs_name_id + 1];
@@ -128,13 +128,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       // Return type code
       int32_t return_type_id = constant_pool_sub->return_type_id;
       SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
-      int32_t return_type_code = return_type->code;
-
-      // Mys length
-      int32_t mys_length = constant_pool_sub->mys_length;
-
-      // My type ids base
-      int32_t my_type_ids_base = constant_pool_sub->my_type_ids_base;
 
       // Return type
       switch (return_type->code) {
@@ -237,7 +230,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       
       SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
       int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
-      int32_t sub_abs_name_length = constant_pool[sub_abs_name_id];
       
       // Subroutine name
       const char* sub_abs_name = (char*)&constant_pool[sub_abs_name_id + 1];
@@ -253,9 +245,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
 
       // Subroutine object args length
       int32_t sub_object_args_length = constant_pool_sub->object_args_length;
-
-      // Subroutine object args length
-      int32_t sub_object_args_base = constant_pool_sub->object_args_base;
 
       // Subroutine object my base index
       int32_t sub_object_mys_base = constant_pool_sub->object_mys_base;
@@ -655,7 +644,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
         int32_t opcode_length = constant_pool_sub->opcode_length;
         int32_t opcode_index = opcode_base;
         
-        SPVM_OPCODE* opcode;
+        SPVM_OPCODE* opcode = NULL;
         while (opcode_index < opcode_base + opcode_length) {
 
           // Line label
@@ -1603,13 +1592,18 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               break;
             }
             case SPVM_OPCODE_C_CODE_WEAKEN_FIELD_OBJECT: {
-              int32_t field_id = opcode->operand1;
-              
               SPVM_STRING_BUFFER_add(string_buffer, "  // WEAKEN_FIELD_OBJECT\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  api->weaken_object_field(api, object, field_id);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  if (SPVM_INLINE_GET_EXCEPTION()) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_id = ");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    api->weaken_object_field(api, object, field_id);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_INLINE_GET_EXCEPTION()) {\n");
               SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top);
+              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               break;
             }
@@ -1750,7 +1744,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               
               SPVM_API_VALUE* package_vars = runtime->package_vars;
               int32_t package_var_id = opcode->operand1;
-              SPVM_API_VALUE** package_var_address = &package_vars[package_var_id];
+              SPVM_API_VALUE** package_var_address = (SPVM_API_VALUE**)&package_vars[package_var_id];
               
               SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_PACKAGE_VAR\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -1797,7 +1791,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               
               SPVM_API_VALUE* package_vars = runtime->package_vars;
               int32_t package_var_id = opcode->operand0;
-              SPVM_API_VALUE** package_var_address = &package_vars[package_var_id];
+              SPVM_API_VALUE** package_var_address = (SPVM_API_VALUE**)&package_vars[package_var_id];
               
               SPVM_STRING_BUFFER_add(string_buffer, "  // STORE_PACKAGE_VAR\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -1818,7 +1812,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
             case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
               int32_t package_var_id = opcode->operand0;
               SPVM_API_VALUE* package_vars = runtime->package_vars;
-              SPVM_API_OBJECT** package_var_address = &package_vars[package_var_id];
+              SPVM_API_VALUE** package_var_address = (SPVM_API_VALUE**)&package_vars[package_var_id];
               
               SPVM_STRING_BUFFER_add(string_buffer, "  // STORE_PACKAGE_VAR_OBJECT\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -1867,15 +1861,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               // Constant pool sub
               SPVM_CONSTANT_POOL_SUB* constant_pool_sub_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
               
-              // Call subroutine return type id
-              int32_t call_sub_return_type_id = constant_pool_sub_call_sub->return_type_id;
-              
-              // Constant pool type
-              SPVM_CONSTANT_POOL_TYPE* call_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_return_type_id];
-              
-              // Return type code
-              int32_t call_sub_return_type_code = call_sub_return_type->code;
-              
               // Subroutine argument length
               int32_t call_sub_args_length = constant_pool_sub_call_sub->args_length;
               
@@ -1883,7 +1868,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
               int32_t call_sub_is_void = constant_pool_sub_call_sub->is_void;
 
               int32_t call_sub_abs_name_id = constant_pool_sub_call_sub->abs_name_id;
-              int32_t call_sub_abs_name_length = constant_pool[call_sub_abs_name_id];
               
               // Subroutine name
               const char* call_sub_abs_name = (char*)&constant_pool[call_sub_abs_name_id + 1];
@@ -2100,7 +2084,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       
       SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
       int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
-      int32_t sub_abs_name_length = constant_pool[sub_abs_name_id];
       
       // Subroutine name
       const char* sub_abs_name = (char*)&constant_pool[sub_abs_name_id + 1];
@@ -2114,7 +2097,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
       // Return type code
       int32_t return_type_id = constant_pool_sub->return_type_id;
       SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
-      int32_t return_type_code = return_type->code;
       
       SPVM_STRING_BUFFER_add(string_buffer, "    case ");
       SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
@@ -2222,5 +2204,5 @@ void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler) {
   SPVM_STRING_BUFFER_add(string_buffer, "  return return_value;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "}\n");
   
-  warn("%s", string_buffer->buffer);
+  // warn("%s", string_buffer->buffer);
 }
