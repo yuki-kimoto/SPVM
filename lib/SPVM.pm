@@ -204,30 +204,33 @@ CHECK {
   
   # Compile SPVM source code
   my $compile_success = compile();
-  unless ($compile_success) {
+  if ($compile_success) {
+    # Bind native subroutines
+    bind_native_subs();
+    
+    # Build bytecode
+    build_constant_pool();
+    
+    # Build opcode
+    build_opcode();
+
+    # Build run-time
+    build_runtime();
+
+    # Build JIT code
+    build_jitcode();
+    
+    # Free compiler
+    free_compiler();
+
+    # Build SPVM subroutines
+    build_spvm_subs();
+  }
+  else {
+    # Free compiler
+    free_compiler();
     croak("SPVM compile error");
   }
-  
-  # Bind native subroutines
-  bind_native_subs();
-  
-  # Build bytecode
-  build_constant_pool();
-  
-  # Build opcode
-  build_opcode();
-
-  # Build run-time
-  build_runtime();
-
-  # Build JIT code
-  build_jitcode();
-  
-  # Free compiler
-  free_compiler();
-  
-  # Build SPVM subroutines
-  build_spvm_subs();
 }
 
 sub new_byte_array_len {
