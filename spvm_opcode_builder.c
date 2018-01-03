@@ -1445,10 +1445,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                 }
-                else if (op_cur->first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+                else if (op_assign_to->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
                   // PACKAGE_VAR = VAR
                   
-                  SPVM_OP* op_package_var = op_cur->first;
+                  SPVM_OP* op_package_var = op_assign_to;
                   
                   SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
 
@@ -1486,7 +1486,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode.operand1 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
-                else if (op_cur->first->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
+                else if (op_assign_to->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
                   // EXCEPTION_VAR = VAR
                   
                   SPVM_OPCODE opcode;
@@ -1499,11 +1499,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode.operand0 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
-                else if (op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
+                else if (op_assign_to->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                   
                   // $VAR_ARRAY->[$VAR_INDEX] = $VAR_TERM
                   
-                  SPVM_OP* op_array_elem = op_cur->first;
+                  SPVM_OP* op_array_elem = op_assign_to;
                   SPVM_OP* op_term_array = op_array_elem->first;
                   SPVM_OP* op_term_index = op_array_elem->last;
                   
@@ -1543,11 +1543,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode.operand2 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
-                else if (op_cur->first->code == SPVM_OP_C_CODE_CALL_FIELD) {
+                else if (op_assign_to->code == SPVM_OP_C_CODE_CALL_FIELD) {
                   
                   // $VAR_ARRAY->{NAME} = $VAR_TERM
                   
-                  SPVM_OP* op_call_field = op_cur->first;
+                  SPVM_OP* op_call_field = op_assign_to;
                   SPVM_OP* op_term_object = op_call_field->first;
 
                   // Call field
