@@ -953,8 +953,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_ASSIGN: {
-                  SPVM_OP* op_assign_to = op_cur->first;
-                  SPVM_OP* op_assign_from = op_cur->last;
+                  SPVM_OP* op_assign_to = op_cur->last;
+                  SPVM_OP* op_assign_from = op_cur->first;
                   
                   SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
                   SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);

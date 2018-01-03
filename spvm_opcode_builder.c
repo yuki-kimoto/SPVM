@@ -247,8 +247,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             // [START]Postorder traversal position
             switch (op_cur->code) {
               case SPVM_OP_C_CODE_ASSIGN: {
-                SPVM_OP* op_assign_to = op_cur->first;
-                SPVM_OP* op_assign_from = op_cur->last;
+                SPVM_OP* op_assign_to = op_cur->last;
+                SPVM_OP* op_assign_from = op_cur->first;
                 
                 if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
                   SPVM_OP* op_var = op_assign_to;

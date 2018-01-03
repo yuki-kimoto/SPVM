@@ -2361,8 +2361,8 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   }
   
   // Build op
-  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_to);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_from);
+  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_to);
   
   op_assign_to->is_assign_to = 1;
   
