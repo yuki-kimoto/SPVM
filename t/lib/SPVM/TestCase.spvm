@@ -1455,6 +1455,38 @@ package TestCase {
     }
     return 0;
   }
+
+  sub my_var_block() : int {
+    my $success = 1;
+    
+    my $var1 = 1;
+    if ($var1 != 1) {
+      $success = 0;
+    }
+    
+    {
+      my $var1 = 2;
+      if ($var1 != 2) {
+        $success = 0;
+      }
+      
+      {
+        my $var1 = $var1;
+        if ($var1 != 2) {
+          $success = 0;
+        }
+        $var1 = 3;
+      }
+      if ($var1 != 2) {
+        $success = 0;
+      }
+    }
+    
+    if ($success) {
+      return 1;
+    }
+    return 0;
+  }
   
   # Object field is initialized zero
   sub object_field_initialized_zero() : int {
