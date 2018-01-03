@@ -2422,8 +2422,6 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_term->file, op_term->line);
   SPVM_OP_build_assign(compiler, op_assign, op_exception_var, op_term);
   
-  op_assign->first->is_assign_to = 1;
-  
   SPVM_OP_insert_child(compiler, op_croak, op_croak->last, op_assign);
   
   return op_croak;
