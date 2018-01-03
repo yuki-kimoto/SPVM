@@ -1480,7 +1480,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                                     
                   int32_t package_var_id = package_var->op_our->uv.our->id;
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                   
                   opcode.operand0 = package_var_id;
                   opcode.operand1 = index_in;
@@ -1494,7 +1494,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                   opcode.code = SPVM_OPCODE_C_CODE_STORE_EXCEPTION_VAR;
                                     
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                   
                   opcode.operand0 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -1536,7 +1536,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t index_term_array = SPVM_OP_get_my_index(compiler, op_term_array);
                   int32_t index_term_index = SPVM_OP_get_my_index(compiler, op_term_index);
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                   
                   opcode.operand0 = index_term_array;
                   opcode.operand1 = index_term_index;
@@ -1583,7 +1583,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   
                   int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                   
                   opcode.operand0 = index_term_object;
                   opcode.operand1 = field_id;
