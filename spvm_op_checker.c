@@ -953,18 +953,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_CODE_ASSIGN: {
+                  SPVM_OP* op_assign_to = op_cur->first;
+                  SPVM_OP* op_assign_from = op_cur->last;
                   
-                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_to);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_assign_from);
                   
                   // Type inference
-                  if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
+                  if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
                     if (!first_type) {
                       first_type = last_type;
                     }
                     
                     if (first_type) {
-                      SPVM_OP* op_var = op_cur->first;
+                      SPVM_OP* op_var = op_assign_to;
                       SPVM_MY* my = op_var->uv.var->op_my->uv.my;
                       my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
                       my->op_type->uv.type = first_type;
@@ -973,22 +975,22 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Type can't be detected
                   if (!first_type) {
-                    SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_cur->first->file, op_cur->first->line);
+                    SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_assign_to->file, op_assign_to->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                   
                   // Can't assign undef to numeric value
-                  if (SPVM_TYPE_is_numeric(compiler, first_type) && op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
-                    SPVM_yyerror_format(compiler, "Can't assign undef to numeric type at %s line %d\n", op_cur->first->file, op_cur->first->line);
+                  if (SPVM_TYPE_is_numeric(compiler, first_type) && op_assign_from->code == SPVM_OP_C_CODE_UNDEF) {
+                    SPVM_yyerror_format(compiler, "Can't assign undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                   
                   // Copy left type to undef
-                  if (op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
+                  if (op_assign_from->code == SPVM_OP_C_CODE_UNDEF) {
                     last_type = first_type;
-                    op_cur->last->uv.undef->type = last_type;
+                    op_assign_from->uv.undef->type = last_type;
                   }
                   
                   // Invalid if left type is different to right value
@@ -998,29 +1000,29 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
-                    if (op_cur->last->code == SPVM_OP_C_CODE_CONCAT_STRING) {
-                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                  if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
+                    if (op_assign_from->code == SPVM_OP_C_CODE_CONCAT_STRING) {
+                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                       
-                      if (op_cur->last->first->code == SPVM_OP_C_CODE_VAR) {
-                        int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->last->first);
+                      if (op_assign_from->first->code == SPVM_OP_C_CODE_VAR) {
+                        int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
                         if (index_out == index_in1) {
-                          op_cur->last->first->uv.var->create_tmp_var = 1;
+                          op_assign_from->first->uv.var->create_tmp_var = 1;
                         }
                       }
                       
-                      if (op_cur->last->last->code == SPVM_OP_C_CODE_VAR) {
-                        int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_cur->last->last);
+                      if (op_assign_from->last->code == SPVM_OP_C_CODE_VAR) {
+                        int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                         if (index_out == index_in2) {
-                          op_cur->last->last->uv.var->create_tmp_var = 1;
+                          op_assign_from->last->uv.var->create_tmp_var = 1;
                         }
                       }
                     }
-                    else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
-                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    else if (op_assign_from->code == SPVM_OP_C_CODE_CALL_SUB) {
+                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                       
                       // Push args
-                      SPVM_OP* op_args =op_cur->last->last;
+                      SPVM_OP* op_args =op_assign_from->last;
                       SPVM_OP* op_arg = op_args->first;
                       while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
                         if (op_arg->code == SPVM_OP_C_CODE_VAR) {
