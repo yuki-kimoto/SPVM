@@ -210,9 +210,9 @@ struct SPVM_op {
   int32_t flag;
   int32_t line;
   _Bool moresib;
-  _Bool is_assign_left;
-  _Bool is_assign_right;
-  _Bool is_var_assign_right;
+  _Bool is_assign_to;
+  _Bool is_assign_from;
+  _Bool is_var_assign_from;
 };
 
 const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var);

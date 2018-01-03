@@ -1361,7 +1361,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_POST_DEC: {
                   SPVM_OP* op_first = op_cur->first;
                   if (op_first->code != SPVM_OP_C_CODE_VAR) {
-                    SPVM_yyerror_format(compiler, "invalid is_assign_left in increment at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "invalid is_assign_to in increment at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1374,7 +1374,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  op_cur->first->is_assign_left = 1;
+                  op_cur->first->is_assign_to = 1;
                   
                   break;
                 }
@@ -1710,12 +1710,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
           else {
             while (1) {
-              // Create temporary variable for no is_var_assign_right term witch is not variable
+              // Create temporary variable for no is_var_assign_from term witch is not variable
               int32_t create_tmp_var = 0;
               SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
               
               // [START]Postorder traversal position
-              if (!op_cur->is_assign_left && !op_cur->is_var_assign_right) {
+              if (!op_cur->is_assign_to && !op_cur->is_var_assign_from) {
                 switch (op_cur->code) {
                   case SPVM_OP_C_CODE_ADD:
                   case SPVM_OP_C_CODE_SUBTRACT:

@@ -2335,15 +2335,15 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_first);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_last);
   
-  op_assign->first->is_assign_left = 1;
+  op_assign->first->is_assign_to = 1;
   
   SPVM_OP* op_parent;
   
-  op_assign->last->is_assign_right = 1;
+  op_assign->last->is_assign_from = 1;
   
   // Return variable if first children is var
   if (op_first->code == SPVM_OP_C_CODE_VAR) {
-    op_assign->last->is_var_assign_right = 1;
+    op_assign->last->is_var_assign_from = 1;
     
     SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
     op_var->uv.var = op_first->uv.var;
@@ -2404,7 +2404,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
           op_term->sibparent = NULL;
           SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_term);
           
-          op_assign_array->first->is_assign_left = 1;
+          op_assign_array->first->is_assign_to = 1;
           
           SPVM_OP_insert_child(compiler, op_list_new, op_list_new->last, op_assign_array);
         }
@@ -2460,7 +2460,7 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_exception_var);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_term);
   
-  op_assign->first->is_assign_left = 1;
+  op_assign->first->is_assign_to = 1;
   
   SPVM_OP_insert_child(compiler, op_croak, op_croak->last, op_assign);
   
