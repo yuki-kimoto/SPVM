@@ -2335,15 +2335,15 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_to);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_from);
   
-  op_assign->first->is_assign_to = 1;
+  op_assign_to->is_assign_to = 1;
   
   SPVM_OP* op_parent;
   
-  op_assign->last->is_assign_from = 1;
+  op_assign_from->is_assign_from = 1;
   
   // Return variable if first children is var
   if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
-    op_assign->last->is_var_assign_from = 1;
+    op_assign_from->is_var_assign_from = 1;
     
     SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
     op_var->uv.var = op_assign_to->uv.var;
@@ -2370,7 +2370,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_list->file, op_list->line);
       SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
       
-      op_assign->last = op_new;
+      op_assign->last = op_assign_from = op_new;
       op_new->moresib = 0;
       op_new->sibparent = op_assign;
       op_assign_to->sibparent = op_new;
@@ -2422,13 +2422,13 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   }
   
   // Assign left child is var and it has variable declaration, try type inference
-  if (op_assign->first->code == SPVM_OP_C_CODE_VAR) {
-    SPVM_OP* op_var = op_assign->first;
+  if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
+    SPVM_OP* op_var = op_assign_to;
     if (op_var->first && op_var->first->code == SPVM_OP_C_CODE_MY) {
       SPVM_OP* op_my = op_var->first;
       SPVM_MY* my = op_my->uv.my;
       my->try_type_inference = 1;
-      my->op_term_type_inference = op_assign->last;
+      my->op_term_type_inference = op_assign_from;
     }
   }
   
