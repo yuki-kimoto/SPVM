@@ -1026,9 +1026,49 @@ SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_l
   return op_array_length;
 }
 
-SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op_type, SPVM_OP* op_array_init) {
+SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op_type, SPVM_OP* op_list_elements) {
   
   SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
+  
+  // Array initialization
+  if (op_list_elements) {
+    // NEW
+    //   TYPE
+    //   ARRAY_INIT
+    //     LIST_INDEXES
+    //     LIST_ELEMENTS
+    
+    // Add elmenets length to op_type
+    int32_t length = 0;
+    {
+      SPVM_OP* op_term_element = SPVM_OP_sibling(compiler, op_list_elements);
+      while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+        length++;
+      }
+    }
+    SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, op_list_elements->file, op_list_elements->line);
+    SPVM_OP_insert_child(compiler, op_type, op_type->last, op_constant_length);
+    
+    // ARRAY_INIT
+    SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_INIT, op_list_elements->file, op_list_elements->line);
+    
+    // Indexes
+    SPVM_OP* op_list_indexes = SPVM_OP_new_op_list(compiler, op_list_elements->file, op_list_elements->line);
+    {
+      int32_t index = 0;
+      SPVM_OP* op_term_element = SPVM_OP_sibling(compiler, op_list_elements);
+      while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+        SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, op_list_elements->file, op_list_elements->line);
+        SPVM_OP_insert_child(compiler, op_list_indexes, op_list_indexes->last, op_constant_index);
+        index++;
+      }
+    }
+    
+    SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_list_indexes);
+    SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_list_elements);
+    
+    SPVM_OP_insert_child(compiler, op_new, op_new->last, op_array_init);
+  }
   
   return op_new;
 }
