@@ -524,11 +524,11 @@ expression
 new_object
   : NEW type_name
     {
-      $$ = SPVM_OP_build_new_object(compiler, $1, $2);
+      $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
     }
   | NEW type_array_with_length
     {
-      $$ = SPVM_OP_build_new_object(compiler, $1, $2);
+      $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
     }
 
 convert_type
