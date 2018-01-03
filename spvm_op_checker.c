@@ -956,32 +956,32 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_assign_to = op_cur->first;
                   SPVM_OP* op_assign_from = op_cur->last;
                   
-                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_to);
-                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_assign_from);
+                  SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
+                  SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
                   
                   // Type inference
                   if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
-                    if (!first_type) {
-                      first_type = last_type;
+                    if (!assign_to_type) {
+                      assign_to_type = assign_from_type;
                     }
                     
-                    if (first_type) {
+                    if (assign_to_type) {
                       SPVM_OP* op_var = op_assign_to;
                       SPVM_MY* my = op_var->uv.var->op_my->uv.my;
                       my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
-                      my->op_type->uv.type = first_type;
+                      my->op_type->uv.type = assign_to_type;
                     }
                   }
                   
                   // Type can't be detected
-                  if (!first_type) {
+                  if (!assign_to_type) {
                     SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_assign_to->file, op_assign_to->line);
                     compiler->fatal_error = 1;
                     return;
                   }
                   
                   // Can't assign undef to numeric value
-                  if (SPVM_TYPE_is_numeric(compiler, first_type) && op_assign_from->code == SPVM_OP_C_CODE_UNDEF) {
+                  if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && op_assign_from->code == SPVM_OP_C_CODE_UNDEF) {
                     SPVM_yyerror_format(compiler, "Can't assign undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
                     compiler->fatal_error = 1;
                     return;
@@ -989,12 +989,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Copy left type to undef
                   if (op_assign_from->code == SPVM_OP_C_CODE_UNDEF) {
-                    last_type = first_type;
-                    op_assign_from->uv.undef->type = last_type;
+                    assign_from_type = assign_to_type;
+                    op_assign_from->uv.undef->type = assign_from_type;
                   }
                   
                   // Invalid if left type is different to right value
-                  if (first_type->code != last_type->code) {
+                  if (assign_to_type->code != assign_from_type->code) {
                     SPVM_yyerror_format(compiler, "Invalid type value is assigned at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
