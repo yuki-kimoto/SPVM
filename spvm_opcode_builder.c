@@ -1374,6 +1374,59 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                         }
+
+                        if (op_assign_from->last->code == SPVM_OP_C_CODE_ARRAY_INIT) {
+                          SPVM_OP* op_array_init = op_assign_from->last;
+                          SPVM_OP* op_list_indexes = op_array_init->first;
+                          SPVM_OP* op_list_elements = op_array_init->last;
+                          
+                          SPVM_OP* op_term_index = op_list_indexes->first;
+                          SPVM_OP* op_term_element = op_list_elements->first;
+                          
+                          while ((op_term_index = SPVM_OP_sibling(compiler, op_term_index))) {
+                            op_term_element = SPVM_OP_sibling(compiler, op_term_element);
+                            
+                            // $VAR_ARRAY->[$VAR_INDEX] = $VAR_TERM
+                            
+                            SPVM_OP* op_term_array = op_assign_to;
+                            
+                            SPVM_TYPE* type_element = SPVM_OP_get_type(compiler, op_term_element);
+
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                            
+                            if (type_element->code == SPVM_TYPE_C_CODE_BYTE) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_BYTE;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_SHORT) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_SHORT;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_INT) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_INT;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_LONG) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_LONG;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_FLOAT) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_FLOAT;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_DOUBLE;
+                            }
+                            else {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_OBJECT;
+                            }
+                            
+                            int32_t index_term_array = SPVM_OP_get_my_index(compiler, op_term_array);
+                            int32_t index_term_index = SPVM_OP_get_my_index(compiler, op_term_index);
+                            int32_t index_in = SPVM_OP_get_my_index(compiler, op_term_element);
+                            
+                            opcode.operand0 = index_term_array;
+                            opcode.operand1 = index_term_index;
+                            opcode.operand2 = index_in;
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                        }
                       }
                       else {
                         SPVM_OPCODE opcode;

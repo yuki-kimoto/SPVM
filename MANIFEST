@@ -152,8 +152,6 @@ spvm_string_buffer.c
 spvm_string_buffer.h
 spvm_sub.c
 spvm_sub.h
-spvm_sub_check_info.c
-spvm_sub_check_info.h
 spvm_switch_info.c
 spvm_switch_info.h
 spvm_toke.c
@@ -172,9 +170,11 @@ spvm_yacc.c
 spvm_yacc.h
 spvm_yacc_util.c
 spvm_yacc_util.h
+t/compile-error.t
 t/lib/SPVM/TestCase.spvm
 t/lib/SPVM/TestCase/Arrays.spvm
 t/lib/SPVM/TestCase/Byte.spvm
+t/lib/SPVM/TestCase/CompileError/InvalidType.spvm
 t/lib/SPVM/TestCase/Destructor.spvm
 t/lib/SPVM/TestCase/Double.spvm
 t/lib/SPVM/TestCase/Extension.native/Extension.c

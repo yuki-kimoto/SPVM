@@ -81,6 +81,11 @@ package TestCase {
     }
 
     {
+      my $values : int[];
+      $values = new int[] {1, 2, 3};
+    }
+
+    {
       my $var = $PACKAGE_VAR_INT;
       
       $PACKAGE_VAR_INT = 1;
