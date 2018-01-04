@@ -959,27 +959,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
                   SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
                   
-                  // Type inference
-                  if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
-                    if (!assign_to_type) {
-                      assign_to_type = assign_from_type;
-                    }
-                    
-                    if (assign_to_type) {
-                      SPVM_OP* op_var = op_assign_to;
-                      SPVM_MY* my = op_var->uv.var->op_my->uv.my;
-                      my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
-                      my->op_type->uv.type = assign_to_type;
-                    }
-                  }
-                  
-                  // Type can't be detected
-                  if (!assign_to_type) {
-                    SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_assign_to->file, op_assign_to->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
                   // Can't assign undef to numeric value
                   if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && op_assign_from->code == SPVM_OP_C_CODE_UNDEF) {
                     SPVM_yyerror_format(compiler, "Can't assign undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
@@ -993,7 +972,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     op_assign_from->uv.undef->type = assign_from_type;
                   }
                   
-                  // Invalid if left type is different to right value
+                  // Invalid if to type is different to from value
                   if (assign_to_type->code != assign_from_type->code) {
                     SPVM_yyerror_format(compiler, "Invalid type value is assigned at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
@@ -1456,16 +1435,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_MY: {
                   SPVM_MY* my = op_cur->uv.my;
                   
-                  // Search same name variable
+                  // Redeclaration error if same name variable is declare in same block
                   _Bool found = 0;
-                  
                   int32_t* block_my_base_ptr = SPVM_DYNAMIC_ARRAY_fetch(
                     block_my_base_stack,
                     block_my_base_stack->length - 1
                   );
-                  
                   int32_t block_my_base = *block_my_base_ptr;
-                  
                   {
                     int32_t i;
                     for (i = block_my_base; i < op_my_stack->length; i++) {
@@ -1477,7 +1453,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                     }
                   }
-                  
                   if (found) {
                     SPVM_yyerror_format(compiler, "redeclaration of my \"%s\" at %s line %d\n", my->op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
@@ -1487,6 +1462,27 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     my->index = op_mys->length;
                     SPVM_DYNAMIC_ARRAY_push(op_mys, op_cur);
                     SPVM_DYNAMIC_ARRAY_push(op_my_stack, op_cur);
+                  }
+                  
+                  // Type inference
+                  if (my->op_type == NULL) {
+                    if (my->try_type_inference) {
+                      SPVM_OP* op_term_type_inference = my->op_term_type_inference;
+                      
+                      SPVM_TYPE* inferenced_type = SPVM_OP_get_type(compiler, op_term_type_inference);
+                      
+                      if (inferenced_type) {
+                        my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_cur->file, op_cur->line);
+                        my->op_type->uv.type = inferenced_type;
+                      }
+                    }
+                  }
+                  
+                  // Type can't be detected
+                  if (my->op_type == NULL) {
+                    SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
                   }
                   
                   break;
