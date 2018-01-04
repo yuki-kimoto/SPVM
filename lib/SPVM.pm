@@ -5,6 +5,9 @@ use strict;
 use warnings;
 
 use Config;
+use DynaLoader;
+use SPVM::Build;
+use File::Basename 'basename';
 
 use SPVM::Core::Object;
 use SPVM::Core::Object::Array;
@@ -18,18 +21,11 @@ use SPVM::Core::Object::Array::Object;
 use SPVM::Core::Object::Package;
 use SPVM::Core::Object::Package::String;
 
-use File::Temp 'tempdir';
-use ExtUtils::CBuilder;
-use Config;
-use DynaLoader;
-use SPVM::Build;
-use File::Basename 'basename';
-
 use Encode 'encode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0302';
+our $VERSION = '0.0303';
 
 our $COMPILER;
 our $API;
