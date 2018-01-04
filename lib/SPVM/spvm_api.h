@@ -97,5 +97,6 @@ struct SPVM_api {
   SPVM_API_OBJECT* (*concat_string_double)(SPVM_API* api, SPVM_API_OBJECT* string1, double string2);
   SPVM_API_OBJECT* (*concat_string_string)(SPVM_API* api, SPVM_API_OBJECT* string1, SPVM_API_OBJECT* string2);
   void (*weaken_object_field)(SPVM_API* api, SPVM_API_OBJECT* object, int32_t field_id);
+  SPVM_API_OBJECT* (*create_exception_stack_trace)(SPVM_API* api, int32_t sub_id, SPVM_API_OBJECT* excetpion, int32_t current_line);
 };
 #endif

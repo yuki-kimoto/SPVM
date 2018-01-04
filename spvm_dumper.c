@@ -256,58 +256,25 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
       // Operand
       switch (opcode.code) {
         case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
-          printf("\n");
-          
-          printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
-          
-          int32_t max = opcode.operand2;
-          
-          int32_t min = opcode.operand3;
-          
-          // Addresses
-          int32_t length = max - min + 1;
-          
-          int32_t offset_opcode_length;
-          if (length % 8 == 0) {
-            offset_opcode_length = length / 8;
-          }
-          else {
-            offset_opcode_length = (length / 8) + 1;
-          }
-          
-          {
-            int32_t j;
-            for (j = 0; j < offset_opcode_length; j++) {
-              i++;
-              SPVM_OPCODE opcode = opcode_array->values[i];
-              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.code, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
-            }
-          }
-          
-          break;
+          // TABLE_SWITCH is no longer used
+          assert(0);
         }
         case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
-          printf("\n");
+          printf(" ");
           
-          printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
+          printf(" %d %d %d %d %d %d %d\n",
+            opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
           
-          int32_t count = opcode.operand2;
-          
-          int32_t offset_opcode_length;
-          if (count % 8 == 0) {
-            offset_opcode_length = (count * 2) / 8;
-          }
-          else {
-            offset_opcode_length = ((count * 2) / 8) + 1;
-          }
+          int32_t case_length = opcode.operand2;
           
           // Match - offset
           {
             int32_t j;
-            for (j = 0; j < offset_opcode_length; j++) {
+            for (j = 0; j < case_length; j++) {
               i++;
               SPVM_OPCODE opcode = opcode_array->values[i];
-              printf("[%" PRId32 "] %d %d %d %d %d %d %d %d\n", i, opcode.code, opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
+              printf("        [%" PRId32 "] %s %d %d %d %d %d %d %d\n",
+                i, SPVM_OPCODE_C_CODE_NAMES[opcode.code], opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
             }
           }
           
@@ -316,7 +283,8 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
         default :
         // Have seven operands
         {
-          printf(" %d %d %d %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
+          printf(" %d %d %d %d %d %d %d\n",
+            opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3, opcode.operand4, opcode.operand5, opcode.operand6);
           break;
         }
       }

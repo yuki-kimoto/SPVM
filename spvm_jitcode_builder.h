@@ -32,6 +32,6 @@
 #define SPVM_JITCODE_BUILDER_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
 
-void SPVM_JITCODE_BUILDER_build_jitcode(SPVM_COMPILER* compiler);
+void SPVM_JITCODE_BUILDER_build_jitcode();
 
 #endif

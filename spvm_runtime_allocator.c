@@ -12,6 +12,8 @@
 #include "spvm_dynamic_array.h"
 #include "spvm_runtime.h"
 #include "spvm_constant_pool.h"
+#include "spvm_constant_pool_package.h"
+#include "spvm_constant_pool_type.h"
 #include "spvm_api.h"
 #include "spvm_object.h"
 
@@ -122,7 +124,20 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
   }
   else {
     // Byte size
-    int32_t byte_size = SPVM_RUNTIME_API_calcurate_object_byte_size(api, object);
+    int64_t byte_size;
+    switch (object->object_type_code) {
+      case SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT: {
+        // Runtime
+        SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+        SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
+        SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[constant_pool_type->package_id];
+        byte_size = sizeof(SPVM_OBJECT) + constant_pool_package->byte_size;
+        break;
+      }
+      default: {
+        byte_size = sizeof(SPVM_OBJECT) + object->length * object->element_byte_size;
+      }
+    }
     
     assert(byte_size > 0);
     

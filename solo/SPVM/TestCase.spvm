@@ -50,6 +50,11 @@ package TestCase {
   }
   
   sub main($mvar : int) : int {
+    my $title;
+    
+    eval {
+      exception_croak_return_object();
+    };
 
 =pod
     {
@@ -74,6 +79,11 @@ package TestCase {
       my $values = new int[] {1, 2, 3};
       
       CORE::say("" . $values->[0]);
+    }
+
+    {
+      my $values : int[];
+      $values = new int[] {1, 2, 3};
     }
 
     {
@@ -1247,7 +1257,9 @@ package TestCase {
       return 0;
     }
   }
-
+  sub exception_croak_return_object() : TestCase::Minimal {
+    croak "Error";
+  }
 }
 
 =head1 NAME

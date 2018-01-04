@@ -18,7 +18,7 @@
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME
 %token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
-%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
+%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field names opt_names setters getters our_var
@@ -524,11 +524,15 @@ expression
 new_object
   : NEW type_name
     {
-      $$ = SPVM_OP_build_new_object(compiler, $1, $2);
+      $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
     }
   | NEW type_array_with_length
     {
-      $$ = SPVM_OP_build_new_object(compiler, $1, $2);
+      $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
+    }
+  | NEW type_array '{' opt_assignable_terms '}'
+    {
+      $$ = SPVM_OP_build_new_object(compiler, $1, $2, $4);
     }
 
 convert_type
@@ -636,10 +640,6 @@ binop
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | my_var ASSIGN array_init
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
   | my_var ASSIGN assignable_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
@@ -677,12 +677,6 @@ logical_term
       $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
 
-array_init
-  : NEW type_array '{' opt_assignable_terms '}'
-    {
-      $$ = SPVM_OP_build_array_init(compiler, $2, $4);
-    }
-    
 array_elem
   : assignable_term ARROW '[' assignable_term ']'
     {

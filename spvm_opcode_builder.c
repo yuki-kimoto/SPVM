@@ -92,8 +92,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   SPVM_OPCODE_ARRAY* opcode_array = compiler->opcode_array;
   
   {
-    int32_t OPCODE_UNIT = 8;
-    
     int32_t sub_pos;
     for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
       SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_pos);
@@ -137,6 +135,49 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
       // Switch stack
       SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      
+      // Initialize lexical variable
+      {
+        int32_t my_index;
+        
+        for (my_index = sub->op_args->length; my_index < sub->op_mys->length; my_index++) {
+          SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, my_index);
+          
+          SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my);
+          
+          SPVM_OPCODE opcode;
+          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+          
+          switch (type->code) {
+            case SPVM_TYPE_C_CODE_BYTE:
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0;
+              break;
+            case SPVM_TYPE_C_CODE_SHORT:
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT_0;
+              break;
+            case SPVM_TYPE_C_CODE_INT:
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT_0;
+              break;
+            case SPVM_TYPE_C_CODE_LONG:
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG_0;
+              break;
+            case SPVM_TYPE_C_CODE_FLOAT:
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT_0;
+              break;
+            case SPVM_TYPE_C_CODE_DOUBLE:
+              opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE_0;
+              break;
+            default:
+              opcode.code = SPVM_OPCODE_C_CODE_UNDEF;
+          }
+          
+          int32_t index_out = op_my->uv.my->index;
+          
+          opcode.operand0 = index_out;
+          
+          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+        }
+      }
       
       while (op_cur) {
         // [START]Preorder traversal position
@@ -206,36 +247,35 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             // [START]Postorder traversal position
             switch (op_cur->code) {
               case SPVM_OP_C_CODE_ASSIGN: {
+                SPVM_OP* op_assign_to = op_cur->last;
+                SPVM_OP* op_assign_from = op_cur->first;
                 
-                if (op_cur->first->code == SPVM_OP_C_CODE_VAR) {
-                  SPVM_OP* op_var = op_cur->first;
+                if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
+                  SPVM_OP* op_var = op_assign_to;
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
 
                   int32_t do_dec_ref_count = 0;
                   
                   // Do decrement reference count
                   // Variable type is object
-                  if (!SPVM_TYPE_is_numeric(compiler, type)) {
-                    // Variable is not initialized
-                    if (!(op_cur->first->first && op_cur->first->first->code == SPVM_OP_C_CODE_MY)) {
-                      // Right value is variable
-                      if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
-                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                        int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
-                        // Left index is deferent from rithgt index
-                        if (index_out != index_in) {
-                          do_dec_ref_count = 1;
-                        }
-                      }
-                      else {
+                  if (SPVM_TYPE_is_object(compiler, type)) {
+                    // Right value is variable
+                    if (op_assign_from->code == SPVM_OP_C_CODE_VAR) {
+                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                      int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
+                      // Left index is deferent from rithgt index
+                      if (index_out != index_in) {
                         do_dec_ref_count = 1;
                       }
+                    }
+                    else {
+                      do_dec_ref_count = 1;
                     }
                   }
                   
                   // Decrement refernece count
                   if (do_dec_ref_count) {
-                    int32_t index_dec_ref_count = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_dec_ref_count = SPVM_OP_get_my_index(compiler, op_assign_to);
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -248,12 +288,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   if (0) {
                     
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_PRE_INC) {
-                    SPVM_OP* op_last = op_cur->last;
-                    SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_last, 1);
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_PRE_INC) {
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_last->first);
+                    SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_assign_from, 1);
+                    
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from->first);
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -263,11 +303,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_POST_INC) {
-                    SPVM_OP* op_last = op_cur->last;
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_POST_INC) {
+                    
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from->first);
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -277,14 +317,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                    SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_last, 1);
+                    SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_assign_from, 1);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_PRE_DEC) {
-                    SPVM_OP* op_last = op_cur->last;
-                    SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_last, -1);
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_PRE_DEC) {
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_last->first);
+                    SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_assign_from, -1);
+                    
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from->first);
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -294,11 +334,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_POST_DEC) {
-                    SPVM_OP* op_last = op_cur->last;
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_POST_DEC) {
+                    
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from->first);
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -308,14 +348,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                    SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_last, -1);
+                    SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_assign_from, -1);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_CONCAT_STRING) {
-                    SPVM_OP* op_last = op_cur->last;
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_CONCAT_STRING) {
                     
-                    SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_last->first);
+                    
+                    SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_from->first);
                     assert(first_type->code == SPVM_TYPE_C_CODE_STRING);
-                    SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_last->last);
+                    SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_assign_from->last);
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -341,9 +381,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_CONCAT_STRING_DOUBLE;
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
 
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -351,28 +391,28 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_UNDEF) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_UNDEF) {
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     opcode.code = SPVM_OPCODE_C_CODE_UNDEF;
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                     opcode.operand0 = index_out;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_SUB) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_CALL_SUB) {
                     
                     
-                    SPVM_CALL_SUB* call_sub = op_cur->last->uv.call_sub;
+                    SPVM_CALL_SUB* call_sub = op_assign_from->uv.call_sub;
                     const char* sub_name = call_sub->sub->abs_name;
                     
                     SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
                     SPVM_SUB* sub = op_sub->uv.sub;
 
                     // Push args
-                    SPVM_OP* op_args = op_cur->last->last;
+                    SPVM_OP* op_args = op_assign_from->last;
                     SPVM_OP* op_arg = op_args->first;
                     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
                       SPVM_OPCODE opcode;
@@ -391,7 +431,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     opcode.code = SPVM_OPCODE_C_CODE_CALL_SUB;
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                     int32_t id = sub->id;
 
                     opcode.operand0 = index_out;
@@ -408,23 +448,23 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     }
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     opcode.code = SPVM_OPCODE_C_CODE_ARRAY_LENGTH;
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from->first);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_CALL_FIELD) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_CALL_FIELD) {
                     
                     // $VAR = $VAR_OBJECT->{NAME}
-                    SPVM_OP* op_call_field = op_cur->last;
+                    SPVM_OP* op_call_field = op_assign_from;
                     SPVM_OP* op_term_object = op_call_field->first;
                     
                     // Call field
@@ -458,7 +498,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_GET_FIELD_OBJECT;
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                     int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
 
                     opcode.operand0 = index_out;
@@ -467,10 +507,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                     
                     // $VAR = $VAR_ARRAY->[$VAR_INDEX]
-                    SPVM_OP* op_array_elem = op_cur->last;
+                    SPVM_OP* op_array_elem = op_assign_from;
                     SPVM_OP* op_term_array = op_array_elem->first;
                     SPVM_OP* op_term_index = op_array_elem->last;
                     
@@ -500,7 +540,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_ARRAY_LOAD_OBJECT;
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                     int32_t index_term_array = SPVM_OP_get_my_index(compiler, op_term_array);
                     int32_t index_term_index = SPVM_OP_get_my_index(compiler, op_term_index);
 
@@ -510,39 +550,62 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from);
+
                     // VAR = PACKAGE_VAR
-                    SPVM_OUR* our = op_cur->last->uv.package_var->op_our->uv.our;
+                    SPVM_OUR* our = op_assign_from->uv.package_var->op_our->uv.our;
                     
                     int32_t package_var_id = our->id;
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR;
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_BYTE;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_SHORT;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_INT;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_LONG) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_LONG;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_FLOAT;
+                    }
+                    else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_DOUBLE;
+                    }
+                    else {
+                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_OBJECT;
+                    }
+                    
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = package_var_id;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
                     // VAR = EXCEPTION_VAR
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
                     opcode.code = SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR;
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                     
                     opcode.operand0 = index_out;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_ADD) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_ADD) {
                     
-                    SPVM_OP* op_last = op_cur->last;
+                    
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -566,9 +629,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_ADD_DOUBLE;
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -576,9 +639,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_SUBTRACT) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_SUBTRACT) {
                     
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -602,9 +665,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_SUBTRACT_DOUBLE;
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -612,9 +675,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_MULTIPLY) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_MULTIPLY) {
                     
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -638,9 +701,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_MULTIPLY_DOUBLE;
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -648,9 +711,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_DIVIDE) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_DIVIDE) {
                     
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -674,9 +737,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_DOUBLE;
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -684,9 +747,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_REMAINDER) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_REMAINDER) {
                     
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -710,9 +773,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_DOUBLE;
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -720,9 +783,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_LEFT_SHIFT) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_LEFT_SHIFT) {
 
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -740,9 +803,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_LEFT_SHIFT_LONG;
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -750,9 +813,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_RIGHT_SHIFT) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_RIGHT_SHIFT) {
 
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -770,9 +833,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_RIGHT_SHIFT_LONG;
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -780,9 +843,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED) {
 
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -800,9 +863,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_LONG;
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -810,9 +873,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_BIT_AND) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_BIT_AND) {
 
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -833,9 +896,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -843,9 +906,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_BIT_OR) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_BIT_OR) {
 
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -866,9 +929,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -876,9 +939,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_BIT_XOR) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_BIT_XOR) {
 
-                    SPVM_OP* op_last = op_cur->last;
+                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -899,9 +962,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_last->first);
-                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_last->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in1;
@@ -909,7 +972,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_COMPLEMENT) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_COMPLEMENT) {
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -930,15 +993,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from->first);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_NEGATE) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_NEGATE) {
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -962,48 +1025,57 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_NEGATE_DOUBLE;
                     }
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from->first);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_CONSTANT) {
-                    SPVM_CONSTANT* constant = op_cur->last->uv.constant;
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_CONSTANT) {
+                    SPVM_CONSTANT* constant = op_assign_from->uv.constant;
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    if (type->code == SPVM_TYPE_C_CODE_BYTE
-                      || type->code == SPVM_TYPE_C_CODE_SHORT
-                      || type->code == SPVM_TYPE_C_CODE_INT
-                      || type->code == SPVM_TYPE_C_CODE_FLOAT)
-                    {
-                      opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_LONG || type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                     opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT2;
-                    }
-                    else {
-                      assert(0);
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE;
+                        break;
+                      case SPVM_TYPE_C_CODE_SHORT:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT;
+                        break;
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG;
+                        break;
+                      case SPVM_TYPE_C_CODE_FLOAT:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT;
+                        break;
+                      case SPVM_TYPE_C_CODE_DOUBLE:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE;
+                        break;
+                      default:
+                        assert(0);
                     }
                     
                     assert(constant->id != -1);
                     
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                     
                     opcode.operand0 = index_out;
                     opcode.operand1 = constant->id;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_CONVERT) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_CONVERT) {
                     
-                    SPVM_OP* op_dist_term = op_cur->first;
-                    SPVM_OP* op_src_term = op_cur->last->first;
-                    SPVM_OP* op_dist_type = op_cur->last->last;
+                    SPVM_OP* op_dist_term = op_assign_to;
+                    SPVM_OP* op_src_term = op_assign_from->first;
+                    SPVM_OP* op_dist_type = op_assign_from->last;
                     
                     SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src_term);
                     SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist_type);
@@ -1161,33 +1233,33 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_NEW) {
-                    SPVM_OP* op_last = op_cur->last;
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_NEW) {
+                    
 
-                    if (op_last->first->code == SPVM_OP_C_CODE_CONSTANT) {
+                    if (op_assign_from->first->code == SPVM_OP_C_CODE_CONSTANT) {
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       
                       opcode.code = SPVM_OPCODE_C_CODE_NEW_STRING;
 
-                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                      SPVM_CONSTANT* constant = op_last->first->uv.constant;
+                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                      SPVM_CONSTANT* constant = op_assign_from->first->uv.constant;
 
                       opcode.operand0 = index_out;
                       opcode.operand1 = constant->id;
 
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     }
-                    else if (op_last->first->code == SPVM_OP_C_CODE_TYPE) {
+                    else if (op_assign_from->first->code == SPVM_OP_C_CODE_TYPE) {
                       
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_last->first);
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from->first);
                       
                       if (SPVM_TYPE_is_array(compiler, type)) {
                         /*
-                          NEW op_last
-                             TYPE op_last->first
-                               ELEMENT_TYPE op_last->first->first
-                               INDEX op_last->first->last
+                          NEW op_assign_from
+                             TYPE op_assign_from->first
+                               ELEMENT_TYPE op_assign_from->first->first
+                               INDEX op_assign_from->first->last
                         */
                         
                         switch (type->code) {
@@ -1196,8 +1268,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             opcode.code = SPVM_OPCODE_C_CODE_NEW_BYTE_ARRAY;
 
-                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
@@ -1211,8 +1283,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             opcode.code = SPVM_OPCODE_C_CODE_NEW_SHORT_ARRAY;
 
-                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
                             
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
@@ -1227,8 +1299,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                             opcode.code = SPVM_OPCODE_C_CODE_NEW_INT_ARRAY;
 
-                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
@@ -1243,8 +1315,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                             opcode.code = SPVM_OPCODE_C_CODE_NEW_LONG_ARRAY;
 
-                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
@@ -1259,8 +1331,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                             opcode.code = SPVM_OPCODE_C_CODE_NEW_FLOAT_ARRAY;
 
-                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
@@ -1275,8 +1347,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                             opcode.code = SPVM_OPCODE_C_CODE_NEW_DOUBLE_ARRAY;
                             
-                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                             opcode.operand0 = index_out;
                             opcode.operand1 = index_index;
@@ -1289,16 +1361,69 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                            opcode.code = SPVM_OPCODE_C_CODE_NEW_DOUBLE_ARRAY;
+                            opcode.code = SPVM_OPCODE_C_CODE_NEW_OBJECT_ARRAY;
 
-                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                            SPVM_TYPE* element_type = op_last->first->first->uv.type;
-                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_last->first->last);
+                            int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                            SPVM_TYPE* element_type = op_assign_from->first->first->uv.type;
+                            int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                             opcode.operand0 = index_out;
                             opcode.operand1 = element_type->id;
                             opcode.operand2 = index_index;
 
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                        }
+
+                        if (op_assign_from->last->code == SPVM_OP_C_CODE_ARRAY_INIT) {
+                          SPVM_OP* op_array_init = op_assign_from->last;
+                          SPVM_OP* op_list_indexes = op_array_init->first;
+                          SPVM_OP* op_list_elements = op_array_init->last;
+                          
+                          SPVM_OP* op_term_index = op_list_indexes->first;
+                          SPVM_OP* op_term_element = op_list_elements->first;
+                          
+                          while ((op_term_index = SPVM_OP_sibling(compiler, op_term_index))) {
+                            op_term_element = SPVM_OP_sibling(compiler, op_term_element);
+                            
+                            // $VAR_ARRAY->[$VAR_INDEX] = $VAR_TERM
+                            
+                            SPVM_OP* op_term_array = op_assign_to;
+                            
+                            SPVM_TYPE* type_element = SPVM_OP_get_type(compiler, op_term_element);
+
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                            
+                            if (type_element->code == SPVM_TYPE_C_CODE_BYTE) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_BYTE;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_SHORT) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_SHORT;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_INT) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_INT;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_LONG) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_LONG;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_FLOAT) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_FLOAT;
+                            }
+                            else if (type_element->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_DOUBLE;
+                            }
+                            else {
+                              opcode.code = SPVM_OPCODE_C_CODE_ARRAY_STORE_OBJECT;
+                            }
+                            
+                            int32_t index_term_array = SPVM_OP_get_my_index(compiler, op_term_array);
+                            int32_t index_term_index = SPVM_OP_get_my_index(compiler, op_term_index);
+                            int32_t index_in = SPVM_OP_get_my_index(compiler, op_term_element);
+                            
+                            opcode.operand0 = index_term_array;
+                            opcode.operand1 = index_term_index;
+                            opcode.operand2 = index_in;
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                         }
@@ -1309,8 +1434,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         opcode.code = SPVM_OPCODE_C_CODE_NEW_OBJECT;
                         
-                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                        int32_t type_id = op_last->first->uv.type->id;
+                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                        int32_t type_id = op_assign_from->first->uv.type->id;
                         assert(type_id);
                         
                         opcode.operand0 = index_out;
@@ -1322,14 +1447,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
                   }
-                  else if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_VAR) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
                     opcode.code = SPVM_OPCODE_C_CODE_MOVE;
 
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
 
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
@@ -1343,17 +1468,20 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Do increment reference count
                   int32_t do_inc_ref_count = 0;
                   // Right value is not undef
-                  if (op_cur->last->code != SPVM_OP_C_CODE_UNDEF) {
+                  if (op_assign_from->code != SPVM_OP_C_CODE_UNDEF) {
                     // Variable type is object
-                    if (!SPVM_TYPE_is_numeric(compiler, type)) {
+                    if (SPVM_TYPE_is_object(compiler, type)) {
                       // Right value is variable
-                      if (op_cur->last->code == SPVM_OP_C_CODE_VAR) {
-                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_cur->first);
-                        int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                      if (op_assign_from->code == SPVM_OP_C_CODE_VAR) {
+                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                        int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
+                        
+                        // Right variable is different from left variable
                         if (index_out != index_in) {
                           do_inc_ref_count = 1;
                         }
                       }
+                      // Right value is not variable
                       else {
                         do_inc_ref_count = 1;
                       }
@@ -1363,17 +1491,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   if (do_inc_ref_count) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    int32_t index_inc_ref_count = SPVM_OP_get_my_index(compiler, op_cur->first);
+                    int32_t index_inc_ref_count = SPVM_OP_get_my_index(compiler, op_assign_to);
                     
                     opcode.code = SPVM_OPCODE_C_CODE_INC_REF_COUNT;
                     opcode.operand0 = index_inc_ref_count;
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                 }
-                else if (op_cur->first->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+                else if (op_assign_to->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
                   // PACKAGE_VAR = VAR
                   
-                  SPVM_OP* op_package_var = op_cur->first;
+                  SPVM_OP* op_package_var = op_assign_to;
                   
                   SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
 
@@ -1382,21 +1510,36 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                  if (SPVM_TYPE_is_numeric(compiler, type)) {
-                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR;
+                  if (type->code == SPVM_TYPE_C_CODE_BYTE) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_BYTE;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_SHORT;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_INT;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_LONG) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_LONG;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_FLOAT;
+                  }
+                  else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+                    opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_DOUBLE;
                   }
                   else {
                     opcode.code = SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_OBJECT;
                   }
                                     
                   int32_t package_var_id = package_var->op_our->uv.our->id;
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                   
                   opcode.operand0 = package_var_id;
                   opcode.operand1 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
-                else if (op_cur->first->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
+                else if (op_assign_to->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
                   // EXCEPTION_VAR = VAR
                   
                   SPVM_OPCODE opcode;
@@ -1404,16 +1547,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                   opcode.code = SPVM_OPCODE_C_CODE_STORE_EXCEPTION_VAR;
                                     
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                   
                   opcode.operand0 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
-                else if (op_cur->first->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
+                else if (op_assign_to->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                   
                   // $VAR_ARRAY->[$VAR_INDEX] = $VAR_TERM
                   
-                  SPVM_OP* op_array_elem = op_cur->first;
+                  SPVM_OP* op_array_elem = op_assign_to;
                   SPVM_OP* op_term_array = op_array_elem->first;
                   SPVM_OP* op_term_index = op_array_elem->last;
                   
@@ -1446,18 +1589,18 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t index_term_array = SPVM_OP_get_my_index(compiler, op_term_array);
                   int32_t index_term_index = SPVM_OP_get_my_index(compiler, op_term_index);
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                   
                   opcode.operand0 = index_term_array;
                   opcode.operand1 = index_term_index;
                   opcode.operand2 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
-                else if (op_cur->first->code == SPVM_OP_C_CODE_CALL_FIELD) {
+                else if (op_assign_to->code == SPVM_OP_C_CODE_CALL_FIELD) {
                   
                   // $VAR_ARRAY->{NAME} = $VAR_TERM
                   
-                  SPVM_OP* op_call_field = op_cur->first;
+                  SPVM_OP* op_call_field = op_assign_to;
                   SPVM_OP* op_term_object = op_call_field->first;
 
                   // Call field
@@ -1493,7 +1636,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   
                   int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->last);
+                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                   
                   opcode.operand0 = index_term_object;
                   opcode.operand1 = field_id;
@@ -1512,50 +1655,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  SPVM_OPCODE opcode_switch_info;
-                  memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
-
-                  opcode_switch_info.code = SPVM_OPCODE_C_CODE_TABLE_SWITCH;
-
-                  int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
-                  
-                  opcode_switch_info.operand0 = index_in;
-                  
-                  // Default
-                  opcode_switch_info.operand1 = 0;
-                  
-                  // Minimal
-                  opcode_switch_info.operand2 = switch_info->min;
-                  
-                  // Max
-                  opcode_switch_info.operand3 = switch_info->max;
-                  
-                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
-
-                  // Switch opcode index
-                  int32_t switch_opcode_index = opcode_array->length - 1;
-                  switch_info->opcode_index = switch_opcode_index;
-                  SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
-                  
-                  // Jump offset length
-                  int32_t jump_offset_length = switch_info->max - switch_info->min + 1;
-                  int32_t jump_offset_opcode_length;
-                  if (jump_offset_length % OPCODE_UNIT == 0) {
-                    jump_offset_opcode_length = jump_offset_length / OPCODE_UNIT;
-                  }
-                  else {
-                    jump_offset_opcode_length = (jump_offset_length / OPCODE_UNIT) + 1;
-                  }
-                  
-                  // Offsets
-                  {
-                    int32_t i;
-                    for (i = 0; i < jump_offset_opcode_length; i++) {
-                      SPVM_OPCODE opcode_jump_offset;
-                      memset(&opcode_jump_offset, 0, sizeof(SPVM_OPCODE));
-                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_jump_offset);
-                    }
-                  }
+                  // TABLE_SWITCH is no longer used
+                  assert(0);
                 }
                 // lookupswitch
                 else if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH) {
@@ -1571,8 +1672,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode_switch_info.operand1 = 0;
                   
                   // Case count
-                  int32_t length = switch_info->op_cases->length;
-                  opcode_switch_info.operand2 = length;
+                  int32_t case_length = switch_info->op_cases->length;
+                  opcode_switch_info.operand2 = case_length;
 
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
                   
@@ -1581,25 +1682,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   switch_info->opcode_index = switch_opcode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
                   
-                  int32_t size_of_match_offset_pairs = length * 2;
-                  
-                  // Jump offset length
-                  int32_t jump_offset_length = size_of_match_offset_pairs;
-                  int32_t jump_offset_opcode_length;
-                  if (jump_offset_length % OPCODE_UNIT == 0) {
-                    jump_offset_opcode_length = jump_offset_length / OPCODE_UNIT;
-                  }
-                  else {
-                    jump_offset_opcode_length = (jump_offset_length / OPCODE_UNIT) + 1;
-                  }
-                  
                   // Match-Offsets
                   {
                     int32_t i;
-                    for (i = 0; i < jump_offset_opcode_length; i++) {
-                      SPVM_OPCODE opcode_jump_offset;
-                      memset(&opcode_jump_offset, 0, sizeof(SPVM_OPCODE));
-                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_jump_offset);
+                    for (i = 0; i < case_length; i++) {
+                      SPVM_OPCODE opcode_case;
+                      memset(&opcode_case, 0, sizeof(SPVM_OPCODE));
+                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_case);
                     }
                   }
                 }
@@ -1616,46 +1705,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  // Default offset
-                  int32_t default_offset;
-                  if (!default_opcode_index) {
-                    default_offset = opcode_array->length - switch_opcode_index;
-                  }
-                  else {
-                    default_offset = default_opcode_index - switch_opcode_index;
-                  }
-                  ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand1 = default_offset;
-                  
-                  // min
-                  int32_t min = ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand2;
-                  
-                  // max
-                  int32_t max = ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand3;
-                  
-                  int32_t length = (int32_t)(max - min + 1);
-                  
-                  int32_t case_pos = 0;
-                  {
-                    int32_t i;
-                    for (i = 0; i < length; i++) {
-                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(switch_info->op_cases, case_pos);
-                      SPVM_OP* op_constant = op_case->first;
-                      if (op_constant->uv.constant->value.int_value - min == i) {
-                        // Case
-                        int32_t* case_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_opcode_indexes, case_pos);
-                        int32_t case_opcode_index = *case_opcode_index_ptr;
-                        int32_t case_offset = case_opcode_index - switch_opcode_index;
-                        
-                        *((int32_t*)((SPVM_OPCODE*)(opcode_array->values) + switch_opcode_index + 1) + i) = case_offset;
-                        
-                        case_pos++;
-                      }
-                      else {
-                        // Default
-                        *((int32_t*)((SPVM_OPCODE*)(opcode_array->values) + switch_opcode_index + 1) + i) = default_offset;
-                      }
-                    }
-                  }
+                  // TABLE_SWITCH is no longer used
+                  assert(0);
                 }
                 // lookupswitch
                 else if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH) {
@@ -1667,14 +1718,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   else {
                     default_offset = default_opcode_index - switch_opcode_index;
                   }
-                  ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand1 = default_offset;
+                  (opcode_array->values + switch_opcode_index)->operand1 = default_offset;
                   
-                  int32_t length = (int32_t) switch_info->op_cases->length;
+                  int32_t case_length = (int32_t) switch_info->op_cases->length;
                   
                   SPVM_DYNAMIC_ARRAY* ordered_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
                   {
                     int32_t i;
-                    for (i = 0; i < length; i++) {
+                    for (i = 0; i < case_length; i++) {
                       SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(switch_info->op_cases, i);
                       SPVM_DYNAMIC_ARRAY_push(ordered_op_cases, op_case);
                     }
@@ -1682,7 +1733,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_DYNAMIC_ARRAY* ordered_case_opcode_indexes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
                   {
                     int32_t i;
-                    for (i = 0; i < length; i++) {
+                    for (i = 0; i < case_length; i++) {
                       int32_t* case_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_opcode_indexes, i);
                       SPVM_DYNAMIC_ARRAY_push(ordered_case_opcode_indexes, case_opcode_index_ptr);
                     }
@@ -1691,10 +1742,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // sort by asc order
                   {
                     int32_t i;
-                    for (i = 0; i < length; i++) {
+                    for (i = 0; i < case_length; i++) {
                       int32_t j;
                       {
-                        for (j = i + 1; j < length; j++) {
+                        for (j = i + 1; j < case_length; j++) {
                           SPVM_OP* op_case_i = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, i);
                           SPVM_OP* op_case_j = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, j);
                           int32_t match_i = op_case_i->first->uv.constant->value.int_value;
@@ -1717,7 +1768,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   {
                     int32_t i;
-                    for (i = 0; i < length; i++) {
+                    for (i = 0; i < case_length; i++) {
                       SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, i);
                       SPVM_OP* op_constant = op_case->first;
                       int32_t match = op_constant->uv.constant->value.int_value;
@@ -1726,11 +1777,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t case_opcode_index = *case_opcode_index_ptr;
                       int32_t case_offset = case_opcode_index - switch_opcode_index;
                       
+                      SPVM_OPCODE* opcode_case = (opcode_array->values + switch_opcode_index + 1 + i);
+                      
+                      opcode_case->code = SPVM_OPCODE_C_CODE_CASE;
+                      
                       // Match
-                      *((int32_t*)((SPVM_OPCODE*)(opcode_array->values) + switch_opcode_index + 1) + (2 * i)) = match;
+                      opcode_case->operand0 = match;
 
                       // Offset
-                      *((int32_t*)((SPVM_OPCODE*)(opcode_array->values) + switch_opcode_index + 1) + (1 + 2 * i)) = case_offset;
+                      opcode_case->operand1 = case_offset;
                     }
                   }
                 }
@@ -1744,7 +1799,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = opcode_array->length - goto_last_opcode_index;
                   
-                  SPVM_OPCODE* opcode_goto = (((SPVM_OPCODE*)opcode_array->values) + goto_last_opcode_index);
+                  SPVM_OPCODE* opcode_goto = (opcode_array->values + goto_last_opcode_index);
                   opcode_goto->operand0 = goto_last_offset;
                 }
                 
@@ -1854,7 +1909,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = opcode_array->length - opcode_index;
                   
                   // Set jump offset
-                  SPVM_OPCODE* opcode_goto = (((SPVM_OPCODE*)opcode_array->values) + opcode_index);
+                  SPVM_OPCODE* opcode_goto = (opcode_array->values + opcode_index);
                   opcode_goto->operand0 = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF_FALSE) {
@@ -1868,7 +1923,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t jump_offset = opcode_array->length - opcode_index;
                   
                   // Set jump offset
-                  SPVM_OPCODE* opcode_goto = (((SPVM_OPCODE*)opcode_array->values) + opcode_index);
+                  SPVM_OPCODE* opcode_goto = (opcode_array->values + opcode_index);
                   opcode_goto->operand0 = jump_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
@@ -1881,7 +1936,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Last offset
                     int32_t goto_next_offset = opcode_array->length - goto_next_opcode_index;
                     
-                    SPVM_OPCODE* opcode_goto_next = (((SPVM_OPCODE*)opcode_array->values) + goto_next_opcode_index);
+                    SPVM_OPCODE* opcode_goto_next = (opcode_array->values + goto_next_opcode_index);
                     opcode_goto_next->operand0 = goto_next_offset;
                   }
                 }
@@ -1892,7 +1947,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Jump offset
                   int32_t goto_loop_start_offset = opcode_array->length - goto_loop_start_opcode_index;
                   
-                  SPVM_OPCODE* opcode_goto_loop_start = (((SPVM_OPCODE*)opcode_array->values) + goto_loop_start_opcode_index);
+                  SPVM_OPCODE* opcode_goto_loop_start = (opcode_array->values + goto_loop_start_opcode_index);
                   opcode_goto_loop_start->operand0 = goto_loop_start_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
@@ -1908,7 +1963,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t jump_offset_abs = opcode_array->length - sub->opcode_base;
                   
-                  SPVM_OPCODE* opcode_jump_offset_abs = (((SPVM_OPCODE*)opcode_array->values) + opcode_index);
+                  SPVM_OPCODE* opcode_jump_offset_abs = (opcode_array->values + opcode_index);
                   opcode_jump_offset_abs->operand0 = jump_offset_abs;
                 }
                 break;
@@ -1924,7 +1979,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Last offset
                   int32_t goto_last_offset = opcode_array->length - goto_last_opcode_index;
                   
-                  SPVM_OPCODE* opcode_goto_last = (((SPVM_OPCODE*)opcode_array->values) + goto_last_opcode_index);
+                  SPVM_OPCODE* opcode_goto_last = (opcode_array->values + goto_last_opcode_index);
                   opcode_goto_last->operand0 = goto_last_offset;
                 }
                 
@@ -1968,25 +2023,25 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_PRE_INC: {
-                if (!op_cur->is_var_assign_right) {
+                if (!op_cur->is_var_assign_from) {
                   SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, 1);
                 }
                 break;
               }
               case SPVM_OP_C_CODE_POST_INC: {
-                if (!op_cur->is_var_assign_right) {
+                if (!op_cur->is_var_assign_from) {
                   SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, 1);
                 }
                 break;
               }
               case SPVM_OP_C_CODE_PRE_DEC: {
-                if (!op_cur->is_var_assign_right) {
+                if (!op_cur->is_var_assign_from) {
                   SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, -1);
                 }
                 break;
               }
               case SPVM_OP_C_CODE_POST_DEC: {
-                if (!op_cur->is_var_assign_right) {
+                if (!op_cur->is_var_assign_from) {
                   SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, -1);
                 }
                 break;
@@ -2343,33 +2398,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 if (return_type->code == SPVM_TYPE_C_CODE_VOID) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.code = SPVM_OPCODE_C_CODE_RETURN_VOID;
+                  opcode.code = SPVM_OPCODE_C_CODE_RETURN;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
                 else {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  if (return_type->code == SPVM_TYPE_C_CODE_BYTE) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_BYTE;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_SHORT) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_SHORT;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_INT) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_INT;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_LONG) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_LONG;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_FLOAT;
-                  }
-                  else if (return_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_DOUBLE;
-                  }
-                  else {
-                    opcode.code = SPVM_OPCODE_C_CODE_RETURN_OBJECT;
-                  }
+                  opcode.code = SPVM_OPCODE_C_CODE_RETURN;
                   
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   
@@ -2410,6 +2445,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_CONSTANT_POOL_SUB constant_pool_sub;
       memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub->id], sizeof(SPVM_CONSTANT_POOL_SUB));
       constant_pool_sub.opcode_base = sub->opcode_base;
+      constant_pool_sub.opcode_length = sub->opcode_length;
       memcpy(&compiler->constant_pool->values[sub->id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
       
     }

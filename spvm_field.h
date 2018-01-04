@@ -12,6 +12,7 @@ struct SPVM_field {
   int32_t index;
   _Bool has_getter;
   _Bool has_setter;
+  int32_t byte_offset;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);

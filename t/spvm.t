@@ -50,9 +50,14 @@ use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'CORE';
 
-# Field
+# Start objects count
+my $start_objects_count = SPVM::get_objects_count();
+
 {
-  ok(SPVM::TestCase::object_field_set_and_get());
+  my $start_objects_count = SPVM::get_objects_count();
+  SPVM::TestCase::my_var_in_loop_free();
+  my $end_objects_count = SPVM::get_objects_count();
+  is($start_objects_count, $end_objects_count);
 }
 
 # time
@@ -74,6 +79,11 @@ use SPVM 'CORE';
   ok(SPVM::TestCase::package_var());
   my $end_objects_count = SPVM::get_objects_count();
   is($start_objects_count, $end_objects_count);
+}
+
+# Extension
+{
+  ok(SPVM::TestCase::Extension::native_api_get_set_field());
 }
 
 # Native Exception
@@ -213,9 +223,6 @@ use SPVM 'CORE';
     is($values->to_string, "あいうえお");
   }
 }
-
-# Start objects count
-my $start_objects_count = SPVM::get_objects_count();
 
 # Call subroutine
 {
@@ -357,17 +364,10 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::default_return_value_object());
 }
 
-# Switch
-{
-  ok(SPVM::TestCase::switch_nest());
-  ok(SPVM::TestCase::switch_lookup_switch());
-  ok(SPVM::TestCase::switch_table_switch());
-}
-
 # my variable
 {
   ok(SPVM::TestCase::my_var_initialized_zero());
-  ok(SPVM::TestCase::my_var_initialized_zero());
+  ok(SPVM::TestCase::my_var_block());
 }
 
 # Set field exception
@@ -1677,7 +1677,7 @@ is($end_objects_count, $start_objects_count);
 # Exception
 {
   eval { SPVM::TestCase::exception_zero_divide_int() }; my $line = __LINE__;
-  like($@, qr|\Q0 division (int / int)|);
+  like($@, qr|\Q0 division|);
   like($@, qr/\Q$file/);
   like($@, qr/$line/);
 }
@@ -1717,5 +1717,12 @@ is($end_objects_count, $start_objects_count);
   {
     ok(SPVM::TestCase::exception_croak_return_int_eval_catch());
   }
+}
+
+# Switch
+{
+  ok(SPVM::TestCase::switch_nest());
+  ok(SPVM::TestCase::switch_lookup_switch());
+  ok(SPVM::TestCase::switch_table_switch());
 }
 

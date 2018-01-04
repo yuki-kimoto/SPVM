@@ -32,17 +32,17 @@ use Carp 'confess';
 our $VERSION = '0.0302';
 
 our $COMPILER;
+our $API;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
-our $API;
-our @INLINE_DLL_FILES;
 
-our @PACKAGE_INFOS_INLINE;
+require XSLoader;
+XSLoader::load('SPVM', $VERSION);
 
 sub import {
   my ($class, $package_name) = @_;
   
-  # Add package infomations
+  # Add package informations
   if (defined $package_name) {
     unless ($SPVM::PACKAGE_INFO_SYMTABLE{$package_name}) {
       my ($file, $line) = (caller)[1, 2];
@@ -176,8 +176,15 @@ sub bind_native_subs {
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
-  require XSLoader;
-  XSLoader::load('SPVM', $VERSION);
+  unless ($ENV{SPVM_NO_COMPILE}) {
+    my $compile_success = compile_spvm();
+    unless ($compile_success) {
+      croak("SPVM compile error");
+    }
+  }
+}
+
+sub compile_spvm {
   
   # Load standard library
   my @dll_file_bases = qw(
@@ -203,28 +210,32 @@ CHECK {
   }
   
   # Compile SPVM source code
-  compile();
+  my $compile_success = compile();
   
-  # Bind native subroutines
-  bind_native_subs();
-  
-  # Build bytecode
-  build_constant_pool();
-  
-  # Build opcode
-  build_opcode();
+  if ($compile_success) {
+    # Bind native subroutines
+    bind_native_subs();
+    
+    # Build bytecode
+    build_constant_pool();
+    
+    # Build opcode
+    build_opcode();
 
-  # Build JIT code
-  build_jitcode();
-  
-  # Build run-time
-  build_runtime();
-  
-  # Build SPVM subroutines
-  build_spvm_subs();
+    # Build run-time
+    build_runtime();
+
+    # Build JIT code
+    build_jitcode();
+
+    # Build SPVM subroutines
+    build_spvm_subs();
+  }
   
   # Free compiler
   free_compiler();
+  
+  return $compile_success;
 }
 
 sub new_byte_array_len {

@@ -12,7 +12,6 @@
 #include "spvm_opcode.h"
 #include "spvm_object.h"
 #include "spvm_type.h"
-#include "spvm_value.h"
 #include "spvm_runtime.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
@@ -24,7 +23,7 @@
 #define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
 #define SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, length))
 #define SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, ref_count))
-#define SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET ((int32_t)offsetof(SPVM_RUNTIME, exception))
+#define runtime_EXCEPTION_BYTE_OFFSET ((int32_t)offsetof(SPVM_RUNTIME, exception))
 #define SPVM_INFO_TYPE_CODE_VOID (SPVM_TYPE_C_CODE_VOID)
 #define SPVM_INFO_TYPE_CODE_BYTE (SPVM_TYPE_C_CODE_BYTE)
 #define SPVM_INFO_TYPE_CODE_SHORT (SPVM_TYPE_C_CODE_SHORT)
@@ -33,87 +32,72 @@
 #define SPVM_INFO_TYPE_CODE_FLOAT (SPVM_TYPE_C_CODE_FLOAT)
 #define SPVM_INFO_TYPE_CODE_DOUBLE (SPVM_TYPE_C_CODE_DOUBLE)
 
+#define SPVM_INLINE_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET)))
 #define SPVM_INLINE_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)
 #define SPVM_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
-#define SPVM_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))
+#define SPVM_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)runtime + runtime_EXCEPTION_BYTE_OFFSET))
 #define SPVM_INLINE_SET_EXCEPTION_NULL() \
   do { \
-    if ((*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)) != NULL) { \
-      api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))); \
+    if ((*(SPVM_API_OBJECT**)((intptr_t)runtime + runtime_EXCEPTION_BYTE_OFFSET)) != NULL) { \
+      api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)runtime + runtime_EXCEPTION_BYTE_OFFSET))); \
     } \
-    (*(SPVM_API_OBJECT**)((intptr_t)SPVM_INFO_RUNTIME + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)) = NULL; \
+    (*(SPVM_API_OBJECT**)((intptr_t)runtime + runtime_EXCEPTION_BYTE_OFFSET)) = NULL; \
   } \
   while (0) \
 
 #define SPVM_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
 
-SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args) {
+SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
   
   // Runtime
-  SPVM_RUNTIME* SPVM_INFO_RUNTIME = SPVM_RUNTIME_API_get_runtime(api);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   
   // Constant pool
-  int32_t* SPVM_INFO_CONSTANT_POOL = SPVM_INFO_RUNTIME->constant_pool;
+  int32_t* constant_pool = runtime->constant_pool;
 
   // Constant pool sub
-  SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_XXX = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[sub_id];
-  
-  // Package variables
-  SPVM_VALUE* SPVM_INFO_PACKAGE_VARS = SPVM_INFO_RUNTIME->package_vars;
-
-  // Debug
-  int32_t SPVM_INFO_DEBUG = SPVM_INFO_RUNTIME->debug ? 1 : 0;
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
   // Subroutine object my length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_length;
+  int32_t sub_object_mys_length = constant_pool_sub->object_mys_length;
   
   // Subroutine object my base index
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_mys_base;
-  
-  // Subroutine name id
-  int32_t SPVM_INFO_SUB_XXX_ABS_NAME_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->abs_name_id;
-  
-  // Subroutine file name id
-  int32_t SPVM_INFO_SUB_XXX_FILE_NAME_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->file_name_id;
+  int32_t sub_object_mys_base = constant_pool_sub->object_mys_base;
   
   // Subroutine return type id
-  int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_ID = SPVM_INFO_CONSTANT_POOL_SUB_XXX->return_type_id;
+  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
   
   // Subroutine is native
-  int32_t SPVM_INFO_SUB_XXX_IS_NATIVE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->is_native;
+  int32_t sub_is_native = constant_pool_sub->is_native;
   
   // Subroutine object args length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_args_length;
+  int32_t sub_object_args_length = constant_pool_sub->object_args_length;
 
   // Subroutine object args length
-  int32_t SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->object_args_base;
+  int32_t sub_object_args_base = constant_pool_sub->object_args_base;
   
   // Bytecodes
-  SPVM_OPCODE* SPVM_INFO_OPCODES = SPVM_INFO_RUNTIME->opcodes;
+  SPVM_OPCODE* opcodes = runtime->opcodes;
   
   // Opcode base
-  int32_t SPVM_INFO_SUB_XXX_OPCODE_BASE = SPVM_INFO_CONSTANT_POOL_SUB_XXX->opcode_base;
+  int32_t sub_opcode_base = constant_pool_sub->opcode_base;
   
   // Args length
-  int32_t args_length = SPVM_INFO_CONSTANT_POOL_SUB_XXX->args_length;
-  
-  // Lexical varialbe length
-  int32_t SPVM_INFO_SUB_XXX_MYS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_XXX->mys_length;
+  int32_t args_length = constant_pool_sub->args_length;
   
   // Native address
-  void* SPVM_INFO_SUB_XXX_NATIVE_ADDRESS = SPVM_INFO_CONSTANT_POOL_SUB_XXX->native_address;
+  void* sub_native_address = constant_pool_sub->native_address;
   
   // Constant pool type
-  SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_XXX_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_RETURN_TYPE_ID];
+  SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
 
   // Return type code
-  int32_t SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE = SPVM_INFO_SUB_XXX_RETURN_TYPE->code;
+  int32_t sub_return_type_code = sub_return_type->code;
   
   // Call stack
-  SPVM_VALUE vars[65535];
-  memset(vars, 0, sizeof(SPVM_VALUE) * SPVM_INFO_SUB_XXX_MYS_LENGTH);
+  SPVM_API_VALUE vars[65535];
   
   // Eval stack
   int32_t eval_stack[255];
@@ -122,7 +106,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   int32_t eval_stack_top = -1;
   
   // Call subroutine argument stack
-  SPVM_VALUE call_sub_arg_stack[255];
+  SPVM_API_VALUE call_sub_arg_stack[255];
   
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = -1;
@@ -132,80 +116,81 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
   
   // Condition flag
   register int32_t condition_flag = 0;
+  
+  int32_t throw_exception = 0;
 
   // Return value
-  SPVM_VALUE return_value;
-  memset(&return_value, 0, sizeof(SPVM_VALUE));
+  SPVM_API_VALUE return_value;
   
   // Copy arguments
-  memcpy(vars, args, args_length * sizeof(SPVM_VALUE));
-  
-  // Set exception to NULL;
-  SPVM_INLINE_SET_EXCEPTION_NULL();
+  memcpy(vars, args, args_length * sizeof(SPVM_API_VALUE));
   
   // Call native sub
-  if (SPVM_INFO_SUB_XXX_IS_NATIVE) {
+  if (sub_is_native) {
+    // Set exception to NULL;
+    SPVM_INLINE_SET_EXCEPTION_NULL();
+
     // Call native subroutine
-    if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_VOID) {
-      void (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      (*native_address)(api, (SPVM_VALUE*)vars);
+    if (sub_return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
+      void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+      (*native_address)(api, (SPVM_API_VALUE*)vars);
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
-      int8_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int8_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_BYTE) {
+      int8_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+      int8_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.byte_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
-      int16_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int16_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_SHORT) {
+      int16_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+      int16_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.short_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
-      int32_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int32_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_INT) {
+      int32_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+      int32_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.int_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
-      int64_t (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      int64_t return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_LONG) {
+      int64_t (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+      int64_t return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.long_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
-      float (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      float return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_FLOAT) {
+      float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+      float return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.float_value = return_value_native;
     }
-    else if (SPVM_INFO_SUB_XXX_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
-      double (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      double return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_DOUBLE) {
+      double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+      double return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.double_value = return_value_native;
     }
     else {
-      SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_VALUE*) = SPVM_INFO_SUB_XXX_NATIVE_ADDRESS;
-      SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_VALUE*)vars);
+      SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+      SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_API_VALUE*)vars);
       return_value.object_value = return_value_native;
     }
     return return_value;
   }
-
+  
   // Call normal sub
   // If arg is object, increment reference count
   {
     int32_t i;
-    for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-      int32_t arg_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_ARGS_BASE + i];
+    for (i = 0; i < sub_object_args_length; i++) {
+      int32_t arg_index = constant_pool[sub_object_args_base + i];
       
-      SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[arg_index].object_value;
+      SPVM_API_OBJECT* object = vars[arg_index].object_value;
       if (object != NULL) {
         SPVM_INLINE_INC_REF_COUNT(object);
       }
     }
   }
   
-  register int32_t opcode_index = SPVM_INFO_SUB_XXX_OPCODE_BASE;
+  register int32_t opcode_index = sub_opcode_base;
   
   while (1) {
-    SPVM_OPCODE* opcode = &(SPVM_INFO_OPCODES[opcode_index]);
+    SPVM_OPCODE* opcode = &(opcodes[opcode_index]);
     
     switch (opcode->code) {
       case SPVM_OPCODE_C_CODE_NOP:
@@ -424,8 +409,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           = vars[opcode->operand1].double_value * vars[opcode->operand2].double_value;
         break;
       case SPVM_OPCODE_C_CODE_DIVIDE_BYTE:
-        if (vars[opcode->operand2].byte_value == 0) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "0 division (byte / byte)", 0);
+        if (__builtin_expect(vars[opcode->operand2].byte_value == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
@@ -435,8 +420,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           break;
         }
       case SPVM_OPCODE_C_CODE_DIVIDE_SHORT:
-        if (vars[opcode->operand2].short_value == 0) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "0 division (short / short)", 0);
+        if (__builtin_expect(vars[opcode->operand2].short_value == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
@@ -446,8 +431,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           break;
         }
       case SPVM_OPCODE_C_CODE_DIVIDE_INT:
-        if (vars[opcode->operand2].int_value == 0) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "0 division (int / int)", 0);
+        if (__builtin_expect(vars[opcode->operand2].int_value == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
@@ -457,8 +442,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
           break;
         }
       case SPVM_OPCODE_C_CODE_DIVIDE_LONG:
-        if (vars[opcode->operand2].long_value == 0) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "0 division (long / long)", 0);
+        if (__builtin_expect(vars[opcode->operand2].long_value == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
@@ -637,12 +622,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_CODE_INC_LONG:
         vars[opcode->operand0].long_value += (int64_t)(opcode->operand1);
         break;
-      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT:
-        memcpy(&vars[opcode->operand0], &SPVM_INFO_CONSTANT_POOL[opcode->operand1], sizeof(int32_t));
-        break;
-      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT2:
-        memcpy(&vars[opcode->operand0], &SPVM_INFO_CONSTANT_POOL[opcode->operand1], sizeof(int64_t));
-        break;
       case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_LONG:
         vars[opcode->operand0].long_value = (int64_t)vars[opcode->operand1].int_value;
         break;
@@ -754,38 +733,73 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_CODE_UNDEF:
         vars[opcode->operand0].object_value = NULL;
         break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0:
+        *(int8_t*)&vars[opcode->operand0] = (int8_t)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT_0:
+        *(int16_t*)&vars[opcode->operand0] = (int16_t)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT_0:
+        *(int32_t*)&vars[opcode->operand0] = (int32_t)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG_0:
+        *(int64_t*)&vars[opcode->operand0] = (int64_t)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT_0:
+        *(float*)&vars[opcode->operand0] = (float)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE_0:
+        *(double*)&vars[opcode->operand0] = (double)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE:
+        *(int8_t*)&vars[opcode->operand0] = *(int8_t*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT:
+        *(int16_t*)&vars[opcode->operand0] = *(int16_t*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT:
+        *(int32_t*)&vars[opcode->operand0] = *(int32_t*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG:
+        *(int64_t*)&vars[opcode->operand0] = *(int64_t*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT:
+        *(float*)&vars[opcode->operand0] = *(float*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE:
+        *(double*)&vars[opcode->operand0] = *(double*)&constant_pool[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_BYTE: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
-        if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "BYTE_ARRAY must not be undef(BYTE_ARRAY->[INDEX])", 0);
+        if (__builtin_expect(array == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(BYTE_ARRAY->[INDEX])", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
           else {
-            vars[opcode->operand0].byte_value
-              = *(int8_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
+            vars[opcode->operand0].byte_value = *(int8_t*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
             break;
           }
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_SHORT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "SHORT_ARRAY must not be undef(SHORT_ARRAY->[INDEX])", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(SHORT_ARRAY->[INDEX])", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -797,16 +811,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_INT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "INT_ARRAY must not be undef(INT_ARRAY->[INDEX])", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(INT_ARRAY->[INDEX])", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -817,16 +831,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_LONG: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "LONG_ARRAY must not be undef(LONG_ARRAY->[INDEX])", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(LONG_ARRAY->[INDEX])", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -837,16 +851,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_FLOAT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "FLOAT_ARRAY must not be undef(FLOAT_ARRAY->[INDEX])", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(FLOAT_ARRAY->[INDEX])", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -857,16 +871,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_DOUBLE: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "DOUBLE_ARRAY must not be undef(DOUBLE_ARRAY->[INDEX])", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(DOUBLE_ARRAY->[INDEX])", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -877,36 +891,36 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_LOAD_OBJECT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand1].object_value;
         int32_t index = vars[opcode->operand2].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "OBJECT_ARRAY must not be undef(OBJECT_ARRAY->[INDEX])", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(OBJECT_ARRAY->[INDEX])", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
           else {
-            vars[opcode->operand0] = *(SPVM_VALUE*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * index);
+            vars[opcode->operand0].object_value = *(SPVM_API_OBJECT**)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
             break;
           }
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_STORE_BYTE: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand0].object_value;
         int32_t index = vars[opcode->operand1].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "BYTE_ARRAY must not be undef(BYTE_ARRAY->[INDEX] = VALUE)", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(BYTE_ARRAY->[INDEX] = VALUE)", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -917,16 +931,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_STORE_SHORT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand0].object_value;
         int32_t index = vars[opcode->operand1].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "SHORT_ARRAY must not be undef(SHORT_ARRAY->[INDEX] = VALUE)", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(SHORT_ARRAY->[INDEX] = VALUE)", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -937,16 +951,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_STORE_INT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand0].object_value;
         int32_t index = vars[opcode->operand1].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "INT_ARRAY must not be undef(INT_ARRAY->[INDEX] = VALUE)", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(INT_ARRAY->[INDEX] = VALUE)", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -957,16 +971,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_STORE_LONG: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand0].object_value;
         int32_t index = vars[opcode->operand1].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "LONG_ARRAY must not be undef(LONG_ARRAY->[INDEX] = VALUE)", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(LONG_ARRAY->[INDEX] = VALUE)", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -977,16 +991,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_STORE_FLOAT: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand0].object_value;
         int32_t index = vars[opcode->operand1].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "FLOAT_ARRAY must not be undef(FLOAT_ARRAY->[INDEX] = VALUE)", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(FLOAT_ARRAY->[INDEX] = VALUE)", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -997,16 +1011,16 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
       }
       case SPVM_OPCODE_C_CODE_ARRAY_STORE_DOUBLE: {
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand0].object_value;
         int32_t index = vars[opcode->operand1].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "DOUBLE_ARRAY must not be undef(DOUBLE_ARRAY->[INDEX] = VALUE)", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(DOUBLE_ARRAY->[INDEX] = VALUE)", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
@@ -1018,25 +1032,30 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_CODE_ARRAY_STORE_OBJECT: {
         
-        SPVM_API_OBJECT* array = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
+        SPVM_API_OBJECT* array = vars[opcode->operand0].object_value;
         int32_t index = vars[opcode->operand1].int_value;
         if (__builtin_expect(!array, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "OBJECT_ARRAY must not be undef(OBJECT_ARRAY->[INDEX] = VALUE)", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
-            SPVM_API_OBJECT* exception = api->new_string(api, "INDEX is out of range(OBJECT_ARRAY->[INDEX] = VALUE)", 0);
+            SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             goto label_SPVM_OPCODE_C_CODE_CROAK;
           }
           else {
-            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_VALUE) * index);
+            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_OBJECT*) * index);
             
             // Decrement old object reference count
             if (*object_address != NULL) {
-              api->dec_ref_count(api, *object_address);
+              if (SPVM_INLINE_GET_REF_COUNT(*object_address) > 1) {
+                SPVM_INLINE_DEC_REF_COUNT_ONLY(*object_address);
+              }
+              else {
+                api->dec_ref_count(api, *object_address);
+              }
             }
             
             // Store address
@@ -1063,7 +1082,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_CODE_DEC_REF_COUNT: {
         // Decrement reference count
         if (vars[opcode->operand0].object_value != NULL) {
-          api->dec_ref_count(api, vars[opcode->operand0].object_value);
+          if (SPVM_INLINE_GET_REF_COUNT(vars[opcode->operand0].object_value) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(vars[opcode->operand0].object_value);
+          }
+          else {
+            api->dec_ref_count(api, vars[opcode->operand0].object_value);
+          }
         }
         break;
       }
@@ -1074,7 +1098,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         SPVM_API_OBJECT* object = api->new_object(api, type_id);
         
         // Push object
-        vars[opcode->operand0].object_value = (SPVM_API_OBJECT*)object;
+        vars[opcode->operand0].object_value = object;
         
         break;
       }
@@ -1084,11 +1108,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t length = vars[opcode->operand1].int_value;
         
         SPVM_API_OBJECT* object = api->new_byte_array(api, length);
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
         
         // Set array
         vars[opcode->operand0].object_value = object;
@@ -1101,11 +1120,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         SPVM_API_OBJECT* object = api->new_short_array(api, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set array
         vars[opcode->operand0].object_value = object;
         break;
@@ -1116,11 +1130,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         int32_t length = vars[opcode->operand1].int_value;
         
         SPVM_API_OBJECT* object = api->new_int_array(api, length);
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
         
         // Set array
         vars[opcode->operand0].object_value = object;
@@ -1133,11 +1142,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         SPVM_API_OBJECT* object = api->new_long_array(api, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set array
         vars[opcode->operand0].object_value = object;
         break;
@@ -1149,11 +1153,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         SPVM_API_OBJECT* object = api->new_float_array(api, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set array
         vars[opcode->operand0].object_value = object;
         break;
@@ -1165,28 +1164,18 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         
         SPVM_API_OBJECT* object = api->new_double_array(api, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set array
         vars[opcode->operand0].object_value = object;
         break;
       }
       case SPVM_OPCODE_C_CODE_NEW_OBJECT_ARRAY: {
-        int32_t element_type_id = opcode->operand0;
+        int32_t element_type_id = opcode->operand1;
         
         // length
         int32_t length = vars[opcode->operand2].int_value;
         
         SPVM_API_OBJECT* object = api->new_object_array(api, element_type_id, length);
         
-        if (__builtin_expect(object == NULL, 0)) {
-          // Throw exception
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-
         // Set object
         vars[opcode->operand0].object_value = object;
         break;
@@ -1194,7 +1183,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_CODE_NEW_STRING: {
         int32_t name_id = opcode->operand1;
         
-        SPVM_API_OBJECT* string = api->new_string(api, (char*)&SPVM_INFO_CONSTANT_POOL[name_id + 1], SPVM_INFO_CONSTANT_POOL[name_id]);
+        SPVM_API_OBJECT* string = api->new_string(api, (char*)&constant_pool[name_id + 1], constant_pool[name_id]);
 
         // Set string
         vars[opcode->operand0].object_value = string;
@@ -1208,144 +1197,283 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           vars[opcode->operand0].int_value = *(int32_t*)((intptr_t)vars[opcode->operand1].object_value + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET);
-          break;
         }
+        break;
       case SPVM_OPCODE_C_CODE_GET_FIELD_BYTE: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* object = vars[opcode->operand1].object_value;
         
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-        
-        vars[opcode->operand0].byte_value = *(int8_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        else {
+          vars[opcode->operand0].byte_value = *(int8_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+        }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_SHORT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* object = vars[opcode->operand1].object_value;
         
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-        
-        vars[opcode->operand0].short_value = *(int16_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        else {
+          vars[opcode->operand0].short_value = *(int16_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+        }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_INT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* object = vars[opcode->operand1].object_value;
         
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-        
-        vars[opcode->operand0].int_value = *(int32_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        else {
+          vars[opcode->operand0].int_value = *(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+        }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_LONG: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* object = vars[opcode->operand1].object_value;
         
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-        
-        vars[opcode->operand0].long_value = *(int64_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        else {
+          vars[opcode->operand0].long_value = *(int64_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+        }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_FLOAT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* object = vars[opcode->operand1].object_value;
         
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-        
-        vars[opcode->operand0].float_value = *(float*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        else {
+          vars[opcode->operand0].float_value = *(float*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+        }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_DOUBLE: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* object = vars[opcode->operand1].object_value;
         
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-        
-        vars[opcode->operand0].double_value = *(double*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        else {
+          vars[opcode->operand0].double_value = *(double*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+        }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_OBJECT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand1].object_value;
+        SPVM_API_OBJECT* object = vars[opcode->operand1].object_value;
         
         int32_t field_id = opcode->operand2;
         
         // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_OPCODE_C_CODE_CROAK;
+        }
+        else {
+          vars[opcode->operand0].object_value = *(SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_SET_FIELD_BYTE: {
+        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
+        int32_t field_id = opcode->operand1;
+        
+        // Index
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].object_value = *(SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
+        *(int8_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].byte_value;
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_SET_FIELD_SHORT: {
+        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
+        int32_t field_id = opcode->operand1;
+        
+        // Index
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_OPCODE_C_CODE_CROAK;
+        }
+        
+        *(int16_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].short_value;
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_SET_FIELD_INT: {
+        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
+        int32_t field_id = opcode->operand1;
+        
+        // Index
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_OPCODE_C_CODE_CROAK;
+        }
+        
+        *(int32_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].int_value;
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_SET_FIELD_LONG: {
+        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
+        int32_t field_id = opcode->operand1;
+        
+        // Index
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_OPCODE_C_CODE_CROAK;
+        }
+        
+        *(int64_t*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].long_value;
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_SET_FIELD_FLOAT: {
+        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
+        int32_t field_id = opcode->operand1;
+        
+        // Index
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_OPCODE_C_CODE_CROAK;
+        }
+        
+        *(float*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].float_value;
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_SET_FIELD_DOUBLE: {
+        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
+        int32_t field_id = opcode->operand1;
+        
+        // Index
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_OPCODE_C_CODE_CROAK;
+        }
+        
+        *(double*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = vars[opcode->operand2].double_value;
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT: {
+        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
+        int32_t field_id = opcode->operand1;
+
+        // Index
+        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+        int32_t field_byte_offset = constant_pool_field->byte_offset;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
+          api->set_exception(api, exception);
+          goto label_SPVM_OPCODE_C_CODE_CROAK;
+        }
+        
+        SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+        
+        if(*field_address != NULL) {
+          // If object is weak, unweaken
+          if (SPVM_INLINE_ISWEAK(*field_address)) {
+            api->unweaken(api, field_address);
+          }
+          
+          if (SPVM_INLINE_GET_REF_COUNT(*field_address) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(*field_address);
+          }
+          else {
+            api->dec_ref_count(api, *field_address);
+          }
+        }
+        
+        *field_address = vars[opcode->operand2].object_value;
+        
+        if(*field_address != NULL) {
+          SPVM_INLINE_INC_REF_COUNT(*field_address);
+        }
         break;
       }
       case SPVM_OPCODE_C_CODE_WEAKEN_FIELD_OBJECT: {
         
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
+        SPVM_API_OBJECT* object = vars[opcode->operand0].object_value;
         int32_t field_id = opcode->operand1;
         
         api->weaken_object_field(api, object, field_id);
@@ -1355,277 +1483,67 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         break;
       }
-      case SPVM_OPCODE_C_CODE_SET_FIELD_BYTE: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
-        int32_t field_id = opcode->operand1;
-        int8_t value = vars[opcode->operand2].byte_value;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        
-        *(int8_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_SET_FIELD_SHORT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
-        int32_t field_id = opcode->operand1;
-        int16_t value = vars[opcode->operand2].short_value;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        
-        *(int16_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_SET_FIELD_INT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
-        int32_t field_id = opcode->operand1;
-        int32_t value = vars[opcode->operand2].int_value;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        
-        *(int32_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_SET_FIELD_LONG: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
-        int32_t field_id = opcode->operand1;
-        int64_t value = vars[opcode->operand2].long_value;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        
-        *(int64_t*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_SET_FIELD_FLOAT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
-        int32_t field_id = opcode->operand1;
-        float value = vars[opcode->operand2].float_value;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        
-        *(float*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_SET_FIELD_DOUBLE: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
-        int32_t field_id = opcode->operand1;
-        double value = vars[opcode->operand2].double_value;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        
-        *(double*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET) = value;
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT: {
-        SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[opcode->operand0].object_value;
-        int32_t field_id = opcode->operand1;
-        SPVM_API_OBJECT* value = vars[opcode->operand2].object_value;
-
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* SPVM_INFO_FIELD_XXX_YYY = (SPVM_CONSTANT_POOL_FIELD*)&SPVM_INFO_CONSTANT_POOL[field_id];
-        int32_t SPVM_INFO_FIELD_XXX_YYY_INDEX = SPVM_INFO_FIELD_XXX_YYY->index;
-        int32_t SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET = SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_VALUE) * SPVM_INFO_FIELD_XXX_YYY_INDEX;
-        
-        if (__builtin_expect(object == NULL, 0)) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef(get_byte_field).", 0);
-          api->set_exception(api, exception);
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        
-        SPVM_API_VALUE* field_address = (SPVM_API_VALUE*)((intptr_t)object + SPVM_INFO_FIELD_XXX_YYY_BYTE_OFFSET);
-        
-        if((*field_address).object_value != NULL) {
-          // If object is weak, unweaken
-          if (SPVM_INLINE_ISWEAK((*field_address).object_value)) {
-            api->unweaken(api, (SPVM_API_OBJECT**)field_address);
-          }
-          api->dec_ref_count(api, (*field_address).object_value);
-        }
-        
-        (*field_address).object_value = value;
-        
-        if((*field_address).object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT((*field_address).object_value);
-        }
-        break;
-      }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_STRING: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        SPVM_API_OBJECT* string2 = vars[opcode->operand2].object_value;
+        vars[opcode->operand0].object_value = api->concat_string_string(api, vars[opcode->operand1].object_value, vars[opcode->operand2].object_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_string(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_BYTE: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        int8_t string2 = vars[opcode->operand2].byte_value;
+        vars[opcode->operand0].object_value = api->concat_string_byte(api, vars[opcode->operand1].object_value, vars[opcode->operand2].byte_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_byte(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
 
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_SHORT: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        int16_t string2 = vars[opcode->operand2].short_value;
+        vars[opcode->operand0].object_value = api->concat_string_short(api, vars[opcode->operand1].object_value, vars[opcode->operand2].short_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_short(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-
-        vars[opcode->operand0].object_value = string3;
+        
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_INT: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        int32_t string2 = vars[opcode->operand2].int_value;
+        vars[opcode->operand0].object_value = api->concat_string_int(api, vars[opcode->operand1].object_value, vars[opcode->operand2].int_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_int(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
 
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_LONG: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        int64_t string2 = vars[opcode->operand2].long_value;
+        vars[opcode->operand0].object_value = api->concat_string_long(api, vars[opcode->operand1].object_value, vars[opcode->operand2].long_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_long(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
 
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_FLOAT: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        float string2 = vars[opcode->operand2].float_value;
+       vars[opcode->operand0].object_value = api->concat_string_float(api, vars[opcode->operand1].object_value, vars[opcode->operand2].float_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_float(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
 
-        vars[opcode->operand0].object_value = string3;
         break;
       }
       case SPVM_OPCODE_C_CODE_CONCAT_STRING_DOUBLE: {
-        SPVM_API_OBJECT* string1 = vars[opcode->operand1].object_value;
-        double string2 = vars[opcode->operand2].double_value;
+        vars[opcode->operand0].object_value = api->concat_string_double(api, vars[opcode->operand1].object_value, vars[opcode->operand2].double_value);
         
-        SPVM_API_OBJECT* string3 = api->concat_string_double(api, string1, string2);
-        
-        if (string3 == NULL) {
+        if (vars[opcode->operand0].object_value == NULL) {
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         
-        vars[opcode->operand0].object_value = string3;
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR: {
-        // Get subroutine ID
-        int32_t package_var_id = opcode->operand1;
-        
-        vars[opcode->operand0] = SPVM_INFO_PACKAGE_VARS[package_var_id];
-        
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR: {
-        // Get subroutine ID
-        int32_t package_var_id = opcode->operand0;
-
-        SPVM_INFO_PACKAGE_VARS[package_var_id] = vars[opcode->operand1];
-
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
-        // Get subroutine ID
-        int32_t package_var_id = opcode->operand0;
-        
-        // Decrement reference count
-        if (SPVM_INFO_PACKAGE_VARS[package_var_id].object_value != NULL) {
-          api->dec_ref_count(api, SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
-        }
-        
-        // Store object
-        SPVM_INFO_PACKAGE_VARS[package_var_id].object_value = vars[opcode->operand1].object_value;
-        
-        // Increment new value reference count
-        if (SPVM_INFO_PACKAGE_VARS[package_var_id].object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT(SPVM_INFO_PACKAGE_VARS[package_var_id].object_value);
-        }
-
         break;
       }
       case SPVM_OPCODE_C_CODE_PUSH_EVAL: {
@@ -1643,387 +1561,177 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR: {
-        vars[opcode->operand0].object_value = (SPVM_API_OBJECT*)SPVM_INLINE_GET_EXCEPTION();
+        vars[opcode->operand0].object_value = SPVM_INLINE_GET_EXCEPTION();
         
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_EXCEPTION_VAR: {
         
-        api->set_exception(api, (SPVM_API_OBJECT*)vars[opcode->operand0].object_value);
+        api->set_exception(api, vars[opcode->operand0].object_value);
         
         break;
       }
-      case SPVM_OPCODE_C_CODE_PUSH_ARG:
-        call_sub_arg_stack_top++;
-        call_sub_arg_stack[call_sub_arg_stack_top].int_value = opcode->operand0;
-        
-        break;
-      case SPVM_OPCODE_C_CODE_CALL_SUB:
-      {
+      case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_BYTE: {
         // Get subroutine ID
-        int32_t call_sub_id = opcode->operand1;
-
-        // Constant pool sub
-        SPVM_CONSTANT_POOL_SUB* SPVM_INFO_CONSTANT_POOL_SUB_YYY = (SPVM_CONSTANT_POOL_SUB*)&SPVM_INFO_CONSTANT_POOL[call_sub_id];
+        int32_t package_var_id = opcode->operand1;
         
-        // Call subroutine return type id
-        int32_t SPVM_INFO_SUB_YYY_RETURN_TYPE_ID = SPVM_INFO_CONSTANT_POOL_SUB_YYY->return_type_id;
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        // Constant pool type
-        SPVM_CONSTANT_POOL_TYPE* SPVM_INFO_SUB_YYY_RETURN_TYPE = (SPVM_CONSTANT_POOL_TYPE*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_YYY_RETURN_TYPE_ID];
+        vars[opcode->operand0].byte_value = *(int8_t*)&package_vars[package_var_id];
         
-        // Return type code
-        int32_t SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE = SPVM_INFO_SUB_YYY_RETURN_TYPE->code;
-        
-        // Subroutine argument length
-        int32_t SPVM_INFO_SUB_YYY_ARGS_LENGTH = SPVM_INFO_CONSTANT_POOL_SUB_YYY->args_length;
-
-        // Subroutine argument length
-        int32_t SPVM_INFO_SUB_YYY_IS_VOID = SPVM_INFO_CONSTANT_POOL_SUB_YYY->is_void;
-        
-        call_sub_arg_stack_top -= SPVM_INFO_SUB_YYY_ARGS_LENGTH;
-        
-        SPVM_VALUE args[255];
-        {
-          int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_YYY_ARGS_LENGTH; i++) {
-            int32_t var_index = call_sub_arg_stack[call_sub_arg_stack_top + 1 + i].int_value;
-            args[i] = vars[var_index];
-          }
-        }
-        
-        // Call subroutine
-        if (SPVM_INFO_SUB_YYY_IS_VOID) {
-          api->call_void_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
-        }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_BYTE) {
-          vars[opcode->operand0].byte_value = api->call_byte_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
-        }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_SHORT) {
-          vars[opcode->operand0].short_value = api->call_short_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
-        }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_INT) {
-          vars[opcode->operand0].int_value = api->call_int_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
-        }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_LONG) {
-          vars[opcode->operand0].long_value = api->call_long_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
-        }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_FLOAT) {
-          vars[opcode->operand0].float_value = api->call_float_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
-        }
-        else if (SPVM_INFO_SUB_YYY_RETURN_TYPE_CODE == SPVM_INFO_TYPE_CODE_DOUBLE) {
-          vars[opcode->operand0].double_value = api->call_double_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
-        }
-        else {
-          vars[opcode->operand0].object_value = api->call_object_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
-        }
-        
-        if (SPVM_INLINE_GET_EXCEPTION()) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
-        }
-        else {
-          // Next operation
-          opcode_index++;
-        }
-        
-        continue;
+        break;
       }
-      case SPVM_OPCODE_C_CODE_RETURN_BYTE:
-      case SPVM_OPCODE_C_CODE_RETURN_SHORT:
-      case SPVM_OPCODE_C_CODE_RETURN_INT:
-      case SPVM_OPCODE_C_CODE_RETURN_LONG:
-      case SPVM_OPCODE_C_CODE_RETURN_FLOAT:
-      case SPVM_OPCODE_C_CODE_RETURN_DOUBLE:
-      {
-        // Get return value
-        return_value = vars[opcode->operand0];
-          
-        // Decrement my vars which is arguments - decrement only
-        {
-          int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
-            SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-            }
-          }
-        }
-
-        // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
-        {
-          int32_t i;
-          for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
-            SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              api->dec_ref_count(api, object);
-            }
-          }
-        }
+      case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_SHORT: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand1;
         
-        // No exception
-        SPVM_INLINE_SET_EXCEPTION_NULL();
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        return return_value;
+        vars[opcode->operand0].short_value = *(int16_t*)&package_vars[package_var_id];
+        
+        break;
       }
-      case SPVM_OPCODE_C_CODE_RETURN_OBJECT: {
-
-        return_value = vars[opcode->operand0];
-          
-        // Increment ref count of return value not to release by decrement
-        if (return_value.object_value != NULL) {
-          SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
-        }
+      case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_INT: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand1;
         
-        // Decrement my vars which is arguments - decrement only
-        {
-          int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
-            SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-            }
-          }
-        }
-
-        // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
-        {
-          int32_t i;
-          for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
-            SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              api->dec_ref_count(api, object);
-            }
-          }
-        }
-
-        // Decrement ref count of return value
-        if (return_value.object_value != NULL) {
-          SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
-        }
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        SPVM_INLINE_SET_EXCEPTION_NULL();
+        vars[opcode->operand0].int_value = *(int32_t*)&package_vars[package_var_id];
         
-        return return_value;
+        break;
       }
-      case SPVM_OPCODE_C_CODE_RETURN_VOID: {
-
-        memset(&return_value, 0, sizeof(SPVM_VALUE));
+      case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_LONG: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand1;
         
-        // Decrement object my vars reference count
-        {
-          int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
-            SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-            }
-          }
-        }
-        {
-          int32_t i;
-          for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
-            SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              api->dec_ref_count(api, object);
-            }
-          }
-        }
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        // No exception
-        SPVM_INLINE_SET_EXCEPTION_NULL();
-
-        return return_value;
+        vars[opcode->operand0].long_value = *(int64_t*)&package_vars[package_var_id];
+        
+        break;
       }
-      case SPVM_OPCODE_C_CODE_CROAK: {
+      case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_FLOAT: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand1;
         
-        label_SPVM_OPCODE_C_CODE_CROAK:
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
         
-        // Catch exception
-        if (eval_stack_top > -1) {
-          
-          int32_t jump_offset_abs = eval_stack[eval_stack_top];
-          eval_stack_top--;
-          
-          opcode_index = SPVM_INFO_SUB_XXX_OPCODE_BASE + jump_offset_abs;
-          continue;
-        }
+        vars[opcode->operand0].float_value = *(float*)&package_vars[package_var_id];
         
-        // Decrement my vars which is arguments - decrement only
-        {
-          int32_t i;
-          for (i = 0; i < SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
-            SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-            }
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_DOUBLE: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand1;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        vars[opcode->operand0].double_value = *(double*)&package_vars[package_var_id];
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_OBJECT: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand1;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        vars[opcode->operand0].object_value = *(SPVM_API_OBJECT**)&package_vars[package_var_id];
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_BYTE: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand0;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        *(int8_t*)&package_vars[package_var_id] = vars[opcode->operand1].byte_value;
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_SHORT: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand0;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        *(int16_t*)&package_vars[package_var_id] = vars[opcode->operand1].short_value;
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_INT: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand0;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        *(int32_t*)&package_vars[package_var_id] = vars[opcode->operand1].int_value;
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_LONG: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand0;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        *(int64_t*)&package_vars[package_var_id] = vars[opcode->operand1].long_value;
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_FLOAT: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand0;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        *(float*)&package_vars[package_var_id] = vars[opcode->operand1].float_value;
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_DOUBLE: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand0;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        *(double*)&package_vars[package_var_id] = vars[opcode->operand1].double_value;
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
+        // Get subroutine ID
+        int32_t package_var_id = opcode->operand0;
+        
+        SPVM_API_VALUE* package_vars = runtime->package_vars;
+        
+        SPVM_API_OBJECT** package_var_address = (SPVM_API_OBJECT**)&package_vars[package_var_id];
+        
+        // Decrement reference count
+        if (*(SPVM_API_OBJECT**)package_var_address != NULL) {
+          if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);
+          }
+          else {
+            api->dec_ref_count(api, *(SPVM_API_OBJECT**)package_var_address);
           }
         }
-
-        // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
-        {
-          int32_t i;
-          for (i = SPVM_INFO_SUB_XXX_OBJECT_ARGS_LENGTH; i < SPVM_INFO_SUB_XXX_OBJECT_MYS_LENGTH; i++) {
-            int32_t my_var_index = SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_OBJECT_MYS_BASE + i];
-            SPVM_API_OBJECT* object = (SPVM_API_OBJECT*)vars[my_var_index].object_value;
-            
-            if (object != NULL) {
-              api->dec_ref_count(api, object);
-            }
-          }
+        
+        // Store object
+        *(SPVM_API_OBJECT**)package_var_address = vars[opcode->operand1].object_value;
+        
+        // Increment new value reference count
+        if (package_vars[package_var_id].object_value != NULL) {
+          SPVM_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address);
         }
         
-        if (SPVM_INFO_DEBUG) {
-          // Sub name
-          const char* sub_name = (char*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_ABS_NAME_ID + 1];
-          
-          // File name
-          const char* file_name = (char*)&SPVM_INFO_CONSTANT_POOL[SPVM_INFO_SUB_XXX_FILE_NAME_ID + 1];
-          
-          // stack trace strings
-          const char* from = "\n  from ";
-          const char* at = "() at ";
-
-          // Exception
-          SPVM_API_OBJECT* exception = SPVM_INLINE_GET_EXCEPTION();
-          char* exception_chars = api->get_string_chars(api, exception);
-          int32_t exception_length = api->get_string_length(api, exception);
-          
-          // Total string length
-          int32_t total_length = 0;
-          total_length += exception_length;
-          total_length += strlen(from);
-          total_length += strlen(sub_name);
-          total_length += strlen(at);
-          total_length += strlen(file_name);
-
-          const char* line = " line ";
-          char line_str[20];
-          
-          sprintf(line_str, "%" PRId32, current_line);
-          total_length += strlen(line);
-          total_length += strlen(line_str);
-          
-          // Create exception message
-          SPVM_API_OBJECT* new_exception = api->new_string(api, NULL, total_length);
-          char* new_exception_chars = api->get_string_chars(api, new_exception);
-          
-          memcpy(
-            (void*)(new_exception_chars),
-            (void*)(exception_chars),
-            exception_length
-          );
-
-          sprintf(
-            new_exception_chars + exception_length,
-            "%s%s%s%s%s%" PRId32,
-            from,
-            sub_name,
-            at,
-            file_name,
-            line,
-            current_line
-          );
-          
-          // Set exception
-          api->set_exception(api, new_exception);
-        }
-        
-        memset(&return_value, 0, sizeof(SPVM_VALUE));
-        
-        return return_value;
+        break;
       }
-      case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
-        int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
-        int32_t intcode_index = opcode_index * 8;
-        
-        // default offset
-        int32_t default_offset = intcodes[intcode_index + 2];
-        
-        // min
-        int32_t min = intcodes[intcode_index + 3];
-        
-        // max
-        int32_t max = intcodes[intcode_index + 4];
-        
-        if (vars[opcode->operand0].int_value >= min && vars[opcode->operand0].int_value <= max) {
-          int32_t branch_offset
-            = *(int32_t*)((&intcodes[intcode_index + 8]) + (vars[opcode->operand0].int_value - min));
-          opcode_index += branch_offset;
-        }
-        else {
-          opcode_index += default_offset;
-        }
-        
-        continue;
-      }
-      case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
-        int32_t* intcodes = (int32_t*)SPVM_INFO_OPCODES;
-        int32_t intcode_index = opcode_index * 8;
-        
-        // 1  default
-        // 5  npare
-        // 9  match1 offset1 // min
-        // 17 match2 offset2
-        // 25 match3 offset3 // max
-        
-        // default offset
-        int32_t default_offset = intcodes[intcode_index + 2];
-        
-        // npare
-        int32_t pair_count = intcodes[intcode_index + 3];
-        
-        // min
-        int32_t min = intcodes[intcode_index + 8];
-        
-        // max
-        int32_t max = intcodes[intcode_index + 8 + (pair_count - 1) * 2];
-        
-        if (vars[opcode->operand0].int_value >= min && vars[opcode->operand0].int_value <= max) {
-          // 2 branch searching
-          int32_t cur_min_pos = 0;
-          int32_t cur_max_pos = pair_count - 1;
-
-          while (1) {
-            if (cur_max_pos < cur_min_pos) {
-              opcode_index += default_offset;
-              break;
-            }
-            int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-            int32_t cur_half = intcodes[intcode_index + 8 + (cur_half_pos * 2)];
-            
-            if (vars[opcode->operand0].int_value > cur_half) {
-              cur_min_pos = cur_half_pos + 1;
-            }
-            else if (vars[opcode->operand0].int_value < cur_half) {
-              cur_max_pos = cur_half_pos - 1;
-            }
-            else {
-              int32_t branch_offset = intcodes[intcode_index + 8 + (cur_half_pos * 2) + 1];
-              opcode_index += branch_offset;
-              break;
-            }
-          }
-        }
-        else {
-          opcode_index += default_offset;
-        }
-        
-        continue;
-      }
+      case SPVM_OPCODE_C_CODE_CURRENT_LINE:
+        current_line = opcode->operand0;
+        break;
       case SPVM_OPCODE_C_CODE_GOTO:
         opcode_index += opcode->operand0;
         continue;
@@ -2041,10 +1749,238 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args
         }
         break;
       }
-      case SPVM_OPCODE_C_CODE_CURRENT_LINE:
-        current_line = opcode->operand0;
+      case SPVM_OPCODE_C_CODE_PUSH_ARG:
+        call_sub_arg_stack_top++;
+        call_sub_arg_stack[call_sub_arg_stack_top].int_value = opcode->operand0;
+        
         break;
+      case SPVM_OPCODE_C_CODE_CALL_SUB:
+      {
+        // Get subroutine ID
+        int32_t call_sub_id = opcode->operand1;
+        
+        // Constant pool sub
+        SPVM_CONSTANT_POOL_SUB* constant_pool_sub_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
+        
+        // Call subroutine return type id
+        int32_t call_sub_return_type_id = constant_pool_sub_call_sub->return_type_id;
+        
+        // Constant pool type
+        SPVM_CONSTANT_POOL_TYPE* call_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_return_type_id];
+        
+        // Return type code
+        int32_t call_sub_return_type_code = call_sub_return_type->code;
+        
+        // Subroutine argument length
+        int32_t call_sub_args_length = constant_pool_sub_call_sub->args_length;
+        
+        // Subroutine argument length
+        int32_t call_sub_is_void = constant_pool_sub_call_sub->is_void;
+        
+        call_sub_arg_stack_top -= call_sub_args_length;
+        
+        SPVM_API_VALUE args[255];
+        {
+          int32_t i;
+          for (i = 0; i < call_sub_args_length; i++) {
+            int32_t var_index = call_sub_arg_stack[call_sub_arg_stack_top + 1 + i].int_value;
+            args[i] = vars[var_index];
+          }
+        }
+        
+        // Call subroutine
+        if (call_sub_is_void) {
+          api->call_void_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
+        }
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_BYTE) {
+          vars[opcode->operand0].byte_value = api->call_byte_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
+        }
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_SHORT) {
+          vars[opcode->operand0].short_value = api->call_short_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
+        }
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_INT) {
+          vars[opcode->operand0].int_value = api->call_int_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
+        }
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_LONG) {
+          vars[opcode->operand0].long_value = api->call_long_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
+        }
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_FLOAT) {
+          vars[opcode->operand0].float_value = api->call_float_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
+        }
+        else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_DOUBLE) {
+          vars[opcode->operand0].double_value = api->call_double_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
+        }
+        else {
+          vars[opcode->operand0].object_value = api->call_object_sub(api, call_sub_id, (SPVM_API_VALUE*)args);
+        }
+        
+        if (SPVM_INLINE_GET_EXCEPTION()) {
+          goto label_SPVM_OPCODE_C_CODE_CROAK;
+        }
+        else {
+          // Next operation
+          opcode_index++;
+        }
+        
+        continue;
+      }
+      case SPVM_OPCODE_C_CODE_CROAK: {
+        
+        label_SPVM_OPCODE_C_CODE_CROAK:
+        
+        // Catch exception
+        if (eval_stack_top > -1) {
+          int32_t jump_offset_abs = eval_stack[eval_stack_top];
+          eval_stack_top--;
+          opcode_index = sub_opcode_base + jump_offset_abs;
+          continue;
+        }
+        // Throw exception
+        else {
+          throw_exception = 1;
+          memset(&return_value, 0, sizeof(SPVM_API_VALUE));
+          goto label_SPVM_OPCODE_C_CODE_RETURN;
+        }
+      }
+      case SPVM_OPCODE_C_CODE_RETURN:
+      {
+        // Get return value
+        if (!constant_pool_sub->is_void) {
+          return_value = vars[opcode->operand0];
+        }
+        
+        goto label_SPVM_OPCODE_C_CODE_RETURN;
+      }
+      case SPVM_OPCODE_C_CODE_TABLE_SWITCH:
+        // TABLE_SWITCH is no longer used
+        assert(0);
+      case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
+        // 1  default
+        // 5  npare
+        // 9  match1 offset1 // min
+        // 17 match2 offset2
+        // 25 match3 offset3 // max
+        
+        // default offset
+        int32_t default_offset = opcode->operand1;
+        
+        // npare
+        int32_t case_count = opcode->operand2;
+        
+        // min
+        int32_t min = (opcode + 1)->operand0;
+        
+        // max
+        int32_t max = (opcode + 1 + case_count - 1)->operand0;
+        
+        if (vars[opcode->operand0].int_value >= min && vars[opcode->operand0].int_value <= max) {
+          // 2 branch searching
+          int32_t cur_min_pos = 0;
+          int32_t cur_max_pos = case_count - 1;
+
+          while (1) {
+            if (cur_max_pos < cur_min_pos) {
+              opcode_index += default_offset;
+              break;
+            }
+            int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
+            int32_t cur_half = (opcode + 1 + cur_half_pos)->operand0;
+            
+            if (vars[opcode->operand0].int_value > cur_half) {
+              cur_min_pos = cur_half_pos + 1;
+            }
+            else if (vars[opcode->operand0].int_value < cur_half) {
+              cur_max_pos = cur_half_pos - 1;
+            }
+            else {
+              int32_t branch_offset = (opcode + 1 + cur_half_pos)->operand1;
+              opcode_index += branch_offset;
+              break;
+            }
+          }
+        }
+        else {
+          opcode_index += default_offset;
+        }
+        
+        continue;
+      }
     }
     opcode_index++;
+  }
+
+  label_SPVM_OPCODE_C_CODE_RETURN: {
+
+    SPVM_API_OBJECT* exception_save = NULL;
+    
+    // Save exception because destructor maybe remove exception
+    if (throw_exception) {
+      exception_save = api->get_exception(api);
+      SPVM_INLINE_INC_REF_COUNT(exception_save);
+    }
+    
+    // Increment ref count of return value not to release by decrement
+    if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+      if (return_value.object_value != NULL) {
+        SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
+      }
+    }
+      
+    // Decrement my vars which is arguments - decrement only
+    {
+      int32_t i;
+      for (i = 0; i < sub_object_args_length; i++) {
+        int32_t my_var_index = constant_pool[sub_object_mys_base + i];
+        SPVM_API_OBJECT* object = vars[my_var_index].object_value;
+        
+        if (object != NULL) {
+          SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+        }
+      }
+    }
+    
+    // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
+    {
+      int32_t i;
+      for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
+        int32_t my_var_index = constant_pool[sub_object_mys_base + i];
+        SPVM_API_OBJECT* object = vars[my_var_index].object_value;
+        
+        if (object != NULL) {
+          if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {
+            SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
+          }
+          else {
+            api->dec_ref_count(api, object);
+          }
+        }
+      }
+    }
+    
+    // Decrement ref count of return value
+    if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+      if (return_value.object_value != NULL) {
+        SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
+      }
+    }
+    
+    // Throw exception
+    if (throw_exception) {
+      if (runtime->debug) {
+        // Exception stack trace
+        SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api, sub_id, exception_save, current_line);
+        api->set_exception(api, exception_stack_trace);
+      }
+      else {
+        api->set_exception(api, exception_save);
+      }
+      SPVM_INLINE_DEC_REF_COUNT_ONLY(exception_save);
+    }
+    // No exception
+    else {
+      SPVM_INLINE_SET_EXCEPTION_NULL();
+    }
+    
+    return return_value;
   }
 }

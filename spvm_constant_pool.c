@@ -100,6 +100,12 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   memset(&constant_pool_type, 0, sizeof(SPVM_CONSTANT_POOL_TYPE));
   
   constant_pool_type.code = type->code;
+  if (SPVM_TYPE_is_numeric(compiler, type)) {
+    constant_pool_type.is_numeric = 1;
+  }
+  else {
+    constant_pool_type.is_numeric = 0;
+  }
   
   // Add length
   constant_pool->length += extend_length;
@@ -147,6 +153,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   memset(&constant_pool_package, 0, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   constant_pool_package.fields_length = package->op_fields->length;
   constant_pool_package.object_fields_length = SPVM_PACKAGE_get_object_fields_length(compiler, package);
+  constant_pool_package.byte_size = package->byte_size;
   
   // Add length
   constant_pool->length += extend_length;
@@ -165,7 +172,26 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
       SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->id);
     }
   }
-  
+
+  // Push object fields constant_pool byte offsets to constant pool
+  {
+    int32_t field_pos;
+    constant_pool_package.object_field_byte_offsets_base = constant_pool->length;
+    int32_t object_field_byte_offsets_length = 0;
+    for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
+      SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
+      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
+      
+      if (SPVM_TYPE_is_object(compiler, field_type)) {
+        SPVM_FIELD* field = op_field->uv.field;
+        int32_t byte_offset = field->byte_offset;
+        SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, byte_offset);
+        object_field_byte_offsets_length++;
+      }
+    }
+    constant_pool_package.object_field_byte_offsets_length = object_field_byte_offsets_length;
+  }
+
   memcpy(&constant_pool->values[id], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   
   return id;
@@ -186,7 +212,6 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   memset(&constant_pool_sub, 0, sizeof(SPVM_CONSTANT_POOL_SUB));
   constant_pool_sub.native_address = sub->native_address;
-  constant_pool_sub.opcode_base = sub->opcode_base;
   constant_pool_sub.mys_length = sub->op_mys->length;
   constant_pool_sub.call_sub_arg_stack_max = sub->call_sub_arg_stack_max;
   constant_pool_sub.args_length = sub->op_args->length;
@@ -215,6 +240,17 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
     }
   }
 
+  // My type ids
+  constant_pool_sub.my_type_ids_base = constant_pool->length;
+  {
+    int32_t i;
+    for (i = 0; i < sub->op_mys->length; i++) {
+      SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, i);
+      SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, op_my);
+      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, my_type->id);
+    }
+  }
+
   // Arg type ids
   constant_pool_sub.arg_type_ids_base = constant_pool->length;
   {
@@ -235,7 +271,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
       SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
       assert(arg_type);
-      if (!SPVM_TYPE_is_numeric(compiler, arg_type)) {
+      if (SPVM_TYPE_is_object(compiler, arg_type)) {
         SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, i);
         object_args_length++;
       }
@@ -252,7 +288,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
       SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, i);
       SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, op_my);
       assert(my_type);
-      if (!SPVM_TYPE_is_numeric(compiler, my_type)) {
+      if (SPVM_TYPE_is_object(compiler, my_type)) {
         SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, i);
         object_mys_length++;
       }
@@ -286,6 +322,11 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   memset(&constant_pool_field, 0, sizeof(SPVM_CONSTANT_POOL_FIELD));
   constant_pool_field.index = field->index;
   constant_pool_field.type_id = field->op_type->uv.type->id;
+  constant_pool_field.byte_offset = field->byte_offset;
+  
+  if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
+    constant_pool_field.is_object = 1;
+  }
   
   // Add length
   constant_pool->length += extend_length;

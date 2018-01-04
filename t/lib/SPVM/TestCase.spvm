@@ -58,6 +58,12 @@ package TestCase {
     DOUBLE_PRECICE = 65536.5,
   }
   
+  sub my_var_in_loop_free() : int {
+    for (my $i = 0; $i < 5; $i++) {
+      my $minimal = TestCase::Minimal::new();
+    }
+  }
+  
   sub next_statement() : int {
     my $total = 0;
     for (my $i = 0; $i < 5; $i++) {
@@ -1235,7 +1241,7 @@ package TestCase {
   
   # Switch - nest
   sub switch_nest() : int {
-    my $success1;
+    my $success1 : int;
     switch (3) {
       case 1:
         $success1 = 0;
@@ -1267,7 +1273,7 @@ package TestCase {
   
   # Switch - lookup switch
   sub switch_lookup_switch() : int {
-    my $success1;
+    my $success1 : int;
     switch (1) {
       case 1:
         $success1 = 1;
@@ -1280,7 +1286,7 @@ package TestCase {
         last;
       default:
     }
-    my $success2;
+    my $success2 : int;
     switch (3) {
       case 1:
         $success2 = 0;
@@ -1293,12 +1299,12 @@ package TestCase {
         last;
       default:
     }
-    my $success3;
+    my $success3 : int;
     switch (10000) {
-      case 1:
+      case 3:
         $success3 = 0;
         last;
-      case 3:
+      case 1:
         $success3 = 0;
         last;
       case 10000:
@@ -1306,7 +1312,7 @@ package TestCase {
         last;
       default:
     }
-    my $success4;
+    my $success4 : int;
     switch (2) {
       case 1:
         last;
@@ -1332,7 +1338,7 @@ package TestCase {
   
   # Switch - table switch
   sub switch_table_switch() : int {
-    my $success1;
+    my $success1 : int;
     
     switch(3) {
       case 3:
@@ -1347,7 +1353,7 @@ package TestCase {
       default:
     }
 
-    my $success2;
+    my $success2 : int;
     switch(4) {
       case 3:
         $success2 = 0;
@@ -1360,7 +1366,7 @@ package TestCase {
         last;
       default:
     }
-    my $success3;
+    my $success3 : int;
     switch(10) {
       case 3:
         $success3 = 0;
@@ -1446,6 +1452,38 @@ package TestCase {
       if ($var2 == undef) {
         return 1;
       }
+    }
+    return 0;
+  }
+
+  sub my_var_block() : int {
+    my $success = 1;
+    
+    my $var1 = 1;
+    if ($var1 != 1) {
+      $success = 0;
+    }
+    
+    {
+      my $var1 = 2;
+      if ($var1 != 2) {
+        $success = 0;
+      }
+      
+      {
+        my $var1 = $var1;
+        if ($var1 != 2) {
+          $success = 0;
+        }
+        $var1 = 3;
+      }
+      if ($var1 != 2) {
+        $success = 0;
+      }
+    }
+    
+    if ($success) {
+      return 1;
     }
     return 0;
   }
@@ -1641,11 +1679,19 @@ package TestCase {
   }
   sub array_init_int () : int {
     my $nums = new int[] {1, 2, 3};
+    my $nums2 : int[];
+    $nums2 = new int[] {4, 5, 6};
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
         if ($nums->[2] == 3) {
-          return 1;
+          if ($nums2->[0] == 4) {
+            if ($nums2->[1] == 5) {
+              if ($nums2->[2] == 6) {
+                return 1;
+              }
+            }
+          }
         }
       }
     }

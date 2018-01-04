@@ -19,6 +19,7 @@
 #include "spvm_runtime_api.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
+#include "spvm_constant_pool_builder.h"
 
 #include "native/SPVM/CORE.native/CORE.c"
 
@@ -49,14 +50,15 @@ int main(int argc, char *argv[])
   
   SPVM_COMPILER_compile(compiler);
   
+  if (compiler->error_count > 0) {
+    exit(1);
+  }
+  
   // Build constant pool
-  SPVM_OP_build_constant_pool(compiler);
+  SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(compiler);
   
   // Build bytecode
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
-  
-  // Build JIT code(This is C source code which is passed to gcc)
-  SPVM_JITCODE_BUILDER_build_jitcode(compiler);
   
   // Bind native subroutine
   {
@@ -207,7 +209,10 @@ int main(int argc, char *argv[])
     fprintf(stderr, "Can't find entry point subroutine\n");
     exit(EXIT_FAILURE);
   }
-  
+
+  // Build JIT code(This is C source code which is passed to gcc)
+  SPVM_JITCODE_BUILDER_build_jitcode(compiler);
+
   // Free compiler
   SPVM_COMPILER_free(compiler);
   
@@ -217,7 +222,6 @@ int main(int argc, char *argv[])
   // Run
   int32_t return_value = api->call_int_sub(api, sub_id, args);
   
-#ifdef DEBUG
   if (runtime->exception) {
     void* message_object = runtime->exception;
     char* message = api->get_string_chars(api, message_object);
@@ -228,7 +232,6 @@ int main(int argc, char *argv[])
   else {
     printf("TEST return_value: %" PRId32 "\n", return_value);
   }
-#endif
   
   SPVM_RUNTIME_API_free_runtime(api, runtime);
   

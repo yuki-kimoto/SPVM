@@ -29,10 +29,6 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_limit.h"
 #include "spvm_use.h"
-#include "spvm_constant_pool.h"
-#include "spvm_constant_pool_type.h"
-#include "spvm_constant_pool_package.h"
-#include "spvm_constant_pool_sub.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 #include "spvm_jitcode_builder.h"
@@ -173,16 +169,6 @@ void SPVM_OP_insert_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op
   }
   
   SPVM_OP_insert_child(compiler, op_most_left_deep_child_of_parent, op_most_left_deep_child_of_parent->last, op_child);
-}
-
-SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term) {
-  
-  SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_INIT, op_type->file, op_type->line);
-  
-  SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_type);
-  SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_term);
-  
-  return op_array_init;
 }
 
 SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
@@ -1030,9 +1016,49 @@ SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_l
   return op_array_length;
 }
 
-SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op_type, SPVM_OP* op_list_elements) {
   
   SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
+  
+  // Array initialization
+  if (op_list_elements) {
+    // NEW
+    //   TYPE
+    //   ARRAY_INIT
+    //     LIST_INDEXES
+    //     LIST_ELEMENTS
+    
+    // Add elmenets length to op_type
+    int32_t length = 0;
+    {
+      SPVM_OP* op_term_element = op_list_elements->first;
+      while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+        length++;
+      }
+    }
+    SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, op_list_elements->file, op_list_elements->line);
+    SPVM_OP_insert_child(compiler, op_type, op_type->last, op_constant_length);
+    
+    // ARRAY_INIT
+    SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_INIT, op_list_elements->file, op_list_elements->line);
+    
+    // Indexes
+    SPVM_OP* op_list_indexes = SPVM_OP_new_op_list(compiler, op_list_elements->file, op_list_elements->line);
+    {
+      int32_t index = 0;
+      SPVM_OP* op_term_element = op_list_elements->first;
+      while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+        SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, op_list_elements->file, op_list_elements->line);
+        SPVM_OP_insert_child(compiler, op_list_indexes, op_list_indexes->last, op_constant_index);
+        index++;
+      }
+    }
+    
+    SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_list_indexes);
+    SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_list_elements);
+    
+    SPVM_OP_insert_child(compiler, op_new, op_new->last, op_array_init);
+  }
   
   return op_new;
 }
@@ -1086,7 +1112,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_CODE_PLUS:
     case SPVM_OP_C_CODE_NEGATE:
     case SPVM_OP_C_CODE_NEW:
-    case SPVM_OP_C_CODE_ARRAY_INIT:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
@@ -1170,6 +1195,11 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = field->op_type->uv.type;
       break;
     }
+    case SPVM_OP_C_CODE_FIELD: {
+      SPVM_FIELD* field = op->uv.field;
+      type = field->op_type->uv.type;
+      break;
+    }
   }
   
   return type;
@@ -1178,6 +1208,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
 void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPVM_OP* op_package_current) {
   
   SPVM_CALL_SUB* call_sub = op_call_sub->uv.call_sub;
+  
+  if (call_sub->sub) {
+    return;
+  }
   
   SPVM_OP* found_op_sub;
   
@@ -1238,7 +1272,13 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
 }
 
 void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field) {
-  
+
+  SPVM_CALL_FIELD* call_field = op_call_field->uv.call_field;
+
+  if (call_field->field) {
+    return;
+  }
+
   SPVM_OP* op_term = op_call_field->first;
   SPVM_OP* op_name = op_call_field->last;
   
@@ -1304,233 +1344,6 @@ SPVM_OP* SPVM_OP_build_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, S
   op_convert_type->line = op_type->line;
   
   return op_convert_type;
-}
-
-void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler) {
-  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
-  
-  // Push constant to constant pool
-  {
-    int32_t i;
-    for (i = 0; i < compiler->op_constants->length; i++) {
-      SPVM_OP* op_constant = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_constants, i);
-      
-      // Constant
-      SPVM_CONSTANT* constant = op_constant->uv.constant;
-      
-      // Constant pool
-      SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
-      
-      // Push value to constant pool
-      switch (constant->type->code) {
-        case SPVM_TYPE_C_CODE_BYTE: {
-          int8_t value = constant->value.byte_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_byte(compiler, constant_pool, value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_SHORT: {
-          int16_t value = constant->value.short_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_short(compiler, constant_pool, value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_INT: {
-          int32_t value = constant->value.int_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_LONG: {
-          int64_t value = constant->value.long_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_FLOAT: {
-          float value = constant->value.float_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_DOUBLE: {
-          double value = constant->value.double_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
-          break;
-        }
-        case SPVM_TYPE_C_CODE_STRING: {
-          const char* value = constant->value.string_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
-          
-          break;
-        }
-        default:
-          assert(0);
-      }
-    }
-  }
-  
-  // Push types to constant pool
-  {
-    int32_t i;
-    for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
-      type->id = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
-    }
-  }
-
-  // Set parent type id and element type id
-  {
-    int32_t i;
-    for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
-      
-      char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
-      SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
-      if (parent_type) {
-        SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
-        constant_pool_type->parent_type_id = parent_type->id;
-      }
-      
-      // Element type id
-      char* element_type_name = SPVM_TYPE_get_element_name(compiler, type->name);
-      if (element_type_name) {
-        SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
-        if (element_type) {
-          SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
-          constant_pool_type->element_type_id = element_type->id;
-        }
-        else {
-          assert(0);
-        }
-      }
-    }
-  }
-  
-  // Push type index to constant pool
-  {
-    int32_t i;
-    for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
-      int32_t type_id = type->id;
-      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, type_id);
-      if (compiler->types_base == 0) {
-        compiler->types_base = added_id;
-      }
-    }
-  }
-
-  // Push type code to id index to constant pool
-  {
-    int32_t type_code;
-    for (type_code = 0; type_code < SPVM_TYPE_C_CORE_LENGTH; type_code++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_code);
-      int32_t type_id = type->id;
-      
-      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, type_id);
-      if (!compiler->type_code_to_id_base) {
-        compiler->type_code_to_id_base = added_id;
-      }
-    }
-  }
-  
-  // Push package into constant_pool
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      
-      // Push field information to constant pool
-      {
-        int32_t field_index;
-        for (field_index = 0; field_index < package->op_fields->length; field_index++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_index);
-          SPVM_FIELD* field = op_field->uv.field;
-          
-          // Add field to constant pool
-          field->id = SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
-        }
-      }
-      package->id = SPVM_CONSTANT_POOL_push_package(compiler, compiler->constant_pool, package);
-    }
-  }
-
-  // Push package indexes
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
-      int32_t package_id = op_package->uv.package->id;
-      
-      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_id);
-      if (!compiler->packages_base) {
-        compiler->packages_base = added_id;
-      }
-    }
-  }
-  
-  // Set package id to type constant pool
-  {
-    {
-      int32_t i;
-      for (i = 0; i < compiler->types->length; i++) {
-        SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
-        if (type->op_package) {
-          SPVM_PACKAGE* package = type->op_package->uv.package;
-          int32_t type_id = type->id;
-          SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type_id];
-          constant_pool_type->package_id = package->id;
-        }
-      }
-    }
-  }
-  
-  // Push subroutine into constant pool
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      sub->id = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
-      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&compiler->constant_pool->values[sub->id];
-      constant_pool_sub->native_address = sub->native_address;
-    }
-  }
-
-  // Push subroutine index to constant pool
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
-      
-      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      int32_t sub_id = sub->id;
-      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_id);
-      if (!compiler->subs_base) {
-        compiler->subs_base = added_id;
-      }
-    }
-  }
-
-  // Set destcutor sub id to package
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      
-      int32_t package_id = package->id;
-      
-      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&compiler->constant_pool->values[package_id];
-      
-      if (package->op_sub_destructor) {
-        constant_pool_package->destructor_sub_id = package->op_sub_destructor->uv.sub->id;
-      }
-    }
-  }
 }
 
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
@@ -1963,10 +1776,6 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_
     // Create my var information
     SPVM_MY* my = SPVM_MY_new(compiler);
     if (op_type) {
-      my->op_type = op_type;
-    }
-    else {
-      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_var->file, op_var->line);
       my->op_type = op_type;
     }
     
@@ -2494,7 +2303,7 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
   return op_if;
 }
 
-SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last) {
+SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
   
   if (op_assign->code == SPVM_OP_C_CODE_SPECIAL_ASSIGN) {
     int32_t flag = op_assign->flag;
@@ -2541,104 +2350,50 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
     }
     
     SPVM_OP* op_var_right = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
-    op_var_right->uv.var = op_first->uv.var;
+    op_var_right->uv.var = op_assign_to->uv.var;
     
     SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_var_right);
-    SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_last);
+    SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_assign_from);
     
-    op_last = op_operation;
+    op_assign_from = op_operation;
     
     op_assign->code = SPVM_OP_C_CODE_ASSIGN;
   }
   
   // Build op
-  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_first);
-  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_last);
+  // Exchange left and right for excecution order
+  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_from);
+  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_to);
   
-  op_assign->first->is_assign_left = 1;
+  op_assign_to->is_assign_to = 1;
   
   SPVM_OP* op_parent;
   
-  op_assign->last->is_assign_right = 1;
+  op_assign_from->is_assign_from = 1;
   
   // Return variable if first children is var
-  if (op_first->code == SPVM_OP_C_CODE_VAR) {
-    op_assign->last->is_var_assign_right = 1;
+  if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
+    op_assign_from->is_var_assign_from = 1;
     
     SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
-    op_var->uv.var = op_first->uv.var;
+    op_var->uv.var = op_assign_to->uv.var;
     SPVM_OP_insert_child(compiler, op_var, op_var->last, op_assign);
     
-    // Array initialization
-    if (op_last->code == SPVM_OP_C_CODE_ARRAY_INIT) {
-      
-      SPVM_OP* op_type_new = SPVM_OP_clone_op_type(compiler, op_last->first);
-      SPVM_OP* op_list = op_last->last;
-      
-      op_list->moresib = 0;
-      op_list->sibparent = NULL;
-      
-      // Length term
-      int32_t length = 0;
-      SPVM_OP* op_term = op_list->first;
-      while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-        length++;
-      }
-      SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, op_list->file, op_list->line);
-      
-      // New
-      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_list->file, op_list->line);
-      SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
-      
-      op_assign->last = op_new;
-      op_new->moresib = 0;
-      op_new->sibparent = op_assign;
-      op_first->sibparent = op_new;
-      
-      // Add length term
-      SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
-      
-      // Assign array element
-      SPVM_OP* op_list_new = SPVM_OP_new_op_list(compiler, op_list->file, op_list->line);
-      SPVM_DYNAMIC_ARRAY* op_terms = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      op_term = op_list->first;
-      while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-        SPVM_DYNAMIC_ARRAY_push(op_terms, op_term);
-      }
-      {
-        int32_t i;
-        for (i = 0; i < op_terms->length; i++) {
-          SPVM_OP* op_term = SPVM_DYNAMIC_ARRAY_fetch(op_terms, i);
-          
-          SPVM_OP* op_assign_array = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_list->file, op_list->line);
-          SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_ELEM, op_list->file, op_list->line);
-          SPVM_OP* op_var_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_list->file, op_list->line);
-          op_var_array_elem->uv.var = op_first->uv.var;
-          SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_array_elem);
-          
-          SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, i, op_list->file, op_list->line);
-          SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
-          
-          SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_array_elem);
-          op_term->moresib = 0;
-          op_term->sibparent = NULL;
-          SPVM_OP_insert_child(compiler, op_assign_array, op_assign_array->last, op_term);
-          
-          op_assign_array->first->is_assign_left = 1;
-          
-          SPVM_OP_insert_child(compiler, op_list_new, op_list_new->last, op_assign_array);
-        }
-        SPVM_OP_insert_to_most_left_deep_child(compiler, op_list_new, op_assign);
-      }
-      
-      op_parent = op_list_new;
-    }
-    else {
-      op_parent = op_var;
-    }
+    op_parent = op_var;
   }
   else {
     op_parent = op_assign;
+  }
+  
+  // Assign left child is var and it has variable declaration, try type inference
+  if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
+    SPVM_OP* op_var = op_assign_to;
+    if (op_var->first && op_var->first->code == SPVM_OP_C_CODE_MY) {
+      SPVM_OP* op_my = op_var->first;
+      SPVM_MY* my = op_my->uv.my;
+      my->try_type_inference = 1;
+      my->op_term_type_inference = op_assign_from;
+    }
   }
   
   return op_parent;
@@ -2666,10 +2421,7 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   
   // Assign
   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_term->file, op_term->line);
-  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_exception_var);
-  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_term);
-  
-  op_assign->first->is_assign_left = 1;
+  SPVM_OP_build_assign(compiler, op_assign, op_exception_var, op_term);
   
   SPVM_OP_insert_child(compiler, op_croak, op_croak->last, op_assign);
   

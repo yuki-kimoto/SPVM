@@ -12,6 +12,7 @@ struct SPVM_package {
   int32_t id;
   SPVM_OP* op_sub_destructor;
   SPVM_DYNAMIC_ARRAY* native_subs;
+  int32_t byte_size;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);

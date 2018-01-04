@@ -59,7 +59,7 @@ _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_is_string(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_is_package(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_ref(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_object(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 
 SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler);

@@ -36,6 +36,7 @@
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_dynamic_array.h"
+#include "spvm_constant_pool_builder.h"
 
 static SPVM_API_VALUE call_sub_args[255];
 
@@ -3133,19 +3134,26 @@ compile(...)
     }
   }
   
-  // Compile SPVM
-  SPVM_COMPILER_compile(compiler);
-  if (compiler->error_count > 0) {
-    croak("SPVM compile error %d", compiler->error_count);
-  }
-
   // Set compiler
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
   sv_setsv(get_sv("SPVM::COMPILER", 0), sv_compiler);
+
+  // Compile SPVM
+  SPVM_COMPILER_compile(compiler);
+  SV* sv_compile_success;
   
-  XSRETURN(0);
+  if (compiler->error_count > 0) {
+    sv_compile_success = sv_2mortal(newSViv(0));
+  }
+  else {
+    sv_compile_success = sv_2mortal(newSViv(1));
+  }
+  
+  XPUSHs(sv_compile_success);
+  
+  XSRETURN(1);
 }
 
 SV*
@@ -3158,7 +3166,7 @@ build_constant_pool(...)
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
   
   // Build constant pool
-  SPVM_OP_build_constant_pool(compiler);
+  SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(compiler);
   
   XSRETURN(0);
 }
