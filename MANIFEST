@@ -175,6 +175,8 @@ t/lib/SPVM/TestCase.spvm
 t/lib/SPVM/TestCase/Arrays.spvm
 t/lib/SPVM/TestCase/Byte.spvm
 t/lib/SPVM/TestCase/CompileError/InvalidType.spvm
+t/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
+t/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/lib/SPVM/TestCase/Destructor.spvm
 t/lib/SPVM/TestCase/Double.spvm
 t/lib/SPVM/TestCase/Extension.native/Extension.c
