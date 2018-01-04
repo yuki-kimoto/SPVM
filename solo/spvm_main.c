@@ -50,6 +50,10 @@ int main(int argc, char *argv[])
   
   SPVM_COMPILER_compile(compiler);
   
+  if (compiler->error_count > 0) {
+    exit(1);
+  }
+  
   // Build constant pool
   SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(compiler);
   

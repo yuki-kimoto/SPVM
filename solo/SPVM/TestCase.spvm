@@ -50,7 +50,8 @@ package TestCase {
   }
   
   sub main($mvar : int) : int {
-
+    my $title;
+    
     eval {
       exception_croak_return_object();
     };

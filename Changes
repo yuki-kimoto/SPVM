@@ -4,6 +4,7 @@
     new int[] { 1, 2, 3} is used in any place.
   - add temporary JIT code for preparation for JIT compile
   - fix assign excecution order
+  - fix type inference bug
 0.0302 2017-12-07
   - add eval block stack max length
   - fix next statement bug
