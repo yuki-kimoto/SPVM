@@ -217,7 +217,7 @@ sub build_shared_lib {
     objects => $object_files,
     module_name => $module_name,
     dl_func_list => $native_func_names,
-    extra_linker_flags => $extra_linker_flags
+    extra_linker_flags => ''
   );
   
   $compiled->{$module_name} = $lib_file;
@@ -251,6 +251,56 @@ sub get_native_func_names {
   }
   
   return $native_func_names;
+}
+
+sub build_jitcode {
+  my $source_file = shift;
+  
+  # Source directory
+  my $source_dir = dirname $source_file;
+  
+  # Object created directory
+  my $object_dir = $source_dir;
+  
+  # Include directory
+  my $include_dirs = [];
+  
+  # Default include path
+  my $api_header_include_dir = $INC{"SPVM/Build.pm"};
+  $api_header_include_dir =~ s/\/Build\.pm$//;
+  push @$include_dirs, $api_header_include_dir;
+  
+  my $cbuilder_config = {};
+  
+  # OPTIMIZE default is -O3
+  $cbuilder_config->{optimize} ||= '-O3';
+  
+  # Compile source files
+  my $quiet = 1;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
+  my $object_files = [];
+  
+  # Object file
+  my $object_file = $source_file;
+  $object_file =~ s/\.c$//;
+  $object_file .= '.o';
+  
+  # Compile source file
+  $cbuilder->compile(
+    source => $source_file,
+    object_file => $object_file,
+    include_dirs => $include_dirs
+  );
+  push @$object_files, $object_file;
+  
+  my $lib_file = $cbuilder->link(
+    objects => $object_files,
+    module_name => 'SPVM::JITCode',
+    dl_func_list => ['SPVM_JITCODE_call_sub'],
+    extra_linker_flags => ''
+  );
+  
+  return $lib_file;
 }
 
 1;
