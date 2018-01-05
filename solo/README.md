@@ -20,7 +20,11 @@ For compile, bison command is needed.
 
 ## Build jitcode
 
-gcc -g -O -Ilib/SPVM -c -o solo/jitcode/spvm_jitcode.o solo/jitcode/spvm_jitcode.c
+  gcc -g -O -Ilib/SPVM -c -o solo/jitcode/spvm_jitcode.o solo/jitcode/spvm_jitcode.c
+  
+  # Once
+  yacc/bison.sh && make -f solo/Makefile && ./spvm TestCase && gcc -g -O -Ilib/SPVM -c -o solo/jitcode/spvm_jitcode.o solo/jitcode/spvm_jitcode.c
+
 
 # Contributors
 
