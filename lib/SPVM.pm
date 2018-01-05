@@ -227,19 +227,23 @@ sub compile_spvm {
     
     # Build opcode
     build_opcode();
-
+    
     # Build run-time
     build_runtime();
 
+    # Free compiler
+    free_compiler();
+    
     # Build JIT code
     build_jitcode();
-
+    
     # Build SPVM subroutines
     build_spvm_subs();
   }
-  
-  # Free compiler
-  free_compiler();
+  else {
+    # Free compiler
+    free_compiler();
+  }
   
   return $compile_success;
 }

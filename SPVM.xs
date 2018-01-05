@@ -3192,11 +3192,8 @@ build_jitcode(...)
 {
   (void)RETVAL;
 
-  // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
-  
-  // Build JIT code(This is C source code which is passed to gcc)
-  SPVM_JITCODE_BUILDER_build_jitcode(compiler);
+  // Build JIT code
+  SPVM_JITCODE_BUILDER_build_jitcode();
   
   XSRETURN(0);
 }
