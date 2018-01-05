@@ -61,6 +61,8 @@ struct SPVM_runtime {
   int32_t objects_count;
   
   int32_t debug;
+  
+  char* jit_source_file;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

@@ -8,6 +8,7 @@ use Config;
 use DynaLoader;
 use SPVM::Build;
 use File::Basename 'basename';
+use File::Temp 'tempdir';
 
 use SPVM::Core::Object;
 use SPVM::Core::Object::Array;
@@ -230,12 +231,14 @@ sub compile_spvm {
     
     # Build run-time
     build_runtime();
-
+    
     # Free compiler
     free_compiler();
     
     # Build JIT code
-    build_jitcode();
+    my $jit_source_dir = tempdir(CLEANUP => 1);
+    my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
+    build_jitcode($jit_source_file);
     
     # Build SPVM subroutines
     build_spvm_subs();

@@ -3192,6 +3192,16 @@ build_jitcode(...)
 {
   (void)RETVAL;
 
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SV* sv_jit_source_file = ST(0);
+  char* jit_source_file = SvPV_nolen(sv_jit_source_file);
+  
+  // Set jit source file
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  runtime->jit_source_file = jit_source_file;
+  
   // Build JIT code
   SPVM_JITCODE_BUILDER_build_jitcode();
   
