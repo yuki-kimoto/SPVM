@@ -1918,11 +1918,12 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               
               break;
             }
-            case SPVM_OPCODE_C_CODE_CROAK:
+            case SPVM_OPCODE_C_CODE_CROAK: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // CRAOK\n");
               SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top);
               
-              goto label_RETURN;
+              break;
+            }
             case SPVM_OPCODE_C_CODE_RETURN:
             {
               SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN\n");
@@ -1935,7 +1936,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               }
               SPVM_STRING_BUFFER_add(string_buffer, "  goto label_SPVM_OPCODE_C_CODE_RETURN;\n");
               
-              goto label_RETURN;
+              break;
             }
             case SPVM_OPCODE_C_CODE_TABLE_SWITCH:
               // TABLE_SWITCH is no longer used
