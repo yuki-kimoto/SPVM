@@ -212,8 +212,9 @@ int main(int argc, char *argv[])
 
   // Free compiler
   SPVM_COMPILER_free(compiler);
-
+  
   // Build JIT code(This is C source code which is passed to gcc)
+  runtime->jit_source_file = "solo/jitcode/spvm_jitcode.c";
   SPVM_JITCODE_BUILDER_build_jitcode();
   
   SPVM_API_VALUE args[1];
