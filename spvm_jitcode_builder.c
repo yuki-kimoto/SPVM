@@ -2201,5 +2201,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   SPVM_STRING_BUFFER_add(string_buffer, "  return return_value;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "}\n");
   
+  const char* jit_source_file = runtime->jit_source_file;
+  FILE* jitcode_fh = fopen(jit_source_file, "w");
+  if (jitcode_fh) {
+    fprintf(jitcode_fh, string_buffer->buffer);
+    fclose(jitcode_fh);
+  }
+  else {
+    fprintf(stderr, "Can't open file %s", jit_source_file);
+    exit(1);
+  }
+  
   // warn("%s", string_buffer->buffer);
 }
