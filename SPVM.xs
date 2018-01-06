@@ -3364,6 +3364,18 @@ bind_native_sub(...)
 }
 
 SV*
+bind_jitcode_call_sub(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_call_sub_native_address = ST(0);
+  void* call_sub_native_address = (void*)SvIV(sv_call_sub_native_address);
+  
+  XSRETURN(0);
+}
+
+SV*
 build_field_symtable(...)
   PPCODE:
 {
