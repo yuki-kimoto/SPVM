@@ -930,9 +930,9 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, type);
               SPVM_STRING_BUFFER_add(string_buffer, ")var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, " >> var)");
+              SPVM_STRING_BUFFER_add(string_buffer, " >> var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               break;
             }
             case SPVM_OPCODE_C_CODE_BIT_AND_BYTE:
@@ -1073,6 +1073,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, " = (float)var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_CONVERT_BYTE_TO_DOUBLE:
             case SPVM_OPCODE_C_CODE_CONVERT_SHORT_TO_DOUBLE:
             case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_DOUBLE:
@@ -1085,6 +1086,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, " = (double)var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0:
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT_0:
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT_0:
@@ -1283,10 +1285,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "      else { \n");
               
               if (opcode->code == SPVM_OPCODE_C_CODE_ARRAY_STORE_OBJECT) {
-                SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE + sizeof(void*) * index\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE + sizeof(void*) * index);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        if (*object_address != NULL) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "          if (SPVM_INLINE_GET_REF_COUNT(*object_address) > 1) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "            SPVM_INLINE_DEC_REF_COUNT_ONLY(*object_address);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "          if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*object_address) > 1) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "            SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*object_address);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "          }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "          else {\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "            api->dec_ref_count(api, *object_address);\n");
@@ -1299,7 +1301,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 
 
                 SPVM_STRING_BUFFER_add(string_buffer, "        if (*object_address != NULL) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_INLINE_INC_REF_COUNT(*object_address);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_JITCODE_INLINE_INC_REF_COUNT(*object_address);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
               }
               else {
@@ -1331,7 +1333,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "  if (var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_INC_REF_COUNT(var");
+              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_INC_REF_COUNT(var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -1343,10 +1345,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "  if (var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_INLINE_GET_REF_COUNT(var");
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_JITCODE_INLINE_GET_REF_COUNT(var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ") > 1) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_INLINE_DEC_REF_COUNT_ONLY(var");
+              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -1411,16 +1413,18 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             }
             case SPVM_OPCODE_C_CODE_NEW_OBJECT_ARRAY: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // NEW_OBJECT_ARRAY\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t element_type_id = ");
+              SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t element_type_id = ");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, "  ;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t length = var");
+              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length = var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
               SPVM_STRING_BUFFER_add(string_buffer, "  ;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* object = api->new_object_array(api, element_type_id, length);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object = api->new_object_array(api, element_type_id, length);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, "   = object;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, " = object;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               break;
             }
             case SPVM_OPCODE_C_CODE_NEW_STRING: {
@@ -1543,11 +1547,11 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               if (opcode->code == SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT) {
                 SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)object + SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "      if(*field_address != NULL) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_INLINE_ISWEAK(*field_address)) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_ISWEAK(*field_address)) {\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "          api->unweaken(api, field_address);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_INLINE_GET_REF_COUNT(*field_address) > 1) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_INLINE_DEC_REF_COUNT_ONLY(*field_address);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*field_address) > 1) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*field_address);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        else {\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "          api->dec_ref_count(api, *field_address);\n");
@@ -1557,7 +1561,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
                 SPVM_STRING_BUFFER_add(string_buffer, "    ;\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "      if(*field_address != NULL) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_INLINE_INC_REF_COUNT(*field_address);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_JITCODE_INLINE_INC_REF_COUNT(*field_address);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
               }
               else {
@@ -1825,8 +1829,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add_address(string_buffer, package_var_address);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    if (*(SPVM_API_OBJECT**)package_var_address != NULL) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address) > 1) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address) > 1) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);\n");
               SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "        api->dec_ref_count(api, *(SPVM_API_OBJECT**)package_var_address);\n");
@@ -1836,7 +1840,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    if (*(SPVM_API_OBJECT**)package_var_address != NULL) {;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address);\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               
@@ -2024,7 +2028,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT* object = var");
                 SPVM_STRING_BUFFER_add_int(string_buffer, my_var_index);
                 SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "      if (object != NULL) { SPVM_INLINE_DEC_REF_COUNT_ONLY(object); }\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      if (object != NULL) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object); }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               }
             }
@@ -2041,8 +2045,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 SPVM_STRING_BUFFER_add_int(string_buffer, my_var_index);
                 SPVM_STRING_BUFFER_add(string_buffer, ";\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "      if (object != NULL) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_INLINE_GET_REF_COUNT(object) > 1) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_INLINE_DEC_REF_COUNT_ONLY(object);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_GET_REF_COUNT(object) > 1) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object);\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        else { api->dec_ref_count(api, object); }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
@@ -2058,7 +2062,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             }
           }
           else {
-            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_SET_EXCEPTION_NULL();\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
           }
           
           if (sub_is_void) {
