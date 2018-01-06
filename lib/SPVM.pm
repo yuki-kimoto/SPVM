@@ -62,7 +62,7 @@ sub import {
 
 sub _get_dll_file {
   my $package_name = shift;
-
+  
   # DLL file name
   my $dll_base_name = $package_name;
   $dll_base_name =~ s/^.*:://;
@@ -174,10 +174,9 @@ sub bind_native_subs {
 sub bind_jitcode {
   my $shared_lib_file = shift;
   
-  my $dll_libref = DynaLoader::dl_load_file($shared_lib_file);
-  my $call_sub_name = 'SPVM_JITCODE_call_sub';
-  my $call_sub_native_address = DynaLoader::dl_find_symbol($dll_libref, $call_sub_name);
-
+  my $call_sub_name = 'SPVM_JITCODE_TestCase__EnumA__THREE';
+  my $native_address = search_native_address($shared_lib_file, $call_sub_name);
+  
   # bind_jitcode($call_sub_native_address);
 }
 
@@ -240,7 +239,9 @@ sub compile_spvm {
     my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
     build_jitcode($jit_source_file);
     
-    SPVM::Build::compile_jitcode($jit_source_file);
+    my $jitcode_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
+    
+    bind_jitcode($jitcode_lib_file);
     
     # Build SPVM subroutines
     build_spvm_subs();

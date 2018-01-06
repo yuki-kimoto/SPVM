@@ -25,6 +25,9 @@ For compile, bison command is needed.
   # Once
   yacc/bison.sh && make -f solo/Makefile && ./spvm TestCase && gcc -g -O -Ilib/SPVM -c -o solo/jitcode/spvm_jitcode.o solo/jitcode/spvm_jitcode.c
 
+  # Once with warnings
+  yacc/bison.sh && make -f solo/Makefile && ./spvm TestCase && gcc -g -O -Wall -Wextra -Ilib/SPVM -c -o solo/jitcode/spvm_jitcode.o solo/jitcode/spvm_jitcode.c
+
 
 # Contributors
 
