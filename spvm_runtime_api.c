@@ -22,6 +22,7 @@
 #include "spvm_util_allocator.h"
 
 static const void* SPVM_NATIVE_INTERFACE[]  = {
+  NULL,
   SPVM_RUNTIME_API_get_array_length,
   SPVM_RUNTIME_API_get_byte_array_elements,
   SPVM_RUNTIME_API_get_short_array_elements,
