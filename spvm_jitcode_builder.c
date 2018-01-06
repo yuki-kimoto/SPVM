@@ -86,6 +86,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   // Inline macro function
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET)))\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET))++)\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET))--)\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET))\n");
@@ -2082,6 +2083,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   }
 
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  
+  
+  // Declare call_sub
+  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE SPVM_JITCODE_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);");
   
   // Define call_sub
   SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE SPVM_JITCODE_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {\n");
