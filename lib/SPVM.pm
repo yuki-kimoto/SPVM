@@ -240,6 +240,8 @@ sub compile_spvm {
     my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
     build_jitcode($jit_source_file);
     
+    SPVM::Build::compile_jitcode($jit_source_file);
+    
     # Build SPVM subroutines
     build_spvm_subs();
   }

@@ -253,7 +253,7 @@ sub get_native_func_names {
   return $native_func_names;
 }
 
-sub build_jitcode {
+sub compile_jitcode {
   my $source_file = shift;
   
   # Source directory
