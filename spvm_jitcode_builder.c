@@ -1154,7 +1154,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG:
                   SPVM_STRING_BUFFER_add_long(string_buffer, *(int64_t*)&constant_pool[opcode->operand1]);
-                  SPVM_STRING_BUFFER_add(string_buffer, "L");
+                  SPVM_STRING_BUFFER_add(string_buffer, "UL");
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT:
                   SPVM_STRING_BUFFER_add_float(string_buffer, *(float*)&constant_pool[opcode->operand1]);
