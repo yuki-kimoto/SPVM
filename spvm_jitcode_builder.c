@@ -1088,30 +1088,29 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG_0:
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT_0:
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE_0: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_0\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               switch (opcode->code) {
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (int8_t)");
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_BYTE_0\n");
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT_0:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (int16_t)");
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_SHORT_0\n");
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT_0:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (int32_t)");
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_INT_0\n");
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG_0:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (int64_t)");
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_LONG_0\n");
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT_0:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (float)");
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_FLOAT_0\n");
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE_0:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (double)");
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_DOUBLE_0\n");
                   break;
               }
-              SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
               break;
             }
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE:
@@ -1120,34 +1119,48 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG:
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT:
             case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               switch (opcode->code) {
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (int8_t)");
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_BYTE\n");
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT:
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_SHORT\n");
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT:
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_INT\n");
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG:
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_LONG\n");
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT:
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_FLOAT\n");
+                  break;
+                case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE:
+                  SPVM_STRING_BUFFER_add(string_buffer, "  // LOAD_CONSTANT_DOUBLE\n");
+                  break;
+              }
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              switch (opcode->code) {
+                case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE:
                   SPVM_STRING_BUFFER_add_byte(string_buffer, *(int8_t*)&constant_pool[opcode->operand1]);
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (int16_t)");
-                  SPVM_STRING_BUFFER_add_byte(string_buffer, *(int16_t*)&constant_pool[opcode->operand1]);
+                  SPVM_STRING_BUFFER_add_short(string_buffer, *(int16_t*)&constant_pool[opcode->operand1]);
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (int32_t)");
-                  SPVM_STRING_BUFFER_add_byte(string_buffer, *(int32_t*)&constant_pool[opcode->operand1]);
+                  SPVM_STRING_BUFFER_add_int(string_buffer, *(int32_t*)&constant_pool[opcode->operand1]);
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (int64_t)");
-                  SPVM_STRING_BUFFER_add_byte(string_buffer, *(int64_t*)&constant_pool[opcode->operand1]);
+                  SPVM_STRING_BUFFER_add_long(string_buffer, *(int64_t*)&constant_pool[opcode->operand1]);
                   SPVM_STRING_BUFFER_add(string_buffer, "L");
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (float)");
                   SPVM_STRING_BUFFER_add_float(string_buffer, *(float*)&constant_pool[opcode->operand1]);
                   SPVM_STRING_BUFFER_add(string_buffer, "f");
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE:
-                  SPVM_STRING_BUFFER_add(string_buffer, " = (double)");
                   SPVM_STRING_BUFFER_add_double(string_buffer, *(double*)&constant_pool[opcode->operand1]);
                   break;
               }
