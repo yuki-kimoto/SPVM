@@ -12,43 +12,94 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'TestCase'; my $use_test_line = __LINE__;
-use SPVM 'CORE'; my $use_core_line = __LINE__;
+use SPVM 'TestCase';
 
-use SPVM 'TestCase::Extension';
-use SPVM 'TestCase::Extension2';
-use SPVM 'TestCase::Arrays';
+# TODO
+# Divide
+# Remainder
 
-use POSIX ();
 
-use SPVM::Core::Object::Package;
+# Add
+{
+  is(SPVM::TestCase::add_byte_max(), 127);
+  is(SPVM::TestCase::add_byte_min(), -127);
+  is(SPVM::TestCase::add_byte_overflow(), -128);
+  is(SPVM::TestCase::add_short_max(), 32767);
+  is(SPVM::TestCase::add_short_min(), -32767);
+  is(SPVM::TestCase::add_short_overflow(), -32768);
+  is(SPVM::TestCase::add_int_max(), 2147483647);
+  is(SPVM::TestCase::add_int_min(), -2147483647);
+  is(SPVM::TestCase::add_int_overflow(), -2147483648);
+  is(SPVM::TestCase::add_long_max(), 9223372036854775807);
+  is(SPVM::TestCase::add_long_min(), -9223372036854775807);
+  is(SPVM::TestCase::add_long_overflow(), -9223372036854775808);
+}
 
-my $BYTE_MAX = 127;
-my $BYTE_MIN = -128;
-my $SHORT_MAX = 32767;
-my $SHORT_MIN = -32768;
-my $INT_MAX = 2147483647;
-my $INT_MIN = -2147483648;
-my $LONG_MAX = 9223372036854775807;
-my $LONG_MIN = -9223372036854775808;
-my $FLOAT_MAX = POSIX::FLT_MAX();
-my $FLOAT_MIN = POSIX::FLT_MIN();
-my $DOUBLE_MAX = POSIX::DBL_MAX();
-my $DOUBLE_MIN = POSIX::DBL_MIN();
-my $FLOAT_PRECICE = 16384.5;
-my $DOUBLE_PRECICE = 65536.5;
+# Subtract
+{
+  is(SPVM::TestCase::subtract_byte_max(), 126);
+  is(SPVM::TestCase::subtract_byte_min(), -128);
+  is(SPVM::TestCase::subtract_byte_underflow(), 127);
+  is(SPVM::TestCase::subtract_short_max(), 32766);
+  is(SPVM::TestCase::subtract_short_min(), -32768);
+  is(SPVM::TestCase::subtract_short_underflow(), 32767);
+  is(SPVM::TestCase::subtract_int_max(), 2147483646);
+  is(SPVM::TestCase::subtract_int_min(), -2147483648);
+  is(SPVM::TestCase::subtract_int_underflow(), 2147483647);
+  is(SPVM::TestCase::subtract_long_max(), 9223372036854775806);
+  is(SPVM::TestCase::subtract_long_min(), -9223372036854775808);
+  is(SPVM::TestCase::subtract_long_underflow(), 9223372036854775807);
+}
 
-# Positive infinity(unix like system : inf, Windows : 1.#INF)
-my $POSITIVE_INFINITY = SPVM::POSITIVE_INFINITY();
+# Multiply
+{
+  is(SPVM::TestCase::multiply_byte_plus(), 64);
+  is(SPVM::TestCase::multiply_byte_minus(), -64);
+  is(SPVM::TestCase::multiply_byte_overflow(), -128);
+  is(SPVM::TestCase::multiply_short_plus(), 16384);
+  is(SPVM::TestCase::multiply_short_minus(), -16384);
+  is(SPVM::TestCase::multiply_short_overflow(), -32768);
+  is(SPVM::TestCase::multiply_int_plus(), 1073741824);
+  is(SPVM::TestCase::multiply_int_minus(), -1073741824);
+  is(SPVM::TestCase::multiply_int_overflow(), -2147483648);
+  is(SPVM::TestCase::multiply_long_plus(), 4611686018427387904);
+  is(SPVM::TestCase::multiply_long_minus(), -4611686018427387904);
+  is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
+}
 
-# Negative infinity(unix like system : -inf, Windows : -1.#INF)
-my $NEGATIVE_INFINITY = SPVM::NEGATIVE_INFINITY();
+# Bit shift left
+{
+  ok(SPVM::TestCase::bit_shift_left_byte());
+  ok(SPVM::TestCase::bit_shift_left_byte_max());
+  ok(SPVM::TestCase::bit_shift_left_byte_overflow());
+  ok(SPVM::TestCase::bit_shift_left_short());
+  ok(SPVM::TestCase::bit_shift_left_short_max());
+  ok(SPVM::TestCase::bit_shift_left_short_overflow());
+  ok(SPVM::TestCase::bit_shift_left_int());
+  ok(SPVM::TestCase::bit_shift_left_int_max());
+  ok(SPVM::TestCase::bit_shift_left_int_overflow());
+  ok(SPVM::TestCase::bit_shift_left_long());
+  ok(SPVM::TestCase::bit_shift_left_long_max());
+  ok(SPVM::TestCase::bit_shift_left_long_overflow());
+}
 
-my $NaN = SPVM::NaN();
+# Bit shift right logical
+{
+  ok(SPVM::TestCase::bit_shift_right_logical_byte());
+  ok(SPVM::TestCase::bit_shift_right_logical_short());
+  ok(SPVM::TestCase::bit_shift_right_logical_int());
+  ok(SPVM::TestCase::bit_shift_right_logical_long());
+}
 
-use SPVM 'Double';
-use SPVM 'Float';
-use SPVM 'CORE';
+# Bit shift right
+{
+  ok(SPVM::TestCase::bit_shift_right_byte());
+  ok(SPVM::TestCase::bit_shift_right_short());
+  ok(SPVM::TestCase::bit_shift_right_int());
+  ok(SPVM::TestCase::bit_shift_right_long());
+}
+
+__END__
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
@@ -727,55 +778,6 @@ is_deeply(
 {
   ok(SPVM::TestCase::pre_inc());
   ok(SPVM::TestCase::post_inc());
-}
-
-
-# Add
-{
-  is(SPVM::TestCase::add_byte_max(), 127);
-  is(SPVM::TestCase::add_byte_min(), -127);
-  is(SPVM::TestCase::add_byte_overflow(), -128);
-  is(SPVM::TestCase::add_short_max(), 32767);
-  is(SPVM::TestCase::add_short_min(), -32767);
-  is(SPVM::TestCase::add_short_overflow(), -32768);
-  is(SPVM::TestCase::add_int_max(), 2147483647);
-  is(SPVM::TestCase::add_int_min(), -2147483647);
-  is(SPVM::TestCase::add_int_overflow(), -2147483648);
-  is(SPVM::TestCase::add_long_max(), 9223372036854775807);
-  is(SPVM::TestCase::add_long_min(), -9223372036854775807);
-  is(SPVM::TestCase::add_long_overflow(), -9223372036854775808);
-}
-
-# Subtract
-{
-  is(SPVM::TestCase::subtract_byte_max(), 126);
-  is(SPVM::TestCase::subtract_byte_min(), -128);
-  is(SPVM::TestCase::subtract_byte_underflow(), 127);
-  is(SPVM::TestCase::subtract_short_max(), 32766);
-  is(SPVM::TestCase::subtract_short_min(), -32768);
-  is(SPVM::TestCase::subtract_short_underflow(), 32767);
-  is(SPVM::TestCase::subtract_int_max(), 2147483646);
-  is(SPVM::TestCase::subtract_int_min(), -2147483648);
-  is(SPVM::TestCase::subtract_int_underflow(), 2147483647);
-  is(SPVM::TestCase::subtract_long_max(), 9223372036854775806);
-  is(SPVM::TestCase::subtract_long_min(), -9223372036854775808);
-  is(SPVM::TestCase::subtract_long_underflow(), 9223372036854775807);
-}
-
-# Multiply
-{
-  is(SPVM::TestCase::multiply_byte_plus(), 64);
-  is(SPVM::TestCase::multiply_byte_minus(), -64);
-  is(SPVM::TestCase::multiply_byte_overflow(), -128);
-  is(SPVM::TestCase::multiply_short_plus(), 16384);
-  is(SPVM::TestCase::multiply_short_minus(), -16384);
-  is(SPVM::TestCase::multiply_short_overflow(), -32768);
-  is(SPVM::TestCase::multiply_int_plus(), 1073741824);
-  is(SPVM::TestCase::multiply_int_minus(), -1073741824);
-  is(SPVM::TestCase::multiply_int_overflow(), -2147483648);
-  is(SPVM::TestCase::multiply_long_plus(), 4611686018427387904);
-  is(SPVM::TestCase::multiply_long_minus(), -4611686018427387904);
-  is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
 }
 
 # Negate
@@ -1510,39 +1512,6 @@ is_deeply(
   ok(SPVM::TestCase::number_literal_binary_int_max());
   ok(SPVM::TestCase::number_literal_binary_long_max());
 }
-
-# Bit shift left
-{
-  ok(SPVM::TestCase::bit_shift_left_byte());
-  ok(SPVM::TestCase::bit_shift_left_byte_max());
-  ok(SPVM::TestCase::bit_shift_left_byte_overflow());
-  ok(SPVM::TestCase::bit_shift_left_short());
-  ok(SPVM::TestCase::bit_shift_left_short_max());
-  ok(SPVM::TestCase::bit_shift_left_short_overflow());
-  ok(SPVM::TestCase::bit_shift_left_int());
-  ok(SPVM::TestCase::bit_shift_left_int_max());
-  ok(SPVM::TestCase::bit_shift_left_int_overflow());
-  ok(SPVM::TestCase::bit_shift_left_long());
-  ok(SPVM::TestCase::bit_shift_left_long_max());
-  ok(SPVM::TestCase::bit_shift_left_long_overflow());
-}
-
-# Bit shift right logical
-{
-  ok(SPVM::TestCase::bit_shift_right_logical_byte());
-  ok(SPVM::TestCase::bit_shift_right_logical_short());
-  ok(SPVM::TestCase::bit_shift_right_logical_int());
-  ok(SPVM::TestCase::bit_shift_right_logical_long());
-}
-
-# Bit shift right
-{
-  ok(SPVM::TestCase::bit_shift_right_byte());
-  ok(SPVM::TestCase::bit_shift_right_short());
-  ok(SPVM::TestCase::bit_shift_right_int());
-  ok(SPVM::TestCase::bit_shift_right_long());
-}
-
 
 # Array
 {
