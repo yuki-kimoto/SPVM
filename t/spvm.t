@@ -12,12 +12,13 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'TestCase';
-
 # TODO
 # Divide
 # Remainder
+# BIT_AND
+# BIT_OR
 
+use SPVM 'TestCase';
 
 # Add
 {
@@ -99,7 +100,56 @@ use SPVM 'TestCase';
   ok(SPVM::TestCase::bit_shift_right_long());
 }
 
+# Negate
+{
+  ok(SPVM::TestCase::negate());
+}
+
+# Complement
+{
+  ok(SPVM::TestCase::complement());
+}
+
+
 __END__
+
+use SPVM 'TestCase'; my $use_test_line = __LINE__;
+use SPVM 'CORE'; my $use_core_line = __LINE__;
+
+use SPVM 'TestCase::Extension';
+use SPVM 'TestCase::Extension2';
+use SPVM 'TestCase::Arrays';
+
+use POSIX ();
+
+use SPVM::Core::Object::Package;
+
+my $BYTE_MAX = 127;
+my $BYTE_MIN = -128;
+my $SHORT_MAX = 32767;
+my $SHORT_MIN = -32768;
+my $INT_MAX = 2147483647;
+my $INT_MIN = -2147483648;
+my $LONG_MAX = 9223372036854775807;
+my $LONG_MIN = -9223372036854775808;
+my $FLOAT_MAX = POSIX::FLT_MAX();
+my $FLOAT_MIN = POSIX::FLT_MIN();
+my $DOUBLE_MAX = POSIX::DBL_MAX();
+my $DOUBLE_MIN = POSIX::DBL_MIN();
+my $FLOAT_PRECICE = 16384.5;
+my $DOUBLE_PRECICE = 65536.5;
+
+# Positive infinity(unix like system : inf, Windows : 1.#INF)
+my $POSITIVE_INFINITY = SPVM::POSITIVE_INFINITY();
+
+# Negative infinity(unix like system : -inf, Windows : -1.#INF)
+my $NEGATIVE_INFINITY = SPVM::NEGATIVE_INFINITY();
+
+my $NaN = SPVM::NaN();
+
+use SPVM 'Double';
+use SPVM 'Float';
+use SPVM 'CORE';
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
@@ -778,16 +828,6 @@ is_deeply(
 {
   ok(SPVM::TestCase::pre_inc());
   ok(SPVM::TestCase::post_inc());
-}
-
-# Negate
-{
-  ok(SPVM::TestCase::negate());
-}
-
-# Complement
-{
-  ok(SPVM::TestCase::complement());
 }
 
 # get and set
