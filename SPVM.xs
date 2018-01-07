@@ -3372,6 +3372,10 @@ bind_jitcode_call_sub(...)
   SV* sv_call_sub_native_address = ST(0);
   void* call_sub_native_address = (void*)SvIV(sv_call_sub_native_address);
   
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  api->call_sub = call_sub_native_address;
+  
   XSRETURN(0);
 }
 

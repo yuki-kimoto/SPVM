@@ -243,7 +243,13 @@ sub compile_spvm {
     my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
     build_jitcode($jit_source_file);
     
+    open my $fh, '<', $jit_source_file
+      or die "aaa";
+    my $jit_source_content = do { local $/; <$fh> };
+    print $jit_source_content;
+    
     my $jitcode_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
+    
     
     bind_jitcode($jitcode_lib_file);
     
