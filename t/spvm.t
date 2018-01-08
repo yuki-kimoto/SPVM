@@ -529,6 +529,23 @@ use SPVM 'TestCase';
   ok(SPVM::TestCase::switch_table_switch());
 }
 
+# Default return value
+{
+  ok(SPVM::TestCase::default_return_value_byte());
+  ok(SPVM::TestCase::default_return_value_short());
+  ok(SPVM::TestCase::default_return_value_int());
+  ok(SPVM::TestCase::default_return_value_long());
+  ok(SPVM::TestCase::default_return_value_float());
+  ok(SPVM::TestCase::default_return_value_double());
+  ok(SPVM::TestCase::default_return_value_object());
+}
+
+# my variable
+{
+  ok(SPVM::TestCase::my_var_initialized_zero());
+  ok(SPVM::TestCase::my_var_block());
+}
+
 
 __END__
 
@@ -762,23 +779,6 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::array_init_long());
   ok(SPVM::TestCase::array_init_float());
   ok(SPVM::TestCase::array_init_double());
-}
-
-# Default return value
-{
-  ok(SPVM::TestCase::default_return_value_byte());
-  ok(SPVM::TestCase::default_return_value_short());
-  ok(SPVM::TestCase::default_return_value_int());
-  ok(SPVM::TestCase::default_return_value_long());
-  ok(SPVM::TestCase::default_return_value_float());
-  ok(SPVM::TestCase::default_return_value_double());
-  ok(SPVM::TestCase::default_return_value_object());
-}
-
-# my variable
-{
-  ok(SPVM::TestCase::my_var_initialized_zero());
-  ok(SPVM::TestCase::my_var_block());
 }
 
 # Set field exception
