@@ -5,6 +5,8 @@ use Data::Dumper;
 use File::Basename 'basename';
 use FindBin;
 
+use POSIX ();
+
 use Test::More 'no_plan';
 
 my $file = 't/' . basename $0;
@@ -13,10 +15,34 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 
 # TODO
-# Divide
-# Remainder
+# DIVIDE
+# REMAINDER
 # BIT_AND
 # BIT_OR
+# LAST
+
+my $BYTE_MAX = 127;
+my $BYTE_MIN = -128;
+my $SHORT_MAX = 32767;
+my $SHORT_MIN = -32768;
+my $INT_MAX = 2147483647;
+my $INT_MIN = -2147483648;
+my $LONG_MAX = 9223372036854775807;
+my $LONG_MIN = -9223372036854775808;
+my $FLOAT_MAX = POSIX::FLT_MAX();
+my $FLOAT_MIN = POSIX::FLT_MIN();
+my $DOUBLE_MAX = POSIX::DBL_MAX();
+my $DOUBLE_MIN = POSIX::DBL_MIN();
+my $FLOAT_PRECICE = 16384.5;
+my $DOUBLE_PRECICE = 65536.5;
+
+# Positive infinity(unix like system : inf, Windows : 1.#INF)
+my $POSITIVE_INFINITY = SPVM::POSITIVE_INFINITY();
+
+# Negative infinity(unix like system : -inf, Windows : -1.#INF)
+my $NEGATIVE_INFINITY = SPVM::NEGATIVE_INFINITY();
+
+my $NaN = SPVM::NaN();
 
 use SPVM 'TestCase';
 
@@ -462,6 +488,18 @@ use SPVM 'TestCase';
   ok(SPVM::TestCase::if_le_double_right_big());
 }
 
+# for
+{
+  my $total = SPVM::TestCase::for_basic();
+  cmp_ok($total, '==', 6);
+}
+
+# next
+{
+  SPVM::TestCase::next_statement();
+}
+
+
 __END__
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
@@ -471,32 +509,7 @@ use SPVM 'TestCase::Extension';
 use SPVM 'TestCase::Extension2';
 use SPVM 'TestCase::Arrays';
 
-use POSIX ();
-
 use SPVM::Core::Object::Package;
-
-my $BYTE_MAX = 127;
-my $BYTE_MIN = -128;
-my $SHORT_MAX = 32767;
-my $SHORT_MIN = -32768;
-my $INT_MAX = 2147483647;
-my $INT_MIN = -2147483648;
-my $LONG_MAX = 9223372036854775807;
-my $LONG_MIN = -9223372036854775808;
-my $FLOAT_MAX = POSIX::FLT_MAX();
-my $FLOAT_MIN = POSIX::FLT_MIN();
-my $DOUBLE_MAX = POSIX::DBL_MAX();
-my $DOUBLE_MIN = POSIX::DBL_MIN();
-my $FLOAT_PRECICE = 16384.5;
-my $DOUBLE_PRECICE = 65536.5;
-
-# Positive infinity(unix like system : inf, Windows : 1.#INF)
-my $POSITIVE_INFINITY = SPVM::POSITIVE_INFINITY();
-
-# Negative infinity(unix like system : -inf, Windows : -1.#INF)
-my $NEGATIVE_INFINITY = SPVM::NEGATIVE_INFINITY();
-
-my $NaN = SPVM::NaN();
 
 use SPVM 'Double';
 use SPVM 'Float';
@@ -563,90 +576,6 @@ my $start_objects_count = SPVM::get_objects_count();
 # Template
 {
   ok(SPVM::TestCase::template());
-}
-
-# SPVM::Byte
-{
-  ok(SPVM::TestCase::Byte::constant());
-}
-
-# SPVM::Short
-{
-  ok(SPVM::TestCase::Short::constant());
-}
-
-# SPVM::Integer
-{
-  ok(SPVM::TestCase::Integer::constant());
-}
-
-# SPVM::Long
-{
-  ok(SPVM::TestCase::Long::constant());
-}
-
-# SPVM::Float
-{
-  ok(SPVM::TestCase::Float::pass_positive_infinity($POSITIVE_INFINITY));
-  ok(SPVM::TestCase::Float::pass_negative_infinity($NEGATIVE_INFINITY));
-  ok(SPVM::TestCase::Float::pass_nan($NaN));
-  
-  ok(SPVM::TestCase::Float::constant());
-  ok(SPVM::TestCase::Float::is_infinite());
-  ok(SPVM::TestCase::Float::is_finite());
-  ok(SPVM::TestCase::Float::is_nan());
-  ok(SPVM::TestCase::Float::int_bits_to_float());
-  ok(SPVM::TestCase::Float::int_bits_to_float_nan_first_condition());
-  ok(SPVM::TestCase::Float::int_bits_to_float_nan_first_condition_is_nan());
-  ok(SPVM::TestCase::Float::int_bits_to_float_nan_second_condition());
-  ok(SPVM::TestCase::Float::int_bits_to_float_nan_second_condition_is_nan());
-
-  ok(SPVM::TestCase::Float::float_to_raw_int_bits());
-  ok(SPVM::TestCase::Float::float_to_raw_int_bits_nan());
-  ok(SPVM::TestCase::Float::float_to_int_bits());
-  ok(SPVM::TestCase::Float::float_to_int_bits_nan());
-  
-  is(SPVM::Float::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
-  is(SPVM::Float::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
-  
-  cmp_ok(SPVM::Float::NaN(), 'eq', $NaN);
-  
-  # Check not Inf or NaN in Perl value
-  like(SPVM::Float::MAX_VALUE(), qr/[0-9]/);
-  like(SPVM::Float::MIN_VALUE(), qr/[0-9]/);
-  like(SPVM::Float::MIN_NORMAL(), qr/[0-9]/);
-}
-
-# SPVM::Double
-{
-  ok(SPVM::TestCase::Double::pass_positive_infinity($POSITIVE_INFINITY));
-  ok(SPVM::TestCase::Double::pass_negative_infinity($NEGATIVE_INFINITY));
-  ok(SPVM::TestCase::Double::pass_nan($NaN));
-  
-  ok(SPVM::TestCase::Double::constant());
-  ok(SPVM::TestCase::Double::is_infinite());
-  ok(SPVM::TestCase::Double::is_finite());
-  ok(SPVM::TestCase::Double::is_nan());
-  ok(SPVM::TestCase::Double::long_bits_to_double());
-  ok(SPVM::TestCase::Double::long_bits_to_double_nan_first_condition());
-  ok(SPVM::TestCase::Double::long_bits_to_double_nan_first_condition_is_nan());
-  ok(SPVM::TestCase::Double::long_bits_to_double_nan_second_condition());
-  ok(SPVM::TestCase::Double::long_bits_to_double_nan_second_condition_is_nan());
-  
-  ok(SPVM::TestCase::Double::double_to_raw_long_bits());
-  ok(SPVM::TestCase::Double::double_to_raw_long_bits_nan());
-  ok(SPVM::TestCase::Double::double_to_long_bits());
-  ok(SPVM::TestCase::Double::double_to_long_bits_nan());
-  
-  is(SPVM::Double::POSITIVE_INFINITY(), $POSITIVE_INFINITY);
-  is(SPVM::Double::NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
-  
-  cmp_ok(SPVM::Double::NaN(), 'eq', $NaN);
-  
-  # Check not Inf or NaN in Perl value
-  like(SPVM::Double::MAX_VALUE(), qr/[0-9]/);
-  like(SPVM::Double::MIN_VALUE(), qr/[0-9]/);
-  like(SPVM::Double::MIN_NORMAL(), qr/[0-9]/);
 }
 
 # .
@@ -1624,17 +1553,6 @@ is_deeply(
   }
 }
 
-
-# for
-{
-  my $total = SPVM::TestCase::for_basic();
-  cmp_ok($total, '==', 6);
-}
-
-# next
-{
-  SPVM::TestCase::next_statement();
-}
 
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
