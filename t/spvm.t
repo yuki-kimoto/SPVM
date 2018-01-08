@@ -312,6 +312,68 @@ use SPVM 'TestCase';
 
 }
 
+# If
+{
+  ok(SPVM::TestCase::if_true_byte());
+  ok(SPVM::TestCase::if_true_short());
+  ok(SPVM::TestCase::if_true_int());
+  ok(SPVM::TestCase::if_true_long());
+  ok(SPVM::TestCase::if_true_float());
+  ok(SPVM::TestCase::if_true_double());
+  ok(SPVM::TestCase::if_true_object());
+
+  ok(SPVM::TestCase::if_false_byte());
+  ok(SPVM::TestCase::if_false_short());
+  ok(SPVM::TestCase::if_false_int());
+  ok(SPVM::TestCase::if_false_long());
+  ok(SPVM::TestCase::if_false_float());
+  ok(SPVM::TestCase::if_false_double());
+  ok(SPVM::TestCase::if_false_object());
+
+  ok(SPVM::TestCase::if_else());
+  ok(SPVM::TestCase::if_elsif());
+  ok(SPVM::TestCase::if_elsif_2());
+  ok(SPVM::TestCase::if_duplicate());
+}
+
+# If a == b
+{
+  ok(SPVM::TestCase::if_eq_byte_same());
+  ok(SPVM::TestCase::if_eq_byte_different());
+  ok(SPVM::TestCase::if_eq_short_same());
+  ok(SPVM::TestCase::if_eq_short_different());
+  ok(SPVM::TestCase::if_eq_int_same());
+  ok(SPVM::TestCase::if_eq_int_different());
+  ok(SPVM::TestCase::if_eq_long_same());
+  ok(SPVM::TestCase::if_eq_long_different());
+  ok(SPVM::TestCase::if_eq_float_same());
+  ok(SPVM::TestCase::if_eq_float_different());
+  ok(SPVM::TestCase::if_eq_double_same());
+  ok(SPVM::TestCase::if_eq_double_different());
+  ok(SPVM::TestCase::if_eq_object_same());
+  ok(SPVM::TestCase::if_eq_object_different());
+  ok(SPVM::TestCase::if_eq_undef());
+}
+
+# If a != b
+{
+  ok(SPVM::TestCase::if_ne_byte_same());
+  ok(SPVM::TestCase::if_ne_byte_different());
+  ok(SPVM::TestCase::if_ne_short_same());
+  ok(SPVM::TestCase::if_ne_short_different());
+  ok(SPVM::TestCase::if_ne_int_same());
+  ok(SPVM::TestCase::if_ne_int_different());
+  ok(SPVM::TestCase::if_ne_long_same());
+  ok(SPVM::TestCase::if_ne_long_different());
+  ok(SPVM::TestCase::if_ne_float_same());
+  ok(SPVM::TestCase::if_ne_float_different());
+  ok(SPVM::TestCase::if_ne_double_same());
+  ok(SPVM::TestCase::if_ne_double_different());
+  ok(SPVM::TestCase::if_ne_object_same());
+  ok(SPVM::TestCase::if_ne_object_different());
+  ok(SPVM::TestCase::if_ne_undef());
+}
+
 # If a > b
 {
   ok(SPVM::TestCase::if_gt_byte_left_big());
@@ -1509,68 +1571,6 @@ is_deeply(
 {
   my $sp_values = SPVM::Core::Object::Array::Int->new_len(3);
   $sp_values->set_elements([1, 2, 3]);
-}
-
-# If
-{
-  ok(SPVM::TestCase::if_true_byte());
-  ok(SPVM::TestCase::if_true_short());
-  ok(SPVM::TestCase::if_true_int());
-  ok(SPVM::TestCase::if_true_long());
-  ok(SPVM::TestCase::if_true_float());
-  ok(SPVM::TestCase::if_true_double());
-  ok(SPVM::TestCase::if_true_object());
-
-  ok(SPVM::TestCase::if_false_byte());
-  ok(SPVM::TestCase::if_false_short());
-  ok(SPVM::TestCase::if_false_int());
-  ok(SPVM::TestCase::if_false_long());
-  ok(SPVM::TestCase::if_false_float());
-  ok(SPVM::TestCase::if_false_double());
-  ok(SPVM::TestCase::if_false_object());
-
-  ok(SPVM::TestCase::if_else());
-  ok(SPVM::TestCase::if_elsif());
-  ok(SPVM::TestCase::if_elsif_2());
-  ok(SPVM::TestCase::if_duplicate());
-}
-
-# If a == b
-{
-  ok(SPVM::TestCase::if_eq_byte_same());
-  ok(SPVM::TestCase::if_eq_byte_different());
-  ok(SPVM::TestCase::if_eq_short_same());
-  ok(SPVM::TestCase::if_eq_short_different());
-  ok(SPVM::TestCase::if_eq_int_same());
-  ok(SPVM::TestCase::if_eq_int_different());
-  ok(SPVM::TestCase::if_eq_long_same());
-  ok(SPVM::TestCase::if_eq_long_different());
-  ok(SPVM::TestCase::if_eq_float_same());
-  ok(SPVM::TestCase::if_eq_float_different());
-  ok(SPVM::TestCase::if_eq_double_same());
-  ok(SPVM::TestCase::if_eq_double_different());
-  ok(SPVM::TestCase::if_eq_object_same());
-  ok(SPVM::TestCase::if_eq_object_different());
-  ok(SPVM::TestCase::if_eq_undef());
-}
-
-# If a != b
-{
-  ok(SPVM::TestCase::if_ne_byte_same());
-  ok(SPVM::TestCase::if_ne_byte_different());
-  ok(SPVM::TestCase::if_ne_short_same());
-  ok(SPVM::TestCase::if_ne_short_different());
-  ok(SPVM::TestCase::if_ne_int_same());
-  ok(SPVM::TestCase::if_ne_int_different());
-  ok(SPVM::TestCase::if_ne_long_same());
-  ok(SPVM::TestCase::if_ne_long_different());
-  ok(SPVM::TestCase::if_ne_float_same());
-  ok(SPVM::TestCase::if_ne_float_different());
-  ok(SPVM::TestCase::if_ne_double_same());
-  ok(SPVM::TestCase::if_ne_double_different());
-  ok(SPVM::TestCase::if_ne_object_same());
-  ok(SPVM::TestCase::if_ne_object_different());
-  ok(SPVM::TestCase::if_ne_undef());
 }
 
 # Number literal
