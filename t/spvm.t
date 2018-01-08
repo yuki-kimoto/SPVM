@@ -522,6 +522,13 @@ use SPVM 'TestCase';
   ok(SPVM::TestCase::number_literal_binary_long_max());
 }
 
+# Switch
+{
+  ok(SPVM::TestCase::switch_nest());
+  ok(SPVM::TestCase::switch_lookup_switch());
+  ok(SPVM::TestCase::switch_table_switch());
+}
+
 
 __END__
 
@@ -1648,12 +1655,5 @@ is($end_objects_count, $start_objects_count);
   {
     ok(SPVM::TestCase::exception_croak_return_int_eval_catch());
   }
-}
-
-# Switch
-{
-  ok(SPVM::TestCase::switch_nest());
-  ok(SPVM::TestCase::switch_lookup_switch());
-  ok(SPVM::TestCase::switch_table_switch());
 }
 
