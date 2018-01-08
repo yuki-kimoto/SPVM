@@ -676,6 +676,12 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::call_sub_args_long(0, $LONG_MAX, $LONG_MIN));
 }
 
+# Template
+{
+  ok(SPVM::TestCase::template());
+}
+
+
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
@@ -749,11 +755,6 @@ use SPVM 'CORE';
   cmp_ok($NEGATIVE_INFINITY, '<', 0);
   
   like($NaN, qr/(nan|ind)/i);
-}
-
-# Template
-{
-  ok(SPVM::TestCase::template());
 }
 
 # .
