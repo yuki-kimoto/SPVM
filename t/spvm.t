@@ -110,6 +110,18 @@ use SPVM 'TestCase';
   ok(SPVM::TestCase::complement());
 }
 
+# Special assign
+{
+  ok(SPVM::TestCase::special_assign());
+}
+
+# Increment
+{
+  ok(SPVM::TestCase::pre_inc());
+  ok(SPVM::TestCase::post_inc());
+}
+
+
 
 __END__
 
@@ -817,17 +829,6 @@ is_deeply(
   ok(SPVM::TestCase::logical_and_left_true());
   ok(SPVM::TestCase::logical_and_right_true());
   ok(SPVM::TestCase::logical_and_both_false());
-}
-
-# Special assign
-{
-  ok(SPVM::TestCase::special_assign());
-}
-
-# Increment
-{
-  ok(SPVM::TestCase::pre_inc());
-  ok(SPVM::TestCase::post_inc());
 }
 
 # get and set
