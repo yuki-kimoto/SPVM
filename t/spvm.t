@@ -229,6 +229,89 @@ use SPVM 'TestCase';
 }
 
 
+# Convert type - floating point narrowing convertion
+{
+  ok(SPVM::TestCase::convert_float_to_byte());
+  ok(SPVM::TestCase::convert_float_to_short());
+  ok(SPVM::TestCase::convert_float_to_int());
+  ok(SPVM::TestCase::convert_float_to_long());
+  ok(SPVM::TestCase::convert_double_to_byte());
+  ok(SPVM::TestCase::convert_double_to_short());
+  ok(SPVM::TestCase::convert_double_to_int());
+  ok(SPVM::TestCase::convert_double_to_long());
+  ok(SPVM::TestCase::convert_double_to_float());
+}
+
+# Convert type - floating point widening convertion
+{
+  ok(SPVM::TestCase::convert_byte_to_float());
+  ok(SPVM::TestCase::convert_short_to_float());
+  ok(SPVM::TestCase::convert_int_to_float());
+  ok(SPVM::TestCase::convert_long_to_float());
+  ok(SPVM::TestCase::convert_byte_to_double());
+  ok(SPVM::TestCase::convert_short_to_double());
+  ok(SPVM::TestCase::convert_int_to_double());
+  ok(SPVM::TestCase::convert_long_to_double());
+  ok(SPVM::TestCase::convert_float_to_double());
+}
+
+# Convert type - integral number widning convertion
+{
+  ok(SPVM::TestCase::convert_byte_to_short_plus());
+  ok(SPVM::TestCase::convert_byte_to_short_minus());
+  ok(SPVM::TestCase::convert_byte_to_int_plus());
+  ok(SPVM::TestCase::convert_byte_to_int_minus());
+  ok(SPVM::TestCase::convert_byte_to_long_plus());
+  ok(SPVM::TestCase::convert_byte_to_long_minus());
+  ok(SPVM::TestCase::convert_short_to_int_plus());
+  ok(SPVM::TestCase::convert_short_to_int_minus());
+  ok(SPVM::TestCase::convert_short_to_long_plus());
+  ok(SPVM::TestCase::convert_short_to_long_minus());
+  ok(SPVM::TestCase::convert_int_to_long_plus());
+  ok(SPVM::TestCase::convert_int_to_long_minus());
+}
+
+# Convert type - same type
+{
+  ok(SPVM::TestCase::convert_long_to_long());
+  ok(SPVM::TestCase::convert_int_to_int());
+  ok(SPVM::TestCase::convert_short_to_short());
+  ok(SPVM::TestCase::convert_byte_to_byte());
+}
+
+# Convert type - integral number narrowing convertion
+{
+  ok(SPVM::TestCase::convert_long_to_int());
+  ok(SPVM::TestCase::convert_long_to_short());
+  ok(SPVM::TestCase::convert_long_to_byte());
+  ok(SPVM::TestCase::convert_int_to_short());
+  ok(SPVM::TestCase::convert_int_to_byte());
+  ok(SPVM::TestCase::convert_short_to_byte());
+}
+
+# Enumeration
+{
+  ok(SPVM::TestCase::enum_byte());
+  ok(SPVM::TestCase::enum_short());
+  ok(SPVM::TestCase::enum_int());
+  ok(SPVM::TestCase::enum_long());
+  ok(SPVM::TestCase::enum_float());
+  ok(SPVM::TestCase::enum_double());
+
+  is(SPVM::TestCase::INT_VALUE(), 127);
+
+=pod
+  is(SPVM::TestCase::BYTE_MIN(), -128);
+  is(SPVM::TestCase::SHORT_MAX(), 32767);
+  is(SPVM::TestCase::SHORT_MIN(), -32768);
+  is(SPVM::TestCase::INT_MAX(), 2147483647);
+  is(SPVM::TestCase::INT_MIN(), -2147483648);
+  is(SPVM::TestCase::LONG_MAX(), 9223372036854775807);
+  is(SPVM::TestCase::LONG_MIN(), -9223372036854775808);
+=cut
+
+}
+
 __END__
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
@@ -639,89 +722,6 @@ is_deeply(
 # Get object from freelist
 {
   ok(SPVM::TestCase::get_object_from_freelist());
-}
-
-# Enumeration
-{
-  ok(SPVM::TestCase::enum_byte());
-  ok(SPVM::TestCase::enum_short());
-  ok(SPVM::TestCase::enum_int());
-  ok(SPVM::TestCase::enum_long());
-  ok(SPVM::TestCase::enum_float());
-  ok(SPVM::TestCase::enum_double());
-
-  is(SPVM::TestCase::INT_VALUE(), 127);
-
-=pod
-  is(SPVM::TestCase::BYTE_MIN(), -128);
-  is(SPVM::TestCase::SHORT_MAX(), 32767);
-  is(SPVM::TestCase::SHORT_MIN(), -32768);
-  is(SPVM::TestCase::INT_MAX(), 2147483647);
-  is(SPVM::TestCase::INT_MIN(), -2147483648);
-  is(SPVM::TestCase::LONG_MAX(), 9223372036854775807);
-  is(SPVM::TestCase::LONG_MIN(), -9223372036854775808);
-=cut
-
-}
-
-# Convert type - floating point narrowing convertion
-{
-  ok(SPVM::TestCase::convert_float_to_byte());
-  ok(SPVM::TestCase::convert_float_to_short());
-  ok(SPVM::TestCase::convert_float_to_int());
-  ok(SPVM::TestCase::convert_float_to_long());
-  ok(SPVM::TestCase::convert_double_to_byte());
-  ok(SPVM::TestCase::convert_double_to_short());
-  ok(SPVM::TestCase::convert_double_to_int());
-  ok(SPVM::TestCase::convert_double_to_long());
-  ok(SPVM::TestCase::convert_double_to_float());
-}
-
-# Convert type - floating point widening convertion
-{
-  ok(SPVM::TestCase::convert_byte_to_float());
-  ok(SPVM::TestCase::convert_short_to_float());
-  ok(SPVM::TestCase::convert_int_to_float());
-  ok(SPVM::TestCase::convert_long_to_float());
-  ok(SPVM::TestCase::convert_byte_to_double());
-  ok(SPVM::TestCase::convert_short_to_double());
-  ok(SPVM::TestCase::convert_int_to_double());
-  ok(SPVM::TestCase::convert_long_to_double());
-  ok(SPVM::TestCase::convert_float_to_double());
-}
-
-# Convert type - integral number widning convertion
-{
-  ok(SPVM::TestCase::convert_byte_to_short_plus());
-  ok(SPVM::TestCase::convert_byte_to_short_minus());
-  ok(SPVM::TestCase::convert_byte_to_int_plus());
-  ok(SPVM::TestCase::convert_byte_to_int_minus());
-  ok(SPVM::TestCase::convert_byte_to_long_plus());
-  ok(SPVM::TestCase::convert_byte_to_long_minus());
-  ok(SPVM::TestCase::convert_short_to_int_plus());
-  ok(SPVM::TestCase::convert_short_to_int_minus());
-  ok(SPVM::TestCase::convert_short_to_long_plus());
-  ok(SPVM::TestCase::convert_short_to_long_minus());
-  ok(SPVM::TestCase::convert_int_to_long_plus());
-  ok(SPVM::TestCase::convert_int_to_long_minus());
-}
-
-# Convert type - same type
-{
-  ok(SPVM::TestCase::convert_long_to_long());
-  ok(SPVM::TestCase::convert_int_to_int());
-  ok(SPVM::TestCase::convert_short_to_short());
-  ok(SPVM::TestCase::convert_byte_to_byte());
-}
-
-# Convert type - integral number narrowing convertion
-{
-  ok(SPVM::TestCase::convert_long_to_int());
-  ok(SPVM::TestCase::convert_long_to_short());
-  ok(SPVM::TestCase::convert_long_to_byte());
-  ok(SPVM::TestCase::convert_int_to_short());
-  ok(SPVM::TestCase::convert_int_to_byte());
-  ok(SPVM::TestCase::convert_short_to_byte());
 }
 
 # SPVM new_object_array_len
