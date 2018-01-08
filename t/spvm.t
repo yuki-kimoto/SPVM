@@ -499,6 +499,29 @@ use SPVM 'TestCase';
   SPVM::TestCase::next_statement();
 }
 
+# Number literal
+{
+  ok(SPVM::TestCase::number_literal_underline_hex());
+  ok(SPVM::TestCase::number_literal_underline());
+  ok(SPVM::TestCase::number_literal_hex_specifier());
+  ok(SPVM::TestCase::number_literal_hex_all_number());
+  ok(SPVM::TestCase::number_literal_hex_int());
+  ok(SPVM::TestCase::number_literal_hex_int_max());
+  ok(SPVM::TestCase::number_literal_hex_long_max());
+
+  ok(SPVM::TestCase::number_literal_octal_specifier());
+  ok(SPVM::TestCase::number_literal_octal_all_number());
+  ok(SPVM::TestCase::number_literal_octal_int());
+  ok(SPVM::TestCase::number_literal_octal_int_max());
+  ok(SPVM::TestCase::number_literal_octal_long_max());
+
+  ok(SPVM::TestCase::number_literal_binary_specifier());
+  ok(SPVM::TestCase::number_literal_binary_all_number());
+  ok(SPVM::TestCase::number_literal_binary_int());
+  ok(SPVM::TestCase::number_literal_binary_int_max());
+  ok(SPVM::TestCase::number_literal_binary_long_max());
+}
+
 
 __END__
 
@@ -1500,29 +1523,6 @@ is_deeply(
 {
   my $sp_values = SPVM::Core::Object::Array::Int->new_len(3);
   $sp_values->set_elements([1, 2, 3]);
-}
-
-# Number literal
-{
-  ok(SPVM::TestCase::number_literal_underline_hex());
-  ok(SPVM::TestCase::number_literal_underline());
-  ok(SPVM::TestCase::number_literal_hex_specifier());
-  ok(SPVM::TestCase::number_literal_hex_all_number());
-  ok(SPVM::TestCase::number_literal_hex_int());
-  ok(SPVM::TestCase::number_literal_hex_int_max());
-  ok(SPVM::TestCase::number_literal_hex_long_max());
-
-  ok(SPVM::TestCase::number_literal_octal_specifier());
-  ok(SPVM::TestCase::number_literal_octal_all_number());
-  ok(SPVM::TestCase::number_literal_octal_int());
-  ok(SPVM::TestCase::number_literal_octal_int_max());
-  ok(SPVM::TestCase::number_literal_octal_long_max());
-
-  ok(SPVM::TestCase::number_literal_binary_specifier());
-  ok(SPVM::TestCase::number_literal_binary_all_number());
-  ok(SPVM::TestCase::number_literal_binary_int());
-  ok(SPVM::TestCase::number_literal_binary_int_max());
-  ok(SPVM::TestCase::number_literal_binary_long_max());
 }
 
 # Array
