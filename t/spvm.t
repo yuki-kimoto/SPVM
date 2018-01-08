@@ -546,6 +546,174 @@ use SPVM 'TestCase';
   ok(SPVM::TestCase::my_var_block());
 }
 
+# Array default
+{
+  ok(SPVM::TestCase::array_default_zero_memory_pool());
+  ok(SPVM::TestCase::array_default_zero_not_memory_pool());
+}
+
+# Array initialization
+{
+  ok(SPVM::TestCase::array_init_byte());
+  ok(SPVM::TestCase::array_init_short());
+  ok(SPVM::TestCase::array_init_int());
+  ok(SPVM::TestCase::array_init_long());
+  ok(SPVM::TestCase::array_init_float());
+  ok(SPVM::TestCase::array_init_double());
+}
+
+# SPVM new_object_array_len
+{
+  # element byte array
+  {
+    my $object_array = SPVM::new_object_array_len("byte[]", 3);
+    
+    my $object1 = SPVM::new_byte_array([1, 2, 3]);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::new_byte_array([4, 5, 6]);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_byte_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
+  }
+
+  # element short array
+  {
+    my $object_array = SPVM::new_object_array_len("short[]", 3);
+    my $object1 = SPVM::new_short_array([1, 2, 3]);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::new_short_array([4, 5, 6]);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_short_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
+  }
+
+  # element int array
+  {
+    my $object_array = SPVM::new_object_array_len("int[]", 3);
+    my $object1 = SPVM::new_int_array([1, 2, 3]);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::new_int_array([4, 5, 6]);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_int_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
+  }
+
+  # element long array
+  {
+    my $object_array = SPVM::new_object_array_len("long[]", 3);
+    my $object1 = SPVM::new_long_array([1, 2, 3]);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::new_long_array([4, 5, 6]);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_long_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
+  }
+
+  # element float array
+  {
+    my $object_array = SPVM::new_object_array_len("float[]", 3);
+    my $object1 = SPVM::new_float_array([1, 2, 3]);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::new_float_array([4, 5, 6]);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_float_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
+  }
+
+  # element double array
+  {
+    my $object_array = SPVM::new_object_array_len("double[]", 3);
+    my $object1 = SPVM::new_double_array([1, 2, 3]);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::new_double_array([4, 5, 6]);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_double_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_elements, [1, 2, 3]);
+    is_deeply($object2_get->get_elements, [4, 5, 6]);
+  }
+
+  # element object array
+  {
+    my $object_array = SPVM::new_object_array_len("TestCase", 3);
+    my $object1 = SPVM::TestCase::new();
+    
+    $object1->set_x_int(1);
+    $object_array->set(0, $object1);
+    my $object2 = SPVM::TestCase::new();
+    $object2->set_x_int(2);
+    $object_array->set(1, $object2);
+    ok(SPVM::TestCase::spvm_new_object_array_len_element_object_array($object_array));
+    
+    my $object1_get = $object_array->get(0);
+    my $object2_get = $object_array->get(1);
+    
+    is_deeply($object1_get->get_x_int, 1);
+    is_deeply($object2_get->get_x_int, 2);
+  }
+}
+
+# SPVM::Core::Object::Array
+{
+  my $sp_values = SPVM::Core::Object::Array::Int->new_len(3);
+  $sp_values->set_elements([1, 2, 3]);
+}
+
+# Array
+{
+  # int array and get length
+  {
+    ok(SPVM::TestCase::get_array_length_at());
+    ok(SPVM::TestCase::get_array_length_len());
+    ok(SPVM::TestCase::get_array_length_undef());
+  }
+
+  # array - set and get array element, first element
+  {
+    my $element = SPVM::TestCase::array_set_and_get_array_element_first();
+    is($element, 345);
+  }
+  
+  # array - set and get array element, last element
+  {
+    my $element = SPVM::TestCase::array_set_and_get_array_element_last();
+    is($element, 298);
+  }
+
+  # array - culcurate sum by for
+  {
+    my $total = SPVM::TestCase::array_culcurate_sum_by_for();
+    is($total, 6);
+  }
+}
 
 __END__
 
@@ -765,22 +933,6 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::call_void());
 }
 
-# Array default
-{
-  ok(SPVM::TestCase::array_default_zero_memory_pool());
-  ok(SPVM::TestCase::array_default_zero_not_memory_pool());
-}
-
-# Array initialization
-{
-  ok(SPVM::TestCase::array_init_byte());
-  ok(SPVM::TestCase::array_init_short());
-  ok(SPVM::TestCase::array_init_int());
-  ok(SPVM::TestCase::array_init_long());
-  ok(SPVM::TestCase::array_init_float());
-  ok(SPVM::TestCase::array_init_double());
-}
-
 # Set field exception
 {
   ok(SPVM::TestCase::set_field_exception_object_undef());
@@ -831,125 +983,6 @@ is_deeply(
 # Get object from freelist
 {
   ok(SPVM::TestCase::get_object_from_freelist());
-}
-
-# SPVM new_object_array_len
-{
-  # element byte array
-  {
-    my $object_array = SPVM::new_object_array_len("byte[]", 3);
-    
-    my $object1 = SPVM::new_byte_array([1, 2, 3]);
-    $object_array->set(0, $object1);
-    my $object2 = SPVM::new_byte_array([4, 5, 6]);
-    $object_array->set(1, $object2);
-    ok(SPVM::TestCase::spvm_new_object_array_len_element_byte_array($object_array));
-    
-    my $object1_get = $object_array->get(0);
-    my $object2_get = $object_array->get(1);
-    
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
-  }
-
-  # element short array
-  {
-    my $object_array = SPVM::new_object_array_len("short[]", 3);
-    my $object1 = SPVM::new_short_array([1, 2, 3]);
-    $object_array->set(0, $object1);
-    my $object2 = SPVM::new_short_array([4, 5, 6]);
-    $object_array->set(1, $object2);
-    ok(SPVM::TestCase::spvm_new_object_array_len_element_short_array($object_array));
-    
-    my $object1_get = $object_array->get(0);
-    my $object2_get = $object_array->get(1);
-    
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
-  }
-
-  # element int array
-  {
-    my $object_array = SPVM::new_object_array_len("int[]", 3);
-    my $object1 = SPVM::new_int_array([1, 2, 3]);
-    $object_array->set(0, $object1);
-    my $object2 = SPVM::new_int_array([4, 5, 6]);
-    $object_array->set(1, $object2);
-    ok(SPVM::TestCase::spvm_new_object_array_len_element_int_array($object_array));
-    
-    my $object1_get = $object_array->get(0);
-    my $object2_get = $object_array->get(1);
-    
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
-  }
-
-  # element long array
-  {
-    my $object_array = SPVM::new_object_array_len("long[]", 3);
-    my $object1 = SPVM::new_long_array([1, 2, 3]);
-    $object_array->set(0, $object1);
-    my $object2 = SPVM::new_long_array([4, 5, 6]);
-    $object_array->set(1, $object2);
-    ok(SPVM::TestCase::spvm_new_object_array_len_element_long_array($object_array));
-    
-    my $object1_get = $object_array->get(0);
-    my $object2_get = $object_array->get(1);
-    
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
-  }
-
-  # element float array
-  {
-    my $object_array = SPVM::new_object_array_len("float[]", 3);
-    my $object1 = SPVM::new_float_array([1, 2, 3]);
-    $object_array->set(0, $object1);
-    my $object2 = SPVM::new_float_array([4, 5, 6]);
-    $object_array->set(1, $object2);
-    ok(SPVM::TestCase::spvm_new_object_array_len_element_float_array($object_array));
-    
-    my $object1_get = $object_array->get(0);
-    my $object2_get = $object_array->get(1);
-    
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
-  }
-
-  # element double array
-  {
-    my $object_array = SPVM::new_object_array_len("double[]", 3);
-    my $object1 = SPVM::new_double_array([1, 2, 3]);
-    $object_array->set(0, $object1);
-    my $object2 = SPVM::new_double_array([4, 5, 6]);
-    $object_array->set(1, $object2);
-    ok(SPVM::TestCase::spvm_new_object_array_len_element_double_array($object_array));
-    
-    my $object1_get = $object_array->get(0);
-    my $object2_get = $object_array->get(1);
-    
-    is_deeply($object1_get->get_elements, [1, 2, 3]);
-    is_deeply($object2_get->get_elements, [4, 5, 6]);
-  }
-
-  # element object array
-  {
-    my $object_array = SPVM::new_object_array_len("TestCase", 3);
-    my $object1 = SPVM::TestCase::new();
-    
-    $object1->set_x_int(1);
-    $object_array->set(0, $object1);
-    my $object2 = SPVM::TestCase::new();
-    $object2->set_x_int(2);
-    $object_array->set(1, $object2);
-    ok(SPVM::TestCase::spvm_new_object_array_len_element_object_array($object_array));
-    
-    my $object1_get = $object_array->get(0);
-    my $object2_get = $object_array->get(1);
-    
-    is_deeply($object1_get->get_x_int, 1);
-    is_deeply($object2_get->get_x_int, 2);
-  }
 }
 
 # Create object
@@ -1525,41 +1558,6 @@ is_deeply(
     ok(SPVM::TestCase::call_sub_args_long(0, $LONG_MAX, $LONG_MIN));
   }
 }
-
-# SPVM::Core::Object::Array
-{
-  my $sp_values = SPVM::Core::Object::Array::Int->new_len(3);
-  $sp_values->set_elements([1, 2, 3]);
-}
-
-# Array
-{
-  # int array and get length
-  {
-    ok(SPVM::TestCase::get_array_length_at());
-    ok(SPVM::TestCase::get_array_length_len());
-    ok(SPVM::TestCase::get_array_length_undef());
-  }
-
-  # array - set and get array element, first element
-  {
-    my $element = SPVM::TestCase::array_set_and_get_array_element_first();
-    is($element, 345);
-  }
-  
-  # array - set and get array element, last element
-  {
-    my $element = SPVM::TestCase::array_set_and_get_array_element_last();
-    is($element, 298);
-  }
-
-  # array - culcurate sum by for
-  {
-    my $total = SPVM::TestCase::array_culcurate_sum_by_for();
-    is($total, 6);
-  }
-}
-
 
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
