@@ -15,11 +15,12 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 
 # TODO
-# DIVIDE
-# REMAINDER
-# BIT_AND
-# BIT_OR
-# LAST
+# divide
+# remainder
+# bit_and
+# bit_or
+# last
+# while
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -665,6 +666,14 @@ my $start_objects_count = SPVM::get_objects_count();
     my $value = $sp_values->get(1);
     is($value, $DOUBLE_PRECICE);
   }
+}
+
+# call_sub
+{
+  ok(SPVM::TestCase::call_sub_args_byte(0, $BYTE_MAX, $BYTE_MIN));
+  ok(SPVM::TestCase::call_sub_args_short(0, $SHORT_MAX, $SHORT_MIN));
+  ok(SPVM::TestCase::call_sub_args_int(0, $INT_MAX, $INT_MIN));
+  ok(SPVM::TestCase::call_sub_args_long(0, $LONG_MAX, $LONG_MIN));
 }
 
 # All object is freed
@@ -1433,14 +1442,6 @@ is_deeply(
   {
     my $sp_values = SPVM::new_double_array([0.5, 0.5, 1.0]);
     is(SPVM::TestCase::call_sub_double_array($sp_values), 2.0);
-  }
-
-  # call_sub
-  {
-    ok(SPVM::TestCase::call_sub_args_byte(0, $BYTE_MAX, $BYTE_MIN));
-    ok(SPVM::TestCase::call_sub_args_short(0, $SHORT_MAX, $SHORT_MIN));
-    ok(SPVM::TestCase::call_sub_args_int(0, $INT_MAX, $INT_MIN));
-    ok(SPVM::TestCase::call_sub_args_long(0, $LONG_MAX, $LONG_MIN));
   }
 }
 
