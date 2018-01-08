@@ -312,6 +312,94 @@ use SPVM 'TestCase';
 
 }
 
+# If a > b
+{
+  ok(SPVM::TestCase::if_gt_byte_left_big());
+  ok(SPVM::TestCase::if_gt_byte_same());
+  ok(SPVM::TestCase::if_gt_byte_right_big());
+  ok(SPVM::TestCase::if_gt_short_left_big());
+  ok(SPVM::TestCase::if_gt_short_same());
+  ok(SPVM::TestCase::if_gt_short_right_big());
+  ok(SPVM::TestCase::if_gt_int_left_big());
+  ok(SPVM::TestCase::if_gt_int_same());
+  ok(SPVM::TestCase::if_gt_int_right_big());
+  ok(SPVM::TestCase::if_gt_long_left_big());
+  ok(SPVM::TestCase::if_gt_long_same());
+  ok(SPVM::TestCase::if_gt_long_right_big());
+  ok(SPVM::TestCase::if_gt_float_left_big());
+  ok(SPVM::TestCase::if_gt_float_same());
+  ok(SPVM::TestCase::if_gt_float_right_big());
+  ok(SPVM::TestCase::if_gt_double_left_big());
+  ok(SPVM::TestCase::if_gt_double_same());
+  ok(SPVM::TestCase::if_gt_double_right_big());
+}
+
+# If a >= b
+{
+  ok(SPVM::TestCase::if_ge_byte_left_big());
+  ok(SPVM::TestCase::if_ge_byte_same());
+  ok(SPVM::TestCase::if_ge_byte_right_big());
+  ok(SPVM::TestCase::if_ge_short_left_big());
+  ok(SPVM::TestCase::if_ge_short_same());
+  ok(SPVM::TestCase::if_ge_short_right_big());
+  ok(SPVM::TestCase::if_ge_int_left_big());
+  ok(SPVM::TestCase::if_ge_int_same());
+  ok(SPVM::TestCase::if_ge_int_right_big());
+  ok(SPVM::TestCase::if_ge_long_left_big());
+  ok(SPVM::TestCase::if_ge_long_same());
+  ok(SPVM::TestCase::if_ge_long_right_big());
+  ok(SPVM::TestCase::if_ge_float_left_big());
+  ok(SPVM::TestCase::if_ge_float_same());
+  ok(SPVM::TestCase::if_ge_float_right_big());
+  ok(SPVM::TestCase::if_ge_double_left_big());
+  ok(SPVM::TestCase::if_ge_double_same());
+  ok(SPVM::TestCase::if_ge_double_right_big());
+}
+
+# If a < b
+{
+  ok(SPVM::TestCase::if_lt_byte_left_big());
+  ok(SPVM::TestCase::if_lt_byte_same());
+  ok(SPVM::TestCase::if_lt_byte_right_big());
+  ok(SPVM::TestCase::if_lt_short_left_big());
+  ok(SPVM::TestCase::if_lt_short_same());
+  ok(SPVM::TestCase::if_lt_short_right_big());
+  ok(SPVM::TestCase::if_lt_int_left_big());
+  ok(SPVM::TestCase::if_lt_int_same());
+  ok(SPVM::TestCase::if_lt_int_right_big());
+  ok(SPVM::TestCase::if_lt_long_left_big());
+  ok(SPVM::TestCase::if_lt_long_same());
+  ok(SPVM::TestCase::if_lt_long_right_big());
+  ok(SPVM::TestCase::if_lt_float_left_big());
+  ok(SPVM::TestCase::if_lt_float_same());
+  ok(SPVM::TestCase::if_lt_float_right_big());
+  ok(SPVM::TestCase::if_lt_double_left_big());
+  ok(SPVM::TestCase::if_lt_double_same());
+  ok(SPVM::TestCase::if_lt_double_right_big());
+}
+
+# If a <= b
+{
+  ok(SPVM::TestCase::if_le_byte_left_big());
+  ok(SPVM::TestCase::if_le_byte_same());
+  ok(SPVM::TestCase::if_le_byte_right_big());
+  ok(SPVM::TestCase::if_le_short_left_big());
+  ok(SPVM::TestCase::if_le_short_same());
+  ok(SPVM::TestCase::if_le_short_right_big());
+  ok(SPVM::TestCase::if_le_int_left_big());
+  ok(SPVM::TestCase::if_le_int_same());
+  ok(SPVM::TestCase::if_le_int_right_big());
+  ok(SPVM::TestCase::if_le_long_left_big());
+  ok(SPVM::TestCase::if_le_long_same());
+  ok(SPVM::TestCase::if_le_long_right_big());
+  ok(SPVM::TestCase::if_le_float_left_big());
+  ok(SPVM::TestCase::if_le_float_same());
+  ok(SPVM::TestCase::if_le_float_right_big());
+  ok(SPVM::TestCase::if_le_double_left_big());
+  ok(SPVM::TestCase::if_le_double_same());
+  ok(SPVM::TestCase::if_le_double_right_big());
+}
+
 __END__
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
@@ -1445,94 +1533,6 @@ is_deeply(
   ok(SPVM::TestCase::if_elsif());
   ok(SPVM::TestCase::if_elsif_2());
   ok(SPVM::TestCase::if_duplicate());
-}
-
-# If a > b
-{
-  ok(SPVM::TestCase::if_gt_byte_left_big());
-  ok(SPVM::TestCase::if_gt_byte_same());
-  ok(SPVM::TestCase::if_gt_byte_right_big());
-  ok(SPVM::TestCase::if_gt_short_left_big());
-  ok(SPVM::TestCase::if_gt_short_same());
-  ok(SPVM::TestCase::if_gt_short_right_big());
-  ok(SPVM::TestCase::if_gt_int_left_big());
-  ok(SPVM::TestCase::if_gt_int_same());
-  ok(SPVM::TestCase::if_gt_int_right_big());
-  ok(SPVM::TestCase::if_gt_long_left_big());
-  ok(SPVM::TestCase::if_gt_long_same());
-  ok(SPVM::TestCase::if_gt_long_right_big());
-  ok(SPVM::TestCase::if_gt_float_left_big());
-  ok(SPVM::TestCase::if_gt_float_same());
-  ok(SPVM::TestCase::if_gt_float_right_big());
-  ok(SPVM::TestCase::if_gt_double_left_big());
-  ok(SPVM::TestCase::if_gt_double_same());
-  ok(SPVM::TestCase::if_gt_double_right_big());
-}
-
-# If a >= b
-{
-  ok(SPVM::TestCase::if_ge_byte_left_big());
-  ok(SPVM::TestCase::if_ge_byte_same());
-  ok(SPVM::TestCase::if_ge_byte_right_big());
-  ok(SPVM::TestCase::if_ge_short_left_big());
-  ok(SPVM::TestCase::if_ge_short_same());
-  ok(SPVM::TestCase::if_ge_short_right_big());
-  ok(SPVM::TestCase::if_ge_int_left_big());
-  ok(SPVM::TestCase::if_ge_int_same());
-  ok(SPVM::TestCase::if_ge_int_right_big());
-  ok(SPVM::TestCase::if_ge_long_left_big());
-  ok(SPVM::TestCase::if_ge_long_same());
-  ok(SPVM::TestCase::if_ge_long_right_big());
-  ok(SPVM::TestCase::if_ge_float_left_big());
-  ok(SPVM::TestCase::if_ge_float_same());
-  ok(SPVM::TestCase::if_ge_float_right_big());
-  ok(SPVM::TestCase::if_ge_double_left_big());
-  ok(SPVM::TestCase::if_ge_double_same());
-  ok(SPVM::TestCase::if_ge_double_right_big());
-}
-
-# If a < b
-{
-  ok(SPVM::TestCase::if_lt_byte_left_big());
-  ok(SPVM::TestCase::if_lt_byte_same());
-  ok(SPVM::TestCase::if_lt_byte_right_big());
-  ok(SPVM::TestCase::if_lt_short_left_big());
-  ok(SPVM::TestCase::if_lt_short_same());
-  ok(SPVM::TestCase::if_lt_short_right_big());
-  ok(SPVM::TestCase::if_lt_int_left_big());
-  ok(SPVM::TestCase::if_lt_int_same());
-  ok(SPVM::TestCase::if_lt_int_right_big());
-  ok(SPVM::TestCase::if_lt_long_left_big());
-  ok(SPVM::TestCase::if_lt_long_same());
-  ok(SPVM::TestCase::if_lt_long_right_big());
-  ok(SPVM::TestCase::if_lt_float_left_big());
-  ok(SPVM::TestCase::if_lt_float_same());
-  ok(SPVM::TestCase::if_lt_float_right_big());
-  ok(SPVM::TestCase::if_lt_double_left_big());
-  ok(SPVM::TestCase::if_lt_double_same());
-  ok(SPVM::TestCase::if_lt_double_right_big());
-}
-
-# If a <= b
-{
-  ok(SPVM::TestCase::if_le_byte_left_big());
-  ok(SPVM::TestCase::if_le_byte_same());
-  ok(SPVM::TestCase::if_le_byte_right_big());
-  ok(SPVM::TestCase::if_le_short_left_big());
-  ok(SPVM::TestCase::if_le_short_same());
-  ok(SPVM::TestCase::if_le_short_right_big());
-  ok(SPVM::TestCase::if_le_int_left_big());
-  ok(SPVM::TestCase::if_le_int_same());
-  ok(SPVM::TestCase::if_le_int_right_big());
-  ok(SPVM::TestCase::if_le_long_left_big());
-  ok(SPVM::TestCase::if_le_long_same());
-  ok(SPVM::TestCase::if_le_long_right_big());
-  ok(SPVM::TestCase::if_le_float_left_big());
-  ok(SPVM::TestCase::if_le_float_same());
-  ok(SPVM::TestCase::if_le_float_right_big());
-  ok(SPVM::TestCase::if_le_double_left_big());
-  ok(SPVM::TestCase::if_le_double_same());
-  ok(SPVM::TestCase::if_le_double_right_big());
 }
 
 # If a == b
