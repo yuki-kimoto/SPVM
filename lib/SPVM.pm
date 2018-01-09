@@ -237,7 +237,8 @@ sub compile_spvm {
     
     # Free compiler
     free_compiler();
-    
+
+=pod
     # Build JIT code
     my $jit_source_dir = tempdir(CLEANUP => 1);
     my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
@@ -248,11 +249,11 @@ sub compile_spvm {
     my $jit_source_content = do { local $/; <$fh> };
     # print $jit_source_content;
     
+    # Compile JIT code
     my $jitcode_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
-    
-    
     bind_jitcode($jitcode_lib_file);
-    
+=cut
+
     # Build SPVM subroutines
     build_spvm_subs();
   }
