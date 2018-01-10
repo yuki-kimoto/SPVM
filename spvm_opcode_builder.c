@@ -146,7 +146,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           if (SPVM_TYPE_is_object(compiler, type)) {
             SPVM_OPCODE opcode;
             memset(&opcode, 0, sizeof(SPVM_OPCODE));
-            opcode.code = SPVM_OPCODE_C_CODE_UNDEF;
+            opcode.code = SPVM_OPCODE_C_CODE_LOAD_UNDEF;
             int32_t index_out = op_my->uv.my->index;
             opcode.operand0 = index_out;
             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -370,7 +370,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.code = SPVM_OPCODE_C_CODE_UNDEF;
+                    opcode.code = SPVM_OPCODE_C_CODE_LOAD_UNDEF;
                     
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                     opcode.operand0 = index_out;

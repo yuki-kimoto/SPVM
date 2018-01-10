@@ -249,7 +249,7 @@ const char* const SPVM_OPCODE_C_CODE_NAMES[] = {
   "BOOL_FLOAT",
   "BOOL_DOUBLE",
   "BOOL_OBJECT",
-  "UNDEF",
+  "LOAD_UNDEF",
   "MOVE",
   "NEW_OBJECT",
   "NEW_STRING",

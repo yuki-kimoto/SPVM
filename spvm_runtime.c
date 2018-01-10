@@ -730,7 +730,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_DOUBLE:
         vars[opcode->operand0].double_value = vars[opcode->operand1].double_value;
         break;
-      case SPVM_OPCODE_C_CODE_UNDEF:
+      case SPVM_OPCODE_C_CODE_LOAD_UNDEF:
         vars[opcode->operand0].object_value = NULL;
         break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0:
