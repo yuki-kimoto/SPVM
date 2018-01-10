@@ -1442,10 +1442,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                   // Do increment reference count
                   int32_t do_inc_ref_count = 0;
-                  // Right value is not undef
-                  if (op_assign_from->code != SPVM_OP_C_CODE_UNDEF) {
-                    // Variable type is object
-                    if (SPVM_TYPE_is_object(compiler, type)) {
+                  // Variable type is object
+                  if (SPVM_TYPE_is_object(compiler, type)) {
+                    // Right value is not undef
+                    if (op_assign_from->code != SPVM_OP_C_CODE_UNDEF) {
                       // Right value is variable
                       if (op_assign_from->code == SPVM_OP_C_CODE_VAR) {
                         int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
