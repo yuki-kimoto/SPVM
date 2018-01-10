@@ -378,7 +378,7 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP* op_type_object_arg = op_type_package;
   
   // Argument
-  SPVM_OP* op_var_arg = SPVM_OP_build_my(compiler, op_var_object_arg, op_type_object_arg);
+  SPVM_OP* op_var_arg = SPVM_OP_build_arg(compiler, op_var_object_arg, op_type_object_arg);
   
   // Arguments
   SPVM_OP* op_list_args = SPVM_OP_new_op_list(compiler, file, line);
@@ -463,10 +463,10 @@ SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP* op_type_value_arg = op_type_field;
 
   // Argument object
-  SPVM_OP* op_var_arg_object = SPVM_OP_build_my(compiler, op_var_object_arg, op_type_object_arg);
+  SPVM_OP* op_var_arg_object = SPVM_OP_build_arg(compiler, op_var_object_arg, op_type_object_arg);
 
   // Argument value
-  SPVM_OP* op_var_arg_value = SPVM_OP_build_my(compiler, op_var_value_arg, op_type_value_arg);
+  SPVM_OP* op_var_arg_value = SPVM_OP_build_arg(compiler, op_var_value_arg, op_type_value_arg);
   
   // Arguments
   SPVM_OP* op_list_args = SPVM_OP_new_op_list(compiler, file, line);
@@ -1714,7 +1714,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_package_with_template_args) {
   
   SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package_with_template_args);
-
+  
   const char* package_name_with_template_args = op_name_package_with_template_args->uv.name;
   
   SPVM_USE* use = SPVM_USE_new(compiler);
@@ -1766,6 +1766,18 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   }
   
   return op_use;
+}
+
+SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
+  
+  op_var = SPVM_OP_build_my(compiler, op_var, op_type);
+  
+  // Variable declaration is argument
+  if (op_var->first) {
+    op_var->first->uv.my->is_arg = 1;
+  }
+  
+  return op_var;
 }
 
 SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {

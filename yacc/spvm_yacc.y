@@ -746,7 +746,7 @@ args
 arg
   : var ':' type
     {
-      $$ = SPVM_OP_build_my(compiler, $1, $3);
+      $$ = SPVM_OP_build_arg(compiler, $1, $3);
     }
 
 opt_descriptors

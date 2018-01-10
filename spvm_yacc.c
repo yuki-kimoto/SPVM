@@ -2670,7 +2670,7 @@ yyreduce:
   case 147:
 #line 748 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
+      (yyval.opval) = SPVM_OP_build_arg(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
     ;}
     break;
 
