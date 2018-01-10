@@ -1387,6 +1387,63 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     compiler->fatal_error = 1;
                     return;
                   }
+                  
+                  // Assign initial value
+                  if (op_cur->first && op_cur->first->code == SPVM_OP_C_CODE_MY) {
+                    SPVM_OP* op_my = op_cur->first;
+                    SPVM_MY* my = op_my->uv.my;
+                    
+                    if (!op_cur->is_assign_to && !my->is_arg) {
+                      // Before
+                      // VAR
+                      
+                      // After
+                      // ASSIGN
+                      //  CONSTANT_XXX_0
+                      //  VAR
+                      
+                      SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_cur);
+                      assert(var_type);
+                      
+                      SPVM_OP* op_assign_from;
+                      switch (var_type->code) {
+                        case SPVM_TYPE_C_CODE_BYTE:
+                          op_assign_from = SPVM_OP_new_op_constant_byte(compiler, 0, op_cur->file, op_cur->line);
+                          break;
+                        case SPVM_TYPE_C_CODE_SHORT:
+                          op_assign_from = SPVM_OP_new_op_constant_short(compiler, 0, op_cur->file, op_cur->line);
+                          break;
+                        case SPVM_TYPE_C_CODE_INT:
+                          op_assign_from = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
+                          break;
+                        case SPVM_TYPE_C_CODE_LONG:
+                          op_assign_from = SPVM_OP_new_op_constant_long(compiler, 0, op_cur->file, op_cur->line);
+                          break;
+                        case SPVM_TYPE_C_CODE_FLOAT:
+                          op_assign_from = SPVM_OP_new_op_constant_float(compiler, 0, op_cur->file, op_cur->line);
+                          break;
+                        case SPVM_TYPE_C_CODE_DOUBLE:
+                          op_assign_from = SPVM_OP_new_op_constant_double(compiler, 0, op_cur->file, op_cur->line);
+                          break;
+                        default:
+                          op_assign_from = SPVM_OP_new_op_undef(compiler, op_cur->file, op_cur->line);
+                      }
+                      
+                      SPVM_OP* op_var = op_cur;
+                      
+                      // Cut VAR
+                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+
+                      // ASSIGN
+                      SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_cur->file, op_cur->line);
+                      SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var, op_assign_from);
+
+                      SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                      
+                      op_cur = op_var;
+                    }
+                  }
+                  
                   break;
                 }
                 case SPVM_OP_C_CODE_MY: {
