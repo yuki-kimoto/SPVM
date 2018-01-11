@@ -29,7 +29,6 @@ void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buf
   // Catch exception
   if (*eval_stack_top > -1) {
     int32_t jump_offset_abs = eval_stack[*eval_stack_top];
-    (*eval_stack_top)--;
     int32_t jump_line = sub_opcode_base + jump_offset_abs;
     
     SPVM_STRING_BUFFER_add(string_buffer, "      goto L");
@@ -39,6 +38,7 @@ void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buf
   // Throw exception
   else {
     SPVM_STRING_BUFFER_add(string_buffer, "      exception = api->get_exception(api);\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_INC_REF_COUNT(exception);\n");
     SPVM_STRING_BUFFER_add(string_buffer, "      goto label_SPVM_OPCODE_C_CODE_RETURN;\n");
   }
 }
@@ -542,17 +542,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           }
         }
         
-        // Eval stack
-        if (constant_pool_sub->eval_stack_max_length > 0) {
-          // Eval stack
-          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack[");
-          SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->eval_stack_max_length);
-          SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-          
-          // Eval stack top
-          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack_top = -1;\n");
-        }
-
         // Current line
         if (runtime->debug) {
           SPVM_STRING_BUFFER_add(string_buffer, "  int32_t current_line = 0;\n");
@@ -2019,6 +2008,9 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, exception);\n");
           }
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(exception);\n");
+          if (!sub_is_void) {
+            SPVM_STRING_BUFFER_add(string_buffer, "    return_value = 0;\n");
+          }
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
           // No exception

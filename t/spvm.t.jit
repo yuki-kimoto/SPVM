@@ -1513,33 +1513,9 @@ my $start_objects_count = SPVM::get_objects_count();
   
 }
 
-# All object is freed
-my $end_objects_count = SPVM::get_objects_count();
-is($end_objects_count, $start_objects_count);
-
-__END__
-
-
 # Extension
 {
   ok(SPVM::TestCase::Extension::native_api_get_set_field());
-}
-
-# Native Exception
-{
-  ok(SPVM::TestCase::Extension::call_void_sub_exception());
-  ok(SPVM::TestCase::Extension::call_byte_sub_exception());
-  ok(SPVM::TestCase::Extension::call_short_sub_exception());
-  ok(SPVM::TestCase::Extension::call_int_sub_exception());
-  ok(SPVM::TestCase::Extension::call_long_sub_exception());
-  ok(SPVM::TestCase::Extension::call_float_sub_exception());
-  ok(SPVM::TestCase::Extension::call_double_sub_exception());
-  ok(SPVM::TestCase::Extension::call_object_sub_exception());
-}
-
-# Destructor
-{
-  ok(SPVM::TestCase::destructor());
 }
 
 
@@ -1551,6 +1527,11 @@ __END__
 
 {
   ok(SPVM::TestCase::object_field_initialized_zero());
+}
+
+# Destructor
+{
+  ok(SPVM::TestCase::destructor());
 }
 
 =pod
@@ -1609,6 +1590,25 @@ is_deeply(
   ok(SPVM::TestCase::Arrays::copy_of_double_negative());
 }
 
+# Native Exception
+{
+  ok(SPVM::TestCase::Extension::call_void_sub_exception());
+  ok(SPVM::TestCase::Extension::call_byte_sub_exception());
+  ok(SPVM::TestCase::Extension::call_short_sub_exception());
+  ok(SPVM::TestCase::Extension::call_int_sub_exception());
+  ok(SPVM::TestCase::Extension::call_long_sub_exception());
+  ok(SPVM::TestCase::Extension::call_float_sub_exception());
+  ok(SPVM::TestCase::Extension::call_double_sub_exception());
+  ok(SPVM::TestCase::Extension::call_object_sub_exception());
+}
+
+
+# All object is freed
+my $end_objects_count = SPVM::get_objects_count();
+is($end_objects_count, $start_objects_count);
+
+
+__END__
 
 # Exception
 {
