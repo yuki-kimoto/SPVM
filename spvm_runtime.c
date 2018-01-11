@@ -1837,8 +1837,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         // Throw exception
         else {
+          // Save exception because destructor maybe remove exception
           exception = api->get_exception(api);
-          memset(&return_value, 0, sizeof(SPVM_API_VALUE));
+          SPVM_INLINE_INC_REF_COUNT(exception);
           goto label_SPVM_OPCODE_C_CODE_RETURN;
         }
       }
@@ -1911,12 +1912,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
   label_SPVM_OPCODE_C_CODE_RETURN: {
     
-    // Save exception because destructor maybe remove exception
-    if (exception) {
-      exception = api->get_exception(api);
-      SPVM_INLINE_INC_REF_COUNT(exception);
-    }
-    
     // Increment ref count of return value not to release by decrement
     if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
       if (return_value.object_value != NULL) {
@@ -1960,6 +1955,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         api->set_exception(api, exception);
       }
       SPVM_INLINE_DEC_REF_COUNT_ONLY(exception);
+      memset(&return_value, 0, sizeof(SPVM_API_VALUE));
     }
     // No exception
     else {
