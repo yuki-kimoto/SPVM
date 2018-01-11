@@ -2024,13 +2024,12 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           
           SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN_PROCESS\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  label_SPVM_OPCODE_C_CODE_RETURN:\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
           
           // Increment ref count of return value not to release by decrement
           if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != NULL) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_INC_REF_COUNT(return_value);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  if (return_value != NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_INC_REF_COUNT(return_value);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           }
           
           // Decrement my vars
@@ -2038,53 +2037,57 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             int32_t i;
             for (i = 0; i < sub_object_mys_length; i++) {
               int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-              SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT* object = var");
+              SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+              SPVM_STRING_BUFFER_add(string_buffer, "var");
               SPVM_STRING_BUFFER_add_int(string_buffer, my_var_index);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      if (object != NULL) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_GET_REF_COUNT(object) > 1) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "        else { api->dec_ref_count(api, object); }\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_JITCODE_INLINE_GET_REF_COUNT(");
+              SPVM_STRING_BUFFER_add(string_buffer, "var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, my_var_index);
+              SPVM_STRING_BUFFER_add(string_buffer, ") > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(");
+              SPVM_STRING_BUFFER_add(string_buffer, "var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, my_var_index);
+              SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    else { api->dec_ref_count(api, ");
+              SPVM_STRING_BUFFER_add(string_buffer, "var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, my_var_index);
+              SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             }
           }
           
           // Decrement ref count of return value
           if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != NULL) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(return_value);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  if (return_value != NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(return_value);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           }
           
           // Throw exception
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (exception) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (exception) {\n");
           if (runtime->debug) {
-            SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api,\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api,\n");
             SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
             SPVM_STRING_BUFFER_add(string_buffer, ", exception, current_line);");
-            SPVM_STRING_BUFFER_add(string_buffer, "      api->set_exception(api, exception_stack_trace);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, exception_stack_trace);\n");
           }
           else {
-            SPVM_STRING_BUFFER_add(string_buffer, "      api->set_exception(api, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, exception);\n");
           }
-          SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(exception);\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(exception);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
           // No exception
-          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
           if (sub_is_void) {
-            SPVM_STRING_BUFFER_add(string_buffer, "    return;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  return;\n");
           }
           else {
-            SPVM_STRING_BUFFER_add(string_buffer, "    return return_value;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  return return_value;\n");
           }
-          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
       }
       
