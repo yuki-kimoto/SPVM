@@ -568,6 +568,9 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
         if (!constant_pool_sub->is_void) {
           SPVM_STRING_BUFFER_add(string_buffer, "return_value_native;\n");
         }
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* exception = NULL;\n");
+        
         if (args_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  (*native_address)(api,");
         }
