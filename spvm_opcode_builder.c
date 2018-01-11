@@ -1926,18 +1926,18 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode_goto_loop_start->operand0 = goto_loop_start_offset;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
+                  // POP_EVAL
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  opcode.code = SPVM_OPCODE_C_CODE_POP_EVAL;
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                  
                   // Set jump offset of eval block
                   int32_t* opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_catch_exception_opcode_index_stack);
                   int32_t opcode_index = *opcode_index_ptr;
                   int32_t jump_offset_abs = opcode_array->length - sub->opcode_base;
                   SPVM_OPCODE* opcode_jump_offset_abs = (opcode_array->values + opcode_index);
                   opcode_jump_offset_abs->operand0 = jump_offset_abs;
-                  
-                  // POP_EVAL
-                  SPVM_OPCODE opcode;
-                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.code = SPVM_OPCODE_C_CODE_POP_EVAL;
-                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
                 break;
               }
