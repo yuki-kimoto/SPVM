@@ -38,7 +38,7 @@ void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buf
   }
   // Throw exception
   else {
-    SPVM_STRING_BUFFER_add(string_buffer, "      throw_exception = 1;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "      exception = api->get_exception(api);\n");
     SPVM_STRING_BUFFER_add(string_buffer, "      goto label_SPVM_OPCODE_C_CODE_RETURN;\n");
   }
 }
@@ -569,8 +569,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           SPVM_STRING_BUFFER_add(string_buffer, "return_value_native;\n");
         }
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* exception = NULL;\n");
-        
         if (args_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  (*native_address)(api,");
         }
@@ -635,8 +633,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           SPVM_STRING_BUFFER_add(string_buffer, " return_value;\n");
         }
         
-        // Throw exception
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t throw_exception = 0;\n");
+        // Exception
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* exception = NULL;\n");
         
         SPVM_OPCODE* opcodes = runtime->opcodes;
         int32_t opcode_base = constant_pool_sub->opcode_base;
@@ -2065,19 +2063,28 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               }
             }
           }
-
-          if (opcode->code == SPVM_OPCODE_C_CODE_CROAK) {
-            if (runtime->debug) {
-              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* new_exception = api->create_exception_stack_trace(api, sub_id, api->get_exception(api), current_line);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  api->set_exception(api, new_exception);\n");
-            }
+          
+          // Throw exception
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (exception) {\n");
+          if (runtime->debug) {
+            SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api,\n");
+            SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
+            SPVM_STRING_BUFFER_add(string_buffer, ", exception, current_line);");
+            SPVM_STRING_BUFFER_add(string_buffer, "      api->set_exception(api, exception_stack_trace);\n");
           }
           else {
-            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      api->set_exception(api, exception);\n");
           }
+          SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(exception);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          
+          // No exception
+          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           
           if (sub_is_void) {
-            SPVM_STRING_BUFFER_add(string_buffer, "    return;");
+            SPVM_STRING_BUFFER_add(string_buffer, "    return;\n");
           }
           else {
             SPVM_STRING_BUFFER_add(string_buffer, "    return return_value;\n");
