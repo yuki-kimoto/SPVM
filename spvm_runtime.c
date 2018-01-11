@@ -1925,24 +1925,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
       }
     }
-      
-    // Decrement my vars which is arguments - decrement only
-    {
-      int32_t i;
-      for (i = 0; i < sub_object_args_length; i++) {
-        int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-        SPVM_API_OBJECT* object = vars[my_var_index].object_value;
-        
-        if (object != NULL) {
-          SPVM_INLINE_DEC_REF_COUNT_ONLY(object);
-        }
-      }
-    }
     
     // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
     {
       int32_t i;
-      for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
+      for (i = 0; i < sub_object_mys_length; i++) {
         int32_t my_var_index = constant_pool[sub_object_mys_base + i];
         SPVM_API_OBJECT* object = vars[my_var_index].object_value;
         
