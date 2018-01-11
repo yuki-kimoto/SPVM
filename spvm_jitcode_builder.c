@@ -402,12 +402,15 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           default:
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* ");
         }
-        if (args_length > 0) {
-          SPVM_STRING_BUFFER_add(string_buffer, "(*native_address)(SPVM_API*, ");
-        }
-        else {
-          SPVM_STRING_BUFFER_add(string_buffer, "(*native_address)(SPVM_API*");
-        }
+        SPVM_STRING_BUFFER_add(string_buffer, "(*native_address)(SPVM_API*, SPVM_API_VALUE*) = (void*)");
+        SPVM_STRING_BUFFER_add_address(string_buffer, constant_pool_sub->native_address);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        // Call function
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE args[");
+        SPVM_STRING_BUFFER_add_int(string_buffer, args_length);
+        SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+
         {
           int32_t arg_index;
           for (arg_index = 0; arg_index < args_length; arg_index++) {
@@ -416,91 +419,75 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             // Argument type code
             SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
             int32_t arg_type_code = constant_pool_arg_type->code;
+
+            SPVM_STRING_BUFFER_add(string_buffer, "  args[");
+            SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+            SPVM_STRING_BUFFER_add(string_buffer, "].");
             
             switch (arg_type_code) {
               case SPVM_TYPE_C_CODE_BYTE : {
-                SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
+                SPVM_STRING_BUFFER_add(string_buffer, "byte_value");
                 break;
               }
               case  SPVM_TYPE_C_CODE_SHORT : {
-                SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
+                SPVM_STRING_BUFFER_add(string_buffer, "short_value");
                 break;
               }
               case  SPVM_TYPE_C_CODE_INT : {
-                SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+                SPVM_STRING_BUFFER_add(string_buffer, "int_value");
                 break;
               }
               case  SPVM_TYPE_C_CODE_LONG : {
-                SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
+                SPVM_STRING_BUFFER_add(string_buffer, "long_value");
                 break;
               }
               case  SPVM_TYPE_C_CODE_FLOAT : {
-                SPVM_STRING_BUFFER_add(string_buffer, "float ");
+                SPVM_STRING_BUFFER_add(string_buffer, "float_value");
                 break;
               }
               case  SPVM_TYPE_C_CODE_DOUBLE : {
-                SPVM_STRING_BUFFER_add(string_buffer, "double ");
+                SPVM_STRING_BUFFER_add(string_buffer, "double_value");
                 break;
               }
               default : {
-                SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+                SPVM_STRING_BUFFER_add(string_buffer, "object_value");
               }
             }
-            if (arg_index != args_length - 1) {
-              SPVM_STRING_BUFFER_add(string_buffer, ", ");
-            }
-          }
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, ") = (void*)");
-        SPVM_STRING_BUFFER_add_address(string_buffer, constant_pool_sub->native_address);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        // Call function
-        switch (return_type_code) {
-          case SPVM_TYPE_C_CODE_VOID:
-            break;
-          case SPVM_TYPE_C_CODE_BYTE:
-            SPVM_STRING_BUFFER_add(string_buffer, "  int8_t ");
-            break;
-          case SPVM_TYPE_C_CODE_SHORT:
-            SPVM_STRING_BUFFER_add(string_buffer, "  int16_t ");
-            break;
-          case SPVM_TYPE_C_CODE_INT:
-            SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
-            break;
-          case SPVM_TYPE_C_CODE_LONG:
-            SPVM_STRING_BUFFER_add(string_buffer, "  int64_t ");
-            break;
-          case SPVM_TYPE_C_CODE_FLOAT:
-            SPVM_STRING_BUFFER_add(string_buffer, "  float ");
-            break;
-          case SPVM_TYPE_C_CODE_DOUBLE:
-            SPVM_STRING_BUFFER_add(string_buffer, "  double ");
-            break;
-          default:
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* ");
-        }
-        if (!constant_pool_sub->is_void) {
-          SPVM_STRING_BUFFER_add(string_buffer, "return_value_native;\n");
-        }
-        
-        if (args_length > 0) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  (*native_address)(api,");
-        }
-        else {
-          SPVM_STRING_BUFFER_add(string_buffer, "  (*native_address)(api");
-        }
-        {
-          int32_t arg_index;
-          for (arg_index = 0; arg_index < args_length; arg_index++) {
-            SPVM_STRING_BUFFER_add(string_buffer, "var");
+            SPVM_STRING_BUFFER_add(string_buffer, " = var");
             SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
-            if (arg_index != args_length - 1) {
-              SPVM_STRING_BUFFER_add(string_buffer, ", ");
-            }
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           }
         }
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        
+        if (!constant_pool_sub->is_void) {
+          switch (return_type_code) {
+            case SPVM_TYPE_C_CODE_VOID:
+              break;
+            case SPVM_TYPE_C_CODE_BYTE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  int8_t ");
+              break;
+            case SPVM_TYPE_C_CODE_SHORT:
+              SPVM_STRING_BUFFER_add(string_buffer, "  int16_t ");
+              break;
+            case SPVM_TYPE_C_CODE_INT:
+              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
+              break;
+            case SPVM_TYPE_C_CODE_LONG:
+              SPVM_STRING_BUFFER_add(string_buffer, "  int64_t ");
+              break;
+            case SPVM_TYPE_C_CODE_FLOAT:
+              SPVM_STRING_BUFFER_add(string_buffer, "  float ");
+              break;
+            case SPVM_TYPE_C_CODE_DOUBLE:
+              SPVM_STRING_BUFFER_add(string_buffer, "  double ");
+              break;
+            default:
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* ");
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, " return_value_native = ");
+        }
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  (*native_address)(api, args);\n");
         if (constant_pool_sub->is_void) {
           SPVM_STRING_BUFFER_add(string_buffer, "  return;\n");
         }
