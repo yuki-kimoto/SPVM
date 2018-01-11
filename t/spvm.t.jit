@@ -884,26 +884,6 @@ my $start_objects_count = SPVM::get_objects_count();
   }
 }
 
-# All object is freed
-my $end_objects_count = SPVM::get_objects_count();
-is($end_objects_count, $start_objects_count);
-
-__END__
-
-
-
-{
-  my $start_objects_count = SPVM::get_objects_count();
-  SPVM::TestCase::my_var_in_loop_free();
-  my $end_objects_count = SPVM::get_objects_count();
-  is($start_objects_count, $end_objects_count);
-}
-
-# time
-{
-  cmp_ok(abs(time - SPVM::CORE::time()), '<', 2);
-}
-
 # Package variable relative name
 {
   my $start_objects_count = SPVM::get_objects_count();
@@ -920,74 +900,6 @@ __END__
   is($start_objects_count, $end_objects_count);
 }
 
-# Extension
-{
-  ok(SPVM::TestCase::Extension::native_api_get_set_field());
-}
-
-# Native Exception
-{
-  ok(SPVM::TestCase::Extension::call_void_sub_exception());
-  ok(SPVM::TestCase::Extension::call_byte_sub_exception());
-  ok(SPVM::TestCase::Extension::call_short_sub_exception());
-  ok(SPVM::TestCase::Extension::call_int_sub_exception());
-  ok(SPVM::TestCase::Extension::call_long_sub_exception());
-  ok(SPVM::TestCase::Extension::call_float_sub_exception());
-  ok(SPVM::TestCase::Extension::call_double_sub_exception());
-  ok(SPVM::TestCase::Extension::call_object_sub_exception());
-}
-
-{
-  like($POSITIVE_INFINITY, qr/inf/i);
-  cmp_ok($POSITIVE_INFINITY, '>', 0);
-  
-  like($NEGATIVE_INFINITY, qr/inf/i);
-  cmp_ok($NEGATIVE_INFINITY, '<', 0);
-  
-  like($NaN, qr/(nan|ind)/i);
-}
-
-# .
-{
-  {
-    is("ab", SPVM::TestCase::concat_string_special_assign()->to_data);
-    is("ab", SPVM::TestCase::concat_string_string()->to_data);
-    is("a3", SPVM::TestCase::concat_string_byte()->to_data);
-    is("a3", SPVM::TestCase::concat_string_short()->to_data);
-    is("a3", SPVM::TestCase::concat_string_int()->to_data);
-    is("a3", SPVM::TestCase::concat_string_long()->to_data);
-    is("a3.000000", SPVM::TestCase::concat_string_float()->to_data);
-    is("a3.000000", SPVM::TestCase::concat_string_double()->to_data);
-  }
-}
-
-# String
-{
-  {
-    my $values = SPVM::TestCase::string_empty();
-    is($values->to_data, "");
-  }
-  
-  {
-    my $values = SPVM::TestCase::string_utf8();
-    is($values->to_string, "あいうえお");
-  }
-}
-
-# Call subroutine
-{
-  ok(SPVM::TestCase::sin());
-  ok(SPVM::TestCase::cos());
-  ok(SPVM::TestCase::tan());
-}
-
-# Native subroutine
-{
-  my $sp_values = SPVM::new_int_array([1, 2, 3]);
-  my $total = SPVM::CORE::sum_int($sp_values);
-  is($total, 6);
-}
-
 # Call subroutine
 {
   ok(SPVM::TestCase::call_sub_last_camma());
@@ -999,11 +911,6 @@ __END__
     my $end_objects_count = SPVM::get_objects_count();
     is($start_objects_count, $end_objects_count);
   }
-}
-
-# Destructor
-{
-  ok(SPVM::TestCase::destructor());
 }
 
 # Weaken
@@ -1086,96 +993,6 @@ __END__
 {
   ok(SPVM::TestCase::call_void());
 }
-
-# Set field exception
-{
-  ok(SPVM::TestCase::set_field_exception_object_undef());
-}
-
-# Get field exception
-{
-  ok(SPVM::TestCase::get_field_exception_object_undef());
-}
-
-# Field
-{
-  ok(SPVM::TestCase::object_field_set_and_get());
-  ok(SPVM::TestCase::object_field_set_and_get_again());
-}
-
-{
-  ok(SPVM::TestCase::object_field_initialized_zero());
-}
-
-{
-  ok(SPVM::TestCase::new_near_small_base_object_max_byte_size_use_memory_pool());
-}
-
-# Get object from freelist
-{
-  ok(SPVM::TestCase::get_object_from_freelist());
-}
-
-=pod
-is_deeply(
-  \@SPVM::PACKAGE_INFOS,
-  [
-    {name => 'TestCase', file => $file, line => $use_test_line},
-    {name => 'CORE', file => $file, line => $use_core_line}
-  ]
-);
-=cut
-
-# Extension 
-{
-  ok(SPVM::TestCase::spvm_extension());
-  ok(SPVM::TestCase::spvm_extension_add_int_array());
-  ok(SPVM::TestCase::spvm_extension2());
-  ok(SPVM::TestCase::spvm_extension2_binding());
-}
-
-# Get object from freelist
-{
-  ok(SPVM::TestCase::get_object_from_freelist());
-}
-
-# Create object
-{
-  # Create object
-  {
-    my $object = SPVM::TestCase::new();
-    $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    $object->set_x_string(SPVM::new_byte_array_data("abc"));
-    ok(SPVM::TestCase::spvm_object_set_object($object));
-  }
-  # Create object
-  {
-    my $object = SPVM::TestCase::new();
-    $object->set_x_byte($BYTE_MAX);
-    $object->set_x_short($SHORT_MAX);
-    $object->set_x_int($INT_MAX);
-    $object->set_x_long($LONG_MAX);
-    $object->set_x_float($FLOAT_PRECICE);
-    $object->set_x_double($DOUBLE_PRECICE);
-    $object->set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
-    $object->set_x_string(SPVM::new_byte_array_string("Hello"));
-    my $minimal = SPVM::TestCase::Minimal::new();
-    $minimal->set_x(3);
-    $object->set_minimal($minimal);
-    
-    ok(SPVM::TestCase::spvm_object_set($object));
-    
-    is($object->get_x_byte,$BYTE_MAX);
-    is($object->get_x_short, $SHORT_MAX);
-    is($object->get_x_int, $INT_MAX);
-    is($object->get_x_long, $LONG_MAX);
-    is($object->get_x_float, $FLOAT_PRECICE);
-    is($object->get_x_double, $DOUBLE_PRECICE);
-    is($object->get_minimal->get_x, 3);
-  }
-  
-}
-
 
 # SPVM Functions
 {
@@ -1563,6 +1380,191 @@ is_deeply(
     }
   }
 }
+
+
+# All object is freed
+my $end_objects_count = SPVM::get_objects_count();
+is($end_objects_count, $start_objects_count);
+
+__END__
+
+
+
+{
+  my $start_objects_count = SPVM::get_objects_count();
+  SPVM::TestCase::my_var_in_loop_free();
+  my $end_objects_count = SPVM::get_objects_count();
+  is($start_objects_count, $end_objects_count);
+}
+
+# time
+{
+  cmp_ok(abs(time - SPVM::CORE::time()), '<', 2);
+}
+
+# Extension
+{
+  ok(SPVM::TestCase::Extension::native_api_get_set_field());
+}
+
+# Native Exception
+{
+  ok(SPVM::TestCase::Extension::call_void_sub_exception());
+  ok(SPVM::TestCase::Extension::call_byte_sub_exception());
+  ok(SPVM::TestCase::Extension::call_short_sub_exception());
+  ok(SPVM::TestCase::Extension::call_int_sub_exception());
+  ok(SPVM::TestCase::Extension::call_long_sub_exception());
+  ok(SPVM::TestCase::Extension::call_float_sub_exception());
+  ok(SPVM::TestCase::Extension::call_double_sub_exception());
+  ok(SPVM::TestCase::Extension::call_object_sub_exception());
+}
+
+{
+  like($POSITIVE_INFINITY, qr/inf/i);
+  cmp_ok($POSITIVE_INFINITY, '>', 0);
+  
+  like($NEGATIVE_INFINITY, qr/inf/i);
+  cmp_ok($NEGATIVE_INFINITY, '<', 0);
+  
+  like($NaN, qr/(nan|ind)/i);
+}
+
+# .
+{
+  {
+    is("ab", SPVM::TestCase::concat_string_special_assign()->to_data);
+    is("ab", SPVM::TestCase::concat_string_string()->to_data);
+    is("a3", SPVM::TestCase::concat_string_byte()->to_data);
+    is("a3", SPVM::TestCase::concat_string_short()->to_data);
+    is("a3", SPVM::TestCase::concat_string_int()->to_data);
+    is("a3", SPVM::TestCase::concat_string_long()->to_data);
+    is("a3.000000", SPVM::TestCase::concat_string_float()->to_data);
+    is("a3.000000", SPVM::TestCase::concat_string_double()->to_data);
+  }
+}
+
+# String
+{
+  {
+    my $values = SPVM::TestCase::string_empty();
+    is($values->to_data, "");
+  }
+  
+  {
+    my $values = SPVM::TestCase::string_utf8();
+    is($values->to_string, "あいうえお");
+  }
+}
+
+# Call subroutine
+{
+  ok(SPVM::TestCase::sin());
+  ok(SPVM::TestCase::cos());
+  ok(SPVM::TestCase::tan());
+}
+
+# Native subroutine
+{
+  my $sp_values = SPVM::new_int_array([1, 2, 3]);
+  my $total = SPVM::CORE::sum_int($sp_values);
+  is($total, 6);
+}
+
+# Destructor
+{
+  ok(SPVM::TestCase::destructor());
+}
+
+
+# Set field exception
+{
+  ok(SPVM::TestCase::set_field_exception_object_undef());
+}
+
+# Get field exception
+{
+  ok(SPVM::TestCase::get_field_exception_object_undef());
+}
+
+# Field
+{
+  ok(SPVM::TestCase::object_field_set_and_get());
+  ok(SPVM::TestCase::object_field_set_and_get_again());
+}
+
+{
+  ok(SPVM::TestCase::object_field_initialized_zero());
+}
+
+{
+  ok(SPVM::TestCase::new_near_small_base_object_max_byte_size_use_memory_pool());
+}
+
+# Get object from freelist
+{
+  ok(SPVM::TestCase::get_object_from_freelist());
+}
+
+=pod
+is_deeply(
+  \@SPVM::PACKAGE_INFOS,
+  [
+    {name => 'TestCase', file => $file, line => $use_test_line},
+    {name => 'CORE', file => $file, line => $use_core_line}
+  ]
+);
+=cut
+
+# Extension 
+{
+  ok(SPVM::TestCase::spvm_extension());
+  ok(SPVM::TestCase::spvm_extension_add_int_array());
+  ok(SPVM::TestCase::spvm_extension2());
+  ok(SPVM::TestCase::spvm_extension2_binding());
+}
+
+# Get object from freelist
+{
+  ok(SPVM::TestCase::get_object_from_freelist());
+}
+
+# Create object
+{
+  # Create object
+  {
+    my $object = SPVM::TestCase::new();
+    $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
+    $object->set_x_string(SPVM::new_byte_array_data("abc"));
+    ok(SPVM::TestCase::spvm_object_set_object($object));
+  }
+  # Create object
+  {
+    my $object = SPVM::TestCase::new();
+    $object->set_x_byte($BYTE_MAX);
+    $object->set_x_short($SHORT_MAX);
+    $object->set_x_int($INT_MAX);
+    $object->set_x_long($LONG_MAX);
+    $object->set_x_float($FLOAT_PRECICE);
+    $object->set_x_double($DOUBLE_PRECICE);
+    $object->set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
+    $object->set_x_string(SPVM::new_byte_array_string("Hello"));
+    my $minimal = SPVM::TestCase::Minimal::new();
+    $minimal->set_x(3);
+    $object->set_minimal($minimal);
+    
+    ok(SPVM::TestCase::spvm_object_set($object));
+    
+    is($object->get_x_byte,$BYTE_MAX);
+    is($object->get_x_short, $SHORT_MAX);
+    is($object->get_x_int, $INT_MAX);
+    is($object->get_x_long, $LONG_MAX);
+    is($object->get_x_float, $FLOAT_PRECICE);
+    is($object->get_x_double, $DOUBLE_PRECICE);
+    is($object->get_minimal->get_x, 3);
+  }
+  
+}
+
 
 
 # SPVM::Arrays;
