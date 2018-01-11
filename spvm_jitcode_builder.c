@@ -370,91 +370,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       SPVM_STRING_BUFFER_add_address(string_buffer, runtime->api);
       SPVM_STRING_BUFFER_add(string_buffer, ";\n");
       
-      // Lexical variables
-      {
-        int32_t my_index;
-        for (my_index = args_length; my_index < mys_length; my_index++) {
-          int32_t my_type_id = constant_pool[my_type_ids_base + my_index];
-
-          // My type code
-          SPVM_CONSTANT_POOL_TYPE* constant_pool_my_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[my_type_id];
-          int32_t my_type_code = constant_pool_my_type->code;
-          
-          switch (my_type_code) {
-            case SPVM_TYPE_C_CODE_BYTE : {
-              SPVM_STRING_BUFFER_add(string_buffer, "  int8_t ");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_SHORT : {
-              SPVM_STRING_BUFFER_add(string_buffer, "  int16_t ");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_INT : {
-              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_LONG : {
-              SPVM_STRING_BUFFER_add(string_buffer, "  int64_t ");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_FLOAT : {
-              SPVM_STRING_BUFFER_add(string_buffer, "  float ");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_DOUBLE : {
-              SPVM_STRING_BUFFER_add(string_buffer, "  double ");
-              break;
-            }
-            default : {
-              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* ");
-            }
-          }
-          SPVM_STRING_BUFFER_add(string_buffer, "var");
-          SPVM_STRING_BUFFER_add_int(string_buffer, my_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-      }
-      
-      // Eval stack
-      if (constant_pool_sub->eval_stack_max_length > 0) {
-        // Eval stack
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack[");
-        SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->eval_stack_max_length);
-        SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-        
-        // Eval stack top
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack_top = -1;\n");
-      }
-
-      // If arg is object, increment reference count
-      {
-        int32_t arg_index;
-        for (arg_index = 0; arg_index < args_length; arg_index++) {
-          int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
-
-          // Argument type code
-          SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
-          
-          if (!constant_pool_arg_type->is_numeric) {
-            SPVM_STRING_BUFFER_add(string_buffer, "  if (var");
-            SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
-            SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
-            
-            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_INC_REF_COUNT(var");
-            SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
-            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-            
-            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-          }
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "\n");
-      }
-
-      // Current line
-      if (runtime->debug) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t current_line = 0;\n");
-      }
-      
       // Native subroutine
       if (constant_pool_sub->is_native) {
         // Set exception to NULL
@@ -595,6 +510,91 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       }
       // Normal subroutine
       else {
+        // Lexical variables
+        {
+          int32_t my_index;
+          for (my_index = args_length; my_index < mys_length; my_index++) {
+            int32_t my_type_id = constant_pool[my_type_ids_base + my_index];
+
+            // My type code
+            SPVM_CONSTANT_POOL_TYPE* constant_pool_my_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[my_type_id];
+            int32_t my_type_code = constant_pool_my_type->code;
+            
+            switch (my_type_code) {
+              case SPVM_TYPE_C_CODE_BYTE : {
+                SPVM_STRING_BUFFER_add(string_buffer, "  int8_t ");
+                break;
+              }
+              case  SPVM_TYPE_C_CODE_SHORT : {
+                SPVM_STRING_BUFFER_add(string_buffer, "  int16_t ");
+                break;
+              }
+              case  SPVM_TYPE_C_CODE_INT : {
+                SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
+                break;
+              }
+              case  SPVM_TYPE_C_CODE_LONG : {
+                SPVM_STRING_BUFFER_add(string_buffer, "  int64_t ");
+                break;
+              }
+              case  SPVM_TYPE_C_CODE_FLOAT : {
+                SPVM_STRING_BUFFER_add(string_buffer, "  float ");
+                break;
+              }
+              case  SPVM_TYPE_C_CODE_DOUBLE : {
+                SPVM_STRING_BUFFER_add(string_buffer, "  double ");
+                break;
+              }
+              default : {
+                SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* ");
+              }
+            }
+            SPVM_STRING_BUFFER_add(string_buffer, "var");
+            SPVM_STRING_BUFFER_add_int(string_buffer, my_index);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+          }
+        }
+        
+        // Eval stack
+        if (constant_pool_sub->eval_stack_max_length > 0) {
+          // Eval stack
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack[");
+          SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->eval_stack_max_length);
+          SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+          
+          // Eval stack top
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_stack_top = -1;\n");
+        }
+
+        // Current line
+        if (runtime->debug) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t current_line = 0;\n");
+        }
+      
+        // If arg is object, increment reference count
+        {
+          int32_t arg_index;
+          for (arg_index = 0; arg_index < args_length; arg_index++) {
+            int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
+
+            // Argument type code
+            SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
+            
+            if (!constant_pool_arg_type->is_numeric) {
+              SPVM_STRING_BUFFER_add(string_buffer, "  if (var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
+              
+              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_INC_REF_COUNT(var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+              
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+            }
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, "\n");
+        }
+
         // Condition flag
         SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
         
