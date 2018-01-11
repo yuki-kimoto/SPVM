@@ -1504,6 +1504,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_SET_FIELD_LONG:
             case SPVM_OPCODE_C_CODE_SET_FIELD_FLOAT:
             case SPVM_OPCODE_C_CODE_SET_FIELD_DOUBLE:
+            case SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT:
             {
               int32_t field_id = opcode->operand1;
               SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
@@ -1521,7 +1522,9 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
               if (opcode->code == SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT) {
-                SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)object + SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)object + SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE + ");
+                SPVM_STRING_BUFFER_add_int(string_buffer, field_byte_offset);
+                SPVM_STRING_BUFFER_add(string_buffer, ");\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "      if(*field_address != NULL) {\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_ISWEAK(*field_address)) {\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "          api->unweaken(api, field_address);\n");
@@ -1529,7 +1532,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*field_address) > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*field_address); }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        else { api->dec_ref_count(api, *field_address); }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "      *field_address = var\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "      *field_address = var");
                 SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
                 SPVM_STRING_BUFFER_add(string_buffer, "    ;\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "      if(*field_address != NULL) { SPVM_JITCODE_INLINE_INC_REF_COUNT(*field_address); }\n");
