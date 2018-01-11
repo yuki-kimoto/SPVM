@@ -2026,42 +2026,37 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           SPVM_STRING_BUFFER_add(string_buffer, "  label_SPVM_OPCODE_C_CODE_RETURN:\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
           
-          // Decrement my vars which is arguments - decrement only
+          // Increment ref count of return value not to release by decrement
+          if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+            SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_INC_REF_COUNT(return_value);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          }
+          
+          // Decrement my vars
           {
             int32_t i;
-            for (i = 0; i < sub_object_args_length; i++) {
-              // Decrement if not return variable
+            for (i = 0; i < sub_object_mys_length; i++) {
               int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-              if (my_var_index != opcode->operand0) {
-                SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT* object = var");
-                SPVM_STRING_BUFFER_add_int(string_buffer, my_var_index);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "      if (object != NULL) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object); }\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-              }
+              SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT* object = var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, my_var_index);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      if (object != NULL) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_GET_REF_COUNT(object) > 1) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        else { api->dec_ref_count(api, object); }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
             }
           }
-          // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
-          {
-            int32_t i;
-            for (i = sub_object_args_length; i < sub_object_mys_length; i++) {
-              int32_t my_var_index = constant_pool[sub_object_mys_base + i];
-              // Decrement if not return variable
-              if (my_var_index != opcode->operand0) {
-                SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT* object = var");
-                SPVM_STRING_BUFFER_add_int(string_buffer, my_var_index);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "      if (object != NULL) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_GET_REF_COUNT(object) > 1) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object);\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "        else { api->dec_ref_count(api, object); }\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-              }
-            }
+          
+          // Decrement ref count of return value
+          if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+            SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(return_value);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           }
           
           // Throw exception

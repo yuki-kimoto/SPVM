@@ -731,19 +731,6 @@ my $start_objects_count = SPVM::get_objects_count();
   }
 }
 
-  {
-    my $sp_values = SPVM::TestCase::call_sub_return_byte_array();
-    is(ref $sp_values, 'SPVM::Core::Object::Array::Byte');
-    SPVM::TestCase::call_sub_return_byte_array_check($sp_values);
-  }
-
-# All object is freed
-my $end_objects_count = SPVM::get_objects_count();
-is($end_objects_count, $start_objects_count);
-
-__END__
-
-
 # call_sub return array
 {
   {
@@ -777,6 +764,14 @@ __END__
     SPVM::TestCase::call_sub_return_double_array_check($sp_values);
   }
 }
+
+# All object is freed
+my $end_objects_count = SPVM::get_objects_count();
+is($end_objects_count, $start_objects_count);
+
+__END__
+
+
 
 
 {

@@ -1924,7 +1924,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
     }
     
-    // Decrement my vars which is not arguments - decrement and if reference count is 0, free object
+    // Decrement my vars
     {
       int32_t i;
       for (i = 0; i < sub_object_mys_length; i++) {
