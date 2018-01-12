@@ -1182,9 +1182,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               }
               
               SPVM_STRING_BUFFER_add(string_buffer, "  { \n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t index = var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
               SPVM_STRING_BUFFER_add(string_buffer, "var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
@@ -1193,7 +1190,13 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
               SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)");
+              SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(");
+              SPVM_STRING_BUFFER_add(string_buffer, "var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, " < 0 || ");
+              SPVM_STRING_BUFFER_add(string_buffer, "var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, "  >= *(int32_t*)((intptr_t)");
               SPVM_STRING_BUFFER_add(string_buffer, "var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_JITCODE_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) { \n");
@@ -1210,7 +1213,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE + sizeof(");
               SPVM_STRING_BUFFER_add(string_buffer, element_type);
-              SPVM_STRING_BUFFER_add(string_buffer, ") * index); \n");
+              SPVM_STRING_BUFFER_add(string_buffer, ") * ");
+              SPVM_STRING_BUFFER_add(string_buffer, "var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, "); \n");
               SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
               SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
               SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
