@@ -2024,10 +2024,11 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           // Throw exception
           SPVM_STRING_BUFFER_add(string_buffer, "  if (exception) {\n");
           if (runtime->debug) {
-            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api,\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "api->create_exception_stack_trace(api,");
             SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
-            SPVM_STRING_BUFFER_add(string_buffer, ", exception, current_line);");
-            SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, exception_stack_trace);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", exception, current_line)");
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
           }
           else {
             SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, exception);\n");
