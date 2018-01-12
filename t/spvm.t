@@ -39,7 +39,7 @@ my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
 # TODO
-# remainder
+# remainder float double
 # bit_and
 # bit_or
 # last
@@ -788,6 +788,10 @@ is_deeply(
   ok(SPVM::TestCase::divide());
 }
 
+# Remainder
+{
+  ok(SPVM::TestCase::remainder());
+}
 
 # Negate
 {

@@ -820,7 +820,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, " % var");
+              SPVM_STRING_BUFFER_add(string_buffer, " %% var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
@@ -2177,7 +2177,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
     fclose(jitcode_fh);
   }
   else {
-    fprintf(stderr, "Can't open file %s", jit_source_file);
+    fprintf(stderr, "Can't open file %%s", jit_source_file);
     exit(1);
   }
 }
