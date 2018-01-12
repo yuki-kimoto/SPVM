@@ -1413,18 +1413,14 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             }
             case SPVM_OPCODE_C_CODE_NEW_OBJECT_ARRAY: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // NEW_OBJECT_ARRAY\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t element_type_id = ");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, "  ;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length = var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
-              SPVM_STRING_BUFFER_add(string_buffer, "  ;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object = api->new_object_array(api, element_type_id, length);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    var");
+              SPVM_STRING_BUFFER_add(string_buffer, "  var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, " = object;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, " = api->new_object_array(api, ");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ", ");
+              SPVM_STRING_BUFFER_add(string_buffer, "var");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               break;
             }
             case SPVM_OPCODE_C_CODE_NEW_STRING: {
