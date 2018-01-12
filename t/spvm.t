@@ -38,6 +38,14 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
+# TODO
+# remainder
+# bit_and
+# bit_or
+# last
+# while
+# eval repeat
+
 # Positive infinity(unix like system : inf, Windows : 1.#INF)
 my $POSITIVE_INFINITY = SPVM::POSITIVE_INFINITY();
 
@@ -774,6 +782,12 @@ is_deeply(
   is(SPVM::TestCase::multiply_long_minus(), -4611686018427387904);
   is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
 }
+
+# Divide
+{
+  ok(SPVM::TestCase::divide());
+}
+
 
 # Negate
 {

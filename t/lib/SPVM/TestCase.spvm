@@ -1125,6 +1125,43 @@ package TestCase {
     1 / 0;
   }
   
+  sub divide() : int {
+    my $num1 = 8y / 4y;
+    my $num2 = 8y / 3y;
+    my $num3 = 8s / 4s;
+    my $num4 = 8s / 3s;
+    my $num5 = 8 / 4;
+    my $num6 = 8 / 3;
+    my $num7 = 8L / 4L;
+    my $num8 = 8L / 3L;
+    my $num9 = 1.0f / 2.0f;
+    my $num10 = 1.0 / 2.0;
+    
+    if ($num1 == 2y) {
+      if ($num2 == 2y) {
+        if ($num3 == 2s) {
+          if ($num4 == 2s) {
+            if ($num5 == 2) {
+              if ($num6 == 2) {
+                if ($num7 == 2L) {
+                  if ($num8 == 2L) {
+                    if ($num9 == 0.5f) {
+                      if ($num10 == 0.5) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   # Default return value empty
   sub default_return_value_byte() : int {
     
