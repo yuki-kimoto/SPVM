@@ -1589,17 +1589,14 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             }
             case SPVM_OPCODE_C_CODE_WEAKEN_FIELD_OBJECT: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // WEAKEN_FIELD_OBJECT\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_id = ");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object = var");
+              SPVM_STRING_BUFFER_add(string_buffer, "  api->weaken_object_field(api, ");
+              SPVM_STRING_BUFFER_add(string_buffer, "var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    api->weaken_object_field(api, object, field_id);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_JITCODE_INLINE_GET_EXCEPTION()) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, ", ");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  if (SPVM_JITCODE_INLINE_GET_EXCEPTION()) {\n");
               SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
-              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               break;
             }
