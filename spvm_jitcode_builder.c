@@ -1956,31 +1956,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
         }
 
         label_RETURN: {
-          char* return_type_name = NULL;
-          switch (return_type->code) {
-            case SPVM_TYPE_C_CODE_VOID:
-              break;
-            case SPVM_TYPE_C_CODE_BYTE:
-              return_type_name = "int8_t";
-              break;
-            case SPVM_TYPE_C_CODE_SHORT:
-              return_type_name = "int16_t";
-              break;
-            case SPVM_TYPE_C_CODE_INT:
-              return_type_name = "int32_t";
-              break;
-            case SPVM_TYPE_C_CODE_LONG:
-              return_type_name = "int64_t";
-              break;
-            case SPVM_TYPE_C_CODE_FLOAT:
-              return_type_name = "float";
-              break;
-            case SPVM_TYPE_C_CODE_DOUBLE:
-              return_type_name = "double";
-              break;
-            default:
-              return_type_name = "SPVM_API_OBJECT*";
-          }
           
           SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN_PROCESS\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  label_SPVM_OPCODE_C_CODE_RETURN:\n");
