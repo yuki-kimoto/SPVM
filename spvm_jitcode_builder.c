@@ -2164,7 +2164,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
     }
   }
   SPVM_STRING_BUFFER_add(string_buffer, "    default:\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      fprintf(stderr, \"Unknown subroutine(SPVM_JITCODE_call_sub())\");\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      fprintf(stderr, \"Unknown subroutine is called in SPVM_JITCODE_call_sub(). subroutine id is %%d.\", sub_id);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      exit(1);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  return return_value;\n");
