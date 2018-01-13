@@ -1663,14 +1663,14 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_IF_EQ_ZERO: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // IF_EQ_ZERO\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  if (condition_flag == 0) { goto L");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index + opcode->operand0);
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, "; }\n");
               break;
             }
             case SPVM_OPCODE_C_CODE_IF_NE_ZERO: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // IF_NE_ZERO\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  if (condition_flag) { goto L");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index + opcode->operand0);
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, "; }");
               break;
             }

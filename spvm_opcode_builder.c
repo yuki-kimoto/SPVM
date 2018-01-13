@@ -1880,12 +1880,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t* opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(if_start_opcode_index_stack);
                   int32_t opcode_index = *opcode_index_ptr;
                   
-                  // Jump offset
-                  int32_t jump_offset = opcode_array->length - opcode_index;
-                  
                   // Set jump offset
                   SPVM_OPCODE* opcode_goto = (opcode_array->values + opcode_index);
-                  opcode_goto->operand0 = jump_offset;
+                  opcode_goto->operand0 = opcode_array->length;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_ELSE) {
                   
@@ -1985,10 +1982,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t* loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(loop_start_opcode_index_stack);
                   int32_t loop_start_opcode_index = *loop_start_opcode_index_ptr;
                   
-                  // Jump offset
-                  int32_t loop_start_offset = loop_start_opcode_index - opcode_array->length + 1;
-                  
-                  opcode.operand0 = loop_start_offset;
+                  opcode.operand0 = loop_start_opcode_index + 1;
                 }
                 
                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
