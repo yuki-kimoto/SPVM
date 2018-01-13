@@ -1655,7 +1655,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_GOTO: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // GOTO\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index + opcode->operand0);
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
             }
@@ -1922,7 +1922,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               // 25 match3 offset3 // max
               
               // default offset
-              int32_t default_offset = opcode->operand1;
+              int32_t default_branch = opcode->operand1;
               
               // case count
               int32_t case_count = opcode->operand2;
@@ -1934,17 +1934,17 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 int32_t case_index;
                 for (case_index = 0; case_index < case_count; case_index++) {
                   int32_t match = (opcode + 1 + case_index)->operand0;
-                  int32_t branch_offset = (opcode + 1 + case_index)->operand1;
+                  int32_t branch = (opcode + 1 + case_index)->operand1;
                   
                   SPVM_STRING_BUFFER_add(string_buffer, "    case ");
                   SPVM_STRING_BUFFER_add_int(string_buffer, match);
                   SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
-                  SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index + branch_offset);
+                  SPVM_STRING_BUFFER_add_int(string_buffer, branch);
                   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
                 }
               }
               SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index + default_offset);
+              SPVM_STRING_BUFFER_add_int(string_buffer, default_branch);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 

@@ -1730,7 +1730,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         current_line = opcode->operand0;
         break;
       case SPVM_OPCODE_C_CODE_GOTO:
-        opcode_index += opcode->operand0;
+        opcode_index = opcode->operand0;
         continue;
       case SPVM_OPCODE_C_CODE_IF_EQ_ZERO: {
         if (condition_flag == 0) {
@@ -1859,7 +1859,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // 25 match3 offset3 // max
         
         // default offset
-        int32_t default_offset = opcode->operand1;
+        int32_t default_branch = opcode->operand1;
         
         // npare
         int32_t case_count = opcode->operand2;
@@ -1877,7 +1877,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
           while (1) {
             if (cur_max_pos < cur_min_pos) {
-              opcode_index += default_offset;
+              opcode_index = default_branch;
               break;
             }
             int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
@@ -1890,14 +1890,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
               cur_max_pos = cur_half_pos - 1;
             }
             else {
-              int32_t branch_offset = (opcode + 1 + cur_half_pos)->operand1;
-              opcode_index += branch_offset;
+              int32_t branch = (opcode + 1 + cur_half_pos)->operand1;
+              opcode_index = branch;
               break;
             }
           }
         }
         else {
-          opcode_index += default_offset;
+          opcode_index = default_branch;
         }
         
         continue;
