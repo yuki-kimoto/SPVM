@@ -237,21 +237,23 @@ sub compile_spvm {
     
     # Free compiler
     free_compiler();
-
-    # Build JIT code
-    my $jit_source_dir = tempdir(CLEANUP => 1);
-    my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
-    build_jitcode($jit_source_file);
     
-    open my $fh, '<', $jit_source_file
-      or die "aaa";
-    my $jit_source_content = do { local $/; <$fh> };
-    # print $jit_source_content;
+    if (defined $ENV{PERL_SPVM_DIR}) {
+      # Build JIT code
+      my $jit_source_dir = tempdir(CLEANUP => 1);
+      my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
+      build_jitcode($jit_source_file);
+      
+      open my $fh, '<', $jit_source_file
+        or die "aaa";
+      my $jit_source_content = do { local $/; <$fh> };
+      # print $jit_source_content;
+      
+      # Compile JIT code
+      my $jitcode_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
+      bind_jitcode($jitcode_lib_file);
+    }
     
-    # Compile JIT code
-    my $jitcode_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
-    bind_jitcode($jitcode_lib_file);
-
     # Build SPVM subroutines
     build_spvm_subs();
   }
@@ -863,6 +865,14 @@ L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many example
 =head2 SPVM FAQ
 
 L<SPVM::Document::FAQ> - Oftten asked question.
+
+=head1 Environment Variable
+
+=head2 PERL_SPVM_DIR
+
+  PERL_SPVM_DIR=/var/data/spvm
+
+C<PERL_SPVM_DIR> is for SPVM cache and config directory.
 
 =head2 SUPPORT
 

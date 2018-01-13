@@ -9,6 +9,10 @@ use Data::Dumper;
 use File::Basename 'basename';
 use FindBin;
 
+BEGIN {
+  $ENV{PERL_SPVM_DIR} = "$FindBin::Bin/spvm";
+}
+
 use Test::More 'no_plan';
 
 my $file = 't/' . basename $0;
