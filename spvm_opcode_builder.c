@@ -1930,9 +1930,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Set jump offset of eval block
                   int32_t* eval_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_eval_opcode_index_stack);
                   int32_t eval_start_opcode_index = *eval_start_opcode_index_ptr;
-                  int32_t jump_offset_abs = opcode_array->length - sub->opcode_base;
-                  SPVM_OPCODE* opcode_jump_offset_abs = (opcode_array->values + eval_start_opcode_index);
-                  opcode_jump_offset_abs->operand0 = jump_offset_abs;
+                  SPVM_OPCODE* opcode_jump = (opcode_array->values + eval_start_opcode_index);
+                  opcode_jump->operand0 = opcode_array->length;
                 }
                 break;
               }

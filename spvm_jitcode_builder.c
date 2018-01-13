@@ -28,11 +28,10 @@ void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buf
   
   // Catch exception
   if (*eval_stack_top > -1) {
-    int32_t jump_offset_abs = eval_stack[*eval_stack_top];
-    int32_t jump_line = sub_opcode_base + jump_offset_abs;
+    int32_t jump = eval_stack[*eval_stack_top];
     
     SPVM_STRING_BUFFER_add(string_buffer, "      goto L");
-    SPVM_STRING_BUFFER_add_int(string_buffer, jump_line);
+    SPVM_STRING_BUFFER_add_int(string_buffer, jump);
     SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
   // Throw exception
@@ -1677,9 +1676,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_PUSH_EVAL: {
               SPVM_STRING_BUFFER_add(string_buffer, "  // PUSH_EVAL\n");
               
-              int32_t jump_offset_abs = opcode->operand0;
               eval_stack_top++;
-              eval_stack[eval_stack_top] = jump_offset_abs;
+              eval_stack[eval_stack_top] = opcode->operand0;
               
               break;
             }

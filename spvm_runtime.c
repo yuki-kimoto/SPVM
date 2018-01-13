@@ -1547,11 +1547,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_PUSH_EVAL: {
-        // Next operation
-        int16_t jump_offset_abs = opcode->operand0;
-        
         eval_stack_top++;
-        eval_stack[eval_stack_top] = jump_offset_abs;
+        eval_stack[eval_stack_top] = opcode->operand0;
         
         break;
       }
@@ -1830,9 +1827,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         // Catch exception
         if (eval_stack_top > -1) {
-          int32_t jump_offset_abs = eval_stack[eval_stack_top];
+          opcode_index = eval_stack[eval_stack_top];
           eval_stack_top--;
-          opcode_index = sub_opcode_base + jump_offset_abs;
           continue;
         }
         // Throw exception
