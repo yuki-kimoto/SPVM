@@ -35,7 +35,6 @@
 #include "spvm_package_var.h"
 #include "spvm_dumper.h"
 #include "spvm_opcode.h"
-#include "spvm_opcode_array.h"
 
 
 void SPVM_OPCODE_BUILDER_push_inc_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcode_array, SPVM_OP* op_inc, int32_t value) {
@@ -2392,6 +2391,36 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       constant_pool_sub.opcode_length = sub->opcode_length;
       memcpy(&compiler->constant_pool->values[sub->id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
       
+    }
+  }
+  
+  // Set label information
+  {
+    int32_t opcode_index;
+    SPVM_OPCODE* opcodes = opcode_array->values;
+    for (opcode_index = 0; opcode_index < opcode_array->length; opcode_index++) {
+      if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_GOTO) {
+        int32_t branch_opcode_index = opcodes[opcode_index].operand0;
+        opcodes[branch_opcode_index].has_label = 1;
+      }
+      else if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_IF_EQ_ZERO || opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_IF_NE_ZERO) {
+        int32_t branch_opcode_index = opcodes[opcode_index].operand0;
+        opcodes[branch_opcode_index].has_label = 1;
+      }
+      else if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_PUSH_EVAL) {
+        int32_t branch_opcode_index = opcodes[opcode_index].operand0;
+        opcodes[branch_opcode_index].has_label = 1;
+      }
+      else if (opcodes[opcode_index].code == SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH) {
+        // Default branch
+        int32_t branch_opcode_index = opcodes[opcode_index].operand1;
+        opcodes[branch_opcode_index].has_label = 1;
+      }
+      else if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_CASE) {
+        // Branch
+        int32_t branch_opcode_index = opcodes[opcode_index].operand1;
+        opcodes[branch_opcode_index].has_label = 1;
+      }
     }
   }
 }
