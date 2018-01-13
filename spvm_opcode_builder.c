@@ -116,13 +116,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       _Bool finish = 0;
       
       // opcode index stack for if start
-      SPVM_DYNAMIC_ARRAY* if_start_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_DYNAMIC_ARRAY* if_eq_or_if_ne_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // opcode index stack for if end
-      SPVM_DYNAMIC_ARRAY* else_start_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_DYNAMIC_ARRAY* if_block_end_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // opcode index stack for loop start
-      SPVM_DYNAMIC_ARRAY* loop_start_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_DYNAMIC_ARRAY* loop_start_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // opcode index stack for last
       SPVM_DYNAMIC_ARRAY* last_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -131,7 +131,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_DYNAMIC_ARRAY* next_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // opcode index stack for eval start
-      SPVM_DYNAMIC_ARRAY* eval_start_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_DYNAMIC_ARRAY* push_eval_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
       // Switch stack
       SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -169,7 +169,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *opcode_index_ptr = opcode_array->length - 1;
               
-              SPVM_DYNAMIC_ARRAY_push(loop_start_opcode_index_stack, opcode_index_ptr);
+              SPVM_DYNAMIC_ARRAY_push(loop_start_goto_opcode_index_stack, opcode_index_ptr);
             }
             else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
               SPVM_OPCODE opcode;
@@ -180,7 +180,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *opcode_index_ptr = opcode_array->length - 1;
               
-              SPVM_DYNAMIC_ARRAY_push(eval_start_opcode_index_stack, opcode_index_ptr);
+              SPVM_DYNAMIC_ARRAY_push(push_eval_opcode_index_stack, opcode_index_ptr);
             }
           }
         }
@@ -1871,13 +1871,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
                     *opcode_index_ptr = opcode_array->length - 1;
-                    SPVM_DYNAMIC_ARRAY_push(else_start_opcode_index_stack, opcode_index_ptr);
+                    SPVM_DYNAMIC_ARRAY_push(if_block_end_goto_opcode_index_stack, opcode_index_ptr);
                   }
 
-                  assert(if_start_opcode_index_stack->length > 0);
-
                   // Set if jump opcode index
-                  int32_t* opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(if_start_opcode_index_stack);
+                  int32_t* opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(if_eq_or_if_ne_opcode_index_stack);
                   int32_t opcode_index = *opcode_index_ptr;
                   
                   // Set jump offset
@@ -1886,9 +1884,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_ELSE) {
                   
-                  assert(else_start_opcode_index_stack->length > 0);
+                  assert(if_block_end_goto_opcode_index_stack->length > 0);
                   
-                  int32_t* opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(else_start_opcode_index_stack);
+                  int32_t* opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(if_block_end_goto_opcode_index_stack);
                   int32_t opcode_index = *opcode_index_ptr;
                   
                   // Jump offset
@@ -1913,7 +1911,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_NEXT_STEP) {
-                  int32_t* loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(loop_start_opcode_index_stack, loop_start_opcode_index_stack->length - 1);
+                  int32_t* loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(loop_start_goto_opcode_index_stack, loop_start_goto_opcode_index_stack->length - 1);
                   int32_t loop_start_opcode_index = *loop_start_opcode_index_ptr;
                   
                   // Jump offset
@@ -1930,7 +1928,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   
                   // Set jump offset of eval block
-                  int32_t* eval_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(eval_start_opcode_index_stack);
+                  int32_t* eval_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_eval_opcode_index_stack);
                   int32_t eval_start_opcode_index = *eval_start_opcode_index_ptr;
                   int32_t jump_offset_abs = opcode_array->length - sub->opcode_base;
                   SPVM_OPCODE* opcode_jump_offset_abs = (opcode_array->values + eval_start_opcode_index);
@@ -1974,12 +1972,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
                   *opcode_index_ptr = opcode_index;
                   
-                  SPVM_DYNAMIC_ARRAY_push(if_start_opcode_index_stack, opcode_index_ptr);
+                  SPVM_DYNAMIC_ARRAY_push(if_eq_or_if_ne_opcode_index_stack, opcode_index_ptr);
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
-                  assert(loop_start_opcode_index_stack->length > 0);
+                  assert(loop_start_goto_opcode_index_stack->length > 0);
                   
-                  int32_t* loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(loop_start_opcode_index_stack);
+                  int32_t* loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(loop_start_goto_opcode_index_stack);
                   int32_t loop_start_opcode_index = *loop_start_opcode_index_ptr;
                   
                   opcode.operand0 = loop_start_opcode_index + 1;
