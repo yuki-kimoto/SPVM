@@ -342,6 +342,10 @@ enum {
   SPVM_OPCODE_C_CODE_CASE,
 };
 
+enum {
+  SPVM_OPCODE_C_FLAG_IS_LABEL = 1
+};
+
 extern const char* const SPVM_OPCODE_C_CODE_NAMES[];
 
 struct SPVM_opcode {
@@ -352,7 +356,7 @@ struct SPVM_opcode {
   int32_t operand3;
   int32_t operand4;
   int32_t operand5;
-  int32_t operand6;
+  int32_t operand6; // flag
 };
 
 enum {
