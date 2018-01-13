@@ -355,10 +355,6 @@ struct SPVM_opcode {
   int32_t operand0;
   int32_t operand1;
   int32_t operand2;
-  int32_t operand3;
-  int32_t operand4;
-  int32_t operand5;
-  int32_t operand6; // flag
 };
 
 enum {
