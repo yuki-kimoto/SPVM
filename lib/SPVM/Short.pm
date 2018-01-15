@@ -6,7 +6,7 @@ package SPVM::Short;
 
 SPVM::Short - Short Utility
 
-=head1 CONSTANT FUNCTIONS
+=head1 FUNCTIONS
 
 =head2 MIN_VALUE
 
@@ -20,17 +20,14 @@ B<short MAX_VALUE()>
 
 A constant holding the maximum value a short can have, C<32767>.
 
-=head2 SIZE
-
-B<int SIZE>
-
-The number of bits used to represent a short value in two's complement binary form.
-
 =head2 BYTES
 
 B<int BYTES()>
 
-The number of shorts used to represent a short value in two's complement binary form.
+The number of shorts used to represent a short value in two's complement binary form, C<2>.
 
-=head1 FUNCTIONS
+=head2 SIZE
 
+B<int SIZE>
+
+The number of bits used to represent a short value in two's complement binary form, C<16>.
