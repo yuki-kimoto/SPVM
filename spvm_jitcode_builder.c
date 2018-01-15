@@ -56,6 +56,16 @@ void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t ind
   }
 }
 
+void SPVM_JITCODE_BUILDER_add_add(SPVM_STRING_BUFFER* string_buffer, int32_t type_code, int32_t out, int32_t in1, int32_t in2) {
+  
+  SPVM_JITCODE_BUILDER_add_var(string_buffer, out, type_code);
+  SPVM_STRING_BUFFER_add(string_buffer, " = ");
+  SPVM_JITCODE_BUILDER_add_var(string_buffer, in1, type_code);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_JITCODE_BUILDER_add_var(string_buffer, in2, type_code);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+}
+
 void SPVM_JITCODE_BUILDER_build_jitcode() {
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
@@ -744,79 +754,117 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               break;
             case SPVM_OPCODE_C_CODE_ADD_BYTE:
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_BYTE, opcode->operand0, opcode->operand1, opcode->operand2);
+              break;
+            case SPVM_OPCODE_C_CODE_ADD_SHORT:
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_SHORT, opcode->operand0, opcode->operand1, opcode->operand2);
+              break;
+            case SPVM_OPCODE_C_CODE_ADD_INT:
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_INT, opcode->operand0, opcode->operand1, opcode->operand2);
+              break;
+            case SPVM_OPCODE_C_CODE_ADD_LONG:
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_LONG, opcode->operand0, opcode->operand1, opcode->operand2);
+              break;
+            case SPVM_OPCODE_C_CODE_ADD_FLOAT:
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
+              break;
+            case SPVM_OPCODE_C_CODE_ADD_DOUBLE:
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
+              break;
+            case SPVM_OPCODE_C_CODE_SUBTRACT_BYTE:
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_BYTE);
               SPVM_STRING_BUFFER_add(string_buffer, " = ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_BYTE);
-              SPVM_STRING_BUFFER_add(string_buffer, " + ");
+              SPVM_STRING_BUFFER_add(string_buffer, " - ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_BYTE);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
-            case SPVM_OPCODE_C_CODE_ADD_SHORT:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_SHORT:
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_SHORT);
               SPVM_STRING_BUFFER_add(string_buffer, " = ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_SHORT);
-              SPVM_STRING_BUFFER_add(string_buffer, " + ");
+              SPVM_STRING_BUFFER_add(string_buffer, " - ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_SHORT);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
-            case SPVM_OPCODE_C_CODE_ADD_INT:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_INT:
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_INT);
               SPVM_STRING_BUFFER_add(string_buffer, " = ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_INT);
-              SPVM_STRING_BUFFER_add(string_buffer, " + ");
+              SPVM_STRING_BUFFER_add(string_buffer, " - ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_INT);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
-            case SPVM_OPCODE_C_CODE_ADD_LONG:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_LONG:
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_LONG);
               SPVM_STRING_BUFFER_add(string_buffer, " = ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_LONG);
-              SPVM_STRING_BUFFER_add(string_buffer, " + ");
+              SPVM_STRING_BUFFER_add(string_buffer, " - ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_LONG);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
-            case SPVM_OPCODE_C_CODE_ADD_FLOAT:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_FLOAT:
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_FLOAT);
               SPVM_STRING_BUFFER_add(string_buffer, " = ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_FLOAT);
-              SPVM_STRING_BUFFER_add(string_buffer, " + ");
+              SPVM_STRING_BUFFER_add(string_buffer, " - ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_FLOAT);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
-            case SPVM_OPCODE_C_CODE_ADD_DOUBLE:
+            case SPVM_OPCODE_C_CODE_SUBTRACT_DOUBLE:
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_DOUBLE);
               SPVM_STRING_BUFFER_add(string_buffer, " = ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_DOUBLE);
-              SPVM_STRING_BUFFER_add(string_buffer, " + ");
+              SPVM_STRING_BUFFER_add(string_buffer, " - ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_DOUBLE);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
-            case SPVM_OPCODE_C_CODE_SUBTRACT_BYTE:
-            case SPVM_OPCODE_C_CODE_SUBTRACT_SHORT:
-            case SPVM_OPCODE_C_CODE_SUBTRACT_INT:
-            case SPVM_OPCODE_C_CODE_SUBTRACT_LONG:
-            case SPVM_OPCODE_C_CODE_SUBTRACT_FLOAT:
-            case SPVM_OPCODE_C_CODE_SUBTRACT_DOUBLE:
-              SPVM_STRING_BUFFER_add(string_buffer, "  var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, " = var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, " - var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+            case SPVM_OPCODE_C_CODE_MULTIPLY_BYTE:
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_BYTE);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_BYTE);
+              SPVM_STRING_BUFFER_add(string_buffer, " * ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_BYTE);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
-            case SPVM_OPCODE_C_CODE_MULTIPLY_BYTE:
             case SPVM_OPCODE_C_CODE_MULTIPLY_SHORT:
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_SHORT);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_SHORT);
+              SPVM_STRING_BUFFER_add(string_buffer, " * ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_SHORT);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_INT:
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_INT);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_INT);
+              SPVM_STRING_BUFFER_add(string_buffer, " * ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_INT);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_LONG:
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_LONG);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_LONG);
+              SPVM_STRING_BUFFER_add(string_buffer, " * ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_LONG);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_FLOAT:
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_FLOAT);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_FLOAT);
+              SPVM_STRING_BUFFER_add(string_buffer, " * ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_FLOAT);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_DOUBLE:
-              SPVM_STRING_BUFFER_add(string_buffer, "  var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, " = var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, " * var");
-              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0, SPVM_TYPE_C_CODE_DOUBLE);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1, SPVM_TYPE_C_CODE_DOUBLE);
+              SPVM_STRING_BUFFER_add(string_buffer, " * ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2, SPVM_TYPE_C_CODE_DOUBLE);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
             case SPVM_OPCODE_C_CODE_DIVIDE_BYTE:
