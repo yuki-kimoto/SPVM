@@ -65,6 +65,12 @@ void SPVM_JITCODE_BUILDER_add_operand(SPVM_STRING_BUFFER* string_buffer, int32_t
   }
 }
 
+void SPVM_JITCODE_BUILDER_add_bool(SPVM_STRING_BUFFER* string_buffer, int32_t type_code, const char* input_signatures, int32_t in_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = !!");
+  SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_code, input_signatures[0], in_index);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+}
+
 void SPVM_JITCODE_BUILDER_add_add(SPVM_STRING_BUFFER* string_buffer, int32_t type_code, const char* input_signatures, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_code, 'V', out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -685,11 +691,23 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_NOP:
               abort();
             case SPVM_OPCODE_C_CODE_BOOL_BYTE:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, SPVM_TYPE_C_CODE_BYTE, "V", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_SHORT:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, SPVM_TYPE_C_CODE_SHORT, "V", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_INT:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, SPVM_TYPE_C_CODE_INT, "V", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_LONG:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, SPVM_TYPE_C_CODE_LONG, "V", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_FLOAT:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, SPVM_TYPE_C_CODE_FLOAT, "V", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_DOUBLE:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, SPVM_TYPE_C_CODE_DOUBLE, "V", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_OBJECT:
               SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = !!var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
