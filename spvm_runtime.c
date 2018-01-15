@@ -355,52 +355,40 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         vars[opcode->operand0].double_value = vars[opcode->operand1].double_value + vars[opcode->operand2].double_value;
         break;
       case SPVM_OPCODE_C_CODE_SUBTRACT_BYTE:
-        vars[opcode->operand0].byte_value
-          = vars[opcode->operand1].byte_value - vars[opcode->operand2].byte_value;
+        vars[opcode->operand0].byte_value = vars[opcode->operand1].byte_value - vars[opcode->operand2].byte_value;
         break;
       case SPVM_OPCODE_C_CODE_SUBTRACT_SHORT:
-        vars[opcode->operand0].short_value
-          = vars[opcode->operand1].short_value - vars[opcode->operand2].short_value;
+        vars[opcode->operand0].short_value = vars[opcode->operand1].short_value - vars[opcode->operand2].short_value;
         break;
       case SPVM_OPCODE_C_CODE_SUBTRACT_INT:
-        vars[opcode->operand0].int_value
-          = vars[opcode->operand1].int_value - vars[opcode->operand2].int_value;
+        vars[opcode->operand0].int_value = vars[opcode->operand1].int_value - vars[opcode->operand2].int_value;
         break;
       case SPVM_OPCODE_C_CODE_SUBTRACT_LONG:
-        vars[opcode->operand0].long_value
-          = vars[opcode->operand1].long_value - vars[opcode->operand2].long_value;
+        vars[opcode->operand0].long_value = vars[opcode->operand1].long_value - vars[opcode->operand2].long_value;
         break;
       case SPVM_OPCODE_C_CODE_SUBTRACT_FLOAT:
-        vars[opcode->operand0].float_value
-          = vars[opcode->operand1].float_value - vars[opcode->operand2].float_value;
+        vars[opcode->operand0].float_value = vars[opcode->operand1].float_value - vars[opcode->operand2].float_value;
         break;
       case SPVM_OPCODE_C_CODE_SUBTRACT_DOUBLE:
-        vars[opcode->operand0].double_value
-          = vars[opcode->operand1].double_value - vars[opcode->operand2].double_value;
+        vars[opcode->operand0].double_value = vars[opcode->operand1].double_value - vars[opcode->operand2].double_value;
         break;
       case SPVM_OPCODE_C_CODE_MULTIPLY_BYTE:
-        vars[opcode->operand0].byte_value
-          = vars[opcode->operand1].byte_value * vars[opcode->operand2].byte_value;
+        vars[opcode->operand0].byte_value = vars[opcode->operand1].byte_value * vars[opcode->operand2].byte_value;
         break;
       case SPVM_OPCODE_C_CODE_MULTIPLY_SHORT:
-        vars[opcode->operand0].short_value
-          = vars[opcode->operand1].short_value * vars[opcode->operand2].short_value;
+        vars[opcode->operand0].short_value = vars[opcode->operand1].short_value * vars[opcode->operand2].short_value;
         break;
       case SPVM_OPCODE_C_CODE_MULTIPLY_INT:
-        vars[opcode->operand0].int_value
-          = vars[opcode->operand1].int_value * vars[opcode->operand2].int_value;
+        vars[opcode->operand0].int_value = vars[opcode->operand1].int_value * vars[opcode->operand2].int_value;
         break;
       case SPVM_OPCODE_C_CODE_MULTIPLY_LONG:
-        vars[opcode->operand0].long_value
-          = vars[opcode->operand1].long_value * vars[opcode->operand2].long_value;
+        vars[opcode->operand0].long_value = vars[opcode->operand1].long_value * vars[opcode->operand2].long_value;
         break;
       case SPVM_OPCODE_C_CODE_MULTIPLY_FLOAT:
-        vars[opcode->operand0].float_value
-          = vars[opcode->operand1].float_value * vars[opcode->operand2].float_value;
+        vars[opcode->operand0].float_value = vars[opcode->operand1].float_value * vars[opcode->operand2].float_value;
         break;
       case SPVM_OPCODE_C_CODE_MULTIPLY_DOUBLE:
-        vars[opcode->operand0].double_value
-          = vars[opcode->operand1].double_value * vars[opcode->operand2].double_value;
+        vars[opcode->operand0].double_value = vars[opcode->operand1].double_value * vars[opcode->operand2].double_value;
         break;
       case SPVM_OPCODE_C_CODE_DIVIDE_BYTE:
         if (__builtin_expect(vars[opcode->operand2].byte_value == 0, 0)) {
