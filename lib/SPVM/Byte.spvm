@@ -1,11 +1,6 @@
 package Byte {
-
-  has value : byte;
-
-  enum {
-    MIN_VALUE = -128y,
-    MAX_VALUE = 127y,
-    BYTES = 1,
-    SIZE = 8,
-  }
+  sub MIN_VALUE() : byte { return -128y; }
+  sub MAX_VALUE() : byte { return 127y; }
+  sub BYTES() : int { return 1; }
+  sub SIZE() : int { return 8; }
 }
