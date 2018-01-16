@@ -24,6 +24,16 @@
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_api.h"
 
+enum {
+  SPVM_JITCODE_BUILDER_C_TYPE_BYTE,
+  SPVM_JITCODE_BUILDER_C_TYPE_SHORT,
+  SPVM_JITCODE_BUILDER_C_TYPE_INT,
+  SPVM_JITCODE_BUILDER_C_TYPE_LONG,
+  SPVM_JITCODE_BUILDER_C_TYPE_FLOAT,
+  SPVM_JITCODE_BUILDER_C_TYPE_DOUBLE,
+  SPVM_JITCODE_BUILDER_C_TYPE_OBJECT,
+};
+
 void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buffer, int32_t sub_opcode_base, int32_t* eval_stack, int32_t* eval_stack_top, _Bool sub_is_void) {
   
   // Catch exception
