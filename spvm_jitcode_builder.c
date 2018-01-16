@@ -808,58 +808,58 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               break;
             case SPVM_OPCODE_C_CODE_ADD_BYTE:
-              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_BYTE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_BYTE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_ADD_SHORT:
-              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_SHORT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_SHORT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_ADD_INT:
-              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_INT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_INT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_ADD_LONG:
-              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_LONG, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_LONG, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_ADD_FLOAT:
-              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_FLOAT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_FLOAT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_ADD_DOUBLE:
-              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_TYPE_C_CODE_DOUBLE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_add(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_DOUBLE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_SUBTRACT_BYTE:
-              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_TYPE_C_CODE_BYTE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_BYTE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_SUBTRACT_SHORT:
-              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_TYPE_C_CODE_SHORT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_SHORT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_SUBTRACT_INT:
-              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_TYPE_C_CODE_INT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_INT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_SUBTRACT_LONG:
-              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_TYPE_C_CODE_LONG, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_LONG, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_SUBTRACT_FLOAT:
-              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_TYPE_C_CODE_FLOAT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_FLOAT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_SUBTRACT_DOUBLE:
-              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_TYPE_C_CODE_DOUBLE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_subtract(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_DOUBLE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_BYTE:
-              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_TYPE_C_CODE_BYTE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_BYTE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_SHORT:
-              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_TYPE_C_CODE_SHORT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_SHORT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_INT:
-              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_TYPE_C_CODE_INT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_INT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_LONG:
-              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_TYPE_C_CODE_LONG, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_LONG, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_FLOAT:
-              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_TYPE_C_CODE_FLOAT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_FLOAT, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_MULTIPLY_DOUBLE:
-              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_TYPE_C_CODE_DOUBLE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_multiply(string_buffer, SPVM_JITCODE_BUILDER_C_TYPE_DOUBLE, "VV", opcode->operand0, opcode->operand1, opcode->operand2);
               break;
             case SPVM_OPCODE_C_CODE_DIVIDE_BYTE:
             case SPVM_OPCODE_C_CODE_DIVIDE_SHORT:
