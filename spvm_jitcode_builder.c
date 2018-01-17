@@ -168,7 +168,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       }
 
       // Arguments
-      SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API_VALUE* args);\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API* api, SPVM_API_VALUE* args);\n");
     }
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
@@ -271,7 +271,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       }
 
       // Arguments
-      SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API_VALUE* args)");
+      SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API* api, SPVM_API_VALUE* args)");
       
       // Block start
       SPVM_STRING_BUFFER_add(string_buffer, " {\n");
@@ -350,11 +350,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
       }
-      
-      // API
-      SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API* api = (SPVM_API*)");
-      SPVM_STRING_BUFFER_add_address(string_buffer, runtime->api);
-      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
       
       // Native subroutine
       if (constant_pool_sub->is_native) {
@@ -2016,7 +2011,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       }
       
       // Arguments
-      SPVM_STRING_BUFFER_add(string_buffer, "(args);\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "(api, args);\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      break;\n");
     }
   }
