@@ -195,16 +195,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           SPVM_STRING_BUFFER_add(string_buffer, "void ");
           break;
         case SPVM_TYPE_C_CODE_BYTE:
-          SPVM_STRING_BUFFER_add(string_buffer, "int8_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_byte ");
           break;
         case SPVM_TYPE_C_CODE_SHORT:
-          SPVM_STRING_BUFFER_add(string_buffer, "int16_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_short ");
           break;
         case SPVM_TYPE_C_CODE_INT:
-          SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_int ");
           break;
         case SPVM_TYPE_C_CODE_LONG:
-          SPVM_STRING_BUFFER_add(string_buffer, "int64_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_long ");
           break;
         case SPVM_TYPE_C_CODE_FLOAT:
           SPVM_STRING_BUFFER_add(string_buffer, "float ");
@@ -251,16 +251,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "  void ");
               break;
             case SPVM_TYPE_C_CODE_BYTE:
-              SPVM_STRING_BUFFER_add(string_buffer, "  int8_t");
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_byte");
               break;
             case SPVM_TYPE_C_CODE_SHORT:
-              SPVM_STRING_BUFFER_add(string_buffer, "  int16_t");
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_short");
               break;
             case SPVM_TYPE_C_CODE_INT:
               SPVM_STRING_BUFFER_add(string_buffer, "  int32_t");
               break;
             case SPVM_TYPE_C_CODE_LONG:
-              SPVM_STRING_BUFFER_add(string_buffer, "  int64_t");
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_long");
               break;
             case SPVM_TYPE_C_CODE_FLOAT:
               SPVM_STRING_BUFFER_add(string_buffer, "  float");
@@ -323,16 +323,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             SPVM_STRING_BUFFER_add(string_buffer, "  void ");
             break;
           case SPVM_TYPE_C_CODE_BYTE:
-            SPVM_STRING_BUFFER_add(string_buffer, "  int8_t ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_byte ");
             break;
           case SPVM_TYPE_C_CODE_SHORT:
-            SPVM_STRING_BUFFER_add(string_buffer, "  int16_t ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_short ");
             break;
           case SPVM_TYPE_C_CODE_INT:
             SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
             break;
           case SPVM_TYPE_C_CODE_LONG:
-            SPVM_STRING_BUFFER_add(string_buffer, "  int64_t ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_long ");
             break;
           case SPVM_TYPE_C_CODE_FLOAT:
             SPVM_STRING_BUFFER_add(string_buffer, "  float ");
@@ -352,16 +352,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_TYPE_C_CODE_VOID:
               break;
             case SPVM_TYPE_C_CODE_BYTE:
-              SPVM_STRING_BUFFER_add(string_buffer, "  int8_t ");
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_byte ");
               break;
             case SPVM_TYPE_C_CODE_SHORT:
-              SPVM_STRING_BUFFER_add(string_buffer, "  int16_t ");
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_short ");
               break;
             case SPVM_TYPE_C_CODE_INT:
               SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
               break;
             case SPVM_TYPE_C_CODE_LONG:
-              SPVM_STRING_BUFFER_add(string_buffer, "  int64_t ");
+              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_long ");
               break;
             case SPVM_TYPE_C_CODE_FLOAT:
               SPVM_STRING_BUFFER_add(string_buffer, "  float ");
@@ -397,11 +397,11 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             
             switch (my_type_code) {
               case SPVM_TYPE_C_CODE_BYTE : {
-                SPVM_STRING_BUFFER_add(string_buffer, "  int8_t ");
+                SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_byte ");
                 break;
               }
               case  SPVM_TYPE_C_CODE_SHORT : {
-                SPVM_STRING_BUFFER_add(string_buffer, "  int16_t ");
+                SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_short ");
                 break;
               }
               case  SPVM_TYPE_C_CODE_INT : {
@@ -409,7 +409,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 break;
               }
               case  SPVM_TYPE_C_CODE_LONG : {
-                SPVM_STRING_BUFFER_add(string_buffer, "  int64_t ");
+                SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_long ");
                 break;
               }
               case  SPVM_TYPE_C_CODE_FLOAT : {
@@ -463,19 +463,19 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           switch (return_type_code) {
             case SPVM_TYPE_C_CODE_BYTE : {
-              SPVM_STRING_BUFFER_add(string_buffer, "int8_t");
+              SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_byte");
               break;
             }
             case  SPVM_TYPE_C_CODE_SHORT : {
-              SPVM_STRING_BUFFER_add(string_buffer, "int16_t");
+              SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_short");
               break;
             }
             case  SPVM_TYPE_C_CODE_INT : {
-              SPVM_STRING_BUFFER_add(string_buffer, "int32_t");
+              SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_int");
               break;
             }
             case  SPVM_TYPE_C_CODE_LONG : {
-              SPVM_STRING_BUFFER_add(string_buffer, "int64_t");
+              SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_long");
               break;
             }
             case  SPVM_TYPE_C_CODE_FLOAT : {
@@ -855,7 +855,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_BYTE:
               SPVM_STRING_BUFFER_add(string_buffer, "  var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, " = (int8_t)var");
+              SPVM_STRING_BUFFER_add(string_buffer, " = (SPVM_API_byte)var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
@@ -867,7 +867,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_SHORT:
               SPVM_STRING_BUFFER_add(string_buffer, "  var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, " = (int16_t)var");
+              SPVM_STRING_BUFFER_add(string_buffer, " = (SPVM_API_short)var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
@@ -891,7 +891,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_CONVERT_DOUBLE_TO_LONG:
               SPVM_STRING_BUFFER_add(string_buffer, "  var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, " = (int64_t)var");
+              SPVM_STRING_BUFFER_add(string_buffer, " = (SPVM_API_long)var");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               break;
@@ -941,16 +941,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, " = ");
               switch (opcode->code) {
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE:
-                  SPVM_STRING_BUFFER_add_byte(string_buffer, *(int8_t*)&constant_pool[opcode->operand1]);
+                  SPVM_STRING_BUFFER_add_byte(string_buffer, *(SPVM_API_byte*)&constant_pool[opcode->operand1]);
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT:
-                  SPVM_STRING_BUFFER_add_short(string_buffer, *(int16_t*)&constant_pool[opcode->operand1]);
+                  SPVM_STRING_BUFFER_add_short(string_buffer, *(SPVM_API_short*)&constant_pool[opcode->operand1]);
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT:
                   SPVM_STRING_BUFFER_add_int(string_buffer, *(int32_t*)&constant_pool[opcode->operand1]);
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_LONG:
-                  SPVM_STRING_BUFFER_add_long(string_buffer, *(int64_t*)&constant_pool[opcode->operand1]);
+                  SPVM_STRING_BUFFER_add_long(string_buffer, *(SPVM_API_long*)&constant_pool[opcode->operand1]);
                   SPVM_STRING_BUFFER_add(string_buffer, "UL");
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_FLOAT:
@@ -980,16 +980,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               char* element_type = NULL;
               switch (opcode->code) {
                 case SPVM_OPCODE_C_CODE_ARRAY_LOAD_BYTE:
-                  element_type = "int8_t";
+                  element_type = "SPVM_API_byte";
                   break;
                 case SPVM_OPCODE_C_CODE_ARRAY_LOAD_SHORT:
-                  element_type = "int16_t";
+                  element_type = "SPVM_API_short";
                   break;
                 case SPVM_OPCODE_C_CODE_ARRAY_LOAD_INT:
-                  element_type = "int32_t";
+                  element_type = "SPVM_API_int";
                   break;
                 case SPVM_OPCODE_C_CODE_ARRAY_LOAD_LONG:
-                  element_type = "int64_t";
+                  element_type = "SPVM_API_long";
                   break;
                 case SPVM_OPCODE_C_CODE_ARRAY_LOAD_FLOAT:
                   element_type = "float";
@@ -1051,16 +1051,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               char* element_type = NULL;
               switch (opcode->code) {
                 case SPVM_OPCODE_C_CODE_ARRAY_STORE_BYTE:
-                  element_type = "int8_t";
+                  element_type = "SPVM_API_byte";
                   break;
                 case SPVM_OPCODE_C_CODE_ARRAY_STORE_SHORT:
-                  element_type = "int16_t";
+                  element_type = "SPVM_API_short";
                   break;
                 case SPVM_OPCODE_C_CODE_ARRAY_STORE_INT:
-                  element_type = "int32_t";
+                  element_type = "SPVM_API_int";
                   break;
                 case SPVM_OPCODE_C_CODE_ARRAY_STORE_LONG:
-                  element_type = "int64_t";
+                  element_type = "SPVM_API_long";
                   break;
                 case SPVM_OPCODE_C_CODE_ARRAY_STORE_FLOAT:
                   element_type = "float";
@@ -1276,16 +1276,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               char* field_type = NULL;
               switch (opcode->code) {
                 case SPVM_OPCODE_C_CODE_GET_FIELD_BYTE:
-                  field_type = "int8_t";
+                  field_type = "SPVM_API_byte";
                   break;
                 case SPVM_OPCODE_C_CODE_GET_FIELD_SHORT:
-                  field_type = "int16_t";
+                  field_type = "SPVM_API_short";
                   break;
                 case SPVM_OPCODE_C_CODE_GET_FIELD_INT:
-                  field_type = "int32_t";
+                  field_type = "SPVM_API_int";
                   break;
                 case SPVM_OPCODE_C_CODE_GET_FIELD_LONG:
-                  field_type = "int64_t";
+                  field_type = "SPVM_API_long";
                   break;
                 case SPVM_OPCODE_C_CODE_GET_FIELD_FLOAT:
                   field_type = "float";
@@ -1366,16 +1366,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 char* field_type = NULL;
                 switch (opcode->code) {
                   case SPVM_OPCODE_C_CODE_SET_FIELD_BYTE:
-                    field_type = "int8_t";
+                    field_type = "SPVM_API_byte";
                     break;
                   case SPVM_OPCODE_C_CODE_SET_FIELD_SHORT:
-                    field_type = "int16_t";
+                    field_type = "SPVM_API_short";
                     break;
                   case SPVM_OPCODE_C_CODE_SET_FIELD_INT:
-                    field_type = "int32_t";
+                    field_type = "SPVM_API_int";
                     break;
                   case SPVM_OPCODE_C_CODE_SET_FIELD_LONG:
-                    field_type = "int64_t";
+                    field_type = "SPVM_API_long";
                     break;
                   case SPVM_OPCODE_C_CODE_SET_FIELD_FLOAT:
                     field_type = "float";
@@ -1511,16 +1511,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               char* package_var_type = NULL;
               switch (opcode->code) {
                 case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_BYTE:
-                  package_var_type = "int8_t";
+                  package_var_type = "SPVM_API_byte";
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_SHORT:
-                  package_var_type = "int16_t";
+                  package_var_type = "SPVM_API_short";
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_INT:
-                  package_var_type = "int32_t";
+                  package_var_type = "SPVM_API_int";
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_LONG:
-                  package_var_type = "int64_t";
+                  package_var_type = "SPVM_API_long";
                   break;
                 case SPVM_OPCODE_C_CODE_LOAD_PACKAGE_VAR_FLOAT:
                   package_var_type = "float";
@@ -1556,16 +1556,16 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               char* package_var_type = NULL;
               switch (opcode->code) {
                 case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_BYTE:
-                  package_var_type = "int8_t";
+                  package_var_type = "SPVM_API_byte";
                   break;
                 case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_SHORT:
-                  package_var_type = "int16_t";
+                  package_var_type = "SPVM_API_short";
                   break;
                 case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_INT:
-                  package_var_type = "int32_t";
+                  package_var_type = "SPVM_API_int";
                   break;
                 case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_LONG:
-                  package_var_type = "int64_t";
+                  package_var_type = "SPVM_API_long";
                   break;
                 case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_FLOAT:
                   package_var_type = "float";
@@ -1669,7 +1669,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                   SPVM_CONSTANT_POOL_TYPE* constant_pool_call_sub_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_arg_type_id];
                   int32_t call_sub_arg_type_code = constant_pool_call_sub_arg_type->code;
                   
-                  SPVM_STRING_BUFFER_add(string_buffer, "*(");
+                  SPVM_STRING_BUFFER_add(string_buffer, "    *(");
                   SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(call_sub_arg_type_code));
                   SPVM_STRING_BUFFER_add(string_buffer, "*)&call_sub_args[");
                   SPVM_STRING_BUFFER_add_int(string_buffer, call_sub_arg_index);
