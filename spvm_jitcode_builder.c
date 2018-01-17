@@ -1722,29 +1722,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               if (!call_sub_is_void) {
                 SPVM_STRING_BUFFER_add(string_buffer, "    var");
                 SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-                SPVM_STRING_BUFFER_add(string_buffer, " = call_sub_return_value.");
-                switch (call_sub_return_type_code) {
-                  case SPVM_TYPE_C_CODE_BYTE:
-                    SPVM_STRING_BUFFER_add(string_buffer, "byte_value");
-                    break;
-                  case SPVM_TYPE_C_CODE_SHORT:
-                    SPVM_STRING_BUFFER_add(string_buffer, "short_value");
-                    break;
-                  case SPVM_TYPE_C_CODE_INT:
-                    SPVM_STRING_BUFFER_add(string_buffer, "int_value");
-                    break;
-                  case SPVM_TYPE_C_CODE_LONG:
-                    SPVM_STRING_BUFFER_add(string_buffer, "long_value");
-                    break;
-                  case SPVM_TYPE_C_CODE_FLOAT:
-                    SPVM_STRING_BUFFER_add(string_buffer, "float_value");
-                    break;
-                  case SPVM_TYPE_C_CODE_DOUBLE:
-                    SPVM_STRING_BUFFER_add(string_buffer, "double_value");
-                    break;
-                  default:
-                    SPVM_STRING_BUFFER_add(string_buffer, "object_value");
-                }
+                SPVM_STRING_BUFFER_add(string_buffer, " = ");
+                SPVM_STRING_BUFFER_add(string_buffer, "*(");
+                SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(call_sub_return_type->code));
+                SPVM_STRING_BUFFER_add(string_buffer, "*)&call_sub_return_value;");
                 SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               }
               
