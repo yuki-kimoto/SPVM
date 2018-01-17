@@ -125,7 +125,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       // Return type code
       int32_t return_type_id = constant_pool_sub->return_type_id;
       SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
-
+      
       // Return type
       switch (return_type->code) {
         case SPVM_TYPE_C_CODE_VOID:
@@ -152,7 +152,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
         default:
           SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
       }
-
+      
       // Subroutine name. Replace : to _
       SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
       SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_abs_name);
@@ -2011,7 +2011,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   
   
   // Declare call_sub
-  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE SPVM_JITCODE_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);");
+  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE SPVM_JITCODE_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);\n");
   
   // Define call_sub
   SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE SPVM_JITCODE_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {\n");
