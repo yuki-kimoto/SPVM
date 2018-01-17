@@ -45,6 +45,35 @@ void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buf
   }
 }
 
+char* SPVM_JITCODE_BUILDER_get_type_name(int32_t type_code) {
+  
+  switch (type_code ) {
+    case SPVM_TYPE_C_CODE_VOID:
+      assert(0);
+      break;
+    case SPVM_TYPE_C_CODE_BYTE:
+      return "SPVM_API_byte";
+      break;
+    case SPVM_TYPE_C_CODE_SHORT:
+      return "SPVM_API_short";
+      break;
+    case SPVM_TYPE_C_CODE_INT:
+      return "SPVM_API_int";
+      break;
+    case SPVM_TYPE_C_CODE_LONG:
+      return "SPVM_API_long";
+      break;
+    case SPVM_TYPE_C_CODE_FLOAT:
+      return "SPVM_API_float";
+      break;
+    case SPVM_TYPE_C_CODE_DOUBLE:
+      return "SPVM_API_double";
+      break;
+    default:
+      return "SPVM_API_OBJECT*";
+  }
+}
+
 void SPVM_JITCODE_BUILDER_build_jitcode() {
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
@@ -1897,30 +1926,11 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
 
       SPVM_STRING_BUFFER_add(string_buffer, "      ");
 
-      // Return type
-      switch (return_type->code) {
-        case SPVM_TYPE_C_CODE_VOID:
-          break;
-        case SPVM_TYPE_C_CODE_BYTE:
-          SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_API_byte*)&return_value = ");
-          break;
-        case SPVM_TYPE_C_CODE_SHORT:
-          SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_API_short*)&return_value = ");
-          break;
-        case SPVM_TYPE_C_CODE_INT:
-          SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_API_int*)&return_value = ");
-          break;
-        case SPVM_TYPE_C_CODE_LONG:
-          SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_API_long*)&return_value = ");
-          break;
-        case SPVM_TYPE_C_CODE_FLOAT:
-          SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_API_float*)&return_value = ");
-          break;
-        case SPVM_TYPE_C_CODE_DOUBLE:
-          SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_API_double*)&return_value = ");
-          break;
-        default:
-          SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_API_OBJECT**)&return_value = ");
+      // Return value
+      if (!constant_pool_sub->is_void) {
+        SPVM_STRING_BUFFER_add(string_buffer, "*(");
+        SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(return_type->code));
+        SPVM_STRING_BUFFER_add(string_buffer, "*)&return_value = ");
       }
       
       // Subroutine name. Replace : to _
