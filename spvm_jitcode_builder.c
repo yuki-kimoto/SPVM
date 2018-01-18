@@ -29,7 +29,7 @@ void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t ind
   SPVM_STRING_BUFFER_add_int(string_buffer, index);
 }
 
-void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buffer, int32_t sub_opcode_base, int32_t* eval_stack, int32_t* eval_stack_top, _Bool sub_is_void) {
+void SPVM_JITCODE_BUILDER_add_string_buffer_croak(SPVM_STRING_BUFFER* string_buffer, int32_t* eval_stack, int32_t* eval_stack_top, _Bool sub_is_void) {
   
   // Catch exception
   if (*eval_stack_top > -1) {
@@ -159,9 +159,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       // Is void
       int32_t sub_is_void = constant_pool_sub->is_void;
 
-      // Subroutine object args length
-      int32_t sub_object_args_length = constant_pool_sub->object_args_length;
-
       // Subroutine object my base index
       int32_t sub_object_mys_base = constant_pool_sub->object_mys_base;
 
@@ -190,9 +187,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       
       // Eval stack top
       int32_t eval_stack_top = -1;
-      
-      // Opcode base
-      int32_t sub_opcode_base = constant_pool_sub->opcode_base;
       
       // Return type
       switch (return_type->code) {
@@ -471,7 +465,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           opcode = &(opcodes[opcode_index]);
 
           SPVM_STRING_BUFFER_add(string_buffer, "// ");
-          SPVM_STRING_BUFFER_add(string_buffer, SPVM_OPCODE_C_CODE_NAMES[opcode->code]);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_OPCODE_C_CODE_NAMES[opcode->code]);
           SPVM_STRING_BUFFER_add(string_buffer, "\n");
           
           switch (opcode->code) {
@@ -623,7 +617,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n");
               SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string(api, \"0 division\", 0));\n");
               
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               
               SPVM_STRING_BUFFER_add(string_buffer, "  } else {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    ");
@@ -959,7 +953,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
               SPVM_STRING_BUFFER_add(string_buffer, "      api->set_exception(api, api->new_string(api, \"Array must not be undef\", 0)); \n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
               SPVM_STRING_BUFFER_add(string_buffer, "  else { \n");
               SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
@@ -970,7 +964,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_JITCODE_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) { \n");
               SPVM_STRING_BUFFER_add(string_buffer, "        api->set_exception(api, api->new_string(api, \"Index is out of range\", 0)); \n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
               SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -1024,7 +1018,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
               SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string(api, \"Array must not be undef\", 0)); \n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
               SPVM_STRING_BUFFER_add(string_buffer, "  else { \n");
               SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
@@ -1035,7 +1029,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_JITCODE_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) { \n");
               SPVM_STRING_BUFFER_add(string_buffer, "        api->set_exception(api, api->new_string(api, \"Index is out of range\", 0)); \n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
               SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
               
@@ -1187,7 +1181,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, " == NULL) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string(api, \"Can't get array length of undef value.\", 0));\n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    ");
@@ -1238,7 +1232,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string(api, \"Object must be not undef.\", 0));\n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    ");
@@ -1270,7 +1264,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string(api, \"Object must be not undef.\", 0));\n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
               if (opcode->code == SPVM_OPCODE_C_CODE_SET_FIELD_OBJECT) {
@@ -1334,7 +1328,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  if (SPVM_JITCODE_INLINE_GET_EXCEPTION()) {\n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               break;
             }
@@ -1380,7 +1374,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "  if (");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " == NULL) {\n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               
               break;
@@ -1573,10 +1567,9 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
 
               int32_t call_sub_return_type_id = constant_pool_sub_call_sub->return_type_id;
               SPVM_CONSTANT_POOL_TYPE* call_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_return_type_id];
-              int32_t call_sub_return_type_code = call_sub_return_type->code;
               
               SPVM_STRING_BUFFER_add(string_buffer, "  // ");
-              SPVM_STRING_BUFFER_add(string_buffer, call_sub_abs_name);
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)call_sub_abs_name);
               SPVM_STRING_BUFFER_add(string_buffer, "\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
               
@@ -1628,7 +1621,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               }
               
               SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_JITCODE_INLINE_GET_EXCEPTION()) {\n");
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 
@@ -1637,7 +1630,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               break;
             }
             case SPVM_OPCODE_C_CODE_CROAK: {
-              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, sub_opcode_base, eval_stack, &eval_stack_top, sub_is_void);
+              SPVM_JITCODE_BUILDER_add_string_buffer_croak(string_buffer, eval_stack, &eval_stack_top, sub_is_void);
               break;
             }
             case SPVM_OPCODE_C_CODE_RETURN:
@@ -1696,7 +1689,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           opcode_index++;
         }
 
-        label_RETURN: {
+        {
           
           SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN_PROCESS\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  label_SPVM_OPCODE_C_CODE_RETURN:\n");
@@ -1784,12 +1777,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       
       // Subroutine name
       const char* sub_abs_name = (char*)&constant_pool[sub_abs_name_id + 1];
-
-      // Arguments length
-      int32_t args_length = constant_pool_sub->args_length;
-      
-      // Arguments type ids base
-      int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
       
       // Return type code
       int32_t return_type_id = constant_pool_sub->return_type_id;
@@ -1841,7 +1828,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
     fclose(jitcode_fh);
   }
   else {
-    fprintf(stderr, "Can't open file %%s", jit_source_file);
+    fprintf(stderr, "Can't open file %s", jit_source_file);
     exit(1);
   }
 }
