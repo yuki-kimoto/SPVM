@@ -1374,7 +1374,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               }
               
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, ", var");SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+              SPVM_STRING_BUFFER_add(string_buffer, ", ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2);
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  if (");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
