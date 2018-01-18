@@ -366,9 +366,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             int32_t arg_type_code = constant_pool_arg_type->code;
 
             // Assign argument
-            SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
-            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-            
             SPVM_STRING_BUFFER_add(string_buffer, "  var");
             SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
             SPVM_STRING_BUFFER_add(string_buffer, " = ");
