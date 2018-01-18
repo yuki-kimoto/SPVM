@@ -136,8 +136,8 @@ extern const char* const SPVM_OP_C_CODE_NAMES[];
 
 enum {
   // Block flag
-  SPVM_OP_C_FLAG_BLOCK_IF_TRUE = 1,
-  SPVM_OP_C_FLAG_BLOCK_IF_FALSE = 2,
+  SPVM_OP_C_FLAG_BLOCK_IF = 1,
+  SPVM_OP_C_FLAG_BLOCK_ELSE = 2,
   SPVM_OP_C_FLAG_BLOCK_LOOP = 4,
   SPVM_OP_C_FLAG_BLOCK_SWITCH = 8,
   SPVM_OP_C_FLAG_BLOCK_SUB = 32,
@@ -295,6 +295,7 @@ SPVM_OP* SPVM_OP_build_CONSTVALUE(SPVM_COMPILER* compiler, SPVM_OP* op_const);
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_field_base_name, SPVM_OP* op_descripters, SPVM_OP* type);
 SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type);
 SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type);
+SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type);
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages);
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_package);
 SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_subname, SPVM_OP* op_terms);

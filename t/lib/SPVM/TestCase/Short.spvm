@@ -6,7 +6,7 @@ package TestCase::Short {
     if (Short::MIN_VALUE() == -32768s) {
       if (Short::MAX_VALUE() == 32767s) {
         if (Short::BYTES() == 2) {
-          if (Short::SIZE() == 8) {
+          if (Short::SIZE() == 16) {
             return 1;
           }
         }

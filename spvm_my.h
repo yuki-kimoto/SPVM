@@ -9,6 +9,7 @@ struct SPVM_my {
   int32_t index;
   SPVM_OP* op_term_type_inference;
   _Bool try_type_inference;
+  _Bool is_arg;
 };
 
 SPVM_MY* SPVM_MY_new();

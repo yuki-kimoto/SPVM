@@ -1,11 +1,6 @@
 package Long {
-
-  has value : long;
-
-  enum {
-    MIN_VALUE = -9223372036854775808L,
-    MAX_VALUE = 9223372036854775807L,
-    BYTES = 8,
-    SIZE = 64,
-  }
+  sub MIN_VALUE() : long { return -9223372036854775808L; }
+  sub MAX_VALUE() : long { return 9223372036854775807L; }
+  sub BYTES() : int { return 8; }
+  sub SIZE() : int { return 64; }
 }

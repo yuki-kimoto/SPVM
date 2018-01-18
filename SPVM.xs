@@ -3192,11 +3192,18 @@ build_jitcode(...)
 {
   (void)RETVAL;
 
-  // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  // Build JIT code(This is C source code which is passed to gcc)
-  SPVM_JITCODE_BUILDER_build_jitcode(compiler);
+  SV* sv_jit_source_file = ST(0);
+  char* jit_source_file = SvPV_nolen(sv_jit_source_file);
+  
+  // Set jit source file
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  runtime->jit_source_file = jit_source_file;
+  
+  // Build JIT code
+  SPVM_JITCODE_BUILDER_build_jitcode();
   
   XSRETURN(0);
 }
@@ -3352,6 +3359,22 @@ bind_native_sub(...)
   SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   sub->native_address = (void*)native_address;
+  
+  XSRETURN(0);
+}
+
+SV*
+bind_jitcode_call_sub(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_call_sub_native_address = ST(0);
+  void* call_sub_native_address = (void*)SvIV(sv_call_sub_native_address);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  api->call_sub = call_sub_native_address;
   
   XSRETURN(0);
 }

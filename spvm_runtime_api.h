@@ -112,4 +112,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime();
 void SPVM_RUNTIME_API_set_runtime(SPVM_API* api, SPVM_RUNTIME* runtime);
 void SPVM_RUNTIME_API_free_runtime(SPVM_API* api, SPVM_RUNTIME* runtime);
 
+int32_t print_error(SPVM_API* api, const char* message);
+void exit(int32_t statue);
+int32_t get_stderr();
+
 #endif

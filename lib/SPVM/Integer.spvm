@@ -1,11 +1,6 @@
 package Integer {
-
-  has value : int;
-
-  enum {
-    MIN_VALUE = -2147483648,
-    MAX_VALUE = 2147483647,
-    BYTES = 4,
-    SIZE = 32,
-  }
+  sub MIN_VALUE() : int { return -2147483648; }
+  sub MAX_VALUE() : int { return 2147483647; }
+  sub BYTES() : int { return 4; }
+  sub SIZE() : int { return 32; }
 }

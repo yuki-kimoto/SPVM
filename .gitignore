@@ -26,3 +26,5 @@ SPVM.c
 *.tar.gz
 SPVM-*/
 *.tar
+solo/jitcode/*
+!solo/jitcode/.gitkeep

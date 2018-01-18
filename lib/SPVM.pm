@@ -8,6 +8,7 @@ use Config;
 use DynaLoader;
 use SPVM::Build;
 use File::Basename 'basename';
+use File::Temp 'tempdir';
 
 use SPVM::Core::Object;
 use SPVM::Core::Object::Array;
@@ -25,7 +26,7 @@ use Encode 'encode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0303';
+our $VERSION = '0.0304';
 
 our $COMPILER;
 our $API;
@@ -61,7 +62,7 @@ sub import {
 
 sub _get_dll_file {
   my $package_name = shift;
-
+  
   # DLL file name
   my $dll_base_name = $package_name;
   $dll_base_name =~ s/^.*:://;
@@ -170,6 +171,19 @@ sub bind_native_subs {
   }
 }
 
+sub bind_jitcode {
+  my $shared_lib_file = shift;
+  
+  my $call_sub_name = 'SPVM_JITCODE_call_sub';
+  my $call_sub_native_address = search_native_address($shared_lib_file, $call_sub_name);
+  
+  unless ($call_sub_native_address) {
+    confess "Can't get jitcode call_sub native_address";
+  }
+  
+  bind_jitcode_call_sub($call_sub_native_address);
+}
+
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
   unless ($ENV{SPVM_NO_COMPILE}) {
@@ -217,19 +231,36 @@ sub compile_spvm {
     
     # Build opcode
     build_opcode();
-
+    
     # Build run-time
     build_runtime();
-
-    # Build JIT code
-    build_jitcode();
-
+    
+    # Free compiler
+    free_compiler();
+    
+    if (defined $ENV{PERL_SPVM_DIR}) {
+      # Build JIT code
+      my $jit_source_dir = tempdir(CLEANUP => 1);
+      my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
+      build_jitcode($jit_source_file);
+      
+      open my $fh, '<', $jit_source_file
+        or die "aaa";
+      my $jit_source_content = do { local $/; <$fh> };
+      #print $jit_source_content;
+      
+      # Compile JIT code
+      my $jitcode_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
+      bind_jitcode($jitcode_lib_file);
+    }
+    
     # Build SPVM subroutines
     build_spvm_subs();
   }
-  
-  # Free compiler
-  free_compiler();
+  else {
+    # Free compiler
+    free_compiler();
+  }
   
   return $compile_success;
 }
@@ -834,6 +865,14 @@ L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many example
 =head2 SPVM FAQ
 
 L<SPVM::Document::FAQ> - Oftten asked question.
+
+=head1 Environment Variable
+
+=head2 PERL_SPVM_DIR
+
+  PERL_SPVM_DIR=/var/data/spvm
+
+C<PERL_SPVM_DIR> is for SPVM cache and config directory.
 
 =head2 SUPPORT
 

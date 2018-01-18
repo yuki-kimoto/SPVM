@@ -1,11 +1,6 @@
 package Short {
-  
-  has value : short;
-  
-  enum {
-    MIN_VALUE = -32768s,
-    MAX_VALUE = 32767s,
-    BYTES = 2,
-    SIZE = 8,
-  }
+  sub MIN_VALUE() : short { return -32768s; }
+  sub MAX_VALUE() : short { return 32767s; }
+  sub BYTES() : int { return 2; }
+  sub SIZE() : int { return 16; }
 }

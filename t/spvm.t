@@ -38,6 +38,14 @@ my $DOUBLE_MIN = POSIX::DBL_MIN();
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
+# TODO
+# remainder float double
+# bit_and
+# bit_or
+# last
+# while
+# eval repeat
+
 # Positive infinity(unix like system : inf, Windows : 1.#INF)
 my $POSITIVE_INFINITY = SPVM::POSITIVE_INFINITY();
 
@@ -50,14 +58,14 @@ use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'CORE';
 
-# Start objects count
-my $start_objects_count = SPVM::get_objects_count();
+  {
+    eval { SPVM::TestCase::exception_croak_return_object() };
+    like($@, qr/Error/);
+  }
 
+# Field
 {
-  my $start_objects_count = SPVM::get_objects_count();
-  SPVM::TestCase::my_var_in_loop_free();
-  my $end_objects_count = SPVM::get_objects_count();
-  is($start_objects_count, $end_objects_count);
+  ok(SPVM::TestCase::object_field_set_and_get());
 }
 
 # time
@@ -79,11 +87,6 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::package_var());
   my $end_objects_count = SPVM::get_objects_count();
   is($start_objects_count, $end_objects_count);
-}
-
-# Extension
-{
-  ok(SPVM::TestCase::Extension::native_api_get_set_field());
 }
 
 # Native Exception
@@ -223,6 +226,9 @@ my $start_objects_count = SPVM::get_objects_count();
     is($values->to_string, "あいうえお");
   }
 }
+
+# Start objects count
+my $start_objects_count = SPVM::get_objects_count();
 
 # Call subroutine
 {
@@ -364,10 +370,17 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::default_return_value_object());
 }
 
+# Switch
+{
+  ok(SPVM::TestCase::switch_nest());
+  ok(SPVM::TestCase::switch_lookup_switch());
+  ok(SPVM::TestCase::switch_table_switch());
+}
+
 # my variable
 {
   ok(SPVM::TestCase::my_var_initialized_zero());
-  ok(SPVM::TestCase::my_var_block());
+  ok(SPVM::TestCase::my_var_initialized_zero());
 }
 
 # Set field exception
@@ -722,14 +735,6 @@ is_deeply(
 {
   ok(SPVM::TestCase::special_assign());
 }
-
-# Increment
-{
-  ok(SPVM::TestCase::pre_inc());
-  ok(SPVM::TestCase::post_inc());
-}
-
-
 # Add
 {
   is(SPVM::TestCase::add_byte_max(), 127);
@@ -776,6 +781,16 @@ is_deeply(
   is(SPVM::TestCase::multiply_long_plus(), 4611686018427387904);
   is(SPVM::TestCase::multiply_long_minus(), -4611686018427387904);
   is(SPVM::TestCase::multiply_long_overflow(), -9223372036854775808);
+}
+
+# Divide
+{
+  ok(SPVM::TestCase::divide());
+}
+
+# Remainder
+{
+  ok(SPVM::TestCase::remainder());
 }
 
 # Negate
@@ -1618,11 +1633,6 @@ is_deeply(
   cmp_ok($total, '==', 6);
 }
 
-# next
-{
-  SPVM::TestCase::next_statement();
-}
-
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
@@ -1682,47 +1692,4 @@ is($end_objects_count, $start_objects_count);
   like($@, qr/$line/);
 }
 
-
-# Exception
-{
-  {
-    ok(SPVM::TestCase::exception_eval_call_sub());
-  }
-  
-  {
-    eval { SPVM::TestCase::exception_croak_return_short() };
-    like($@, qr/Error/);
-  }
-  {
-    eval { SPVM::TestCase::exception_croak_return_long() };
-    like($@, qr/Error/);
-  }
-  {
-    eval { SPVM::TestCase::exception_croak_return_float() };
-    like($@, qr/Error/);
-  }
-  {
-    eval { SPVM::TestCase::exception_croak_return_double() };
-    like($@, qr/Error/);
-  }
-  {
-    eval { SPVM::TestCase::exception_croak_return_object() };
-    like($@, qr/Error/);
-  }
-  {
-    eval { SPVM::TestCase::exception_croak_return_void() };
-    like($@, qr/Error/);
-  }
-  
-  {
-    ok(SPVM::TestCase::exception_croak_return_int_eval_catch());
-  }
-}
-
-# Switch
-{
-  ok(SPVM::TestCase::switch_nest());
-  ok(SPVM::TestCase::switch_lookup_switch());
-  ok(SPVM::TestCase::switch_table_switch());
-}
 
