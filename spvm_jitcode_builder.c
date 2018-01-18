@@ -235,81 +235,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       
       // Block start
       SPVM_STRING_BUFFER_add(string_buffer, " {\n");
-
-      {
-        int32_t arg_index;
-        for (arg_index = 0; arg_index < args_length; arg_index++) {
-          int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
-
-          // Argument type code
-          SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
-          int32_t arg_type_code = constant_pool_arg_type->code;
-
-          // Assign native address
-          switch (arg_type_code) {
-            case SPVM_TYPE_C_CODE_VOID:
-              SPVM_STRING_BUFFER_add(string_buffer, "  void ");
-              break;
-            case SPVM_TYPE_C_CODE_BYTE:
-              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_byte");
-              break;
-            case SPVM_TYPE_C_CODE_SHORT:
-              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_short");
-              break;
-            case SPVM_TYPE_C_CODE_INT:
-              SPVM_STRING_BUFFER_add(string_buffer, "  int32_t");
-              break;
-            case SPVM_TYPE_C_CODE_LONG:
-              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_long");
-              break;
-            case SPVM_TYPE_C_CODE_FLOAT:
-              SPVM_STRING_BUFFER_add(string_buffer, "  float");
-              break;
-            case SPVM_TYPE_C_CODE_DOUBLE:
-              SPVM_STRING_BUFFER_add(string_buffer, "  double");
-              break;
-            default:
-              SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT*");
-          }
-        
-          SPVM_STRING_BUFFER_add(string_buffer, " var");
-          SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
-          SPVM_STRING_BUFFER_add(string_buffer, " = args[");
-          SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
-          SPVM_STRING_BUFFER_add(string_buffer, "].");
-          
-          switch (arg_type_code) {
-            case SPVM_TYPE_C_CODE_BYTE : {
-              SPVM_STRING_BUFFER_add(string_buffer, "byte_value");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_SHORT : {
-              SPVM_STRING_BUFFER_add(string_buffer, "short_value");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_INT : {
-              SPVM_STRING_BUFFER_add(string_buffer, "int_value");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_LONG : {
-              SPVM_STRING_BUFFER_add(string_buffer, "long_value");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_FLOAT : {
-              SPVM_STRING_BUFFER_add(string_buffer, "float_value");
-              break;
-            }
-            case  SPVM_TYPE_C_CODE_DOUBLE : {
-              SPVM_STRING_BUFFER_add(string_buffer, "double_value");
-              break;
-            }
-            default : {
-              SPVM_STRING_BUFFER_add(string_buffer, "object_value");
-            }
-          }
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-      }
       
       // Native subroutine
       if (constant_pool_sub->is_native) {
@@ -388,7 +313,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
         // Lexical variables
         {
           int32_t my_index;
-          for (my_index = args_length; my_index < mys_length; my_index++) {
+          for (my_index = 0; my_index < mys_length; my_index++) {
             int32_t my_type_id = constant_pool[my_type_ids_base + my_index];
 
             // My type code
@@ -429,6 +354,34 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           }
         }
+
+        // Copy arguments to variables
+        {
+          int32_t arg_index;
+          for (arg_index = 0; arg_index < args_length; arg_index++) {
+            int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
+
+            // Argument type code
+            SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
+            int32_t arg_type_code = constant_pool_arg_type->code;
+
+            // Assign argument
+            SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            
+            SPVM_STRING_BUFFER_add(string_buffer, "  var");
+            SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+            SPVM_STRING_BUFFER_add(string_buffer, " = ");
+            SPVM_STRING_BUFFER_add(string_buffer, "*(");
+            SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(arg_type_code));
+            SPVM_STRING_BUFFER_add(string_buffer, "*)&args[");
+            SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+            SPVM_STRING_BUFFER_add(string_buffer, "]");
+            
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+          }
+        }
+      
         
         // Current line
         if (runtime->debug) {
