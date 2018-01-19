@@ -1807,14 +1807,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         if (SPVM_INLINE_GET_EXCEPTION()) {
           croak_flag = 1;
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
-        else {
-          // Next operation
-          opcode_index++;
-        }
-        
-        continue;
+        break;
       }
       case SPVM_OPCODE_C_CODE_CROAK: {
         
