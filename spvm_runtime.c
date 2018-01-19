@@ -1811,21 +1811,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_CROAK: {
-        
-        label_SPVM_OPCODE_C_CODE_CROAK:
-        
-        // Catch croak
-        if (eval_stack_top > -1) {
-          opcode_index = eval_stack[eval_stack_top];
-          eval_stack_top--;
-          croak_flag = 0;
-          continue;
-        }
-        // Croak
-        else {
-          assert(croak_flag == 1);
-          goto label_SPVM_OPCODE_C_CODE_RETURN;
-        }
+        // Nothing to do
+        break;
       }
       case SPVM_OPCODE_C_CODE_IF_CROAK_CATCH: {
         if (croak_flag) {
