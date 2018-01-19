@@ -1022,7 +1022,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           SPVM_API_OBJECT* exception = api->new_string(api, "Array must not be undef", 0);
           api->set_exception(api, exception);
           croak_flag = 1;
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
