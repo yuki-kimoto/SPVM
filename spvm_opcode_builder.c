@@ -545,6 +545,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.operand2 = index_term_index;
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from);
