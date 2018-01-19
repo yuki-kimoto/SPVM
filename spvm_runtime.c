@@ -1872,12 +1872,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           goto label_SPVM_OPCODE_C_CODE_RETURN;
         }
       }
-      case SPVM_OPCODE_C_CODE_IF_EXCEPTION_CATCH: {
+      case SPVM_OPCODE_C_CODE_IF_CROAK_CATCH: {
         
         break;
       }
-      case SPVM_OPCODE_C_CODE_IF_EXCEPTION_CROAK: {
+      case SPVM_OPCODE_C_CODE_IF_CROAK_RETURN: {
         
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_SET_CROAK_FLAG_TRUE: {
+        croak_flag = 1;
         break;
       }
       case SPVM_OPCODE_C_CODE_RETURN:
