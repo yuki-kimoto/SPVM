@@ -1178,7 +1178,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           SPVM_API_OBJECT* exception = api->new_string(api, "Can't get array length of undef value.", 0);
           api->set_exception(api, exception);
           croak_flag = 1;
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
           *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)((intptr_t)*(SPVM_API_OBJECT**)&vars[opcode->operand1] + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET);
