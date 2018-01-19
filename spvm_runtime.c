@@ -120,9 +120,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Return value
   SPVM_API_VALUE return_value;
   
-  // Exception message $@
-  SPVM_API_OBJECT* exception = NULL;
-  
   // Croak flag
   int32_t croak_flag = 0;
   
@@ -1825,8 +1822,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         else {
           // Save exception because destructor maybe remove exception
           croak_flag = 1;
-          exception = api->get_exception(api);
-          SPVM_INLINE_INC_REF_COUNT(exception);
           goto label_SPVM_OPCODE_C_CODE_RETURN;
         }
       }
@@ -1943,13 +1938,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     if (croak_flag) {
       if (runtime->debug) {
         // Exception stack trace
-        SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api, sub_id, exception, current_line);
+        SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api, sub_id, SPVM_INLINE_GET_EXCEPTION(), current_line);
         api->set_exception(api, exception_stack_trace);
       }
-      else {
-        api->set_exception(api, exception);
-      }
-      SPVM_INLINE_DEC_REF_COUNT_ONLY(exception);
       memset(&return_value, 0, sizeof(SPVM_API_VALUE));
     }
     // RETURN
