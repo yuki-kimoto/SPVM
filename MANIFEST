@@ -34,6 +34,7 @@ lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
 lib/SPVM/Integer.pm
 lib/SPVM/Integer.spvm
+lib/SPVM/JITCode.pm
 lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
 lib/SPVM/Math.pm
@@ -171,6 +172,8 @@ spvm_yacc.h
 spvm_yacc_util.c
 spvm_yacc_util.h
 t/compile-error.t
+t/jit-spvm-debug.t
+t/jit-spvm.t
 t/lib/SPVM/TestCase.spvm
 t/lib/SPVM/TestCase/Arrays.spvm
 t/lib/SPVM/TestCase/Byte.spvm

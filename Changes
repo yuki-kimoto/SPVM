@@ -1,3 +1,6 @@
+0.0305
+  - fix MANIFEST
+  - improve exception logic
 0.0304 2018-01-18
   - add jit code in test(jit-spvm.t)
 0.0303 2018-01-03
