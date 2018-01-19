@@ -120,15 +120,20 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Return value
   SPVM_API_VALUE return_value;
   
+  // Exception message $@
   SPVM_API_OBJECT* exception = NULL;
+  
+  // Croak flag
+  int32_t croak_flag = 0;
   
   // Copy arguments
   memcpy(vars, args, args_length * sizeof(SPVM_API_VALUE));
+
+  // Set exception to NULL at start of subroutine
+  SPVM_INLINE_SET_EXCEPTION_NULL();
   
   // Call native sub
   if (sub_is_native) {
-    // Set exception to NULL;
-    SPVM_INLINE_SET_EXCEPTION_NULL();
 
     // Call native subroutine
     if (sub_return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
@@ -1529,6 +1534,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_PUSH_EVAL: {
+        // Set exception to NULL at start of eval block
+        SPVM_INLINE_SET_EXCEPTION_NULL();
+        
         eval_stack_top++;
         eval_stack[eval_stack_top] = opcode->operand0;
         
@@ -1816,10 +1824,19 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Throw exception
         else {
           // Save exception because destructor maybe remove exception
+          croak_flag = 1;
           exception = api->get_exception(api);
           SPVM_INLINE_INC_REF_COUNT(exception);
           goto label_SPVM_OPCODE_C_CODE_RETURN;
         }
+      }
+      case SPVM_OPCODE_C_CODE_IF_EXCEPTION_CATCH: {
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_IF_EXCEPTION_CROAK: {
+        
+        break;
       }
       case SPVM_OPCODE_C_CODE_RETURN:
       {
@@ -1922,8 +1939,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
     }
     
-    // Throw exception
-    if (exception) {
+    // Croak
+    if (croak_flag) {
       if (runtime->debug) {
         // Exception stack trace
         SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api, sub_id, exception, current_line);
@@ -1935,7 +1952,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       SPVM_INLINE_DEC_REF_COUNT_ONLY(exception);
       memset(&return_value, 0, sizeof(SPVM_API_VALUE));
     }
-    // No exception
+    // RETURN
     else {
       SPVM_INLINE_SET_EXCEPTION_NULL();
     }
