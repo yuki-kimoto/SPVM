@@ -1846,6 +1846,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         
         if (SPVM_INLINE_GET_EXCEPTION()) {
+          croak_flag = 1;
           goto label_SPVM_OPCODE_C_CODE_CROAK;
         }
         else {
@@ -1868,7 +1869,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         // Croak
         else {
-          croak_flag = 1;
+          assert(croak_flag == 1);
           goto label_SPVM_OPCODE_C_CODE_RETURN;
         }
       }

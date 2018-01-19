@@ -1810,12 +1810,26 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_CROAK: {
-                SPVM_OPCODE opcode;
-                memset(&opcode, 0, sizeof(SPVM_OPCODE));
                 
-                opcode.code = SPVM_OPCODE_C_CODE_CROAK;
+                // SET_CROAK_FLAG_TRUE
+                {
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  
+                  opcode.code = SPVM_OPCODE_C_CODE_SET_CROAK_FLAG_TRUE;
+                  
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                }
                 
-                SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                // CROAK
+                {
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  
+                  opcode.code = SPVM_OPCODE_C_CODE_CROAK;
+                  
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                }
                 
                 break;
               }
