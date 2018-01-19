@@ -1470,7 +1470,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         api->weaken_object_field(api, object, field_id);
         
         if (SPVM_INLINE_GET_EXCEPTION()) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
+          croak_flag = 1;
         }
         break;
       }
@@ -1478,7 +1478,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_string(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_OBJECT**)&vars[opcode->operand2]);
         
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
+          croak_flag = 1;
         }
         
         break;
@@ -1487,7 +1487,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_byte(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_byte*)&vars[opcode->operand2]);
         
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
+          croak_flag = 1;
         }
 
         break;
@@ -1496,7 +1496,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_short(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_short*)&vars[opcode->operand2]);
         
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
+          croak_flag = 1;
         }
         
         break;
@@ -1505,7 +1505,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_int(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_int*)&vars[opcode->operand2]);
         
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
+          croak_flag = 1;
         }
 
         break;
@@ -1514,7 +1514,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_long(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_long*)&vars[opcode->operand2]);
         
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
+          croak_flag = 1;
         }
 
         break;
@@ -1523,7 +1523,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_float(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(float*)&vars[opcode->operand2]);
         
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
+          croak_flag = 1;
         }
 
         break;
@@ -1532,7 +1532,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_double(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(double*)&vars[opcode->operand2]);
         
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          goto label_SPVM_OPCODE_C_CODE_CROAK;
+          croak_flag = 1;
         }
         
         break;
