@@ -131,7 +131,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       
       // opcode index stack for eval start
       SPVM_DYNAMIC_ARRAY* push_eval_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-
+      
+      // IF_CROAK_CATCH opcode index stack
+      SPVM_DYNAMIC_ARRAY* if_croak_catch_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      
       // Switch stack
       SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
@@ -686,29 +689,29 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_DIVIDE) {
-                    
-                    
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-
-                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                      opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_BYTE;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_SHORT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_INT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                      opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_LONG;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_FLOAT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                      opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_DOUBLE;
+                    
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                        opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_BYTE;
+                        break;
+                      case SPVM_TYPE_C_CODE_SHORT:
+                        opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_SHORT;
+                        break;
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_LONG;
+                        break;
+                      case SPVM_TYPE_C_CODE_FLOAT:
+                        opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_FLOAT;
+                        break;
+                      case SPVM_TYPE_C_CODE_DOUBLE:
+                        opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_DOUBLE;
+                        break;
                     }
                     
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
@@ -720,6 +723,33 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.operand2 = index_in2;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                    
+                    // Check croak
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                      case SPVM_TYPE_C_CODE_SHORT:
+                      case SPVM_TYPE_C_CODE_INT:
+                      case SPVM_TYPE_C_CODE_LONG:
+                      {
+                        if (push_eval_opcode_index_stack->length > 0) {
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          opcode.code = SPVM_OPCODE_C_CODE_IF_CROAK_CATCH;
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          
+                          int32_t* if_croak_catch_opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+                          *if_croak_catch_opcode_index_ptr = opcode_array->length - 1;
+                          
+                          SPVM_DYNAMIC_ARRAY_push(if_croak_catch_opcode_index_stack, if_croak_catch_opcode_index_ptr);
+                        }
+                        else {
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          opcode.code = SPVM_OPCODE_C_CODE_IF_CROAK_RETURN;
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                        }
+                      }
+                    }
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_REMAINDER) {
                     
@@ -1928,6 +1958,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t eval_start_opcode_index = *eval_start_opcode_index_ptr;
                   SPVM_OPCODE* opcode_jump = (opcode_array->values + eval_start_opcode_index);
                   opcode_jump->operand0 = opcode_array->length;
+                  
+                  // Set IF_CROAK_CATCH opcode index
+                  while (if_croak_catch_opcode_index_stack->length > 0) {
+                    int32_t* if_croak_catch_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(if_croak_catch_opcode_index_stack);
+                    int32_t if_croak_catch_opcode_index = *if_croak_catch_opcode_index_ptr;
+                    
+                    SPVM_OPCODE* opcode_if_croak_catch = (opcode_array->values + if_croak_catch_opcode_index);
+                    opcode_if_croak_catch->operand0 = opcode_array->length;
+                  }
                 }
                 break;
               }
