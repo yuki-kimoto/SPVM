@@ -1947,6 +1947,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode_loop_start->operand0 = opcode_array->length;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
+                  // Set IF_CROAK_CATCH opcode index
+                  while (if_croak_catch_opcode_index_stack->length > 0) {
+                    int32_t* if_croak_catch_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(if_croak_catch_opcode_index_stack);
+                    int32_t if_croak_catch_opcode_index = *if_croak_catch_opcode_index_ptr;
+                    
+                    SPVM_OPCODE* opcode_if_croak_catch = (opcode_array->values + if_croak_catch_opcode_index);
+                    opcode_if_croak_catch->operand0 = opcode_array->length;
+                  }
+
                   // POP_EVAL
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1958,15 +1967,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t eval_start_opcode_index = *eval_start_opcode_index_ptr;
                   SPVM_OPCODE* opcode_jump = (opcode_array->values + eval_start_opcode_index);
                   opcode_jump->operand0 = opcode_array->length;
-                  
-                  // Set IF_CROAK_CATCH opcode index
-                  while (if_croak_catch_opcode_index_stack->length > 0) {
-                    int32_t* if_croak_catch_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(if_croak_catch_opcode_index_stack);
-                    int32_t if_croak_catch_opcode_index = *if_croak_catch_opcode_index_ptr;
-                    
-                    SPVM_OPCODE* opcode_if_croak_catch = (opcode_array->values + if_croak_catch_opcode_index);
-                    opcode_if_croak_catch->operand0 = opcode_array->length;
-                  }
                 }
                 break;
               }
