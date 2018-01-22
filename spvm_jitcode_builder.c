@@ -31,6 +31,12 @@ void SPVM_JITCODE_BUILDER_add_operand(SPVM_STRING_BUFFER* string_buffer, const c
   SPVM_JITCODE_BUILDER_add_var(string_buffer, var_index);
 }
 
+void SPVM_JITCODE_BUILDER_add_bool(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t in_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = !!");
+  SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, in_index);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+}
+
 void SPVM_JITCODE_BUILDER_add_add(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  ");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, out_index);
@@ -516,15 +522,25 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_NOP:
               abort();
             case SPVM_OPCODE_C_CODE_BOOL_BYTE:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, "SPVM_API_byte", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_SHORT:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, "SPVM_API_short", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_INT:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, "SPVM_API_int", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_LONG:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, "SPVM_API_long", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_FLOAT:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, "float", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_DOUBLE:
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, "double", opcode->operand0);
+              break;
             case SPVM_OPCODE_C_CODE_BOOL_OBJECT:
-              SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = !!");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              SPVM_JITCODE_BUILDER_add_bool(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               break;
             case SPVM_OPCODE_C_CODE_IS_UNDEF:
               SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
