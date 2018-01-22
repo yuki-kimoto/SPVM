@@ -2474,7 +2474,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
     int32_t opcode_index;
     SPVM_OPCODE* opcodes = opcode_array->values;
     for (opcode_index = 0; opcode_index < opcode_array->length; opcode_index++) {
-      
       if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_GOTO) {
         int32_t branch_opcode_index = opcodes[opcode_index].operand0;
         opcodes[branch_opcode_index].has_label = 1;
@@ -2495,6 +2494,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       else if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_CASE) {
         // Branch
         int32_t branch_opcode_index = opcodes[opcode_index].operand1;
+        opcodes[branch_opcode_index].has_label = 1;
+      }
+      else if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_IF_CROAK_CATCH) {
+        int32_t branch_opcode_index = opcodes[opcode_index].operand0;
         opcodes[branch_opcode_index].has_label = 1;
       }
     }

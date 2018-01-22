@@ -1810,10 +1810,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         break;
       }
-      case SPVM_OPCODE_C_CODE_CROAK: {
-        // Nothing to do
-        break;
-      }
       case SPVM_OPCODE_C_CODE_IF_CROAK_CATCH: {
         if (croak_flag) {
           croak_flag = 0;
@@ -1824,6 +1820,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_OPCODE_C_CODE_IF_CROAK_RETURN: {
         if (croak_flag) {
+          if (!constant_pool_sub->is_void) {
+            memset(&return_value, 0, sizeof(SPVM_API_VALUE));
+          }
           goto label_SPVM_OPCODE_C_CODE_RETURN;
         }
         break;
@@ -1834,7 +1833,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_OPCODE_C_CODE_RETURN:
       {
-        // Get return value
+        // Set return value
         if (!constant_pool_sub->is_void) {
           return_value = vars[opcode->operand0];
         }
@@ -1940,7 +1939,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api, sub_id, SPVM_INLINE_GET_EXCEPTION(), current_line);
         api->set_exception(api, exception_stack_trace);
       }
-      memset(&return_value, 0, sizeof(SPVM_API_VALUE));
     }
     // RETURN
     else {
