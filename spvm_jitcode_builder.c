@@ -24,9 +24,14 @@
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_api.h"
 
+void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "var");
+  SPVM_STRING_BUFFER_add_int(string_buffer, index);
+}
+
 void SPVM_JITCODE_BUILDER_add_operand(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t var_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "*(");
-  SPVM_STRING_BUFFER_add(string_buffer, type_name);
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "*)&");
   SPVM_JITCODE_BUILDER_add_var(string_buffer, var_index);
 }
@@ -167,9 +172,9 @@ void SPVM_JITCODE_BUILDER_add_right_shift_unsigned(SPVM_STRING_BUFFER* string_bu
   SPVM_STRING_BUFFER_add(string_buffer, "  ");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (");
-  SPVM_STRING_BUFFER_add(string_buffer, type_name);
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
   SPVM_STRING_BUFFER_add(string_buffer, ")((u");
-  SPVM_STRING_BUFFER_add(string_buffer, type_name);
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
   SPVM_STRING_BUFFER_add(string_buffer, ")");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " >> ");
@@ -245,7 +250,7 @@ void SPVM_JITCODE_BUILDER_add_convert(SPVM_STRING_BUFFER* string_buffer, const c
   SPVM_STRING_BUFFER_add(string_buffer, "  ");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, out_type_name, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (");
-  SPVM_STRING_BUFFER_add(string_buffer, out_type_name);
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)out_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, ")");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, in_type_name, in_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -256,11 +261,6 @@ void SPVM_JITCODE_BUILDER_add_load_constant_0(SPVM_STRING_BUFFER* string_buffer,
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = 0");
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-}
-
-void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "var");
-  SPVM_STRING_BUFFER_add_int(string_buffer, index);
 }
 
 char* SPVM_JITCODE_BUILDER_get_type_name(int32_t type_code) {
