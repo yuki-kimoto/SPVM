@@ -241,6 +241,16 @@ void SPVM_JITCODE_BUILDER_add_inc(SPVM_STRING_BUFFER* string_buffer, const char*
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 }
 
+void SPVM_JITCODE_BUILDER_add_convert(SPVM_STRING_BUFFER* string_buffer, const char* out_type_name, const char* in_type_name, int32_t out_index, int32_t in_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  ");
+  SPVM_JITCODE_BUILDER_add_operand(string_buffer, out_type_name, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " = (");
+  SPVM_STRING_BUFFER_add(string_buffer, out_type_name);
+  SPVM_STRING_BUFFER_add(string_buffer, ")");
+  SPVM_JITCODE_BUILDER_add_operand(string_buffer, in_type_name, in_index);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+}
+
 void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "var");
   SPVM_STRING_BUFFER_add_int(string_buffer, index);
@@ -1029,6 +1039,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_JITCODE_BUILDER_add_inc(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1);
               break;
             case SPVM_OPCODE_C_CODE_CONVERT_BYTE_TO_BYTE:
+              SPVM_JITCODE_BUILDER_add_convert(string_buffer, "SPVM_API_byte", "SPVM_API_byte", opcode->operand0, opcode->operand1);
+              break;
             case SPVM_OPCODE_C_CODE_CONVERT_SHORT_TO_BYTE:
             case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_BYTE:
             case SPVM_OPCODE_C_CODE_CONVERT_LONG_TO_BYTE:
