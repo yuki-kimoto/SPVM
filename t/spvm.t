@@ -1692,4 +1692,57 @@ is($end_objects_count, $start_objects_count);
   like($@, qr/$line/);
 }
 
+# Exception
+{
+  {
+    ok(SPVM::TestCase::exception_eval_call_sub());
+  }
+  
+  {
+    eval { SPVM::TestCase::exception_call_stack() };
+    like($@, qr/Error/);
+    like($@, qr/exception_croak_return_int/);
+    like($@, qr/exception_call_stack/);
+  }
+
+  {
+    eval { SPVM::TestCase::exception_croak_return_byte() };
+    like($@, qr/Error/);
+    like($@, qr/exception_croak_return_byte/);
+  }
+  {
+    eval { SPVM::TestCase::exception_croak_return_short() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_croak_return_int() };
+    like($@, qr/Error/);
+    like($@, qr/exception_croak_return_int/);
+    like($@, qr/TestCase\.spvm/);
+  }
+  {
+    eval { SPVM::TestCase::exception_croak_return_long() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_croak_return_float() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_croak_return_double() };
+    like($@, qr/Error/);
+  }
+  {
+    eval { SPVM::TestCase::exception_croak_return_void() };
+    like($@, qr/Error/);
+  }
+  {
+    ok(SPVM::TestCase::exception_croak_return_int_eval_catch());
+  }
+  {
+    eval { SPVM::TestCase::exception_croak_return_object() };
+    like($@, qr/Error/);
+  }
+}
+
 

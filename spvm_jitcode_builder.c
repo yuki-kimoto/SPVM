@@ -1940,6 +1940,11 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             case SPVM_OPCODE_C_CODE_IF_CROAK_CATCH: {
               SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 0;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->create_exception_stack_trace(api, ");
+              SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
+              SPVM_STRING_BUFFER_add(string_buffer, " , SPVM_JITCODE_INLINE_GET_EXCEPTION(), ");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, "));\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
               SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -1948,6 +1953,11 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             }
             case SPVM_OPCODE_C_CODE_IF_CROAK_RETURN: {
               SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->create_exception_stack_trace(api, ");
+              SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
+              SPVM_STRING_BUFFER_add(string_buffer, " , SPVM_JITCODE_INLINE_GET_EXCEPTION(), ");
+              SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, "));\n");
               if (!sub_is_void) {
                 SPVM_STRING_BUFFER_add(string_buffer, "    return_value = 0;\n");
               }

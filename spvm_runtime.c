@@ -1813,6 +1813,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_IF_CROAK_CATCH: {
         if (croak_flag) {
           croak_flag = 0;
+          
+          // Exception stack trace
+          api->set_exception(api, api->create_exception_stack_trace(api, sub_id, SPVM_INLINE_GET_EXCEPTION(), opcode->operand1));
           opcode_index = opcode->operand0;
           continue;
         }
@@ -1820,6 +1823,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_OPCODE_C_CODE_IF_CROAK_RETURN: {
         if (croak_flag) {
+          // Exception stack trace
+          api->set_exception(api, api->create_exception_stack_trace(api, sub_id, SPVM_INLINE_GET_EXCEPTION(), opcode->operand1));
           if (!constant_pool_sub->is_void) {
             memset(&return_value, 0, sizeof(SPVM_API_VALUE));
           }
@@ -1933,15 +1938,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     }
     
     // Croak
-    if (croak_flag) {
-      if (runtime->debug) {
-        // Exception stack trace
-        SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api, sub_id, SPVM_INLINE_GET_EXCEPTION(), current_line);
-        api->set_exception(api, exception_stack_trace);
-      }
-    }
-    // RETURN
-    else {
+    if (!croak_flag) {
       SPVM_INLINE_SET_EXCEPTION_NULL();
     }
     
