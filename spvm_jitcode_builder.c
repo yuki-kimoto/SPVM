@@ -1372,7 +1372,13 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               
               break;
             }
-            case SPVM_OPCODE_C_CODE_MOVE:
+            case SPVM_OPCODE_C_CODE_MOVE_BYTE:
+            case SPVM_OPCODE_C_CODE_MOVE_SHORT:
+            case SPVM_OPCODE_C_CODE_MOVE_INT:
+            case SPVM_OPCODE_C_CODE_MOVE_LONG:
+            case SPVM_OPCODE_C_CODE_MOVE_FLOAT:
+            case SPVM_OPCODE_C_CODE_MOVE_DOUBLE:
+            case SPVM_OPCODE_C_CODE_MOVE_OBJECT:
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
               SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = ");

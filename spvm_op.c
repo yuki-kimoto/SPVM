@@ -127,6 +127,13 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "PACKAGE_VAR",
   "ARRAY_INIT",
   "BOOL",
+  "MOVE_BYTE",
+  "MOVE_SHORT",
+  "MOVE_INT",
+  "MOVE_LONG",
+  "MOVE_FLOAT",
+  "MOVE_DOUBLE",
+  "MOVE_OBJECT",
 };
 
 _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
