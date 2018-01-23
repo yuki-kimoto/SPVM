@@ -3083,11 +3083,6 @@ compile(...)
   
   // Debug model
   HV* hv_env = get_hv("ENV", 0);
-  SV** sv_debug_ptr = hv_fetch(hv_env, "SPVM_DEBUG", strlen("SPVM_DEBUG"), 0);
-  SV* sv_debug = sv_debug_ptr ? *sv_debug_ptr : &PL_sv_undef;
-  if (SvTRUE(sv_debug)) {
-    compiler->debug = 1;
-  }
   
   // Add package
   AV* av_package_infos = get_av("SPVM::PACKAGE_INFOS", 0);

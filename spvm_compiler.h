@@ -137,8 +137,6 @@ struct SPVM_compiler {
   _Bool expect_name;
   
   SPVM_OP* cur_op_use;
-  
-  _Bool debug;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

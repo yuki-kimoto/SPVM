@@ -147,8 +147,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   runtime->types_length = compiler->types->length;
   
-  runtime->debug = compiler->debug;
-  
   return runtime;
 }
 
