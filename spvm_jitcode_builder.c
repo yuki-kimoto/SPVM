@@ -341,6 +341,26 @@ void SPVM_JITCODE_BUILDER_add_move(SPVM_STRING_BUFFER* string_buffer, const char
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 }
 
+void SPVM_JITCODE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, int32_t field_byte_offset) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
+  SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", object_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string(api, \"Object must be not undef.\", 0));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_JITCODE_BUILDER_add_operand(string_buffer, field_type_name, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " = *(");
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_type_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
+  SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", object_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE + ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, field_byte_offset);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+}
+
 char* SPVM_JITCODE_BUILDER_get_type_name(int32_t type_code) {
   
   switch (type_code ) {
@@ -1521,60 +1541,60 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               break;
             }
-            case SPVM_OPCODE_C_CODE_GET_FIELD_BYTE:
-            case SPVM_OPCODE_C_CODE_GET_FIELD_SHORT:
-            case SPVM_OPCODE_C_CODE_GET_FIELD_INT:
-            case SPVM_OPCODE_C_CODE_GET_FIELD_LONG:
-            case SPVM_OPCODE_C_CODE_GET_FIELD_FLOAT:
-            case SPVM_OPCODE_C_CODE_GET_FIELD_DOUBLE:
-            case SPVM_OPCODE_C_CODE_GET_FIELD_OBJECT:
-            {
-              char* field_type = NULL;
-              switch (opcode->code) {
-                case SPVM_OPCODE_C_CODE_GET_FIELD_BYTE:
-                  field_type = "SPVM_API_byte";
-                  break;
-                case SPVM_OPCODE_C_CODE_GET_FIELD_SHORT:
-                  field_type = "SPVM_API_short";
-                  break;
-                case SPVM_OPCODE_C_CODE_GET_FIELD_INT:
-                  field_type = "SPVM_API_int";
-                  break;
-                case SPVM_OPCODE_C_CODE_GET_FIELD_LONG:
-                  field_type = "SPVM_API_long";
-                  break;
-                case SPVM_OPCODE_C_CODE_GET_FIELD_FLOAT:
-                  field_type = "float";
-                  break;
-                case SPVM_OPCODE_C_CODE_GET_FIELD_DOUBLE:
-                  field_type = "double";
-                  break;
-                case SPVM_OPCODE_C_CODE_GET_FIELD_OBJECT:
-                  field_type = "SPVM_API_OBJECT*";
-              }
-              
+            case SPVM_OPCODE_C_CODE_GET_FIELD_BYTE: {
               int32_t field_id = opcode->operand2;
               SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
               int32_t field_byte_offset = constant_pool_field->byte_offset;
               
-              SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string(api, \"Object must be not undef.\", 0));\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, " = *(");
-              SPVM_STRING_BUFFER_add(string_buffer, field_type);
-              SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
-              SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE + ");
-              SPVM_STRING_BUFFER_add_int(string_buffer, field_byte_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, field_byte_offset);
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_GET_FIELD_SHORT: {
+              int32_t field_id = opcode->operand2;
+              SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+              int32_t field_byte_offset = constant_pool_field->byte_offset;
               
+              SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1, field_byte_offset);
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_GET_FIELD_INT: {
+              int32_t field_id = opcode->operand2;
+              SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+              int32_t field_byte_offset = constant_pool_field->byte_offset;
+              
+              SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, field_byte_offset);
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_GET_FIELD_LONG: {
+              int32_t field_id = opcode->operand2;
+              SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+              int32_t field_byte_offset = constant_pool_field->byte_offset;
+              
+              SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1, field_byte_offset);
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_GET_FIELD_FLOAT: {
+              int32_t field_id = opcode->operand2;
+              SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+              int32_t field_byte_offset = constant_pool_field->byte_offset;
+              
+              SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_float", opcode->operand0, opcode->operand1, field_byte_offset);
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_GET_FIELD_DOUBLE: {
+              int32_t field_id = opcode->operand2;
+              SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+              int32_t field_byte_offset = constant_pool_field->byte_offset;
+              
+              SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_double", opcode->operand0, opcode->operand1, field_byte_offset);
+              break;
+            }
+            case SPVM_OPCODE_C_CODE_GET_FIELD_OBJECT: {
+              int32_t field_id = opcode->operand2;
+              SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
+              int32_t field_byte_offset = constant_pool_field->byte_offset;
+              
+              SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_OBJECT*", opcode->operand0, opcode->operand1, field_byte_offset);
               break;
             }
             case SPVM_OPCODE_C_CODE_SET_FIELD_BYTE:
@@ -1739,13 +1759,13 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             }
             case SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR: {
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, "   = SPVM_JITCODE_INLINE_GET_EXCEPTION();\n");
               break;
             }
             case SPVM_OPCODE_C_CODE_STORE_EXCEPTION_VAR: {
               SPVM_STRING_BUFFER_add(string_buffer, "  api->set_exception(api, ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               break;
             }
