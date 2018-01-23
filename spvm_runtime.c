@@ -111,9 +111,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = -1;
   
-  // Current line
-  int32_t current_line = 0;
-  
   // Condition flag
   register int32_t condition_flag = 0;
   
@@ -1720,9 +1717,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         break;
       }
-      case SPVM_OPCODE_C_CODE_CURRENT_LINE:
-        current_line = opcode->operand0;
-        break;
       case SPVM_OPCODE_C_CODE_GOTO:
         opcode_index = opcode->operand0;
         continue;

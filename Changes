@@ -1,4 +1,7 @@
-0.0305
+0.0306 2018-01-23
+  - remove SPVM::Debug
+  - croak stack trace is on by default
+0.0305 2018-01-20
   - fix MANIFEST
   - improve exception logic
 0.0304 2018-01-18

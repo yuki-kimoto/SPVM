@@ -589,13 +589,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           }
         }
-      
         
-        // Current line
-        if (runtime->debug) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t current_line = 0;\n");
-        }
-      
         // If arg is object, increment reference count
         {
           int32_t arg_index;
@@ -1844,13 +1838,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               
               break;
             }
-            case SPVM_OPCODE_C_CODE_CURRENT_LINE:
-              if (runtime->debug) {
-                SPVM_STRING_BUFFER_add(string_buffer, "  current_line = ");
-                SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              }
-              break;
             case SPVM_OPCODE_C_CODE_CALL_SUB:
             {
               // Get subroutine ID
@@ -2064,13 +2051,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           
           // Throw exception
           SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
-          if (runtime->debug) {
-            // Exception stack trace
-            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* exception_stack_trace = api->create_exception_stack_trace(api, ");
-            SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
-            SPVM_STRING_BUFFER_add(string_buffer, "    , SPVM_JITCODE_INLINE_GET_EXCEPTION(), current_line);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, exception_stack_trace);\n");
-          }
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
           // No exception

@@ -216,33 +216,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         }
         else {
           while (1) {
-            if (compiler->debug) {
-              _Bool is_operation;
-              switch (op_cur->code) {
-                case SPVM_OP_C_CODE_NULL:
-                case SPVM_OP_C_CODE_STAB:
-                case SPVM_OP_C_CODE_PUSHMARK:
-                case SPVM_OP_C_CODE_LIST:
-                case SPVM_OP_C_CODE_BLOCK:
-                case SPVM_OP_C_CODE_NAME:
-                case SPVM_OP_C_CODE_MY:
-                case SPVM_OP_C_CODE_TYPE:
-                  is_operation = 0;
-                  break;
-                default:
-                  is_operation = 1;
-              }
-              
-              if (is_operation) {
-                SPVM_OPCODE opcode;
-                memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                opcode.code = SPVM_OPCODE_C_CODE_CURRENT_LINE;
-                opcode.operand0 = op_cur->line;
-                
-                SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-              }
-            }
-            
             // [START]Postorder traversal position
             switch (op_cur->code) {
               case SPVM_OP_C_CODE_ASSIGN: {
@@ -441,15 +414,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                     SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, op_cur->line);
-                    
-                    if (compiler->debug) {
-                      SPVM_OPCODE opcode;
-                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                      opcode.code = SPVM_OPCODE_C_CODE_CURRENT_LINE;
-                      opcode.operand0 = op_cur->line;
-                      
-                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                    }
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_ARRAY_LENGTH) {
                     SPVM_OPCODE opcode;
@@ -2401,13 +2365,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                   SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, op_cur->line);
-                  
-                  if (compiler->debug) {
-                    SPVM_OPCODE opcode;
-                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.code = SPVM_OPCODE_C_CODE_CURRENT_LINE;
-                    opcode.operand0 = op_cur->line;
-                  }
                 }
                 
                 break;
