@@ -36,11 +36,14 @@
 #include "spvm_dumper.h"
 #include "spvm_opcode.h"
 
-void SPVM_OPCODE_BUILDER_push_if_croak(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcode_array, SPVM_DYNAMIC_ARRAY* push_eval_opcode_index_stack, SPVM_DYNAMIC_ARRAY* if_croak_catch_opcode_index_stack) {
+void SPVM_OPCODE_BUILDER_push_if_croak(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcode_array, SPVM_DYNAMIC_ARRAY* push_eval_opcode_index_stack, SPVM_DYNAMIC_ARRAY* if_croak_catch_opcode_index_stack, SPVM_SUB* sub, int32_t line) {
   if (push_eval_opcode_index_stack->length > 0) {
     SPVM_OPCODE opcode;
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
     opcode.code = SPVM_OPCODE_C_CODE_IF_CROAK_CATCH;
+    opcode.operand1 = sub->id;
+    opcode.operand2 = line;
+    
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
     
     int32_t* if_croak_catch_opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
@@ -52,6 +55,8 @@ void SPVM_OPCODE_BUILDER_push_if_croak(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRA
     SPVM_OPCODE opcode;
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
     opcode.code = SPVM_OPCODE_C_CODE_IF_CROAK_RETURN;
+    opcode.operand1 = sub->id;
+    opcode.operand2 = line;
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
   }
 }
@@ -387,7 +392,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_UNDEF) {
 
@@ -437,7 +442,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                     
                     if (compiler->debug) {
                       SPVM_OPCODE opcode;
@@ -461,7 +466,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_CALL_FIELD) {
                     
@@ -509,7 +514,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_ARRAY_ELEM) {
                     
@@ -554,7 +559,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from);
@@ -759,7 +764,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       case SPVM_TYPE_C_CODE_SHORT:
                       case SPVM_TYPE_C_CODE_INT:
                       case SPVM_TYPE_C_CODE_LONG:
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                       break;
                     }
                   }
@@ -1612,7 +1617,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode.operand2 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                  SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                  SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                 }
                 else if (op_assign_to->code == SPVM_OP_C_CODE_CALL_FIELD) {
                   
@@ -1661,7 +1666,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode.operand2 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                  SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                  SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                 }
                 else {
                   assert(0);
@@ -1852,7 +1857,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   opcode.operand1 = field_id;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                  SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                  SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                 }
                 
                 break;
@@ -1879,7 +1884,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
 
-                SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                 
                 break;
               }
@@ -2397,7 +2402,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                  SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack);
+                  SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub, op_cur->line);
                   
                   if (compiler->debug) {
                     SPVM_OPCODE opcode;
