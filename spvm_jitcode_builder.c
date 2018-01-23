@@ -864,20 +864,20 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               break;
             case SPVM_OPCODE_C_CODE_REMAINDER_FLOAT:
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "float", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = (float)fmod((double)");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "float", opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ", (double)");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "float", opcode->operand2);
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               break;
             case SPVM_OPCODE_C_CODE_REMAINDER_DOUBLE:
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "double", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = fmod(");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "double", opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ", ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand2);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "double", opcode->operand2);
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               break;
             case SPVM_OPCODE_C_CODE_LEFT_SHIFT_BYTE:
