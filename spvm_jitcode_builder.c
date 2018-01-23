@@ -1434,52 +1434,56 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               break;
             }
             case SPVM_OPCODE_C_CODE_NEW_BYTE_ARRAY:
-            case SPVM_OPCODE_C_CODE_NEW_SHORT_ARRAY:
-            case SPVM_OPCODE_C_CODE_NEW_INT_ARRAY:
-            case SPVM_OPCODE_C_CODE_NEW_LONG_ARRAY:
-            case SPVM_OPCODE_C_CODE_NEW_FLOAT_ARRAY:
-            case SPVM_OPCODE_C_CODE_NEW_DOUBLE_ARRAY:
-            {
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              switch (opcode->code) {
-                case SPVM_OPCODE_C_CODE_NEW_BYTE_ARRAY:
-                  SPVM_STRING_BUFFER_add(string_buffer, "api->new_byte_array(api, ");
-                  SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
-                  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-                  break;
-                case SPVM_OPCODE_C_CODE_NEW_SHORT_ARRAY:
-                  SPVM_STRING_BUFFER_add(string_buffer, "api->new_short_array(api, ");
-                  SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
-                  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-                  break;
-                case SPVM_OPCODE_C_CODE_NEW_INT_ARRAY:
-                  SPVM_STRING_BUFFER_add(string_buffer, "api->new_int_array(api, ");
-                  SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
-                  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-                  break;
-                case SPVM_OPCODE_C_CODE_NEW_LONG_ARRAY:
-                  SPVM_STRING_BUFFER_add(string_buffer, "api->new_long_array(api, ");
-                  SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
-                  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-                  break;
-                case SPVM_OPCODE_C_CODE_NEW_FLOAT_ARRAY:
-                  SPVM_STRING_BUFFER_add(string_buffer, "api->new_float_array(api, ");
-                  SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
-                  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-                  break;
-                case SPVM_OPCODE_C_CODE_NEW_DOUBLE_ARRAY:
-                  SPVM_STRING_BUFFER_add(string_buffer, "api->new_double_array(api, ");
-                  SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
-                  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-                  break;
-              }
+              SPVM_STRING_BUFFER_add(string_buffer, "api->new_byte_array(api, ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               break;
-            }
+            case SPVM_OPCODE_C_CODE_NEW_SHORT_ARRAY:
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_STRING_BUFFER_add(string_buffer, "api->new_short_array(api, ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+              break;
+            case SPVM_OPCODE_C_CODE_NEW_INT_ARRAY:
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_STRING_BUFFER_add(string_buffer, "api->new_int_array(api, ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+              break;
+            case SPVM_OPCODE_C_CODE_NEW_LONG_ARRAY:
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_STRING_BUFFER_add(string_buffer, "api->new_long_array(api, ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+              break;
+            case SPVM_OPCODE_C_CODE_NEW_FLOAT_ARRAY:
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_STRING_BUFFER_add(string_buffer, "api->new_float_array(api, ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+              break;
+            case SPVM_OPCODE_C_CODE_NEW_DOUBLE_ARRAY:
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_STRING_BUFFER_add(string_buffer, "api->new_double_array(api, ");
+              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+              break;
             case SPVM_OPCODE_C_CODE_NEW_OBJECT_ARRAY: {
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = api->new_object_array(api, ");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ", ");
