@@ -1403,31 +1403,31 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               break;
             case SPVM_OPCODE_C_CODE_INC_REF_COUNT: {
               SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " != NULL) { SPVM_JITCODE_INLINE_INC_REF_COUNT(");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
               
               break;
             }
             case SPVM_OPCODE_C_CODE_DEC_REF_COUNT: {
               SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_JITCODE_INLINE_GET_REF_COUNT(");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ") > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    else { api->dec_ref_count(api, ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               break;
             }
             case SPVM_OPCODE_C_CODE_NEW_OBJECT: {
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = api->new_object(api, ");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
