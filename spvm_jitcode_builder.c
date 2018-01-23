@@ -1497,7 +1497,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               char* name = (char*)&constant_pool[name_id + 1];
               
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = api->new_string(api, (const char*)");
               SPVM_STRING_BUFFER_add_address(string_buffer, name);
               SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -1514,9 +1514,9 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = *(int32_t*)((intptr_t)");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_JITCODE_C_OBJECT_LENGTH_BYTE_OFFSET);\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
               break;
