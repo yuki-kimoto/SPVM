@@ -99,12 +99,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Call stack
   SPVM_API_VALUE vars[65535];
   
-  // Eval stack
-  int32_t eval_stack[255];
-  
-  // Eval stack top
-  int32_t eval_stack_top = -1;
-  
   // Call subroutine argument stack
   SPVM_API_VALUE call_sub_arg_stack[255];
   
@@ -1561,20 +1555,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
           croak_flag = 1;
         }
-        
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_PUSH_EVAL: {
-        // Set exception to NULL at start of eval block
-        SPVM_INLINE_SET_EXCEPTION_NULL();
-        
-        eval_stack_top++;
-        eval_stack[eval_stack_top] = opcode->operand0;
-        
-        break;
-      }
-      case SPVM_OPCODE_C_CODE_POP_EVAL: {
-        eval_stack_top--;
         
         break;
       }

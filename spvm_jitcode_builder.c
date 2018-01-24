@@ -521,12 +521,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       // Call subroutine argument stack
       SPVM_API_VALUE call_sub_arg_stack[255];
 
-      // Eval stack
-      int32_t eval_stack[255];
-      
-      // Eval stack top
-      int32_t eval_stack_top = -1;
-      
       // Return type
       switch (return_type->code) {
         case SPVM_TYPE_C_CODE_VOID:
@@ -1853,17 +1847,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "  if (condition_flag) { goto L");
               SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, "; }");
-              break;
-            }
-            case SPVM_OPCODE_C_CODE_PUSH_EVAL: {
-              eval_stack_top++;
-              eval_stack[eval_stack_top] = opcode->operand0;
-              
-              break;
-            }
-            case SPVM_OPCODE_C_CODE_POP_EVAL: {
-              eval_stack_top--;
-              
               break;
             }
             case SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR: {

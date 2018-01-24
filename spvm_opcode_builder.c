@@ -196,13 +196,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               SPVM_DYNAMIC_ARRAY_push(loop_start_goto_opcode_index_stack, opcode_index_ptr);
             }
             else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
-              SPVM_OPCODE opcode;
-              memset(&opcode, 0, sizeof(SPVM_OPCODE));
-              opcode.code = SPVM_OPCODE_C_CODE_PUSH_EVAL;
-              SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-              
               int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *opcode_index_ptr = opcode_array->length - 1;
+              *opcode_index_ptr = opcode_array->length;
               
               SPVM_DYNAMIC_ARRAY_push(push_eval_opcode_index_stack, opcode_index_ptr);
             }
@@ -1970,18 +1965,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE* opcode_if_croak_catch = (opcode_array->values + if_croak_catch_opcode_index);
                     opcode_if_croak_catch->operand0 = opcode_array->length;
                   }
-
-                  // POP_EVAL
-                  SPVM_OPCODE opcode;
-                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.code = SPVM_OPCODE_C_CODE_POP_EVAL;
-                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                  
-                  // Set jump of eval block
-                  int32_t* eval_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(push_eval_opcode_index_stack);
-                  int32_t eval_start_opcode_index = *eval_start_opcode_index_ptr;
-                  SPVM_OPCODE* opcode_jump = (opcode_array->values + eval_start_opcode_index);
-                  opcode_jump->operand0 = opcode_array->length;
                 }
                 break;
               }
@@ -2467,10 +2450,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         opcodes[branch_opcode_index].has_label = 1;
       }
       else if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_IF_EQ_ZERO || opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_IF_NE_ZERO) {
-        int32_t branch_opcode_index = opcodes[opcode_index].operand0;
-        opcodes[branch_opcode_index].has_label = 1;
-      }
-      else if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_PUSH_EVAL) {
         int32_t branch_opcode_index = opcodes[opcode_index].operand0;
         opcodes[branch_opcode_index].has_label = 1;
       }
