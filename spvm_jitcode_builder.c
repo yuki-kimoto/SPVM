@@ -1615,14 +1615,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               int32_t field_id = opcode->operand1;
               SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
               int32_t field_byte_offset = constant_pool_field->byte_offset;
-              
-              SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
-              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-              SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string(api, \"Object must be not undef.\", 0));\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
               char* field_type_name = NULL;
               switch (opcode->code) {
                 case SPVM_OPCODE_C_CODE_SET_FIELD_BYTE:
@@ -1644,6 +1636,14 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                   field_type_name = "double";
                   break;
               }
+              
+              SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+              SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string(api, \"Object must be not undef.\", 0));\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    *(");
               SPVM_STRING_BUFFER_add(string_buffer, field_type_name);
               SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
