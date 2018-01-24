@@ -731,12 +731,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_REMAINDER) {
-                    
-                    
-
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-
+                    
                     if (type->code == SPVM_TYPE_C_CODE_BYTE) {
                       opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_BYTE;
                     }
@@ -765,6 +762,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.operand2 = index_in2;
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                    // Check croak
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                      case SPVM_TYPE_C_CODE_SHORT:
+                      case SPVM_TYPE_C_CODE_INT:
+                      case SPVM_TYPE_C_CODE_LONG:
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, op_cur->line);
+                      break;
+                    }
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_LEFT_SHIFT) {
 

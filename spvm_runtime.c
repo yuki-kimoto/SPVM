@@ -442,20 +442,44 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           = *(double*)&vars[opcode->operand1] / *(double*)&vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_CODE_REMAINDER_BYTE:
-        *(SPVM_API_byte*)&vars[opcode->operand0]
-          = *(SPVM_API_byte*)&vars[opcode->operand1] % *(SPVM_API_byte*)&vars[opcode->operand2];
+        if (__builtin_expect(*(SPVM_API_short*)&vars[opcode->operand2] == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division", 0);
+          api->set_exception(api, exception);
+          croak_flag = 1;
+        }
+        else {
+          *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)&vars[opcode->operand1] % *(SPVM_API_byte*)&vars[opcode->operand2];
+        }
         break;
       case SPVM_OPCODE_C_CODE_REMAINDER_SHORT:
-        *(SPVM_API_short*)&vars[opcode->operand0]
-          = *(SPVM_API_short*)&vars[opcode->operand1] % *(SPVM_API_short*)&vars[opcode->operand2];
+        if (__builtin_expect(*(SPVM_API_short*)&vars[opcode->operand2] == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division", 0);
+          api->set_exception(api, exception);
+          croak_flag = 1;
+        }
+        else {
+          *(SPVM_API_short*)&vars[opcode->operand0] = *(SPVM_API_short*)&vars[opcode->operand1] % *(SPVM_API_short*)&vars[opcode->operand2];
+        }
         break;
       case SPVM_OPCODE_C_CODE_REMAINDER_INT:
-        *(SPVM_API_int*)&vars[opcode->operand0]
-          = *(SPVM_API_int*)&vars[opcode->operand1] % *(SPVM_API_int*)&vars[opcode->operand2];
+        if (__builtin_expect(*(SPVM_API_short*)&vars[opcode->operand2] == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division", 0);
+          api->set_exception(api, exception);
+          croak_flag = 1;
+        }
+        else {
+          *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)&vars[opcode->operand1] % *(SPVM_API_int*)&vars[opcode->operand2];
+        }
         break;
       case SPVM_OPCODE_C_CODE_REMAINDER_LONG:
-        *(SPVM_API_long*)&vars[opcode->operand0]
-          = *(SPVM_API_long*)&vars[opcode->operand1] % *(SPVM_API_long*)&vars[opcode->operand2];
+        if (__builtin_expect(*(SPVM_API_short*)&vars[opcode->operand2] == 0, 0)) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "0 division", 0);
+          api->set_exception(api, exception);
+          croak_flag = 1;
+        }
+        else {
+          *(SPVM_API_long*)&vars[opcode->operand0] = *(SPVM_API_long*)&vars[opcode->operand1] % *(SPVM_API_long*)&vars[opcode->operand2];
+        }
         break;
       case SPVM_OPCODE_C_CODE_REMAINDER_FLOAT:
         *(float*)&vars[opcode->operand0]
