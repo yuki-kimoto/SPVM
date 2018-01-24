@@ -701,10 +701,11 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             // Argument type code
             SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
             int32_t arg_type_code = constant_pool_arg_type->code;
+            const char* arg_type_name = SPVM_JITCODE_BUILDER_get_type_name(arg_type_code);
 
             // Assign argument
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
-            SPVM_JITCODE_BUILDER_add_var(string_buffer, arg_index);
+            SPVM_JITCODE_BUILDER_add_operand(string_buffer, arg_type_name, arg_index);
             SPVM_STRING_BUFFER_add(string_buffer, " = ");
             SPVM_STRING_BUFFER_add(string_buffer, "*(");
             SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(arg_type_code));
