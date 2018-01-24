@@ -727,9 +727,9 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             
             if (!constant_pool_arg_type->is_numeric) {
               SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, arg_index);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", arg_index);
               SPVM_STRING_BUFFER_add(string_buffer, " != NULL) { SPVM_JITCODE_INLINE_INC_REF_COUNT(");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, arg_index);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", arg_index);
               SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
             }
           }
@@ -2140,7 +2140,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               int32_t case_count = opcode->operand2;
               
               SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
               {
                 int32_t case_index;
@@ -2185,15 +2185,15 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             for (i = 0; i < sub_object_mys_length; i++) {
               int32_t my_var_index = constant_pool[sub_object_mys_base + i];
               SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, my_var_index);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", my_var_index);
               SPVM_STRING_BUFFER_add(string_buffer, " != NULL) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_JITCODE_INLINE_GET_REF_COUNT(");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, my_var_index);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", my_var_index);
               SPVM_STRING_BUFFER_add(string_buffer, ") > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, my_var_index);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", my_var_index);
               SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    else { api->dec_ref_count(api, ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, my_var_index);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", my_var_index);
               SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             }
