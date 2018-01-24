@@ -1914,7 +1914,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_API_VALUE** package_var_address = (SPVM_API_VALUE**)&package_vars[package_var_id];
               
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, package_var_type, opcode->operand0);
               SPVM_STRING_BUFFER_add(string_buffer, " = *(");
               SPVM_STRING_BUFFER_add(string_buffer, package_var_type);
               SPVM_STRING_BUFFER_add(string_buffer, "*)");
@@ -1961,7 +1961,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "*)");
               SPVM_STRING_BUFFER_add_address(string_buffer, package_var_address);
               SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand1);
+              SPVM_JITCODE_BUILDER_add_operand(string_buffer, package_var_type, opcode->operand1);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               
               break;
@@ -2018,6 +2018,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               int32_t call_sub_return_type_id = constant_pool_sub_call_sub->return_type_id;
               SPVM_CONSTANT_POOL_TYPE* call_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_return_type_id];
               
+              
               SPVM_STRING_BUFFER_add(string_buffer, "  // ");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)call_sub_abs_name);
               SPVM_STRING_BUFFER_add(string_buffer, "\n");
@@ -2037,15 +2038,15 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                   // Argument type code
                   SPVM_CONSTANT_POOL_TYPE* constant_pool_call_sub_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_arg_type_id];
                   int32_t call_sub_arg_type_code = constant_pool_call_sub_arg_type->code;
+                  const char* call_sub_arg_type_name = SPVM_JITCODE_BUILDER_get_type_name(call_sub_arg_type_code);
                   
                   SPVM_STRING_BUFFER_add(string_buffer, "    *(");
-                  SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(call_sub_arg_type_code));
+                  SPVM_STRING_BUFFER_add(string_buffer, call_sub_arg_type_name);
                   SPVM_STRING_BUFFER_add(string_buffer, "*)&call_sub_args[");
                   SPVM_STRING_BUFFER_add_int(string_buffer, call_sub_arg_index);
                   SPVM_STRING_BUFFER_add(string_buffer, "]");
                   SPVM_STRING_BUFFER_add(string_buffer, " = ");
-                  SPVM_JITCODE_BUILDER_add_var(string_buffer, call_sub_arg_stack[call_sub_arg_index].int_value);
-                  
+                  SPVM_JITCODE_BUILDER_add_operand(string_buffer, call_sub_arg_type_name, call_sub_arg_stack[call_sub_arg_index].int_value);
                   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
                 }
               }
@@ -2061,11 +2062,12 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, ");\n");
               
               if (!call_sub_is_void) {
+                const char* call_sub_return_type_name = SPVM_JITCODE_BUILDER_get_type_name(call_sub_return_type->code);
                 SPVM_STRING_BUFFER_add(string_buffer, "    ");
-                SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+                SPVM_JITCODE_BUILDER_add_operand(string_buffer, call_sub_return_type_name, opcode->operand0);
                 SPVM_STRING_BUFFER_add(string_buffer, " = ");
                 SPVM_STRING_BUFFER_add(string_buffer, "*(");
-                SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(call_sub_return_type->code));
+                SPVM_STRING_BUFFER_add(string_buffer, call_sub_return_type_name);
                 SPVM_STRING_BUFFER_add(string_buffer, "*)&call_sub_return_value;");
                 SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               }
@@ -2074,7 +2076,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
               SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-
+              
               call_sub_arg_stack_top -= call_sub_args_length;
               
               break;
@@ -2115,8 +2117,9 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             {
               // Get return value
               if (!constant_pool_sub->is_void) {
+                const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(return_type_code);
                 SPVM_STRING_BUFFER_add(string_buffer, "  return_value = ");
-                SPVM_JITCODE_BUILDER_add_var(string_buffer, opcode->operand0);
+                SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
                 SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               }
               SPVM_STRING_BUFFER_add(string_buffer, "  goto label_SPVM_OPCODE_C_CODE_RETURN;\n");
