@@ -60,6 +60,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
+  // Subroutine mys length
+  int32_t sub_mys_length = constant_pool_sub->mys_length;
+  
   // Subroutine object my length
   int32_t sub_object_mys_length = constant_pool_sub->object_mys_length;
   
@@ -114,6 +117,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Croak flag
   int32_t croak_flag = 0;
   
+  // Initialize variables
+  memset(vars, 0, sizeof(SPVM_API_VALUE) * sub_mys_length);
+
   // Copy arguments
   memcpy(vars, args, args_length * sizeof(SPVM_API_VALUE));
 

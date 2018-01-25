@@ -428,6 +428,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   // C library
   SPVM_STRING_BUFFER_add(string_buffer, "#include <stdlib.h>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include <stdio.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <memory.h>\n");
   
   // API header
   SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
@@ -648,6 +649,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE vars[");
           SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->mys_length);
           SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  memset(vars, 0, sizeof(SPVM_API_VALUE) * ");
+          SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->mys_length);
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          
         }
         
         // Copy arguments to variables
