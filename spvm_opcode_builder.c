@@ -118,6 +118,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_pos);
       SPVM_SUB* sub = op_sub->uv.sub;
       
+      int32_t max_auto_dec_ref_count_stack_count = 0;
+      int32_t auto_dec_ref_count_stack_top = -1;
+      SPVM_DYNAMIC_ARRAY* auto_dec_ref_count_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      int32_t auto_dec_ref_count_base_stack_top = -1;
+      SPVM_DYNAMIC_ARRAY* auto_dec_ref_count_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      
       // Check sub information
       assert(sub->id > -1);
       assert(sub->op_name);
@@ -2000,7 +2006,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_CODE_MY: {
                 SPVM_MY* my = op_cur->uv.my;
-
+                
                 SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                 
                 if (SPVM_TYPE_is_object(compiler, type)) {
