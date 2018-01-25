@@ -119,9 +119,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_SUB* sub = op_sub->uv.sub;
       
       int32_t max_auto_dec_ref_count_stack_count = 0;
-      int32_t auto_dec_ref_count_stack_top = -1;
       SPVM_DYNAMIC_ARRAY* auto_dec_ref_count_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      int32_t auto_dec_ref_count_base_stack_top = -1;
       SPVM_DYNAMIC_ARRAY* auto_dec_ref_count_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // Check sub information
@@ -189,6 +187,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               
               SPVM_DYNAMIC_ARRAY_push(push_eval_opcode_index_stack, opcode_index_ptr);
             }
+            
+            int32_t* auto_dec_ref_count_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+            *auto_dec_ref_count_base_ptr = auto_dec_ref_count_stack->length;
+            SPVM_DYNAMIC_ARRAY_push(auto_dec_ref_count_base_stack, auto_dec_ref_count_base_ptr);
           }
         }
         
@@ -1954,6 +1956,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode_if_croak_catch->operand0 = opcode_array->length;
                   }
                 }
+                
+                // leave scope
+                if (auto_dec_ref_count_base_stack->length > 0) {
+                  int32_t* auto_dec_ref_count_base_ptr = SPVM_DYNAMIC_ARRAY_pop(auto_dec_ref_count_base_stack);
+                  int32_t auto_dec_ref_count_base = *auto_dec_ref_count_base_ptr;
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  opcode.code = SPVM_OPCODE_C_CODE_LEAVE_SCOPE;
+                  opcode.operand0 = auto_dec_ref_count_base;
+                }
+                
                 break;
               }
               case SPVM_OP_C_CODE_LOOP: {
@@ -2012,10 +2025,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 if (SPVM_TYPE_is_object(compiler, type)) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  
-                  // Add goto
                   opcode.code = SPVM_OPCODE_C_CODE_PUSH_AUTO_DEC_REF_COUNT;
                   opcode.operand0 = my->index;
+
+                  int32_t* my_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+                  *my_index_ptr = my->index;
+                  SPVM_DYNAMIC_ARRAY_push(auto_dec_ref_count_stack, my_index_ptr);
                 }
                 
                 break;
