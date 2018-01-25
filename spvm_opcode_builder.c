@@ -1998,6 +1998,22 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
+              case SPVM_OP_C_CODE_MY: {
+                SPVM_MY* my = op_cur->uv.my;
+
+                SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+                
+                if (SPVM_TYPE_is_object(compiler, type)) {
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  
+                  // Add goto
+                  opcode.code = SPVM_OPCODE_C_CODE_PUSH_AUTO_DEC_REF_COUNT;
+                  opcode.operand0 = my->index;
+                }
+                
+                break;
+              }
               case SPVM_OP_C_CODE_PRE_INC: {
                 if (!op_cur->is_var_assign_from) {
                   SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, 1);
