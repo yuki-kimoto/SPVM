@@ -1,5 +1,5 @@
 package TestCase::CompileError::TypeCantBeDetectedUndefDefault {
-  sub main() : int {
+  sub main : int () {
     my $value;
   }
 }

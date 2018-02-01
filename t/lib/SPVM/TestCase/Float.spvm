@@ -3,7 +3,7 @@ use Float;
 package TestCase::Float {
 
   # SPVM::Float
-  sub constant() : int {
+  sub constant: int () {
     if (Float::MIN_EXPONENT() == -126) {
       if (Float::MAX_EXPONENT() == 127) {
         if (Float::BYTES() == 4) {
@@ -17,7 +17,7 @@ package TestCase::Float {
     return 0;
   }
 
-  sub float_to_raw_int_bits() : int {
+  sub float_to_raw_int_bits: int () {
     
     my $float_value = 0.5f;
     
@@ -30,7 +30,7 @@ package TestCase::Float {
     return 0;
   }
   
-  sub float_to_raw_int_bits_nan() : int {
+  sub float_to_raw_int_bits_nan: int () {
     
     my $float_value = 0.0f / 0.0f;
     
@@ -45,7 +45,7 @@ package TestCase::Float {
     return 0;
   }
 
-  sub float_to_int_bits() : int {
+  sub float_to_int_bits: int () {
     
     my $float_value = 0.5f;
     
@@ -58,7 +58,7 @@ package TestCase::Float {
     return 0;
   }
   
-  sub float_to_int_bits_nan() : int {
+  sub float_to_int_bits_nan: int () {
     
     my $float_value = 0.0f / 0.0f;
     
@@ -73,7 +73,7 @@ package TestCase::Float {
     return 0;
   }
     
-  sub int_bits_to_float() : int {
+  sub int_bits_to_float: int () {
     
     my $int_bits = 0x3F000000;
     
@@ -86,7 +86,7 @@ package TestCase::Float {
     return 0;
   }
   
-  sub int_bits_to_float_nan_first_condition() : int {
+  sub int_bits_to_float_nan_first_condition: int () {
     
     if (Float::float_to_raw_int_bits(Float::int_bits_to_float(0x7F800000)) == 0x7F800000) {
       if (Float::float_to_raw_int_bits(Float::int_bits_to_float(0x7F800001)) == 0x7FC00000) {
@@ -103,7 +103,7 @@ package TestCase::Float {
     return 0;
   }
 
-  sub int_bits_to_float_nan_first_condition_is_nan() : int {
+  sub int_bits_to_float_nan_first_condition_is_nan: int () {
     
     if (!Float::is_nan(Float::int_bits_to_float(0x7F800000))) {
       if (Float::is_nan(Float::int_bits_to_float(0x7F800001))) {
@@ -120,7 +120,7 @@ package TestCase::Float {
     return 0;
   }
   
-  sub int_bits_to_float_nan_second_condition() : int {
+  sub int_bits_to_float_nan_second_condition: int () {
     
     if (Float::float_to_raw_int_bits(Float::int_bits_to_float(0xFF800000)) == 0xFF800000) {
       if (Float::float_to_raw_int_bits(Float::int_bits_to_float(0xFF800001)) == 0x7FC00000) {
@@ -137,7 +137,7 @@ package TestCase::Float {
     return 0;
   }
 
-  sub int_bits_to_float_nan_second_condition_is_nan() : int {
+  sub int_bits_to_float_nan_second_condition_is_nan: int () {
     
     if (!Float::is_nan(Float::int_bits_to_float(0xFF800000))) {
       if (Float::is_nan(Float::int_bits_to_float(0xFF800001))) {
@@ -154,7 +154,7 @@ package TestCase::Float {
     return 0;
   }
 
-  sub is_infinite() : int {
+  sub is_infinite: int () {
     if (Float::is_infinite(Float::POSITIVE_INFINITY())) {
       if (Float::is_infinite(Float::NEGATIVE_INFINITY())) {
         if (!Float::is_infinite(Float::NaN())) {
@@ -168,7 +168,7 @@ package TestCase::Float {
     return 0;
   }
 
-  sub is_finite() : int {
+  sub is_finite: int () {
     if (!Float::is_finite(Float::POSITIVE_INFINITY())) {
       if (!Float::is_finite(Float::NEGATIVE_INFINITY())) {
         if (!Float::is_finite(Float::NaN())) {
@@ -182,7 +182,7 @@ package TestCase::Float {
     return 0;
   }
 
-  sub is_nan() : int {
+  sub is_nan: int () {
     if (!Float::is_nan(Float::POSITIVE_INFINITY())) {
       if (!Float::is_nan(Float::NEGATIVE_INFINITY())) {
         if (Float::is_nan(Float::NaN())) {
@@ -196,7 +196,7 @@ package TestCase::Float {
     return 0;
   }
   
-  sub pass_positive_infinity($value : float) : int {
+  sub pass_positive_infinity : int ($value : float) {
     if ($value == Float::POSITIVE_INFINITY()) {
       return 1;
     }
@@ -204,7 +204,7 @@ package TestCase::Float {
     return 0;
   }
   
-  sub pass_negative_infinity($value : float) : int {
+  sub pass_negative_infinity : int ($value : float) {
     if ($value == Float::NEGATIVE_INFINITY()) {
       return 1;
     }
@@ -212,7 +212,7 @@ package TestCase::Float {
     return 0;
   }
   
-  sub pass_nan($value : float) : int {
+  sub pass_nan : int ($value : float) {
     if (Float::is_nan($value)) {
       if (Float::float_to_raw_int_bits($value) == 0x7FC00000) {
         return 1;

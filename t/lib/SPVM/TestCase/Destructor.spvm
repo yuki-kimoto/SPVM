@@ -6,7 +6,7 @@ package TestCase::Destructor {
   set minimal;
   get minimal;
   
-  sub DESTROY($self : TestCase::Destructor) : void {
+  sub DESTROY : void ($self : TestCase::Destructor) {
     $self->{minimal}->set_x(3);
   }
 }

@@ -1,15 +1,15 @@
 use TestCase;
 
 package TestCase::Extension {
-  sub native_api_get_byte_field($test_case : TestCase) : native byte;
-  sub native_api_get_short_field($test_case : TestCase) : native short;
-  sub native_api_get_int_field($test_case : TestCase) : native int;
-  sub native_api_get_long_field($test_case : TestCase) : native long;
-  sub native_api_get_float_field($test_case : TestCase) : native float;
-  sub native_api_get_double_field($test_case : TestCase) : native double;
-  sub native_api_get_object_field($test_case : TestCase) : native TestCase::Minimal;
+  sub native_api_get_byte_field : native byte ($test_case : TestCase);
+  sub native_api_get_short_field : native short ($test_case : TestCase);
+  sub native_api_get_int_field : native int ($test_case : TestCase);
+  sub native_api_get_long_field : native long ($test_case : TestCase);
+  sub native_api_get_float_field : native float ($test_case : TestCase);
+  sub native_api_get_double_field : native double ($test_case : TestCase);
+  sub native_api_get_object_field : native TestCase::Minimal ($test_case : TestCase);
   
-  sub native_api_get_set_field() : int {
+  sub native_api_get_set_field : int () {
     
     my $test_case = TestCase::new();
     
@@ -47,11 +47,11 @@ package TestCase::Extension {
     }
   }
 
-  sub sum($num1 : int, $num2 : int) : native int;
+  sub sum : native int ($num1 : int, $num2 : int);
   
-  sub add_int_array($nums1 : int[], $nums2 : int[]) : native int[];
+  sub add_int_array : native int[] ($nums1 : int[], $nums2 : int[]);
 
-  sub call_void_sub_exception() : int {
+  sub call_void_sub_exception : int () {
     eval {
       TestCase::Extension::call_void_sub_exception_native();
     };
@@ -63,7 +63,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  sub call_byte_sub_exception() : int {
+  sub call_byte_sub_exception : int () {
     eval {
       TestCase::Extension::call_byte_sub_exception_native();
     };
@@ -75,7 +75,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  sub call_short_sub_exception() : int {
+  sub call_short_sub_exception : int () {
     eval {
       TestCase::Extension::call_short_sub_exception_native();
     };
@@ -87,7 +87,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  sub call_int_sub_exception() : int {
+  sub call_int_sub_exception : int () {
     eval {
       TestCase::Extension::call_int_sub_exception_native();
     };
@@ -99,7 +99,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  sub call_long_sub_exception() : int {
+  sub call_long_sub_exception : int () {
     eval {
       TestCase::Extension::call_long_sub_exception_native();
     };
@@ -111,7 +111,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  sub call_float_sub_exception() : int {
+  sub call_float_sub_exception : int () {
     eval {
       TestCase::Extension::call_float_sub_exception_native();
     };
@@ -123,7 +123,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  sub call_double_sub_exception() : int {
+  sub call_double_sub_exception : int () {
     eval {
       TestCase::Extension::call_double_sub_exception_native();
     };
@@ -135,7 +135,7 @@ package TestCase::Extension {
     return 0;
   }
   
-  sub call_object_sub_exception() : int {
+  sub call_object_sub_exception : int () {
     eval {
       TestCase::Extension::call_object_sub_exception_native();
     };
@@ -147,13 +147,12 @@ package TestCase::Extension {
     return 0;
   }
   
-  sub call_void_sub_exception_native() : native void;
-  sub call_byte_sub_exception_native() : native byte;
-  sub call_short_sub_exception_native() : native short;
-  sub call_int_sub_exception_native() : native int;
-  sub call_long_sub_exception_native() : native long;
-  sub call_float_sub_exception_native() : native float;
-  sub call_double_sub_exception_native() : native double;
-  sub call_object_sub_exception_native() : native double;
-  
+  sub call_void_sub_exception_native : native void ();
+  sub call_byte_sub_exception_native : native byte ();
+  sub call_short_sub_exception_native : native short ();
+  sub call_int_sub_exception_native : native int ();
+  sub call_long_sub_exception_native : native long ();
+  sub call_float_sub_exception_native : native float ();
+  sub call_double_sub_exception_native : native double ();
+  sub call_object_sub_exception_native : native double ();
 }

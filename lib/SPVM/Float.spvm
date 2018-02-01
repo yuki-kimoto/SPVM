@@ -19,7 +19,7 @@ package Float {
   
   sub is_infinite : native int($x : float);
   sub is_finite : native int($x : float);
-  sub is_nan : native int($x : float);
+  sub is_nan : native int ($x : float);
   sub float_to_int_bits : native int ($x : float);
   sub float_to_raw_int_bits : native int ($x : float);
   sub int_bits_to_float : native float ($x : int);

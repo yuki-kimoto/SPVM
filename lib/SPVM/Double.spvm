@@ -19,8 +19,8 @@ package Double {
   
   sub is_infinite : native int ($x : double);
   sub is_finite : native int ($x : double);
-  sub is_nan($x : double);
-  sub double_to_long_bits : native int ($x : double) : native long;
+  sub is_nan : native int ($x : double);
+  sub double_to_long_bits : native long ($x : double);
   sub double_to_raw_long_bits : native long ($x : double);
   sub long_bits_to_double : native double ($x : long);
 }
