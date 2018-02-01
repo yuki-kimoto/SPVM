@@ -10,19 +10,19 @@ SPVM::Math - Math Library
 
 =head2 E
 
-B<double E()>
+B<sub E : double ()>
 
 The double value that is closer than any other to e, the base of the natural logarithms.
 
 =head2 PI
 
-B<double PI()>
+B<sub PI : double ()>
 
 The double value that is closer than any other to pi, the ratio of the circumference of a circle to its diameter.
 
 =head2 sin
 
-B<double sin(double $x)>
+B<sub sin : double ($x : double)>
 
 Returns the trigonometric sine of an angle. Special cases:
 
@@ -46,7 +46,7 @@ the sine of the argument.
 
 =head2 cos
 
-B<double cos(double $x)>
+B<sub cos : double ($x : double)>
 
 Returns the trigonometric cosine of an angle. Special cases:
 
@@ -68,7 +68,7 @@ the cosine of the argument.
 
 =head2 tan
 
-B<double tan(double $x)>
+B<sub tan : double ($x : double)>
 
 Returns the trigonometric tangent of an angle. Special cases:
 
@@ -92,7 +92,7 @@ the tangent of the argument.
 
 =head2 asin
 
-B<double asin(double $x)>
+B<sub asin : double ($x : double)>
 
 Returns the arc sine of a value; the returned angle is in the range -pi/2 through pi/2. Special cases:
 
@@ -114,7 +114,7 @@ the arc sine of the argument.
 
 =head2 acos
 
-B<public static double acos(double $x)>
+B<sub acos : double ($x : double)>
 
 Returns the arc cosine of a value; the returned angle is in the range 0.0 through pi. Special case:
 
@@ -136,7 +136,7 @@ the arc cosine of the argument.
 
 =head2 atan
 
-B<double atan(double $x)>
+B<sub atan : double ($x : double)>
 
 Returns the arc tangent of a value; the returned angle is in the range -pi/2 through pi/2. Special cases:
 
@@ -160,7 +160,7 @@ the arc tangent of the argument.
 
 =head2 to_radians
 
-B<double toRadians(double angdeg)>
+B<sub toRadians : double ($angdeg : double)>
 
 Converts an angle measured in degrees to an approximately equivalent angle measured in radians. The conversion from degrees to radians is generally inexact.
 
