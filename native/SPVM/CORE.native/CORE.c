@@ -6,6 +6,26 @@
 
 #include "spvm_api.h"
 
+void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  SPVM_API_OBJECT* object = args[0].object_value;
+  
+  char* chars = api->get_string_chars(api, object);
+  
+  printf("%s", (char*)chars);
+}
+
+void SPVM__CORE__print_err(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  SPVM_API_OBJECT* object = args[0].object_value;
+  
+  char* chars = api->get_string_chars(api, object);
+  
+  fprintf(stderr, "%s", chars);
+}
+
 int64_t SPVM__CORE__time(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
@@ -64,120 +84,4 @@ int32_t SPVM__CORE__test2(SPVM_API* api, SPVM_API_VALUE* args) {
   int32_t num3 = num1 * num2;
   
   return num3;
-}
-
-void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  SPVM_API_OBJECT* object = args[0].object_value;
-  
-  char* chars = api->get_string_chars(api, object);
-  
-  printf("%s", (char*)chars);
-}
-
-void SPVM__CORE__print_byte(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  int8_t value = args[0].byte_value;
-  
-  printf("%" PRId8, value);
-}
-
-void SPVM__CORE__print_short(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  int16_t value = args[0].short_value;
-  
-  printf("%" PRId16, value);
-}
-
-void SPVM__CORE__print_int(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  int32_t value = args[0].int_value;
-  
-  printf("%" PRId32, value);
-}
-
-void SPVM__CORE__print_long(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  int64_t value = args[0].long_value;
-  
-  printf("%" PRId64, value);
-}
-
-void SPVM__CORE__print_float(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  float value = args[0].float_value;
-  
-  printf("%f", value);
-}
-
-void SPVM__CORE__print_double(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  double value = args[0].double_value;
-  
-  printf("%f", value);
-}
-
-void SPVM__CORE__print_err(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  SPVM_API_OBJECT* object = args[0].object_value;
-  
-  char* chars = api->get_string_chars(api, object);
-  
-  fprintf(stderr, "%s", chars);
-}
-
-void SPVM__CORE__print_err_byte(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  int8_t value = args[0].byte_value;
-  
-  fprintf(stderr, "%" PRId8, value);
-}
-
-void SPVM__CORE__print_err_short(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  int16_t value = args[0].short_value;
-  
-  fprintf(stderr, "%" PRId16, value);
-}
-
-void SPVM__CORE__print_err_int(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  int32_t value = args[0].int_value;
-  
-  fprintf(stderr, "%" PRId32, value);
-}
-
-void SPVM__CORE__print_err_long(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  int64_t value = args[0].long_value;
-  
-  fprintf(stderr, "%" PRId64, value);
-}
-
-void SPVM__CORE__print_err_float(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  float value = args[0].float_value;
-  
-  fprintf(stderr, "%f", value);
-}
-
-void SPVM__CORE__print_err_double(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  double value = args[0].double_value;
-  
-  fprintf(stderr, "%f", value);
 }

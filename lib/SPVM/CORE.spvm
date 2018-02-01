@@ -1,20 +1,7 @@
 package CORE {
   sub print ($value : String) : native void;
-  sub print_byte ($value : byte) : native void;
-  sub print_short ($value : short) : native void;
-  sub print_int ($value : int) : native void;
-  sub print_long ($value : long) : native void;
-  sub print_float ($value : float) : native void;
-  sub print_double ($value : double) : native void;
-
   sub print_err ($value : String) : native void;
-  sub print_err_byte ($value : byte) : native void;
-  sub print_err_short ($value : short) : native void;
-  sub print_err_int ($value : int) : native void;
-  sub print_err_long ($value : long) : native void;
-  sub print_err_float ($value : float) : native void;
-  sub print_err_double ($value : double) : native void;
-
+  
   sub time () : native long;
   
   sub sum_int($values : int[]) : native int;

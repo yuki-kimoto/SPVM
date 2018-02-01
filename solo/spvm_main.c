@@ -79,44 +79,8 @@ int main(int argc, char *argv[])
       if (strcmp(sub_abs_name, "CORE::print") == 0) {
         constant_pool_sub.native_address = SPVM__CORE__print;
       }
-      else if (strcmp(sub_abs_name, "CORE::print_byte") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_byte;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_short") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_short;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_int") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_int;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_long") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_long;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_float") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_float;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_double") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_double;
-      }
       else if (strcmp(sub_abs_name, "CORE::print_err") == 0) {
         constant_pool_sub.native_address = SPVM__CORE__print_err;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_err_byte") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_err_byte;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_err_short") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_err_short;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_err_int") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_err_int;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_err_long") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_err_long;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_err_float") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_err_float;
-      }
-      else if (strcmp(sub_abs_name, "CORE::print_err_double") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_err_double;
       }
       else if (strcmp(sub_abs_name, "CORE::time") == 0) {
         constant_pool_sub.native_address = SPVM__CORE__time;
