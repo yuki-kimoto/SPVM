@@ -79,8 +79,8 @@ int main(int argc, char *argv[])
       if (strcmp(sub_abs_name, "CORE::print") == 0) {
         constant_pool_sub.native_address = SPVM__CORE__print;
       }
-      else if (strcmp(sub_abs_name, "CORE::print_err") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print_err;
+      else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
+        constant_pool_sub.native_address = SPVM__CORE__warn;
       }
       else if (strcmp(sub_abs_name, "CORE::time") == 0) {
         constant_pool_sub.native_address = SPVM__CORE__time;

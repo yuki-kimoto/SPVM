@@ -1,6 +1,6 @@
 package CORE {
   sub print ($value : String) : native void;
-  sub print_err ($value : String) : native void;
+  sub warn ($value : String) : native void;
   
   sub time () : native long;
   

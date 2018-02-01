@@ -2,6 +2,7 @@
   - fix print function bug that print line break.
   - remove say relative functions. say, say_xxx, say_xxx_err
   - remove print relative functions. print_xxx, print_xxx_err
+  - rename print_err to warn
 0.0306 2018-01-23
   - remove SPVM::Debug
   - croak stack trace is on by default

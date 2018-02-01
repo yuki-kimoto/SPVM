@@ -16,7 +16,7 @@ void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
   printf("%s", (char*)chars);
 }
 
-void SPVM__CORE__print_err(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__warn(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* object = args[0].object_value;
