@@ -1490,8 +1490,6 @@ package TestCase {
     
     my $var3 = 6;
     
-    CORE::say("AAAAAAAAAAAAAAAAAA" . $var1);
-    
     if ($var1 == 1) {
       if ($var2 == 2) {
         if ($var3 == 6) {
