@@ -1,10 +1,10 @@
 package CORE {
-  sub print ($value : String) : native void;
-  sub warn ($value : String) : native void;
+  sub print : native void ($value : String);
+  sub warn : native void ($value : String);
   
-  sub time () : native long;
+  sub time : native long ();
   
-  sub sum_int($values : int[]) : native int;
-  sub test1($num1 : int, $num2 : int) : native int;
-  sub test2($num1 : int, $num2 : int) : native int;
+  sub sum_int : native int ($values : int[]);
+  sub test1 : native int ($num1 : int, $num2 : int);
+  sub test2 : native int ($num1 : int, $num2 : int);
 }

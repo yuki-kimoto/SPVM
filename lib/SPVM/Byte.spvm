@@ -1,6 +1,6 @@
 package Byte {
-  sub MIN_VALUE() : byte { return -128y; }
-  sub MAX_VALUE() : byte { return 127y; }
-  sub BYTES() : int { return 1; }
-  sub SIZE() : int { return 8; }
+  sub MIN_VALUE : byte ()  { return -128y; }
+  sub MAX_VALUE : byte () { return 127y; }
+  sub BYTES: int () { return 1; }
+  sub SIZE: int () { return 8; }
 }

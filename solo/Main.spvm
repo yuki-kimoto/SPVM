@@ -1,6 +1,6 @@
 package Main {
 
-  sub main () : int {
+  sub main : int () {
     my $num1 = 2;
     my $num2 = 5;
     
@@ -11,7 +11,7 @@ package Main {
     return 0;
   }
 
-  sub sum ($num1 : int, $num2 : int) : int {
+  sub sum : int ($num1 : int, $num2 : int) {
     my $num3 = $num1 + $num2;
     
     return $num3;

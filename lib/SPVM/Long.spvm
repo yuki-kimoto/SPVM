@@ -1,6 +1,6 @@
 package Long {
-  sub MIN_VALUE() : long { return -9223372036854775808L; }
-  sub MAX_VALUE() : long { return 9223372036854775807L; }
-  sub BYTES() : int { return 8; }
-  sub SIZE() : int { return 64; }
+  sub MIN_VALUE : long () { return -9223372036854775808L; }
+  sub MAX_VALUE : long () { return 9223372036854775807L; }
+  sub BYTES : int () { return 8; }
+  sub SIZE : int () { return 64; }
 }

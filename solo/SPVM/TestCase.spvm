@@ -49,7 +49,7 @@ package TestCase {
     DOUBLE_PRECICE = 2147483647.0,
   }
   
-  sub main($mvar : int) : int {
+  sub main : int ($mvar : int) {
     eval {
       exception_croak_return_object();
     };
@@ -1053,10 +1053,10 @@ package TestCase {
   }
 
   # Call void function
-  sub call_void_sub($nums : int[]) : void {
+  sub call_void_sub : void ($nums : int[]) {
     $nums->[0] = 5;
   }
-  sub call_void() : int {
+  sub call_void : int () {
     my $nums = new int[] {1};
     
     TestCase::call_void_sub($nums);
@@ -1067,7 +1067,7 @@ package TestCase {
     return 0;
   }
   
-  sub test1 () : int {
+  sub test1 : int () {
     my $num0 = 1;
     my $num1 = 2;
     my $num2 = 3;
@@ -1077,11 +1077,11 @@ package TestCase {
     return 0;
   }
   
-  sub sum4($num1 : long, $num2 : long) : long {
+  sub sum4 : long ($num1 : long, $num2 : long) {
     return $num1 + $num2;
   }
   
-  sub sum3 ($simple : TestCase::Simple, $foo : long, $bar : float) : int {
+  sub sum3 : int ($simple : TestCase::Simple, $foo : long, $bar : float) {
     
     if (3) {
     
@@ -1122,14 +1122,14 @@ package TestCase {
     return 2;
   }
   
-  sub sum1 ($num1 : long, $num2 : long) : long {
+  sub sum1 : long ($num1 : long, $num2 : long) {
     return $num1 + $num2;
   }
-  sub sum0($num1 : int, $num2 : int) : int {
+  sub sum0 : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
   
-  sub sum2 ($num1 : int, $num2 : int) : int {
+  sub sum2 : int ($num1 : int, $num2 : int) {
     # croak "Error";
     
     my $num3 = TestCase::sum0($num1, $num2);
@@ -1137,12 +1137,12 @@ package TestCase {
     return $num3 + 3;
   }
 
-  sub increfcount($test : TestCase::Minimal, $num : int) : int {
+  sub increfcount : int ($test : TestCase::Minimal, $num : int) {
     
     my $aaa = TestCase::Minimal::new();
   }
 
-  sub decinctest ($num1 : TestCase::Minimal, $num2 : int, $num3 : TestCase::Minimal) : int {
+  sub decinctest : int ($num1 : TestCase::Minimal, $num2 : int, $num3 : TestCase::Minimal) {
     {
       my $num4 = TestCase::Minimal::new();
       my $num5 = TestCase::Minimal::new();
@@ -1150,7 +1150,7 @@ package TestCase {
     return 2;
   }
 
-  sub return_object() : TestCase::Minimal {
+  sub return_object : TestCase::Minimal () {
     my $obj0 = TestCase::Minimal::new();
     {
       my $obj1 = TestCase::Minimal::new();
@@ -1163,7 +1163,7 @@ package TestCase {
     }
   }
 
-  sub eval_block() : void {
+  sub eval_block : void () {
     my $obj0 = TestCase::Minimal::new();
     
     eval {
@@ -1190,24 +1190,24 @@ package TestCase {
       croak $obj_error2;
     }
   }
-  sub array_new() : int {
+  sub array_new : int () {
     
     my $nums = new int[3];
     
     return @$nums;
   }
-  sub check_freelist () : int[] {
+  sub check_freelist : int[] () {
     my $result = new int[63];
     my $true_result = new int[1];
     return $true_result;
   }
-  sub default_return_value_object_sub() : TestCase {
+  sub default_return_value_object_sub : TestCase () {
     1;
   }
-  sub default_return_value_object_sub_empty() : TestCase {
+  sub default_return_value_object_sub_empty : TestCase () {
     
   }
-  sub weaken_reference_count1_object() : int {
+  sub weaken_reference_count1_object : int (){
     my $minimal = TestCase::Minimal::new();
     my $test = new TestCase;
     
@@ -1222,15 +1222,15 @@ package TestCase {
     return 0;
   }
   
-  sub error() : int {
+  sub error : int () {
     croak "ERROR";
   }
   
-  sub error_call_stack() : int {
+  sub error_call_stack : int () {
     TestCase::error();
   }
 
-  sub error_eval() : int {
+  sub error_eval : int () {
     eval {
       croak "ERROR";
     };
@@ -1243,7 +1243,7 @@ package TestCase {
     }
   }
 
-  sub error_eval_call() : int {
+  sub error_eval_call : int () {
     eval {
       TestCase::error();
     };
@@ -1255,7 +1255,7 @@ package TestCase {
       return 0;
     }
   }
-  sub exception_croak_return_object() : TestCase::Minimal {
+  sub exception_croak_return_object : TestCase::Minimal () {
     croak "Error";
   }
 }

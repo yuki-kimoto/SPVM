@@ -1,16 +1,16 @@
 package Arrays {
-  sub copy_of_byte($original : byte[], $new_length : int) : native byte[];
-  sub copy_of_short($original : short[], $new_length : int) : native short[];
-  sub copy_of_int($original : int[], $new_length : int) : native int[];
-  sub copy_of_long($original : long[], $new_length : int) : native long[];
-  sub copy_of_float($original : float[], $new_length : int) : native float[];
-  sub copy_of_double($original : double[], $new_length : int) : native double[];
+  sub copy_of_byte : native byte[] ($original : byte[], $new_length : int);
+  sub copy_of_short : native short[] ($original : short[], $new_length : int);
+  sub copy_of_int : native int[] ($original : int[], $new_length : int);
+  sub copy_of_long : native long[] ($original : long[], $new_length : int);
+  sub copy_of_float : native float[] ($original : float[], $new_length : int);
+  sub copy_of_double : native double[] ($original : double[], $new_length : int);
 
-  sub equals_byte($x1 : byte[], $x2 : byte[]) : native int;
-  sub equals_short($x1 : short[], $x2 : short[]) : native int;
-  sub equals_int($x1 : int[], $x2 : int[]) : native int;
-  sub equals_long($x1 : long[], $x2 : long[]) : native int;
-  sub equals_float($x1 : float[], $x2 : float[]) : native int;
-  sub equals_double($x1 : double[], $x2 : double[]) : native int;
+  sub equals_byte : native int ($x1 : byte[], $x2 : byte[]);
+  sub equals_short : native int ($x1 : short[], $x2 : short[]);
+  sub equals_int : native int ($x1 : int[], $x2 : int[]);
+  sub equals_long : native int ($x1 : long[], $x2 : long[]);
+  sub equals_float : native int ($x1 : float[], $x2 : float[]);
+  sub equals_double : native int ($x1 : double[], $x2 : double[]);
 
 }

@@ -9,7 +9,7 @@ package TestCase::Weaken {
   set test_case, weaken2, x1;
   get test_case, weaken2, x1;
   
-  sub weaken_test_case($self : TestCase::Weaken) : void {
+  sub weaken_test_case : void ($self : TestCase::Weaken) {
     weaken $self->{test_case};
   }
 }

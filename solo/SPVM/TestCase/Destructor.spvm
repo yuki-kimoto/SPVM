@@ -2,7 +2,7 @@ package TestCase::Destructor {
   has x : int;
   has y : int;
   
-  sub DESTROY($self : TestCase::Destructor) : void {
+  sub DESTROY : void ($self : TestCase::Destructor) {
     print("DESTROY\n");
   }
 }
