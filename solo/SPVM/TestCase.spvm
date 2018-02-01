@@ -62,7 +62,7 @@ package TestCase {
     
     {
       my $num = sum0(1, 2);
-      say_int($num);
+      print($num . "\n");
     }
     
     {
@@ -76,7 +76,7 @@ package TestCase {
     {
       my $values = new int[] {1, 2, 3};
       
-      CORE::say("" . $values->[0]);
+      CORE::print($values->[0] . "\n");
     }
 
     {

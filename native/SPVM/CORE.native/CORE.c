@@ -131,7 +131,7 @@ void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
   
   char* chars = api->get_string_chars(api, object);
   
-  printf("%s\n", (char*)chars);
+  printf("%s", (char*)chars);
 }
 
 void SPVM__CORE__print_byte(SPVM_API* api, SPVM_API_VALUE* args) {
@@ -189,7 +189,7 @@ void SPVM__CORE__print_err(SPVM_API* api, SPVM_API_VALUE* args) {
   
   char* chars = api->get_string_chars(api, object);
   
-  fprintf(stderr, "%s\n", chars);
+  fprintf(stderr, "%s", chars);
 }
 
 void SPVM__CORE__say_err(SPVM_API* api, SPVM_API_VALUE* args) {
