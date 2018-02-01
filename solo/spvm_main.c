@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
         constant_pool_sub.native_address = SPVM__CORE__say_err_double;
       }
       else if (strcmp(sub_abs_name, "CORE::print_err") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__say;
+        constant_pool_sub.native_address = SPVM__CORE__print_err;
       }
       else if (strcmp(sub_abs_name, "CORE::print_err_byte") == 0) {
         constant_pool_sub.native_address = SPVM__CORE__print_err_byte;

@@ -128,25 +128,25 @@ package TestCase {
     {
       my $time = CORE::time();
       
-      CORE::say_long($time);
+      CORE::print($time . "\n");
     }
 
-    CORE::say_err("say_err");
-    CORE::say_err_byte(1y);
-    CORE::say_err_short(1s);
-    CORE::say_err_int(1);
-    CORE::say_err_long(1L);
-    CORE::say_err_float(0.5f);
-    CORE::say_err_double(0.5);
+    CORE::print_err("print_err");
+    CORE::print_err(1y . "\n");
+    CORE::print_err(1s . "\n");
+    CORE::print_err(1 . "\n");
+    CORE::print_err(1L . "\n");
+    CORE::print_err(0.5f . "\n");
+    CORE::print_err(0.5 . "\n");
 
     CORE::print_err("print_err");
-    CORE::print_err_byte(1y);
-    CORE::print_err_short(1s);
-    CORE::print_err_int(1);
-    CORE::print_err_long(1L);
-    CORE::print_err_float(0.5f);
-    CORE::print_err_double(0.5);
-
+    CORE::print_err(1y . "\n");
+    CORE::print_err(1s . "\n");
+    CORE::print_err(1 . "\n");
+    CORE::print_err(1L . "\n");
+    CORE::print_err(0.5f . "\n");
+    CORE::print_err(0.5 . "\n");
+    
     # .
     {
       {
@@ -156,7 +156,7 @@ package TestCase {
         
         $val2 .= "def";
         
-        CORE::say($val2);
+        CORE::print($val2 . "\n");
       }
       {
         1 . 3;
@@ -171,7 +171,7 @@ package TestCase {
         my $value2 = -9223372036854775808L;
         my $value3 = $value1 . $value2;
         
-        CORE::say($value3);
+        CORE::print($value3 . "\n");
       }
 
       {
@@ -179,7 +179,7 @@ package TestCase {
         my $value2 = -2147483648;
         my $value3 = $value1 . $value2;
         
-        CORE::say($value3);
+        CORE::print($value3 . "\n");
       }
 
       {
@@ -187,7 +187,7 @@ package TestCase {
         my $value2 = (short)13;
         my $value3 = $value1 . $value2;
         
-        CORE::say($value3);
+        CORE::print($value3 . "\n");
       }
 
       {
@@ -195,7 +195,7 @@ package TestCase {
         my $value2 = (byte)13;
         my $value3 = $value1 . $value2;
         
-        CORE::say($value3);
+        CORE::print($value3 . "\n");
       }
       
       # .
@@ -204,7 +204,7 @@ package TestCase {
         my $value2 = "def";
         my $value3 = $value1 . $value2;
         
-        CORE::say($value3);
+        CORE::print($value3 . "\n");
       }
     }
     
@@ -213,7 +213,7 @@ package TestCase {
       
       $num += 4;
       
-      CORE::say_int($num);
+      CORE::print($num . "\n");
     }
     
     {
@@ -227,7 +227,7 @@ package TestCase {
     {
       my $ret = TestCase::error_eval();
       
-      CORE::say_int($ret);
+      CORE::print($ret . "\n");
     }
     
     TestCase::error_eval();
@@ -273,7 +273,7 @@ package TestCase {
     
     TestCase::call_void();
     
-    CORE::say("a");
+    CORE::print("a" . "\n");
     
     # Default return value object
     if (TestCase::default_return_value_object_sub() == undef) {
@@ -285,7 +285,7 @@ package TestCase {
     # Use template package
     {
       my $num = TestCase::Template_int_long::get(100, 200, 300L,);
-      CORE::say_int($num);
+      CORE::print($num . "\n");
     }
 
     # Get object from freelist
@@ -301,32 +301,32 @@ package TestCase {
       2,
       3
     };
-    CORE::say_float(TestCase::ONE());
+    CORE::print(TestCase::ONE() . "\n");
     
     # Logical or
     {
       if (1 || 0) {
-        CORE::say("Logical or");
+        CORE::print("Logical or" . "\n");
       }
     }
 
     # Logical and
     {
       if (1 && 1) {
-        CORE::say("Logical and");
+        CORE::print("Logical and" . "\n");
       }
     }
     
     # Constant e
     {
       my $num = 0.25E+3;
-      CORE::say_double($num);
+      CORE::print($num . "\n");
     }
 
     # Constant e
     {
       my $num = 0.25E-3f;
-      CORE::say_float($num);
+      CORE::print($num . "\n");
     }
     # Convert to string to byte[]
     {
@@ -337,12 +337,12 @@ package TestCase {
     # MIN long constant;
     {
       my $num = -9223372036854775808L;
-      CORE::say_long($num);
+      CORE::print($num . "\n");
     }
     {
       my $var = 3;
       while (my $var = 964) {
-        CORE::say_int($var);
+        CORE::print($var . "\n");
         last;
       }
     }
@@ -351,7 +351,7 @@ package TestCase {
       my $error = "First";
       $@ = "Error";
       if (my $error = $@) {
-        CORE::say($error);
+        CORE::print($error . "\n");
       }
     }
     
@@ -364,7 +364,7 @@ package TestCase {
     # Exception variable
     {
       $@ = "Exception";
-      CORE::say($@);
+      CORE::print($@ . "\n");
     }
     
     # $array->[0]{x}
@@ -372,7 +372,7 @@ package TestCase {
       my $objs = new TestCase::Minimal[3];
       $objs->[0] = TestCase::Minimal::new();
       $objs->[0]->set_x(111);
-      CORE::say_int($objs->[0]->get_x);
+      CORE::print($objs->[0]->get_x . "\n");
     }
     
     # $obj->{x}[0]
@@ -380,7 +380,7 @@ package TestCase {
       my $obj = TestCase::Simple::new();
       $obj->set_values1(new int[5]);
       $obj->get_values1->[0] = 221;
-      CORE::say_int($obj->get_values1->[0]);
+      CORE::print($obj->get_values1->[0] . "\n");
     }
     
     # Call new subroutine without variable
@@ -392,7 +392,7 @@ package TestCase {
     # Subroutine call from native
     {
       my $total = CORE::test1(3, 11);
-      CORE::say_int($total);
+      CORE::print($total . "\n");
     }
     
     # Create temporary varialbe
@@ -420,7 +420,7 @@ package TestCase {
     {
       my $string = "abc\"\'\\\n\t\b\r\fdef";
      
-      CORE::say($string);
+      CORE::print($string . "\n");
     }
     
     # Escape sequence
@@ -450,7 +450,7 @@ package TestCase {
       my $nums : int[][] = new int[][3];
       $nums->[0] = new int[1];
       $nums->[0][0] = 178;
-      CORE::say_int($nums->[0][0]);
+      CORE::print($nums->[0][0] . "\n");
     }
     
     # Declare mutil array
@@ -458,18 +458,18 @@ package TestCase {
       my $nums : int[][];
     }
     
-    CORE::say_int(TestCase::EnumD::THREE());
-    CORE::say_int(TestCase::EnumD::FORE());
+    CORE::print(TestCase::EnumD::THREE() . "\n");
+    CORE::print(TestCase::EnumD::FORE() . "\n");
     
     # Core functions
     {
-      CORE::print_byte((byte)1);
-      CORE::print_short((short)1);
-      CORE::print_int(1);
-      CORE::print_long(1L);
-      CORE::print_float(1f);
-      CORE::print_double(1.0);
-      CORE::say("end");
+      CORE::print((byte)1 . "\n");
+      CORE::print((short)1 . "\n");
+      CORE::print(1 . "\n");
+      CORE::print(1L . "\n");
+      CORE::print(1f . "\n");
+      CORE::print(1.0 . "\n");
+      CORE::print("end\n");
     }
 
     {
@@ -489,7 +489,7 @@ package TestCase {
       my $nums = new int[150000000];
       my $len = @{$nums};
       $nums->[149999999] = 764;
-      CORE::say_int($nums->[149999999]);
+      CORE::print($nums->[149999999] . "\n");
     }
     
     {
@@ -499,8 +499,8 @@ package TestCase {
       for ($i = 0; $i < $len; $i = $i + 1) {
         $nums->[$i] = $i;
       }
-      CORE::say_int($i);
-      CORE::say_int($nums->[$i - 1]);
+      CORE::print($i . "\n");
+      CORE::print($nums->[$i - 1] . "\n");
     }
     
     # Object to get long field is undef
@@ -567,14 +567,14 @@ package TestCase {
     {
       my $num = (byte)1;
       $num++;
-      CORE::say_byte($num);
+      CORE::print($num . "\n");
     }
     
     # Increment short 
     {
       my $num = (short)1;
       $num++;
-      CORE::say_short($num);
+      CORE::print($num . "\n");
     }
     
     # increment int
@@ -610,7 +610,7 @@ package TestCase {
     {
       TestCase::sum0(5, 6);
       2;
-      CORE::say("Error");
+      CORE::print("Error" . "\n");
     }
     
     {
@@ -620,28 +620,28 @@ package TestCase {
       $nums->[2] = 3;
       
       my $total = CORE::sum_int($nums);
-      CORE::say_int($total);
+      CORE::print($total . "\n");
     }
     
     {
       my $string = "ace";
      
-      CORE::say($string);
+      CORE::print($string . "\n");
     }
 
     {
       my $string = "ace";
      
-      CORE::say($string);
+      CORE::print($string . "\n");
     }
     
     {
       my $num = (byte)3;
-      CORE::say_byte($num);
+      CORE::print($num . "\n");
       
       my $num2 = (long)1 + (long)$num;
       
-      CORE::say_long($num2);
+      CORE::print($num2 . "\n");
     }
     
     # get and set field
@@ -651,8 +651,8 @@ package TestCase {
       $m->set_x(99);
       $m->set_y(100);
       
-      CORE::say_int($m->get_x);
-      CORE::say_int($m->get_y);
+      CORE::print($m->get_x . "\n");
+      CORE::print($m->get_y . "\n");
     }
 
     # Free when assignment
@@ -683,76 +683,76 @@ package TestCase {
     }
     7;
     
-    CORE::say_int(TestCase::sum0(1, 1));
-    CORE::say_int(TestCase::sum2(1, 2));
+    CORE::print(TestCase::sum0(1, 1) . "\n");
+    CORE::print(TestCase::sum2(1, 2) . "\n");
 
     # Constant float
-    CORE::say_float(0.3f);
-    CORE::say_float(1f);
-    CORE::say_float(2f);
-    CORE::say_float(1.2f);
+    CORE::print(0.3f . "\n");
+    CORE::print(1f . "\n");
+    CORE::print(2f . "\n");
+    CORE::print(1.2f . "\n");
     
     # Constant double
-    CORE::say_double(0d);
-    CORE::say_double(1d);
-    CORE::say_double(1.2);
+    CORE::print(0d . "\n");
+    CORE::print(1d . "\n");
+    CORE::print(1.2 . "\n");
 
     # Constant int
-    CORE::say_int(-2147483648);
-    CORE::say_int(-32769);
-    CORE::say_int(-32768);
-    CORE::say_int(-129);
-    CORE::say_int(-128);
-    CORE::say_int(-2);
-    CORE::say_int(-1);
-    CORE::say_int(0);
-    CORE::say_int(1);
-    CORE::say_int(2);
-    CORE::say_int(3);
-    CORE::say_int(4);
-    CORE::say_int(5);
-    CORE::say_int(6);
-    CORE::say_int(127);
-    CORE::say_int(128);
-    CORE::say_int(255);
-    CORE::say_int(256);
-    CORE::say_int(32767);
-    CORE::say_int(32768);
-    CORE::say_int(65535);
-    CORE::say_int(65536);
-    CORE::say_int(2147483647);
+    CORE::print(-2147483648 . "\n");
+    CORE::print(-32769 . "\n");
+    CORE::print(-32768 . "\n");
+    CORE::print(-129 . "\n");
+    CORE::print(-128 . "\n");
+    CORE::print(-2 . "\n");
+    CORE::print(-1 . "\n");
+    CORE::print(0 . "\n");
+    CORE::print(1 . "\n");
+    CORE::print(2 . "\n");
+    CORE::print(3 . "\n");
+    CORE::print(4 . "\n");
+    CORE::print(5 . "\n");
+    CORE::print(6 . "\n");
+    CORE::print(127 . "\n");
+    CORE::print(128 . "\n");
+    CORE::print(255 . "\n");
+    CORE::print(256 . "\n");
+    CORE::print(32767 . "\n");
+    CORE::print(32768 . "\n");
+    CORE::print(65535 . "\n");
+    CORE::print(65536 . "\n");
+    CORE::print(2147483647 . "\n");
     
     # Constant long
-    CORE::say_long(-1L);
-    CORE::say_long(0L);
-    CORE::say_long(1L);
-    CORE::say_long(2L);
-    CORE::say_long(9223372036854775807L);
-    CORE::say_long(-9223372036854775807L);
-    CORE::say_long(-2147483648L);
-    CORE::say_long(-32769L);
-    CORE::say_long(-32768L);
-    CORE::say_long(-129L);
-    CORE::say_long(-128L);
-    CORE::say_long(-2L);
-    CORE::say_long(-1L);
-    CORE::say_long(0L);
-    CORE::say_long(1L);
-    CORE::say_long(2L);
-    CORE::say_long(3L);
-    CORE::say_long(4L);
-    CORE::say_long(5L);
-    CORE::say_long(6L);
-    CORE::say_long(127L);
-    CORE::say_long(128L);
-    CORE::say_long(255L);
-    CORE::say_long(256L);
-    CORE::say_long(32767L);
-    CORE::say_long(32768L);
-    CORE::say_long(65535L);
-    CORE::say_long(65536L);
-    CORE::say_long(2147483647L);
-    CORE::say_long(0xFFL);
+    CORE::print(-1L . "\n");
+    CORE::print(0L . "\n");
+    CORE::print(1L . "\n");
+    CORE::print(2L . "\n");
+    CORE::print(9223372036854775807L . "\n");
+    CORE::print(-9223372036854775807L . "\n");
+    CORE::print(-2147483648L . "\n");
+    CORE::print(-32769L . "\n");
+    CORE::print(-32768L . "\n");
+    CORE::print(-129L . "\n");
+    CORE::print(-128L . "\n");
+    CORE::print(-2L . "\n");
+    CORE::print(-1L . "\n");
+    CORE::print(0L . "\n");
+    CORE::print(1L . "\n");
+    CORE::print(2L . "\n");
+    CORE::print(3L . "\n");
+    CORE::print(4L . "\n");
+    CORE::print(5L . "\n");
+    CORE::print(6L . "\n");
+    CORE::print(127L . "\n");
+    CORE::print(128L . "\n");
+    CORE::print(255L . "\n");
+    CORE::print(256L . "\n");
+    CORE::print(32767L . "\n");
+    CORE::print(32768L . "\n");
+    CORE::print(65535L . "\n");
+    CORE::print(65536L . "\n");
+    CORE::print(2147483647L . "\n");
+    CORE::print(0xFFL . "\n");
     
     "abc";
     
@@ -762,16 +762,16 @@ package TestCase {
       
       switch($num) {
         case TestCase::EnumD::THREE():
-          CORE::say_int(1);
+          CORE::print(1 . "\n");
           last;
         case TestCase::EnumD::FORE():
-          CORE::say_int(2);
+          CORE::print(2 . "\n");
           last;
         case 5:
-          CORE::say_int(3);
+          CORE::print(3 . "\n");
           last;
         default:
-          CORE::say_int(5);
+          CORE::print(5 . "\n");
       }
     }
 
@@ -780,16 +780,16 @@ package TestCase {
       my $num = 3;
       switch ($num) {
         case 1:
-          CORE::say_int(1);
+          CORE::print(1 . "\n");
           last;
         case 3:
-          CORE::say_int(2);
+          CORE::print(2 . "\n");
           last;
         case 10000:
-          CORE::say_int(2);
+          CORE::print(2 . "\n");
           last;
         default:
-          CORE::say_int(5);
+          CORE::print(5 . "\n");
       }
     }
     
@@ -797,7 +797,7 @@ package TestCase {
     #   my $num = 5;
     #   switch($num) {
     #     default:
-    #       CORE::say_int(5);
+    #       CORE::print(5 . "\n");
     #   }
     # }
     
@@ -815,7 +815,7 @@ package TestCase {
 
     my $simple3 : TestCase::Simple = TestCase::Simple::new();
     
-    CORE::say_int($simple3->get_x());
+    CORE::print($simple3->get_x() . "\n");
     $simple3->get_x;
     
     $simple3->set_y(2);
@@ -912,17 +912,17 @@ package TestCase {
       my $nums = new int[3];
       $nums->[0] = 13;
       $nums->[1] = 14;
-      CORE::say_int($nums->[0]);
-      CORE::say_int($nums->[1]);
+      CORE::print($nums->[0] . "\n");
+      CORE::print($nums->[1] . "\n");
     }
     
     {
       my $nums : long[] = new long[3];
       $nums->[0] = 11L;
       $nums->[1] = 12L;
-      CORE::say_long($nums->[0]);
-      CORE::say_long($nums->[1]);
-      CORE::say_int(@$nums);
+      CORE::print($nums->[0] . "\n");
+      CORE::print($nums->[1] . "\n");
+      CORE::print(@$nums . "\n");
       my $nums_length : int = @$nums;
     }
     
@@ -934,7 +934,7 @@ package TestCase {
     my $v3 : int;
     
     $v3 = $v2 = $v1 = 543;
-    CORE::say_int($v3);
+    CORE::print($v3 . "\n");
     
     100;
     1000;
@@ -1031,7 +1031,7 @@ package TestCase {
       my $num1 = (byte)1;
       my $num2 = (byte)2;
       my $num3 = $num0 + $num1 + $num2;
-      CORE::say_byte($num3);
+      CORE::print($num3 . "\n");
     }
 
     {
@@ -1039,7 +1039,7 @@ package TestCase {
       my $num1 = (short)1;
       my $num2 = (short)2;
       my $num3 = $num0 + $num1 + $num2;
-      CORE::say_short($num3);
+      CORE::print($num3 . "\n");
     }
 
     # my $error : String = "Error";
