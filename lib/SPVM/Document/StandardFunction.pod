@@ -10,16 +10,16 @@ SPVM::Document::StandardFunction - SPVM Standard Function(BETA before 1.0)
 
 Print string to stdout.
 
-  sub print ($value : byte) : native void;
+  sub print : void ($value : byte);
 
 =head2 warn
 
 Print string to stderr.
 
-  sub warn ($value : byte[]) : native void;
+  sub warn : void ($value : byte[]);
 
 =head2 time
 
 Get epoch time.
 
-  sub time () : native long;
+  sub time : long ();

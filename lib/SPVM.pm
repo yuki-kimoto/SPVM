@@ -607,7 +607,7 @@ SPVM Module:
   package MyMath {
     
     # Sub Declaration
-    sub sum ($nums : int[]) : int {
+    sub sum : int ($nums : int[]) {
       
       # Culcurate total
       my $total = 0;
@@ -647,7 +647,7 @@ SPVM Module:
   package MyMathNative {
     
     # Sub Declaration
-    sub sum ($nums : int[]) : native int;
+    sub sum : native int ($nums : int[]);
   }
 
 C Source File;
@@ -747,7 +747,7 @@ At first, you can write SPVM module.
     has x : int;
     has y : int;
 
-    sub sum ($x : int, $y : int) : int {
+    sub sum : int ($x : int, $y : int) {
 
       my $total = $x + $y;
 
@@ -763,7 +763,7 @@ You can define field by C<has> keyword, and specify static type by C<: type>.
 
 You can specify argument types and return type to subroutine by C<: type>.
 
-  sub sum ($x : int, $y : int) : int {
+  sub sum : int ($x : int, $y : int) {
 
     my $total = $x + $y;
 

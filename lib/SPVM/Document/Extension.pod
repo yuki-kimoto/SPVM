@@ -11,7 +11,7 @@ This is similar with L<Extension::C>, but L<SPVM> implement this feature by defa
   
   # SPVM/TestCase/Extension.spvm
   package TestCase::Extension {
-    sub sum($num1 : int, $num2 : int) : native int;
+    sub sum : native int ($num1 : int, $num2 : int);
   }
   
   // SPVM/TestCase/Extension.native/Extension.c
@@ -28,7 +28,7 @@ At first, you specify C<native> descripter at SPVM subroutine.
 
   package TestCase::Extension {
     # native descripter
-    sub sum($num1 : int, $num2 : int) : native int;
+    sub sum : native int ($num1 : int, $num2 : int);
   }
 
 Next, you create "SPVM/TestCase/Extension/Extension.c" file
