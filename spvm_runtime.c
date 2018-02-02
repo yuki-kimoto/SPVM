@@ -1109,10 +1109,20 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_PUSH_AUTO_DEC_REF_COUNT: {
-        
+        auto_dec_ref_count_stack_top++;
+        auto_dec_ref_count_stack[auto_dec_ref_count_stack_top] = opcode->operand0;
         break;
       }
       case SPVM_OPCODE_C_CODE_LEAVE_SCOPE: {
+        int32_t auto_dec_ref_count_stack_base = opcode->operand0;
+        int32_t index;
+        for (index = auto_dec_ref_count_stack_base; index <= auto_dec_ref_count_stack_top; index++) {
+          int32_t var_index = auto_dec_ref_count_stack[auto_dec_ref_count_stack_base];
+          
+          // api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]);
+        }
+        
+        auto_dec_ref_count_stack_top -= auto_dec_ref_count_stack_base;
         
         break;
       }
