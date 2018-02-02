@@ -26,7 +26,7 @@ use Encode 'encode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0306';
+our $VERSION = '0.0307';
 
 our $COMPILER;
 our $API;
