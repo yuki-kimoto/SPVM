@@ -1875,6 +1875,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // Set return value
         if (!constant_pool_sub->is_void) {
           return_value = vars[opcode->operand0];
+          
+          // Increment ref count of return value not to release by decrement
+          if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+            if (return_value.object_value != NULL) {
+              SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
+            }
+          }
         }
         
         goto label_SPVM_OPCODE_C_CODE_RETURN;
@@ -1939,13 +1946,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
   label_SPVM_OPCODE_C_CODE_RETURN: {
     
-    // Increment ref count of return value not to release by decrement
-    if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
-      if (return_value.object_value != NULL) {
-        SPVM_INLINE_INC_REF_COUNT(return_value.object_value);
-      }
-    }
-    
     // Decrement my vars
     {
       int32_t i;
@@ -1964,15 +1964,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
     }
     
-    // Decrement ref count of return value
-    if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
-      if (return_value.object_value != NULL) {
-        SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
-      }
-    }
-    
     // Croak
     if (!croak_flag) {
+      // Decrement ref count of return value
+      if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+        if (return_value.object_value != NULL) {
+          SPVM_INLINE_DEC_REF_COUNT_ONLY(return_value.object_value);
+        }
+      }
+      
       SPVM_INLINE_SET_EXCEPTION_NULL();
     }
     
