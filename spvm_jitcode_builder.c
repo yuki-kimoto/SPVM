@@ -2070,6 +2070,14 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
                 SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               }
+              
+              // Increment ref count of return value not to release by decrement
+              if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+                SPVM_STRING_BUFFER_add(string_buffer, "  if (return_value != NULL) {\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_INC_REF_COUNT(return_value);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+              }
+              
               SPVM_STRING_BUFFER_add(string_buffer, "  goto label_SPVM_OPCODE_C_CODE_RETURN;\n");
               
               break;
@@ -2123,13 +2131,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN_PROCESS\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  label_SPVM_OPCODE_C_CODE_RETURN:\n");
           
-          // Increment ref count of return value not to release by decrement
-          if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "  if (return_value != NULL) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_INC_REF_COUNT(return_value);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-          }
-          
           // Decrement my vars
           {
             int32_t i;
@@ -2150,17 +2151,15 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             }
           }
           
-          // Decrement ref count of return value
-          if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
-            SPVM_STRING_BUFFER_add(string_buffer, "  if (return_value != NULL) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(return_value); }\n");
-          }
-          
           // Throw exception
           SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
           // No exception
           SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
+          if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+            SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != NULL) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(return_value); }\n");
+          }
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
