@@ -1965,6 +1965,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.code = SPVM_OPCODE_C_CODE_LEAVE_SCOPE;
                   opcode.operand0 = auto_dec_ref_count_base;
+                  
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
                 
                 break;
@@ -2027,6 +2029,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.code = SPVM_OPCODE_C_CODE_PUSH_AUTO_DEC_REF_COUNT;
                   opcode.operand0 = my->index;
+
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                   int32_t* my_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
                   *my_index_ptr = my->index;
