@@ -108,6 +108,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = -1;
   
+  // Auto decrement reference count variable index stack
+  SPVM_API_OBJECT* auto_dec_ref_count_stack[65535];
+  
+  // Auto decrement reference count variable index stack top
+  int32_t auto_dec_ref_count_stack_top = -1;
+  
   // Condition flag
   register int32_t condition_flag = 0;
   
