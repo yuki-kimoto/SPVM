@@ -1102,6 +1102,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
         break;
       }
+      case SPVM_OPCODE_C_CODE_PUSH_AUTO_DEC_REF_COUNT: {
+        
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_LEAVE_SCOPE: {
+        
+        break;
+      }
       case SPVM_OPCODE_C_CODE_NEW_OBJECT: {
         // Get subroutine ID
         int32_t type_id = opcode->operand1;
