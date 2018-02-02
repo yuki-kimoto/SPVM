@@ -118,7 +118,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_pos);
       SPVM_SUB* sub = op_sub->uv.sub;
       
-      int32_t max_auto_dec_ref_count_stack_count = 0;
       SPVM_DYNAMIC_ARRAY* auto_dec_ref_count_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       SPVM_DYNAMIC_ARRAY* auto_dec_ref_count_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
@@ -163,6 +162,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       
       // Switch stack
       SPVM_DYNAMIC_ARRAY* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      
+      int32_t auto_dec_ref_count_stack_max = 0;
       
       while (op_cur) {
         // [START]Preorder traversal position
@@ -2022,12 +2023,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.code = SPVM_OPCODE_C_CODE_PUSH_AUTO_DEC_REF_COUNT;
                   opcode.operand0 = my->index;
-
+                  
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-
+                  
                   int32_t* my_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
                   *my_index_ptr = my->index;
                   SPVM_DYNAMIC_ARRAY_push(auto_dec_ref_count_stack, my_index_ptr);
+                  
+                  if (auto_dec_ref_count_stack->length > auto_dec_ref_count_stack_max) {
+                    auto_dec_ref_count_stack_max = auto_dec_ref_count_stack->length;
+                  }
                 }
                 
                 break;
@@ -2451,6 +2456,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub->id], sizeof(SPVM_CONSTANT_POOL_SUB));
       constant_pool_sub.opcode_base = sub->opcode_base;
       constant_pool_sub.opcode_length = sub->opcode_length;
+      constant_pool_sub.auto_dec_ref_count_stack_max_length = auto_dec_ref_count_stack_max;
       memcpy(&compiler->constant_pool->values[sub->id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
       
     }
