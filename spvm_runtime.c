@@ -1121,7 +1121,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           
           warn("AAAAAAAAAAAAA %d %d", auto_dec_ref_count_stack_base, auto_dec_ref_count_stack_top);
           
-          api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]);
+          if (*(SPVM_API_OBJECT**)&vars[var_index] != NULL) {
+            api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]);
+          }
         }
         
         auto_dec_ref_count_stack_top = auto_dec_ref_count_stack_base - 1;
@@ -1974,7 +1976,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       for (index = 0; index <= auto_dec_ref_count_stack_top; index++) {
         int32_t var_index = auto_dec_ref_count_stack[index];
         
-        api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]);
+        warn("DDDDDDDD %d", var_index);
+        if (*(SPVM_API_OBJECT**)&vars[var_index] != NULL) {
+          api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]);
+        }
       }
     }
     warn("CCCCC");
