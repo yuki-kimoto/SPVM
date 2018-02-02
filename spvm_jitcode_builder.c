@@ -694,9 +694,15 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
           }
           SPVM_STRING_BUFFER_add(string_buffer, "\n");
         }
-
+        
         // Condition flag
         SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
+        
+        if (constant_pool_sub->auto_dec_ref_count_stack_max_length > 0) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT* auto_dec_ref_count_stack[");
+          SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->auto_dec_ref_count_stack_max_length);
+          SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+        }
         
         // Return value
         if (!constant_pool_sub->is_void) {
