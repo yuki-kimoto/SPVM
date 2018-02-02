@@ -1117,7 +1117,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t auto_dec_ref_count_stack_base = opcode->operand0;
         int32_t index;
         for (index = auto_dec_ref_count_stack_base; index <= auto_dec_ref_count_stack_top; index++) {
-          int32_t var_index = auto_dec_ref_count_stack[auto_dec_ref_count_stack_base];
+          int32_t var_index = auto_dec_ref_count_stack[index];
           
           // api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]);
         }
@@ -1961,6 +1961,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
             api->dec_ref_count(api, object);
           }
         }
+      }
+    }
+    
+    {
+      int32_t index;
+      for (index = 0; index <= auto_dec_ref_count_stack_top; index++) {
+        int32_t var_index = auto_dec_ref_count_stack[index];
+        
+        // api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]);
       }
     }
     
