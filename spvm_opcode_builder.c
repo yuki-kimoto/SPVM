@@ -37,6 +37,7 @@
 #include "spvm_opcode.h"
 
 void SPVM_OPCODE_BUILDER_push_if_croak(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcode_array, SPVM_DYNAMIC_ARRAY* push_eval_opcode_index_stack, SPVM_DYNAMIC_ARRAY* if_croak_catch_opcode_index_stack, int32_t line) {
+  
   if (push_eval_opcode_index_stack->length > 0) {
     SPVM_OPCODE opcode;
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1946,6 +1947,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE* opcode_if_croak_catch = (opcode_array->values + if_croak_catch_opcode_index);
                     opcode_if_croak_catch->operand0 = opcode_array->length;
                   }
+                  
+                  SPVM_DYNAMIC_ARRAY_pop(push_eval_opcode_index_stack);
                 }
                 
                 // leave scope

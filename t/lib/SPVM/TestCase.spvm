@@ -58,6 +58,21 @@ package TestCase {
     DOUBLE_PRECICE = 65536.5,
   }
   
+  # Only compile check
+  sub eval_block_stack_check : void () {
+    eval {
+      my $obj_error1 = "Error1";
+      
+      croak $obj_error1;
+    };
+    
+    {
+      my $obj_error2 = "Error2";
+      
+      croak $obj_error2;
+    }
+  }
+  
   sub new : TestCase () {
     return new TestCase;
   }

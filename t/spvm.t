@@ -1746,4 +1746,5 @@ is($end_objects_count, $start_objects_count);
   }
 }
 
-
+eval { SPVM::TestCase::eval_block_stack_check() };
+ok($@);
