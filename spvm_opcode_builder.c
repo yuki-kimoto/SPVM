@@ -218,17 +218,21 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Do decrement reference count
                   // Variable type is object
                   if (SPVM_TYPE_is_object(compiler, type)) {
-                    // Right value is variable
-                    if (op_assign_from->code == SPVM_OP_C_CODE_VAR) {
-                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
-                      int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
-                      // Left index is deferent from rithgt index
-                      if (index_out != index_in) {
+                    
+                    // Variable is not initialize
+                    if (!(op_assign_to->first && op_assign_to->first->code == SPVM_OP_C_CODE_MY)) {
+                      // Right value is variable
+                      if (op_assign_from->code == SPVM_OP_C_CODE_VAR) {
+                        int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                        int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
+                        // Left index is deferent from rithgt index
+                        if (index_out != index_in) {
+                          do_dec_ref_count = 1;
+                        }
+                      }
+                      else {
                         do_dec_ref_count = 1;
                       }
-                    }
-                    else {
-                      do_dec_ref_count = 1;
                     }
                   }
                   
