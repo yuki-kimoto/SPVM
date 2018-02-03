@@ -12,4 +12,7 @@ package TestCase::Weaken {
   sub weaken_test_case : void ($self : TestCase::Weaken) {
     weaken $self->{test_case};
   }
+  sub new : TestCase::Weaken () {
+    return new TestCase::Weaken;
+  }
 }

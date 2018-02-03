@@ -1258,6 +1258,9 @@ package TestCase {
   sub exception_croak_return_object : TestCase::Minimal () {
     croak "Error";
   }
+  sub new : TestCase () {
+    return new TestCase;
+  }
 }
 
 =head1 NAME

@@ -58,6 +58,10 @@ package TestCase {
     DOUBLE_PRECICE = 65536.5,
   }
   
+  sub new : TestCase () {
+    return new TestCase;
+  }
+  
   sub my_var_in_loop_free : int () {
     for (my $i = 0; $i < 5; $i++) {
       my $minimal = TestCase::Minimal::new();

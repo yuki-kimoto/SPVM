@@ -15,6 +15,10 @@ package TestCase::Simple {
   get x, y, values1;
   set x, y, values1;
   
+  sub new : TestCase::Simple () {
+    return new TestCase::Simple;
+  }
+
   sub get2 : int () {
     1;
     my $var1 : int;

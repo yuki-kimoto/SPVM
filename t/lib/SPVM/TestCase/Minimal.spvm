@@ -4,5 +4,8 @@ package TestCase::Minimal {
   
   set x, y;
   get x, y;
-
+  
+  sub new : TestCase::Minimal () {
+    return new TestCase::Minimal;
+  }
 }
