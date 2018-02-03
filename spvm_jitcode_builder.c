@@ -2179,12 +2179,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
             SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           }
           
-          // Throw exception
-          SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-          
           // No exception
-          SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (!croak_flag) {\n");
           if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
             SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != NULL) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(return_value); }\n");
           }

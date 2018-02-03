@@ -1955,20 +1955,22 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_DYNAMIC_ARRAY_pop(push_eval_opcode_index_stack);
                 }
                 
-                // leave scope
+                // Leave scope
                 int32_t* auto_dec_ref_count_base_ptr = SPVM_DYNAMIC_ARRAY_pop(auto_dec_ref_count_base_stack);
                 int32_t auto_dec_ref_count_base = *auto_dec_ref_count_base_ptr;
                 
-                while (auto_dec_ref_count_stack->length > auto_dec_ref_count_base) {
-                  SPVM_DYNAMIC_ARRAY_pop(auto_dec_ref_count_stack);
+                if (auto_dec_ref_count_base < auto_dec_ref_count_stack->length) {
+                  while (auto_dec_ref_count_stack->length > auto_dec_ref_count_base) {
+                    SPVM_DYNAMIC_ARRAY_pop(auto_dec_ref_count_stack);
+                  }
+                  
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  opcode.code = SPVM_OPCODE_C_CODE_LEAVE_SCOPE;
+                  opcode.operand0 = auto_dec_ref_count_base;
+                  
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
-                
-                SPVM_OPCODE opcode;
-                memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                opcode.code = SPVM_OPCODE_C_CODE_LEAVE_SCOPE;
-                opcode.operand0 = auto_dec_ref_count_base;
-                
-                SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 
                 break;
               }
