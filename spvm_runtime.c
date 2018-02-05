@@ -59,82 +59,45 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+
+  // Subroutine is native
+  int32_t sub_is_native = constant_pool_sub->is_native;
+
+  // Subroutine is JIT
+  int32_t sub_is_jit = constant_pool_sub->is_jit;
   
   // Subroutine mys length
   int32_t sub_mys_length = constant_pool_sub->mys_length;
   
-  // Subroutine object my length
-  int32_t sub_object_mys_length = constant_pool_sub->object_mys_length;
-  
-  // Subroutine object my base index
-  int32_t sub_object_mys_base = constant_pool_sub->object_mys_base;
+  // Args length
+  int32_t args_length = constant_pool_sub->args_length;
   
   // Subroutine return type id
   int32_t sub_return_type_id = constant_pool_sub->return_type_id;
   
-  // Subroutine is native
-  int32_t sub_is_native = constant_pool_sub->is_native;
-  
-  // Subroutine object args length
-  int32_t sub_object_args_length = constant_pool_sub->object_args_length;
-
-  // Subroutine object args length
-  int32_t sub_object_args_base = constant_pool_sub->object_args_base;
-  
-  int32_t sub_is_jit = constant_pool_sub->is_jit;
-  
-  void* sub_jit_address = constant_pool_sub->jit_address;
-  
-  // Bytecodes
-  SPVM_OPCODE* opcodes = runtime->opcodes;
-  
-  // Opcode base
-  int32_t sub_opcode_base = constant_pool_sub->opcode_base;
-  
-  // Args length
-  int32_t args_length = constant_pool_sub->args_length;
-  
-  // Native address
-  void* sub_native_address = constant_pool_sub->native_address;
-  
-  // Constant pool type
+  // Subroutine return type
   SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
-
-  // Return type code
+  
+  // Subroutine return type code
   int32_t sub_return_type_code = sub_return_type->code;
   
   // Call stack
   SPVM_API_VALUE vars[65535];
   
-  // Call subroutine argument stack
-  SPVM_API_VALUE call_sub_arg_stack[255];
-  
-  // Call subroutine argument stack top
-  int32_t call_sub_arg_stack_top = -1;
-  
-  // Auto decrement reference count variable index stack
-  SPVM_API_OBJECT* auto_dec_ref_count_stack[65535];
-  
-  // Auto decrement reference count variable index stack top
-  int32_t auto_dec_ref_count_stack_top = -1;
-  
-  // Condition flag
-  register int32_t condition_flag = 0;
-  
   // Return value
   SPVM_API_VALUE return_value;
   
-  // Croak flag
-  int32_t croak_flag = 0;
-  
   // Copy arguments
   memcpy(vars, args, args_length * sizeof(SPVM_API_VALUE));
-
+  
   // Set exception to NULL at start of subroutine
   SPVM_INLINE_SET_EXCEPTION_NULL();
   
   // Call native sub
   if (sub_is_native) {
+    // Native address
+    void* sub_native_address = constant_pool_sub->native_address;
+  
     if (sub_return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
       void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       (*native_address)(api, (SPVM_API_VALUE*)vars);
@@ -178,6 +141,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   }
   // Call JIT sub
   else if (sub_is_jit) {
+    
+    void* sub_jit_address = constant_pool_sub->jit_address;
+    
     // Call JIT subroutine
     if (sub_return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
       void (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
@@ -220,6 +186,42 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     }
     return return_value;
   }
+
+  // Subroutine object my length
+  int32_t sub_object_mys_length = constant_pool_sub->object_mys_length;
+  
+  // Subroutine object my base index
+  int32_t sub_object_mys_base = constant_pool_sub->object_mys_base;
+  
+  // Subroutine object args length
+  int32_t sub_object_args_length = constant_pool_sub->object_args_length;
+
+  // Subroutine object args length
+  int32_t sub_object_args_base = constant_pool_sub->object_args_base;
+
+  // Bytecodes
+  SPVM_OPCODE* opcodes = runtime->opcodes;
+  
+  // Opcode base
+  int32_t sub_opcode_base = constant_pool_sub->opcode_base;
+
+  // Call subroutine argument stack
+  SPVM_API_VALUE call_sub_arg_stack[255];
+  
+  // Call subroutine argument stack top
+  int32_t call_sub_arg_stack_top = -1;
+  
+  // Auto decrement reference count variable index stack
+  SPVM_API_OBJECT* auto_dec_ref_count_stack[65535];
+  
+  // Auto decrement reference count variable index stack top
+  int32_t auto_dec_ref_count_stack_top = -1;
+  
+  // Condition flag
+  register int32_t condition_flag = 0;
+
+  // Croak flag
+  int32_t croak_flag = 0;
 
   // Call normal sub
   // If arg is object, increment reference count
