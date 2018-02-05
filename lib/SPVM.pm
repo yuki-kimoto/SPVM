@@ -185,11 +185,12 @@ sub bind_jitcode {
   my $shared_lib_file = shift;
   
   # Subroutine names
-  my $sub_names = SPVM::get_sub_names();
+  my $sub_names = get_no_native_sub_names();
   for my $sub_abs_name (@$sub_names) {
     my $jit_sub_name = $sub_abs_name;
     $jit_sub_name =~ s/:/_/g;
     $jit_sub_name = "SPVM_JITCODE_$jit_sub_name";
+    
 
     my $sub_jit_address = search_native_address($shared_lib_file, $jit_sub_name);
     unless ($sub_jit_address) {

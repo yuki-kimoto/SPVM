@@ -482,6 +482,11 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
       int32_t sub_id = constant_pool[subs_base + sub_index];
       
       SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+      
+      if (constant_pool_sub->is_native) {
+        continue;
+      }
+      
       int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
       
       // Subroutine name
