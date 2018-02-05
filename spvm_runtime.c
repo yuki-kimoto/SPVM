@@ -123,9 +123,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Croak flag
   int32_t croak_flag = 0;
   
-  // Initialize variables
-  memset(vars, 0, sizeof(SPVM_API_VALUE) * sub_mys_length);
-
   // Copy arguments
   memcpy(vars, args, args_length * sizeof(SPVM_API_VALUE));
 

@@ -647,7 +647,7 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
         if (constant_pool_sub->mys_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE vars[");
           SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->mys_length);
-          SPVM_STRING_BUFFER_add(string_buffer, "] = {};\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "];\n");
         }
         
         // Copy arguments to variables
