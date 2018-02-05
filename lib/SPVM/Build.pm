@@ -294,10 +294,20 @@ sub compile_jitcode {
   );
   push @$object_files, $object_file;
   
+  # JIT Subroutine names
+  my $sub_names = SPVM::get_sub_names();
+  my @jit_sub_names;
+  for my $abs_name (@$sub_names) {
+    my $jit_sub_name = $abs_name;
+    $jit_sub_name =~ s/:/_/g;
+    $jit_sub_name = "SPVM_JITCODE_$jit_sub_name";
+    push @jit_sub_names, $jit_sub_name;
+  }
+  
   my $lib_file = $cbuilder->link(
     objects => $object_files,
     module_name => 'SPVM::JITCode',
-    dl_func_list => ['SPVM_JITCODE_call_sub'],
+    dl_func_list => ['SPVM_JITCODE_call_sub', @jit_sub_names],
     extra_linker_flags => ''
   );
   
