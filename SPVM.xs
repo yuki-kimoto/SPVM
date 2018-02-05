@@ -3375,6 +3375,33 @@ bind_jitcode_call_sub(...)
 }
 
 SV*
+bind_jitcode_sub(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_sub_abs_name = ST(0);
+  SV* sv_sub_native_address = ST(1);
+  
+  const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
+  void* sub_jit_address = (void*)SvIV(sv_sub_native_address);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  int32_t sub_id = api->get_sub_id(api, sub_abs_name);
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  
+  // Subroutine information
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  
+  constant_pool_sub->jit_address = sub_jit_address;
+  
+  XSRETURN(0);
+}
+
+SV*
 build_field_symtable(...)
   PPCODE:
 {
