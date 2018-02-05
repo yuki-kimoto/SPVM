@@ -1,4 +1,4 @@
-0.0308 2018-02-02
+0.0308 2018-02-05
   - implement Perl compatible GC system correctory
   - fix eval block stack bug
 0.0307 2018-02-01
