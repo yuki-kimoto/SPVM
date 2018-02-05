@@ -81,6 +81,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Subroutine object args length
   int32_t sub_object_args_base = constant_pool_sub->object_args_base;
   
+  int32_t sub_is_jit = constant_pool_sub->is_jit;
+  
+  void* sub_jit_address = constant_pool_sub->jit_address;
+  
   // Bytecodes
   SPVM_OPCODE* opcodes = runtime->opcodes;
   
@@ -131,8 +135,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   // Call native sub
   if (sub_is_native) {
-
-    // Call native subroutine
     if (sub_return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
       void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
       (*native_address)(api, (SPVM_API_VALUE*)vars);
@@ -174,7 +176,51 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     }
     return return_value;
   }
-  
+  // Call JIT sub
+  else if (sub_is_jit) {
+    // Call JIT subroutine
+    if (sub_return_type_code == SPVM_INFO_TYPE_CODE_VOID) {
+      void (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
+      (*jit_address)(api, (SPVM_API_VALUE*)vars);
+    }
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_BYTE) {
+      SPVM_API_byte (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
+      SPVM_API_byte return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)vars);
+      *(SPVM_API_byte*)&return_value = return_value_jit;
+    }
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_SHORT) {
+      SPVM_API_short (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
+      SPVM_API_short return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)vars);
+      *(SPVM_API_short*)&return_value = return_value_jit;
+    }
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_INT) {
+      SPVM_API_int (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
+      SPVM_API_int return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)vars);
+      *(SPVM_API_int*)&return_value = return_value_jit;
+    }
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_LONG) {
+      SPVM_API_long (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
+      SPVM_API_long return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)vars);
+      *(SPVM_API_long*)&return_value = return_value_jit;
+    }
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_FLOAT) {
+      float (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
+      float return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)vars);
+      *(float*)&return_value = return_value_jit;
+    }
+    else if (sub_return_type_code == SPVM_INFO_TYPE_CODE_DOUBLE) {
+      double (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
+      double return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)vars);
+      *(double*)&return_value = return_value_jit;
+    }
+    else {
+      SPVM_API_OBJECT* (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
+      SPVM_API_OBJECT* return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)vars);
+      return_value.object_value = return_value_jit;
+    }
+    return return_value;
+  }
+
   // Call normal sub
   // If arg is object, increment reference count
   {

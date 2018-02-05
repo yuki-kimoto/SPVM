@@ -1,3 +1,5 @@
+0.0309 2018-02-05
+  - jit code is called from virtual machine
 0.0308 2018-02-05
   - implement Perl compatible GC system correctory
   - fix eval block stack bug

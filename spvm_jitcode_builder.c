@@ -427,7 +427,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   
   // C library
   SPVM_STRING_BUFFER_add(string_buffer, "#include <stdlib.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <stdio.h>\n");
   
   // API header
   SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
@@ -2203,64 +2202,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   }
 
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
-  // Define call_sub
-  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_VALUE SPVM_JITCODE_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE return_value;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  switch(sub_id) {\n");
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < subs_length; sub_index++) {
-      int32_t sub_id = constant_pool[subs_base + sub_index];
-      
-      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-      int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
-      
-      // Subroutine name
-      const char* sub_abs_name = (char*)&constant_pool[sub_abs_name_id + 1];
-      
-      // Return type code
-      int32_t return_type_id = constant_pool_sub->return_type_id;
-      SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "    case ");
-      SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
-      SPVM_STRING_BUFFER_add(string_buffer, ":\n");
-
-      SPVM_STRING_BUFFER_add(string_buffer, "      ");
-
-      // Return value
-      if (!constant_pool_sub->is_void) {
-        SPVM_STRING_BUFFER_add(string_buffer, "*(");
-        SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(return_type->code));
-        SPVM_STRING_BUFFER_add(string_buffer, "*)&return_value = ");
-      }
-      
-      // Subroutine name. Replace : to _
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
-      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_abs_name);
-      {
-        int32_t index = string_buffer->length - strlen(sub_abs_name);
-        
-        while (index < string_buffer->length) {
-          if (string_buffer->buffer[index] == ':') {
-            string_buffer->buffer[index] = '_';
-          }
-          index++;
-        }
-      }
-      
-      // Arguments
-      SPVM_STRING_BUFFER_add(string_buffer, "(api, args);\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      break;\n");
-    }
-  }
-  SPVM_STRING_BUFFER_add(string_buffer, "    default:\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      fprintf(stderr, \"Unknown subroutine is called in SPVM_JITCODE_call_sub(). subroutine id is %%d.\", sub_id);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      exit(1);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  return return_value;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "}\n");
   
   const char* jit_source_file = runtime->jit_source_file;
   FILE* jitcode_fh = fopen(jit_source_file, "w");

@@ -174,15 +174,6 @@ sub bind_native_subs {
 sub bind_jitcode {
   my $shared_lib_file = shift;
   
-  my $call_sub_name = 'SPVM_JITCODE_call_sub';
-  my $call_sub_native_address = search_native_address($shared_lib_file, $call_sub_name);
-  
-  unless ($call_sub_native_address) {
-    confess "Can't get jitcode call_sub native_address";
-  }
-  
-  bind_jitcode_call_sub($call_sub_native_address);
-
   # Subroutine names
   my $sub_names = SPVM::get_sub_names();
   for my $sub_abs_name (@$sub_names) {
