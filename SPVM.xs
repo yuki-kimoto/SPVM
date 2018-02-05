@@ -73,6 +73,33 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   }
 }
 
+static PerlInterpreter *my_perl;  /***    The Perl interpreter    ***/
+
+int SPVM_STAB_new_jitcode_sub(SPVM_API* api, const char* sub_name) {
+  dSP;
+  int count;
+
+  ENTER;
+  SAVETMPS;
+
+  PUSHMARK(SP);
+  XPUSHs(sv_2mortal(newSVpv(sub_name, 0)));
+  PUTBACK;
+
+  count = call_pv("SPVM::new_jitcode_sub", G_SCALAR);
+
+  SPAGAIN;
+
+  if (count != 1)
+      croak("Big trouble\n");
+
+  int32_t success = POPi;
+
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+}
+
 MODULE = SPVM::Core::Object		PACKAGE = SPVM::Core::Object
 
 SV*
@@ -3495,6 +3522,8 @@ call_sub(...)
   SV* sviv_api = SvRV(sv_api);
   size_t iv_api = SvIV(sviv_api);
   SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
+
+  // SPVM_STAB_new_jitcode_sub(api, "Point::foo");
   
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   int32_t sub_id = api->get_sub_id(api, sub_abs_name);
