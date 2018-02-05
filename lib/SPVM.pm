@@ -182,6 +182,21 @@ sub bind_jitcode {
   }
   
   bind_jitcode_call_sub($call_sub_native_address);
+
+  # Subroutine names
+  my $sub_names = SPVM::get_sub_names();
+  for my $sub_abs_name (@$sub_names) {
+    my $jit_sub_name = $sub_abs_name;
+    $jit_sub_name =~ s/:/_/g;
+    $jit_sub_name = "SPVM_JITCODE_$jit_sub_name";
+
+    my $sub_jit_address = search_native_address($shared_lib_file, $jit_sub_name);
+    unless ($sub_jit_address) {
+      confess "Can't get $sub_abs_name jitcode address";
+    }
+    
+    bind_jitcode_sub($sub_abs_name, $sub_jit_address);
+  }
 }
 
 # Compile SPVM source code just after compile-time of Perl

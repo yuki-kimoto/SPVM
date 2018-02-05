@@ -3397,6 +3397,7 @@ bind_jitcode_sub(...)
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
   
   constant_pool_sub->jit_address = sub_jit_address;
+  constant_pool_sub->is_jit = 1;
   
   XSRETURN(0);
 }
