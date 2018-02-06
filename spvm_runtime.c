@@ -146,6 +146,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     constant_pool_sub->call_count++;
   }
   
+  if (!sub_is_jit) {
+    // api->compile_jit_sub(api, sub_id);
+  }
+  
   // Call JIT sub
   if (sub_is_jit) {
     

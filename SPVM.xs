@@ -37,6 +37,8 @@
 #include "spvm_jitcode_builder.h"
 #include "spvm_dynamic_array.h"
 #include "spvm_constant_pool_builder.h"
+#include "spvm_jitcode_builder.h"
+#include "spvm_string_buffer.h"
 
 static SPVM_API_VALUE call_sub_args[255];
 
@@ -76,11 +78,24 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
 int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   dSP;
 
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  
+  // Subroutine information
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  
+  // String buffer for jitcode
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
+  
+  // Build sub jitcode
+  SPVM_JITCODE_BUILDER_build_sub_jitcode(string_buffer, sub_id);
+  
+  SV* sv_jitcode_source = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
+  
   ENTER;
   SAVETMPS;
 
   PUSHMARK(SP);
-  XPUSHs(sv_2mortal(newSViv(sub_id)));
+  XPUSHs(sv_jitcode_source);
   PUTBACK;
 
   call_pv("SPVM::compile_jit_sub", G_SCALAR);
@@ -92,6 +107,8 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   PUTBACK;
   FREETMPS;
   LEAVE;
+  
+  
   
   return success;
 }

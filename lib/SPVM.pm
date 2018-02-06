@@ -37,10 +37,28 @@ require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
 sub compile_jit_sub {
-  my ($sub_id) = @_;
+  my ($sub_jitcode_source) = @_;
+
+  # Build JIT code
+  my $jit_source_dir = tempdir(CLEANUP => 1);
+  my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
   
-  warn "AAAAAAAAAAAAA $sub_id";
+  open my $fh, '>', $jit_source_file
+    or die "Can't create $jit_source_file";
+  print $fh $sub_jitcode_source;
+  close $fh;
   
+  my $shared_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
+  
+=pod
+  my $sub_jit_address = search_native_address($shared_lib_file, $jit_sub_name);
+  unless ($sub_jit_address) {
+    confess "Can't get $sub_abs_name jitcode address";
+  }
+  
+  bind_jitcode_sub($sub_abs_name, $sub_jit_address);
+=cut
+
   my $success = 1;
   
   return $success;
