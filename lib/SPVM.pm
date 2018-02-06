@@ -36,7 +36,7 @@ our %PACKAGE_INFO_SYMTABLE;
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
-sub new_jitcode_sub {
+sub compile_jit_sub {
   my ($sub_name) = @_;
   
   warn "AAAAAAAAAAAAA $sub_name";

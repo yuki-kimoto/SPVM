@@ -73,11 +73,8 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   }
 }
 
-static PerlInterpreter *my_perl;  /***    The Perl interpreter    ***/
-
-int SPVM_STAB_new_jitcode_sub(SPVM_API* api, const char* sub_name) {
+int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, const char* sub_name) {
   dSP;
-  int count;
 
   ENTER;
   SAVETMPS;
@@ -86,18 +83,17 @@ int SPVM_STAB_new_jitcode_sub(SPVM_API* api, const char* sub_name) {
   XPUSHs(sv_2mortal(newSVpv(sub_name, 0)));
   PUTBACK;
 
-  count = call_pv("SPVM::new_jitcode_sub", G_SCALAR);
+  call_pv("SPVM::compile_jit_sub", G_SCALAR);
 
   SPAGAIN;
-
-  if (count != 1)
-      croak("Big trouble\n");
 
   int32_t success = POPi;
 
   PUTBACK;
   FREETMPS;
   LEAVE;
+  
+  return success;
 }
 
 MODULE = SPVM::Core::Object		PACKAGE = SPVM::Core::Object
@@ -3526,7 +3522,7 @@ build_runtime(...)
   SV* sv_api = sv_2mortal(newRV_inc(sviv_api));
   sv_setsv(get_sv("SPVM::API", 0), sv_api);
   
-  // SPVM_STAB_new_jitcode_sub(api, "Point::foo");
+  SPVM_XS_UTIL_compile_jit_sub(api, "Point::foo");
 
   XSRETURN(0);
 }
