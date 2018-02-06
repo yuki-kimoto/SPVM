@@ -1459,7 +1459,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
                 SPVM_STRING_BUFFER_add(string_buffer, "      for (index = auto_dec_ref_count_stack_base; index <= auto_dec_ref_count_stack_top; index++) {\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        int32_t var_index = auto_dec_ref_count_stack[index];\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        if (*(SPVM_API_OBJECT**)&vars[var_index] != SPVM_JITCODE_C_NULL) {\n");
-                SPVM_STRING_BUFFER_add(string_buffer, "          api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]);\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "          if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&vars[var_index]) > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&vars[var_index]); }\n");
+                SPVM_STRING_BUFFER_add(string_buffer, "          else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]); }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
                 SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
