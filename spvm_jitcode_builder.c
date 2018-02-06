@@ -425,6 +425,10 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
+  // Include header
+  SPVM_STRING_BUFFER_add(string_buffer, "#ifndef SPVM_JITCODE_BUILDER_H\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_BUILDER_H\n");
+  
   // API header
   SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
@@ -468,6 +472,8 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
 
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_ISWEAK(object) ((intptr_t)object & 1)\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
+
+  SPVM_STRING_BUFFER_add(string_buffer, "#endif\n");
   
   // Constant pool
   int32_t* constant_pool = runtime->constant_pool;
