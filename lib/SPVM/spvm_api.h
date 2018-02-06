@@ -31,6 +31,11 @@ typedef int64_t SPVM_API_long;
 typedef float SPVM_API_float;
 typedef double SPVM_API_double;
 
+
+
+
+
+
 struct SPVM_api {
   SPVM_API_VALUE (*call_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   int32_t (*get_array_length)(SPVM_API*, SPVM_API_OBJECT*);
@@ -99,5 +104,6 @@ struct SPVM_api {
   SPVM_API_OBJECT* (*concat_string_string)(SPVM_API* api, SPVM_API_OBJECT* string1, SPVM_API_OBJECT* string2);
   void (*weaken_object_field)(SPVM_API* api, SPVM_API_OBJECT* object, int32_t field_id);
   SPVM_API_OBJECT* (*create_exception_stack_trace)(SPVM_API* api, int32_t sub_id, SPVM_API_OBJECT* excetpion, int32_t current_line);
+  int32_t (*compile_jit_sub)(SPVM_API* api, int32_t sub_id);
 };
 #endif

@@ -37,9 +37,9 @@ require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
 sub compile_jit_sub {
-  my ($sub_name) = @_;
+  my ($sub_id) = @_;
   
-  warn "AAAAAAAAAAAAA $sub_name";
+  warn "AAAAAAAAAAAAA $sub_id";
   
   my $success = 1;
   

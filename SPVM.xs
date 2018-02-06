@@ -73,14 +73,14 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   }
 }
 
-int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, const char* sub_name) {
+int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   dSP;
 
   ENTER;
   SAVETMPS;
 
   PUSHMARK(SP);
-  XPUSHs(sv_2mortal(newSVpv(sub_name, 0)));
+  XPUSHs(sv_2mortal(newSViv(sub_id)));
   PUTBACK;
 
   call_pv("SPVM::compile_jit_sub", G_SCALAR);
@@ -3522,7 +3522,7 @@ build_runtime(...)
   SV* sv_api = sv_2mortal(newRV_inc(sviv_api));
   sv_setsv(get_sv("SPVM::API", 0), sv_api);
   
-  SPVM_XS_UTIL_compile_jit_sub(api, "Point::foo");
+  api->compile_jit_sub = &SPVM_XS_UTIL_compile_jit_sub;
 
   XSRETURN(0);
 }

@@ -22,6 +22,7 @@ struct SPVM_constant_pool_sub {
   int32_t my_type_ids_base;
   int32_t eval_stack_max_length;
   int32_t auto_dec_ref_count_stack_max_length;
+  int32_t call_count;
   _Bool is_native;
   _Bool is_destructor;
   _Bool is_void;

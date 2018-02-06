@@ -21,6 +21,21 @@
 #include "spvm_hash.h"
 #include "spvm_util_allocator.h"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_call_sub,
   SPVM_RUNTIME_API_get_array_length,
@@ -89,6 +104,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_concat_string_string,
   SPVM_RUNTIME_API_weaken_object_field,
   SPVM_RUNTIME_API_create_exception_stack_trace,
+  NULL
 };
 
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, int32_t sub_id, SPVM_OBJECT* exception, int32_t current_line) {
