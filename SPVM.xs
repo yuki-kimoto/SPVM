@@ -91,10 +91,13 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   
   SV* sv_jitcode_source = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   
+  SV* sv_sub_id = sv_2mortal(newSViv(sub_id));
+  
   ENTER;
   SAVETMPS;
 
   PUSHMARK(SP);
+  XPUSHs(sv_sub_id);
   XPUSHs(sv_jitcode_source);
   PUTBACK;
 
@@ -3241,6 +3244,31 @@ build_jitcode(...)
   SPVM_JITCODE_BUILDER_build_jitcode();
   
   XSRETURN(0);
+}
+
+SV*
+get_sub_name(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_sub_id = ST(0);
+  int32_t sub_id = (int32_t)SvIV(sv_sub_id);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  int32_t sub_name_id = constant_pool_sub->abs_name_id;
+  int32_t sub_name_length = runtime->constant_pool[sub_name_id];
+  const char* sub_name = (char*)&runtime->constant_pool[sub_name_id + 1];
+  
+  SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, sub_name_length));
+  
+  XPUSHs(sv_sub_name);
+  XSRETURN(1);
 }
 
 SV*
