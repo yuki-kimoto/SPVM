@@ -63,6 +63,11 @@ sub compile_jit_sub {
   print $fh $sub_jitcode_source;
   close $fh;
   
+  if ($jit_source_file =~ /TestCase__special_assign/) {
+    # warn $jit_source_file;
+    # sleep 300;
+  }
+  
   # warn "$sub_abs_name";
   my $shared_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
   
