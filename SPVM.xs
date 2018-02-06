@@ -3519,7 +3519,7 @@ build_runtime(...)
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
   
-  // SPVM API
+  // Set API
   SPVM_API* api = runtime->api;
   size_t iv_api = PTR2IV(api);
   SV* sviv_api = sv_2mortal(newSViv(iv_api));
@@ -3555,11 +3555,8 @@ call_sub(...)
   
   SV* sv_sub_abs_name = ST(0);
   
-  // Get API
-  SV* sv_api = get_sv("SPVM::API", 0);
-  SV* sviv_api = SvRV(sv_api);
-  size_t iv_api = SvIV(sviv_api);
-  SPVM_API* api = INT2PTR(SPVM_API*, iv_api);
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
 
   // SPVM_STAB_new_jitcode_sub(api, "Point::foo");
   
