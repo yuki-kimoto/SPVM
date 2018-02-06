@@ -3526,6 +3526,8 @@ build_runtime(...)
   SV* sv_api = sv_2mortal(newRV_inc(sviv_api));
   sv_setsv(get_sv("SPVM::API", 0), sv_api);
   
+  // SPVM_STAB_new_jitcode_sub(api, "Point::foo");
+
   XSRETURN(0);
 }
 
@@ -3558,8 +3560,6 @@ call_sub(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
-  // SPVM_STAB_new_jitcode_sub(api, "Point::foo");
-  
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   int32_t sub_id = api->get_sub_id(api, sub_abs_name);
   
