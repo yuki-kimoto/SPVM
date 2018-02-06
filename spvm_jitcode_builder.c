@@ -425,56 +425,6 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
-  // Include header
-  SPVM_STRING_BUFFER_add(string_buffer, "#ifndef SPVM_JITCODE_BUILDER_H\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_BUILDER_H\n");
-  
-  // API header
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
-  // Constant macro
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_NULL 0\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_RUNTIME ");
-  SPVM_STRING_BUFFER_add_address(string_buffer, runtime);
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, sizeof(SPVM_OBJECT));
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_OBJECT_LENGTH_BYTE_OFFSET ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, (int32_t)offsetof(SPVM_OBJECT, length));
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, (int32_t)offsetof(SPVM_OBJECT, ref_count));
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, (int32_t)offsetof(SPVM_RUNTIME, exception));
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
-  // Inline macro function
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET)))\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET))++)\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET))--)\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET))\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL()\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  do { \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if ((*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET)) != SPVM_JITCODE_C_NULL) { \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET))); \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET)) = SPVM_JITCODE_C_NULL; \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  } \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  while (0) \\\n\n");
-
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_ISWEAK(object) ((intptr_t)object & 1)\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-
-  SPVM_STRING_BUFFER_add(string_buffer, "#endif\n");
-  
   // Constant pool
   int32_t* constant_pool = runtime->constant_pool;
 
@@ -485,6 +435,57 @@ void SPVM_JITCODE_BUILDER_build_jitcode() {
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < subs_length; sub_index++) {
+      
+      // Include header
+      SPVM_STRING_BUFFER_add(string_buffer, "#ifndef SPVM_JITCODE_BUILDER_H\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_BUILDER_H\n");
+      
+      // API header
+      SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+      
+      // Constant macro
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_NULL 0\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_RUNTIME ");
+      SPVM_STRING_BUFFER_add_address(string_buffer, runtime);
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE ");
+      SPVM_STRING_BUFFER_add_int(string_buffer, sizeof(SPVM_OBJECT));
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_OBJECT_LENGTH_BYTE_OFFSET ");
+      SPVM_STRING_BUFFER_add_int(string_buffer, (int32_t)offsetof(SPVM_OBJECT, length));
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET ");
+      SPVM_STRING_BUFFER_add_int(string_buffer, (int32_t)offsetof(SPVM_OBJECT, ref_count));
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET ");
+      SPVM_STRING_BUFFER_add_int(string_buffer, (int32_t)offsetof(SPVM_RUNTIME, exception));
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+      
+      // Inline macro function
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET)))\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET))++)\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET))--)\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET))\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL()\\\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  do { \\\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    if ((*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET)) != SPVM_JITCODE_C_NULL) { \\\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET))); \\\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    } \\\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET)) = SPVM_JITCODE_C_NULL; \\\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  } \\\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  while (0) \\\n\n");
+
+      SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_ISWEAK(object) ((intptr_t)object & 1)\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+
+      SPVM_STRING_BUFFER_add(string_buffer, "#endif\n");
+
       int32_t sub_id = constant_pool[subs_base + sub_index];
       
       SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
