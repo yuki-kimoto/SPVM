@@ -24,3 +24,4 @@ SPVM.c
 SPVM-.*
 ^core\.
 ^solo/jitcode/
+^spvm_home_dir/

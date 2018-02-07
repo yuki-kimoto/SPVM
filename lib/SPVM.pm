@@ -32,6 +32,7 @@ our $COMPILER;
 our $API;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
+our $HOME_DIR;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
@@ -55,7 +56,7 @@ sub compile_jit_sub {
   my $jit_sub_name = SPVM::create_jit_sub_name($sub_abs_name);
   
   # Build JIT code
-  my $jit_source_dir = tempdir(CLEANUP => 1);
+  my $jit_source_dir = $SPVM::HOME_DIR;
   my $jit_source_file = "$jit_source_dir/$jit_sub_name.c";
   
   open my $fh, '>', $jit_source_file
@@ -103,6 +104,8 @@ sub import {
       return $package_info;
     }
   }
+  
+  $SPVM::HOME_DIR = $ENV{SPVM_HOME_DIR} || tempdir(CLEANUP => 1);
   
   return;
 }
@@ -218,26 +221,6 @@ sub bind_native_subs {
   }
 }
 
-sub bind_jitcode {
-  my $shared_lib_file = shift;
-  
-  # Subroutine names
-  my $sub_names = get_no_native_sub_names();
-  for my $sub_abs_name (@$sub_names) {
-    my $jit_sub_name = $sub_abs_name;
-    $jit_sub_name =~ s/:/_/g;
-    $jit_sub_name = "SPVM_JITCODE_$jit_sub_name";
-    
-
-    my $sub_jit_address = search_native_address($shared_lib_file, $jit_sub_name);
-    unless ($sub_jit_address) {
-      confess "Can't get $sub_abs_name jitcode address";
-    }
-    
-    bind_jitcode_sub($sub_abs_name, $sub_jit_address);
-  }
-}
-
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
   unless ($ENV{SPVM_NO_COMPILE}) {
@@ -291,24 +274,6 @@ sub compile_spvm {
     
     # Free compiler
     free_compiler();
-
-=pod    
-    if (defined $ENV{SPVM_JIT_ALL}) {
-      # Build JIT code
-      my $jit_source_dir = tempdir(CLEANUP => 1);
-      my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
-      build_jitcode($jit_source_file);
-      
-      open my $fh, '<', $jit_source_file
-        or die "aaa";
-      my $jit_source_content = do { local $/; <$fh> };
-      #print $jit_source_content;
-      
-      # Compile JIT code
-      my $jitcode_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
-      bind_jitcode($jitcode_lib_file);
-    }
-=cut
 
     # Build SPVM subroutines
     build_spvm_subs();

@@ -28,3 +28,5 @@ SPVM-*/
 *.tar
 solo/jitcode/*
 !solo/jitcode/.gitkeep
+spvm_home_dir/
+!spvm_home_dir/.gitkeep
