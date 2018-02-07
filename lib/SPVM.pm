@@ -292,7 +292,7 @@ sub compile_spvm {
     # Free compiler
     free_compiler();
     
-    if (defined $ENV{PERL_SPVM_JIT_ALL}) {
+    if (defined $ENV{SPVM_JIT_ALL}) {
       # Build JIT code
       my $jit_source_dir = tempdir(CLEANUP => 1);
       my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";

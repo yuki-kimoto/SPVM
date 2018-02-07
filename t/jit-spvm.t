@@ -6,7 +6,7 @@ use File::Basename 'basename';
 use FindBin;
 
 BEGIN {
-  $ENV{PERL_SPVM_JIT_ALL} = 1;
+  $ENV{SPVM_JIT_ALL} = 1;
 }
 
 use Test::More 'no_plan';
