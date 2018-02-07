@@ -268,15 +268,8 @@ sub compile_spvm {
     # Build run-time
     build_runtime();
     
-    # Free compiler
-    free_compiler();
-
     # Build SPVM subroutines
     build_spvm_subs();
-  }
-  else {
-    # Free compiler
-    free_compiler();
   }
   
   return $compile_success;
