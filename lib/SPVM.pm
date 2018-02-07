@@ -49,9 +49,11 @@ sub create_jit_sub_name {
   return $jit_sub_name;
 }
 
+my $count = 0;
+
 sub compile_jit_sub {
   my ($sub_id, $sub_jitcode_source) = @_;
-
+  
   my $sub_abs_name = SPVM::get_sub_name($sub_id);
   my $jit_sub_name = SPVM::create_jit_sub_name($sub_abs_name);
   
@@ -64,12 +66,6 @@ sub compile_jit_sub {
   print $fh $sub_jitcode_source;
   close $fh;
   
-  if ($jit_source_file =~ /TestCase__special_assign/) {
-    # warn $jit_source_file;
-    # sleep 300;
-  }
-  
-  # warn "$sub_abs_name";
   my $shared_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
   
   my $sub_jit_address = search_native_address($shared_lib_file, $jit_sub_name);
