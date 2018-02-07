@@ -3568,7 +3568,21 @@ build_runtime(...)
   sv_setsv(get_sv("SPVM::API", 0), sv_api);
   
   api->compile_jit_sub = &SPVM_XS_UTIL_compile_jit_sub;
-
+  
+  // JIT count
+  HV* hv_env = get_hv("ENV", 0);
+  SV** sv_jit_count_ptr = hv_fetch(hv_env, "SPVM_JIT_COUNT", strlen("SPVM_JIT_COUNT"), 0);
+  int32_t jit_count = 0;
+  if (sv_jit_count_ptr) {
+    jit_count = SvIV(*sv_jit_count_ptr);
+  }
+  if (jit_count <= 0) {
+    runtime->jit_count = 10000;
+  }
+  else {
+    runtime->jit_count = jit_count;
+  }
+  
   XSRETURN(0);
 }
 

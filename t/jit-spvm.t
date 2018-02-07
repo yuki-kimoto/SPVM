@@ -7,6 +7,7 @@ use FindBin;
 
 BEGIN {
   $ENV{SPVM_JIT_ALL} = 1;
+  $ENV{SPVM_JIT_COUNT} = 1;
 }
 
 use Test::More 'no_plan';
