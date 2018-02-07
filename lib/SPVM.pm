@@ -291,7 +291,8 @@ sub compile_spvm {
     
     # Free compiler
     free_compiler();
-    
+
+=pod    
     if (defined $ENV{SPVM_JIT_ALL}) {
       # Build JIT code
       my $jit_source_dir = tempdir(CLEANUP => 1);
@@ -307,7 +308,8 @@ sub compile_spvm {
       my $jitcode_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
       bind_jitcode($jitcode_lib_file);
     }
-    
+=cut
+
     # Build SPVM subroutines
     build_spvm_subs();
   }

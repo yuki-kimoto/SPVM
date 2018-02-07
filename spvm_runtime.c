@@ -140,14 +140,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     return return_value;
   }
   
-  // Compile JIT subroutine
-  if (!sub_is_jit && constant_pool_sub->call_count > 10000) {
-    api->compile_jit_sub(api, sub_id);
-    constant_pool_sub->call_count++;
-  }
+  constant_pool_sub->call_count++;
   
-  if (!sub_is_jit) {
-    // api->compile_jit_sub(api, sub_id);
+  // Compile JIT subroutine
+  if (!sub_is_jit && constant_pool_sub->call_count >= runtime->jit_count) {
+    api->compile_jit_sub(api, sub_id);
   }
   
   // Call JIT sub
