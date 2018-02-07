@@ -292,7 +292,7 @@ sub compile_spvm {
     # Free compiler
     free_compiler();
     
-    if (defined $ENV{PERL_SPVM_DIR}) {
+    if (defined $ENV{PERL_SPVM_JIT_ALL}) {
       # Build JIT code
       my $jit_source_dir = tempdir(CLEANUP => 1);
       my $jit_source_file = "$jit_source_dir/spvm_jitcode.c";
@@ -919,14 +919,6 @@ L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many example
 =head2 SPVM FAQ
 
 L<SPVM::Document::FAQ> - Oftten asked question.
-
-=head1 Environment Variable
-
-=head2 PERL_SPVM_DIR
-
-  PERL_SPVM_DIR=/var/data/spvm
-
-C<PERL_SPVM_DIR> is for SPVM cache and config directory.
 
 =head2 SUPPORT
 
