@@ -1800,16 +1800,16 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
             package_var_type = "SPVM_API_OBJECT*";
         }
         
-        SPVM_API_VALUE* package_vars = runtime->package_vars;
-        int32_t package_var_id = opcode->operand1;
-        SPVM_API_VALUE** package_var_address = (SPVM_API_VALUE**)&package_vars[package_var_id];
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, package_var_type, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = *(");
         SPVM_STRING_BUFFER_add(string_buffer, package_var_type);
         SPVM_STRING_BUFFER_add(string_buffer, "*)");
-        SPVM_STRING_BUFFER_add_address(string_buffer, package_var_address);
+        SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_API_VALUE**)(api->get_runtime(api) + ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_vars));
+        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, "]");
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         break;
