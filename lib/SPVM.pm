@@ -68,7 +68,7 @@ sub compile_jit_sub {
   
   my $shared_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
   
-  my $sub_jit_address = search_native_address($shared_lib_file, $jit_sub_name);
+  my $sub_jit_address = search_shared_lib_func_address($shared_lib_file, $jit_sub_name);
   unless ($sub_jit_address) {
     confess "Can't get $sub_abs_name jitcode address";
   }
@@ -130,7 +130,7 @@ sub _get_dll_file {
   return $shared_lib_file;
 }
 
-sub search_native_address {
+sub search_shared_lib_func_address {
   my ($shared_lib_file, $sub_abs_name) = @_;
   
   my $native_address;
@@ -167,7 +167,7 @@ sub get_sub_native_address {
   my $dll_package_name = $package_name;
   my $shared_lib_file = _get_dll_file($dll_package_name);
 
-  my $native_address = search_native_address($shared_lib_file, $sub_abs_name);
+  my $native_address = search_shared_lib_func_address($shared_lib_file, $sub_abs_name);
   
   # Try runtime compile
   unless ($native_address) {
@@ -196,7 +196,7 @@ sub get_sub_native_address {
       return;
     }
     else {
-      $native_address = search_native_address($shared_lib_file, $sub_abs_name);
+      $native_address = search_shared_lib_func_address($shared_lib_file, $sub_abs_name);
     }
   }
   
