@@ -1858,13 +1858,13 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_OBJECT: {
-        int32_t package_var_id = opcode->operand0;
-        SPVM_API_VALUE* package_vars = runtime->package_vars;
-        SPVM_API_VALUE** package_var_address = (SPVM_API_VALUE**)&package_vars[package_var_id];
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT** package_var_address = (SPVM_API_OBJECT**)");
-        SPVM_STRING_BUFFER_add_address(string_buffer, package_var_address);
+        SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_API_VALUE**)(api->get_runtime(api) + ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_vars));
+        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, "]");
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (*(SPVM_API_OBJECT**)package_var_address != SPVM_JITCODE_C_NULL) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*package_var_address) > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*package_var_address); }\n");
