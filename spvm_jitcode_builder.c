@@ -1448,9 +1448,16 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = api->new_string(api, (const char*)");
-        SPVM_STRING_BUFFER_add_address(string_buffer, name);
-        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_STRING_BUFFER_add(string_buffer, " = api->new_string(api, \"");
+        
+        {
+          int32_t i;
+          for (i = 0; i < length; i++) {
+            SPVM_STRING_BUFFER_add_hex_char(string_buffer, name[i]);
+          }
+        }
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
         SPVM_STRING_BUFFER_add_int(string_buffer, length);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;

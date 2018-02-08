@@ -54,6 +54,34 @@ void SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, char* string) {
   return;
 }
 
+void SPVM_STRING_BUFFER_add_hex_char(SPVM_STRING_BUFFER* string_buffer, char ch) {
+  
+  int32_t new_length = string_buffer->length + 4;
+  
+  // Extend
+  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
+  
+  sprintf(string_buffer->buffer + string_buffer->length, "\\x%02X", ch & 0x000000FF);
+  
+  string_buffer->length = new_length;
+  
+  return;
+}
+
+void SPVM_STRING_BUFFER_add_len(SPVM_STRING_BUFFER* string_buffer, char* string, int32_t string_length) {
+  
+  int32_t new_length = string_buffer->length + string_length;
+  
+  // Extend
+  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
+  
+  memcpy(string_buffer->buffer + string_buffer->length, string, string_length);
+  
+  string_buffer->length = new_length;
+  
+  return;
+}
+
 void SPVM_STRING_BUFFER_add_byte(SPVM_STRING_BUFFER* string_buffer, int8_t value) {
   
   int32_t max_length = 20;
@@ -144,22 +172,6 @@ void SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double val
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
   int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.70f", value);
-  
-  string_buffer->length += write_length;
-  
-  return;
-}
-
-void SPVM_STRING_BUFFER_add_address(SPVM_STRING_BUFFER* string_buffer, void* value) {
-  
-  int32_t max_length = 20;
-  
-  int32_t new_max_length = string_buffer->length + max_length;
-  
-  // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
-  
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%p", value);
   
   string_buffer->length += write_length;
   
