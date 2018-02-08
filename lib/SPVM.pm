@@ -60,15 +60,16 @@ sub compile_jit_sub {
   # Build JIT code
   my $jit_source_dir = $SPVM::HOME_DIR;
   my $jit_source_file = "$jit_source_dir/$jit_sub_name.c";
+  my $jit_shared_lib_file = "$jit_source_dir/$jit_sub_name.$Config{dlext}";
   
   open my $fh, '>', $jit_source_file
     or die "Can't create $jit_source_file";
   print $fh $sub_jitcode_source;
   close $fh;
   
-  my $shared_lib_file = SPVM::Build::compile_jitcode($jit_source_file);
+  SPVM::Build::compile_jitcode($jit_source_file);
   
-  my $sub_jit_address = search_shared_lib_func_address($shared_lib_file, $jit_sub_name);
+  my $sub_jit_address = search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   unless ($sub_jit_address) {
     confess "Can't get $sub_abs_name jitcode address";
   }
