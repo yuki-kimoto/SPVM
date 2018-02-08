@@ -1683,62 +1683,32 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_BYTE: {
-        // Get subroutine ID
-        int32_t package_var_id = opcode->operand0;
-        
-        SPVM_API_VALUE* package_vars = runtime->package_vars;
-        
-        *(SPVM_API_byte*)&package_vars[package_var_id] = *(SPVM_API_byte*)&vars[opcode->operand1];
+        *(SPVM_API_byte*)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand0] = *(SPVM_API_byte*)&vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_SHORT: {
-        // Get subroutine ID
-        int32_t package_var_id = opcode->operand0;
-        
-        SPVM_API_VALUE* package_vars = runtime->package_vars;
-        
-        *(SPVM_API_short*)&package_vars[package_var_id] = *(SPVM_API_short*)&vars[opcode->operand1];
+        *(SPVM_API_short*)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand0] = *(SPVM_API_short*)&vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_INT: {
-        // Get subroutine ID
-        int32_t package_var_id = opcode->operand0;
-        
-        SPVM_API_VALUE* package_vars = runtime->package_vars;
-        
-        *(SPVM_API_int*)&package_vars[package_var_id] = *(SPVM_API_int*)&vars[opcode->operand1];
+        *(SPVM_API_int*)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand0] = *(SPVM_API_int*)&vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_LONG: {
-        // Get subroutine ID
-        int32_t package_var_id = opcode->operand0;
-        
-        SPVM_API_VALUE* package_vars = runtime->package_vars;
-        
-        *(SPVM_API_long*)&package_vars[package_var_id] = *(SPVM_API_long*)&vars[opcode->operand1];
+        *(SPVM_API_long*)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand0] = *(SPVM_API_long*)&vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_FLOAT: {
-        // Get subroutine ID
-        int32_t package_var_id = opcode->operand0;
-        
-        SPVM_API_VALUE* package_vars = runtime->package_vars;
-        
-        *(float*)&package_vars[package_var_id] = *(float*)&vars[opcode->operand1];
+        *(float*)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand0] = *(float*)&vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_CODE_STORE_PACKAGE_VAR_DOUBLE: {
-        // Get subroutine ID
-        int32_t package_var_id = opcode->operand0;
-        
-        SPVM_API_VALUE* package_vars = runtime->package_vars;
-        
-        *(double*)&package_vars[package_var_id] = *(double*)&vars[opcode->operand1];
+        *(double*)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand0] = *(double*)&vars[opcode->operand1];
         
         break;
       }
