@@ -35,16 +35,6 @@
 #define SPVM_INLINE_GET_REF_COUNT(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET)))
 #define SPVM_INLINE_INC_REF_COUNT(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)
 #define SPVM_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
-#define SPVM_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)runtime + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))
-#define SPVM_INLINE_SET_EXCEPTION_NULL() \
-  do { \
-    if ((*(SPVM_API_OBJECT**)((intptr_t)runtime + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)) != NULL) { \
-      api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)runtime + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET))); \
-    } \
-    (*(SPVM_API_OBJECT**)((intptr_t)runtime + SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET)) = NULL; \
-  } \
-  while (0) \
-
 #define SPVM_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
 
@@ -91,7 +81,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   memcpy(vars, args, args_length * sizeof(SPVM_API_VALUE));
   
   // Set exception to NULL at start of subroutine
-  SPVM_INLINE_SET_EXCEPTION_NULL();
+  api->set_exception(api, NULL);
   
   // Call native sub
   if (sub_is_native) {
@@ -1576,7 +1566,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         api->weaken_object_field(api, object, field_id);
         
-        if (SPVM_INLINE_GET_EXCEPTION()) {
+        if (api->get_exception(api)) {
           croak_flag = 1;
         }
         break;
@@ -1645,7 +1635,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR: {
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = SPVM_INLINE_GET_EXCEPTION();
+        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->get_exception(api);
         
         break;
       }
@@ -1895,7 +1885,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->call_object_sub(api, call_sub_id, args);
         }
         
-        if (SPVM_INLINE_GET_EXCEPTION()) {
+        if (api->get_exception(api)) {
           croak_flag = 1;
         }
         break;
@@ -1905,7 +1895,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
           croak_flag = 0;
           
           // Exception stack trace
-          api->set_exception(api, api->create_exception_stack_trace(api, sub_id, SPVM_INLINE_GET_EXCEPTION(), opcode->operand1));
+          api->set_exception(api, api->create_exception_stack_trace(api, sub_id, api->get_exception(api), opcode->operand1));
           opcode_index = opcode->operand0;
           continue;
         }
@@ -1914,7 +1904,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_IF_CROAK_RETURN: {
         if (croak_flag) {
           // Exception stack trace
-          api->set_exception(api, api->create_exception_stack_trace(api, sub_id, SPVM_INLINE_GET_EXCEPTION(), opcode->operand1));
+          api->set_exception(api, api->create_exception_stack_trace(api, sub_id, api->get_exception(api), opcode->operand1));
           if (!constant_pool_sub->is_void) {
             memset(&return_value, 0, sizeof(SPVM_API_VALUE));
           }
@@ -2023,7 +2013,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         }
       }
       
-      SPVM_INLINE_SET_EXCEPTION_NULL();
+      api->set_exception(api, NULL);
     }
     
     return return_value;

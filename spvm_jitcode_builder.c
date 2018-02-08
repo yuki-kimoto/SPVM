@@ -442,10 +442,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   
   // Constant macro
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_NULL 0\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_RUNTIME ");
-  SPVM_STRING_BUFFER_add_address(string_buffer, runtime);
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_C_OBJECT_HEADER_BYTE_SIZE ");
   SPVM_STRING_BUFFER_add_int(string_buffer, sizeof(SPVM_OBJECT));
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
@@ -467,16 +463,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET)))\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_INC_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET))++)\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + SPVM_JITCODE_C_OBJECT_REF_COUNT_BYTE_OFFSET))--)\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_GET_EXCEPTION() (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET))\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL()\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  do { \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if ((*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET)) != SPVM_JITCODE_C_NULL) { \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      api->dec_ref_count(api, (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET))); \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    (*(SPVM_API_OBJECT**)((intptr_t)SPVM_JITCODE_C_RUNTIME + SPVM_JITCODE_C_RUNTIME_EXCEPTION_BYTE_OFFSET)) = SPVM_JITCODE_C_NULL; \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  } \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  while (0) \\\n\n");
-
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_JITCODE_INLINE_ISWEAK(object) ((intptr_t)object & 1)\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
 
@@ -569,7 +555,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Native subroutine
   if (constant_pool_sub->is_native) {
     // Set exception to NULL
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  api->set_exception(api, SPVM_JITCODE_C_NULL);;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
 
     // Assign native address
@@ -1703,7 +1689,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
           SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
           SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "  if (SPVM_JITCODE_INLINE_GET_EXCEPTION()) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (api->get_exception(api)) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           break;
@@ -1848,7 +1834,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         case SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, "   = SPVM_JITCODE_INLINE_GET_EXCEPTION();\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "   = api->get_exception(api);\n");
           break;
         }
         case SPVM_OPCODE_C_CODE_STORE_EXCEPTION_VAR: {
@@ -2052,7 +2038,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           }
           
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_JITCODE_INLINE_GET_EXCEPTION()) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -2066,7 +2052,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 0;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->create_exception_stack_trace(api, ");
           SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
-          SPVM_STRING_BUFFER_add(string_buffer, " , SPVM_JITCODE_INLINE_GET_EXCEPTION(), ");
+          SPVM_STRING_BUFFER_add(string_buffer, " , api->get_exception(api), ");
           SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
           SPVM_STRING_BUFFER_add(string_buffer, "));\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
@@ -2080,7 +2066,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->create_exception_stack_trace(api, ");
           SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
-          SPVM_STRING_BUFFER_add(string_buffer, " , SPVM_JITCODE_INLINE_GET_EXCEPTION(), ");
+          SPVM_STRING_BUFFER_add(string_buffer, " , api->get_exception(api), ");
           SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
           SPVM_STRING_BUFFER_add(string_buffer, "));\n");
           if (!sub_is_void) {
@@ -2183,7 +2169,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
         SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != SPVM_JITCODE_C_NULL) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(return_value); }\n");
       }
-      SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_JITCODE_INLINE_SET_EXCEPTION_NULL();\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, SPVM_JITCODE_C_NULL);\n");
       SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
       
       if (sub_is_void) {
