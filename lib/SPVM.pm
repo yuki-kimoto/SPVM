@@ -131,17 +131,14 @@ sub _get_dll_file {
 }
 
 sub search_shared_lib_func_address {
-  my ($shared_lib_file, $sub_abs_name) = @_;
+  my ($shared_lib_file, $shared_lib_func_name) = @_;
   
   my $native_address;
   
   if ($shared_lib_file) {
     my $dll_libref = DynaLoader::dl_load_file($shared_lib_file);
     if ($dll_libref) {
-      my $sub_abs_name_c = $sub_abs_name;
-      $sub_abs_name_c =~ s/:/_/g;
-      
-      $native_address = DynaLoader::dl_find_symbol($dll_libref, $sub_abs_name_c);
+      $native_address = DynaLoader::dl_find_symbol($dll_libref, $shared_lib_func_name);
     }
     else {
       return;
@@ -166,8 +163,10 @@ sub get_sub_native_address {
   
   my $dll_package_name = $package_name;
   my $shared_lib_file = _get_dll_file($dll_package_name);
-
-  my $native_address = search_shared_lib_func_address($shared_lib_file, $sub_abs_name);
+  
+  my $shared_lib_func_name = $sub_abs_name;
+  $shared_lib_func_name =~ s/:/_/g;
+  my $native_address = search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
   
   # Try runtime compile
   unless ($native_address) {
@@ -196,7 +195,7 @@ sub get_sub_native_address {
       return;
     }
     else {
-      $native_address = search_shared_lib_func_address($shared_lib_file, $sub_abs_name);
+      $native_address = search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
     }
   }
   
