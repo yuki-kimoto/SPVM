@@ -1664,31 +1664,45 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE opcode_switch_info;
                   memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
 
-                  opcode_switch_info.code = SPVM_OPCODE_C_CODE_LOOKUP_SWITCH;
+                  opcode_switch_info.code = SPVM_OPCODE_C_CODE_TABLE_SWITCH;
 
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
+                  
                   opcode_switch_info.operand0 = index_in;
                   
                   // Default
                   opcode_switch_info.operand1 = 0;
-                  
-                  // Case count
-                  int32_t case_length = switch_info->op_cases->length;
-                  opcode_switch_info.operand2 = case_length;
 
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
+
+                  SPVM_OPCODE opcode_table_switch_range;
+                  memset(&opcode_table_switch_range, 0, sizeof(SPVM_OPCODE));
+
+                  opcode_table_switch_range.code = SPVM_OPCODE_C_CODE_TABLE_SWITCH_RANGE;
                   
-                  // Switch opcode index
-                  int32_t switch_opcode_index = opcode_array->length - 1;
+                  // Minimal
+                  opcode_table_switch_range.operand0 = switch_info->min;
+                  
+                  // Max
+                  opcode_table_switch_range.operand1 = switch_info->max;
+
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_table_switch_range);
+
+                  // Switch bytecode index
+                  int32_t switch_opcode_index = opcode_array->length - 2;
                   switch_info->opcode_index = switch_opcode_index;
                   SPVM_DYNAMIC_ARRAY_push(switch_info_stack, switch_info);
                   
-                  // Match-Offsets
+                  // Jump offset length
+                  int32_t jump_offset_length = switch_info->max - switch_info->min + 1;
+                  
+                  // Branches
                   {
                     int32_t i;
-                    for (i = 0; i < case_length; i++) {
+                    for (i = 0; i < jump_offset_length; i++) {
                       SPVM_OPCODE opcode_case;
                       memset(&opcode_case, 0, sizeof(SPVM_OPCODE));
+                      opcode_case.code = SPVM_OPCODE_C_CODE_CASE;
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_case);
                     }
                   }
@@ -1740,77 +1754,46 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  // Default branch
+                  // Default offset
+                  int32_t default_offset;
                   if (!default_opcode_index) {
-                    default_opcode_index = opcode_array->length;
+                    default_offset = opcode_array->length - switch_opcode_index;
                   }
-                  (opcode_array->values + switch_opcode_index)->operand1 = default_opcode_index;
+                  else {
+                    default_offset = default_opcode_index - switch_opcode_index;
+                  }
+                  ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand1 = default_offset;
                   
-                  int32_t case_length = (int32_t) switch_info->op_cases->length;
+                  // min
+                  int32_t min = ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index + 1)->operand0;
                   
-                  SPVM_DYNAMIC_ARRAY* ordered_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+                  // max
+                  int32_t max = ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index + 1)->operand1;
+                  
+                  int32_t length = (int32_t)(max - min + 1);
+                  
+                  int32_t case_pos = 0;
                   {
                     int32_t i;
-                    for (i = 0; i < case_length; i++) {
-                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(switch_info->op_cases, i);
-                      SPVM_DYNAMIC_ARRAY_push(ordered_op_cases, op_case);
-                    }
-                  }
-                  SPVM_DYNAMIC_ARRAY* ordered_case_opcode_indexes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-                  {
-                    int32_t i;
-                    for (i = 0; i < case_length; i++) {
-                      int32_t* case_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_opcode_indexes, i);
-                      SPVM_DYNAMIC_ARRAY_push(ordered_case_opcode_indexes, case_opcode_index_ptr);
-                    }
-                  }
-                  
-                  // sort by asc order
-                  {
-                    int32_t i;
-                    for (i = 0; i < case_length; i++) {
-                      int32_t j;
-                      {
-                        for (j = i + 1; j < case_length; j++) {
-                          SPVM_OP* op_case_i = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, i);
-                          SPVM_OP* op_case_j = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, j);
-                          int32_t match_i = op_case_i->first->uv.constant->value.int_value;
-                          int32_t match_j = op_case_j->first->uv.constant->value.int_value;
-                          
-                          int32_t* case_opcode_index_i = SPVM_DYNAMIC_ARRAY_fetch(ordered_case_opcode_indexes, i);
-                          int32_t* case_opcode_index_j = SPVM_DYNAMIC_ARRAY_fetch(ordered_case_opcode_indexes, j);
-                          
-                          if (match_i > match_j) {
-                            SPVM_DYNAMIC_ARRAY_store(ordered_op_cases, i, op_case_j);
-                            SPVM_DYNAMIC_ARRAY_store(ordered_op_cases, j, op_case_i);
-                            
-                            SPVM_DYNAMIC_ARRAY_store(ordered_case_opcode_indexes, i, case_opcode_index_j);
-                            SPVM_DYNAMIC_ARRAY_store(ordered_case_opcode_indexes, j, case_opcode_index_i);
-                          }
-                        }
-                      }
-                    }
-                  }
-                  
-                  {
-                    int32_t i;
-                    for (i = 0; i < case_length; i++) {
-                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(ordered_op_cases, i);
+                    for (i = 0; i < length; i++) {
+                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(switch_info->op_cases, case_pos);
                       SPVM_OP* op_constant = op_case->first;
-                      int32_t match = op_constant->uv.constant->value.int_value;
+                      SPVM_OPCODE* opcode_case = (opcode_array->values + switch_opcode_index + 2 + i);
 
-                      int32_t* case_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(ordered_case_opcode_indexes, i);
-                      int32_t case_opcode_index = *case_opcode_index_ptr;
-                      
-                      SPVM_OPCODE* opcode_case = (opcode_array->values + switch_opcode_index + 1 + i);
-                      
-                      opcode_case->code = SPVM_OPCODE_C_CODE_CASE;
-                      
-                      // Match
-                      opcode_case->operand0 = match;
-
-                      // Branch
-                      opcode_case->operand1 = case_opcode_index;
+                      if (op_constant->uv.constant->value.int_value - min == i) {
+                        // Branch
+                        int32_t* case_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_opcode_indexes, case_pos);
+                        int32_t case_opcode_index = *case_opcode_index_ptr;
+                        int32_t case_offset = case_opcode_index - switch_opcode_index;
+                        
+                        opcode_case->operand1 = case_offset;
+                        
+                        case_pos++;
+                      }
+                      else {
+                        // Default branch
+                        opcode_case->operand1 = default_offset;
+                      }
                     }
                   }
                 }

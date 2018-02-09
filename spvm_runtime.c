@@ -1865,52 +1865,21 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         goto label_SPVM_OPCODE_C_CODE_RETURN;
       }
       case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
-        // 1  default
-        // 5  npare
-        // 9  match1 offset1 // min
-        // 17 match2 offset2
-        // 25 match3 offset3 // max
-        
         // default offset
-        int32_t default_branch = opcode->operand1;
-        
-        // npare
-        int32_t case_count = opcode->operand2;
+        int32_t default_offset = opcode->operand1;
         
         // min
         int32_t min = (opcode + 1)->operand0;
         
         // max
-        int32_t max = (opcode + 1 + case_count - 1)->operand0;
+        int32_t max = (opcode + 1)->operand1;
         
         if (*(SPVM_API_int*)&vars[opcode->operand0] >= min && *(SPVM_API_int*)&vars[opcode->operand0] <= max) {
-          // 2 branch searching
-          int32_t cur_min_pos = 0;
-          int32_t cur_max_pos = case_count - 1;
-          
-          while (1) {
-            if (cur_max_pos < cur_min_pos) {
-              opcode_index = default_branch;
-              break;
-            }
-            int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-            int32_t cur_half = (opcode + 1 + cur_half_pos)->operand0;
-            
-            if (*(SPVM_API_int*)&vars[opcode->operand0] > cur_half) {
-              cur_min_pos = cur_half_pos + 1;
-            }
-            else if (*(SPVM_API_int*)&vars[opcode->operand0] < cur_half) {
-              cur_max_pos = cur_half_pos - 1;
-            }
-            else {
-              int32_t branch = (opcode + 1 + cur_half_pos)->operand1;
-              opcode_index = branch;
-              break;
-            }
-          }
+          int32_t branch_offset = *(int32_t*)(opcode + 2 + *(SPVM_API_int*)&vars[opcode->operand0] - min);
+          opcode_index += branch_offset;
         }
         else {
-          opcode_index = default_branch;
+          opcode_index += default_offset;
         }
         
         continue;
