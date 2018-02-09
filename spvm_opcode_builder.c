@@ -2567,6 +2567,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         int32_t branch_opcode_index = opcodes[opcode_index].operand0;
         opcodes[branch_opcode_index].has_label = 1;
       }
+      else if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_TABLE_SWITCH) {
+        // Default branch
+        int32_t branch_opcode_index = opcodes[opcode_index].operand1;
+        opcodes[branch_opcode_index].has_label = 1;
+      }
       else if (opcodes[opcode_index].code == SPVM_OPCODE_C_CODE_LOOKUP_SWITCH) {
         // Default branch
         int32_t branch_opcode_index = opcodes[opcode_index].operand1;
