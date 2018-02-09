@@ -2116,38 +2116,3 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_STRING_BUFFER_add(string_buffer, "}\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
 }
-
-void SPVM_JITCODE_BUILDER_build_jitcode() {
-
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
-  
-  int32_t subs_base = runtime->subs_base;
-  int32_t subs_length = runtime->subs_length;
-
-  // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
-
-  // Subroutine Implementations
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < subs_length; sub_index++) {
-      int32_t sub_id = constant_pool[subs_base + sub_index];
-      SPVM_JITCODE_BUILDER_build_sub_jitcode(string_buffer, sub_id);
-    }
-  }
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
-  const char* jit_source_file = runtime->jit_source_file;
-  FILE* jitcode_fh = fopen(jit_source_file, "w");
-  if (jitcode_fh) {
-    fprintf(jitcode_fh, string_buffer->buffer);
-    fclose(jitcode_fh);
-  }
-  else {
-    fprintf(stderr, "Can't open file %s", jit_source_file);
-    exit(1);
-  }
-}

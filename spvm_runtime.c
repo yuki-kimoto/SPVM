@@ -133,7 +133,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   constant_pool_sub->call_count++;
   
   // Compile JIT subroutine
-  if (!sub_is_jit && constant_pool_sub->call_count >= runtime->jit_count) {
+  if (!sub_is_jit && runtime->jit_count > 0 && constant_pool_sub->call_count >= runtime->jit_count) {
     api->compile_jit_sub(api, sub_id);
   }
   
@@ -1864,9 +1864,26 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         goto label_SPVM_OPCODE_C_CODE_RETURN;
       }
-      case SPVM_OPCODE_C_CODE_TABLE_SWITCH:
-        // TABLE_SWITCH is no longer used
-        assert(0);
+      case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
+        // default offset
+        int32_t default_offset = opcode->operand1;
+        
+        // min
+        int32_t min = (opcode + 1)->operand0;
+        
+        // max
+        int32_t max = (opcode + 1)->operand1;
+        
+        if (*(SPVM_API_int*)&vars[opcode->operand0] >= min && *(SPVM_API_int*)&vars[opcode->operand0] <= max) {
+          int32_t branch_offset = *(int32_t*)(opcode + 2 + *(SPVM_API_int*)&vars[opcode->operand0] - min);
+          opcode_index += branch_offset;
+        }
+        else {
+          opcode_index += default_offset;
+        }
+        
+        continue;
+      }
       case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
         // 1  default
         // 5  npare
