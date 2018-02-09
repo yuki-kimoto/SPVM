@@ -273,11 +273,10 @@ sub compile_jitcode {
   my $cbuilder_config = {};
   
   # OPTIMIZE default is -O3
-  # $cbuilder_config->{optimize} ||= '-O3';
-  $cbuilder_config->{optimize} ||= '-O0';
+  $cbuilder_config->{optimize} ||= '-O3';
   
   # Compile source files
-  my $quiet = 1;
+  my $quiet = 0;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
   my $object_files = [];
   
