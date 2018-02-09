@@ -256,8 +256,35 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
       // Operand
       switch (opcode.code) {
         case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
-          // TABLE_SWITCH is no longer used
-          assert(0);
+          printf(" ");
+          
+          printf(" %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2);
+          
+          i++;
+
+          SPVM_OPCODE opcode_table_switch_range = opcode_array->values[i];
+          
+          int32_t min = opcode_table_switch_range.operand0;
+
+          int32_t max = opcode_table_switch_range.operand0;
+          
+          int32_t length = max - min + 1;
+
+          printf("        [%" PRId32 "] %s %d %d %d\n",
+            i, SPVM_OPCODE_C_CODE_NAMES[opcode_table_switch_range.code], opcode_table_switch_range.operand0, opcode_table_switch_range.operand1, opcode_table_switch_range.operand2);
+          
+          // Branch
+          {
+            int32_t j;
+            for (j = 0; j < length; j++) {
+              i++;
+              SPVM_OPCODE opcode = opcode_array->values[i];
+              printf("        [%" PRId32 "] %s %d %d %d\n",
+                i, SPVM_OPCODE_C_CODE_NAMES[opcode.code], opcode.operand0, opcode.operand1, opcode.operand2);
+            }
+          }
+          
+          break;
         }
         case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
           printf(" ");

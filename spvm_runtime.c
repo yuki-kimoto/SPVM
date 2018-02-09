@@ -1875,11 +1875,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t max = (opcode + 1)->operand1;
         
         if (*(SPVM_API_int*)&vars[opcode->operand0] >= min && *(SPVM_API_int*)&vars[opcode->operand0] <= max) {
-          int32_t branch_offset = *(int32_t*)(opcode + 2 + *(SPVM_API_int*)&vars[opcode->operand0] - min);
-          opcode_index += branch_offset;
+          int32_t branch_offset = (opcode + 2 + *(SPVM_API_int*)&vars[opcode->operand0] - min)->operand1;
+          opcode_index = branch_offset;
         }
         else {
-          opcode_index += default_offset;
+          opcode_index = default_offset;
         }
         
         continue;

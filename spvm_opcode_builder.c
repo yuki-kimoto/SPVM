@@ -1754,15 +1754,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 // tableswitch
                 if (switch_info->code == SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH) {
-                  // Default offset
-                  int32_t default_offset;
+                  // Default branch
+                  int32_t default_branch;
                   if (!default_opcode_index) {
-                    default_offset = opcode_array->length - switch_opcode_index;
+                    default_branch = opcode_array->length;
                   }
                   else {
-                    default_offset = default_opcode_index - switch_opcode_index;
+                    default_branch = default_opcode_index;
                   }
-                  ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand1 = default_offset;
+                  ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index)->operand1 = default_branch;
                   
                   // min
                   int32_t min = ((SPVM_OPCODE*)opcode_array->values + switch_opcode_index + 1)->operand0;
@@ -1784,15 +1784,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         // Branch
                         int32_t* case_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(case_opcode_indexes, case_pos);
                         int32_t case_opcode_index = *case_opcode_index_ptr;
-                        int32_t case_offset = case_opcode_index - switch_opcode_index;
+                        int32_t case_branch = case_opcode_index;
                         
-                        opcode_case->operand1 = case_offset;
+                        opcode_case->operand1 = case_branch;
                         
                         case_pos++;
                       }
                       else {
                         // Default branch
-                        opcode_case->operand1 = default_offset;
+                        opcode_case->operand1 = default_branch;
                       }
                     }
                   }
