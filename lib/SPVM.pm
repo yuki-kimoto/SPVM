@@ -62,12 +62,26 @@ sub compile_jit_sub {
   my $jit_source_file = "$jit_source_dir/$jit_sub_name.c";
   my $jit_shared_lib_file = "$jit_source_dir/$jit_sub_name.$Config{dlext}";
   
-  open my $fh, '>', $jit_source_file
-    or die "Can't create $jit_source_file";
-  print $fh $sub_jitcode_source;
-  close $fh;
+  # Get old jit source
+  my $old_sub_jitcode_source;
+  if (-f $jit_source_file) {
+    open my $fh, '<', $jit_source_file
+      or die "Can't open $jit_source_file";
+    $old_sub_jitcode_source = do { local $/; <$fh> };
+  }
+  else {
+    $old_sub_jitcode_source = '';
+  }
   
-  SPVM::Build::compile_jitcode($jit_source_file);
+  # Only compile when source is different
+  if (!-f $jit_shared_lib_file || ($sub_jitcode_source ne $old_sub_jitcode_source)) {
+    open my $fh, '>', $jit_source_file
+      or die "Can't create $jit_source_file";
+    print $fh $sub_jitcode_source;
+    close $fh;
+    
+    SPVM::Build::compile_jitcode($jit_source_file);
+  }
   
   my $sub_jit_address = search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   unless ($sub_jit_address) {
