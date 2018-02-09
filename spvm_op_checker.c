@@ -347,9 +347,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  // tableswitch if the following. SWITCHRTIO is 1.5 by default
-                  // 4 + range <= (3 + 2 * length) * SWITCHRTIO
-                  
                   SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
                   SPVM_DYNAMIC_ARRAY* op_cases = switch_info->op_cases;
                   int32_t length = op_cases->length;
@@ -395,16 +392,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                   }
                   
-                  // double range = (double) max - (double) min;
-                  // int32_t code;
-                  // if (4.0 + range <= (3.0 + 2.0 * (double) length) * 1.5) {
-                  //   code = SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH;
-                  // }
-                  // else {
-                  //   code = SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH;
-                  // }
-
-                  int32_t code = SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH;
+                  // tableswitch if the following. SWITCHRTIO is 1.5 by default
+                  // 4 + range <= (3 + 2 * length) * SWITCHRTIO
+                  double range = (double) max - (double) min;
+                  int32_t code;
+                  if (4.0 + range <= (3.0 + 2.0 * (double) length) * 1.5) {
+                    code = SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH;
+                  }
+                  else {
+                    code = SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH;
+                  }
                   
                   switch_info->code = code;
                   switch_info->min = min;

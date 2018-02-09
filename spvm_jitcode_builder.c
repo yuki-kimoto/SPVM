@@ -2033,9 +2033,43 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         
         break;
       }
-      case SPVM_OPCODE_C_CODE_TABLE_SWITCH:
-        // TABLE_SWITCH is no longer used
-        assert(0);
+      case SPVM_OPCODE_C_CODE_TABLE_SWITCH: {
+        // 1  default
+        // 5  npare
+        // 9  match1 offset1 // min
+        // 17 match2 offset2
+        // 25 match3 offset3 // max
+        
+        // default offset
+        int32_t default_branch = opcode->operand1;
+        
+        // case count
+        int32_t case_count = opcode->operand2;
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+        {
+          int32_t case_index;
+          for (case_index = 0; case_index < case_count; case_index++) {
+            int32_t match = (opcode + 1 + case_index)->operand0;
+            int32_t branch = (opcode + 1 + case_index)->operand1;
+            
+            SPVM_STRING_BUFFER_add(string_buffer, "    case ");
+            SPVM_STRING_BUFFER_add_int(string_buffer, match);
+            SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
+            SPVM_STRING_BUFFER_add_int(string_buffer, branch);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+          }
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, default_branch);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+
+        opcode_index += (1 + case_count);
+        continue;
+      }
       case SPVM_OPCODE_C_CODE_LOOKUP_SWITCH: {
         // 1  default
         // 5  npare
