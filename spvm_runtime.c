@@ -133,7 +133,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   constant_pool_sub->call_count++;
   
   // Compile JIT subroutine
-  if (!sub_is_jit && constant_pool_sub->call_count >= runtime->jit_count) {
+  if (!sub_is_jit && runtime->jit_count > 0 && constant_pool_sub->call_count >= runtime->jit_count) {
     api->compile_jit_sub(api, sub_id);
   }
   
