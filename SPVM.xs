@@ -111,7 +111,7 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   FREETMPS;
   LEAVE;
   
-  
+  SPVM_STRING_BUFFER_free(string_buffer);
   
   return success;
 }
