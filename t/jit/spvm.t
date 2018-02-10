@@ -57,6 +57,10 @@ use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'CORE';
 
+# Start objects count
+my $start_objects_count = SPVM::get_objects_count();
+
+
   {
     eval { SPVM::TestCase::exception_croak_return_object() };
     like($@, qr/Error/);
@@ -213,9 +217,6 @@ use SPVM 'CORE';
     is($values->to_string, "あいうえお");
   }
 }
-
-# Start objects count
-my $start_objects_count = SPVM::get_objects_count();
 
 # Call subroutine
 {
@@ -622,43 +623,6 @@ is_deeply(
     is_deeply($object1_get->get_x_int, 1);
     is_deeply($object2_get->get_x_int, 2);
   }
-}
-
-# Create object
-{
-  # Create object
-  {
-    my $object = SPVM::TestCase::new();
-    $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    $object->set_x_string(SPVM::new_byte_array_data("abc"));
-    ok(SPVM::TestCase::spvm_object_set_object($object));
-  }
-  # Create object
-  {
-    my $object = SPVM::TestCase::new();
-    $object->set_x_byte($BYTE_MAX);
-    $object->set_x_short($SHORT_MAX);
-    $object->set_x_int($INT_MAX);
-    $object->set_x_long($LONG_MAX);
-    $object->set_x_float($FLOAT_PRECICE);
-    $object->set_x_double($DOUBLE_PRECICE);
-    $object->set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
-    $object->set_x_string(SPVM::new_byte_array_string("Hello"));
-    my $minimal = SPVM::TestCase::Minimal::new();
-    $minimal->set_x(3);
-    $object->set_minimal($minimal);
-    
-    ok(SPVM::TestCase::spvm_object_set($object));
-    
-    is($object->get_x_byte,$BYTE_MAX);
-    is($object->get_x_short, $SHORT_MAX);
-    is($object->get_x_int, $INT_MAX);
-    is($object->get_x_long, $LONG_MAX);
-    is($object->get_x_float, $FLOAT_PRECICE);
-    is($object->get_x_double, $DOUBLE_PRECICE);
-    is($object->get_minimal->get_x, 3);
-  }
-  
 }
 
 # call_sub return array
@@ -1490,29 +1454,6 @@ is_deeply(
   ok(SPVM::TestCase::if_ne_undef());
 }
 
-# Number literal
-{
-  ok(SPVM::TestCase::number_literal_underline_hex());
-  ok(SPVM::TestCase::number_literal_underline());
-  ok(SPVM::TestCase::number_literal_hex_specifier());
-  ok(SPVM::TestCase::number_literal_hex_all_number());
-  ok(SPVM::TestCase::number_literal_hex_int());
-  ok(SPVM::TestCase::number_literal_hex_int_max());
-  ok(SPVM::TestCase::number_literal_hex_long_max());
-
-  ok(SPVM::TestCase::number_literal_octal_specifier());
-  ok(SPVM::TestCase::number_literal_octal_all_number());
-  ok(SPVM::TestCase::number_literal_octal_int());
-  ok(SPVM::TestCase::number_literal_octal_int_max());
-  ok(SPVM::TestCase::number_literal_octal_long_max());
-
-  ok(SPVM::TestCase::number_literal_binary_specifier());
-  ok(SPVM::TestCase::number_literal_binary_all_number());
-  ok(SPVM::TestCase::number_literal_binary_int());
-  ok(SPVM::TestCase::number_literal_binary_int_max());
-  ok(SPVM::TestCase::number_literal_binary_long_max());
-}
-
 # Bit shift left
 {
   ok(SPVM::TestCase::bit_shift_left_byte());
@@ -1545,34 +1486,6 @@ is_deeply(
   ok(SPVM::TestCase::bit_shift_right_long());
 }
 
-
-# Array
-{
-  # int array and get length
-  {
-    ok(SPVM::TestCase::get_array_length_at());
-    ok(SPVM::TestCase::get_array_length_len());
-    ok(SPVM::TestCase::get_array_length_undef());
-  }
-
-  # array - set and get array element, first element
-  {
-    my $element = SPVM::TestCase::array_set_and_get_array_element_first();
-    is($element, 345);
-  }
-  
-  # array - set and get array element, last element
-  {
-    my $element = SPVM::TestCase::array_set_and_get_array_element_last();
-    is($element, 298);
-  }
-
-  # array - culcurate sum by for
-  {
-    my $total = SPVM::TestCase::array_culcurate_sum_by_for();
-    is($total, 6);
-  }
-}
 
 # byte
 {
