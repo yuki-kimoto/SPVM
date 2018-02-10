@@ -98,6 +98,8 @@ sub compile_jit_sub {
 sub import {
   my ($class, $package_name) = @_;
   
+  $SPVM::HOME_DIR ||= $ENV{SPVM_HOME_DIR} || tempdir(CLEANUP => 1);
+  
   # Add package informations
   if (defined $package_name) {
     unless ($SPVM::PACKAGE_INFO_SYMTABLE{$package_name}) {
@@ -115,8 +117,6 @@ sub import {
       return $package_info;
     }
   }
-  
-  $SPVM::HOME_DIR = $ENV{SPVM_HOME_DIR} || tempdir(CLEANUP => 1);
   
   return;
 }
