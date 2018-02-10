@@ -1,3 +1,6 @@
+use lib "t/lib";
+use JITTestAuto;
+
 use strict;
 use warnings;
 use utf8;
@@ -5,16 +8,11 @@ use Data::Dumper;
 use File::Basename 'basename';
 use FindBin;
 
-BEGIN {
-  $ENV{SPVM_JIT_COUNT} = 1;
-}
-
 use Test::More 'no_plan';
 
-my $file = 't/' . basename $0;
+my $file = basename $0;
 
 use FindBin;
-use lib "$FindBin::Bin/lib";
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'CORE'; my $use_core_line = __LINE__;
@@ -49,6 +47,7 @@ my $DOUBLE_PRECICE = 65536.5;
 # last
 # while
 # eval repeat
+# print
 
 # Positive infinity(unix like system : inf, Windows : 1.#INF)
 my $POSITIVE_INFINITY = SPVM::POSITIVE_INFINITY();
@@ -1748,3 +1747,6 @@ is($end_objects_count, $start_objects_count);
     like($@, qr/Error/);
   }
 }
+
+eval { SPVM::TestCase::eval_block_stack_check() };
+ok($@);

@@ -1,3 +1,6 @@
+use lib "t/lib";
+use JITTestAuto;
+
 use strict;
 use warnings;
 use utf8;
@@ -7,10 +10,9 @@ use FindBin;
 
 use Test::More 'no_plan';
 
-my $file = 't/' . basename $0;
+my $file = basename $0;
 
 use FindBin;
-use lib "$FindBin::Bin/lib";
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'CORE'; my $use_core_line = __LINE__;
