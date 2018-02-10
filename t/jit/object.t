@@ -93,6 +93,10 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::get_object_from_freelist());
 }
 
+# Destructor
+{
+  ok(SPVM::TestCase::destructor());
+}
 
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
