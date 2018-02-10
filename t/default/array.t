@@ -39,6 +39,23 @@ my $start_objects_count = SPVM::get_objects_count();
   }
 }
 
+# Array default
+{
+  ok(SPVM::TestCase::array_default_zero_memory_pool());
+  ok(SPVM::TestCase::array_default_zero_not_memory_pool());
+}
+
+# Array initialization
+{
+  ok(SPVM::TestCase::array_init_byte());
+  ok(SPVM::TestCase::array_init_short());
+  ok(SPVM::TestCase::array_init_int());
+  ok(SPVM::TestCase::array_init_long());
+  ok(SPVM::TestCase::array_init_float());
+  ok(SPVM::TestCase::array_init_double());
+}
+
+
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);

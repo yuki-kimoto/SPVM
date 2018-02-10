@@ -63,6 +63,37 @@ my $start_objects_count = SPVM::get_objects_count();
   
 }
 
+# Field
+{
+  ok(SPVM::TestCase::object_field_set_and_get());
+}
+
+# Set field exception
+{
+  ok(SPVM::TestCase::set_field_exception_object_undef());
+}
+
+# Get field exception
+{
+  ok(SPVM::TestCase::get_field_exception_object_undef());
+}
+
+# Field
+{
+  ok(SPVM::TestCase::object_field_set_and_get());
+  ok(SPVM::TestCase::object_field_set_and_get_again());
+}
+
+{
+  ok(SPVM::TestCase::object_field_initialized_zero());
+}
+
+# Get object from freelist
+{
+  ok(SPVM::TestCase::get_object_from_freelist());
+}
+
+
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
