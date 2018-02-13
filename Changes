@@ -1,6 +1,7 @@
 0.0310 2018-02-13
   - enum value must be int type
-
+  - remove byte literal b
+  - remove short literal s
 0.0309 2018-02-10
   - jit code is called from virtual machine
   - separate tests to succeed tests at less memory environment
