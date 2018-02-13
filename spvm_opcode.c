@@ -98,8 +98,6 @@
 
 const char* const SPVM_OPCODE_C_CODE_NAMES[] = {
   "NOP",
-  "ADD_BYTE",
-  "ADD_SHORT",
   "ADD_INT",
   "ADD_LONG",
   "ADD_FLOAT",
