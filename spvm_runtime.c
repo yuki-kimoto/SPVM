@@ -546,14 +546,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         *(SPVM_API_long*)&vars[opcode->operand0]
           = (int64_t)((uint64_t)*(SPVM_API_long*)&vars[opcode->operand1] >> *(SPVM_API_long*)&vars[opcode->operand2]);
         break;
-      case SPVM_OPCODE_C_CODE_BIT_AND_BYTE:
-        *(SPVM_API_byte*)&vars[opcode->operand0]
-          = *(SPVM_API_byte*)&vars[opcode->operand1] & *(SPVM_API_byte*)&vars[opcode->operand2];
-        break;
-      case SPVM_OPCODE_C_CODE_BIT_AND_SHORT:
-        *(SPVM_API_short*)&vars[opcode->operand0]
-          = *(SPVM_API_short*)&vars[opcode->operand1] & *(SPVM_API_short*)&vars[opcode->operand2];
-        break;
       case SPVM_OPCODE_C_CODE_BIT_AND_INT:
         *(SPVM_API_int*)&vars[opcode->operand0]
           = *(SPVM_API_int*)&vars[opcode->operand1] & *(SPVM_API_int*)&vars[opcode->operand2];
@@ -562,14 +554,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         *(SPVM_API_long*)&vars[opcode->operand0]
           = *(SPVM_API_long*)&vars[opcode->operand1] & *(SPVM_API_long*)&vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_CODE_BIT_OR_BYTE:
-        *(SPVM_API_byte*)&vars[opcode->operand0]
-          = *(SPVM_API_byte*)&vars[opcode->operand1] | *(SPVM_API_byte*)&vars[opcode->operand2];
-        break;
-      case SPVM_OPCODE_C_CODE_BIT_OR_SHORT:
-        *(SPVM_API_short*)&vars[opcode->operand0]
-          = *(SPVM_API_short*)&vars[opcode->operand1] | *(SPVM_API_short*)&vars[opcode->operand2];
-        break;
       case SPVM_OPCODE_C_CODE_BIT_OR_INT:
         *(SPVM_API_int*)&vars[opcode->operand0]
           = *(SPVM_API_int*)&vars[opcode->operand1] | *(SPVM_API_int*)&vars[opcode->operand2];
@@ -577,14 +561,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_BIT_OR_LONG:
         *(SPVM_API_long*)&vars[opcode->operand0]
           = *(SPVM_API_long*)&vars[opcode->operand1] | *(SPVM_API_long*)&vars[opcode->operand2];
-        break;
-      case SPVM_OPCODE_C_CODE_BIT_XOR_BYTE:
-        *(SPVM_API_byte*)&vars[opcode->operand0]
-          = *(SPVM_API_byte*)&vars[opcode->operand1] ^ *(SPVM_API_byte*)&vars[opcode->operand2];
-        break;
-      case SPVM_OPCODE_C_CODE_BIT_XOR_SHORT:
-        *(SPVM_API_short*)&vars[opcode->operand0]
-          = *(SPVM_API_short*)&vars[opcode->operand1] ^ *(SPVM_API_short*)&vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_CODE_BIT_XOR_INT:
         *(SPVM_API_int*)&vars[opcode->operand0]

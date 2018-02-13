@@ -937,35 +937,17 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_LONG:
         SPVM_JITCODE_BUILDER_add_right_shift_unsigned(string_buffer, "int64_t", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_CODE_BIT_AND_BYTE:
-        SPVM_JITCODE_BUILDER_add_bit_and(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_CODE_BIT_AND_SHORT:
-        SPVM_JITCODE_BUILDER_add_bit_and(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
       case SPVM_OPCODE_C_CODE_BIT_AND_INT:
         SPVM_JITCODE_BUILDER_add_bit_and(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_CODE_BIT_AND_LONG:
         SPVM_JITCODE_BUILDER_add_bit_and(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_CODE_BIT_OR_BYTE:
-        SPVM_JITCODE_BUILDER_add_bit_or(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_CODE_BIT_OR_SHORT:
-        SPVM_JITCODE_BUILDER_add_bit_or(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
       case SPVM_OPCODE_C_CODE_BIT_OR_INT:
         SPVM_JITCODE_BUILDER_add_bit_or(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_CODE_BIT_OR_LONG:
         SPVM_JITCODE_BUILDER_add_bit_or(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_CODE_BIT_XOR_BYTE:
-        SPVM_JITCODE_BUILDER_add_bit_xor(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_CODE_BIT_XOR_SHORT:
-        SPVM_JITCODE_BUILDER_add_bit_xor(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_CODE_BIT_XOR_INT:
         SPVM_JITCODE_BUILDER_add_bit_xor(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, opcode->operand2);

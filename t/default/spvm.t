@@ -40,6 +40,7 @@ my $DOUBLE_PRECICE = 65536.5;
 # remainder float double
 # bit_and
 # bit_or
+# bit_xor
 # last
 # while
 # eval repeat

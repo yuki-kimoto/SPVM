@@ -847,20 +847,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_AND_BYTE;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_AND_SHORT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_AND_INT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_AND_LONG;
-                    }
-                    else {
-                      assert(0);
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_BIT_AND_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_BIT_AND_LONG;
+                        break;
+                      default:
+                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
+                        assert(0);
                     }
 
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
@@ -875,25 +871,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_BIT_OR) {
 
-                    
-
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_OR_BYTE;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_OR_SHORT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_OR_INT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_OR_LONG;
-                    }
-                    else {
-                      assert(0);
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_BIT_OR_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_BIT_OR_LONG;
+                        break;
+                      default:
+                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
+                        assert(0);
                     }
 
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
@@ -908,25 +898,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_BIT_XOR) {
 
-                    
-
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_XOR_BYTE;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_XOR_SHORT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_XOR_INT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                      opcode.code = SPVM_OPCODE_C_CODE_BIT_XOR_LONG;
-                    }
-                    else {
-                      assert(0);
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_BIT_XOR_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_BIT_XOR_LONG;
+                        break;
+                      default:
+                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
+                        assert(0);
                     }
 
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
