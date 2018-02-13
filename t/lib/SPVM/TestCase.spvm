@@ -1143,10 +1143,10 @@ package TestCase {
   }
   
   sub divide : int () {
-    my $num1 = (byte)8 / (byte)4;
-    my $num2 = (byte)8 / (byte)3;
-    my $num3 = (short)8 / (short)4;
-    my $num4 = (short)8 / (short)3;
+    my $num1 = (byte)((int)(byte)8 / (int)(byte)4);
+    my $num2 = (byte)((int)(byte)8 / (int)(byte)3);
+    my $num3 = (short)((int)(short)8 / (int)(short)4);
+    my $num4 = (short)((int)(short)8 / (int)(short)3);
     my $num5 = 8 / 4;
     my $num6 = 8 / 3;
     my $num7 = 8L / 4L;
