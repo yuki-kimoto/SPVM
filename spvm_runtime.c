@@ -396,12 +396,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_ADD_DOUBLE:
         *(double*)&vars[opcode->operand0] = *(double*)&vars[opcode->operand1] + *(double*)&vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_CODE_SUBTRACT_BYTE:
-        *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)&vars[opcode->operand1] - *(SPVM_API_byte*)&vars[opcode->operand2];
-        break;
-      case SPVM_OPCODE_C_CODE_SUBTRACT_SHORT:
-        *(SPVM_API_short*)&vars[opcode->operand0] = *(SPVM_API_short*)&vars[opcode->operand1] - *(SPVM_API_short*)&vars[opcode->operand2];
-        break;
       case SPVM_OPCODE_C_CODE_SUBTRACT_INT:
         *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)&vars[opcode->operand1] - *(SPVM_API_int*)&vars[opcode->operand2];
         break;

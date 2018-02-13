@@ -2626,27 +2626,27 @@ package TestCase {
 
   # Subtract
   sub subtract_byte_max : byte () {
-    return (byte)127 - (byte)1;
+    return (byte)((int)(byte)127 - (int)(byte)1);
   }
   
   sub subtract_byte_min : byte () {
-    return (byte)-127 - (byte)1;
+    return (byte)((int)(byte)-127 - (int)(byte)1);
   }
   
   sub subtract_byte_underflow : byte () {
-    return (byte)-128 - (byte)1;
+    return (byte)((int)(byte)-128 - (int)(byte)1);
   }
   
   sub subtract_short_max : short () {
-    return (short)32767 - (short)1;
+    return (short)((int)(short)32767 - (int)(short)1);
   }
   
   sub subtract_short_min : short () {
-    return (short)-32767 - (short)1;
+    return (short)((int)(short)-32767 - (int)(short)1);
   }
   
   sub subtract_short_underflow : short () {
-    return (short)-32768 - (short)1;
+    return (short)((int)(short)-32768 - (int)(short)1);
   }
 
   sub subtract_int_max : int () {
