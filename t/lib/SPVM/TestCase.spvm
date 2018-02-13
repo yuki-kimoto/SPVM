@@ -169,10 +169,10 @@ package TestCase {
     my $value_int2 = --$value_int;
     my $value_long2 = --$value_long;
     
-    if ($value_byte == -(byte)1) {
-      if ($value_byte2 == -(byte)1) {
-        if ($value_short == (short)-1) {
-          if ($value_short2 == (short)-1) {
+    if ($value_byte == (byte)-(int)(byte)1) {
+      if ($value_byte2 == (byte)-(int)(byte)1) {
+        if ($value_short == (short)-(int)(short)1) {
+          if ($value_short2 == (short)-(int)(short)1) {
             if ($value_int == -1) {
               if ($value_int2 == -1) {
                 if ($value_long == -1L) {
@@ -199,9 +199,9 @@ package TestCase {
     my $value_int2 = $value_int--;
     my $value_long2 = $value_long--;
     
-    if ($value_byte == -(byte)1) {
+    if ($value_byte == (byte)-(int)(byte)1) {
       if ($value_byte2 == (byte)0) {
-        if ($value_short == (short)-1) {
+        if ($value_short == (short)-(int)(short)1) {
           if ($value_short2 == (short)0) {
             if ($value_int == -1) {
               if ($value_int2 == 0) {
@@ -1180,10 +1180,10 @@ package TestCase {
   }
 
   sub remainder : int () {
-    my $num1 = (byte)5 % (byte)3;
-    my $num2 = (byte)-3 % (byte)5;
-    my $num3 = (short)5 % (short)3;
-    my $num4 = (short)-3 % (short)5;
+    my $num1 = (byte)((int)(byte)5 % (int)(byte)3);
+    my $num2 = (byte)((int)(byte)-3 % (int)(byte)5);
+    my $num3 = (short)((int)(short)5 % (int)(short)3);
+    my $num4 = (short)((int)(short)-3 % (int)(short)5);
     my $num5 = 5 % 3;
     my $num6 = -3 % 5;
     my $num7 = 5L % 3L;
@@ -2526,14 +2526,14 @@ package TestCase {
     my $num_float = 1f;
     my $num_double = 1d;
     
-    my $num_byte_negate = -$num_byte;
-    my $num_short_negate = -$num_short;
+    my $num_byte_negate = (byte)-(int)$num_byte;
+    my $num_short_negate = (short)-(int)$num_short;
     my $num_int_negate = -$num_int;
     my $num_long_negate = -$num_long;
     my $num_float_negate = -$num_float;
     my $num_double_negate = -$num_double;
     
-    if ($num_byte_negate == -(byte)1) {
+    if ($num_byte_negate == (byte)-(int)(byte)1) {
       if ($num_short_negate == (short)-1) {
         if ($num_int_negate == -1) {
           if ($num_long_negate == -1L) {
@@ -2557,8 +2557,8 @@ package TestCase {
     my $num_int = 0xFFFFFFF0;
     my $num_long = 0xFFFFFFFFFFFFFFF0L;
     
-    my $num_byte_complement = ~$num_byte;
-    my $num_short_complement = ~$num_short;
+    my $num_byte_complement = (byte)~(int)$num_byte;
+    my $num_short_complement = (short)~(int)$num_short;
     my $num_int_complement = ~$num_int;
     my $num_long_complement = ~$num_long;
     

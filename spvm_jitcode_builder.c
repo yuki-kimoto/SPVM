@@ -973,12 +973,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_CODE_BIT_XOR_LONG:
         SPVM_JITCODE_BUILDER_add_bit_xor(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_CODE_NEGATE_BYTE:
-        SPVM_JITCODE_BUILDER_add_negate(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_NEGATE_SHORT:
-        SPVM_JITCODE_BUILDER_add_negate(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1);
-        break;
       case SPVM_OPCODE_C_CODE_NEGATE_INT:
         SPVM_JITCODE_BUILDER_add_negate(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);
         break;
@@ -990,12 +984,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       case SPVM_OPCODE_C_CODE_NEGATE_DOUBLE:
         SPVM_JITCODE_BUILDER_add_negate(string_buffer, "double", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_COMPLEMENT_BYTE:
-        SPVM_JITCODE_BUILDER_add_complement(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_COMPLEMENT_SHORT:
-        SPVM_JITCODE_BUILDER_add_complement(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_CODE_COMPLEMENT_INT:
         SPVM_JITCODE_BUILDER_add_complement(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);
