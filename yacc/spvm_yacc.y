@@ -40,8 +40,8 @@
 %left <opval> MULTIPLY DIVIDE REMAINDER
 %right <opval> NOT '~' ARRAY_LENGTH UMINUS
 %nonassoc <opval> INC DEC
-%left <opval> ARROW
 %nonassoc <opval> ')'
+%left <opval> ARROW
 %left <opval> '('
 %left <opval> '[' '{'
 

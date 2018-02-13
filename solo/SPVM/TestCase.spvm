@@ -1020,7 +1020,7 @@ package TestCase {
       my $num0 = (byte)0;
       my $num1 = (byte)1;
       my $num2 = (byte)2;
-      my $num3 = $num0 + $num1 + $num2;
+      my $num3 = (byte)((int)$num0 + (int)$num1 + (int)$num2);
       CORE::print($num3 . "\n");
     }
 
@@ -1028,7 +1028,7 @@ package TestCase {
       my $num0 = (short)0;
       my $num1 = (short)1;
       my $num2 = (short)2;
-      my $num3 = $num0 + $num1 + $num2;
+      my $num3 = (short)((int)$num0 + (int)$num1 + (int)$num2);
       CORE::print($num3 . "\n");
     }
 

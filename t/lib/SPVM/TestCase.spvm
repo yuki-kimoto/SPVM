@@ -2577,27 +2577,27 @@ package TestCase {
   
   # Add
   sub add_byte_max : byte () {
-    return (byte)126 + (byte)1;
+    return (byte)((int)(byte)126 + (int)(byte)1);
   }
   
   sub add_byte_min : byte () {
-    return (byte)-128 + (byte)1;
+    return (byte)((int)(byte)-128 + (int)(byte)1);
   }
   
   sub add_byte_overflow : byte () {
-    return (byte)127 + (byte)1;
+    return (byte)((int)(byte)127 + (int)(byte)1);
   }
   
   sub add_short_max : short () {
-    return (short)32766 + (short)1;
+    return (short)((int)(short)32766 + (int)(short)1);
   }
   
   sub add_short_min : short () {
-    return (short)-32768 + (short)1;
+    return (short)((int)(short)-32768 + (int)(short)1);
   }
   
   sub add_short_overflow : short () {
-    return (short)32767 + (short)1;
+    return (short)((int)(short)32767 + (int)(short)1);
   }
 
   sub add_int_max : int () {
@@ -2848,7 +2848,7 @@ package TestCase {
     
     my $total = (byte)0;
     for (my $i = 0; $i < @$nums; $i++) {
-      $total = $total + $nums->[$i];
+      $total = (byte)((int)$total + (int)$nums->[$i]);
     }
     
     return $total;
@@ -2859,7 +2859,7 @@ package TestCase {
     
     my $total = (short)0;
     for (my $i = 0; $i < @$nums; $i++) {
-      $total = $total + $nums->[$i];
+      $total = (short)((int)$total + (int)$nums->[$i]);
     }
     
     return $total;
@@ -4999,14 +4999,14 @@ package TestCase {
   # Sum
   sub sum_byte : byte ($a : byte, $b :byte,) {
     
-    my $total = $a + $b;
+    my $total = (byte)((int)$a + (int)$b);
     
     return $total;
   }
 
   sub sum_short : short ($a : short, $b :short) {
     
-    my $total = $a + $b;
+    my $total = (short)((int)$a + (int)$b);
     
     return $total;
   }
