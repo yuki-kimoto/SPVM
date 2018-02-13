@@ -4381,7 +4381,19 @@ package TestCase {
       return 0;
     }
   }
-
+  
+  sub bit_and : int () {
+    my $value1 = 0xF0F0 & 0x0F0F;
+    my $value2 = 0xF0F0F0F0L & 0x0F0F0F0FL;
+    if ($value1 == 0x0000) {
+      if ($value2 == 0x00000000L) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  
   # Bit shift right logical
   sub bit_shift_right_logical_byte : int () {
     # 11000001 >>> 2
