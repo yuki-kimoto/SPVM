@@ -847,12 +847,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_CODE_SUBTRACT_DOUBLE:
         SPVM_JITCODE_BUILDER_add_subtract(string_buffer, "double", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_CODE_MULTIPLY_BYTE:
-        SPVM_JITCODE_BUILDER_add_multiply(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_CODE_MULTIPLY_SHORT:
-        SPVM_JITCODE_BUILDER_add_multiply(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
       case SPVM_OPCODE_C_CODE_MULTIPLY_INT:
         SPVM_JITCODE_BUILDER_add_multiply(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, opcode->operand2);
         break;

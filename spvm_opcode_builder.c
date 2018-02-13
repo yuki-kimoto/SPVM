@@ -585,6 +585,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.code = SPVM_OPCODE_C_CODE_ADD_DOUBLE;
                     }
                     else {
+                      warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                       assert(0);
                     }
 
@@ -637,13 +638,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                      opcode.code = SPVM_OPCODE_C_CODE_MULTIPLY_BYTE;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_MULTIPLY_SHORT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
+                    if (type->code == SPVM_TYPE_C_CODE_INT) {
                       opcode.code = SPVM_OPCODE_C_CODE_MULTIPLY_INT;
                     }
                     else if (type->code == SPVM_TYPE_C_CODE_LONG) {
@@ -654,6 +649,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
                       opcode.code = SPVM_OPCODE_C_CODE_MULTIPLY_DOUBLE;
+                    }
+                    else {
+                      warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
+                      assert(0);
                     }
                     
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
