@@ -36,10 +36,10 @@ package TestCase {
   get x_byte, x_int, x_long;
   set x_byte, x_int, x_long;
   
-  sub BYTE_MAX : byte () { return 127y; }
-  sub BYTE_MIN : byte () { return -128y; }
-  sub SHORT_MAX : short () { return 32767s; }
-  sub SHORT_MIN : short () { return -32768s; }
+  sub BYTE_MAX : byte () { return (byte)127; }
+  sub BYTE_MIN : byte () { return (byte)-128; }
+  sub SHORT_MAX : short () { return (short)32767; }
+  sub SHORT_MIN : short () { return (short)-32768; }
   sub INT_MAX : int () { return 2147483647; }
   sub INT_MIN : int () { return -2147483648; }
   sub LONG_MAX : long () { return 9223372036854775807L; }

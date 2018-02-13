@@ -99,8 +99,8 @@ package TestCase {
   }
   
   sub pre_inc : int () {
-    my $value_byte = 0y;
-    my $value_short = 0s;
+    my $value_byte = (byte)0;
+    my $value_short = (short)0;
     my $value_int = 0;
     my $value_long = 0L;
     
@@ -109,8 +109,8 @@ package TestCase {
     my $value_int2 = ++$value_int;
     my $value_long2 = ++$value_long;
     
-    if ($value_byte == 1y) {
-      if ($value_byte2 == 1y) {
+    if ($value_byte == (byte)1) {
+      if ($value_byte2 == (byte)1) {
         if ($value_short == 1s) {
           if ($value_short2 == 1s) {
             if ($value_int == 1) {
@@ -129,8 +129,8 @@ package TestCase {
   }
 
   sub post_inc : int () {
-    my $value_byte = 0y;
-    my $value_short = 0s;
+    my $value_byte = (byte)0;
+    my $value_short = (short)0;
     my $value_int = 0;
     my $value_long = 0L;
     
@@ -139,7 +139,7 @@ package TestCase {
     my $value_int2 = $value_int++;
     my $value_long2 = $value_long++;
     
-    if ($value_byte == 1y) {
+    if ($value_byte == (byte)1) {
       if ($value_byte2 == 0y) {
         if ($value_short == 1s) {
           if ($value_short2 == 0s) {
@@ -159,8 +159,8 @@ package TestCase {
   }
 
   sub pre_dec : int () {
-    my $value_byte = 0y;
-    my $value_short = 0s;
+    my $value_byte = (byte)0;
+    my $value_short = (short)0;
     my $value_int = 0;
     my $value_long = 0L;
     
@@ -169,10 +169,10 @@ package TestCase {
     my $value_int2 = --$value_int;
     my $value_long2 = --$value_long;
     
-    if ($value_byte == -1y) {
-      if ($value_byte2 == -1y) {
-        if ($value_short == -1s) {
-          if ($value_short2 == -1s) {
+    if ($value_byte == -(byte)1) {
+      if ($value_byte2 == -(byte)1) {
+        if ($value_short == (short)-1) {
+          if ($value_short2 == (short)-1) {
             if ($value_int == -1) {
               if ($value_int2 == -1) {
                 if ($value_long == -1L) {
@@ -189,8 +189,8 @@ package TestCase {
   }
 
   sub post_dec : int () {
-    my $value_byte = 0y;
-    my $value_short = 0s;
+    my $value_byte = (byte)0;
+    my $value_short = (short)0;
     my $value_int = 0;
     my $value_long = 0L;
     
@@ -199,9 +199,9 @@ package TestCase {
     my $value_int2 = $value_int--;
     my $value_long2 = $value_long--;
     
-    if ($value_byte == -1y) {
+    if ($value_byte == -(byte)1) {
       if ($value_byte2 == 0y) {
-        if ($value_short == -1s) {
+        if ($value_short == (short)-1) {
           if ($value_short2 == 0s) {
             if ($value_int == -1) {
               if ($value_int2 == 0) {
@@ -320,13 +320,13 @@ package TestCase {
     my $test_case : TestCase = undef;
     
     eval {
-      $test_case->{x_byte} = 1y;
+      $test_case->{x_byte} = (byte)1;
     }
     if ($@) {
       return 1;
       
       eval {
-        $test_case->{x_short} = 1s;
+        $test_case->{x_short} = (short)1;
       }
       
       if ($@) {
@@ -552,9 +552,9 @@ package TestCase {
   }
 
   sub concat_string_short : String () {
-    "a" . 3s;
+    "a" . (short)3;
     
-    my $value = "a" . 3s;
+    my $value = "a" . (short)3;
     
     return $value;
   }
@@ -1143,10 +1143,10 @@ package TestCase {
   }
   
   sub divide : int () {
-    my $num1 = 8y / 4y;
-    my $num2 = 8y / 3y;
-    my $num3 = 8s / 4s;
-    my $num4 = 8s / 3s;
+    my $num1 = (byte)8 / (byte)4;
+    my $num2 = (byte)8 / (byte)3;
+    my $num3 = (short)8 / (short)4;
+    my $num4 = (short)8 / (short)3;
     my $num5 = 8 / 4;
     my $num6 = 8 / 3;
     my $num7 = 8L / 4L;
@@ -1180,10 +1180,10 @@ package TestCase {
   }
 
   sub remainder : int () {
-    my $num1 = 5y % 3y;
-    my $num2 = -3y % 5y;
-    my $num3 = 5s % 3s;
-    my $num4 = -3s % 5s;
+    my $num1 = (byte)5 % (byte)3;
+    my $num2 = (byte)-3 % (byte)5;
+    my $num3 = (short)5 % (short)3;
+    my $num4 = (short)-3 % (short)5;
     my $num5 = 5 % 3;
     my $num6 = -3 % 5;
     my $num7 = 5L % 3L;
@@ -1739,7 +1739,7 @@ package TestCase {
   sub array_init_byte : int () {
     my $nums = new byte[] {1y, 2y, Byte::MAX_VALUE()};
     
-    if ($nums->[0] == 1y) {
+    if ($nums->[0] == (byte)1) {
       if ($nums->[1] == 2y) {
         if ($nums->[2] == Byte::MAX_VALUE()) {
           return 1;
@@ -2519,8 +2519,8 @@ package TestCase {
   
   # Negate
   sub negate : int () {
-    my $num_byte = 1y;
-    my $num_short = 1s;
+    my $num_byte = (byte)1;
+    my $num_short = (short)1;
     my $num_int = 1;
     my $num_long = 1L;
     my $num_float = 1f;
@@ -2533,8 +2533,8 @@ package TestCase {
     my $num_float_negate = -$num_float;
     my $num_double_negate = -$num_double;
     
-    if ($num_byte_negate == -1y) {
-      if ($num_short_negate == -1s) {
+    if ($num_byte_negate == -(byte)1) {
+      if ($num_short_negate == (short)-1) {
         if ($num_int_negate == -1) {
           if ($num_long_negate == -1L) {
             if ($num_float_negate == -1f) {
@@ -2552,8 +2552,8 @@ package TestCase {
 
   # Complement
   sub complement : int () {
-    my $num_byte = 0xF0y;
-    my $num_short = 0xFFF0s;
+    my $num_byte = (byte)0xF0;
+    my $num_short = (short)0xFFF0;
     my $num_int = 0xFFFFFFF0;
     my $num_long = 0xFFFFFFFFFFFFFFF0L;
     
@@ -4492,10 +4492,10 @@ package TestCase {
     my $value1 = 255f;
     my $value2 = 255d;
     my $value3 = 255L;
-    my $value4 = -128y;
-    my $value5 = -32768s;
-    my $value6 = 127y;
-    my $value7 = -128s;
+    my $value4 = (byte)-128;
+    my $value5 = (short)-32768;
+    my $value6 = (byte)127;
+    my $value7 = (short)-128;
     
     if ($value1 == (float)255) {
       if ($value2 == (double)255) {
@@ -4529,10 +4529,10 @@ package TestCase {
   
   sub number_literal_hex_specifier : int () {
     my $value3 = 0xFFL;
-    my $value4 = 0xFFy;
-    my $value5 = 0xFFFFs;
-    my $value6 = 0x7Fy;
-    my $value7 = 0x7FFFs;
+    my $value4 = (byte)0xFF;
+    my $value5 = (short)0xFFFF;
+    my $value6 = (byte)0x7F;
+    my $value7 = (short)0x7FFF;
     
     if ($value3 == (long)255) {
       if ($value4 == (byte)-1) {
@@ -4610,10 +4610,10 @@ package TestCase {
 
   sub number_literal_octal_specifier : int () {
     my $value3 = 0377L;
-    my $value4 = 0377y;
-    my $value5 = 0177777s;
-    my $value6 = 0177y;
-    my $value7 = 077777s;
+    my $value4 = (byte)0377;
+    my $value5 = (short)0177777;
+    my $value6 = (byte)0177;
+    my $value7 = (short)077777;
     
     if ($value3 == (long)255) {
       if ($value4 == (byte)-1) {
@@ -4642,10 +4642,10 @@ package TestCase {
 
   sub number_literal_binary_specifier : int () {
     my $value3 = 0b11111111L;
-    my $value4 = 0b11111111y;
-    my $value5 = 0b1111111111111111s;
-    my $value6 = 0b1111111y;
-    my $value7 = 0b111111111111111s;
+    my $value4 = (byte)0b11111111;
+    my $value5 = (short)0b1111111111111111;
+    my $value6 = (byte)0b1111111;
+    my $value7 = (short)0b111111111111111;
     
     if ($value3 == (long)255) {
       if ($value4 == (byte)-1) {
