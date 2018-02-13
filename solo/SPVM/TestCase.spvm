@@ -36,18 +36,16 @@ package TestCase {
   get x_byte, x_int, x_long;
   set x_byte, x_int, x_long;
   
-  enum {
-    BYTE_MAX = 127y,
-    BYTE_MIN = -128y,
-    SHORT_MAX = 32767s,
-    SHORT_MIN = -32768s,
-    INT_MAX = 2147483647,
-    INT_MIN = -2147483648,
-    LONG_MAX = 9223372036854775807L,
-    LONG_MIN = -9223372036854775808L,
-    FLOAT_PRECICE = 32767f,
-    DOUBLE_PRECICE = 2147483647.0,
-  }
+  sub BYTE_MAX : byte () { return 127y; }
+  sub BYTE_MIN : byte () { return -128y; }
+  sub SHORT_MAX : short () { return 32767s; }
+  sub SHORT_MIN : short () { return -32768s; }
+  sub INT_MAX : int () { return 2147483647; }
+  sub INT_MIN : int () { return -2147483648; }
+  sub LONG_MAX : long () { return 9223372036854775807L; }
+  sub LONG_MIN : long () { return -9223372036854775808L; }
+  sub FLOAT_PRECICE : float () { return 32767f; }
+  sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
     eval {
@@ -301,7 +299,6 @@ package TestCase {
       2,
       3
     };
-    CORE::print(TestCase::ONE() . "\n");
     
     # Logical or
     {
@@ -457,9 +454,6 @@ package TestCase {
     {
       my $nums : int[][];
     }
-    
-    CORE::print(TestCase::EnumD::THREE() . "\n");
-    CORE::print(TestCase::EnumD::FORE() . "\n");
     
     # Core functions
     {
@@ -1046,10 +1040,6 @@ package TestCase {
     # croak $error;
     
     return $mvar + 3;
-  }
-
-  enum {
-    ONE = 0.25f
   }
 
   # Call void function

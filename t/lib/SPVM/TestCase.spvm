@@ -52,11 +52,9 @@ package TestCase {
   set x_int, x_long;
   get x_int, x_long;
   
-  enum {
-    INT_VALUE = 127,
-    FLOAT_PRECICE = 16384.5f,
-    DOUBLE_PRECICE = 65536.5,
-  }
+  sub INT_VALUE : int () { return 127; }
+  sub FLOAT_PRECICE : float () { return 16384.5f; }
+  sub DOUBLE_PRECICE : double () { return 65536.5; }
   
   # Only compile check
   sub eval_block_stack_check : void () {
@@ -1834,58 +1832,6 @@ package TestCase {
   }
 
   enum {
-    BYTE_ZERO = 0y,
-    BYTE_ONE,
-    BYTE_THREE = 3y,
-    BYTE_FOUR,
-    BYTE_SIX = 6y,
-    BYTE_MINUS_MAX = -128y
-  }
-  sub enum_byte  : int () {
-    if (TestCase::BYTE_ZERO() == (byte)0) {
-      if (TestCase::BYTE_ONE() == (byte)1) {
-        if (TestCase::BYTE_THREE() == (byte)3) {
-          if (TestCase::BYTE_FOUR() == (byte)4) {
-            if (TestCase::BYTE_SIX() == (byte)6) {
-              if (TestCase::BYTE_MINUS_MAX() == (byte)-128) {
-                return 1;
-              }
-            }
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-
-  enum {
-    SHORT_ZERO = 0s,
-    SHORT_ONE,
-    SHORT_THREE = 3s,
-    SHORT_FOUR,
-    SHORT_SIX = 6s,
-    SHORT_MINUS_MAX = -32768s
-  }
-  sub enum_short  : int () {
-    if (TestCase::SHORT_ZERO() == (short)0) {
-      if (TestCase::SHORT_ONE() == (short)1) {
-        if (TestCase::SHORT_THREE() == (short)3) {
-          if (TestCase::SHORT_FOUR() == (short)4) {
-            if (TestCase::SHORT_SIX() == (short)6) {
-              if (TestCase::SHORT_MINUS_MAX() == (short)-32768) {
-                return 1;
-              }
-            }
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-
-  enum {
     INT_ZERO,
     INT_ONE,
     INT_THREE = 3,
@@ -1912,69 +1858,6 @@ package TestCase {
     return 0;
   }
   
-  enum {
-    LONG_ZERO = 0L,
-    LONG_ONE,
-    LONG_THREE = 3L,
-    LONG_MINUS_MAX = -9223372036854775808L
-  }
-  
-  sub enum_long  : int () {
-    if (TestCase::LONG_ZERO() == 0L) {
-      if (TestCase::LONG_ONE() == 1L) {
-        if (TestCase::LONG_THREE() == 3L) {
-          if (TestCase::LONG_MINUS_MAX() == -9223372036854775808L) {
-            return 1;
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-  
-  enum {
-    FLOAT_ZERO = 0.25f,
-    FLOAT_ONE = 1.0f,
-    FLOAT_THREE = 2.5f,
-    FLOAT_MINUS_ZERO = -0.25f
-  }
-
-  sub enum_float  : int () {
-    if (TestCase::FLOAT_ZERO() == 0.25f) {
-      if (TestCase::FLOAT_ONE() == 1.0f) {
-        if (TestCase::FLOAT_THREE() == 2.5f) {
-          if (TestCase::FLOAT_MINUS_ZERO() == -0.25f) {
-            return 1;
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-
-  enum {
-    DOUBLE_ZERO = 0.25,
-    DOUBLE_ONE = 1.0,
-    DOUBLE_THREE = 2.5,
-    DOUBLE_MINUS_ZERO = -0.25
-  }
-
-  sub enum_double  : int () {
-    if (TestCase::DOUBLE_ZERO() == 0.25) {
-      if (TestCase::DOUBLE_ONE() == 1.0) {
-        if (TestCase::DOUBLE_THREE() == 2.5) {
-          if (TestCase::DOUBLE_MINUS_ZERO() == -0.25) {
-            return 1;
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-
   # Convert type - floating point narrowing convertion
   sub convert_float_to_byte : int () {
     my $value = (byte)127.1f;

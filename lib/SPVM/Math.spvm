@@ -2,10 +2,8 @@ use Float;
 use Double;
 
 package Math {
-  enum {
-    PI = 3.141592653589793,
-    E = 2.718281828459045
-  }
+  sub PI : double () { return 3.141592653589793; }
+  sub E : double () { return 2.718281828459045; }
   
   sub sin : native double ($x : double);
   sub cos : native double ($x : double);

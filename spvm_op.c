@@ -1983,53 +1983,18 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     
     SPVM_CONSTANT* constant = op_constant->uv.constant;
     
-    compiler->enum_default_type_code = constant->type->code;
-    
-    // TODO add type
-    if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_BYTE) {
-      compiler->enum_default_value = constant->value.byte_value;
-    }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_SHORT) {
-      compiler->enum_default_value = constant->value.short_value;
-    }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_INT) {
+    if (constant->type->code == SPVM_TYPE_C_CODE_INT) {
       compiler->enum_default_value = constant->value.int_value;
     }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_LONG) {
-      compiler->enum_default_value = constant->value.long_value;
-    }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_FLOAT) {
-      compiler->enum_default_value = (int64_t)constant->value.float_value;
-    }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_DOUBLE) {
-      compiler->enum_default_value = (int64_t)constant->value.double_value;
+    else {
+      SPVM_yyerror_format(compiler, "enum value must be int type at %s line %d\n", op_constant->file, op_constant->line);
+      return;
     }
     
     compiler->enum_default_value++;
   }
   else {
-    // TODO add type
-    if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_BYTE) {
-      op_constant = SPVM_OP_new_op_constant_byte(compiler, (int8_t)compiler->enum_default_value, op_name->file, op_name->line);
-    }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_SHORT) {
-      op_constant = SPVM_OP_new_op_constant_short(compiler, (int16_t)compiler->enum_default_value, op_name->file, op_name->line);
-    }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_INT) {
-      op_constant = SPVM_OP_new_op_constant_int(compiler, (int32_t)compiler->enum_default_value, op_name->file, op_name->line);
-    }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_LONG) {
-      op_constant = SPVM_OP_new_op_constant_long(compiler, (int64_t)compiler->enum_default_value, op_name->file, op_name->line);
-    }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_FLOAT) {
-      op_constant = SPVM_OP_new_op_constant_float(compiler, (float)compiler->enum_default_value, op_name->file, op_name->line);
-    }
-    else if (compiler->enum_default_type_code == SPVM_TYPE_C_CODE_DOUBLE) {
-      op_constant = SPVM_OP_new_op_constant_double(compiler, (double)compiler->enum_default_value, op_name->file, op_name->line);
-    }
-    else {
-      assert(0);
-    }
+    op_constant = SPVM_OP_new_op_constant_int(compiler, (int32_t)compiler->enum_default_value, op_name->file, op_name->line);
     
     compiler->enum_default_value++;
   }
