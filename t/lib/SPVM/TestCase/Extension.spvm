@@ -30,8 +30,8 @@ package TestCase::Extension {
     my $x_double1 = native_api_get_double_field($test_case);
     my $minimal2 = native_api_get_object_field($test_case);
     
-    if ($x_byte1 == (byte)1) {
-      if ($x_short1 == (short)2) {
+    if ((int)$x_byte1 == (int)(byte)1) {
+      if ((int)$x_short1 == (int)(short)2) {
         if ($x_int1 == 3) {
           if ($x_long1 == 4L) {
             if ($x_float1 == 0.5f) {

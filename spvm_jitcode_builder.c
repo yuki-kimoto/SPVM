@@ -678,12 +678,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     switch (opcode->code) {
       case SPVM_OPCODE_C_CODE_NOP:
         abort();
-      case SPVM_OPCODE_C_CODE_BOOL_BYTE:
-        SPVM_JITCODE_BUILDER_add_bool(string_buffer, "SPVM_API_byte", opcode->operand0);
-        break;
-      case SPVM_OPCODE_C_CODE_BOOL_SHORT:
-        SPVM_JITCODE_BUILDER_add_bool(string_buffer, "SPVM_API_short", opcode->operand0);
-        break;
       case SPVM_OPCODE_C_CODE_BOOL_INT:
         SPVM_JITCODE_BUILDER_add_bool(string_buffer, "SPVM_API_int", opcode->operand0);
         break;
@@ -709,12 +703,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " != SPVM_JITCODE_C_NULL);\n");
         break;
-      case SPVM_OPCODE_C_CODE_EQ_BYTE:
-        SPVM_JITCODE_BUILDER_add_eq(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_EQ_SHORT:
-        SPVM_JITCODE_BUILDER_add_eq(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1);
-        break;
       case SPVM_OPCODE_C_CODE_EQ_INT:
         SPVM_JITCODE_BUILDER_add_eq(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);
         break;
@@ -729,12 +717,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       case SPVM_OPCODE_C_CODE_EQ_OBJECT:
         SPVM_JITCODE_BUILDER_add_eq(string_buffer, "SPVM_API_OBJECT*", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_NE_BYTE:
-        SPVM_JITCODE_BUILDER_add_ne(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_NE_SHORT:
-        SPVM_JITCODE_BUILDER_add_ne(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_CODE_NE_INT:
         SPVM_JITCODE_BUILDER_add_ne(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);
@@ -751,12 +733,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_CODE_NE_OBJECT:
         SPVM_JITCODE_BUILDER_add_ne(string_buffer, "SPVM_API_OBJECT*", opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_CODE_GT_BYTE:
-        SPVM_JITCODE_BUILDER_add_gt(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_GT_SHORT:
-        SPVM_JITCODE_BUILDER_add_gt(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1);
-        break;
       case SPVM_OPCODE_C_CODE_GT_INT:
         SPVM_JITCODE_BUILDER_add_gt(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);
         break;
@@ -768,12 +744,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       case SPVM_OPCODE_C_CODE_GT_DOUBLE:
         SPVM_JITCODE_BUILDER_add_gt(string_buffer, "double", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_GE_BYTE:
-        SPVM_JITCODE_BUILDER_add_ge(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_GE_SHORT:
-        SPVM_JITCODE_BUILDER_add_ge(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_CODE_GE_INT:
         SPVM_JITCODE_BUILDER_add_ge(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);
@@ -787,12 +757,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_CODE_GE_DOUBLE:
         SPVM_JITCODE_BUILDER_add_ge(string_buffer, "double", opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_CODE_LT_BYTE:
-        SPVM_JITCODE_BUILDER_add_lt(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_LT_SHORT:
-        SPVM_JITCODE_BUILDER_add_lt(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1);
-        break;
       case SPVM_OPCODE_C_CODE_LT_INT:
         SPVM_JITCODE_BUILDER_add_lt(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);
         break;
@@ -804,12 +768,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       case SPVM_OPCODE_C_CODE_LT_DOUBLE:
         SPVM_JITCODE_BUILDER_add_lt(string_buffer, "double", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_LE_BYTE:
-        SPVM_JITCODE_BUILDER_add_le(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_CODE_LE_SHORT:
-        SPVM_JITCODE_BUILDER_add_le(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_CODE_LE_INT:
         SPVM_JITCODE_BUILDER_add_le(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);

@@ -243,12 +243,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     switch (opcode->code) {
       case SPVM_OPCODE_C_CODE_NOP:
         abort();
-      case SPVM_OPCODE_C_CODE_BOOL_BYTE:
-        condition_flag = !!*(SPVM_API_byte*)&vars[opcode->operand0];
-        break;
-      case SPVM_OPCODE_C_CODE_BOOL_SHORT:
-        condition_flag = !!*(SPVM_API_short*)&vars[opcode->operand0];
-        break;
       case SPVM_OPCODE_C_CODE_BOOL_INT:
         condition_flag = !!*(SPVM_API_int*)&vars[opcode->operand0];
         break;
@@ -270,12 +264,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_IS_NOT_UNDEF:
         condition_flag = *(SPVM_API_OBJECT**)&vars[opcode->operand0] != NULL;
         break;
-      case SPVM_OPCODE_C_CODE_EQ_BYTE:
-        condition_flag = *(SPVM_API_byte*)&vars[opcode->operand0] == *(SPVM_API_byte*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_CODE_EQ_SHORT:
-        condition_flag = *(SPVM_API_short*)&vars[opcode->operand0] == *(SPVM_API_short*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_CODE_EQ_INT:
         condition_flag = *(SPVM_API_int*)&vars[opcode->operand0] == *(SPVM_API_int*)&vars[opcode->operand1];
         break;
@@ -290,12 +278,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       case SPVM_OPCODE_C_CODE_EQ_OBJECT:
         condition_flag = *(SPVM_API_OBJECT**)&vars[opcode->operand0] == *(SPVM_API_OBJECT**)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_CODE_NE_BYTE:
-        condition_flag = *(SPVM_API_byte*)&vars[opcode->operand0] != *(SPVM_API_byte*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_CODE_NE_SHORT:
-        condition_flag = *(SPVM_API_short*)&vars[opcode->operand0] != *(SPVM_API_short*)&vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_CODE_NE_INT:
         condition_flag = *(SPVM_API_int*)&vars[opcode->operand0] != *(SPVM_API_int*)&vars[opcode->operand1];
@@ -312,12 +294,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_NE_OBJECT:
         condition_flag = *(SPVM_API_OBJECT**)&vars[opcode->operand0] != *(SPVM_API_OBJECT**)&vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_CODE_GT_BYTE:
-        condition_flag = *(SPVM_API_byte*)&vars[opcode->operand0] > *(SPVM_API_byte*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_CODE_GT_SHORT:
-        condition_flag = *(SPVM_API_short*)&vars[opcode->operand0] > *(SPVM_API_short*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_CODE_GT_INT:
         condition_flag = *(SPVM_API_int*)&vars[opcode->operand0] > *(SPVM_API_int*)&vars[opcode->operand1];
         break;
@@ -329,12 +305,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       case SPVM_OPCODE_C_CODE_GT_DOUBLE:
         condition_flag = *(double*)&vars[opcode->operand0] > *(double*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_CODE_GE_BYTE:
-        condition_flag = *(SPVM_API_byte*)&vars[opcode->operand0] >= *(SPVM_API_byte*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_CODE_GE_SHORT:
-        condition_flag = *(SPVM_API_short*)&vars[opcode->operand0] >= *(SPVM_API_short*)&vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_CODE_GE_INT:
         condition_flag = *(SPVM_API_int*)&vars[opcode->operand0] >= *(SPVM_API_int*)&vars[opcode->operand1];
@@ -348,12 +318,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_GE_DOUBLE:
         condition_flag = *(double*)&vars[opcode->operand0] >= *(double*)&vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_CODE_LT_BYTE:
-        condition_flag = *(SPVM_API_byte*)&vars[opcode->operand0] < *(SPVM_API_byte*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_CODE_LT_SHORT:
-        condition_flag = *(SPVM_API_short*)&vars[opcode->operand0] < *(SPVM_API_short*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_CODE_LT_INT:
         condition_flag = *(SPVM_API_int*)&vars[opcode->operand0] < *(SPVM_API_int*)&vars[opcode->operand1];
         break;
@@ -365,12 +329,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       case SPVM_OPCODE_C_CODE_LT_DOUBLE:
         condition_flag = *(double*)&vars[opcode->operand0] < *(double*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_CODE_LE_BYTE:
-        condition_flag = *(SPVM_API_byte*)&vars[opcode->operand0] <= *(SPVM_API_byte*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_CODE_LE_SHORT:
-        condition_flag = *(SPVM_API_short*)&vars[opcode->operand0] <= *(SPVM_API_short*)&vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_CODE_LE_INT:
         condition_flag = *(SPVM_API_int*)&vars[opcode->operand0] <= *(SPVM_API_int*)&vars[opcode->operand1];

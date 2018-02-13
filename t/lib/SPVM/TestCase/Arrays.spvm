@@ -130,9 +130,9 @@ package TestCase::Arrays {
     my $values2 = Arrays::copy_of_byte($values, len $values);
     
     if (@$values2 == 3) {
-      if ($values2->[0] == (byte)0) {
-        if ($values2->[1] == (byte)1) {
-          if ($values2->[2] == (byte)2) {
+      if ((int)$values2->[0] == (int)(byte)0) {
+        if ((int)$values2->[1] == (int)(byte)1) {
+          if ((int)$values2->[2] == (int)(byte)2) {
             return 1;
           }
         }
@@ -150,10 +150,10 @@ package TestCase::Arrays {
     my $values2 = Arrays::copy_of_byte($values, $length);
     
     if (@$values2 == 4) {
-      if ($values2->[0] == (byte)0) {
-        if ($values2->[1] == (byte)1) {
-          if ($values2->[2] == (byte)2) {
-            if ($values2->[3] == (byte)0) {
+      if ((int)$values2->[0] == (int)(byte)0) {
+        if ((int)$values2->[1] == (int)(byte)1) {
+          if ((int)$values2->[2] == (int)(byte)2) {
+            if ((int)$values2->[3] == (int)(byte)0) {
               return 1;
             }
           }
@@ -172,8 +172,8 @@ package TestCase::Arrays {
     my $values2 = Arrays::copy_of_byte($values, $length);
     
     if (@$values2 == 2) {
-      if ($values2->[0] == (byte)0) {
-        if ($values2->[1] == (byte)1) {
+      if ((int)$values2->[0] == (int)(byte)0) {
+        if ((int)$values2->[1] == (int)(byte)1) {
           return 1;
         }
       }
@@ -216,9 +216,9 @@ package TestCase::Arrays {
     my $values2 = Arrays::copy_of_short($values, len $values);
     
     if (@$values2 == 3) {
-      if ($values2->[0] == (short)0) {
-        if ($values2->[1] == (short)1) {
-          if ($values2->[2] == (short)2) {
+      if ((int)$values2->[0] == (int)(short)0) {
+        if ((int)$values2->[1] == (int)(short)1) {
+          if ((int)$values2->[2] == (int)(short)2) {
             return 1;
           }
         }
@@ -236,10 +236,10 @@ package TestCase::Arrays {
     my $values2 = Arrays::copy_of_short($values, $length);
     
     if (@$values2 == 4) {
-      if ($values2->[0] == (short)0) {
-        if ($values2->[1] == (short)1) {
-          if ($values2->[2] == (short)2) {
-            if ($values2->[3] == (short)0) {
+      if ((int)$values2->[0] == (int)(short)0) {
+        if ((int)$values2->[1] == (int)(short)1) {
+          if ((int)$values2->[2] == (int)(short)2) {
+            if ((int)$values2->[3] == (int)(short)0) {
               return 1;
             }
           }
@@ -258,8 +258,8 @@ package TestCase::Arrays {
     my $values2 = Arrays::copy_of_short($values, $length);
     
     if (@$values2 == 2) {
-      if ($values2->[0] == (short)0) {
-        if ($values2->[1] == (short)1) {
+      if ((int)$values2->[0] == (int)(short)0) {
+        if ((int)$values2->[1] == (int)(short)1) {
           return 1;
         }
       }
