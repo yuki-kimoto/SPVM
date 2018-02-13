@@ -4383,10 +4383,10 @@ package TestCase {
   }
   
   sub bit_and : int () {
-    my $value1 = 0xF0F0 & 0x0F0F;
-    my $value2 = 0xF0F0F0F0L & 0x0F0F0F0FL;
-    if ($value1 == 0x0000) {
-      if ($value2 == 0x00000000L) {
+    my $value1 = 0xFF00 & 0xF0F0;
+    my $value2 = 0xFF00FF00L & 0xF0F0F0F0L;
+    if ($value1 == 0xF000) {
+      if ($value2 == 0xF000F000L) {
         return 1;
       }
     }
@@ -4395,10 +4395,22 @@ package TestCase {
   }
 
   sub bit_or : int () {
-    my $value1 = 0xF0F0 | 0x0F0F;
-    my $value2 = 0xF0F0F0F0L | 0x0F0F0F0FL;
-    if ($value1 == 0xFFFF) {
-      if ($value2 == 0xFFFFFFFFL) {
+    my $value1 = 0xFF00 | 0xF0F0;
+    my $value2 = 0xFF00FF00L | 0xF0F0F0F0L;
+    if ($value1 == 0xFFF0) {
+      if ($value2 == 0xFFF0FFF0L) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub bit_xor : int () {
+    my $value1 = 0xFF00 ^ 0xF0F0;
+    my $value2 = 0xFF00FF00L ^ 0xF0F0F0F0L;
+    if ($value1 == 0x0FF0) {
+      if ($value2 == 0x0FF00FF0L) {
         return 1;
       }
     }
