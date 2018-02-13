@@ -894,15 +894,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Constant
           SPVM_TYPE* constant_type;
           
-          if (*compiler->bufptr == 'y')  {
-            constant_type = SPVM_TYPE_get_byte_type(compiler);
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == 's')  {
-            constant_type = SPVM_TYPE_get_short_type(compiler);
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == 'L')  {
+          if (*compiler->bufptr == 'L')  {
             constant_type = SPVM_TYPE_get_long_type(compiler);
             compiler->bufptr++;
           }

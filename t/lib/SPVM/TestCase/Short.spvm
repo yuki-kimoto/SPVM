@@ -3,8 +3,8 @@ use Short;
 package TestCase::Short {
 
   sub constant : int () {
-    if (Short::MIN_VALUE() == -32768s) {
-      if (Short::MAX_VALUE() == 32767s) {
+    if (Short::MIN_VALUE() == (short)-32768) {
+      if (Short::MAX_VALUE() == (short)32767) {
         if (Short::BYTES() == 2) {
           if (Short::SIZE() == 16) {
             return 1;

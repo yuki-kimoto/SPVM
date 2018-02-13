@@ -130,16 +130,12 @@ package TestCase {
     }
 
     CORE::warn("warn");
-    CORE::warn(1y . "\n");
-    CORE::warn(1s . "\n");
     CORE::warn(1 . "\n");
     CORE::warn(1L . "\n");
     CORE::warn(0.5f . "\n");
     CORE::warn(0.5 . "\n");
 
     CORE::warn("warn");
-    CORE::warn(1y . "\n");
-    CORE::warn(1s . "\n");
     CORE::warn(1 . "\n");
     CORE::warn(1L . "\n");
     CORE::warn(0.5f . "\n");

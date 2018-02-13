@@ -111,8 +111,8 @@ package TestCase {
     
     if ($value_byte == (byte)1) {
       if ($value_byte2 == (byte)1) {
-        if ($value_short == 1s) {
-          if ($value_short2 == 1s) {
+        if ($value_short == (short)1) {
+          if ($value_short2 == (short)1) {
             if ($value_int == 1) {
               if ($value_int2 == 1) {
                 if ($value_long == 1L) {
@@ -140,9 +140,9 @@ package TestCase {
     my $value_long2 = $value_long++;
     
     if ($value_byte == (byte)1) {
-      if ($value_byte2 == 0y) {
-        if ($value_short == 1s) {
-          if ($value_short2 == 0s) {
+      if ($value_byte2 == (byte)0) {
+        if ($value_short == (short)1) {
+          if ($value_short2 == (short)0) {
             if ($value_int == 1) {
               if ($value_int2 == 0) {
                 if ($value_long == 1L) {
@@ -200,9 +200,9 @@ package TestCase {
     my $value_long2 = $value_long--;
     
     if ($value_byte == -(byte)1) {
-      if ($value_byte2 == 0y) {
+      if ($value_byte2 == (byte)0) {
         if ($value_short == (short)-1) {
-          if ($value_short2 == 0s) {
+          if ($value_short2 == (short)0) {
             if ($value_int == -1) {
               if ($value_int2 == 0) {
                 if ($value_long == -1L) {
@@ -468,7 +468,7 @@ package TestCase {
   # SPVM set and get
   sub spvm_set_and_get_byte : int ($nums : byte[]) {
     
-    if ($nums->[0] == 0y) {
+    if ($nums->[0] == (byte)0) {
       if ($nums->[1] == Byte::MAX_VALUE()) {
         return 1;
       }
@@ -478,7 +478,7 @@ package TestCase {
   }
   sub spvm_set_and_get_short : int ($nums : short[]) {
     
-    if ($nums->[0] == 0s) {
+    if ($nums->[0] == (short)0) {
       if ($nums->[1] == Short::MAX_VALUE()) {
         return 1;
       }
@@ -1154,10 +1154,10 @@ package TestCase {
     my $num9 = 1.0f / 2.0f;
     my $num10 = 1.0 / 2.0;
     
-    if ($num1 == 2y) {
-      if ($num2 == 2y) {
-        if ($num3 == 2s) {
-          if ($num4 == 2s) {
+    if ($num1 == (byte)2) {
+      if ($num2 == (byte)2) {
+        if ($num3 == (short)2) {
+          if ($num4 == (short)2) {
             if ($num5 == 2) {
               if ($num6 == 2) {
                 if ($num7 == 2L) {
@@ -1189,10 +1189,10 @@ package TestCase {
     my $num7 = 5L % 3L;
     my $num8 = -3L % 5L;
     
-    if ($num1 == 2y) {
-      if ($num2 == -3y) {
-        if ($num3 == 2s) {
-          if ($num4 == -3s) {
+    if ($num1 == (byte)2) {
+      if ($num2 == (byte)-3) {
+        if ($num3 == (short)2) {
+          if ($num4 == (short)-3) {
             if ($num5 == 2) {
               if ($num6 == -3) {
                 if ($num7 == 2L) {
@@ -1670,10 +1670,10 @@ package TestCase {
     my $values_float = new float[1000000];
     my $values_double = new double[1000000];
     my $values_object = new TestCase[1000000];
-    if ($values_byte->[0] == 0y) {
-      if ($values_byte->[999999] == 0y) {
-        if ($values_short->[0] == 0s) {
-          if ($values_short->[999999] == 0s) {
+    if ($values_byte->[0] == (byte)0) {
+      if ($values_byte->[999999] == (byte)0) {
+        if ($values_short->[0] == (short)0) {
+          if ($values_short->[999999] == (short)0) {
             if ($values_int->[0] == 0) {
               if ($values_int->[999999] == 0) {
                 if ($values_long->[0] == 0L) {
@@ -1707,10 +1707,10 @@ package TestCase {
     my $values_float = new float[10];
     my $values_double = new double[10];
     my $values_object = new TestCase[10];
-    if ($values_byte->[0] == 0y) {
-      if ($values_byte->[9] == 0y) {
-        if ($values_short->[0] == 0s) {
-          if ($values_short->[9] == 0s) {
+    if ($values_byte->[0] == (byte)0) {
+      if ($values_byte->[9] == (byte)0) {
+        if ($values_short->[0] == (short)0) {
+          if ($values_short->[9] == (short)0) {
             if ($values_int->[0] == 0) {
               if ($values_int->[9] == 0) {
                 if ($values_long->[0] == 0L) {
@@ -1737,10 +1737,10 @@ package TestCase {
     return 0;
   }
   sub array_init_byte : int () {
-    my $nums = new byte[] {1y, 2y, Byte::MAX_VALUE()};
+    my $nums = new byte[] {(byte)1, (byte)2, Byte::MAX_VALUE()};
     
     if ($nums->[0] == (byte)1) {
-      if ($nums->[1] == 2y) {
+      if ($nums->[1] == (byte)2) {
         if ($nums->[2] == Byte::MAX_VALUE()) {
           return 1;
         }
@@ -1749,11 +1749,11 @@ package TestCase {
     return 0;
   }
   sub array_init_short : int () {
-    my $nums = new short[] {1s, 2s, 3s};
+    my $nums = new short[] {(short)1, (short)2, (short)3};
     
-    if ($nums->[0] == 1s) {
-      if ($nums->[1] == 2s) {
-        if ($nums->[2] == 3s) {
+    if ($nums->[0] == (short)1) {
+      if ($nums->[1] == (short)2) {
+        if ($nums->[2] == (short)3) {
           return 1;
         }
       }
@@ -2562,8 +2562,8 @@ package TestCase {
     my $num_int_complement = ~$num_int;
     my $num_long_complement = ~$num_long;
     
-    if ($num_byte_complement == 0xFy) {
-      if ($num_short_complement == 0xFs) {
+    if ($num_byte_complement == (byte)0xF) {
+      if ($num_short_complement == (short)0xF) {
         if ($num_int_complement == 0xF) {
           if ($num_long_complement == 0xFL) {
             return 1;

@@ -13,8 +13,8 @@ package TestCase::Extension {
     
     my $test_case = TestCase::new();
     
-    $test_case->set_x_byte(1y);
-    $test_case->set_x_short(2s);
+    $test_case->set_x_byte((byte)1);
+    $test_case->set_x_short((short)2);
     $test_case->set_x_int(3);
     $test_case->set_x_long(4L);
     $test_case->set_x_float(0.5f);
@@ -30,8 +30,8 @@ package TestCase::Extension {
     my $x_double1 = native_api_get_double_field($test_case);
     my $minimal2 = native_api_get_object_field($test_case);
     
-    if ($x_byte1 == 1y) {
-      if ($x_short1 == 2s) {
+    if ($x_byte1 == (byte)1) {
+      if ($x_short1 == (short)2) {
         if ($x_int1 == 3) {
           if ($x_long1 == 4L) {
             if ($x_float1 == 0.5f) {
