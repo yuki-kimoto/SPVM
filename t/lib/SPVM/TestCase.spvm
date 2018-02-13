@@ -4418,33 +4418,6 @@ package TestCase {
     return 0;
   }
 
-  # Bit shift right logical
-  sub bit_shift_right_logical_byte : int () {
-    # 11000001 >>> 2
-    my $value = (byte)0xC1 >>> 2;
-    
-    # 00110000
-    if ($value == (byte)0x30) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub bit_shift_right_logical_short : int () {
-    # 11000000 00000001 >>> 2
-    my $value = (short)0xC001 >>> 2;
-    
-    # 00110000 00000000
-    if ($value == (short)0x3000) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
   sub bit_shift_right_logical_int : int () {
     # 11000000 00000000 00000000 00000001 >>> 2
     my $value = 0xC0000001 >>> 2;
@@ -4471,33 +4444,6 @@ package TestCase {
     }
   }
 
-  # Bit shift right logical
-  sub bit_shift_right_byte : int () {
-    # 11000001 >> 2
-    my $value = (byte)0xC1 >> 2;
-    
-    # 11110000
-    if ($value == (byte)0xF0) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub bit_shift_right_short : int () {
-    # 11000000 00000001 >> 2
-    my $value = (short)0xC001 >> 2;
-    
-    # 11110000 00000000
-    if ($value == (short)0xF000) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
   sub bit_shift_right_int : int () {
     # 11000000 00000000 00000000 00000001 >> 2
     my $value = 0xC0000001 >> 2;
@@ -4796,89 +4742,6 @@ package TestCase {
   }
   
   # Bit shift left
-  sub bit_shift_left_byte : int () {
-    # 00000011 << 2
-    my $value = (byte)0x3 << 2;
-    
-    # 00001100
-    if ($value == (byte)0xC) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub bit_shift_left_byte_max : int () {
-    
-    # 01000000 << 1
-    my $value = (byte)0x40 << 1;
-    
-    # 10000000
-    if ($value == (byte)0x80) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub bit_shift_left_byte_overflow : int () {
-    
-    # 10000000 << 1
-    my $value = (byte)0x80 << 1;
-    
-    # 00000000
-    if ($value == (byte)0) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub bit_shift_left_short : int () {
-    
-    # 00000011 00000000 << 2
-    my $value = (short)0x300 << 2;
-    
-    # 00001100 00000000
-    if ($value == (short)0xC00) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub bit_shift_left_short_max : int () {
-    
-    # 01000000 00000000 << 1
-    my $value = (short)0x4000 << 1;
-    
-    # 10000000 00000000
-    if ($value == (short)0x8000) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub bit_shift_left_short_overflow : int () {
-    
-    # 10000000 00000000 << 1
-    my $value = (short)0x8000 << 1;
-    
-    # 00000000 00000000
-    if ($value == (short)0) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-
   sub bit_shift_left_int : int () {
     
     # 00000011 00000000 00000000 00000000 << 2

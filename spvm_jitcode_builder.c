@@ -901,35 +901,17 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "double", opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
-      case SPVM_OPCODE_C_CODE_LEFT_SHIFT_BYTE:
-        SPVM_JITCODE_BUILDER_add_left_shift(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_CODE_LEFT_SHIFT_SHORT:
-        SPVM_JITCODE_BUILDER_add_left_shift(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
       case SPVM_OPCODE_C_CODE_LEFT_SHIFT_INT:
         SPVM_JITCODE_BUILDER_add_left_shift(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_CODE_LEFT_SHIFT_LONG:
         SPVM_JITCODE_BUILDER_add_left_shift(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_BYTE:
-        SPVM_JITCODE_BUILDER_add_right_shift(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_SHORT:
-        SPVM_JITCODE_BUILDER_add_right_shift(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
       case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_INT:
         SPVM_JITCODE_BUILDER_add_right_shift(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_LONG:
         SPVM_JITCODE_BUILDER_add_right_shift(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_BYTE:
-        SPVM_JITCODE_BUILDER_add_right_shift_unsigned(string_buffer, "int8_t", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_SHORT:
-        SPVM_JITCODE_BUILDER_add_right_shift_unsigned(string_buffer, "int16_t", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_INT:
         SPVM_JITCODE_BUILDER_add_right_shift_unsigned(string_buffer, "int32_t", opcode->operand0, opcode->operand1, opcode->operand2);

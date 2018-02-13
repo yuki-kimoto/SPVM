@@ -85,12 +85,6 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Bit shift left
 {
-  ok(SPVM::TestCase::bit_shift_left_byte());
-  ok(SPVM::TestCase::bit_shift_left_byte_max());
-  ok(SPVM::TestCase::bit_shift_left_byte_overflow());
-  ok(SPVM::TestCase::bit_shift_left_short());
-  ok(SPVM::TestCase::bit_shift_left_short_max());
-  ok(SPVM::TestCase::bit_shift_left_short_overflow());
   ok(SPVM::TestCase::bit_shift_left_int());
   ok(SPVM::TestCase::bit_shift_left_int_max());
   ok(SPVM::TestCase::bit_shift_left_int_overflow());
@@ -101,16 +95,12 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Bit shift right logical
 {
-  ok(SPVM::TestCase::bit_shift_right_logical_byte());
-  ok(SPVM::TestCase::bit_shift_right_logical_short());
   ok(SPVM::TestCase::bit_shift_right_logical_int());
   ok(SPVM::TestCase::bit_shift_right_logical_long());
 }
 
 # Bit shift right
 {
-  ok(SPVM::TestCase::bit_shift_right_byte());
-  ok(SPVM::TestCase::bit_shift_right_short());
   ok(SPVM::TestCase::bit_shift_right_int());
   ok(SPVM::TestCase::bit_shift_right_long());
 }
