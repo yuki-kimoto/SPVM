@@ -711,23 +711,22 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                      opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_BYTE;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_SHORT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_INT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_INT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-                      opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_LONG;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_FLOAT) {
-                      opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_FLOAT;
-                    }
-                    else if (type->code == SPVM_TYPE_C_CODE_DOUBLE) {
-                      opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_DOUBLE;
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_LONG;
+                        break;
+                      case SPVM_TYPE_C_CODE_FLOAT:
+                        opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_FLOAT;
+                        break;
+                      case SPVM_TYPE_C_CODE_DOUBLE:
+                        opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_DOUBLE;
+                        break;
+                      default:
+                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
+                        assert(0);
                     }
                     
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
@@ -742,8 +741,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     // Check croak
                     switch (type->code) {
-                      case SPVM_TYPE_C_CODE_BYTE:
-                      case SPVM_TYPE_C_CODE_SHORT:
                       case SPVM_TYPE_C_CODE_INT:
                       case SPVM_TYPE_C_CODE_LONG:
                         SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, op_cur->line);
