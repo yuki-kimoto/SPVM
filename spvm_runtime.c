@@ -962,13 +962,25 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_MOVE_BYTE:
+        *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)&vars[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_CODE_MOVE_SHORT:
+        *(SPVM_API_short*)&vars[opcode->operand0] = *(SPVM_API_short*)&vars[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_CODE_MOVE_INT:
+        *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)&vars[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_CODE_MOVE_LONG:
+        *(SPVM_API_long*)&vars[opcode->operand0] = *(SPVM_API_long*)&vars[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_CODE_MOVE_FLOAT:
+        *(SPVM_API_float*)&vars[opcode->operand0] = *(SPVM_API_float*)&vars[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_CODE_MOVE_DOUBLE:
+        *(SPVM_API_double*)&vars[opcode->operand0] = *(SPVM_API_double*)&vars[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_CODE_MOVE_OBJECT:
-        vars[opcode->operand0] = vars[opcode->operand1];
+        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_CODE_INC_REF_COUNT: {
         // Increment new value reference count
