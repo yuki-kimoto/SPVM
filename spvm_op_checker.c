@@ -1064,9 +1064,23 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  // Right value Must not be undef
+                  // Right value must not be undef
                   if (!last_type) {
                     SPVM_yyerror_format(compiler, "+ operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  // Left value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "+ operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  // Right value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "+ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1078,13 +1092,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                                                   
-                  // Value must be numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "+ operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
                   break;
                 }
                 case SPVM_OP_C_CODE_SUBTRACT: {
@@ -1104,6 +1111,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     compiler->fatal_error = 1;
                     return;
                   }
+
+                  // Left value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "- operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  // Right value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "- operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
                   
                   // Must be same type
                   if (first_type->code != last_type->code) {
@@ -1111,13 +1132,168 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     compiler->fatal_error = 1;
                     return;
                   }
-                                                  
-                  // Value must be numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "- operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+
+                  
+                  break;
+                }
+                case SPVM_OP_C_CODE_MULTIPLY: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  
+                  // Left value must not be undef
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "* operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
+                  
+                  // Right value Must not be undef
+                  if (!last_type) {
+                    SPVM_yyerror_format(compiler, "* operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
+                  // Left value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "* operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  // Right value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "* operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  // Must be same type
+                  if (first_type->code != last_type->code) {
+                    SPVM_yyerror_format(compiler, "* operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_CODE_DIVIDE: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  
+                  // Left value must not be undef
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "/ operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
+                  // Right value Must not be undef
+                  if (!last_type) {
+                    SPVM_yyerror_format(compiler, "/ operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  // Left value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "/ operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  // Right value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "/ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
+                  // Must be same type
+                  if (first_type->code != last_type->code) {
+                    SPVM_yyerror_format(compiler, "/ operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  break;
+                }
+                case SPVM_OP_C_CODE_REMAINDER: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  
+                  // Left value must not be undef
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "% operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
+                  // Right value Must not be undef
+                  if (!last_type) {
+                    SPVM_yyerror_format(compiler, "%% operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  // Left value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "%% operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+
+                  // Right value must not be object type
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "%% operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
+                  // Must be same type
+                  if (first_type->code != last_type->code) {
+                    SPVM_yyerror_format(compiler, "%% operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                                                  
+                  break;
+                }
+                case SPVM_OP_C_CODE_PRE_INC:
+                case SPVM_OP_C_CODE_POST_INC:
+                case SPVM_OP_C_CODE_PRE_DEC:
+                case SPVM_OP_C_CODE_POST_DEC: {
+                  SPVM_OP* op_first = op_cur->first;
+                  if (op_first->code != SPVM_OP_C_CODE_VAR) {
+                    SPVM_yyerror_format(compiler, "invalid is_assign_to in increment at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
+                  
+                  // Only int or long
+                  if (first_type->code > SPVM_TYPE_C_CODE_LONG) {
+                    SPVM_yyerror_format(compiler, "increment or decrement target must be integral at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
+                  op_cur->first->is_assign_to = 1;
+                  
+                  break;
+                }
+                case SPVM_OP_C_CODE_LOOP: {
+                  // Exchange condition and loop block to move condition to end of block
+                  SPVM_OP* op_block_outer = op_cur->first;
+                  
+                  SPVM_OP* op_condition = op_block_outer->first->sibparent;
+                  SPVM_OP* op_block_loop = op_block_outer->last;
+                  
+                  SPVM_OP* op_stab_condition = SPVM_OP_cut_op(compiler, op_condition);
+                  SPVM_OP* op_stab_block_loop = SPVM_OP_cut_op(compiler, op_block_loop);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab_condition, op_block_loop);
+                  SPVM_OP_replace_op(compiler, op_stab_block_loop, op_condition);
                   
                   break;
                 }
@@ -1174,108 +1350,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
-                case SPVM_OP_C_CODE_MULTIPLY: {
-                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-                  
-                  // Left value must not be undef
-                  if (!first_type) {
-                    SPVM_yyerror_format(compiler, "* operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  // Right value Must not be undef
-                  if (!last_type) {
-                    SPVM_yyerror_format(compiler, "* operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  // Must be same type
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "* operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                                                  
-                  // Value must be numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "* operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  break;
-                }
-                case SPVM_OP_C_CODE_DIVIDE: {
-                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-                  
-                  // Left value must not be undef
-                  if (!first_type) {
-                    SPVM_yyerror_format(compiler, "/ operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  // Right value Must not be undef
-                  if (!last_type) {
-                    SPVM_yyerror_format(compiler, "/ operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  // Must be same type
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "/ operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                                                  
-                  // Value must be numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "/ operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  break;
-                }
-                case SPVM_OP_C_CODE_REMAINDER: {
-                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-                  
-                  // Left value must not be undef
-                  if (!first_type) {
-                    SPVM_yyerror_format(compiler, "% operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  // Right value Must not be undef
-                  if (!last_type) {
-                    SPVM_yyerror_format(compiler, "% operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  // Must be same type
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "% operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                                                  
-                  // Value must be numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "% operator left and right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  break;
-                }
                 case SPVM_OP_C_CODE_CROAK: {
                   if (op_cur->first->code == SPVM_OP_C_CODE_UNDEF) {
                     op_cur->first->uv.undef->type = SPVM_TYPE_get_string_type(compiler);
@@ -1288,44 +1362,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       return;
                     }
                   }
-                  break;
-                }
-                case SPVM_OP_C_CODE_PRE_INC:
-                case SPVM_OP_C_CODE_POST_INC:
-                case SPVM_OP_C_CODE_PRE_DEC:
-                case SPVM_OP_C_CODE_POST_DEC: {
-                  SPVM_OP* op_first = op_cur->first;
-                  if (op_first->code != SPVM_OP_C_CODE_VAR) {
-                    SPVM_yyerror_format(compiler, "invalid is_assign_to in increment at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
-                  
-                  // Only int or long
-                  if (first_type->code > SPVM_TYPE_C_CODE_LONG) {
-                    SPVM_yyerror_format(compiler, "increment or decrement target must be integral at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-                  
-                  op_cur->first->is_assign_to = 1;
-                  
-                  break;
-                }
-                case SPVM_OP_C_CODE_LOOP: {
-                  // Exchange condition and loop block to move condition to end of block
-                  SPVM_OP* op_block_outer = op_cur->first;
-                  
-                  SPVM_OP* op_condition = op_block_outer->first->sibparent;
-                  SPVM_OP* op_block_loop = op_block_outer->last;
-                  
-                  SPVM_OP* op_stab_condition = SPVM_OP_cut_op(compiler, op_condition);
-                  SPVM_OP* op_stab_block_loop = SPVM_OP_cut_op(compiler, op_block_loop);
-                  
-                  SPVM_OP_replace_op(compiler, op_stab_condition, op_block_loop);
-                  SPVM_OP_replace_op(compiler, op_stab_block_loop, op_condition);
-                  
                   break;
                 }
                 // End of scope
