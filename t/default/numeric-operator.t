@@ -19,10 +19,7 @@ my $start_objects_count = SPVM::get_objects_count();
 # Add
 {
   ok(SPVM::TestCase::add());
-}
 
-# Add
-{
   is(SPVM::TestCase::add_byte_max(), 127);
   is(SPVM::TestCase::add_byte_min(), -127);
   is(SPVM::TestCase::add_byte_overflow(), -128);
@@ -39,6 +36,8 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Subtract
 {
+  ok(SPVM::TestCase::subtract());
+
   is(SPVM::TestCase::subtract_byte_max(), 126);
   is(SPVM::TestCase::subtract_byte_min(), -128);
   is(SPVM::TestCase::subtract_byte_underflow(), 127);

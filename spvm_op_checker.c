@@ -1122,13 +1122,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  // Must be same type
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "- operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
-
+                  // Upgrade type
+                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
                   
                   break;
                 }
@@ -1164,12 +1159,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
-                  // Must be same type
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "* operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
+                  // Upgrade type
+                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
                   
                   break;
                 }
@@ -1205,12 +1196,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  // Must be same type
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "/ operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
+                  // Upgrade type
+                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
 
                   break;
                 }
@@ -1246,12 +1233,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  // Must be same type
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "%% operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
+                  // Upgrade type
+                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
                                                   
                   break;
                 }
