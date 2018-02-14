@@ -15,14 +15,11 @@ my $start_objects_count = SPVM::get_objects_count();
 {
   ok(SPVM::TestCase::special_assign());
 }
+
 # Add
 {
-  is(SPVM::TestCase::add_byte_max(), 127);
-  is(SPVM::TestCase::add_byte_min(), -127);
-  is(SPVM::TestCase::add_byte_overflow(), -128);
-  is(SPVM::TestCase::add_short_max(), 32767);
-  is(SPVM::TestCase::add_short_min(), -32767);
-  is(SPVM::TestCase::add_short_overflow(), -32768);
+  ok(SPVM::TestCase::add());
+
   is(SPVM::TestCase::add_int_max(), 2147483647);
   is(SPVM::TestCase::add_int_min(), -2147483647);
   is(SPVM::TestCase::add_int_overflow(), -2147483648);
@@ -33,12 +30,8 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Subtract
 {
-  is(SPVM::TestCase::subtract_byte_max(), 126);
-  is(SPVM::TestCase::subtract_byte_min(), -128);
-  is(SPVM::TestCase::subtract_byte_underflow(), 127);
-  is(SPVM::TestCase::subtract_short_max(), 32766);
-  is(SPVM::TestCase::subtract_short_min(), -32768);
-  is(SPVM::TestCase::subtract_short_underflow(), 32767);
+  ok(SPVM::TestCase::subtract());
+
   is(SPVM::TestCase::subtract_int_max(), 2147483646);
   is(SPVM::TestCase::subtract_int_min(), -2147483648);
   is(SPVM::TestCase::subtract_int_underflow(), 2147483647);
@@ -49,12 +42,6 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Multiply
 {
-  is(SPVM::TestCase::multiply_byte_plus(), 64);
-  is(SPVM::TestCase::multiply_byte_minus(), -64);
-  is(SPVM::TestCase::multiply_byte_overflow(), -128);
-  is(SPVM::TestCase::multiply_short_plus(), 16384);
-  is(SPVM::TestCase::multiply_short_minus(), -16384);
-  is(SPVM::TestCase::multiply_short_overflow(), -32768);
   is(SPVM::TestCase::multiply_int_plus(), 1073741824);
   is(SPVM::TestCase::multiply_int_minus(), -1073741824);
   is(SPVM::TestCase::multiply_int_overflow(), -2147483648);

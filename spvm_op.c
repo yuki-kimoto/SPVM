@@ -175,8 +175,6 @@ void SPVM_OP_add_convert_op_for_type_upgrade(SPVM_COMPILER* compiler, SPVM_OP* o
     SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_bin->file, op_bin->line);
     op_dist_type->uv.type = dist_type;
     SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_last);
-    
-    SPVM_DUMPER_dump_ast(compiler, op_bin);
     SPVM_OP_replace_op(compiler, op_stab, op_convert);
   }
 }
