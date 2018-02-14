@@ -2526,15 +2526,15 @@ package TestCase {
     my $num_float = 1f;
     my $num_double = 1d;
     
-    my $num_byte_negate = (byte)-(int)$num_byte;
-    my $num_short_negate = (short)-(int)$num_short;
+    my $num_byte_negate : int = -$num_byte;
+    my $num_short_negate : int = -$num_short;
     my $num_int_negate = -$num_int;
     my $num_long_negate = -$num_long;
     my $num_float_negate = -$num_float;
     my $num_double_negate = -$num_double;
     
-    if ((int)$num_byte_negate == (int)(byte)-(int)(byte)1) {
-      if ((int)$num_short_negate == (int)(short)-1) {
+    if ($num_byte_negate == -1) {
+      if ($num_short_negate == -1) {
         if ($num_int_negate == -1) {
           if ($num_long_negate == -1L) {
             if ($num_float_negate == -1f) {

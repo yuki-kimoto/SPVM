@@ -1027,6 +1027,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
+                  SPVM_OP_add_convert_op_primitive_unary_op(compiler, op_cur);
+                  
                   break;
                 }
                 case SPVM_OP_C_CODE_COMPLEMENT: {
@@ -1050,6 +1052,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     compiler->fatal_error = 1;
                     return;
                   }
+
                   
                   break;
                 }
@@ -1086,7 +1089,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Upgrade type
-                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
+                  SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
                                                   
                   break;
                 }
@@ -1123,7 +1126,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Upgrade type
-                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
+                  SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
                   
                   break;
                 }
@@ -1160,7 +1163,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
 
                   // Upgrade type
-                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
+                  SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
                   
                   break;
                 }
@@ -1197,7 +1200,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Upgrade type
-                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
+                  SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
 
                   break;
                 }
@@ -1234,7 +1237,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Upgrade type
-                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
+                  SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
                                                   
                   break;
                 }
