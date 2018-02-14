@@ -1085,12 +1085,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  // Must be same type
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "+ operator left and right value must be same at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
+                  // Upgrade type
+                  SPVM_OP_add_convert_op_for_type_upgrade(compiler, op_cur);
                                                   
                   break;
                 }
@@ -1755,7 +1751,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
           else {
             while (1) {
-              // Create temporary variable for no is_var_assign_from term witch is not variable
+              // Create temporary variable for no is_var_assign_from term which is not variable
               int32_t create_tmp_var = 0;
               SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
               

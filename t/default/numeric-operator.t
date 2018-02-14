@@ -15,6 +15,12 @@ my $start_objects_count = SPVM::get_objects_count();
 {
   ok(SPVM::TestCase::special_assign());
 }
+
+# Add
+{
+  ok(SPVM::TestCase::add());
+}
+
 # Add
 {
   is(SPVM::TestCase::add_byte_max(), 127);

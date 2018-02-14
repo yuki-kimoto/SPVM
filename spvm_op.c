@@ -136,6 +136,51 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "MOVE_OBJECT",
 };
 
+void SPVM_OP_add_convert_op_for_type_upgrade(SPVM_COMPILER* compiler, SPVM_OP* op_bin) {
+  
+  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_bin->first);
+  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_bin->last);
+  
+  SPVM_TYPE* dist_type;
+  if (first_type->code == SPVM_TYPE_C_CODE_DOUBLE || last_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+    dist_type = SPVM_TYPE_get_double_type(compiler);
+  }
+  else if (first_type->code == SPVM_TYPE_C_CODE_FLOAT || last_type->code == SPVM_TYPE_C_CODE_FLOAT) {
+    dist_type = SPVM_TYPE_get_float_type(compiler);
+  }
+  else if (first_type->code == SPVM_TYPE_C_CODE_LONG || last_type->code == SPVM_TYPE_C_CODE_LONG) {
+    dist_type = SPVM_TYPE_get_long_type(compiler);
+  }
+  else {
+    dist_type = SPVM_TYPE_get_int_type(compiler);
+  }
+  
+  if (first_type->code != dist_type->code) {
+    SPVM_OP* op_first = op_bin->first;
+    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
+    
+    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_first->file, op_first->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_bin->file, op_bin->line);
+    op_dist_type->uv.type = dist_type;
+    SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_first);
+    
+    SPVM_OP_replace_op(compiler, op_stab, op_convert);
+  }
+  
+  if (last_type->code != dist_type->code) {
+    SPVM_OP* op_last = op_bin->last;
+    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_last);
+    
+    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_last->file, op_last->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_bin->file, op_bin->line);
+    op_dist_type->uv.type = dist_type;
+    SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_last);
+    
+    SPVM_DUMPER_dump_ast(compiler, op_bin);
+    SPVM_OP_replace_op(compiler, op_stab, op_convert);
+  }
+}
+
 _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
@@ -563,7 +608,7 @@ void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** o
 // Replace target op with replace op
 void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace) {
   (void)compiler;
-
+  
   // Get parent op
   SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
   
@@ -1301,16 +1346,15 @@ SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken,
   return op_weaken_field;
 }
 
-SPVM_OP* SPVM_OP_build_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term) {
   
-  SPVM_OP* op_convert_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_type->file, op_type->line);
-  SPVM_OP_insert_child(compiler, op_convert_type, op_convert_type->last, op_term);
-  SPVM_OP_insert_child(compiler, op_convert_type, op_convert_type->last, op_type);
+  SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_term);
+  SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_type);
   
-  op_convert_type->file = op_type->file;
-  op_convert_type->line = op_type->line;
+  op_convert->file = op_type->file;
+  op_convert->line = op_type->line;
   
-  return op_convert_type;
+  return op_convert;
 }
 
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
