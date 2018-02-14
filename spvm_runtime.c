@@ -625,6 +625,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_LOAD_UNDEF:
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = NULL;
         break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0:
+        *(SPVM_API_byte*)&vars[opcode->operand0] = (int8_t)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT_0:
+        *(SPVM_API_short*)&vars[opcode->operand0] = (int16_t)0;
+        break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT_0:
         *(SPVM_API_int*)&vars[opcode->operand0] = (int32_t)0;
         break;
@@ -636,6 +642,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE_0:
         *(double*)&vars[opcode->operand0] = (double)0;
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE:
+        *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)&constant_pool[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT:
+        *(SPVM_API_short*)&vars[opcode->operand0] = *(SPVM_API_short*)&constant_pool[opcode->operand1];
         break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT:
         *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)&constant_pool[opcode->operand1];
@@ -950,25 +962,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_MOVE_BYTE:
-        *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_CODE_MOVE_SHORT:
-        *(SPVM_API_short*)&vars[opcode->operand0] = *(SPVM_API_short*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_CODE_MOVE_INT:
-        *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_CODE_MOVE_LONG:
-        *(SPVM_API_long*)&vars[opcode->operand0] = *(SPVM_API_long*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_CODE_MOVE_FLOAT:
-        *(SPVM_API_float*)&vars[opcode->operand0] = *(SPVM_API_float*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_CODE_MOVE_DOUBLE:
-        *(SPVM_API_double*)&vars[opcode->operand0] = *(SPVM_API_double*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_CODE_MOVE_OBJECT:
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
+        vars[opcode->operand0] = vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_CODE_INC_REF_COUNT: {
         // Increment new value reference count

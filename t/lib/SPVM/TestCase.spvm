@@ -745,14 +745,10 @@ package TestCase {
   
   sub exception_croak_return_byte : byte () {
     croak "Error";
-    
-    return (byte)0;
   }
   
   sub exception_croak_return_short : short () {
     croak "Error";
-
-    return (short)0;
   }
   
   sub exception_croak_return_int : int () {
@@ -1227,11 +1223,9 @@ package TestCase {
   }
   sub default_return_value_byte_sub : byte () {
     1;
-    
-    return (byte)0;
   }
   sub default_return_value_byte_sub_empty : byte () {
-    return (byte)0;
+    
   }
   sub default_return_value_short : int () {
     
@@ -1245,10 +1239,9 @@ package TestCase {
   }
   sub default_return_value_short_sub : short () {
     1;
-    return (short)0;
   }
   sub default_return_value_short_sub_empty : short () {
-    return (short)0;
+    
   }
   sub default_return_value_int : int () {
     

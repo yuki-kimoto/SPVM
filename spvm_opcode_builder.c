@@ -980,6 +980,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
                     switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE;
+                        break;
+                      case SPVM_TYPE_C_CODE_SHORT:
+                        opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT;
+                        break;
                       case SPVM_TYPE_C_CODE_INT:
                         opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT;
                         break;
@@ -993,7 +999,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
                     

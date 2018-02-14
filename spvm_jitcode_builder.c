@@ -1027,6 +1027,12 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_CODE_CONVERT_FLOAT_TO_DOUBLE:
         SPVM_JITCODE_BUILDER_add_convert(string_buffer, "SPVM_API_double", "SPVM_API_float", opcode->operand0, opcode->operand1);
         break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE_0:
+        SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_byte", opcode->operand0);
+        break;
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT_0:
+        SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_short", opcode->operand0);
+        break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT_0:
         SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_int", opcode->operand0);
         break;
@@ -1038,6 +1044,22 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_DOUBLE_0: {
         SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_double", opcode->operand0);
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_BYTE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_byte", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_STRING_BUFFER_add_byte(string_buffer, *(SPVM_API_byte*)&constant_pool[opcode->operand1]);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_SHORT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_short", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_STRING_BUFFER_add_short(string_buffer, *(SPVM_API_short*)&constant_pool[opcode->operand1]);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
       case SPVM_OPCODE_C_CODE_LOAD_CONSTANT_INT: {
