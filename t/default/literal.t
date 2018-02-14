@@ -34,6 +34,11 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::number_literal_binary_long_max());
 }
 
+# Character literal
+{
+  ok(SPVM::TestCase::literal_character());
+}
+
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);

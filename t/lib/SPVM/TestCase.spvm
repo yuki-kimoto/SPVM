@@ -4469,7 +4469,13 @@ package TestCase {
       return 0;
     }
   }
-
+  
+  sub literal_character : int () {
+    my $value = 'a';
+    
+    return 1;
+  }
+  
   sub number_literal_specifier : int () {
     my $value1 = 255f;
     my $value2 = 255d;
