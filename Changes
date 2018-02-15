@@ -10,6 +10,12 @@
   - add automatically type convertion to unary -
   - fix unary + bug
   - add automatically type convertion to unary +
+  - add automatically type convertion to == operator
+  - add automatically type convertion to != operator
+  - add automatically type convertion to > operator
+  - add automatically type convertion to >= operator
+  - add automatically type convertion to < operator
+  - add automatically type convertion to <= operator
   
 0.0309 2018-02-10
   - jit code is called from virtual machine

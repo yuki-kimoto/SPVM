@@ -462,7 +462,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_first = op_cur->first;
                   SPVM_OP* op_last = op_cur->last;
                   
-                  // term == term
+                  // undef == undef
                   if (op_first->code == SPVM_OP_C_CODE_UNDEF && op_last->code == SPVM_OP_C_CODE_UNDEF) {
                     
                     SPVM_OP* op_true = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
@@ -476,17 +476,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     op_cur = op_true;
                   }
+                  // term == term
                   else if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                     SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                     
                     // numeric == numeric
                     if (SPVM_TYPE_is_numeric(compiler, first_type) && SPVM_TYPE_is_numeric(compiler, last_type)) {
-                      if (first_type->code != last_type->code) {
-                        SPVM_yyerror_format(compiler, "== operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
-                        compiler->fatal_error = 1;
-                        return;
-                      }
+                      SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
                     }
                     // numeric == OBJ
                     else if (SPVM_TYPE_is_numeric(compiler, first_type)) {
@@ -526,7 +523,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_first = op_cur->first;
                   SPVM_OP* op_last = op_cur->last;
 
-                  // term != term
+                  // undef != undef
                   if (op_first->code == SPVM_OP_C_CODE_UNDEF && op_last->code == SPVM_OP_C_CODE_UNDEF) {
                     
                     SPVM_OP* op_false = SPVM_OP_new_op_constant_int(compiler, 0, op_first->file, op_first->line);
@@ -540,17 +537,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     op_cur = op_false;
                   }
+                  // term != term
                   else if (op_first->code != SPVM_OP_C_CODE_UNDEF && op_last->code != SPVM_OP_C_CODE_UNDEF) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                     SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
 
                     // numeric != numeric
                     if (SPVM_TYPE_is_numeric(compiler, first_type) && SPVM_TYPE_is_numeric(compiler, last_type)) {
-                      if (first_type->code != last_type->code) {
-                        SPVM_yyerror_format(compiler, "!= operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
-                        compiler->fatal_error = 1;
-                        return;
-                      }
+                      SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
                     }
                     // numeric != OBJ
                     else if (SPVM_TYPE_is_numeric(compiler, first_type)) {
@@ -617,11 +611,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "< operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
+                  SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
 
                   break;
                 }
@@ -654,11 +644,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "<= operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
+                  SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
                   
                   break;
                 }
@@ -691,11 +677,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, "> operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
+                  SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
                   
                   break;
                 }
@@ -728,11 +710,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
-                  if (first_type->code != last_type->code) {
-                    SPVM_yyerror_format(compiler, ">= operator two operands must be same type at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
-                  }
+                  SPVM_OP_add_convert_op_primitive_bin_op(compiler, op_cur);
                   
                   break;
                 }
