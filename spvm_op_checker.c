@@ -1053,6 +1053,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
+                  SPVM_OP_add_convert_op_primitive_unary_op(compiler, op_cur);
                   
                   break;
                 }

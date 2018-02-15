@@ -60,6 +60,11 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::remainder());
 }
 
+# Plus
+{
+  ok(SPVM::TestCase::plus());
+}
+
 # Negate
 {
   ok(SPVM::TestCase::negate());

@@ -942,6 +942,37 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
+                  else if (op_assign_from->code == SPVM_OP_C_CODE_PLUS) {
+
+                    SPVM_OPCODE opcode;
+                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                   
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_PLUS_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_PLUS_LONG;
+                        break;
+                      case SPVM_TYPE_C_CODE_FLOAT:
+                        opcode.code = SPVM_OPCODE_C_CODE_PLUS_FLOAT;
+                        break;
+                      case SPVM_TYPE_C_CODE_DOUBLE:
+                        opcode.code = SPVM_OPCODE_C_CODE_PLUS_DOUBLE;
+                        break;
+                      default:
+                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
+                        assert(0);
+                    }
+                    
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from->first);
+                    
+                    opcode.operand0 = index_out;
+                    opcode.operand1 = index_in;
+                    
+                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                  }
                   else if (op_assign_from->code == SPVM_OP_C_CODE_NEGATE) {
 
                     SPVM_OPCODE opcode;
