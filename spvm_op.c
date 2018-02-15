@@ -160,10 +160,10 @@ void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_
   }
 }
 
-void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_bin) {
+void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last) {
   
-  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_bin->first);
-  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_bin->last);
+  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
+  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_last);
   
   SPVM_TYPE* dist_type;
   if (first_type->code == SPVM_TYPE_C_CODE_DOUBLE || last_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
@@ -180,11 +180,10 @@ void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op
   }
   
   if (first_type->code != dist_type->code) {
-    SPVM_OP* op_first = op_bin->first;
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
     
     SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_first->file, op_first->line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_bin->file, op_bin->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_first->file, op_first->line);
     op_dist_type->uv.type = dist_type;
     SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_first);
     
@@ -192,11 +191,10 @@ void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op
   }
   
   if (last_type->code != dist_type->code) {
-    SPVM_OP* op_last = op_bin->last;
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_last);
     
     SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_last->file, op_last->line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_bin->file, op_bin->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_last->file, op_last->line);
     op_dist_type->uv.type = dist_type;
     SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_last);
     SPVM_OP_replace_op(compiler, op_stab, op_convert);

@@ -483,7 +483,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // numeric == numeric
                     if (SPVM_TYPE_is_numeric(compiler, first_type) && SPVM_TYPE_is_numeric(compiler, last_type)) {
-                      SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                      SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                     }
                     // numeric == OBJ
                     else if (SPVM_TYPE_is_numeric(compiler, first_type)) {
@@ -544,7 +544,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                     // numeric != numeric
                     if (SPVM_TYPE_is_numeric(compiler, first_type) && SPVM_TYPE_is_numeric(compiler, last_type)) {
-                      SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                      SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                     }
                     // numeric != OBJ
                     else if (SPVM_TYPE_is_numeric(compiler, first_type)) {
@@ -611,7 +611,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
-                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
 
                   break;
                 }
@@ -644,7 +644,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
-                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                   
                   break;
                 }
@@ -677,7 +677,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
-                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                   
                   break;
                 }
@@ -710,7 +710,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
 
-                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                   
                   break;
                 }
@@ -1068,7 +1068,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Upgrade type
-                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                                                   
                   break;
                 }
@@ -1105,7 +1105,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Upgrade type
-                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                   
                   break;
                 }
@@ -1142,7 +1142,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
 
                   // Upgrade type
-                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                   
                   break;
                 }
@@ -1179,7 +1179,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Upgrade type
-                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
 
                   break;
                 }
@@ -1216,7 +1216,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Upgrade type
-                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur);
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                                                   
                   break;
                 }
