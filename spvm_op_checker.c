@@ -1042,6 +1042,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     compiler->fatal_error = 1;
                     return;
                   }
+
+                  SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
                   
                   break;
                 }

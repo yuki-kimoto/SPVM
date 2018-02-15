@@ -2590,13 +2590,13 @@ package TestCase {
     my $num_int = 0xFFFFFFF0;
     my $num_long = 0xFFFFFFFFFFFFFFF0L;
     
-    my $num_byte_complement = (byte)~(int)$num_byte;
-    my $num_short_complement = (short)~(int)$num_short;
+    my $num_byte_complement : int = ~$num_byte;
+    my $num_short_complement : int = ~$num_short;
     my $num_int_complement = ~$num_int;
     my $num_long_complement = ~$num_long;
     
-    if ((int)$num_byte_complement == (int)(byte)0xF) {
-      if ((int)$num_short_complement == (int)(short)0xF) {
+    if ($num_byte_complement == (byte)0xF) {
+      if ($num_short_complement == (short)0xF) {
         if ($num_int_complement == 0xF) {
           if ($num_long_complement == 0xFL) {
             return 1;
