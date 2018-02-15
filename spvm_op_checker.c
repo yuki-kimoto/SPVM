@@ -719,12 +719,25 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
                   // Can receive only numeric type
-                  if (!SPVM_TYPE_is_integral(compiler, first_type)) {
+                  if (SPVM_TYPE_is_integral(compiler, first_type)) {
+                    SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
+                  }
+                  else {
                     SPVM_yyerror_format(compiler, "<< operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
-                  if (last_type->code != SPVM_TYPE_C_CODE_INT) {
+                  
+                  if (SPVM_TYPE_is_integral(compiler, last_type)) {
+                    SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
+                    
+                    if (last_type->code >= SPVM_TYPE_C_CODE_LONG) {
+                      SPVM_yyerror_format(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
+                      compiler->fatal_error = 1;
+                      return;
+                    }
+                  }
+                  else {
                     SPVM_yyerror_format(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -737,12 +750,25 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
                   // Can receive only numeric type
-                  if (!SPVM_TYPE_is_integral(compiler, first_type)) {
+                  if (SPVM_TYPE_is_integral(compiler, first_type)) {
+                    SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
+                  }
+                  else {
                     SPVM_yyerror_format(compiler, ">> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
-                  if (last_type->code != SPVM_TYPE_C_CODE_INT) {
+                  
+                  if (SPVM_TYPE_is_integral(compiler, last_type)) {
+                    SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
+                    
+                    if (last_type->code >= SPVM_TYPE_C_CODE_LONG) {
+                      SPVM_yyerror_format(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
+                      compiler->fatal_error = 1;
+                      return;
+                    }
+                  }
+                  else {
                     SPVM_yyerror_format(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -755,12 +781,25 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
                   // Can receive only numeric type
-                  if (!SPVM_TYPE_is_integral(compiler, first_type)) {
+                  if (SPVM_TYPE_is_integral(compiler, first_type)) {
+                    SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
+                  }
+                  else {
                     SPVM_yyerror_format(compiler, ">>> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
-                  if (last_type->code > SPVM_TYPE_C_CODE_INT) {
+                  
+                  if (SPVM_TYPE_is_integral(compiler, last_type)) {
+                    SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
+                    
+                    if (last_type->code >= SPVM_TYPE_C_CODE_LONG) {
+                      SPVM_yyerror_format(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
+                      compiler->fatal_error = 1;
+                      return;
+                    }
+                  }
+                  else {
                     SPVM_yyerror_format(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
