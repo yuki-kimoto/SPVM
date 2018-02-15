@@ -19,6 +19,9 @@
   - add automatically type convertion to array index
   - add automatically type convertion to lengh of new array
   - add automatically type convertion to ~ operator
+  - add automatically type convertion to & operator
+  - add automatically type convertion to | operator
+  - add automatically type convertion to ^ operator
 0.0309 2018-02-10
   - jit code is called from virtual machine
   - separate tests to succeed tests at less memory environment

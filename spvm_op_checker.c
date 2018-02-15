@@ -828,13 +828,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
-                  // Can receive only numeric type
-                  if (first_type->code >= SPVM_TYPE_C_CODE_FLOAT || last_type->code >= SPVM_TYPE_C_CODE_FLOAT) {
+                  // Can receive only integral type
+                  if (!SPVM_TYPE_is_integral(compiler, first_type) || !SPVM_TYPE_is_integral(compiler, last_type)) {
                     SPVM_yyerror_format(compiler,
-                      "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
+                      "^ operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
+                  
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                   
                   break;
                 }
@@ -842,13 +844,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
-                  // Can receive only numeric type
-                  if (first_type->code >= SPVM_TYPE_C_CODE_FLOAT || last_type->code >= SPVM_TYPE_C_CODE_FLOAT) {
+                  // Can receive only integral type
+                  if (!SPVM_TYPE_is_integral(compiler, first_type) || !SPVM_TYPE_is_integral(compiler, last_type)) {
                     SPVM_yyerror_format(compiler,
-                      "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
+                      "| operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
+                  
+                  
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                   
                   break;
                 }
@@ -856,13 +861,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
-                  // Can receive only numeric type
-                  if (first_type->code >= SPVM_TYPE_C_CODE_FLOAT || last_type->code >= SPVM_TYPE_C_CODE_FLOAT) {
+                  // Can receive only integral type
+                  if (!SPVM_TYPE_is_integral(compiler, first_type) || !SPVM_TYPE_is_integral(compiler, last_type)) {
                     SPVM_yyerror_format(compiler,
                       "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
+                  
+                  SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
                   
                   break;
                 }
