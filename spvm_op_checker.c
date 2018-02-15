@@ -775,6 +775,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     if (SPVM_TYPE_is_array(compiler, type)) {
                       SPVM_OP* op_index_term = op_type->last;
+
                       SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
                       
                       if (!index_type) {
@@ -782,10 +783,23 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         compiler->fatal_error = 1;
                         return;
                       }
-                      else if (index_type->code != SPVM_TYPE_C_CODE_INT) {
-                        SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
-                        compiler->fatal_error = 1;
-                        return;
+                      else {
+                        if (SPVM_TYPE_is_numeric(compiler, index_type)) {
+                          SPVM_OP_apply_unary_numeric_promotion(compiler, op_index_term);
+                          
+                          SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
+                          
+                          if (index_type->code >= SPVM_TYPE_C_CODE_LONG) {
+                            SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
+                            compiler->fatal_error = 1;
+                            return;
+                          }
+                        }
+                        else {
+                          SPVM_yyerror_format(compiler, "new operator can't create array which don't have numeric length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
+                          compiler->fatal_error = 1;
+                          return;
+                        }
                       }
                     }
                     else {
@@ -876,8 +890,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Right value must be integer
-                  if (last_type->code != SPVM_TYPE_C_CODE_INT) {
-                    SPVM_yyerror_format(compiler, "array index must be int at %s line %d\n", op_cur->file, op_cur->line);
+                  if (SPVM_TYPE_is_numeric(compiler, last_type)) {
+                    SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
+                    SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                    
+                    if (last_type->code != SPVM_TYPE_C_CODE_INT) {
+                      SPVM_yyerror_format(compiler, "array index must be int type at %s line %d\n", op_cur->file, op_cur->line);
+                      compiler->fatal_error = 1;
+                      return;
+                    }
+                  }
+                  else {
+                    SPVM_yyerror_format(compiler, "array index must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }

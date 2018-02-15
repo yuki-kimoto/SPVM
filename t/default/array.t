@@ -55,6 +55,10 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::array_init_double());
 }
 
+# Array
+{
+  ok(SPVM::TestCase::array());
+}
 
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
