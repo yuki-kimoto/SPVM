@@ -438,27 +438,27 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       case SPVM_OPCODE_C_CODE_LEFT_SHIFT_INT:
         *(SPVM_API_int*)&vars[opcode->operand0]
-          = *(SPVM_API_int*)&vars[opcode->operand1] << *(SPVM_API_int*)&vars[opcode->operand2];
+          = *(SPVM_API_int*)&vars[opcode->operand1] << (*(SPVM_API_int*)&vars[opcode->operand2] & 0x1f);
         break;
       case SPVM_OPCODE_C_CODE_LEFT_SHIFT_LONG:
         *(SPVM_API_long*)&vars[opcode->operand0]
-          = *(SPVM_API_long*)&vars[opcode->operand1] << *(SPVM_API_long*)&vars[opcode->operand2];
+          = *(SPVM_API_long*)&vars[opcode->operand1] << (*(SPVM_API_int*)&vars[opcode->operand2] & 0x3f);
         break;
       case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_INT:
         *(SPVM_API_int*)&vars[opcode->operand0]
-          = *(SPVM_API_int*)&vars[opcode->operand1] >> *(SPVM_API_int*)&vars[opcode->operand2];
+          = *(SPVM_API_int*)&vars[opcode->operand1] >> (*(SPVM_API_int*)&vars[opcode->operand2] & 0x1f);
         break;
       case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_LONG:
         *(SPVM_API_long*)&vars[opcode->operand0]
-          = *(SPVM_API_long*)&vars[opcode->operand1] >> *(SPVM_API_long*)&vars[opcode->operand2];
+          = *(SPVM_API_long*)&vars[opcode->operand1] >> (*(SPVM_API_int*)&vars[opcode->operand2] & 0x3f);
         break;
       case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_INT:
         *(SPVM_API_int*)&vars[opcode->operand0]
-          = (int32_t)((uint32_t)*(SPVM_API_int*)&vars[opcode->operand1] >> *(SPVM_API_int*)&vars[opcode->operand2]);
+          = (int32_t)((uint32_t)*(SPVM_API_int*)&vars[opcode->operand1] >> (*(SPVM_API_int*)&vars[opcode->operand2] & 0x1f));
         break;
       case SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_LONG:
         *(SPVM_API_long*)&vars[opcode->operand0]
-          = (int64_t)((uint64_t)*(SPVM_API_long*)&vars[opcode->operand1] >> *(SPVM_API_long*)&vars[opcode->operand2]);
+          = (int64_t)((uint64_t)*(SPVM_API_long*)&vars[opcode->operand1] >> (*(SPVM_API_int*)&vars[opcode->operand2] & 0x3f));
         break;
       case SPVM_OPCODE_C_CODE_BIT_AND_INT:
         *(SPVM_API_int*)&vars[opcode->operand0]
