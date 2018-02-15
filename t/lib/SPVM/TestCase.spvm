@@ -4475,36 +4475,132 @@ package TestCase {
   }
   
   sub bit_and : int () {
-    my $value1 = 0xFF00 & 0xF0F0;
-    my $value2 = 0xFF00FF00L & 0xF0F0F0F0L;
-    if ($value1 == 0xF000) {
-      if ($value2 == 0xF000F000L) {
-        return 1;
+    # byte
+    my $byte_success = 0;
+    {
+      my $value1 : int = (byte)0xFF & (byte)0x0F;
+      if ($value1 & 0xFF == 0x0F) {
+        $byte_success = 1;
       }
+    }
+
+    # short
+    my $short_success = 0;
+    {
+      my $value1 : int = (short)0xFF00 & (short)0xF0F0;
+      if ($value1 & 0xFFFF == 0xF000) {
+        $short_success = 1;
+      }
+    }
+    
+    # int
+    my $int_success = 0;
+    {
+      my $value1 = 0xFF00 & 0xF0F0;
+      if ($value1 == 0xF000) {
+        $int_success = 1;
+      }
+    }
+    
+    # long
+    my $long_success = 0;
+    {
+      my $value1 = 0xFF00FF00L & 0xF0F0F0F0L;
+      if ($value1 == 0xF000F000L) {
+        $long_success = 1;
+      }
+    }
+    
+    if ($byte_success && $short_success && $int_success && $long_success) {
+      return 1;
     }
     
     return 0;
   }
 
   sub bit_or : int () {
-    my $value1 = 0xFF00 | 0xF0F0;
-    my $value2 = 0xFF00FF00L | 0xF0F0F0F0L;
-    if ($value1 == 0xFFF0) {
-      if ($value2 == 0xFFF0FFF0L) {
-        return 1;
+    # byte
+    my $byte_success = 0;
+    {
+      my $value1 : int = (byte)0xF0 | (byte)0xFF;
+      if ($value1 & 0xFF == 0xFF) {
+        $byte_success = 1;
       }
+    }
+
+    # short
+    my $short_success = 0;
+    {
+      my $value1 : int = (short)0xFF00 | (short)0xF0F0;
+      if ($value1 & 0xFFFF == 0xFFF0) {
+        $short_success = 1;
+      }
+    }
+
+    # int
+    my $int_success = 0;
+    {
+      my $value1 = 0xFF00 | 0xF0F0;
+      if ($value1 == 0xFFF0) {
+        $int_success = 1;
+      }
+    }
+    
+    # long
+    my $long_success = 0;
+    {
+      my $value2 = 0xFF00FF00L | 0xF0F0F0F0L;
+      if ($value2 == 0xFFF0FFF0L) {
+        $long_success = 1;
+      }
+    }
+
+    if ($byte_success && $short_success && $int_success && $long_success) {
+      return 1;
     }
     
     return 0;
   }
 
   sub bit_xor : int () {
-    my $value1 = 0xFF00 ^ 0xF0F0;
-    my $value2 = 0xFF00FF00L ^ 0xF0F0F0F0L;
-    if ($value1 == 0x0FF0) {
-      if ($value2 == 0x0FF00FF0L) {
-        return 1;
+    # byte
+    my $byte_success = 0;
+    {
+      my $value1 : int = (byte)0xF0 ^ (byte)0x0F;
+      if ($value1 & 0xFF == 0xFF) {
+        $byte_success = 1;
       }
+    }
+    
+    # short
+    my $short_success = 0;
+    {
+      my $value1 : int = (short)0xFF00 ^ (short)0xF0F0;
+      if ($value1 & 0xFFFF == 0x0FF0) {
+        $short_success = 1;
+      }
+    }
+    
+    # int
+    my $int_success = 0;
+    {
+      my $value1 = 0xFF00 ^ 0xF0F0;
+      if ($value1 == 0x0FF0) {
+        $int_success = 1;
+      }
+    }
+    
+    # long
+    my $long_success = 0;
+    {
+      my $value1 = 0xFF00FF00L ^ 0xF0F0F0F0L;
+      if ($value1 == 0x0FF00FF0L) {
+        $long_success = 1;
+      }
+    }
+    
+    if ($byte_success && $short_success && $int_success && $long_success) {
+      return 1;
     }
     
     return 0;
