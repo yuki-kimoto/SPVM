@@ -149,9 +149,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->cur_package_name_with_template_args = op_use->uv.use->package_name_with_template_args;
               compiler->cur_op_use = op_use;
               
-              // Add module load symbol table
-              SPVM_HASH_insert(compiler->module_load_symtable, package_name, strlen(package_name), cur_file);
-              
               // Read file content
               fseek(fh, 0, SEEK_END);
               int32_t file_size = (int32_t)ftell(fh);

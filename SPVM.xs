@@ -3225,26 +3225,6 @@ build_opcode(...)
 }
 
 SV*
-get_module_path(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_module_name = ST(0);
-  const char* module_name = SvPV_nolen(sv_module_name);
-
-  // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
-  
-  const char* module_path = SPVM_HASH_search(compiler->module_load_symtable, module_name, strlen(module_name));
-  
-  SV* sv_module_path = sv_2mortal(newSVpvn(module_path, 0));
-  
-  XPUSHs(sv_module_path);
-  XSRETURN(1);
-}
-
-SV*
 get_sub_name(...)
   PPCODE:
 {

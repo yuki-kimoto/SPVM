@@ -69,9 +69,6 @@ struct SPVM_compiler {
   // Subroutine absolute name symbol table
   SPVM_HASH* op_sub_symtable;
 
-  // Module load symtable. Module name and module loaded path pair
-  SPVM_HASH* module_load_symtable;
-  
   // use symbol table
   SPVM_HASH* op_use_symtable;
   
