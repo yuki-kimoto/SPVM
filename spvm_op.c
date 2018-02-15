@@ -136,9 +136,9 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "MOVE_OBJECT",
 };
 
-void SPVM_OP_add_convert_op_primitive_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary) {
+void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   
-  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_unary->first);
+  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
   
   SPVM_TYPE* dist_type;
   if (type->code <= SPVM_TYPE_C_CODE_INT) {
@@ -149,19 +149,18 @@ void SPVM_OP_add_convert_op_primitive_unary_op(SPVM_COMPILER* compiler, SPVM_OP*
   }
   
   if (type->code != dist_type->code) {
-    SPVM_OP* op_first = op_unary->first;
-    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
+    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
     
-    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_first->file, op_first->line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_unary->file, op_unary->line);
+    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_term->file, op_term->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_term->file, op_term->line);
     op_dist_type->uv.type = dist_type;
-    SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_first);
+    SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_term);
     
     SPVM_OP_replace_op(compiler, op_stab, op_convert);
   }
 }
 
-void SPVM_OP_add_convert_op_primitive_bin_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin) {
+void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_bin) {
   
   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_bin->first);
   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_bin->last);

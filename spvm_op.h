@@ -327,7 +327,7 @@ void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* sta
 
 SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* o);
 
-void SPVM_OP_add_convert_op_primitive_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary);
-void SPVM_OP_add_convert_op_primitive_bin_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin);
+void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_unary);
+void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_bin);
 
 #endif
