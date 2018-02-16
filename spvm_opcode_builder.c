@@ -66,46 +66,31 @@ void SPVM_OPCODE_BUILDER_push_inc_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_AR
   SPVM_MY* my = var->op_my->uv.my;
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_inc);
-  if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-    SPVM_OPCODE opcode;
-    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-    
-    opcode.code = SPVM_OPCODE_C_CODE_INC_BYTE;
-    opcode.operand0 = my->index;
-    opcode.operand1 = value;
-    
-    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+  SPVM_OPCODE opcode;
+  switch (type->code) {
+    case SPVM_TYPE_C_CODE_BYTE:
+      opcode.code = SPVM_OPCODE_C_CODE_INC_BYTE;
+      break;
+    case SPVM_TYPE_C_CODE_SHORT:
+      opcode.code = SPVM_OPCODE_C_CODE_INC_SHORT;
+      break;
+    case SPVM_TYPE_C_CODE_INT:
+      opcode.code = SPVM_OPCODE_C_CODE_INC_INT;
+      break;
+    case SPVM_TYPE_C_CODE_LONG:
+      opcode.code = SPVM_OPCODE_C_CODE_INC_LONG;
+      break;
+    case SPVM_TYPE_C_CODE_FLOAT:
+      opcode.code = SPVM_OPCODE_C_CODE_INC_FLOAT;
+      break;
+    case SPVM_TYPE_C_CODE_DOUBLE:
+      opcode.code = SPVM_OPCODE_C_CODE_INC_DOUBLE;
+      break;
   }
-  else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-    SPVM_OPCODE opcode;
-    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-    
-    opcode.code = SPVM_OPCODE_C_CODE_INC_SHORT;
-    opcode.operand0 = my->index;
-    opcode.operand1 = value;
-    
-    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-  }
-  else if (type->code == SPVM_TYPE_C_CODE_INT) {
-    SPVM_OPCODE opcode;
-    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-    
-    opcode.code = SPVM_OPCODE_C_CODE_INC_INT;
-    opcode.operand0 = my->index;
-    opcode.operand1 = value;
-    
-    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-  }
-  else if (type->code == SPVM_TYPE_C_CODE_LONG) {
-    SPVM_OPCODE opcode;
-    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-    
-    opcode.code = SPVM_OPCODE_C_CODE_INC_LONG;
-    opcode.operand0 = my->index;
-    opcode.operand1 = value;
-    
-    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-  }
+  opcode.operand0 = my->index;
+  opcode.operand1 = value;
+  
+  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 }
 
 void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
@@ -260,7 +245,28 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.code = SPVM_OPCODE_C_CODE_MOVE;
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_BYTE;
+                        break;
+                      case SPVM_TYPE_C_CODE_SHORT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_SHORT;
+                        break;
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_LONG;
+                        break;
+                      case SPVM_TYPE_C_CODE_FLOAT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_FLOAT;
+                        break;
+                      case SPVM_TYPE_C_CODE_DOUBLE:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_DOUBLE;
+                        break;
+                      default:
+                        assert(0);
+                    }
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
@@ -274,7 +280,28 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.code = SPVM_OPCODE_C_CODE_MOVE;
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_BYTE;
+                        break;
+                      case SPVM_TYPE_C_CODE_SHORT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_SHORT;
+                        break;
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_LONG;
+                        break;
+                      case SPVM_TYPE_C_CODE_FLOAT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_FLOAT;
+                        break;
+                      case SPVM_TYPE_C_CODE_DOUBLE:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_DOUBLE;
+                        break;
+                      default:
+                        assert(0);
+                    }
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
@@ -291,7 +318,28 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.code = SPVM_OPCODE_C_CODE_MOVE;
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_BYTE;
+                        break;
+                      case SPVM_TYPE_C_CODE_SHORT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_SHORT;
+                        break;
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_LONG;
+                        break;
+                      case SPVM_TYPE_C_CODE_FLOAT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_FLOAT;
+                        break;
+                      case SPVM_TYPE_C_CODE_DOUBLE:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_DOUBLE;
+                        break;
+                      default:
+                        assert(0);
+                    }
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     
@@ -305,7 +353,28 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.code = SPVM_OPCODE_C_CODE_MOVE;
+                    switch (type->code) {
+                      case SPVM_TYPE_C_CODE_BYTE:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_BYTE;
+                        break;
+                      case SPVM_TYPE_C_CODE_SHORT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_SHORT;
+                        break;
+                      case SPVM_TYPE_C_CODE_INT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_INT;
+                        break;
+                      case SPVM_TYPE_C_CODE_LONG:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_LONG;
+                        break;
+                      case SPVM_TYPE_C_CODE_FLOAT:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_FLOAT;
+                        break;
+                      case SPVM_TYPE_C_CODE_DOUBLE:
+                        opcode.code = SPVM_OPCODE_C_CODE_MOVE_DOUBLE;
+                        break;
+                      default:
+                        assert(0);
+                    }
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_in;
                     

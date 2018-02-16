@@ -118,3 +118,11 @@ my $start_objects_count = SPVM::get_objects_count();
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
 
+# Increment
+{
+  ok(SPVM::TestCase::pre_inc());
+  ok(SPVM::TestCase::pre_dec());
+  ok(SPVM::TestCase::post_inc());
+  ok(SPVM::TestCase::post_dec());
+}
+

@@ -1304,9 +1304,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
                   
-                  // Only int or long
-                  if (first_type->code > SPVM_TYPE_C_CODE_LONG) {
-                    SPVM_yyerror_format(compiler, "increment or decrement target must be integral at %s line %d\n", op_cur->file, op_cur->line);
+                  // Numeric type
+                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "increment or decrement operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }

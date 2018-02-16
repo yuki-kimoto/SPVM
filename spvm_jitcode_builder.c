@@ -966,6 +966,12 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_CODE_INC_LONG:
         SPVM_JITCODE_BUILDER_add_inc(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1);
         break;
+      case SPVM_OPCODE_C_CODE_INC_FLOAT:
+        SPVM_JITCODE_BUILDER_add_inc(string_buffer, "SPVM_API_float", opcode->operand0, opcode->operand1);
+        break;
+      case SPVM_OPCODE_C_CODE_INC_DOUBLE:
+        SPVM_JITCODE_BUILDER_add_inc(string_buffer, "SPVM_API_double", opcode->operand0, opcode->operand1);
+        break;
       case SPVM_OPCODE_C_CODE_CONVERT_BYTE_TO_BYTE:
         SPVM_JITCODE_BUILDER_add_convert(string_buffer, "SPVM_API_byte", "SPVM_API_byte", opcode->operand0, opcode->operand1);
         break;

@@ -42,6 +42,8 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Multiply
 {
+  ok(SPVM::TestCase::multiply());
+
   is(SPVM::TestCase::multiply_int_plus(), 1073741824);
   is(SPVM::TestCase::multiply_int_minus(), -1073741824);
   is(SPVM::TestCase::multiply_int_overflow(), -2147483648);
@@ -58,6 +60,11 @@ my $start_objects_count = SPVM::get_objects_count();
 # Remainder
 {
   ok(SPVM::TestCase::remainder());
+}
+
+# Plus
+{
+  ok(SPVM::TestCase::plus());
 }
 
 # Negate
@@ -110,4 +117,12 @@ my $start_objects_count = SPVM::get_objects_count();
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
+
+# Increment
+{
+  ok(SPVM::TestCase::pre_inc());
+  ok(SPVM::TestCase::pre_dec());
+  ok(SPVM::TestCase::post_inc());
+  ok(SPVM::TestCase::post_dec());
+}
 

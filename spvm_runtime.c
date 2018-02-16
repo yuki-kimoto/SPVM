@@ -515,16 +515,22 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         *(SPVM_API_long*)&vars[opcode->operand0] = ~*(SPVM_API_long*)&vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_CODE_INC_BYTE:
-        *(SPVM_API_byte*)&vars[opcode->operand0] += (int8_t)(opcode->operand1);
+        *(SPVM_API_byte*)&vars[opcode->operand0] += (int32_t)(opcode->operand1);
         break;
       case SPVM_OPCODE_C_CODE_INC_SHORT:
-        *(SPVM_API_short*)&vars[opcode->operand0] += (int16_t)(opcode->operand1);
+        *(SPVM_API_short*)&vars[opcode->operand0] += (int32_t)(opcode->operand1);
         break;
       case SPVM_OPCODE_C_CODE_INC_INT:
         *(SPVM_API_int*)&vars[opcode->operand0] += (int32_t)(opcode->operand1);
         break;
       case SPVM_OPCODE_C_CODE_INC_LONG:
-        *(SPVM_API_long*)&vars[opcode->operand0] += (int64_t)(opcode->operand1);
+        *(SPVM_API_long*)&vars[opcode->operand0] += (int32_t)(opcode->operand1);
+        break;
+      case SPVM_OPCODE_C_CODE_INC_FLOAT:
+        *(float*)&vars[opcode->operand0] += (int32_t)(opcode->operand1);
+        break;
+      case SPVM_OPCODE_C_CODE_INC_DOUBLE:
+        *(double*)&vars[opcode->operand0] += (int32_t)(opcode->operand1);
         break;
       case SPVM_OPCODE_C_CODE_CONVERT_INT_TO_LONG:
         *(SPVM_API_long*)&vars[opcode->operand0] = (int64_t)*(SPVM_API_int*)&vars[opcode->operand1];
