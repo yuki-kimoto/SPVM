@@ -1040,6 +1040,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_assign_from);
                       
                       SPVM_OP_replace_op(compiler, op_stab, op_convert);
+
+                      op_convert->is_var_assign_from = op_convert->first->is_var_assign_from;
+                      op_convert->is_assign_from = op_convert->first->is_assign_from;
+                      
+                      op_convert->first->is_var_assign_from = 0;
+                      op_convert->first->is_assign_from = 0;
                     }
                   }
                   // Invalid if to type is different to from value
@@ -1844,6 +1850,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
         }
+        // SPVM_DUMPER_dump_ast(compiler, op_base);
       }
 
       if (!sub->is_native) {
@@ -1865,6 +1872,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               // [START]Postorder traversal position
               if (!op_cur->is_assign_to && !op_cur->is_var_assign_from) {
                 switch (op_cur->code) {
+                  case SPVM_OP_C_CODE_CONVERT:
+                    create_tmp_var = 1;
+                    break;
                   case SPVM_OP_C_CODE_ADD:
                   case SPVM_OP_C_CODE_SUBTRACT:
                   case SPVM_OP_C_CODE_MULTIPLY:
@@ -1880,7 +1890,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_CODE_COMPLEMENT:
                   case SPVM_OP_C_CODE_NEGATE:
                   case SPVM_OP_C_CODE_PLUS:
-                  case SPVM_OP_C_CODE_CONVERT:
                   case SPVM_OP_C_CODE_ARRAY_LENGTH:
                   case SPVM_OP_C_CODE_NEW:
                   case SPVM_OP_C_CODE_CONCAT_STRING:
@@ -1971,6 +1980,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
         }
+      
+        // SPVM_DUMPER_dump_ast(compiler, op_base);
+
       }
 
       assert(sub->file_name);
