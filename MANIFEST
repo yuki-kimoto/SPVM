@@ -171,7 +171,9 @@ spvm_yacc.h
 spvm_yacc_util.c
 spvm_yacc_util.h
 t/compile-error.t
+t/copy_default_to_jit.pl
 t/default/array.t
+t/default/assign-operator.t
 t/default/call-sub.t
 t/default/constant.t
 t/default/enum.t
@@ -200,6 +202,7 @@ t/default/templatae.t
 t/default/type-convertion.t
 t/default/weaken.t
 t/jit/array.t
+t/jit/assign-operator.t
 t/jit/call-sub.t
 t/jit/constant.t
 t/jit/enum.t
