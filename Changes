@@ -1,4 +1,4 @@
-0.0310 2018-02-14
+0.0310 2018-02-16
   - enum value must be int type
   - remove byte literal b
   - remove short literal s
@@ -28,6 +28,7 @@
   - limit <<, >>, >>> right value
   - fix increment, decrelement assignment bug
   - implement float, double increment
+  - add automatically type convertion to == operator
 0.0309 2018-02-10
   - jit code is called from virtual machine
   - separate tests to succeed tests at less memory environment

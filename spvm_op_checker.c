@@ -974,11 +974,81 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     op_assign_from->uv.undef->type = assign_from_type;
                   }
                   
+                  if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
+                    int32_t do_convert = 0;
+                    if (assign_to_type->code > assign_from_type->code) {
+                      do_convert = 1;
+                    }
+                    // Narrowng convetion only when constant is in range
+                    else if (assign_to_type->code < assign_from_type->code) {
+                      int32_t compile_error = 0;
+                      if (op_assign_from->code == SPVM_OP_C_CODE_CONSTANT) {
+                        int32_t compile_error = 0;
+                        SPVM_CONSTANT* constant = op_assign_from->uv.constant;
+                        int64_t constant_value;
+                        if (constant->type->code == SPVM_TYPE_C_CODE_INT || constant->type->code == SPVM_TYPE_C_CODE_LONG) {
+                          if (constant->type->code == SPVM_TYPE_C_CODE_INT) {
+                            constant_value = constant->value.int_value;
+                          }
+                          else if (constant->type->code == SPVM_TYPE_C_CODE_LONG) {
+                            constant_value = constant->value.long_value;
+                          }
+                          
+                          if (assign_to_type->code == SPVM_OP_C_CODE_BYTE) {
+                            if (!(constant_value >= INT8_MIN && constant_value <= INT8_MAX)) {
+                              compile_error = 1;
+                            }
+                          }
+                          else if (assign_to_type->code == SPVM_OP_C_CODE_SHORT) {
+                            if (!(constant_value >= INT16_MIN && constant_value <= INT16_MAX)) {
+                              compile_error = 1;
+                            }
+                          }
+                          else if (assign_to_type->code == SPVM_OP_C_CODE_INT) {
+                            if (!(constant_value >= INT32_MIN && constant_value <= INT32_MAX)) {
+                              compile_error = 1;
+                            }
+                          }
+                          else {
+                            compile_error = 1;
+                          }
+                        }
+                        else {
+                          compile_error = 1;
+                        }
+                      }
+                      else {
+                        compile_error = 1;
+                      }
+                      
+                      if (compile_error) {
+                        SPVM_yyerror_format(compiler, "Can't do implicite narrowing convertion at %s line %d\n", op_cur->file, op_cur->line);
+                        compiler->fatal_error = 1;
+                        return;
+                      }
+                      else {
+                        do_convert = 1;
+                      }
+                    }
+                    
+                    if (do_convert) {
+                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
+                      
+                      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_assign_from->file, op_assign_from->line);
+                      SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_assign_from->file, op_assign_from->line);
+                      op_dist_type->uv.type = assign_to_type;
+                      SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_assign_from);
+                      
+                      SPVM_OP_replace_op(compiler, op_stab, op_convert);
+                    }
+                  }
                   // Invalid if to type is different to from value
-                  if (assign_to_type->code != assign_from_type->code) {
-                    SPVM_yyerror_format(compiler, "Invalid type value is assigned at %s line %d\n", op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
-                    return;
+                  else {
+                    if (assign_to_type->code != assign_from_type->code) {
+                      SPVM_yyerror_format(compiler, "Invalid type value is assigned at %s line %d\n", op_cur->file, op_cur->line);
+                      compiler->fatal_error = 1;
+                      return;
+                    }
                   }
                   
                   if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
