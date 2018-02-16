@@ -42,6 +42,8 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Multiply
 {
+  ok(SPVM::TestCase::multiply());
+
   is(SPVM::TestCase::multiply_int_plus(), 1073741824);
   is(SPVM::TestCase::multiply_int_minus(), -1073741824);
   is(SPVM::TestCase::multiply_int_overflow(), -2147483648);
