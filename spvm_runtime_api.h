@@ -93,6 +93,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_type_id, int32_t length);
 
+SPVM_OBJECT* SPVM_RUNTIME_API_new_call_stack_object(SPVM_API* api, int32_t length);
+
 // Exception
 void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_OBJECT* exception);
 SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_API* api);
@@ -115,5 +117,6 @@ void SPVM_RUNTIME_API_free_runtime(SPVM_API* api, SPVM_RUNTIME* runtime);
 int32_t print_error(SPVM_API* api, const char* message);
 void exit(int32_t statue);
 int32_t get_stderr();
+
 
 #endif

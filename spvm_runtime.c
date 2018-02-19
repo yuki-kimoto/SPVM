@@ -126,8 +126,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   // Subroutine stack
   // This is used Variables, Auto decrement stack, call sub args stack
-  SPVM_API_VALUE call_stack[65535];
-
+  int32_t call_stack_length = sub_mys_length + constant_pool_sub->auto_dec_ref_count_stack_max_length + constant_pool_sub->call_sub_arg_stack_max;
+  
+  SPVM_API_OBJECT* call_stack_object = SPVM_RUNTIME_API_new_call_stack_object(api, call_stack_length);
+  SPVM_API_VALUE* call_stack = call_stack_object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE;
+  
   // Copy arguments
   memcpy(call_stack, args, args_length * sizeof(SPVM_API_VALUE));
   
@@ -183,6 +186,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       SPVM_API_OBJECT* return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)call_stack);
       *(SPVM_API_OBJECT**)&return_value = return_value_jit;
     }
+    
+    // Free call stack
+    SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, call_stack_object);
+    
     return return_value;
   }
 
@@ -1823,6 +1830,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       
       api->set_exception(api, NULL);
     }
+    
+    // Free call stack
+    SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, call_stack_object);
     
     return return_value;
   }
