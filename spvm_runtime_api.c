@@ -593,6 +593,26 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_address_array(SPVM_API* api, int32_t length) {
   return object;
 }
 
+// Use only internal
+SPVM_OBJECT* SPVM_RUNTIME_API_new_call_stack(SPVM_API* api, int32_t length) {
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
+  
+  // Allocate array
+  // alloc length + 1. Last value is 0
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)length * (int64_t)sizeof(void*);
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
+  
+  // Set array length
+  object->length = length;
+  
+  object->element_byte_size = sizeof(SPVM_API_VALUE);
+  
+  object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_CALL_STACK;
+  
+  return object;
+}
+
 SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
