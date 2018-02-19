@@ -204,15 +204,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Opcode base
   int32_t sub_opcode_base = constant_pool_sub->opcode_base;
 
-  // Call subroutine argument stack
-  SPVM_API_VALUE call_sub_arg_stack[255];
-  
-  // Call subroutine argument stack top
-  int32_t call_sub_arg_stack_top = -1;
-  
   // Auto decrement reference count variable index stack top
   int32_t auto_dec_ref_count_stack_base = sub_mys_length;
   int32_t auto_dec_ref_count_stack_top = -1;
+
+  // Call subroutine argument stack top
+  int32_t call_sub_arg_stack_base = auto_dec_ref_count_stack_base + constant_pool_sub->auto_dec_ref_count_stack_max_length;
+  int32_t call_sub_arg_stack_top = -1;
   
   // Condition flag
   register int32_t condition_flag = 0;
@@ -1621,7 +1619,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_OPCODE_C_CODE_PUSH_ARG:
         call_sub_arg_stack_top++;
-        call_sub_arg_stack[call_sub_arg_stack_top].int_value = opcode->operand0;
+        call_stack[call_sub_arg_stack_base + call_sub_arg_stack_top].int_value = opcode->operand0;
         
         break;
       case SPVM_OPCODE_C_CODE_CALL_SUB:
@@ -1653,7 +1651,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         {
           int32_t i;
           for (i = 0; i < call_sub_args_length; i++) {
-            int32_t var_index = call_sub_arg_stack[call_sub_arg_stack_top + 1 + i].int_value;
+            int32_t var_index = call_stack[call_sub_arg_stack_base + call_sub_arg_stack_top + 1 + i].int_value;
             args[i] = call_stack[var_index];
           }
         }
