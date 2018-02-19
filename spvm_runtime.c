@@ -1027,9 +1027,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_OPCODE_C_CODE_LEAVE_SCOPE: {
         int32_t auto_dec_ref_count_stack_base = opcode->operand0;
-        int32_t index;
-        for (index = auto_dec_ref_count_stack_base; index <= auto_dec_ref_count_stack_top; index++) {
-          int32_t var_index = auto_dec_ref_count_stack[index];
+        int32_t auto_dec_ref_count_index;
+        for (auto_dec_ref_count_index = auto_dec_ref_count_stack_base; auto_dec_ref_count_index <= auto_dec_ref_count_stack_top; auto_dec_ref_count_index++) {
+          int32_t var_index = auto_dec_ref_count_stack[auto_dec_ref_count_index];
           
           if (*(SPVM_API_OBJECT**)&call_stack[var_index] != NULL) {
             if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 1) { SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[var_index]); }
@@ -1811,9 +1811,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   label_SPVM_OPCODE_C_CODE_RETURN: {
     
     {
-      int32_t index;
-      for (index = 0; index <= auto_dec_ref_count_stack_top; index++) {
-        int32_t var_index = auto_dec_ref_count_stack[index];
+      int32_t auto_dec_ref_count_index;
+      for (auto_dec_ref_count_index = 0; auto_dec_ref_count_index <= auto_dec_ref_count_stack_top; auto_dec_ref_count_index++) {
+        int32_t var_index = auto_dec_ref_count_stack[auto_dec_ref_count_index];
         
         if (*(SPVM_API_OBJECT**)&call_stack[var_index] != NULL) {
           if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 1) { SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[var_index]); }
