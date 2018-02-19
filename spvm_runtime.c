@@ -186,12 +186,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     return return_value;
   }
 
-  // Subroutine object my length
-  int32_t sub_object_mys_length = constant_pool_sub->object_mys_length;
-  
-  // Subroutine object my base index
-  int32_t sub_object_mys_base = constant_pool_sub->object_mys_base;
-  
   // Subroutine object args length
   int32_t sub_object_args_length = constant_pool_sub->object_args_length;
 
