@@ -390,19 +390,20 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   
   runtime->api = api;
   
+  // Constant pool type symbol table
+  runtime->type_symtable = SPVM_HASH_new(0);
+
+  // Constant pool package symbol table
+  runtime->package_symtable = SPVM_HASH_new(0);
+  
   // Constant pool subroutine symbol table
-  runtime->sub_id_symtable = SPVM_HASH_new(0);
+  runtime->sub_symtable = SPVM_HASH_new(0);
   
-  // Constant pool type symbol table
-  runtime->type_id_symtable = SPVM_HASH_new(0);
-  
-  // Constant pool type symbol table
-  runtime->field_id_symtable = SPVM_HASH_new(0);
+  // Constant pool field symbol table
+  runtime->field_symtable = SPVM_HASH_new(0);
   
   // Constant pool type symbol table
   runtime->use_package_path_id_symtable = SPVM_HASH_new(0);
-  
-  runtime->native_sub_name_ids_symtable = SPVM_HASH_new(0);
   
   return runtime;
 }
@@ -1157,8 +1158,8 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   const char* type_name = (char*)&constant_pool[constant_pool_type_name_id + 1];
   
   // Constant pool field symbol table
-  SPVM_HASH* field_id_symtable = runtime->field_id_symtable;
-  SPVM_HASH* field_name_symtable = SPVM_HASH_search(field_id_symtable, type_name, strlen(type_name));
+  SPVM_HASH* field_symtable = runtime->field_symtable;
+  SPVM_HASH* field_name_symtable = SPVM_HASH_search(field_symtable, type_name, strlen(type_name));
   
   int32_t field_id = (int32_t)(intptr_t)SPVM_HASH_search(field_name_symtable, name, strlen(name));
   
@@ -1173,8 +1174,8 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
   }
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_HASH* sub_id_symtable = runtime->sub_id_symtable;
-  int32_t constant_pool_sub_id = (int32_t)(intptr_t)SPVM_HASH_search(sub_id_symtable, name, strlen(name));
+  SPVM_HASH* sub_symtable = runtime->sub_symtable;
+  int32_t constant_pool_sub_id = (int32_t)(intptr_t)SPVM_HASH_search(sub_symtable, name, strlen(name));
   
   return constant_pool_sub_id;
 }
@@ -1183,8 +1184,8 @@ int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
   (void)api;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_HASH* type_id_symtable = runtime->type_id_symtable;
-  int32_t constant_pool_type_id = (int32_t)(intptr_t)SPVM_HASH_search(type_id_symtable, name, strlen(name));
+  SPVM_HASH* type_symtable = runtime->type_symtable;
+  int32_t constant_pool_type_id = (int32_t)(intptr_t)SPVM_HASH_search(type_symtable, name, strlen(name));
   
   // Can't find type id
   if (constant_pool_type_id == 0) {

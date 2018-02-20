@@ -45,26 +45,37 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   SPVM_API_VALUE* package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API_VALUE) * (compiler->package_var_length + 1));
   runtime->package_vars = package_vars;
   
-  // Build sub id symtable
+  // Build sub symtable
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
       SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
-      SPVM_HASH_insert(runtime->sub_id_symtable, sub->abs_name, strlen(sub->abs_name), (void*)(intptr_t)sub->id);
+      SPVM_HASH_insert(runtime->sub_symtable, sub->abs_name, strlen(sub->abs_name), (void*)(intptr_t)sub->id);
     }
   }
   
-  // Build type id symtable
+  // Build type symtable
   {
     int32_t type_index;
     for (type_index = 0; type_index < compiler->types->length; type_index++) {
       SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_index);
-      SPVM_HASH_insert(runtime->type_id_symtable, type->name, strlen(type->name), (void*)(intptr_t)type->id);
+      SPVM_HASH_insert(runtime->type_symtable, type->name, strlen(type->name), (void*)(intptr_t)type->id);
     }
   }
   
-  // Build field info id symtable
+  // Build package symtable
+  {
+    int32_t package_index;
+    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
+      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_packages, package_index);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      const char* package_name = package->op_name->uv.name;
+      SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), (void*)(intptr_t)package->id);
+    }
+  }
+  
+  // Build field symtable
   {
     int32_t package_index;
     for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
@@ -85,7 +96,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
         }
       }
       
-      SPVM_HASH_insert(runtime->field_id_symtable, package_name, strlen(package_name), field_name_symtable);
+      SPVM_HASH_insert(runtime->field_symtable, package_name, strlen(package_name), field_name_symtable);
     }
   }
   
@@ -100,34 +111,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
       assert(package_path_id > 0);
       
       SPVM_HASH_insert(runtime->use_package_path_id_symtable, package_name, strlen(package_name), (void*)(intptr_t)package_path_id);
-    }
-  }
-  
-  // Build native subroutine name symtable
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      const char* package_name = package->op_name->uv.name;
-      
-      SPVM_DYNAMIC_ARRAY* native_subs = package->native_subs;
-      
-      SPVM_DYNAMIC_ARRAY* native_sub_name_ids = SPVM_DYNAMIC_ARRAY_new(0);
-      
-      {
-        int32_t native_sub_index;
-        for (native_sub_index = 0; native_sub_index < native_subs->length; native_sub_index++) {
-          SPVM_SUB* native_sub = SPVM_DYNAMIC_ARRAY_fetch(native_subs, native_sub_index);
-          
-          int32_t native_sub_name_id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, native_sub->abs_name, strlen(native_sub->abs_name));
-          assert(native_sub_name_id);
-          
-          SPVM_DYNAMIC_ARRAY_push(native_sub_name_ids, (void*)(intptr_t)native_sub_name_id);
-        }
-      }
-      
-      SPVM_HASH_insert(runtime->native_sub_name_ids_symtable, package_name, strlen(package_name), native_sub_name_ids);
     }
   }
   

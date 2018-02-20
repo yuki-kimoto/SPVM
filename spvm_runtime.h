@@ -21,15 +21,16 @@ struct SPVM_runtime {
   int32_t* constant_pool;
   
   // Constant pool subroutine symbol table
-  SPVM_HASH* sub_id_symtable;
-  
-  SPVM_HASH* native_sub_name_ids_symtable;
+  SPVM_HASH* sub_symtable;
   
   // Constant pool type symbol table
-  SPVM_HASH* type_id_symtable;
+  SPVM_HASH* type_symtable;
+
+  // Constant pool package symbol table
+  SPVM_HASH* package_symtable;
   
-  // Constant pool type symbol table
-  SPVM_HASH* field_id_symtable;
+  // Constant pool field symbol table
+  SPVM_HASH* field_symtable;
   
   // Module include symbol table
   SPVM_HASH* use_package_path_id_symtable;
