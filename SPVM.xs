@@ -3378,6 +3378,40 @@ get_use_package_path(...)
 }
 
 SV*
+get_package_load_path(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+
+  // Get compiler
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+
+  SV* sv_package_name = ST(0);
+  const char* package_name = SvPV_nolen(sv_package_name);
+  
+  int32_t package_id = (int32_t)SPVM_HASH_search(runtime->package_symtable, package_name, strlen(package_name));
+  
+  // Subroutine information
+  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[package_id];
+  
+  int32_t package_load_path_id = constant_pool_package->load_path_id;
+  
+  const char* package_load_path = (char*)&runtime->constant_pool[package_load_path_id + 1];
+  
+  int32_t package_load_path_length = (int32_t)strlen(package_load_path);
+  SV* sv_package_load_path = sv_2mortal(newSVpvn(package_load_path, package_load_path_length));
+  
+  XPUSHs(sv_package_load_path);
+  
+  XSRETURN(1);
+}
+
+SV*
 bind_native_sub(...)
   PPCODE:
 {
