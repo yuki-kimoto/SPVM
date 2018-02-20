@@ -3356,44 +3356,21 @@ get_no_native_sub_names(...)
 }
 
 SV*
-get_use_package_path(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
-
-  SV* sv_package_name = ST(0);
-  const char* package_name = SvPV_nolen(sv_package_name);
-  
-  const char* use_package_path = (const char*)(intptr_t)SPVM_HASH_search(compiler->use_package_path_symtable, package_name, strlen(package_name));
-  
-  int32_t use_package_path_length = (int32_t)strlen(use_package_path);
-  SV* sv_use_package_path = sv_2mortal(newSVpvn(use_package_path, use_package_path_length));
-  
-  XPUSHs(sv_use_package_path);
-  
-  XSRETURN(1);
-}
-
-SV*
 get_package_load_path(...)
   PPCODE:
 {
   (void)RETVAL;
-
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
 
-  // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
 
   SV* sv_package_name = ST(0);
   const char* package_name = SvPV_nolen(sv_package_name);
   
+
   int32_t package_id = (int32_t)SPVM_HASH_search(runtime->package_symtable, package_name, strlen(package_name));
   
   // Subroutine information
@@ -3417,8 +3394,10 @@ bind_native_sub(...)
 {
   (void)RETVAL;
   
-  // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
   SV* sv_native_sub_name = ST(0);
   SV* sv_native_address = ST(1);
@@ -3430,9 +3409,10 @@ bind_native_sub(...)
   IV native_address = SvIV(sv_native_address);
   
   // Set native address to subroutine
-  SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
-  SPVM_SUB* sub = op_sub->uv.sub;
-  sub->native_address = (void*)native_address;
+  int32_t sub_id = SPVM_HASH_search(runtime->sub_symtable, native_sub_name, strlen(native_sub_name));
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  
+  constant_pool_sub->native_address = (void*)native_address;
   
   XSRETURN(0);
 }

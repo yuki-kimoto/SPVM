@@ -162,6 +162,10 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   const char* package_name = package->op_name->uv.name;
   constant_pool_package.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
 
+  // Push load_path to constant pool
+  const char* load_path = package->load_path;
+  constant_pool_package.load_path_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, load_path);
+
   // Push fields constant_pool indexes to constant pool
   {
     int32_t field_pos;
@@ -211,7 +215,6 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   // Set subroutine information
   SPVM_CONSTANT_POOL_SUB constant_pool_sub;
   memset(&constant_pool_sub, 0, sizeof(SPVM_CONSTANT_POOL_SUB));
-  constant_pool_sub.native_address = sub->native_address;
   constant_pool_sub.mys_length = sub->op_mys->length;
   constant_pool_sub.call_sub_arg_stack_max = sub->call_sub_arg_stack_max;
   constant_pool_sub.args_length = sub->op_args->length;

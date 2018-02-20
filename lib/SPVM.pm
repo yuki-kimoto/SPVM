@@ -189,7 +189,7 @@ sub get_sub_native_address {
     
     my $module_name = $package_name;
     $module_name =~ s/^SPVM:://;
-    my $module_dir = get_use_package_path($module_name);
+    my $module_dir = get_package_load_path($module_name);
     $module_dir =~ s/\.spvm$//;
     
     my $module_name_slash = $package_name;
@@ -273,9 +273,6 @@ sub compile_spvm {
   my $compile_success = compile();
   
   if ($compile_success) {
-    # Bind native subroutines
-    bind_native_subs();
-    
     # Build bytecode
     build_constant_pool();
     
@@ -284,6 +281,9 @@ sub compile_spvm {
     
     # Build run-time
     build_runtime();
+    
+    # Bind native subroutines
+    bind_native_subs();
     
     # Build SPVM subroutines
     build_spvm_subs();
