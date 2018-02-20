@@ -236,29 +236,6 @@ CHECK {
 
 sub compile_spvm {
   
-  # Load standard library
-  my @dll_file_bases = qw(
-    CORE
-    Math
-    Byte
-    Short
-    Integer
-    Long
-    Float
-    Double
-    Arrays
-  );
-  for my $shared_lib_file_base (@dll_file_bases) {
-    my $shared_lib_file_rel = "auto/SPVM/$shared_lib_file_base.native/$shared_lib_file_base.$Config{dlext}";
-    for my $module_dir (@INC) {
-      my $shared_lib_file = "$module_dir/$shared_lib_file_rel";
-      if (-f $shared_lib_file) {
-        DynaLoader::dl_load_file($shared_lib_file);
-        push @DynaLoader::dl_shared_objects, $shared_lib_file;
-      }
-    }
-  }
-  
   # Compile SPVM source code
   my $compile_success = compile();
   
