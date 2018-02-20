@@ -8,7 +8,7 @@ use Config;
 use DynaLoader;
 use SPVM::Build;
 use File::Basename 'basename';
-use File::Temp 'tempdir';
+use File::Temp ();
 
 use SPVM::Core::Object;
 use SPVM::Core::Object::Array;
@@ -58,7 +58,8 @@ sub compile_jit_sub {
   my $jit_sub_name = SPVM::create_jit_sub_name($sub_abs_name);
   
   # Build JIT code
-  my $jit_source_dir = $SPVM::HOME_DIR;
+  my $tmp_dir = File::Temp->newdir;
+  my $jit_source_dir = $SPVM::HOME_DIR  || $tmp_dir->dirname;
   my $jit_source_file = "$jit_source_dir/$jit_sub_name.c";
   my $jit_shared_lib_file = "$jit_source_dir/$jit_sub_name.$Config{dlext}";
   
@@ -98,7 +99,7 @@ sub compile_jit_sub {
 sub import {
   my ($class, $package_name) = @_;
   
-  $SPVM::HOME_DIR ||= $ENV{SPVM_HOME_DIR} || tempdir(CLEANUP => 1);
+  $SPVM::HOME_DIR ||= $ENV{SPVM_HOME_DIR};
   
   # Add package informations
   if (defined $package_name) {
