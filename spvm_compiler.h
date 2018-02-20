@@ -88,9 +88,6 @@ struct SPVM_compiler {
   const char* start_sub_name;
   
   SPVM_DYNAMIC_ARRAY* cur_template_args;
-  
-  // Use module pathes
-  SPVM_DYNAMIC_ARRAY* use_package_names;
 
   // Use module pathes
   SPVM_HASH* package_load_path_symtable;

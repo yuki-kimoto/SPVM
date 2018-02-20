@@ -176,7 +176,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_name_with_template_args);
               const char* package_path = cur_file;
               SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_path);
-              SPVM_DYNAMIC_ARRAY_push(compiler->use_package_names, (void*)package_name);
               SPVM_HASH_insert(compiler->package_load_path_symtable, package_name_with_template_args, strlen(package_name_with_template_args), (void*)package_path);
               
               compiler->cur_src = cur_src;
