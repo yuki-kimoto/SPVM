@@ -200,10 +200,12 @@ sub get_sub_native_address {
     
     my $shared_lib_file;
     
+    my $tmp_dir = File::Temp->newdir;
     eval {
       $shared_lib_file = SPVM::Build::build_shared_lib(
         module_dir => $module_dir,
-        module_name => "SPVM::$module_name"
+        module_name => "SPVM::$module_name",
+        object_dir => $tmp_dir->dirname
       );
     };
     

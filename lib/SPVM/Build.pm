@@ -8,7 +8,6 @@ use ExtUtils::CBuilder;
 use Config;
 
 use File::Basename 'dirname', 'basename';
-use File::Temp 'tempdir';
 
 my $compiled = {};
 
@@ -183,7 +182,7 @@ sub build_shared_lib {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
   my $object_files = [];
   unless (defined $object_dir) {
-    $object_dir = tempdir(CLEANUP => 1);
+    confess "object_dir option is needed";
   }
   for my $src_file (@$src_files) {
     # Object file
