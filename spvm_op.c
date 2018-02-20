@@ -1590,7 +1590,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
     
     // Add package load path
-    const char* package_load_path = SPVM_HASH_search(compiler->use_package_path_symtable, package_name, strlen(package_name));
+    const char* package_load_path = SPVM_HASH_search(compiler->package_load_path_symtable, package_name, strlen(package_name));
     package->load_path = package_load_path;
     
     // Add package

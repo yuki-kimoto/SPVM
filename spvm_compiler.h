@@ -94,6 +94,9 @@ struct SPVM_compiler {
   
   // Use module pathes
   SPVM_HASH* use_package_path_symtable;
+
+  // Use module pathes
+  SPVM_HASH* package_load_path_symtable;
   
   // Current line number
   int32_t cur_line;
