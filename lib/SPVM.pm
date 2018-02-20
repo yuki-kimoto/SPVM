@@ -125,25 +125,15 @@ sub import {
 sub _get_dll_file {
   my $package_name = shift;
   
-  # DLL file name
-  my $dll_base_name = $package_name;
-  $dll_base_name =~ s/^.*:://;
-  my $shared_lib_file_tail = 'auto/' . $package_name . '.native' . '/' . $dll_base_name;
-  $shared_lib_file_tail =~ s/::/\//g;
-  my $shared_lib_file;
-  for my $dl_shared_object (@DynaLoader::dl_shared_objects) {
-    my $dl_shared_object_no_ext = $dl_shared_object;
-    # remove .so, xs.dll .dll, etc
-    while ($dl_shared_object_no_ext =~ s/\.[^\/\.]+$//) {
-      1;
-    }
-    if ($dl_shared_object_no_ext =~ /\Q$shared_lib_file_tail\E$/) {
-      $shared_lib_file = $dl_shared_object;
-      last;
-    }
-  }
+  my $package_name2 = $package_name;
+  $package_name2 =~ s/SPVM:://;
+  my @package_name_parts = split(/::/, $package_name2);
+  my $package_load_path = get_package_load_path($package_name2);
+  my $dll_file = $package_load_path;
+  $dll_file =~ s/\.[^.]+$//;
+  $dll_file .= ".native/$package_name_parts[-1].$Config{dlext}";
   
-  return $shared_lib_file;
+  return $dll_file;
 }
 
 sub search_shared_lib_func_address {

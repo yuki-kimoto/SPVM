@@ -28,7 +28,7 @@ my $shared_lib_file = SPVM::Build::build_shared_lib(
 my $shared_lib_dir = $module_name;
 $shared_lib_dir =~ s/::/\//g;
 $shared_lib_dir .= '.native';
-$shared_lib_dir = "blib/arch/auto/$shared_lib_dir";
+$shared_lib_dir = "blib/lib/$shared_lib_dir";
 mkpath $shared_lib_dir;
 
 # blib shared lib file
