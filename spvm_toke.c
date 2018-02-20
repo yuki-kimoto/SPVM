@@ -145,8 +145,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 exit(EXIT_FAILURE);
               }
               
+              const char* package_name_with_template_args = op_use->uv.use->package_name_with_template_args;
               compiler->cur_file = cur_file;
-              compiler->cur_package_name_with_template_args = op_use->uv.use->package_name_with_template_args;
+              compiler->cur_package_name_with_template_args = package_name_with_template_args;
               compiler->cur_op_use = op_use;
               
               // Read file content
@@ -172,7 +173,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               
               // Add package loading information
               SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_name);
-              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, op_use->uv.use->package_name_with_template_args);
+              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_name_with_template_args);
               const char* package_path = cur_file;
               SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_path);
               SPVM_DYNAMIC_ARRAY_push(compiler->use_package_names, (void*)package_name);

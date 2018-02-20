@@ -14,6 +14,7 @@ struct SPVM_constant_pool_package {
   int32_t byte_size;
   int32_t object_field_byte_offsets_base;
   int32_t object_field_byte_offsets_length;
+  int32_t load_path_id;
 };
 
 #endif
