@@ -19,6 +19,7 @@
 #include "spvm_constant_pool_type.h"
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
+#include "spvm_runtime_allocator.h"
 
 #define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
 #define SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, length))

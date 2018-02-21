@@ -77,11 +77,8 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
 
 int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   dSP;
-
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   
-  // Subroutine information
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  (void)api;
   
   // String buffer for jitcode
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
@@ -3124,9 +3121,6 @@ compile(...)
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
-  // Debug model
-  HV* hv_env = get_hv("ENV", 0);
-  
   // Add package
   AV* av_package_infos = get_av("SPVM::PACKAGE_INFOS", 0);
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
@@ -3371,7 +3365,7 @@ get_package_load_path(...)
   const char* package_name = SvPV_nolen(sv_package_name);
   
 
-  int32_t package_id = (int32_t)SPVM_HASH_search(runtime->package_symtable, package_name, strlen(package_name));
+  int32_t package_id = (int32_t)(intptr_t)SPVM_HASH_search(runtime->package_symtable, package_name, strlen(package_name));
   
   // Subroutine information
   SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[package_id];
@@ -3409,7 +3403,7 @@ bind_native_sub(...)
   IV native_address = SvIV(sv_native_address);
   
   // Set native address to subroutine
-  int32_t sub_id = SPVM_HASH_search(runtime->sub_symtable, native_sub_name, strlen(native_sub_name));
+  int32_t sub_id = (int32_t)(intptr_t)SPVM_HASH_search(runtime->sub_symtable, native_sub_name, strlen(native_sub_name));
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
   
   constant_pool_sub->native_address = (void*)native_address;

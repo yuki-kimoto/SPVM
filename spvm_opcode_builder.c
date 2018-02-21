@@ -658,7 +658,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_ADD_DOUBLE;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
 
@@ -691,7 +690,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_SUBTRACT_DOUBLE;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
                     
@@ -724,7 +722,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_MULTIPLY_DOUBLE;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
                     
@@ -757,7 +754,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_DIVIDE_DOUBLE;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
                     
@@ -797,7 +793,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_REMAINDER_DOUBLE;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
                     
@@ -834,7 +829,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_LEFT_SHIFT_LONG;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
 
@@ -863,7 +857,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_RIGHT_SHIFT_LONG;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
 
@@ -892,7 +885,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_RIGHT_SHIFT_UNSIGNED_LONG;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
 
@@ -921,7 +913,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_BIT_AND_LONG;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
 
@@ -948,7 +939,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_BIT_OR_LONG;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
 
@@ -975,7 +965,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_BIT_XOR_LONG;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
 
@@ -1002,7 +991,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_COMPLEMENT_LONG;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
                     
@@ -1033,7 +1021,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_PLUS_DOUBLE;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
                     
@@ -1064,7 +1051,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.code = SPVM_OPCODE_C_CODE_NEGATE_DOUBLE;
                         break;
                       default:
-                        warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                         assert(0);
                     }
                     
@@ -2236,7 +2222,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.code = SPVM_OPCODE_C_CODE_GT_DOUBLE;
                     break;
                   default:
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                 }
                 
@@ -2271,7 +2256,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.code = SPVM_OPCODE_C_CODE_GE_DOUBLE;
                     break;
                   default:
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                 }
                 
@@ -2305,7 +2289,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.code = SPVM_OPCODE_C_CODE_LT_DOUBLE;
                     break;
                   default:
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                 }
                 
@@ -2340,7 +2323,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.code = SPVM_OPCODE_C_CODE_LE_DOUBLE;
                     break;
                   default:
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                 }
                 
@@ -2381,11 +2363,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
                   if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_INT) {
@@ -2438,11 +2418,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   
                   if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_INT) {
@@ -2479,11 +2457,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   
                   if (type->code == SPVM_TYPE_C_CODE_BYTE) {
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_SHORT) {
-                    warn("AAAAAAAAAA %s at %d", op_cur->file, op_cur->line);
                     assert(0);
                   }
                   else if (type->code == SPVM_TYPE_C_CODE_INT) {

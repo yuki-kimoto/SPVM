@@ -20,5 +20,6 @@ void SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t valu
 void SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float value);
 void SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double value);
 void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer);
+void SPVM_STRING_BUFFER_add_hex_char(SPVM_STRING_BUFFER* string_buffer, char ch);
 
 #endif

@@ -33,5 +33,6 @@
 
 
 void SPVM_JITCODE_BUILDER_build_jitcode();
+void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, int32_t sub_id);
 
 #endif

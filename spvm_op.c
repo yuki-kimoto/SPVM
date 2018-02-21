@@ -1591,7 +1591,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     // Add package load path
     const char* package_load_path = SPVM_HASH_search(compiler->package_load_path_symtable, package_name, strlen(package_name));
-    package->load_path = package_load_path;
+    package->load_path = (char*)package_load_path;
     
     // Add package
     op_package->uv.package = package;
@@ -2056,7 +2056,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     }
     else {
       SPVM_yyerror_format(compiler, "enum value must be int type at %s line %d\n", op_constant->file, op_constant->line);
-      return;
+      return NULL;
     }
     
     compiler->enum_default_value++;

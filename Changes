@@ -2,6 +2,7 @@
   - shared library building temporaly directory is cleaned up in the scope
   - cleanup shared library loading
   - fix exception stack trace subroutine name
+  - fix all warnings
 0.0310 2018-02-16
   - enum value must be int type
   - remove byte literal b
