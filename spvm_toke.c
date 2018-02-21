@@ -207,6 +207,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\n':
         compiler->bufptr++;
         compiler->cur_line++;
+        
         continue;
       
       /* Cancat */

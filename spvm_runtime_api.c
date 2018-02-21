@@ -107,7 +107,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   NULL
 };
 
-SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, int32_t sub_id, SPVM_OBJECT* exception, int32_t current_line) {
+SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_OBJECT* exception, int32_t sub_id, int32_t current_line) {
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
 
