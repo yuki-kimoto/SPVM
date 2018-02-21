@@ -1,5 +1,6 @@
 0.0311 2018-02-20
   - shared library building temporaly directory is cleaned up in the scope
+  - cleanup shared library loading
 0.0310 2018-02-16
   - enum value must be int type
   - remove byte literal b
