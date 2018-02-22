@@ -135,7 +135,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_DYNAMIC_ARRAY* if_block_end_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // opcode index stack for loop start
-      SPVM_DYNAMIC_ARRAY* loop_start_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_DYNAMIC_ARRAY* loop_first_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // opcode index stack for last
       SPVM_DYNAMIC_ARRAY* last_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -169,7 +169,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *opcode_index_ptr = opcode_array->length - 1;
               
-              SPVM_DYNAMIC_ARRAY_push(loop_start_goto_opcode_index_stack, opcode_index_ptr);
+              SPVM_DYNAMIC_ARRAY_push(loop_first_goto_opcode_index_stack, opcode_index_ptr);
             }
             else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
               int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
@@ -2067,11 +2067,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT) {
-                  int32_t* loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(loop_start_goto_opcode_index_stack, loop_start_goto_opcode_index_stack->length - 1);
-                  int32_t loop_start_opcode_index = *loop_start_opcode_index_ptr;
+                  // Add CHECK_LOOP_JIT opcode
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  opcode.code = SPVM_OPCODE_C_CODE_CHECK_LOOP_JIT;
+                  opcode.operand0 = opcode_array->length;
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                  // Set loop first GOTO opcode
+                  int32_t* loop_first_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(loop_first_goto_opcode_index_stack, loop_first_goto_opcode_index_stack->length - 1);
+                  int32_t loop_first_opcode_index = *loop_first_opcode_index_ptr;
                   
-                  SPVM_OPCODE* opcode_loop_start = (opcode_array->values + loop_start_opcode_index);
-                  opcode_loop_start->operand0 = opcode_array->length;
+                  SPVM_OPCODE* opcode_loop_first = (opcode_array->values + loop_first_opcode_index);
+                  opcode_loop_first->operand0 = opcode_array->length;
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
                   // Set IF_CROAK_CATCH opcode index
@@ -2141,12 +2149,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_DYNAMIC_ARRAY_push(if_eq_or_if_ne_opcode_index_stack, opcode_index_ptr);
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
-                  assert(loop_start_goto_opcode_index_stack->length > 0);
+                  assert(loop_first_goto_opcode_index_stack->length > 0);
                   
-                  int32_t* loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(loop_start_goto_opcode_index_stack);
-                  int32_t loop_start_opcode_index = *loop_start_opcode_index_ptr;
+                  int32_t* loop_first_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_pop(loop_first_goto_opcode_index_stack);
+                  int32_t loop_first_opcode_index = *loop_first_opcode_index_ptr;
                   
-                  opcode.operand0 = loop_start_opcode_index + 1;
+                  opcode.operand0 = loop_first_opcode_index + 1;
                 }
                 
                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
