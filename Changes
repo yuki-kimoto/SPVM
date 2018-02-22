@@ -1,4 +1,4 @@
-0.0311 2018-02-20
+0.0311 2018-02-21
   - shared library building temporaly directory is cleaned up in the scope
   - cleanup shared library loading
   - fix exception stack trace subroutine name
