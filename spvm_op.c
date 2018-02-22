@@ -952,7 +952,7 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   
   // Block for next step
   SPVM_OP* op_block_next_step = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_for->file, op_for->line);
-  op_block_next_step->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_NEXT_STEP;
+  op_block_next_step->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT;
   SPVM_OP_insert_child(compiler, op_block_next_step, op_block_next_step->last, op_term_next_step);
   
   SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_statement_init);
@@ -987,7 +987,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
 
   // Block for next step
   SPVM_OP* op_block_next_step = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_while->file, op_while->line);
-  op_block_next_step->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_NEXT_STEP;
+  op_block_next_step->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT;
   SPVM_OP_insert_child(compiler, op_block_next_step, op_block_next_step->last, op_term_next_step);
 
   SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_statement_init);

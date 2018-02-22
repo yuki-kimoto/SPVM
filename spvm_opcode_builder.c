@@ -2066,7 +2066,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode_next->operand0 = opcode_array->length;
                   }
                 }
-                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_NEXT_STEP) {
+                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT) {
                   int32_t* loop_start_opcode_index_ptr = SPVM_DYNAMIC_ARRAY_fetch(loop_start_goto_opcode_index_stack, loop_start_goto_opcode_index_stack->length - 1);
                   int32_t loop_start_opcode_index = *loop_start_opcode_index_ptr;
                   
