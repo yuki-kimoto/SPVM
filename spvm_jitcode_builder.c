@@ -683,12 +683,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   while (opcode_index < opcode_base + opcode_length) {
 
     // Line label
-    if (opcodes[opcode_index].has_label) {
-      SPVM_STRING_BUFFER_add(string_buffer, "L");
-    }
-    else {
-      SPVM_STRING_BUFFER_add(string_buffer, "// L");
-    }
+    SPVM_STRING_BUFFER_add(string_buffer, "L");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index);
     SPVM_STRING_BUFFER_add(string_buffer, ": ");
     

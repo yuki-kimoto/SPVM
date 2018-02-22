@@ -288,7 +288,8 @@ sub compile_jitcode {
   $cbuilder->compile(
     source => $source_file,
     object_file => $object_file,
-    include_dirs => $include_dirs
+    include_dirs => $include_dirs,
+    # extra_compiler_flags => '-Wall -Wextra -Wno-unused-label'
   );
   push @$object_files, $object_file;
   
