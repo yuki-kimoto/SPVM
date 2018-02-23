@@ -13,8 +13,7 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # for
 {
-  my $total = SPVM::TestCase::for_basic();
-  cmp_ok($total, '==', 6);
+  ok(SPVM::TestCase::for_basic());
 }
 
 

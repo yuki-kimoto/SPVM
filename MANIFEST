@@ -102,8 +102,6 @@ spvm_descriptor.c
 spvm_descriptor.h
 spvm_dumper.c
 spvm_dumper.h
-spvm_dynamic_array.c
-spvm_dynamic_array.h
 spvm_enumeration.c
 spvm_enumeration.h
 spvm_enumeration_value.c
@@ -120,6 +118,8 @@ spvm_jitcode_builder.c
 spvm_jitcode_builder.h
 spvm_lib_std.c
 spvm_limit.h
+spvm_list.c
+spvm_list.h
 spvm_memory_pool.c
 spvm_memory_pool.h
 spvm_my.c

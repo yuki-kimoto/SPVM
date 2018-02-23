@@ -1817,8 +1817,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       for (auto_dec_ref_count_index = 0; auto_dec_ref_count_index <= auto_dec_ref_count_stack_top; auto_dec_ref_count_index++) {
         int32_t var_index = call_stack[auto_dec_ref_count_stack_base + auto_dec_ref_count_index].int_value;
         
-        assert(SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 0);
-        
         if (*(SPVM_API_OBJECT**)&call_stack[var_index] != NULL) {
           if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 1) { SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[var_index]); }
           else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&call_stack[var_index]); }
