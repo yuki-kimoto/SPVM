@@ -11,7 +11,7 @@ struct SPVM_runtime_allocator {
   SPVM_MEMORY_POOL* memory_pool;
   
   // Free lists
-  SPVM_DYNAMIC_ARRAY** freelists;
+  SPVM_LIST** freelists;
 
   // use memory pool max reference byte size
   int64_t object_max_byte_size_use_memory_pool;

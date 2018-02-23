@@ -9,7 +9,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_sub.h"
 #include "spvm_op.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_type.h"
 #include "spvm_object.h"
 #include "spvm_runtime.h"

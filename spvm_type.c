@@ -4,7 +4,7 @@
 
 #include "spvm_compiler.h"
 #include "spvm_type.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_op.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_hash.h"
@@ -41,7 +41,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_VOID);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_VOID);
   
   assert(type);
   
@@ -51,7 +51,7 @@ SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_BYTE);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_BYTE);
   
   assert(type);
   
@@ -61,7 +61,7 @@ SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_short_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_SHORT);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_SHORT);
   
   assert(type);
   
@@ -71,7 +71,7 @@ SPVM_TYPE* SPVM_TYPE_get_short_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_int_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_INT);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_INT);
   
   assert(type);
   
@@ -81,7 +81,7 @@ SPVM_TYPE* SPVM_TYPE_get_int_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_long_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_LONG);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_LONG);
   
   assert(type);
   
@@ -91,7 +91,7 @@ SPVM_TYPE* SPVM_TYPE_get_long_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_float_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_FLOAT);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_FLOAT);
   
   assert(type);
   
@@ -101,7 +101,7 @@ SPVM_TYPE* SPVM_TYPE_get_float_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_DOUBLE);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_DOUBLE);
   
   assert(type);
   
@@ -111,7 +111,7 @@ SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_BYTE_ARRAY);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_BYTE_ARRAY);
   
   assert(type);
   
@@ -121,7 +121,7 @@ SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_STRING);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_STRING);
   
   assert(type);
   

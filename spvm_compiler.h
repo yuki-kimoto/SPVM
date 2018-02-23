@@ -43,13 +43,13 @@ struct SPVM_compiler {
   SPVM_OP* op_grammar;
   
   // Constants
-  SPVM_DYNAMIC_ARRAY* op_constants;
+  SPVM_LIST* op_constants;
   
   int64_t enum_default_value;
   int32_t enum_default_type_code;
 
   // Packages
-  SPVM_DYNAMIC_ARRAY* op_packages;
+  SPVM_LIST* op_packages;
   
   // OP package symtable
   SPVM_HASH* op_package_symtable;
@@ -58,13 +58,13 @@ struct SPVM_compiler {
   SPVM_HASH* op_our_symtable;
   
   // Class loading stack
-  SPVM_DYNAMIC_ARRAY* op_use_stack;
+  SPVM_LIST* op_use_stack;
   
   // Include pathes
-  SPVM_DYNAMIC_ARRAY* include_pathes;
+  SPVM_LIST* include_pathes;
   
   // Subroutine ops
-  SPVM_DYNAMIC_ARRAY* op_subs;
+  SPVM_LIST* op_subs;
   
   // Subroutine absolute name symbol table
   SPVM_HASH* op_sub_symtable;
@@ -73,21 +73,21 @@ struct SPVM_compiler {
   SPVM_HASH* op_use_symtable;
   
   // Types(This is all type ops in source code)
-  SPVM_DYNAMIC_ARRAY* op_types;
+  SPVM_LIST* op_types;
   
   // Types(This is unique types)
-  SPVM_DYNAMIC_ARRAY* types;
+  SPVM_LIST* types;
   
   // Resolved type symbol table
   SPVM_HASH* type_symtable;
   
   // Current case statements in switch statement
-  SPVM_DYNAMIC_ARRAY* cur_op_cases;
+  SPVM_LIST* cur_op_cases;
   
   // Entry point subroutine name
   const char* start_sub_name;
   
-  SPVM_DYNAMIC_ARRAY* cur_template_args;
+  SPVM_LIST* cur_template_args;
 
   // Use module pathes
   SPVM_HASH* package_load_path_symtable;
@@ -119,7 +119,7 @@ struct SPVM_compiler {
   int32_t tmp_var_index;
   
   // Native subroutines
-  SPVM_DYNAMIC_ARRAY* native_subs;
+  SPVM_LIST* native_subs;
   
   // Error is fatal
   _Bool fatal_error;

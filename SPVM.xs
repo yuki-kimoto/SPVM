@@ -15,7 +15,7 @@
 
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_util_allocator.h"
 #include "spvm_constant_pool.h"
 #include "spvm_runtime.h"
@@ -35,7 +35,7 @@
 #include "spvm_api.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_constant_pool_builder.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_string_buffer.h"
@@ -3148,7 +3148,7 @@ compile(...)
       
       // push package to compiler use stack
       SPVM_OP* op_use_package = SPVM_OP_new_op_use_from_package_name(compiler, name, file, line);
-      SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use_package);
+      SPVM_LIST_push(compiler->op_use_stack, op_use_package);
       SPVM_HASH_insert(compiler->op_use_symtable, name, strlen(name), op_use_package);
     }
   }
@@ -3162,7 +3162,7 @@ compile(...)
       SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
       SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
       char* include_path = SvPV_nolen(sv_include_path);
-      SPVM_DYNAMIC_ARRAY_push(compiler->include_pathes, include_path);
+      SPVM_LIST_push(compiler->include_pathes, include_path);
     }
   }
   
@@ -3288,13 +3288,13 @@ get_native_sub_names(...)
   // Get compiler
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
   
-  SPVM_DYNAMIC_ARRAY* op_subs = compiler->op_subs;
+  SPVM_LIST* op_subs = compiler->op_subs;
   
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(op_subs, sub_index);
+      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       
       if (sub->is_native) {
@@ -3452,20 +3452,20 @@ build_field_symtable(...)
   HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
   
   // name, arg_types, return_type
-  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
+  SPVM_LIST* op_packages = compiler->op_packages;
   {
     int32_t package_index;
     for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
+      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_index);
       const char* package_name = op_package->uv.package->op_name->uv.name;
       
       HV* hv_package_info = (HV*)sv_2mortal((SV*)newHV());
       
-      SPVM_DYNAMIC_ARRAY* op_fields = op_package->uv.package->op_fields;
+      SPVM_LIST* op_fields = op_package->uv.package->op_fields;
       {
         int32_t field_index;
         for (field_index = 0; field_index < op_fields->length; field_index++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_index);
+          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
           SPVM_FIELD* field = op_field->uv.field;
           const char* field_name = field->op_name->uv.name;
           

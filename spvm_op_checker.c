@@ -7,7 +7,7 @@
 
 
 #include "spvm_compiler.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_yacc_util.h"
@@ -30,7 +30,7 @@
 #include "spvm_package_var.h"
 #include "spvm_undef.h"
 
-SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_DYNAMIC_ARRAY* op_mys, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_LIST* op_mys, const char* file, int32_t line) {
 
   // Create temporary variable
   // my
@@ -55,7 +55,7 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   op_my->uv.my = my;
 
   // Add my var
-  SPVM_DYNAMIC_ARRAY_push(op_mys, op_my);
+  SPVM_LIST_push(op_mys, op_my);
   
   SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my(compiler, op_my);
   
@@ -64,10 +64,10 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
-  SPVM_DYNAMIC_ARRAY* op_types = compiler->op_types;
+  SPVM_LIST* op_types = compiler->op_types;
   
   // Resolve String type
-  SPVM_TYPE* type_string = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, SPVM_TYPE_C_CODE_STRING);
+  SPVM_TYPE* type_string = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_STRING);
   type_string->op_package = SPVM_HASH_search(compiler->op_package_symtable, "String", strlen("String"));
   
   // Resolve types
@@ -76,7 +76,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     for (i = 0; i < op_types->length; i++) {
       assert(compiler->types->length <= SPVM_LIMIT_C_TYPES);
       
-      SPVM_OP* op_type = SPVM_DYNAMIC_ARRAY_fetch(op_types, i);
+      SPVM_OP* op_type = SPVM_LIST_fetch(op_types, i);
       
       if (compiler->types->length == SPVM_LIMIT_C_TYPES) {
         SPVM_yyerror_format(compiler, "too many types at %s line %d\n", op_type->file, op_type->line);
@@ -122,7 +122,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
         SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
         memcpy(new_type, type, sizeof(SPVM_TYPE));
-        SPVM_DYNAMIC_ARRAY_push(compiler->types, new_type);
+        SPVM_LIST_push(compiler->types, new_type);
         SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
         
         new_type->op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
@@ -133,7 +133,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   }
 
   // Calcurate fild byte offset and package byte size
-  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
+  SPVM_LIST* op_packages = compiler->op_packages;
   int32_t alignment;
   if (sizeof(void*) > sizeof(int64_t)) {
     alignment = sizeof(void*);
@@ -145,9 +145,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
+      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_pos);
       SPVM_PACKAGE* package = op_package->uv.package;
-      SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
+      SPVM_LIST* op_fields = package->op_fields;
       
       // Separate reference type and value type
       int32_t next_max_byte_size = alignment;
@@ -155,7 +155,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
+          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
           SPVM_FIELD* field = op_field->uv.field;
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
@@ -216,15 +216,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   {
     int32_t package_pos;
     for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_pos);
+      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_pos);
       SPVM_PACKAGE* package = op_package->uv.package;
-      SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
+      SPVM_LIST* op_fields = package->op_fields;
       
       // Calculate package byte size
       {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, field_pos);
+          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
           SPVM_FIELD* field = op_field->uv.field;
           field->index = field_pos;
         }
@@ -236,7 +236,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     int32_t sub_pos;
     for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
       
-      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_pos);
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_pos);
       SPVM_SUB* sub = op_sub->uv.sub;
       SPVM_OP* op_package = sub->op_package;
       SPVM_PACKAGE* package = op_package->uv.package;
@@ -244,12 +244,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       int32_t eval_block_stack_length = 0;
       int32_t loop_block_stack_length = 0;
       
-      SPVM_DYNAMIC_ARRAY* op_mys = sub->op_mys;
-      SPVM_DYNAMIC_ARRAY* op_my_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      SPVM_DYNAMIC_ARRAY* block_my_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_LIST* op_mys = sub->op_mys;
+      SPVM_LIST* op_my_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_LIST* block_my_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      
+      int32_t loop_block_count = 0;
       
       // Switch stack
-      SPVM_DYNAMIC_ARRAY* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_LIST* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // Destructor must receive own package object
       if (sub->is_destructor) {
@@ -259,7 +261,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           error = 1;
         }
         else {
-          SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, 0);
+          SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, 0);
           SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
           
           if (arg_type->code != package->op_type->uv.type->code) {
@@ -284,7 +286,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           switch (op_cur->code) {
             case SPVM_OP_C_CODE_SWITCH: {
-              SPVM_DYNAMIC_ARRAY_push(op_switch_stack, op_cur);
+              SPVM_LIST_push(op_switch_stack, op_cur);
               break;
             }
             // Start scope
@@ -293,7 +295,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               int32_t block_my_base = op_my_stack->length;
               int32_t* block_my_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *block_my_base_ptr = block_my_base;
-              SPVM_DYNAMIC_ARRAY_push(block_my_base_stack, block_my_base_ptr);
+              SPVM_LIST_push(block_my_base_stack, block_my_base_ptr);
               
               if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
                 loop_block_stack_length++;
@@ -348,14 +350,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
-                  SPVM_DYNAMIC_ARRAY* op_cases = switch_info->op_cases;
+                  SPVM_LIST* op_cases = switch_info->op_cases;
                   int32_t length = op_cases->length;
                   
                   // Check case type
                   {
                     int32_t i;
                     for (i = 0; i < length; i++) {
-                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(op_cases, i);
+                      SPVM_OP* op_case = SPVM_LIST_fetch(op_cases, i);
                       SPVM_OP* op_constant = op_case->first;
 
                       if (op_constant->code != SPVM_OP_C_CODE_CONSTANT) {
@@ -379,7 +381,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   {
                     int32_t i;
                     for (i = 0; i < length; i++) {
-                      SPVM_OP* op_case = SPVM_DYNAMIC_ARRAY_fetch(op_cases, i);
+                      SPVM_OP* op_case = SPVM_LIST_fetch(op_cases, i);
                       SPVM_OP* op_constant = op_case->first;
                       int32_t value = op_constant->uv.constant->value.int_value;
                       
@@ -407,13 +409,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   switch_info->min = min;
                   switch_info->max = max;
                   
-                  SPVM_DYNAMIC_ARRAY_pop(op_switch_stack);
+                  SPVM_LIST_pop(op_switch_stack);
                   
                   break;
                 }
                 case SPVM_OP_C_CODE_CASE: {
                   if (op_switch_stack->length > 0) {
-                    SPVM_OP* op_switch = SPVM_DYNAMIC_ARRAY_fetch(op_switch_stack, op_switch_stack->length - 1);
+                    SPVM_OP* op_switch = SPVM_LIST_fetch(op_switch_stack, op_switch_stack->length - 1);
                     SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                     if (switch_info->op_cases->length == SPVM_LIMIT_C_CASES) {
                       SPVM_yyerror_format(compiler, "Too many case statements at %s line %d\n", op_cur->file, op_cur->line);
@@ -421,13 +423,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       return;
                     }
 
-                    SPVM_DYNAMIC_ARRAY_push(switch_info->op_cases, op_cur);
+                    SPVM_LIST_push(switch_info->op_cases, op_cur);
                   }
                   break;
                 }
                 case SPVM_OP_C_CODE_DEFAULT: {
                   if (op_switch_stack->length > 0) {
-                    SPVM_OP* op_switch = SPVM_DYNAMIC_ARRAY_fetch(op_switch_stack, op_switch_stack->length - 1);
+                    SPVM_OP* op_switch = SPVM_LIST_fetch(op_switch_stack, op_switch_stack->length - 1);
                     SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                     
                     if (switch_info->op_default) {
@@ -1404,6 +1406,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP_replace_op(compiler, op_stab_condition, op_block_loop);
                   SPVM_OP_replace_op(compiler, op_stab_block_loop, op_condition);
                   
+                  op_cur->uv.loop_block_index = loop_block_count;
+                  loop_block_count++;
+                  
                   break;
                 }
                 case SPVM_OP_C_CODE_CONCAT_STRING: {
@@ -1477,7 +1482,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_CODE_BLOCK: {
                   // Pop block my variable base
                   assert(block_my_base_stack->length > 0);
-                  int32_t* block_my_base_ptr = SPVM_DYNAMIC_ARRAY_pop(block_my_base_stack);
+                  int32_t* block_my_base_ptr = SPVM_LIST_pop(block_my_base_stack);
                   int32_t block_my_base = *block_my_base_ptr;
                     
                   int32_t my_stack_pop_count = op_my_stack->length - block_my_base;
@@ -1485,7 +1490,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   {
                     int32_t i;
                     for (i = 0; i < my_stack_pop_count; i++) {
-                      SPVM_DYNAMIC_ARRAY_pop(op_my_stack);
+                      SPVM_LIST_pop(op_my_stack);
                     }
                   }
 
@@ -1510,7 +1515,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   {
                     int32_t i;
                     for (i = op_my_stack->length - 1; i >= 0; i--) {
-                      SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(op_my_stack, i);
+                      SPVM_OP* op_my = SPVM_LIST_fetch(op_my_stack, i);
                       SPVM_MY* my = op_my->uv.my;
                       if (strcmp(var->op_name->uv.name, my->op_name->uv.name) == 0) {
                         found_op_my = op_my;
@@ -1593,7 +1598,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Redeclaration error if same name variable is declare in same block
                   _Bool found = 0;
-                  int32_t* block_my_base_ptr = SPVM_DYNAMIC_ARRAY_fetch(
+                  int32_t* block_my_base_ptr = SPVM_LIST_fetch(
                     block_my_base_stack,
                     block_my_base_stack->length - 1
                   );
@@ -1601,7 +1606,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   {
                     int32_t i;
                     for (i = block_my_base; i < op_my_stack->length; i++) {
-                      SPVM_OP* op_bef_my = SPVM_DYNAMIC_ARRAY_fetch(op_my_stack, i);
+                      SPVM_OP* op_bef_my = SPVM_LIST_fetch(op_my_stack, i);
                       SPVM_MY* bef_my = op_bef_my->uv.my;
                       if (strcmp(my->op_name->uv.name, bef_my->op_name->uv.name) == 0) {
                         found = 1;
@@ -1616,8 +1621,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   else {
                     my->index = op_mys->length;
-                    SPVM_DYNAMIC_ARRAY_push(op_mys, op_cur);
-                    SPVM_DYNAMIC_ARRAY_push(op_my_stack, op_cur);
+                    SPVM_LIST_push(op_mys, op_cur);
+                    SPVM_LIST_push(op_my_stack, op_cur);
                   }
                   
                   // Type inference
@@ -1674,7 +1679,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     _Bool is_invalid = 0;
                     
-                    SPVM_OP* op_sub_arg_my = SPVM_DYNAMIC_ARRAY_fetch(call_sub->sub->op_args, call_sub_args_count - 1);
+                    SPVM_OP* op_sub_arg_my = SPVM_LIST_fetch(call_sub->sub->op_args, call_sub_args_count - 1);
                     
                     SPVM_TYPE* sub_arg_type = SPVM_OP_get_type(compiler, op_sub_arg_my);
                     
@@ -1850,9 +1855,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
         }
-        // SPVM_DUMPER_dump_ast(compiler, op_base);
       }
-
+      
+      // Set subroutine information
+      sub->loop_block_count = loop_block_count;
+      
       if (!sub->is_native) {
         // Run OPs
         SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);

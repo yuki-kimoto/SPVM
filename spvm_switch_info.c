@@ -2,7 +2,7 @@
 
 #include "spvm_compiler_allocator.h"
 #include "spvm_compiler.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 
 SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_COMPILER* compiler) {
   SPVM_SWITCH_INFO* switch_info = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_SWITCH_INFO));

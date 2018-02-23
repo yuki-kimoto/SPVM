@@ -1,5 +1,5 @@
 #include "spvm_use.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_compiler.h"
 

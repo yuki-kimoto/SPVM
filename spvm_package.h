@@ -6,11 +6,11 @@
 struct SPVM_package {
   SPVM_OP* op_name;
   SPVM_OP* op_type;
-  SPVM_DYNAMIC_ARRAY* op_fields;
+  SPVM_LIST* op_fields;
   SPVM_HASH* op_field_symtable;
   SPVM_HASH* op_our_symtable;
   SPVM_OP* op_sub_destructor;
-  SPVM_DYNAMIC_ARRAY* native_subs;
+  SPVM_LIST* native_subs;
   char* load_path;
   int32_t id;
   int32_t byte_size;

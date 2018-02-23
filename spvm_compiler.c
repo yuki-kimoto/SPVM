@@ -9,11 +9,11 @@
 #include "spvm_op.h"
 #include "spvm_memory_pool.h"
 #include "spvm_hash.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_util_allocator.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_yacc_util.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_opcode_array.h"
 #include "spvm_sub.h"
 #include "spvm_constant_pool.h"
@@ -49,7 +49,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       SPVM_HASH_insert(runtime->sub_symtable, sub->abs_name, strlen(sub->abs_name), (void*)(intptr_t)sub->id);
     }
@@ -59,7 +59,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   {
     int32_t type_index;
     for (type_index = 0; type_index < compiler->types->length; type_index++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_index);
+      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_index);
       SPVM_HASH_insert(runtime->type_symtable, type->name, strlen(type->name), (void*)(intptr_t)type->id);
     }
   }
@@ -68,7 +68,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   {
     int32_t package_index;
     for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_packages, package_index);
+      SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
       SPVM_PACKAGE* package = op_package->uv.package;
       const char* package_name = package->op_name->uv.name;
       SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), (void*)(intptr_t)package->id);
@@ -79,16 +79,16 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   {
     int32_t package_index;
     for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_packages, package_index);
+      SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
       SPVM_PACKAGE* package = op_package->uv.package;
       const char* package_name = package->op_name->uv.name;
       
-      SPVM_DYNAMIC_ARRAY* op_fields = package->op_fields;
+      SPVM_LIST* op_fields = package->op_fields;
       SPVM_HASH* field_name_symtable = SPVM_HASH_new(0);
       {
         int32_t op_field_index;
         for (op_field_index = 0; op_field_index < op_fields->length; op_field_index++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(op_fields, op_field_index);
+          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, op_field_index);
           SPVM_FIELD* field = op_field->uv.field;
           const char* field_name = field->op_name->uv.name;
           
@@ -100,7 +100,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
-  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
+  SPVM_LIST* op_packages = compiler->op_packages;
   
   runtime->packages_length = op_packages->length;
   
@@ -164,12 +164,12 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       type->code = type_code;
       if (type_code >= SPVM_TYPE_C_CODE_BYTE_ARRAY && type_code <= SPVM_TYPE_C_CODE_DOUBLE_ARRAY) {
         type->dimension++;
-        type->base_type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_code - SPVM_TYPE_C_ARRAY_SHIFT);
+        type->base_type = SPVM_LIST_fetch(compiler->types, type_code - SPVM_TYPE_C_ARRAY_SHIFT);
       }
       else {
         type->base_type = type;
       }
-      SPVM_DYNAMIC_ARRAY_push(compiler->types, type);
+      SPVM_LIST_push(compiler->types, type);
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
     }
   }
@@ -184,7 +184,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   if (entyr_point_package_name) {
     // Create use op for entry point package
     SPVM_OP* op_use_entry_point = SPVM_OP_new_op_use_from_package_name(compiler, entyr_point_package_name, "main", 1);
-    SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use_entry_point);
+    SPVM_LIST_push(compiler->op_use_stack, op_use_entry_point);
     SPVM_HASH_insert(compiler->op_use_symtable, entyr_point_package_name, strlen(entyr_point_package_name), op_use_entry_point);
     
     // Entry point
@@ -199,12 +199,12 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   // use std module
   SPVM_OP* op_use_std = SPVM_OP_new_op_use_from_package_name(compiler, "CORE", "CORE", 0);
-  SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use_std);
+  SPVM_LIST_push(compiler->op_use_stack, op_use_std);
   SPVM_HASH_insert(compiler->op_use_symtable, "CORE", strlen("CORE"), op_use_std);
   
   // use String module
   SPVM_OP* op_use_string = SPVM_OP_new_op_use_from_package_name(compiler, "String", "CORE", 0);
-  SPVM_DYNAMIC_ARRAY_push(compiler->op_use_stack, op_use_string);
+  SPVM_LIST_push(compiler->op_use_stack, op_use_string);
   SPVM_HASH_insert(compiler->op_use_symtable, "String", strlen("String"), op_use_string);
   
   /* call SPVM_yyparse */

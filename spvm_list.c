@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_util_allocator.h"
 #include "spvm_compiler.h"
 
-SPVM_DYNAMIC_ARRAY* SPVM_DYNAMIC_ARRAY_new(int32_t capacity) {
+SPVM_LIST* SPVM_LIST_new(int32_t capacity) {
   
   assert(capacity >= 0);
   
-  SPVM_DYNAMIC_ARRAY* array = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_DYNAMIC_ARRAY));
+  SPVM_LIST* array = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_LIST));
   array->length = 0;
   
   if (capacity == 0) {
@@ -28,7 +28,7 @@ SPVM_DYNAMIC_ARRAY* SPVM_DYNAMIC_ARRAY_new(int32_t capacity) {
   return array;
 }
 
-void SPVM_DYNAMIC_ARRAY_maybe_extend(SPVM_DYNAMIC_ARRAY* array) {
+void SPVM_LIST_maybe_extend(SPVM_LIST* array) {
   
   assert(array);
   
@@ -48,15 +48,15 @@ void SPVM_DYNAMIC_ARRAY_maybe_extend(SPVM_DYNAMIC_ARRAY* array) {
   }
 }
 
-void SPVM_DYNAMIC_ARRAY_free(SPVM_DYNAMIC_ARRAY* array) {
+void SPVM_LIST_free(SPVM_LIST* array) {
   
   free(array->values);
   free(array);
 }
 
-void SPVM_DYNAMIC_ARRAY_push(SPVM_DYNAMIC_ARRAY* array, void* value) {
+void SPVM_LIST_push(SPVM_LIST* array, void* value) {
   
-  SPVM_DYNAMIC_ARRAY_maybe_extend(array);
+  SPVM_LIST_maybe_extend(array);
   
   int32_t length = array->length;
   
@@ -64,7 +64,7 @@ void SPVM_DYNAMIC_ARRAY_push(SPVM_DYNAMIC_ARRAY* array, void* value) {
   array->length++;
 }
 
-void* SPVM_DYNAMIC_ARRAY_fetch(SPVM_DYNAMIC_ARRAY* array, int32_t index) {
+void* SPVM_LIST_fetch(SPVM_LIST* array, int32_t index) {
   
   assert(array);
   assert(index >= 0);
@@ -73,7 +73,7 @@ void* SPVM_DYNAMIC_ARRAY_fetch(SPVM_DYNAMIC_ARRAY* array, int32_t index) {
   return *(void**)&array->values[index];
 }
 
-void SPVM_DYNAMIC_ARRAY_store(SPVM_DYNAMIC_ARRAY* array, int32_t index, void* value) {
+void SPVM_LIST_store(SPVM_LIST* array, int32_t index, void* value) {
   
   assert(array);
   assert(index >= 0);
@@ -82,7 +82,7 @@ void SPVM_DYNAMIC_ARRAY_store(SPVM_DYNAMIC_ARRAY* array, int32_t index, void* va
   *(void**)&array->values[index] = value;
 }
 
-void* SPVM_DYNAMIC_ARRAY_pop(SPVM_DYNAMIC_ARRAY* array) {
+void* SPVM_LIST_pop(SPVM_LIST* array) {
   
   assert(array->length >= 0);
   

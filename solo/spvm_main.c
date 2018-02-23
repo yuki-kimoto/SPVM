@@ -5,7 +5,7 @@
 
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_util_allocator.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_sub.h"
@@ -45,8 +45,8 @@ int main(int argc, char *argv[])
   
   compiler->entry_point_package_name = package_name;
   
-  SPVM_DYNAMIC_ARRAY_push(compiler->include_pathes, "lib");
-  SPVM_DYNAMIC_ARRAY_push(compiler->include_pathes, "solo");
+  SPVM_LIST_push(compiler->include_pathes, "lib");
+  SPVM_LIST_push(compiler->include_pathes, "solo");
   
   SPVM_COMPILER_compile(compiler);
   
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
   {
     int32_t i;
     for (i = 0; i < compiler->native_subs->length; i++) {
-      SPVM_SUB* native_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->native_subs, i);
+      SPVM_SUB* native_sub = SPVM_LIST_fetch(compiler->native_subs, i);
       
       // Sub abs name
       const char* sub_abs_name = native_sub->abs_name;

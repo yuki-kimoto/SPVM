@@ -16,7 +16,7 @@
 #include "spvm_util_allocator.h"
 #include "spvm_constant.h"
 #include "spvm_var.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_descriptor.h"
 #include "spvm_type.h"
@@ -62,12 +62,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->befbufptr = NULL;
         
         // If there are more module, load it
-        SPVM_DYNAMIC_ARRAY* op_use_stack = compiler->op_use_stack;
+        SPVM_LIST* op_use_stack = compiler->op_use_stack;
         
         while (1) {
           SPVM_OP* op_use = NULL;
           if (op_use_stack->length > 0) {
-            op_use = SPVM_DYNAMIC_ARRAY_pop(op_use_stack);
+            op_use = SPVM_LIST_pop(op_use_stack);
           }
           
           if (op_use) {
@@ -110,7 +110,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               {
                 int32_t i;
                 for (i = 0; i < include_pathes_length; i++) {
-                  const char* include_path = (const char*) SPVM_DYNAMIC_ARRAY_fetch(compiler->include_pathes, i);
+                  const char* include_path = (const char*) SPVM_LIST_fetch(compiler->include_pathes, i);
                   
                   // File name
                   int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(module_path_base));
@@ -133,7 +133,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   {
                     int32_t i;
                     for (i = 0; i < include_pathes_length; i++) {
-                      const char* include_path = (const char*) SPVM_DYNAMIC_ARRAY_fetch(compiler->include_pathes, i);
+                      const char* include_path = (const char*) SPVM_LIST_fetch(compiler->include_pathes, i);
                       fprintf(stderr, " %s", include_path);
                     }
                   }
@@ -1130,7 +1130,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           const char* found_template_var = strstr(keyword, "type");
           if (found_template_var) {
             if (isdigit(found_template_var[4])) {
-              SPVM_DYNAMIC_ARRAY* part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+              SPVM_LIST* part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
               
               char* base_ptr = keyword;
               char* cur_ptr = keyword;
@@ -1141,7 +1141,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   char* part_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
                   memcpy(part_name, base_ptr, length);
                   part_name[length] = '\0';
-                  SPVM_DYNAMIC_ARRAY_push(part_names, part_name);
+                  SPVM_LIST_push(part_names, part_name);
                   if (*cur_ptr == '\0') {
                     break;
                   }
@@ -1153,12 +1153,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
               
-              SPVM_DYNAMIC_ARRAY* replaced_part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+              SPVM_LIST* replaced_part_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
               int32_t replaced_part_names_length = 0;
               {
                 int32_t i;
                 for (i = 0; i < part_names->length; i++) {
-                  char* part_name = SPVM_DYNAMIC_ARRAY_fetch(part_names, i);
+                  char* part_name = SPVM_LIST_fetch(part_names, i);
                   if (strncmp(part_name, "type", 4) == 0 && isdigit(part_name[4])) {
                     int32_t template_args_index;
                     errno = 0;
@@ -1173,12 +1173,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       exit(EXIT_FAILURE);
                     }
                     
-                    char* replaced_part_name = SPVM_DYNAMIC_ARRAY_fetch(compiler->cur_template_args, template_args_index - 1);
-                    SPVM_DYNAMIC_ARRAY_push(replaced_part_names, replaced_part_name);
+                    char* replaced_part_name = SPVM_LIST_fetch(compiler->cur_template_args, template_args_index - 1);
+                    SPVM_LIST_push(replaced_part_names, replaced_part_name);
                     replaced_part_names_length += strlen(replaced_part_name);
                   }
                   else {
-                    SPVM_DYNAMIC_ARRAY_push(replaced_part_names, part_name);
+                    SPVM_LIST_push(replaced_part_names, part_name);
                     replaced_part_names_length += strlen(part_name);
                   }
                   // _
@@ -1193,7 +1193,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 int32_t i;
                 char* base_ptr = replaced_keyword;
                 for (i = 0; i < replaced_part_names->length; i++) {
-                  const char* replaced_part_name = SPVM_DYNAMIC_ARRAY_fetch(replaced_part_names, i);
+                  const char* replaced_part_name = SPVM_LIST_fetch(replaced_part_names, i);
                   memcpy(base_ptr, replaced_part_name, strlen(replaced_part_name));
                   base_ptr += strlen(replaced_part_name);
                   if (i != replaced_part_names->length - 1) {

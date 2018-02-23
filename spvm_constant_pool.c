@@ -9,7 +9,7 @@
 #include "spvm_field.h"
 #include "spvm_sub.h"
 #include "spvm_util_allocator.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_op.h"
 #include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
@@ -171,7 +171,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
     int32_t field_pos;
     constant_pool_package.fields_base = constant_pool->length;
     for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
+      SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_pos);
       SPVM_FIELD* field = op_field->uv.field;
       SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->id);
     }
@@ -183,7 +183,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
     constant_pool_package.object_field_byte_offsets_base = constant_pool->length;
     int32_t object_field_byte_offsets_length = 0;
     for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_pos);
+      SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_pos);
       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
       
       if (SPVM_TYPE_is_object(compiler, field_type)) {
@@ -237,7 +237,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   {
     int32_t i;
     for (i = 0; i < sub->op_args->length; i++) {
-      SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
+      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
       SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, arg_type->code);
     }
@@ -248,7 +248,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   {
     int32_t i;
     for (i = 0; i < sub->op_mys->length; i++) {
-      SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, i);
+      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, i);
       SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, op_my);
       SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, my_type->id);
     }
@@ -259,7 +259,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   {
     int32_t i;
     for (i = 0; i < sub->op_args->length; i++) {
-      SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
+      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
       SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, arg_type->id);
     }
@@ -271,7 +271,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   {
     int32_t i;
     for (i = 0; i < sub->op_args->length; i++) {
-      SPVM_OP* op_arg = SPVM_DYNAMIC_ARRAY_fetch(sub->op_args, i);
+      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
       assert(arg_type);
       if (SPVM_TYPE_is_object(compiler, arg_type)) {
@@ -288,7 +288,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   {
     int32_t i;
     for (i = 0; i < sub->op_mys->length; i++) {
-      SPVM_OP* op_my = SPVM_DYNAMIC_ARRAY_fetch(sub->op_mys, i);
+      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, i);
       SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, op_my);
       assert(my_type);
       if (SPVM_TYPE_is_object(compiler, my_type)) {

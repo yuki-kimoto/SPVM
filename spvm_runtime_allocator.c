@@ -9,7 +9,7 @@
 #include "spvm_runtime_api.h"
 #include "spvm_util_allocator.h"
 #include "spvm_memory_pool.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_runtime.h"
 #include "spvm_constant_pool.h"
 #include "spvm_constant_pool_package.h"
@@ -29,14 +29,14 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   allocator->memory_pool = SPVM_MEMORY_POOL_new(allocator->object_max_byte_size_use_memory_pool);
   
   // Free lists
-  int64_t allocator_freelists_byte_size = (int64_t)16 * (int64_t)sizeof(SPVM_DYNAMIC_ARRAY);
+  int64_t allocator_freelists_byte_size = (int64_t)16 * (int64_t)sizeof(SPVM_LIST);
   allocator->freelists = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(allocator_freelists_byte_size);
   
   // Initialize free list
   {
     int32_t i;
     for (i = 0; i < 16; i++) {
-      allocator->freelists[i] = SPVM_DYNAMIC_ARRAY_new(0);
+      allocator->freelists[i] = SPVM_LIST_new(0);
     }
   }
   
@@ -92,7 +92,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* 
     block = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(alloc_byte_size);
   }
   else {
-    void* free_address = SPVM_DYNAMIC_ARRAY_pop(allocator->freelists[index]);
+    void* free_address = SPVM_LIST_pop(allocator->freelists[index]);
     if (free_address) {
       block = free_address;
     }
@@ -156,7 +156,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
       int32_t freelist_index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(api, allocator, byte_size);
       
       // Push free address
-      SPVM_DYNAMIC_ARRAY_push(allocator->freelists[freelist_index], object);
+      SPVM_LIST_push(allocator->freelists[freelist_index], object);
     }
   }
 }

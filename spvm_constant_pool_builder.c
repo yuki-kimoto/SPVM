@@ -7,7 +7,7 @@
 #include "spvm_constant_pool_type.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_sub.h"
-#include "spvm_dynamic_array.h"
+#include "spvm_list.h"
 #include "spvm_compiler.h"
 #include "spvm_constant.h"
 #include "spvm_op.h"
@@ -18,13 +18,13 @@
 #include "spvm_hash.h"
 
 void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
-  SPVM_DYNAMIC_ARRAY* op_packages = compiler->op_packages;
+  SPVM_LIST* op_packages = compiler->op_packages;
   
   // Push constant to constant pool
   {
     int32_t i;
     for (i = 0; i < compiler->op_constants->length; i++) {
-      SPVM_OP* op_constant = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_constants, i);
+      SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, i);
       
       // Constant
       SPVM_CONSTANT* constant = op_constant->uv.constant;
@@ -87,7 +87,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   {
     int32_t i;
     for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
+      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
       type->id = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
     }
   }
@@ -96,7 +96,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   {
     int32_t i;
     for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
+      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
       
       char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
       SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
@@ -124,7 +124,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   {
     int32_t i;
     for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
+      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
       int32_t type_id = type->id;
       int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, type_id);
       if (compiler->types_base == 0) {
@@ -137,7 +137,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   {
     int32_t type_code;
     for (type_code = 0; type_code < SPVM_TYPE_C_CORE_LENGTH; type_code++) {
-      SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, type_code);
+      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_code);
       int32_t type_id = type->id;
       
       int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, type_id);
@@ -151,14 +151,14 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   {
     int32_t package_index;
     for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
+      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_index);
       SPVM_PACKAGE* package = op_package->uv.package;
       
       // Push field information to constant pool
       {
         int32_t field_index;
         for (field_index = 0; field_index < package->op_fields->length; field_index++) {
-          SPVM_OP* op_field = SPVM_DYNAMIC_ARRAY_fetch(package->op_fields, field_index);
+          SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
           SPVM_FIELD* field = op_field->uv.field;
           
           // Add field to constant pool
@@ -173,7 +173,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   {
     int32_t package_index;
     for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
+      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_index);
       int32_t package_id = op_package->uv.package->id;
       
       int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_id);
@@ -188,7 +188,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
     {
       int32_t i;
       for (i = 0; i < compiler->types->length; i++) {
-        SPVM_TYPE* type = SPVM_DYNAMIC_ARRAY_fetch(compiler->types, i);
+        SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
         if (type->op_package) {
           SPVM_PACKAGE* package = type->op_package->uv.package;
           int32_t type_id = type->id;
@@ -203,7 +203,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       sub->id = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
       SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&compiler->constant_pool->values[sub->id];
@@ -216,7 +216,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
     int32_t sub_index;
     for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
       
-      SPVM_OP* op_sub = SPVM_DYNAMIC_ARRAY_fetch(compiler->op_subs, sub_index);
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       int32_t sub_id = sub->id;
       int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_id);
@@ -230,7 +230,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   {
     int32_t package_index;
     for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_DYNAMIC_ARRAY_fetch(op_packages, package_index);
+      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_index);
       SPVM_PACKAGE* package = op_package->uv.package;
       
       int32_t package_id = package->id;

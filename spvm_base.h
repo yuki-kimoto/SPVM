@@ -176,13 +176,13 @@ typedef struct SPVM_descriptor SPVM_DESCRIPTOR;
 struct SPVM_sub;
 typedef struct SPVM_sub SPVM_SUB;
 
-// spvm_dynamic_array_element.h
+// spvm_list_element.h
 struct SPVM_array_element;
-typedef struct SPVM_array_element SPVM_DYNAMIC_ARRAY_ELEMENT;
+typedef struct SPVM_array_element SPVM_LIST_ELEMENT;
 
-// spvm_dynamic_array.h
-struct SPVM_dynamic_array;
-typedef struct SPVM_dynamic_array SPVM_DYNAMIC_ARRAY;
+// spvm_list.h
+struct SPVM_list;
+typedef struct SPVM_list SPVM_LIST;
 
 // spvm_hash_entry.h
 struct SPVM_hash_entry;
