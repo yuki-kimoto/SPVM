@@ -5468,9 +5468,53 @@ package TestCase {
         $success_while = 1;
       }
     }
+    
+    # Check also object count
+    my $success_last_object = 0;
+    {
+      my $total = 0;
+      for (my $i = 0; $i < 10; $i++) {
+        my $minimal = TestCase::Minimal::new();
+        if ($i == 5) {
+          last;
+        }
+        $total = $total + $i;
+      }
+      
+      if ($total == 10) {
+        $success_last_object = 1;
+      }
+    }
 
-    if ($success_basic && $success_last && $success_next && $success_while) {
-      return 1;
+    # Check also object count
+    my $success_next_object = 0;
+    {
+      my $total = 0;
+      for (my $i = 0; $i < 10; $i++) {
+        my $minimal = TestCase::Minimal::new();
+        if ($i == 5) {
+          next;
+        }
+        $total = $total + $i;
+      }
+      
+      if ($total == 40) {
+        $success_next_object = 1;
+      }
+    }
+    
+    if ($success_basic) {
+      if ($success_last) {
+        if ($success_next) {
+          if ($success_while) {
+            if ($success_last_object) {
+              if ($success_next_object) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
     }
     
     return 0;

@@ -38,6 +38,7 @@ my $DOUBLE_PRECICE = 65536.5;
 
 # TODO
 # remainder float double
+# duplicate loop
 # eval repeat
 # print
 
