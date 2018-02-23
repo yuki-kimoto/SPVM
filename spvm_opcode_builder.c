@@ -108,7 +108,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_SUB* sub = op_sub->uv.sub;
       
       SPVM_LIST* auto_dec_ref_count_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      SPVM_LIST* auto_dec_ref_count_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_LIST* auto_dec_ref_count_block_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_LIST* auto_dec_ref_count_last_meaning_block_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // Check sub information
       assert(sub->id > -1);
@@ -156,7 +157,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       
       while (op_cur) {
         // [START]Preorder traversal position
-        
         switch (op_cur->code) {
           case SPVM_OP_C_CODE_BLOCK: {
             if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
@@ -178,9 +178,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               SPVM_LIST_push(push_eval_opcode_index_stack, opcode_index_ptr);
             }
             
-            int32_t* auto_dec_ref_count_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-            *auto_dec_ref_count_base_ptr = auto_dec_ref_count_stack->length;
-            SPVM_LIST_push(auto_dec_ref_count_base_stack, auto_dec_ref_count_base_ptr);
+            int32_t* auto_dec_ref_count_block_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+            *auto_dec_ref_count_block_base_ptr = auto_dec_ref_count_stack->length;
+            SPVM_LIST_push(auto_dec_ref_count_block_base_stack, auto_dec_ref_count_block_base_ptr);
+            
+            if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP || op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+              int32_t* auto_dec_ref_count_block_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+              *auto_dec_ref_count_block_base_ptr = auto_dec_ref_count_stack->length;
+              SPVM_LIST_push(auto_dec_ref_count_last_meaning_block_base_stack, auto_dec_ref_count_block_base_ptr);
+            }
           }
         }
         
@@ -1991,10 +1997,22 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_LAST: {
+                // LEAVE_SCOPE
+                int32_t* auto_dec_ref_count_last_meaning_block_base_ptr
+                  = SPVM_LIST_fetch(auto_dec_ref_count_last_meaning_block_base_stack, auto_dec_ref_count_last_meaning_block_base_stack->length - 1);
+                int32_t auto_dec_ref_count_last_meaning_block_base = *auto_dec_ref_count_last_meaning_block_base_ptr;
+                
+                if (auto_dec_ref_count_last_meaning_block_base < auto_dec_ref_count_stack->length) {
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  opcode.code = SPVM_OPCODE_C_CODE_LEAVE_SCOPE;
+                  opcode.operand0 = auto_dec_ref_count_last_meaning_block_base;
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                }
+                
+                // GOTO out of loop block
                 SPVM_OPCODE opcode;
                 memset(&opcode, 0, sizeof(SPVM_OPCODE));
-
-                // Add goto
                 opcode.code = SPVM_OPCODE_C_CODE_GOTO;
                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 
@@ -2006,10 +2024,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_CODE_NEXT: {
+                // GOTO increment statement
                 SPVM_OPCODE opcode;
                 memset(&opcode, 0, sizeof(SPVM_OPCODE));
-
-                // Add goto
                 opcode.code = SPVM_OPCODE_C_CODE_GOTO;
                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 
@@ -2095,20 +2112,24 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 }
                 
                 // Leave scope
-                int32_t* auto_dec_ref_count_base_ptr = SPVM_LIST_pop(auto_dec_ref_count_base_stack);
-                int32_t auto_dec_ref_count_base = *auto_dec_ref_count_base_ptr;
+                int32_t* auto_dec_ref_count_block_base_ptr = SPVM_LIST_pop(auto_dec_ref_count_block_base_stack);
+                int32_t auto_dec_ref_count_block_base = *auto_dec_ref_count_block_base_ptr;
                 
-                if (auto_dec_ref_count_base < auto_dec_ref_count_stack->length) {
-                  while (auto_dec_ref_count_stack->length > auto_dec_ref_count_base) {
+                if (auto_dec_ref_count_block_base < auto_dec_ref_count_stack->length) {
+                  while (auto_dec_ref_count_stack->length > auto_dec_ref_count_block_base) {
                     SPVM_LIST_pop(auto_dec_ref_count_stack);
                   }
                   
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.code = SPVM_OPCODE_C_CODE_LEAVE_SCOPE;
-                  opcode.operand0 = auto_dec_ref_count_base;
+                  opcode.operand0 = auto_dec_ref_count_block_base;
                   
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                }
+
+                if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP || op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+                  SPVM_LIST_pop(auto_dec_ref_count_last_meaning_block_base_stack);
                 }
                 
                 break;
