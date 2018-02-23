@@ -5455,7 +5455,21 @@ package TestCase {
       }
     }
 
-    if ($success_basic && $success_last && $success_next) {
+    my $success_while = 0;
+    {
+      my $total = 0;
+      my $i = 0;
+      while ($i <= 3) {
+        $total = $total + $i;
+        $i++;
+      }
+      
+      if ($total == 6) {
+        $success_while = 1;
+      }
+    }
+
+    if ($success_basic && $success_last && $success_next && $success_while) {
       return 1;
     }
     
