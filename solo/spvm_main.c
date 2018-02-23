@@ -21,7 +21,7 @@
 #include "spvm_jitcode_builder.h"
 #include "spvm_constant_pool_builder.h"
 
-#include "native/SPVM/CORE.native/CORE.c"
+#include "lib_native/SPVM/CORE.native/CORE.c"
 
 #include <spvm_api.h>
 
