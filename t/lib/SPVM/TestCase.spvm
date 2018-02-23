@@ -5425,7 +5425,37 @@ package TestCase {
       }
     }
     
-    if ($success_basic) {
+    my $success_last = 0;
+    {
+      my $total = 0;
+      for (my $i = 0; $i < 10; $i++) {
+        if ($i == 5) {
+          last;
+        }
+        $total = $total + $i;
+      }
+      
+      if ($total == 10) {
+        $success_last = 1;
+      }
+    }
+
+    my $success_next = 0;
+    {
+      my $total = 0;
+      for (my $i = 0; $i < 10; $i++) {
+        if ($i == 5) {
+          next;
+        }
+        $total = $total + $i;
+      }
+      
+      if ($total == 40) {
+        $success_next = 1;
+      }
+    }
+
+    if ($success_basic && $success_last && $success_next) {
       return 1;
     }
     
