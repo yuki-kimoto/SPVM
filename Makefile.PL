@@ -40,7 +40,7 @@ WriteMakefile(
 
 # Build shared library
 sub MY::postamble {
-  my $postamble = SPVM::Build::create_postamble(
+  my $postamble = SPVM::Build::create_build_shared_lib_make_rule(
     module_names => [qw(
       SPVM::CORE
       SPVM::Math

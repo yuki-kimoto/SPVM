@@ -11,7 +11,7 @@ use File::Basename 'dirname', 'basename';
 
 my $compiled = {};
 
-sub create_postamble {
+sub create_build_shared_lib_make_rule {
   my %opt = @_;
   
   my $module_names = $opt{module_names};
@@ -211,7 +211,7 @@ sub build_shared_lib {
   unless (@$native_func_names) {
     push @$native_func_names, '';
   }
-
+  
   my $lib_file = $cbuilder->link(
     objects => $object_files,
     module_name => $module_name,
