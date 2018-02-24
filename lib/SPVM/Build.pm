@@ -41,7 +41,7 @@ sub create_postamble {
     
     my $src_dir = $module_name;
     $src_dir =~ s/::/\//g;
-    $src_dir = "native/$src_dir.native";
+    $src_dir = "lib_native/$src_dir.native";
     
     # Dependency
     my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
@@ -49,7 +49,7 @@ sub create_postamble {
     # Shared library file
     my $shared_lib_file = $module_name;
     $shared_lib_file =~ s/::/\//g;
-    $shared_lib_file = "blib/arch/auto/$shared_lib_file.native/$module_base_name.$dlext";
+    $shared_lib_file = "blib/lib/$shared_lib_file.native/$module_base_name.$dlext";
     
     # Get native source files
     $postamble
