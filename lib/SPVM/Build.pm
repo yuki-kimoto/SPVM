@@ -12,55 +12,48 @@ use File::Basename 'dirname', 'basename';
 my $compiled = {};
 
 sub create_build_shared_lib_make_rule {
-  my %opt = @_;
+  my $module_name = shift;
   
-  my $module_names = $opt{module_names};
-  
-  my $postamble;
+  my $make_rule;
   
   # dynamic section
-  $postamble
-    = "dynamic :: ";
-  for my $module_name (@$module_names) {
-    my $module_name_under_score = $module_name;
-    $module_name_under_score =~ s/:/_/g;
-    
-    $postamble
-      .= "shared_lib_$module_name_under_score ";
-  }
-  $postamble .= "\n\n";
+  $make_rule
+  = "dynamic :: ";
+
+  my $module_name_under_score = $module_name;
+  $module_name_under_score =~ s/:/_/g;
+  
+  $make_rule
+    .= "shared_lib_$module_name_under_score ";
+  $make_rule .= "\n\n";
   
   # shared_lib sections
   my $dlext = $Config{dlext};
-  for my $module_name (@$module_names) {
-    my $module_name_under_score = $module_name;
-    $module_name_under_score =~ s/:/_/g;
-    
-    my $module_base_name = $module_name;
-    $module_base_name =~ s/^.+:://;
-    
-    my $src_dir = $module_name;
-    $src_dir =~ s/::/\//g;
-    $src_dir = "lib_native/$src_dir.native";
-    
-    # Dependency
-    my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
-    
-    # Shared library file
-    my $shared_lib_file = $module_name;
-    $shared_lib_file =~ s/::/\//g;
-    $shared_lib_file = "blib/lib/$shared_lib_file.native/$module_base_name.$dlext";
-    
-    # Get native source files
-    $postamble
-      .= "shared_lib_$module_name_under_score :: $shared_lib_file\n\n";
-    $postamble
-      .= "$shared_lib_file :: @deps\n\n";
-    $postamble
-      .= "\tperl build_shared_lib.pl --object_dir=. $module_name\n\n";
-  }
   
-  return $postamble;
+  my $module_base_name = $module_name;
+  $module_base_name =~ s/^.+:://;
+  
+  my $src_dir = $module_name;
+  $src_dir =~ s/::/\//g;
+  $src_dir = "lib_native/$src_dir.native";
+  
+  # Dependency
+  my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
+  
+  # Shared library file
+  my $shared_lib_file = $module_name;
+  $shared_lib_file =~ s/::/\//g;
+  $shared_lib_file = "blib/lib/$shared_lib_file.native/$module_base_name.$dlext";
+  
+  # Get native source files
+  $make_rule
+    .= "shared_lib_$module_name_under_score :: $shared_lib_file\n\n";
+  $make_rule
+    .= "$shared_lib_file :: @deps\n\n";
+  $make_rule
+    .= "\tperl build_shared_lib.pl --object_dir=. $module_name\n\n";
+  
+  return $make_rule;
 }
 
 sub build_shared_lib {
