@@ -1,7 +1,7 @@
 use TestCase::Inline;
 
 package TestCase::Inline {
-  sub sum : native int ($num1 : int, $num2 : int);
+  native sub sum : int ($num1 : int, $num2 : int);
 }
 
 __NATIVE__

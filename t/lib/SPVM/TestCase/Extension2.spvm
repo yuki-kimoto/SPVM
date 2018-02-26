@@ -1,5 +1,5 @@
 package TestCase::Extension2 {
-  sub mul : native int ($num1 : int, $num2 : int);
+  native sub mul : int ($num1 : int, $num2 : int);
 
-  sub one : native int ();
+  native sub one : int ();
 }

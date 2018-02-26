@@ -9,18 +9,18 @@ package Float {
     MIN_EXPONENT = -126,
   }
   
-  sub POSITIVE_INFINITY : native float ();
-  sub NEGATIVE_INFINITY : native float ();
-  sub NaN : native float ();
+  native sub POSITIVE_INFINITY : float ();
+  native sub NEGATIVE_INFINITY : float ();
+  native sub NaN : float ();
   
-  sub MAX_VALUE : native float ();
-  sub MIN_NORMAL : native float();
-  sub MIN_VALUE : native float();
+  native sub MAX_VALUE : float ();
+  native sub MIN_NORMAL : float();
+  native sub MIN_VALUE : float();
   
-  sub is_infinite : native int($x : float);
-  sub is_finite : native int($x : float);
-  sub is_nan : native int ($x : float);
-  sub float_to_int_bits : native int ($x : float);
-  sub float_to_raw_int_bits : native int ($x : float);
-  sub int_bits_to_float : native float ($x : int);
+  native sub is_infinite : int($x : float);
+  native sub is_finite : int($x : float);
+  native sub is_nan : int ($x : float);
+  native sub float_to_int_bits : int ($x : float);
+  native sub float_to_raw_int_bits : int ($x : float);
+  native sub int_bits_to_float : float ($x : int);
 }

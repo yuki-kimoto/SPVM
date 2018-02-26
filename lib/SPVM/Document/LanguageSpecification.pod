@@ -72,7 +72,7 @@ Package Definition must be just under file itself.
   }
   
   # Illegal
-  sub foo() : int {
+  sub foo : int () {
     package PackageName {
       
     }
@@ -110,7 +110,7 @@ Field Definition must be just under Package Definition.
 
   # Illeagal
   has field_name : type_name;
-  sub foo() : int {
+  sub foo : int () {
     has field_name : type_name
   }
 
@@ -124,8 +124,8 @@ B<Set Accessor Definition:>
 
 This is same as the following Subroutine Definition if x and y is int field of Point package.
 
-  sub set_x($self : Point, $value : int) : void { $self->{x} = $value }
-  sub set_y($self : Point, $value : int) : void { $self->{y} = $value }
+  sub set_x : void ($self : Point, $value : int) { $self->{x} = $value }
+  sub set_y : void ($self : Point, $value : int) { $self->{y} = $value }
   
 If field is not exsit or same name subroutine is defined, Accessor Definition is compile error.
 
@@ -135,8 +135,8 @@ B<Get Accessor Definition:>
 
 This is same as the following Subroutine Definition if x and y is int field of Point package.
 
-  sub get_x($self : Point) : int { return $self->{x} }
-  sub get_y($self : Point) : int { return $self->{y} }
+  sub get_x : int ($self : Point) { return $self->{x} }
+  sub get_y : int ($self : Point) { return $self->{y} }
 
 If field is not exsit or same name subroutine is defined, Accessor Definition is compile error.
 
@@ -144,7 +144,7 @@ If field is not exsit or same name subroutine is defined, Accessor Definition is
 
 Subroutine Definition is the following.
 
-  sub sub_name(arg_name : type_name, ...) : descripter_name return_type_name {
+  descripter_names sub sub_name : type_name (arg_name : type_name, ...) {
     
   }
 
@@ -184,13 +184,13 @@ Subroutine Definition must be just under Package Definition.
 
   # Legal
   package PackageName {
-    sub foo($values : int[]) : int {
+    sub foo : int ($values : int[]) {
     
     }
   }
   
   # Illeagal
-  sub foo() : double {
+  sub foo : double () {
     sub var() : void {
       
     }
@@ -698,7 +698,7 @@ Destructor.
   
   package Foo {
   
-    sub DESTROY($self : Foo) : void {
+    sub DESTROY : void ($self : Foo) {
       
     }
   }
@@ -743,7 +743,7 @@ Foo package;
     
     set bar;
     
-    sub wekan_bar() : void {
+    sub wekan_bar : void () {
       weaken $foo->{bar};
     }
   }
@@ -752,7 +752,7 @@ Foo package;
 =head2 Extension native function
 
   package TestCase::Extension {
-    sub sum($num1 : int, $num2 : int) : native int;
+    native sub sum : int ($num1 : int, $num2 : int);
   }
 
 =head2 Operators

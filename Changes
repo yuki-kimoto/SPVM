@@ -1,5 +1,8 @@
 0.0313 2018-02-24
   - fix shared lib dependency bug
+  - sub descripter position is changed
+    before: sub sin : native double ($x : double);
+    after : native sub sin : double ($x : double);
 0.0312 2018-02-23
   - fix bug that last statement can't do leave scope logic
 0.0311 2018-02-21

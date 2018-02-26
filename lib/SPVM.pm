@@ -641,7 +641,7 @@ SPVM Module:
   package MyMathNative {
     
     # Sub Declaration
-    sub sum : native int ($nums : int[]);
+    native sub sum int ($nums : int[]);
   }
 
 C Source File;

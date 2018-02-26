@@ -5,30 +5,30 @@ package Math {
   sub PI : double () { return 3.141592653589793; }
   sub E : double () { return 2.718281828459045; }
   
-  sub sin : native double ($x : double);
-  sub cos : native double ($x : double);
-  sub tan : native double ($x : double);
-  sub asin : native double($x : double);
-  sub acos : native double ($x : double);
-  sub atan : native double ($x : double);
-  sub to_radians : native double ($x : double);
-  sub to_degrees : native double ($x : double);
-  sub exp : native double ($x : double);
-  sub log : native double ($x : double);
-  sub log10 : native double ($x : double);
-  sub sqrt : native double ($x : double);
-  sub cbrt : native double ($x : double);
-  sub IEEE_remainder : native double ($x1 : double, $x2 : double);
-  sub ceil : native double ($x : double);
-  sub floor : native double ($x : double);
-  sub rint : native double ($x : double);
-  sub atan2 : native double ($y : double, $x : double);
-  sub pow : native double ($x : double, $y : double);
-  sub round : native double ($x : double);
-  sub abs : native int ($x : int);
-  sub abs_long : native long ($x : long);
-  sub abs_float : native float ($x : float);
-  sub abs_double : native double ($x : double);
+  native sub sin : double ($x : double);
+  native sub cos : double ($x : double);
+  native sub tan : double ($x : double);
+  native sub asin : double($x : double);
+  native sub acos : double ($x : double);
+  native sub atan : double ($x : double);
+  native sub to_radians : double ($x : double);
+  native sub to_degrees : double ($x : double);
+  native sub exp : double ($x : double);
+  native sub log : double ($x : double);
+  native sub log10 : double ($x : double);
+  native sub sqrt : double ($x : double);
+  native sub cbrt : double ($x : double);
+  native sub IEEE_remainder : double ($x1 : double, $x2 : double);
+  native sub ceil : double ($x : double);
+  native sub floor : double ($x : double);
+  native sub rint : double ($x : double);
+  native sub atan2 : double ($y : double, $x : double);
+  native sub pow : double ($x : double, $y : double);
+  native sub round : double ($x : double);
+  native sub abs : int ($x : int);
+  native sub abs_long : long ($x : long);
+  native sub abs_float : float ($x : float);
+  native sub abs_double : double ($x : double);
   
   sub max : int ($x : int, $y : int) {
     if ($x > $y) {
@@ -131,14 +131,14 @@ package Math {
       return 0.0f;
     }
   }
-  sub sinh : native double ($x : double);
-  sub cosh : native double ($x : double);
-  sub tanh : native double ($x : double);
-  sub hypot : native double ($x : double, $y : double);
-  sub expm1 : native double ($x : double);
-  sub log1p : native double ($x : double);
-  sub copy_sign : native double ($magnitude : double, $sign : double);
-  sub copy_sign_float : native float ($magnitude : float, $sign : float);
+  native sub sinh : double ($x : double);
+  native sub cosh : double ($x : double);
+  native sub tanh : double ($x : double);
+  native sub hypot : double ($x : double, $y : double);
+  native sub expm1 : double ($x : double);
+  native sub log1p : double ($x : double);
+  native sub copy_sign : double ($magnitude : double, $sign : double);
+  native sub copy_sign_float : float ($magnitude : float, $sign : float);
   
   # TODO
   # ulp

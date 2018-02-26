@@ -342,13 +342,13 @@ field
     }
 
 sub
- : SUB sub_name ':' opt_descriptors type_or_void '(' opt_args ')' block
+ : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $1, $2, $7, $4, $5, $9);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $7, $1, $5, $9);
      }
- | SUB sub_name ':' opt_descriptors type_or_void '(' opt_args ')' ';'
+ | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_sub(compiler, $1, $2, $7, $4, $5, NULL);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $7, $1, $5, NULL);
      }
 
 setters
