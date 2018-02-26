@@ -103,7 +103,7 @@ sub create_build_shared_lib_make_rule {
   $make_rule
     .= "$shared_lib_bilb_file :: @deps\n\n";
   $make_rule
-    .= "\tperl build_shared_lib.pl --object_dir=. $module_name\n\n";
+    .= "\tperl -Ilib -MSPVM::Build -e \"SPVM::Build->new->build_shared_lib_blib('$module_name')\"\n\n";
   
   return $make_rule;
 }
