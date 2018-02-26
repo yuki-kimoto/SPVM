@@ -13,6 +13,21 @@ use File::Basename 'dirname', 'basename';
 
 my $compiled = {};
 
+sub convert_module_name_to_shared_lib_rel_path {
+  my $module_name = shift;
+  
+  my $dlext = $Config{dlext};
+  
+  my $module_base_name = $module_name;
+  $module_base_name =~ s/^.+:://;
+  
+  my $shared_lib_rel_path = $module_name;
+  $shared_lib_rel_path =~ s/::/\//g;
+  $shared_lib_rel_path = "$shared_lib_rel_path.native/$module_base_name.$dlext";
+  
+  return $shared_lib_rel_path;
+}
+
 sub create_build_shared_lib_make_rule {
   my $module_name = shift;
   
@@ -29,9 +44,6 @@ sub create_build_shared_lib_make_rule {
     .= "shared_lib_$module_name_under_score ";
   $make_rule .= "\n\n";
   
-  # shared_lib sections
-  my $dlext = $Config{dlext};
-  
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
@@ -43,9 +55,8 @@ sub create_build_shared_lib_make_rule {
   my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
   
   # Shared library file
-  my $shared_lib_file = $module_name;
-  $shared_lib_file =~ s/::/\//g;
-  $shared_lib_file = "blib/lib/$shared_lib_file.native/$module_base_name.$dlext";
+  my $shared_lib_rel_path = convert_module_name_to_shared_lib_rel_path($module_name);
+  my $shared_lib_file = "blib/lib/$shared_lib_rel_path";
   
   # Get native source files
   $make_rule
@@ -73,7 +84,7 @@ sub move_shared_lib_to_blib {
   $module_base_name =~ s/^.+:://;
   my $dlext = $Config{dlext};
   my $blib_shared_lib_file = "$shared_lib_dir/${module_base_name}.$dlext";
-
+  
   # Move shared library file to blib directory
   move($shared_lib_file, $blib_shared_lib_file)
     or die "Can't move $shared_lib_file to $blib_shared_lib_file";
@@ -218,7 +229,6 @@ sub build_shared_lib {
     push @$object_files, $object_file;
   }
   
-  
   my $dlext = $Config{dlext};
   my $native_func_names = SPVM::Build::get_native_func_names($module_dir, $module_name);
 
@@ -228,16 +238,16 @@ sub build_shared_lib {
     push @$native_func_names, '';
   }
   
-  my $lib_file = $cbuilder->link(
+  my $shared_lib_file = $cbuilder->link(
     objects => $object_files,
     module_name => $module_name,
     dl_func_list => $native_func_names,
     extra_linker_flags => ''
   );
   
-  $compiled->{$module_name} = $lib_file;
+  $compiled->{$module_name} = $shared_lib_file;
   
-  return $lib_file;
+  return $shared_lib_file;
 }
 
 sub get_native_func_names {
