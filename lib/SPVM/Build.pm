@@ -28,6 +28,16 @@ sub convert_module_name_to_shared_lib_rel_path {
   return $shared_lib_rel_path;
 }
 
+sub convert_module_name_to_shared_lib_blib_path {
+  my $module_name = shift;
+
+  # Shared library file
+  my $shared_lib_rel_path = convert_module_name_to_shared_lib_rel_path($module_name);
+  my $shared_lib_blib_path = "blib/lib/$shared_lib_rel_path";
+
+  return $shared_lib_blib_path;
+}
+
 sub create_build_shared_lib_make_rule {
   my $module_name = shift;
   
@@ -55,14 +65,13 @@ sub create_build_shared_lib_make_rule {
   my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
   
   # Shared library file
-  my $shared_lib_rel_path = convert_module_name_to_shared_lib_rel_path($module_name);
-  my $shared_lib_file = "blib/lib/$shared_lib_rel_path";
+  my $shared_lib_blib_path = convert_module_name_to_shared_lib_blib_path($module_name);
   
   # Get native source files
   $make_rule
-    .= "shared_lib_$module_name_under_score :: $shared_lib_file\n\n";
+    .= "shared_lib_$module_name_under_score :: $shared_lib_blib_path\n\n";
   $make_rule
-    .= "$shared_lib_file :: @deps\n\n";
+    .= "$shared_lib_blib_path :: @deps\n\n";
   $make_rule
     .= "\tperl build_shared_lib.pl --object_dir=. $module_name\n\n";
   
