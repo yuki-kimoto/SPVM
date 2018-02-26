@@ -13,8 +13,16 @@ use File::Basename 'dirname', 'basename';
 
 my $compiled = {};
 
+sub new {
+  my $class = shift;
+  
+  my $self = {};
+  
+  return bless $self, $class;
+}
+
 sub convert_module_name_to_shared_lib_rel_dir {
-  my $module_name = shift;
+  my ($self, $module_name) = @_;
   
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
@@ -27,41 +35,41 @@ sub convert_module_name_to_shared_lib_rel_dir {
 }
 
 sub convert_module_name_to_shared_lib_rel_file {
-  my $module_name = shift;
+  my ($self, $module_name) = @_;
   
   my $dlext = $Config{dlext};
   
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
-  my $shared_lib_rel_dir = convert_module_name_to_shared_lib_rel_dir($module_name);
+  my $shared_lib_rel_dir = $self->convert_module_name_to_shared_lib_rel_dir($module_name);
   my $shared_lib_rel_file = "$shared_lib_rel_dir/$module_base_name.$dlext";
   
   return $shared_lib_rel_file;
 }
 
 sub convert_module_name_to_shared_lib_bilb_file {
-  my $module_name = shift;
+  my ($self, $module_name) = @_;
 
   # Shared library file
-  my $shared_lib_rel_file = convert_module_name_to_shared_lib_rel_file($module_name);
+  my $shared_lib_rel_file = $self->convert_module_name_to_shared_lib_rel_file($module_name);
   my $shared_lib_bilb_file = "blib/lib/$shared_lib_rel_file";
 
   return $shared_lib_bilb_file;
 }
 
 sub convert_module_name_to_shared_lib_blib_dir {
-  my $module_name = shift;
+  my ($self, $module_name) = @_;
   
   # Shared library file
-  my $shared_lib_rel_dir = convert_module_name_to_shared_lib_rel_dir($module_name);
+  my $shared_lib_rel_dir = $self->convert_module_name_to_shared_lib_rel_dir($module_name);
   my $shared_lib_blib_dir = "blib/lib/$shared_lib_rel_dir";
   
   return $shared_lib_blib_dir;
 }
 
 sub create_build_shared_lib_make_rule {
-  my $module_name = shift;
+  my ($self, $module_name) = @_;
   
   my $make_rule;
   
@@ -87,7 +95,7 @@ sub create_build_shared_lib_make_rule {
   my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
   
   # Shared library file
-  my $shared_lib_bilb_file = convert_module_name_to_shared_lib_bilb_file($module_name);
+  my $shared_lib_bilb_file = $self->convert_module_name_to_shared_lib_bilb_file($module_name);
   
   # Get native source files
   $make_rule
@@ -101,14 +109,14 @@ sub create_build_shared_lib_make_rule {
 }
 
 sub move_shared_lib_to_blib {
-  my ($shared_lib_file, $module_name) = @_;
+  my ($self, $shared_lib_file, $module_name) = @_;
   
   # Create shared lib blib directory
-  my $shared_lib_blib_dir = convert_module_name_to_shared_lib_blib_dir($module_name);
+  my $shared_lib_blib_dir = $self->convert_module_name_to_shared_lib_blib_dir($module_name);
   mkpath $shared_lib_blib_dir;
   
   # shared lib blib file
-  my $shared_lib_blib_file = convert_module_name_to_shared_lib_bilb_file($module_name);
+  my $shared_lib_blib_file = $self->convert_module_name_to_shared_lib_bilb_file($module_name);
   
   # Move shared library file to blib directory
   move($shared_lib_file, $shared_lib_blib_file)
@@ -116,7 +124,7 @@ sub move_shared_lib_to_blib {
 }
 
 sub build_shared_lib {
-  my %opt = @_;
+  my ($self, %opt) = @_;
   
   # Module name
   my $module_name = $opt{module_name};
@@ -255,7 +263,7 @@ sub build_shared_lib {
   }
   
   my $dlext = $Config{dlext};
-  my $native_func_names = SPVM::Build::get_native_func_names($module_dir, $module_name);
+  my $native_func_names = $self->get_native_func_names($module_dir, $module_name);
 
   # This is dummy to suppress boot strap function
   # This is bad hack
@@ -276,7 +284,7 @@ sub build_shared_lib {
 }
 
 sub get_native_func_names {
-  my ($module_dir, $module_name) = @_;
+  my ($self, $module_dir, $module_name) = @_;
   
   my $module_file = $module_name;
   $module_file =~ s/:/\//g;
@@ -304,7 +312,7 @@ sub get_native_func_names {
 }
 
 sub compile_jitcode {
-  my $source_file = shift;
+  my ($self, $source_file) = @_;
   
   # Source directory
   my $source_dir = dirname $source_file;

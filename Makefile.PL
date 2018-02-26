@@ -40,6 +40,8 @@ WriteMakefile(
 
 # Add Build shared library make rule
 sub MY::postamble {
+  my $spvm_build = SPVM::Build->new;
+  
   my @module_names = qw(
     SPVM::CORE
     SPVM::Math
@@ -54,7 +56,7 @@ sub MY::postamble {
   
   my $make_rule = '';
   for my $module_name (@module_names) {
-    $make_rule .= SPVM::Build::create_build_shared_lib_make_rule($module_name);
+    $make_rule .= $spvm_build->create_build_shared_lib_make_rule($module_name);
   }
   
   return $make_rule;

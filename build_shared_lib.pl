@@ -13,12 +13,14 @@ GetOptions('object_dir=s' => \$object_dir);
 # Module name
 my $module_name = shift;
 
+my $spvm_build = SPVM::Build->new;
+
 # Build shared library
-my $shared_lib_file = SPVM::Build::build_shared_lib(
+my $shared_lib_file = $spvm_build->build_shared_lib(
   module_name => $module_name,
   module_dir => 'lib',
   source_dir => 'lib_native',
   object_dir => $object_dir
 );
 
-SPVM::Build::move_shared_lib_to_blib($shared_lib_file, $module_name);
+$spvm_build->move_shared_lib_to_blib($shared_lib_file, $module_name);

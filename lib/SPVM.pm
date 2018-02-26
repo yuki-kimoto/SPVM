@@ -37,6 +37,8 @@ our $HOME_DIR;
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
+my $spvm_build = SPVM::Build->new;
+
 sub create_jit_sub_name {
   my $sub_name = shift;
   
@@ -81,7 +83,7 @@ sub compile_jit_sub {
     print $fh $sub_jitcode_source;
     close $fh;
     
-    SPVM::Build::compile_jitcode($jit_source_file);
+    $spvm_build->compile_jitcode($jit_source_file);
   }
   
   my $sub_jit_address = search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
@@ -192,7 +194,7 @@ sub get_sub_native_address {
     
     my $tmp_dir = File::Temp->newdir;
     eval {
-      $shared_lib_file = SPVM::Build::build_shared_lib(
+      $shared_lib_file = $spvm_build->build_shared_lib(
         module_dir => $module_dir,
         module_name => "SPVM::$module_name",
         object_dir => $tmp_dir->dirname
