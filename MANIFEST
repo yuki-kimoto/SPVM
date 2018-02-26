@@ -170,7 +170,6 @@ spvm_yacc.c
 spvm_yacc.h
 spvm_yacc_util.c
 spvm_yacc_util.h
-sub_symtable
 t/compile-error.t
 t/copy_default_to_jit.pl
 t/default/array.t

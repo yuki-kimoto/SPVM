@@ -1,4 +1,4 @@
-0.0313 2018-02-24
+0.0313 2018-02-26
   - fix shared lib dependency bug
   - sub descripter position is changed
     before: sub sin : native double ($x : double);
