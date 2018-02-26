@@ -6,6 +6,8 @@ use Carp 'croak', 'confess';
 
 use ExtUtils::CBuilder;
 use Config;
+use File::Copy 'move';
+use File::Path 'mkpath';
 
 use File::Basename 'dirname', 'basename';
 
@@ -54,6 +56,27 @@ sub create_build_shared_lib_make_rule {
     .= "\tperl build_shared_lib.pl --object_dir=. $module_name\n\n";
   
   return $make_rule;
+}
+
+sub move_shared_lib_to_blib {
+  my ($shared_lib_file, $module_name) = @_;
+  
+  # Create shared lib directory
+  my $shared_lib_dir = $module_name;
+  $shared_lib_dir =~ s/::/\//g;
+  $shared_lib_dir .= '.native';
+  $shared_lib_dir = "blib/lib/$shared_lib_dir";
+  mkpath $shared_lib_dir;
+
+  # blib shared lib file
+  my $module_base_name = $module_name;
+  $module_base_name =~ s/^.+:://;
+  my $dlext = $Config{dlext};
+  my $blib_shared_lib_file = "$shared_lib_dir/${module_base_name}.$dlext";
+
+  # Move shared library file to blib directory
+  move($shared_lib_file, $blib_shared_lib_file)
+    or die "Can't move $shared_lib_file to $blib_shared_lib_file";
 }
 
 sub build_shared_lib {
