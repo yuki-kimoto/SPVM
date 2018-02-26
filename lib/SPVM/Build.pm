@@ -13,7 +13,20 @@ use File::Basename 'dirname', 'basename';
 
 my $compiled = {};
 
-sub convert_module_name_to_shared_lib_rel_path {
+sub convert_module_name_to_shared_lib_rel_dir {
+  my $module_name = shift;
+  
+  my $module_base_name = $module_name;
+  $module_base_name =~ s/^.+:://;
+  
+  my $shared_lib_rel_dir = $module_name;
+  $shared_lib_rel_dir =~ s/::/\//g;
+  $shared_lib_rel_dir = "$shared_lib_rel_dir.native";
+  
+  return $shared_lib_rel_dir;
+}
+
+sub convert_module_name_to_shared_lib_rel_file {
   my $module_name = shift;
   
   my $dlext = $Config{dlext};
@@ -21,21 +34,30 @@ sub convert_module_name_to_shared_lib_rel_path {
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
-  my $shared_lib_rel_path = $module_name;
-  $shared_lib_rel_path =~ s/::/\//g;
-  $shared_lib_rel_path = "$shared_lib_rel_path.native/$module_base_name.$dlext";
+  my $shared_lib_rel_dir = convert_module_name_to_shared_lib_rel_dir($module_name);
+  my $shared_lib_rel_file = "$shared_lib_rel_dir/$module_base_name.$dlext";
   
-  return $shared_lib_rel_path;
+  return $shared_lib_rel_file;
 }
 
-sub convert_module_name_to_shared_lib_blib_path {
+sub convert_module_name_to_shared_lib_bilb_file {
   my $module_name = shift;
 
   # Shared library file
-  my $shared_lib_rel_path = convert_module_name_to_shared_lib_rel_path($module_name);
-  my $shared_lib_blib_path = "blib/lib/$shared_lib_rel_path";
+  my $shared_lib_rel_file = convert_module_name_to_shared_lib_rel_file($module_name);
+  my $shared_lib_bilb_file = "blib/lib/$shared_lib_rel_file";
 
-  return $shared_lib_blib_path;
+  return $shared_lib_bilb_file;
+}
+
+sub convert_module_name_to_shared_lib_blib_dir {
+  my $module_name = shift;
+  
+  # Shared library file
+  my $shared_lib_rel_dir = convert_module_name_to_shared_lib_rel_dir($module_name);
+  my $shared_lib_blib_dir = "blib/lib/$shared_lib_rel_dir";
+  
+  return $shared_lib_blib_dir;
 }
 
 sub create_build_shared_lib_make_rule {
@@ -65,13 +87,13 @@ sub create_build_shared_lib_make_rule {
   my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
   
   # Shared library file
-  my $shared_lib_blib_path = convert_module_name_to_shared_lib_blib_path($module_name);
+  my $shared_lib_bilb_file = convert_module_name_to_shared_lib_bilb_file($module_name);
   
   # Get native source files
   $make_rule
-    .= "shared_lib_$module_name_under_score :: $shared_lib_blib_path\n\n";
+    .= "shared_lib_$module_name_under_score :: $shared_lib_bilb_file\n\n";
   $make_rule
-    .= "$shared_lib_blib_path :: @deps\n\n";
+    .= "$shared_lib_bilb_file :: @deps\n\n";
   $make_rule
     .= "\tperl build_shared_lib.pl --object_dir=. $module_name\n\n";
   
@@ -81,22 +103,16 @@ sub create_build_shared_lib_make_rule {
 sub move_shared_lib_to_blib {
   my ($shared_lib_file, $module_name) = @_;
   
-  # Create shared lib directory
-  my $shared_lib_dir = $module_name;
-  $shared_lib_dir =~ s/::/\//g;
-  $shared_lib_dir .= '.native';
-  $shared_lib_dir = "blib/lib/$shared_lib_dir";
-  mkpath $shared_lib_dir;
-
-  # blib shared lib file
-  my $module_base_name = $module_name;
-  $module_base_name =~ s/^.+:://;
-  my $dlext = $Config{dlext};
-  my $blib_shared_lib_file = "$shared_lib_dir/${module_base_name}.$dlext";
+  # Create shared lib blib directory
+  my $shared_lib_blib_dir = convert_module_name_to_shared_lib_blib_dir($module_name);
+  mkpath $shared_lib_blib_dir;
+  
+  # shared lib blib file
+  my $shared_lib_blib_file = convert_module_name_to_shared_lib_bilb_file($module_name);
   
   # Move shared library file to blib directory
-  move($shared_lib_file, $blib_shared_lib_file)
-    or die "Can't move $shared_lib_file to $blib_shared_lib_file";
+  move($shared_lib_file, $shared_lib_blib_file)
+    or die "Can't move $shared_lib_file to $shared_lib_blib_file";
 }
 
 sub build_shared_lib {
