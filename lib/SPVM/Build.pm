@@ -287,7 +287,7 @@ sub get_native_func_names {
   my ($self, $module_dir, $module_name) = @_;
   
   my $module_file = $module_name;
-  $module_file =~ s/:/\//g;
+  $module_file =~ s/::/\//g;
   $module_file = "$module_dir/$module_file.spvm";
   
   open my $module_fh, '<', $module_file
@@ -297,15 +297,11 @@ sub get_native_func_names {
   
   my $src = do { local $/; <$module_fh> };
   
-  while ($src =~ /sub\s+([^\s]+)\s*\((?:[^\)]*?)\)\s*\:\s*([^\{;]+);/g) {
+  while ($src =~ /native\s+sub\s+([^\s]+)\s/g) {
     my $sub_name = $1;
-    my $descripter_type = $2;
-    if ($descripter_type =~ /\bnative\b/) {
-      my $native_func_name = "${module_name}::$sub_name";
-      $native_func_name =~ s/:/_/g;
-      
-      push @$native_func_names, $native_func_name;
-    }
+    my $native_func_name = "${module_name}::$sub_name";
+    $native_func_name =~ s/:/_/g;
+    push @$native_func_names, $native_func_name;
   }
   
   return $native_func_names;

@@ -3,6 +3,7 @@
   - sub descripter position is changed
     before: sub sin : native double ($x : double);
     after : native sub sin : double ($x : double);
+  - fix windows dll not loading bug
 0.0312 2018-02-23
   - fix bug that last statement can't do leave scope logic
 0.0311 2018-02-21
