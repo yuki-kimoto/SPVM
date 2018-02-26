@@ -7,7 +7,7 @@ use warnings;
 use Config;
 use DynaLoader;
 use SPVM::Build;
-use File::Basename 'basename';
+use File::Basename 'basename', 'dirname';
 use File::Temp ();
 
 use SPVM::Core::Object;
@@ -40,6 +40,67 @@ XSLoader::load('SPVM', $VERSION);
 
 $SPVM_BUILD = SPVM::Build->new;
 
+sub compile_jitcode {
+  my ($source_file) = @_;
+  
+  # Source directory
+  my $source_dir = dirname $source_file;
+  
+  # Object created directory
+  my $object_dir = $source_dir;
+  
+  # Include directory
+  my $include_dirs = [];
+  
+  # Default include path
+  my $api_header_include_dir = $INC{"SPVM/Build.pm"};
+  $api_header_include_dir =~ s/\/Build\.pm$//;
+  push @$include_dirs, $api_header_include_dir;
+  
+  my $cbuilder_config = {};
+  
+  # OPTIMIZE default is -O3
+  $cbuilder_config->{optimize} ||= '-O3';
+  
+  # Compile source files
+  my $quiet = 1;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
+  my $object_files = [];
+  
+  # Object file
+  my $object_file = $source_file;
+  $object_file =~ s/\.c$//;
+  $object_file .= '.o';
+  
+  # Compile source file
+  $cbuilder->compile(
+    source => $source_file,
+    object_file => $object_file,
+    include_dirs => $include_dirs,
+    # extra_compiler_flags => '-Wall -Wextra -Wno-unused-label'
+  );
+  push @$object_files, $object_file;
+  
+  # JIT Subroutine names
+  my $sub_names = SPVM::get_sub_names();
+  my @jit_sub_names;
+  for my $abs_name (@$sub_names) {
+    my $jit_sub_name = $abs_name;
+    $jit_sub_name =~ s/:/_/g;
+    $jit_sub_name = "SPVM_JITCODE_$jit_sub_name";
+    push @jit_sub_names, $jit_sub_name;
+  }
+  
+  my $lib_file = $cbuilder->link(
+    objects => $object_files,
+    module_name => 'SPVM::JITCode',
+    dl_func_list => ['SPVM_JITCODE_call_sub', @jit_sub_names],
+    extra_linker_flags => ''
+  );
+  
+  return $lib_file;
+}
+
 sub create_jit_sub_name {
   my $sub_name = shift;
   
@@ -51,8 +112,6 @@ sub create_jit_sub_name {
   
   return $jit_sub_name;
 }
-
-my $count = 0;
 
 sub compile_jit_sub {
   my ($sub_id, $sub_jitcode_source) = @_;
@@ -84,7 +143,7 @@ sub compile_jit_sub {
     print $fh $sub_jitcode_source;
     close $fh;
     
-    $SPVM_BUILD->compile_jitcode($jit_source_file);
+    compile_jitcode($jit_source_file);
   }
   
   my $sub_jit_address = search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
