@@ -25,7 +25,7 @@
 #include "spvm_runtime_api.h"
 
 void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "vars[");
+  SPVM_STRING_BUFFER_add(string_buffer, "call_stack[");
   SPVM_STRING_BUFFER_add_int(string_buffer, index);
   SPVM_STRING_BUFFER_add(string_buffer, "]");
 }
@@ -568,7 +568,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   }
 
   // Arguments
-  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API* api, SPVM_API_VALUE* args, int32_t on_stack_replacement, SPVM_API_VALUE* call_stack, int32_t label_id)");
+  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API* api, SPVM_API_VALUE* args, int32_t on_stack_replacement, SPVM_API_VALUE* runtime_call_stack, int32_t label_id)");
   
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
@@ -576,7 +576,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Native subroutine
   // Lexical variables
   if (constant_pool_sub->mys_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE vars[");
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE call_stack[");
     SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->mys_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
@@ -1280,9 +1280,9 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "      int32_t index;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      for (index = auto_dec_ref_count_stack_base; index <= auto_dec_ref_count_stack_top; index++) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "        int32_t var_index = auto_dec_ref_count_stack[index];\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "        if (*(SPVM_API_OBJECT**)&vars[var_index] != SPVM_JITCODE_C_NULL) {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "          if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&vars[var_index]) > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&vars[var_index]); }\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "          else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]); }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "        if (*(SPVM_API_OBJECT**)&call_stack[var_index] != SPVM_JITCODE_C_NULL) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "          if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[var_index]); }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "          else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&call_stack[var_index]); }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2043,9 +2043,9 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       SPVM_STRING_BUFFER_add(string_buffer, "    int32_t index;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "    for (index = 0; index <= auto_dec_ref_count_stack_top; index++) {\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      int32_t var_index = auto_dec_ref_count_stack[index];\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      if (*(SPVM_API_OBJECT**)&vars[var_index] != SPVM_JITCODE_C_NULL) {\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&vars[var_index]) > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&vars[var_index]); }\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "        else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]); }\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      if (*(SPVM_API_OBJECT**)&call_stack[var_index] != SPVM_JITCODE_C_NULL) {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_JITCODE_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 1) { SPVM_JITCODE_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[var_index]); }\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&call_stack[var_index]); }\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
       SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
       SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
