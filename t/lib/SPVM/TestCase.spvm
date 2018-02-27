@@ -2,14 +2,6 @@ use TestCase::Weaken;
 use TestCase::Minimal;
 use TestCase::Destructor;
 
-# Standard Library tests
-use TestCase::Byte;
-use TestCase::Short;
-use TestCase::Integer;
-use TestCase::Long;
-use TestCase::Float;
-use TestCase::Double;
-
 use TestCase::Template_int_long;
 
 use Byte;
