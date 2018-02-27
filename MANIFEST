@@ -1,4 +1,3 @@
-build_shared_lib.pl
 Changes
 lib/SPVM.pm
 lib/SPVM/Arrays.pm
