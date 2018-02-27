@@ -38,8 +38,7 @@ my $DOUBLE_PRECICE = 65536.5;
 
 # TODO
 # remainder float double
-# last
-# while
+# duplicate loop
 # eval repeat
 # print
 
@@ -54,6 +53,14 @@ my $NaN = SPVM::NaN();
 use SPVM 'Double';
 use SPVM 'Float';
 use SPVM 'CORE';
+
+{
+  # SPVM::Build tests
+  my $spvm_build = SPVM::Build->new;
+  my $func_names = $spvm_build->get_native_func_names('t/lib', 'SPVM::TestCase::Extension2');
+  is($func_names->[0], 'SPVM__TestCase__Extension2__mul');
+  is($func_names->[1], 'SPVM__TestCase__Extension2__one');
+}
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();

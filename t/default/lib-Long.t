@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase';
+use SPVM 'TestCase::Long';
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
