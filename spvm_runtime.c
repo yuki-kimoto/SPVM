@@ -128,7 +128,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Subroutine stack
   // This is used Variables, Auto decrement stack, call sub args stack
   int32_t call_stack_length = sub_mys_length + constant_pool_sub->auto_dec_ref_count_stack_max_length + constant_pool_sub->call_sub_arg_stack_max;
-  
   SPVM_API_OBJECT* call_stack_object = SPVM_RUNTIME_API_new_call_stack_object(api, call_stack_length);
   SPVM_API_VALUE* call_stack = call_stack_object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE;
   
