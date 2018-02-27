@@ -1646,7 +1646,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       }
       case SPVM_OPCODE_C_CODE_PUSH_ARG:
         call_sub_arg_stack_top++;
-        call_stack[call_sub_arg_stack_base + call_sub_arg_stack_top].int_value = opcode->operand0;
+        call_sub_args[call_sub_arg_stack_top] = call_stack[opcode->operand0];
         
         break;
       case SPVM_OPCODE_C_CODE_CALL_SUB:
@@ -1673,14 +1673,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         int32_t call_sub_is_void = constant_pool_sub_call_sub->is_void;
         
         call_sub_arg_stack_top -= call_sub_args_length;
-        
-        {
-          int32_t i;
-          for (i = 0; i < call_sub_args_length; i++) {
-            int32_t var_index = call_stack[call_sub_arg_stack_base + call_sub_arg_stack_top + 1 + i].int_value;
-            call_sub_args[i] = call_stack[var_index];
-          }
-        }
         
         // Call subroutine
         if (call_sub_is_void) {
