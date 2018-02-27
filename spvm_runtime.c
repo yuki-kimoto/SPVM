@@ -1631,12 +1631,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       case SPVM_OPCODE_C_CODE_CHECK_LOOP_JIT: {
         call_stack[loop_stack_base + opcode->operand1].int_value++;
         
-        if (call_stack[loop_stack_base + opcode->operand1].int_value > 1000) {
+        // if (call_stack[loop_stack_base + opcode->operand1].int_value > 1000) {
           
           // JIT compile and on stack replacement
           
-          return;
-        }
+          // return;
+        // }
         
         // warn("BBBBBB %d %d", opcode->operand0, opcode->operand1);
         break;
