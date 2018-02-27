@@ -153,11 +153,18 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       // Switch stack
       SPVM_LIST* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
+      // Loop block stack
+      SPVM_LIST* loop_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      
       int32_t auto_dec_ref_count_stack_max = 0;
       
       while (op_cur) {
         // [START]Preorder traversal position
         switch (op_cur->code) {
+          case SPVM_OP_C_CODE_LOOP: {
+            SPVM_LIST_push(loop_stack, op_cur);
+            break;
+          }
           case SPVM_OP_C_CODE_BLOCK: {
             if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
               SPVM_OPCODE opcode;
@@ -2089,8 +2096,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.code = SPVM_OPCODE_C_CODE_CHECK_LOOP_JIT;
                   opcode.operand0 = opcode_array->length;
+                  assert(loop_stack->length > 0);
+                  SPVM_OP* op_loop = SPVM_LIST_fetch(loop_stack, loop_stack->length - 1);
+                  opcode.operand1 = op_loop->uv.loop_block_index;
+                  
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-
+                  
                   // Set loop first GOTO opcode
                   int32_t* loop_first_opcode_index_ptr = SPVM_LIST_fetch(loop_first_goto_opcode_index_stack, loop_first_goto_opcode_index_stack->length - 1);
                   int32_t loop_first_opcode_index = *loop_first_opcode_index_ptr;
@@ -2145,6 +2156,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE* opcode_last = (opcode_array->values + last_opcode_index);
                   opcode_last->operand0 = opcode_array->length;
                 }
+                
+                SPVM_LIST_pop(loop_stack);
                 
                 break;
               }

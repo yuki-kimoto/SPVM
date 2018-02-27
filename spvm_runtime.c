@@ -1621,6 +1621,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         break;
       }
       case SPVM_OPCODE_C_CODE_CHECK_LOOP_JIT: {
+        // warn("AAAAAAAAAA %d %d", opcode->operand0, opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_CODE_PUSH_ARG:
