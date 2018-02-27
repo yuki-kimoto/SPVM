@@ -162,7 +162,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         // [START]Preorder traversal position
         switch (op_cur->code) {
           case SPVM_OP_C_CODE_LOOP: {
+            SPVM_OPCODE opcode;
+            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+            opcode.code = SPVM_OPCODE_C_CODE_LOOP_START;
+            opcode.operand0 = op_cur->uv.loop_block_index;
+            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
             SPVM_LIST_push(loop_stack, op_cur);
+
             break;
           }
           case SPVM_OP_C_CODE_BLOCK: {
