@@ -207,7 +207,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   int32_t sub_opcode_base = constant_pool_sub->opcode_base;
 
   // Auto decrement reference count variable index stack top
-  int32_t auto_dec_ref_count_stack_base = sub_mys_length;
+  int32_t auto_dec_ref_count_stack_base = constant_pool_sub->mys_length;
   int32_t auto_dec_ref_count_stack_top = -1;
 
   // Call subroutine argument stack top
@@ -222,6 +222,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
 
   // Croak flag
   int32_t croak_flag = 0;
+  
+  // Call sub arguments
+  SPVM_API_VALUE call_sub_args[255];
 
   // Call normal sub
   // If arg is object, increment reference count
@@ -1671,39 +1674,38 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         
         call_sub_arg_stack_top -= call_sub_args_length;
         
-        SPVM_API_VALUE args[255];
         {
           int32_t i;
           for (i = 0; i < call_sub_args_length; i++) {
             int32_t var_index = call_stack[call_sub_arg_stack_base + call_sub_arg_stack_top + 1 + i].int_value;
-            args[i] = call_stack[var_index];
+            call_sub_args[i] = call_stack[var_index];
           }
         }
         
         // Call subroutine
         if (call_sub_is_void) {
-          api->call_void_sub(api, call_sub_id, args);
+          api->call_void_sub(api, call_sub_id, call_sub_args);
         }
         else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_BYTE) {
-          *(SPVM_API_byte*)&call_stack[opcode->operand0] = api->call_byte_sub(api, call_sub_id, args);
+          *(SPVM_API_byte*)&call_stack[opcode->operand0] = api->call_byte_sub(api, call_sub_id, call_sub_args);
         }
         else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_SHORT) {
-          *(SPVM_API_short*)&call_stack[opcode->operand0] = api->call_short_sub(api, call_sub_id, args);
+          *(SPVM_API_short*)&call_stack[opcode->operand0] = api->call_short_sub(api, call_sub_id, call_sub_args);
         }
         else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_INT) {
-          *(SPVM_API_int*)&call_stack[opcode->operand0] = api->call_int_sub(api, call_sub_id, args);
+          *(SPVM_API_int*)&call_stack[opcode->operand0] = api->call_int_sub(api, call_sub_id, call_sub_args);
         }
         else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_LONG) {
-          *(SPVM_API_long*)&call_stack[opcode->operand0] = api->call_long_sub(api, call_sub_id, args);
+          *(SPVM_API_long*)&call_stack[opcode->operand0] = api->call_long_sub(api, call_sub_id, call_sub_args);
         }
         else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_FLOAT) {
-          *(float*)&call_stack[opcode->operand0] = api->call_float_sub(api, call_sub_id, args);
+          *(float*)&call_stack[opcode->operand0] = api->call_float_sub(api, call_sub_id, call_sub_args);
         }
         else if (call_sub_return_type_code == SPVM_INFO_TYPE_CODE_DOUBLE) {
-          *(double*)&call_stack[opcode->operand0] = api->call_double_sub(api, call_sub_id, args);
+          *(double*)&call_stack[opcode->operand0] = api->call_double_sub(api, call_sub_id, call_sub_args);
         }
         else {
-          *(SPVM_API_OBJECT**)&call_stack[opcode->operand0] = api->call_object_sub(api, call_sub_id, args);
+          *(SPVM_API_OBJECT**)&call_stack[opcode->operand0] = api->call_object_sub(api, call_sub_id, call_sub_args);
         }
         
         if (api->get_exception(api)) {
