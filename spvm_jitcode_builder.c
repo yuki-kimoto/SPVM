@@ -463,6 +463,18 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
+  int32_t call_stack_length = constant_pool_sub->mys_length + constant_pool_sub->auto_dec_ref_count_stack_max_length + constant_pool_sub->call_sub_arg_stack_max
+    + constant_pool_sub->loop_count;
+  
+  // Auto decrement reference count variable index stack top
+  int32_t auto_dec_ref_count_stack_base = constant_pool_sub->mys_length;
+
+  // Call subroutine argument stack top
+  int32_t call_sub_arg_stack_base = auto_dec_ref_count_stack_base + constant_pool_sub->auto_dec_ref_count_stack_max_length;
+
+  // Call subroutine argument stack top
+  int32_t loop_stack_base = call_sub_arg_stack_base + constant_pool_sub->call_sub_arg_stack_max;
+  
   assert(!constant_pool_sub->is_native);
   
   // Include header
@@ -576,7 +588,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Call stack
   if (constant_pool_sub->mys_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE call_stack[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->mys_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   
