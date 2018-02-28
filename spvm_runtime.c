@@ -125,16 +125,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Args length
   int32_t args_length = constant_pool_sub->args_length;
   
-  // Subroutine stack
-  // This is used Variables, Auto decrement stack, call sub args stack
-  int32_t call_stack_length = sub_mys_length + constant_pool_sub->auto_dec_ref_count_stack_max_length + constant_pool_sub->call_sub_arg_stack_max
-    + constant_pool_sub->loop_count;
-  SPVM_API_OBJECT* call_stack_object = SPVM_RUNTIME_API_new_call_stack_object(api, call_stack_length);
-  SPVM_API_VALUE* call_stack = call_stack_object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE;
-  
-  // Copy arguments
-  memcpy(call_stack, args, args_length * sizeof(SPVM_API_VALUE));
-  
   constant_pool_sub->call_count++;
   
   // Compile JIT subroutine
@@ -188,9 +178,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
       *(SPVM_API_OBJECT**)&return_value = return_value_jit;
     }
     
-    // Free call stack
-    SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, call_stack_object);
-    
     return return_value;
   }
 
@@ -206,16 +193,24 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Opcode base
   int32_t sub_opcode_base = constant_pool_sub->opcode_base;
 
+  // Subroutine stack
+  // This is used Variables, Auto decrement stack, loop count
+  int32_t call_stack_length = constant_pool_sub->mys_length + constant_pool_sub->auto_dec_ref_count_stack_max_length + constant_pool_sub->loop_count;
+  SPVM_API_OBJECT* call_stack_object = SPVM_RUNTIME_API_new_call_stack_object(api, call_stack_length);
+  SPVM_API_VALUE* call_stack = call_stack_object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE;
+  
+  // Copy arguments
+  memcpy(call_stack, args, args_length * sizeof(SPVM_API_VALUE));
+
   // Auto decrement reference count variable index stack top
   int32_t auto_dec_ref_count_stack_base = constant_pool_sub->mys_length;
   int32_t auto_dec_ref_count_stack_top = -1;
 
   // Call subroutine argument stack top
-  int32_t call_sub_arg_stack_base = auto_dec_ref_count_stack_base + constant_pool_sub->auto_dec_ref_count_stack_max_length;
   int32_t call_sub_arg_stack_top = -1;
 
   // Call subroutine argument stack top
-  int32_t loop_stack_base = call_sub_arg_stack_base + constant_pool_sub->call_sub_arg_stack_max;
+  int32_t loop_stack_base = auto_dec_ref_count_stack_base + constant_pool_sub->auto_dec_ref_count_stack_max_length;
   
   // Condition flag
   register int32_t condition_flag = 0;
@@ -225,7 +220,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   
   // Call sub arguments
   SPVM_API_VALUE call_sub_args[255];
-
+  
   // Call normal sub
   // If arg is object, increment reference count
   {
