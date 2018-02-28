@@ -2098,10 +2098,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT) {
-                  // Add CHECK_LOOP_JIT opcode
+                  // Add JIT_ON_STACK_REPLACEMENT opcode
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.code = SPVM_OPCODE_C_CODE_CHECK_LOOP_JIT;
+                  opcode.code = SPVM_OPCODE_C_CODE_JIT_ON_STACK_REPLACEMENT;
                   opcode.operand0 = opcode_array->length;
                   assert(loop_stack->length > 0);
                   SPVM_OP* op_loop = SPVM_LIST_fetch(loop_stack, loop_stack->length - 1);

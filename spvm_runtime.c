@@ -1626,7 +1626,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
         // warn("AAAAAAAAAA %d", opcode->operand0);
         break;
       }
-      case SPVM_OPCODE_C_CODE_CHECK_LOOP_JIT: {
+      case SPVM_OPCODE_C_CODE_JIT_ON_STACK_REPLACEMENT: {
         call_stack[loop_stack_base + opcode->operand1].int_value++;
         
         // if (call_stack[loop_stack_base + opcode->operand1].int_value > 1000) {
