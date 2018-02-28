@@ -12,6 +12,7 @@ struct SPVM_sub {
   SPVM_OP* op_constant;
   SPVM_LIST* op_args;
   SPVM_LIST* op_mys;
+  SPVM_LIST* on_stack_replacement_jump_opcode_indexes;
   void* native_address;
   const char* abs_name;
   const char* file_name;
