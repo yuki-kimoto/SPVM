@@ -1726,7 +1726,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Update operand stack max
-                  if (sub->call_sub_arg_stack_max > call_sub_args_count) {
+                  if (call_sub_args_count > sub->call_sub_arg_stack_max) {
                     sub->call_sub_arg_stack_max = call_sub_args_count;
                   }
                   
