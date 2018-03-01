@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
   SPVM_API* api = runtime->api;
-  runtime->jit_count = 0;
+  runtime->disable_jit = 1;
 
   // Entry point subroutine address
   const char* entry_point_sub_name = compiler->entry_point_sub_name;

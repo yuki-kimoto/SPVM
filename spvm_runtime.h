@@ -64,6 +64,8 @@ struct SPVM_runtime {
   char* jit_source_file;
   
   int32_t jit_count;
+  
+  int32_t disable_jit;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
