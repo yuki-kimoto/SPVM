@@ -37,7 +37,6 @@ typedef double SPVM_API_double;
 
 
 struct SPVM_api {
-  SPVM_API_VALUE (*call_sub)(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
   int32_t (*get_array_length)(SPVM_API*, SPVM_API_OBJECT*);
   int8_t* (*get_byte_array_elements)(SPVM_API*, SPVM_API_OBJECT*);
   int16_t* (*get_short_array_elements)(SPVM_API*, SPVM_API_OBJECT*);

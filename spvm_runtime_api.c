@@ -37,7 +37,6 @@
 
 
 static const void* SPVM_NATIVE_INTERFACE[]  = {
-  SPVM_RUNTIME_call_sub,
   SPVM_RUNTIME_API_get_array_length,
   SPVM_RUNTIME_API_get_byte_array_elements,
   SPVM_RUNTIME_API_get_short_array_elements,
@@ -1082,7 +1081,7 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
 void SPVM_RUNTIME_API_call_void_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
   
-  (void)api->call_sub(api, sub_id, args);
+  (void)SPVM_RUNTIME_call_sub(api, sub_id, args);
 }
 
 int8_t SPVM_RUNTIME_API_call_byte_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
