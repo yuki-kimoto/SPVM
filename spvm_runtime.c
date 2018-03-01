@@ -31,8 +31,27 @@
 #define SPVM_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
 #define SPVM_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
-
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  
+  // Constant pool
+  int32_t* constant_pool = runtime->constant_pool;
+
+  // Constant pool sub
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  if (constant_pool_sub->is_native) {
+    return SPVM_RUNTIME_call_sub_native(api, sub_id, args);
+  }
+  else {
+    return SPVM_RUNTIME_call_sub_vm(api, sub_id, args);
+  }
+}
+
+SPVM_API_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
   
   // Runtime
@@ -45,7 +64,79 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
 
   // Subroutine is native
-  int32_t sub_is_native = constant_pool_sub->is_native;
+  assert(constant_pool_sub->is_native);
+
+  // Subroutine return type id
+  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
+  
+  // Subroutine return type
+  SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
+  
+  // Subroutine return type code
+  int32_t sub_return_type_code = sub_return_type->code;
+  
+  // Return value
+  SPVM_API_VALUE return_value;
+
+  // Set exception to NULL at start of subroutine
+  api->set_exception(api, NULL);
+  
+  // Native address
+  void* sub_native_address = constant_pool_sub->native_address;
+
+  if (sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
+    void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+    (*native_address)(api, (SPVM_API_VALUE*)args);
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_BYTE) {
+    SPVM_API_byte (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+    SPVM_API_byte return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
+    *(SPVM_API_byte*)&return_value = return_value_native;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_SHORT) {
+    SPVM_API_short (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+    SPVM_API_short return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
+    *(SPVM_API_short*)&return_value = return_value_native;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_INT) {
+    SPVM_API_int (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+    SPVM_API_int return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
+    *(SPVM_API_int*)&return_value = return_value_native;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_LONG) {
+    SPVM_API_long (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+    SPVM_API_long return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
+    *(SPVM_API_long*)&return_value = return_value_native;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_FLOAT) {
+    float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+    float return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
+    *(float*)&return_value = return_value_native;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_DOUBLE) {
+    double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+    double return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
+    *(double*)&return_value = return_value_native;
+  }
+  else {
+    SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
+    SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
+    *(SPVM_API_OBJECT**)&return_value = return_value_native;
+  }
+  return return_value;
+}
+
+SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  
+  // Constant pool
+  int32_t* constant_pool = runtime->constant_pool;
+
+  // Constant pool sub
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
 
   // Subroutine return type id
   int32_t sub_return_type_id = constant_pool_sub->return_type_id;
@@ -59,56 +150,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Return value
   SPVM_API_VALUE return_value;
   
-  // Call native sub
-  if (sub_is_native) {
-    // Set exception to NULL at start of subroutine
-    api->set_exception(api, NULL);
-    
-    // Native address
-    void* sub_native_address = constant_pool_sub->native_address;
-  
-    if (sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
-      void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
-      (*native_address)(api, (SPVM_API_VALUE*)args);
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_BYTE) {
-      SPVM_API_byte (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
-      SPVM_API_byte return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
-      *(SPVM_API_byte*)&return_value = return_value_native;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_SHORT) {
-      SPVM_API_short (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
-      SPVM_API_short return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
-      *(SPVM_API_short*)&return_value = return_value_native;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_INT) {
-      SPVM_API_int (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
-      SPVM_API_int return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
-      *(SPVM_API_int*)&return_value = return_value_native;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_LONG) {
-      SPVM_API_long (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
-      SPVM_API_long return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
-      *(SPVM_API_long*)&return_value = return_value_native;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_FLOAT) {
-      float (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
-      float return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
-      *(float*)&return_value = return_value_native;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_DOUBLE) {
-      double (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
-      double return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
-      *(double*)&return_value = return_value_native;
-    }
-    else {
-      SPVM_API_OBJECT* (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;
-      SPVM_API_OBJECT* return_value_native = (*native_address)(api, (SPVM_API_VALUE*)args);
-      *(SPVM_API_OBJECT**)&return_value = return_value_native;
-    }
-    return return_value;
-  }
-
   // Subroutine is JIT
   int32_t sub_is_jit = constant_pool_sub->is_jit;
   
