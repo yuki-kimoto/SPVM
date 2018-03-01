@@ -2105,6 +2105,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t* on_stack_replacement_jump_opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
                   *on_stack_replacement_jump_opcode_index_ptr = opcode_array->length;
                   SPVM_LIST_push(sub->on_stack_replacement_jump_opcode_indexes, on_stack_replacement_jump_opcode_index_ptr);
+                  
                   opcode.operand0 = *on_stack_replacement_jump_opcode_index_ptr;
                   assert(loop_stack->length > 0);
                   SPVM_OP* op_loop = SPVM_LIST_fetch(loop_stack, loop_stack->length - 1);
@@ -2634,8 +2635,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       constant_pool_sub.opcode_length = sub->opcode_length;
       constant_pool_sub.auto_dec_ref_count_stack_max_length = auto_dec_ref_count_stack_max;
       memcpy(&compiler->constant_pool->values[sub->id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
-      
+
+      int32_t on_stack_replacement_jump_opcode_indexes_base = constant_pool_sub.on_stack_replacement_jump_opcode_indexes_base;
+      {
+        assert(constant_pool_sub.loop_count == sub->on_stack_replacement_jump_opcode_indexes->length);
+        int32_t i;
+        for (i = 0; i < sub->on_stack_replacement_jump_opcode_indexes->length; i++) {
+          int32_t* on_stack_replacement_jump_opcode_index_ptr = SPVM_LIST_fetch(sub->on_stack_replacement_jump_opcode_indexes, i);
+          compiler->constant_pool->values[on_stack_replacement_jump_opcode_indexes_base + i] = *on_stack_replacement_jump_opcode_index_ptr;
+        }
+      }
     }
   }
-  
 }

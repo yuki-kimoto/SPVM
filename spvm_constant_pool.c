@@ -300,6 +300,16 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
     constant_pool_sub.object_mys_length = object_mys_length;
   }
   
+  // on_stack_replacement_jump_opcode_indexes_base
+  constant_pool_sub.on_stack_replacement_jump_opcode_indexes_base = constant_pool->length;
+  {
+    int32_t i;
+    for (i = 0; i < constant_pool_sub.loop_count; i++) {
+      // Temporary
+      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, 0);
+    }
+  }
+  
   // Push sub name to constant pool
   constant_pool_sub.abs_name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->abs_name);
   
