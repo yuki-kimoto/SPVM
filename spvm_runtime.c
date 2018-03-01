@@ -31,6 +31,29 @@
 #define SPVM_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
 #define SPVM_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
+SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  
+  // Constant pool
+  int32_t* constant_pool = runtime->constant_pool;
+
+  // Constant pool sub
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  
+  if (constant_pool_sub->is_native) {
+    return SPVM_RUNTIME_call_sub_native(api, sub_id, args);
+  }
+  else if (constant_pool_sub->is_jit) {
+    return SPVM_RUNTIME_call_sub_jit(api, sub_id, args, 0, NULL, 0);
+  }
+  else {
+    return SPVM_RUNTIME_call_sub_vm(api, sub_id, args);
+  }
+}
+
 SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args, int32_t on_stack_replacement, SPVM_API_VALUE* runtime_call_stack, int32_t jump_opcode_index) {
   (void)api;
   
@@ -57,12 +80,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
   
   // Subroutine is JIT
   assert(constant_pool_sub->is_jit);
-  
-  // Subroutine mys length
-  int32_t sub_mys_length = constant_pool_sub->mys_length;
-  
-  // Args length
-  int32_t args_length = constant_pool_sub->args_length;
   
   void* sub_jit_address = constant_pool_sub->jit_address;
   
@@ -108,26 +125,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
   }
   
   return return_value;
-}
-
-SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-  
-  // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
-
-  // Constant pool sub
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  
-  if (constant_pool_sub->is_native) {
-    return SPVM_RUNTIME_call_sub_native(api, sub_id, args);
-  }
-  else {
-    return SPVM_RUNTIME_call_sub_vm(api, sub_id, args);
-  }
 }
 
 SPVM_API_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
