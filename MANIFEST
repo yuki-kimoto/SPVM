@@ -177,7 +177,6 @@ t/default/call-sub.t
 t/default/constant.t
 t/default/enum.t
 t/default/exception.t
-t/default/extension.t
 t/default/if.t
 t/default/lib-Arrays.t
 t/default/lib-Byte.t
@@ -206,7 +205,6 @@ t/jit/call-sub.t
 t/jit/constant.t
 t/jit/enum.t
 t/jit/exception.t
-t/jit/extension.t
 t/jit/if.t
 t/jit/lib-Arrays.t
 t/jit/lib-Byte.t
