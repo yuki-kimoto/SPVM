@@ -31,6 +31,85 @@
 #define SPVM_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
 #define SPVM_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
+SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args, int32_t on_stack_replacement, SPVM_API_VALUE* runtime_call_stack, int32_t jump_opcode_index) {
+  (void)api;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  
+  // Constant pool
+  int32_t* constant_pool = runtime->constant_pool;
+
+  // Constant pool sub
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+
+  // Subroutine return type id
+  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
+  
+  // Subroutine return type
+  SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
+  
+  // Subroutine return type code
+  int32_t sub_return_type_code = sub_return_type->code;
+  
+  // Return value
+  SPVM_API_VALUE return_value;
+  
+  // Subroutine is JIT
+  assert(constant_pool_sub->is_jit);
+  
+  // Subroutine mys length
+  int32_t sub_mys_length = constant_pool_sub->mys_length;
+  
+  // Args length
+  int32_t args_length = constant_pool_sub->args_length;
+  
+  void* sub_jit_address = constant_pool_sub->jit_address;
+  
+  // Call JIT subroutine
+  if (sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
+    void (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
+    (*jit_address)(api, (SPVM_API_VALUE*)args);
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_BYTE) {
+    SPVM_API_byte (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
+    SPVM_API_byte return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    *(SPVM_API_byte*)&return_value = return_value_jit;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_SHORT) {
+    SPVM_API_short (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
+    SPVM_API_short return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    *(SPVM_API_short*)&return_value = return_value_jit;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_INT) {
+    SPVM_API_int (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
+    SPVM_API_int return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    *(SPVM_API_int*)&return_value = return_value_jit;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_LONG) {
+    SPVM_API_long (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
+    SPVM_API_long return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    *(SPVM_API_long*)&return_value = return_value_jit;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_FLOAT) {
+    float (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
+    float return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    *(float*)&return_value = return_value_jit;
+  }
+  else if (sub_return_type_code == SPVM_TYPE_C_CODE_DOUBLE) {
+    double (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
+    double return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    *(double*)&return_value = return_value_jit;
+  }
+  else {
+    SPVM_API_OBJECT* (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
+    SPVM_API_OBJECT* return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    *(SPVM_API_OBJECT**)&return_value = return_value_jit;
+  }
+  
+  return return_value;
+}
+
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
   
@@ -167,51 +246,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   }
   
   // Call JIT sub
-  if (sub_is_jit) {
-    
-    void* sub_jit_address = constant_pool_sub->jit_address;
-    
-    // Call JIT subroutine
-    if (sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
-      void (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
-      (*jit_address)(api, (SPVM_API_VALUE*)args);
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_BYTE) {
-      SPVM_API_byte (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-      SPVM_API_byte return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
-      *(SPVM_API_byte*)&return_value = return_value_jit;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_SHORT) {
-      SPVM_API_short (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-      SPVM_API_short return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
-      *(SPVM_API_short*)&return_value = return_value_jit;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_INT) {
-      SPVM_API_int (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-      SPVM_API_int return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
-      *(SPVM_API_int*)&return_value = return_value_jit;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_LONG) {
-      SPVM_API_long (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-      SPVM_API_long return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
-      *(SPVM_API_long*)&return_value = return_value_jit;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_FLOAT) {
-      float (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-      float return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
-      *(float*)&return_value = return_value_jit;
-    }
-    else if (sub_return_type_code == SPVM_TYPE_C_CODE_DOUBLE) {
-      double (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-      double return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
-      *(double*)&return_value = return_value_jit;
-    }
-    else {
-      SPVM_API_OBJECT* (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-      SPVM_API_OBJECT* return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
-      *(SPVM_API_OBJECT**)&return_value = return_value_jit;
-    }
-    
+  if (constant_pool_sub->is_jit) {
+    return_value = SPVM_RUNTIME_call_sub_jit(api, sub_id, args, 0, NULL, 0);
     return return_value;
   }
 

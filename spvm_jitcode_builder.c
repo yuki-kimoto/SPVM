@@ -173,13 +173,13 @@ void SPVM_JITCODE_BUILDER_add_left_shift(SPVM_STRING_BUFFER* string_buffer, cons
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, in1_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " << ");
+  SPVM_STRING_BUFFER_add(string_buffer, " << (");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, in2_index);
   if (strcmp(type_name, "SPVM_API_int") == 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x1f)");
+    SPVM_STRING_BUFFER_add(string_buffer, " & 0x1f))");
   }
   else if (strcmp(type_name, "SPVM_API_long") == 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x3f)");
+    SPVM_STRING_BUFFER_add(string_buffer, " & 0x3f))");
   }
   else {
     assert(0);
@@ -196,13 +196,13 @@ void SPVM_JITCODE_BUILDER_add_right_shift_unsigned(SPVM_STRING_BUFFER* string_bu
   SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
   SPVM_STRING_BUFFER_add(string_buffer, ")");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, in1_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " >> ");
+  SPVM_STRING_BUFFER_add(string_buffer, " >> (");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, in2_index);
   if (strcmp(type_name, "int32_t") == 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x1f)");
+    SPVM_STRING_BUFFER_add(string_buffer, " & 0x1f))");
   }
   else if (strcmp(type_name, "int64_t") == 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x3f)");
+    SPVM_STRING_BUFFER_add(string_buffer, " & 0x3f))");
   }
   else {
     assert(0);
@@ -215,13 +215,13 @@ void SPVM_JITCODE_BUILDER_add_right_shift(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, in1_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " >> ");
+  SPVM_STRING_BUFFER_add(string_buffer, " >> (");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, type_name, in2_index);
   if (strcmp(type_name, "SPVM_API_int") == 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x1f)");
+    SPVM_STRING_BUFFER_add(string_buffer, " & 0x1f))");
   }
   else if (strcmp(type_name, "SPVM_API_long") == 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x3f)");
+    SPVM_STRING_BUFFER_add(string_buffer, " & 0x3f))");
   }
   else {
     assert(0);
