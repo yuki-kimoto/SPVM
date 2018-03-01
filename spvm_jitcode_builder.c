@@ -570,7 +570,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   }
 
   // Arguments
-  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API* api, SPVM_API_VALUE* args, int32_t on_stack_replacement, SPVM_API_VALUE* runtime_call_stack, int32_t label_id)");
+  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API* api, SPVM_API_VALUE* args, int32_t on_stack_replacement, SPVM_API_VALUE* runtime_call_stack, int32_t jump_opcode_index)");
   
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
@@ -580,6 +580,24 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE call_stack[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+  
+  // On stack replacement
+  if (constant_pool_sub->loop_count > 0) {
+    int32_t on_stack_replacement_jump_opcode_indexes_base = constant_pool_sub->on_stack_replacement_jump_opcode_indexes_base;
+    {
+      SPVM_STRING_BUFFER_add(string_buffer, "  switch(jump_opcode_index) {\n");
+      int32_t i;
+      for (i = 0; i < constant_pool_sub->loop_count; i++) {
+        int32_t on_stack_replacement_jump_opcode_index = constant_pool[on_stack_replacement_jump_opcode_indexes_base + i];
+        SPVM_STRING_BUFFER_add(string_buffer, "    case ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, on_stack_replacement_jump_opcode_index);
+        SPVM_STRING_BUFFER_add(string_buffer, " : goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, on_stack_replacement_jump_opcode_index);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   }
   
   if (constant_pool_sub->call_sub_arg_stack_max > 0 ) {
@@ -1686,7 +1704,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_CODE_IF_NE_ZERO: {
         SPVM_STRING_BUFFER_add(string_buffer, "  if (condition_flag) { goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, "; }");
+        SPVM_STRING_BUFFER_add(string_buffer, "; }\n");
         break;
       }
       case SPVM_OPCODE_C_CODE_LOAD_EXCEPTION_VAR: {

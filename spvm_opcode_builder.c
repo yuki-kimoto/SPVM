@@ -2635,7 +2635,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       constant_pool_sub.opcode_length = sub->opcode_length;
       constant_pool_sub.auto_dec_ref_count_stack_max_length = auto_dec_ref_count_stack_max;
       memcpy(&compiler->constant_pool->values[sub->id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
-
+      
+      // On stack replacement
       int32_t on_stack_replacement_jump_opcode_indexes_base = constant_pool_sub.on_stack_replacement_jump_opcode_indexes_base;
       {
         assert(constant_pool_sub.loop_count == sub->on_stack_replacement_jump_opcode_indexes->length);
