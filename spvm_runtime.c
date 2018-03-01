@@ -1693,14 +1693,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_CODE_JIT_ON_STACK_REPLACEMENT: {
         call_stack[loop_stack_base + opcode->operand1].int_value++;
         
-        if (call_stack[loop_stack_base + opcode->operand1].int_value > 10000) {
-          
-          // JIT compile and on stack replacement
-          
-          // return;
+        /*
+        if (!runtime->disable_jit && call_stack[loop_stack_base + opcode->operand1].int_value > 10000) {
+          return_value = SPVM_RUNTIME_call_sub_jit(api, sub_id, args, 1, call_stack, opcode->operand0);
+          goto label_FREE_CALL_STACK;
         }
+        */
         
-        // warn("BBBBBB %d %d", opcode->operand0, opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_CODE_PUSH_ARG:
@@ -1906,6 +1905,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       
       api->set_exception(api, NULL);
     }
+    
+    label_FREE_CALL_STACK:
     
     // Free call stack
     SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, call_stack_object);

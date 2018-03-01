@@ -586,17 +586,28 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   if (constant_pool_sub->loop_count > 0) {
     int32_t on_stack_replacement_jump_opcode_indexes_base = constant_pool_sub->on_stack_replacement_jump_opcode_indexes_base;
     {
-      SPVM_STRING_BUFFER_add(string_buffer, "  switch(jump_opcode_index) {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  if (on_stack_replacement) {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_stack_length = ");
+      SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_length);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_stack_index;\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    for (call_stack_index = 0; call_stack_index < call_stack_length; call_stack_index++) {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      call_stack[call_stack_index] = runtime_call_stack[call_stack_index];\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+      SPVM_STRING_BUFFER_add(string_buffer, ";");
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "    switch(jump_opcode_index) {\n");
       int32_t i;
       for (i = 0; i < constant_pool_sub->loop_count; i++) {
         int32_t on_stack_replacement_jump_opcode_index = constant_pool[on_stack_replacement_jump_opcode_indexes_base + i];
-        SPVM_STRING_BUFFER_add(string_buffer, "    case ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      case ");
         SPVM_STRING_BUFFER_add_int(string_buffer, on_stack_replacement_jump_opcode_index);
         SPVM_STRING_BUFFER_add(string_buffer, " : goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, on_stack_replacement_jump_opcode_index);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
       }
     }
+    SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   }
   
