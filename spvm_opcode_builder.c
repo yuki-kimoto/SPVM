@@ -2102,7 +2102,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.code = SPVM_OPCODE_C_CODE_JIT_ON_STACK_REPLACEMENT;
-                  opcode.operand0 = opcode_array->length;
+                  int32_t* on_stack_replacement_jump_opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+                  *on_stack_replacement_jump_opcode_index_ptr = opcode_array->length;
+                  SPVM_LIST_push(sub->on_stack_replacement_jump_opcode_indexes, on_stack_replacement_jump_opcode_index_ptr);
+                  opcode.operand0 = *on_stack_replacement_jump_opcode_index_ptr;
                   assert(loop_stack->length > 0);
                   SPVM_OP* op_loop = SPVM_LIST_fetch(loop_stack, loop_stack->length - 1);
                   opcode.operand1 = op_loop->uv.loop_block_index;
