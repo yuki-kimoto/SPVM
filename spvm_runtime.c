@@ -74,6 +74,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
   
   void* sub_jit_address = constant_pool_sub->jit_address;
   
+  
   // Call JIT subroutine
   if (sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
     void (*jit_address)(SPVM_API*, SPVM_API_VALUE*) = sub_jit_address;
@@ -81,37 +82,37 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
   }
   else if (sub_return_type_code == SPVM_TYPE_C_CODE_BYTE) {
     SPVM_API_byte (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-    SPVM_API_byte return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    SPVM_API_byte return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, on_stack_replacement, runtime_call_stack, jump_opcode_index);
     *(SPVM_API_byte*)&return_value = return_value_jit;
   }
   else if (sub_return_type_code == SPVM_TYPE_C_CODE_SHORT) {
     SPVM_API_short (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-    SPVM_API_short return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    SPVM_API_short return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, on_stack_replacement, runtime_call_stack, jump_opcode_index);
     *(SPVM_API_short*)&return_value = return_value_jit;
   }
   else if (sub_return_type_code == SPVM_TYPE_C_CODE_INT) {
     SPVM_API_int (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-    SPVM_API_int return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    SPVM_API_int return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, on_stack_replacement, runtime_call_stack, jump_opcode_index);
     *(SPVM_API_int*)&return_value = return_value_jit;
   }
   else if (sub_return_type_code == SPVM_TYPE_C_CODE_LONG) {
     SPVM_API_long (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-    SPVM_API_long return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    SPVM_API_long return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, on_stack_replacement, runtime_call_stack, jump_opcode_index);
     *(SPVM_API_long*)&return_value = return_value_jit;
   }
   else if (sub_return_type_code == SPVM_TYPE_C_CODE_FLOAT) {
     float (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-    float return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    float return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, on_stack_replacement, runtime_call_stack, jump_opcode_index);
     *(float*)&return_value = return_value_jit;
   }
   else if (sub_return_type_code == SPVM_TYPE_C_CODE_DOUBLE) {
     double (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-    double return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    double return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, on_stack_replacement, runtime_call_stack, jump_opcode_index);
     *(double*)&return_value = return_value_jit;
   }
   else {
     SPVM_API_OBJECT* (*jit_address)(SPVM_API*, SPVM_API_VALUE*, int32_t, SPVM_API_VALUE*, int32_t) = sub_jit_address;
-    SPVM_API_OBJECT* return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, 0, NULL, 0);
+    SPVM_API_OBJECT* return_value_jit = (*jit_address)(api, (SPVM_API_VALUE*)args, on_stack_replacement, runtime_call_stack, jump_opcode_index);
     *(SPVM_API_OBJECT**)&return_value = return_value_jit;
   }
   
@@ -1683,23 +1684,22 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       }
       case SPVM_OPCODE_C_CODE_LOOP_START: {
         call_stack[loop_stack_base + opcode->operand0].int_value = 0;
-        // warn("AAAAAAAAAA %d", opcode->operand0);
         break;
       }
       case SPVM_OPCODE_C_CODE_JIT_ON_STACK_REPLACEMENT: {
         call_stack[loop_stack_base + opcode->operand1].int_value++;
         
-        /*
-        if (call_stack[loop_stack_base + opcode->operand1].int_value > 1) {
-          *(int32_t*)&call_stack[call_stack_info.auto_dec_ref_count_stack_top_index] = auto_dec_ref_count_stack_top;
-          // JIT compile and on stack replacement
-          api->compile_jit_sub(api, sub_id);
-          int32_t jump_opcode_index = opcode->operand0;
-          return_value = SPVM_RUNTIME_call_sub_jit(api, sub_id, args, 1, call_stack, jump_opcode_index);
-          
-          goto label_FREE_CALL_STACK;
+        if (runtime->jit_count > 0) {
+          if (call_stack[loop_stack_base + opcode->operand1].int_value > 10000) {
+            *(int32_t*)&call_stack[call_stack_info.auto_dec_ref_count_stack_top_index] = auto_dec_ref_count_stack_top;
+            // JIT compile and on stack replacement
+            api->compile_jit_sub(api, sub_id);
+            int32_t jump_opcode_index = opcode->operand0;
+            return_value = SPVM_RUNTIME_call_sub_jit(api, sub_id, args, 1, call_stack, jump_opcode_index);
+            
+            goto label_FREE_CALL_STACK;
+          }
         }
-        */
         
         break;
       }

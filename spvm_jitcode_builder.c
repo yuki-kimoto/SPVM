@@ -601,7 +601,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     if (constant_pool_sub->auto_dec_ref_count_stack_max_length > 0) {
       SPVM_STRING_BUFFER_add(string_buffer, "    auto_dec_ref_count_stack_top = *(int32_t*)&call_stack[");
       SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_info.auto_dec_ref_count_stack_top_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "];");
+      SPVM_STRING_BUFFER_add(string_buffer, "];\n");
     }
     
     int32_t on_stack_replacement_jump_opcode_indexes_base = constant_pool_sub->on_stack_replacement_jump_opcode_indexes_base;
