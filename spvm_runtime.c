@@ -1689,12 +1689,17 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_CODE_JIT_ON_STACK_REPLACEMENT: {
         call_stack[loop_stack_base + opcode->operand1].int_value++;
         
-        // if (call_stack[loop_stack_base + opcode->operand1].int_value > 1000) {
+        /*
+        if (call_stack[loop_stack_base + opcode->operand1].int_value > 1000) {
           *(int32_t*)&call_stack[call_stack_info.auto_dec_ref_count_stack_top_index] = auto_dec_ref_count_stack_top;
           // JIT compile and on stack replacement
+          api->compile_jit_sub(api, sub_id);
+          int32_t jump_opcode_index = opcode->operand0;
+          SPVM_RUNTIME_call_sub_jit(api, sub_id, args, 1, call_stack, jump_opcode_index);
           
-          // return;
-        // }
+          return;
+        }
+        */
         
         // warn("BBBBBB %d %d", opcode->operand0, opcode->operand1);
         break;
