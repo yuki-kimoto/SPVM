@@ -3529,6 +3529,29 @@ build_runtime(...)
   else {
     runtime->jit_count = jit_count;
   }
+
+  // JIT mode
+  SV** sv_jit_mode_ptr = hv_fetch(hv_env, "SPVM_JIT_MODE", strlen("SPVM_JIT_MODE"), 0);
+  const char* pv_jit_mode;
+  if (sv_jit_mode_ptr) {
+    pv_jit_mode = SvPV_nolen(*sv_jit_mode_ptr);
+  }
+  else {
+    pv_jit_mode = "auto";
+  }
+  
+  if (strcmp(pv_jit_mode, "auto") == 0) {
+    runtime->jit_mode = SPVM_RUNTIME_C_JIT_MODE_AUTO;
+  }
+  else if (strcmp(pv_jit_mode, "all") == 0) {
+    runtime->jit_mode = SPVM_RUNTIME_C_JIT_MODE_ALL;
+  }
+  else if (strcmp(pv_jit_mode, "none") == 0) {
+    runtime->jit_mode = SPVM_RUNTIME_C_JIT_MODE_NONE;
+  }
+  else {
+    croak("Unknown jit mode");
+  }
   
   XSRETURN(0);
 }

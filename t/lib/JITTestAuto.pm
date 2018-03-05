@@ -6,9 +6,9 @@ use warnings;
 use FindBin;
 
 sub import {
-  
   if ($FindBin::Bin =~ /\/jit$/) {
     $ENV{SPVM_JIT_COUNT} = 1;
+    $ENV{SPVM_JIT_MODE} = 'all';
   }
 }
 

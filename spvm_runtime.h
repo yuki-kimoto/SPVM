@@ -14,6 +14,12 @@
 #define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET))--)
 #define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
+enum {
+  SPVM_RUNTIME_C_JIT_MODE_AUTO,
+  SPVM_RUNTIME_C_JIT_MODE_NONE,
+  SPVM_RUNTIME_C_JIT_MODE_ALL,
+};
+
 struct SPVM_runtime {
   // Exception
   SPVM_OBJECT* exception;
@@ -74,6 +80,8 @@ struct SPVM_runtime {
   char* jit_source_file;
   
   int32_t jit_count;
+  
+  int32_t jit_mode;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
