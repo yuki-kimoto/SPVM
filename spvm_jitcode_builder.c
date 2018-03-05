@@ -590,7 +590,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   }
   
   // On stack replacement
-  if (constant_pool_sub->loop_count > 0) {
+  if (constant_pool_sub->loop_structure_count > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  if (on_stack_replacement) {\n");
     SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_stack_index;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "    for (call_stack_index = 0; call_stack_index < ");
@@ -608,7 +608,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     {
       SPVM_STRING_BUFFER_add(string_buffer, "    switch(jump_opcode_index) {\n");
       int32_t i;
-      for (i = 0; i < constant_pool_sub->loop_count; i++) {
+      for (i = 0; i < constant_pool_sub->loop_structure_count; i++) {
         int32_t on_stack_replacement_jump_opcode_index = constant_pool[on_stack_replacement_jump_opcode_indexes_base + i];
         SPVM_STRING_BUFFER_add(string_buffer, "      case ");
         SPVM_STRING_BUFFER_add_int(string_buffer, on_stack_replacement_jump_opcode_index);

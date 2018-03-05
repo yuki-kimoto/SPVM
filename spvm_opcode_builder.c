@@ -2639,7 +2639,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       // On stack replacement
       int32_t on_stack_replacement_jump_opcode_indexes_base = constant_pool_sub.on_stack_replacement_jump_opcode_indexes_base;
       {
-        assert(constant_pool_sub.loop_count == sub->on_stack_replacement_jump_opcode_indexes->length);
+        assert(constant_pool_sub.loop_structure_count == sub->on_stack_replacement_jump_opcode_indexes->length);
         int32_t i;
         for (i = 0; i < sub->on_stack_replacement_jump_opcode_indexes->length; i++) {
           int32_t* on_stack_replacement_jump_opcode_index_ptr = SPVM_LIST_fetch(sub->on_stack_replacement_jump_opcode_indexes, i);

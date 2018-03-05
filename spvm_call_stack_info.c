@@ -9,7 +9,7 @@ void SPVM_CALL_STACK_init_call_stack_info(SPVM_CALL_STACK_INFO* call_stack_info,
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
   // Length
-  call_stack_info->length = constant_pool_sub->mys_length + 1 + constant_pool_sub->auto_dec_ref_count_stack_max_length + constant_pool_sub->loop_count;
+  call_stack_info->length = constant_pool_sub->mys_length + 1 + constant_pool_sub->auto_dec_ref_count_stack_max_length + constant_pool_sub->loop_structure_count;
   
   call_stack_info->auto_dec_ref_count_stack_top_index = constant_pool_sub->mys_length;
   call_stack_info->auto_dec_ref_count_stack_base = call_stack_info->auto_dec_ref_count_stack_top_index + 1;
