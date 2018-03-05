@@ -12,4 +12,7 @@ struct SPVM_call_stack_info {
   int32_t loop_stack_base;
 };
 
+void SPVM_CALL_STACK_init_call_stack_info(SPVM_CALL_STACK_INFO* call_stack_info, SPVM_RUNTIME* runtime, int32_t sub_id);
+void SPVM_CALL_STACK_foo(SPVM_CALL_STACK_INFO* call_stack_info, SPVM_RUNTIME* runtime, int32_t sub_id);
+
 #endif

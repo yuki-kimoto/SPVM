@@ -20,6 +20,7 @@
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_allocator.h"
+#include "spvm_call_stack_info.h"
 
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
@@ -249,6 +250,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   
   // Opcode base
   int32_t sub_opcode_base = constant_pool_sub->opcode_base;
+  
+  SPVM_CALL_STACK_INFO call_stack_info = {};
+  SPVM_CALL_STACK_init_call_stack_info(&call_stack_info, runtime, sub_id);
 
   // Subroutine stack
   // This is used Variables, Auto decrement stack, loop count
