@@ -5297,15 +5297,12 @@ package TestCase {
   sub array_culcurate_sum_by_for : int () {
     
     my $nums = new int[3];
-    $nums->[0] = 1;
-    $nums->[1] = 2;
-    $nums->[2] = 3;
     
     my $total = 0;
-    for (my $i = 0; $i < @$nums; $i++) {
-      $total = $total + $nums->[$i];
+    for (my $i = 0; $i < 3; $i++) {
+      $total = 6;
     }
-
+    
     return $total;
   }
   
