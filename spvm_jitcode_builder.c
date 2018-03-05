@@ -23,6 +23,7 @@
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_api.h"
+#include "spvm_call_stack_info.h"
 
 void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "call_stack[");
@@ -462,14 +463,15 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   int32_t* constant_pool = runtime->constant_pool;
   
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  
-  int32_t call_stack_length = constant_pool_sub->mys_length + constant_pool_sub->auto_dec_ref_count_stack_max_length + constant_pool_sub->loop_count;
+
+  SPVM_CALL_STACK_INFO call_stack_info = {};
+  SPVM_CALL_STACK_init_call_stack_info(&call_stack_info, runtime, sub_id);
   
   // Auto decrement reference count variable index stack top
-  int32_t auto_dec_ref_count_stack_base = constant_pool_sub->mys_length;
+  int32_t auto_dec_ref_count_stack_base = call_stack_info.auto_dec_ref_count_stack_base;
 
   // Call subroutine argument stack top
-  int32_t loop_stack_base = auto_dec_ref_count_stack_base + constant_pool_sub->auto_dec_ref_count_stack_max_length;
+  int32_t loop_stack_base = call_stack_info.loop_stack_base;
   
   assert(!constant_pool_sub->is_native);
   
@@ -578,7 +580,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Call stack
   if (constant_pool_sub->mys_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE call_stack[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_info.length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   
