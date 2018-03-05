@@ -21,15 +21,15 @@
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_allocator.h"
 
-#define SPVM_INFO_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
-#define SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, length))
-#define SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, ref_count))
-#define SPVM_INFO_RUNTIME_EXCEPTION_BYTE_OFFSET ((int32_t)offsetof(SPVM_RUNTIME, exception))
+#define SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
+#define SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, length))
+#define SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, ref_count))
+#define SPVM_RUNTIME_C_RUNTIME_EXCEPTION_BYTE_OFFSET ((int32_t)offsetof(SPVM_RUNTIME, exception))
 
-#define SPVM_INLINE_GET_REF_COUNT(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET)))
-#define SPVM_INLINE_INC_REF_COUNT(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))++)
-#define SPVM_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_REF_COUNT_BYTE_OFFSET))--)
-#define SPVM_INLINE_ISWEAK(object) ((intptr_t)object & 1)
+#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET)))
+#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET))++)
+#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET))--)
+#define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
@@ -264,7 +264,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // This is used Variables, Auto decrement stack, loop count
   int32_t call_stack_length = constant_pool_sub->mys_length + constant_pool_sub->auto_dec_ref_count_stack_max_length + constant_pool_sub->loop_count;
   SPVM_API_OBJECT* call_stack_object = SPVM_RUNTIME_API_new_call_stack_object(api, call_stack_length);
-  SPVM_API_VALUE* call_stack = call_stack_object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE;
+  SPVM_API_VALUE* call_stack = call_stack_object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE;
   
   // Copy arguments
   memcpy(call_stack, args, args_length * sizeof(SPVM_API_VALUE));
@@ -297,7 +297,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       
       SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&call_stack[arg_index];
       if (object != NULL) {
-        SPVM_INLINE_INC_REF_COUNT(object);
+        SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object);
       }
     }
   }
@@ -755,13 +755,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(SPVM_API_byte*)&call_stack[opcode->operand0] = *(SPVM_API_byte*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
+            *(SPVM_API_byte*)&call_stack[opcode->operand0] = *(SPVM_API_byte*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index);
           }
         }
         break;
@@ -775,14 +775,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
             *(SPVM_API_short*)&call_stack[opcode->operand0]
-              = *(SPVM_API_short*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index);
+              = *(SPVM_API_short*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index);
           }
         }
         break;
@@ -796,13 +796,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(SPVM_API_int*)&call_stack[opcode->operand0] = *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index);
+            *(SPVM_API_int*)&call_stack[opcode->operand0] = *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index);
           }
         }
         break;
@@ -816,13 +816,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(SPVM_API_long*)&call_stack[opcode->operand0] = *(SPVM_API_long*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index);
+            *(SPVM_API_long*)&call_stack[opcode->operand0] = *(SPVM_API_long*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index);
           }
         }
         break;
@@ -836,13 +836,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(float*)&call_stack[opcode->operand0] = *(float*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index);
+            *(float*)&call_stack[opcode->operand0] = *(float*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index);
           }
         }
         break;
@@ -856,13 +856,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(double*)&call_stack[opcode->operand0] = *(double*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index);
+            *(double*)&call_stack[opcode->operand0] = *(double*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index);
           }
         }
         break;
@@ -876,13 +876,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(SPVM_API_OBJECT**)&call_stack[opcode->operand0] = *(SPVM_API_OBJECT**)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
+            *(SPVM_API_OBJECT**)&call_stack[opcode->operand0] = *(SPVM_API_OBJECT**)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
           }
         }
         break;
@@ -896,13 +896,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(SPVM_API_byte*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index) = *(SPVM_API_byte*)&call_stack[opcode->operand2];
+            *(SPVM_API_byte*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(int8_t) * index) = *(SPVM_API_byte*)&call_stack[opcode->operand2];
           }
         }
         break;
@@ -916,13 +916,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(SPVM_API_short*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index) = *(SPVM_API_short*)&call_stack[opcode->operand2];
+            *(SPVM_API_short*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(int16_t) * index) = *(SPVM_API_short*)&call_stack[opcode->operand2];
           }
         }
         break;
@@ -936,13 +936,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index) = *(SPVM_API_int*)&call_stack[opcode->operand2];
+            *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(int32_t) * index) = *(SPVM_API_int*)&call_stack[opcode->operand2];
           }
         }
         break;
@@ -956,13 +956,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(SPVM_API_long*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index) = *(SPVM_API_long*)&call_stack[opcode->operand2];
+            *(SPVM_API_long*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(int64_t) * index) = *(SPVM_API_long*)&call_stack[opcode->operand2];
           }
         }
         break;
@@ -976,13 +976,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(float*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index) = *(float*)&call_stack[opcode->operand2];
+            *(float*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(float) * index) = *(float*)&call_stack[opcode->operand2];
           }
         }
         break;
@@ -996,13 +996,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            *(double*)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index) = *(double*)&call_stack[opcode->operand2];
+            *(double*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(double) * index) = *(double*)&call_stack[opcode->operand2];
           }
         }
         break;
@@ -1017,18 +1017,18 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET), 0)) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Index is out of range", 0);
             api->set_exception(api, exception);
             croak_flag = 1;
           }
           else {
-            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_OBJECT*) * index);
+            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_OBJECT*) * index);
             
             // Decrement old object reference count
             if (*object_address != NULL) {
-              if (SPVM_INLINE_GET_REF_COUNT(*object_address) > 1) {
-                SPVM_INLINE_DEC_REF_COUNT_ONLY(*object_address);
+              if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*object_address) > 1) {
+                SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*object_address);
               }
               else {
                 api->dec_ref_count(api, *object_address);
@@ -1040,7 +1040,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
 
             // Increment new object reference count
             if (*object_address != NULL) {
-              SPVM_INLINE_INC_REF_COUNT(*object_address);
+              SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*object_address);
             }
           }
         }
@@ -1070,15 +1070,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_CODE_INC_REF_COUNT: {
         // Increment new value reference count
         if (*(SPVM_API_OBJECT**)&call_stack[opcode->operand0] != NULL) {
-          SPVM_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[opcode->operand0]);
+          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[opcode->operand0]);
         }
         break;
       }
       case SPVM_OPCODE_C_CODE_DEC_REF_COUNT: {
         // Decrement reference count
         if (*(SPVM_API_OBJECT**)&call_stack[opcode->operand0] != NULL) {
-          if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[opcode->operand0]) > 1) {
-            SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[opcode->operand0]);
+          if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[opcode->operand0]) > 1) {
+            SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[opcode->operand0]);
           }
           else {
             api->dec_ref_count(api, *(SPVM_API_OBJECT**)&call_stack[opcode->operand0]);
@@ -1099,7 +1099,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           int32_t var_index = call_stack[auto_dec_ref_count_stack_base + auto_dec_ref_count_index].int_value;
           
           if (*(SPVM_API_OBJECT**)&call_stack[var_index] != NULL) {
-            if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 1) { SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[var_index]); }
+            if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[var_index]); }
             else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&call_stack[var_index]); }
           }
         }
@@ -1213,7 +1213,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_int*)&call_stack[opcode->operand0] = *(SPVM_API_int*)((intptr_t)*(SPVM_API_OBJECT**)&call_stack[opcode->operand1] + SPVM_INFO_OBJECT_LENGTH_BYTE_OFFSET);
+          *(SPVM_API_int*)&call_stack[opcode->operand0] = *(SPVM_API_int*)((intptr_t)*(SPVM_API_OBJECT**)&call_stack[opcode->operand1] + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET);
         }
         break;
       case SPVM_OPCODE_C_CODE_GET_FIELD_BYTE: {
@@ -1231,7 +1231,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_byte*)&call_stack[opcode->operand0] = *(SPVM_API_byte*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_byte*)&call_stack[opcode->operand0] = *(SPVM_API_byte*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
         }
         break;
       }
@@ -1250,7 +1250,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_short*)&call_stack[opcode->operand0] = *(SPVM_API_short*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_short*)&call_stack[opcode->operand0] = *(SPVM_API_short*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
         }
         break;
       }
@@ -1269,7 +1269,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_int*)&call_stack[opcode->operand0] = *(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_int*)&call_stack[opcode->operand0] = *(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
         }
         break;
       }
@@ -1288,7 +1288,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_long*)&call_stack[opcode->operand0] = *(SPVM_API_long*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_long*)&call_stack[opcode->operand0] = *(SPVM_API_long*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
         }
         break;
       }
@@ -1307,7 +1307,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(float*)&call_stack[opcode->operand0] = *(float*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(float*)&call_stack[opcode->operand0] = *(float*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
         }
         break;
       }
@@ -1326,7 +1326,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(double*)&call_stack[opcode->operand0] = *(double*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(double*)&call_stack[opcode->operand0] = *(double*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
         }
         break;
       }
@@ -1345,7 +1345,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_OBJECT**)&call_stack[opcode->operand0] = *(SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_OBJECT**)&call_stack[opcode->operand0] = *(SPVM_API_OBJECT**)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
         }
         break;
       }
@@ -1363,7 +1363,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_byte*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(SPVM_API_byte*)&call_stack[opcode->operand2];
+          *(SPVM_API_byte*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(SPVM_API_byte*)&call_stack[opcode->operand2];
         }
         break;
       }
@@ -1381,7 +1381,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_short*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(SPVM_API_short*)&call_stack[opcode->operand2];
+          *(SPVM_API_short*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(SPVM_API_short*)&call_stack[opcode->operand2];
         }
         break;
       }
@@ -1399,7 +1399,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_int*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(SPVM_API_int*)&call_stack[opcode->operand2];
+          *(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(SPVM_API_int*)&call_stack[opcode->operand2];
         }
         break;
       }
@@ -1417,7 +1417,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_long*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(SPVM_API_long*)&call_stack[opcode->operand2];
+          *(SPVM_API_long*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(SPVM_API_long*)&call_stack[opcode->operand2];
         }
         break;
       }
@@ -1435,7 +1435,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(float*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(float*)&call_stack[opcode->operand2];
+          *(float*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(float*)&call_stack[opcode->operand2];
         }
         break;
       }
@@ -1453,7 +1453,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(double*)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(double*)&call_stack[opcode->operand2];
+          *(double*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset) = *(double*)&call_stack[opcode->operand2];
         }
         break;
       }
@@ -1471,16 +1471,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)object + SPVM_INFO_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
           
           if(*field_address != NULL) {
             // If object is weak, unweaken
-            if (SPVM_INLINE_ISWEAK(*field_address)) {
+            if (SPVM_RUNTIME_C_INLINE_ISWEAK(*field_address)) {
               api->unweaken(api, field_address);
             }
             
-            if (SPVM_INLINE_GET_REF_COUNT(*field_address) > 1) {
-              SPVM_INLINE_DEC_REF_COUNT_ONLY(*field_address);
+            if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*field_address) > 1) {
+              SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*field_address);
             }
             else {
               api->dec_ref_count(api, *field_address);
@@ -1490,7 +1490,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           *field_address = *(SPVM_API_OBJECT**)&call_stack[opcode->operand2];
           
           if(*field_address != NULL) {
-            SPVM_INLINE_INC_REF_COUNT(*field_address);
+            SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*field_address);
           }
         }
         break;
@@ -1653,8 +1653,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         
         // Decrement reference count
         if (*(SPVM_API_OBJECT**)package_var_address != NULL) {
-          if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address) > 1) {
-            SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);
+          if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address) > 1) {
+            SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);
           }
           else {
             api->dec_ref_count(api, *(SPVM_API_OBJECT**)package_var_address);
@@ -1666,7 +1666,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         
         // Increment new value reference count
         if (*(SPVM_API_OBJECT**)package_var_address != NULL) {
-          SPVM_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address);
+          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address);
         }
         
         break;
@@ -1802,7 +1802,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           // Increment ref count of return value not to release by decrement
           if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
             if (*(SPVM_API_OBJECT**)&return_value != NULL) {
-              SPVM_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)&return_value);
+              SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)&return_value);
             }
           }
         }
@@ -1892,7 +1892,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         int32_t var_index = call_stack[auto_dec_ref_count_stack_base + auto_dec_ref_count_index].int_value;
         
         if (*(SPVM_API_OBJECT**)&call_stack[var_index] != NULL) {
-          if (SPVM_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 1) { SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[var_index]); }
+          if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&call_stack[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&call_stack[var_index]); }
           else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&call_stack[var_index]); }
         }
       }
@@ -1903,7 +1903,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       // Decrement ref count of return value
       if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
         if (*(SPVM_API_OBJECT**)&return_value != NULL) {
-          SPVM_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&return_value);
+          SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&return_value);
         }
       }
       
