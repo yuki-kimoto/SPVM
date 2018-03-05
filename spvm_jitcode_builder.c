@@ -580,6 +580,14 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_info.length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
+
+  if (constant_pool_sub->auto_dec_ref_count_stack_max_length > 0) {
+    // Auto decrement reference count variable index stack top
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t auto_dec_ref_count_stack_base = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_info.auto_dec_ref_count_stack_base);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t auto_dec_ref_count_stack_top = -1;\n");
+  }
   
   // On stack replacement
   if (constant_pool_sub->loop_count > 0) {
@@ -598,7 +606,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     }
     SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   }
-  
+
   if (constant_pool_sub->call_sub_arg_stack_max > 0 ) {
     SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_VALUE call_sub_args[");
     SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->call_sub_arg_stack_max);
@@ -655,14 +663,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   
   // Condition flag
   SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
-  
-  if (constant_pool_sub->auto_dec_ref_count_stack_max_length > 0) {
-    // Auto decrement reference count variable index stack top
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t auto_dec_ref_count_stack_base = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_info.auto_dec_ref_count_stack_base);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t auto_dec_ref_count_stack_top = -1;\n");
-  }
   
   // Return value
   if (!constant_pool_sub->is_void) {
