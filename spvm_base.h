@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_call_stack_info.h
+struct SPVM_call_stack_info;
+typedef struct SPVM_call_stack_info SPVM_CALL_STACK_INFO;
+
 // spvm_opcode_array.h
 struct SPVM_opcode_array;
 typedef struct SPVM_opcode_array SPVM_OPCODE_ARRAY;
