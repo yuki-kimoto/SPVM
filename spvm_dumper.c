@@ -356,7 +356,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     printf("      abs_name => \"%s\"\n", sub->abs_name);
     printf("      name => \"%s\"\n", sub->op_name->uv.name);
     printf("      return_type => \"%s\"\n", sub->op_return_type->uv.type->name);
-    printf("      is_constant => %d\n", sub->is_constant);
+    printf("      is_enum => %d\n", sub->is_enum);
     printf("      is_native => %d\n", sub->is_native);
     
     printf("      args\n");

@@ -1715,7 +1715,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Constant subroutine
-                  if (call_sub->sub->is_constant) {
+                  if (call_sub->sub->is_enum) {
                     // Replace sub to constant
                     op_cur->code = SPVM_OP_C_CODE_CONSTANT;
                     op_cur->uv.constant = call_sub->sub->op_constant->uv.constant;

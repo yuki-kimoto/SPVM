@@ -23,9 +23,10 @@ struct SPVM_sub {
   int32_t eval_stack_max_length;
   int32_t loop_structure_count;
   _Bool is_native;
-  _Bool is_constant;
+  _Bool is_enum;
   _Bool is_destructor;
   _Bool is_jit;
+  _Bool disable_jit;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
