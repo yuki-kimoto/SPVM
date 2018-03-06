@@ -34,6 +34,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   
+  // Compile JIT if caller sub is JIT
+  if (runtime->caller_sub_id > 0) {
+    SPVM_CONSTANT_POOL_SUB* constant_pool_caller_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[runtime->caller_sub_id];
+    if (constant_pool_caller_sub->is_jit) {
+      api->compile_jit_sub(api, sub_id);
+    }
+  }
+  
   if (constant_pool_sub->is_native) {
     return SPVM_RUNTIME_call_sub_native(api, sub_id, args);
   }
