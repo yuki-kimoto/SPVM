@@ -80,6 +80,8 @@ struct SPVM_runtime {
   char* jit_source_file;
   
   int32_t jit_mode;
+  
+  int32_t caller_sub_id;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

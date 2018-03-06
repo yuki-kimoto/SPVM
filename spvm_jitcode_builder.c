@@ -1878,6 +1878,13 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
 
         // Return type code
         int32_t call_sub_return_type_code = call_sub_return_type->code;
+
+        // Set callar subroutine id
+        SPVM_STRING_BUFFER_add(string_buffer, "*(int32_t*)(api->get_runtime(api) + ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, caller_sub_id));
+        SPVM_STRING_BUFFER_add(string_buffer, ") = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, sub_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)call_sub_abs_name);

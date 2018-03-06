@@ -230,7 +230,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   constant_pool_sub->call_count++;
   
   // Compile JIT subroutine
-
   if (runtime->jit_mode == SPVM_RUNTIME_C_JIT_MODE_ALL) {
     api->compile_jit_sub(api, sub_id);
   }
@@ -1733,6 +1732,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         int32_t call_sub_is_void = constant_pool_sub_call_sub->is_void;
         
         call_sub_arg_stack_top -= call_sub_args_length;
+        
+        // Set callar subroutine id
+        *(int32_t*)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, caller_sub_id)) = sub_id;
         
         // Call subroutine
         if (call_sub_is_void) {
