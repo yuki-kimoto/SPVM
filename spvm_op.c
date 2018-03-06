@@ -1943,6 +1943,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
     if (op_descriptor->code == SPVM_DESCRIPTOR_C_CODE_NATIVE) {
       sub->is_native = 1;
+      sub->disable_jit = 1;
     }
     else {
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_CODE_NAMES[op_descriptor->code], op_descriptors->file, op_descriptors->line);
@@ -2096,6 +2097,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   
   // Subroutine is constant
   op_sub->uv.sub->is_enum = 1;
+  op_sub->uv.sub->disable_jit = 1;
   
   return op_sub;
 }

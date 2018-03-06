@@ -86,7 +86,7 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
   
-  if (constant_pool_sub->is_jit) {
+  if (constant_pool_sub->is_jit || constant_pool_sub->disable_jit) {
     return 1;
   }
   

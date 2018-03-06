@@ -29,6 +29,7 @@ struct SPVM_constant_pool_sub {
   _Bool is_destructor;
   _Bool is_void;
   _Bool is_jit;
+  _Bool disable_jit;
 };
 
 #endif
