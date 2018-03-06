@@ -79,6 +79,16 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   dSP;
   
   (void)api;
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  
+  SPVM_CONSTANT_POOL* constant_pool = runtime->constant_pool;
+  
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  
+  if (constant_pool_sub->is_jit) {
+    return 1;
+  }
   
   // String buffer for jitcode
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
@@ -3516,21 +3526,8 @@ build_runtime(...)
   
   api->compile_jit_sub = &SPVM_XS_UTIL_compile_jit_sub;
   
-  // JIT count
-  HV* hv_env = get_hv("ENV", 0);
-  SV** sv_jit_count_ptr = hv_fetch(hv_env, "SPVM_JIT_COUNT", strlen("SPVM_JIT_COUNT"), 0);
-  int32_t jit_count = 0;
-  if (sv_jit_count_ptr) {
-    jit_count = SvIV(*sv_jit_count_ptr);
-  }
-  if (jit_count <= 0) {
-    runtime->jit_count = 10000;
-  }
-  else {
-    runtime->jit_count = jit_count;
-  }
-
   // JIT mode
+  HV* hv_env = get_hv("ENV", 0);
   SV** sv_jit_mode_ptr = hv_fetch(hv_env, "SPVM_JIT_MODE", strlen("SPVM_JIT_MODE"), 0);
   const char* pv_jit_mode;
   if (sv_jit_mode_ptr) {
