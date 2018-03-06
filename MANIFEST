@@ -81,6 +81,8 @@ SPVM.xs
 spvm_base.h
 spvm_call_field.c
 spvm_call_field.h
+spvm_call_stack_info.c
+spvm_call_stack_info.h
 spvm_call_sub.c
 spvm_call_sub.h
 spvm_compiler.c
