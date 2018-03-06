@@ -230,7 +230,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   constant_pool_sub->call_count++;
   
   // Compile JIT subroutine
-  if (!sub_is_jit && runtime->jit_count > 0 && constant_pool_sub->call_count >= runtime->jit_count) {
+
+  if (runtime->jit_mode == SPVM_RUNTIME_C_JIT_MODE_ALL) {
     api->compile_jit_sub(api, sub_id);
   }
   
@@ -1689,7 +1690,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_CODE_JIT_ON_STACK_REPLACEMENT: {
         call_stack[loop_stack_base + opcode->operand1].int_value++;
         
-        if (runtime->jit_count > 0) {
+        if (runtime->jit_mode == SPVM_RUNTIME_C_JIT_MODE_AUTO) {
           if (call_stack[loop_stack_base + opcode->operand1].int_value > 10000) {
             *(int32_t*)&call_stack[call_stack_info.auto_dec_ref_count_stack_top_index] = auto_dec_ref_count_stack_top;
             // JIT compile and on stack replacement
