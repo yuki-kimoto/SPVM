@@ -26,7 +26,7 @@
 #include "spvm_call_stack_info.h"
 
 void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "call_stack[");
+  SPVM_STRING_BUFFER_add(string_buffer, "vars[");
   SPVM_STRING_BUFFER_add_int(string_buffer, index);
   SPVM_STRING_BUFFER_add(string_buffer, "]");
 }
@@ -579,6 +579,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE call_stack[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_info.length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE* vars = call_stack;");
   }
 
   if (constant_pool_sub->auto_dec_ref_count_stack_max_length > 0) {
