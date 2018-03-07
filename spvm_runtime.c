@@ -279,7 +279,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   int32_t call_sub_arg_stack_top = -1;
 
   // Call subroutine argument stack top
-  int32_t loop_stack_base = call_stack_info.loop_stack_base;
+  SPVM_API_VALUE* loop_stack = &call_stack[call_stack_info.loop_stack_base];
   
   // Condition flag
   register int32_t condition_flag = 0;
@@ -1691,14 +1691,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_CODE_LOOP_START: {
-        call_stack[loop_stack_base + opcode->operand0].int_value = 0;
+        loop_stack[opcode->operand0].int_value = 0;
         break;
       }
       case SPVM_OPCODE_C_CODE_JIT_ON_STACK_REPLACEMENT: {
-        call_stack[loop_stack_base + opcode->operand1].int_value++;
+        loop_stack[opcode->operand1].int_value++;
         
         if (runtime->jit_mode == SPVM_RUNTIME_C_JIT_MODE_AUTO) {
-          if (call_stack[loop_stack_base + opcode->operand1].int_value > 1000) {
+          if (loop_stack[opcode->operand1].int_value > 1000) {
             *(int32_t*)&auto_dec_ref_count_stack[call_stack_info.auto_dec_ref_count_stack_top_index] = auto_dec_ref_count_stack_top;
             // JIT compile and on stack replacement
             api->compile_jit_sub(api, sub_id);
