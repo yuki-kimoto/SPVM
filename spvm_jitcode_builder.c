@@ -467,9 +467,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_CALL_STACK_INFO call_stack_info = {};
   SPVM_CALL_STACK_init_call_stack_info(&call_stack_info, runtime, sub_id);
   
-  // Call subroutine argument stack top
-  int32_t loop_stack_base = call_stack_info.loop_stack_base;
-  
   assert(!constant_pool_sub->is_native);
   
   // Include header
