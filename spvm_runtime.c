@@ -49,6 +49,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
     return SPVM_RUNTIME_call_sub_jit(api, sub_id, args);
   }
   else {
+    // Compile JIT subroutine
+    if (constant_pool_sub->have_jit_desc) {
+      api->compile_jit_sub(api, sub_id);
+      return SPVM_RUNTIME_call_sub_jit(api, sub_id, args);
+    }
+    
     return SPVM_RUNTIME_call_sub_vm(api, sub_id, args);
   }
 }
@@ -226,9 +232,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // Return value
   SPVM_API_VALUE return_value;
   
-  // Subroutine is JIT
-  int32_t sub_is_jit = constant_pool_sub->is_jit;
-  
   // Subroutine mys length
   int32_t sub_mys_length = constant_pool_sub->mys_length;
   
@@ -237,17 +240,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   
   constant_pool_sub->call_count++;
   
-  // Compile JIT subroutine
-  if (constant_pool_sub->have_jit_desc) {
-    api->compile_jit_sub(api, sub_id);
-  }
-  
-  // Call JIT sub
-  if (constant_pool_sub->is_jit) {
-    return_value = SPVM_RUNTIME_call_sub_jit(api, sub_id, args);
-    return return_value;
-  }
-
   // Subroutine object args length
   int32_t sub_object_args_length = constant_pool_sub->object_args_length;
 
