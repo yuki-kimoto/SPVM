@@ -1,0 +1,16 @@
+use TestCase::Minimal;
+
+package TestCase::Destructor {
+  has minimal : TestCase::Minimal;
+  
+  set minimal;
+  get minimal;
+
+  sub new : TestCase::Destructor () {
+    return new TestCase::Destructor;
+  }
+  
+  sub DESTROY : void ($self : TestCase::Destructor) {
+    $self->{minimal}->set_x(3);
+  }
+}

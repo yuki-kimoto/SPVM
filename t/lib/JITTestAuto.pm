@@ -9,10 +9,12 @@ use lib "t/lib";
 sub import {
   if ($FindBin::Bin =~ /\/jit$/) {
     $ENV{SPVM_JIT_MODE} = 'all';
-    push @INC, "t/jit/lib"
+    $ENV{SPVM_TEST_LIB_DIR} = "t/jit/lib";
+    push @INC, $ENV{SPVM_TEST_LIB_DIR};
   }
   else {
-    push @INC, "t/default/lib"
+    $ENV{SPVM_TEST_LIB_DIR} = "t/jit/lib";
+    push @INC, $ENV{SPVM_TEST_LIB_DIR};
   }
 }
 
