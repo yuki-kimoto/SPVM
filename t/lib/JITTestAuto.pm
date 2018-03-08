@@ -4,10 +4,15 @@ use strict;
 use warnings;
 
 use FindBin;
+use lib "t/lib";
 
 sub import {
   if ($FindBin::Bin =~ /\/jit$/) {
     $ENV{SPVM_JIT_MODE} = 'all';
+    push @INC, "t/jit/lib"
+  }
+  else {
+    push @INC, "t/default/lib"
   }
 }
 
