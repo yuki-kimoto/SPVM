@@ -33,6 +33,9 @@
 #include "spvm_package_var.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_undef.h"
+
+
+
 const char* const SPVM_OP_C_CODE_NAMES[] = {
   "IF",
   "ELSIF",
@@ -127,13 +130,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "PACKAGE_VAR",
   "ARRAY_INIT",
   "BOOL",
-  "MOVE_BYTE",
-  "MOVE_SHORT",
-  "MOVE_INT",
-  "MOVE_LONG",
-  "MOVE_FLOAT",
-  "MOVE_DOUBLE",
-  "MOVE_OBJECT",
 };
 
 void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
@@ -1945,9 +1941,15 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       sub->is_native = 1;
       sub->disable_jit = 1;
     }
+    else if (op_descriptor->code == SPVM_DESCRIPTOR_C_CODE_JIT){
+      sub->have_jit_desc = 1;
+    }
     else {
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_CODE_NAMES[op_descriptor->code], op_descriptors->file, op_descriptors->line);
     }
+  }
+  if (sub->is_native && sub->have_jit_desc) {
+    SPVM_yyerror_format(compiler, "native and jit descriptor can't be used together %s", SPVM_DESCRIPTOR_C_CODE_NAMES[op_descriptor->code], op_descriptors->file, op_descriptors->line);
   }
   
   // Native subroutine can't have block

@@ -220,6 +220,7 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   constant_pool_sub.args_length = sub->op_args->length;
   constant_pool_sub.is_native = sub->is_native;
   constant_pool_sub.is_destructor = sub->is_destructor;
+  constant_pool_sub.have_jit_desc = sub->have_jit_desc;
   constant_pool_sub.is_jit = sub->is_jit;
   constant_pool_sub.disable_jit = sub->disable_jit;
   constant_pool_sub.eval_stack_max_length = sub->eval_stack_max_length;
