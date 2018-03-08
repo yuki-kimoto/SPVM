@@ -1,5 +1,5 @@
 0.0315 2018-03-08
-
+  - add JIT descripter
 0.0314 2018-03-01
   - remove build_shared_lib.pl script
   - fix jit subroutine not called bug
