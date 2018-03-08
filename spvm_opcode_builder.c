@@ -153,25 +153,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       // Switch stack
       SPVM_LIST* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
-      // Loop block stack
-      SPVM_LIST* loop_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      
       int32_t auto_dec_ref_count_stack_max = 0;
       
       while (op_cur) {
         // [START]Preorder traversal position
         switch (op_cur->code) {
-          case SPVM_OP_C_CODE_LOOP: {
-            SPVM_OPCODE opcode;
-            memset(&opcode, 0, sizeof(SPVM_OPCODE));
-            opcode.code = SPVM_OPCODE_C_CODE_LOOP_START;
-            opcode.operand0 = op_cur->uv.loop_block_index;
-            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-
-            SPVM_LIST_push(loop_stack, op_cur);
-
-            break;
-          }
           case SPVM_OP_C_CODE_BLOCK: {
             if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
               SPVM_OPCODE opcode;
@@ -2098,21 +2084,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT) {
-                  // Add JIT_ON_STACK_REPLACEMENT opcode
-                  SPVM_OPCODE opcode;
-                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.code = SPVM_OPCODE_C_CODE_JIT_ON_STACK_REPLACEMENT;
-                  int32_t* on_stack_replacement_jump_opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-                  *on_stack_replacement_jump_opcode_index_ptr = opcode_array->length;
-                  SPVM_LIST_push(sub->on_stack_replacement_jump_opcode_indexes, on_stack_replacement_jump_opcode_index_ptr);
-                  
-                  opcode.operand0 = *on_stack_replacement_jump_opcode_index_ptr;
-                  assert(loop_stack->length > 0);
-                  SPVM_OP* op_loop = SPVM_LIST_fetch(loop_stack, loop_stack->length - 1);
-                  opcode.operand1 = op_loop->uv.loop_block_index;
-                  
-                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                  
                   // Set loop first GOTO opcode
                   int32_t* loop_first_opcode_index_ptr = SPVM_LIST_fetch(loop_first_goto_opcode_index_stack, loop_first_goto_opcode_index_stack->length - 1);
                   int32_t loop_first_opcode_index = *loop_first_opcode_index_ptr;
@@ -2167,8 +2138,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE* opcode_last = (opcode_array->values + last_opcode_index);
                   opcode_last->operand0 = opcode_array->length;
                 }
-                
-                SPVM_LIST_pop(loop_stack);
                 
                 break;
               }
@@ -2635,17 +2604,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       constant_pool_sub.opcode_length = sub->opcode_length;
       constant_pool_sub.auto_dec_ref_count_stack_max_length = auto_dec_ref_count_stack_max;
       memcpy(&compiler->constant_pool->values[sub->id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
-      
-      // On stack replacement
-      int32_t on_stack_replacement_jump_opcode_indexes_base = constant_pool_sub.on_stack_replacement_jump_opcode_indexes_base;
-      {
-        assert(constant_pool_sub.loop_structure_count == sub->on_stack_replacement_jump_opcode_indexes->length);
-        int32_t i;
-        for (i = 0; i < sub->on_stack_replacement_jump_opcode_indexes->length; i++) {
-          int32_t* on_stack_replacement_jump_opcode_index_ptr = SPVM_LIST_fetch(sub->on_stack_replacement_jump_opcode_indexes, i);
-          compiler->constant_pool->values[on_stack_replacement_jump_opcode_indexes_base + i] = *on_stack_replacement_jump_opcode_index_ptr;
-        }
-      }
     }
   }
 }

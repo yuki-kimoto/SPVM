@@ -566,7 +566,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   }
 
   // Arguments
-  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API* api, SPVM_API_VALUE* args, int32_t on_stack_replacement, SPVM_API_VALUE* runtime_call_stack, int32_t jump_opcode_index)");
+  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API* api, SPVM_API_VALUE* args)");
   
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
@@ -586,38 +586,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t auto_dec_ref_count_stack_top = -1;\n");
   }
   
-  // On stack replacement
-  if (constant_pool_sub->loop_structure_count > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  if (on_stack_replacement) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_stack_index;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    for (call_stack_index = 0; call_stack_index < ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_info.length);
-    SPVM_STRING_BUFFER_add(string_buffer, "; call_stack_index++) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "      call_stack[call_stack_index] = runtime_call_stack[call_stack_index];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-    if (constant_pool_sub->auto_dec_ref_count_stack_max_length > 0) {
-      SPVM_STRING_BUFFER_add(string_buffer, "    auto_dec_ref_count_stack_top = *(int32_t*)&call_stack[");
-      SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_info.auto_dec_ref_count_stack_top_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-    }
-    
-    int32_t on_stack_replacement_jump_opcode_indexes_base = constant_pool_sub->on_stack_replacement_jump_opcode_indexes_base;
-    {
-      SPVM_STRING_BUFFER_add(string_buffer, "    switch(jump_opcode_index) {\n");
-      int32_t i;
-      for (i = 0; i < constant_pool_sub->loop_structure_count; i++) {
-        int32_t on_stack_replacement_jump_opcode_index = constant_pool[on_stack_replacement_jump_opcode_indexes_base + i];
-        SPVM_STRING_BUFFER_add(string_buffer, "      case ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, on_stack_replacement_jump_opcode_index);
-        SPVM_STRING_BUFFER_add(string_buffer, " : goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, on_stack_replacement_jump_opcode_index);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  }
-
   if (constant_pool_sub->call_sub_arg_stack_max > 0 ) {
     SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_VALUE call_sub_args[");
     SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->call_sub_arg_stack_max);
