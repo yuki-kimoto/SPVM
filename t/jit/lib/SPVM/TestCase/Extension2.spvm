@@ -1,5 +1,5 @@
 package TestCase::Extension2 {
-  sub spvm_extension2 : int () {
+  jit sub spvm_extension2 : int () {
     my $total = TestCase::Extension2::mul(5, 3);
     
     if ($total == 15) {
@@ -9,7 +9,7 @@ package TestCase::Extension2 {
     return 0;
   }
 
-  sub spvm_extension2_binding : int () {
+  jit sub spvm_extension2_binding : int () {
     my $total = TestCase::Extension2::one();
     
     if ($total == 1) {

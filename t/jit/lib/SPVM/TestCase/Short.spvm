@@ -2,7 +2,7 @@ use Short;
 
 package TestCase::Short {
 
-  sub constant : int () {
+  jit sub constant : int () {
     if ((int)Short::MIN_VALUE() == (int)(short)-32768) {
       if ((int)Short::MAX_VALUE() == (int)(short)32767) {
         if (Short::BYTES() == 2) {

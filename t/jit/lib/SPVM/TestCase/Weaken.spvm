@@ -9,11 +9,11 @@ package TestCase::Weaken {
   set test_case, weaken2, x1;
   get test_case, weaken2, x1;
 
-  sub new : TestCase::Weaken () {
+  jit sub new : TestCase::Weaken () {
     return new TestCase::Weaken;
   }
   
-  sub weaken_test_case : void ($self : TestCase::Weaken) {
+  jit sub weaken_test_case : void ($self : TestCase::Weaken) {
     weaken $self->{test_case};
   }
 }
