@@ -467,6 +467,8 @@ char* SPVM_JITCODE_BUILDER_get_type_name(int32_t type_code) {
 void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, int32_t sub_id) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
 
+  SPVM_COMPILER* compiler = runtime->compiler;
+
   // Constant pool
   int32_t* constant_pool = runtime->constant_pool;
   
