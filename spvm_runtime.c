@@ -30,6 +30,7 @@
 #include "spvm_compiler.h"
 #include "spvm_my.h"
 #include "spvm_op.h"
+#include "spvm_list.h"
 
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
@@ -243,11 +244,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
 
-  // Subroutine return type id
-  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
-  
   // Subroutine return type
-  SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
+  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
   
   // Subroutine return type code
   int32_t sub_return_type_code = sub_return_type->code;
@@ -256,22 +254,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   SPVM_API_VALUE return_value;
   
   // Subroutine mys length
-  int32_t sub_mys_length = constant_pool_sub->mys_length;
+  int32_t sub_mys_length = sub->op_mys->length;
   
   // Args length
-  int32_t args_length = constant_pool_sub->args_length;
+  int32_t args_length = sub->op_args->length;
   
-  // Subroutine object args length
-  int32_t sub_object_args_length = constant_pool_sub->object_args_length;
-
-  // Subroutine object args length
-  int32_t sub_object_args_base = constant_pool_sub->object_args_base;
-
   // Bytecodes
   SPVM_OPCODE* opcodes = runtime->opcodes;
   
   // Opcode base
-  int32_t sub_opcode_base = constant_pool_sub->opcode_base;
+  int32_t sub_opcode_base = sub->opcode_base;
   
   SPVM_CALL_STACK_INFO call_stack_info = {};
   SPVM_CALL_STACK_init_call_stack_info(&call_stack_info, runtime, sub_id);
@@ -303,6 +295,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // Call sub arguments
   SPVM_API_VALUE call_sub_args[255];
   
+  // Subroutine object args length
+  int32_t sub_object_args_length = constant_pool_sub->object_args_length;
+
+  // Subroutine object args length
+  int32_t sub_object_args_base = constant_pool_sub->object_args_base;
+
   // Call normal sub
   // If arg is object, increment reference count
   {
@@ -1714,19 +1712,19 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         int32_t call_sub_id = opcode->operand1;
         
         // Constant pool sub
-        SPVM_CONSTANT_POOL_SUB* constant_pool_sub_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
+        SPVM_CONSTANT_POOL_SUB* constant_pool_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
+        int32_t op_call_sub_id = constant_pool_call_sub->op_sub_id;
+        SPVM_OP* op_call_sub = SPVM_LIST_fetch(compiler->op_subs, op_call_sub_id);
+        SPVM_SUB* call_sub = op_call_sub->uv.sub;
         
-        // Call subroutine return type id
-        int32_t call_sub_return_type_id = constant_pool_sub_call_sub->return_type_id;
+        // Subroutine return type
+        SPVM_TYPE* call_sub_return_type = call_sub->op_return_type->uv.type;
         
-        // Constant pool type
-        SPVM_CONSTANT_POOL_TYPE* call_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_return_type_id];
-        
-        // Return type code
+        // Subroutine return type code
         int32_t call_sub_return_type_code = call_sub_return_type->code;
         
         // Subroutine argument length
-        int32_t call_sub_args_length = constant_pool_sub_call_sub->args_length;
+        int32_t call_sub_args_length = call_sub->op_args->length;
         
         call_sub_arg_stack_top -= call_sub_args_length;
         
