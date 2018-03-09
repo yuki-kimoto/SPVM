@@ -1827,21 +1827,18 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         int32_t call_sub_id = opcode->operand1;
         
         // Constant pool sub
-        SPVM_CONSTANT_POOL_SUB* constant_pool_sub_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
+        SPVM_CONSTANT_POOL_SUB* constant_pool_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
+        int32_t op_call_sub_id = constant_pool_call_sub->op_sub_id;
+        SPVM_OP* op_call_sub = SPVM_LIST_fetch(compiler->op_subs, op_call_sub_id);
+        SPVM_SUB* call_sub = op_call_sub->uv.sub;
         
         // Subroutine argument length
-        int32_t call_sub_args_length = constant_pool_sub_call_sub->args_length;
+        int32_t call_sub_args_length = call_sub->op_args->length;
 
-        // Subroutine argment type ids base
-        int32_t call_sub_arg_type_ids_base = constant_pool_sub_call_sub->arg_type_ids_base;
-
-        int32_t call_sub_abs_name_id = constant_pool_sub_call_sub->abs_name_id;
-        
         // Subroutine name
-        const char* call_sub_abs_name = (char*)&constant_pool[call_sub_abs_name_id + 1];
+        const char* call_sub_abs_name = call_sub->abs_name;
 
-        int32_t call_sub_return_type_id = constant_pool_sub_call_sub->return_type_id;
-        SPVM_CONSTANT_POOL_TYPE* call_sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[call_sub_return_type_id];
+        SPVM_TYPE* call_sub_return_type = call_sub->op_return_type->uv.type;
 
         // Return type code
         int32_t call_sub_return_type_code = call_sub_return_type->code;
