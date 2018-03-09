@@ -473,17 +473,17 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   int32_t* constant_pool = runtime->constant_pool;
   
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  int32_t op_sub_id = constant_pool_sub->op_sub_id;
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
 
-  // Subroutine return type id
-  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
-  
   // Subroutine return type
-  SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
+  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
   
   // Subroutine return type code
   int32_t sub_return_type_code = sub_return_type->code;
 
-  assert(!constant_pool_sub->is_native);
+  assert(!sub->is_native);
   
   // Include header
   SPVM_STRING_BUFFER_add(string_buffer, "#ifndef SPVM_JITCODE_BUILDER_H\n");
@@ -521,24 +521,14 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
 
   SPVM_STRING_BUFFER_add(string_buffer, "#endif\n");
   
-  int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
-  
   // Subroutine name
-  const char* sub_abs_name = (char*)&constant_pool[sub_abs_name_id + 1];
+  const char* sub_abs_name = sub->abs_name;
 
   // Arguments length
-  int32_t args_length = constant_pool_sub->args_length;
-  
-  // Arguments type ids base
-  int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
+  int32_t args_length = sub->op_args->length;
 
-  // Return type code
-  int32_t return_type_id = constant_pool_sub->return_type_id;
-  SPVM_CONSTANT_POOL_TYPE* return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[return_type_id];
-  int32_t return_type_code = return_type->code;
-  
   // Return type
-  switch (return_type->code) {
+  switch (sub_return_type_code) {
     case SPVM_TYPE_C_CODE_VOID:
       SPVM_STRING_BUFFER_add(string_buffer, "void ");
       break;
@@ -585,27 +575,30 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
   // Variables
-  if (constant_pool_sub->mys_length > 0) {
+  if (sub->op_mys->length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->mys_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, sub->op_mys->length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   
-  if (constant_pool_sub->auto_dec_ref_count_stack_max_length > 0) {
+  if (sub->auto_dec_ref_count_stack_max_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE auto_dec_ref_count_stack[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->auto_dec_ref_count_stack_max_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, sub->auto_dec_ref_count_stack_max_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t auto_dec_ref_count_stack_top = -1;\n");
   }
   
-  if (constant_pool_sub->call_sub_arg_stack_max > 0 ) {
+  if (sub->call_sub_arg_stack_max > 0 ) {
     SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_VALUE call_sub_args[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, constant_pool_sub->call_sub_arg_stack_max);
+    SPVM_STRING_BUFFER_add_int(string_buffer, sub->call_sub_arg_stack_max);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   
   // Call subroutine argument stack top
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t call_sub_arg_stack_top = -1;\n");
+
+  // Arguments type ids base
+  int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
   
   // Copy arguments to variables
   {
@@ -658,7 +651,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Return value
   if (sub_return_type_code != SPVM_TYPE_C_CODE_VOID) {
     SPVM_STRING_BUFFER_add(string_buffer, "  ");
-    switch (return_type_code) {
+    switch (sub_return_type_code) {
       case SPVM_TYPE_C_CODE_BYTE : {
         SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_byte");
         break;
@@ -694,8 +687,8 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t croak_flag = 0;\n");
   
   SPVM_OPCODE* opcodes = runtime->opcodes;
-  int32_t opcode_base = constant_pool_sub->opcode_base;
-  int32_t opcode_length = constant_pool_sub->opcode_length;
+  int32_t opcode_base = sub->opcode_base;
+  int32_t opcode_length = sub->opcode_length;
   int32_t opcode_index = opcode_base;
   
   SPVM_OPCODE* opcode = NULL;
@@ -1290,7 +1283,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       }
       case SPVM_OPCODE_C_CODE_LEAVE_SCOPE: {
-        if (constant_pool_sub->auto_dec_ref_count_stack_max_length > 0) {
+        if (sub->auto_dec_ref_count_stack_max_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t auto_dec_ref_count_stack_current_base = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
@@ -1969,14 +1962,14 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       {
         // Get return value
         if (sub_return_type_code != SPVM_TYPE_C_CODE_VOID) {
-          const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(return_type_code);
+          const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_code);
           SPVM_STRING_BUFFER_add(string_buffer, "  return_value = ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
         
         // Increment ref count of return value not to release by decrement
-        if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+        if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
           SPVM_STRING_BUFFER_add(string_buffer, "  if (return_value != SPVM_RUNTIME_C_NULL) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(return_value);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -2073,7 +2066,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     SPVM_STRING_BUFFER_add(string_buffer, "  label_SPVM_OPCODE_C_CODE_RETURN:\n");
     
     // Decrement auto decremenet variable
-    if (constant_pool_sub->auto_dec_ref_count_stack_max_length > 0) {
+    if (sub->auto_dec_ref_count_stack_max_length > 0) {
       SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
       SPVM_STRING_BUFFER_add(string_buffer, "    int32_t auto_dec_ref_count_index;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "    for (auto_dec_ref_count_index = 0; auto_dec_ref_count_index <= auto_dec_ref_count_stack_top; auto_dec_ref_count_index++) {\n");
@@ -2088,7 +2081,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     
     // No exception
     SPVM_STRING_BUFFER_add(string_buffer, "  if (!croak_flag) {\n");
-    if (return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
+    if (sub_return_type_code > SPVM_TYPE_C_CODE_DOUBLE) {
       SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != SPVM_RUNTIME_C_NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(return_value); }\n");
     }
     SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, SPVM_RUNTIME_C_NULL);\n");
