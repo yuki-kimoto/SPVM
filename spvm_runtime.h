@@ -82,6 +82,8 @@ struct SPVM_runtime {
   int32_t jit_mode;
   
   int32_t caller_sub_id;
+  
+  SPVM_COMPILER* compiler;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

@@ -29,6 +29,7 @@
 #include "spvm_compiler.h"
 #include "spvm_my.h"
 #include "spvm_op.h"
+#include "spvm_list.h"
 
 
 
@@ -109,23 +110,22 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_OBJECT* exception, int32_t sub_id, int32_t current_line) {
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
 
   int32_t* constant_pool = runtime->constant_pool;
   
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  
-  // Subroutine name id
-  int32_t sub_abs_name_id = constant_pool_sub->abs_name_id;
-  
-  // Subroutine file name id
-  int32_t sub_file_name_id = constant_pool_sub->file_name_id;
+  int32_t op_sub_id = constant_pool_sub->op_sub_id;
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
   
   // Sub name
-  const char* sub_name = (char*)&constant_pool[sub_abs_name_id + 1];
+  const char* sub_name = sub->abs_name;
   
   // File name
-  const char* file_name = (char*)&constant_pool[sub_file_name_id + 1];
+  const char* file_name = sub->file_name;
   
   // stack trace strings
   const char* from = "\n  from ";

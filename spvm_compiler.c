@@ -28,6 +28,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_new_runtime();
   
+  runtime->compiler = compiler;
+  
   // Set global runtime
   SPVM_RUNTIME_API_set_runtime(runtime->api, runtime);
   
