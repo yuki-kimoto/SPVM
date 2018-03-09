@@ -3439,12 +3439,20 @@ bind_jitcode_sub(...)
   int32_t sub_id = api->get_sub_id(api, sub_abs_name);
 
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Subroutine information
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  int32_t op_sub_id = constant_pool_sub->op_sub_id;
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
   
   constant_pool_sub->jit_address = sub_jit_address;
   constant_pool_sub->is_jit = 1;
+  
+  sub->jit_address = sub_jit_address;
+  sub->is_jit = 1;
   
   XSRETURN(0);
 }
