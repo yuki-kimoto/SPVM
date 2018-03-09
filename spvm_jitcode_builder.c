@@ -597,18 +597,14 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Call subroutine argument stack top
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t call_sub_arg_stack_top = -1;\n");
 
-  // Arguments type ids base
-  int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
-  
   // Copy arguments to variables
   {
     int32_t arg_index;
-    for (arg_index = 0; arg_index < args_length; arg_index++) {
-      int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
-
-      // Argument type code
-      SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
-      int32_t arg_type_code = constant_pool_arg_type->code;
+    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+      
+      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
+      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
+      int32_t arg_type_code = arg_type->code;
       const char* arg_type_name = SPVM_JITCODE_BUILDER_get_type_name(arg_type_code);
 
       // Assign argument
@@ -628,13 +624,11 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // If arg is object, increment reference count
   {
     int32_t arg_index;
-    for (arg_index = 0; arg_index < args_length; arg_index++) {
-      int32_t arg_type_id = constant_pool[arg_type_ids_base + arg_index];
-
-      // Argument type code
-      SPVM_CONSTANT_POOL_TYPE* constant_pool_arg_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[arg_type_id];
+    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
+      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
       
-      if (!constant_pool_arg_type->is_numeric) {
+      if (SPVM_TYPE_is_object(compiler, arg_type)) {
         SPVM_STRING_BUFFER_add(string_buffer, "  if (");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", arg_index);
         SPVM_STRING_BUFFER_add(string_buffer, " != SPVM_RUNTIME_C_NULL) { SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(");
