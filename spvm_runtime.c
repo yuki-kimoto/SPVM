@@ -272,9 +272,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
 
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = -1;
-
-  // Call subroutine argument stack top
-  SPVM_API_VALUE* loop_stack = &call_stack[call_stack_info.loop_stack_base];
   
   // Condition flag
   register int32_t condition_flag = 0;

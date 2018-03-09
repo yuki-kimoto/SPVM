@@ -248,8 +248,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_LIST* op_my_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       SPVM_LIST* block_my_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
-      int32_t loop_structure_count = 0;
-      
       // Switch stack
       SPVM_LIST* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
@@ -1406,9 +1404,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP_replace_op(compiler, op_stab_condition, op_block_loop);
                   SPVM_OP_replace_op(compiler, op_stab_block_loop, op_condition);
                   
-                  op_cur->uv.loop_block_index = loop_structure_count;
-                  loop_structure_count++;
-                  
                   break;
                 }
                 case SPVM_OP_C_CODE_CONCAT_STRING: {
@@ -1856,9 +1851,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
         }
       }
-      
-      // Set subroutine information
-      sub->loop_structure_count = loop_structure_count;
       
       if (!sub->is_native) {
         // Run OPs
