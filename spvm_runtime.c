@@ -238,8 +238,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // Args length
   int32_t args_length = constant_pool_sub->args_length;
   
-  constant_pool_sub->call_count++;
-  
   // Subroutine object args length
   int32_t sub_object_args_length = constant_pool_sub->object_args_length;
 

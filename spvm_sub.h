@@ -5,6 +5,8 @@
 
 // Method information
 struct SPVM_sub {
+  void* native_address;
+  void* jit_address;
   SPVM_OP* op_name;
   SPVM_OP* op_return_type;
   SPVM_OP* op_block;
@@ -12,7 +14,6 @@ struct SPVM_sub {
   SPVM_OP* op_constant;
   SPVM_LIST* op_args;
   SPVM_LIST* op_mys;
-  void* native_address;
   const char* abs_name;
   const char* file_name;
   int32_t opcode_base;
