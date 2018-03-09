@@ -295,22 +295,19 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // Call sub arguments
   SPVM_API_VALUE call_sub_args[255];
   
-  // Subroutine object args length
-  int32_t sub_object_args_length = constant_pool_sub->object_args_length;
-
-  // Subroutine object args length
-  int32_t sub_object_args_base = constant_pool_sub->object_args_base;
-
   // Call normal sub
   // If arg is object, increment reference count
   {
-    int32_t i;
-    for (i = 0; i < sub_object_args_length; i++) {
-      int32_t arg_index = constant_pool[sub_object_args_base + i];
+    int32_t arg_index;
+    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
+      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
       
-      SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[arg_index];
-      if (object != NULL) {
-        SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object);
+      if (SPVM_TYPE_is_object(compiler, arg_type)) {
+        SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[arg_index];
+        if (object != NULL) {
+          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object);
+        }
       }
     }
   }
