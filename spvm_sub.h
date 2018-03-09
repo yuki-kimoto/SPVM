@@ -20,6 +20,7 @@ struct SPVM_sub {
   int32_t call_sub_arg_stack_max;
   int32_t id;
   int32_t eval_stack_max_length;
+  int32_t auto_dec_ref_count_stack_max_length;
   _Bool is_native;
   _Bool is_enum;
   _Bool is_destructor;

@@ -225,10 +225,6 @@ int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL*
   constant_pool_sub.disable_jit = sub->disable_jit;
   constant_pool_sub.eval_stack_max_length = sub->eval_stack_max_length;
   
-  if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
-    constant_pool_sub.is_void = 1;
-  }
-  
   assert(sub->op_return_type);
   
   constant_pool_sub.return_type_id = sub->op_return_type->uv.type->id;

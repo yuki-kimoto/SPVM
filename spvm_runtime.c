@@ -1707,16 +1707,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         // Subroutine argument length
         int32_t call_sub_args_length = constant_pool_sub_call_sub->args_length;
         
-        // Subroutine argument length
-        int32_t call_sub_is_void = constant_pool_sub_call_sub->is_void;
-        
         call_sub_arg_stack_top -= call_sub_args_length;
         
         // Set callar subroutine id
         *(int32_t*)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, caller_sub_id)) = sub_id;
         
         // Call subroutine
-        if (call_sub_is_void) {
+        if (call_sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
           api->call_void_sub(api, call_sub_id, call_sub_args);
         }
         else if (call_sub_return_type_code == SPVM_TYPE_C_CODE_BYTE) {
@@ -1761,7 +1758,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         if (croak_flag) {
           // Exception stack trace
           api->set_exception(api, api->create_exception_stack_trace(api, api->get_exception(api), opcode->operand1, opcode->operand2));
-          if (!constant_pool_sub->is_void) {
+          if (sub_return_type_code != SPVM_TYPE_C_CODE_VOID) {
             memset(&return_value, 0, sizeof(SPVM_API_VALUE));
           }
           goto label_SPVM_OPCODE_C_CODE_RETURN;
@@ -1775,7 +1772,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_CODE_RETURN:
       {
         // Set return value
-        if (!constant_pool_sub->is_void) {
+        if (sub_return_type_code != SPVM_TYPE_C_CODE_VOID) {
           return_value = vars[opcode->operand0];
           
           // Increment ref count of return value not to release by decrement

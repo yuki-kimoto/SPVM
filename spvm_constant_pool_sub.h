@@ -25,7 +25,6 @@ struct SPVM_constant_pool_sub {
   int32_t call_count;
   _Bool is_native;
   _Bool is_destructor;
-  _Bool is_void;
   _Bool is_jit;
   _Bool disable_jit;
   _Bool have_jit_desc;

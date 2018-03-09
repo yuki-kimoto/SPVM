@@ -463,6 +463,15 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
 
+  // Subroutine return type id
+  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
+  
+  // Subroutine return type
+  SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
+  
+  // Subroutine return type code
+  int32_t sub_return_type_code = sub_return_type->code;
+
   assert(!constant_pool_sub->is_native);
   
   // Include header
@@ -511,9 +520,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   
   // Arguments type ids base
   int32_t arg_type_ids_base = constant_pool_sub->arg_type_ids_base;
-
-  // Is void
-  int32_t sub_is_void = constant_pool_sub->is_void;
 
   // Return type code
   int32_t return_type_id = constant_pool_sub->return_type_id;
@@ -639,7 +645,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
   
   // Return value
-  if (!constant_pool_sub->is_void) {
+  if (sub_return_type_code != SPVM_TYPE_C_CODE_VOID) {
     SPVM_STRING_BUFFER_add(string_buffer, "  ");
     switch (return_type_code) {
       case SPVM_TYPE_C_CODE_BYTE : {
@@ -1824,9 +1830,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
 
         // Subroutine argment type ids base
         int32_t call_sub_arg_type_ids_base = constant_pool_sub_call_sub->arg_type_ids_base;
-        
-        // Subroutine argument length
-        int32_t call_sub_is_void = constant_pool_sub_call_sub->is_void;
 
         int32_t call_sub_abs_name_id = constant_pool_sub_call_sub->abs_name_id;
         
@@ -1857,7 +1860,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         // Call subroutine
-        if (call_sub_is_void) {
+        if (call_sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
           SPVM_STRING_BUFFER_add(string_buffer, "    api->call_void_sub(api, call_sub_id");
         }
         else if (call_sub_return_type_code == SPVM_TYPE_C_CODE_BYTE) {
@@ -1940,7 +1943,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, "));\n");
-        if (!sub_is_void) {
+        if (sub_return_type_code != SPVM_TYPE_C_CODE_VOID) {
           SPVM_STRING_BUFFER_add(string_buffer, "    return_value = 0;\n");
         }
         SPVM_STRING_BUFFER_add(string_buffer, "    goto label_SPVM_OPCODE_C_CODE_RETURN;\n");
@@ -1954,7 +1957,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_CODE_RETURN:
       {
         // Get return value
-        if (!constant_pool_sub->is_void) {
+        if (sub_return_type_code != SPVM_TYPE_C_CODE_VOID) {
           const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(return_type_code);
           SPVM_STRING_BUFFER_add(string_buffer, "  return_value = ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
@@ -2080,7 +2083,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, SPVM_RUNTIME_C_NULL);\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
     
-    if (sub_is_void) {
+    if (sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
       SPVM_STRING_BUFFER_add(string_buffer, "  return;\n");
     }
     else {
