@@ -89,12 +89,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
   int32_t op_sub_id = constant_pool_sub->op_sub_id;
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
-
-  // Subroutine return type id
-  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
   
   // Subroutine return type
-  SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
+  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
   
   // Subroutine return type code
   int32_t sub_return_type_code = sub_return_type->code;
@@ -103,9 +100,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
   SPVM_API_VALUE return_value;
   
   // Subroutine is JIT
-  assert(constant_pool_sub->is_jit);
+  assert(sub->is_jit);
   
-  void* sub_jit_address = constant_pool_sub->jit_address;
+  void* sub_jit_address = sub->jit_address;
   
   
   // Call JIT subroutine
