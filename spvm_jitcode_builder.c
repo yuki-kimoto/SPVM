@@ -24,6 +24,15 @@
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_api.h"
 
+#include "spvm_package.h"
+#include "spvm_sub.h"
+#include "spvm_package.h"
+#include "spvm_type.h"
+#include "spvm_field.h"
+#include "spvm_compiler.h"
+#include "spvm_my.h"
+#include "spvm_op.h"
+
 void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
   SPVM_STRING_BUFFER_add_int(string_buffer, index);

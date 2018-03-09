@@ -22,6 +22,15 @@
 #include "spvm_runtime_allocator.h"
 #include "spvm_call_stack_info.h"
 
+#include "spvm_package.h"
+#include "spvm_sub.h"
+#include "spvm_package.h"
+#include "spvm_type.h"
+#include "spvm_field.h"
+#include "spvm_compiler.h"
+#include "spvm_my.h"
+#include "spvm_op.h"
+
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
   
