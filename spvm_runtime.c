@@ -167,13 +167,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_
   SPVM_SUB* sub = op_sub->uv.sub;
 
   // Subroutine is native
-  assert(constant_pool_sub->is_native);
+  assert(sub->is_native);
 
-  // Subroutine return type id
-  int32_t sub_return_type_id = constant_pool_sub->return_type_id;
-  
   // Subroutine return type
-  SPVM_CONSTANT_POOL_TYPE* sub_return_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[sub_return_type_id];
+  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
   
   // Subroutine return type code
   int32_t sub_return_type_code = sub_return_type->code;
@@ -185,7 +182,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_
   api->set_exception(api, NULL);
   
   // Native address
-  void* sub_native_address = constant_pool_sub->native_address;
+  void* sub_native_address = sub->native_address;
 
   if (sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
     void (*native_address)(SPVM_API*, SPVM_API_VALUE*) = sub_native_address;

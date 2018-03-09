@@ -3402,6 +3402,7 @@ bind_native_sub(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   SV* sv_native_sub_name = ST(0);
   SV* sv_native_address = ST(1);
@@ -3415,8 +3416,12 @@ bind_native_sub(...)
   // Set native address to subroutine
   int32_t sub_id = (int32_t)(intptr_t)SPVM_HASH_search(runtime->sub_symtable, native_sub_name, strlen(native_sub_name));
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  int32_t op_sub_id = constant_pool_sub->op_sub_id;
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
   
   constant_pool_sub->native_address = (void*)native_address;
+  sub->native_address = (void*)native_address;
   
   XSRETURN(0);
 }
