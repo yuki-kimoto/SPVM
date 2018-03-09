@@ -86,6 +86,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  int32_t op_sub_id = constant_pool_sub->op_sub_id;
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
 
   // Subroutine return type id
   int32_t sub_return_type_id = constant_pool_sub->return_type_id;
@@ -162,6 +165,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  int32_t op_sub_id = constant_pool_sub->op_sub_id;
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
 
   // Subroutine is native
   assert(constant_pool_sub->is_native);
@@ -239,6 +245,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
+  int32_t op_sub_id = constant_pool_sub->op_sub_id;
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
 
   // Subroutine return type id
   int32_t sub_return_type_id = constant_pool_sub->return_type_id;
