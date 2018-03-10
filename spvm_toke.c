@@ -21,7 +21,6 @@
 #include "spvm_descriptor.h"
 #include "spvm_type.h"
 #include "spvm_use.h"
-#include "spvm_constant_pool.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -172,10 +171,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               cur_src[file_size] = '\0';
               
               // Add package loading information
-              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_name);
-              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_name_with_template_args);
               const char* package_path = cur_file;
-              SPVM_CONSTANT_POOL_push_string(compiler, compiler->constant_pool, package_path);
               SPVM_HASH_insert(compiler->package_load_path_symtable, package_name_with_template_args, strlen(package_name_with_template_args), (void*)package_path);
               
               compiler->cur_src = cur_src;

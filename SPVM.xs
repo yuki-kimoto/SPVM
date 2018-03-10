@@ -17,7 +17,6 @@
 #include "spvm_hash.h"
 #include "spvm_list.h"
 #include "spvm_util_allocator.h"
-#include "spvm_constant_pool.h"
 #include "spvm_runtime.h"
 #include "spvm_op.h"
 #include "spvm_sub.h"
@@ -26,13 +25,11 @@
 #include "spvm_my.h"
 #include "spvm_type.h"
 #include "spvm_field.h"
-#include "spvm_constant_pool.h"
 #include "spvm_object.h"
 #include "spvm_api.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_list.h"
-#include "spvm_constant_pool_builder.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_string_buffer.h"
 
@@ -3181,21 +3178,6 @@ compile(...)
   XPUSHs(sv_compile_success);
   
   XSRETURN(1);
-}
-
-SV*
-build_constant_pool(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
-  
-  // Build constant pool
-  SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(compiler);
-  
-  XSRETURN(0);
 }
 
 SV*

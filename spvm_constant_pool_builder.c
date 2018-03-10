@@ -2,8 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "spvm_constant_pool_builder.h"
-#include "spvm_constant_pool.h"
 #include "spvm_list.h"
 #include "spvm_compiler.h"
 #include "spvm_constant.h"
@@ -14,51 +12,3 @@
 #include "spvm_sub.h"
 #include "spvm_hash.h"
 
-void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
-  SPVM_LIST* op_packages = compiler->op_packages;
-  
-  // Push constant to constant pool
-  {
-    int32_t i;
-    for (i = 0; i < compiler->op_constants->length; i++) {
-      SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, i);
-      
-      // Constant
-      SPVM_CONSTANT* constant = op_constant->uv.constant;
-      
-      // Constant pool
-      SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
-      
-      // Push value to constant pool
-      switch (constant->type->id) {
-        case SPVM_TYPE_C_ID_BYTE: {
-          break;
-        }
-        case SPVM_TYPE_C_ID_SHORT: {
-          break;
-        }
-        case SPVM_TYPE_C_ID_INT: {
-          break;
-        }
-        case SPVM_TYPE_C_ID_LONG: {
-          break;
-        }
-        case SPVM_TYPE_C_ID_FLOAT: {
-          break;
-        }
-        case SPVM_TYPE_C_ID_DOUBLE: {
-          break;
-        }
-        case SPVM_TYPE_C_ID_STRING: {
-          const char* value = constant->value.string_value;
-          
-          constant->id = i;
-          
-          break;
-        }
-        default:
-          assert(0);
-      }
-    }
-  }
-}

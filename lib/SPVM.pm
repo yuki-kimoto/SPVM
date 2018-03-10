@@ -302,9 +302,6 @@ sub compile_spvm {
   my $compile_success = compile();
   
   if ($compile_success) {
-    # Build bytecode
-    build_constant_pool();
-    
     # Build opcode
     build_opcode();
     

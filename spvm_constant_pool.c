@@ -198,35 +198,6 @@ int32_t SPVM_CONSTANT_POOL_push_double(SPVM_COMPILER* compiler, SPVM_CONSTANT_PO
   return id;
 }
 
-int32_t SPVM_CONSTANT_POOL_push_string(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, const char* string) {
-  
-  int32_t id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->string_symtable, string, strlen(string));
-  
-  if (id > 0) {
-    return id;
-  }
-  else {
-    int32_t id = constant_pool->length;
-    
-    // Add string length
-    int32_t string_length = (int32_t)strlen(string);
-    SPVM_CONSTANT_POOL_extend(compiler, constant_pool, 1);
-    memcpy(&constant_pool->values[constant_pool->length], &string_length, sizeof(int32_t));
-    constant_pool->length++;
-    
-    // Add string base_object
-    int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, string_length + 1);
-    SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-    memcpy(&constant_pool->values[constant_pool->length], string, string_length + 1);
-    
-    constant_pool->length += extend_length;
-    
-    SPVM_HASH_insert(compiler->string_symtable, string, strlen(string), (void*)(intptr_t)id);
-    
-    return id;
-  }
-}
-
 void SPVM_CONSTANT_POOL_free(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool) {
   (void)compiler;
   

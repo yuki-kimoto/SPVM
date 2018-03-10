@@ -26,7 +26,6 @@
 #include "spvm_my.h"
 #include "spvm_op.h"
 #include "spvm_list.h"
-#include "spvm_constant_pool.h"
 
 
 
@@ -960,7 +959,6 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   if (object->ref_count == 0) {
     SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
     SPVM_COMPILER* compiler = runtime->compiler;
-    int32_t* constant_pool = compiler->constant_pool->values;
     
     if (__builtin_expect(object->has_destructor, 0)) {
       if (object->in_destroy) {

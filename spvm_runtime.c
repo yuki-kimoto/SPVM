@@ -13,7 +13,6 @@
 #include "spvm_object.h"
 #include "spvm_type.h"
 #include "spvm_runtime.h"
-#include "spvm_constant_pool.h"
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_allocator.h"
@@ -207,7 +206,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
 
   // Constant pool sub
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
