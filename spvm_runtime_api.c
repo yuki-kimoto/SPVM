@@ -765,6 +765,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_type_id, int32_t length) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
   // Allocate array
@@ -775,7 +777,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   ((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Type id
-  SPVM_CONSTANT_POOL_TYPE* element_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_element_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
+  int32_t op_element_type_id = constant_pool_element_type->op_type_id;
+  SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, op_element_type_id);
+
   int32_t type_id = element_type->parent_type_id;
   object->type_id = type_id;
   

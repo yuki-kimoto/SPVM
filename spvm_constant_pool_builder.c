@@ -105,6 +105,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
       if (parent_type) {
         SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
         constant_pool_type->parent_type_id = parent_type->id;
+        type->parent_type_id = parent_type->id;
       }
       
       // Element type id
@@ -114,6 +115,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
         if (element_type) {
           SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
           constant_pool_type->element_type_id = element_type->id;
+          type->element_type_id = element_type->id;
         }
         else {
           assert(0);
