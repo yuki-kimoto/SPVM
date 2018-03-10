@@ -85,9 +85,7 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   
   int32_t* constant_pool = compiler->constant_pool->values;
   
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
   if (sub->is_jit || sub->disable_jit) {
@@ -3252,9 +3250,7 @@ get_sub_name(...)
   SPVM_COMPILER* compiler = runtime->compiler;
   int32_t* constant_pool = compiler->constant_pool->values;
   
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
 
   const char* sub_name = sub->abs_name;
@@ -3447,9 +3443,7 @@ bind_jitcode_sub(...)
   int32_t* constant_pool = compiler->constant_pool->values;
   
   // Subroutine information
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
   sub->jit_address = sub_jit_address;
@@ -3599,9 +3593,7 @@ call_sub(...)
   int32_t* constant_pool = compiler->constant_pool->values;
   
   // Subroutine information
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
   // Arguments

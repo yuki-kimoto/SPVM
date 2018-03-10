@@ -17,9 +17,7 @@ void SPVM_CALL_STACK_init_call_stack_info(SPVM_CALL_STACK_INFO* call_stack_info,
   SPVM_COMPILER* compiler = runtime->compiler;
   int32_t* constant_pool = compiler->constant_pool->values;
 
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
   // Length

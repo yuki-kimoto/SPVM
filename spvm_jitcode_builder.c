@@ -473,9 +473,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Constant pool
   int32_t* constant_pool = compiler->constant_pool->values;
   
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
 
   // Subroutine return type
@@ -1766,9 +1764,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         int32_t call_sub_id = opcode->operand1;
         
         // Constant pool sub
-        SPVM_CONSTANT_POOL_SUB* constant_pool_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
-        int32_t op_call_sub_id = constant_pool_call_sub->op_sub_id;
-        SPVM_OP* op_call_sub = SPVM_LIST_fetch(compiler->op_subs, op_call_sub_id);
+        SPVM_OP* op_call_sub = SPVM_LIST_fetch(compiler->op_subs, call_sub_id);
         SPVM_SUB* call_sub = op_call_sub->uv.sub;
         
         // Subroutine argument length

@@ -114,9 +114,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_O
   int32_t* constant_pool = compiler->constant_pool->values;
   
   // Constant pool sub
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
   // Sub name

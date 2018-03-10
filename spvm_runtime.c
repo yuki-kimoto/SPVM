@@ -45,9 +45,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   int32_t* constant_pool = compiler->constant_pool->values;
 
   // Constant pool sub
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
   if (sub->is_native) {
@@ -76,9 +74,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
   int32_t* constant_pool = compiler->constant_pool->values;
 
   // Constant pool sub
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
   // Subroutine return type
@@ -149,9 +145,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_
   int32_t* constant_pool = compiler->constant_pool->values;
 
   // Constant pool sub
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
 
   // Subroutine is native
@@ -223,9 +217,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   int32_t* constant_pool = compiler->constant_pool->values;
 
   // Constant pool sub
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
 
   // Subroutine return type
@@ -1612,9 +1604,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         int32_t call_sub_id = opcode->operand1;
         
         // Constant pool sub
-        SPVM_CONSTANT_POOL_SUB* constant_pool_call_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[call_sub_id];
-        int32_t op_call_sub_id = constant_pool_call_sub->op_sub_id;
-        SPVM_OP* op_call_sub = SPVM_LIST_fetch(compiler->op_subs, op_call_sub_id);
+        SPVM_OP* op_call_sub = SPVM_LIST_fetch(compiler->op_subs, call_sub_id);
         SPVM_SUB* call_sub = op_call_sub->uv.sub;
         
         // Subroutine return type
