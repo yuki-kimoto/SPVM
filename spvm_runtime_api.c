@@ -1169,11 +1169,24 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   int32_t op_type_id = constant_pool_type->op_type_id;
   SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
   
-  // Constant pool field symbol table
-  SPVM_HASH* field_symtable = runtime->field_symtable;
-  SPVM_HASH* field_name_symtable = SPVM_HASH_search(field_symtable, type->name, strlen(type->name));
+  SPVM_OP* op_package = type->op_package;
   
-  int32_t field_id = (int32_t)(intptr_t)SPVM_HASH_search(field_name_symtable, name, strlen(name));
+  SPVM_LIST* op_fields = op_package->uv.package->op_fields;
+  
+  int32_t field_id;
+  {
+    int32_t field_index;
+    for (field_index = 0; field_index < op_fields->length; field_index++) {
+      SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
+      SPVM_FIELD* field = op_field->uv.field;
+      if (strcmp(name, field->op_name->uv.name) == 0) {
+        field_id = field->id;
+      }
+      else {
+        field_id = 0;
+      }
+    }
+  }
   
   return field_id;
 }
