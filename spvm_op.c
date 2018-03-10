@@ -1716,6 +1716,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Add op fields
     package->op_fields = op_fields;
     
+    package->id = compiler->op_packages->length;
     SPVM_LIST_push(compiler->op_packages, op_package);
     SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
   }

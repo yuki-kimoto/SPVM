@@ -156,9 +156,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
           constant_pool_field->op_field_id = field_index;
         }
       }
-      package->id = SPVM_CONSTANT_POOL_push_package(compiler, compiler->constant_pool, package);
-      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&compiler->constant_pool->values[package->id];
-      constant_pool_package->op_package_id = package_index;
+      SPVM_CONSTANT_POOL_push_package(compiler, compiler->constant_pool, package);
     }
   }
 }
