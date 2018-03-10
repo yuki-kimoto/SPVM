@@ -587,8 +587,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_call_stack_object(SPVM_API* api, int32_t lengt
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
 
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -600,8 +598,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   ((int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type id
-  int32_t* type_code_to_id = (int32_t*)&constant_pool[runtime->type_code_to_id_base];
-  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_BYTE_ARRAY];
+  object->type_id = SPVM_TYPE_C_CODE_BYTE_ARRAY;
   
   // Set array length
   object->length = length;
@@ -615,8 +612,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
 
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -628,8 +623,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
   ((int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type id
-  int32_t* type_code_to_id = (int32_t*)&constant_pool[runtime->type_code_to_id_base];
-  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_SHORT_ARRAY];
+  object->type_id = SPVM_TYPE_C_CODE_SHORT_ARRAY;
   
   // Set array length
   object->length = length;
@@ -643,8 +637,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
 
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -656,8 +648,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
   ((int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type id
-  int32_t* type_code_to_id = (int32_t*)&constant_pool[runtime->type_code_to_id_base];
-  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_INT_ARRAY];
+  object->type_id = SPVM_TYPE_C_CODE_INT_ARRAY;
   
   // Set array length
   object->length = length;
@@ -671,8 +662,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
 
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -684,8 +673,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
   ((int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type id
-  int32_t* type_code_to_id = (int32_t*)&constant_pool[runtime->type_code_to_id_base];
-  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_LONG_ARRAY];
+  object->type_id = SPVM_TYPE_C_CODE_LONG_ARRAY;
   
   // Set array length
   object->length = length;
@@ -699,8 +687,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
 
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -712,8 +698,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
   ((float*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type id
-  int32_t* type_code_to_id = (int32_t*)&constant_pool[runtime->type_code_to_id_base];
-  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_FLOAT_ARRAY];
+  object->type_id = SPVM_TYPE_C_CODE_FLOAT_ARRAY;
   
   // Set array length
   object->length = length;
@@ -727,8 +712,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
 
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -740,8 +723,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   ((double*)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
   // Set type id
-  int32_t* type_code_to_id = (int32_t*)&constant_pool[runtime->type_code_to_id_base];
-  object->type_id = type_code_to_id[SPVM_TYPE_C_CODE_DOUBLE_ARRAY];
+  object->type_id = SPVM_TYPE_C_CODE_DOUBLE_ARRAY;
   
   // Set array length
   object->length = length;
@@ -820,10 +802,6 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_OBJECT* object) {
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* chars, int32_t length) {
   (void)api;
-  
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
 
   if (length == 0) {
     if (chars != NULL) {
@@ -842,8 +820,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* chars, int32
     }
   }
   
-  int32_t* type_code_to_id = (int32_t*)&constant_pool[runtime->type_code_to_id_base];
-  int32_t string_type_id = type_code_to_id[SPVM_TYPE_C_CODE_STRING];
+  int32_t string_type_id = SPVM_TYPE_C_CODE_STRING;
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_type_id);
 

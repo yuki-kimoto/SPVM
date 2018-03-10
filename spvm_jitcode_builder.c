@@ -519,9 +519,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Subroutine name
   const char* sub_abs_name = sub->abs_name;
 
-  // Arguments length
-  int32_t args_length = sub->op_args->length;
-
   // Return type
   switch (sub_return_type_code) {
     case SPVM_TYPE_C_CODE_VOID:

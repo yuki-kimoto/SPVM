@@ -79,8 +79,6 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  int32_t* constant_pool = compiler->constant_pool->values;
-  
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
@@ -2871,7 +2869,6 @@ new_len(...)
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
   
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -2930,7 +2927,6 @@ set(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
   
   // Array type id
   int32_t array_type_id = array->type_id;
@@ -2974,7 +2970,6 @@ get(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
   
   // Get array
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
@@ -3234,7 +3229,6 @@ get_sub_name(...)
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
   
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
@@ -3426,7 +3420,6 @@ bind_jitcode_sub(...)
 
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
   
   // Subroutine information
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
@@ -3576,7 +3569,6 @@ call_sub(...)
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
   
   // Subroutine information
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);

@@ -39,9 +39,6 @@ struct SPVM_runtime {
   int32_t objects_count;
   
   int8_t jit_mode;
-  
-  // Type code to id
-  int32_t type_code_to_id_base;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

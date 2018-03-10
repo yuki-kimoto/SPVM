@@ -36,8 +36,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   // Initialize Package Variables
   runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API_VALUE) * (compiler->package_var_length + 1));
   
-  runtime->type_code_to_id_base = compiler->type_code_to_id_base;
-  
   return runtime;
 }
 

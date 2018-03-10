@@ -101,9 +101,6 @@ struct SPVM_compiler {
   // Current package count
   int32_t current_package_count;
   
-  // Type code to id index
-  int32_t type_code_to_id_base;
-  
   // Package Variable id
   int32_t package_var_length;
   
