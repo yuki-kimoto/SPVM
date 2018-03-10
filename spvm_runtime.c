@@ -1412,9 +1412,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_CODE_WEAKEN_FIELD_OBJECT: {
         
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand0];
-        int32_t field_id = opcode->operand1;
         
-        api->weaken_object_field(api, object, field_id);
+        api->weaken_object_field(api, object, opcode->operand1);
         
         if (api->get_exception(api)) {
           croak_flag = 1;

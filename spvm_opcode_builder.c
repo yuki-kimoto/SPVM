@@ -1966,13 +1966,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                   opcode.code = SPVM_OPCODE_C_CODE_WEAKEN_FIELD_OBJECT;
                   SPVM_FIELD* field = op_cur->uv.call_field->field;
-                  int32_t field_id = field->id;
                   
                   SPVM_OP* op_term_object = op_cur->first;
                   int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
                     
                   opcode.operand0 = index_term_object;
-                  opcode.operand1 = field_id;
+                  opcode.operand1 = field->byte_offset;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                   SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_opcode_index_stack, sub->id, op_cur->line);
