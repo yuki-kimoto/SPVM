@@ -94,11 +94,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_LIST* op_packages = compiler->op_packages;
   
-  runtime->types_base = compiler->types_base;
-  
   runtime->type_code_to_id_base = compiler->type_code_to_id_base;
-  
-  runtime->types_length = compiler->types->length;
   
   return runtime;
 }

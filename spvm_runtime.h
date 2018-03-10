@@ -51,12 +51,6 @@ struct SPVM_runtime {
   // Package variables
   SPVM_API_VALUE* package_vars;
   
-  // Subroutines length
-  int32_t types_length;
-  
-  // Subroutine base
-  int32_t types_base;
-  
   // Type code to id
   int32_t type_code_to_id_base;
   
