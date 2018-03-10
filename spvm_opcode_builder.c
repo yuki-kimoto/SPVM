@@ -1697,7 +1697,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                   
                   opcode.operand0 = index_term_object;
-                  opcode.operand1 = field_id;
+                  opcode.operand1 = field->byte_offset;
                   opcode.operand2 = index_in;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
