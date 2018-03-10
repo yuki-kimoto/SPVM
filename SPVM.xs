@@ -2876,6 +2876,7 @@ new_len(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -2894,7 +2895,9 @@ new_len(...)
   const char* type_name = SvPV_nolen(sv_type_name);
   
   int32_t type_id = api->get_type_id(api, type_name);
-  SPVM_CONSTANT_POOL_TYPE* type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[type_id];
+  int32_t op_type_id = constant_pool_type->op_type_id;
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
   
   int32_t type_code = type->code;
   
@@ -2933,15 +2936,15 @@ set(...)
   
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Array type id
   int32_t array_type_id = array->type_id;
   
   // Array type
   SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
-  
-  // Array type name
-  const char* array_type_name = (char*)&runtime->constant_pool[constant_pool_array_type->name_id + 1];
+  int32_t op_array_type_id = constant_pool_array_type->op_type_id;
+  SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, op_array_type_id);
 
   // Get object
   SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
@@ -2950,13 +2953,12 @@ set(...)
   int32_t object_type_id = object->type_id;
 
   // Object type
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_objet_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object_type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_object_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object_type_id];
+  int32_t op_object_type_id = constant_pool_object_type->op_type_id;
+  SPVM_TYPE* object_type = SPVM_LIST_fetch(compiler->types, op_object_type_id);
 
-  // Object type name
-  const char* object_type_name = (char*)&runtime->constant_pool[constant_pool_objet_type->name_id + 1];
-  
-  if (strncmp(array_type_name, object_type_name, strlen(array_type_name - 2)) != 0) {
-    croak("Invalid type %s is set to object array %s(SPVM::Core::Object::Array::Object::set())", object_type_name, array_type_name);
+  if (strncmp(array_type->name, object_type->name, strlen(array_type->name - 2)) != 0) {
+    croak("Invalid type %s is set to object array %s(SPVM::Core::Object::Array::Object::set())", object_type->name, array_type->name);
   }
   
   // Index
@@ -2981,6 +2983,7 @@ get(...)
   
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Get array
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
@@ -2990,17 +2993,19 @@ get(...)
   
   // Array type
   SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
-  
-  // Array type name
-  const char* array_type_name = (char*)&runtime->constant_pool[constant_pool_array_type->name_id + 1];
+  int32_t op_array_type_id = constant_pool_array_type->op_type_id;
+  SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, op_array_type_id);
   
   // Element type name sv
-  SV* sv_element_type_name = sv_2mortal(newSVpvn(array_type_name, strlen(array_type_name) - 2));
+  SV* sv_element_type_name = sv_2mortal(newSVpvn(array_type->name, strlen(array_type->name) - 2));
   const char* element_type_name = SvPV_nolen(sv_element_type_name);
   
   // Element type id
   int32_t element_type_id = api->get_type_id(api, element_type_name);
-  SPVM_CONSTANT_POOL_TYPE* element_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_element_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
+  int32_t op_element_type_id = constant_pool_element_type->op_type_id;
+  SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, op_element_type_id);
+  
   int32_t element_type_code = element_type->code;
 
   // Index
@@ -3011,7 +3016,7 @@ get(...)
   }
   
   SV* sv_base_object;
-  switch (element_type_code) {
+  switch (element_type->code) {
     case SPVM_TYPE_C_CODE_BYTE_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Core::Object::Array::Byte");
       break;
@@ -3038,10 +3043,8 @@ get(...)
         sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Core::Object::Array::Object");
       }
       else {
-        int32_t element_type_name_id = element_type->name_id;
-        const char* element_type_name = (char*)&runtime->constant_pool[element_type_name_id + 1];
         SV* sv_element_type_name = sv_2mortal(newSVpv("SPVM::", 0));
-        sv_catpv(sv_element_type_name, element_type_name);
+        sv_catpv(sv_element_type_name, element_type->name);
         
         sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, SvPV_nolen(sv_element_type_name));
       }
@@ -3664,13 +3667,11 @@ call_sub(...)
                 int32_t base_object_type_id = base_object->type_id;
                 
                 SPVM_CONSTANT_POOL_TYPE* constant_pool_base_object_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[base_object_type_id];
+                int32_t op_base_object_type_id = constant_pool_base_object_type->op_type_id;
+                SPVM_TYPE* base_object_type = SPVM_LIST_fetch(compiler->types, op_base_object_type_id);
                 
-                int32_t base_object_type_code =constant_pool_base_object_type->code;
-                
-                if (base_object_type_code != arg_type->code) {
-                  const char* base_object_type_name = (char*)&runtime->constant_pool[constant_pool_base_object_type->name_id + 1];
-                  
-                  croak("Argument base_object type need %s, but %s", arg_type->name, base_object_type_name);
+                if (base_object_type->code != arg_type->code) {
+                  croak("Argument base_object type need %s, but %s", arg_type->name, base_object_type->name);
                 }
                 
                 call_sub_args[arg_index].object_value = base_object;
