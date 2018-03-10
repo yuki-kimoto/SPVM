@@ -676,9 +676,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else {
           _Bool finish = 0;
           while(1) {
+            // End of string literal
             if (*compiler->bufptr == '"' && *(compiler->bufptr - 1) != '\\') {
               finish = 1;
             }
+            // End of source file
             else if (*compiler->bufptr == '\0') {
               finish = 1;
             }
@@ -739,6 +741,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else if (str_tmp[i] == 'f') {
                   str[str_index] = '\f';
+                  str_index++;
+                }
+                else if (str_tmp[i] == '0') {
+                  str[str_index] = '\0';
                   str_index++;
                 }
                 else {
