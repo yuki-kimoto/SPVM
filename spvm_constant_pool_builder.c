@@ -161,14 +161,4 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
       constant_pool_package->op_package_id = package_index;
     }
   }
-
-  // Push subroutine into constant pool
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      sub->id = sub_index;
-    }
-  }
 }

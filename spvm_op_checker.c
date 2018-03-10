@@ -233,13 +233,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   }
   
   {
-    int32_t sub_pos;
-    for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
       
-      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_pos);
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       SPVM_OP* op_package = sub->op_package;
       SPVM_PACKAGE* package = op_package->uv.package;
+      
+      // Set subroutine id
+      sub->id = sub_index;
       
       int32_t eval_block_stack_length = 0;
       int32_t loop_block_stack_length = 0;
