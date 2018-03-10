@@ -2597,14 +2597,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       }
       sub->opcode_length = opcode_array->length - sub->opcode_base;
       sub->auto_dec_ref_count_stack_max_length = auto_dec_ref_count_stack_max;
-      
-      // Set opcode base to sub
-      SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-      memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub->id], sizeof(SPVM_CONSTANT_POOL_SUB));
-      constant_pool_sub.opcode_base = sub->opcode_base;
-      constant_pool_sub.opcode_length = sub->opcode_length;
-      constant_pool_sub.auto_dec_ref_count_stack_max_length = sub->auto_dec_ref_count_stack_max_length;
-      memcpy(&compiler->constant_pool->values[sub->id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
     }
   }
 }

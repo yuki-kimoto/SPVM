@@ -207,7 +207,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
       SPVM_SUB* sub = op_sub->uv.sub;
       sub->id = SPVM_CONSTANT_POOL_push_sub(compiler, compiler->constant_pool, sub);
       SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&compiler->constant_pool->values[sub->id];
-      constant_pool_sub->native_address = sub->native_address;
       constant_pool_sub->op_sub_id = sub_index;
     }
   }
