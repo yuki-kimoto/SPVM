@@ -1,6 +1,5 @@
 #include "spvm_call_stack_info.h"
 #include "spvm_runtime.h"
-#include "spvm_constant_pool_sub.h"
 
 #include "spvm_package.h"
 #include "spvm_sub.h"

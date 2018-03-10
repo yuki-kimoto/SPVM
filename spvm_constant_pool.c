@@ -11,7 +11,6 @@
 #include "spvm_util_allocator.h"
 #include "spvm_list.h"
 #include "spvm_op.h"
-#include "spvm_constant_pool_sub.h"
 #include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_type.h"
@@ -143,29 +142,6 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   }
 
   memcpy(&constant_pool->values[id], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  
-  return id;
-}
-
-int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_SUB* sub) {
-  (void)compiler;
-  
-  SPVM_CONSTANT_POOL_adjust_alignment(compiler, constant_pool, sizeof(void*));
-  
-  int32_t id = constant_pool->length;
-  
-  // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_SUB));
-  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-  
-  // Set subroutine information
-  SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-  memset(&constant_pool_sub, 0, sizeof(SPVM_CONSTANT_POOL_SUB));
-
-  // Add length
-  constant_pool->length += extend_length;
-
-  memcpy(&constant_pool->values[id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
   
   return id;
 }
