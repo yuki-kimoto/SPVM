@@ -1401,59 +1401,31 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_BYTE: {
-        int32_t field_id = opcode->operand2;
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
-        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, field_byte_offset);
+        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_SHORT: {
-        int32_t field_id = opcode->operand2;
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
-        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1, field_byte_offset);
+        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_short", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_INT: {
-        int32_t field_id = opcode->operand2;
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
-        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, field_byte_offset);
+        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_LONG: {
-        int32_t field_id = opcode->operand2;
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
-        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1, field_byte_offset);
+        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_FLOAT: {
-        int32_t field_id = opcode->operand2;
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
-        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_float", opcode->operand0, opcode->operand1, field_byte_offset);
+        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_float", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_DOUBLE: {
-        int32_t field_id = opcode->operand2;
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
-        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_double", opcode->operand0, opcode->operand1, field_byte_offset);
+        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_double", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_OBJECT: {
-        int32_t field_id = opcode->operand2;
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
-        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_OBJECT*", opcode->operand0, opcode->operand1, field_byte_offset);
+        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_OBJECT*", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_CODE_SET_FIELD_BYTE: {

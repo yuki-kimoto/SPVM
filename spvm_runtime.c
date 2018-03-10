@@ -245,9 +245,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // Return value
   SPVM_API_VALUE return_value;
   
-  // Subroutine mys length
-  int32_t sub_mys_length = sub->op_mys->length;
-  
   // Args length
   int32_t args_length = sub->op_args->length;
   
@@ -1221,133 +1218,91 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_CODE_GET_FIELD_BYTE: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
         
-        int32_t field_id = opcode->operand2;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + opcode->operand2);
         }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_SHORT: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
-        
-        int32_t field_id = opcode->operand2;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
+
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_short*)&vars[opcode->operand0] = *(SPVM_API_short*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_short*)&vars[opcode->operand0] = *(SPVM_API_short*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + opcode->operand2);
         }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_INT: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
         
-        int32_t field_id = opcode->operand2;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + opcode->operand2);
         }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_LONG: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
         
-        int32_t field_id = opcode->operand2;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_long*)&vars[opcode->operand0] = *(SPVM_API_long*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_long*)&vars[opcode->operand0] = *(SPVM_API_long*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + opcode->operand2);
         }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_FLOAT: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
         
-        int32_t field_id = opcode->operand2;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           croak_flag = 1;
         }
         else {
-          *(float*)&vars[opcode->operand0] = *(float*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(float*)&vars[opcode->operand0] = *(float*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + opcode->operand2);
         }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_DOUBLE: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
         
-        int32_t field_id = opcode->operand2;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           croak_flag = 1;
         }
         else {
-          *(double*)&vars[opcode->operand0] = *(double*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(double*)&vars[opcode->operand0] = *(double*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + opcode->operand2);
         }
         break;
       }
       case SPVM_OPCODE_C_CODE_GET_FIELD_OBJECT: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
         
-        int32_t field_id = opcode->operand2;
-        
-        // Index
-        SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&constant_pool[field_id];
-        int32_t field_byte_offset = constant_pool_field->byte_offset;
-        
         if (__builtin_expect(object == NULL, 0)) {
           SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
           api->set_exception(api, exception);
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_OBJECT**)&vars[opcode->operand0] = *(SPVM_API_OBJECT**)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + field_byte_offset);
+          *(SPVM_API_OBJECT**)&vars[opcode->operand0] = *(SPVM_API_OBJECT**)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + opcode->operand2);
         }
         break;
       }
@@ -1855,8 +1810,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       
       api->set_exception(api, NULL);
     }
-    
-    label_FREE_CALL_STACK:
     
     // Free call stack
     SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, call_stack_object);
