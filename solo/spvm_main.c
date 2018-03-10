@@ -8,7 +8,6 @@
 #include "spvm_list.h"
 #include "spvm_util_allocator.h"
 #include "spvm_constant_pool.h"
-#include "spvm_constant_pool_sub.h"
 #include "spvm_opcode_array.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_allocator.h"
@@ -63,38 +62,33 @@ int main(int argc, char *argv[])
   // Bind native subroutine
   {
     int32_t i;
-    for (i = 0; i < compiler->native_subs->length; i++) {
-      SPVM_SUB* native_sub = SPVM_LIST_fetch(compiler->native_subs, i);
+    for (i = 0; i < compiler->op_subs->length; i++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, i);
+      SPVM_SUB* sub = op_sub->uv.sub;
       
-      // Sub abs name
-      const char* sub_abs_name = native_sub->abs_name;
-      
-      // Sub id
-      int32_t sub_id = native_sub->id;
-      
-      // Set native address
-      SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-      memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
-      
-      if (strcmp(sub_abs_name, "CORE::print") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print;
+      if (sub->is_native) {
+        // Sub abs name
+        const char* sub_abs_name = sub->abs_name;
+        
+        if (strcmp(sub_abs_name, "CORE::print") == 0) {
+          sub->native_address = SPVM__CORE__print;
+        }
+        else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
+          sub->native_address = SPVM__CORE__warn;
+        }
+        else if (strcmp(sub_abs_name, "CORE::time") == 0) {
+          sub->native_address = SPVM__CORE__time;
+        }
+        else if (strcmp(sub_abs_name, "CORE::sum_int") == 0) {
+          sub->native_address = SPVM__CORE__sum_int;
+        }
+        else if (strcmp(sub_abs_name, "CORE::test1") == 0) {
+          sub->native_address = SPVM__CORE__test1;
+        }
+        else if (strcmp(sub_abs_name, "CORE::test2") == 0) {
+          sub->native_address = SPVM__CORE__test2;
+        }
       }
-      else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__warn;
-      }
-      else if (strcmp(sub_abs_name, "CORE::time") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__time;
-      }
-      else if (strcmp(sub_abs_name, "CORE::sum_int") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__sum_int;
-      }
-      else if (strcmp(sub_abs_name, "CORE::test1") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__test1;
-      }
-      else if (strcmp(sub_abs_name, "CORE::test2") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__test2;
-      }
-      memcpy(&compiler->constant_pool->values[sub_id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
     }
   }
   
@@ -112,7 +106,7 @@ int main(int argc, char *argv[])
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
   SPVM_API* api = runtime->api;
-  runtime->disable_jit = 1;
+  runtime->jit_mode = SPVM_RUNTIME_C_JIT_MODE_NONE;
 
   // Entry point subroutine address
   const char* entry_point_sub_name = compiler->entry_point_sub_name;

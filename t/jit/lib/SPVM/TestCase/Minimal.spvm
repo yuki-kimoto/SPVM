@@ -1,0 +1,11 @@
+package TestCase::Minimal {
+  has x : int;
+  has y : int;
+  
+  set x, y;
+  get x, y;
+  
+  jit sub new : TestCase::Minimal () {
+    return new TestCase::Minimal;
+  }
+}

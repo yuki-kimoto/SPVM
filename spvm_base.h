@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_call_stack_info.h
+struct SPVM_call_stack_info;
+typedef struct SPVM_call_stack_info SPVM_CALL_STACK_INFO;
+
 // spvm_opcode_array.h
 struct SPVM_opcode_array;
 typedef struct SPVM_opcode_array SPVM_OPCODE_ARRAY;
@@ -35,22 +39,6 @@ typedef struct SPVM_call_sub SPVM_CALL_SUB;
 // spvm_sub_check_info.h
 struct SPVM_sub_check_info;
 typedef struct SPVM_sub_check_info SPVM_SUB_CHECK_INFO;
-
-// spvm_constant_pool_sub.h
-struct SPVM_constant_pool_sub;
-typedef struct SPVM_constant_pool_sub SPVM_CONSTANT_POOL_SUB;
-
-// spvm_constant_pool_field.h
-struct SPVM_constant_pool_field;
-typedef struct SPVM_constant_pool_field SPVM_CONSTANT_POOL_FIELD;
-
-// spvm_constant_pool_package.h
-struct SPVM_constant_pool_package;
-typedef struct SPVM_constant_pool_package SPVM_CONSTANT_POOL_PACKAGE;
-
-// spvm_constant_pool_package.h
-struct SPVM_constant_pool_type;
-typedef struct SPVM_constant_pool_type SPVM_CONSTANT_POOL_TYPE;
 
 // spvm_object.h
 struct SPVM_object;

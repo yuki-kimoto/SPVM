@@ -5,6 +5,8 @@
 
 // Method information
 struct SPVM_sub {
+  void* native_address;
+  void* jit_address;
   SPVM_OP* op_name;
   SPVM_OP* op_return_type;
   SPVM_OP* op_block;
@@ -12,8 +14,6 @@ struct SPVM_sub {
   SPVM_OP* op_constant;
   SPVM_LIST* op_args;
   SPVM_LIST* op_mys;
-  SPVM_LIST* on_stack_replacement_jump_opcode_indexes;
-  void* native_address;
   const char* abs_name;
   const char* file_name;
   int32_t opcode_base;
@@ -21,11 +21,13 @@ struct SPVM_sub {
   int32_t call_sub_arg_stack_max;
   int32_t id;
   int32_t eval_stack_max_length;
-  int32_t loop_count;
+  int32_t auto_dec_ref_count_stack_max_length;
   _Bool is_native;
-  _Bool is_constant;
+  _Bool is_enum;
   _Bool is_destructor;
   _Bool is_jit;
+  _Bool disable_jit;
+  _Bool have_jit_desc;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

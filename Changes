@@ -1,4 +1,7 @@
-0.0315 2018-03-01
+0.0316 2018-03-10
+  - remove runtime constant_pool
+0.0315 2018-03-08
+  - add JIT descripter
   - fix manifest not to contain SPVM-* files
 0.0314 2018-03-01
   - remove build_shared_lib.pl script

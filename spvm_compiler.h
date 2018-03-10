@@ -46,7 +46,7 @@ struct SPVM_compiler {
   SPVM_LIST* op_constants;
   
   int64_t enum_default_value;
-  int32_t enum_default_type_code;
+  int32_t enum_default_type_id;
 
   // Packages
   SPVM_LIST* op_packages;
@@ -72,7 +72,7 @@ struct SPVM_compiler {
   // use symbol table
   SPVM_HASH* op_use_symtable;
   
-  // Types(This is all type ops in source code)
+  // Types(This is all type ops in source id)
   SPVM_LIST* op_types;
   
   // Types(This is unique types)
@@ -101,25 +101,10 @@ struct SPVM_compiler {
   // Current package count
   int32_t current_package_count;
   
-  // Package indexes constant pool index
-  int32_t packages_base;
-
-  // Type indexes constant pool index
-  int32_t types_base;
-
-  // Type code to id index
-  int32_t type_code_to_id_base;
-  
-  // Subroutine indexes constant pool index
-  int32_t subs_base;
-  
   // Package Variable id
   int32_t package_var_length;
   
   int32_t tmp_var_index;
-  
-  // Native subroutines
-  SPVM_LIST* native_subs;
   
   // Error is fatal
   _Bool fatal_error;

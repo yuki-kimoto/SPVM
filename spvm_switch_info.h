@@ -4,8 +4,8 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_SWITCH_INFO_C_CODE_TABLE_SWITCH,
-  SPVM_SWITCH_INFO_C_CODE_LOOKUP_SWITCH,
+  SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH,
+  SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH,
 };
 
 // Parser information
@@ -14,7 +14,7 @@ struct SPVM_switch_info {
   SPVM_OP* op_default;
   int32_t max;
   int32_t min;
-  int32_t code;
+  int32_t id;
   int32_t opcode_index;
   int32_t default_opcode_index;
   SPVM_LIST* case_opcode_indexes;

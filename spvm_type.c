@@ -13,7 +13,7 @@
 #include "spvm_limit.h"
 #include "spvm_package.h"
 
-const char* const SPVM_TYPE_C_CODE_NAMES[] = {
+const char* const SPVM_TYPE_C_ID_NAMES[] = {
   "void",
   "byte",
   "short",
@@ -33,7 +33,7 @@ const char* const SPVM_TYPE_C_CODE_NAMES[] = {
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
   
-  type->code = SPVM_TYPE_C_CODE_UNKNOWN;
+  type->id = SPVM_TYPE_C_ID_UNKNOWN;
   
   return type;
 }
@@ -41,7 +41,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_VOID);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_VOID);
   
   assert(type);
   
@@ -51,7 +51,7 @@ SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_BYTE);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_BYTE);
   
   assert(type);
   
@@ -61,7 +61,7 @@ SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_short_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_SHORT);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_SHORT);
   
   assert(type);
   
@@ -71,7 +71,7 @@ SPVM_TYPE* SPVM_TYPE_get_short_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_int_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_INT);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_INT);
   
   assert(type);
   
@@ -81,7 +81,7 @@ SPVM_TYPE* SPVM_TYPE_get_int_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_long_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_LONG);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_LONG);
   
   assert(type);
   
@@ -91,7 +91,7 @@ SPVM_TYPE* SPVM_TYPE_get_long_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_float_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_FLOAT);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_FLOAT);
   
   assert(type);
   
@@ -101,7 +101,7 @@ SPVM_TYPE* SPVM_TYPE_get_float_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_DOUBLE);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_DOUBLE);
   
   assert(type);
   
@@ -111,7 +111,7 @@ SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_BYTE_ARRAY);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_BYTE_ARRAY);
   
   assert(type);
   
@@ -121,7 +121,7 @@ SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_STRING);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_STRING);
   
   assert(type);
   
@@ -203,13 +203,13 @@ _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
 _Bool SPVM_TYPE_is_string(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  return type->code == SPVM_TYPE_C_CODE_STRING;
+  return type->id == SPVM_TYPE_C_ID_STRING;
 }
 
 _Bool SPVM_TYPE_is_package(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  _Bool is_package = type->dimension == 0 && type->code >= SPVM_TYPE_C_CODE_STRING;
+  _Bool is_package = type->dimension == 0 && type->id >= SPVM_TYPE_C_ID_STRING;
   
   return is_package;
 }
@@ -219,7 +219,7 @@ _Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   
   assert(type);
   
-  if (type->code >= SPVM_TYPE_C_CODE_BYTE_ARRAY && type->code <= SPVM_TYPE_C_CODE_DOUBLE_ARRAY)
+  if (type->id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type->id <= SPVM_TYPE_C_ID_DOUBLE_ARRAY)
   {
     return 1;
   }
@@ -233,7 +233,7 @@ _Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   
   assert(type);
   
-  if (type->code >= SPVM_TYPE_C_CODE_BYTE && type->code <= SPVM_TYPE_C_CODE_LONG) {
+  if (type->id >= SPVM_TYPE_C_ID_BYTE && type->id <= SPVM_TYPE_C_ID_LONG) {
     return 1;
   }
   else {
@@ -246,7 +246,7 @@ _Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   
   assert(type);
   
-  if (type->code >= SPVM_TYPE_C_CODE_BYTE && type->code <= SPVM_TYPE_C_CODE_DOUBLE) {
+  if (type->id >= SPVM_TYPE_C_ID_BYTE && type->id <= SPVM_TYPE_C_ID_DOUBLE) {
     return 1;
   }
   else {
@@ -257,7 +257,7 @@ _Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
 _Bool SPVM_TYPE_is_object(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  if (type->code > SPVM_TYPE_C_CODE_DOUBLE) {
+  if (type->id > SPVM_TYPE_C_ID_DOUBLE) {
     return 1;
   }
   else {

@@ -1,0 +1,5 @@
+package TestCase::CompileError::TypeCantBeDetectedUndefDefault {
+  jit sub main : int () {
+    my $value;
+  }
+}

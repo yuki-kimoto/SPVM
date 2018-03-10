@@ -96,7 +96,7 @@
 
 
 
-const char* const SPVM_OPCODE_C_CODE_NAMES[] = {
+const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "NOP",
   "ADD_INT",
   "ADD_LONG",
@@ -318,8 +318,6 @@ const char* const SPVM_OPCODE_C_CODE_NAMES[] = {
   "MOVE_OBJECT",
   "PUSH_AUTO_DEC_REF_COUNT",
   "LEAVE_SCOPE",
-  "JIT_ON_STACK_REPLACEMENT",
-  "LOOP_START",
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {

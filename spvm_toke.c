@@ -215,7 +215,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->bufptr++;
         if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT_STRING;
           
           yylvalp->opval = op_special_assign;
@@ -223,7 +223,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CONCAT_STRING);
+          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CONCAT_STRING);
           return '.';
         }
       
@@ -233,12 +233,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         if (*compiler->bufptr == '+') {
           compiler->bufptr++;
-          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);
+          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
           return INC;
         }
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD;
           
           yylvalp->opval = op_special_assign;
@@ -246,7 +246,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);
+          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
           return '+';
         }
       
@@ -268,19 +268,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         else if (*compiler->bufptr == '>') {
           compiler->bufptr++;
-          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);
+          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
           compiler->expect_name = 1;
           
           return ARROW;
         }
         else if (*compiler->bufptr == '-') {
           compiler->bufptr++;
-          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);
+          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
           return DEC;
         }
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT;
           
           yylvalp->opval = op_special_assign;
@@ -288,7 +288,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);;
+          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);;
           return '-';
         }
       /* Multiply */
@@ -297,7 +297,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY;
           
           yylvalp->opval = op_special_assign;
@@ -305,7 +305,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MULTIPLY);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_MULTIPLY);
           yylvalp->opval = op;
           return MULTIPLY;
         }
@@ -316,7 +316,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE;
           
           yylvalp->opval = op_special_assign;
@@ -324,7 +324,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DIVIDE);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIVIDE);
           yylvalp->opval = op;
           return DIVIDE;
         }
@@ -333,7 +333,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->bufptr++;
         if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER;
           
           yylvalp->opval = op_special_assign;
@@ -341,7 +341,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_REMAINDER);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REMAINDER);
           yylvalp->opval = op;
           return REMAINDER;
         }
@@ -350,7 +350,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->bufptr++;
         if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR;
           
           yylvalp->opval = op_special_assign;
@@ -358,7 +358,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_BIT_XOR);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_XOR);
           yylvalp->opval = op;
           return BIT_XOR;
         }
@@ -368,13 +368,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         /* Or */
         if (*compiler->bufptr == '|') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_OR);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_OR);
           yylvalp->opval = op;
           return OR;
         }
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_OR;
           
           yylvalp->opval = op_special_assign;
@@ -382,7 +382,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_BIT_OR);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_OR);
           yylvalp->opval = op;
           return BIT_OR;
         }
@@ -392,13 +392,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         /* Or */
         if (*compiler->bufptr == '&') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_AND);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_AND);
           yylvalp->opval = op;
           return AND;
         }
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND;
           
           yylvalp->opval = op_special_assign;
@@ -407,7 +407,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         /* Bit and */
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_BIT_AND);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_AND);
           yylvalp->opval = op;
           return BIT_AND;
         }
@@ -462,13 +462,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           /* == */
           if (*compiler->bufptr == '=') {
             compiler->bufptr++;
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EQ);
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_EQ);
             yylvalp->opval = op;
             return REL;
           }
           /* = */
           else {
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ASSIGN);
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ASSIGN);
             yylvalp->opval = op;
             return ASSIGN;
           }
@@ -482,7 +482,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // <<=
           if (*compiler->bufptr == '=') {
             compiler->bufptr++;
-            SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+            SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
             op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT;
             
             yylvalp->opval = op_special_assign;
@@ -491,7 +491,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           // <<
           else {
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LEFT_SHIFT);
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LEFT_SHIFT);
             yylvalp->opval = op;
             return SHIFT;
           }
@@ -499,14 +499,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // <=
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LE);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LE);
           yylvalp->opval = op;
           return REL;
         }
         /* < */
         else {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LT);
           yylvalp->opval = op;
           return REL;
         }
@@ -521,7 +521,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // >>>=
             if (*compiler->bufptr == '=') {
               compiler->bufptr++;
-              SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+              SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
               op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT_UNSIGNED;
               
               yylvalp->opval = op_special_assign;
@@ -530,7 +530,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             // >>=
             else {
-              SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED);
+              SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED);
               yylvalp->opval = op;
               return SHIFT;
             }
@@ -539,7 +539,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // >>=
             if (*compiler->bufptr == '=') {
               compiler->bufptr++;
-              SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SPECIAL_ASSIGN);
+              SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
               op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT;
               
               yylvalp->opval = op_special_assign;
@@ -548,7 +548,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             // >>
             else {
-              SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_RIGHT_SHIFT);
+              SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_RIGHT_SHIFT);
               yylvalp->opval = op;
               return SHIFT;
             }
@@ -557,14 +557,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         /* >= */
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_GE);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_GE);
           yylvalp->opval = op;
           return REL;
         }
         /* > */
         else {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_GT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_GT);
           yylvalp->opval = op;
           return REL;
         }
@@ -573,25 +573,25 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NE);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NE);
           yylvalp->opval = op;
           return REL;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NOT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NOT);
           yylvalp->opval = op;
           return NOT;
         }
         
       case '~': {
         compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_COMPLEMENT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COMPLEMENT);
           yylvalp->opval = op;
         return '~';
       }
       case '@': {
         compiler->bufptr++;
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ARRAY_LENGTH);
+        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ARRAY_LENGTH);
         yylvalp->opval = op;
         
         return ARRAY_LENGTH;
@@ -918,7 +918,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Constant op
           SPVM_OP* op_constant;
           
-          if (constant_type->code == SPVM_TYPE_C_CODE_FLOAT) {
+          if (constant_type->id == SPVM_TYPE_C_ID_FLOAT) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -928,7 +928,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num, compiler->cur_file, compiler->cur_line);
           }
           // double
-          else if (constant_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+          else if (constant_type->id == SPVM_TYPE_C_ID_DOUBLE) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -938,7 +938,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_double(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // byte
-          else if (constant_type->code == SPVM_TYPE_C_CODE_BYTE) {
+          else if (constant_type->id == SPVM_TYPE_C_ID_BYTE) {
             int64_t num;
             errno = 0;
             _Bool out_of_range = 0;
@@ -975,7 +975,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_byte(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // short
-          else if (constant_type->code == SPVM_TYPE_C_CODE_SHORT) {
+          else if (constant_type->id == SPVM_TYPE_C_ID_SHORT) {
             int64_t num;
             errno = 0;
             _Bool out_of_range = 0;
@@ -1012,7 +1012,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_short(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // int
-          else if (constant_type->code == SPVM_TYPE_C_CODE_INT) {
+          else if (constant_type->id == SPVM_TYPE_C_ID_INT) {
             int64_t num;
             errno = 0;
             _Bool out_of_range = 0;
@@ -1049,7 +1049,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_int(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // long
-          else if (constant_type->code == SPVM_TYPE_C_CODE_LONG) {
+          else if (constant_type->id == SPVM_TYPE_C_ID_LONG) {
             int64_t num;
             errno = 0;
             _Bool out_of_range = 0;
@@ -1212,124 +1212,133 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               // Keyword
               case 'b' :
                 if (strcmp(keyword, "byte") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_BYTE);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BYTE);
                   return BYTE;
                 }
                 break;
               case 'c' :
                 if (strcmp(keyword, "case") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CASE);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CASE);
                   return CASE;
                 }
                 else if (strcmp(keyword, "croak") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_CROAK);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CROAK);
                   return CROAK;
                 }
                 break;
               case 'd' :
                 if (strcmp(keyword, "default") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DEFAULT);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DEFAULT);
                   return DEFAULT;
                 }
                 else if (strcmp(keyword, "double") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DOUBLE);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DOUBLE);
                   return DOUBLE;
                 }
                 break;
               case 'e' :
                 if (strcmp(keyword, "elsif") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ELSIF);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ELSIF);
                   return ELSIF;
                 }
                 else if (strcmp(keyword, "else") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ELSE);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ELSE);
                   return ELSE;
                 }
                 else if (strcmp(keyword, "enum") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ENUM);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ENUM);
                   return ENUM;
                 }
                 else if (strcmp(keyword, "eval") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_EVAL);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_EVAL);
                   return EVAL;
                 }
                 break;
               case 'f' :
                 if (strcmp(keyword, "for") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_FOR);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FOR);
                   return FOR;
                 }
                 else if (strcmp(keyword, "float") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_FLOAT);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FLOAT);
                   return FLOAT;
                 }
                 break;
               case 'g' :
                 if (strcmp(keyword, "get") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_GET);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_GET);
                   return GET;
                 }
                 break;
               case 'h' :
                 if (strcmp(keyword, "has") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_FIELD);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FIELD);
                   return HAS;
                 }
                 break;
               case 'i' :
                 if (strcmp(keyword, "if") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_IF);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IF);
                   return IF;
                 }
                 else if (strcmp(keyword, "int") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_INT);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
                   return INT;
+                }
+                break;
+              case 'j' :
+                if (strcmp(keyword, "jit") == 0) {
+                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DESCRIPTOR);
+                  op->id = SPVM_DESCRIPTOR_C_ID_JIT;
+                  yylvalp->opval = op;
+                  
+                  return DESCRIPTOR;
                 }
                 break;
               case 'l' :
                 if (strcmp(keyword, "last") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LAST);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LAST);
                   return LAST;
                 }
                 else if (strcmp(keyword, "len") == 0) {
                   compiler->bufptr++;
-                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_ARRAY_LENGTH);
+                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ARRAY_LENGTH);
                   yylvalp->opval = op;
                   
                   return ARRAY_LENGTH;
                 }
                 else if (strcmp(keyword, "long") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_LONG);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LONG);
                   return LONG;
                 }
                 break;
                 break;
               case 'm' :
                 if (strcmp(keyword, "my") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_MY);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_MY);
                   return MY;
                 }
                 break;
               case 'n' :
                 if (strcmp(keyword, "native") == 0) {
-                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_DESCRIPTOR);
-                  op->code = SPVM_DESCRIPTOR_C_CODE_NATIVE;
+                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DESCRIPTOR);
+                  op->id = SPVM_DESCRIPTOR_C_ID_NATIVE;
                   yylvalp->opval = op;
                   
                   return DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "next") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NEXT);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEXT);
                   return NEXT;
                 }
                 else if (strcmp(keyword, "new") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NEW);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEW);
                   return NEW;
                 }
                 break;
               case 'o' :
                 if (strcmp(keyword, "our") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_OUR);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_OUR);
                   return OUR;
                 }
                 
@@ -1345,38 +1354,38 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   compiler->before_is_package = 1;
                   
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_PACKAGE);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_PACKAGE);
                   return PACKAGE;
                 }
                 
                 break;
               case 'r' :
                 if (strcmp(keyword, "return") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_RETURN);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_RETURN);
                   return RETURN;
                 }
                 break;
               case 's' :
                 if (strcmp(keyword, "switch") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SWITCH);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SWITCH);
                   return SWITCH;
                 }
                 else if (strcmp(keyword, "sub") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SUB);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SUB);
                   compiler->expect_name = 1;
                   
                   return SUB;
                 }
                 else if (strcmp(keyword, "short") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SHORT);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SHORT);
                   return SHORT;
                 }
                 else if (strcmp(keyword, "string") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_STRING);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING);
                   return STRING;
                 }
                 else if (strcmp(keyword, "set") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_SET);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SET);
                   return SET;
                 }
                 break;
@@ -1386,23 +1395,23 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return UNDEF;
                 }
                 else if (strcmp(keyword, "use") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_USE);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_USE);
                   return USE;
                 }
                 break;
               case 'v' :
                 if (strcmp(keyword, "void") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_VOID);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_VOID);
                   return VOID;
                 }
                 break;
               case 'w' :
                 if (strcmp(keyword, "while") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_WHILE);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_WHILE);
                   return WHILE;
                 }
                 else if (strcmp(keyword, "weaken") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_WEAKEN);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_WEAKEN);
                   return WEAKEN;
                 }
                 break;
@@ -1449,7 +1458,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         /* Return character */
         compiler->bufptr++;
-        yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_CODE_NULL);
+        yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
         
         return (int) (uint8_t) c;
     }

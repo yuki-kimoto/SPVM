@@ -33,7 +33,10 @@
 #include "spvm_package_var.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_undef.h"
-const char* const SPVM_OP_C_CODE_NAMES[] = {
+
+
+
+const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
   "ELSIF",
   "ELSE",
@@ -127,13 +130,6 @@ const char* const SPVM_OP_C_CODE_NAMES[] = {
   "PACKAGE_VAR",
   "ARRAY_INIT",
   "BOOL",
-  "MOVE_BYTE",
-  "MOVE_SHORT",
-  "MOVE_INT",
-  "MOVE_LONG",
-  "MOVE_FLOAT",
-  "MOVE_DOUBLE",
-  "MOVE_OBJECT",
 };
 
 void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
@@ -141,18 +137,18 @@ void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
   
   SPVM_TYPE* dist_type;
-  if (type->code <= SPVM_TYPE_C_CODE_INT) {
+  if (type->id <= SPVM_TYPE_C_ID_INT) {
     dist_type = SPVM_TYPE_get_int_type(compiler);
   }
   else {
     return;
   }
   
-  if (type->code != dist_type->code) {
+  if (type->id != dist_type->id) {
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
     
-    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_term->file, op_term->line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_term->file, op_term->line);
+    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_term->file, op_term->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_term->file, op_term->line);
     op_dist_type->uv.type = dist_type;
     SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_term);
     
@@ -166,35 +162,35 @@ void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op
   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_last);
   
   SPVM_TYPE* dist_type;
-  if (first_type->code == SPVM_TYPE_C_CODE_DOUBLE || last_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+  if (first_type->id == SPVM_TYPE_C_ID_DOUBLE || last_type->id == SPVM_TYPE_C_ID_DOUBLE) {
     dist_type = SPVM_TYPE_get_double_type(compiler);
   }
-  else if (first_type->code == SPVM_TYPE_C_CODE_FLOAT || last_type->code == SPVM_TYPE_C_CODE_FLOAT) {
+  else if (first_type->id == SPVM_TYPE_C_ID_FLOAT || last_type->id == SPVM_TYPE_C_ID_FLOAT) {
     dist_type = SPVM_TYPE_get_float_type(compiler);
   }
-  else if (first_type->code == SPVM_TYPE_C_CODE_LONG || last_type->code == SPVM_TYPE_C_CODE_LONG) {
+  else if (first_type->id == SPVM_TYPE_C_ID_LONG || last_type->id == SPVM_TYPE_C_ID_LONG) {
     dist_type = SPVM_TYPE_get_long_type(compiler);
   }
   else {
     dist_type = SPVM_TYPE_get_int_type(compiler);
   }
   
-  if (first_type->code != dist_type->code) {
+  if (first_type->id != dist_type->id) {
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
     
-    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_first->file, op_first->line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_first->file, op_first->line);
+    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_first->file, op_first->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_first->file, op_first->line);
     op_dist_type->uv.type = dist_type;
     SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_first);
     
     SPVM_OP_replace_op(compiler, op_stab, op_convert);
   }
   
-  if (last_type->code != dist_type->code) {
+  if (last_type->id != dist_type->id) {
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_last);
     
-    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, op_last->file, op_last->line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_last->file, op_last->line);
+    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_last->file, op_last->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_last->file, op_last->line);
     op_dist_type->uv.type = dist_type;
     SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_last);
     SPVM_OP_replace_op(compiler, op_stab, op_convert);
@@ -204,13 +200,13 @@ void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op
 _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
-  switch (op->code) {
-    case SPVM_OP_C_CODE_EQ:
-    case SPVM_OP_C_CODE_NE:
-    case SPVM_OP_C_CODE_GT:
-    case SPVM_OP_C_CODE_GE:
-    case SPVM_OP_C_CODE_LT:
-    case SPVM_OP_C_CODE_LE:
+  switch (op->id) {
+    case SPVM_OP_C_ID_EQ:
+    case SPVM_OP_C_ID_NE:
+    case SPVM_OP_C_ID_GT:
+    case SPVM_OP_C_ID_GE:
+    case SPVM_OP_C_ID_LT:
+    case SPVM_OP_C_ID_LE:
       return 1;
   }
   
@@ -253,7 +249,7 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
   // Exception variable
   if (var_name_length == 2 && var_name[1] == '@') {
     // Exception variable
-    SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_EXCEPTION_VAR, op_var_name->file, op_var_name->line);
+    SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, op_var_name->file, op_var_name->line);
     op_var_ret = op_exception_var;
   }
   // Package variable
@@ -332,7 +328,7 @@ void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_va
 }
 
 SPVM_OP* SPVM_OP_new_op_undef(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_UNDEF, file, line);
+  SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_UNDEF, file, line);
   
   SPVM_UNDEF* undef = SPVM_UNDEF_new(compiler);
   op_undef->uv.undef = undef;
@@ -341,7 +337,7 @@ SPVM_OP* SPVM_OP_new_op_undef(SPVM_COMPILER* compiler, const char* file, int32_t
 }
 
 SPVM_OP* SPVM_OP_new_op_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
-  SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PACKAGE_VAR, op_name->file, op_name->line);
+  SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR, op_name->file, op_name->line);
 
   SPVM_PACKAGE_VAR* package_var = SPVM_PACKAGE_VAR_new(compiler);
   package_var->op_name = op_name;
@@ -366,7 +362,7 @@ SPVM_OP* SPVM_OP_build_getters(SPVM_COMPILER* compiler, SPVM_OP* op_get, SPVM_OP
 
 SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
-  SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type->file, op_type->line);
+  SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type->file, op_type->line);
   
   op_type_new->uv.type = op_type->uv.type;
   
@@ -390,7 +386,7 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32
 
 SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line) {
   
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   
   op_name->uv.name = name;
   
@@ -399,7 +395,7 @@ SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const ch
 
 SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
-  SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_name->file, op_name->line);
+  SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_name->file, op_name->line);
 
   SPVM_VAR* var = SPVM_VAR_new(compiler);
   var->op_name = op_name;
@@ -434,7 +430,7 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   int32_t line = op_field->line;
   
   // sub
-  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUB, file, line);
+  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, file, line);
   
   // Subroutine name
   int32_t sub_name_length = (int32_t)(4 + strlen(field_name));
@@ -470,7 +466,7 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP* op_call_field = SPVM_OP_build_call_field(compiler, op_var_object_invocant, op_name_field);
   
   // Return
-  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, file, line);
+  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, file, line);
   SPVM_OP_insert_child(compiler, op_return, op_return->last, op_call_field);
 
   // Statements
@@ -478,7 +474,7 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
   
   // Block
-  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, file, line);
+  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, file, line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
 
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_list_args, NULL, op_type_return, op_block);
@@ -512,7 +508,7 @@ SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   int32_t line = op_field->line;
   
   // sub
-  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUB, file, line);
+  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, file, line);
   
   // Subroutine name
   int32_t sub_name_length = (int32_t)(4 + strlen(field_name));
@@ -549,7 +545,7 @@ SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP* op_type_return = SPVM_OP_new_op_void(compiler, file, line);
   
   // Assign
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, file, line);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
   
   // Variable Object invocant
   SPVM_OP* op_name_object_invocant = SPVM_OP_new_op_name(compiler, "$self", file, line);
@@ -572,7 +568,7 @@ SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_build_assign);
   
   // Block
-  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, file, line);
+  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, file, line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
 
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_list_args, NULL, op_type_return, op_block);
@@ -675,7 +671,7 @@ SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   SPVM_OP_get_before(compiler, op_target, &op_before, &next_is_child);
   
   // Stab
-  SPVM_OP* op_stab = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_STAB, op_target->file, op_target->line);
+  SPVM_OP* op_stab = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_STAB, op_target->file, op_target->line);
   if (next_is_child) {
     
     // One child
@@ -709,8 +705,8 @@ SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_CONSTANT* constant = op_constant->uv.constant;
   
-  if (constant->type->code == SPVM_TYPE_C_CODE_STRING) {
-    SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEW, op_constant->file, op_constant->line);
+  if (constant->type->id == SPVM_TYPE_C_ID_STRING) {
+    SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_constant->file, op_constant->line);
     SPVM_OP_insert_child(compiler, op_new, op_new->last, op_constant);
     return op_new;
   }
@@ -721,9 +717,9 @@ SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
 
 SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line) {
 
-  SPVM_OP* op_name_package = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, file, line);
+  SPVM_OP* op_name_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name_package->uv.name = package_name;
-  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_USE, file, line);
+  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file, line);
   SPVM_USE* use = SPVM_USE_new(compiler);
   use->package_name = package_name;
   use->package_name_with_template_args = package_name;
@@ -734,7 +730,7 @@ SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const cha
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.byte_value = value;
@@ -748,7 +744,7 @@ SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, con
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.short_value = value;
@@ -762,7 +758,7 @@ SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, c
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.int_value = value;
@@ -776,7 +772,7 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.long_value = value;
@@ -790,7 +786,7 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.float_value = value;
@@ -804,7 +800,7 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.double_value = value;
@@ -819,7 +815,7 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
 
 SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, const char* file, int32_t line) {
 
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   constant->value.string_value = string;
   constant->type = SPVM_TYPE_get_string_type(compiler);
@@ -832,7 +828,7 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, c
 
 SPVM_OP* SPVM_OP_new_op_constant_byte_array_string(SPVM_COMPILER* compiler, char* string, const char* file, int32_t line) {
 
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONSTANT, file, line);
+  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   constant->value.string_value = string;
   constant->type = SPVM_TYPE_get_string_type(compiler);
@@ -847,11 +843,11 @@ SPVM_OP* SPVM_OP_new_op_var_from_op_my(SPVM_COMPILER* compiler, SPVM_OP* op_my) 
   (void)compiler;
   
   SPVM_VAR* var = SPVM_VAR_new(compiler);
-  SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_my->file, op_my->line);
+  SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_my->file, op_my->line);
   
   SPVM_MY* my = op_my->uv.my;
   
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_my->file, op_my->line);
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_my->file, op_my->line);
   op_name->uv.name = my->op_name->uv.name;
   var->op_name = op_name;
   var->op_my = op_my;
@@ -867,7 +863,7 @@ SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_s
   
   SPVM_OP* op_block = op_sub->last;
   
-  if (op_block->code == SPVM_OP_C_CODE_BLOCK) {
+  if (op_block->id == SPVM_OP_C_ID_BLOCK) {
     return op_block;
   }
   else {
@@ -887,7 +883,7 @@ SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* 
 
 SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_switch, SPVM_OP* op_term_condition, SPVM_OP* op_block) {
   
-  SPVM_OP* op_switch_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SWITCH_CONDITION, op_term_condition->file, op_term_condition->line);
+  SPVM_OP* op_switch_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SWITCH_CONDITION, op_term_condition->file, op_term_condition->line);
   SPVM_OP_insert_child(compiler, op_switch_condition, op_switch_condition->last, op_term_condition);
   
   SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_switch_condition);
@@ -914,20 +910,20 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case,
 
 SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_term_condition, int32_t is_not) {
   // Condition
-  int32_t code;
+  int32_t id;
   if (is_not) {
-    code = SPVM_OP_C_CODE_CONDITION_NOT;
+    id = SPVM_OP_C_ID_CONDITION_NOT;
   }
   else {
-    code = SPVM_OP_C_CODE_CONDITION;
+    id = SPVM_OP_C_ID_CONDITION;
   }
-  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, code, op_term_condition->file, op_term_condition->line);
+  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, id, op_term_condition->file, op_term_condition->line);
   
   if (SPVM_OP_is_rel_op(compiler, op_term_condition)) {
     SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
   }
   else {
-    SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_term_condition->file, op_term_condition->line);
+    SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_term_condition->file, op_term_condition->line);
     SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_term_condition);
     SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_bool);
   }
@@ -938,7 +934,7 @@ SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_term_condi
 SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, SPVM_OP* op_statement_init, SPVM_OP* op_term_condition, SPVM_OP* op_term_increment, SPVM_OP* op_block) {
   
   // Loop
-  SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LOOP, op_for->file, op_for->line);
+  SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP, op_for->file, op_for->line);
   
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 1);
@@ -948,10 +944,10 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
 
   // Outer block for initialize loop variable
-  SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_for->file, op_for->line);
+  SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_for->file, op_for->line);
   
   // Block for increment
-  SPVM_OP* op_block_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_for->file, op_for->line);
+  SPVM_OP* op_block_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_for->file, op_for->line);
   op_block_increment->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT;
   SPVM_OP_insert_child(compiler, op_block_increment, op_block_increment->last, op_term_increment);
   
@@ -968,10 +964,10 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
 SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_while, SPVM_OP* op_term_condition, SPVM_OP* op_block) {
   
   // Loop
-  SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LOOP, op_while->file, op_while->line);
+  SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP, op_while->file, op_while->line);
   
   // Init statement. This is null.
-  SPVM_OP* op_statement_init = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_while->file, op_while->line);
+  SPVM_OP* op_statement_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_while->file, op_while->line);
   
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 1);
@@ -981,12 +977,12 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
   
   // Next value. This is null.
-  SPVM_OP* op_term_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_while->file, op_while->line);
+  SPVM_OP* op_term_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_while->file, op_while->line);
 
-  SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_while->file, op_while->line);
+  SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_while->file, op_while->line);
 
   // Block for increment
-  SPVM_OP* op_block_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_while->file, op_while->line);
+  SPVM_OP* op_block_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_while->file, op_while->line);
   op_block_increment->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT;
   SPVM_OP_insert_child(compiler, op_block_increment, op_block_increment->last, op_term_increment);
 
@@ -1003,8 +999,8 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
 SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_term_condition, SPVM_OP* op_block_true, SPVM_OP* op_block_false) {
   
   // ELSIF is same as IF
-  if (op_if->code == SPVM_OP_C_CODE_ELSIF) {
-    op_if->code = SPVM_OP_C_CODE_IF;
+  if (op_if->id == SPVM_OP_C_ID_ELSIF) {
+    op_if->id = SPVM_OP_C_ID_IF;
   }
   
   // Condition
@@ -1012,10 +1008,10 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
 
   // Create true block if needed
-  if (op_block_true->code != SPVM_OP_C_CODE_BLOCK) {
+  if (op_block_true->id != SPVM_OP_C_ID_BLOCK) {
     SPVM_OP* op_not_block = op_block_true;
     
-    op_block_true = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_not_block->file, op_not_block->line);
+    op_block_true = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_not_block->file, op_not_block->line);
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_not_block->file, op_not_block->line);
     SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_true, op_block_true->last, op_list);
@@ -1023,11 +1019,11 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   op_block_true->flag |= SPVM_OP_C_FLAG_BLOCK_IF;
   
   // Create false block if needed
-  if (op_block_false->code != SPVM_OP_C_CODE_BLOCK) {
+  if (op_block_false->id != SPVM_OP_C_ID_BLOCK) {
     SPVM_OP* op_not_block = op_block_false;
     
     // Create block
-    op_block_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_not_block->file, op_not_block->line);
+    op_block_false = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_not_block->file, op_not_block->line);
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_not_block->file, op_not_block->line);
     SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_false, op_block_false->last, op_list);
@@ -1072,7 +1068,7 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_constant_length);
     
     // ARRAY_INIT
-    SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_INIT, op_list_elements->file, op_list_elements->line);
+    SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, op_list_elements->file, op_list_elements->line);
     
     // Indexes
     SPVM_OP* op_list_indexes = SPVM_OP_new_op_list(compiler, op_list_elements->file, op_list_elements->line);
@@ -1099,23 +1095,23 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   SPVM_TYPE*  type = NULL;
   
-  switch (op->code) {
-    case SPVM_OP_C_CODE_EQ:
-    case SPVM_OP_C_CODE_NE:
-    case SPVM_OP_C_CODE_GT:
-    case SPVM_OP_C_CODE_GE:
-    case SPVM_OP_C_CODE_LT:
-    case SPVM_OP_C_CODE_LE:
-    case SPVM_OP_C_CODE_BOOL:
+  switch (op->id) {
+    case SPVM_OP_C_ID_EQ:
+    case SPVM_OP_C_ID_NE:
+    case SPVM_OP_C_ID_GT:
+    case SPVM_OP_C_ID_GE:
+    case SPVM_OP_C_ID_LT:
+    case SPVM_OP_C_ID_LE:
+    case SPVM_OP_C_ID_BOOL:
       type = SPVM_TYPE_get_int_type(compiler);
       break;
-    case SPVM_OP_C_CODE_CONCAT_STRING:
+    case SPVM_OP_C_ID_CONCAT_STRING:
       type = SPVM_TYPE_get_string_type(compiler);
       break;
-    case SPVM_OP_C_CODE_ARRAY_LENGTH:
+    case SPVM_OP_C_ID_ARRAY_LENGTH:
       type = SPVM_TYPE_get_int_type(compiler);
       break;
-    case SPVM_OP_C_CODE_ARRAY_ELEM: {
+    case SPVM_OP_C_ID_ARRAY_ELEM: {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
       if (strcmp(first_type->name, "string") == 0) {
         type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
@@ -1125,55 +1121,55 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
-    case SPVM_OP_C_CODE_ADD:
-    case SPVM_OP_C_CODE_SUBTRACT:
-    case SPVM_OP_C_CODE_MULTIPLY:
-    case SPVM_OP_C_CODE_DIVIDE:
-    case SPVM_OP_C_CODE_REMAINDER:
-    case SPVM_OP_C_CODE_PRE_INC:
-    case SPVM_OP_C_CODE_POST_INC:
-    case SPVM_OP_C_CODE_PRE_DEC:
-    case SPVM_OP_C_CODE_POST_DEC:
-    case SPVM_OP_C_CODE_LEFT_SHIFT:
-    case SPVM_OP_C_CODE_RIGHT_SHIFT:
-    case SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED:
-    case SPVM_OP_C_CODE_BIT_XOR:
-    case SPVM_OP_C_CODE_BIT_OR:
-    case SPVM_OP_C_CODE_BIT_AND:
-    case SPVM_OP_C_CODE_COMPLEMENT:
-    case SPVM_OP_C_CODE_PLUS:
-    case SPVM_OP_C_CODE_NEGATE:
-    case SPVM_OP_C_CODE_NEW:
+    case SPVM_OP_C_ID_ADD:
+    case SPVM_OP_C_ID_SUBTRACT:
+    case SPVM_OP_C_ID_MULTIPLY:
+    case SPVM_OP_C_ID_DIVIDE:
+    case SPVM_OP_C_ID_REMAINDER:
+    case SPVM_OP_C_ID_PRE_INC:
+    case SPVM_OP_C_ID_POST_INC:
+    case SPVM_OP_C_ID_PRE_DEC:
+    case SPVM_OP_C_ID_POST_DEC:
+    case SPVM_OP_C_ID_LEFT_SHIFT:
+    case SPVM_OP_C_ID_RIGHT_SHIFT:
+    case SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED:
+    case SPVM_OP_C_ID_BIT_XOR:
+    case SPVM_OP_C_ID_BIT_OR:
+    case SPVM_OP_C_ID_BIT_AND:
+    case SPVM_OP_C_ID_COMPLEMENT:
+    case SPVM_OP_C_ID_PLUS:
+    case SPVM_OP_C_ID_NEGATE:
+    case SPVM_OP_C_ID_NEW:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
     }
-    case SPVM_OP_C_CODE_ASSIGN: {
+    case SPVM_OP_C_ID_ASSIGN: {
       type = SPVM_OP_get_type(compiler, op->last);
       break;
     }
-    case SPVM_OP_C_CODE_RETURN: {
+    case SPVM_OP_C_ID_RETURN: {
       if (op->first) {
         type = SPVM_OP_get_type(compiler, op->first);
       }
       break;
     }
-    case SPVM_OP_C_CODE_CONVERT: {
+    case SPVM_OP_C_ID_CONVERT: {
       SPVM_OP* op_type = op->last;
       type = SPVM_OP_get_type(compiler, op_type);
       break;
     }
-    case SPVM_OP_C_CODE_TYPE: {
+    case SPVM_OP_C_ID_TYPE: {
       if (op->uv.type) {
         type = op->uv.type;
       }
       break;
     }
-    case SPVM_OP_C_CODE_SWITCH_CONDITION : {
+    case SPVM_OP_C_ID_SWITCH_CONDITION : {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
     }
-    case SPVM_OP_C_CODE_UNDEF : {
+    case SPVM_OP_C_ID_UNDEF : {
       if (op->uv.undef->type) {
         type = op->uv.undef->type;
       }
@@ -1182,30 +1178,30 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
-    case SPVM_OP_C_CODE_CONSTANT: {
+    case SPVM_OP_C_ID_CONSTANT: {
       SPVM_CONSTANT* constant = op->uv.constant;
       type = constant->type;
       break;
     }
-    case SPVM_OP_C_CODE_VAR: {
+    case SPVM_OP_C_ID_VAR: {
       SPVM_VAR* var = op->uv.var;
       if (var->op_my->uv.my->op_type) {
         type = var->op_my->uv.my->op_type->uv.type;
       }
       break;
     }
-    case SPVM_OP_C_CODE_PACKAGE_VAR: {
+    case SPVM_OP_C_ID_PACKAGE_VAR: {
       SPVM_OUR* our = op->uv.package_var->op_our->uv.our;
       if (our->op_type) {
         type = our->op_type->uv.type;
       }
       break;
     }
-    case SPVM_OP_C_CODE_EXCEPTION_VAR: {
+    case SPVM_OP_C_ID_EXCEPTION_VAR: {
       type = SPVM_TYPE_get_string_type(compiler);
       break;
     }
-    case SPVM_OP_C_CODE_MY: {
+    case SPVM_OP_C_ID_MY: {
       
       SPVM_MY* my = op->uv.my;
       if ( my->op_type) {
@@ -1213,7 +1209,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
-    case SPVM_OP_C_CODE_CALL_SUB: {
+    case SPVM_OP_C_ID_CALL_SUB: {
       SPVM_CALL_SUB* call_sub = op->uv.call_sub;
       const char* abs_name = call_sub->sub->abs_name;
       SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, abs_name, strlen(abs_name));
@@ -1221,13 +1217,13 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = sub->op_return_type->uv.type;
       break;
     }
-    case SPVM_OP_C_CODE_CALL_FIELD: {
+    case SPVM_OP_C_ID_CALL_FIELD: {
       SPVM_CALL_FIELD* call_field = op->uv.call_field;
       SPVM_FIELD* field = call_field->field;
       type = field->op_type->uv.type;
       break;
     }
-    case SPVM_OP_C_CODE_FIELD: {
+    case SPVM_OP_C_ID_FIELD: {
       SPVM_FIELD* field = op->uv.field;
       type = field->op_type->uv.type;
       break;
@@ -1247,7 +1243,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
   
   SPVM_OP* found_op_sub;
   
-  if (call_sub->code == SPVM_CALL_SUB_C_CODE_METHOD_CALL) {
+  if (call_sub->id == SPVM_CALL_SUB_C_ID_METHOD_CALL) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_term);
     const char* type_name = type->name;
     const char* sub_name = call_sub->op_name->uv.name;
@@ -1259,7 +1255,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
       strlen(sub_abs_name)
     );
   }
-  else if (call_sub->code == SPVM_CALL_SUB_C_CODE_SUB_CALL) {
+  else if (call_sub->id == SPVM_CALL_SUB_C_ID_SUB_CALL) {
     const char* sub_name = call_sub->op_name->uv.name;
     
     if (strstr(sub_name, "::")) {
@@ -1330,7 +1326,7 @@ void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field)
 
 SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term) {
   
-  SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ARRAY_ELEM, op_var->file, op_var->line);
+  SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEM, op_var->file, op_var->line);
   SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var);
   SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_term);
   
@@ -1338,7 +1334,7 @@ SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM
 }
 
 SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_term, SPVM_OP* op_name_field) {
-  SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_FIELD, op_term->file, op_term->line);
+  SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_FIELD, op_term->file, op_term->line);
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_term);
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
   
@@ -1358,7 +1354,7 @@ SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_term, SPV
 
 SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_call_field) {
   
-  SPVM_OP* op_weaken_field = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_WEAKEN_FIELD, op_weaken->file, op_weaken->line);
+  SPVM_OP* op_weaken_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_WEAKEN_FIELD, op_weaken->file, op_weaken->line);
   SPVM_OP_insert_child(compiler, op_weaken_field, op_weaken_field->last, op_call_field);
   
   op_call_field->flag |= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN;
@@ -1379,7 +1375,7 @@ SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPV
 
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   
-  SPVM_OP* op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_GRAMMAR, op_packages->file, op_packages->line);
+  SPVM_OP* op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_packages->file, op_packages->line);
   SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_packages);
   
   compiler->op_grammar = op_grammar;
@@ -1469,7 +1465,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     type->base_type = type;
     
     // Type OP
-    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name_package->file, op_name_package->line);
+    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name_package->file, op_name_package->line);
     op_type->uv.type = type;
     
     // Add type
@@ -1486,13 +1482,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_OP* op_decls = op_block->first;
     SPVM_OP* op_decl = op_decls->first;
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
-      if (op_decl->code == SPVM_OP_C_CODE_FIELD) {
+      if (op_decl->id == SPVM_OP_C_ID_FIELD) {
         SPVM_LIST_push(op_fields, op_decl);
       }
-      else if (op_decl->code == SPVM_OP_C_CODE_SUB) {
+      else if (op_decl->id == SPVM_OP_C_ID_SUB) {
         SPVM_LIST_push(op_subs, op_decl);
       }
-      else if (op_decl->code == SPVM_OP_C_CODE_ENUM) {
+      else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
         SPVM_OP* op_enum_block = op_decl->first;
         SPVM_OP* op_enumeration_values = op_enum_block->first;
         SPVM_OP* op_sub = op_enumeration_values->first;
@@ -1500,21 +1496,21 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_LIST_push(op_subs, op_sub);
         }
       }
-      else if (op_decl->code == SPVM_OP_C_CODE_SET) {
+      else if (op_decl->id == SPVM_OP_C_ID_SET) {
         SPVM_OP* op_list = op_decl->first;
         SPVM_OP* op_name = op_list->first;
         while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
           SPVM_LIST_push(op_names_set_field, op_name);
         }
       }
-      else if (op_decl->code == SPVM_OP_C_CODE_GET) {
+      else if (op_decl->id == SPVM_OP_C_ID_GET) {
         SPVM_OP* op_list = op_decl->first;
         SPVM_OP* op_name = op_list->first;
         while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
           SPVM_LIST_push(op_names_get_field, op_name);
         }
       }
-      else if (op_decl->code == SPVM_OP_C_CODE_OUR) {
+      else if (op_decl->id == SPVM_OP_C_ID_OUR) {
         SPVM_LIST_push(op_ours, op_decl);
       }
       else {
@@ -1623,11 +1619,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         // Unknown sub
         else {
           // Bind standard functions
-          if (sub->is_native) {
-            SPVM_LIST_push(compiler->native_subs, sub);
-            SPVM_LIST_push(package->native_subs, sub);
-          }
-          
           sub->abs_name = sub_abs_name;
           
           sub->op_package = op_package;
@@ -1725,6 +1716,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Add op fields
     package->op_fields = op_fields;
     
+    package->id = compiler->op_packages->length;
     SPVM_LIST_push(compiler->op_packages, op_package);
     SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
   }
@@ -1803,8 +1795,8 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
   
-  if (op_var->code == SPVM_OP_C_CODE_VAR) {
-    SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_var->file, op_var->line);
+  if (op_var->id == SPVM_OP_C_ID_VAR) {
+    SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, op_var->file, op_var->line);
     
     // Create my var information
     SPVM_MY* my = SPVM_MY_new(compiler);
@@ -1813,7 +1805,7 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_
     }
     
     // Name OP
-    SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_var->file, op_var->line);
+    SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
     op_name->uv.name = op_var->uv.var->op_name->uv.name;
     my->op_name = op_name;
 
@@ -1837,13 +1829,13 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_
 
 SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPVM_OP* op_type) {
   
-  SPVM_OP* op_our = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_OUR, op_package_var->file, op_package_var->line);
+  SPVM_OP* op_our = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_OUR, op_package_var->file, op_package_var->line);
   SPVM_OUR* our = SPVM_OUR_new(compiler);
   
   const char* name = SPVM_OP_get_var_name(compiler, op_package_var);
   
   _Bool invalid_name = 0;
-  if (op_package_var->code != SPVM_OP_C_CODE_PACKAGE_VAR) {
+  if (op_package_var->id != SPVM_OP_C_ID_PACKAGE_VAR) {
     invalid_name = 1;
   }
   else {
@@ -1868,13 +1860,13 @@ const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
   (void)compiler;
   
   const char* name;
-  if (op_var->code == SPVM_OP_C_CODE_VAR) {
+  if (op_var->id == SPVM_OP_C_ID_VAR) {
     name = op_var->uv.var->op_name->uv.name;
   }
-  else if (op_var->code == SPVM_OP_C_CODE_PACKAGE_VAR) {
+  else if (op_var->id == SPVM_OP_C_ID_PACKAGE_VAR) {
     name = op_var->uv.package_var->op_name->uv.name;
   }
-  else if (op_var->code == SPVM_OP_C_CODE_EXCEPTION_VAR) {
+  else if (op_var->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
     name = "$@";
   }
   else {
@@ -1912,8 +1904,8 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
 
 SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_return_type, SPVM_OP* op_block) {
   
-  if (op_name_sub->code == SPVM_OP_C_CODE_NEW) {
-    op_name_sub->code = SPVM_OP_C_CODE_NAME;
+  if (op_name_sub->id == SPVM_OP_C_ID_NEW) {
+    op_name_sub->id = SPVM_OP_C_ID_NAME;
     op_name_sub->uv.name = "new";
   }
   
@@ -1941,12 +1933,19 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   // Descriptors
   SPVM_OP* op_descriptor = op_descriptors->first;
   while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
-    if (op_descriptor->code == SPVM_DESCRIPTOR_C_CODE_NATIVE) {
+    if (op_descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
       sub->is_native = 1;
+      sub->disable_jit = 1;
+    }
+    else if (op_descriptor->id == SPVM_DESCRIPTOR_C_ID_JIT){
+      sub->have_jit_desc = 1;
     }
     else {
-      SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_CODE_NAMES[op_descriptor->code], op_descriptors->file, op_descriptors->line);
+      SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[op_descriptor->id], op_descriptors->file, op_descriptors->line);
     }
+  }
+  if (sub->is_native && sub->have_jit_desc) {
+    SPVM_yyerror_format(compiler, "native and jit descriptor can't be used together %s", SPVM_DESCRIPTOR_C_ID_NAMES[op_descriptor->id], op_descriptors->file, op_descriptors->line);
   }
   
   // Native subroutine can't have block
@@ -1976,7 +1975,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   if (strcmp(sub->op_name->uv.name, "DESTROY") == 0) {
     sub->is_destructor = 1;
     // DESTROY return type must be void
-    if (sub->op_return_type->uv.type->code != SPVM_TYPE_C_CODE_VOID) {
+    if (sub->op_return_type->uv.type->id != SPVM_TYPE_C_ID_VOID) {
       SPVM_yyerror_format(compiler, "DESTROY return type must be void\n", op_block->file, op_block->line);
     }
   }
@@ -1988,42 +1987,42 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       int32_t i;
       for (i = sub->op_args->length - 1; i >= 0; i--) {
         SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
-        SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MY, op_arg->file, op_arg->line);
+        SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, op_arg->file, op_arg->line);
         op_my->uv.my = op_arg->uv.my;
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_my);
       }
     }
     
     // Add return to last of statement if need
-    if (!op_list_statement->last || op_list_statement->last->code != SPVM_OP_C_CODE_RETURN) {
-      SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_list_statement->file, op_list_statement->line);
+    if (!op_list_statement->last || op_list_statement->last->id != SPVM_OP_C_ID_RETURN) {
+      SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_list_statement->file, op_list_statement->line);
       SPVM_TYPE* return_type = sub->op_return_type->uv.type;
       
       SPVM_OP* op_constant;
-      if (return_type->code == SPVM_TYPE_C_CODE_VOID) {
+      if (return_type->id == SPVM_TYPE_C_ID_VOID) {
         // Nothing
       }
-      else if (return_type->code == SPVM_TYPE_C_CODE_BYTE) {
+      else if (return_type->id == SPVM_TYPE_C_ID_BYTE) {
         op_constant = SPVM_OP_new_op_constant_byte(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->code == SPVM_TYPE_C_CODE_SHORT) {
+      else if (return_type->id == SPVM_TYPE_C_ID_SHORT) {
         op_constant = SPVM_OP_new_op_constant_short(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->code == SPVM_TYPE_C_CODE_INT) {
+      else if (return_type->id == SPVM_TYPE_C_ID_INT) {
         op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->code == SPVM_TYPE_C_CODE_LONG) {
+      else if (return_type->id == SPVM_TYPE_C_ID_LONG) {
         op_constant = SPVM_OP_new_op_constant_long(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->code == SPVM_TYPE_C_CODE_FLOAT) {
+      else if (return_type->id == SPVM_TYPE_C_ID_FLOAT) {
         op_constant = SPVM_OP_new_op_constant_float(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->code == SPVM_TYPE_C_CODE_DOUBLE) {
+      else if (return_type->id == SPVM_TYPE_C_ID_DOUBLE) {
         op_constant = SPVM_OP_new_op_constant_double(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
@@ -2051,7 +2050,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     
     SPVM_CONSTANT* constant = op_constant->uv.constant;
     
-    if (constant->type->code == SPVM_TYPE_C_CODE_INT) {
+    if (constant->type->id == SPVM_TYPE_C_ID_INT) {
       compiler->enum_default_value = constant->value.int_value;
     }
     else {
@@ -2068,7 +2067,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   }
   
   // Return
-  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RETURN, op_name->file, op_name->line);
+  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
   
   // Statements
@@ -2076,16 +2075,16 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
 
   // Block
-  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, op_name->file, op_name->line);
+  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
   
   // sub
-  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUB, op_name->file, op_name->line);
+  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, op_name->file, op_name->line);
   op_sub->file = op_name->file;
   op_sub->line = op_name->line;
   
   // Type
-  SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name->file, op_name->line);
+  SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name->file, op_name->line);
   op_return_type->uv.type = op_constant->uv.constant->type;
   
   // Build subroutine
@@ -2095,7 +2094,8 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   op_sub->uv.sub->op_constant = op_constant;
   
   // Subroutine is constant
-  op_sub->uv.sub->is_constant = 1;
+  op_sub->uv.sub->is_enum = 1;
+  op_sub->uv.sub->disable_jit = 1;
   
   return op_sub;
 }
@@ -2107,7 +2107,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   
   // Reset enum information
   compiler->enum_default_value = 0;
-  compiler->enum_default_type_code = SPVM_TYPE_C_CODE_INT;
+  compiler->enum_default_type_id = SPVM_TYPE_C_ID_INT;
   
   return op_enumeration;
 }
@@ -2115,24 +2115,24 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
 SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_sub, SPVM_OP* op_terms) {
   
   // Build OP_SUB
-  SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CALL_SUB, op_name_sub->file, op_name_sub->line);
+  SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_SUB, op_name_sub->file, op_name_sub->line);
   SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_name_sub);
   SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_terms);
   
   SPVM_CALL_SUB* call_sub = SPVM_CALL_SUB_new(compiler);
   
   const char* sub_name = op_name_sub->uv.name;
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NAME, op_invocant->file, op_invocant->line);
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_invocant->file, op_invocant->line);
   
   // Normal call
-  if (op_invocant->code == SPVM_OP_C_CODE_NULL) {
-    call_sub->code = SPVM_CALL_SUB_C_CODE_SUB_CALL;
+  if (op_invocant->id == SPVM_OP_C_ID_NULL) {
+    call_sub->id = SPVM_CALL_SUB_C_ID_SUB_CALL;
     op_name->uv.name = sub_name;
     call_sub->op_name = op_name;
   }
   // Method call
   else {
-    call_sub->code = SPVM_CALL_SUB_C_CODE_METHOD_CALL;
+    call_sub->id = SPVM_CALL_SUB_C_ID_METHOD_CALL;
     call_sub->op_term = op_invocant;
     call_sub->op_name = op_name_sub;
     
@@ -2194,25 +2194,25 @@ SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op
         0             false2
   */
   
-  SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_and->file, op_and->line);
+  SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_and->file, op_and->line);
   
   // Constant true
-  SPVM_OP* op_bool_true = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
+  SPVM_OP* op_bool_true = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if1->file, op_if1->line);
   SPVM_OP_insert_child(compiler, op_bool_true, op_bool_true->last, op_constant_true);
   
   // Constant false 1
-  SPVM_OP* op_bool_false1 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
+  SPVM_OP* op_bool_false1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_false1 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
   SPVM_OP_insert_child(compiler, op_bool_false1, op_bool_false1->last, op_constant_false1);
   
   // Constant false 2
-  SPVM_OP* op_bool_false2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
+  SPVM_OP* op_bool_false2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_false2 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
   SPVM_OP_insert_child(compiler, op_bool_false2, op_bool_false2->last, op_constant_false2);
   
   // if2
-  SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_if1->file, op_if1->line);
+  SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_if1->file, op_if1->line);
   
   // Build if tree
   SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_bool_true, op_bool_false1);
@@ -2241,25 +2241,25 @@ SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_f
   //      BOOL
   //        0   false
   
-  SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_or->file, op_or->line);
+  SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_or->file, op_or->line);
   
   // Constant true 1
-  SPVM_OP* op_bool_true1 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
+  SPVM_OP* op_bool_true1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_true1 = SPVM_OP_new_op_constant_int(compiler, 1, op_if1->file, op_if1->line);
   SPVM_OP_insert_child(compiler, op_bool_true1, op_bool_true1->last, op_constant_true1);
   
   // Constant true 2
-  SPVM_OP* op_bool_true2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
+  SPVM_OP* op_bool_true2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_true2 = SPVM_OP_new_op_constant_int(compiler, 1, op_if1->file, op_if1->line);
   SPVM_OP_insert_child(compiler, op_bool_true2, op_bool_true2->last, op_constant_true2);
   
   // Constant false
-  SPVM_OP* op_bool_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if1->file, op_if1->line);
+  SPVM_OP* op_bool_false = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_if1->file, op_if1->line);
   SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
   SPVM_OP_insert_child(compiler, op_bool_false, op_bool_false->last, op_constant_false);
   
   // if2
-  SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_if1->file, op_if1->line);
+  SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_if1->file, op_if1->line);
   
   // Build if tree
   SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_constant_true2, op_constant_false);
@@ -2283,15 +2283,15 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
   //    BOOL
   //      1
   
-  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_IF, op_not->file, op_not->line);
+  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_not->file, op_not->line);
   
   // Constant false
-  SPVM_OP* op_bool_false = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if->file, op_if->line);
+  SPVM_OP* op_bool_false = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_if->file, op_if->line);
   SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_if->file, op_if->line);
   SPVM_OP_insert_child(compiler, op_bool_false, op_bool_false->last, op_constant_false);
 
   // Constant true
-  SPVM_OP* op_bool_true = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BOOL, op_if->file, op_if->line);
+  SPVM_OP* op_bool_true = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_if->file, op_if->line);
   SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if->file, op_if->line);
   SPVM_OP_insert_child(compiler, op_bool_true, op_bool_true->last, op_constant_true);
   
@@ -2303,51 +2303,51 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
   
-  if (op_assign->code == SPVM_OP_C_CODE_SPECIAL_ASSIGN) {
+  if (op_assign->id == SPVM_OP_C_ID_SPECIAL_ASSIGN) {
     int32_t flag = op_assign->flag;
     
     SPVM_OP* op_operation;
     if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ADD, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUBTRACT, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_MULTIPLY, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MULTIPLY, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_DIVIDE, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DIVIDE, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_REMAINDER, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REMAINDER, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LEFT_SHIFT, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LEFT_SHIFT, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RIGHT_SHIFT, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RIGHT_SHIFT, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT_UNSIGNED) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_RIGHT_SHIFT_UNSIGNED, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BIT_XOR, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_XOR, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_OR) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BIT_OR, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_OR, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BIT_AND, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_AND, op_assign->file, op_assign->line);
     }
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT_STRING) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONCAT_STRING, op_assign->file, op_assign->line);
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONCAT_STRING, op_assign->file, op_assign->line);
     }
     else {
       assert(0);
     }
     
-    SPVM_OP* op_var_right = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
+    SPVM_OP* op_var_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_assign->file, op_assign->line);
     op_var_right->uv.var = op_assign_to->uv.var;
     
     SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_var_right);
@@ -2355,7 +2355,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
     
     op_assign_from = op_operation;
     
-    op_assign->code = SPVM_OP_C_CODE_ASSIGN;
+    op_assign->id = SPVM_OP_C_ID_ASSIGN;
   }
   
   // Build op
@@ -2370,10 +2370,10 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   op_assign_from->is_assign_from = 1;
   
   // Return variable if first children is var
-  if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
+  if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
     op_assign_from->is_var_assign_from = 1;
     
-    SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_VAR, op_assign->file, op_assign->line);
+    SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_assign->file, op_assign->line);
     op_var->uv.var = op_assign_to->uv.var;
     SPVM_OP_insert_child(compiler, op_var, op_var->last, op_assign);
     
@@ -2384,9 +2384,9 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   }
   
   // Assign left child is var and it has variable declaration, try type inference
-  if (op_assign_to->code == SPVM_OP_C_CODE_VAR) {
+  if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
     SPVM_OP* op_var = op_assign_to;
-    if (op_var->first && op_var->first->code == SPVM_OP_C_CODE_MY) {
+    if (op_var->first && op_var->first->id == SPVM_OP_C_ID_MY) {
       SPVM_OP* op_my = op_var->first;
       SPVM_MY* my = op_my->uv.my;
       my->try_type_inference = 1;
@@ -2415,10 +2415,10 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   }
   
   // Exception variable
-  SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_EXCEPTION_VAR, op_term->file, op_term->line);
+  SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, op_term->file, op_term->line);
   
   // Assign
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ASSIGN, op_term->file, op_term->line);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_term->file, op_term->line);
   SPVM_OP_build_assign(compiler, op_assign, op_exception_var, op_term);
   
   SPVM_OP_insert_child(compiler, op_croak, op_croak->last, op_assign);
@@ -2429,7 +2429,7 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
 SPVM_OP* SPVM_OP_new_op_void(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, file, line);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
   
   op_type->uv.type = SPVM_TYPE_get_void_type(compiler);
   
@@ -2439,8 +2439,8 @@ SPVM_OP* SPVM_OP_new_op_void(SPVM_COMPILER* compiler, const char* file, int32_t 
 SPVM_OP* SPVM_OP_build_type_byte(SPVM_COMPILER* compiler, SPVM_OP* op_byte) {
   
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_byte->file, op_byte->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_BYTE);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_byte->file, op_byte->line);
+  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_BYTE);
   
   return op_type;
 }
@@ -2448,40 +2448,40 @@ SPVM_OP* SPVM_OP_build_type_byte(SPVM_COMPILER* compiler, SPVM_OP* op_byte) {
 SPVM_OP* SPVM_OP_build_type_short(SPVM_COMPILER* compiler, SPVM_OP* op_short) {
 
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_short->file, op_short->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_SHORT);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_short->file, op_short->line);
+  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_SHORT);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_build_type_int(SPVM_COMPILER* compiler, SPVM_OP* op_int) {
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_int->file, op_int->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_INT);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_int->file, op_int->line);
+  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_INT);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_build_type_long(SPVM_COMPILER* compiler, SPVM_OP* op_long) {
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_long->file, op_long->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_LONG);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_long->file, op_long->line);
+  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_LONG);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_build_type_float(SPVM_COMPILER* compiler, SPVM_OP* op_float) {
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_float->file, op_float->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_FLOAT);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_float->file, op_float->line);
+  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_FLOAT);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_build_type_double(SPVM_COMPILER* compiler, SPVM_OP* op_double) {
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_double->file, op_double->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_CODE_DOUBLE);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_double->file, op_double->line);
+  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_DOUBLE);
   
   return op_type;
 }
@@ -2493,7 +2493,7 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   type->name = op_name->uv.name;
   
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_name->file, op_name->line);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
   op_type->uv.type = type;
   
@@ -2515,14 +2515,14 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   type->base_type = op_type_child->uv.type->base_type;
   
   // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_TYPE, op_type_child->file, op_type_child->line);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type_child->file, op_type_child->line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_child);
   
   if (op_term_length) {
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_term_length);
   }
   else {
-    SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, op_type_child->file, op_type_child->line);
+    SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_type_child->file, op_type_child->line);
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_null);
   }
   
@@ -2537,22 +2537,22 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
 
 SPVM_OP* SPVM_OP_new_op_list(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   
-  SPVM_OP* op_pushmark = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PUSHMARK, file, line);
+  SPVM_OP* op_pushmark = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PUSHMARK, file, line);
   
-  SPVM_OP* op_list = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_LIST, file, line);
+  SPVM_OP* op_list = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LIST, file, line);
   SPVM_OP_insert_child(compiler, op_list, op_list->last, op_pushmark);
   
   return op_list;
 }
 
 
-SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t code, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
 
   SPVM_OP *op = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_OP));
   
   memset(op, 0, sizeof(SPVM_OP));
   
-  op->code = code;
+  op->id = id;
   
   assert(!op->file);
   assert(!op->line);

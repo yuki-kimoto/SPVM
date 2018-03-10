@@ -11,10 +11,6 @@
 #include "spvm_util_allocator.h"
 #include "spvm_list.h"
 #include "spvm_op.h"
-#include "spvm_constant_pool_sub.h"
-#include "spvm_constant_pool_field.h"
-#include "spvm_constant_pool_package.h"
-#include "spvm_constant_pool_type.h"
 #include "spvm_type.h"
 #include "spvm_hash.h"
 #include "spvm_compiler.h"
@@ -86,101 +82,15 @@ void SPVM_CONSTANT_POOL_extend(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* cons
   }
 }
 
-int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_TYPE* type) {
-  (void)compiler;
-  
-  int32_t id = constant_pool->length;
-  
-  // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_TYPE));
-  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-  
-  // Constant pool type information
-  SPVM_CONSTANT_POOL_TYPE constant_pool_type;
-  memset(&constant_pool_type, 0, sizeof(SPVM_CONSTANT_POOL_TYPE));
-  
-  constant_pool_type.code = type->code;
-  if (SPVM_TYPE_is_numeric(compiler, type)) {
-    constant_pool_type.is_numeric = 1;
-  }
-  else {
-    constant_pool_type.is_numeric = 0;
-  }
-  
-  // Add length
-  constant_pool->length += extend_length;
-  
-  // Push type name to constant pool
-  constant_pool_type.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, type->name);
-  
-  // Parent type id
-  char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
-  SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
-  if (parent_type) {
-    constant_pool_type.parent_type_id = parent_type->id;
-  }
-
-  // Element type id
-  char* element_type_name = SPVM_TYPE_get_element_name(compiler, type->name);
-  if (element_type_name) {
-    SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
-    if (element_type) {
-      constant_pool_type.element_type_id = element_type->id;
-    }
-  }
-  
-  constant_pool_type.dimension = type->dimension;
-  
-  assert(type->base_type);
-  constant_pool_type.base_id = type->base_type->id;
-  
-  memcpy(&constant_pool->values[id], &constant_pool_type, sizeof(SPVM_CONSTANT_POOL_TYPE));
-  
-  return id;
-}
-
 int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_PACKAGE* package) {
   (void)compiler;
   
   int32_t id = constant_pool->length;
-  
-  // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-
-  // Constant pool package information
-  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-  memset(&constant_pool_package, 0, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  constant_pool_package.fields_length = package->op_fields->length;
-  constant_pool_package.object_fields_length = SPVM_PACKAGE_get_object_fields_length(compiler, package);
-  constant_pool_package.byte_size = package->byte_size;
-  
-  // Add length
-  constant_pool->length += extend_length;
-  
-  // Push package name to constant pool
-  const char* package_name = package->op_name->uv.name;
-  constant_pool_package.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
-
-  // Push load_path to constant pool
-  const char* load_path = package->load_path;
-  constant_pool_package.load_path_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, load_path);
-
-  // Push fields constant_pool indexes to constant pool
-  {
-    int32_t field_pos;
-    constant_pool_package.fields_base = constant_pool->length;
-    for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_pos);
-      SPVM_FIELD* field = op_field->uv.field;
-      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->id);
-    }
-  }
 
   // Push object fields constant_pool byte offsets to constant pool
   {
     int32_t field_pos;
-    constant_pool_package.object_field_byte_offsets_base = constant_pool->length;
+    package->object_field_byte_offsets_base = constant_pool->length;
     int32_t object_field_byte_offsets_length = 0;
     for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_pos);
@@ -193,162 +103,8 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
         object_field_byte_offsets_length++;
       }
     }
-    constant_pool_package.object_field_byte_offsets_length = object_field_byte_offsets_length;
+    package->object_field_byte_offsets_length = object_field_byte_offsets_length;
   }
-
-  memcpy(&constant_pool->values[id], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  
-  return id;
-}
-
-int32_t SPVM_CONSTANT_POOL_push_sub(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_SUB* sub) {
-  (void)compiler;
-  
-  SPVM_CONSTANT_POOL_adjust_alignment(compiler, constant_pool, sizeof(void*));
-  
-  int32_t id = constant_pool->length;
-  
-  // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_SUB));
-  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-  
-  // Set subroutine information
-  SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-  memset(&constant_pool_sub, 0, sizeof(SPVM_CONSTANT_POOL_SUB));
-  constant_pool_sub.mys_length = sub->op_mys->length;
-  constant_pool_sub.call_sub_arg_stack_max = sub->call_sub_arg_stack_max;
-  constant_pool_sub.args_length = sub->op_args->length;
-  constant_pool_sub.is_native = sub->is_native;
-  constant_pool_sub.is_destructor = sub->is_destructor;
-  constant_pool_sub.is_jit = sub->is_jit;
-  constant_pool_sub.eval_stack_max_length = sub->eval_stack_max_length;
-  constant_pool_sub.loop_count = sub->loop_count;
-  
-  if (sub->op_return_type->uv.type->code == SPVM_TYPE_C_CODE_VOID) {
-    constant_pool_sub.is_void = 1;
-  }
-  
-  assert(sub->op_return_type);
-  
-  constant_pool_sub.return_type_id = sub->op_return_type->uv.type->id;
-  
-  // Add length
-  constant_pool->length += extend_length;
-
-  {
-    int32_t i;
-    for (i = 0; i < sub->op_args->length; i++) {
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
-      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
-      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, arg_type->code);
-    }
-  }
-
-  // My type ids
-  constant_pool_sub.my_type_ids_base = constant_pool->length;
-  {
-    int32_t i;
-    for (i = 0; i < sub->op_mys->length; i++) {
-      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, i);
-      SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, op_my);
-      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, my_type->id);
-    }
-  }
-
-  // Arg type ids
-  constant_pool_sub.arg_type_ids_base = constant_pool->length;
-  {
-    int32_t i;
-    for (i = 0; i < sub->op_args->length; i++) {
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
-      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
-      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, arg_type->id);
-    }
-  }
-  
-  // Object args length
-  int32_t object_args_length = 0;
-  constant_pool_sub.object_args_base = constant_pool->length;
-  {
-    int32_t i;
-    for (i = 0; i < sub->op_args->length; i++) {
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
-      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
-      assert(arg_type);
-      if (SPVM_TYPE_is_object(compiler, arg_type)) {
-        SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, i);
-        object_args_length++;
-      }
-    }
-    constant_pool_sub.object_args_length = object_args_length;
-  }
-
-  // Object mys length
-  int32_t object_mys_length = 0;
-  constant_pool_sub.object_mys_base = constant_pool->length;
-  {
-    int32_t i;
-    for (i = 0; i < sub->op_mys->length; i++) {
-      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, i);
-      SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, op_my);
-      assert(my_type);
-      if (SPVM_TYPE_is_object(compiler, my_type)) {
-        SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, i);
-        object_mys_length++;
-      }
-    }
-    constant_pool_sub.object_mys_length = object_mys_length;
-  }
-  
-  // on_stack_replacement_jump_opcode_indexes_base
-  constant_pool_sub.on_stack_replacement_jump_opcode_indexes_base = constant_pool->length;
-  {
-    int32_t i;
-    for (i = 0; i < constant_pool_sub.loop_count; i++) {
-      // Temporary
-      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, 0);
-    }
-  }
-  
-  // Push sub name to constant pool
-  constant_pool_sub.abs_name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->abs_name);
-  
-  // Push file name to constant pool
-  constant_pool_sub.file_name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, sub->file_name);
-  
-  memcpy(&constant_pool->values[id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
-  
-  return id;
-}
-
-int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_FIELD* field) {
-  (void)compiler;
-
-  int32_t id = constant_pool->length;
-
-  // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_FIELD));
-  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-  
-  // Constant pool field information
-  // Field id is field index + 1 because 0 mean no id
-  SPVM_CONSTANT_POOL_FIELD constant_pool_field;
-  memset(&constant_pool_field, 0, sizeof(SPVM_CONSTANT_POOL_FIELD));
-  constant_pool_field.index = field->index;
-  constant_pool_field.type_id = field->op_type->uv.type->id;
-  constant_pool_field.byte_offset = field->byte_offset;
-  
-  if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
-    constant_pool_field.is_object = 1;
-  }
-  
-  // Add length
-  constant_pool->length += extend_length;
-  
-  // Add field name to constant pool
-  constant_pool_field.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->op_name->uv.name);
-  
-  memcpy(&constant_pool->values[id], &constant_pool_field, sizeof(SPVM_CONSTANT_POOL_FIELD));
   
   return id;
 }

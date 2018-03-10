@@ -10,10 +10,11 @@ struct SPVM_package {
   SPVM_HASH* op_field_symtable;
   SPVM_HASH* op_our_symtable;
   SPVM_OP* op_sub_destructor;
-  SPVM_LIST* native_subs;
   char* load_path;
   int32_t id;
   int32_t byte_size;
+  int32_t object_field_byte_offsets_base;
+  int32_t object_field_byte_offsets_length;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
