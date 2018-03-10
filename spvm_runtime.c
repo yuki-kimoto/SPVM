@@ -685,24 +685,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_LOAD_UNDEF:
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = NULL;
         break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE_0:
-        *(SPVM_API_byte*)&vars[opcode->operand0] = (int8_t)0;
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_SHORT_0:
-        *(SPVM_API_short*)&vars[opcode->operand0] = (int16_t)0;
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_INT_0:
-        *(SPVM_API_int*)&vars[opcode->operand0] = (int32_t)0;
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_LONG_0:
-        *(SPVM_API_long*)&vars[opcode->operand0] = (int64_t)0;
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_FLOAT_0:
-        *(float*)&vars[opcode->operand0] = (float)0;
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_DOUBLE_0:
-        *(double*)&vars[opcode->operand0] = (double)0;
-        break;
       case SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE:
         *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)&opcode->operand1;
         break;

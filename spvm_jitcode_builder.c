@@ -1061,25 +1061,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_DOUBLE:
         SPVM_JITCODE_BUILDER_add_convert(string_buffer, "SPVM_API_double", "SPVM_API_float", opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE_0:
-        SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_byte", opcode->operand0);
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_SHORT_0:
-        SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_short", opcode->operand0);
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_INT_0:
-        SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_int", opcode->operand0);
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_LONG_0:
-        SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_long", opcode->operand0);
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_FLOAT_0:
-        SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_float", opcode->operand0);
-        break;
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_DOUBLE_0: {
-        SPVM_JITCODE_BUILDER_add_load_constant_0(string_buffer, "SPVM_API_double", opcode->operand0);
-        break;
-      }
       case SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_byte", opcode->operand0);
