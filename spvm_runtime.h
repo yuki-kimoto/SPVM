@@ -62,11 +62,7 @@ struct SPVM_runtime {
   
   int32_t objects_count;
   
-  char* jit_source_file;
-  
-  int32_t jit_mode;
-  
-  int32_t caller_sub_id;
+  int8_t jit_mode;
   
   SPVM_COMPILER* compiler;
 };
