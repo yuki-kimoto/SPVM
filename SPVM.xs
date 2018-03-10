@@ -3370,6 +3370,7 @@ get_package_load_path(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
 
 
   SV* sv_package_name = ST(0);
@@ -3380,13 +3381,13 @@ get_package_load_path(...)
   
   // Subroutine information
   SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[package_id];
+  int32_t op_package_id = constant_pool_package->op_package_id;
+  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
+  SPVM_PACKAGE* package = op_package->uv.package;
   
-  int32_t package_load_path_id = constant_pool_package->load_path_id;
+  const char* package_load_path = package->load_path;
   
-  const char* package_load_path = (char*)&runtime->constant_pool[package_load_path_id + 1];
-  
-  int32_t package_load_path_length = (int32_t)strlen(package_load_path);
-  SV* sv_package_load_path = sv_2mortal(newSVpvn(package_load_path, package_load_path_length));
+  SV* sv_package_load_path = sv_2mortal(newSVpvn(package_load_path, strlen(package_load_path)));
   
   XPUSHs(sv_package_load_path);
   

@@ -792,6 +792,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -799,10 +800,14 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   
   SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[type_id];
   int32_t package_id = constant_pool_type->package_id;
+  
   SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[package_id];
+  int32_t op_package_id = constant_pool_package->op_package_id;
+  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
+  SPVM_PACKAGE* package = op_package->uv.package;
   
   // Allocate memory
-  int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)constant_pool_package->byte_size;
+  int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)package->byte_size;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
   
   // Type id
@@ -812,7 +817,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   object->object_type_code = SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT;
   
   // Has destructor
-  if (constant_pool_package->destructor_sub_id > 0) {
+  if (package->op_sub_destructor) {
     object->has_destructor = 1;
   }
   
@@ -972,7 +977,6 @@ void SPVM_RUNTIME_API_dec_ref_count_only(SPVM_API* api, SPVM_OBJECT* object) {
 }
 
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   
   assert(object != NULL);
   assert(object->ref_count > 0);
@@ -987,6 +991,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
   
   // If reference count is zero, free address.
   if (object->ref_count == 0) {
+    SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+    SPVM_COMPILER* compiler = runtime->compiler;
     
     if (__builtin_expect(object->has_destructor, 0)) {
       if (object->in_destroy) {
@@ -996,12 +1002,15 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
         SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
         SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
         SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[constant_pool_type->package_id];
+        int32_t op_package_id = constant_pool_package->op_package_id;
+        SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
+        SPVM_PACKAGE* package = op_package->uv.package;
         
         // Call destructor
         SPVM_API_VALUE args[1];
         args[0].object_value = object;
         object->in_destroy = 1;
-        SPVM_RUNTIME_API_call_void_sub(api, constant_pool_package->destructor_sub_id, args);
+        SPVM_RUNTIME_API_call_void_sub(api, package->op_sub_destructor->uv.sub->id, args);
         object->in_destroy = 0;
         
         if (object->ref_count < 0) {
@@ -1032,9 +1041,12 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
       
       SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[constant_pool_type->package_id];
+      int32_t op_package_id = constant_pool_package->op_package_id;
+      SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
+      SPVM_PACKAGE* package = op_package->uv.package;
       
-      int32_t object_field_byte_offsets_base = constant_pool_package->object_field_byte_offsets_base;
-      int32_t object_field_byte_offsets_length = constant_pool_package->object_field_byte_offsets_length;
+      int32_t object_field_byte_offsets_base = package->object_field_byte_offsets_base;
+      int32_t object_field_byte_offsets_length = package->object_field_byte_offsets_length;
       
       {
         int32_t i;
@@ -1490,12 +1502,17 @@ int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
 
   int32_t* constant_pool = runtime->constant_pool;
   SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[constant_pool_type->package_id];
-  int32_t length = constant_pool_package->fields_length;
+  int32_t op_package_id = constant_pool_package->op_package_id;
+  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
+  SPVM_PACKAGE* package = op_package->uv.package;
+
+  int32_t length = package->op_fields->length;
   
   return length;
 }
@@ -1505,22 +1522,23 @@ int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
   
   int32_t* constant_pool = runtime->constant_pool;
   SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[constant_pool_type->package_id];
-  int32_t field_names_base = constant_pool_package->field_names_base;
-  int32_t length = constant_pool_package->fields_length;
-  
+  int32_t op_package_id = constant_pool_package->op_package_id;
+  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
+  SPVM_PACKAGE* package = op_package->uv.package;
+
   {
     int32_t i;
-    for (i = 0; i < length; i++) {
-      int32_t name_index = constant_pool[field_names_base + i];
-      char* name = (char*)&constant_pool[name_index + 1];
-      fprintf(stderr, "%s\n", name);
+    for (i = 0; i < package->op_fields->length; i++) {
+      SPVM_FIELD* field = SPVM_LIST_fetch(package->op_fields, i);
+      fprintf(stderr, "%s\n", field->op_name->uv.name);
     }
   }
   
-  return length;
+  return package->op_fields->length;
 }

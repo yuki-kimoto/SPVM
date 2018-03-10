@@ -180,6 +180,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   // Push object fields constant_pool byte offsets to constant pool
   {
     int32_t field_pos;
+    package->object_field_byte_offsets_base = constant_pool->length;
     constant_pool_package.object_field_byte_offsets_base = constant_pool->length;
     int32_t object_field_byte_offsets_length = 0;
     for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
@@ -193,6 +194,7 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
         object_field_byte_offsets_length++;
       }
     }
+    package->object_field_byte_offsets_length = object_field_byte_offsets_length;
     constant_pool_package.object_field_byte_offsets_length = object_field_byte_offsets_length;
   }
 

@@ -13,6 +13,8 @@ struct SPVM_package {
   char* load_path;
   int32_t id;
   int32_t byte_size;
+  int32_t object_field_byte_offsets_base;
+  int32_t object_field_byte_offsets_length;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
