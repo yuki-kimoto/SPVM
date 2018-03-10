@@ -7,8 +7,6 @@
 
 // Parser information
 struct SPVM_compiler {
-  // String symbol table
-  SPVM_HASH* string_symtable;
   
   // Opcodes
   SPVM_OPCODE_ARRAY* opcode_array;
