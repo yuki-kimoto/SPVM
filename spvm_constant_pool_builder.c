@@ -123,19 +123,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Push type index to constant pool
-  {
-    int32_t i;
-    for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
-      int32_t type_id = type->id;
-      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, type_id);
-      if (compiler->types_base == 0) {
-        compiler->types_base = added_id;
-      }
-    }
-  }
-
   // Push type code to id index to constant pool
   {
     int32_t type_code;

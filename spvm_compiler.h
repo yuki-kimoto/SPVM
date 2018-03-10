@@ -101,9 +101,6 @@ struct SPVM_compiler {
   // Current package count
   int32_t current_package_count;
   
-  // Type indexes constant pool index
-  int32_t types_base;
-
   // Type code to id index
   int32_t type_code_to_id_base;
   
