@@ -14,7 +14,6 @@
 #include "spvm_type.h"
 #include "spvm_runtime.h"
 #include "spvm_constant_pool.h"
-#include "spvm_constant_pool_type.h"
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_allocator.h"

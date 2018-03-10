@@ -11,7 +11,6 @@
 #include "spvm_util_allocator.h"
 #include "spvm_list.h"
 #include "spvm_op.h"
-#include "spvm_constant_pool_type.h"
 #include "spvm_type.h"
 #include "spvm_hash.h"
 #include "spvm_compiler.h"
@@ -83,14 +82,6 @@ void SPVM_CONSTANT_POOL_extend(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* cons
   }
 }
 
-int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_TYPE* type) {
-  (void)compiler;
-  
-  int32_t id = constant_pool->length;
-  
-  return id;
-}
-
 int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_PACKAGE* package) {
   (void)compiler;
   
@@ -115,14 +106,6 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
     package->object_field_byte_offsets_length = object_field_byte_offsets_length;
   }
   
-  return id;
-}
-
-int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, SPVM_FIELD* field) {
-  (void)compiler;
-
-  int32_t id = constant_pool->length;
-
   return id;
 }
 

@@ -4,7 +4,6 @@
 
 #include "spvm_constant_pool_builder.h"
 #include "spvm_constant_pool.h"
-#include "spvm_constant_pool_type.h"
 #include "spvm_list.h"
 #include "spvm_compiler.h"
 #include "spvm_constant.h"

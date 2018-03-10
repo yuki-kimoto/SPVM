@@ -8,7 +8,6 @@
 #include <inttypes.h>
 
 #include "spvm_runtime_api.h"
-#include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_allocator.h"

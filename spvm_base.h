@@ -40,10 +40,6 @@ typedef struct SPVM_call_sub SPVM_CALL_SUB;
 struct SPVM_sub_check_info;
 typedef struct SPVM_sub_check_info SPVM_SUB_CHECK_INFO;
 
-// spvm_constant_pool_type.h
-struct SPVM_constant_pool_type;
-typedef struct SPVM_constant_pool_type SPVM_CONSTANT_POOL_TYPE;
-
 // spvm_object.h
 struct SPVM_object;
 typedef struct SPVM_object SPVM_OBJECT;
