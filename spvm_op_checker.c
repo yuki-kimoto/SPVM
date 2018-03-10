@@ -119,6 +119,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
       else {
         type->code = compiler->types->length;
+        type->id = compiler->types->length;
         
         SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
         memcpy(new_type, type, sizeof(SPVM_TYPE));

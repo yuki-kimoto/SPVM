@@ -80,15 +80,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Push types to constant pool
-  {
-    int32_t type_index;
-    for (type_index = 0; type_index < compiler->types->length; type_index++) {
-      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_index);
-      type->id = type_index;
-    }
-  }
-
   // Set parent type id and element type id
   {
     int32_t i;
