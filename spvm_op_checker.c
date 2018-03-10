@@ -133,6 +133,32 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
 
+  // Set parent type id and element type id
+  {
+    int32_t i;
+    for (i = 0; i < compiler->types->length; i++) {
+      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
+      
+      char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
+      SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
+      if (parent_type) {
+        type->parent_type_id = parent_type->id;
+      }
+      
+      // Element type id
+      char* element_type_name = SPVM_TYPE_get_element_name(compiler, type->name);
+      if (element_type_name) {
+        SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
+        if (element_type) {
+          type->element_type_id = element_type->id;
+        }
+        else {
+          assert(0);
+        }
+      }
+    }
+  }
+
   // Calcurate fild byte offset and package byte size
   SPVM_LIST* op_packages = compiler->op_packages;
   int32_t alignment;

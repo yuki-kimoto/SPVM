@@ -1004,22 +1004,25 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       
       SPVM_PACKAGE* package = type->op_package->uv.package;
       
-      int32_t object_field_byte_offsets_base = package->object_field_byte_offsets_base;
-      int32_t object_field_byte_offsets_length = package->object_field_byte_offsets_length;
-      
       {
-        int32_t i;
-        for (i = 0; i < object_field_byte_offsets_length; i++) {
-          int32_t field_byte_offset = constant_pool[object_field_byte_offsets_base + i];
+        int32_t field_index;
+        for (field_index = 0; field_index < package->op_fields->length; field_index++) {
+          SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
+          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_TYPE* field_type = field->op_type->uv.type;
           
-          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
-          if (*object_field_address != NULL) {
-            // If object is weak, unweaken
-            if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
-              SPVM_RUNTIME_API_unweaken(api, object_field_address);
-            }
-            else {
-              SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);
+          if (SPVM_TYPE_is_object(compiler, field_type)) {
+            int32_t field_byte_offset = field->byte_offset;
+            
+            SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
+            if (*object_field_address != NULL) {
+              // If object is weak, unweaken
+              if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
+                SPVM_RUNTIME_API_unweaken(api, object_field_address);
+              }
+              else {
+                SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);
+              }
             }
           }
         }
