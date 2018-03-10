@@ -799,12 +799,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   int32_t* constant_pool = runtime->constant_pool;
   
   SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[type_id];
-  int32_t package_id = constant_pool_type->package_id;
-  
-  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[package_id];
-  int32_t op_package_id = constant_pool_package->op_package_id;
-  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
-  SPVM_PACKAGE* package = op_package->uv.package;
+  int32_t op_type_id = constant_pool_type->op_type_id;
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
+
+  SPVM_PACKAGE* package = type->op_package->uv.package;
   
   // Allocate memory
   int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)package->byte_size;
@@ -1001,10 +999,10 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       else {
         SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
         SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
-        SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[constant_pool_type->package_id];
-        int32_t op_package_id = constant_pool_package->op_package_id;
-        SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
-        SPVM_PACKAGE* package = op_package->uv.package;
+        int32_t op_type_id = constant_pool_type->op_type_id;
+        SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
+
+        SPVM_PACKAGE* package = type->op_package->uv.package;
         
         // Call destructor
         SPVM_API_VALUE args[1];
@@ -1039,11 +1037,10 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       
       // Type
       SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
+      int32_t op_type_id = constant_pool_type->op_type_id;
+      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
       
-      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[constant_pool_type->package_id];
-      int32_t op_package_id = constant_pool_package->op_package_id;
-      SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
-      SPVM_PACKAGE* package = op_package->uv.package;
+      SPVM_PACKAGE* package = type->op_package->uv.package;
       
       int32_t object_field_byte_offsets_base = package->object_field_byte_offsets_base;
       int32_t object_field_byte_offsets_length = package->object_field_byte_offsets_length;
@@ -1157,20 +1154,19 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Constant pool
   int32_t* constant_pool = runtime->constant_pool;
   
   // Type
   SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
-  
-  // Type name
-  int32_t constant_pool_type_name_id = constant_pool_type->name_id;
-  const char* type_name = (char*)&constant_pool[constant_pool_type_name_id + 1];
+  int32_t op_type_id = constant_pool_type->op_type_id;
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
   
   // Constant pool field symbol table
   SPVM_HASH* field_symtable = runtime->field_symtable;
-  SPVM_HASH* field_name_symtable = SPVM_HASH_search(field_symtable, type_name, strlen(type_name));
+  SPVM_HASH* field_name_symtable = SPVM_HASH_search(field_symtable, type->name, strlen(type->name));
   
   int32_t field_id = (int32_t)(intptr_t)SPVM_HASH_search(field_name_symtable, name, strlen(name));
   
@@ -1195,18 +1191,19 @@ int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
   (void)api;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_HASH* type_symtable = runtime->type_symtable;
-  int32_t constant_pool_type_id = (int32_t)(intptr_t)SPVM_HASH_search(type_symtable, name, strlen(name));
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  SPVM_TYPE* type = (int32_t)(intptr_t)SPVM_HASH_search(compiler->type_symtable, name, strlen(name));
   
   // Can't find type id
-  if (constant_pool_type_id == 0) {
+  if (type == NULL) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string(api, "Unknown type(SPVM_RUNTIME_API_get_type_id())", 0);
     SPVM_RUNTIME_API_set_exception(api, exception);
     
     return 0;
   }
   
-  return constant_pool_type_id;
+  return type->id;
 }
 
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
@@ -1505,12 +1502,10 @@ int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
   SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
+  int32_t op_type_id = constant_pool_type->op_type_id;
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
 
-  int32_t* constant_pool = runtime->constant_pool;
-  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[constant_pool_type->package_id];
-  int32_t op_package_id = constant_pool_package->op_package_id;
-  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
-  SPVM_PACKAGE* package = op_package->uv.package;
+  SPVM_PACKAGE* package = type->op_package->uv.package;
 
   int32_t length = package->op_fields->length;
   
@@ -1525,12 +1520,10 @@ int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object) {
   SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
+  int32_t op_type_id = constant_pool_type->op_type_id;
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
   
-  int32_t* constant_pool = runtime->constant_pool;
-  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&constant_pool[constant_pool_type->package_id];
-  int32_t op_package_id = constant_pool_package->op_package_id;
-  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
-  SPVM_PACKAGE* package = op_package->uv.package;
+  SPVM_PACKAGE* package = type->op_package->uv.package;
 
   {
     int32_t i;
