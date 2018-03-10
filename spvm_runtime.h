@@ -61,12 +61,6 @@ struct SPVM_runtime {
   int32_t packages_base;
   
   // Subroutines length
-  int32_t subs_length;
-  
-  // Subroutine base
-  int32_t subs_base;
-  
-  // Subroutines length
   int32_t types_length;
   
   // Subroutine base

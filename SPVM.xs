@@ -3272,18 +3272,12 @@ get_sub_names(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  int32_t subs_base = runtime->subs_base;
-  int32_t subs_length = runtime->subs_length;
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
   
   {
     int32_t sub_index;
-    for (sub_index = 0; sub_index < subs_length; sub_index++) {
-      int32_t sub_id = runtime->constant_pool[subs_base + sub_index];
-      
-      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
-      int32_t op_sub_id = constant_pool_sub->op_sub_id;
-      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
 
       const char* sub_name = sub->abs_name;
@@ -3343,18 +3337,12 @@ get_no_native_sub_names(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  int32_t subs_base = runtime->subs_base;
-  int32_t subs_length = runtime->subs_length;
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
   
   {
     int32_t sub_index;
-    for (sub_index = 0; sub_index < subs_length; sub_index++) {
-      int32_t sub_id = runtime->constant_pool[subs_base + sub_index];
-      
-      SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
-      int32_t op_sub_id = constant_pool_sub->op_sub_id;
-      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
 
       if (!sub->is_native) {

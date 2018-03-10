@@ -110,9 +110,6 @@ struct SPVM_compiler {
   // Type code to id index
   int32_t type_code_to_id_base;
   
-  // Subroutine indexes constant pool index
-  int32_t subs_base;
-  
   // Package Variable id
   int32_t package_var_length;
   

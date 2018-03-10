@@ -211,21 +211,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
     }
   }
 
-  // Push subroutine index to constant pool
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
-      
-      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      int32_t sub_id = sub->id;
-      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, sub_id);
-      if (!compiler->subs_base) {
-        compiler->subs_base = added_id;
-      }
-    }
-  }
-
   // Set destcutor sub id to package
   {
     int32_t package_index;
