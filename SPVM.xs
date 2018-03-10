@@ -3380,12 +3380,8 @@ get_package_load_path(...)
   const char* package_name = SvPV_nolen(sv_package_name);
   
 
-  int32_t package_id = (int32_t)(intptr_t)SPVM_HASH_search(runtime->package_symtable, package_name, strlen(package_name));
-  
   // Subroutine information
-  SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[package_id];
-  int32_t op_package_id = constant_pool_package->op_package_id;
-  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));;
   SPVM_PACKAGE* package = op_package->uv.package;
   
   const char* package_load_path = package->load_path;

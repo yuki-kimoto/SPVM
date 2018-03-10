@@ -47,17 +47,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   SPVM_API_VALUE* package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API_VALUE) * (compiler->package_var_length + 1));
   runtime->package_vars = package_vars;
   
-  // Build package symtable
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      const char* package_name = package->op_name->uv.name;
-      SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), (void*)(intptr_t)package->id);
-    }
-  }
-  
   // Build field symtable
   {
     int32_t package_index;
