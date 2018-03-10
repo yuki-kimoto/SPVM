@@ -12,7 +12,6 @@
 #include "spvm_list.h"
 #include "spvm_op.h"
 #include "spvm_constant_pool_field.h"
-#include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_type.h"
 #include "spvm_hash.h"
@@ -110,17 +109,6 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   (void)compiler;
   
   int32_t id = constant_pool->length;
-  
-  // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-
-  // Constant pool package information
-  SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
-  memset(&constant_pool_package, 0, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  
-  // Add length
-  constant_pool->length += extend_length;
 
   // Push object fields constant_pool byte offsets to constant pool
   {
@@ -140,8 +128,6 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
     }
     package->object_field_byte_offsets_length = object_field_byte_offsets_length;
   }
-
-  memcpy(&constant_pool->values[id], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
   
   return id;
 }

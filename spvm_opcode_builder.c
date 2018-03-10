@@ -28,7 +28,6 @@
 #include "spvm_type.h"
 #include "spvm_limit.h"
 #include "spvm_constant_pool_field.h"
-#include "spvm_constant_pool_package.h"
 #include "spvm_object.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
