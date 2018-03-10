@@ -7,6 +7,7 @@
 #include "spvm_constant_pool_type.h"
 #include "spvm_constant_pool_package.h"
 #include "spvm_constant_pool_sub.h"
+#include "spvm_constant_pool_field.h"
 #include "spvm_list.h"
 #include "spvm_compiler.h"
 #include "spvm_constant.h"
@@ -165,6 +166,8 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
           
           // Add field to constant pool
           field->id = SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
+          SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&compiler->constant_pool->values[field->id];
+          constant_pool_field->op_field_id = field_index;
         }
       }
       package->id = SPVM_CONSTANT_POOL_push_package(compiler, compiler->constant_pool, package);

@@ -10,6 +10,7 @@ struct SPVM_constant_pool_field {
   int32_t type_id;
   int32_t is_object;
   int32_t byte_offset;
+  int32_t op_field_id;
 };
 
 #endif
