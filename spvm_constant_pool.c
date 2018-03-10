@@ -183,19 +183,9 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
   // Field id is field index + 1 because 0 mean no id
   SPVM_CONSTANT_POOL_FIELD constant_pool_field;
   memset(&constant_pool_field, 0, sizeof(SPVM_CONSTANT_POOL_FIELD));
-  constant_pool_field.index = field->index;
-  constant_pool_field.type_id = field->op_type->uv.type->id;
-  constant_pool_field.byte_offset = field->byte_offset;
-  
-  if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
-    constant_pool_field.is_object = 1;
-  }
   
   // Add length
   constant_pool->length += extend_length;
-  
-  // Add field name to constant pool
-  constant_pool_field.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, field->op_name->uv.name);
   
   memcpy(&constant_pool->values[id], &constant_pool_field, sizeof(SPVM_CONSTANT_POOL_FIELD));
   
