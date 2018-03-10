@@ -49,18 +49,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
-  // Compile JIT if caller sub is JIT
-  if (runtime->caller_sub_id > 0) {
-    SPVM_CONSTANT_POOL_SUB* constant_pool_caller_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[runtime->caller_sub_id];
-    int32_t op_caller_sub_id = constant_pool_caller_sub->op_sub_id;
-    SPVM_OP* op_caller_sub = SPVM_LIST_fetch(compiler->op_subs, op_caller_sub_id);
-    SPVM_SUB* caller_sub = op_caller_sub->uv.sub;
-    
-    if (caller_sub->is_jit) {
-      api->compile_jit_sub(api, sub_id);
-    }
-  }
-  
   if (sub->is_native) {
     return SPVM_RUNTIME_call_sub_native(api, sub_id, args);
   }
@@ -1728,9 +1716,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         int32_t call_sub_args_length = call_sub->op_args->length;
         
         call_sub_arg_stack_top -= call_sub_args_length;
-        
-        // Set callar subroutine id
-        *(int32_t*)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, caller_sub_id)) = sub_id;
         
         // Call subroutine
         if (call_sub_return_type_code == SPVM_TYPE_C_CODE_VOID) {
