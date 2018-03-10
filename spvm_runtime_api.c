@@ -392,9 +392,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   // Constant pool field symbol table
   runtime->field_symtable = SPVM_HASH_new(0);
   
-  // Constant pool type symbol table
-  runtime->use_package_path_id_symtable = SPVM_HASH_new(0);
-  
   return runtime;
 }
 

@@ -39,9 +39,6 @@ struct SPVM_runtime {
   // Constant pool field symbol table
   SPVM_HASH* field_symtable;
   
-  // Module include symbol table
-  SPVM_HASH* use_package_path_id_symtable;
-  
   // Package variables
   SPVM_API_VALUE* package_vars;
   
