@@ -395,9 +395,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   // Constant pool package symbol table
   runtime->package_symtable = SPVM_HASH_new(0);
   
-  // Constant pool subroutine symbol table
-  runtime->sub_symtable = SPVM_HASH_new(0);
-  
   // Constant pool field symbol table
   runtime->field_symtable = SPVM_HASH_new(0);
   
@@ -1186,10 +1183,12 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
   }
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_HASH* sub_symtable = runtime->sub_symtable;
-  int32_t constant_pool_sub_id = (int32_t)(intptr_t)SPVM_HASH_search(sub_symtable, name, strlen(name));
+  SPVM_COMPILER* compiler = runtime->compiler;
   
-  return constant_pool_sub_id;
+  SPVM_OP* op_sub = (int32_t)(intptr_t)SPVM_HASH_search(compiler->op_sub_symtable, name, strlen(name));
+  int32_t sub_id = op_sub->uv.sub->id;
+  
+  return sub_id;
 }
 
 int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {

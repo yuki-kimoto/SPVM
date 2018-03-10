@@ -36,9 +36,6 @@ struct SPVM_runtime {
   // Constant pool
   int32_t* constant_pool;
   
-  // Constant pool subroutine symbol table
-  SPVM_HASH* sub_symtable;
-  
   // Constant pool type symbol table
   SPVM_HASH* type_symtable;
 

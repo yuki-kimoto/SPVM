@@ -3419,10 +3419,7 @@ bind_native_sub(...)
   IV native_address = SvIV(sv_native_address);
   
   // Set native address to subroutine
-  int32_t sub_id = (int32_t)(intptr_t)SPVM_HASH_search(runtime->sub_symtable, native_sub_name, strlen(native_sub_name));
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
-  int32_t op_sub_id = constant_pool_sub->op_sub_id;
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
+  SPVM_OP* op_sub = (int32_t)(intptr_t)SPVM_HASH_search(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   
   sub->native_address = (void*)native_address;

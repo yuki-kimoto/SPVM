@@ -47,16 +47,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   SPVM_API_VALUE* package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API_VALUE) * (compiler->package_var_length + 1));
   runtime->package_vars = package_vars;
   
-  // Build sub symtable
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      SPVM_HASH_insert(runtime->sub_symtable, sub->abs_name, strlen(sub->abs_name), (void*)(intptr_t)sub->id);
-    }
-  }
-  
   // Build type symtable
   {
     int32_t type_index;
