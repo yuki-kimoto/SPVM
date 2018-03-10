@@ -697,53 +697,49 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           int32_t str_tmp_len = (int32_t)(compiler->bufptr - cur_token_ptr);
-          
-          char* str_tmp = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, str_tmp_len);
-          memcpy(str_tmp, cur_token_ptr, str_tmp_len);
-          str_tmp[str_tmp_len] = '\0';
 
           compiler->bufptr++;
           
           str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, str_tmp_len);
           int32_t str_index = 0;
           {
-            int32_t i;
-            for (i = 0; i < str_tmp_len; i++) {
-              if (str_tmp[i] == '\\') {
-                i++;
-                if (str_tmp[i] == '"') {
+            char* char_ptr = cur_token_ptr;
+            while (char_ptr != compiler->bufptr - 1) {
+              if (*char_ptr == '\\') {
+                char_ptr++;
+                if (*char_ptr == '"') {
                   str[str_index] = '"';
                   str_index++;
                 }
-                else if (str_tmp[i] == '\'') {
+                else if (*char_ptr == '\'') {
                   str[str_index] = '\'';
                   str_index++;
                 }
-                else if (str_tmp[i] == '\\') {
+                else if (*char_ptr == '\\') {
                   str[str_index] = '\\';
                   str_index++;
                 }
-                else if (str_tmp[i] == 'r') {
+                else if (*char_ptr == 'r') {
                   str[str_index] = 0x0D;
                   str_index++;
                 }
-                else if (str_tmp[i] == 'n') {
+                else if (*char_ptr == 'n') {
                   str[str_index] = 0x0A;
                   str_index++;
                 }
-                else if (str_tmp[i] == 't') {
+                else if (*char_ptr == 't') {
                   str[str_index] = '\t';
                   str_index++;
                 }
-                else if (str_tmp[i] == 'b') {
+                else if (*char_ptr == 'b') {
                   str[str_index] = '\b';
                   str_index++;
                 }
-                else if (str_tmp[i] == 'f') {
+                else if (*char_ptr == 'f') {
                   str[str_index] = '\f';
                   str_index++;
                 }
-                else if (str_tmp[i] == '0') {
+                else if (*char_ptr == '0') {
                   str[str_index] = '\0';
                   str_index++;
                 }
@@ -753,9 +749,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
               else {
-                str[str_index] = str_tmp[i];
+                str[str_index] = *char_ptr;
                 str_index++;
               }
+              char_ptr++;
             }
           }
           str[str_index] = '\0';
