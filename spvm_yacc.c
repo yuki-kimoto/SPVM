@@ -1075,7 +1075,7 @@ while (YYID (0))
 
 /* YY_LOCATION_PRINT -- Print the location on the stream.
    This macro was not mandated originally: define only if we know
-   we won't break user id: when these are the locations we know.  */
+   we won't break user code: when these are the locations we know.  */
 
 #ifndef YY_LOCATION_PRINT
 # if YYLTYPE_IS_TRIVIAL
@@ -2046,9 +2046,9 @@ yyreduce:
   case 43:
 #line 266 "yacc/spvm_yacc.y"
     {
-      SPVM_OP* op_id_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(1) - (3)].opval)->line);
-      SPVM_OP_insert_child(compiler, op_id_block, op_id_block->last, (yyvsp[(2) - (3)].opval));
-      (yyval.opval) = op_id_block;
+      SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(1) - (3)].opval)->line);
+      SPVM_OP_insert_child(compiler, op_block, op_block->last, (yyvsp[(2) - (3)].opval));
+      (yyval.opval) = op_block;
     ;}
     break;
 
@@ -2921,9 +2921,9 @@ yyerrlab:
 `---------------------------------------------------*/
 yyerrorlab:
 
-  /* Pacify compilers like GCC when the user id never invokes
+  /* Pacify compilers like GCC when the user code never invokes
      YYERROR and the label yyerrorlab therefore never appears in user
-     id.  */
+     code.  */
   if (/*CONSTCOND*/ 0)
      goto yyerrorlab;
 
@@ -2937,7 +2937,7 @@ yyerrorlab:
 
 
 /*-------------------------------------------------------------.
-| yyerrlab1 -- common id for both syntax error and YYERROR.  |
+| yyerrlab1 -- common code for both syntax error and YYERROR.  |
 `-------------------------------------------------------------*/
 yyerrlab1:
   yyerrstatus = 3;	/* Each real token shifted decrements this.  */

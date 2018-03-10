@@ -65,7 +65,7 @@ opt_declarations_in_grammar
     }
   |	declarations_in_grammar
     {
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
       }
       else {
@@ -79,7 +79,7 @@ declarations_in_grammar
   : declarations_in_grammar declaration_in_grammar
     {
       SPVM_OP* op_list;
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         op_list = $1;
       }
       else {
@@ -118,7 +118,7 @@ opt_declarations_in_package
     }
   |	declarations_in_package
     {
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
       }
       else {
@@ -131,7 +131,7 @@ declarations_in_package
   : declarations_in_package declaration_in_package
     {
       SPVM_OP* op_list;
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         op_list = $1;
       }
       else {
@@ -155,7 +155,7 @@ declaration_in_package
 package_block
   : '{' opt_declarations_in_package '}'
     {
-      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CLASS_BLOCK, $1->file, $1->line);
+      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, $2);
       $$ = op_class_block;
     }
@@ -163,7 +163,7 @@ package_block
 enumeration_block 
   : '{' opt_enumeration_values '}'
     {
-      SPVM_OP* op_enum_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ENUM_BLOCK, $1->file, $1->line);
+      SPVM_OP* op_enum_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ENUM_BLOCK, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_enum_block, op_enum_block->last, $2);
       $$ = op_enum_block;
     }
@@ -175,7 +175,7 @@ opt_enumeration_values
     }
   |	enumeration_values
     {
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
       }
       else {
@@ -189,7 +189,7 @@ enumeration_values
   : enumeration_values ',' enumeration_value 
     {
       SPVM_OP* op_list;
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         op_list = $1;
       }
       else {
@@ -223,7 +223,7 @@ opt_statements
     }
   |	statements
     {
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
       }
       else {
@@ -237,7 +237,7 @@ statements
   : statements statement 
     {
       SPVM_OP* op_list;
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         op_list = $1;
       }
       else {
@@ -264,9 +264,9 @@ statement
 block 
   : '{' opt_statements '}'
     {
-      SPVM_OP* op_code_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, op_code_block, op_code_block->last, $2);
-      $$ = op_code_block;
+      SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_block, op_block->last, $2);
+      $$ = op_block;
     }
 
 normal_statement
@@ -274,7 +274,7 @@ normal_statement
   | expression ';'
   | ';'
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, $1->file, $1->line);
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, $1->file, $1->line);
     }
 
 normal_statement_for_end
@@ -315,7 +315,7 @@ if_statement
       
       // if is wraped with block to allow the following syntax
       //  if (my $var = 3) { ... }
-      SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_BLOCK, $1->file, $1->line);
+      SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_block, op_block->last, op_if);
       
       $$ = op_block;
@@ -324,7 +324,7 @@ if_statement
 else_statement
   : /* NULL */
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
     };
   | ELSE block
     {
@@ -392,7 +392,7 @@ opt_assignable_terms
     }
   |	assignable_terms
     {
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
       }
       else {
@@ -406,7 +406,7 @@ assignable_terms
   : assignable_terms ',' assignable_term
     {
       SPVM_OP* op_list;
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         op_list = $1;
       }
       else {
@@ -430,7 +430,7 @@ opt_names
     }
   |	names
     {
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
       }
       else {
@@ -444,7 +444,7 @@ names
   : names ',' NAME
     {
       SPVM_OP* op_list;
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         op_list = $1;
       }
       else {
@@ -538,7 +538,7 @@ new_object
 convert_type
   : '(' type ')' assignable_term
     {
-      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_CONVERT, $2->file, $2->line);
+      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, $2->file, $2->line);
       $$ = SPVM_OP_build_convert(compiler, op_convert, $2, $4);
     }
 
@@ -565,32 +565,32 @@ weaken_field
 unop
   : '+' assignable_term %prec UMINUS
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PLUS, $1->file, $1->line);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PLUS, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op, $2);
     }
   | '-' assignable_term %prec UMINUS
     {
-      SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NEGATE, $1->file, $1->line);
+      SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
     }
   | INC assignable_term
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PRE_INC, $1->file, $1->line);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op, $2);
     }
   | assignable_term INC
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POST_INC, $2->file, $2->line);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_INC, $2->file, $2->line);
       $$ = SPVM_OP_build_unop(compiler, op, $1);
     }
   | DEC assignable_term
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_PRE_DEC, $1->file, $1->line);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_DEC, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op, $2);
     }
   | assignable_term DEC
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_POST_DEC, $2->file, $2->line);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_DEC, $2->file, $2->line);
       $$ = SPVM_OP_build_unop(compiler, op, $1);
     }
   | '~' assignable_term
@@ -601,12 +601,12 @@ unop
 binop
   : assignable_term '+' assignable_term
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_ADD, $2->file, $2->line);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, $2->file, $2->line);
       $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
     }
   | assignable_term '-' assignable_term
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_SUBTRACT, $2->file, $2->line);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, $2->file, $2->line);
       $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
     }
   | assignable_term '.' assignable_term
@@ -695,7 +695,7 @@ array_elem
 call_sub
   : sub_name '(' opt_assignable_terms  ')'
     {
-      $$ = SPVM_OP_build_call_sub(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_CODE_NULL, $1->file, $1->line), $1, $3);
+      $$ = SPVM_OP_build_call_sub(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, $1->file, $1->line), $1, $3);
     }
   | assignable_term ARROW sub_name '(' opt_assignable_terms ')'
     {
@@ -713,7 +713,7 @@ opt_args
     }
   |	args
     {
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
       }
       else {
@@ -727,7 +727,7 @@ args
   : args ',' arg
     {
       SPVM_OP* op_list;
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         op_list = $1;
       }
       else {
@@ -757,7 +757,7 @@ opt_descriptors
     }
   |	descriptors
     {
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
       }
       else {
@@ -771,7 +771,7 @@ descriptors
   : descriptors ',' DESCRIPTOR
     {
       SPVM_OP* op_list;
-      if ($1->code == SPVM_OP_C_CODE_LIST) {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
         op_list = $1;
       }
       else {
