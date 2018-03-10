@@ -171,20 +171,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
     }
   }
 
-  // Push package indexes
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_index);
-      int32_t package_id = op_package->uv.package->id;
-      
-      int32_t added_id = SPVM_CONSTANT_POOL_push_int(compiler, compiler->constant_pool, package_id);
-      if (!compiler->packages_base) {
-        compiler->packages_base = added_id;
-      }
-    }
-  }
-  
   // Set package id to type constant pool
   {
     {
