@@ -31,6 +31,7 @@
 #include "spvm_my.h"
 #include "spvm_op.h"
 #include "spvm_list.h"
+#include "spvm_opcode_array.h"
 
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
@@ -249,7 +250,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   int32_t args_length = sub->op_args->length;
   
   // Bytecodes
-  SPVM_OPCODE* opcodes = runtime->opcodes;
+  SPVM_OPCODE* opcodes = compiler->opcode_array->values;
   
   // Opcode base
   int32_t sub_opcode_base = sub->opcode_base;

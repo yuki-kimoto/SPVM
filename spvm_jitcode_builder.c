@@ -32,6 +32,7 @@
 #include "spvm_compiler.h"
 #include "spvm_my.h"
 #include "spvm_op.h"
+#include "spvm_opcode_array.h"
 
 void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
@@ -680,7 +681,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t croak_flag = 0;\n");
   
-  SPVM_OPCODE* opcodes = runtime->opcodes;
+  SPVM_OPCODE* opcodes = compiler->opcode_array->values;
   int32_t opcode_base = sub->opcode_base;
   int32_t opcode_length = sub->opcode_length;
   int32_t opcode_index = opcode_base;

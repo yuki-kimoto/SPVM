@@ -38,14 +38,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime_constant_pool_byte_size);
   memcpy(runtime->constant_pool, compiler->constant_pool->values, compiler->constant_pool->length * sizeof(int32_t));
   
-  // Copy opcodes to runtime
-  int64_t runtime_opcodes_byte_size = (int64_t)compiler->opcode_array->length * (int64_t)sizeof(SPVM_OPCODE);
-  runtime->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc(runtime_opcodes_byte_size);
-  memcpy(runtime->opcodes, compiler->opcode_array->values, compiler->opcode_array->length * sizeof(SPVM_OPCODE));
-  
   // Initialize Package Variables
-  SPVM_API_VALUE* package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API_VALUE) * (compiler->package_var_length + 1));
-  runtime->package_vars = package_vars;
+  runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API_VALUE) * (compiler->package_var_length + 1));
   
   // Build field symtable
   {

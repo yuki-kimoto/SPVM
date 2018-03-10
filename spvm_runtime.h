@@ -30,9 +30,6 @@ struct SPVM_runtime {
   // Env
   SPVM_API* api;
   
-  // opcodes
-  SPVM_OPCODE* opcodes;
-  
   // Constant pool
   int32_t* constant_pool;
   
