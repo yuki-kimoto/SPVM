@@ -11,7 +11,6 @@
 #include "spvm_util_allocator.h"
 #include "spvm_list.h"
 #include "spvm_op.h"
-#include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_type.h"
 #include "spvm_hash.h"
@@ -137,20 +136,6 @@ int32_t SPVM_CONSTANT_POOL_push_field(SPVM_COMPILER* compiler, SPVM_CONSTANT_POO
 
   int32_t id = constant_pool->length;
 
-  // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_FIELD));
-  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-  
-  // Constant pool field information
-  // Field id is field index + 1 because 0 mean no id
-  SPVM_CONSTANT_POOL_FIELD constant_pool_field;
-  memset(&constant_pool_field, 0, sizeof(SPVM_CONSTANT_POOL_FIELD));
-  
-  // Add length
-  constant_pool->length += extend_length;
-  
-  memcpy(&constant_pool->values[id], &constant_pool_field, sizeof(SPVM_CONSTANT_POOL_FIELD));
-  
   return id;
 }
 

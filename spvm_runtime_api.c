@@ -8,7 +8,6 @@
 #include <inttypes.h>
 
 #include "spvm_runtime_api.h"
-#include "spvm_constant_pool_field.h"
 #include "spvm_constant_pool_type.h"
 #include "spvm_object.h"
 #include "spvm_runtime.h"
@@ -109,7 +108,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_O
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
   
   // Constant pool sub
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
@@ -1172,6 +1170,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
       SPVM_FIELD* field = op_field->uv.field;
       if (strcmp(name, field->op_name->uv.name) == 0) {
         field_id = field->byte_offset;
+        break;
       }
       else {
         field_id = -1;
