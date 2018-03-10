@@ -668,6 +668,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         const char* cur_token_ptr = compiler->bufptr;
         
         char* str;
+        int32_t str_length = 0;
         if (*(compiler->bufptr) == '"') {
           str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, 0);
           str[0] = '\0';
@@ -701,47 +702,46 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           compiler->bufptr++;
           
           str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, str_tmp_len);
-          int32_t str_index = 0;
           {
             char* char_ptr = cur_token_ptr;
             while (char_ptr != compiler->bufptr - 1) {
               if (*char_ptr == '\\') {
                 char_ptr++;
                 if (*char_ptr == '"') {
-                  str[str_index] = '"';
-                  str_index++;
+                  str[str_length] = '"';
+                  str_length++;
                 }
                 else if (*char_ptr == '\'') {
-                  str[str_index] = '\'';
-                  str_index++;
+                  str[str_length] = '\'';
+                  str_length++;
                 }
                 else if (*char_ptr == '\\') {
-                  str[str_index] = '\\';
-                  str_index++;
+                  str[str_length] = '\\';
+                  str_length++;
                 }
                 else if (*char_ptr == 'r') {
-                  str[str_index] = 0x0D;
-                  str_index++;
+                  str[str_length] = 0x0D;
+                  str_length++;
                 }
                 else if (*char_ptr == 'n') {
-                  str[str_index] = 0x0A;
-                  str_index++;
+                  str[str_length] = 0x0A;
+                  str_length++;
                 }
                 else if (*char_ptr == 't') {
-                  str[str_index] = '\t';
-                  str_index++;
+                  str[str_length] = '\t';
+                  str_length++;
                 }
                 else if (*char_ptr == 'b') {
-                  str[str_index] = '\b';
-                  str_index++;
+                  str[str_length] = '\b';
+                  str_length++;
                 }
                 else if (*char_ptr == 'f') {
-                  str[str_index] = '\f';
-                  str_index++;
+                  str[str_length] = '\f';
+                  str_length++;
                 }
                 else if (*char_ptr == '0') {
-                  str[str_index] = '\0';
-                  str_index++;
+                  str[str_length] = '\0';
+                  str_length++;
                 }
                 else {
                   fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %" PRId32 "\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_file, compiler->cur_line);
@@ -749,16 +749,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
               else {
-                str[str_index] = *char_ptr;
-                str_index++;
+                str[str_length] = *char_ptr;
+                str_length++;
               }
               char_ptr++;
             }
           }
-          str[str_index] = '\0';
+          str[str_length] = '\0';
         }
         
-        SPVM_OP* op_constant = SPVM_OP_new_op_constant_byte_array_string(compiler, str, compiler->cur_file, compiler->cur_line);
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str, str_length, compiler->cur_file, compiler->cur_line);
         
         yylvalp->opval = op_constant;
         

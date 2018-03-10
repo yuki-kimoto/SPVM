@@ -1,3 +1,5 @@
+0.0317 2018-03-10
+  - support escape character \0
 0.0316 2018-03-10
   - remove runtime constant_pool
 0.0315 2018-03-08

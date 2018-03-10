@@ -1159,7 +1159,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, constant_id);
         SPVM_CONSTANT* constant = op_constant->uv.constant;
         
-        SPVM_API_OBJECT* string = api->new_string(api, constant->value.string_value, strlen(constant->value.string_value));
+        SPVM_API_OBJECT* string = api->new_string(api, constant->value.string_value, constant->string_length);
 
         // Set string
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;

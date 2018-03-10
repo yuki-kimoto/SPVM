@@ -1340,7 +1340,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_CONSTANT* constant = op_constant->uv.constant;
 
         const char* name = constant->value.string_value;
-        int32_t length = strlen(name);
+        int32_t length = constant->string_length;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);

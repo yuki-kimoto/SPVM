@@ -1478,7 +1478,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term1);
                     
                     // Empty string
-                    SPVM_OP* op_constant_empty_string = SPVM_OP_new_op_constant_byte_array_string(compiler, "", op_concat_string1->file, op_concat_string1->line);
+                    SPVM_OP* op_constant_empty_string = SPVM_OP_new_op_constant_string(compiler, "", 0, op_concat_string1->file, op_concat_string1->line);
                     SPVM_OP* op_build_constant = SPVM_OP_build_constant(compiler, op_constant_empty_string);
                     
                     SPVM_OP_insert_child(compiler, op_concat_string2, op_concat_string2->last, op_build_constant);
