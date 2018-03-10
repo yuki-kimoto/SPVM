@@ -88,19 +88,6 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   
   int32_t id = constant_pool->length;
   
-  // Extend
-  int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, sizeof(SPVM_CONSTANT_POOL_TYPE));
-  SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
-  
-  // Constant pool type information
-  SPVM_CONSTANT_POOL_TYPE constant_pool_type;
-  memset(&constant_pool_type, 0, sizeof(SPVM_CONSTANT_POOL_TYPE));
-  
-  // Add length
-  constant_pool->length += extend_length;
-  
-  memcpy(&constant_pool->values[id], &constant_pool_type, sizeof(SPVM_CONSTANT_POOL_TYPE));
-  
   return id;
 }
 

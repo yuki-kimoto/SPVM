@@ -140,9 +140,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
       case SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT: {
         // Runtime
         SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-        SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[object->type_id];
-        int32_t op_type_id = constant_pool_type->op_type_id;
-        SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
+        SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
 
         SPVM_PACKAGE* package = type->op_package->uv.package;
 

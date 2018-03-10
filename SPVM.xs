@@ -2891,9 +2891,7 @@ new_len(...)
   const char* type_name = SvPV_nolen(sv_type_name);
   
   int32_t type_id = api->get_type_id(api, type_name);
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[type_id];
-  int32_t op_type_id = constant_pool_type->op_type_id;
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
   
   int32_t type_code = type->code;
   
@@ -2939,9 +2937,7 @@ set(...)
   int32_t array_type_id = array->type_id;
   
   // Array type
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[array_type_id];
-  int32_t op_array_type_id = constant_pool_array_type->op_type_id;
-  SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, op_array_type_id);
+  SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, array_type_id);
 
   // Get object
   SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
@@ -2950,9 +2946,7 @@ set(...)
   int32_t object_type_id = object->type_id;
 
   // Object type
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_object_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[object_type_id];
-  int32_t op_object_type_id = constant_pool_object_type->op_type_id;
-  SPVM_TYPE* object_type = SPVM_LIST_fetch(compiler->types, op_object_type_id);
+  SPVM_TYPE* object_type = SPVM_LIST_fetch(compiler->types, object_type_id);
 
   if (strncmp(array_type->name, object_type->name, strlen(array_type->name - 2)) != 0) {
     croak("Invalid type %s is set to object array %s(SPVM::Core::Object::Array::Object::set())", object_type->name, array_type->name);
@@ -2990,9 +2984,7 @@ get(...)
   int32_t array_type_id = array->type_id;
   
   // Array type
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[array_type_id];
-  int32_t op_array_type_id = constant_pool_array_type->op_type_id;
-  SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, op_array_type_id);
+  SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, array_type_id);
   
   // Element type name sv
   SV* sv_element_type_name = sv_2mortal(newSVpvn(array_type->name, strlen(array_type->name) - 2));
@@ -3000,9 +2992,7 @@ get(...)
   
   // Element type id
   int32_t element_type_id = api->get_type_id(api, element_type_name);
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_element_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[element_type_id];
-  int32_t op_element_type_id = constant_pool_element_type->op_type_id;
-  SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, op_element_type_id);
+  SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, element_type_id);
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -3651,9 +3641,7 @@ call_sub(...)
                 
                 int32_t base_object_type_id = base_object->type_id;
                 
-                SPVM_CONSTANT_POOL_TYPE* constant_pool_base_object_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[base_object_type_id];
-                int32_t op_base_object_type_id = constant_pool_base_object_type->op_type_id;
-                SPVM_TYPE* base_object_type = SPVM_LIST_fetch(compiler->types, op_base_object_type_id);
+                SPVM_TYPE* base_object_type = SPVM_LIST_fetch(compiler->types, base_object_type_id);
                 
                 if (base_object_type->code != arg_type->code) {
                   croak("Argument base_object type need %s, but %s", arg_type->name, base_object_type->name);

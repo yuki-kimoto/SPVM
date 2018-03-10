@@ -86,9 +86,7 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
     int32_t type_index;
     for (type_index = 0; type_index < compiler->types->length; type_index++) {
       SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_index);
-      type->id = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
-      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
-      constant_pool_type->op_type_id = type_index;
+      type->id = type_index;
     }
   }
 
@@ -101,7 +99,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
       char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
       SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
       if (parent_type) {
-        SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
         type->parent_type_id = parent_type->id;
       }
       
@@ -110,7 +107,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
       if (element_type_name) {
         SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
         if (element_type) {
-          SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
           type->element_type_id = element_type->id;
         }
         else {
