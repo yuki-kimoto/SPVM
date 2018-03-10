@@ -72,29 +72,24 @@ int main(int argc, char *argv[])
       // Sub id
       int32_t sub_id = native_sub->id;
       
-      // Set native address
-      SPVM_CONSTANT_POOL_SUB constant_pool_sub;
-      memcpy(&constant_pool_sub, &compiler->constant_pool->values[sub_id], sizeof(SPVM_CONSTANT_POOL_SUB));
-      
       if (strcmp(sub_abs_name, "CORE::print") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__print;
+        native_sub->native_address = SPVM__CORE__print;
       }
       else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__warn;
+        native_sub->native_address = SPVM__CORE__warn;
       }
       else if (strcmp(sub_abs_name, "CORE::time") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__time;
+        native_sub->native_address = SPVM__CORE__time;
       }
       else if (strcmp(sub_abs_name, "CORE::sum_int") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__sum_int;
+        native_sub->native_address = SPVM__CORE__sum_int;
       }
       else if (strcmp(sub_abs_name, "CORE::test1") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__test1;
+        native_sub->native_address = SPVM__CORE__test1;
       }
       else if (strcmp(sub_abs_name, "CORE::test2") == 0) {
-        constant_pool_sub.native_address = SPVM__CORE__test2;
+        native_sub->native_address = SPVM__CORE__test2;
       }
-      memcpy(&compiler->constant_pool->values[sub_id], &constant_pool_sub, sizeof(SPVM_CONSTANT_POOL_SUB));
     }
   }
   
