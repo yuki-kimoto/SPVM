@@ -14,6 +14,7 @@ struct SPVM_constant_pool_type {
   _Bool is_package;
   int32_t package_id;
   _Bool is_numeric;
+  int32_t op_type_id;
 };
 
 #endif

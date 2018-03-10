@@ -85,10 +85,12 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
   
   // Push types to constant pool
   {
-    int32_t i;
-    for (i = 0; i < compiler->types->length; i++) {
-      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
+    int32_t type_index;
+    for (type_index = 0; type_index < compiler->types->length; type_index++) {
+      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_index);
       type->id = SPVM_CONSTANT_POOL_push_type(compiler, compiler->constant_pool, type);
+      SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
+      constant_pool_type->op_type_id = type_index;
     }
   }
 
