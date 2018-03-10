@@ -21,29 +21,27 @@ enum {
 };
 
 struct SPVM_runtime {
-  // Exception
-  SPVM_OBJECT* exception;
+  // API
+  SPVM_API* api;
+  
+  // Compiler
+  SPVM_COMPILER* compiler;
   
   // Runtime memory allocator
   SPVM_RUNTIME_ALLOCATOR* allocator;
-
-  // Env
-  SPVM_API* api;
   
-  // Constant pool field symbol table
-  SPVM_HASH* field_symtable;
+  // Exception
+  SPVM_OBJECT* exception;
   
   // Package variables
   SPVM_API_VALUE* package_vars;
-  
-  // Type code to id
-  int32_t type_code_to_id_base;
   
   int32_t objects_count;
   
   int8_t jit_mode;
   
-  SPVM_COMPILER* compiler;
+  // Type code to id
+  int32_t type_code_to_id_base;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

@@ -36,31 +36,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   // Initialize Package Variables
   runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API_VALUE) * (compiler->package_var_length + 1));
   
-  // Build field symtable
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      const char* package_name = package->op_name->uv.name;
-      
-      SPVM_LIST* op_fields = package->op_fields;
-      SPVM_HASH* field_name_symtable = SPVM_HASH_new(0);
-      {
-        int32_t op_field_index;
-        for (op_field_index = 0; op_field_index < op_fields->length; op_field_index++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, op_field_index);
-          SPVM_FIELD* field = op_field->uv.field;
-          const char* field_name = field->op_name->uv.name;
-          
-          SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), (void*)(intptr_t)field->id);
-        }
-      }
-      
-      SPVM_HASH_insert(runtime->field_symtable, package_name, strlen(package_name), field_name_symtable);
-    }
-  }
-  
   runtime->type_code_to_id_base = compiler->type_code_to_id_base;
   
   return runtime;

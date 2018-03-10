@@ -383,12 +383,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   // Runtime memory allocator
   runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
   
-  SPVM_API* api = (SPVM_API*)SPVM_NATIVE_INTERFACE;
-  
-  runtime->api = api;
-  
-  // Constant pool field symbol table
-  runtime->field_symtable = SPVM_HASH_new(0);
+  runtime->api = (SPVM_API*)SPVM_NATIVE_INTERFACE;
   
   return runtime;
 }
