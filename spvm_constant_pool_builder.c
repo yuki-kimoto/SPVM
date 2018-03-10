@@ -32,45 +32,27 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
       // Push value to constant pool
       switch (constant->type->id) {
         case SPVM_TYPE_C_ID_BYTE: {
-          int8_t value = constant->value.byte_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_byte(compiler, constant_pool, value);
           break;
         }
         case SPVM_TYPE_C_ID_SHORT: {
-          int16_t value = constant->value.short_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_short(compiler, constant_pool, value);
           break;
         }
         case SPVM_TYPE_C_ID_INT: {
-          int32_t value = constant->value.int_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, value);
           break;
         }
         case SPVM_TYPE_C_ID_LONG: {
-          int64_t value = constant->value.long_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
           break;
         }
         case SPVM_TYPE_C_ID_FLOAT: {
-          float value = constant->value.float_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
           break;
         }
         case SPVM_TYPE_C_ID_DOUBLE: {
-          double value = constant->value.double_value;
-          
-          constant->id = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
           break;
         }
         case SPVM_TYPE_C_ID_STRING: {
           const char* value = constant->value.string_value;
           
-          constant->id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);
+          constant->id = i;
           
           break;
         }

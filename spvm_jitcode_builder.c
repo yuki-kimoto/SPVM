@@ -29,6 +29,7 @@
 #include "spvm_my.h"
 #include "spvm_op.h"
 #include "spvm_opcode_array.h"
+#include "spvm_constant.h"
 
 void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
@@ -1337,9 +1338,13 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t name_id = opcode->operand1;
-        int32_t length = constant_pool[name_id];
-        char* name = (char*)&constant_pool[name_id + 1];
+        int32_t constant_id = opcode->operand1;
+        
+        SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, constant_id);
+        SPVM_CONSTANT* constant = op_constant->uv.constant;
+
+        const char* name = constant->value.string_value;
+        int32_t length = strlen(name);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);

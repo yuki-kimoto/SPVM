@@ -29,6 +29,7 @@
 #include "spvm_op.h"
 #include "spvm_list.h"
 #include "spvm_opcode_array.h"
+#include "spvm_constant.h"
 
 SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
   (void)api;
@@ -1155,9 +1156,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t name_id = opcode->operand1;
+        int32_t constant_id = opcode->operand1;
         
-        SPVM_API_OBJECT* string = api->new_string(api, (char*)&constant_pool[name_id + 1], constant_pool[name_id]);
+        SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, constant_id);
+        SPVM_CONSTANT* constant = op_constant->uv.constant;
+        
+        SPVM_API_OBJECT* string = api->new_string(api, constant->value.string_value, strlen(constant->value.string_value));
 
         // Set string
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
