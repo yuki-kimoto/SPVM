@@ -42,7 +42,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   SPVM_COMPILER* compiler = runtime->compiler;
 
   // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
+  int32_t* constant_pool = compiler->constant_pool->values;
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
@@ -72,11 +72,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-
   SPVM_COMPILER* compiler = runtime->compiler;
-  
-  // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
+  int32_t* constant_pool = compiler->constant_pool->values;
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
@@ -148,11 +145,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-
   SPVM_COMPILER* compiler = runtime->compiler;
-  
-  // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
+  int32_t* constant_pool = compiler->constant_pool->values;
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
@@ -225,11 +219,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-
   SPVM_COMPILER* compiler = runtime->compiler;
-  
-  // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
+  int32_t* constant_pool = compiler->constant_pool->values;
 
   // Constant pool sub
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];

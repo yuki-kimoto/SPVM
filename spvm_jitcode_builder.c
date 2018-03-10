@@ -471,7 +471,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_COMPILER* compiler = runtime->compiler;
 
   // Constant pool
-  int32_t* constant_pool = runtime->constant_pool;
+  int32_t* constant_pool = compiler->constant_pool->values;
   
   SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   int32_t op_sub_id = constant_pool_sub->op_sub_id;

@@ -83,9 +83,9 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_CONSTANT_POOL* constant_pool = runtime->constant_pool;
+  int32_t* constant_pool = compiler->constant_pool->values;
   
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   int32_t op_sub_id = constant_pool_sub->op_sub_id;
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
@@ -2877,6 +2877,7 @@ new_len(...)
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
+  int32_t* constant_pool = compiler->constant_pool->values;
   
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -2895,7 +2896,7 @@ new_len(...)
   const char* type_name = SvPV_nolen(sv_type_name);
   
   int32_t type_id = api->get_type_id(api, type_name);
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[type_id];
   int32_t op_type_id = constant_pool_type->op_type_id;
   SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
   
@@ -2937,12 +2938,13 @@ set(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
+  int32_t* constant_pool = compiler->constant_pool->values;
   
   // Array type id
   int32_t array_type_id = array->type_id;
   
   // Array type
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[array_type_id];
   int32_t op_array_type_id = constant_pool_array_type->op_type_id;
   SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, op_array_type_id);
 
@@ -2953,7 +2955,7 @@ set(...)
   int32_t object_type_id = object->type_id;
 
   // Object type
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_object_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object_type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_object_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[object_type_id];
   int32_t op_object_type_id = constant_pool_object_type->op_type_id;
   SPVM_TYPE* object_type = SPVM_LIST_fetch(compiler->types, op_object_type_id);
 
@@ -2984,6 +2986,7 @@ get(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
+  int32_t* constant_pool = compiler->constant_pool->values;
   
   // Get array
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
@@ -2992,7 +2995,7 @@ get(...)
   int32_t array_type_id = array->type_id;
   
   // Array type
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[array_type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_array_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[array_type_id];
   int32_t op_array_type_id = constant_pool_array_type->op_type_id;
   SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, op_array_type_id);
   
@@ -3002,11 +3005,9 @@ get(...)
   
   // Element type id
   int32_t element_type_id = api->get_type_id(api, element_type_name);
-  SPVM_CONSTANT_POOL_TYPE* constant_pool_element_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[element_type_id];
+  SPVM_CONSTANT_POOL_TYPE* constant_pool_element_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[element_type_id];
   int32_t op_element_type_id = constant_pool_element_type->op_type_id;
   SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, op_element_type_id);
-  
-  int32_t element_type_code = element_type->code;
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -3249,8 +3250,9 @@ get_sub_name(...)
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
+  int32_t* constant_pool = compiler->constant_pool->values;
   
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   int32_t op_sub_id = constant_pool_sub->op_sub_id;
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
@@ -3415,7 +3417,7 @@ bind_native_sub(...)
   IV native_address = SvIV(sv_native_address);
   
   // Set native address to subroutine
-  SPVM_OP* op_sub = (int32_t)(intptr_t)SPVM_HASH_search(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
+  SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   
   sub->native_address = (void*)native_address;
@@ -3441,11 +3443,11 @@ bind_jitcode_sub(...)
   int32_t sub_id = api->get_sub_id(api, sub_abs_name);
 
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
-
   SPVM_COMPILER* compiler = runtime->compiler;
+  int32_t* constant_pool = compiler->constant_pool->values;
   
   // Subroutine information
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   int32_t op_sub_id = constant_pool_sub->op_sub_id;
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
@@ -3594,9 +3596,10 @@ call_sub(...)
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
+  int32_t* constant_pool = compiler->constant_pool->values;
   
   // Subroutine information
-  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&runtime->constant_pool[sub_id];
+  SPVM_CONSTANT_POOL_SUB* constant_pool_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[sub_id];
   int32_t op_sub_id = constant_pool_sub->op_sub_id;
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, op_sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
@@ -3659,7 +3662,7 @@ call_sub(...)
                 
                 int32_t base_object_type_id = base_object->type_id;
                 
-                SPVM_CONSTANT_POOL_TYPE* constant_pool_base_object_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[base_object_type_id];
+                SPVM_CONSTANT_POOL_TYPE* constant_pool_base_object_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[base_object_type_id];
                 int32_t op_base_object_type_id = constant_pool_base_object_type->op_type_id;
                 SPVM_TYPE* base_object_type = SPVM_LIST_fetch(compiler->types, op_base_object_type_id);
                 

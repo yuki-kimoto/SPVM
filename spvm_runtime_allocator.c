@@ -129,6 +129,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* 
 void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
+  int32_t* constant_pool = compiler->constant_pool->values;
   
   if (object == NULL) {
     return;
@@ -140,7 +141,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
       case SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT: {
         // Runtime
         SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-        SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
+        SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&constant_pool[object->type_id];
         int32_t op_type_id = constant_pool_type->op_type_id;
         SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, op_type_id);
 

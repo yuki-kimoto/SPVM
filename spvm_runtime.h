@@ -30,9 +30,6 @@ struct SPVM_runtime {
   // Env
   SPVM_API* api;
   
-  // Constant pool
-  int32_t* constant_pool;
-  
   // Constant pool field symbol table
   SPVM_HASH* field_symtable;
   
