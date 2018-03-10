@@ -141,20 +141,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
     for (package_index = 0; package_index < op_packages->length; package_index++) {
       SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_index);
       SPVM_PACKAGE* package = op_package->uv.package;
-      
-      // Push field information to constant pool
-      {
-        int32_t field_index;
-        for (field_index = 0; field_index < package->op_fields->length; field_index++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-          SPVM_FIELD* field = op_field->uv.field;
-          
-          // Add field to constant pool
-          field->id = SPVM_CONSTANT_POOL_push_field(compiler, compiler->constant_pool, field);
-          SPVM_CONSTANT_POOL_FIELD* constant_pool_field = (SPVM_CONSTANT_POOL_FIELD*)&compiler->constant_pool->values[field->id];
-          constant_pool_field->op_field_id = field_index;
-        }
-      }
       SPVM_CONSTANT_POOL_push_package(compiler, compiler->constant_pool, package);
     }
   }
