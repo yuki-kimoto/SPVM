@@ -1620,7 +1620,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         else {
           // Bind standard functions
           if (sub->is_native) {
-            SPVM_LIST_push(compiler->native_subs, sub);
             SPVM_LIST_push(package->native_subs, sub);
           }
           

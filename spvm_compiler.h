@@ -118,9 +118,6 @@ struct SPVM_compiler {
   
   int32_t tmp_var_index;
   
-  // Native subroutines
-  SPVM_LIST* native_subs;
-  
   // Error is fatal
   _Bool fatal_error;
   

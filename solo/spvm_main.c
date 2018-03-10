@@ -63,32 +63,35 @@ int main(int argc, char *argv[])
   // Bind native subroutine
   {
     int32_t i;
-    for (i = 0; i < compiler->native_subs->length; i++) {
-      SPVM_SUB* native_sub = SPVM_LIST_fetch(compiler->native_subs, i);
+    for (i = 0; i < compiler->op_subs->length; i++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, i);
+      SPVM_SUB* sub = op_sub->uv.sub;
       
-      // Sub abs name
-      const char* sub_abs_name = native_sub->abs_name;
-      
-      // Sub id
-      int32_t sub_id = native_sub->id;
-      
-      if (strcmp(sub_abs_name, "CORE::print") == 0) {
-        native_sub->native_address = SPVM__CORE__print;
-      }
-      else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
-        native_sub->native_address = SPVM__CORE__warn;
-      }
-      else if (strcmp(sub_abs_name, "CORE::time") == 0) {
-        native_sub->native_address = SPVM__CORE__time;
-      }
-      else if (strcmp(sub_abs_name, "CORE::sum_int") == 0) {
-        native_sub->native_address = SPVM__CORE__sum_int;
-      }
-      else if (strcmp(sub_abs_name, "CORE::test1") == 0) {
-        native_sub->native_address = SPVM__CORE__test1;
-      }
-      else if (strcmp(sub_abs_name, "CORE::test2") == 0) {
-        native_sub->native_address = SPVM__CORE__test2;
+      if (sub->is_native) {
+        // Sub abs name
+        const char* sub_abs_name = sub->abs_name;
+        
+        // Sub id
+        int32_t sub_id = sub->id;
+        
+        if (strcmp(sub_abs_name, "CORE::print") == 0) {
+          sub->native_address = SPVM__CORE__print;
+        }
+        else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
+          sub->native_address = SPVM__CORE__warn;
+        }
+        else if (strcmp(sub_abs_name, "CORE::time") == 0) {
+          sub->native_address = SPVM__CORE__time;
+        }
+        else if (strcmp(sub_abs_name, "CORE::sum_int") == 0) {
+          sub->native_address = SPVM__CORE__sum_int;
+        }
+        else if (strcmp(sub_abs_name, "CORE::test1") == 0) {
+          sub->native_address = SPVM__CORE__test1;
+        }
+        else if (strcmp(sub_abs_name, "CORE::test2") == 0) {
+          sub->native_address = SPVM__CORE__test2;
+        }
       }
     }
   }
