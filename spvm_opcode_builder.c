@@ -1071,35 +1071,39 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    opcode.operand0 = index_out;
+
                     switch (type->id) {
                       case SPVM_TYPE_C_ID_BYTE:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE;
+                        *(SPVM_API_byte*)&opcode.operand1 = *(SPVM_API_byte*)&constant->value;
                         break;
                       case SPVM_TYPE_C_ID_SHORT:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_SHORT;
+                        *(SPVM_API_short*)&opcode.operand1 = *(SPVM_API_short*)&constant->value;
                         break;
                       case SPVM_TYPE_C_ID_INT:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_INT;
+                        *(SPVM_API_int*)&opcode.operand1 = *(SPVM_API_int*)&constant->value;
                         break;
                       case SPVM_TYPE_C_ID_LONG:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_LONG;
+                        *(SPVM_API_long*)&opcode.operand1 = *(SPVM_API_long*)&constant->value;
                         break;
                       case SPVM_TYPE_C_ID_FLOAT:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_FLOAT;
+                        *(SPVM_API_float*)&opcode.operand1 = *(SPVM_API_float*)&constant->value;
                         break;
                       case SPVM_TYPE_C_ID_DOUBLE:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_DOUBLE;
+                        *(SPVM_API_double*)&opcode.operand1 = *(SPVM_API_double*)&constant->value;
                         break;
                       default:
                         assert(0);
                     }
                     
                     assert(constant->id != -1);
-                    
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
-                    
-                    opcode.operand0 = index_out;
-                    opcode.operand1 = constant->id;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }

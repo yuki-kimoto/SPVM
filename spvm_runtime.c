@@ -704,22 +704,22 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         *(double*)&vars[opcode->operand0] = (double)0;
         break;
       case SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE:
-        *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)&constant_pool[opcode->operand1];
+        *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_LOAD_CONSTANT_SHORT:
-        *(SPVM_API_short*)&vars[opcode->operand0] = *(SPVM_API_short*)&constant_pool[opcode->operand1];
+        *(SPVM_API_short*)&vars[opcode->operand0] = *(SPVM_API_short*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_LOAD_CONSTANT_INT:
-        *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)&constant_pool[opcode->operand1];
+        *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_LOAD_CONSTANT_LONG:
-        *(SPVM_API_long*)&vars[opcode->operand0] = *(SPVM_API_long*)&constant_pool[opcode->operand1];
+        *(SPVM_API_long*)&vars[opcode->operand0] = *(SPVM_API_long*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_LOAD_CONSTANT_FLOAT:
-        *(float*)&vars[opcode->operand0] = *(float*)&constant_pool[opcode->operand1];
+        *(float*)&vars[opcode->operand0] = *(float*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_LOAD_CONSTANT_DOUBLE:
-        *(double*)&vars[opcode->operand0] = *(double*)&constant_pool[opcode->operand1];
+        *(double*)&vars[opcode->operand0] = *(double*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_ARRAY_LOAD_BYTE: {
         SPVM_API_OBJECT* array = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
