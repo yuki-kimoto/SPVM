@@ -11,7 +11,6 @@
 #include "spvm_memory_pool.h"
 #include "spvm_list.h"
 #include "spvm_runtime.h"
-#include "spvm_constant_pool.h"
 #include "spvm_api.h"
 #include "spvm_object.h"
 
@@ -127,7 +126,6 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* 
 void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
   
   if (object == NULL) {
     return;
@@ -138,7 +136,6 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
     switch (object->object_type_id) {
       case SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT: {
         // Runtime
-        SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
         SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
 
         SPVM_PACKAGE* package = type->op_package->uv.package;

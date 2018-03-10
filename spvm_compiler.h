@@ -7,9 +7,6 @@
 
 // Parser information
 struct SPVM_compiler {
-  // Constant pool
-  SPVM_CONSTANT_POOL* constant_pool;
-  
   // String symbol table
   SPVM_HASH* string_symtable;
   

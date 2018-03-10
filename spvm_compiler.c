@@ -16,7 +16,6 @@
 #include "spvm_list.h"
 #include "spvm_opcode_array.h"
 #include "spvm_sub.h"
-#include "spvm_constant_pool.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 #include "spvm_sub.h"
@@ -65,9 +64,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   compiler->enum_default_type_id = SPVM_TYPE_C_ID_INT;
 
-  // Constant pool
-  compiler->constant_pool = SPVM_CONSTANT_POOL_new(compiler);
-  
   // Bytecodes
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   
@@ -136,9 +132,6 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   // Free allocator
   SPVM_COMPILER_ALLOCATOR_free(compiler, compiler->allocator);
-
-  // Free constant pool
-  SPVM_CONSTANT_POOL_free(compiler, compiler->constant_pool);
   
   // Free opcode array
   SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);

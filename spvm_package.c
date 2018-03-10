@@ -1,7 +1,6 @@
 #include "spvm_package.h"
 
 #include "spvm_compiler_allocator.h"
-#include "spvm_constant_pool.h"
 #include "spvm_compiler.h"
 #include "spvm_field.h"
 #include "spvm_op.h"

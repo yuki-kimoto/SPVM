@@ -20,7 +20,6 @@
 #include "spvm_enumeration.h"
 #include "spvm_package.h"
 #include "spvm_type.h"
-#include "spvm_constant_pool.h"
 #include "spvm_opcode.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
@@ -149,9 +148,6 @@ void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
   printf("\n[Types]\n");
   SPVM_DUMPER_dump_types(compiler, compiler->types);
   
-  printf("\n[Constant pool]\n");
-  SPVM_DUMPER_dump_constant_pool(compiler, compiler->constant_pool);
-  
   printf("\n[Packages]\n");
   SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
 
@@ -226,17 +222,6 @@ void SPVM_DUMPER_dump_types(SPVM_COMPILER* compiler, SPVM_LIST* types) {
       SPVM_TYPE* type = SPVM_LIST_fetch(types, i);
       printf("    name => \"%s\"\n", type->name);
       printf("    id => \"%" PRId32 "\"\n", type->id);
-    }
-  }
-}
-
-void SPVM_DUMPER_dump_constant_pool(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool) {
-  (void)compiler;
-  
-  {
-    int32_t i;
-    for (i = 0; i < constant_pool->length; i++) {
-      printf("      constant_pool[%" PRId32 "] %" PRId32 "\n", i, constant_pool->values[i]);
     }
   }
 }

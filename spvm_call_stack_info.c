@@ -10,11 +10,9 @@
 #include "spvm_my.h"
 #include "spvm_op.h"
 #include "spvm_list.h"
-#include "spvm_constant_pool.h"
 
 void SPVM_CALL_STACK_init_call_stack_info(SPVM_CALL_STACK_INFO* call_stack_info, SPVM_RUNTIME* runtime, int32_t sub_id) {
   SPVM_COMPILER* compiler = runtime->compiler;
-  int32_t* constant_pool = compiler->constant_pool->values;
 
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
