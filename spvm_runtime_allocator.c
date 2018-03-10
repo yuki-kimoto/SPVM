@@ -17,6 +17,16 @@
 #include "spvm_api.h"
 #include "spvm_object.h"
 
+#include "spvm_package.h"
+#include "spvm_sub.h"
+#include "spvm_package.h"
+#include "spvm_type.h"
+#include "spvm_field.h"
+#include "spvm_compiler.h"
+#include "spvm_my.h"
+#include "spvm_op.h"
+#include "spvm_list.h"
+
 SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   (void)runtime;
   
@@ -118,6 +128,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* 
 
 void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   if (object == NULL) {
     return;
@@ -131,7 +142,11 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
         SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
         SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&runtime->constant_pool[object->type_id];
         SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&runtime->constant_pool[constant_pool_type->package_id];
-        byte_size = sizeof(SPVM_OBJECT) + constant_pool_package->byte_size;
+        int32_t op_package_id = constant_pool_package->op_package_id;
+        SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, op_package_id);
+        SPVM_PACKAGE* package = op_package->uv.package;
+
+        byte_size = sizeof(SPVM_OBJECT) + package->byte_size;
         break;
       }
       default: {

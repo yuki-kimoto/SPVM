@@ -212,21 +212,4 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
       constant_pool_sub->op_sub_id = sub_index;
     }
   }
-
-  // Set destcutor sub id to package
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      
-      int32_t package_id = package->id;
-      
-      SPVM_CONSTANT_POOL_PACKAGE* constant_pool_package = (SPVM_CONSTANT_POOL_PACKAGE*)&compiler->constant_pool->values[package_id];
-      
-      if (package->op_sub_destructor) {
-        constant_pool_package->destructor_sub_id = package->op_sub_destructor->uv.sub->id;
-      }
-    }
-  }
 }

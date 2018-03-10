@@ -151,37 +151,14 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
   // Constant pool package information
   SPVM_CONSTANT_POOL_PACKAGE constant_pool_package;
   memset(&constant_pool_package, 0, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
-  constant_pool_package.fields_length = package->op_fields->length;
-  constant_pool_package.object_fields_length = SPVM_PACKAGE_get_object_fields_length(compiler, package);
-  constant_pool_package.byte_size = package->byte_size;
   
   // Add length
   constant_pool->length += extend_length;
-  
-  // Push package name to constant pool
-  const char* package_name = package->op_name->uv.name;
-  constant_pool_package.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, package_name);
-
-  // Push load_path to constant pool
-  const char* load_path = package->load_path;
-  constant_pool_package.load_path_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, load_path);
-
-  // Push fields constant_pool indexes to constant pool
-  {
-    int32_t field_pos;
-    constant_pool_package.fields_base = constant_pool->length;
-    for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
-      SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_pos);
-      SPVM_FIELD* field = op_field->uv.field;
-      SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, field->id);
-    }
-  }
 
   // Push object fields constant_pool byte offsets to constant pool
   {
     int32_t field_pos;
     package->object_field_byte_offsets_base = constant_pool->length;
-    constant_pool_package.object_field_byte_offsets_base = constant_pool->length;
     int32_t object_field_byte_offsets_length = 0;
     for (field_pos = 0; field_pos < package->op_fields->length; field_pos++) {
       SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_pos);
@@ -195,7 +172,6 @@ int32_t SPVM_CONSTANT_POOL_push_package(SPVM_COMPILER* compiler, SPVM_CONSTANT_P
       }
     }
     package->object_field_byte_offsets_length = object_field_byte_offsets_length;
-    constant_pool_package.object_field_byte_offsets_length = object_field_byte_offsets_length;
   }
 
   memcpy(&constant_pool->values[id], &constant_pool_package, sizeof(SPVM_CONSTANT_POOL_PACKAGE));
