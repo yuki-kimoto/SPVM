@@ -10,7 +10,6 @@ struct SPVM_package {
   SPVM_HASH* op_field_symtable;
   SPVM_HASH* op_our_symtable;
   SPVM_OP* op_sub_destructor;
-  SPVM_LIST* native_subs;
   char* load_path;
   int32_t id;
   int32_t byte_size;

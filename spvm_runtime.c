@@ -52,7 +52,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   // Compile JIT if caller sub is JIT
   if (runtime->caller_sub_id > 0) {
     SPVM_CONSTANT_POOL_SUB* constant_pool_caller_sub = (SPVM_CONSTANT_POOL_SUB*)&constant_pool[runtime->caller_sub_id];
-    if (constant_pool_caller_sub->is_jit) {
+    int32_t op_caller_sub_id = constant_pool_caller_sub->op_sub_id;
+    SPVM_OP* op_caller_sub = SPVM_LIST_fetch(compiler->op_subs, op_caller_sub_id);
+    SPVM_SUB* caller_sub = op_caller_sub->uv.sub;
+    
+    if (caller_sub->is_jit) {
       api->compile_jit_sub(api, sub_id);
     }
   }
