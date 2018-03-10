@@ -30,44 +30,44 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
       SPVM_CONSTANT_POOL* constant_pool = compiler->constant_pool;
       
       // Push value to constant pool
-      switch (constant->type->code) {
-        case SPVM_TYPE_C_CODE_BYTE: {
+      switch (constant->type->id) {
+        case SPVM_TYPE_C_ID_BYTE: {
           int8_t value = constant->value.byte_value;
           
           constant->id = SPVM_CONSTANT_POOL_push_byte(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_CODE_SHORT: {
+        case SPVM_TYPE_C_ID_SHORT: {
           int16_t value = constant->value.short_value;
           
           constant->id = SPVM_CONSTANT_POOL_push_short(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_CODE_INT: {
+        case SPVM_TYPE_C_ID_INT: {
           int32_t value = constant->value.int_value;
           
           constant->id = SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_CODE_LONG: {
+        case SPVM_TYPE_C_ID_LONG: {
           int64_t value = constant->value.long_value;
           
           constant->id = SPVM_CONSTANT_POOL_push_long(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_CODE_FLOAT: {
+        case SPVM_TYPE_C_ID_FLOAT: {
           float value = constant->value.float_value;
           
           constant->id = SPVM_CONSTANT_POOL_push_float(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_CODE_DOUBLE: {
+        case SPVM_TYPE_C_ID_DOUBLE: {
           double value = constant->value.double_value;
           
           constant->id = SPVM_CONSTANT_POOL_push_double(compiler, constant_pool, value);
           break;
         }
-        case SPVM_TYPE_C_CODE_STRING: {
+        case SPVM_TYPE_C_ID_STRING: {
           const char* value = constant->value.string_value;
           
           constant->id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, value);

@@ -119,26 +119,26 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
     case CONSTANT: {
       SPVM_CONSTANT* constant = yylval.opval->uv.constant;
       
-      switch(constant->type->code) {
-        case SPVM_TYPE_C_CODE_BYTE:
+      switch(constant->type->id) {
+        case SPVM_TYPE_C_ID_BYTE:
           fprintf(file, "int %" PRId8, constant->value.byte_value);
           break;
-        case SPVM_TYPE_C_CODE_SHORT:
+        case SPVM_TYPE_C_ID_SHORT:
           fprintf(file, "int %" PRId16, constant->value.short_value);
           break;
-        case SPVM_TYPE_C_CODE_INT:
+        case SPVM_TYPE_C_ID_INT:
           fprintf(file, "int %" PRId32, constant->value.int_value);
           break;
-        case SPVM_TYPE_C_CODE_LONG:
+        case SPVM_TYPE_C_ID_LONG:
           fprintf(file, "long %" PRId64, constant->value.long_value);
           break;
-        case SPVM_TYPE_C_CODE_FLOAT:
+        case SPVM_TYPE_C_ID_FLOAT:
           fprintf(file, "float %f", constant->value.float_value);
           break;
-        case SPVM_TYPE_C_CODE_DOUBLE:
+        case SPVM_TYPE_C_ID_DOUBLE:
           fprintf(file, "double %f", constant->value.double_value);
           break;
-        case SPVM_TYPE_C_CODE_BYTE_ARRAY:
+        case SPVM_TYPE_C_ID_BYTE_ARRAY:
           fprintf(file, "byte[] %s", constant->value.string_value);
           break;
       }

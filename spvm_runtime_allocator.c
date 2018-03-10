@@ -135,7 +135,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
   else {
     // Byte size
     int64_t byte_size;
-    switch (object->object_type_code) {
+    switch (object->object_type_id) {
       case SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT: {
         // Runtime
         SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();

@@ -96,7 +96,7 @@
 
 
 
-const char* const SPVM_OPCODE_C_CODE_NAMES[] = {
+const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "NOP",
   "ADD_INT",
   "ADD_LONG",

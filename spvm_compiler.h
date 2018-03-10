@@ -46,7 +46,7 @@ struct SPVM_compiler {
   SPVM_LIST* op_constants;
   
   int64_t enum_default_value;
-  int32_t enum_default_type_code;
+  int32_t enum_default_type_id;
 
   // Packages
   SPVM_LIST* op_packages;
@@ -72,7 +72,7 @@ struct SPVM_compiler {
   // use symbol table
   SPVM_HASH* op_use_symtable;
   
-  // Types(This is all type ops in source code)
+  // Types(This is all type ops in source id)
   SPVM_LIST* op_types;
   
   // Types(This is unique types)

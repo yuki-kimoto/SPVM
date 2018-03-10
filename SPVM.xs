@@ -2889,12 +2889,10 @@ new_len(...)
   int32_t type_id = api->get_type_id(api, type_name);
   SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
   
-  int32_t type_code = type->code;
-  
-  if (type_code < 0) {
+  if (type_id < 0) {
     croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Core::Object::Array::Object::new())", type_name);
   }
-  if (type_code >= SPVM_TYPE_C_CODE_BYTE && type_code <= SPVM_TYPE_C_CODE_DOUBLE) {
+  if (type_id >= SPVM_TYPE_C_ID_BYTE && type_id <= SPVM_TYPE_C_ID_DOUBLE) {
     croak("Type is not object array %s(SPVM::Core::Object::Array::Object::new())", type_name);
   }
   
@@ -2996,26 +2994,26 @@ get(...)
   }
   
   SV* sv_base_object;
-  switch (element_type->code) {
-    case SPVM_TYPE_C_CODE_BYTE_ARRAY :
+  switch (element_type->id) {
+    case SPVM_TYPE_C_ID_BYTE_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Core::Object::Array::Byte");
       break;
-    case SPVM_TYPE_C_CODE_SHORT_ARRAY :
+    case SPVM_TYPE_C_ID_SHORT_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Core::Object::Array::Short");
       break;
-    case SPVM_TYPE_C_CODE_INT_ARRAY :
+    case SPVM_TYPE_C_ID_INT_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Core::Object::Array::Int");
       break;
-    case SPVM_TYPE_C_CODE_LONG_ARRAY :
+    case SPVM_TYPE_C_ID_LONG_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Core::Object::Array::Long");
       break;
-    case SPVM_TYPE_C_CODE_FLOAT_ARRAY :
+    case SPVM_TYPE_C_ID_FLOAT_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Core::Object::Array::Float");
       break;
-    case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
+    case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
       sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Core::Object::Array::Double");
       break;
-    case SPVM_TYPE_C_CODE_STRING :
+    case SPVM_TYPE_C_ID_STRING :
       sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Core::Object::Package::String");
       break;
     default : {
@@ -3588,33 +3586,33 @@ call_sub(...)
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
       
-      switch (arg_type->code) {
-        case SPVM_TYPE_C_CODE_BYTE : {
+      switch (arg_type->id) {
+        case SPVM_TYPE_C_ID_BYTE : {
           int8_t value = (int8_t)SvIV(sv_value);
           call_sub_args[arg_index].byte_value = value;
           break;
         }
-        case  SPVM_TYPE_C_CODE_SHORT : {
+        case  SPVM_TYPE_C_ID_SHORT : {
           int16_t value = (int16_t)SvIV(sv_value);
           call_sub_args[arg_index].short_value = value;
           break;
         }
-        case  SPVM_TYPE_C_CODE_INT : {
+        case  SPVM_TYPE_C_ID_INT : {
           int32_t value = (int32_t)SvIV(sv_value);
           call_sub_args[arg_index].int_value = value;
           break;
         }
-        case  SPVM_TYPE_C_CODE_LONG : {
+        case  SPVM_TYPE_C_ID_LONG : {
           int64_t value = (int64_t)SvIV(sv_value);
           call_sub_args[arg_index].long_value = value;
           break;
         }
-        case  SPVM_TYPE_C_CODE_FLOAT : {
+        case  SPVM_TYPE_C_ID_FLOAT : {
           float value = (float)SvNV(sv_value);
           call_sub_args[arg_index].float_value = value;
           break;
         }
-        case  SPVM_TYPE_C_CODE_DOUBLE : {
+        case  SPVM_TYPE_C_ID_DOUBLE : {
           double value = (double)SvNV(sv_value);
           call_sub_args[arg_index].double_value = value;
           break;
@@ -3634,7 +3632,7 @@ call_sub(...)
                 
                 SPVM_TYPE* base_object_type = SPVM_LIST_fetch(compiler->types, base_object_type_id);
                 
-                if (base_object_type->code != arg_type->code) {
+                if (base_object_type->id != arg_type->id) {
                   croak("Argument base_object type need %s, but %s", arg_type->name, base_object_type->name);
                 }
                 
@@ -3654,52 +3652,52 @@ call_sub(...)
   
   // Return type id
   SPVM_TYPE* return_type = sub->op_return_type->uv.type;
-  int32_t return_type_code = return_type->code;
+  int32_t return_type_id = return_type->id;
   
   // Return count
   int32_t return_count;
-  switch (return_type_code) {
-    case SPVM_TYPE_C_CODE_VOID:  {
+  switch (return_type_id) {
+    case SPVM_TYPE_C_ID_VOID:  {
       api->call_void_sub(api, sub_id, call_sub_args);
       return_count = 0;
       break;
     }
-    case SPVM_TYPE_C_CODE_BYTE: {
+    case SPVM_TYPE_C_ID_BYTE: {
       int8_t return_value = api->call_byte_sub(api, sub_id, call_sub_args);
       SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
       return_count = 1;
       break;
     }
-    case SPVM_TYPE_C_CODE_SHORT: {
+    case SPVM_TYPE_C_ID_SHORT: {
       int16_t return_value = api->call_short_sub(api, sub_id, call_sub_args);
       SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
       return_count = 1;
       break;
     }
-    case SPVM_TYPE_C_CODE_INT: {
+    case SPVM_TYPE_C_ID_INT: {
       int32_t return_value = api->call_int_sub(api, sub_id, call_sub_args);
       SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
       return_count = 1;
       break;
     }
-    case SPVM_TYPE_C_CODE_LONG: {
+    case SPVM_TYPE_C_ID_LONG: {
       int64_t return_value = api->call_long_sub(api, sub_id, call_sub_args);
       SV* sv_return_value = sv_2mortal(newSViv(return_value));
       XPUSHs(sv_return_value);
       return_count = 1;
       break;
     }
-    case SPVM_TYPE_C_CODE_FLOAT: {
+    case SPVM_TYPE_C_ID_FLOAT: {
       float return_value = api->call_float_sub(api, sub_id, call_sub_args);
       SV* sv_return_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_return_value);
       return_count = 1;
       break;
     }
-    case SPVM_TYPE_C_CODE_DOUBLE: {
+    case SPVM_TYPE_C_ID_DOUBLE: {
       double return_value = api->call_double_sub(api, sub_id, call_sub_args);
       SV* sv_return_value = sv_2mortal(newSVnv(return_value));
       XPUSHs(sv_return_value);
@@ -3712,26 +3710,26 @@ call_sub(...)
       if (return_value != NULL) {
         api->inc_ref_count(api, return_value);
         
-        switch(return_type_code) {
-          case SPVM_TYPE_C_CODE_BYTE_ARRAY :
+        switch(return_type_id) {
+          case SPVM_TYPE_C_ID_BYTE_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Core::Object::Array::Byte");
             break;
-          case SPVM_TYPE_C_CODE_SHORT_ARRAY :
+          case SPVM_TYPE_C_ID_SHORT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Core::Object::Array::Short");
             break;
-          case SPVM_TYPE_C_CODE_INT_ARRAY :
+          case SPVM_TYPE_C_ID_INT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Core::Object::Array::Int");
             break;
-          case SPVM_TYPE_C_CODE_LONG_ARRAY :
+          case SPVM_TYPE_C_ID_LONG_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Core::Object::Array::Long");
             break;
-          case SPVM_TYPE_C_CODE_FLOAT_ARRAY :
+          case SPVM_TYPE_C_ID_FLOAT_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Core::Object::Array::Float");
             break;
-          case SPVM_TYPE_C_CODE_DOUBLE_ARRAY :
+          case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Core::Object::Array::Double");
             break;
-          case SPVM_TYPE_C_CODE_STRING :
+          case SPVM_TYPE_C_ID_STRING :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Core::Object::Package::String");
             break;
           default : {
