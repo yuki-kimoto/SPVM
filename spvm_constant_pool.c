@@ -99,40 +99,8 @@ int32_t SPVM_CONSTANT_POOL_push_type(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL
   SPVM_CONSTANT_POOL_TYPE constant_pool_type;
   memset(&constant_pool_type, 0, sizeof(SPVM_CONSTANT_POOL_TYPE));
   
-  constant_pool_type.code = type->code;
-  if (SPVM_TYPE_is_numeric(compiler, type)) {
-    constant_pool_type.is_numeric = 1;
-  }
-  else {
-    constant_pool_type.is_numeric = 0;
-  }
-  
   // Add length
   constant_pool->length += extend_length;
-  
-  // Push type name to constant pool
-  constant_pool_type.name_id = SPVM_CONSTANT_POOL_push_string(compiler, constant_pool, type->name);
-  
-  // Parent type id
-  char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
-  SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
-  if (parent_type) {
-    constant_pool_type.parent_type_id = parent_type->id;
-  }
-
-  // Element type id
-  char* element_type_name = SPVM_TYPE_get_element_name(compiler, type->name);
-  if (element_type_name) {
-    SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
-    if (element_type) {
-      constant_pool_type.element_type_id = element_type->id;
-    }
-  }
-  
-  constant_pool_type.dimension = type->dimension;
-  
-  assert(type->base_type);
-  constant_pool_type.base_id = type->base_type->id;
   
   memcpy(&constant_pool->values[id], &constant_pool_type, sizeof(SPVM_CONSTANT_POOL_TYPE));
   

@@ -104,7 +104,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
       SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
       if (parent_type) {
         SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
-        constant_pool_type->parent_type_id = parent_type->id;
         type->parent_type_id = parent_type->id;
       }
       
@@ -114,7 +113,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
         SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
         if (element_type) {
           SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type->id];
-          constant_pool_type->element_type_id = element_type->id;
           type->element_type_id = element_type->id;
         }
         else {
@@ -175,22 +173,6 @@ void SPVM_CONSTANT_POOL_BUILDER_build_constant_pool(SPVM_COMPILER* compiler) {
     }
   }
 
-  // Set package id to type constant pool
-  {
-    {
-      int32_t i;
-      for (i = 0; i < compiler->types->length; i++) {
-        SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
-        if (type->op_package) {
-          SPVM_PACKAGE* package = type->op_package->uv.package;
-          int32_t type_id = type->id;
-          SPVM_CONSTANT_POOL_TYPE* constant_pool_type = (SPVM_CONSTANT_POOL_TYPE*)&compiler->constant_pool->values[type_id];
-          constant_pool_type->package_id = package->id;
-        }
-      }
-    }
-  }
-  
   // Push subroutine into constant pool
   {
     int32_t sub_index;
