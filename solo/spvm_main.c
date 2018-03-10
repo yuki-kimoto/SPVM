@@ -8,7 +8,6 @@
 #include "spvm_list.h"
 #include "spvm_util_allocator.h"
 #include "spvm_constant_pool.h"
-#include "spvm_constant_pool_sub.h"
 #include "spvm_opcode_array.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_allocator.h"
@@ -70,9 +69,6 @@ int main(int argc, char *argv[])
       if (sub->is_native) {
         // Sub abs name
         const char* sub_abs_name = sub->abs_name;
-        
-        // Sub id
-        int32_t sub_id = sub->id;
         
         if (strcmp(sub_abs_name, "CORE::print") == 0) {
           sub->native_address = SPVM__CORE__print;
