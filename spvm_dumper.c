@@ -103,6 +103,29 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         continue;
       }
     }
+    else if (id == SPVM_OP_C_ID_BLOCK) {
+      if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF) {
+        printf(" IF");
+      }
+      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_ELSE) {
+        printf(" ELSE");
+      }
+      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
+        printf(" LOOP");
+      }
+      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+        printf(" SWITCH");
+      }
+      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SUB) {
+        printf(" SUB");
+      }
+      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
+        printf(" EVAL");
+      }
+      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT) {
+        printf(" INCREMENT");
+      }
+    }
     printf("\n");
     
     // [END]Preorder traversal position
