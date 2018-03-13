@@ -44,6 +44,10 @@ typedef struct SPVM_sub_check_info SPVM_SUB_CHECK_INFO;
 struct SPVM_object;
 typedef struct SPVM_object SPVM_OBJECT;
 
+// spvm_block.h
+struct SPVM_block;
+typedef struct SPVM_block SPVM_BLOCK;
+
 // spvm_use.h
 struct SPVM_use;
 typedef struct SPVM_use SPVM_USE;
