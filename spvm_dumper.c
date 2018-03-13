@@ -122,9 +122,6 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
         printf(" EVAL");
       }
-      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_INCREMENT) {
-        printf(" INCREMENT");
-      }
     }
     printf("\n");
     
