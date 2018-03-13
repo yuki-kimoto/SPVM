@@ -33,6 +33,7 @@
 #include "spvm_package_var.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_undef.h"
+#include "spvm_block.h"
 
 
 
@@ -335,6 +336,16 @@ SPVM_OP* SPVM_OP_new_op_undef(SPVM_COMPILER* compiler, const char* file, int32_t
   op_undef->uv.undef = undef;
   
   return op_undef;
+}
+
+SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
+  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, file, line);
+  
+  SPVM_BLOCK* block = SPVM_BLOCK_new(compiler);
+  block->id = id;
+  op_block->uv.block = block;
+  
+  return op_block;
 }
 
 SPVM_OP* SPVM_OP_new_op_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
