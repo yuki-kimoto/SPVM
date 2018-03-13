@@ -1875,7 +1875,9 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto label_SPVM_OPCODE_C_ID_RETURN;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         break;
       }

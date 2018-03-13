@@ -313,6 +313,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "PUSH_OBJECT_VAR_INDEX",
   "ENTER_SCOPE",
   "LEAVE_SCOPE",
+  "END",
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {

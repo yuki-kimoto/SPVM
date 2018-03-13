@@ -1665,7 +1665,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           }
         }
         
-        goto label_SPVM_OPCODE_C_ID_RETURN;
+        opcode_index = opcode->operand1;
+        continue;
       }
       case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
         // default offset
@@ -1737,6 +1738,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         }
         
         continue;
+      }
+      case SPVM_OPCODE_C_ID_END: {
+        goto label_SPVM_OPCODE_C_ID_RETURN;
       }
     }
     opcode_index++;
