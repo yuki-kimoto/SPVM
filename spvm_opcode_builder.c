@@ -106,7 +106,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* auto_dec_ref_count_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       SPVM_LIST* auto_dec_ref_count_block_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      SPVM_LIST* auto_dec_ref_count_last_meaning_block_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // Check sub information
       assert(sub->id > -1);
@@ -182,7 +181,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS || op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
               int32_t* auto_dec_ref_count_block_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *auto_dec_ref_count_block_base_ptr = auto_dec_ref_count_stack->length;
-              SPVM_LIST_push(auto_dec_ref_count_last_meaning_block_base_stack, auto_dec_ref_count_block_base_ptr);
             }
           }
         }
@@ -1997,20 +1995,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_ID_LAST: {
-                // LEAVE_SCOPE
-                int32_t* auto_dec_ref_count_last_meaning_block_base_ptr
-                  = SPVM_LIST_fetch(auto_dec_ref_count_last_meaning_block_base_stack, auto_dec_ref_count_last_meaning_block_base_stack->length - 1);
-                int32_t auto_dec_ref_count_last_meaning_block_base = *auto_dec_ref_count_last_meaning_block_base_ptr;
-                
-                if (auto_dec_ref_count_last_meaning_block_base < auto_dec_ref_count_stack->length) {
-                  SPVM_OPCODE opcode;
-                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.id = SPVM_OPCODE_C_ID_LEAVE_SCOPE;
-                  opcode.operand0 = auto_dec_ref_count_last_meaning_block_base;
-                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                }
-                
-                // GOTO out of loop block
+                // GOTO end of loop init block
                 SPVM_OPCODE opcode;
                 memset(&opcode, 0, sizeof(SPVM_OPCODE));
                 opcode.id = SPVM_OPCODE_C_ID_GOTO;
@@ -2072,6 +2057,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE* opcode_goto = (opcode_array->values + opcode_index);
                   opcode_goto->operand0 = opcode_array->length;
                 }
+                else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
+                  // Set last position
+                  while (last_goto_opcode_index_stack->length > 0) {
+                    
+                    int32_t* last_opcode_index_ptr = SPVM_LIST_pop(last_goto_opcode_index_stack);
+                    int32_t last_opcode_index = *last_opcode_index_ptr;
+                    
+                    SPVM_OPCODE* opcode_last = (opcode_array->values + last_opcode_index);
+                    opcode_last->operand0 = opcode_array->length;
+                  }
+                }
                 else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                   // Set next position
                   while (next_goto_opcode_index_stack->length > 0) {
@@ -2113,24 +2109,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
 
-                if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS || op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
-                  SPVM_LIST_pop(auto_dec_ref_count_last_meaning_block_base_stack);
-                }
-                
-                break;
-              }
-              case SPVM_OP_C_ID_LOOP: {
-                
-                // Set last position
-                while (last_goto_opcode_index_stack->length > 0) {
-                  
-                  int32_t* last_opcode_index_ptr = SPVM_LIST_pop(last_goto_opcode_index_stack);
-                  int32_t last_opcode_index = *last_opcode_index_ptr;
-                  
-                  SPVM_OPCODE* opcode_last = (opcode_array->values + last_opcode_index);
-                  opcode_last->operand0 = opcode_array->length;
-                }
-                
                 break;
               }
               case SPVM_OP_C_ID_LOOP_INCREMENT: {
