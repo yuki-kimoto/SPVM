@@ -1643,7 +1643,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           if (sub_return_type_id != SPVM_TYPE_C_ID_VOID) {
             memset(&return_value, 0, sizeof(SPVM_API_VALUE));
           }
-          goto label_SPVM_OPCODE_C_ID_RETURN;
+          opcode_index = opcode->operand0;
+          continue;
         }
         break;
       }
@@ -1740,25 +1741,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         continue;
       }
       case SPVM_OPCODE_C_ID_END: {
-        goto label_SPVM_OPCODE_C_ID_RETURN;
+        goto label_END;
       }
     }
     opcode_index++;
   }
 
-  label_SPVM_OPCODE_C_ID_RETURN: {
-    
-    {
-      int32_t object_var_index_index;
-      for (object_var_index_index = 0; object_var_index_index <= object_var_index_stack_top; object_var_index_index++) {
-        int32_t var_index = object_var_index_stack[object_var_index_index].int_value;
-        
-        if (*(SPVM_API_OBJECT**)&vars[var_index] != NULL) {
-          if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&vars[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&vars[var_index]); }
-          else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]); }
-        }
-      }
-    }
+  label_END: {
     
     // Croak
     if (!croak_flag) {
