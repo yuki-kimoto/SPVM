@@ -29,6 +29,7 @@
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 #include "spvm_undef.h"
+#include "spvm_block.h"
 
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_LIST* op_mys, const char* file, int32_t line) {
 
@@ -325,10 +326,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               *block_my_base_ptr = block_my_base;
               SPVM_LIST_push(block_my_base_stack, block_my_base_ptr);
               
-              if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
+              if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                 loop_block_stack_length++;
               }
-              else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
+              else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
                 // Eval block max length
                 eval_block_stack_length++;
                 if (eval_block_stack_length > sub->eval_stack_max_length) {
@@ -1509,11 +1510,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
 
                   // Pop loop block my variable base
-                  if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
+                  if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                     loop_block_stack_length--;
                   }
                   // Pop try block my variable base
-                  else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
+                  else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
                     eval_block_stack_length--;
                   }
                   

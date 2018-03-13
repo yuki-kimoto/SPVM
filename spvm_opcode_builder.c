@@ -31,6 +31,7 @@
 #include "spvm_package_var.h"
 #include "spvm_dumper.h"
 #include "spvm_opcode.h"
+#include "spvm_block.h"
 
 void SPVM_OPCODE_BUILDER_push_if_croak(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcode_array, SPVM_LIST* push_eval_opcode_index_stack, SPVM_LIST* if_croak_catch_opcode_index_stack,
   int32_t sub_id, int32_t line) {
@@ -155,7 +156,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         // [START]Preorder traversal position
         switch (op_cur->id) {
           case SPVM_OP_C_ID_BLOCK: { // Preorder
-            if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
+            if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
               SPVM_OPCODE opcode;
               memset(&opcode, 0, sizeof(SPVM_OPCODE));
               // Add goto
@@ -167,7 +168,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               
               SPVM_LIST_push(loop_first_goto_opcode_index_stack, opcode_index_ptr);
             }
-            else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
+            else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
               int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *opcode_index_ptr = opcode_array->length;
               
@@ -178,7 +179,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             *auto_dec_ref_count_block_base_ptr = auto_dec_ref_count_stack->length;
             SPVM_LIST_push(auto_dec_ref_count_block_base_stack, auto_dec_ref_count_block_base_ptr);
             
-            if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS || op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+            if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS || op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
               int32_t* auto_dec_ref_count_block_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *auto_dec_ref_count_block_base_ptr = auto_dec_ref_count_stack->length;
               SPVM_LIST_push(auto_dec_ref_count_last_meaning_block_base_stack, auto_dec_ref_count_block_base_ptr);
@@ -2037,7 +2038,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_ID_BLOCK: { // Postorder
-                if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF) {
+                if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_IF) {
                   
                   {
                     // Prepare to jump to end of true block
@@ -2060,7 +2061,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE* opcode_goto = (opcode_array->values + opcode_index);
                   opcode_goto->operand0 = opcode_array->length;
                 }
-                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_ELSE) {
+                else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_ELSE) {
                   
                   assert(if_block_end_goto_opcode_index_stack->length > 0);
                   
@@ -2071,7 +2072,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE* opcode_goto = (opcode_array->values + opcode_index);
                   opcode_goto->operand0 = opcode_array->length;
                 }
-                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
+                else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                   // Set next position
                   while (next_goto_opcode_index_stack->length > 0) {
                     
@@ -2082,7 +2083,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode_next->operand0 = opcode_array->length;
                   }
                 }
-                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
+                else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
                   // Set IF_CROAK_CATCH opcode index
                   while (if_croak_catch_opcode_index_stack->length > 0) {
                     int32_t* if_croak_catch_opcode_index_ptr = SPVM_LIST_pop(if_croak_catch_opcode_index_stack);
@@ -2112,7 +2113,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
 
-                if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS || op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+                if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS || op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
                   SPVM_LIST_pop(auto_dec_ref_count_last_meaning_block_base_stack);
                 }
                 

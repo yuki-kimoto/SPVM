@@ -24,6 +24,7 @@
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 #include "spvm_opcode_array.h"
+#include "spvm_block.h"
 
 void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   int32_t depth = 0;
@@ -104,22 +105,22 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       }
     }
     else if (id == SPVM_OP_C_ID_BLOCK) {
-      if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_IF) {
+      if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_IF) {
         printf(" IF");
       }
-      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_ELSE) {
+      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_ELSE) {
         printf(" ELSE");
       }
-      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
+      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
         printf(" LOOP");
       }
-      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
         printf(" SWITCH");
       }
-      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SUB) {
+      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SUB) {
         printf(" SUB");
       }
-      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
+      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
         printf(" EVAL");
       }
     }

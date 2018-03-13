@@ -2047,7 +2047,7 @@ yyreduce:
   case 43:
 #line 267 "yacc/spvm_yacc.y"
     {
-      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_NORMAL, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(1) - (3)].opval)->line);
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(1) - (3)].opval)->line);
       SPVM_OP_insert_child(compiler, op_block, op_block->last, (yyvsp[(2) - (3)].opval));
       (yyval.opval) = op_block;
     ;}
@@ -2095,7 +2095,7 @@ yyreduce:
       
       // if is wraped with block to allow the following syntax
       //  if (my $var = 3) { ... }
-      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_NORMAL, (yyvsp[(1) - (6)].opval)->file, (yyvsp[(1) - (6)].opval)->line);
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, (yyvsp[(1) - (6)].opval)->file, (yyvsp[(1) - (6)].opval)->line);
       SPVM_OP_insert_child(compiler, op_block, op_block->last, op_if);
       
       (yyval.opval) = op_block;
