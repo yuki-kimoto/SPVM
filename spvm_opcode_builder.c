@@ -2126,6 +2126,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE* opcode_return = (opcode_array->values + return_opcode_index);
                     opcode_return->operand1 = opcode_array->length;
                   }
+
+                  // Set IF_CROAK_RETURN opcode index
+                  while (if_croak_return_goto_opcode_index_stack->length > 0) {
+                    int32_t* if_croak_return_opcode_index_ptr = SPVM_LIST_pop(if_croak_return_goto_opcode_index_stack);
+                    int32_t if_croak_return_opcode_index = *if_croak_return_opcode_index_ptr;
+                    
+                    SPVM_OPCODE* opcode_if_croak_return = (opcode_array->values + if_croak_return_opcode_index);
+                    opcode_if_croak_return->operand0 = opcode_array->length;
+                  }
                 }
                 
                 // Leave scope
