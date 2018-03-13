@@ -130,6 +130,7 @@ enum {
   SPVM_OP_C_ID_PACKAGE_VAR,
   SPVM_OP_C_ID_ARRAY_INIT,
   SPVM_OP_C_ID_BOOL,
+  SPVM_OP_C_ID_LOOP_INCREMENT,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];
