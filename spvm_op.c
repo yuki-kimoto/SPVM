@@ -940,9 +940,9 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   SPVM_OP_insert_child(compiler, op_block_increment, op_block_increment->last, op_term_increment);
   
   SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_statement_init);
-  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_condition);
-  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_block_increment);
   SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_block);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_block_increment);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_condition);
   
   SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_outer);
   
@@ -975,9 +975,9 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP_insert_child(compiler, op_block_increment, op_block_increment->last, op_term_increment);
 
   SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_statement_init);
-  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_condition);
-  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_block_increment);
   SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_block);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_block_increment);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_condition);
   
   SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_outer);
   
