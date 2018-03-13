@@ -1850,7 +1850,9 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         if (sub_return_type_id != SPVM_TYPE_C_ID_VOID) {
           SPVM_STRING_BUFFER_add(string_buffer, "    return_value = 0;\n");
         }
-        SPVM_STRING_BUFFER_add(string_buffer, "    goto label_SPVM_OPCODE_C_ID_RETURN;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       }
@@ -1962,39 +1964,19 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     opcode_index++;
   }
 
-  {
-    
-    SPVM_STRING_BUFFER_add(string_buffer, "  // RETURN_PROCESS\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  label_SPVM_OPCODE_C_ID_RETURN:\n");
-    
-    // Decrement auto decremenet variable
-    if (sub->object_var_index_stack_max > 0) {
-      SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "    int32_t object_var_index_index;\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "    for (object_var_index_index = 0; object_var_index_index <= object_var_index_stack_top; object_var_index_index++) {\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      int32_t var_index = *(int32_t*)&object_var_index_stack[object_var_index_index];\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      if (*(SPVM_API_OBJECT**)&vars[var_index] != SPVM_RUNTIME_C_NULL) {\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "        if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&vars[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&vars[var_index]); }\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "        else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]); }\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-    }
-    
-    // No exception
-    SPVM_STRING_BUFFER_add(string_buffer, "  if (!croak_flag) {\n");
-    if (sub_return_type_id > SPVM_TYPE_C_ID_DOUBLE) {
-      SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != SPVM_RUNTIME_C_NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(return_value); }\n");
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, SPVM_RUNTIME_C_NULL);\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-    
-    if (sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
-      SPVM_STRING_BUFFER_add(string_buffer, "  return;\n");
-    }
-    else {
-      SPVM_STRING_BUFFER_add(string_buffer, "  return return_value;\n");
-    }
+  // No exception
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (!croak_flag) {\n");
+  if (sub_return_type_id > SPVM_TYPE_C_ID_DOUBLE) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != SPVM_RUNTIME_C_NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(return_value); }\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, SPVM_RUNTIME_C_NULL);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+  
+  if (sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  return;\n");
+  }
+  else {
+    SPVM_STRING_BUFFER_add(string_buffer, "  return return_value;\n");
   }
   
   // Close subroutine
