@@ -929,7 +929,7 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
   
   // Set block flag
-  op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
+  op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS;
 
   // Outer block for initialize loop variable
   SPVM_OP* op_block_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_for->file, op_for->line);
@@ -962,7 +962,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
   
   // Set block flag
-  op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP;
+  op_block->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS;
   
   // Next value. This is null.
   SPVM_OP* op_term_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_while->file, op_while->line);

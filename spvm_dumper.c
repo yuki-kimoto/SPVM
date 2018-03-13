@@ -110,7 +110,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_ELSE) {
         printf(" ELSE");
       }
-      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
+      else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
         printf(" LOOP");
       }
       else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {

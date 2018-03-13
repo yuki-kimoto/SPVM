@@ -155,7 +155,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         // [START]Preorder traversal position
         switch (op_cur->id) {
           case SPVM_OP_C_ID_BLOCK: {
-            if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
+            if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
               SPVM_OPCODE opcode;
               memset(&opcode, 0, sizeof(SPVM_OPCODE));
               // Add goto
@@ -178,7 +178,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             *auto_dec_ref_count_block_base_ptr = auto_dec_ref_count_stack->length;
             SPVM_LIST_push(auto_dec_ref_count_block_base_stack, auto_dec_ref_count_block_base_ptr);
             
-            if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP || op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+            if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS || op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
               int32_t* auto_dec_ref_count_block_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
               *auto_dec_ref_count_block_base_ptr = auto_dec_ref_count_stack->length;
               SPVM_LIST_push(auto_dec_ref_count_last_meaning_block_base_stack, auto_dec_ref_count_block_base_ptr);
@@ -2071,7 +2071,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE* opcode_goto = (opcode_array->values + opcode_index);
                   opcode_goto->operand0 = opcode_array->length;
                 }
-                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
+                else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
                   // Set next position
                   while (next_goto_opcode_index_stack->length > 0) {
                     
@@ -2120,7 +2120,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
 
-                if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP || op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
+                if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS || op_cur->flag & SPVM_OP_C_FLAG_BLOCK_SWITCH) {
                   SPVM_LIST_pop(auto_dec_ref_count_last_meaning_block_base_stack);
                 }
                 

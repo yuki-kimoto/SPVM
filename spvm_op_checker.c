@@ -325,7 +325,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               *block_my_base_ptr = block_my_base;
               SPVM_LIST_push(block_my_base_stack, block_my_base_ptr);
               
-              if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
+              if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
                 loop_block_stack_length++;
               }
               else if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_EVAL) {
@@ -1509,7 +1509,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
 
                   // Pop loop block my variable base
-                  if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP) {
+                  if (op_cur->flag & SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS) {
                     loop_block_stack_length--;
                   }
                   // Pop try block my variable base
