@@ -149,12 +149,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       // Switch stack
       SPVM_LIST* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
+      // Block stack
+      SPVM_LIST* op_block_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      
       int32_t object_var_index_stack_max = 0;
       
       while (op_cur) {
         // [START]Preorder traversal position
         switch (op_cur->id) {
           case SPVM_OP_C_ID_BLOCK: { // Preorder
+            
+            // Push block
+            SPVM_LIST_push(op_block_stack, op_cur);
+            
             if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
               SPVM_OPCODE opcode;
               memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -2023,6 +2030,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_ID_BLOCK: { // Postorder
+                
+                SPVM_OP* op_block_current = SPVM_LIST_pop(op_block_stack);
+                
+                // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
+                if (op_block_stack->length > 0) {
+                  SPVM_OP* op_block_parent = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                  op_block_parent->uv.block->need_leave_scope = op_block_current->uv.block->need_leave_scope;
+                }
+                
                 if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_IF) {
                   
                   {
@@ -2108,7 +2124,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
-
+                
                 break;
               }
               case SPVM_OP_C_ID_LOOP_INCREMENT: {
@@ -2176,6 +2192,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   if (object_var_index_stack->length > object_var_index_stack_max) {
                     object_var_index_stack_max = object_var_index_stack->length;
                   }
+                  
+                  SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                  op_block_current->uv.block->need_leave_scope = 1;
                 }
                 
                 break;
