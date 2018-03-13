@@ -18,8 +18,8 @@ void SPVM_CALL_STACK_init_call_stack_info(SPVM_CALL_STACK_INFO* call_stack_info,
   SPVM_SUB* sub = op_sub->uv.sub;
   
   // Length
-  call_stack_info->length = sub->op_mys->length + 1 + sub->auto_dec_ref_count_stack_max_length;
+  call_stack_info->length = sub->op_mys->length + 1 + sub->object_var_index_stack_max;
   
-  call_stack_info->auto_dec_ref_count_stack_top_index = sub->op_mys->length;
-  call_stack_info->auto_dec_ref_count_stack_base = call_stack_info->auto_dec_ref_count_stack_top_index + 1;
+  call_stack_info->object_var_index_stack_top_index = sub->op_mys->length;
+  call_stack_info->object_var_index_stack_base = call_stack_info->object_var_index_stack_top_index + 1;
 }
