@@ -12,6 +12,7 @@
   #include "spvm_dumper.h"
   #include "spvm_constant.h"
   #include "spvm_type.h"
+  #include "spvm_block.h"
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW SET GET OUR
@@ -264,7 +265,7 @@ statement
 block 
   : '{' opt_statements '}'
     {
-      SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, $1->file, $1->line);
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_NORMAL, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_block, op_block->last, $2);
       $$ = op_block;
     }
@@ -315,7 +316,7 @@ if_statement
       
       // if is wraped with block to allow the following syntax
       //  if (my $var = 3) { ... }
-      SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, $1->file, $1->line);
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_NORMAL, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_block, op_block->last, op_if);
       
       $$ = op_block;

@@ -486,7 +486,7 @@ SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
   
   // Block
-  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, file, line);
+  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_NORMAL, file, line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
 
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_list_args, NULL, op_type_return, op_block);
@@ -580,7 +580,7 @@ SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, 
   SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_build_assign);
   
   // Block
-  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, file, line);
+  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_NORMAL, file, line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
 
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_list_args, NULL, op_type_return, op_block);
@@ -944,7 +944,7 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   op_block_statements->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_STATEMENTS;
 
   // Outer block for initialize loop variable
-  SPVM_OP* op_block_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_for->file, op_for->line);
+  SPVM_OP* op_block_init = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_LOOP_INIT, op_for->file, op_for->line);
   op_block_init->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_INIT;
   
   // Block for increment
@@ -979,7 +979,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   // Next value. This is null.
   SPVM_OP* op_term_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_while->file, op_while->line);
 
-  SPVM_OP* op_block_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_while->file, op_while->line);
+  SPVM_OP* op_block_init = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_LOOP_INIT, op_while->file, op_while->line);
   op_block_init->flag |= SPVM_OP_C_FLAG_BLOCK_LOOP_INIT;
 
   // Block for increment
@@ -1011,7 +1011,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   if (op_block_true->id != SPVM_OP_C_ID_BLOCK) {
     SPVM_OP* op_not_block = op_block_true;
     
-    op_block_true = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_not_block->file, op_not_block->line);
+    op_block_true = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_NORMAL, op_not_block->file, op_not_block->line);
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_not_block->file, op_not_block->line);
     SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_true, op_block_true->last, op_list);
@@ -1023,7 +1023,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     SPVM_OP* op_not_block = op_block_false;
     
     // Create block
-    op_block_false = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_not_block->file, op_not_block->line);
+    op_block_false = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_NORMAL, op_not_block->file, op_not_block->line);
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_not_block->file, op_not_block->line);
     SPVM_OP_insert_child(compiler, op_list, op_list->last, op_not_block);
     SPVM_OP_insert_child(compiler, op_block_false, op_block_false->last, op_list);
@@ -2075,7 +2075,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
 
   // Block
-  SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_name->file, op_name->line);
+  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, SPVM_BLOCK_C_ID_NORMAL, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
   
   // sub
