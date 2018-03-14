@@ -2575,7 +2575,32 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                    
+                    SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
 
+                    switch (arg_type->id) {
+                      case SPVM_TYPE_C_ID_BYTE:
+                        opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_BYTE;
+                        break;
+                      case SPVM_TYPE_C_ID_SHORT:
+                        opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_SHORT;
+                        break;
+                      case SPVM_TYPE_C_ID_INT:
+                        opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_INT;
+                        break;
+                      case SPVM_TYPE_C_ID_LONG:
+                        opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_LONG;
+                        break;
+                      case SPVM_TYPE_C_ID_FLOAT:
+                        opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT;
+                        break;
+                      case SPVM_TYPE_C_ID_DOUBLE:
+                        opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE;
+                        break;
+                      default:
+                        opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
+                    }
+                    
                     opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG;
 
                     int32_t index_arg = SPVM_OP_get_my_index(compiler, op_arg);

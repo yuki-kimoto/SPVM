@@ -1749,7 +1749,15 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG: {
+      case SPVM_OPCODE_C_ID_PUSH_ARG:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
+      {
         SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top++;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_args[call_sub_arg_stack_top] = vars[");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
