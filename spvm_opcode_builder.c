@@ -2245,6 +2245,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.id = SPVM_OPCODE_C_ID_DECL_MY;
                   opcode.operand0 = my->index;
+                  opcode.operand1 = type->id;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
                 

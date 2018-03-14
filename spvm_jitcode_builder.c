@@ -584,7 +584,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   }
   
   // Call subroutine argument stack top
-  SPVM_STRING_BUFFER_add(string_buffer, "int32_t call_sub_arg_stack_top = -1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t call_sub_arg_stack_top = -1;\n");
 
   // Copy arguments to variables
   {
@@ -1246,6 +1246,19 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_DECL_MY: {
+        int32_t my_index = opcode->operand0;
+        int32_t type_id = opcode->operand1;
+        
+        // Variable declaration is not statement, so I add meanless statement.
+        SPVM_STRING_BUFFER_add(string_buffer, "  1;");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(type_id));
+        SPVM_STRING_BUFFER_add(string_buffer, " var");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         if (sub->object_var_index_stack_max > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -1726,8 +1739,8 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "call_sub_arg_stack_top++;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args[call_sub_arg_stack_top] = vars[");
+        SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top++;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_args[call_sub_arg_stack_top] = vars[");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, "];\n");
         
