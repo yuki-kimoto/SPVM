@@ -314,6 +314,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "ENTER_SCOPE",
   "LEAVE_SCOPE",
   "END",
+  "DECL_MY",
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {
