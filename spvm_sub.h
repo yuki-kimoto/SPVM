@@ -22,6 +22,7 @@ struct SPVM_sub {
   int32_t id;
   int32_t eval_stack_max_length;
   int32_t object_var_index_stack_max;
+  int32_t object_mys_length;
   _Bool is_native;
   _Bool is_enum;
   _Bool is_destructor;
