@@ -48,9 +48,6 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
   my->op_type->uv.type = type;
 
-  // Index
-  my->index = op_mys->length;
-
   // op my
   SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
   op_my->uv.my = my;
@@ -1635,7 +1632,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   else {
-                    my->index = op_mys->length;
                     SPVM_LIST_push(op_mys, op_cur);
                     SPVM_LIST_push(op_my_stack, op_cur);
                   }
@@ -2006,8 +2002,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
       assert(sub->file_name);
       
+      // My index
+      {
+        int32_t my_index;
+        for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
+          SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
+          SPVM_MY* my = op_my->uv.my;
+          my->index = my_index;
+        }
+      }
     }
   }
+  
 
   // Resolve constant id
   {
