@@ -480,7 +480,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       
-                      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
+                      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
                       
                       switch (arg_type->id) {
                         case SPVM_TYPE_C_ID_BYTE:
@@ -2599,8 +2599,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
-
+                    SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+                    
                     switch (arg_type->id) {
                       case SPVM_TYPE_C_ID_BYTE:
                         opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_BYTE;
