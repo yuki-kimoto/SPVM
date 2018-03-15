@@ -2004,35 +2004,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       
       // My index
       {
-        int32_t mys_length = 0;
-        
-        // Object my is first
-        {
-          int32_t my_index;
-          for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
-            SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
-            SPVM_MY* my = op_my->uv.my;
-            SPVM_TYPE* type = my->op_type->uv.type;
-            if (SPVM_TYPE_is_object(compiler, type)) {
-              my->index = mys_length;
-              mys_length++;
-            }
-          }
-          sub->object_mys_length = mys_length;
-        }
-        
-        // Not object my is second
-        {
-          int32_t my_index;
-          for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
-            SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
-            SPVM_MY* my = op_my->uv.my;
-            SPVM_TYPE* type = my->op_type->uv.type;
-            if (!SPVM_TYPE_is_object(compiler, type)) {
-              my->index = mys_length;
-              mys_length++;
-            }
-          }
+        int32_t my_index;
+        for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
+          SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
+          SPVM_MY* my = op_my->uv.my;
+          SPVM_TYPE* type = my->op_type->uv.type;
+          my->index = my_index;
         }
       }
     }
