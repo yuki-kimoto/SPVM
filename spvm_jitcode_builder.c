@@ -602,7 +602,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   }
   
   if (sub->call_sub_arg_stack_max > 0 ) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_VALUE call_sub_args[");
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE call_sub_args[");
     SPVM_STRING_BUFFER_add_int(string_buffer, sub->call_sub_arg_stack_max);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
