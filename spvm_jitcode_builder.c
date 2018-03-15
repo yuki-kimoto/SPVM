@@ -43,9 +43,11 @@ void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, const char*
 }
 
 void SPVM_JITCODE_BUILDER_add_operand(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t var_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "*(");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "*)&");
+  if (strcmp(type_name, "SPVM_API_OBJECT*") == 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "*(");
+    SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
+    SPVM_STRING_BUFFER_add(string_buffer, "*)&");
+  }
   SPVM_JITCODE_BUILDER_add_var(string_buffer, type_name, var_index);
 }
 
