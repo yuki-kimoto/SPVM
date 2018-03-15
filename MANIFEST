@@ -79,6 +79,8 @@ solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
 SPVM.xs
 spvm_base.h
+spvm_block.c
+spvm_block.h
 spvm_call_field.c
 spvm_call_field.h
 spvm_call_stack_info.c

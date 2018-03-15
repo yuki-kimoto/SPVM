@@ -2008,7 +2008,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
           SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
           SPVM_MY* my = op_my->uv.my;
-          SPVM_TYPE* type = my->op_type->uv.type;
           my->index = my_index;
         }
       }

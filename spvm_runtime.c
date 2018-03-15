@@ -229,7 +229,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // Opcode base
   int32_t sub_opcode_base = sub->opcode_base;
   
-  SPVM_CALL_STACK_INFO call_stack_info = {};
+  SPVM_CALL_STACK_INFO call_stack_info;
   SPVM_CALL_STACK_init_call_stack_info(&call_stack_info, runtime, sub_id);
 
   // Subroutine stack
@@ -1766,8 +1766,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       
       api->set_exception(api, NULL);
     }
-    
-    label_FREE_CALL_STACK:
     
     // Free call stack
     SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, call_stack_object);

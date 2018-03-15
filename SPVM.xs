@@ -2864,9 +2864,6 @@ new_len(...)
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
   int32_t length = (int32_t)SvIV(sv_length);
   
   // Element type id
@@ -2884,7 +2881,6 @@ new_len(...)
   const char* type_name = SvPV_nolen(sv_type_name);
   
   int32_t type_id = api->get_type_id(api, type_name);
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
   
   if (type_id < 0) {
     croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Core::Object::Array::Object::new())", type_name);

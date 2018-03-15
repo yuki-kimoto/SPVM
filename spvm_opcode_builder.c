@@ -551,7 +551,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Call field
                     SPVM_CALL_FIELD* call_field = op_call_field->uv.call_field;
                     SPVM_FIELD* field = call_field->field;
-                    int32_t field_id = field->id;
                     
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
                     
@@ -1711,7 +1710,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Call field
                   SPVM_CALL_FIELD* call_field = op_call_field->uv.call_field;
                   SPVM_FIELD* field = call_field->field;
-                  int32_t field_id = field->id;
 
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
 
