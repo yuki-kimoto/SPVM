@@ -1,6 +1,7 @@
 0.0317 2018-03-13
   - support escape character \0
   - cleanup leave scope logic
+  - numeric variable become local variable in jitcode
 0.0316 2018-03-10
   - remove runtime constant_pool
 0.0315 2018-03-08
