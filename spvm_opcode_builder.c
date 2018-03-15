@@ -2263,14 +2263,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
                   op_block_current->uv.block->need_leave_scope = 1;
                 }
-                else {
-                  SPVM_OPCODE opcode;
-                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.id = SPVM_OPCODE_C_ID_DECL_MY;
-                  opcode.operand0 = my->index;
-                  opcode.operand1 = type->id;
-                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                }
                 
                 break;
               }

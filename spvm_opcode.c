@@ -314,7 +314,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "ENTER_SCOPE",
   "LEAVE_SCOPE",
   "END",
-  "DECL_MY",
   "PUSH_ARG_BYTE",
   "PUSH_ARG_SHORT",
   "PUSH_ARG_INT",
