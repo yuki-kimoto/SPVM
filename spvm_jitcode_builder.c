@@ -37,9 +37,8 @@ void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, const char*
     SPVM_STRING_BUFFER_add(string_buffer, "]");
   }
   else {
-    SPVM_STRING_BUFFER_add(string_buffer, "vars[");
+    SPVM_STRING_BUFFER_add(string_buffer, "var");
     SPVM_STRING_BUFFER_add_int(string_buffer, index);
-    SPVM_STRING_BUFFER_add(string_buffer, "]");
   }
 }
 
