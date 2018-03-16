@@ -1391,22 +1391,27 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, i);
 
         SPVM_SUB* sub = op_sub->uv.sub;
+
+        SPVM_OP* op_name_sub = sub->op_name;
+        const char* sub_name = op_name_sub->uv.name;
+        const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
         
-        // Set first argument type if not set
+        // Method check
         if (!sub->is_static) {
+          // Set first argument type if not set
           SPVM_LIST* op_args = sub->op_args;
           if (sub->op_args->length > 0) {
             SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
             if (!op_arg_first->uv.my->op_type) {
-              SPVM_OP* op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_arg_first->file, op_arg_first->line);
+              SPVM_OP* op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
               op_arg_first_type->uv.type = package->op_type->uv.type;
             }
           }
+          else {
+            SPVM_yyerror_format(compiler, "Method %s need first argument at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
+            compiler->fatal_error = 1;
+          }
         }
-        
-        SPVM_OP* op_name_sub = sub->op_name;
-        const char* sub_name = op_name_sub->uv.name;
-        const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
         
         SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
         
