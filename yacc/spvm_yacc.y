@@ -341,13 +341,43 @@ field
     }
 
 sub
- : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' block
+  : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' block
      {
        $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $9);
      }
- | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' ';'
+  | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' ';'
      {
        $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL);
+     }
+  | opt_descriptors SUB sub_name ':' type_or_void '(' var ',' opt_args ')' block
+     {
+       // Add invocant to arguments
+       SPVM_OP* op_arg_first = SPVM_OP_build_arg(compiler, $7, NULL);
+       SPVM_OP* op_args;
+       if ($9) {
+         op_args = $9;
+       }
+       else {
+         op_args = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+       }
+       SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_first);
+       
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, op_args, $1, $11);
+     }
+  | opt_descriptors SUB sub_name ':' type_or_void '(' var ',' opt_args ')' ';'
+     {
+       // Add invocant to arguments
+       SPVM_OP* op_arg_first = SPVM_OP_build_arg(compiler, $7, NULL);
+       SPVM_OP* op_args;
+       if ($9) {
+         op_args = $9;
+       }
+       else {
+         op_args = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+       }
+       SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_first);
+
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, op_args, $1, NULL);
      }
 
 enumeration
