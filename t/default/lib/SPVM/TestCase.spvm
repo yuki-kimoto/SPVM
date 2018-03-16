@@ -120,7 +120,7 @@ package TestCase {
   
   sub my_var_in_loop_free : int () {
     for (my $i = 0; $i < 5; $i++) {
-      my $minimal = TestCase::Minimal::new();
+      my $minimal = new TestCase::Minimal;
     }
   }
   

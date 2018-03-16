@@ -876,10 +876,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         compiler->fatal_error = 1;
                         return;
                       }
-                      else if (strcmp(type->name, op_package->uv.package->op_name->uv.name) != 0) {
-                        SPVM_yyerror_format(compiler,
-                          "new operator is private at %s line %d\n", op_cur->file, op_cur->line);
-                      }
                     }
                   }
                   else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
