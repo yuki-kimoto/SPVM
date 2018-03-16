@@ -7,6 +7,7 @@ const char* const SPVM_DESCRIPTOR_C_ID_NAMES[] = {
   "native",
   "const",
   "jit",
+  "static",
 };
 
 SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_COMPILER* compiler) {

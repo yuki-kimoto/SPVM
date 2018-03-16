@@ -27,6 +27,7 @@ struct SPVM_sub {
   _Bool is_enum;
   _Bool is_destructor;
   _Bool is_jit;
+  _Bool is_static;
   _Bool disable_jit;
   _Bool have_jit_desc;
 };

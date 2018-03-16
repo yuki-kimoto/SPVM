@@ -1653,6 +1653,9 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     else if (op_descriptor->id == SPVM_DESCRIPTOR_C_ID_JIT){
       sub->have_jit_desc = 1;
     }
+    else if (op_descriptor->id == SPVM_DESCRIPTOR_C_ID_STATIC) {
+      sub->is_static = 1;
+    }
     else {
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[op_descriptor->id], op_descriptors->file, op_descriptors->line);
     }

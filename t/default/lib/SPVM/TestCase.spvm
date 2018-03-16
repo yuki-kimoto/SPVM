@@ -114,7 +114,7 @@ package TestCase {
     }
   }
   
-  sub new : TestCase () {
+  static sub new : TestCase () {
     return new TestCase;
   }
   

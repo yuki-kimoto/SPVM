@@ -44,6 +44,7 @@ find(
         my $content = do { local $/; <$fh> };
         
         $content =~ s/^(\s+)sub/${1}jit sub/mg;
+        $content =~ s/^(\s+)static(\s+)sub/${1}jit static sub/mg;
         
         mkpath $to_dir;
         
