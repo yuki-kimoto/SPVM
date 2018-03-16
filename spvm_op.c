@@ -357,20 +357,6 @@ SPVM_OP* SPVM_OP_new_op_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   return op_package_var;
 }
 
-SPVM_OP* SPVM_OP_build_setters(SPVM_COMPILER* compiler, SPVM_OP* op_set, SPVM_OP* op_names) {
-  
-  SPVM_OP_insert_child(compiler, op_set, op_set->last, op_names);
-  
-  return op_set;
-}
-
-SPVM_OP* SPVM_OP_build_getters(SPVM_COMPILER* compiler, SPVM_OP* op_get, SPVM_OP* op_names) {
-
-  SPVM_OP_insert_child(compiler, op_get, op_get->last, op_names);
-  
-  return op_get;
-}
-
 SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
   SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type->file, op_type->line);
@@ -413,178 +399,6 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   op_var->uv.var = var;
   
   return op_var;
-}
-
-SPVM_OP* SPVM_OP_build_sub_getter(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_field) {
-  
-  /*
-    sub get_x($self : Point) : int { return $self->{x} }
-  */
-  
-  // Package name
-  SPVM_PACKAGE* package = op_package->uv.package;
-  
-  // Package type
-  SPVM_OP* op_type_package = SPVM_OP_clone_op_type(compiler, package->op_type);
-  
-  // Field name
-  SPVM_FIELD* field = op_field->uv.field;
-  const char* field_name = field->op_name->uv.name;
-  
-  // Field type
-  SPVM_OP* op_type_field = SPVM_OP_clone_op_type(compiler, field->op_type);
-  
-  // File
-  const char* file = op_field->file;
-  
-  // Line
-  int32_t line = op_field->line;
-  
-  // sub
-  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, file, line);
-  
-  // Subroutine name
-  int32_t sub_name_length = (int32_t)(4 + strlen(field_name));
-  char* sub_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, sub_name_length);
-  sprintf(sub_name, "get_%s", field_name);  
-  SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, sub_name, file, line);
-
-  // Variable Object argument
-  SPVM_OP* op_name_object_arg = SPVM_OP_new_op_name(compiler, "$self", file, line);
-  SPVM_OP* op_var_object_arg = SPVM_OP_new_op_var(compiler, op_name_object_arg);
-  
-  // Object type
-  SPVM_OP* op_type_object_arg = op_type_package;
-  
-  // Argument
-  SPVM_OP* op_var_arg = SPVM_OP_build_arg(compiler, op_var_object_arg, op_type_object_arg);
-  
-  // Arguments
-  SPVM_OP* op_list_args = SPVM_OP_new_op_list(compiler, file, line);
-  SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, op_var_arg);
-  
-  // Return type
-  SPVM_OP* op_type_return = op_type_field;
-  
-  // Variable Object invocant
-  SPVM_OP* op_name_object_invocant = SPVM_OP_new_op_name(compiler, "$self", file, line);
-  SPVM_OP* op_var_object_invocant = SPVM_OP_new_op_var(compiler, op_name_object_invocant);
-  
-  // Field name
-  SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, field_name, file, line);
-  
-  // Call field
-  SPVM_OP* op_call_field = SPVM_OP_build_call_field(compiler, op_var_object_invocant, op_name_field);
-  
-  // Return
-  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, file, line);
-  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_call_field);
-
-  // Statements
-  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, file, line);
-  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
-  
-  // Block
-  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, file, line);
-  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
-
-  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_list_args, NULL, op_type_return, op_block);
-  
-  return op_sub;
-}
-
-SPVM_OP* SPVM_OP_build_sub_setter(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_field) {
-  
-  /*
-    sub set_x($self : Point, $value : int) : void { $self->{x} = $value }
-  */
-  
-  // Package name
-  SPVM_PACKAGE* package = op_package->uv.package;
-  
-  // Package type
-  SPVM_OP* op_type_package = SPVM_OP_clone_op_type(compiler, package->op_type);
-  
-  // Field name
-  SPVM_FIELD* field = op_field->uv.field;
-  const char* field_name = field->op_name->uv.name;
-  
-  // Field type
-  SPVM_OP* op_type_field = SPVM_OP_clone_op_type(compiler, field->op_type);
-  
-  // File
-  const char* file = op_field->file;
-  
-  // Line
-  int32_t line = op_field->line;
-  
-  // sub
-  SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, file, line);
-  
-  // Subroutine name
-  int32_t sub_name_length = (int32_t)(4 + strlen(field_name));
-  char* sub_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, sub_name_length);
-  sprintf(sub_name, "set_%s", field_name);  
-  SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, sub_name, file, line);
-
-  // Variable Object argument
-  SPVM_OP* op_name_object_arg = SPVM_OP_new_op_name(compiler, "$self", file, line);
-  SPVM_OP* op_var_object_arg = SPVM_OP_new_op_var(compiler, op_name_object_arg);
-  
-  // Object type
-  SPVM_OP* op_type_object_arg = op_type_package;
-
-  // Variable Value argument
-  SPVM_OP* op_name_value_arg = SPVM_OP_new_op_name(compiler, "$value", file, line);
-  SPVM_OP* op_var_value_arg = SPVM_OP_new_op_var(compiler, op_name_value_arg);
-  
-  // Value type
-  SPVM_OP* op_type_value_arg = op_type_field;
-
-  // Argument object
-  SPVM_OP* op_var_arg_object = SPVM_OP_build_arg(compiler, op_var_object_arg, op_type_object_arg);
-
-  // Argument value
-  SPVM_OP* op_var_arg_value = SPVM_OP_build_arg(compiler, op_var_value_arg, op_type_value_arg);
-  
-  // Arguments
-  SPVM_OP* op_list_args = SPVM_OP_new_op_list(compiler, file, line);
-  SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, op_var_arg_object);
-  SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, op_var_arg_value);
-  
-  // Return type
-  SPVM_OP* op_type_return = SPVM_OP_new_op_void(compiler, file, line);
-  
-  // Assign
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-  
-  // Variable Object invocant
-  SPVM_OP* op_name_object_invocant = SPVM_OP_new_op_name(compiler, "$self", file, line);
-  SPVM_OP* op_var_object_invocant = SPVM_OP_new_op_var(compiler, op_name_object_invocant);
-  
-  // Field name
-  SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, field_name, file, line);
-  
-  // Call field
-  SPVM_OP* op_call_field = SPVM_OP_build_call_field(compiler, op_var_object_invocant, op_name_field);
-  
-  // Variable assinged Value
-  SPVM_OP* op_name_assigned_value = SPVM_OP_new_op_name(compiler, "$value", file, line);
-  SPVM_OP* op_var_assigned_value = SPVM_OP_new_op_var(compiler, op_name_assigned_value);
-  
-  SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_call_field, op_var_assigned_value);
-  
-  // Statements
-  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, file, line);
-  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_build_assign);
-  
-  // Block
-  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, file, line);
-  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
-
-  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_list_args, NULL, op_type_return, op_block);
-  
-  return op_sub;
 }
 
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
@@ -1418,27 +1232,6 @@ const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const c
   return abs_name;
 }
 
-const char* SPVM_OP_create_getter_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
-  // Foo::set_bar
-  int32_t length = (int32_t)(strlen(package_name) + 6 + strlen(name));
-  
-  char* abs_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
-  
-  sprintf(abs_name, "%s::get_%s", package_name, name);
-  
-  return abs_name;
-}
-
-const char* SPVM_OP_create_setter_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
-  int32_t length = (int32_t)(strlen(package_name) + 6 + strlen(name));
-  
-  char* abs_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
-  
-  sprintf(abs_name, "%s::set_%s", package_name, name);
-  
-  return abs_name;
-}
-
 SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block) {
   
   SPVM_OP_insert_child(compiler, op_package, op_package->last, op_name_package);
@@ -1591,9 +1384,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Add package
     op_package->uv.package = package;
     
-    // Subroutine limit rest. new and getter and setter
-    int32_t sub_limit_rest = 1 + op_fields->length * 2;
-    
     // Register subrotuine
     {
       int32_t i;
@@ -1611,7 +1401,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         if (found_op_sub) {
           SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
         }
-        else if (op_subs->length == SPVM_LIMIT_C_SUBS - sub_limit_rest) {
+        else if (op_subs->length == SPVM_LIMIT_C_SUBS) {
           SPVM_yyerror_format(compiler, "Too many subroutines at %s line %d\n", sub_name, op_sub->file, op_sub->line);
           compiler->fatal_error = 1;
         }
@@ -1632,82 +1422,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           SPVM_LIST_push(compiler->op_subs, op_sub);
           SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
-        }
-      }
-    }
-
-    // Create gettter
-    {
-      int32_t i;
-      for (i = 0; i < op_names_get_field->length; i++) {
-        SPVM_OP* op_name = SPVM_LIST_fetch(op_names_get_field, i);
-        
-        const char* field_name = op_name->uv.name;
-        
-        const char* sub_abs_name_getter = SPVM_OP_create_getter_name(compiler, package_name, field_name);
-        
-        SPVM_OP* op_field_found = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
-        
-        if (!op_field_found) {
-          SPVM_yyerror_format(compiler, "Can't create get accessor get_%s because %s field is not declared in %s package at %s line %d\n",
-            field_name, field_name, package_name, op_name->file, op_name->line);
-        }
-        else {
-          SPVM_OP* found_op_sub_getter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter));
-          
-          if (found_op_sub_getter) {
-            SPVM_yyerror_format(compiler, "Can't create get accessor get_%s because get_%s subroutine is already declared in %s package at %s line %d\n",
-              field_name, field_name, package_name, op_name->file, op_name->line);
-          }
-          else {
-            SPVM_OP* op_sub_getter = SPVM_OP_build_sub_getter(compiler, op_package, op_field_found);
-            
-            SPVM_SUB* sub_getter = op_sub_getter->uv.sub;
-            sub_getter->abs_name = sub_abs_name_getter;
-            sub_getter->file_name = op_package->file;
-            sub_getter->op_package = op_package;
-            
-            SPVM_LIST_push(compiler->op_subs, op_sub_getter);
-            SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_getter, strlen(sub_abs_name_getter), op_sub_getter);
-          }
-        }
-      }
-    }
-
-    // Create setter
-    {
-      int32_t i;
-      for (i = 0; i < op_names_set_field->length; i++) {
-        SPVM_OP* op_name = SPVM_LIST_fetch(op_names_set_field, i);
-        
-        const char* field_name = op_name->uv.name;
-        
-        const char* sub_abs_name_setter = SPVM_OP_create_setter_name(compiler, package_name, field_name);
-        
-        SPVM_OP* op_field_found = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
-        
-        if (!op_field_found) {
-          SPVM_yyerror_format(compiler, "Can't create set accessor set_%s because %s field is not declared in %s package at %s line %d\n",
-            field_name, field_name, package_name, op_name->file, op_name->line);
-        }
-        else {
-          SPVM_OP* found_op_sub_setter = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter));
-          
-          if (found_op_sub_setter) {
-            SPVM_yyerror_format(compiler, "Can't create set accessor set_%s because set_%s subroutine is already declared in %s package at %s line %d\n",
-              field_name, field_name, package_name, op_name->file, op_name->line);
-          }
-          else {
-            SPVM_OP* op_sub_setter = SPVM_OP_build_sub_setter(compiler, op_package, op_field_found);
-            
-            SPVM_SUB* sub_setter = op_sub_setter->uv.sub;
-            sub_setter->abs_name = sub_abs_name_setter;
-            sub_setter->file_name = op_package->file;
-            sub_setter->op_package = op_package;
-            
-            SPVM_LIST_push(compiler->op_subs, op_sub_setter);
-            SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name_setter, strlen(sub_abs_name_setter), op_sub_setter);
-          }
         }
       }
     }

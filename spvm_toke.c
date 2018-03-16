@@ -1189,12 +1189,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return FLOAT;
                 }
                 break;
-              case 'g' :
-                if (strcmp(keyword, "get") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_GET);
-                  return GET;
-                }
-                break;
               case 'h' :
                 if (strcmp(keyword, "has") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FIELD);
@@ -1308,10 +1302,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "string") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING);
                   return STRING;
-                }
-                else if (strcmp(keyword, "set") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SET);
-                  return SET;
                 }
                 break;
               case 'u' :

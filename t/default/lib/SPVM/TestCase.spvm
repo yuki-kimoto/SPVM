@@ -39,12 +39,65 @@ package TestCase {
   has minimal : TestCase::Minimal;
   has private_field : int;
   
-  set x_int, x_long;
-  get x_int, x_long;
-  
   sub INT_VALUE : int () { return 127; }
   sub FLOAT_PRECICE : float () { return 16384.5f; }
   sub DOUBLE_PRECICE : double () { return 65536.5; }
+  
+  sub set_x_int_array : void ($self : TestCase, $x_int_array : int[]) {
+    $self->{x_int_array} = $x_int_array;
+  }
+
+  sub set_x_string : void ($self : TestCase, $x_string : byte[]) {
+    $self->{x_string} = $x_string;
+  }
+
+  sub set_x_byte : void ($self : TestCase, $x_byte : byte) {
+    $self->{x_byte} = $x_byte;
+  }
+
+  sub set_x_short : void ($self : TestCase, $x_short : short) {
+    $self->{x_short} = $x_short;
+  }
+
+  sub set_x_int : void ($self : TestCase, $x_int : int) {
+    $self->{x_int} = $x_int;
+  }
+
+  sub set_x_long : void ($self : TestCase, $x_long : long) {
+    $self->{x_long} = $x_long;
+  }
+
+  sub set_x_float : void ($self : TestCase, $x_float : float) {
+    $self->{x_float} = $x_float;
+  }
+
+  sub set_x_double : void ($self : TestCase, $x_double : double) {
+    $self->{x_double} = $x_double;
+  }
+
+  sub get_x_byte : byte ($self : TestCase) {
+    return $self->{x_byte};
+  }
+
+  sub get_x_short : short ($self : TestCase) {
+    return $self->{x_short};
+  }
+
+  sub get_x_int : int ($self : TestCase) {
+    return $self->{x_int};
+  }
+
+  sub get_x_long : long ($self : TestCase) {
+    return $self->{x_long};
+  }
+
+  sub get_x_float : float ($self : TestCase) {
+    return $self->{x_float};
+  }
+
+  sub get_x_double : double ($self : TestCase) {
+    return $self->{x_double};
+  }
   
   # Only compile check
   sub eval_block_stack_check : void () {
@@ -265,9 +318,9 @@ package TestCase {
         if ($TestCase::PACKAGE_VAR_LONG == Long::MAX_VALUE()) {
           $TestCase::PACKAGE_VAR_MINIMAL = TestCase::Minimal::new();
           
-          $TestCase::PACKAGE_VAR_MINIMAL->set_x(4);
+          $TestCase::PACKAGE_VAR_MINIMAL->{x} = 4;
           
-          if ($TestCase::PACKAGE_VAR_MINIMAL->get_x == 4) {
+          if ($TestCase::PACKAGE_VAR_MINIMAL->{x} == 4) {
             $TestCase::PACKAGE_VAR_MINIMAL = undef;
             return 1;
           }
@@ -285,9 +338,9 @@ package TestCase {
         if ($PACKAGE_VAR_LONG2 == Long::MAX_VALUE()) {
           $PACKAGE_VAR_MINIMAL2 = TestCase::Minimal::new();
           
-          $PACKAGE_VAR_MINIMAL2->set_x(4);
+          $PACKAGE_VAR_MINIMAL2->{x} = 4;
           
-          if ($PACKAGE_VAR_MINIMAL2->get_x == 4) {
+          if ($PACKAGE_VAR_MINIMAL2->{x} == 4) {
             $PACKAGE_VAR_MINIMAL2 = undef;
             return 1;
           }
@@ -409,53 +462,6 @@ package TestCase {
     }
     
     return 0;
-  }
-  sub set_x_byte : void ($self : TestCase, $value : byte) {
-    $self->{x_byte} = $value;
-  }
-  
-  sub get_x_byte : byte ($self : TestCase) {
-    return $self->{x_byte};
-  }
-
-  sub set_x_short : void ($self : TestCase, $value : short) {
-    $self->{x_short} = $value;
-  }
-  
-  sub get_x_short : short ($self : TestCase) {
-    return $self->{x_short};
-  }
-
-  sub set_x_float : void ($self : TestCase, $value : float) {
-    $self->{x_float} = $value;
-  }
-  
-  sub get_x_float : float ($self : TestCase) {
-    return $self->{x_float};
-  }
-
-  sub set_x_double : void ($self : TestCase, $value : double) {
-    $self->{x_double} = $value;
-  }
-  
-  sub get_x_double : double ($self : TestCase) {
-    return $self->{x_double};
-  }
-  
-  sub set_x_int_array : void ($self : TestCase, $value : int[]) {
-    $self->{x_int_array} = $value;
-  }
-  
-  sub get_x_int_array : int[] ($self : TestCase) {
-    return $self->{x_int_array};
-  }
-
-  sub set_x_string : void ($self : TestCase, $value : byte[]) {
-    $self->{x_string} = $value;
-  }
-  
-  sub get_x_string : byte[] ($self : TestCase) {
-    return $self->{x_string};
   }
   
   sub private_field : int () {
@@ -865,7 +871,7 @@ package TestCase {
     my $minimal = TestCase::Minimal::new();
     TestCase::destructor_call($minimal);
     
-    if ($minimal->get_x == 3) {
+    if ($minimal->{x} == 3) {
       return 1;
     }
     return 0;
@@ -873,7 +879,7 @@ package TestCase {
   
   sub destructor_call : int ($minimal: TestCase::Minimal) {
     my $dest = TestCase::Destructor::new();
-    $dest->set_minimal($minimal);
+    $dest->{minimal} = $minimal;
   }
   
   sub weaken_target4_weaken_object_assign : int () {
@@ -889,21 +895,21 @@ package TestCase {
     $test_case->{weaken3} = $weaken3;
     $test_case->{weaken4} = $weaken4;
     
-    $weaken1->set_test_case($test_case);
-    $weaken2->set_test_case($test_case);
-    $weaken3->set_test_case($test_case);
-    $weaken4->set_test_case($test_case);
+    $weaken1->{test_case} = $test_case;
+    $weaken2->{test_case} = $test_case;
+    $weaken3->{test_case} = $test_case;
+    $weaken4->{test_case} = $test_case;
     
     $weaken1->weaken_test_case;
     $weaken2->weaken_test_case;
     $weaken3->weaken_test_case;
     $weaken4->weaken_test_case;
     
-    $weaken2->set_test_case(undef);
+    $weaken2->{test_case} = undef;
     my $test_case2 = new TestCase;
-    $weaken4->set_test_case($test_case2);
+    $weaken4->{test_case} = $test_case2;
     
-    if ($test_case->get_x_int == 2) {
+    if ($test_case->{x_int} == 2) {
       return 1;
     }
     return 0;
@@ -922,17 +928,17 @@ package TestCase {
     $test_case->{weaken3} = $weaken3;
     $test_case->{weaken4} = $weaken4;
     
-    $weaken1->set_test_case($test_case);
-    $weaken2->set_test_case($test_case);
-    $weaken3->set_test_case($test_case);
-    $weaken4->set_test_case($test_case);
+    $weaken1->{test_case} = $test_case;
+    $weaken2->{test_case} = $test_case;
+    $weaken3->{test_case} = $test_case;
+    $weaken4->{test_case} = $test_case;
     
     $weaken1->weaken_test_case;
     $weaken2->weaken_test_case;
     $weaken3->weaken_test_case;
     $weaken4->weaken_test_case;
 
-    if ($test_case->get_x_int == 2) {
+    if ($test_case->{x_int} == 2) {
       return 1;
     }
     return 0;
@@ -944,7 +950,7 @@ package TestCase {
     $test_case->{x_int} = 2;
     
     $test_case->{x_weaken} = $weaken;
-    $weaken->set_test_case($test_case);
+    $weaken->{test_case} = $test_case;
     
     weaken $test_case->{x_weaken};
     $test_case->{x_weaken} = undef;
@@ -962,7 +968,7 @@ package TestCase {
     my $test_case = new TestCase;
 
     $test_case->{x_weaken} = $weaken;
-    $weaken->set_test_case($test_case);
+    $weaken->{test_case} = $test_case;
     
     weaken $test_case->{x_weaken};
     $weaken = undef;
@@ -978,8 +984,8 @@ package TestCase {
     my $weaken2 = TestCase::Weaken2::new();
     my $test_case = new TestCase;
     $test_case->{x_weaken} = $weaken;
-    $weaken->set_weaken2($weaken2);
-    $weaken2->set_test_case($test_case);
+    $weaken->{weaken2} = $weaken2;
+    $weaken2->{test_case} = $test_case;
     
     weaken $test_case->{x_weaken};
     
@@ -1008,7 +1014,7 @@ package TestCase {
     my $test_case = new TestCase;
     $test_case->{x_weaken} = $weaken;
     
-    $weaken->set_test_case($test_case);
+    $weaken->{test_case} = $test_case;
     
     weaken $test_case->{x_weaken};
     weaken $test_case->{x_weaken};
@@ -1016,18 +1022,18 @@ package TestCase {
   
   sub weaken_recursive : int () {
     my $weaken = TestCase::Weaken::new();
-    $weaken->set_x1(1);
+    $weaken->{x1} = 1;
     
     # Recuresive reference
     my $test_case = new TestCase;
     $test_case->{x_weaken} = $weaken;
     $test_case->{x_int} = 2;
     
-    $weaken->set_test_case($test_case);
+    $weaken->{test_case} = $test_case;
     
     weaken $test_case->{x_weaken};
     
-    if ($weaken->get_x1 == 1) {
+    if ($weaken->{x1} == 1) {
       if ($test_case->{x_int} == 2) {
         return 1;
       }
@@ -1708,7 +1714,7 @@ package TestCase {
     $test_case->{x_float} = TestCase::FLOAT_PRECICE();
     $test_case->{x_double} = TestCase::DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal::new();
-    $minimal->set_x(3);
+    $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
     if ((int)$test_case->{x_byte} == (int)Byte::MAX_VALUE()) {
       if ((int)$test_case->{x_short} == (int)Short::MAX_VALUE()) {
@@ -1716,7 +1722,7 @@ package TestCase {
           if ($test_case->{x_long} == Long::MAX_VALUE()) {
             if ($test_case->{x_float} == TestCase::FLOAT_PRECICE()) {
               if ($test_case->{x_double} == TestCase::DOUBLE_PRECICE()) {
-                if ($test_case->{minimal}->get_x == 3) {
+                if ($test_case->{minimal}->{x} == 3) {
                   return 1;
                 }
               }
@@ -1739,7 +1745,7 @@ package TestCase {
     $test_case->{x_float} = TestCase::FLOAT_PRECICE();
     $test_case->{x_double} = TestCase::DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal::new();
-    $minimal->set_x(3);
+    $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
 
     $test_case->{x_byte} = Byte::MAX_VALUE();
@@ -1756,7 +1762,7 @@ package TestCase {
           if ($test_case->{x_long} == Long::MAX_VALUE()) {
             if ($test_case->{x_float} == TestCase::FLOAT_PRECICE()) {
               if ($test_case->{x_double} == TestCase::DOUBLE_PRECICE()) {
-                if ($test_case->{minimal}->get_x == 3) {
+                if ($test_case->{minimal}->{x} == 3) {
                   return 1;
                 }
               }
@@ -2391,7 +2397,7 @@ package TestCase {
           if ($obj->{x_long} == 9223372036854775807L) {
             if ($obj->{x_float} == TestCase::FLOAT_PRECICE()) {
               if ($obj->{x_double} == TestCase::DOUBLE_PRECICE()) {
-                if ($obj->{minimal}->get_x == 3) {
+                if ($obj->{minimal}->{x} == 3) {
                   return 1;
                 }
               }

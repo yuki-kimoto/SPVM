@@ -12,9 +12,6 @@ package TestCase::Simple {
   
   has title : int;
   
-  get x, y, values1;
-  set x, y, values1;
-  
   sub new : TestCase::Simple () {
     return new TestCase::Simple;
   }

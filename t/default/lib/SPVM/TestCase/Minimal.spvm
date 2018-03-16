@@ -1,9 +1,14 @@
 package TestCase::Minimal {
   has x : int;
   has y : int;
-  
-  set x, y;
-  get x, y;
+
+  sub get_x : int ($self : TestCase::Minimal) {
+    return $self->{x};
+  }
+
+  sub set_x : void ($self : TestCase::Minimal, $x : int) {
+    $self->{x} = $x;
+  }
   
   sub new : TestCase::Minimal () {
     return new TestCase::Minimal;

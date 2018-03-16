@@ -33,9 +33,6 @@ package TestCase {
   has x_double : double;
   has private_field : int;
   
-  get x_byte, x_int, x_long;
-  set x_byte, x_int, x_long;
-  
   sub BYTE_MAX : byte () { return (byte)127; }
   sub BYTE_MIN : byte () { return (byte)-128; }
   sub SHORT_MAX : short () { return (short)32767; }
@@ -245,7 +242,7 @@ package TestCase {
     {
       my $test = new TestCase;
       
-      $test->set_x_byte(TestCase::BYTE_MAX());
+      $test->{x_byte} = TestCase::BYTE_MAX();
       $test->{x_short} = TestCase::SHORT_MAX();
       $test->{x_int} = TestCase::INT_MAX();
       $test->{x_long} = TestCase::LONG_MAX();
@@ -366,16 +363,16 @@ package TestCase {
     {
       my $objs = new TestCase::Minimal[3];
       $objs->[0] = TestCase::Minimal::new();
-      $objs->[0]->set_x(111);
-      CORE::print($objs->[0]->get_x . "\n");
+      $objs->[0]{x} = 111;
+      CORE::print($objs->[0]{x} . "\n");
     }
     
     # $obj->{x}[0]
     {
       my $obj = TestCase::Simple::new();
-      $obj->set_values1(new int[5]);
-      $obj->get_values1->[0] = 221;
-      CORE::print($obj->get_values1->[0] . "\n");
+      $obj->{values1} = new int[5];
+      $obj->{values1}[0] = 221;
+      CORE::print($obj->{values1}[0] . "\n");
     }
     
     # Call new subroutine without variable
@@ -394,7 +391,7 @@ package TestCase {
     {
       TestCase::Minimal::new();
       TestCase::Minimal::new();
-      TestCase::Minimal::new()->get_x;
+      TestCase::Minimal::new()->{x};
     }
     
     my $obj1 = TestCase::Minimal::new();
@@ -640,11 +637,11 @@ package TestCase {
     {
       my $m = TestCase::Minimal::new();
       
-      $m->set_x(99);
-      $m->set_y(100);
+      $m->{x} = 99;
+      $m->{y} = 100;
       
-      CORE::print($m->get_x . "\n");
-      CORE::print($m->get_y . "\n");
+      CORE::print($m->{x} . "\n");
+      CORE::print($m->{y} . "\n");
     }
 
     # Free when assignment
@@ -807,12 +804,12 @@ package TestCase {
 
     my $simple3 : TestCase::Simple = TestCase::Simple::new();
     
-    CORE::print($simple3->get_x() . "\n");
-    $simple3->get_x;
+    CORE::print($simple3->{x} . "\n");
+    $simple3->{x};
     
-    $simple3->set_y(2);
-    $simple3->get_x;
-    $simple3->get_y;
+    $simple3->{y} = 2;
+    $simple3->{x};
+    $simple3->{y};
 
     my $simple2 : TestCase::Simple = TestCase::Simple::new();
     

@@ -1756,11 +1756,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   SPVM_OUR* our = op_cur->uv.package_var->op_our->uv.our;
                   
-                  if (package != our->op_package->uv.package) {
-                    SPVM_yyerror_format(compiler, "Package variable is private \"%s\" \"%s\" at %s line %d\n",
-                      our->op_package->uv.package->op_name->uv.name, our->op_package_var->uv.package_var->op_name->uv.name, op_cur->file, op_cur->line);
-                  }
-                  
                   break;
                 }
                 case SPVM_OP_C_ID_CALL_FIELD: {
@@ -1790,11 +1785,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       type->name, op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
-                  }
-                  
-                  if ( package != field->op_package->uv.package) {
-                    SPVM_yyerror_format(compiler, "Field is private \"%s\" \"%s\" at %s line %d\n",
-                      field->op_package->uv.package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                   }
                   
                   break;

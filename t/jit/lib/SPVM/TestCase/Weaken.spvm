@@ -6,9 +6,6 @@ package TestCase::Weaken {
   has weaken2 : TestCase::Weaken2;
   has test_cases : TestCase[];
   
-  set test_case, weaken2, x1;
-  get test_case, weaken2, x1;
-
   jit sub new : TestCase::Weaken () {
     return new TestCase::Weaken;
   }

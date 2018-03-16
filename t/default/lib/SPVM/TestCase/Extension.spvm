@@ -40,14 +40,14 @@ package TestCase::Extension {
     
     my $test_case = TestCase::new();
     
-    $test_case->set_x_byte((byte)1);
-    $test_case->set_x_short((short)2);
-    $test_case->set_x_int(3);
-    $test_case->set_x_long(4L);
-    $test_case->set_x_float(0.5f);
-    $test_case->set_x_double(0.025);
+    $test_case->{x_byte} = (byte)1;
+    $test_case->{x_short} = (short)2;
+    $test_case->{x_int} = 3;
+    $test_case->{x_long} = 4L;
+    $test_case->{x_float} = 0.5f;
+    $test_case->{x_double} = 0.025;
     my $minimal1 = TestCase::Minimal::new();
-    $test_case->set_minimal($minimal1);
+    $test_case->{minimal} = $minimal1;
     
     my $x_byte1 = native_api_get_byte_field($test_case);
     my $x_short1 = native_api_get_short_field($test_case);

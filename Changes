@@ -1,3 +1,6 @@
+0.0317 2018-03-16
+  - field become public by default
+  - remove set, get keyword
 0.0317 2018-03-15
   - support escape character \0
   - cleanup leave scope logic
