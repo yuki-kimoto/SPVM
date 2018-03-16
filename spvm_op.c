@@ -1642,7 +1642,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_return_type, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block) {
   
   if (op_name_sub->id == SPVM_OP_C_ID_NEW) {
     op_name_sub->id = SPVM_OP_C_ID_NAME;
@@ -1831,7 +1831,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   op_return_type->uv.type = op_constant->uv.constant->type;
   
   // Build subroutine
-  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, NULL, NULL, op_return_type, op_block);
+  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, op_return_type, NULL, NULL, op_block);
   
   // Set constant
   op_sub->uv.sub->op_constant = op_constant;

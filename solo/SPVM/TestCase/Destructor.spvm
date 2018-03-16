@@ -2,7 +2,7 @@ package TestCase::Destructor {
   has x : int;
   has y : int;
   
-  sub new : TestCase::Destructor () {
+  static sub new : TestCase::Destructor () {
     return new TestCase::Destructor;
   }
 
