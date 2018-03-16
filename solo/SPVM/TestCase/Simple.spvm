@@ -48,7 +48,7 @@ package TestCase::Simple {
     return 0;
   }
   
-  sub sum5 : int ($self : TestCase::Simple) {
+  sub sum5 : int ($self) {
     $self->{x};
     
     return 0;

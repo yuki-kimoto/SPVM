@@ -1409,10 +1409,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             else {
               op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
               op_arg_first_type->uv.type = package->op_type->uv.type;
+              op_arg_first->uv.my->op_type = op_arg_first_type;
             }
+            SPVM_LIST_push(compiler->op_types, op_arg_first->uv.my->op_type);
             
-            
-            if (op_arg_first_type->uv.type->id != package->op_type->uv.type->id) {
+            if (strcmp(op_arg_first_type->uv.type->name, package->op_type->uv.type->name) != 0) {
               SPVM_yyerror_format(compiler, "Type of %s method first argument must be %s at %s line %d\n", sub_abs_name, package->op_type->uv.type->name, op_sub->file, op_sub->line);
               compiler->fatal_error = 1;
             }
