@@ -1402,9 +1402,19 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_LIST* op_args = sub->op_args;
           if (sub->op_args->length > 0) {
             SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
-            if (!op_arg_first->uv.my->op_type) {
-              SPVM_OP* op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
+            SPVM_OP* op_arg_first_type = NULL;
+            if (op_arg_first->uv.my->op_type) {
+              op_arg_first_type = op_arg_first->uv.my->op_type;
+            }
+            else {
+              op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
               op_arg_first_type->uv.type = package->op_type->uv.type;
+            }
+            
+            
+            if (op_arg_first_type->uv.type->id != package->op_type->uv.type->id) {
+              SPVM_yyerror_format(compiler, "Type of %s method first argument must be %s at %s line %d\n", sub_abs_name, package->op_type->uv.type->name, op_sub->file, op_sub->line);
+              compiler->fatal_error = 1;
             }
           }
           else {
