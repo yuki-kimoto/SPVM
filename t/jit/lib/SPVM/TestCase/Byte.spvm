@@ -1,7 +1,7 @@
 use Byte;
 
 package TestCase::Byte {
-  jit sub constant : int () {
+  jit static sub constant : int () {
     if ((int)Byte::MIN_VALUE() == (int)(byte)-128) {
       if ((int)Byte::MAX_VALUE() == (int)(byte)127) {
         if (Byte::BYTES() == 1) {

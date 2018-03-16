@@ -3,7 +3,7 @@ use TestCase::Minimal;
 package TestCase::Destructor {
   has minimal : TestCase::Minimal;
   
-  jit sub new : TestCase::Destructor () {
+  jit static sub new : TestCase::Destructor () {
     return new TestCase::Destructor;
   }
   

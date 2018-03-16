@@ -10,7 +10,7 @@ package TestCase::Minimal {
     $self->{x} = $x;
   }
   
-  jit sub new : TestCase::Minimal () {
+  jit static sub new : TestCase::Minimal () {
     return new TestCase::Minimal;
   }
 }

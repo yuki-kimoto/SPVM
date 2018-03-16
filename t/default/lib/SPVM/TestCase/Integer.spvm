@@ -1,7 +1,7 @@
 use Integer;
 
 package TestCase::Integer {
-  sub constant : int () {
+  static sub constant : int () {
     if (Integer::MIN_VALUE() == -2147483648) {
       if (Integer::MAX_VALUE() == 2147483647) {
         if (Integer::BYTES() == 4) {

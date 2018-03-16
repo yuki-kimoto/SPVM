@@ -1,7 +1,7 @@
 use Long;
 
 package TestCase::Long {
-  sub constant : int () {
+  static sub constant : int () {
     if (Long::MIN_VALUE() == -9223372036854775808L) {
       if (Long::MAX_VALUE() == 9223372036854775807L) {
         if (Long::BYTES() == 8) {

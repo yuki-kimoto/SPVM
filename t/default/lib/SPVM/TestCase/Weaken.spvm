@@ -6,7 +6,7 @@ package TestCase::Weaken {
   has weaken2 : TestCase::Weaken2;
   has test_cases : TestCase[];
   
-  sub new : TestCase::Weaken () {
+  static sub new : TestCase::Weaken () {
     return new TestCase::Weaken;
   }
   

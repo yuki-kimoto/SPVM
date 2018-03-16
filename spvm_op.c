@@ -1811,6 +1811,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   
   // Subroutine is constant
   op_sub->uv.sub->is_enum = 1;
+  op_sub->uv.sub->is_static = 1;
   op_sub->uv.sub->disable_jit = 1;
   
   return op_sub;

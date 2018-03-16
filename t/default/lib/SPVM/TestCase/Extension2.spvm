@@ -1,5 +1,5 @@
 package TestCase::Extension2 {
-  sub spvm_extension2 : int () {
+  static sub spvm_extension2 : int () {
     my $total = TestCase::Extension2::mul(5, 3);
     
     if ($total == 15) {
@@ -9,7 +9,7 @@ package TestCase::Extension2 {
     return 0;
   }
 
-  sub spvm_extension2_binding : int () {
+  static sub spvm_extension2_binding : int () {
     my $total = TestCase::Extension2::one();
     
     if ($total == 1) {
@@ -19,7 +19,7 @@ package TestCase::Extension2 {
     return 0;
   }
 
-  native sub mul : int ($num1 : int, $num2 : int);
+  static native sub mul : int ($num1 : int, $num2 : int);
 
-  native sub one : int ();
+  static native sub one : int ();
 }
