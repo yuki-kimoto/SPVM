@@ -1392,6 +1392,18 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
 
         SPVM_SUB* sub = op_sub->uv.sub;
         
+        // Set first argument type if not set
+        if (!sub->is_static) {
+          SPVM_LIST* op_args = sub->op_args;
+          if (sub->op_args->length > 0) {
+            SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
+            if (!op_arg_first->uv.my->op_type) {
+              SPVM_OP* op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_arg_first->file, op_arg_first->line);
+              op_arg_first_type->uv.type = package->op_type->uv.type;
+            }
+          }
+        }
+        
         SPVM_OP* op_name_sub = sub->op_name;
         const char* sub_name = op_name_sub->uv.name;
         const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
