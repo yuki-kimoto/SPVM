@@ -349,36 +349,6 @@ sub
      {
        $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL);
      }
-  | opt_descriptors SUB sub_name ':' type_or_void '(' var ',' opt_args ')' block
-     {
-       // Add invocant to arguments
-       SPVM_OP* op_arg_first = SPVM_OP_build_arg(compiler, $7, NULL);
-       SPVM_OP* op_args;
-       if ($9) {
-         op_args = $9;
-       }
-       else {
-         op_args = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-       }
-       SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_first);
-       
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, op_args, $1, $11);
-     }
-  | opt_descriptors SUB sub_name ':' type_or_void '(' var ',' opt_args ')' ';'
-     {
-       // Add invocant to arguments
-       SPVM_OP* op_arg_first = SPVM_OP_build_arg(compiler, $7, NULL);
-       SPVM_OP* op_args;
-       if ($9) {
-         op_args = $9;
-       }
-       else {
-         op_args = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-       }
-       SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_first);
-
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, op_args, $1, NULL);
-     }
 
 enumeration
   : ENUM enumeration_block
@@ -700,6 +670,24 @@ opt_args
         SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
         $$ = op_list;
       }
+    }
+  | var
+    {
+       // Add invocant to arguments
+       SPVM_OP* op_arg_first = SPVM_OP_build_arg(compiler, $1, NULL);
+       SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+       SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_first);
+       
+       $$ = op_args;
+    }
+  | var ',' args
+    {
+       // Add invocant to arguments
+       SPVM_OP* op_arg_first = SPVM_OP_build_arg(compiler, $1, NULL);
+       SPVM_OP* op_args = $3;
+       SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_first);
+       
+       $$ = op_args;
     }
 
 args
