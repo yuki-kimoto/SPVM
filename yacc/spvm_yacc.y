@@ -682,12 +682,21 @@ opt_args
     }
   | var ',' args
     {
-       // Add invocant to arguments
-       SPVM_OP* op_arg_first = SPVM_OP_build_arg(compiler, $1, NULL);
-       SPVM_OP* op_args = $3;
-       SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_first);
+      // Add invocant to arguments
+      SPVM_OP* op_arg_first = SPVM_OP_build_arg(compiler, $1, NULL);
+      SPVM_OP* op_args;
+      if ($3->id == SPVM_OP_C_ID_LIST) {
+        op_args = $3;
+      }
+      else {
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+        op_args = op_list;
+      }
+      
+      SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_first);
        
-       $$ = op_args;
+      $$ = op_args;
     }
 
 args

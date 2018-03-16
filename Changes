@@ -2,6 +2,9 @@
   - field become public by default
   - remove set, get keyword
   - new become public by default
+  - add static descriptor
+  - subroutine become method
+  - method first arugument become invocant.
 0.0317 2018-03-15
   - support escape character \0
   - cleanup leave scope logic
