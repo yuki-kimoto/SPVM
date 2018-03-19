@@ -1405,7 +1405,15 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
             SPVM_OP* op_arg_first_type = NULL;
             if (op_arg_first->uv.my->op_type) {
-              op_arg_first_type = op_arg_first->uv.my->op_type;
+              if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
+                op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
+                op_arg_first_type->uv.type = package->op_type->uv.type;
+                op_arg_first->uv.my->op_type = op_arg_first_type;
+                sub->is_method = 1;
+              }
+              else {
+                op_arg_first_type = op_arg_first->uv.my->op_type;
+              }
             }
             else {
               op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);

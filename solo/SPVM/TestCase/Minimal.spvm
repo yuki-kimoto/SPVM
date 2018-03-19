@@ -8,7 +8,7 @@ package TestCase::Minimal {
     return new TestCase::Minimal;
   }
 
-  sub set_x : int ($self, $x : int) {
+  sub set_x : int ($self : self, $x : int) {
     $self->{x} = $x;
   }
 }
