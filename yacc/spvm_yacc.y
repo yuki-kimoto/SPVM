@@ -646,6 +646,15 @@ call_sub
     {
       $$ = SPVM_OP_build_call_sub(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, $1->file, $1->line), $1, $3);
     }
+  | package_name ARROW sub_name '(' opt_assignable_terms  ')'
+    {
+      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
+    }
+  | package_name ARROW sub_name
+    {
+      SPVM_OP* op_assignable_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
+      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_assignable_terms);
+    }
   | assignable_term ARROW sub_name '(' opt_assignable_terms ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
@@ -655,6 +664,7 @@ call_sub
       SPVM_OP* op_assignable_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_assignable_terms);
     }
+
 opt_args
   :	/* Empty */
     {
