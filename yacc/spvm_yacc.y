@@ -343,11 +343,11 @@ field
 sub
   : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, NULL, $7, $1, $9);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $9);
      }
   | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, NULL, $7, $1, NULL);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL);
      }
 
 enumeration
