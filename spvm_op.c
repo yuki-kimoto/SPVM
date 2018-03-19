@@ -1869,6 +1869,12 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     op_name->uv.name = sub_name;
     call_sub->op_name = op_name;
   }
+  // Class method call
+  else if (op_invocant->id == SPVM_OP_C_ID_NAME) {
+    call_sub->id = SPVM_CALL_SUB_C_ID_CLASS_METHOD_CALL;
+    op_name->uv.name = sub_name;
+    call_sub->op_name_package = op_invocant;
+  }
   // Method call
   else {
     call_sub->id = SPVM_CALL_SUB_C_ID_METHOD_CALL;

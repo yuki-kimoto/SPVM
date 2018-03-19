@@ -6,6 +6,7 @@
 enum {
   SPVM_CALL_SUB_C_ID_METHOD_CALL,
   SPVM_CALL_SUB_C_ID_SUB_CALL,
+  SPVM_CALL_SUB_C_ID_CLASS_METHOD_CALL,
 };
 
 struct SPVM_call_sub {
@@ -13,6 +14,7 @@ struct SPVM_call_sub {
   SPVM_OP* op_name;
   SPVM_SUB* sub;
   int32_t id;
+  SPVM_OP* op_name_package;
 };
 
 SPVM_CALL_SUB* SPVM_CALL_SUB_new(SPVM_COMPILER* compiler);
