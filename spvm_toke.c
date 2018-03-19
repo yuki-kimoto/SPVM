@@ -1285,7 +1285,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 break;
               case 's' :
-                if (strcmp(keyword, "switch") == 0) {
+                if (strcmp(keyword, "self") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SELF);
+                  return SWITCH;
+                }
+                else if (strcmp(keyword, "switch") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SWITCH);
                   return SWITCH;
                 }
