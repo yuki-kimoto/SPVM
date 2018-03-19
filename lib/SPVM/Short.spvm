@@ -1,6 +1,6 @@
 package Short {
-  static sub MIN_VALUE : short () { return (short)-32768; }
-  static sub MAX_VALUE : short () { return (short)32767; }
-  static sub BYTES : int () { return 2; }
-  static sub SIZE : int () { return 16; }
+  sub MIN_VALUE : short () { return (short)-32768; }
+  sub MAX_VALUE : short () { return (short)32767; }
+  sub BYTES : int () { return 2; }
+  sub SIZE : int () { return 16; }
 }

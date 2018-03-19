@@ -3,7 +3,7 @@ package TestCase::Minimal {
   has y : int;
   has tests : TestCase[];
   
-  static sub new : TestCase::Minimal () {
+  sub new : TestCase::Minimal () {
     
     return new TestCase::Minimal;
   }

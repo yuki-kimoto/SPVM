@@ -33,18 +33,18 @@ package TestCase {
   has x_double : double;
   has private_field : int;
   
-  static sub BYTE_MAX : byte () { return (byte)127; }
-  static sub BYTE_MIN : byte () { return (byte)-128; }
-  static sub SHORT_MAX : short () { return (short)32767; }
-  static sub SHORT_MIN : short () { return (short)-32768; }
-  static sub INT_MAX : int () { return 2147483647; }
-  static sub INT_MIN : int () { return -2147483648; }
-  static sub LONG_MAX : long () { return 9223372036854775807L; }
-  static sub LONG_MIN : long () { return -9223372036854775808L; }
-  static sub FLOAT_PRECICE : float () { return 32767f; }
-  static sub DOUBLE_PRECICE : double () { return 2147483647.0; }
+  sub BYTE_MAX : byte () { return (byte)127; }
+  sub BYTE_MIN : byte () { return (byte)-128; }
+  sub SHORT_MAX : short () { return (short)32767; }
+  sub SHORT_MIN : short () { return (short)-32768; }
+  sub INT_MAX : int () { return 2147483647; }
+  sub INT_MIN : int () { return -2147483648; }
+  sub LONG_MAX : long () { return 9223372036854775807L; }
+  sub LONG_MIN : long () { return -9223372036854775808L; }
+  sub FLOAT_PRECICE : float () { return 32767f; }
+  sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
-  static sub main : int ($mvar : int) {
+  sub main : int ($mvar : int) {
     my $num : byte = 127;
     
     eval {
@@ -1038,10 +1038,10 @@ package TestCase {
   }
 
   # Call void function
-  static sub call_void_sub : void ($nums : int[]) {
+  sub call_void_sub : void ($nums : int[]) {
     $nums->[0] = 5;
   }
-  static sub call_void : int () {
+  sub call_void : int () {
     my $nums = new int[] {1};
     
     TestCase::call_void_sub($nums);
@@ -1052,7 +1052,7 @@ package TestCase {
     return 0;
   }
   
-  static sub test1 : int () {
+  sub test1 : int () {
     my $num0 = 1;
     my $num1 = 2;
     my $num2 = 3;
@@ -1062,11 +1062,11 @@ package TestCase {
     return 0;
   }
   
-  static sub sum4 : long ($num1 : long, $num2 : long) {
+  sub sum4 : long ($num1 : long, $num2 : long) {
     return $num1 + $num2;
   }
   
-  static sub sum3 : int ($simple : TestCase::Simple, $foo : long, $bar : float) {
+  sub sum3 : int ($simple : TestCase::Simple, $foo : long, $bar : float) {
     
     if (3) {
     
@@ -1107,14 +1107,14 @@ package TestCase {
     return 2;
   }
   
-  static sub sum1 : long ($num1 : long, $num2 : long) {
+  sub sum1 : long ($num1 : long, $num2 : long) {
     return $num1 + $num2;
   }
-  static sub sum0 : int ($num1 : int, $num2 : int) {
+  sub sum0 : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
   
-  static sub sum2 : int ($num1 : int, $num2 : int) {
+  sub sum2 : int ($num1 : int, $num2 : int) {
     # croak "Error";
     
     my $num3 = TestCase::sum0($num1, $num2);
@@ -1122,12 +1122,12 @@ package TestCase {
     return $num3 + 3;
   }
 
-  static sub increfcount : int ($test : TestCase::Minimal, $num : int) {
+  sub increfcount : int ($test : TestCase::Minimal, $num : int) {
     
     my $aaa = TestCase::Minimal::new();
   }
 
-  static sub decinctest : int ($num1 : TestCase::Minimal, $num2 : int, $num3 : TestCase::Minimal) {
+  sub decinctest : int ($num1 : TestCase::Minimal, $num2 : int, $num3 : TestCase::Minimal) {
     {
       my $num4 = TestCase::Minimal::new();
       my $num5 = TestCase::Minimal::new();
@@ -1135,7 +1135,7 @@ package TestCase {
     return 2;
   }
 
-  static sub return_object : TestCase::Minimal () {
+  sub return_object : TestCase::Minimal () {
     my $obj0 = TestCase::Minimal::new();
     {
       my $obj1 = TestCase::Minimal::new();
@@ -1148,7 +1148,7 @@ package TestCase {
     }
   }
 
-  static sub eval_block : void () {
+  sub eval_block : void () {
     my $obj0 = TestCase::Minimal::new();
     
     eval {
@@ -1175,24 +1175,24 @@ package TestCase {
       croak $obj_error2;
     }
   }
-  static sub array_new : int () {
+  sub array_new : int () {
     
     my $nums = new int[3];
     
     return @$nums;
   }
-  static sub check_freelist : int[] () {
+  sub check_freelist : int[] () {
     my $result = new int[63];
     my $true_result = new int[1];
     return $true_result;
   }
-  static sub default_return_value_object_sub : TestCase () {
+  sub default_return_value_object_sub : TestCase () {
     1;
   }
-  static sub default_return_value_object_sub_empty : TestCase () {
+  sub default_return_value_object_sub_empty : TestCase () {
     
   }
-  static sub weaken_reference_count1_object : int (){
+  sub weaken_reference_count1_object : int (){
     my $minimal = TestCase::Minimal::new();
     my $test = new TestCase;
     
@@ -1207,15 +1207,15 @@ package TestCase {
     return 0;
   }
   
-  static sub error : int () {
+  sub error : int () {
     croak "ERROR";
   }
   
-  static sub error_call_stack : int () {
+  sub error_call_stack : int () {
     TestCase::error();
   }
 
-  static sub error_eval : int () {
+  sub error_eval : int () {
     eval {
       croak "ERROR";
     };
@@ -1228,7 +1228,7 @@ package TestCase {
     }
   }
 
-  static sub error_eval_call : int () {
+  sub error_eval_call : int () {
     eval {
       TestCase::error();
     };
@@ -1240,10 +1240,10 @@ package TestCase {
       return 0;
     }
   }
-  static sub exception_croak_return_object : TestCase::Minimal () {
+  sub exception_croak_return_object : TestCase::Minimal () {
     croak "Error";
   }
-  static sub new : TestCase () {
+  sub new : TestCase () {
     return new TestCase;
   }
 }

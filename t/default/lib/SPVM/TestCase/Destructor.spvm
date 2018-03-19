@@ -3,11 +3,11 @@ use TestCase::Minimal;
 package TestCase::Destructor {
   has minimal : TestCase::Minimal;
   
-  static sub new : TestCase::Destructor () {
+  sub new : TestCase::Destructor () {
     return new TestCase::Destructor;
   }
   
-  sub DESTROY : void ($self : TestCase::Destructor) {
+  sub DESTROY : void ($self : self) {
     $self->{minimal}->{x} = 3;
   }
 }

@@ -1398,39 +1398,28 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
         
         // Method check
-        if (!sub->is_static) {
-          // Set first argument type if not set
-          SPVM_LIST* op_args = sub->op_args;
-          if (sub->op_args->length > 0) {
-            SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
-            SPVM_OP* op_arg_first_type = NULL;
-            if (op_arg_first->uv.my->op_type) {
-              if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
-                op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
-                op_arg_first_type->uv.type = package->op_type->uv.type;
-                op_arg_first->uv.my->op_type = op_arg_first_type;
-                sub->is_method = 1;
-              }
-              else {
-                op_arg_first_type = op_arg_first->uv.my->op_type;
-              }
-            }
-            else {
+        // Set first argument type if not set
+        SPVM_LIST* op_args = sub->op_args;
+        if (sub->op_args->length > 0) {
+          SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
+          SPVM_OP* op_arg_first_type = NULL;
+          if (op_arg_first->uv.my->op_type) {
+            if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
               op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
               op_arg_first_type->uv.type = package->op_type->uv.type;
               op_arg_first->uv.my->op_type = op_arg_first_type;
+              sub->is_method = 1;
             }
-            SPVM_LIST_push(compiler->op_types, op_arg_first->uv.my->op_type);
-            
-            if (strcmp(op_arg_first_type->uv.type->name, package->op_type->uv.type->name) != 0) {
-              SPVM_yyerror_format(compiler, "Type of %s method first argument must be %s at %s line %d\n", sub_abs_name, package->op_type->uv.type->name, op_sub->file, op_sub->line);
-              compiler->fatal_error = 1;
+            else {
+              op_arg_first_type = op_arg_first->uv.my->op_type;
             }
           }
           else {
-            SPVM_yyerror_format(compiler, "Method %s need first argument at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
-            compiler->fatal_error = 1;
+            op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
+            op_arg_first_type->uv.type = package->op_type->uv.type;
+            op_arg_first->uv.my->op_type = op_arg_first_type;
           }
+          SPVM_LIST_push(compiler->op_types, op_arg_first->uv.my->op_type);
         }
         
         SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
@@ -1690,9 +1679,6 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     else if (op_descriptor->id == SPVM_DESCRIPTOR_C_ID_JIT){
       sub->have_jit_desc = 1;
     }
-    else if (op_descriptor->id == SPVM_DESCRIPTOR_C_ID_STATIC) {
-      sub->is_static = 1;
-    }
     else {
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[op_descriptor->id], op_descriptors->file, op_descriptors->line);
     }
@@ -1848,7 +1834,6 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   
   // Subroutine is constant
   op_sub->uv.sub->is_enum = 1;
-  op_sub->uv.sub->is_static = 1;
   op_sub->uv.sub->disable_jit = 1;
   
   return op_sub;

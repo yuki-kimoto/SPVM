@@ -2,35 +2,35 @@ use Float;
 use Double;
 
 package Math {
-  static sub PI : double () { return 3.141592653589793; }
-  static sub E : double () { return 2.718281828459045; }
+  sub PI : double () { return 3.141592653589793; }
+  sub E : double () { return 2.718281828459045; }
   
-  static native sub sin : double ($x : double);
-  static native sub cos : double ($x : double);
-  static native sub tan : double ($x : double);
-  static native sub asin : double($x : double);
-  static native sub acos : double ($x : double);
-  static native sub atan : double ($x : double);
-  static native sub to_radians : double ($x : double);
-  static native sub to_degrees : double ($x : double);
-  static native sub exp : double ($x : double);
-  static native sub log : double ($x : double);
-  static native sub log10 : double ($x : double);
-  static native sub sqrt : double ($x : double);
-  static native sub cbrt : double ($x : double);
-  static native sub IEEE_remainder : double ($x1 : double, $x2 : double);
-  static native sub ceil : double ($x : double);
-  static native sub floor : double ($x : double);
-  static native sub rint : double ($x : double);
-  static native sub atan2 : double ($y : double, $x : double);
-  static native sub pow : double ($x : double, $y : double);
-  static native sub round : double ($x : double);
-  static native sub abs : int ($x : int);
-  static native sub abs_long : long ($x : long);
-  static native sub abs_float : float ($x : float);
-  static native sub abs_double : double ($x : double);
+  native sub sin : double ($x : double);
+  native sub cos : double ($x : double);
+  native sub tan : double ($x : double);
+  native sub asin : double($x : double);
+  native sub acos : double ($x : double);
+  native sub atan : double ($x : double);
+  native sub to_radians : double ($x : double);
+  native sub to_degrees : double ($x : double);
+  native sub exp : double ($x : double);
+  native sub log : double ($x : double);
+  native sub log10 : double ($x : double);
+  native sub sqrt : double ($x : double);
+  native sub cbrt : double ($x : double);
+  native sub IEEE_remainder : double ($x1 : double, $x2 : double);
+  native sub ceil : double ($x : double);
+  native sub floor : double ($x : double);
+  native sub rint : double ($x : double);
+  native sub atan2 : double ($y : double, $x : double);
+  native sub pow : double ($x : double, $y : double);
+  native sub round : double ($x : double);
+  native sub abs : int ($x : int);
+  native sub abs_long : long ($x : long);
+  native sub abs_float : float ($x : float);
+  native sub abs_double : double ($x : double);
   
-  static sub max : int ($x : int, $y : int) {
+  sub max : int ($x : int, $y : int) {
     if ($x > $y) {
       return $x;
     }
@@ -39,7 +39,7 @@ package Math {
     }
   }
 
-  static sub max_long : long ($x : long, $y : long) {
+  sub max_long : long ($x : long, $y : long) {
     if ($x > $y) {
       return $x;
     }
@@ -48,7 +48,7 @@ package Math {
     }
   }
 
-  static sub max_float : float ($x : float, $y : float) {
+  sub max_float : float ($x : float, $y : float) {
     if ($x > $y) {
       return $x;
     }
@@ -57,7 +57,7 @@ package Math {
     }
   }
 
-  static sub max_double : double ($x : double, $y : double) {
+  sub max_double : double ($x : double, $y : double) {
     if ($x > $y) {
       return $x;
     }
@@ -66,7 +66,7 @@ package Math {
     }
   }
 
-  static sub min : int ($x : int, $y : int) {
+  sub min : int ($x : int, $y : int) {
     if ($x < $y) {
       return $x;
     }
@@ -75,7 +75,7 @@ package Math {
     }
   }
 
-  static sub min_long : long ($x : long, $y : long) {
+  sub min_long : long ($x : long, $y : long) {
     if ($x < $y) {
       return $x;
     }
@@ -84,7 +84,7 @@ package Math {
     }
   }
 
-  static sub min_float : float ($x : float, $y : float) {
+  sub min_float : float ($x : float, $y : float) {
     if ($x < $y) {
       return $x;
     }
@@ -93,7 +93,7 @@ package Math {
     }
   }
 
-  static sub min_double : double ($x : double, $y : double) {
+  sub min_double : double ($x : double, $y : double) {
     if ($x < $y) {
       return $x;
     }
@@ -102,7 +102,7 @@ package Math {
     }
   }
   
-  static sub signum : double ($x : double) {
+  sub signum : double ($x : double) {
     if (Double::is_nan($x)) {
       return Double::NaN();
     }
@@ -117,7 +117,7 @@ package Math {
     }
   }
   
-  static sub signum_float : float ($x : float) {
+  sub signum_float : float ($x : float) {
     if (Float::is_nan($x)) {
       return Float::NaN();
     }
@@ -131,14 +131,14 @@ package Math {
       return 0.0f;
     }
   }
-  static native sub sinh : double ($x : double);
-  static native sub cosh : double ($x : double);
-  static native sub tanh : double ($x : double);
-  static native sub hypot : double ($x : double, $y : double);
-  static native sub expm1 : double ($x : double);
-  static native sub log1p : double ($x : double);
-  static native sub copy_sign : double ($magnitude : double, $sign : double);
-  static native sub copy_sign_float : float ($magnitude : float, $sign : float);
+  native sub sinh : double ($x : double);
+  native sub cosh : double ($x : double);
+  native sub tanh : double ($x : double);
+  native sub hypot : double ($x : double, $y : double);
+  native sub expm1 : double ($x : double);
+  native sub log1p : double ($x : double);
+  native sub copy_sign : double ($magnitude : double, $sign : double);
+  native sub copy_sign_float : float ($magnitude : float, $sign : float);
   
   # TODO
   # ulp

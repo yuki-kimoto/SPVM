@@ -1,10 +1,10 @@
 package CORE {
-  static native sub print : void ($value : String);
-  static native sub warn : void ($value : String);
+  native sub print : void ($value : String);
+  native sub warn : void ($value : String);
   
-  static native sub time : long ();
+  native sub time : long ();
   
-  static native sub sum_int : int ($values : int[]);
-  static native sub test1 : int ($num1 : int, $num2 : int);
-  static native sub test2 : int ($num1 : int, $num2 : int);
+  native sub sum_int : int ($values : int[]);
+  native sub test1 : int ($num1 : int, $num2 : int);
+  native sub test2 : int ($num1 : int, $num2 : int);
 }

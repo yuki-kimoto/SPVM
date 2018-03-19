@@ -1307,13 +1307,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING);
                   return STRING;
                 }
-                else if (strcmp(keyword, "static") == 0) {
-                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DESCRIPTOR);
-                  op->id = SPVM_DESCRIPTOR_C_ID_STATIC;
-                  yylvalp->opval = op;
-                  
-                  return DESCRIPTOR;
-                }
                 break;
               case 'u' :
                 if (strcmp(keyword, "undef") == 0) {

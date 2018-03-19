@@ -39,68 +39,68 @@ package TestCase {
   has minimal : TestCase::Minimal;
   has private_field : int;
   
-  static sub INT_VALUE : int () { return 127; }
-  static sub FLOAT_PRECICE : float () { return 16384.5f; }
-  static sub DOUBLE_PRECICE : double () { return 65536.5; }
+  sub INT_VALUE : int () { return 127; }
+  sub FLOAT_PRECICE : float () { return 16384.5f; }
+  sub DOUBLE_PRECICE : double () { return 65536.5; }
   
-  sub set_x_int_array : void ($self, $x_int_array : int[]) {
+  sub set_x_int_array : void ($self : self, $x_int_array : int[]) {
     $self->{x_int_array} = $x_int_array;
   }
 
-  sub set_x_string : void ($self, $x_string : byte[]) {
+  sub set_x_string : void ($self : self, $x_string : byte[]) {
     $self->{x_string} = $x_string;
   }
 
-  sub set_x_byte : void ($self, $x_byte : byte) {
+  sub set_x_byte : void ($self : self, $x_byte : byte) {
     $self->{x_byte} = $x_byte;
   }
 
-  sub set_x_short : void ($self, $x_short : short) {
+  sub set_x_short : void ($self : self, $x_short : short) {
     $self->{x_short} = $x_short;
   }
 
-  sub set_x_int : void ($self, $x_int : int) {
+  sub set_x_int : void ($self : self, $x_int : int) {
     $self->{x_int} = $x_int;
   }
 
-  sub set_x_long : void ($self, $x_long : long) {
+  sub set_x_long : void ($self : self, $x_long : long) {
     $self->{x_long} = $x_long;
   }
 
-  sub set_x_float : void ($self, $x_float : float) {
+  sub set_x_float : void ($self : self, $x_float : float) {
     $self->{x_float} = $x_float;
   }
 
-  sub set_x_double : void ($self, $x_double : double) {
+  sub set_x_double : void ($self : self, $x_double : double) {
     $self->{x_double} = $x_double;
   }
 
-  sub get_x_byte : byte ($self) {
+  sub get_x_byte : byte ($self : self) {
     return $self->{x_byte};
   }
 
-  sub get_x_short : short ($self) {
+  sub get_x_short : short ($self : self) {
     return $self->{x_short};
   }
 
-  sub get_x_int : int ($self) {
+  sub get_x_int : int ($self : self) {
     return $self->{x_int};
   }
 
-  sub get_x_long : long ($self) {
+  sub get_x_long : long ($self : self) {
     return $self->{x_long};
   }
 
-  sub get_x_float : float ($self) {
+  sub get_x_float : float ($self : self) {
     return $self->{x_float};
   }
 
-  sub get_x_double : double ($self) {
+  sub get_x_double : double ($self : self) {
     return $self->{x_double};
   }
   
   # Only compile check
-  static sub eval_block_stack_check : void () {
+  sub eval_block_stack_check : void () {
     eval {
       my $obj_error1 = "Error1";
       
@@ -114,17 +114,17 @@ package TestCase {
     }
   }
   
-  static sub new : TestCase () {
+  sub new : TestCase () {
     return new TestCase;
   }
   
-  static sub my_var_in_loop_free : int () {
+  sub my_var_in_loop_free : int () {
     for (my $i = 0; $i < 5; $i++) {
       my $minimal = new TestCase::Minimal;
     }
   }
   
-  static sub next_statement : int () {
+  sub next_statement : int () {
     my $total = 0;
     for (my $i = 0; $i < 5; $i++) {
       if ($i == 1) {
@@ -141,7 +141,7 @@ package TestCase {
     return 0;
   }
   
-  static sub pre_inc : int () {
+  sub pre_inc : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
     my $value_int = 0;
@@ -184,7 +184,7 @@ package TestCase {
     }
   }
 
-  static sub post_inc : int () {
+  sub post_inc : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
     my $value_int = 0;
@@ -226,7 +226,7 @@ package TestCase {
     }
   }
 
-  static sub pre_dec : int () {
+  sub pre_dec : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
     my $value_int = 0;
@@ -268,7 +268,7 @@ package TestCase {
     }
   }
 
-  static sub post_dec : int () {
+  sub post_dec : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
     my $value_int = 0;
@@ -310,7 +310,7 @@ package TestCase {
     }
   }
   
-  static sub package_var : int () {
+  sub package_var : int () {
     if ($TestCase::PACKAGE_VAR_INT == 0) {
       $TestCase::PACKAGE_VAR_INT = Integer::MAX_VALUE();
       if ($TestCase::PACKAGE_VAR_INT == Integer::MAX_VALUE()) {
@@ -330,7 +330,7 @@ package TestCase {
     return 0;
   }
 
-  static sub package_var_rel_name : int () {
+  sub package_var_rel_name : int () {
     if ($PACKAGE_VAR_INT2 == 0) {
       $PACKAGE_VAR_INT2 = Integer::MAX_VALUE();
       if ($PACKAGE_VAR_INT2 == Integer::MAX_VALUE()) {
@@ -350,7 +350,7 @@ package TestCase {
     return 0;
   }
 
-  static sub get_field_exception_object_undef : int () {
+  sub get_field_exception_object_undef : int () {
     
     my $test_case : TestCase = undef;
     
@@ -407,7 +407,7 @@ package TestCase {
     return 0;
   }
   
-  static sub set_field_exception_object_undef : int () {
+  sub set_field_exception_object_undef : int () {
     
     my $test_case : TestCase = undef;
     
@@ -456,7 +456,6 @@ package TestCase {
             }
           }
         }
-
       }
       
     }
@@ -464,26 +463,26 @@ package TestCase {
     return 0;
   }
   
-  static sub private_field : int () {
+  sub private_field : int () {
     my $test_case = new TestCase;
     $test_case->{private_field};
   }
 
-  sub get_minimal : TestCase::Minimal ($self) {
+  sub get_minimal : TestCase::Minimal ($self : self) {
     return $self->{minimal};
   }
 
-  sub set_minimal : void ($self, $value : TestCase::Minimal) {
+  sub set_minimal : void ($self : self, $value : TestCase::Minimal) {
     $self->{minimal} = $value;
   }
 
   # Resorved word
-  static sub int : int ($obj : TestCase) {
+  sub int : int ($obj : TestCase) {
     
     return 5;
   }
   
-  static sub use_reserved_word : int () {
+  sub use_reserved_word : int () {
     
     my $test_case = new TestCase;
     
@@ -499,7 +498,7 @@ package TestCase {
   }
   
   # Package Template
-  static sub template : int () {
+  sub template : int () {
     my $value = TestCase::Template_int_long::sum(1, 2, 3L);
     
     if ($value == 6) {
@@ -511,7 +510,7 @@ package TestCase {
   
   
   # SPVM set and get
-  static sub spvm_set_and_get_byte : int ($nums : byte[]) {
+  sub spvm_set_and_get_byte : int ($nums : byte[]) {
     
     if ($nums->[0] == 0) {
       if ($nums->[1] == Byte::MAX_VALUE()) {
@@ -521,7 +520,7 @@ package TestCase {
     
     return 0;
   }
-  static sub spvm_set_and_get_short : int ($nums : short[]) {
+  sub spvm_set_and_get_short : int ($nums : short[]) {
     
     if ($nums->[0] == 0) {
       if ($nums->[1] == Short::MAX_VALUE()) {
@@ -531,7 +530,7 @@ package TestCase {
     
     return 0;
   }
-  static sub spvm_set_and_get_int : int ($nums : int[]) {
+  sub spvm_set_and_get_int : int ($nums : int[]) {
     
     if ($nums->[0] == 0) {
       if ($nums->[1] == Integer::MAX_VALUE()) {
@@ -541,7 +540,7 @@ package TestCase {
     
     return 0;
   }
-  static sub spvm_set_and_get_long : int ($nums : long[]) {
+  sub spvm_set_and_get_long : int ($nums : long[]) {
     
     if ($nums->[0] == 0L) {
       if ($nums->[1] == Long::MAX_VALUE()) {
@@ -551,7 +550,7 @@ package TestCase {
     
     return 0;
   }
-  static sub spvm_set_and_get_float : int ($nums : float[]) {
+  sub spvm_set_and_get_float : int ($nums : float[]) {
     
     if ($nums->[0] == 0.0f) {
       if ($nums->[1] == TestCase::FLOAT_PRECICE()) {
@@ -561,7 +560,7 @@ package TestCase {
     
     return 0;
   }
-  static sub spvm_set_and_get_double : int ($nums : double[]) {
+  sub spvm_set_and_get_double : int ($nums : double[]) {
     
     if ($nums->[0] == 0.0) {
       if ($nums->[1] == TestCase::DOUBLE_PRECICE()) {
@@ -573,7 +572,7 @@ package TestCase {
   }
   
   # Concat
-  static sub concat_string_special_assign : String () {
+  sub concat_string_special_assign : String () {
     
     my $value = "a";
     
@@ -582,7 +581,7 @@ package TestCase {
     return $value;
   }
   
-  static sub concat_string_string : String () {
+  sub concat_string_string : String () {
     "a" . "b";
     
     my $value = "a" . "b";
@@ -590,13 +589,13 @@ package TestCase {
     return $value;
   }
   
-  static sub concat_string_byte : String () {
+  sub concat_string_byte : String () {
     my $value = "a" . 3;
     
     return $value;
   }
 
-  static sub concat_string_short : String () {
+  sub concat_string_short : String () {
     "a" . (short)3;
     
     my $value = "a" . (short)3;
@@ -604,7 +603,7 @@ package TestCase {
     return $value;
   }
 
-  static sub concat_string_int : String () {
+  sub concat_string_int : String () {
     "a" . 3;
     
     my $value = "a" . 3;
@@ -612,7 +611,7 @@ package TestCase {
     return $value;
   }
   
-  static sub concat_string_long : String () {
+  sub concat_string_long : String () {
     "a" . 3L;
     
     my $value = "a" . 3L;
@@ -620,7 +619,7 @@ package TestCase {
     return $value;
   }
   
-  static sub concat_string_float : String () {
+  sub concat_string_float : String () {
     "a" . 3.0f;
     
     my $value = "a" . 3.0f;
@@ -628,7 +627,7 @@ package TestCase {
     return $value;
   }
   
-  static sub concat_string_double : String () {
+  sub concat_string_double : String () {
     "a" . 3.0;
     
     my $value = "a" . 3.0;
@@ -637,18 +636,18 @@ package TestCase {
   }
   
   # String
-  static sub string_utf8 : String () {
+  sub string_utf8 : String () {
     my $value = "あいうえお";
     
     return $value;
   }
-  static sub string_empty : String () {
+  sub string_empty : String () {
     my $value = "";
     
     return $value;
   }
 
-  static sub assign : int () {
+  sub assign : int () {
     # Constant assignment
     my $success_constant_narrow = 0;
     {
@@ -705,7 +704,7 @@ package TestCase {
     return 0;
   }
   
-  static sub special_assign : int () {
+  sub special_assign : int () {
     my $num1 = 1;
     $num1 += 4;
     if ($num1 == 5) {
@@ -754,7 +753,7 @@ package TestCase {
     
     return 0;
   }
-  static sub sin : int () {
+  sub sin : int () {
     my $value = Math::sin(Math::PI());
     
     if ($value < 0.000001 && $value > -0.000001) {
@@ -763,7 +762,7 @@ package TestCase {
     return 0;
   }
 
-  static sub cos : int () {
+  sub cos : int () {
     my $value = Math::cos(Math::PI() / 2.0);
     
     if ($value < 0.000001 && $value > -0.000001) {
@@ -772,7 +771,7 @@ package TestCase {
     return 0;
   }
   
-  static sub tan : int () {
+  sub tan : int () {
     my $value = Math::tan(Math::PI() / 4.0);
     
     if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
@@ -781,7 +780,7 @@ package TestCase {
     return 0;
   }
 
-  static sub exception_eval_call_sub : int () {
+  sub exception_eval_call_sub : int () {
     eval {
       TestCase::exception_croak_return_int();
     };
@@ -793,43 +792,43 @@ package TestCase {
     return 0;
   }
   
-  static sub exception_call_stack : int () {
+  sub exception_call_stack : int () {
     TestCase::exception_croak_return_int();
   }
   
-  static sub exception_croak_return_byte : byte () {
+  sub exception_croak_return_byte : byte () {
     croak "Error";
   }
   
-  static sub exception_croak_return_short : short () {
+  sub exception_croak_return_short : short () {
     croak "Error";
   }
   
-  static sub exception_croak_return_int : int () {
+  sub exception_croak_return_int : int () {
     croak "Error";
   }
   
-  static sub exception_croak_return_long : long () {
+  sub exception_croak_return_long : long () {
     croak "Error";
   }
   
-  static sub exception_croak_return_float : float () {
+  sub exception_croak_return_float : float () {
     croak "Error";
   }
   
-  static sub exception_croak_return_double : double () {
+  sub exception_croak_return_double : double () {
     croak "Error";
   }
   
-  static sub exception_croak_return_object : TestCase::Minimal () {
+  sub exception_croak_return_object : TestCase::Minimal () {
     croak "Error";
   }
   
-  static sub exception_croak_return_void : void () {
+  sub exception_croak_return_void : void () {
     croak "Error";
   }
 
-  static sub exception_croak_return_int_eval_catch : int () {
+  sub exception_croak_return_int_eval_catch : int () {
     eval {
       croak "Error";
     };
@@ -842,12 +841,12 @@ package TestCase {
     return 0;
   }
 
-  static sub call_sub_assign : int () {
+  sub call_sub_assign : int () {
     my $m = TestCase::Minimal::new();
     $m = TestCase::Minimal::new();
   }
   
-  static sub call_sub_undef : int ($value : TestCase) {
+  sub call_sub_undef : int ($value : TestCase) {
     
     if ($value == undef) {
       return 1;
@@ -856,7 +855,7 @@ package TestCase {
     return 0;
   }
 
-  static sub call_sub_last_camma : int () {
+  sub call_sub_last_camma : int () {
     
     my $total = TestCase::sum_int(3, 4,);
     
@@ -867,7 +866,7 @@ package TestCase {
     return 0;
   }
   
-  static sub destructor : int () {
+  sub destructor : int () {
     my $minimal = TestCase::Minimal::new();
     TestCase::destructor_call($minimal);
     
@@ -877,12 +876,12 @@ package TestCase {
     return 0;
   }
   
-  static sub destructor_call : int ($minimal: TestCase::Minimal) {
+  sub destructor_call : int ($minimal: TestCase::Minimal) {
     my $dest = TestCase::Destructor::new();
     $dest->{minimal} = $minimal;
   }
   
-  static sub weaken_target4_weaken_object_assign : int () {
+  sub weaken_target4_weaken_object_assign : int () {
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
     my $weaken1 = TestCase::Weaken::new();
@@ -915,7 +914,7 @@ package TestCase {
     return 0;
   }
   
-  static sub weaken_target4 : int () {
+  sub weaken_target4 : int () {
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
     my $weaken1 = TestCase::Weaken::new();
@@ -944,7 +943,7 @@ package TestCase {
     return 0;
   }
   
-  static sub weaken_weaken_object_undef : int () {
+  sub weaken_weaken_object_undef : int () {
     my $weaken = TestCase::Weaken::new();
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
@@ -963,7 +962,7 @@ package TestCase {
     return 0;
   }
   
-  static sub weaken_target_object_undef : int () {
+  sub weaken_target_object_undef : int () {
     my $weaken = TestCase::Weaken::new();
     my $test_case = new TestCase;
 
@@ -979,7 +978,7 @@ package TestCase {
     return 0;
   }
   
-  static sub weaken_recursive3 : int () {
+  sub weaken_recursive3 : int () {
     my $weaken = TestCase::Weaken::new();
     my $weaken2 = TestCase::Weaken2::new();
     my $test_case = new TestCase;
@@ -992,7 +991,7 @@ package TestCase {
     return 1;
   }
   
-  static sub weaken_reference_count1_object : int () {
+  sub weaken_reference_count1_object : int () {
     my $weaken = TestCase::Weaken::new();
     my $test_case = new TestCase;
     
@@ -1007,7 +1006,7 @@ package TestCase {
     return 0;
   }
 
-  static sub weaken_recursive_again : void () {
+  sub weaken_recursive_again : void () {
     my $weaken = TestCase::Weaken::new();
     
     # Recuresive reference
@@ -1020,7 +1019,7 @@ package TestCase {
     weaken $test_case->{x_weaken};
   }
   
-  static sub weaken_recursive : int () {
+  sub weaken_recursive : int () {
     my $weaken = TestCase::Weaken::new();
     $weaken->{x1} = 1;
     
@@ -1041,7 +1040,7 @@ package TestCase {
     return 0;
   }
   
-  static sub weaken_self_recuresive : int () {
+  sub weaken_self_recuresive : int () {
     my $test_case = new TestCase;
     $test_case->{x_int} = 5;
     
@@ -1057,7 +1056,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_object_array_len_element_byte_array : int ($nums : byte[][]) {
+  sub spvm_new_object_array_len_element_byte_array : int ($nums : byte[][]) {
     
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
@@ -1076,7 +1075,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_object_array_len_element_short_array : int ($nums : short[][]) {
+  sub spvm_new_object_array_len_element_short_array : int ($nums : short[][]) {
     if ((int)$nums->[0][0] == (int)(short)1) {
       if ((int)$nums->[0][1] == (int)(short)2) {
         if ((int)$nums->[0][2] == (int)(short)3) {
@@ -1094,7 +1093,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_object_array_len_element_int_array : int ($nums : int[][]) {
+  sub spvm_new_object_array_len_element_int_array : int ($nums : int[][]) {
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
         if ($nums->[0][2] == 3) {
@@ -1112,7 +1111,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_object_array_len_element_long_array : int ($nums : long[][]) {
+  sub spvm_new_object_array_len_element_long_array : int ($nums : long[][]) {
     if ($nums->[0][0] == (long)1) {
       if ($nums->[0][1] == (long)2) {
         if ($nums->[0][2] == (long)3) {
@@ -1130,7 +1129,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_object_array_len_element_float_array : int ($nums : float[][]) {
+  sub spvm_new_object_array_len_element_float_array : int ($nums : float[][]) {
     if ($nums->[0][0] == (float)1) {
       if ($nums->[0][1] == (float)2) {
         if ($nums->[0][2] == (float)3) {
@@ -1148,7 +1147,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_object_array_len_element_double_array : int ($nums : double[][]) {
+  sub spvm_new_object_array_len_element_double_array : int ($nums : double[][]) {
     if ($nums->[0][0] == (double)1) {
       if ($nums->[0][1] == (double)2) {
         if ($nums->[0][2] == (double)3) {
@@ -1166,7 +1165,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_object_array_len_element_object_array : int ($nums : TestCase[]) {
+  sub spvm_new_object_array_len_element_object_array : int ($nums : TestCase[]) {
     if ($nums->[0]{x_int} == 1) {
       if ($nums->[1]{x_int} == 2) {
         return 1;
@@ -1177,10 +1176,10 @@ package TestCase {
   }
 
   # Call void function
-  static sub call_void_sub : void ($nums : int[]) {
+  sub call_void_sub : void ($nums : int[]) {
     $nums->[0] = 5;
   }
-  static sub call_void : int () {
+  sub call_void : int () {
     my $nums = new int[] {1};
     
     TestCase::call_void_sub($nums);
@@ -1192,12 +1191,12 @@ package TestCase {
   }
   
   # Exception
-  static sub exception_zero_divide_int : int () {
+  sub exception_zero_divide_int : int () {
     1 / 0;
   }
 
   # Multiply
-  static sub divide : int () {
+  sub divide : int () {
     # int
     my $int_success = 0;
     {
@@ -1298,7 +1297,7 @@ package TestCase {
     return 0;
   }
   
-  static sub remainder : int () {
+  sub remainder : int () {
     my $num1 = (byte)((byte)5 % (byte)3);
     my $num2 = (byte)((byte)-3 % (byte)5);
     my $num3 = (short)((int)(short)5 % (int)(short)3);
@@ -1330,7 +1329,7 @@ package TestCase {
   }
   
   # Default return value empty
-  static sub default_return_value_byte : int () {
+  sub default_return_value_byte : int () {
     
     if (TestCase::default_return_value_byte_sub() == 0) {
       if (TestCase::default_return_value_byte_sub_empty() == 0) {
@@ -1340,13 +1339,13 @@ package TestCase {
     
     return 0;
   }
-  static sub default_return_value_byte_sub : byte () {
+  sub default_return_value_byte_sub : byte () {
     1;
   }
-  static sub default_return_value_byte_sub_empty : byte () {
+  sub default_return_value_byte_sub_empty : byte () {
     
   }
-  static sub default_return_value_short : int () {
+  sub default_return_value_short : int () {
     
     if ((int)TestCase::default_return_value_short_sub() == (int)(short)0) {
       if ((int)TestCase::default_return_value_short_sub_empty() == (int)(short)0) {
@@ -1356,13 +1355,13 @@ package TestCase {
     
     return 0;
   }
-  static sub default_return_value_short_sub : short () {
+  sub default_return_value_short_sub : short () {
     1;
   }
-  static sub default_return_value_short_sub_empty : short () {
+  sub default_return_value_short_sub_empty : short () {
     
   }
-  static sub default_return_value_int : int () {
+  sub default_return_value_int : int () {
     
     if (TestCase::default_return_value_int_sub() == (int)0) {
       if (TestCase::default_return_value_int_sub_empty() == (int)0) {
@@ -1372,13 +1371,13 @@ package TestCase {
     
     return 0;
   }
-  static sub default_return_value_int_sub : int () {
+  sub default_return_value_int_sub : int () {
     1;
   }
-  static sub default_return_value_int_sub_empty : int () {
+  sub default_return_value_int_sub_empty : int () {
     
   }
-  static sub default_return_value_long : int () {
+  sub default_return_value_long : int () {
     
     if (TestCase::default_return_value_long_sub() == (long)0) {
       if (TestCase::default_return_value_long_sub_empty() == (long)0) {
@@ -1388,13 +1387,13 @@ package TestCase {
     
     return 0;
   }
-  static sub default_return_value_long_sub : long () {
+  sub default_return_value_long_sub : long () {
     1;
   }
-  static sub default_return_value_long_sub_empty : long () {
+  sub default_return_value_long_sub_empty : long () {
     
   }
-  static sub default_return_value_float : int () {
+  sub default_return_value_float : int () {
     
     if (TestCase::default_return_value_float_sub() == (float)0) {
       if (TestCase::default_return_value_float_sub_empty() == (float)0) {
@@ -1404,13 +1403,13 @@ package TestCase {
     
     return 0;
   }
-  static sub default_return_value_float_sub : float () {
+  sub default_return_value_float_sub : float () {
     1;
   }
-  static sub default_return_value_float_sub_empty : float () {
+  sub default_return_value_float_sub_empty : float () {
     
   }
-  static sub default_return_value_double : int () {
+  sub default_return_value_double : int () {
     
     if (TestCase::default_return_value_double_sub() == (double)0) {
       if (TestCase::default_return_value_double_sub_empty() == (double)0) {
@@ -1420,13 +1419,13 @@ package TestCase {
     
     return 0;
   }
-  static sub default_return_value_double_sub : double () {
+  sub default_return_value_double_sub : double () {
     1;
   }
-  static sub default_return_value_double_sub_empty : double () {
+  sub default_return_value_double_sub_empty : double () {
     
   }
-  static sub default_return_value_object : int () {
+  sub default_return_value_object : int () {
     
     if (TestCase::default_return_value_object_sub() == undef) {
       if (TestCase::default_return_value_object_sub_empty() == undef) {
@@ -1436,15 +1435,15 @@ package TestCase {
     
     return 0;
   }
-  static sub default_return_value_object_sub : TestCase () {
+  sub default_return_value_object_sub : TestCase () {
     1;
   }
-  static sub default_return_value_object_sub_empty : TestCase () {
+  sub default_return_value_object_sub_empty : TestCase () {
     
   }
   
   # Switch - nest
-  static sub switch_nest : int () {
+  sub switch_nest : int () {
     my $success1 : int;
     switch (3) {
       case 1:
@@ -1476,7 +1475,7 @@ package TestCase {
   }
   
   # Switch - lookup switch
-  static sub switch_lookup_switch : int () {
+  sub switch_lookup_switch : int () {
     my $success1 : int;
     switch (1) {
       case 1:
@@ -1541,7 +1540,7 @@ package TestCase {
   }
   
   # Switch - table switch
-  static sub switch_table_switch : int () {
+  sub switch_table_switch : int () {
     my $success1 : int;
     
     switch(3) {
@@ -1596,7 +1595,7 @@ package TestCase {
     return 0;
   }
 
-  static sub my_var_scope : int () {
+  sub my_var_scope : int () {
     my $ok1 = 0;
     my $ok2 = 0;
     my $ok3 = 0;
@@ -1646,7 +1645,7 @@ package TestCase {
   }
   
   # My variable is initialized zero
-  static sub my_var_initialized_zero : int () {
+  sub my_var_initialized_zero : int () {
     my $var1 : int;
     my $var2 : TestCase;
     
@@ -1658,7 +1657,7 @@ package TestCase {
     return 0;
   }
 
-  static sub my_var_block : int () {
+  sub my_var_block : int () {
     my $success = 1;
     
     my $var1 = 1;
@@ -1691,7 +1690,7 @@ package TestCase {
   }
   
   # Object field is initialized zero
-  static sub object_field_initialized_zero : int () {
+  sub object_field_initialized_zero : int () {
     my $obj = new TestCase;
     if ($obj->{x_byte} == 0) {
       if ($obj->{x_int} == 0) {
@@ -1704,7 +1703,7 @@ package TestCase {
   }
   
   # Object field set and get
-  static sub object_field_set_and_get : int () {
+  sub object_field_set_and_get : int () {
     my $test_case = new TestCase;
     
     $test_case->{x_byte} = Byte::MAX_VALUE();
@@ -1735,7 +1734,7 @@ package TestCase {
   }
 
   # Object field set and get
-  static sub object_field_set_and_get_again : int () {
+  sub object_field_set_and_get_again : int () {
     my $test_case = new TestCase;
     
     $test_case->{x_byte} = Byte::MAX_VALUE();
@@ -1775,13 +1774,13 @@ package TestCase {
   }
 
   # new near small base_object_max_byte_size_use_memory_pool
-  static sub new_near_small_base_object_max_byte_size_use_memory_pool : int () {
+  sub new_near_small_base_object_max_byte_size_use_memory_pool : int () {
     my $block = new byte[0xFFF0];
     
     return 1;
   }
 
-  static sub array_default_zero_not_memory_pool : int () {
+  sub array_default_zero_not_memory_pool : int () {
     my $values_byte = new byte[1000000];
     my $values_short = new short[1000000];
     my $values_int = new int[1000000];
@@ -1818,7 +1817,7 @@ package TestCase {
     
     return 0;
   }
-  static sub array_default_zero_memory_pool : int () {
+  sub array_default_zero_memory_pool : int () {
     my $values_byte = new byte[10];
     my $values_short = new short[10];
     my $values_int = new int[10];
@@ -1855,7 +1854,7 @@ package TestCase {
     
     return 0;
   }
-  static sub array_init_byte : int () {
+  sub array_init_byte : int () {
     my $nums = new byte[] {(byte)1, (byte)2, Byte::MAX_VALUE()};
     
     if ($nums->[0] == 1) {
@@ -1867,7 +1866,7 @@ package TestCase {
     }
     return 0;
   }
-  static sub array_init_short : int () {
+  sub array_init_short : int () {
     my $nums = new short[] {(short)1, (short)2, (short)3};
     
     if ((int)$nums->[0] == (int)(short)1) {
@@ -1879,7 +1878,7 @@ package TestCase {
     }
     return 0;
   }
-  static sub array_init_int  : int () {
+  sub array_init_int  : int () {
     my $nums = new int[] {1, 2, 3};
     my $nums2 : int[];
     $nums2 = new int[] {4, 5, 6};
@@ -1899,7 +1898,7 @@ package TestCase {
     }
     return 0;
   }
-  static sub array_init_long : int () {
+  sub array_init_long : int () {
     my $nums = new long[] {1L, 2L, 3L};
     
     if ($nums->[0] == 1L) {
@@ -1911,7 +1910,7 @@ package TestCase {
     }
     return 0;
   }
-  static sub array_init_float : int () {
+  sub array_init_float : int () {
     my $nums = new float[] {1f, 2f, 3f};
     
     if ($nums->[0] == 1f) {
@@ -1923,7 +1922,7 @@ package TestCase {
     }
     return 0;
   }
-  static sub array_init_double : int () {
+  sub array_init_double : int () {
     my $nums = new double[] {1d, 2d, 3d};
     
     if ($nums->[0] == 1d) {
@@ -1936,7 +1935,7 @@ package TestCase {
     return 0;
   }
 
-  static sub get_object_from_freelist  : int () {
+  sub get_object_from_freelist  : int () {
     TestCase::get_object_from_freelist_check();
     
     my $result = new int[65];
@@ -1944,7 +1943,7 @@ package TestCase {
     
     return 1;
   }
-  static sub get_object_from_freelist_check : int[] () {
+  sub get_object_from_freelist_check : int[] () {
     my $result = new int[63];
     my $true_result = new int[1];
     return $true_result;
@@ -1958,7 +1957,7 @@ package TestCase {
     INT_SIX = 6,
     INT_MINUS_MAX = -2147483648
   }
-  static sub enum_int  : int () {
+  sub enum_int  : int () {
     
     if (TestCase::INT_ZERO() == 0) {
       if (TestCase::INT_ONE() == 1) {
@@ -1978,7 +1977,7 @@ package TestCase {
   }
   
   # Convert type - floating point narrowing convertion
-  static sub convert_float_to_byte : int () {
+  sub convert_float_to_byte : int () {
     my $value = (byte)127.1f;
     
     if ($value == 127) {
@@ -1987,7 +1986,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_float_to_short : int () {
+  sub convert_float_to_short : int () {
     my $value = (short)32767.1f;
     
     if ($value == 32767) {
@@ -1996,7 +1995,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_float_to_int : int () {
+  sub convert_float_to_int : int () {
     my $value = (int)132767.1f;
     
     if ($value == 132767) {
@@ -2005,7 +2004,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_float_to_long : int () {
+  sub convert_float_to_long : int () {
     my $value = (long)132767.1f;
     
     if ($value == 132767L) {
@@ -2014,7 +2013,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_double_to_byte : int () {
+  sub convert_double_to_byte : int () {
     my $value = (byte)127.1;
     
     if ($value == 127) {
@@ -2023,7 +2022,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_double_to_short : int () {
+  sub convert_double_to_short : int () {
     my $value = (short)32767.1;
     
     if ((int)$value == (int)(short)32767) {
@@ -2032,7 +2031,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_double_to_int : int () {
+  sub convert_double_to_int : int () {
     my $value = (int)2147483646.1;
     
     if ($value == 2147483646) {
@@ -2041,7 +2040,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_double_to_long : int () {
+  sub convert_double_to_long : int () {
     my $value = (long)2147483646.1;
     
     if ($value == 2147483646L) {
@@ -2050,7 +2049,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_double_to_float : int () {
+  sub convert_double_to_float : int () {
     my $value = (float)0.5;
     
     if ($value == 0.5f) {
@@ -2061,7 +2060,7 @@ package TestCase {
   }
   
   # Convert type - floating point widning convertion
-  static sub convert_byte_to_float : int () {
+  sub convert_byte_to_float : int () {
     my $value = (float)(byte)127;
     
     if ($value == 127.0f) {
@@ -2070,7 +2069,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_short_to_float : int () {
+  sub convert_short_to_float : int () {
     my $value = (float)(short)32767;
     
     if ($value == 32767.0f) {
@@ -2079,7 +2078,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_int_to_float : int () {
+  sub convert_int_to_float : int () {
     my $value = (float)32767;
     
     if ($value == 32767.0f) {
@@ -2088,7 +2087,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_long_to_float : int () {
+  sub convert_long_to_float : int () {
     my $value = (float)32767L;
     
     if ($value == 32767.0f) {
@@ -2097,7 +2096,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_byte_to_double : int () {
+  sub convert_byte_to_double : int () {
     my $value = (double)(byte)127;
     
     if ($value == 127.0) {
@@ -2106,7 +2105,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_short_to_double : int () {
+  sub convert_short_to_double : int () {
     my $value = (double)(short)32767;
     
     if ($value == 32767.0) {
@@ -2115,7 +2114,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_int_to_double : int () {
+  sub convert_int_to_double : int () {
     my $value = (double)2147483647;
     if ($value == 2147483647.0) {
       return 1;
@@ -2123,7 +2122,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_long_to_double : int () {
+  sub convert_long_to_double : int () {
     my $value = (double)2147483647L;
     
     if ($value == 2147483647.0) {
@@ -2132,7 +2131,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_float_to_double : int () {
+  sub convert_float_to_double : int () {
     my $value = (double)32767.0f;
     
     if ($value == 32767.0) {
@@ -2143,7 +2142,7 @@ package TestCase {
   }
   
   # Convert type - widning convertion
-  static sub convert_byte_to_short_plus : int () {
+  sub convert_byte_to_short_plus : int () {
     my $value = (short)(byte)0x7F;
     
     if ((int)$value == (int)(short)0x007F) {
@@ -2152,7 +2151,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_byte_to_short_minus : int () {
+  sub convert_byte_to_short_minus : int () {
     my $value = (short)(byte)0xFF;
     
     if ((int)$value == (int)(short)0xFFFF) {
@@ -2161,7 +2160,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_byte_to_int_plus : int () {
+  sub convert_byte_to_int_plus : int () {
     my $value = (int)(byte)0x7F;
     
     if ($value == 0x0000007F) {
@@ -2170,7 +2169,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_byte_to_int_minus : int () {
+  sub convert_byte_to_int_minus : int () {
     my $value = (int)(byte)0xFF;
     
     if ($value == 0xFFFFFFFF) {
@@ -2179,7 +2178,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_byte_to_long_plus : int () {
+  sub convert_byte_to_long_plus : int () {
     my $value = (long)(byte)0x7F;
     
     if ($value == 0x000000000000007FL) {
@@ -2188,7 +2187,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_byte_to_long_minus : int () {
+  sub convert_byte_to_long_minus : int () {
     my $value = (long)(byte)0xFF;
     
     if ($value == 0xFFFFFFFFFFFFFFFFL) {
@@ -2197,7 +2196,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_short_to_int_plus : int () {
+  sub convert_short_to_int_plus : int () {
     my $value = (int)(short)0x7FFF;
     
     if ($value == 0x0000007FFF) {
@@ -2206,7 +2205,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_short_to_int_minus : int () {
+  sub convert_short_to_int_minus : int () {
     my $value = (int)(short)0xFFFF;
     
     if ($value == 0xFFFFFFFF) {
@@ -2215,7 +2214,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_short_to_long_plus : int () {
+  sub convert_short_to_long_plus : int () {
     my $value = (long)(short)0x7FFF;
     
     if ($value == 0x000000000000007FFFL) {
@@ -2224,7 +2223,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_short_to_long_minus : int () {
+  sub convert_short_to_long_minus : int () {
     my $value = (long)(short)0xFFFF;
     
     if ($value == 0xFFFFFFFFFFFFFFFFL) {
@@ -2233,7 +2232,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_int_to_long_plus : int () {
+  sub convert_int_to_long_plus : int () {
     my $value = (long)0x7FFFFFFF;
     
     if ($value == 0x000000007FFFFFFFL) {
@@ -2242,7 +2241,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_int_to_long_minus : int () {
+  sub convert_int_to_long_minus : int () {
     my $value = (long)0xFFFFFFFF;
     
     if ($value == 0xFFFFFFFFFFFFFFFFL) {
@@ -2253,7 +2252,7 @@ package TestCase {
   }
   
   # Convert type - convert to same type
-  static sub convert_long_to_long : int () {
+  sub convert_long_to_long : int () {
     my $value = (long)0xFFFFFFFFFFFFFFFFL;
     
     if ($value == 0xFFFFFFFFFFFFFFFFL) {
@@ -2262,7 +2261,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_int_to_int : int () {
+  sub convert_int_to_int : int () {
     my $value = (int)0xFFFFFFFF;
     
     if ($value == 0xFFFFFFFF) {
@@ -2271,7 +2270,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_short_to_short : int () {
+  sub convert_short_to_short : int () {
     my $value = (short)(short)0xFFFF;
     
     if ((int)$value == (int)(short)0xFFFF) {
@@ -2280,7 +2279,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_byte_to_byte : int () {
+  sub convert_byte_to_byte : int () {
     my $value = (byte)(byte)0xFF;
     
     if ($value == (byte)0xFF) {
@@ -2289,7 +2288,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_float_to_float : int () {
+  sub convert_float_to_float : int () {
     my $value = (float)0.5f;
     
     if ($value == 0.5f) {
@@ -2298,7 +2297,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_double_to_double : int () {
+  sub convert_double_to_double : int () {
     my $value = (double)0.5;
     
     if ($value == 0.5) {
@@ -2309,7 +2308,7 @@ package TestCase {
   }
   
   # Convert type - integral narrowing convertion
-  static sub convert_long_to_int : int () {
+  sub convert_long_to_int : int () {
     my $value = (int)0xFFFFFFFFFFFFFFFFL;
     
     if ($value == 0xFFFFFFFF) {
@@ -2318,7 +2317,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_long_to_short : int () {
+  sub convert_long_to_short : int () {
     my $value = (short)0xFFFFFFFFFFFFFFFFL;
     
     if ((int)$value == (int)(short)0xFFFF) {
@@ -2327,7 +2326,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_long_to_byte : int () {
+  sub convert_long_to_byte : int () {
     my $value = (byte)0xFFFFFFFFFFFFFFFFL;
     
     if ((int)$value == (int)(byte)0xFF) {
@@ -2336,7 +2335,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_int_to_short : int () {
+  sub convert_int_to_short : int () {
     my $value = (short)0xFFFFFFFF;
     
     if ((int)$value == (int)(short)0xFFFF) {
@@ -2345,7 +2344,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_int_to_byte : int () {
+  sub convert_int_to_byte : int () {
     my $value = (byte)0xFFFFFFFF;
     
     if ((int)$value == (int)(byte)0xFF) {
@@ -2354,7 +2353,7 @@ package TestCase {
     
     return 0;
   }
-  static sub convert_short_to_byte : int () {
+  sub convert_short_to_byte : int () {
     my $value = (byte)(short)0xFFFF;
     
     if ((int)$value == (int)(byte)0xFF) {
@@ -2364,7 +2363,7 @@ package TestCase {
     return 0;
   }
   
-  static sub spvm_object_set_object : int ($obj : TestCase) {
+  sub spvm_object_set_object : int ($obj : TestCase) {
     my $nums = $obj->{x_int_array};
     my $values = ($obj->{x_string});
     
@@ -2390,7 +2389,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_object_set : int ($obj : TestCase) {
+  sub spvm_object_set : int ($obj : TestCase) {
     if ($obj->{x_byte} == 127) {
       if ($obj->{x_short} == 32767) {
         if ($obj->{x_int} == 2147483647) {
@@ -2410,14 +2409,14 @@ package TestCase {
     return 0;
   }
   
-  static sub logical_not_true : int () {
+  sub logical_not_true : int () {
     if (!1) {
       return 0;
     }
     
     return 1;
   }
-  static sub logical_not_false : int () {
+  sub logical_not_false : int () {
     if (!0) {
       return 1;
     }
@@ -2426,7 +2425,7 @@ package TestCase {
   }
 
   # logical or
-  static sub logical_or_both_true : int () {
+  sub logical_or_both_true : int () {
     if (1 || 1) {
       return 1;
     }
@@ -2434,7 +2433,7 @@ package TestCase {
     return 0;
   }
   
-  static sub logical_or_left_true : int () {
+  sub logical_or_left_true : int () {
     if (1 || 0) {
       return 1;
     }
@@ -2442,7 +2441,7 @@ package TestCase {
     return 0;
   }
 
-  static sub logical_or_right_true : int () {
+  sub logical_or_right_true : int () {
     if (0 || 1) {
       return 1;
     }
@@ -2450,7 +2449,7 @@ package TestCase {
     return 0;
   }
 
-  static sub logical_or_both_false : int () {
+  sub logical_or_both_false : int () {
     if (0 || 0) {
       return 0;
     }
@@ -2459,7 +2458,7 @@ package TestCase {
   }
   
   # logical and
-  static sub logical_and_both_true : int () {
+  sub logical_and_both_true : int () {
     if (1 && 1) {
       return 1;
     }
@@ -2467,7 +2466,7 @@ package TestCase {
     return 0;
   }
   
-  static sub logical_and_left_true : int () {
+  sub logical_and_left_true : int () {
     if (1 && 0) {
       return 0;
     }
@@ -2475,7 +2474,7 @@ package TestCase {
     return 1;
   }
 
-  static sub logical_and_right_true : int () {
+  sub logical_and_right_true : int () {
     if (1 && 0) {
       return 0;
     }
@@ -2483,7 +2482,7 @@ package TestCase {
     return 1;
   }
 
-  static sub logical_and_both_false : int () {
+  sub logical_and_both_false : int () {
     if (0 && 0) {
       return 0;
     }
@@ -2492,7 +2491,7 @@ package TestCase {
   }
   
   # call_sub return value
-  static sub call_sub_return_byte_array  : byte[] () {
+  sub call_sub_return_byte_array  : byte[] () {
     my $nums = new byte[3];
     
     $nums->[0] = (byte)1;
@@ -2501,7 +2500,7 @@ package TestCase {
     
     return $nums;
   }
-  static sub call_sub_return_byte_array_check : int ($nums : byte[]) {
+  sub call_sub_return_byte_array_check : int ($nums : byte[]) {
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
@@ -2516,7 +2515,7 @@ package TestCase {
     return 0;
   }
 
-  static sub call_sub_return_short_array : short[] () {
+  sub call_sub_return_short_array : short[] () {
     my $nums = new short[3];
     
     $nums->[0] = (short)1;
@@ -2525,7 +2524,7 @@ package TestCase {
     
     return $nums;
   }
-  static sub call_sub_return_short_array_check : int ($nums : short[]) {
+  sub call_sub_return_short_array_check : int ($nums : short[]) {
     
     if ((int)$nums->[0] == (int)(short)1) {
       if ((int)$nums->[1] == (int)(short)2) {
@@ -2540,7 +2539,7 @@ package TestCase {
     return 0;
   }
 
-  static sub call_sub_return_int_array : int[] () {
+  sub call_sub_return_int_array : int[] () {
     my $nums = new int[3];
     
     $nums->[0] = (int)1;
@@ -2549,7 +2548,7 @@ package TestCase {
     
     return $nums;
   }
-  static sub call_sub_return_int_array_check : int ($nums : int[]) {
+  sub call_sub_return_int_array_check : int ($nums : int[]) {
     
     if ($nums->[0] == (int)1) {
       if ($nums->[1] == (int)2) {
@@ -2564,7 +2563,7 @@ package TestCase {
     return 0;
   }
 
-  static sub call_sub_return_long_array : long[] () {
+  sub call_sub_return_long_array : long[] () {
     my $nums = new long[3];
     
     $nums->[0] = (long)1;
@@ -2573,7 +2572,7 @@ package TestCase {
     
     return $nums;
   }
-  static sub call_sub_return_long_array_check : int ($nums : long[]) {
+  sub call_sub_return_long_array_check : int ($nums : long[]) {
     
     if ($nums->[0] == (long)1) {
       if ($nums->[1] == (long)2) {
@@ -2588,7 +2587,7 @@ package TestCase {
     return 0;
   }
 
-  static sub call_sub_return_float_array : float[] () {
+  sub call_sub_return_float_array : float[] () {
     my $nums = new float[3];
     
     $nums->[0] = (float)1;
@@ -2597,7 +2596,7 @@ package TestCase {
     
     return $nums;
   }
-  static sub call_sub_return_float_array_check : int ($nums : float[]) {
+  sub call_sub_return_float_array_check : int ($nums : float[]) {
     
     if ($nums->[0] == (float)1) {
       if ($nums->[1] == (float)2) {
@@ -2612,7 +2611,7 @@ package TestCase {
     return 0;
   }
 
-  static sub call_sub_return_double_array : double[] () {
+  sub call_sub_return_double_array : double[] () {
     my $nums = new double[3];
     
     $nums->[0] = (double)1;
@@ -2621,7 +2620,7 @@ package TestCase {
     
     return $nums;
   }
-  static sub call_sub_return_double_array_check : int ($nums : double[]) {
+  sub call_sub_return_double_array_check : int ($nums : double[]) {
     
     if ($nums->[0] == (double)1) {
       if ($nums->[1] == (double)2) {
@@ -2637,7 +2636,7 @@ package TestCase {
   }
   
   # Negate
-  static sub negate : int () {
+  sub negate : int () {
     my $num_byte = (byte)1;
     my $num_short = (short)1;
     my $num_int = 1;
@@ -2670,7 +2669,7 @@ package TestCase {
   }
 
   # Negate
-  static sub plus : int () {
+  sub plus : int () {
     my $num_byte = (byte)1;
     my $num_short = (short)1;
     my $num_int = 1;
@@ -2703,7 +2702,7 @@ package TestCase {
   }
 
   # Complement
-  static sub complement : int () {
+  sub complement : int () {
     my $num_byte = (byte)0xF0;
     my $num_short = (short)0xFFF0;
     my $num_int = 0xFFFFFFF0;
@@ -2728,7 +2727,7 @@ package TestCase {
   }
 
   # Add
-  static sub add : int () {
+  sub add : int () {
     # int
     my $int_success = 0;
     {
@@ -2827,32 +2826,32 @@ package TestCase {
   }
 
   # Add
-  static sub add_int_max : int () {
+  sub add_int_max : int () {
     return (int)2147483646 + (int)1;
   }
   
-  static sub add_int_min : int () {
+  sub add_int_min : int () {
     return (int)-2147483648 + (int)1;
   }
   
-  static sub add_int_overflow : int () {
+  sub add_int_overflow : int () {
     return (int)2147483647 + (int)1;
   }
 
-  static sub add_long_max : long () {
+  sub add_long_max : long () {
     return (long)9223372036854775806L + (long)1;
   }
   
-  static sub add_long_min : long () {
+  sub add_long_min : long () {
     return (long)-9223372036854775808L + (long)1;
   }
   
-  static sub add_long_overflow : long () {
+  sub add_long_overflow : long () {
     return (long)9223372036854775807L + (long)1;
   }
 
   # Subtract
-  static sub subtract : int () {
+  sub subtract : int () {
     my $value1 : int = 1 - 2;
     my $value2 : int = (byte)1 - 3;
     my $value3 : int = 1 - (byte)4;
@@ -2884,32 +2883,32 @@ package TestCase {
   }
 
   # Subtract
-  static sub subtract_int_max : int () {
+  sub subtract_int_max : int () {
     return (int)2147483647 - (int)1;
   }
   
-  static sub subtract_int_min : int () {
+  sub subtract_int_min : int () {
     return (int)-2147483647 - (int)1;
   }
   
-  static sub subtract_int_underflow : int () {
+  sub subtract_int_underflow : int () {
     return (int)-2147483648 - (int)1;
   }
 
-  static sub subtract_long_max : long () {
+  sub subtract_long_max : long () {
     return (long)9223372036854775807L - (long)1;
   }
   
-  static sub subtract_long_min : long () {
+  sub subtract_long_min : long () {
     return (long)-9223372036854775807L - (long)1;
   }
   
-  static sub subtract_long_underflow : long () {
+  sub subtract_long_underflow : long () {
     return (long)-9223372036854775808L - (long)1;
   }
 
   # Multiply
-  static sub multiply : int () {
+  sub multiply : int () {
     # int
     my $int_success = 0;
     {
@@ -3008,32 +3007,32 @@ package TestCase {
   }
   
   # Multiply
-  static sub multiply_int_plus : int () {
+  sub multiply_int_plus : int () {
     return (int)536870912 * (int)2;
   }
   
-  static sub multiply_int_minus : int () {
+  sub multiply_int_minus : int () {
     return (int)536870912 * (int)-2;
   }
   
-  static sub multiply_int_overflow : int () {
+  sub multiply_int_overflow : int () {
     return (int)1073741824 * (int)2;
   }
   
-  static sub multiply_long_plus : long () {
+  sub multiply_long_plus : long () {
     return (long)2305843009213693952L * (long)2L;
   }
   
-  static sub multiply_long_minus : long () {
+  sub multiply_long_minus : long () {
     return (long)2305843009213693952L * (long)-2L;
   }
   
-  static sub multiply_long_overflow : long () {
+  sub multiply_long_overflow : long () {
     return (long)4611686018427387904L * (long)2L;
   }
   
   # SPVM Functions
-  static sub spvm_new_byte_array_string : int ($values : byte[]) {
+  sub spvm_new_byte_array_string : int ($values : byte[]) {
     
     if ((int)$values->[0] == (int)(byte)0xE3) {
       if ((int)$values->[1] == (int)(byte)0x81) {
@@ -3048,7 +3047,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_byte_array_data : int ($values : byte[]) {
+  sub spvm_new_byte_array_data : int ($values : byte[]) {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
@@ -3063,7 +3062,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_byte_array_data_pack : int ($values : byte[]) {
+  sub spvm_new_byte_array_data_pack : int ($values : byte[]) {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
@@ -3078,7 +3077,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_short_array_data_pack : int ($values : short[]) {
+  sub spvm_new_short_array_data_pack : int ($values : short[]) {
     
     if ((int)$values->[0] == (int)(short)97) {
       if ((int)$values->[1] == (int)(short)98) {
@@ -3093,7 +3092,7 @@ package TestCase {
     return 0;
   }
   
-  static sub spvm_new_int_array_data_pack : int ($values : int[]) {
+  sub spvm_new_int_array_data_pack : int ($values : int[]) {
     
     if ($values->[0] == (int)97) {
       if ($values->[1] == (int)98) {
@@ -3108,7 +3107,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_long_array_data_pack : int ($values : long[]) {
+  sub spvm_new_long_array_data_pack : int ($values : long[]) {
     
     if ($values->[0] == (long)97) {
       if ($values->[1] == (long)98) {
@@ -3123,7 +3122,7 @@ package TestCase {
     return 0;
   }
 
-  static sub spvm_new_float_array_data_pack : int ($values : float[]) {
+  sub spvm_new_float_array_data_pack : int ($values : float[]) {
     
     if ($values->[0] == (float)97) {
       if ($values->[1] == (float)98) {
@@ -3138,7 +3137,7 @@ package TestCase {
     return 0;
   }
   
-  static sub spvm_new_double_array_data_pack : int ($values : double[]) {
+  sub spvm_new_double_array_data_pack : int ($values : double[]) {
     
     if ($values->[0] == (double)97) {
       if ($values->[1] == (double)98) {
@@ -3154,7 +3153,7 @@ package TestCase {
   }
   
   # byte array argument
-  static sub call_sub_byte_array : byte ($nums : byte[]) {
+  sub call_sub_byte_array : byte ($nums : byte[]) {
     
     my $total = (byte)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3165,7 +3164,7 @@ package TestCase {
   }
   
   # short array argument
-  static sub call_sub_short_array : short ($nums : short[]) {
+  sub call_sub_short_array : short ($nums : short[]) {
     
     my $total = (short)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3176,7 +3175,7 @@ package TestCase {
   }
   
   # int array argument
-  static sub call_sub_int_array : int ($nums : int[]) {
+  sub call_sub_int_array : int ($nums : int[]) {
     
     my $total = 0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3187,7 +3186,7 @@ package TestCase {
   }
 
   # long array argument
-  static sub call_sub_long_array : long ($nums : long[]) {
+  sub call_sub_long_array : long ($nums : long[]) {
     
     my $total = (long)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3198,7 +3197,7 @@ package TestCase {
   }
 
   # float array argument
-  static sub call_sub_float_array : float ($nums : float[]) {
+  sub call_sub_float_array : float ($nums : float[]) {
     
     my $total = (float)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3209,7 +3208,7 @@ package TestCase {
   }
 
   # double array argument
-  static sub call_sub_double_array : double ($nums : double[]) {
+  sub call_sub_double_array : double ($nums : double[]) {
     
     my $total = (double)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3220,216 +3219,216 @@ package TestCase {
   }
 
   # constant int
-  static sub load_constant_int_min : int () {
+  sub load_constant_int_min : int () {
    # LOAD_CONSTANT
     return -2147483647;
   }
-  static sub load_constant_int_m32769 : int () {
+  sub load_constant_int_m32769 : int () {
     # LOAD_CONSTANT
     return -32769;
   }
-  static sub load_constant_int_m32768 : int () {
+  sub load_constant_int_m32768 : int () {
     # PUSH_SHORT_TO_INT
     return -32768;
   }
-  static sub load_constant_int_m129 : int () {
+  sub load_constant_int_m129 : int () {
     # PUSH_SHORT_TO_INT
     return -129;
   }
-  static sub load_constant_int_m128 : int () {
+  sub load_constant_int_m128 : int () {
     # PUSH_BYTE_TO_INT
     return -128;
   }
-  static sub load_constant_int_m2 : int () {
+  sub load_constant_int_m2 : int () {
     # PUSH_BYTE_TO_INT
     return -2;
   }
-  static sub load_constant_int_m1 : int () {
+  sub load_constant_int_m1 : int () {
     # CONSTANT_INT_M1
     return -1;
   }
-  static sub load_constant_int_0 : int () {
+  sub load_constant_int_0 : int () {
     # CONSTANT_INT_0
     return 0;
   }
-  static sub load_constant_int_1 : int () {
+  sub load_constant_int_1 : int () {
     # CONSTANT_INT_1
     return 1;
   }
-  static sub load_constant_int_2 : int () {
+  sub load_constant_int_2 : int () {
     # CONSTANT_INT_2
     return 2;
   }
-  static sub load_constant_int_3 : int () {
+  sub load_constant_int_3 : int () {
     # CONSTANT_INT_3
     return 3;
   }
-  static sub load_constant_int_4 : int () {
+  sub load_constant_int_4 : int () {
     # CONSTANT_INT_4
     return 4;
   }
-  static sub load_constant_int_5 : int () {
+  sub load_constant_int_5 : int () {
     # CONSTANT_INT_5
     return 5;
   }
-  static sub load_constant_int_6 : int () {
+  sub load_constant_int_6 : int () {
     # PUSH_BYTE_TO_INT
     return 6;
   }
-  static sub load_constant_int_127 : int () {
+  sub load_constant_int_127 : int () {
     # PUSH_BYTE_TO_INT
     return 127;
   }
-  static sub load_constant_int_128 : int () {
+  sub load_constant_int_128 : int () {
     # PUSH_SHORT_TO_INT
     return 128;
   }
-  static sub load_constant_int_32767 : int () {
+  sub load_constant_int_32767 : int () {
     # PUSH_SHORT_TO_INT
     return 32767;
   }
-  static sub load_constant_int_32768 : int () {
+  sub load_constant_int_32768 : int () {
     # LOAD_CONSTANT
     return 32768;
   }
-  static sub load_constant_int_max : int () {
+  sub load_constant_int_max : int () {
     # LOAD_CONSTANT
     return 2147483647;
   }
 
   # constant long
-  static sub load_constant_long_min : long () {
+  sub load_constant_long_min : long () {
    # LOAD_CONSTANT
     return -9223372036854775808L;
   }
-  static sub load_constant_long_m32769 : long () {
+  sub load_constant_long_m32769 : long () {
     # LOAD_CONSTANT
     return -32769L;
   }
-  static sub load_constant_long_m32768 : long () {
+  sub load_constant_long_m32768 : long () {
     # PUSH_SHORT_TO_LONG
     return -32768L;
   }
-  static sub load_constant_long_m129 : long () {
+  sub load_constant_long_m129 : long () {
     # PUSH_SHORT_TO_LONG
     return -129L;
   }
-  static sub load_constant_long_m128 : long () {
+  sub load_constant_long_m128 : long () {
     # PUSH_BYTE_TO_LONG
     return -128L;
   }
-  static sub load_constant_long_m2 : long () {
+  sub load_constant_long_m2 : long () {
     # PUSH_BYTE_TO_LONG
     return -2L;
   }
-  static sub load_constant_long_m1 : long () {
+  sub load_constant_long_m1 : long () {
     # CONSTANT_LONG_M1
     return -1L;
   }
-  static sub load_constant_long_0 : long () {
+  sub load_constant_long_0 : long () {
     # CONSTANT_LONG_0
     return 0L;
   }
-  static sub load_constant_long_1 : long () {
+  sub load_constant_long_1 : long () {
     # CONSTANT_LONG_1
     return 1L;
   }
-  static sub load_constant_long_2 : long () {
+  sub load_constant_long_2 : long () {
     # CONSTANT_LONG_2
     return 2L;
   }
-  static sub load_constant_long_3 : long () {
+  sub load_constant_long_3 : long () {
     # CONSTANT_LONG_3
     return 3L;
   }
-  static sub load_constant_long_4 : long () {
+  sub load_constant_long_4 : long () {
     # CONSTANT_LONG_4
     return 4L;
   }
-  static sub load_constant_long_5 : long () {
+  sub load_constant_long_5 : long () {
     # CONSTANT_LONG_5
     return 5L;
   }
-  static sub load_constant_long_6 : long () {
+  sub load_constant_long_6 : long () {
     # PUSH_BYTE_TO_LONG
     return 6L;
   }
-  static sub load_constant_long_127 : long () {
+  sub load_constant_long_127 : long () {
     # PUSH_BYTE_TO_LONG
     return 127L;
   }
-  static sub load_constant_long_128 : long () {
+  sub load_constant_long_128 : long () {
     # PUSH_SHORT_TO_LONG
     return 128L;
   }
-  static sub load_constant_long_32767 : long () {
+  sub load_constant_long_32767 : long () {
     # PUSH_SHORT_TO_LONG
     return 32767L;
   }
-  static sub load_constant_long_32768 : long () {
+  sub load_constant_long_32768 : long () {
     # LOAD_CONSTANT2
     return 32768L;
   }
-  static sub load_constant_long_max : long () {
+  sub load_constant_long_max : long () {
     # LOAD_CONSTANT2
     return 9223372036854775807L;
   }
   
   # constant float
-  static sub load_constant_float_0 : float () {
+  sub load_constant_float_0 : float () {
     # CONSTANT_FLOAT_0
     return 0.0f;
   }
-  static sub load_constant_float_1 : float () {
+  sub load_constant_float_1 : float () {
     # CONSTANT_FLOAT_1
     return 1.0f;
   }
-  static sub load_constant_float_0_5 : float () {
+  sub load_constant_float_0_5 : float () {
     # LOAD_CONSTANT
     return 0.5f;
   }
-  static sub load_constant_float_exponent_E_plus : float () {
+  sub load_constant_float_exponent_E_plus : float () {
     return 0.5E+3f;
   }
-  static sub load_constant_float_exponent_e_plus : float () {
+  sub load_constant_float_exponent_e_plus : float () {
     return 0.5e3f;
   }
-  static sub load_constant_float_exponent_E_minus : float () {
+  sub load_constant_float_exponent_E_minus : float () {
     return 62.5E-3f;
   }
-  static sub load_constant_float_exponent_e_minus : float () {
+  sub load_constant_float_exponent_e_minus : float () {
     return 62.5e-3f;
   }
 
-  static sub load_constant_double_exponent_E_plus : double () {
+  sub load_constant_double_exponent_E_plus : double () {
     return 0.5E+3;
   }
-  static sub load_constant_double_exponent_e_plus : double () {
+  sub load_constant_double_exponent_e_plus : double () {
     return 0.5e3;
   }
-  static sub load_constant_double_exponent_E_minus : double () {
+  sub load_constant_double_exponent_E_minus : double () {
     return 62.5E-3;
   }
-  static sub load_constant_double_exponent_e_minus : double () {
+  sub load_constant_double_exponent_e_minus : double () {
     return 62.5e-3;
   }
   
   # constant double
-  static sub load_constant_double_0 : double () {
+  sub load_constant_double_0 : double () {
     # CONSTANT_DOUBLE_0
     return 0.0;
   }
-  static sub load_constant_double_1 : double () {
+  sub load_constant_double_1 : double () {
     # CONSTANT_DOUBLE_1
     return 1.0;
   }
-  static sub load_constant_double_0_5 : double () {
+  sub load_constant_double_0_5 : double () {
     # LOAD_CONSTANT2
     return 0.5;
   }
   
   # call_sub arguments
-  static sub call_sub_args_byte : int ($var1 : byte, $var2 : byte, $var3 : byte) {
+  sub call_sub_args_byte : int ($var1 : byte, $var2 : byte, $var3 : byte) {
     if ($var1 == 0) {
       if ($var2 == 127) {
         if ($var3 == -128) {
@@ -3440,7 +3439,7 @@ package TestCase {
     
     return 0;
   }
-  static sub call_sub_args_short : int ($var1 : short, $var2 : short, $var3 : short) {
+  sub call_sub_args_short : int ($var1 : short, $var2 : short, $var3 : short) {
     if ((int)$var1 == (int)(short)0) {
       if ((int)$var2 == (int)(short)32767) {
         if ((int)$var3 == (int)(short)-32768) {
@@ -3451,7 +3450,7 @@ package TestCase {
     
     return 0;
   }
-  static sub call_sub_args_int : int ($var1 : int, $var2 : int, $var3 : int) {
+  sub call_sub_args_int : int ($var1 : int, $var2 : int, $var3 : int) {
     if ($var1 == 0) {
       if ($var2 == 2147483647) {
         if ($var3 == -2147483648) {
@@ -3463,7 +3462,7 @@ package TestCase {
     return 0;
   }
   
-  static sub call_sub_args_long : int ($var1 : long, $var2 : long, $var3 : long) {
+  sub call_sub_args_long : int ($var1 : long, $var2 : long, $var3 : long) {
     if ($var1 == 0L) {
       if ($var2 == 9223372036854775807L) {
         if ($var3 == -9223372036854775808L) {
@@ -3476,7 +3475,7 @@ package TestCase {
   }
   
   # If
-  static sub if_true_byte : int () {
+  sub if_true_byte : int () {
     if ((int)(byte)1) {
       return 1;
     }
@@ -3484,7 +3483,7 @@ package TestCase {
     return 0;
   }
   
-  static sub if_true_short : int () {
+  sub if_true_short : int () {
     if ((int)(short)1) {
       return 1;
     }
@@ -3492,7 +3491,7 @@ package TestCase {
     return 0;
   }
 
-  static sub if_true_int : int () {
+  sub if_true_int : int () {
     if (1) {
       return 1;
     }
@@ -3500,7 +3499,7 @@ package TestCase {
     return 0;
   }
   
-  static sub if_true_long : int () {
+  sub if_true_long : int () {
     if (1L) {
       return 1;
     }
@@ -3508,7 +3507,7 @@ package TestCase {
     return 0;
   }
   
-  static sub if_true_float : int () {
+  sub if_true_float : int () {
     if (1.0f) {
       return 1;
     }
@@ -3516,7 +3515,7 @@ package TestCase {
     return 0;
   }
   
-  static sub if_true_double : int () {
+  sub if_true_double : int () {
     if (1.0) {
       return 1;
     }
@@ -3524,7 +3523,7 @@ package TestCase {
     return 0;
   }
 
-  static sub if_true_object : int () {
+  sub if_true_object : int () {
     if (new TestCase) {
       return 1;
     }
@@ -3532,7 +3531,7 @@ package TestCase {
     return 0;
   }
 
-  static sub if_false_byte : int () {
+  sub if_false_byte : int () {
     if ((int)(byte)0) {
       return 0;
     }
@@ -3540,7 +3539,7 @@ package TestCase {
     return 1;
   }
   
-  static sub if_false_short : int () {
+  sub if_false_short : int () {
     if ((int)(short)0) {
       return 0;
     }
@@ -3548,7 +3547,7 @@ package TestCase {
     return 1;
   }
   
-  static sub if_false_int : int () {
+  sub if_false_int : int () {
     if (0) {
       return 0;
     }
@@ -3556,7 +3555,7 @@ package TestCase {
     return 1;
   }
   
-  static sub if_false_long : int () {
+  sub if_false_long : int () {
     if (0L) {
       return 0;
     }
@@ -3564,7 +3563,7 @@ package TestCase {
     return 1;
   }
   
-  static sub if_false_float : int () {
+  sub if_false_float : int () {
     if (0.0f) {
       return 0;
     }
@@ -3572,7 +3571,7 @@ package TestCase {
     return 1;
   }
   
-  static sub if_false_double : int () {
+  sub if_false_double : int () {
     if (0.0) {
       return 0;
     }
@@ -3580,7 +3579,7 @@ package TestCase {
     return 1;
   }
   
-  static sub if_false_object : int () {
+  sub if_false_object : int () {
     if (undef) {
       return 0;
     }
@@ -3588,7 +3587,7 @@ package TestCase {
     return 1;
   }
   
-  static sub if_else : int () {
+  sub if_else : int () {
     if (0) {
       return 0;
     }
@@ -3599,7 +3598,7 @@ package TestCase {
     return 0;
   }
 
-  static sub if_elsif : int () {
+  sub if_elsif : int () {
     if (0) {
       return 0;
     }
@@ -3613,7 +3612,7 @@ package TestCase {
     return 0;
   }
 
-  static sub if_elsif_2 : int () {
+  sub if_elsif_2 : int () {
     if (0) {
       return 0;
     }
@@ -3630,7 +3629,7 @@ package TestCase {
     return 0;
   }
   
-  static sub if_duplicate : int () {
+  sub if_duplicate : int () {
     
     if (1) {
       if (0) {
@@ -3649,7 +3648,7 @@ package TestCase {
   }
   
   # eq 
-  static sub if_eq_undef  : int () {
+  sub if_eq_undef  : int () {
     my $test_case : TestCase = undef;
     
     if (undef == undef) {
@@ -3663,7 +3662,7 @@ package TestCase {
     return 0;
   }
 
-  static sub if_eq_byte_same  : int () {
+  sub if_eq_byte_same  : int () {
     
     if ((byte)3 == (byte)3) {
       return 1;
@@ -3673,7 +3672,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_byte_different  : int () {
+  sub if_eq_byte_different  : int () {
     
     if ((byte)3 == (byte)2) {
       return 0;
@@ -3683,7 +3682,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_short_same  : int () {
+  sub if_eq_short_same  : int () {
     
     if ((short)3 == (short)3) {
       return 1;
@@ -3693,7 +3692,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_short_different  : int () {
+  sub if_eq_short_different  : int () {
     
     if ((short)3 == (short)2) {
       return 0;
@@ -3703,7 +3702,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_int_same  : int () {
+  sub if_eq_int_same  : int () {
     
     if (3 == 3) {
       return 1;
@@ -3713,7 +3712,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_int_different  : int () {
+  sub if_eq_int_different  : int () {
     
     if (3 == 2) {
       return 0;
@@ -3723,7 +3722,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_long_same  : int () {
+  sub if_eq_long_same  : int () {
     
     if ((long)3 == (long)3) {
       return 1;
@@ -3733,7 +3732,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_long_different  : int () {
+  sub if_eq_long_different  : int () {
     
     if ((long)3 == (long)2) {
       return 0;
@@ -3743,7 +3742,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_float_same  : int () {
+  sub if_eq_float_same  : int () {
     
     if (0.5f == 0.5f) {
       return 1;
@@ -3753,7 +3752,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_float_different  : int () {
+  sub if_eq_float_different  : int () {
     
     if (0.5f == 0.25f) {
       return 0;
@@ -3763,7 +3762,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_double_same  : int () {
+  sub if_eq_double_same  : int () {
     
     if (0.5 == 0.5) {
       return 1;
@@ -3773,7 +3772,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_double_different  : int () {
+  sub if_eq_double_different  : int () {
     
     if (0.5 == 0.25) {
       return 0;
@@ -3783,7 +3782,7 @@ package TestCase {
     }
   }
   
-  static sub if_eq_object_same  : int () {
+  sub if_eq_object_same  : int () {
     
     my $obj1 = new TestCase;
     
@@ -3795,7 +3794,7 @@ package TestCase {
     }
   }
 
-  static sub if_eq_object_different  : int () {
+  sub if_eq_object_different  : int () {
     my $obj1 = new TestCase;
     my $obj2 = new TestCase;
     
@@ -3808,7 +3807,7 @@ package TestCase {
   }
 
   # If a != b
-  static sub if_ne_undef  : int () {
+  sub if_ne_undef  : int () {
     my $test_case : TestCase = new TestCase;
     
     if (undef != undef) {
@@ -3824,7 +3823,7 @@ package TestCase {
     
     return 0;
   }
-  static sub if_ne_byte_same  : int () {
+  sub if_ne_byte_same  : int () {
     
     if ((byte)3 != (byte)3) {
       return 0;
@@ -3834,7 +3833,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_byte_different  : int () {
+  sub if_ne_byte_different  : int () {
     
     if ((byte)3 != (byte)2) {
       return 1;
@@ -3844,7 +3843,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_short_same  : int () {
+  sub if_ne_short_same  : int () {
     
     if ((int)(short)3 != (int)(short)3) {
       return 0;
@@ -3854,7 +3853,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_short_different  : int () {
+  sub if_ne_short_different  : int () {
     
     if ((int)(short)3 != (int)(short)2) {
       return 1;
@@ -3864,7 +3863,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_int_same  : int () {
+  sub if_ne_int_same  : int () {
     
     if ((int)3 != (int)3) {
       return 0;
@@ -3874,7 +3873,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_int_different  : int () {
+  sub if_ne_int_different  : int () {
     
     if ((int)3 != (int)2) {
       return 1;
@@ -3884,7 +3883,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_long_same  : int () {
+  sub if_ne_long_same  : int () {
     
     if ((long)3 != (long)3) {
       return 0;
@@ -3894,7 +3893,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_long_different  : int () {
+  sub if_ne_long_different  : int () {
     
     if ((long)3 != (long)2) {
       return 1;
@@ -3904,7 +3903,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_float_same  : int () {
+  sub if_ne_float_same  : int () {
     
     if (0.5f != 0.5f) {
       return 0;
@@ -3914,7 +3913,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_float_different  : int () {
+  sub if_ne_float_different  : int () {
     
     if (0.5f != 0.25f) {
       return 1;
@@ -3924,7 +3923,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_double_same  : int () {
+  sub if_ne_double_same  : int () {
     
     if (0.5 != 0.5) {
       return 0;
@@ -3934,7 +3933,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_double_different  : int () {
+  sub if_ne_double_different  : int () {
     
     if (0.5 != 0.25) {
       return 1;
@@ -3944,7 +3943,7 @@ package TestCase {
     }
   }
   
-  static sub if_ne_object_same  : int () {
+  sub if_ne_object_same  : int () {
     
     my $obj1 = new TestCase;
     
@@ -3956,7 +3955,7 @@ package TestCase {
     }
   }
 
-  static sub if_ne_object_different  : int () {
+  sub if_ne_object_different  : int () {
     my $obj1 = new TestCase;
     my $obj2 = new TestCase;
     
@@ -3969,7 +3968,7 @@ package TestCase {
   }
 
   # If a > b
-  static sub if_gt_byte_left_big  : int () {
+  sub if_gt_byte_left_big  : int () {
     
     if ((byte)3 > (byte)1) {
       return 1;
@@ -3979,7 +3978,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_byte_same  : int () {
+  sub if_gt_byte_same  : int () {
     
     if ((byte)3 > (byte)3) {
       return 0;
@@ -3989,7 +3988,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_byte_right_big  : int () {
+  sub if_gt_byte_right_big  : int () {
     
     if ((byte)3 > (byte)4) {
       return 0;
@@ -3999,7 +3998,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_short_left_big  : int () {
+  sub if_gt_short_left_big  : int () {
     
     if ((int)(short)3 > (int)(short)1) {
       return 1;
@@ -4009,7 +4008,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_short_same  : int () {
+  sub if_gt_short_same  : int () {
     
     if ((int)(short)3 > (int)(short)3) {
       return 0;
@@ -4019,7 +4018,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_short_right_big  : int () {
+  sub if_gt_short_right_big  : int () {
     
     if ((int)(short)3 > (int)(short)4) {
       return 0;
@@ -4029,7 +4028,7 @@ package TestCase {
     }
   }
   
-  static sub if_gt_int_left_big  : int () {
+  sub if_gt_int_left_big  : int () {
     
     if (3 > 1) {
       return 1;
@@ -4039,7 +4038,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_int_same  : int () {
+  sub if_gt_int_same  : int () {
     
     if (3 > 3) {
       return 0;
@@ -4049,7 +4048,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_int_right_big  : int () {
+  sub if_gt_int_right_big  : int () {
     
     if (3 > 4) {
       return 0;
@@ -4059,7 +4058,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_long_left_big  : int () {
+  sub if_gt_long_left_big  : int () {
     
     if ((long)3 > (long)1) {
       return 1;
@@ -4069,7 +4068,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_long_same  : int () {
+  sub if_gt_long_same  : int () {
     
     if ((long)3 > (long)3) {
       return 0;
@@ -4079,7 +4078,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_long_right_big  : int () {
+  sub if_gt_long_right_big  : int () {
     
     if ((long)3 > (long)4) {
       return 0;
@@ -4089,7 +4088,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_float_left_big  : int () {
+  sub if_gt_float_left_big  : int () {
     
     if ((float)3 > (float)1) {
       return 1;
@@ -4099,7 +4098,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_float_same  : int () {
+  sub if_gt_float_same  : int () {
     
     if ((float)3 > (float)3) {
       return 0;
@@ -4109,7 +4108,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_float_right_big  : int () {
+  sub if_gt_float_right_big  : int () {
     
     if ((float)3 > (float)4) {
       return 0;
@@ -4119,7 +4118,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_double_left_big  : int () {
+  sub if_gt_double_left_big  : int () {
     
     if ((double)3 > (double)1) {
       return 1;
@@ -4129,7 +4128,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_double_same  : int () {
+  sub if_gt_double_same  : int () {
     
     if ((double)3 > (double)3) {
       return 0;
@@ -4139,7 +4138,7 @@ package TestCase {
     }
   }
 
-  static sub if_gt_double_right_big  : int () {
+  sub if_gt_double_right_big  : int () {
     
     if ((double)3 > (double)4) {
       return 0;
@@ -4150,7 +4149,7 @@ package TestCase {
   }
 
   # If a >= b
-  static sub if_ge_byte_left_big  : int () {
+  sub if_ge_byte_left_big  : int () {
     
     if ((byte)3 >= (byte)1) {
       return 1;
@@ -4160,7 +4159,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_byte_same  : int () {
+  sub if_ge_byte_same  : int () {
     
     if ((byte)3 >= (byte)3) {
       return 1;
@@ -4170,7 +4169,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_byte_right_big  : int () {
+  sub if_ge_byte_right_big  : int () {
     
     if ((byte)3 >= (byte)4) {
       return 0;
@@ -4180,7 +4179,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_short_left_big  : int () {
+  sub if_ge_short_left_big  : int () {
     
     if ((int)(short)3 >= (int)(short)1) {
       return 1;
@@ -4190,7 +4189,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_short_same  : int () {
+  sub if_ge_short_same  : int () {
     
     if ((int)(short)3 >= (int)(short)3) {
       return 1;
@@ -4200,7 +4199,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_short_right_big  : int () {
+  sub if_ge_short_right_big  : int () {
     
     if ((int)(short)3 >= (int)(short)4) {
       return 0;
@@ -4210,7 +4209,7 @@ package TestCase {
     }
   }
   
-  static sub if_ge_int_left_big  : int () {
+  sub if_ge_int_left_big  : int () {
     
     if (3 >= 1) {
       return 1;
@@ -4220,7 +4219,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_int_same  : int () {
+  sub if_ge_int_same  : int () {
     
     if (3 >= 3) {
       return 1;
@@ -4230,7 +4229,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_int_right_big  : int () {
+  sub if_ge_int_right_big  : int () {
     
     if (3 >= 4) {
       return 0;
@@ -4240,7 +4239,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_long_left_big  : int () {
+  sub if_ge_long_left_big  : int () {
     
     if ((long)3 >= (long)1) {
       return 1;
@@ -4250,7 +4249,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_long_same  : int () {
+  sub if_ge_long_same  : int () {
     
     if ((long)3 >= (long)3) {
       return 1;
@@ -4260,7 +4259,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_long_right_big  : int () {
+  sub if_ge_long_right_big  : int () {
     
     if ((long)3 >= (long)4) {
       return 0;
@@ -4270,7 +4269,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_float_left_big  : int () {
+  sub if_ge_float_left_big  : int () {
     
     if ((float)3 >= (float)1) {
       return 1;
@@ -4280,7 +4279,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_float_same  : int () {
+  sub if_ge_float_same  : int () {
     
     if ((float)3 >= (float)3) {
       return 1;
@@ -4290,7 +4289,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_float_right_big  : int () {
+  sub if_ge_float_right_big  : int () {
     
     if ((float)3 >= (float)4) {
       return 0;
@@ -4300,7 +4299,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_double_left_big  : int () {
+  sub if_ge_double_left_big  : int () {
     
     if ((double)3 >= (double)1) {
       return 1;
@@ -4310,7 +4309,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_double_same  : int () {
+  sub if_ge_double_same  : int () {
     
     if ((double)3 >= (double)3) {
       return 1;
@@ -4320,7 +4319,7 @@ package TestCase {
     }
   }
 
-  static sub if_ge_double_right_big  : int () {
+  sub if_ge_double_right_big  : int () {
     
     if ((double)3 >= (double)4) {
       return 0;
@@ -4331,7 +4330,7 @@ package TestCase {
   }
 
   # If a < b
-  static sub if_lt_byte_left_big  : int () {
+  sub if_lt_byte_left_big  : int () {
     
     if ((byte)3 < (byte)1) {
       return 0;
@@ -4341,7 +4340,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_byte_same  : int () {
+  sub if_lt_byte_same  : int () {
     
     if ((byte)3 < (byte)3) {
       return 0;
@@ -4351,7 +4350,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_byte_right_big  : int () {
+  sub if_lt_byte_right_big  : int () {
     
     if ((byte)3 < (byte)4) {
       return 1;
@@ -4361,7 +4360,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_short_left_big  : int () {
+  sub if_lt_short_left_big  : int () {
     
     if ((int)(short)3 < (int)(short)1) {
       return 0;
@@ -4371,7 +4370,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_short_same  : int () {
+  sub if_lt_short_same  : int () {
     
     if ((int)(short)3 < (int)(short)3) {
       return 0;
@@ -4381,7 +4380,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_short_right_big  : int () {
+  sub if_lt_short_right_big  : int () {
     
     if ((int)(short)3 < (int)(short)4) {
       return 1;
@@ -4391,7 +4390,7 @@ package TestCase {
     }
   }
   
-  static sub if_lt_int_left_big  : int () {
+  sub if_lt_int_left_big  : int () {
     
     if (3 < 1) {
       return 0;
@@ -4401,7 +4400,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_int_same  : int () {
+  sub if_lt_int_same  : int () {
     
     if (3 < 3) {
       return 0;
@@ -4411,7 +4410,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_int_right_big  : int () {
+  sub if_lt_int_right_big  : int () {
     
     if (3 < 4) {
       return 1;
@@ -4421,7 +4420,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_long_left_big  : int () {
+  sub if_lt_long_left_big  : int () {
     
     if ((long)3 < (long)1) {
       return 0;
@@ -4431,7 +4430,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_long_same  : int () {
+  sub if_lt_long_same  : int () {
     
     if ((long)3 < (long)3) {
       return 0;
@@ -4441,7 +4440,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_long_right_big  : int () {
+  sub if_lt_long_right_big  : int () {
     
     if ((long)3 < (long)4) {
       return 1;
@@ -4451,7 +4450,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_float_left_big  : int () {
+  sub if_lt_float_left_big  : int () {
     
     if ((float)3 < (float)1) {
       return 0;
@@ -4461,7 +4460,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_float_same  : int () {
+  sub if_lt_float_same  : int () {
     
     if ((float)3 < (float)3) {
       return 0;
@@ -4471,7 +4470,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_float_right_big  : int () {
+  sub if_lt_float_right_big  : int () {
     
     if ((float)3 < (float)4) {
       return 1;
@@ -4481,7 +4480,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_double_left_big  : int () {
+  sub if_lt_double_left_big  : int () {
     
     if ((double)3 < (double)1) {
       return 0;
@@ -4491,7 +4490,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_double_same  : int () {
+  sub if_lt_double_same  : int () {
     
     if ((double)3 < (double)3) {
       return 0;
@@ -4501,7 +4500,7 @@ package TestCase {
     }
   }
 
-  static sub if_lt_double_right_big  : int () {
+  sub if_lt_double_right_big  : int () {
     
     if ((double)3 < (double)4) {
       return 1;
@@ -4512,7 +4511,7 @@ package TestCase {
   }
 
   # If a <= b
-  static sub if_le_byte_left_big  : int () {
+  sub if_le_byte_left_big  : int () {
     
     if ((byte)3 <= (byte)1) {
       return 0;
@@ -4522,7 +4521,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_byte_same  : int () {
+  sub if_le_byte_same  : int () {
     
     if ((byte)3 <= (byte)3) {
       return 1;
@@ -4532,7 +4531,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_byte_right_big  : int () {
+  sub if_le_byte_right_big  : int () {
     
     if ((byte)3 <= (byte)4) {
       return 1;
@@ -4542,7 +4541,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_short_left_big  : int () {
+  sub if_le_short_left_big  : int () {
     
     if ((int)(short)3 <= (int)(short)1) {
       return 0;
@@ -4552,7 +4551,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_short_same  : int () {
+  sub if_le_short_same  : int () {
     
     if ((int)(short)3 <= (int)(short)3) {
       return 1;
@@ -4562,7 +4561,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_short_right_big  : int () {
+  sub if_le_short_right_big  : int () {
     
     if ((int)(short)3 <= (int)(short)4) {
       return 1;
@@ -4572,7 +4571,7 @@ package TestCase {
     }
   }
   
-  static sub if_le_int_left_big  : int () {
+  sub if_le_int_left_big  : int () {
     
     if (3 <= 1) {
       return 0;
@@ -4582,7 +4581,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_int_same  : int () {
+  sub if_le_int_same  : int () {
     
     if (3 <= 3) {
       return 1;
@@ -4592,7 +4591,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_int_right_big  : int () {
+  sub if_le_int_right_big  : int () {
     
     if (3 <= 4) {
       return 1;
@@ -4602,7 +4601,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_long_left_big  : int () {
+  sub if_le_long_left_big  : int () {
     
     if ((long)3 <= (long)1) {
       return 0;
@@ -4612,7 +4611,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_long_same  : int () {
+  sub if_le_long_same  : int () {
     
     if ((long)3 <= (long)3) {
       return 1;
@@ -4622,7 +4621,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_long_right_big  : int () {
+  sub if_le_long_right_big  : int () {
     
     if ((long)3 <= (long)4) {
       return 1;
@@ -4632,7 +4631,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_float_left_big  : int () {
+  sub if_le_float_left_big  : int () {
     
     if ((float)3 <= (float)1) {
       return 0;
@@ -4642,7 +4641,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_float_same  : int () {
+  sub if_le_float_same  : int () {
     
     if ((float)3 <= (float)3) {
       return 1;
@@ -4652,7 +4651,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_float_right_big  : int () {
+  sub if_le_float_right_big  : int () {
     
     if ((float)3 <= (float)4) {
       return 1;
@@ -4662,7 +4661,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_double_left_big  : int () {
+  sub if_le_double_left_big  : int () {
     
     if ((double)3 <= (double)1) {
       return 0;
@@ -4672,7 +4671,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_double_same  : int () {
+  sub if_le_double_same  : int () {
     
     if ((double)3 <= (double)3) {
       return 1;
@@ -4682,7 +4681,7 @@ package TestCase {
     }
   }
 
-  static sub if_le_double_right_big  : int () {
+  sub if_le_double_right_big  : int () {
     
     if ((double)3 <= (double)4) {
       return 1;
@@ -4692,7 +4691,7 @@ package TestCase {
     }
   }
   
-  static sub bit_and : int () {
+  sub bit_and : int () {
     # byte
     my $byte_success = 0;
     {
@@ -4736,7 +4735,7 @@ package TestCase {
     return 0;
   }
 
-  static sub bit_or : int () {
+  sub bit_or : int () {
     # byte
     my $byte_success = 0;
     {
@@ -4780,7 +4779,7 @@ package TestCase {
     return 0;
   }
 
-  static sub bit_xor : int () {
+  sub bit_xor : int () {
     # byte
     my $byte_success = 0;
     {
@@ -4824,7 +4823,7 @@ package TestCase {
     return 0;
   }
 
-  static sub bit_shift_right_logical_int : int () {
+  sub bit_shift_right_logical_int : int () {
     # 11000000 00000000 00000000 00000001 >>> 2
     my $value = 0xC0000001 >>> 2;
     
@@ -4837,7 +4836,7 @@ package TestCase {
     }
   }
   
-  static sub bit_shift_right_logical_long : int () {
+  sub bit_shift_right_logical_long : int () {
     # 11000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 >>> 2
     my $value = 0xC000000000000001L >>> 2;
     
@@ -4850,7 +4849,7 @@ package TestCase {
     }
   }
 
-  static sub bit_shift_right_int : int () {
+  sub bit_shift_right_int : int () {
     # 11000000 00000000 00000000 00000001 >> 2
     my $value = 0xC0000001 >> 2;
     
@@ -4863,7 +4862,7 @@ package TestCase {
     }
   }
   
-  static sub bit_shift_right_long : int () {
+  sub bit_shift_right_long : int () {
     # 11000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 >> 2
     my $value = 0xC000000000000001L >> 2;
     
@@ -4876,13 +4875,13 @@ package TestCase {
     }
   }
   
-  static sub literal_character : int () {
+  sub literal_character : int () {
     my $value = 'a';
     
     return 1;
   }
   
-  static sub number_literal_specifier : int () {
+  sub number_literal_specifier : int () {
     my $value1 = 255f;
     my $value2 = 255d;
     my $value3 = 255L;
@@ -4910,7 +4909,7 @@ package TestCase {
     return 0;
   }
   
-  static sub number_literal_underline : int () {
+  sub number_literal_underline : int () {
     my $value = 123_123;
     
     if ($value == 123123) {
@@ -4921,7 +4920,7 @@ package TestCase {
     }
   }
   
-  static sub number_literal_hex_specifier : int () {
+  sub number_literal_hex_specifier : int () {
     my $value3 = 0xFFL;
     my $value4 = (byte)0xFF;
     my $value5 = (short)0xFFFF;
@@ -4942,7 +4941,7 @@ package TestCase {
     
     return 0;
   }
-  static sub number_literal_hex_all_number : int () {
+  sub number_literal_hex_all_number : int () {
     my $value1 = 0x01234567;
     my $value2 = 0x00ABCDEF;
     my $value3 = 0x00abcdef;
@@ -4958,7 +4957,7 @@ package TestCase {
     return 0;
   }
 
-  static sub number_literal_underline_hex : int () {
+  sub number_literal_underline_hex : int () {
     my $value = 0xFF_FF;
     
     if ($value == 0xFFFF) {
@@ -4969,7 +4968,7 @@ package TestCase {
     }
   }
   
-  static sub number_literal_hex_int : int () {
+  sub number_literal_hex_int : int () {
     my $value = 0xFF;
     
     if ($value == 255) {
@@ -4979,7 +4978,7 @@ package TestCase {
       return 0;
     }
   }
-  static sub number_literal_hex_int_max : int () {
+  sub number_literal_hex_int_max : int () {
     # 11111111 11111111 11111111 11111111
     my $value = 0xFFFFFFFF;
     
@@ -4990,7 +4989,7 @@ package TestCase {
       return 0;
     }
   }
-  static sub number_literal_hex_long_max : int () {
+  sub number_literal_hex_long_max : int () {
     # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
     my $value = 0xFFFFFFFFFFFFFFFFL;
     
@@ -5002,7 +5001,7 @@ package TestCase {
     }
   }
 
-  static sub number_literal_octal_specifier : int () {
+  sub number_literal_octal_specifier : int () {
     my $value3 = 0377L;
     my $value4 = (byte)0377;
     my $value5 = (short)0177777;
@@ -5024,7 +5023,7 @@ package TestCase {
     return 0;
   }
 
-  static sub number_literal_octal_all_number : int () {
+  sub number_literal_octal_all_number : int () {
     my $value1 = 0110642547;
     
     if ($value1 == 19088743) {
@@ -5034,7 +5033,7 @@ package TestCase {
     return 0;
   }
 
-  static sub number_literal_binary_specifier : int () {
+  sub number_literal_binary_specifier : int () {
     my $value3 = 0b11111111L;
     my $value4 = (byte)0b11111111;
     my $value5 = (short)0b1111111111111111;
@@ -5055,7 +5054,7 @@ package TestCase {
     
     return 0;
   }
-  static sub number_literal_binary_all_number : int () {
+  sub number_literal_binary_all_number : int () {
     my $value1 = 0b1001000110100010101100111;
     
     if ($value1 == 19088743) {
@@ -5065,7 +5064,7 @@ package TestCase {
     return 0;
   }
 
-  static sub number_literal_underline_binary : int () {
+  sub number_literal_underline_binary : int () {
     my $value = 0b11111111_11111111;
     
     if ($value == 0b1111111111111111) {
@@ -5076,7 +5075,7 @@ package TestCase {
     }
   }
   
-  static sub number_literal_binary_int : int () {
+  sub number_literal_binary_int : int () {
     my $value = 0b11111111;
     
     if ($value == 255) {
@@ -5086,7 +5085,7 @@ package TestCase {
       return 0;
     }
   }
-  static sub number_literal_binary_int_max : int () {
+  sub number_literal_binary_int_max : int () {
     # 11111111 11111111 11111111 11111111
     my $value = 0b11111111111111111111111111111111;
     
@@ -5097,7 +5096,7 @@ package TestCase {
       return 0;
     }
   }
-  static sub number_literal_binary_long_max : int () {
+  sub number_literal_binary_long_max : int () {
     # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
     my $value = 0b1111111111111111111111111111111111111111111111111111111111111111L;
     
@@ -5109,7 +5108,7 @@ package TestCase {
     }
   }
   
-  static sub number_literal_underline_octal : int () {
+  sub number_literal_underline_octal : int () {
     my $value = 0177_777;
     
     if ($value == 0177777) {
@@ -5120,7 +5119,7 @@ package TestCase {
     }
   }
   
-  static sub number_literal_octal_int : int () {
+  sub number_literal_octal_int : int () {
     my $value = 0377;
     
     if ($value == 255) {
@@ -5130,7 +5129,7 @@ package TestCase {
       return 0;
     }
   }
-  static sub number_literal_octal_int_max : int () {
+  sub number_literal_octal_int_max : int () {
     # 11111111 11111111 11111111 11111111
     my $value = 037777777777;
     
@@ -5141,7 +5140,7 @@ package TestCase {
       return 0;
     }
   }
-  static sub number_literal_octal_long_max : int () {
+  sub number_literal_octal_long_max : int () {
     # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
     my $value = 01777777777777777777777L;
     
@@ -5154,7 +5153,7 @@ package TestCase {
   }
   
   # Bit shift left
-  static sub bit_shift_left_int : int () {
+  sub bit_shift_left_int : int () {
     
     # 00000011 00000000 00000000 00000000 << 2
     my $value = 0x30000000 << 2;
@@ -5168,7 +5167,7 @@ package TestCase {
     }
   }
   
-  static sub bit_shift_left_int_max : int () {
+  sub bit_shift_left_int_max : int () {
     
     # 01000000 00000000 00000000 00000000 << 1
     my $value = 0x40000000 << 1;
@@ -5182,7 +5181,7 @@ package TestCase {
     }
   }
   
-  static sub bit_shift_left_int_overflow : int () {
+  sub bit_shift_left_int_overflow : int () {
     
     # 10000000 00000000 00000000 00000000 << 1
     my $value = 0x80000000 << 1;
@@ -5196,7 +5195,7 @@ package TestCase {
     }
   }
 
-  static sub bit_shift_left_long : int () {
+  sub bit_shift_left_long : int () {
     
     # 00000011 00000000 00000000 00000000 00000000 00000000 00000000 00000000 << 2
     my $value = 0x3000000000000000L << 2;
@@ -5210,7 +5209,7 @@ package TestCase {
     }
   }
   
-  static sub bit_shift_left_long_max : int () {
+  sub bit_shift_left_long_max : int () {
     
     # 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000  << 1
     my $value = 0x4000000000000000L << 1;
@@ -5224,7 +5223,7 @@ package TestCase {
     }
   }
   
-  static sub bit_shift_left_long_overflow : int () {
+  sub bit_shift_left_long_overflow : int () {
     
     # 10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000  << 1
     my $value = 0x8000000000000000L << 1;
@@ -5239,7 +5238,7 @@ package TestCase {
   }
 
   # Array length
-  static sub get_array_length_at : int () {
+  sub get_array_length_at : int () {
     
     my $nums = new int[3];
     my $len = @$nums;
@@ -5249,7 +5248,7 @@ package TestCase {
     
     return 0;
   }
-  static sub get_array_length_len : int () {
+  sub get_array_length_len : int () {
     
     my $nums = new int[3];
     my $len = len $nums;
@@ -5260,7 +5259,7 @@ package TestCase {
     return 0;
   }
 
-  static sub get_array_length_undef : int () {
+  sub get_array_length_undef : int () {
     
     my $nums : int[] = undef;
 
@@ -5276,7 +5275,7 @@ package TestCase {
     return 0;
   }
 
-  static sub array : int () {
+  sub array : int () {
     
     my $nums = new int[(byte)3];
     $nums->[2] = 4;
@@ -5284,7 +5283,7 @@ package TestCase {
       return 1;
     }
   }
-  static sub array_set_and_get_array_element_first : int () {
+  sub array_set_and_get_array_element_first : int () {
     
     my $nums = new int[3];
     $nums->[0] = 345;
@@ -5292,7 +5291,7 @@ package TestCase {
     return $nums->[0];
   }
 
-  static sub array_set_and_get_array_element_last : int () {
+  sub array_set_and_get_array_element_last : int () {
     
     my $nums = new int[3];
     $nums->[2] = 298;
@@ -5300,7 +5299,7 @@ package TestCase {
     return $nums->[2];
   }
 
-  static sub array_culcurate_sum_by_for : int () {
+  sub array_culcurate_sum_by_for : int () {
     
     my $nums = new int[3];
     $nums->[0] = 1;
@@ -5316,42 +5315,42 @@ package TestCase {
   }
   
   # Sum
-  static sub sum_byte : byte ($a : byte, $b :byte,) {
+  sub sum_byte : byte ($a : byte, $b :byte,) {
     
     my $total = (byte)((int)$a + (int)$b);
     
     return $total;
   }
 
-  static sub sum_short : short ($a : short, $b :short) {
+  sub sum_short : short ($a : short, $b :short) {
     
     my $total = (short)((int)$a + (int)$b);
     
     return $total;
   }
 
-  static sub sum_int : int ($a : int, $b :int) {
+  sub sum_int : int ($a : int, $b :int) {
     
     my $total = $a + $b;
     
     return $total;
   }
 
-  static sub sum_long : long ($a : long, $b :long) {
+  sub sum_long : long ($a : long, $b :long) {
     
     my $total = $a + $b;
     
     return $total;
   }
 
-  static sub sum_float : float ($a : float, $b :float) {
+  sub sum_float : float ($a : float, $b :float) {
     
     my $total = $a + $b;
     
     return $total;
   }
 
-  static sub sum_double : double ($a : double, $b :double) {
+  sub sum_double : double ($a : double, $b :double) {
     
     my $total = $a + $b;
     
@@ -5359,7 +5358,7 @@ package TestCase {
   }
   
   # For
-  static sub for_basic : int () {
+  sub for_basic : int () {
   
     my $success_basic = 0;
     {

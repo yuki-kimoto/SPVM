@@ -2,7 +2,7 @@ use Double;
 use Math;
 
 package TestCase::Double {
-  jit static sub constant : int () {
+  jit sub constant : int () {
     if (Double::MIN_EXPONENT() == -1022) {
       if (Double::MAX_EXPONENT() == 1023) {
         if (Double::BYTES() == 8) {
@@ -16,7 +16,7 @@ package TestCase::Double {
     return 0;
   }
   
-  jit static sub double_to_raw_long_bits : int () {
+  jit sub double_to_raw_long_bits : int () {
     
     my $double_value = 0.5;
     
@@ -29,7 +29,7 @@ package TestCase::Double {
     return 0;
   }
   
-  jit static sub double_to_raw_long_bits_nan : int () {
+  jit sub double_to_raw_long_bits_nan : int () {
     
     my $double_value = 0.0 / 0.0;
     
@@ -44,7 +44,7 @@ package TestCase::Double {
     return 0;
   }
 
-  jit static sub double_to_long_bits : int () {
+  jit sub double_to_long_bits : int () {
     
     my $double_value = 0.5;
     
@@ -57,7 +57,7 @@ package TestCase::Double {
     return 0;
   }
   
-  jit static sub double_to_long_bits_nan : int () {
+  jit sub double_to_long_bits_nan : int () {
     
     my $double_value = 0.0 / 0.0;
     
@@ -72,7 +72,7 @@ package TestCase::Double {
     return 0;
   }
     
-  jit static sub long_bits_to_double : int () {
+  jit sub long_bits_to_double : int () {
     
     my $long_bits = 0x3FE0000000000000L;
     
@@ -85,7 +85,7 @@ package TestCase::Double {
     return 0;
   }
   
-  jit static sub long_bits_to_double_nan_first_condition : int () {
+  jit sub long_bits_to_double_nan_first_condition : int () {
     
     if (Double::double_to_raw_long_bits(Double::long_bits_to_double(0x7FF0000000000000L)) == 0x7FF0000000000000L) {
       if (Double::double_to_raw_long_bits(Double::long_bits_to_double(0x7FF0000000000001L)) == 0x7FF8000000000000L) {
@@ -102,7 +102,7 @@ package TestCase::Double {
     return 0;
   }
 
-  jit static sub long_bits_to_double_nan_first_condition_is_nan : int () {
+  jit sub long_bits_to_double_nan_first_condition_is_nan : int () {
     
     if (!Double::is_nan(Double::long_bits_to_double(0x7FF0000000000000L))) {
       if (Double::is_nan(Double::long_bits_to_double(0x7FF0000000000001L))) {
@@ -119,7 +119,7 @@ package TestCase::Double {
     return 0;
   }
   
-  jit static sub long_bits_to_double_nan_second_condition : int () {
+  jit sub long_bits_to_double_nan_second_condition : int () {
     
     if (Double::double_to_raw_long_bits(Double::long_bits_to_double(0xFFF0000000000000L)) == 0xFFF0000000000000L) {
       if (Double::double_to_raw_long_bits(Double::long_bits_to_double(0xFFF0000000000001L)) == 0x7FF8000000000000L) {
@@ -136,7 +136,7 @@ package TestCase::Double {
     return 0;
   }
 
-  jit static sub long_bits_to_double_nan_second_condition_is_nan : int () {
+  jit sub long_bits_to_double_nan_second_condition_is_nan : int () {
     
     if (!Double::is_nan(Double::long_bits_to_double(0xFFF0000000000000L))) {
       if (Double::is_nan(Double::long_bits_to_double(0xFFF0000000000001L))) {
@@ -153,7 +153,7 @@ package TestCase::Double {
     return 0;
   }
 
-  jit static sub is_infinite : int () {
+  jit sub is_infinite : int () {
     if (Double::is_infinite(Double::POSITIVE_INFINITY())) {
       if (Double::is_infinite(Double::NEGATIVE_INFINITY())) {
         if (!Double::is_infinite(Double::NaN())) {
@@ -167,7 +167,7 @@ package TestCase::Double {
     return 0;
   }
 
-  jit static sub is_finite : int () {
+  jit sub is_finite : int () {
     if (!Double::is_finite(Double::POSITIVE_INFINITY())) {
       if (!Double::is_finite(Double::NEGATIVE_INFINITY())) {
         if (!Double::is_finite(Double::NaN())) {
@@ -181,7 +181,7 @@ package TestCase::Double {
     return 0;
   }
 
-  jit static sub is_nan : int () {
+  jit sub is_nan : int () {
     if (!Double::is_nan(Double::POSITIVE_INFINITY())) {
       if (!Double::is_nan(Double::NEGATIVE_INFINITY())) {
         if (Double::is_nan(Double::NaN())) {
@@ -195,7 +195,7 @@ package TestCase::Double {
     return 0;
   }
   
-  jit static sub pass_nan : int ($value : double) {
+  jit sub pass_nan : int ($value : double) {
     if (Double::is_nan($value)) {
       if (Double::double_to_raw_long_bits($value) == 0x7FF8000000000000L) {
         return 1;
@@ -205,7 +205,7 @@ package TestCase::Double {
     return 0;
   }
   
-  jit static sub pass_positive_infinity : int ($value : double) {
+  jit sub pass_positive_infinity : int ($value : double) {
     if ($value == Double::POSITIVE_INFINITY()) {
       return 1;
     }
@@ -213,7 +213,7 @@ package TestCase::Double {
     return 0;
   }
 
-  jit static sub pass_negative_infinity : int ($value : double) {
+  jit sub pass_negative_infinity : int ($value : double) {
     if ($value == Double::NEGATIVE_INFINITY()) {
       return 1;
     }
