@@ -1454,6 +1454,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     // Add op fields
     package->op_fields = op_fields;
+    package->op_subs = op_subs;
     
     package->id = compiler->op_packages->length;
     SPVM_LIST_push(compiler->op_packages, op_package);
