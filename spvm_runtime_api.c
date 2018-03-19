@@ -58,6 +58,8 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_set_double_field,
   SPVM_RUNTIME_API_set_object_field,
   SPVM_RUNTIME_API_get_sub_id,
+  SPVM_RUNTIME_API_get_method_sub_id,
+  SPVM_RUNTIME_API_get_class_method_sub_id,
   SPVM_RUNTIME_API_call_void_sub,
   SPVM_RUNTIME_API_call_byte_sub,
   SPVM_RUNTIME_API_call_short_sub,
@@ -1157,6 +1159,58 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
   
   SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, name, strlen(name));
   int32_t sub_id = op_sub->uv.sub->id;
+  
+  return sub_id;
+}
+
+int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_API* api, SPVM_OBJECT* object, const char* sub_name) {
+  (void)api;
+  
+  if (sub_name == NULL) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
+  SPVM_PACKAGE* package = type->op_package->uv.package;
+  
+  int32_t sub_id = -1;
+  int32_t sub_index;
+  for (sub_index = 0; sub_index < package->op_subs->length; sub_index++) {
+    SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, sub_index);
+    if (strcmp(op_sub->uv.sub->op_name->uv.name, sub_name) == 0) {
+      sub_id = op_sub->uv.sub->id;
+      break;
+    }
+  }
+  
+  return sub_id;
+}
+
+int32_t SPVM_RUNTIME_API_get_class_method_sub_id(SPVM_API* api, const char* package_name, const char* sub_name) {
+  (void)api;
+  
+  if (sub_name == NULL) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_PACKAGE* package = op_package->uv.package;
+  
+  int32_t sub_id = -1;
+  int32_t sub_index;
+  for (sub_index = 0; sub_index < package->op_subs->length; sub_index++) {
+    SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, sub_index);
+    if (strcmp(op_sub->uv.sub->op_name->uv.name, sub_name) == 0) {
+      sub_id = op_sub->uv.sub->id;
+      break;
+    }
+  }
   
   return sub_id;
 }
