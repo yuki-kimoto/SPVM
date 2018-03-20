@@ -1057,7 +1057,19 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
   
   SPVM_OP* found_op_sub;
   
-  if (call_sub->id == SPVM_CALL_SUB_C_ID_METHOD_CALL) {
+  if (call_sub->id == SPVM_CALL_SUB_C_ID_CLASS_METHOD_CALL) {
+    const char* package_name = call_sub->op_name_package->uv.name;
+    const char* sub_name = call_sub->op_name->uv.name;
+    
+    const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
+    
+    found_op_sub= SPVM_HASH_search(
+      compiler->op_sub_symtable,
+      sub_abs_name,
+      strlen(sub_abs_name)
+    );
+  }
+  else if (call_sub->id == SPVM_CALL_SUB_C_ID_METHOD_CALL) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_term);
     const char* type_name = type->name;
     const char* sub_name = call_sub->op_name->uv.name;
@@ -1888,6 +1900,7 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     call_sub->id = SPVM_CALL_SUB_C_ID_CLASS_METHOD_CALL;
     op_name->uv.name = sub_name;
     call_sub->op_name_package = op_invocant;
+    call_sub->op_name = op_name;
   }
   // Method call
   else {

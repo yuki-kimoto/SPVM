@@ -1959,12 +1959,12 @@ package TestCase {
   }
   sub enum_int  : int () {
     
-    if (TestCase::INT_ZERO() == 0) {
-      if (TestCase::INT_ONE() == 1) {
-        if (TestCase::INT_THREE() == 3) {
-          if (TestCase::INT_FOUR() == 4) {
-            if (TestCase::INT_SIX() == 6) {
-              if (TestCase::INT_MINUS_MAX() == -2147483648) {
+    if (TestCase->INT_ZERO == 0) {
+      if (TestCase->INT_ONE == 1) {
+        if (TestCase->INT_THREE == 3) {
+          if (TestCase->INT_FOUR == 4) {
+            if (TestCase->INT_SIX == 6) {
+              if (TestCase->INT_MINUS_MAX == -2147483648) {
                 return 1;
               }
             }
