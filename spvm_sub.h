@@ -3,6 +3,12 @@
 
 #include "spvm_base.h"
 
+enum {
+  SPVM_SUB_C_CALL_TYPE_ID_SUB,
+  SPVM_SUB_C_CALL_TYPE_ID_METHOD,
+  SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD,
+};
+
 // Method information
 struct SPVM_sub {
   void* native_address;
@@ -23,6 +29,7 @@ struct SPVM_sub {
   int32_t eval_stack_max_length;
   int32_t object_var_index_stack_max;
   int32_t object_mys_length;
+  int8_t call_type_id;
   _Bool is_native;
   _Bool is_enum;
   _Bool is_destructor;

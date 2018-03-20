@@ -1419,7 +1419,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
               op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
               op_arg_first_type->uv.type = package->op_type->uv.type;
               op_arg_first->uv.my->op_type = op_arg_first_type;
-              sub->is_method = 1;
+              sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
             }
             else {
               op_arg_first_type = op_arg_first->uv.my->op_type;

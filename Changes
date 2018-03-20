@@ -3,8 +3,6 @@
   - remove set, get keyword
   - new become public by default
   - add self keyword to represent invocant
-  - remove Foo::bar() function call syntax
-    all subroutine is method call $foo->bar() or class method call Foo->bar()
 0.0317 2018-03-15
   - support escape character \0
   - cleanup leave scope logic
