@@ -383,7 +383,7 @@ package TestCase {
     
     # Subroutine call from native
     {
-      my $total = test1(3, 11);
+      my $total = CORE->test1(3, 11);
       print($total . "\n");
     }
     
