@@ -1861,6 +1861,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   // Subroutine is constant
   op_sub->uv.sub->is_enum = 1;
   op_sub->uv.sub->disable_jit = 1;
+  op_sub->uv.sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
   
   return op_sub;
 }

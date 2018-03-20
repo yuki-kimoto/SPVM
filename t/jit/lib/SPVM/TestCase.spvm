@@ -43,59 +43,59 @@ package TestCase {
   jit sub FLOAT_PRECICE : float () { return 16384.5f; }
   jit sub DOUBLE_PRECICE : double () { return 65536.5; }
   
-  jit sub set_x_int_array : void ($self : TestCase, $x_int_array : int[]) {
+  jit sub set_x_int_array : void ($self : self, $x_int_array : int[]) {
     $self->{x_int_array} = $x_int_array;
   }
 
-  jit sub set_x_string : void ($self : TestCase, $x_string : byte[]) {
+  jit sub set_x_string : void ($self : self, $x_string : byte[]) {
     $self->{x_string} = $x_string;
   }
 
-  jit sub set_x_byte : void ($self : TestCase, $x_byte : byte) {
+  jit sub set_x_byte : void ($self : self, $x_byte : byte) {
     $self->{x_byte} = $x_byte;
   }
 
-  jit sub set_x_short : void ($self : TestCase, $x_short : short) {
+  jit sub set_x_short : void ($self : self, $x_short : short) {
     $self->{x_short} = $x_short;
   }
 
-  jit sub set_x_int : void ($self : TestCase, $x_int : int) {
+  jit sub set_x_int : void ($self : self, $x_int : int) {
     $self->{x_int} = $x_int;
   }
 
-  jit sub set_x_long : void ($self : TestCase, $x_long : long) {
+  jit sub set_x_long : void ($self : self, $x_long : long) {
     $self->{x_long} = $x_long;
   }
 
-  jit sub set_x_float : void ($self : TestCase, $x_float : float) {
+  jit sub set_x_float : void ($self : self, $x_float : float) {
     $self->{x_float} = $x_float;
   }
 
-  jit sub set_x_double : void ($self : TestCase, $x_double : double) {
+  jit sub set_x_double : void ($self : self, $x_double : double) {
     $self->{x_double} = $x_double;
   }
 
-  jit sub get_x_byte : byte ($self : TestCase) {
+  jit sub get_x_byte : byte ($self : self) {
     return $self->{x_byte};
   }
 
-  jit sub get_x_short : short ($self : TestCase) {
+  jit sub get_x_short : short ($self : self) {
     return $self->{x_short};
   }
 
-  jit sub get_x_int : int ($self : TestCase) {
+  jit sub get_x_int : int ($self : self) {
     return $self->{x_int};
   }
 
-  jit sub get_x_long : long ($self : TestCase) {
+  jit sub get_x_long : long ($self : self) {
     return $self->{x_long};
   }
 
-  jit sub get_x_float : float ($self : TestCase) {
+  jit sub get_x_float : float ($self : self) {
     return $self->{x_float};
   }
 
-  jit sub get_x_double : double ($self : TestCase) {
+  jit sub get_x_double : double ($self : self) {
     return $self->{x_double};
   }
   
@@ -456,7 +456,6 @@ package TestCase {
             }
           }
         }
-
       }
       
     }
@@ -469,11 +468,11 @@ package TestCase {
     $test_case->{private_field};
   }
 
-  jit sub get_minimal : TestCase::Minimal ($self : TestCase) {
+  jit sub get_minimal : TestCase::Minimal ($self : self) {
     return $self->{minimal};
   }
 
-  jit sub set_minimal : void ($self : TestCase, $value : TestCase::Minimal) {
+  jit sub set_minimal : void ($self : self, $value : TestCase::Minimal) {
     $self->{minimal} = $value;
   }
 
@@ -489,9 +488,7 @@ package TestCase {
     
     if (TestCase::int($test_case) == 5) {
       if (TestCase::int($test_case) == 5) {
-        if ($test_case->int == 5) {
-          return 1;
-        }
+        return 1;
       }
     }
     
@@ -1960,12 +1957,12 @@ package TestCase {
   }
   jit sub enum_int  : int () {
     
-    if (TestCase::INT_ZERO() == 0) {
-      if (TestCase::INT_ONE() == 1) {
-        if (TestCase::INT_THREE() == 3) {
-          if (TestCase::INT_FOUR() == 4) {
-            if (TestCase::INT_SIX() == 6) {
-              if (TestCase::INT_MINUS_MAX() == -2147483648) {
+    if (TestCase->INT_ZERO == 0) {
+      if (TestCase->INT_ONE == 1) {
+        if (TestCase->INT_THREE == 3) {
+          if (TestCase->INT_FOUR == 4) {
+            if (TestCase->INT_SIX == 6) {
+              if (TestCase->INT_MINUS_MAX == -2147483648) {
                 return 1;
               }
             }

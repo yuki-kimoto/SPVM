@@ -7,7 +7,7 @@ package TestCase::Destructor {
     return new TestCase::Destructor;
   }
   
-  jit sub DESTROY : void ($self : TestCase::Destructor) {
+  jit sub DESTROY : void ($self : self) {
     $self->{minimal}->{x} = 3;
   }
 }

@@ -3,10 +3,10 @@ use Math;
 
 package TestCase::Double {
   jit sub constant : int () {
-    if (Double::MIN_EXPONENT() == -1022) {
-      if (Double::MAX_EXPONENT() == 1023) {
-        if (Double::BYTES() == 8) {
-          if (Double::SIZE() == 64) {
+    if (Double->MIN_EXPONENT() == -1022) {
+      if (Double->MAX_EXPONENT() == 1023) {
+        if (Double->BYTES() == 8) {
+          if (Double->SIZE() == 64) {
             return 1;
           }
         }

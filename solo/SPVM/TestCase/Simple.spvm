@@ -39,8 +39,6 @@ package TestCase::Simple {
     $self->{x};
     $self->sum5();
 
-    TestCase::Simple::sum5($self);
-
     $self->{x} = 3;
 
     my $char : byte = 'a';

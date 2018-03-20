@@ -4,10 +4,10 @@ package TestCase::Float {
 
   # SPVM::Float
   jit sub constant: int () {
-    if (Float::MIN_EXPONENT() == -126) {
-      if (Float::MAX_EXPONENT() == 127) {
-        if (Float::BYTES() == 4) {
-          if (Float::SIZE() == 32) {
+    if (Float->MIN_EXPONENT() == -126) {
+      if (Float->MAX_EXPONENT() == 127) {
+        if (Float->BYTES() == 4) {
+          if (Float->SIZE() == 32) {
             return 1;
           }
         }

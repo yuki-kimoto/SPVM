@@ -10,7 +10,7 @@ package TestCase::Weaken {
     return new TestCase::Weaken;
   }
   
-  jit sub weaken_test_case : void ($self : TestCase::Weaken) {
+  jit sub weaken_test_case : void ($self : self) {
     weaken $self->{test_case};
   }
 }

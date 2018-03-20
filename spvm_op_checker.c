@@ -1671,6 +1671,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
+                  if (call_sub->call_type_id != call_sub->sub->call_type_id) {
+                    SPVM_yyerror_format(compiler, "Invalid subroutine call \"%s\" at %s line %d\n",
+                      op_cur->first->uv.name, op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
                   const char* sub_abs_name = call_sub->sub->abs_name;
                   
                   int32_t sub_args_count = call_sub->sub->op_args->length;

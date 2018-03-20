@@ -2,11 +2,11 @@ package TestCase::Minimal {
   has x : int;
   has y : int;
 
-  jit sub get_x : int ($self : TestCase::Minimal) {
+  jit sub get_x : int ($self : self) {
     return $self->{x};
   }
 
-  jit sub set_x : void ($self : TestCase::Minimal, $x : int) {
+  jit sub set_x : void ($self : self, $x : int) {
     $self->{x} = $x;
   }
   

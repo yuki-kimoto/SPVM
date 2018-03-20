@@ -383,7 +383,7 @@ package TestCase {
     
     # Subroutine call from native
     {
-      my $total = CORE->test1(3, 11);
+      my $total = CORE::test1(3, 11);
       print($total . "\n");
     }
     
@@ -750,10 +750,10 @@ package TestCase {
       my $num = 3;
       
       switch($num) {
-        case TestCase::EnumD::THREE():
+        case TestCase::EnumD->THREE():
           print(1 . "\n");
           last;
-        case TestCase::EnumD::FORE():
+        case TestCase::EnumD->FORE():
           print(2 . "\n");
           last;
         case 5:
