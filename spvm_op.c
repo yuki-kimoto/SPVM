@@ -1660,12 +1660,6 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
 }
 
 SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block) {
-  
-  if (op_name_sub->id == SPVM_OP_C_ID_NEW) {
-    op_name_sub->id = SPVM_OP_C_ID_NAME;
-    op_name_sub->uv.name = "new";
-  }
-  
   if (op_args == NULL) {
     op_args = SPVM_OP_new_op_list(compiler, op_sub->file, op_sub->line);
   }
