@@ -1416,10 +1416,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
           SPVM_OP* op_arg_first_type = NULL;
           if (op_arg_first->uv.my->op_type) {
-            if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_CLASS) {
-              sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
-            }
-            else if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
+            if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
               op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
               op_arg_first_type->uv.type = package->op_type->uv.type;
               op_arg_first->uv.my->op_type = op_arg_first_type;
@@ -1704,11 +1701,31 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     SPVM_yyerror_format(compiler, "Native subroutine can't have block", op_block->file, op_block->line);
   }
   
-  // subargs
+  // sub args
   {
+    int32_t sub_index = 0;
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-      SPVM_LIST_push(sub->op_args, op_arg->first);
+      if (sub_index == 0) {
+        // Call type
+        if (op_arg->uv.my->op_type) {
+          if (op_arg->uv.my->op_type->id == SPVM_OP_C_ID_CLASS) {
+            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
+          }
+          else if (op_arg->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
+            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
+            SPVM_LIST_push(sub->op_args, op_arg->first);
+          }
+          else {
+            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_SUB;
+            SPVM_LIST_push(sub->op_args, op_arg->first);
+          }
+        }
+      }
+      else {
+        SPVM_LIST_push(sub->op_args, op_arg->first);
+      }
+      sub_index++;
     }
   }
 
