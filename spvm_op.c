@@ -1816,7 +1816,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     
     int32_t* found_index_ptr = SPVM_HASH_search(compiler->sub_name_symtable, sub_name, strlen(sub_name));
     if (!found_index_ptr) {
-      SPVM_LIST_push(compiler->sub_names, sub->op_name->uv.name);
+      SPVM_LIST_push(compiler->sub_names, (char*)sub->op_name->uv.name);
       int32_t* new_found_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
       *new_found_index_ptr = compiler->sub_names->length - 1;
       SPVM_HASH_insert(compiler->sub_name_symtable, sub_name, strlen(sub_name), new_found_index_ptr);

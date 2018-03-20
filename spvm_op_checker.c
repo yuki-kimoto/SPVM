@@ -1757,8 +1757,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  SPVM_OUR* our = op_cur->uv.package_var->op_our->uv.our;
-                  
                   break;
                 }
                 case SPVM_OP_C_ID_CALL_FIELD: {
