@@ -1058,7 +1058,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
   
   SPVM_OP* found_op_sub;
   
-  if (call_sub->id == SPVM_CALL_SUB_C_ID_CLASS_METHOD_CALL) {
+  if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD) {
     const char* package_name = call_sub->op_name_package->uv.name;
     const char* sub_name = call_sub->op_name->uv.name;
     
@@ -1070,7 +1070,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
       strlen(sub_abs_name)
     );
   }
-  else if (call_sub->id == SPVM_CALL_SUB_C_ID_METHOD_CALL) {
+  else if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_term);
     const char* type_name = type->name;
     const char* sub_name = call_sub->op_name->uv.name;
@@ -1082,7 +1082,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
       strlen(sub_abs_name)
     );
   }
-  else if (call_sub->id == SPVM_CALL_SUB_C_ID_SUB_CALL) {
+  else if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_SUB) {
     const char* sub_name = call_sub->op_name->uv.name;
     
     if (strstr(sub_name, "::")) {
@@ -1891,20 +1891,20 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
   
   // Normal call
   if (op_invocant->id == SPVM_OP_C_ID_NULL) {
-    call_sub->id = SPVM_CALL_SUB_C_ID_SUB_CALL;
+    call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_SUB;
     op_name->uv.name = sub_name;
     call_sub->op_name = op_name;
   }
   // Class method call
   else if (op_invocant->id == SPVM_OP_C_ID_NAME) {
-    call_sub->id = SPVM_CALL_SUB_C_ID_CLASS_METHOD_CALL;
+    call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
     op_name->uv.name = sub_name;
     call_sub->op_name_package = op_invocant;
     call_sub->op_name = op_name;
   }
   // Method call
   else {
-    call_sub->id = SPVM_CALL_SUB_C_ID_METHOD_CALL;
+    call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
     call_sub->op_term = op_invocant;
     call_sub->op_name = op_name_sub;
     

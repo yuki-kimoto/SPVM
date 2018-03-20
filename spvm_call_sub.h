@@ -3,17 +3,11 @@
 
 #include "spvm_base.h"
 
-enum {
-  SPVM_CALL_SUB_C_ID_METHOD_CALL,
-  SPVM_CALL_SUB_C_ID_SUB_CALL,
-  SPVM_CALL_SUB_C_ID_CLASS_METHOD_CALL,
-};
-
 struct SPVM_call_sub {
   SPVM_OP* op_term;
   SPVM_OP* op_name;
   SPVM_SUB* sub;
-  int32_t id;
+  int32_t call_type_id;
   SPVM_OP* op_name_package;
 };
 
