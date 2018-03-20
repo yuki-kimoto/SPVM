@@ -36,7 +36,6 @@
 #include "spvm_block.h"
 
 
-
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
   "ELSIF",
@@ -1708,11 +1707,12 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
       if (sub_index == 0) {
         // Call type
-        if (op_arg->uv.my->op_type) {
-          if (op_arg->uv.my->op_type->id == SPVM_OP_C_ID_CLASS) {
+        SPVM_OP* op_type = op_arg->first->uv.my->op_type;
+        if (op_type) {
+          if (op_type->id == SPVM_OP_C_ID_CLASS) {
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
           }
-          else if (op_arg->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
+          else if (op_type->id == SPVM_OP_C_ID_SELF) {
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
             SPVM_LIST_push(sub->op_args, op_arg->first);
           }

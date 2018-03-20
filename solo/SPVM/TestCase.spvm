@@ -33,7 +33,7 @@ package TestCase {
   has x_double : double;
   has private_field : int;
   
-  sub BYTE_MAX : byte () { return (byte)127; }
+  sub BYTE_MAX : byte ($class : class) { return (byte)127; }
   sub BYTE_MIN : byte () { return (byte)-128; }
   sub SHORT_MAX : short () { return (short)32767; }
   sub SHORT_MIN : short () { return (short)-32768; }
@@ -229,7 +229,7 @@ package TestCase {
     
     # enum
     {
-      TestCase::BYTE_MAX();
+      TestCase->BYTE_MAX();
       TestCase::BYTE_MIN();
       TestCase::SHORT_MAX();
       TestCase::SHORT_MIN();
@@ -242,7 +242,7 @@ package TestCase {
     {
       my $test = new TestCase;
       
-      $test->{x_byte} = TestCase::BYTE_MAX();
+      $test->{x_byte} = TestCase->BYTE_MAX();
       $test->{x_short} = TestCase::SHORT_MAX();
       $test->{x_int} = TestCase::INT_MAX();
       $test->{x_long} = TestCase::LONG_MAX();
