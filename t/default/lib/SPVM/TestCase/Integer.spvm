@@ -2,10 +2,10 @@ use Integer;
 
 package TestCase::Integer {
   sub constant : int () {
-    if (Integer::MIN_VALUE() == -2147483648) {
-      if (Integer::MAX_VALUE() == 2147483647) {
-        if (Integer::BYTES() == 4) {
-          if (Integer::SIZE() == 32) {
+    if (Integer->MIN_VALUE() == -2147483648) {
+      if (Integer->MAX_VALUE() == 2147483647) {
+        if (Integer->BYTES() == 4) {
+          if (Integer->SIZE() == 32) {
             return 1;
           }
         }

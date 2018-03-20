@@ -2,35 +2,35 @@ use Float;
 use Double;
 
 package Math {
-  sub PI : double () { return 3.141592653589793; }
-  sub E : double () { return 2.718281828459045; }
+  sub PI : double ($class : class) { return 3.141592653589793; }
+  sub E : double ($class : class) { return 2.718281828459045; }
   
-  native sub sin : double ($x : double);
-  native sub cos : double ($x : double);
-  native sub tan : double ($x : double);
-  native sub asin : double($x : double);
-  native sub acos : double ($x : double);
-  native sub atan : double ($x : double);
-  native sub to_radians : double ($x : double);
-  native sub to_degrees : double ($x : double);
-  native sub exp : double ($x : double);
-  native sub log : double ($x : double);
-  native sub log10 : double ($x : double);
-  native sub sqrt : double ($x : double);
-  native sub cbrt : double ($x : double);
-  native sub IEEE_remainder : double ($x1 : double, $x2 : double);
-  native sub ceil : double ($x : double);
-  native sub floor : double ($x : double);
-  native sub rint : double ($x : double);
-  native sub atan2 : double ($y : double, $x : double);
-  native sub pow : double ($x : double, $y : double);
-  native sub round : double ($x : double);
-  native sub abs : int ($x : int);
-  native sub abs_long : long ($x : long);
-  native sub abs_float : float ($x : float);
-  native sub abs_double : double ($x : double);
+  native sub sin : double ($class : class, $x : double);
+  native sub cos : double ($class : class, $x : double);
+  native sub tan : double ($class : class, $x : double);
+  native sub asin : double($class : class, $x : double);
+  native sub acos : double ($class : class, $x : double);
+  native sub atan : double ($class : class, $x : double);
+  native sub to_radians : double ($class : class, $x : double);
+  native sub to_degrees : double ($class : class, $x : double);
+  native sub exp : double ($class : class, $x : double);
+  native sub log : double ($class : class, $x : double);
+  native sub log10 : double ($class : class, $x : double);
+  native sub sqrt : double ($class : class, $x : double);
+  native sub cbrt : double ($class : class, $x : double);
+  native sub IEEE_remainder : double ($class : class, $x1 : double, $x2 : double);
+  native sub ceil : double ($class : class, $x : double);
+  native sub floor : double ($class : class, $x : double);
+  native sub rint : double ($class : class, $x : double);
+  native sub atan2 : double ($class : class, $y : double, $x : double);
+  native sub pow : double ($class : class, $x : double, $y : double);
+  native sub round : double ($class : class, $x : double);
+  native sub abs : int ($class : class, $x : int);
+  native sub abs_long : long ($class : class, $x : long);
+  native sub abs_float : float ($class : class, $x : float);
+  native sub abs_double : double ($class : class, $x : double);
   
-  sub max : int ($x : int, $y : int) {
+  sub max : int ($class : class, $x : int, $y : int) {
     if ($x > $y) {
       return $x;
     }
@@ -39,7 +39,7 @@ package Math {
     }
   }
 
-  sub max_long : long ($x : long, $y : long) {
+  sub max_long : long ($class : class, $x : long, $y : long) {
     if ($x > $y) {
       return $x;
     }
@@ -48,7 +48,7 @@ package Math {
     }
   }
 
-  sub max_float : float ($x : float, $y : float) {
+  sub max_float : float ($class : class, $x : float, $y : float) {
     if ($x > $y) {
       return $x;
     }
@@ -57,7 +57,7 @@ package Math {
     }
   }
 
-  sub max_double : double ($x : double, $y : double) {
+  sub max_double : double ($class : class, $x : double, $y : double) {
     if ($x > $y) {
       return $x;
     }
@@ -66,7 +66,7 @@ package Math {
     }
   }
 
-  sub min : int ($x : int, $y : int) {
+  sub min : int ($class : class, $x : int, $y : int) {
     if ($x < $y) {
       return $x;
     }
@@ -75,7 +75,7 @@ package Math {
     }
   }
 
-  sub min_long : long ($x : long, $y : long) {
+  sub min_long : long ($class : class, $x : long, $y : long) {
     if ($x < $y) {
       return $x;
     }
@@ -84,7 +84,7 @@ package Math {
     }
   }
 
-  sub min_float : float ($x : float, $y : float) {
+  sub min_float : float ($class : class, $x : float, $y : float) {
     if ($x < $y) {
       return $x;
     }
@@ -93,7 +93,7 @@ package Math {
     }
   }
 
-  sub min_double : double ($x : double, $y : double) {
+  sub min_double : double ($class : class, $x : double, $y : double) {
     if ($x < $y) {
       return $x;
     }
@@ -102,9 +102,9 @@ package Math {
     }
   }
   
-  sub signum : double ($x : double) {
-    if (Double::is_nan($x)) {
-      return Double::NaN();
+  sub signum : double ($class : class, $x : double) {
+    if (Double->is_nan($x)) {
+      return Double->NaN();
     }
     elsif ($x > 0.0) {
       return 1.0;
@@ -117,9 +117,9 @@ package Math {
     }
   }
   
-  sub signum_float : float ($x : float) {
-    if (Float::is_nan($x)) {
-      return Float::NaN();
+  sub signum_float : float ($class : class, $x : float) {
+    if (Float->is_nan($x)) {
+      return Float->NaN();
     }
     elsif ($x > 0.0f) {
       return 1.0f;
@@ -131,14 +131,14 @@ package Math {
       return 0.0f;
     }
   }
-  native sub sinh : double ($x : double);
-  native sub cosh : double ($x : double);
-  native sub tanh : double ($x : double);
-  native sub hypot : double ($x : double, $y : double);
-  native sub expm1 : double ($x : double);
-  native sub log1p : double ($x : double);
-  native sub copy_sign : double ($magnitude : double, $sign : double);
-  native sub copy_sign_float : float ($magnitude : float, $sign : float);
+  native sub sinh : double ($class : class, $x : double);
+  native sub cosh : double ($class : class, $x : double);
+  native sub tanh : double ($class : class, $x : double);
+  native sub hypot : double ($class : class, $x : double, $y : double);
+  native sub expm1 : double ($class : class, $x : double);
+  native sub log1p : double ($class : class, $x : double);
+  native sub copy_sign : double ($class : class, $magnitude : double, $sign : double);
+  native sub copy_sign_float : float ($class : class, $magnitude : float, $sign : float);
   
   # TODO
   # ulp

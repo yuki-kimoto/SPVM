@@ -3,6 +3,8 @@
   - remove set, get keyword
   - new become public by default
   - add self keyword to represent invocant
+  - many module methods become class method
+    Byte, Short, Integer, Long, Float, Double, Math
 0.0317 2018-03-15
   - support escape character \0
   - cleanup leave scope logic
