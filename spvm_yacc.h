@@ -53,47 +53,48 @@
      NEW = 269,
      OUR = 270,
      SELF = 271,
-     LAST = 272,
-     NEXT = 273,
-     NAME = 274,
-     CONSTANT = 275,
-     ENUM = 276,
-     DESCRIPTOR = 277,
-     CORETYPE = 278,
-     UNDEF = 279,
-     CROAK = 280,
-     VAR_NAME = 281,
-     SWITCH = 282,
-     CASE = 283,
-     DEFAULT = 284,
-     VOID = 285,
-     EVAL = 286,
-     BYTE = 287,
-     SHORT = 288,
-     INT = 289,
-     LONG = 290,
-     FLOAT = 291,
-     DOUBLE = 292,
-     STRING = 293,
-     WEAKEN = 294,
-     SPECIAL_ASSIGN = 295,
-     ASSIGN = 296,
-     OR = 297,
-     AND = 298,
-     BIT_XOR = 299,
-     BIT_OR = 300,
-     BIT_AND = 301,
-     REL = 302,
-     SHIFT = 303,
-     REMAINDER = 304,
-     DIVIDE = 305,
-     MULTIPLY = 306,
-     UMINUS = 307,
-     ARRAY_LENGTH = 308,
-     NOT = 309,
-     DEC = 310,
-     INC = 311,
-     ARROW = 312
+     CLASS = 272,
+     LAST = 273,
+     NEXT = 274,
+     NAME = 275,
+     CONSTANT = 276,
+     ENUM = 277,
+     DESCRIPTOR = 278,
+     CORETYPE = 279,
+     UNDEF = 280,
+     CROAK = 281,
+     VAR_NAME = 282,
+     SWITCH = 283,
+     CASE = 284,
+     DEFAULT = 285,
+     VOID = 286,
+     EVAL = 287,
+     BYTE = 288,
+     SHORT = 289,
+     INT = 290,
+     LONG = 291,
+     FLOAT = 292,
+     DOUBLE = 293,
+     STRING = 294,
+     WEAKEN = 295,
+     SPECIAL_ASSIGN = 296,
+     ASSIGN = 297,
+     OR = 298,
+     AND = 299,
+     BIT_XOR = 300,
+     BIT_OR = 301,
+     BIT_AND = 302,
+     REL = 303,
+     SHIFT = 304,
+     REMAINDER = 305,
+     DIVIDE = 306,
+     MULTIPLY = 307,
+     UMINUS = 308,
+     ARRAY_LENGTH = 309,
+     NOT = 310,
+     DEC = 311,
+     INC = 312,
+     ARROW = 313
    };
 #endif
 /* Tokens.  */
@@ -111,47 +112,48 @@
 #define NEW 269
 #define OUR 270
 #define SELF 271
-#define LAST 272
-#define NEXT 273
-#define NAME 274
-#define CONSTANT 275
-#define ENUM 276
-#define DESCRIPTOR 277
-#define CORETYPE 278
-#define UNDEF 279
-#define CROAK 280
-#define VAR_NAME 281
-#define SWITCH 282
-#define CASE 283
-#define DEFAULT 284
-#define VOID 285
-#define EVAL 286
-#define BYTE 287
-#define SHORT 288
-#define INT 289
-#define LONG 290
-#define FLOAT 291
-#define DOUBLE 292
-#define STRING 293
-#define WEAKEN 294
-#define SPECIAL_ASSIGN 295
-#define ASSIGN 296
-#define OR 297
-#define AND 298
-#define BIT_XOR 299
-#define BIT_OR 300
-#define BIT_AND 301
-#define REL 302
-#define SHIFT 303
-#define REMAINDER 304
-#define DIVIDE 305
-#define MULTIPLY 306
-#define UMINUS 307
-#define ARRAY_LENGTH 308
-#define NOT 309
-#define DEC 310
-#define INC 311
-#define ARROW 312
+#define CLASS 272
+#define LAST 273
+#define NEXT 274
+#define NAME 275
+#define CONSTANT 276
+#define ENUM 277
+#define DESCRIPTOR 278
+#define CORETYPE 279
+#define UNDEF 280
+#define CROAK 281
+#define VAR_NAME 282
+#define SWITCH 283
+#define CASE 284
+#define DEFAULT 285
+#define VOID 286
+#define EVAL 287
+#define BYTE 288
+#define SHORT 289
+#define INT 290
+#define LONG 291
+#define FLOAT 292
+#define DOUBLE 293
+#define STRING 294
+#define WEAKEN 295
+#define SPECIAL_ASSIGN 296
+#define ASSIGN 297
+#define OR 298
+#define AND 299
+#define BIT_XOR 300
+#define BIT_OR 301
+#define BIT_AND 302
+#define REL 303
+#define SHIFT 304
+#define REMAINDER 305
+#define DIVIDE 306
+#define MULTIPLY 307
+#define UMINUS 308
+#define ARRAY_LENGTH 309
+#define NOT 310
+#define DEC 311
+#define INC 312
+#define ARROW 313
 
 
 

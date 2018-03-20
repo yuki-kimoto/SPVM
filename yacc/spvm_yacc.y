@@ -15,7 +15,7 @@
   #include "spvm_block.h"
 %}
 
-%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF
+%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CLASS
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME
 %token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
@@ -736,6 +736,10 @@ arg
 
 invocant
   : var ':' SELF
+    {
+      $$ = SPVM_OP_build_arg(compiler, $1, $3);
+    }
+  | var ':' CLASS
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3);
     }

@@ -133,6 +133,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "BOOL",
   "LOOP_INCREMENT",
   "SELF",
+  "CLASS",
 };
 
 void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
@@ -1415,7 +1416,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
           SPVM_OP* op_arg_first_type = NULL;
           if (op_arg_first->uv.my->op_type) {
-            if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
+            if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_CLASS) {
+              sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
+            }
+            else if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
               op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
               op_arg_first_type->uv.type = package->op_type->uv.type;
               op_arg_first->uv.my->op_type = op_arg_first_type;
@@ -1430,7 +1434,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             op_arg_first_type->uv.type = package->op_type->uv.type;
             op_arg_first->uv.my->op_type = op_arg_first_type;
           }
-          SPVM_LIST_push(compiler->op_types, op_arg_first->uv.my->op_type);
+          if (op_arg_first->uv.my->op_type) {
+            SPVM_LIST_push(compiler->op_types, op_arg_first->uv.my->op_type);
+          }
         }
         
         SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
