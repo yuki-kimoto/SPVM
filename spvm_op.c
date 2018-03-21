@@ -1308,9 +1308,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
-  SPVM_LIST* op_names_set_field = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  SPVM_LIST* op_names_get_field = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  
   SPVM_OP* op_decls = op_block->first;
   SPVM_OP* op_decl = op_decls->first;
   while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
@@ -1326,20 +1323,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_OP* op_sub = op_enumeration_values->first;
       while ((op_sub = SPVM_OP_sibling(compiler, op_sub))) {
         SPVM_LIST_push(op_subs, op_sub);
-      }
-    }
-    else if (op_decl->id == SPVM_OP_C_ID_SET) {
-      SPVM_OP* op_list = op_decl->first;
-      SPVM_OP* op_name = op_list->first;
-      while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
-        SPVM_LIST_push(op_names_set_field, op_name);
-      }
-    }
-    else if (op_decl->id == SPVM_OP_C_ID_GET) {
-      SPVM_OP* op_list = op_decl->first;
-      SPVM_OP* op_name = op_list->first;
-      while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
-        SPVM_LIST_push(op_names_get_field, op_name);
       }
     }
     else if (op_decl->id == SPVM_OP_C_ID_OUR) {
