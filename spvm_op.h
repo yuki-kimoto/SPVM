@@ -198,7 +198,7 @@ struct SPVM_op {
     SPVM_PACKAGE_VAR* package_var;
     SPVM_UNDEF* undef;
     SPVM_BLOCK* block;
-    int32_t loop_block_index;
+    SPVM_DESCRIPTOR* descriptor;
   } uv;
   int32_t id;
   int32_t flag;
