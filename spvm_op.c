@@ -330,6 +330,16 @@ void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_va
   }
 }
 
+SPVM_OP* SPVM_OP_new_op_descriptor(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
+  SPVM_OP* op_descriptor = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DESCRIPTOR, file, line);
+  
+  SPVM_DESCRIPTOR* descriptor = SPVM_DESCRIPTOR_new(compiler);
+  descriptor->id = id;
+  op_descriptor->uv.descriptor = descriptor;
+  
+  return op_descriptor;
+}
+
 SPVM_OP* SPVM_OP_new_op_undef(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_OP* op_undef = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_UNDEF, file, line);
   
