@@ -1706,19 +1706,21 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   // Descriptors
   SPVM_OP* op_descriptor = op_descriptors->first;
   while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
-    if (op_descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
+    SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
+    
+    if (descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
       sub->is_native = 1;
       sub->disable_jit = 1;
     }
-    else if (op_descriptor->id == SPVM_DESCRIPTOR_C_ID_JIT){
+    else if (descriptor->id == SPVM_DESCRIPTOR_C_ID_JIT){
       sub->have_jit_desc = 1;
     }
     else {
-      SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[op_descriptor->id], op_descriptors->file, op_descriptors->line);
+      SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
     }
   }
   if (sub->is_native && sub->have_jit_desc) {
-    SPVM_yyerror_format(compiler, "native and jit descriptor can't be used together %s", SPVM_DESCRIPTOR_C_ID_NAMES[op_descriptor->id], op_descriptors->file, op_descriptors->line);
+    SPVM_yyerror_format(compiler, "native and jit descriptor can't be used together", op_descriptors->file, op_descriptors->line);
   }
   
   // Native subroutine can't have block

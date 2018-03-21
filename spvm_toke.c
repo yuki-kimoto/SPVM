@@ -1217,9 +1217,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               case 'j' :
                 if (strcmp(keyword, "jit") == 0) {
-                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DESCRIPTOR);
-                  op->id = SPVM_DESCRIPTOR_C_ID_JIT;
-                  yylvalp->opval = op;
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_JIT, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
                   
                   return DESCRIPTOR;
                 }
@@ -1250,9 +1249,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               case 'n' :
                 if (strcmp(keyword, "native") == 0) {
-                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DESCRIPTOR);
-                  op->id = SPVM_DESCRIPTOR_C_ID_NATIVE;
-                  yylvalp->opval = op;
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_NATIVE, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
                   
                   return DESCRIPTOR;
                 }
