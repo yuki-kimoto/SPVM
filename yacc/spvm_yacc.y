@@ -111,7 +111,7 @@ package
         YYABORT;
       }
     }
-  | PACKAGE package_name ':' DESCRIPTOR package_block
+  | PACKAGE package_name ':' descriptors package_block
     {
       $$ = SPVM_OP_build_package(compiler, $1, $2, $5, $4);
       if (compiler->fatal_error) {
