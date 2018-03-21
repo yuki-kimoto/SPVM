@@ -1275,11 +1275,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   if (op_list_descriptors) {
     SPVM_OP* op_descriptor = op_list_descriptors->first;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
-      if (op_descriptor->id == SPVM_DESCRIPTOR_C_ID_INTERFACE) {
+      SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
+      if (descriptor->id == SPVM_DESCRIPTOR_C_ID_INTERFACE) {
         is_interface = 1;
       }
       else {
-        SPVM_yyerror_format(compiler, "Invalid descriptor \"%s\" at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[op_descriptor->id], op_package->file, op_package->line);
+        SPVM_yyerror_format(compiler, "Invalid descriptor \"%s\" at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);
         return NULL;
       }
     }
