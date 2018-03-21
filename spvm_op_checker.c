@@ -296,8 +296,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
         
         if (error) {
-          SPVM_yyerror_format(compiler, "DESTROY argument type must be %s\n", package->op_name->uv.name, op_sub->file, op_sub->line);
+          SPVM_yyerror_format(compiler, "DESTROY argument must be self\n", op_sub->file, op_sub->line);
         }
+      }
+      
+      if (package->is_interface && (sub->op_block || sub->is_native)) {
+        SPVM_yyerror_format(compiler, "Subroutine in interface package can't have implementation\n", op_sub->file, op_sub->line);
       }
       
       // Only process normal subroutine
