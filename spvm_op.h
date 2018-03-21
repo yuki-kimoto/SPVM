@@ -133,6 +133,7 @@ enum {
   SPVM_OP_C_ID_LOOP_INCREMENT,
   SPVM_OP_C_ID_SELF,
   SPVM_OP_C_ID_CLASS,
+  SPVM_OP_C_ID_INTERFACE,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];
@@ -281,7 +282,7 @@ SPVM_OP* SPVM_OP_build_type_string(SPVM_COMPILER* compiler, SPVM_OP* op_string);
 SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_type_name);
 SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_term);
 SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_name_package, SPVM_OP* op_name_field);
-SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block);
+SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block, SPVM_OP* op_descriptor);
 SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_subname, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block);
 SPVM_OP* SPVM_OP_build_CONSTVALUE(SPVM_COMPILER* compiler, SPVM_OP* op_const);
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_field_base_name, SPVM_OP* op_descripters, SPVM_OP* type);

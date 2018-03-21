@@ -1,4 +1,6 @@
-0.0318 2018-03-16
+0.0319 2018-03-21
+  - add interface descriptor to package declaration
+0.0318 2018-03-20
   - field become public by default
   - remove set, get keyword
   - new become public by default

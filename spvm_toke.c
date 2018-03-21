@@ -1208,6 +1208,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
                   return INT;
                 }
+                else if (strcmp(keyword, "interface") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INTERFACE);
+                  return DESCRIPTOR;
+                }
                 break;
               case 'j' :
                 if (strcmp(keyword, "jit") == 0) {

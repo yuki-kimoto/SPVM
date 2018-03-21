@@ -16,7 +16,7 @@
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CLASS
-%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME
+%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME INTERFACE
 %token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
@@ -106,7 +106,14 @@ use
 package
   : PACKAGE package_name package_block
     {
-      $$ = SPVM_OP_build_package(compiler, $1, $2, $3);
+      $$ = SPVM_OP_build_package(compiler, $1, $2, $3, NULL);
+      if (compiler->fatal_error) {
+        YYABORT;
+      }
+    }
+  | PACKAGE package_name ':' DESCRIPTOR package_block
+    {
+      $$ = SPVM_OP_build_package(compiler, $1, $2, $5, $4);
       if (compiler->fatal_error) {
         YYABORT;
       }
