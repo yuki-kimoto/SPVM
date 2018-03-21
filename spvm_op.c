@@ -1312,6 +1312,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_OP* op_decl = op_decls->first;
   while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
     if (op_decl->id == SPVM_OP_C_ID_FIELD) {
+      if (is_interface) {
+        SPVM_yyerror_format(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
+      }
       SPVM_LIST_push(op_fields, op_decl);
     }
     else if (op_decl->id == SPVM_OP_C_ID_SUB) {
@@ -1326,6 +1329,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
     else if (op_decl->id == SPVM_OP_C_ID_OUR) {
+      if (is_interface) {
+        SPVM_yyerror_format(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
+      }
       SPVM_LIST_push(op_ours, op_decl);
     }
     else {
