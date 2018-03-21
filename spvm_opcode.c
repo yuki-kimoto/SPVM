@@ -255,6 +255,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "LOOKUP_SWITCH",
   "GOTO",
   "CALL_SUB",
+  "CALL_INTERFACE_METHOD",
   "RETURN",
   "CROAK",
   "LOAD_EXCEPTION_VAR",
