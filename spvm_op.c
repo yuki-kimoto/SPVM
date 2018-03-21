@@ -1258,222 +1258,222 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_OP* found_op_package = SPVM_HASH_search(op_package_symtable, package_name, strlen(package_name));
   if (found_op_package) {
     SPVM_yyerror_format(compiler, "redeclaration of package \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
+    return NULL;
   }
-  else {
-    // Package
-    SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
-    package->op_name = op_name_package;
-    
-    // Type(type is same as package name)
-    SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-    type->name = package_name;
-    type->op_package = op_package;
-    type->base_type = type;
-    
-    // Type OP
-    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name_package->file, op_name_package->line);
-    op_type->uv.type = type;
-    
-    // Add type
-    package->op_type = op_type;
-    SPVM_LIST_push(compiler->op_types, op_type);
-    
-    SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-    SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-    SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-    
-    SPVM_LIST* op_names_set_field = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-    SPVM_LIST* op_names_get_field = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-    
-    SPVM_OP* op_decls = op_block->first;
-    SPVM_OP* op_decl = op_decls->first;
-    while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
-      if (op_decl->id == SPVM_OP_C_ID_FIELD) {
-        SPVM_LIST_push(op_fields, op_decl);
+  
+  // Package
+  SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
+  package->op_name = op_name_package;
+  
+  // Type(type is same as package name)
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->name = package_name;
+  type->op_package = op_package;
+  type->base_type = type;
+  
+  // Type OP
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name_package->file, op_name_package->line);
+  op_type->uv.type = type;
+  
+  // Add type
+  package->op_type = op_type;
+  SPVM_LIST_push(compiler->op_types, op_type);
+  
+  SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  
+  SPVM_LIST* op_names_set_field = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  SPVM_LIST* op_names_get_field = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  
+  SPVM_OP* op_decls = op_block->first;
+  SPVM_OP* op_decl = op_decls->first;
+  while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
+    if (op_decl->id == SPVM_OP_C_ID_FIELD) {
+      SPVM_LIST_push(op_fields, op_decl);
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_SUB) {
+      SPVM_LIST_push(op_subs, op_decl);
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
+      SPVM_OP* op_enum_block = op_decl->first;
+      SPVM_OP* op_enumeration_values = op_enum_block->first;
+      SPVM_OP* op_sub = op_enumeration_values->first;
+      while ((op_sub = SPVM_OP_sibling(compiler, op_sub))) {
+        SPVM_LIST_push(op_subs, op_sub);
       }
-      else if (op_decl->id == SPVM_OP_C_ID_SUB) {
-        SPVM_LIST_push(op_subs, op_decl);
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_SET) {
+      SPVM_OP* op_list = op_decl->first;
+      SPVM_OP* op_name = op_list->first;
+      while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
+        SPVM_LIST_push(op_names_set_field, op_name);
       }
-      else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
-        SPVM_OP* op_enum_block = op_decl->first;
-        SPVM_OP* op_enumeration_values = op_enum_block->first;
-        SPVM_OP* op_sub = op_enumeration_values->first;
-        while ((op_sub = SPVM_OP_sibling(compiler, op_sub))) {
-          SPVM_LIST_push(op_subs, op_sub);
-        }
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_GET) {
+      SPVM_OP* op_list = op_decl->first;
+      SPVM_OP* op_name = op_list->first;
+      while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
+        SPVM_LIST_push(op_names_get_field, op_name);
       }
-      else if (op_decl->id == SPVM_OP_C_ID_SET) {
-        SPVM_OP* op_list = op_decl->first;
-        SPVM_OP* op_name = op_list->first;
-        while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
-          SPVM_LIST_push(op_names_set_field, op_name);
-        }
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_OUR) {
+      SPVM_LIST_push(op_ours, op_decl);
+    }
+    else {
+      assert(0);
+    }
+  }
+  
+  // Register field
+  {
+    int32_t i;
+    for (i = 0; i < op_fields->length; i++) {
+      SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, i);
+      
+      SPVM_FIELD* field = op_field->uv.field;
+      const char* field_name = field->op_name->uv.name;
+      
+      SPVM_OP* found_op_field = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
+      
+      assert(op_fields->length <= SPVM_LIMIT_C_FIELDS);
+      
+      if (found_op_field) {
+        SPVM_yyerror_format(compiler, "Redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, op_field->file, op_field->line);
       }
-      else if (op_decl->id == SPVM_OP_C_ID_GET) {
-        SPVM_OP* op_list = op_decl->first;
-        SPVM_OP* op_name = op_list->first;
-        while ((op_name = SPVM_OP_sibling(compiler, op_name))) {
-          SPVM_LIST_push(op_names_get_field, op_name);
-        }
-      }
-      else if (op_decl->id == SPVM_OP_C_ID_OUR) {
-        SPVM_LIST_push(op_ours, op_decl);
+      else if (op_fields->length == SPVM_LIMIT_C_FIELDS) {
+        SPVM_yyerror_format(compiler, "Too many fields, field \"%s\" ignored at %s line %d\n", field_name, op_field->file, op_field->line);
+        compiler->fatal_error = 1;
       }
       else {
-        assert(0);
+        SPVM_HASH_insert(package->op_field_symtable, field_name, strlen(field_name), op_field);
+        
+        // Add op package
+        field->op_package = op_package;
+        
+        
       }
     }
-    
-    // Register field
-    {
-      int32_t i;
-      for (i = 0; i < op_fields->length; i++) {
-        SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, i);
+  }
+
+  // Register package variable
+  {
+    int32_t i;
+    for (i = 0; i < op_ours->length; i++) {
+
+      SPVM_OP* op_our = SPVM_LIST_fetch(op_ours, i);
+      
+      SPVM_OUR* our = op_our->uv.our;
+      const char* package_var_name = our->op_package_var->uv.package_var->op_name->uv.name;
+      
+      SPVM_OP* found_op_our = SPVM_HASH_search(package->op_our_symtable, package_var_name, strlen(package_var_name));
+      
+      assert(op_ours->length <= SPVM_LIMIT_C_OURS);
+      
+      if (found_op_our) {
+        SPVM_yyerror_format(compiler, "Redeclaration of our \"%s::%s\" at %s line %d\n", package_name, package_var_name, op_our->file, op_our->line);
+      }
+      else if (op_ours->length == SPVM_LIMIT_C_OURS) {
+        SPVM_yyerror_format(compiler, "Too many ours, our \"%s\" ignored at %s line %d\n", package_var_name, op_our->file, op_our->line);
+        compiler->fatal_error = 1;
+      }
+      else {
+        SPVM_HASH_insert(package->op_our_symtable, package_var_name, strlen(package_var_name), op_our);
         
-        SPVM_FIELD* field = op_field->uv.field;
-        const char* field_name = field->op_name->uv.name;
+        const char* package_var_name_abs = SPVM_OP_create_package_var_abs_name(compiler, package_name, package_var_name);
+        SPVM_HASH_insert(compiler->op_our_symtable, package_var_name_abs, strlen(package_var_name_abs), op_our);
         
-        SPVM_OP* found_op_field = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
+        compiler->package_var_length++;
+        our->id = compiler->package_var_length;
         
-        assert(op_fields->length <= SPVM_LIMIT_C_FIELDS);
-        
-        if (found_op_field) {
-          SPVM_yyerror_format(compiler, "Redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, op_field->file, op_field->line);
-        }
-        else if (op_fields->length == SPVM_LIMIT_C_FIELDS) {
-          SPVM_yyerror_format(compiler, "Too many fields, field \"%s\" ignored at %s line %d\n", field_name, op_field->file, op_field->line);
-          compiler->fatal_error = 1;
-        }
-        else {
-          SPVM_HASH_insert(package->op_field_symtable, field_name, strlen(field_name), op_field);
-          
-          // Add op package
-          field->op_package = op_package;
-          
-          
-        }
+        // Add op package
+        our->op_package = op_package;
       }
     }
+  }
+  
+  // Add package load path
+  const char* package_load_path = SPVM_HASH_search(compiler->package_load_path_symtable, package_name, strlen(package_name));
+  package->load_path = (char*)package_load_path;
+  
+  // Add package
+  op_package->uv.package = package;
+  
+  // Register subrotuine
+  {
+    int32_t i;
+    for (i = 0; i < op_subs->length; i++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, i);
 
-    // Register package variable
-    {
-      int32_t i;
-      for (i = 0; i < op_ours->length; i++) {
+      SPVM_SUB* sub = op_sub->uv.sub;
 
-        SPVM_OP* op_our = SPVM_LIST_fetch(op_ours, i);
-        
-        SPVM_OUR* our = op_our->uv.our;
-        const char* package_var_name = our->op_package_var->uv.package_var->op_name->uv.name;
-        
-        SPVM_OP* found_op_our = SPVM_HASH_search(package->op_our_symtable, package_var_name, strlen(package_var_name));
-        
-        assert(op_ours->length <= SPVM_LIMIT_C_OURS);
-        
-        if (found_op_our) {
-          SPVM_yyerror_format(compiler, "Redeclaration of our \"%s::%s\" at %s line %d\n", package_name, package_var_name, op_our->file, op_our->line);
-        }
-        else if (op_ours->length == SPVM_LIMIT_C_OURS) {
-          SPVM_yyerror_format(compiler, "Too many ours, our \"%s\" ignored at %s line %d\n", package_var_name, op_our->file, op_our->line);
-          compiler->fatal_error = 1;
-        }
-        else {
-          SPVM_HASH_insert(package->op_our_symtable, package_var_name, strlen(package_var_name), op_our);
-          
-          const char* package_var_name_abs = SPVM_OP_create_package_var_abs_name(compiler, package_name, package_var_name);
-          SPVM_HASH_insert(compiler->op_our_symtable, package_var_name_abs, strlen(package_var_name_abs), op_our);
-          
-          compiler->package_var_length++;
-          our->id = compiler->package_var_length;
-          
-          // Add op package
-          our->op_package = op_package;
-        }
-      }
-    }
-    
-    // Add package load path
-    const char* package_load_path = SPVM_HASH_search(compiler->package_load_path_symtable, package_name, strlen(package_name));
-    package->load_path = (char*)package_load_path;
-    
-    // Add package
-    op_package->uv.package = package;
-    
-    // Register subrotuine
-    {
-      int32_t i;
-      for (i = 0; i < op_subs->length; i++) {
-        SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, i);
-
-        SPVM_SUB* sub = op_sub->uv.sub;
-
-        SPVM_OP* op_name_sub = sub->op_name;
-        const char* sub_name = op_name_sub->uv.name;
-        const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
-        
-        // Method check
-        // Set first argument type if not set
-        if (sub->op_args->length > 0) {
-          SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
-          SPVM_OP* op_arg_first_type = NULL;
-          if (op_arg_first->uv.my->op_type) {
-            if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
-              op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
-              op_arg_first_type->uv.type = package->op_type->uv.type;
-              op_arg_first->uv.my->op_type = op_arg_first_type;
-              sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
-            }
-            else {
-              op_arg_first_type = op_arg_first->uv.my->op_type;
-            }
-          }
-          else {
+      SPVM_OP* op_name_sub = sub->op_name;
+      const char* sub_name = op_name_sub->uv.name;
+      const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
+      
+      // Method check
+      // Set first argument type if not set
+      if (sub->op_args->length > 0) {
+        SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
+        SPVM_OP* op_arg_first_type = NULL;
+        if (op_arg_first->uv.my->op_type) {
+          if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
             op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
             op_arg_first_type->uv.type = package->op_type->uv.type;
             op_arg_first->uv.my->op_type = op_arg_first_type;
+            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
           }
-          if (op_arg_first->uv.my->op_type) {
-            SPVM_LIST_push(compiler->op_types, op_arg_first->uv.my->op_type);
+          else {
+            op_arg_first_type = op_arg_first->uv.my->op_type;
           }
         }
-        
-        SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
-        
-        if (found_op_sub) {
-          SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
-        }
-        else if (op_subs->length == SPVM_LIMIT_C_SUBS) {
-          SPVM_yyerror_format(compiler, "Too many subroutines at %s line %d\n", sub_name, op_sub->file, op_sub->line);
-          compiler->fatal_error = 1;
-        }
-        // Unknown sub
         else {
-          // Bind standard functions
-          sub->abs_name = sub_abs_name;
-          
-          sub->op_package = op_package;
-          
-          if (sub->is_destructor) {
-            package->op_sub_destructor = op_sub;
-          }
-          
-          assert(op_sub->file);
-          
-          sub->file_name = op_sub->file;
-          
-          SPVM_LIST_push(compiler->op_subs, op_sub);
-          SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
+          op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
+          op_arg_first_type->uv.type = package->op_type->uv.type;
+          op_arg_first->uv.my->op_type = op_arg_first_type;
+        }
+        if (op_arg_first->uv.my->op_type) {
+          SPVM_LIST_push(compiler->op_types, op_arg_first->uv.my->op_type);
         }
       }
+      
+      SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
+      
+      if (found_op_sub) {
+        SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
+      }
+      else if (op_subs->length == SPVM_LIMIT_C_SUBS) {
+        SPVM_yyerror_format(compiler, "Too many subroutines at %s line %d\n", sub_name, op_sub->file, op_sub->line);
+        compiler->fatal_error = 1;
+      }
+      // Unknown sub
+      else {
+        // Bind standard functions
+        sub->abs_name = sub_abs_name;
+        
+        sub->op_package = op_package;
+        
+        if (sub->is_destructor) {
+          package->op_sub_destructor = op_sub;
+        }
+        
+        assert(op_sub->file);
+        
+        sub->file_name = op_sub->file;
+        
+        SPVM_LIST_push(compiler->op_subs, op_sub);
+        SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
+      }
     }
-    
-    // Add op fields
-    package->op_fields = op_fields;
-    package->op_subs = op_subs;
-    
-    package->id = compiler->op_packages->length;
-    SPVM_LIST_push(compiler->op_packages, op_package);
-    SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
   }
+  
+  // Add op fields
+  package->op_fields = op_fields;
+  package->op_subs = op_subs;
+  
+  package->id = compiler->op_packages->length;
+  SPVM_LIST_push(compiler->op_packages, op_package);
+  SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
   
   return op_package;
 }
