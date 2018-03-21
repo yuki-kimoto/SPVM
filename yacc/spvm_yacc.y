@@ -113,7 +113,16 @@ package
     }
   | PACKAGE package_name ':' descriptors package_block
     {
-      $$ = SPVM_OP_build_package(compiler, $1, $2, $5, $4);
+      SPVM_OP* op_list_descriptors;
+      if ($4->id == SPVM_OP_C_ID_LIST) {
+        op_list_descriptors = $4;
+      }
+      else {
+        op_list_descriptors = SPVM_OP_new_op_list(compiler, $4->file, $4->line);
+        SPVM_OP_insert_child(compiler, op_list_descriptors, op_list_descriptors->last, $4);
+      }
+      
+      $$ = SPVM_OP_build_package(compiler, $1, $2, $5, op_list_descriptors);
       if (compiler->fatal_error) {
         YYABORT;
       }
