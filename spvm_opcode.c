@@ -324,6 +324,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "PUSH_ARG_OBJECT",
   "CALL_METHOD",
   "CALL_CLASS_METHOD",
+  "CHECK_CAST",
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {
