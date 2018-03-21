@@ -5,6 +5,7 @@
 #include "spvm_api.h"
 
 #define SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE sizeof(SPVM_OBJECT)
+#define SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, type_id))
 #define SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, length))
 #define SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, ref_count))
 #define SPVM_RUNTIME_C_RUNTIME_EXCEPTION_BYTE_OFFSET ((int32_t)offsetof(SPVM_RUNTIME, exception))
