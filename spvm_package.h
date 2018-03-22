@@ -5,7 +5,6 @@
 
 struct SPVM_package {
   SPVM_OP* op_name;
-  SPVM_OP* op_type;
   SPVM_LIST* op_subs;
   SPVM_LIST* op_fields;
   SPVM_HASH* op_field_symtable;
