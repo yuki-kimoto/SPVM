@@ -1083,7 +1083,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       if (assign_to_type->dimension != assign_from_type->dimension) {
                         incompatible_type = 1;
                       }
-                      incompatible_type = 1;
+                      else {
+                        SPVM_TYPE* assign_to_base_type = assign_to_type->base_type;
+                        SPVM_TYPE* assign_from_base_type = assign_from_type->base_type;
+                        if ( assign_from_base_type->id != assign_from_type->base_type) {
+                          incompatible_type = 1;
+                        }
+                      }
                     }
                     if (incompatible_type) {
                       SPVM_yyerror_format(compiler, "Invalid type is assigned at %s line %d\n", op_cur->file, op_cur->line);
