@@ -1,0 +1,8 @@
+use TestCase::Minimal;
+use TestCase::Simple;
+
+package TestCase::CompileError::AssignIncompatibleType::DifferentObject {
+  sub main : int () {
+    my $minimal : TestCase::Minimal = new TestCase::Simple;
+  }
+}

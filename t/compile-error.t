@@ -47,3 +47,12 @@ sub init_spvm {
     init_spvm();
   }
 }
+
+{
+  use SPVM 'TestCase::CompileError::AssignIncompatibleType::DifferentObject';
+  BEGIN {
+    my $success = SPVM::compile_spvm();
+    ok($success == 0);
+    init_spvm();
+  }
+}
