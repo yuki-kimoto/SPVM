@@ -1002,6 +1002,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     op_assign_from->uv.undef->type = assign_from_type;
                   }
                   
+                  // Numeric type check
                   if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
                     int32_t do_convert = 0;
                     if (assign_to_type->id > assign_from_type->id) {
@@ -1076,7 +1077,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       op_convert->first->is_assign_from = 0;
                     }
                   }
-                  // Invalid if to type is different to from value
+                  // Object type check
                   else {
                     _Bool incompatible_type = 0;
                     if (assign_to_type->id != assign_from_type->id) {
@@ -1086,7 +1087,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       else {
                         SPVM_TYPE* assign_to_base_type = assign_to_type->base_type;
                         SPVM_TYPE* assign_from_base_type = assign_from_type->base_type;
-                        if (assign_from_base_type->id != assign_from_type->base_type->id) {
+                        if (assign_to_base_type->id != assign_from_type->base_type->id) {
                           incompatible_type = 1;
                         }
                       }
