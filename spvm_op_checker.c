@@ -1086,7 +1086,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       else {
                         SPVM_TYPE* assign_to_base_type = assign_to_type->base_type;
                         SPVM_TYPE* assign_from_base_type = assign_from_type->base_type;
-                        if ( assign_from_base_type->id != assign_from_type->base_type) {
+                        if (assign_from_base_type->id != assign_from_type->base_type->id) {
                           incompatible_type = 1;
                         }
                       }
