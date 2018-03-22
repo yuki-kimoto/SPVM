@@ -10,6 +10,7 @@ struct SPVM_my {
   SPVM_OP* op_term_type_inference;
   _Bool try_type_inference;
   _Bool is_arg;
+  _Bool is_self;
 };
 
 SPVM_MY* SPVM_MY_new();

@@ -31,9 +31,33 @@
 #include "spvm_undef.h"
 #include "spvm_block.h"
 
-SPVM_OP_check_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package_to, SPVM_PACKAGE* package_from) {
-  // When left package is interface, right package have all methods which left package have
+_Bool SPVM_OP_is_same_signatures(SPVM_COMPILER* compiler, SPVM_SUB* sub_to, SPVM_SUB* sub_from) {
   
+}
+
+_Bool SPVM_OP_check_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package_to, SPVM_PACKAGE* package_from) {
+  // When left package is interface, right package have all methods which left package have
+  SPVM_LIST* op_subs_to = package_to->op_subs;
+  SPVM_LIST* op_subs_from = package_from->op_subs;
+  
+  _Bool compatible = 0;
+  
+  {
+    int32_t sub_index_to;
+    for (sub_index_to = 0; sub_index_to < op_subs_to->length; sub_index_to++) {
+      SPVM_OP* op_sub_to = SPVM_LIST_fetch(op_subs_to, sub_index_to);
+      SPVM_SUB* sub_to = op_sub_to->uv.sub;
+      assert(sub_to->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+      
+      {
+        int32_t sub_index_from;
+        SPVM_OP* op_sub_from = SPVM_LIST_fetch(op_subs_from, sub_index_from);
+        SPVM_SUB* sub_from = op_sub_from->uv.sub;
+      }
+    }
+  }
+  
+  return compatible;
 }
 
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_LIST* op_mys, const char* file, int32_t line) {
