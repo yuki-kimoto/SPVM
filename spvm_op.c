@@ -1290,6 +1290,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   type_package->name = package_name;
   type_package->op_package = op_package;
   type_package->base_type = type_package;
+  type_package->base_type_name = package_name;
   
   // Type OP
   SPVM_OP* op_type_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name_package->file, op_name_package->line);
@@ -2302,6 +2303,7 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   SPVM_LIST_push(compiler->op_types, op_type);
   
   type->base_type = type;
+  type->base_type_name = type->name;
   
   return op_type;
 }
@@ -2314,6 +2316,7 @@ SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   type->dimension++;
   
   type->base_type = op_type_child->uv.type->base_type;
+  type->base_type_name = op_type_child->uv.type->base_type_name;
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type_child->file, op_type_child->line);

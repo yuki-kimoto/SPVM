@@ -42,6 +42,7 @@ struct SPVM_type {
   int32_t id;
   int32_t dimension;
   SPVM_TYPE* base_type;
+  const char* base_type_name;
   int32_t element_type_id;
   int32_t parent_type_id;
 };

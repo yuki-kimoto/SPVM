@@ -1087,17 +1087,34 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         incompatible_type = 1;
                       }
                       else {
-                        SPVM_TYPE* assign_to_base_type = assign_to_type->base_type;
-                        SPVM_TYPE* assign_from_base_type = assign_from_type->base_type;
-                        if (assign_to_base_type->id != assign_from_type->base_type->id) {
+                        const char* assign_to_base_type_name = assign_to_type->base_type_name;
+                        const char* assign_from_base_type_name = assign_from_type->base_type_name;
+                        
+                        SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_type_name, strlen(assign_to_base_type_name));
+                        SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_type_name, strlen(assign_from_base_type_name));
+                        
+                        if (assign_to_base_type->id != assign_from_base_type->id) {
                           SPVM_OP* assign_to_base_type_op_package = assign_to_base_type->op_package;
                           SPVM_OP* assign_from_base_type_op_package = assign_from_base_type->op_package;
-                          // warn("AAAAAAAA %d %d", assign_to_base_type->id, assign_from_type->base_type->id);
                           
-                          // assert(assign_to_base_type_op_package);
-                          // assert(assign_from_base_type_op_package);
+                          assert(assign_to_base_type_op_package);
+                          assert(assign_from_base_type_op_package);
                           
-                          incompatible_type = 1;
+                          SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
+                          SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
+                          
+                          if (!package_assign_to_base->is_interface && !package_assign_from_base->is_interface) {
+                            incompatible_type = 1;
+                          }
+                          else if (!package_assign_to_base->is_interface) {
+                            
+                          }
+                          else if (!package_assign_from_base->is_interface) {
+                            
+                          }
+                          else {
+                            assert(0);
+                          }
                         }
                       }
                     }
