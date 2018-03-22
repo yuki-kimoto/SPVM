@@ -1079,7 +1079,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // Invalid if to type is different to from value
                   else {
                     if (assign_to_type->id != assign_from_type->id) {
-                      SPVM_yyerror_format(compiler, "Invalid type value is assigned at %s line %d\n", op_cur->file, op_cur->line);
+                      SPVM_yyerror_format(compiler, "Invalid type is assigned at %s line %d\n", op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
                     }
