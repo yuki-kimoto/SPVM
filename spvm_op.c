@@ -1421,6 +1421,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
       
       // Method check
+      
       // Set first argument type if not set
       if (sub->op_args->length > 0) {
         SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
@@ -1444,6 +1445,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         if (op_arg_first->uv.my->op_type) {
           SPVM_LIST_push(compiler->op_types, op_arg_first->uv.my->op_type);
         }
+      }
+      
+      // Subroutine in interface package must be method
+      if (is_interface && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+        SPVM_yyerror_format(compiler, "Subroutine in interface package must be method at %s line %d\n", op_sub->file, op_sub->line);
       }
       
       SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));

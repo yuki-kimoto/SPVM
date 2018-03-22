@@ -31,6 +31,11 @@
 #include "spvm_undef.h"
 #include "spvm_block.h"
 
+SPVM_OP_check_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package_to, SPVM_PACKAGE* package_from) {
+  // When left package is interface, right package have all methods which left package have
+  
+}
+
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_LIST* op_mys, const char* file, int32_t line) {
 
   // Create temporary variable
@@ -1106,11 +1111,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           if (!package_assign_to_base->is_interface && !package_assign_from_base->is_interface) {
                             incompatible_type = 1;
                           }
-                          else if (!package_assign_to_base->is_interface) {
-                            
+                          else if (package_assign_to_base->is_interface) {
+                            SPVM_OP_check_interface(compiler, package_assign_to_base, package_assign_from_base);
                           }
-                          else if (!package_assign_from_base->is_interface) {
-                            
+                          else if (package_assign_from_base->is_interface) {
+                            // None
                           }
                           else {
                             assert(0);
