@@ -213,11 +213,6 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) 
       
       printf("  name => \"%s\"\n", package->op_name->uv.name);
       
-      if (package->op_type) {
-        SPVM_TYPE* type = package->op_type->uv.type;
-        printf("  type => \"%s\"\n", type->name);
-      }
-      
       printf("  byte_size => %" PRId32 "\n", package->op_fields->length);
       
       // Field information

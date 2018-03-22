@@ -265,6 +265,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_SUB* sub = op_sub->uv.sub;
       SPVM_OP* op_package = sub->op_package;
       SPVM_PACKAGE* package = op_package->uv.package;
+      const char* package_name = package->op_name->uv.name;
+      SPVM_TYPE* package_type = SPVM_HASH_search(compiler->type_symtable, package_name, strlen(package_name));
       
       // Set subroutine id
       sub->id = sub_index;
@@ -290,7 +292,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, 0);
           SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
           
-          if (arg_type->id != package->op_type->uv.type->id) {
+          if (arg_type->id != package_type->id) {
             error = 1;
           }
         }
