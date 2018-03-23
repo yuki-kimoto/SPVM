@@ -1265,14 +1265,17 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     return NULL;
   }
   
+  // Package
+  SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
+  package->op_name = op_name_package;
+
   // Package is interface
-  _Bool is_interface = 0;
   if (op_list_descriptors) {
     SPVM_OP* op_descriptor = op_list_descriptors->first;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       if (descriptor->id == SPVM_DESCRIPTOR_C_ID_INTERFACE) {
-        is_interface = 1;
+        package->is_interface = 1;
       }
       else {
         SPVM_yyerror_format(compiler, "Invalid descriptor \"%s\" at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);
@@ -1281,9 +1284,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  // Package
-  SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
-  package->op_name = op_name_package;
   
   // Type(type is same as package name)
   SPVM_TYPE* type_package = SPVM_TYPE_new(compiler);
@@ -1307,7 +1307,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_OP* op_decl = op_decls->first;
   while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
     if (op_decl->id == SPVM_OP_C_ID_FIELD) {
-      if (is_interface) {
+      if (package->is_interface) {
         SPVM_yyerror_format(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
       }
       SPVM_LIST_push(op_fields, op_decl);
@@ -1324,7 +1324,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
     else if (op_decl->id == SPVM_OP_C_ID_OUR) {
-      if (is_interface) {
+      if (package->is_interface) {
         SPVM_yyerror_format(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
       }
       SPVM_LIST_push(op_ours, op_decl);
@@ -1448,7 +1448,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       
       // Subroutine in interface package must be method
-      if (is_interface && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+      if (package->is_interface && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
         SPVM_yyerror_format(compiler, "Subroutine in interface package must be method at %s line %d\n", op_sub->file, op_sub->line);
       }
       

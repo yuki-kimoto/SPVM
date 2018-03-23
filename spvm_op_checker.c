@@ -31,26 +31,28 @@
 #include "spvm_undef.h"
 #include "spvm_block.h"
 
-_Bool SPVM_OP_is_same_signatures(SPVM_COMPILER* compiler, SPVM_SUB* sub_to, SPVM_SUB* sub_from) {
-  assert(sub_to->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
-  assert(sub_from->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+_Bool SPVM_OP_is_same_signatures(SPVM_COMPILER* compiler, SPVM_SUB* sub1, SPVM_SUB* sub2) {
+  assert(sub1->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+  assert(sub2->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
   
   _Bool compatible = 1;
-  if (sub_to->op_args->length != sub_from->op_args->length) {
+  if (sub1->op_args->length != sub2->op_args->length) {
     compatible = 0;
   }
   else {
-    int32_t arg_index;
-    for (arg_index = 0; arg_index < sub_to->op_args->length; arg_index++) {
-      SPVM_OP* op_arg_to = SPVM_LIST_fetch(sub_to->op_args, arg_index);
-      SPVM_OP* op_arg_from = SPVM_LIST_fetch(sub_from->op_args, arg_index);
-      
-      SPVM_TYPE* type_arg_to = SPVM_OP_get_type(compiler, op_arg_to);
-      SPVM_TYPE* type_arg_from = SPVM_OP_get_type(compiler, op_arg_from);
-      
-      if (type_arg_to->id != type_arg_from->id) {
-        compatible = 0;
-        break;
+    if (sub1->op_args->length > 1) {
+      int32_t arg_index;
+      for (arg_index = 1; arg_index < sub1->op_args->length; arg_index++) {
+        SPVM_OP* op_arg_sub1 = SPVM_LIST_fetch(sub1->op_args, arg_index);
+        SPVM_OP* op_arg_sub2 = SPVM_LIST_fetch(sub2->op_args, arg_index);
+        
+        SPVM_TYPE* type_arg_sub1 = SPVM_OP_get_type(compiler, op_arg_sub1);
+        SPVM_TYPE* type_arg_sub2 = SPVM_OP_get_type(compiler, op_arg_sub2);
+        
+        if (type_arg_sub1->id != type_arg_sub2->id) {
+          compatible = 0;
+          break;
+        }
       }
     }
   }
