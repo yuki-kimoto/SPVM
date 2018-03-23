@@ -58,31 +58,31 @@ _Bool SPVM_OP_is_same_signatures(SPVM_COMPILER* compiler, SPVM_SUB* sub_to, SPVM
   return compatible;
 }
 
-_Bool SPVM_OP_check_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package_to, SPVM_PACKAGE* package_from) {
+_Bool SPVM_OP_is_interface_assignable(SPVM_COMPILER* compiler, SPVM_PACKAGE* interface, SPVM_PACKAGE* package) {
   // When left package is interface, right package have all methods which left package have
-  assert(package_to->is_interface);
-  assert(!package_from->is_interface);
+  assert(interface->is_interface);
+  assert(!package->is_interface);
   
-  SPVM_LIST* op_subs_to = package_to->op_subs;
-  SPVM_LIST* op_subs_from = package_from->op_subs;
+  SPVM_LIST* op_subs_interface = interface->op_subs;
+  SPVM_LIST* op_subs_package = package->op_subs;
   
-  _Bool compatible = 1;
+  _Bool assignable = 1;
   
   {
-    int32_t sub_index_to;
-    for (sub_index_to = 0; sub_index_to < op_subs_to->length; sub_index_to++) {
-      SPVM_OP* op_sub_to = SPVM_LIST_fetch(op_subs_to, sub_index_to);
-      SPVM_SUB* sub_to = op_sub_to->uv.sub;
-      assert(sub_to->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+    int32_t sub_index_interface;
+    for (sub_index_interface = 0; sub_index_interface < op_subs_interface->length; sub_index_interface++) {
+      SPVM_OP* op_sub_interface = SPVM_LIST_fetch(op_subs_interface, sub_index_interface);
+      SPVM_SUB* sub_interface = op_sub_interface->uv.sub;
+      assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
       
       _Bool found = 0;
       {
-        int32_t sub_index_from;
-        for (sub_index_from = 0; sub_index_from < op_subs_from->length; sub_index_from++) {
-          SPVM_OP* op_sub_from = SPVM_LIST_fetch(op_subs_from, sub_index_from);
-          SPVM_SUB* sub_from = op_sub_from->uv.sub;
+        int32_t sub_index_package;
+        for (sub_index_package = 0; sub_index_package < op_subs_package->length; sub_index_package++) {
+          SPVM_OP* op_sub_package = SPVM_LIST_fetch(op_subs_package, sub_index_package);
+          SPVM_SUB* sub_package = op_sub_package->uv.sub;
           
-          _Bool is_same_signatures = SPVM_OP_is_same_signatures(compiler, sub_to, sub_from);
+          _Bool is_same_signatures = SPVM_OP_is_same_signatures(compiler, sub_interface, sub_package);
           if (is_same_signatures) {
             found = 1;
             break;
@@ -90,13 +90,13 @@ _Bool SPVM_OP_check_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package_to,
         }
       }
       if (!found) {
-        compatible = 0;
+        assignable = 0;
         break;
       }
     }
   }
   
-  return compatible;
+  return assignable;
 }
 
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_LIST* op_mys, const char* file, int32_t line) {
@@ -198,7 +198,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
     }
   }
-
+  
   // Set parent type id and element type id
   {
     int32_t i;
@@ -1180,7 +1180,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             is_compatible = 0;
                           }
                           else if (package_assign_to_base->is_interface) {
-                            is_compatible = SPVM_OP_check_interface(compiler, package_assign_to_base, package_assign_from_base);
+                            is_compatible = SPVM_OP_is_interface_assignable(compiler, package_assign_to_base, package_assign_from_base);
                           }
                           else if (package_assign_from_base->is_interface) {
                             // None, but need check cast
