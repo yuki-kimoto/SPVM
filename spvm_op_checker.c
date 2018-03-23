@@ -60,10 +60,13 @@ _Bool SPVM_OP_is_same_signatures(SPVM_COMPILER* compiler, SPVM_SUB* sub_to, SPVM
 
 _Bool SPVM_OP_check_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package_to, SPVM_PACKAGE* package_from) {
   // When left package is interface, right package have all methods which left package have
+  assert(package_to->is_interface);
+  assert(!package_from->is_interface);
+  
   SPVM_LIST* op_subs_to = package_to->op_subs;
   SPVM_LIST* op_subs_from = package_from->op_subs;
   
-  _Bool compatible = 0;
+  _Bool compatible = 1;
   
   {
     int32_t sub_index_to;
@@ -72,12 +75,23 @@ _Bool SPVM_OP_check_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package_to,
       SPVM_SUB* sub_to = op_sub_to->uv.sub;
       assert(sub_to->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
       
+      _Bool found = 0;
       {
         int32_t sub_index_from;
-        SPVM_OP* op_sub_from = SPVM_LIST_fetch(op_subs_from, sub_index_from);
-        SPVM_SUB* sub_from = op_sub_from->uv.sub;
-        
-        SPVM_OP_is_same_signatures(compiler, sub_to, sub_from);
+        for (sub_index_from = 0; sub_index_from < op_subs_from->length; sub_index_from++) {
+          SPVM_OP* op_sub_from = SPVM_LIST_fetch(op_subs_from, sub_index_from);
+          SPVM_SUB* sub_from = op_sub_from->uv.sub;
+          
+          _Bool is_same_signatures = SPVM_OP_is_same_signatures(compiler, sub_to, sub_from);
+          if (is_same_signatures) {
+            found = 1;
+            break;
+          }
+        }
+      }
+      if (!found) {
+        compatible = 0;
+        break;
       }
     }
   }
