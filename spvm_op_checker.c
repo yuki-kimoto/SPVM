@@ -32,7 +32,30 @@
 #include "spvm_block.h"
 
 _Bool SPVM_OP_is_same_signatures(SPVM_COMPILER* compiler, SPVM_SUB* sub_to, SPVM_SUB* sub_from) {
+  assert(sub_to->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+  assert(sub_from->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
   
+  _Bool compatible = 1;
+  if (sub_to->op_args->length != sub_from->op_args->length) {
+    compatible = 0;
+  }
+  else {
+    int32_t arg_index;
+    for (arg_index = 0; arg_index < sub_to->op_args->length; arg_index++) {
+      SPVM_OP* op_arg_to = SPVM_LIST_fetch(sub_to->op_args, arg_index);
+      SPVM_OP* op_arg_from = SPVM_LIST_fetch(sub_from->op_args, arg_index);
+      
+      SPVM_TYPE* type_arg_to = SPVM_OP_get_type(compiler, op_arg_to);
+      SPVM_TYPE* type_arg_from = SPVM_OP_get_type(compiler, op_arg_from);
+      
+      if (type_arg_to->id != type_arg_from->id) {
+        compatible = 0;
+        break;
+      }
+    }
+  }
+  
+  return compatible;
 }
 
 _Bool SPVM_OP_check_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package_to, SPVM_PACKAGE* package_from) {
@@ -53,6 +76,8 @@ _Bool SPVM_OP_check_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package_to,
         int32_t sub_index_from;
         SPVM_OP* op_sub_from = SPVM_LIST_fetch(op_subs_from, sub_index_from);
         SPVM_SUB* sub_from = op_sub_from->uv.sub;
+        
+        SPVM_OP_is_same_signatures(compiler, sub_to, sub_from);
       }
     }
   }
