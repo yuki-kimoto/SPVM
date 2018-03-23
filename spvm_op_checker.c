@@ -1135,10 +1135,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   // Object type check
                   else {
-                    _Bool incompatible_type = 0;
+                    _Bool is_compatible = 1;
                     if (assign_to_type->id != assign_from_type->id) {
                       if (assign_to_type->dimension != assign_from_type->dimension) {
-                        incompatible_type = 1;
+                        is_compatible = 0;
                       }
                       else {
                         const char* assign_to_base_type_name = assign_to_type->base_type_name;
@@ -1157,14 +1157,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
                           SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
                           
-                          if (!package_assign_to_base->is_interface && !package_assign_from_base->is_interface) {
-                            incompatible_type = 1;
+                          // Can't convert different interface package
+                          if (package_assign_to_base->is_interface && package_assign_from_base->is_interface) {
+                            is_compatible = 0;
+                          }
+                          // Can't convert different package
+                          else if (!package_assign_to_base->is_interface && !package_assign_from_base->is_interface) {
+                            is_compatible = 0;
                           }
                           else if (package_assign_to_base->is_interface) {
-                            SPVM_OP_check_interface(compiler, package_assign_to_base, package_assign_from_base);
+                            is_compatible = SPVM_OP_check_interface(compiler, package_assign_to_base, package_assign_from_base);
                           }
                           else if (package_assign_from_base->is_interface) {
-                            // None
+                            // None, but need check cast
                           }
                           else {
                             assert(0);
@@ -1172,7 +1177,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                     }
-                    if (incompatible_type) {
+                    if (!is_compatible) {
                       SPVM_yyerror_format(compiler, "Invalid type is assigned at %s line %d\n", op_cur->file, op_cur->line);
                     }
                   }
