@@ -1201,7 +1201,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       if (!is_compatible) {
-                        SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_cur->file, op_cur->line);
+                        SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
                       }
                     }
                   }
