@@ -48,6 +48,8 @@ package TestCase {
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
+
+    my $total = CORE::test1(3, 11);
     
     my $object : Object = new TestCase::Minimal;
     my $implement_interface1 : TestCase::Interface = new TestCase::ImplementInterface1;
