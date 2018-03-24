@@ -2584,8 +2584,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_ID_CHECK_CAST: {
-                SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
                 int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
+                SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->last);
 
                 SPVM_OPCODE opcode;
                 memset(&opcode, 0, sizeof(SPVM_OPCODE));

@@ -1121,7 +1121,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         if (compile_error) {
-                          SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
                         }
                         else {
                           do_convert = 1;
@@ -1181,11 +1181,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               is_compatible = SPVM_OP_is_interface_assignable(compiler, package_assign_to_base, package_assign_from_base);
                             }
                             else if (package_assign_from_base->is_interface) {
-                              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->first);
+                              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
                               
-                              SPVM_OP* op_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CHECK_CAST, op_cur->first->file, op_cur->first->line);
+                              SPVM_OP* op_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CHECK_CAST, op_assign_from->file, op_assign_from->line);
                               
-                              SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_cur->first);
+                              SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_assign_from);
+                              
+                              SPVM_OP* op_type_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_assign_from->file, op_assign_from->line);
+                              op_type_check_cast->uv.type = SPVM_OP_get_type(compiler, op_assign_to);
+                              
+                              SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_type_check_cast);
                               
                               SPVM_OP_replace_op(compiler, op_stab, op_check_cast);
                             }
