@@ -2594,6 +2594,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 opcode.operand1 = type->id;
                 
                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, sub->id, op_cur->line);
                 
                 break;
               }
