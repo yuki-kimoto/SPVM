@@ -2583,6 +2583,20 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
+              case SPVM_OP_C_ID_CHECK_CAST: {
+                SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
+                int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
+
+                SPVM_OPCODE opcode;
+                memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
+                opcode.operand0 = index_in;
+                opcode.operand1 = type->id;
+                
+                SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                
+                break;
+              }
               case SPVM_OP_C_ID_CALL_SUB: {
                 SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
                 const char* call_sub_abs_name = call_sub->sub->abs_name;
