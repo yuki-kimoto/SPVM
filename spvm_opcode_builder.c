@@ -468,9 +468,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   else if (op_assign_from->id == SPVM_OP_C_ID_CALL_SUB) {
                     
                     SPVM_CALL_SUB* call_sub = op_assign_from->uv.call_sub;
-                    const char* call_sub_name = call_sub->sub->abs_name;
+                    const char* call_sub_abs_name = call_sub->sub->abs_name;
                     
-                    SPVM_OP* op_sub_call_sub = SPVM_HASH_search(compiler->op_sub_symtable, call_sub_name, strlen(call_sub_name));
+                    SPVM_OP* op_sub_call_sub = SPVM_HASH_search(compiler->op_sub_symtable, call_sub_abs_name, strlen(call_sub_abs_name));
                     SPVM_SUB* sub_call_sub = op_sub_call_sub->uv.sub;
 
                     // Push args
@@ -512,16 +512,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     }
 
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+
                     // Call subroutine
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                    
                     opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
-
-                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
-                    int32_t id = sub_call_sub->id;
-
                     opcode.operand0 = index_out;
-                    opcode.operand1 = id;
+                    opcode.operand1 = sub_call_sub->id;
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -2576,12 +2575,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_ID_CALL_SUB: {
                 SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
-                const char* sub_name = call_sub->sub->abs_name;
+                const char* call_sub_abs_name = call_sub->sub->abs_name;
                 
-                SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
-                SPVM_SUB* sub = op_sub->uv.sub;
+                SPVM_OP* op_sub_call_sub = SPVM_HASH_search(compiler->op_sub_symtable, call_sub_abs_name, strlen(call_sub_abs_name));
+                SPVM_SUB* sub_call_sub = op_sub_call_sub->uv.sub;
                 
-                if (sub->op_return_type->uv.type->id == SPVM_TYPE_C_ID_VOID) {
+                if (sub_call_sub->op_return_type->uv.type->id == SPVM_TYPE_C_ID_VOID) {
                   // Push args
                   SPVM_OP* op_args = op_cur->last;
                   SPVM_OP* op_arg = op_args->first;
@@ -2619,14 +2618,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                   
+
+                  // CALL_SUB opcode
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-
-                  // Call subroutine
                   opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
-                  
-                  int32_t id = sub->id;
-                  opcode.operand1 = id;
+                  opcode.operand1 = sub_call_sub->id;
 
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
