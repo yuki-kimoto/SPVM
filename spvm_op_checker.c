@@ -101,6 +101,156 @@ _Bool SPVM_OP_is_interface_assignable(SPVM_COMPILER* compiler, SPVM_PACKAGE* int
   return assignable;
 }
 
+void SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
+  SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
+  SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
+  
+  // Can't assign undef to numeric value
+  if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
+    SPVM_yyerror_format(compiler, "Can't convert undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
+  }
+  else {
+    // Copy left type to undef
+    if (op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
+      assign_from_type = assign_to_type;
+      op_assign_from->uv.undef->type = assign_from_type;
+    }
+    
+    // Numeric type check
+    if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
+      int32_t do_convert = 0;
+      if (assign_to_type->id > assign_from_type->id) {
+        do_convert = 1;
+      }
+      // Narrowng convetion only when constant is in range
+      else if (assign_to_type->id < assign_from_type->id) {
+        int32_t compile_error = 0;
+        if (op_assign_from->id == SPVM_OP_C_ID_CONSTANT) {
+          int32_t compile_error = 0;
+          SPVM_CONSTANT* constant = op_assign_from->uv.constant;
+          int64_t constant_value;
+          if (constant->type->id == SPVM_TYPE_C_ID_INT || constant->type->id == SPVM_TYPE_C_ID_LONG) {
+            if (constant->type->id == SPVM_TYPE_C_ID_INT) {
+              constant_value = constant->value.int_value;
+            }
+            else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
+              constant_value = constant->value.long_value;
+            }
+            
+            if (assign_to_type->id == SPVM_OP_C_ID_BYTE) {
+              if (!(constant_value >= INT8_MIN && constant_value <= INT8_MAX)) {
+                compile_error = 1;
+              }
+            }
+            else if (assign_to_type->id == SPVM_OP_C_ID_SHORT) {
+              if (!(constant_value >= INT16_MIN && constant_value <= INT16_MAX)) {
+                compile_error = 1;
+              }
+            }
+            else if (assign_to_type->id == SPVM_OP_C_ID_INT) {
+              if (!(constant_value >= INT32_MIN && constant_value <= INT32_MAX)) {
+                compile_error = 1;
+              }
+            }
+            else {
+              compile_error = 1;
+            }
+          }
+          else {
+            compile_error = 1;
+          }
+        }
+        else {
+          compile_error = 1;
+        }
+        
+        if (compile_error) {
+          SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
+        }
+        else {
+          do_convert = 1;
+        }
+      }
+      
+      if (do_convert) {
+        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
+        
+        SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_assign_from->file, op_assign_from->line);
+        SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_assign_from->file, op_assign_from->line);
+        op_dist_type->uv.type = assign_to_type;
+        SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_assign_from);
+        
+        SPVM_OP_replace_op(compiler, op_stab, op_convert);
+
+        op_convert->is_var_assign_from = op_convert->first->is_var_assign_from;
+        op_convert->is_assign_from = op_convert->first->is_assign_from;
+        
+        op_convert->first->is_var_assign_from = 0;
+        op_convert->first->is_assign_from = 0;
+      }
+    }
+    // Object type check
+    else {
+      _Bool is_compatible = 1;
+      if (assign_to_type->id != assign_from_type->id) {
+        if (assign_to_type->dimension != assign_from_type->dimension) {
+          is_compatible = 0;
+        }
+        else {
+          const char* assign_to_base_type_name = assign_to_type->base_type_name;
+          const char* assign_from_base_type_name = assign_from_type->base_type_name;
+          
+          SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_type_name, strlen(assign_to_base_type_name));
+          SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_type_name, strlen(assign_from_base_type_name));
+          
+          if (assign_to_base_type->id != assign_from_base_type->id) {
+            SPVM_OP* assign_to_base_type_op_package = assign_to_base_type->op_package;
+            SPVM_OP* assign_from_base_type_op_package = assign_from_base_type->op_package;
+            
+            assert(assign_to_base_type_op_package);
+            assert(assign_from_base_type_op_package);
+            
+            SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
+            SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
+            
+            // Can't convert different interface package
+            if (package_assign_to_base->is_interface && package_assign_from_base->is_interface) {
+              is_compatible = 0;
+            }
+            // Can't convert different package
+            else if (!package_assign_to_base->is_interface && !package_assign_from_base->is_interface) {
+              is_compatible = 0;
+            }
+            else if (package_assign_to_base->is_interface) {
+              is_compatible = SPVM_OP_is_interface_assignable(compiler, package_assign_to_base, package_assign_from_base);
+            }
+            else if (package_assign_from_base->is_interface) {
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
+              
+              SPVM_OP* op_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CHECK_CAST, op_assign_from->file, op_assign_from->line);
+              
+              SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_assign_from);
+              
+              SPVM_OP* op_type_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_assign_from->file, op_assign_from->line);
+              op_type_check_cast->uv.type = SPVM_OP_get_type(compiler, op_assign_to);
+              
+              SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_type_check_cast);
+              
+              SPVM_OP_replace_op(compiler, op_stab, op_check_cast);
+            }
+            else {
+              assert(0);
+            }
+          }
+        }
+      }
+      if (!is_compatible) {
+        SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
+      }
+    }
+  }
+}
+
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_LIST* op_mys, const char* file, int32_t line) {
 
   // Create temporary variable
@@ -1058,153 +1208,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_assign_to = op_cur->last;
                   SPVM_OP* op_assign_from = op_cur->first;
                   
-                  SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
-                  SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
-                  
-                  // Can't assign undef to numeric value
-                  if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
-                    SPVM_yyerror_format(compiler, "Can't convert undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
-                  }
-                  else {
-                    // Copy left type to undef
-                    if (op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
-                      assign_from_type = assign_to_type;
-                      op_assign_from->uv.undef->type = assign_from_type;
-                    }
-                    
-                    // Numeric type check
-                    if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
-                      int32_t do_convert = 0;
-                      if (assign_to_type->id > assign_from_type->id) {
-                        do_convert = 1;
-                      }
-                      // Narrowng convetion only when constant is in range
-                      else if (assign_to_type->id < assign_from_type->id) {
-                        int32_t compile_error = 0;
-                        if (op_assign_from->id == SPVM_OP_C_ID_CONSTANT) {
-                          int32_t compile_error = 0;
-                          SPVM_CONSTANT* constant = op_assign_from->uv.constant;
-                          int64_t constant_value;
-                          if (constant->type->id == SPVM_TYPE_C_ID_INT || constant->type->id == SPVM_TYPE_C_ID_LONG) {
-                            if (constant->type->id == SPVM_TYPE_C_ID_INT) {
-                              constant_value = constant->value.int_value;
-                            }
-                            else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
-                              constant_value = constant->value.long_value;
-                            }
-                            
-                            if (assign_to_type->id == SPVM_OP_C_ID_BYTE) {
-                              if (!(constant_value >= INT8_MIN && constant_value <= INT8_MAX)) {
-                                compile_error = 1;
-                              }
-                            }
-                            else if (assign_to_type->id == SPVM_OP_C_ID_SHORT) {
-                              if (!(constant_value >= INT16_MIN && constant_value <= INT16_MAX)) {
-                                compile_error = 1;
-                              }
-                            }
-                            else if (assign_to_type->id == SPVM_OP_C_ID_INT) {
-                              if (!(constant_value >= INT32_MIN && constant_value <= INT32_MAX)) {
-                                compile_error = 1;
-                              }
-                            }
-                            else {
-                              compile_error = 1;
-                            }
-                          }
-                          else {
-                            compile_error = 1;
-                          }
-                        }
-                        else {
-                          compile_error = 1;
-                        }
-                        
-                        if (compile_error) {
-                          SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
-                        }
-                        else {
-                          do_convert = 1;
-                        }
-                      }
-                      
-                      if (do_convert) {
-                        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
-                        
-                        SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_assign_from->file, op_assign_from->line);
-                        SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_assign_from->file, op_assign_from->line);
-                        op_dist_type->uv.type = assign_to_type;
-                        SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_assign_from);
-                        
-                        SPVM_OP_replace_op(compiler, op_stab, op_convert);
-
-                        op_convert->is_var_assign_from = op_convert->first->is_var_assign_from;
-                        op_convert->is_assign_from = op_convert->first->is_assign_from;
-                        
-                        op_convert->first->is_var_assign_from = 0;
-                        op_convert->first->is_assign_from = 0;
-                      }
-                    }
-                    // Object type check
-                    else {
-                      _Bool is_compatible = 1;
-                      if (assign_to_type->id != assign_from_type->id) {
-                        if (assign_to_type->dimension != assign_from_type->dimension) {
-                          is_compatible = 0;
-                        }
-                        else {
-                          const char* assign_to_base_type_name = assign_to_type->base_type_name;
-                          const char* assign_from_base_type_name = assign_from_type->base_type_name;
-                          
-                          SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_type_name, strlen(assign_to_base_type_name));
-                          SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_type_name, strlen(assign_from_base_type_name));
-                          
-                          if (assign_to_base_type->id != assign_from_base_type->id) {
-                            SPVM_OP* assign_to_base_type_op_package = assign_to_base_type->op_package;
-                            SPVM_OP* assign_from_base_type_op_package = assign_from_base_type->op_package;
-                            
-                            assert(assign_to_base_type_op_package);
-                            assert(assign_from_base_type_op_package);
-                            
-                            SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
-                            SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
-                            
-                            // Can't convert different interface package
-                            if (package_assign_to_base->is_interface && package_assign_from_base->is_interface) {
-                              is_compatible = 0;
-                            }
-                            // Can't convert different package
-                            else if (!package_assign_to_base->is_interface && !package_assign_from_base->is_interface) {
-                              is_compatible = 0;
-                            }
-                            else if (package_assign_to_base->is_interface) {
-                              is_compatible = SPVM_OP_is_interface_assignable(compiler, package_assign_to_base, package_assign_from_base);
-                            }
-                            else if (package_assign_from_base->is_interface) {
-                              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
-                              
-                              SPVM_OP* op_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CHECK_CAST, op_assign_from->file, op_assign_from->line);
-                              
-                              SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_assign_from);
-                              
-                              SPVM_OP* op_type_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_assign_from->file, op_assign_from->line);
-                              op_type_check_cast->uv.type = SPVM_OP_get_type(compiler, op_assign_to);
-                              
-                              SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_type_check_cast);
-                              
-                              SPVM_OP_replace_op(compiler, op_stab, op_check_cast);
-                            }
-                            else {
-                              assert(0);
-                            }
-                          }
-                        }
-                      }
-                      if (!is_compatible) {
-                        SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
-                      }
-                    }
-                  }
+                  SPVM_OP_check_and_convert_type(compiler, op_assign_to, op_assign_from);
                   
                   if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
                     if (op_assign_from->id == SPVM_OP_C_ID_CONCAT_STRING) {
