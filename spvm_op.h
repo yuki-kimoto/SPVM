@@ -133,6 +133,7 @@ enum {
   SPVM_OP_C_ID_LOOP_INCREMENT,
   SPVM_OP_C_ID_SELF,
   SPVM_OP_C_ID_CLASS,
+  SPVM_OP_C_ID_CHECK_CAST,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];

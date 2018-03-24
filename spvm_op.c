@@ -133,6 +133,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "LOOP_INCREMENT",
   "SELF",
   "CLASS",
+  "CHECK_CAST",
 };
 
 void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
