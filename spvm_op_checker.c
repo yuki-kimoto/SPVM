@@ -1063,7 +1063,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Can't assign undef to numeric value
                   if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
-                    SPVM_yyerror_format(compiler, "Can't assign undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
+                    SPVM_yyerror_format(compiler, "Can't convert undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1123,7 +1123,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       if (compile_error) {
-                        SPVM_yyerror_format(compiler, "Can't do implicite narrowing convertion at %s line %d\n", op_cur->file, op_cur->line);
+                        SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
                       }
@@ -1200,7 +1200,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                     }
                     if (!is_compatible) {
-                      SPVM_yyerror_format(compiler, "Invalid type is assigned at %s line %d\n", op_cur->file, op_cur->line);
+                      SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_cur->file, op_cur->line);
                     }
                   }
                   
