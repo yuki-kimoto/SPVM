@@ -1814,7 +1814,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       return;
                     }
                     
-                    _Bool is_invalid = 0;
+                    _Bool is_compatible = 1;
                     
                     SPVM_OP* op_sub_arg_my = SPVM_LIST_fetch(call_sub->sub->op_args, call_sub_args_count - 1);
                     
@@ -1823,7 +1823,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     // Undef
                     if (op_term->id == SPVM_OP_C_ID_UNDEF) {
                       if (SPVM_TYPE_is_numeric(compiler, sub_arg_type)) {
-                        is_invalid = 1;
+                        is_compatible = 0;
                       }
                       else {
                         // Set undef type
@@ -1834,12 +1834,44 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     else if (op_term) {
                       SPVM_TYPE* op_term_type = SPVM_OP_get_type(compiler, op_term);
                       
-                      if (op_term_type->id !=  sub_arg_type->id) {
-                        is_invalid = 1;
+                      if (sub_arg_type->id != op_term_type->id) {
+                          
+                        SPVM_OP* assign_to_base_type_op_package = sub_arg_type->op_package;
+                        SPVM_OP* assign_from_base_type_op_package = op_term_type->op_package;
+                        
+                        assert(assign_to_base_type_op_package);
+                        assert(assign_from_base_type_op_package);
+                        
+                        SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
+                        SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
+                        
+                        // Can't convert different interface package
+                        if (package_assign_to_base->is_interface && package_assign_from_base->is_interface) {
+                          is_compatible = 0;
+                        }
+                        // Can't convert different package
+                        else if (!package_assign_to_base->is_interface && !package_assign_from_base->is_interface) {
+                          is_compatible = 0;
+                        }
+                        else if (package_assign_to_base->is_interface) {
+                          is_compatible = SPVM_OP_is_interface_assignable(compiler, package_assign_to_base, package_assign_from_base);
+                        }
+                        else if (package_assign_from_base->is_interface) {
+                          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
+                          
+                          SPVM_OP* op_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CHECK_CAST, op_cur->first->file, op_cur->first->line);
+                          
+                          SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_term);
+                          
+                          SPVM_OP_replace_op(compiler, op_stab, op_check_cast);
+                        }
+                        else {
+                          assert(0);
+                        }
                       }
                     }
-                    if (is_invalid) {
-                      SPVM_yyerror_format(compiler, "%dth argument type must be %s (%s()) at %s line %d\n", (int)call_sub_args_count, sub_arg_type->name, sub_abs_name, op_cur->file, op_cur->line);
+                    if (!is_compatible) {
+                      SPVM_yyerror_format(compiler, "Type of %dth argument is invalid at %s line %d\n", call_sub_args_count, op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
                     }

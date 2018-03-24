@@ -960,6 +960,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_PLUS:
     case SPVM_OP_C_ID_NEGATE:
     case SPVM_OP_C_ID_NEW:
+    case SPVM_OP_C_ID_CHECK_CAST:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
