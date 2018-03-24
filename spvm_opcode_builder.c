@@ -518,9 +518,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
                     opcode.operand0 = index_out;
-                    opcode.operand1 = sub_call_sub->id;
+
+                    if (sub_call_sub->op_package->uv.package->is_interface) {
+                      opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
+                      opcode.operand1 = sub_call_sub->op_package->uv.package->id;
+                      const char* method_name = sub_call_sub->op_name->uv.name;
+                      int32_t* name_id_ptr = SPVM_HASH_search(compiler->sub_name_symtable, method_name, strlen(method_name));
+                      opcode.operand2 = *name_id_ptr;
+                    }
+                    else {
+                      opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
+                      opcode.operand1 = sub_call_sub->id;
+                    }
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -2622,11 +2632,21 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // CALL_SUB opcode
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
-                  opcode.operand1 = sub_call_sub->id;
-
+                  
+                  if (sub_call_sub->op_package->uv.package->is_interface) {
+                    opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
+                    opcode.operand1 = sub_call_sub->op_package->uv.package->id;
+                    const char* method_name = sub_call_sub->op_name->uv.name;
+                    int32_t* name_id_ptr = SPVM_HASH_search(compiler->sub_name_symtable, method_name, strlen(method_name));
+                    opcode.operand2 = *name_id_ptr;
+                  }
+                  else {
+                    opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
+                    opcode.operand1 = sub_call_sub->id;
+                  }
+                  
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-
+                  
                   SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, sub->id, op_cur->line);
                 }
                 
