@@ -1,0 +1,15 @@
+use TestCase::Minimal;
+
+package TestCase::ImplementInterface2 {
+  
+  sub foo : int ($self : self, $var1 : int, $var2 : long) {
+    return 2;
+  }
+  sub bar : TestCase::Minimal ($self : self, $var1 : TestCase::Minimal, $var2 : Object) {
+    return undef;
+  }
+  
+  sub baz : int ($self : self) {
+    return 2;
+  }
+}
