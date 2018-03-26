@@ -1569,6 +1569,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         assert(op_sub->file);
         
         sub->file_name = op_sub->file;
+
+        // Register method signature symbol table
+        if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+          const char* method_signature = SPVM_OP_create_method_signature(compiler, sub);
+          SPVM_HASH_insert(sub->op_package->uv.package->method_signature_symtable, method_signature, strlen(method_signature), sub);
+        }
         
         SPVM_LIST_push(compiler->op_subs, op_sub);
         SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);

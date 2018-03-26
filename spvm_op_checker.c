@@ -491,11 +491,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       // Set subroutine id
       sub->id = sub_index;
       
-      // Create method signature
-      if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
-        const char* method_signature = SPVM_OP_create_method_signature(compiler, sub);
-      }
-      
       int32_t eval_block_stack_length = 0;
       int32_t loop_block_stack_length = 0;
       

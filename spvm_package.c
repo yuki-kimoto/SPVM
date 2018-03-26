@@ -14,7 +14,7 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
 
   package->op_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   package->op_our_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
-  package->sub_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  package->method_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
 
   package->compatible_interface_pacakge_names = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
