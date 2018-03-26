@@ -1250,6 +1250,12 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
   
   // Calcurate signature length
   {
+    // Return type
+    length += strlen(sub->op_return_type->uv.type->name);
+    
+    // Space
+    length += 1;
+    
     // Subroutine name
     length += strlen(sub->op_name->uv.name);
     
@@ -1281,15 +1287,23 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
   // Calcurate signature length
   char* bufptr = method_signature;
   {
+    // Return type
+    memcpy(bufptr, sub->op_return_type->uv.type->name, strlen(sub->op_return_type->uv.type->name));
+    bufptr += strlen(sub->op_return_type->uv.type->name);
+
+    // Space
+    memcpy(bufptr, " ", 1);
+    bufptr += 1;
+
     // Subroutine name
     memcpy(bufptr, sub->op_name->uv.name, strlen(sub->op_name->uv.name));
     bufptr += strlen(sub->op_name->uv.name);
     
-    // (self,
-    memcpy(bufptr, "(self,", 6);
-    length += 6;
-    
     if (sub->op_args->length > 1) {
+      // (self,
+      memcpy(bufptr, "(self,", 6);
+      bufptr += 6;
+    
       int32_t arg_index;
       for (arg_index = 1; arg_index < sub->op_args->length; arg_index++) {
         SPVM_OP* op_arg_sub = SPVM_LIST_fetch(sub->op_args, arg_index);
@@ -1297,19 +1311,24 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
         
         // TYPE
         memcpy(bufptr, type_arg_sub->name, strlen(type_arg_sub->name));
-        length += strlen(type_arg_sub->name);
+        bufptr += strlen(type_arg_sub->name);
         
         // ,
         if (arg_index != sub->op_args->length - 1) {
           memcpy(bufptr, ",", 1);
-          length += 1;
+          bufptr += 1;
         }
       }
+    }
+    else {
+      // (self,
+      memcpy(bufptr, "(self", 5);
+      bufptr += 5;
     }
     
     // )
     memcpy(bufptr, ")", 1);
-    length += 1;
+    bufptr += 1;
   }
   
   return method_signature;
