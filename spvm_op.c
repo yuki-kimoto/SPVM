@@ -1569,11 +1569,19 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         assert(op_sub->file);
         
         sub->file_name = op_sub->file;
-
+        
         // Register method signature symbol table
         if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
           const char* method_signature = SPVM_OP_create_method_signature(compiler, sub);
           SPVM_HASH_insert(sub->op_package->uv.package->method_signature_symtable, method_signature, strlen(method_signature), sub);
+          
+          int32_t* found_index_ptr = SPVM_HASH_search(compiler->method_signature_symtable, method_signature, strlen(method_signature));
+          if (!found_index_ptr) {
+            SPVM_LIST_push(compiler->method_signatures, (char*)method_signature);
+            int32_t* new_found_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+            *new_found_index_ptr = compiler->method_signatures->length - 1;
+            SPVM_HASH_insert(compiler->method_signature_symtable, method_signature, strlen(method_signature), new_found_index_ptr);
+          }
         }
         
         SPVM_LIST_push(compiler->op_subs, op_sub);
