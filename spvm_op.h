@@ -210,6 +210,8 @@ struct SPVM_op {
   _Bool is_var_assign_from;
 };
 
+const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub);
+
 SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
 const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var);

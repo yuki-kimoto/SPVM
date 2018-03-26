@@ -1242,6 +1242,79 @@ const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package
   return abs_name;
 }
 
+const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
+  
+  assert(sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+  
+  int32_t length = 0;
+  
+  // Calcurate signature length
+  {
+    // Subroutine name
+    length += strlen(sub->op_name->uv.name);
+    
+    // (self,
+    length += 6;
+    
+    if (sub->op_args->length > 1) {
+      int32_t arg_index;
+      for (arg_index = 1; arg_index < sub->op_args->length; arg_index++) {
+        SPVM_OP* op_arg_sub = SPVM_LIST_fetch(sub->op_args, arg_index);
+        SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, op_arg_sub);
+        
+        // TYPE
+        length += strlen(type_arg_sub->name);
+        
+        // ,
+        if (arg_index != sub->op_args->length - 1) {
+          length += 1;
+        }
+      }
+    }
+    
+    // )
+    length += 1;
+  }
+  
+  char* method_signature = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+  
+  // Calcurate signature length
+  char* bufptr = method_signature;
+  {
+    // Subroutine name
+    memcpy(bufptr, sub->op_name->uv.name, strlen(sub->op_name->uv.name));
+    bufptr += strlen(sub->op_name->uv.name);
+    
+    // (self,
+    memcpy(bufptr, "(self,", 6);
+    length += 6;
+    
+    if (sub->op_args->length > 1) {
+      int32_t arg_index;
+      for (arg_index = 1; arg_index < sub->op_args->length; arg_index++) {
+        SPVM_OP* op_arg_sub = SPVM_LIST_fetch(sub->op_args, arg_index);
+        SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, op_arg_sub);
+        
+        // TYPE
+        memcpy(bufptr, type_arg_sub->name, strlen(type_arg_sub->name));
+        length += strlen(type_arg_sub->name);
+        
+        // ,
+        if (arg_index != sub->op_args->length - 1) {
+          memcpy(bufptr, ",", 1);
+          length += 1;
+        }
+      }
+    }
+    
+    // )
+    memcpy(bufptr, ")", 1);
+    length += 1;
+  }
+  
+  return method_signature;
+}
+
 const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
   int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
   
