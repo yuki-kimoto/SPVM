@@ -3,6 +3,7 @@
   - fix bug that empty package parsing fail
   - add Object interface
   - add subroutine argument convertion
+  - implement interface method call
 0.0318 2018-03-20
   - field become public by default
   - remove set, get keyword
