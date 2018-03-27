@@ -1573,6 +1573,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         // Register method signature symbol table
         if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
           const char* method_signature = SPVM_OP_create_method_signature(compiler, sub);
+          sub->method_signature = method_signature;
           SPVM_HASH_insert(sub->op_package->uv.package->method_signature_symtable, method_signature, strlen(method_signature), sub);
           
           int32_t* found_index_ptr = SPVM_HASH_search(compiler->method_signature_symtable, method_signature, strlen(method_signature));

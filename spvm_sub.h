@@ -22,6 +22,7 @@ struct SPVM_sub {
   SPVM_LIST* op_mys;
   const char* abs_name;
   const char* file_name;
+  const char* method_signature;
   int32_t opcode_base;
   int32_t opcode_length;
   int32_t call_sub_arg_stack_max;
