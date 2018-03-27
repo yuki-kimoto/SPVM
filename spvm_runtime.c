@@ -1596,6 +1596,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {
         int32_t call_sub_id;
+        int32_t not_found_interface_method = 0;
         if (opcode->id == SPVM_OPCODE_C_ID_CALL_SUB) {
            call_sub_id = opcode->operand1;
         }
@@ -1604,9 +1605,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           
           int32_t type_id = *(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET);
           
-          int32_t call_sub_name_id = opcode->operand2;
+          int32_t method_signature_id = opcode->operand2;
           
-          const char* call_sub_name = SPVM_LIST_fetch(compiler->sub_names, call_sub_name_id);
+          const char* method_signature = SPVM_LIST_fetch(compiler->method_signatures, method_signature_id);
           
           _Bool found_sub = 0;
           
@@ -1614,67 +1615,69 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           
           SPVM_PACKAGE* package = type->op_package->uv.package;
           
-          SPVM_LIST* op_subs = package->op_subs;
+          SPVM_SUB* sub_call_sub = SPVM_HASH_search(package->method_signature_symtable, method_signature, strlen(method_signature));
           
-          int32_t sub_index = 0;
-          for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
-            SPVM_OP* op_sub_call_sub = SPVM_LIST_fetch(op_subs, sub_index);
-            SPVM_SUB* sub_call_sub = op_sub_call_sub->uv.sub;
-            
-            if (strcmp(call_sub_name, sub->op_name->uv.name) == 0) {
-              call_sub_id = sub_call_sub->id;
-              break;
-            }
+          if (!sub_call_sub) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "Object must be not undef.", 0);
+            api->set_exception(api, exception);
+            croak_flag = 1;
+            not_found_interface_method = 1;
+          }
+          else {
+            call_sub_id = sub_call_sub->id;
           }
         }
         else {
           assert(0);
         }
         
-        // Constant pool sub
-        SPVM_OP* op_call_sub = SPVM_LIST_fetch(compiler->op_subs, call_sub_id);
-        SPVM_SUB* call_sub = op_call_sub->uv.sub;
+        if (!not_found_interface_method) {
+          // Constant pool sub
+          SPVM_OP* op_call_sub = SPVM_LIST_fetch(compiler->op_subs, call_sub_id);
+          SPVM_SUB* call_sub = op_call_sub->uv.sub;
+          
+          // Subroutine return type
+          SPVM_TYPE* call_sub_return_type = call_sub->op_return_type->uv.type;
+          
+          // Subroutine return type id
+          int32_t call_sub_return_type_id = call_sub_return_type->id;
+          
+          // Subroutine argument length
+          int32_t call_sub_args_length = call_sub->op_args->length;
+          
+          call_sub_arg_stack_top -= call_sub_args_length;
+          
+          // Call subroutine
+          if (call_sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
+            api->call_void_sub(api, call_sub_id, call_sub_args);
+          }
+          else if (call_sub_return_type_id == SPVM_TYPE_C_ID_BYTE) {
+            *(SPVM_API_byte*)&vars[opcode->operand0] = api->call_byte_sub(api, call_sub_id, call_sub_args);
+          }
+          else if (call_sub_return_type_id == SPVM_TYPE_C_ID_SHORT) {
+            *(SPVM_API_short*)&vars[opcode->operand0] = api->call_short_sub(api, call_sub_id, call_sub_args);
+          }
+          else if (call_sub_return_type_id == SPVM_TYPE_C_ID_INT) {
+            *(SPVM_API_int*)&vars[opcode->operand0] = api->call_int_sub(api, call_sub_id, call_sub_args);
+          }
+          else if (call_sub_return_type_id == SPVM_TYPE_C_ID_LONG) {
+            *(SPVM_API_long*)&vars[opcode->operand0] = api->call_long_sub(api, call_sub_id, call_sub_args);
+          }
+          else if (call_sub_return_type_id == SPVM_TYPE_C_ID_FLOAT) {
+            *(float*)&vars[opcode->operand0] = api->call_float_sub(api, call_sub_id, call_sub_args);
+          }
+          else if (call_sub_return_type_id == SPVM_TYPE_C_ID_DOUBLE) {
+            *(double*)&vars[opcode->operand0] = api->call_double_sub(api, call_sub_id, call_sub_args);
+          }
+          else {
+            *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->call_object_sub(api, call_sub_id, call_sub_args);
+          }
+          
+          if (api->get_exception(api)) {
+            croak_flag = 1;
+          }
+        }
         
-        // Subroutine return type
-        SPVM_TYPE* call_sub_return_type = call_sub->op_return_type->uv.type;
-        
-        // Subroutine return type id
-        int32_t call_sub_return_type_id = call_sub_return_type->id;
-        
-        // Subroutine argument length
-        int32_t call_sub_args_length = call_sub->op_args->length;
-        
-        call_sub_arg_stack_top -= call_sub_args_length;
-        
-        // Call subroutine
-        if (call_sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
-          api->call_void_sub(api, call_sub_id, call_sub_args);
-        }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_BYTE) {
-          *(SPVM_API_byte*)&vars[opcode->operand0] = api->call_byte_sub(api, call_sub_id, call_sub_args);
-        }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_SHORT) {
-          *(SPVM_API_short*)&vars[opcode->operand0] = api->call_short_sub(api, call_sub_id, call_sub_args);
-        }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_INT) {
-          *(SPVM_API_int*)&vars[opcode->operand0] = api->call_int_sub(api, call_sub_id, call_sub_args);
-        }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_LONG) {
-          *(SPVM_API_long*)&vars[opcode->operand0] = api->call_long_sub(api, call_sub_id, call_sub_args);
-        }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_FLOAT) {
-          *(float*)&vars[opcode->operand0] = api->call_float_sub(api, call_sub_id, call_sub_args);
-        }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_DOUBLE) {
-          *(double*)&vars[opcode->operand0] = api->call_double_sub(api, call_sub_id, call_sub_args);
-        }
-        else {
-          *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->call_object_sub(api, call_sub_id, call_sub_args);
-        }
-        
-        if (api->get_exception(api)) {
-          croak_flag = 1;
-        }
         break;
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_CATCH: {
