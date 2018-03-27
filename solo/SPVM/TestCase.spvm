@@ -55,8 +55,8 @@ package TestCase {
     my $implement_interface1 : TestCase::Interface = new TestCase::ImplementInterface1;
     my $implement_interface2 : TestCase::Interface = new TestCase::ImplementInterface2;
     
-    # $implement_interface1->foo(0, 0);
-    # $implement_interface2->foo(0, 0);
+    print($implement_interface1->foo(0, 0) . "\n");
+    print($implement_interface2->foo(0, 0) . "\n");
     
     
     my $num : byte = 127;
