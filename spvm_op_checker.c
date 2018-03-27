@@ -101,9 +101,11 @@ _Bool SPVM_OP_is_interface_assignable(SPVM_COMPILER* compiler, SPVM_PACKAGE* int
   return assignable;
 }
 
-void SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
+SPVM_OP* SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
   SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
   SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
+  
+  SPVM_OP* op_out = NULL;
   
   // Can't assign undef to numeric value
   if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
@@ -187,6 +189,8 @@ void SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_
         
         op_convert->first->is_var_assign_from = 0;
         op_convert->first->is_assign_from = 0;
+        
+        op_out = op_convert;
       }
     }
     // Object type check
@@ -249,6 +253,12 @@ void SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_
       }
     }
   }
+  
+  if (!op_out) {
+    op_out = op_assign_from;
+  }
+  
+  return op_out;
 }
 
 SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_LIST* op_mys, const char* file, int32_t line) {
@@ -1824,7 +1834,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     SPVM_TYPE* sub_arg_type = SPVM_OP_get_type(compiler, op_sub_arg_my);
                     
-                    SPVM_OP_check_and_convert_type(compiler, op_sub_arg_my, op_term);
+                    op_term = SPVM_OP_check_and_convert_type(compiler, op_sub_arg_my, op_term);
                   }
                   
                   if (call_sub_args_count < sub_args_count) {

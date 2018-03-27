@@ -1260,6 +1260,16 @@ package TestCase {
   sub new : TestCase () {
     return new TestCase;
   }
+
+  sub call_sub_args_convertion_stab1 : double ($var6 : double) {
+    return ($var6);
+  }
+  
+  sub call_sub_args_convertion : int () {
+    my $return_value1 = call_sub_args_convertion_stab1(16);
+    return 0;
+  }
+
 }
 
 =head1 NAME

@@ -1,7 +1,8 @@
-0.0319 2018-03-21
+0.0319 2018-03-27
   - add interface descriptor to package declaration
   - fix bug that empty package parsing fail
   - add Object interface
+  - add subroutine argument convertion
 0.0318 2018-03-20
   - field become public by default
   - remove set, get keyword

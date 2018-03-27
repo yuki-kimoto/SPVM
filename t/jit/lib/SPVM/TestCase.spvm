@@ -779,6 +779,37 @@ package TestCase {
     return 0;
   }
 
+  jit sub call_sub_args_convertion_stab1 : double ($var1 : byte, $var2 : short, $var3 : int, $var4 : long, $var5 : float, $var6 : double) {
+    return ($var1 + $var2 + $var3 + $var4 + $var5 + $var6);
+  }
+  
+  jit sub call_sub_args_convertion : int () {
+    # Constant assignment
+    my $success_constant_narrow = 0;
+    {
+      my $return_value1 = call_sub_args_convertion_stab1(1, 2, 3, 2, 8, 16);
+      if ($return_value1 == 32) {
+        $success_constant_narrow = 1;
+      }
+    }
+    
+    # Widning
+    my $success_constant_wide = 0;
+    {
+      my $return_value1 = call_sub_args_convertion_stab1((byte)1, (byte)2, (byte)3, (byte)2, (byte)8, (byte)16);
+      
+      if ($return_value1 == 32) {
+        $success_constant_wide = 1;
+      }
+    }
+    
+    if ($success_constant_narrow && $success_constant_wide) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
   jit sub exception_eval_call_sub : int () {
     eval {
       TestCase::exception_croak_return_int();
