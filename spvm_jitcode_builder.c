@@ -1812,6 +1812,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_SUB:
+      case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {
         int32_t decl_sub_id = opcode->operand1;
 
@@ -1827,16 +1828,31 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         
         // Declare subroutine argument length
         int32_t decl_sub_args_length = decl_sub->op_args->length;
-        
+
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        // Get subroutine ID
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        // Call subroutine id
+        int32_t call_sub_id;
+        if (opcode->id == SPVM_OPCODE_C_ID_CALL_SUB) {
+          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = ");
+          SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_id);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        }
+        else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[");
+          SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+          SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = api->get_sub_id_interface_method(api, object, ");
+          SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_id);
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        }
+        else {
+          assert(0);
+        }
         
         // Call subroutine
         if (decl_sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
