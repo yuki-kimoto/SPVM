@@ -58,7 +58,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_set_double_field,
   SPVM_RUNTIME_API_set_object_field,
   SPVM_RUNTIME_API_get_sub_id,
-  SPVM_RUNTIME_API_get_method_sub_id,
+  SPVM_RUNTIME_API_get_sub_id_interface_method,
   SPVM_RUNTIME_API_get_class_method_sub_id,
   SPVM_RUNTIME_API_call_void_sub,
   SPVM_RUNTIME_API_call_byte_sub,
@@ -1161,6 +1161,27 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name) {
   int32_t sub_id = op_sub->uv.sub->id;
   
   return sub_id;
+}
+
+int32_t SPVM_RUNTIME_API_get_sub_id_interface_method(SPVM_API* api, SPVM_OBJECT* object, int32_t decl_sub_id) {
+  (void)api;
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  SPVM_OP* op_sub_decl_sub = SPVM_LIST_fetch(compiler->op_subs, decl_sub_id);
+
+  const char* method_signature = op_sub_decl_sub->uv.sub->method_signature;
+  
+  int32_t type_id = object->type_id;
+  
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
+  
+  SPVM_PACKAGE* package = type->op_package->uv.package;
+  
+  SPVM_SUB* sub_call_sub = SPVM_HASH_search(package->method_signature_symtable, method_signature, strlen(method_signature));
+  
+  return  sub_call_sub->id;
 }
 
 int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_API* api, SPVM_OBJECT* object, const char* sub_name) {

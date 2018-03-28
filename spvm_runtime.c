@@ -1617,21 +1617,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
            call_sub_id = decl_sub_id;
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
-          SPVM_OP* op_sub_decl_sub = SPVM_LIST_fetch(compiler->op_subs,  decl_sub_id);
-
-          const char* method_signature = op_sub_decl_sub->uv.sub->method_signature;
-
           SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand2];
-          
-          int32_t type_id = *(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET);
-          
-          SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
-          
-          SPVM_PACKAGE* package = type->op_package->uv.package;
-          
-          SPVM_SUB* sub_call_sub = SPVM_HASH_search(package->method_signature_symtable, method_signature, strlen(method_signature));
-          
-          call_sub_id = sub_call_sub->id;
+          call_sub_id = api->get_sub_id_interface_method(api, object, decl_sub_id);
         }
         else {
           assert(0);

@@ -80,6 +80,7 @@ int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_API* api, SPVM_OBJECT* object);
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_API* api, const char* name);
+int32_t SPVM_RUNTIME_API_get_sub_id_interface_method(SPVM_API* api, SPVM_OBJECT* object, int32_t decl_sub_id);
 int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_API* api, SPVM_OBJECT* object, const char* sub_name);
 int32_t SPVM_RUNTIME_API_get_class_method_sub_id(SPVM_API* api, const char* package_name, const char* sub_name);
 

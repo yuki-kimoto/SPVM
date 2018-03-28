@@ -2602,6 +2602,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_ID_CALL_SUB: {
+                
                 SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
                 const char* call_sub_abs_name = call_sub->sub->abs_name;
                 

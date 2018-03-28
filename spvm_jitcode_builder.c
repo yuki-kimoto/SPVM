@@ -1813,64 +1813,61 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       }
       case SPVM_OPCODE_C_ID_CALL_SUB:
       {
-        // Get subroutine ID
-        int32_t call_sub_id = opcode->operand1;
+        int32_t decl_sub_id = opcode->operand1;
+
+        // Declare subroutine
+        SPVM_OP* op_sub_decl = SPVM_LIST_fetch(compiler->op_subs, decl_sub_id);
+        SPVM_SUB* decl_sub = op_sub_decl->uv.sub;
         
-        // Constant pool sub
-        SPVM_OP* op_call_sub = SPVM_LIST_fetch(compiler->op_subs, call_sub_id);
-        SPVM_SUB* call_sub = op_call_sub->uv.sub;
+        // Declare subroutine return type
+        SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
         
-        // Subroutine argument length
-        int32_t call_sub_args_length = call_sub->op_args->length;
-
-        // Subroutine name
-        const char* call_sub_abs_name = call_sub->abs_name;
-
-        SPVM_TYPE* call_sub_return_type = call_sub->op_return_type->uv.type;
-
-        // Return type id
-        int32_t call_sub_return_type_id = call_sub_return_type->id;
-
+        // Declare subroutine return type id
+        int32_t decl_sub_return_type_id = decl_sub_return_type->id;
+        
+        // Declare subroutine argument length
+        int32_t decl_sub_args_length = decl_sub->op_args->length;
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)call_sub_abs_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
         // Get subroutine ID
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_id);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         // Call subroutine
-        if (call_sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
+        if (decl_sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
           SPVM_STRING_BUFFER_add(string_buffer, "    api->call_void_sub(api, call_sub_id");
         }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_BYTE) {
+        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_BYTE) {
           SPVM_STRING_BUFFER_add(string_buffer, "    ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_byte", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = api->call_byte_sub(api, call_sub_id");
         }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_SHORT) {
+        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_SHORT) {
           SPVM_STRING_BUFFER_add(string_buffer, "    ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = api->call_short_sub(api, call_sub_id");
         }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_INT) {
+        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_INT) {
           SPVM_STRING_BUFFER_add(string_buffer, "    ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = api->call_int_sub(api, call_sub_id");
         }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_LONG) {
+        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_LONG) {
           SPVM_STRING_BUFFER_add(string_buffer, "    ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_long", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = api->call_long_sub(api, call_sub_id");
         }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_FLOAT) {
+        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_FLOAT) {
           SPVM_STRING_BUFFER_add(string_buffer, "    ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "float", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = api->call_float_sub(api, call_sub_id");
         }
-        else if (call_sub_return_type_id == SPVM_TYPE_C_ID_DOUBLE) {
+        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_DOUBLE) {
           SPVM_STRING_BUFFER_add(string_buffer, "    ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "double", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = api->call_double_sub(api, call_sub_id");
@@ -1882,7 +1879,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
-        if (call_sub_args_length > 0) {
+        if (decl_sub_args_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
         }
         else {
@@ -1896,7 +1893,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "call_sub_arg_stack_top -= ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, call_sub_args_length);
+        SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_args_length);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         break;
