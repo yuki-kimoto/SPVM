@@ -198,33 +198,11 @@ SPVM_OP* SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_ass
             SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
             SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
             
-            // Can't convert different interface package
-            if (package_assign_to_base->is_interface && package_assign_from_base->is_interface) {
-              is_compatible = 0;
-            }
-            // Can't convert different package
-            else if (!package_assign_to_base->is_interface && !package_assign_from_base->is_interface) {
-              is_compatible = 0;
-            }
-            else if (package_assign_to_base->is_interface) {
+            if (package_assign_to_base->is_interface) {
               is_compatible = SPVM_OP_has_interface(compiler, package_assign_from_base, package_assign_to_base);
             }
-            else if (package_assign_from_base->is_interface) {
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
-              
-              SPVM_OP* op_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CHECK_CAST, op_assign_from->file, op_assign_from->line);
-              
-              SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_assign_from);
-              
-              SPVM_OP* op_type_check_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_assign_from->file, op_assign_from->line);
-              op_type_check_cast->uv.type = SPVM_OP_get_type(compiler, op_assign_to);
-              
-              SPVM_OP_insert_child(compiler, op_check_cast, op_check_cast->last, op_type_check_cast);
-              
-              SPVM_OP_replace_op(compiler, op_stab, op_check_cast);
-            }
             else {
-              assert(0);
+              is_compatible = 0;
             }
           }
         }
