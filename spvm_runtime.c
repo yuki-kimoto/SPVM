@@ -1601,13 +1601,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
            call_sub_id = opcode->operand1;
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
-          int32_t method_signature_id = opcode->operand1;
+          int32_t interface_call_sub_id = opcode->operand1;
+
+          SPVM_OP* op_sub_interface_call_sub = SPVM_LIST_fetch(compiler->op_subs,  interface_call_sub_id);
+
+          const char* method_signature = op_sub_interface_call_sub->uv.sub->method_signature;
 
           SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand2];
           
           int32_t type_id = *(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET);
-          
-          const char* method_signature = SPVM_LIST_fetch(compiler->method_signatures, method_signature_id);
           
           _Bool found_sub = 0;
           

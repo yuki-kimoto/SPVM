@@ -526,9 +526,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     if (sub_call_sub->op_package->uv.package->is_interface) {
                       opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
-                      const char* method_signature = sub_call_sub->method_signature;
-                      int32_t* method_signature_id_ptr = SPVM_HASH_search(compiler->method_signature_symtable, method_signature, strlen(method_signature));
-                      opcode.operand1 = *method_signature_id_ptr;
+                      opcode.operand1 = sub_call_sub->id;
                       opcode.operand2 = first_arg_index;
                     }
                     else {
@@ -2660,9 +2658,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   if (sub_call_sub->op_package->uv.package->is_interface) {
                     opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
-                    const char* method_signature = sub_call_sub->method_signature;
-                    int32_t* method_signature_id_ptr = SPVM_HASH_search(compiler->method_signature_symtable, method_signature, strlen(method_signature));
-                    opcode.operand1 = *method_signature_id_ptr;
+                    opcode.operand1 = sub_call_sub->id;
                     opcode.operand2 = first_arg_index;
                   }
                   else {
