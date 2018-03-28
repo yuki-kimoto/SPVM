@@ -10,7 +10,7 @@ struct SPVM_package {
   SPVM_HASH* op_field_symtable;
   SPVM_HASH* op_our_symtable;
   SPVM_HASH* method_signature_symtable;
-  SPVM_HASH* has_interafece_cache_symtable;
+  SPVM_HASH* has_interface_cache_symtable;
   SPVM_OP* op_sub_destructor;
   char* load_path;
   int32_t id;

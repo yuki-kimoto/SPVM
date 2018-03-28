@@ -39,32 +39,44 @@ _Bool SPVM_OP_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM
   SPVM_LIST* op_subs_interface = interface->op_subs;
   SPVM_LIST* op_subs_package = package->op_subs;
   
-  _Bool has_interface = 1;
+  int32_t* has_interface_cache_ptr = SPVM_HASH_search(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
   
-  {
-    int32_t sub_index_interface;
-    for (sub_index_interface = 0; sub_index_interface < op_subs_interface->length; sub_index_interface++) {
-      SPVM_OP* op_sub_interface = SPVM_LIST_fetch(op_subs_interface, sub_index_interface);
-      SPVM_SUB* sub_interface = op_sub_interface->uv.sub;
-      assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
-      
-      _Bool found = 0;
-      {
-        int32_t sub_index_package;
-        for (sub_index_package = 0; sub_index_package < op_subs_package->length; sub_index_package++) {
-          SPVM_OP* op_sub_package = SPVM_LIST_fetch(op_subs_package, sub_index_package);
-          SPVM_SUB* sub_package = op_sub_package->uv.sub;
-          
-          if (strcmp(sub_interface->method_signature, sub_package->method_signature) == 0) {
-            found = 1;
+  int32_t has_interface;
+  if (has_interface_cache_ptr) {
+    has_interface = *has_interface_cache_ptr;
+  }
+  else {
+    _Bool has_interface = 1;
+    
+    {
+      int32_t sub_index_interface;
+      for (sub_index_interface = 0; sub_index_interface < op_subs_interface->length; sub_index_interface++) {
+        SPVM_OP* op_sub_interface = SPVM_LIST_fetch(op_subs_interface, sub_index_interface);
+        SPVM_SUB* sub_interface = op_sub_interface->uv.sub;
+        assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+        
+        _Bool found = 0;
+        {
+          int32_t sub_index_package;
+          for (sub_index_package = 0; sub_index_package < op_subs_package->length; sub_index_package++) {
+            SPVM_OP* op_sub_package = SPVM_LIST_fetch(op_subs_package, sub_index_package);
+            SPVM_SUB* sub_package = op_sub_package->uv.sub;
+            
+            if (strcmp(sub_interface->method_signature, sub_package->method_signature) == 0) {
+              found = 1;
+            }
           }
         }
-      }
-      if (!found) {
-        has_interface = 0;
-        break;
+        if (!found) {
+          has_interface = 0;
+          break;
+        }
       }
     }
+    
+    int32_t* new_has_interface_cache_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+    *new_has_interface_cache_ptr = has_interface;
+    SPVM_HASH_insert(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name), new_has_interface_cache_ptr);
   }
   
   return has_interface;
