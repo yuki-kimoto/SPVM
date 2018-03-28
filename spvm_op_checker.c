@@ -31,36 +31,7 @@
 #include "spvm_undef.h"
 #include "spvm_block.h"
 
-_Bool SPVM_OP_is_same_signatures(SPVM_COMPILER* compiler, SPVM_SUB* sub1, SPVM_SUB* sub2) {
-  assert(sub1->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
-  assert(sub2->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
-  
-  _Bool compatible = 1;
-  if (sub1->op_args->length != sub2->op_args->length) {
-    compatible = 0;
-  }
-  else {
-    if (sub1->op_args->length > 1) {
-      int32_t arg_index;
-      for (arg_index = 1; arg_index < sub1->op_args->length; arg_index++) {
-        SPVM_OP* op_arg_sub1 = SPVM_LIST_fetch(sub1->op_args, arg_index);
-        SPVM_OP* op_arg_sub2 = SPVM_LIST_fetch(sub2->op_args, arg_index);
-        
-        SPVM_TYPE* type_arg_sub1 = SPVM_OP_get_type(compiler, op_arg_sub1);
-        SPVM_TYPE* type_arg_sub2 = SPVM_OP_get_type(compiler, op_arg_sub2);
-        
-        if (type_arg_sub1->id != type_arg_sub2->id) {
-          compatible = 0;
-          break;
-        }
-      }
-    }
-  }
-  
-  return compatible;
-}
-
-_Bool SPVM_OP_is_interface_assignable(SPVM_COMPILER* compiler, SPVM_PACKAGE* interface, SPVM_PACKAGE* package) {
+_Bool SPVM_OP_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
   // When left package is interface, right package have all methods which left package have
   assert(interface->is_interface);
   assert(!package->is_interface);
@@ -68,7 +39,7 @@ _Bool SPVM_OP_is_interface_assignable(SPVM_COMPILER* compiler, SPVM_PACKAGE* int
   SPVM_LIST* op_subs_interface = interface->op_subs;
   SPVM_LIST* op_subs_package = package->op_subs;
   
-  _Bool assignable = 1;
+  _Bool has_interface = 1;
   
   {
     int32_t sub_index_interface;
@@ -84,21 +55,19 @@ _Bool SPVM_OP_is_interface_assignable(SPVM_COMPILER* compiler, SPVM_PACKAGE* int
           SPVM_OP* op_sub_package = SPVM_LIST_fetch(op_subs_package, sub_index_package);
           SPVM_SUB* sub_package = op_sub_package->uv.sub;
           
-          _Bool is_same_signatures = SPVM_OP_is_same_signatures(compiler, sub_interface, sub_package);
-          if (is_same_signatures) {
+          if (strcmp(sub_interface->method_signature, sub_package->method_signature) == 0) {
             found = 1;
-            break;
           }
         }
       }
       if (!found) {
-        assignable = 0;
+        has_interface = 0;
         break;
       }
     }
   }
   
-  return assignable;
+  return has_interface;
 }
 
 SPVM_OP* SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
@@ -226,7 +195,7 @@ SPVM_OP* SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_ass
               is_compatible = 0;
             }
             else if (package_assign_to_base->is_interface) {
-              is_compatible = SPVM_OP_is_interface_assignable(compiler, package_assign_to_base, package_assign_from_base);
+              is_compatible = SPVM_OP_has_interface(compiler, package_assign_from_base, package_assign_to_base);
             }
             else if (package_assign_from_base->is_interface) {
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
