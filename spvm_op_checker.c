@@ -1895,6 +1895,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (SPVM_TYPE_is_numeric(compiler, term_type) && SPVM_TYPE_is_numeric(compiler, type_type)) {
                     can_convert = 1;
                   }
+                  else if (!SPVM_TYPE_is_numeric(compiler, term_type) && !SPVM_TYPE_is_numeric(compiler, type_type)) {
+                    if (!(SPVM_TYPE_is_numeric(compiler, term_type->base_type) || SPVM_TYPE_is_numeric(compiler, type_type->base_type))) {
+                      can_convert = 1;
+                    }
+                  }
                   
                   if (!can_convert) {
                     SPVM_yyerror_format(compiler, "can't convert type %s to %s at %s line %d\n",
