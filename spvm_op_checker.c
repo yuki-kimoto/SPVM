@@ -82,6 +82,63 @@ _Bool SPVM_OP_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM
   return has_interface;
 }
 
+_Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_type, SPVM_TYPE* assign_from_type) {
+  
+  assert(SPVM_TYPE_is_object(compiler, assign_to_type));
+  assert(SPVM_TYPE_is_object(compiler, assign_from_type));
+  
+  _Bool can_assign;
+  
+  // Same type
+  if (assign_to_type->id == assign_from_type->id) {
+    can_assign = 1;
+  }
+  // Different type
+  else {
+    // Different dimension
+    if (assign_to_type->dimension != assign_from_type->dimension) {
+      can_assign = 0;
+    }
+    // Same dimension
+    else {
+      const char* assign_to_base_type_name = assign_to_type->base_type_name;
+      const char* assign_from_base_type_name = assign_from_type->base_type_name;
+      
+      SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_type_name, strlen(assign_to_base_type_name));
+      SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_type_name, strlen(assign_from_base_type_name));
+      
+      // Same base type
+      if (assign_to_base_type->id == assign_from_base_type->id) {
+        can_assign = 1;
+      }
+      // Different base type
+      else {
+        SPVM_OP* assign_to_base_type_op_package = assign_to_base_type->op_package;
+        SPVM_OP* assign_from_base_type_op_package = assign_from_base_type->op_package;
+        
+        // At least one base type is number
+        if (!assign_to_base_type_op_package || !assign_from_base_type_op_package) {
+          can_assign = 0;
+        }
+        else {
+          SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
+          SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
+          
+          // Left base type is interface
+          if (package_assign_to_base->is_interface) {
+            can_assign = SPVM_OP_has_interface(compiler, package_assign_from_base, package_assign_to_base);
+          }
+          else {
+            can_assign = 0;
+          }
+        }
+      }
+    }
+  }
+  
+  return can_assign;
+}
+
 SPVM_OP* SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
   SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
   SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
@@ -176,38 +233,8 @@ SPVM_OP* SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_ass
     }
     // Object type check
     else {
-      _Bool is_compatible = 1;
-      if (assign_to_type->id != assign_from_type->id) {
-        if (assign_to_type->dimension != assign_from_type->dimension) {
-          is_compatible = 0;
-        }
-        else {
-          const char* assign_to_base_type_name = assign_to_type->base_type_name;
-          const char* assign_from_base_type_name = assign_from_type->base_type_name;
-          
-          SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_type_name, strlen(assign_to_base_type_name));
-          SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_type_name, strlen(assign_from_base_type_name));
-          
-          if (assign_to_base_type->id != assign_from_base_type->id) {
-            SPVM_OP* assign_to_base_type_op_package = assign_to_base_type->op_package;
-            SPVM_OP* assign_from_base_type_op_package = assign_from_base_type->op_package;
-            
-            assert(assign_to_base_type_op_package);
-            assert(assign_from_base_type_op_package);
-            
-            SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
-            SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
-            
-            if (package_assign_to_base->is_interface) {
-              is_compatible = SPVM_OP_has_interface(compiler, package_assign_from_base, package_assign_to_base);
-            }
-            else {
-              is_compatible = 0;
-            }
-          }
-        }
-      }
-      if (!is_compatible) {
+      _Bool can_assign = SPVM_OP_CHECKER_can_assign(compiler, assign_to_type, assign_from_type);
+      if (!can_assign) {
         SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
       }
     }
