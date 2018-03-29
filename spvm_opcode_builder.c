@@ -1316,8 +1316,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     // Check cast
                     else {
-                      check_cast = 1;
-                      
                       SPVM_TYPE* dist_base_type = dist_type->base_type;
                       SPVM_TYPE* src_base_type = src_type->base_type;
                       
@@ -1325,12 +1323,22 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(src_base_type->op_package);
                       
                       if (dist_base_type->op_package->uv.package->is_interface) {
-                        opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_INTERFACE;
+                        if (dist_base_type->dimension > 0) {
+                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_INTERFACE;
+                        }
+                        else {
+                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_INTERFACE_ARRAY;
+                        }
                       }
                       else {
-                        opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_PACKAGE;
+                        if (dist_base_type->dimension > 0) {
+                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_PACKAGE_ARRAY;
+                        }
+                        else {
+                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_PACKAGE;
+                        }
                       }
-                      opcode.operand2 = dist_type->id;
+                      opcode.operand2 = dist_base_type->id;
                       
                       assert(0);
                     }
