@@ -1319,9 +1319,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* dist_base_type = dist_type->base_type;
                       SPVM_TYPE* src_base_type = src_type->base_type;
                       
-                      assert(dist_base_type->op_package);
-                      assert(src_base_type->op_package);
-                      
                       opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
                       opcode.operand2 = dist_base_type->id;
                     }
