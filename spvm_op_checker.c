@@ -1891,14 +1891,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* type_type = SPVM_OP_get_type(compiler, op_type);
                   assert(type_type);
                   
-                  _Bool can_convert = 0;
+                  _Bool can_convert;
                   if (SPVM_TYPE_is_numeric(compiler, term_type) && SPVM_TYPE_is_numeric(compiler, type_type)) {
                     can_convert = 1;
                   }
-                  else if (!SPVM_TYPE_is_numeric(compiler, term_type) && !SPVM_TYPE_is_numeric(compiler, type_type)) {
-                    if (!(SPVM_TYPE_is_numeric(compiler, term_type->base_type) || SPVM_TYPE_is_numeric(compiler, type_type->base_type))) {
+                  else if (SPVM_TYPE_is_object(compiler, term_type) && SPVM_TYPE_is_object(compiler, type_type)) {
+                    if (term_type->dimension == type_type->dimension) {
                       can_convert = 1;
                     }
+                    else {
+                      can_convert = 0;
+                    }
+                  }
+                  else {
+                    can_convert = 0;
                   }
                   
                   if (!can_convert) {
