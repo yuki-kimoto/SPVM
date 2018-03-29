@@ -1896,11 +1896,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     can_convert = 1;
                   }
                   else if (SPVM_TYPE_is_object(compiler, term_type) && SPVM_TYPE_is_object(compiler, type_type)) {
-                    if (term_type->dimension == type_type->dimension) {
-                      can_convert = 1;
+                    if (SPVM_TYPE_is_array_numeric(compiler, term_type) && !SPVM_TYPE_is_array_numeric(compiler, type_type)) {
+                      can_convert = 0;
+                    }
+                    else if (!SPVM_TYPE_is_array_numeric(compiler, term_type) && SPVM_TYPE_is_array_numeric(compiler, type_type)) {
+                      can_convert = 0;
                     }
                     else {
-                      can_convert = 0;
+                      if (term_type->dimension == type_type->dimension) {
+                        can_convert = 1;
+                      }
+                      else {
+                        can_convert = 0;
+                      }
                     }
                   }
                   else {
