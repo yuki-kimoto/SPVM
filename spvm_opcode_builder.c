@@ -1175,7 +1175,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    _Bool check_cast = 0;
                     if (src_type->id == SPVM_TYPE_C_ID_BYTE) {
                       if (dist_type->id == SPVM_TYPE_C_ID_BYTE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE;
@@ -1317,7 +1316,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Check cast
                     else {
                       SPVM_TYPE* dist_base_type = dist_type->base_type;
-                      SPVM_TYPE* src_base_type = src_type->base_type;
                       
                       opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
                       opcode.operand2 = dist_base_type->id;

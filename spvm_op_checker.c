@@ -41,7 +41,7 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   
   int32_t* has_interface_cache_ptr = SPVM_HASH_search(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
   
-  int32_t has_interface;
+  int32_t has_interface = 1;
   if (has_interface_cache_ptr) {
     has_interface = *has_interface_cache_ptr;
   }
@@ -1817,8 +1817,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     
                     SPVM_OP* op_sub_arg_my = SPVM_LIST_fetch(call_sub->sub->op_args, call_sub_args_count - 1);
-                    
-                    SPVM_TYPE* sub_arg_type = SPVM_OP_get_type(compiler, op_sub_arg_my);
                     
                     op_term = SPVM_OP_CHECKER_check_and_convert_type(compiler, op_sub_arg_my, op_term);
                   }

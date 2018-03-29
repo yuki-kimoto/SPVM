@@ -33,6 +33,9 @@
 
 
 
+
+
+
 static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_array_length,
   SPVM_RUNTIME_API_get_byte_array_elements,
@@ -102,11 +105,13 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_concat_string_string,
   SPVM_RUNTIME_API_weaken_object_field,
   SPVM_RUNTIME_API_create_exception_stack_trace,
-  NULL
+  NULL,
+  SPVM_RUNTIME_API_check_cast,
 };
 
 int32_t SPVM_RUNTIME_API_check_cast(SPVM_API* api, int32_t cast_type_id, SPVM_OBJECT* object) {
-
+  (void)api;
+  
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
   

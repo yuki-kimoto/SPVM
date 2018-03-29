@@ -11,10 +11,15 @@ package TestCase::Interface {
     
     my $num1 = $implement_interface1->foo(0, 0);
     my $num2 = $implement_interface2->foo(0, 0);
+
+    my $minimal = (TestCase::Minimal)$object;
+    $minimal->{x} = 4;
     
     if ($num1 == 1) {
       if ($num2 == 2) {
-        return 1;
+        if ($minimal->{x} == 4) {
+          return 1;
+        }
       }
     }
   }

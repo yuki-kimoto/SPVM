@@ -1587,7 +1587,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         int32_t cast_type_id = opcode->operand2;
         
         if (object_type_id != cast_type_id) {
-          _Bool can_assign = SPVM_RUNTIME_API_check_cast(api, cast_type_id, object);
+          _Bool can_assign = api->check_cast(api, cast_type_id, object);
           
           if (!can_assign) {
             SPVM_API_OBJECT* exception = api->new_string(api, "Can't cast uncompatible type.", 0);
