@@ -1581,7 +1581,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         call_sub_args[call_sub_arg_stack_top] = vars[opcode->operand0];
         
         break;
-      case SPVM_OPCODE_C_ID_CHECK_CAST: {
+      case SPVM_OPCODE_C_ID_CHECK_CAST_TO_PACKAGE: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand0];
         int32_t check_type_id = opcode->operand1;
         
