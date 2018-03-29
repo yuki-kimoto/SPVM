@@ -1595,6 +1595,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
             croak_flag = 1;
           }
         }
+        else {
+          *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+        }
         
         break;
       }
