@@ -31,7 +31,7 @@
 #include "spvm_undef.h"
 #include "spvm_block.h"
 
-_Bool SPVM_OP_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
+_Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
   // When left package is interface, right package have all methods which left package have
   assert(interface->is_interface);
   assert(!package->is_interface);
@@ -126,7 +126,7 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
           
           // Left base type is interface
           if (package_assign_to_base->is_interface) {
-            can_assign = SPVM_OP_has_interface(compiler, package_assign_from_base, package_assign_to_base);
+            can_assign = SPVM_OP_CHECKER_has_interface(compiler, package_assign_from_base, package_assign_to_base);
           }
           else {
             can_assign = 0;
@@ -139,7 +139,7 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
   return can_assign;
 }
 
-SPVM_OP* SPVM_OP_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
+SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
   SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
   SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
   
@@ -1204,7 +1204,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_assign_to = op_cur->last;
                   SPVM_OP* op_assign_from = op_cur->first;
                   
-                  SPVM_OP_check_and_convert_type(compiler, op_assign_to, op_assign_from);
+                  SPVM_OP_CHECKER_check_and_convert_type(compiler, op_assign_to, op_assign_from);
                   
                   if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
                     if (op_assign_from->id == SPVM_OP_C_ID_CONCAT_STRING) {
@@ -1820,7 +1820,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     SPVM_TYPE* sub_arg_type = SPVM_OP_get_type(compiler, op_sub_arg_my);
                     
-                    op_term = SPVM_OP_check_and_convert_type(compiler, op_sub_arg_my, op_term);
+                    op_term = SPVM_OP_CHECKER_check_and_convert_type(compiler, op_sub_arg_my, op_term);
                   }
                   
                   if (call_sub_args_count < sub_args_count) {

@@ -1581,26 +1581,19 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         call_sub_args[call_sub_arg_stack_top] = vars[opcode->operand0];
         
         break;
-      case SPVM_OPCODE_C_ID_CHECK_CAST_TO_PACKAGE: {
-        SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
-        int32_t check_type_id = opcode->operand2;
-        
-        if (*(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET) != check_type_id) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Can't cast uncompatible type.", 0);
-          api->set_exception(api, exception);
-          croak_flag = 1;        
-        }
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_CHECK_CAST: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
-        int32_t check_type_id = opcode->operand2;
+        int32_t object_type_id = *(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET);
+        int32_t cast_type_id = opcode->operand2;
         
-        if (*(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET) != check_type_id) {
-          SPVM_API_OBJECT* exception = api->new_string(api, "Can't cast uncompatible type.", 0);
-          api->set_exception(api, exception);
-          croak_flag = 1;        
+        if (object_type_id != cast_type_id) {
+          _Bool can_assign = SPVM_RUNTIME_API_check_cast(api, cast_type_id, object);
+          
+          if (!can_assign) {
+            SPVM_API_OBJECT* exception = api->new_string(api, "Can't cast uncompatible type.", 0);
+            api->set_exception(api, exception);
+            croak_flag = 1;
+          }
         }
         
         break;

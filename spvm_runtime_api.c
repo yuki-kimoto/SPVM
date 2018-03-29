@@ -26,6 +26,7 @@
 #include "spvm_my.h"
 #include "spvm_op.h"
 #include "spvm_list.h"
+#include "spvm_op_checker.h"
 
 
 
@@ -103,6 +104,18 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_create_exception_stack_trace,
   NULL
 };
+
+int32_t SPVM_RUNTIME_API_check_cast(SPVM_API* api, int32_t cast_type_id, SPVM_OBJECT* object) {
+
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  SPVM_TYPE* cast_type = SPVM_LIST_fetch(compiler->types, cast_type_id);
+ 
+  SPVM_TYPE* object_type = SPVM_LIST_fetch(compiler->types, object->type_id);
+  
+  return SPVM_OP_CHECKER_can_assign(compiler, cast_type, object_type);
+}
 
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_OBJECT* exception, int32_t sub_id, int32_t current_line) {
 

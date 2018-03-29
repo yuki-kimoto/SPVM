@@ -1322,20 +1322,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(dist_base_type->op_package);
                       assert(src_base_type->op_package);
                       
-                      if (dist_base_type->op_package->uv.package->is_interface) {
-                        opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
-                      }
-                      else {
-                        if (dist_base_type->dimension > 0) {
-                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
-                        }
-                        else {
-                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_PACKAGE;
-                        }
-                      }
+                      opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
                       opcode.operand2 = dist_base_type->id;
-                      
-                      assert(0);
                     }
 
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_dist_term);
