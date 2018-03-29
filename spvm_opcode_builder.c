@@ -1323,16 +1323,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(src_base_type->op_package);
                       
                       if (dist_base_type->op_package->uv.package->is_interface) {
-                        if (dist_base_type->dimension > 0) {
-                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_INTERFACE;
-                        }
-                        else {
-                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_INTERFACE_ARRAY;
-                        }
+                        opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
                       }
                       else {
                         if (dist_base_type->dimension > 0) {
-                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_PACKAGE_ARRAY;
+                          opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
                         }
                         else {
                           opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST_TO_PACKAGE;

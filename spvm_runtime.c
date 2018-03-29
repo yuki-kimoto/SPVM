@@ -1582,8 +1582,20 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         
         break;
       case SPVM_OPCODE_C_ID_CHECK_CAST_TO_PACKAGE: {
-        SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand0];
-        int32_t check_type_id = opcode->operand1;
+        SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
+        int32_t check_type_id = opcode->operand2;
+        
+        if (*(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET) != check_type_id) {
+          SPVM_API_OBJECT* exception = api->new_string(api, "Can't cast uncompatible type.", 0);
+          api->set_exception(api, exception);
+          croak_flag = 1;        
+        }
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CHECK_CAST: {
+        SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
+        int32_t check_type_id = opcode->operand2;
         
         if (*(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET) != check_type_id) {
           SPVM_API_OBJECT* exception = api->new_string(api, "Can't cast uncompatible type.", 0);
