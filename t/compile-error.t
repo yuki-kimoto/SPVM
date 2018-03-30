@@ -22,37 +22,37 @@ sub init_spvm {
 }
 
 {
+  BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::InvalidType';
   BEGIN {
     my $success = SPVM::compile_spvm();
     ok($success == 0);
-    init_spvm();
   }
 }
 
 {
+  BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndef';
   BEGIN {
     my $success = SPVM::compile_spvm();
     ok($success == 0);
-    init_spvm();
   }
 }
 
 {
+  BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndefDefault';
   BEGIN {
     my $success = SPVM::compile_spvm();
     ok($success == 0);
-    init_spvm();
   }
 }
 
 {
+  BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::AssignIncompatibleType::DifferentObject';
   BEGIN {
     my $success = SPVM::compile_spvm();
     ok($success == 0);
-    init_spvm();
   }
 }
