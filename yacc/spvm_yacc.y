@@ -772,7 +772,7 @@ opt_descriptors
       }
       else {
         SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, op_list, op_list->first, $1);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
         $$ = op_list;
       }
     }

@@ -56,3 +56,12 @@ sub init_spvm {
     ok($success == 0);
   }
 }
+
+{
+  BEGIN { init_spvm() }
+  use SPVM 'TestCase::CompileError::Field::Private';
+  BEGIN {
+    my $success = SPVM::compile_spvm();
+    ok($success == 0);
+  }
+}

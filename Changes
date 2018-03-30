@@ -1,4 +1,6 @@
-
+0.0320 2018-03-29
+  - add private and public descriptor
+  - add private field
 0.0319 2018-03-29
   - add interface descriptor to package declaration
   - fix bug that empty package parsing fail

@@ -1756,10 +1756,6 @@ const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
 
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
 
-  if (op_descriptors == NULL) {
-    op_descriptors = SPVM_OP_new_op_list(compiler, op_field->file, op_field->line);
-  }
-  
   // Build OP
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_descriptors);
@@ -1777,7 +1773,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   // Set field informaiton
   op_field->uv.field = field;
   
-  SPVM_OP* op_descriptor = SPVM_OP_sibling(compiler, op_descriptors);
+  SPVM_OP* op_descriptor = op_descriptors->first;
   while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
     SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
     

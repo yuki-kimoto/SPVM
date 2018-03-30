@@ -1869,9 +1869,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term_invocker);
                   
                   if (!(type && type->op_package)) {
-                    SPVM_yyerror_format(compiler, "field invoker is invalid \"%s\" at %s line %d\n",
-                      op_name->uv.name, op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
+                    SPVM_yyerror_format(compiler, "Invalid invoker at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
                   
@@ -1881,10 +1879,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_FIELD* field = op_cur->uv.call_field->field;
                   
                   if (!field) {
-                    SPVM_yyerror_format(compiler, "unknown field \"%s\" \"%s\" at %s line %d\n",
+                    SPVM_yyerror_format(compiler, "Unknown field %s::%s at %s line %d\n",
                       type->name, op_name->uv.name, op_cur->file, op_cur->line);
-                    compiler->fatal_error = 1;
                     return;
+                  }
+                  
+                  if (field->is_private) {
+                    SPVM_yyerror_format(compiler, "Can't access to private field %s::%s at %s line %d\n",
+                      type->name, op_name->uv.name, op_cur->file, op_cur->line);
                   }
                   
                   break;
