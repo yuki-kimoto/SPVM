@@ -1286,7 +1286,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   return PACKAGE;
                 }
-                
+                else if (strcmp(keyword, "private") == 0) {
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PRIVATE, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
+                  
+                  return DESCRIPTOR;
+                }
+                else if (strcmp(keyword, "public") == 0) {
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PUBLIC, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
+                  
+                  return DESCRIPTOR;
+                }
                 break;
               case 'r' :
                 if (strcmp(keyword, "return") == 0) {

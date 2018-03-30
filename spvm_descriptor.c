@@ -8,6 +8,8 @@ const char* const SPVM_DESCRIPTOR_C_ID_NAMES[] = {
   "const",
   "jit",
   "interface",
+  "public",
+  "private",
 };
 
 SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_COMPILER* compiler) {

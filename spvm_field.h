@@ -13,6 +13,7 @@ struct SPVM_field {
   _Bool has_getter;
   _Bool has_setter;
   int32_t byte_offset;
+  _Bool is_private;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);
