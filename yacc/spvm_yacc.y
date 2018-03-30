@@ -27,7 +27,7 @@
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement type_array_with_length
-%type <opval> ';' opt_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
+%type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
 
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -111,18 +111,9 @@ package
         YYABORT;
       }
     }
-  | PACKAGE package_name ':' descriptors package_block
+  | PACKAGE package_name opt_colon_descriptors package_block
     {
-      SPVM_OP* op_list_descriptors;
-      if ($4->id == SPVM_OP_C_ID_LIST) {
-        op_list_descriptors = $4;
-      }
-      else {
-        op_list_descriptors = SPVM_OP_new_op_list(compiler, $4->file, $4->line);
-        SPVM_OP_insert_child(compiler, op_list_descriptors, op_list_descriptors->last, $4);
-      }
-      
-      $$ = SPVM_OP_build_package(compiler, $1, $2, $5, op_list_descriptors);
+      $$ = SPVM_OP_build_package(compiler, $1, $2, $4, $3);
       if (compiler->fatal_error) {
         YYABORT;
       }
@@ -758,6 +749,23 @@ invocant
   | var ':' CLASS
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3);
+    }
+
+opt_colon_descriptors
+  :	/* Empty */
+    {
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+    }
+  |	':' descriptors
+    {
+      if ($2->id == SPVM_OP_C_ID_LIST) {
+        $$ = $2;
+      }
+      else {
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $2->file, $2->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $2);
+        $$ = op_list;
+      }
     }
 
 opt_descriptors
