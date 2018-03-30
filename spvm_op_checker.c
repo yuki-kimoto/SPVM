@@ -1885,8 +1885,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   if (field->is_private) {
-                    SPVM_yyerror_format(compiler, "Can't access to private field %s::%s at %s line %d\n",
-                      type->name, op_name->uv.name, op_cur->file, op_cur->line);
+                    if (strcmp(type->name, sub->op_package->uv.package->op_name->uv.name) != 0) {
+                      SPVM_yyerror_format(compiler, "Can't access to private field %s::%s at %s line %d\n",
+                        type->name, op_name->uv.name, op_cur->file, op_cur->line);
+                    }
                   }
                   
                   break;

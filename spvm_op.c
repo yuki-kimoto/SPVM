@@ -1368,16 +1368,21 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_OP* op_descriptor = op_list_descriptors->first;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
-      if (descriptor->id == SPVM_DESCRIPTOR_C_ID_INTERFACE) {
-        package->is_interface = 1;
-      }
-      else {
-        SPVM_yyerror_format(compiler, "Invalid descriptor \"%s\" at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);
-        return NULL;
+      switch (descriptor->id) {
+        case SPVM_DESCRIPTOR_C_ID_INTERFACE:
+          package->is_interface = 1;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_PRIVATE:
+          package->is_private = 1;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_PUBLIC:
+          package->is_private = 0;
+          break;
+        default:
+          SPVM_yyerror_format(compiler, "Invalid package descriptor %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);
       }
     }
   }
-  
   
   // Type(type is same as package name)
   SPVM_TYPE* type_package = SPVM_TYPE_new(compiler);
