@@ -1,0 +1,8 @@
+use TestCase;
+
+package TestCase::CompileError::Field::Private {
+  jit sub main : int () {
+    my $test_case = new TestCase;
+    $test_case->{private_field};
+  }
+}

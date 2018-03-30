@@ -1062,6 +1062,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_type = op_cur->first;
                     SPVM_TYPE* type = op_type->uv.type;
                     
+                    // Array
                     if (SPVM_TYPE_is_array(compiler, type)) {
                       SPVM_OP* op_index_term = op_type->last;
 
@@ -1069,7 +1070,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       if (!index_type) {
                         SPVM_yyerror_format(compiler, "new operator can't create array which don't have length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
-                        compiler->fatal_error = 1;
                         return;
                       }
                       else {
@@ -1080,24 +1080,35 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           if (index_type->id >= SPVM_TYPE_C_ID_LONG) {
                             SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
-                            compiler->fatal_error = 1;
                             return;
                           }
                         }
                         else {
                           SPVM_yyerror_format(compiler, "new operator can't create array which don't have numeric length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
-                          compiler->fatal_error = 1;
                           return;
                         }
                       }
                     }
-                    else {
-                      if (SPVM_TYPE_is_numeric(compiler, type)) {
-                        SPVM_yyerror_format(compiler,
-                          "new operator can't receive numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                        compiler->fatal_error = 1;
-                        return;
+                    // 
+                    else if (SPVM_TYPE_is_numeric(compiler, type)) {
+                      SPVM_yyerror_format(compiler, "new operator can't receive numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    }
+                    else if (SPVM_TYPE_is_object(compiler, type)) {
+                      SPVM_OP* op_package = type->op_package;
+                      assert(op_package);
+                      SPVM_PACKAGE* package = op_package->uv.package;
+                      
+                      if (package->is_interface) {
+                        SPVM_yyerror_format(compiler, "Can't create object of interface package at %s line %d\n", op_cur->file, op_cur->line);
                       }
+                      else if (package->is_private) {
+                        if (strcmp(package->op_name->uv.name, sub->op_package->uv.package->op_name->uv.name) != 0) {
+                          SPVM_yyerror_format(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
+                        }
+                      }
+                    }
+                    else {
+                      assert(0);
                     }
                   }
                   else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {

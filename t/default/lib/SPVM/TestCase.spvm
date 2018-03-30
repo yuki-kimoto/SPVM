@@ -2,6 +2,7 @@ use TestCase::Weaken;
 use TestCase::Minimal;
 use TestCase::Destructor;
 use TestCase::Empty;
+use TestCase::Private;
 
 use TestCase::Template_int_long;
 

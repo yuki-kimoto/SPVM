@@ -65,3 +65,12 @@ sub init_spvm {
     ok($success == 0);
   }
 }
+
+{
+  BEGIN { init_spvm() }
+  use SPVM 'TestCase::CompileError::New::Private';
+  BEGIN {
+    my $success = SPVM::compile_spvm();
+    ok($success == 0);
+  }
+}
