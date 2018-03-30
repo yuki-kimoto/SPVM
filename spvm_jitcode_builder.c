@@ -1828,16 +1828,19 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (object_type_id != cast_type_id) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (object_type_id == cast_type_id) {\n");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = object; }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t can_assign = api->check_cast(api, cast_type_id, object);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (!can_assign) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      if (can_assign) { ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = object; }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_API_OBJECT* exception = api->new_string(api, \"Can't cast uncompatible type.\", 0);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        api->set_exception(api, exception);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        croak_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      else { ");
-        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = object; }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         

@@ -2,6 +2,7 @@
   - add private and public descriptor
   - add private field
   - add private package
+  - fix check cast bug
 0.0319 2018-03-29
   - add interface descriptor to package declaration
   - fix bug that empty package parsing fail
