@@ -3636,6 +3636,8 @@ call_sub(...)
   SPVM_TYPE* return_type = sub->op_return_type->uv.type;
   int32_t return_type_id = return_type->id;
   
+  PUSHMARK(SP);
+          
   // Return count
   SV* sv_return_value = NULL;
   switch (return_type_id) {
@@ -3719,6 +3721,9 @@ call_sub(...)
       }
     }
   }
+  SPAGAIN;
+  ax = (SP - PL_stack_base) + 1;
+  
   SPVM_API_OBJECT* exception = api->get_exception(api);
   if (exception) {
     int32_t length = api->get_string_length(api, exception);
