@@ -70,7 +70,9 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
 
 int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   dSP;
-  
+  I32 ax;
+  int return_value_count;  
+
   (void)api;
 
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
@@ -101,11 +103,13 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   XPUSHs(sv_jitcode_source);
   PUTBACK;
 
-  call_pv("SPVM::compile_jit_sub", G_SCALAR);
+  return_value_count = call_pv("SPVM::compile_jit_sub", G_SCALAR);
 
   SPAGAIN;
-
-  int32_t success = POPi;
+  SP -= return_value_count;
+  ax = (SP - PL_stack_base) + 1;
+  
+  int32_t success = ST(0);
 
   PUTBACK;
   FREETMPS;
