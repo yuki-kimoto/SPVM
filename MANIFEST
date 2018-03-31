@@ -192,7 +192,9 @@ t/default/lib/SPVM/TestCase.spvm
 t/default/lib/SPVM/TestCase/Arrays.spvm
 t/default/lib/SPVM/TestCase/Byte.spvm
 t/default/lib/SPVM/TestCase/CompileError/AssignIncompatibleType/DifferentObject.spvm
+t/default/lib/SPVM/TestCase/CompileError/Field/Private.spvm
 t/default/lib/SPVM/TestCase/CompileError/InvalidType.spvm
+t/default/lib/SPVM/TestCase/CompileError/New/Private.spvm
 t/default/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/SPVM/TestCase/Destructor.spvm
@@ -213,6 +215,7 @@ t/default/lib/SPVM/TestCase/Interface/ImplementInterface2.spvm
 t/default/lib/SPVM/TestCase/Interface/Interface.spvm
 t/default/lib/SPVM/TestCase/Long.spvm
 t/default/lib/SPVM/TestCase/Minimal.spvm
+t/default/lib/SPVM/TestCase/Private.spvm
 t/default/lib/SPVM/TestCase/Short.spvm
 t/default/lib/SPVM/TestCase/Simple.spvm
 t/default/lib/SPVM/TestCase/Template.spvm
@@ -251,7 +254,9 @@ t/jit/lib/SPVM/TestCase.spvm
 t/jit/lib/SPVM/TestCase/Arrays.spvm
 t/jit/lib/SPVM/TestCase/Byte.spvm
 t/jit/lib/SPVM/TestCase/CompileError/AssignIncompatibleType/DifferentObject.spvm
+t/jit/lib/SPVM/TestCase/CompileError/Field/Private.spvm
 t/jit/lib/SPVM/TestCase/CompileError/InvalidType.spvm
+t/jit/lib/SPVM/TestCase/CompileError/New/Private.spvm
 t/jit/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/jit/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/jit/lib/SPVM/TestCase/Destructor.spvm
@@ -272,6 +277,7 @@ t/jit/lib/SPVM/TestCase/Interface/ImplementInterface2.spvm
 t/jit/lib/SPVM/TestCase/Interface/Interface.spvm
 t/jit/lib/SPVM/TestCase/Long.spvm
 t/jit/lib/SPVM/TestCase/Minimal.spvm
+t/jit/lib/SPVM/TestCase/Private.spvm
 t/jit/lib/SPVM/TestCase/Short.spvm
 t/jit/lib/SPVM/TestCase/Simple.spvm
 t/jit/lib/SPVM/TestCase/Template.spvm
