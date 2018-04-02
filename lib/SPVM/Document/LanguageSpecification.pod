@@ -114,31 +114,17 @@ Field Definition must be just under Package Definition.
     has field_name : type_name
   }
 
-=head3 Accessor Decralation
+=head3 Accessor
 
-Accessor is a subroutine to get and set field.
-
-B<Set Accessor Definition:>
-
-  set x, y;
-
-This is same as the following Subroutine Definition if x and y is int field of Point package.
+Set accsessor;
 
   sub set_x : void ($self : Point, $value : int) { $self->{x} = $value }
   sub set_y : void ($self : Point, $value : int) { $self->{y} = $value }
   
-If field is not exsit or same name subroutine is defined, Accessor Definition is compile error.
-
-B<Get Accessor Definition:>
-
-  get x, y;
-
-This is same as the following Subroutine Definition if x and y is int field of Point package.
+Get accessor;
 
   sub get_x : int ($self : Point) { return $self->{x} }
   sub get_y : int ($self : Point) { return $self->{y} }
-
-If field is not exsit or same name subroutine is defined, Accessor Definition is compile error.
 
 =head2 Subroutine Decralation
 
@@ -270,7 +256,7 @@ Above is same as the following.
 
 Integer Literal is composed of 
 
-   [+|-][0x][0123456789abcdefABCDEF]...[y|s|L|f|d]
+   [+|-][0x][0123456789abcdefABCDEF]...[L|f|d]
 
 For example:
 
@@ -311,16 +297,6 @@ You can use under line C<_> in number literal. Under line is meanless, only for 
 You can use type specifier to specify integer leteral type.
 
 =over 2
-
-=item * y
-
-  # Byte
-  123y
-
-=item * s
-  
-  # Short
-  123s
 
 =item * L
   
@@ -520,7 +496,7 @@ If you know more Package Definition, see L</"Package Definition"> section.
 
 You can create Object by C<new> subroutine. This is Default Constructor.
 
-  my $obj : PackageName = PackageName::new();
+  my $obj : PackageName = PackageName->new;
 
 =head2 New Array
 
@@ -538,7 +514,7 @@ Array is created by new. Elements values is not initialized.
 Array Initialization Syntax:
 
   my $values = new int[] {1, 2, 3};
-  my $points = new Point[] {Point::new(), Point::new(), Point::new()};
+  my $points = new Point[] {Point->new(), Point->new(), Point->new()};
 
 =head2 Array Manipulation
 
@@ -682,15 +658,15 @@ Constructor is C<new> operator.
 
 C<new> operator is private. C<new> operator is only used in same package.
 
-=head3 Default Constructor
+=head3 Constructor
 
 If C<new> subroutine is not defined, Default Constructor is defined automatically.
 
-  sub new () { return new Point }
+  sub new ($class : class) { return new Point }
 
 This is used from other package.
 
-  my $point = Point::new();
+  my $point = Point->new();
 
 =head2 Destructor
 
@@ -726,8 +702,8 @@ Enumeration.
 
 Using Weak Reference, recursive reference is resolved.
 
-  my $foo = Foo::new();
-  my $bar = Bar::new();
+  my $foo = Foo->new();
+  my $bar = Bar->new();
   
   # Recursive reference
   $foo->set_bar($foo);
