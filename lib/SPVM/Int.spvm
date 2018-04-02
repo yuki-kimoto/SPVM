@@ -1,6 +1,15 @@
 package Int {
-  sub MIN_VALUE : int ($class : class) { return -2147483648; }
-  sub MAX_VALUE : int ($class : class) { return 2147483647; }
-  sub BYTES : int ($class : class) { return 4; }
-  sub SIZE : int($class : class) { return 32; }
+  has value : private int;
+  
+  sub new : Int ($class : class, $value : int) {
+    my $self = new Int;
+    
+    $self->{value} = $value;
+    
+    return $self;
+  }
+  
+  sub get_value : int ($self : self) {
+    return $self->{value};
+  }
 }

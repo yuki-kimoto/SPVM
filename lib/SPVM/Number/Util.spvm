@@ -8,4 +8,9 @@ package Number::Util {
   sub SHORT_MAX_VALUE : short ($class : class) { return (short)32767; }
   sub SHORT_BYTES : int ($class : class) { return 2; }
   sub SHORT_SIZE : int ($class : class) { return 16; }
+
+  sub INT_MIN_VALUE : int ($class : class) { return -2147483648; }
+  sub INT_MAX_VALUE : int ($class : class) { return 2147483647; }
+  sub INT_BYTES : int ($class : class) { return 4; }
+  sub INT_SIZE : int($class : class) { return 32; }
 }

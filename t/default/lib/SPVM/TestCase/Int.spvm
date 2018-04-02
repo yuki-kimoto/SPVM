@@ -1,15 +1,12 @@
 use Int;
 
 package TestCase::Int {
-  sub constant : int () {
-    if (Int->MIN_VALUE() == -2147483648) {
-      if (Int->MAX_VALUE() == 2147483647) {
-        if (Int->BYTES() == 4) {
-          if (Int->SIZE() == 32) {
-            return 1;
-          }
-        }
-      }
+  sub basic : int () {
+    my $obj_value = Int->new(3);
+    my $value = $obj_value->get_value;
+    
+    if ($value == 3) {
+      return 1;
     }
     
     return 0;
