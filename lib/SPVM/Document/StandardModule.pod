@@ -16,9 +16,9 @@ L<SPVM::Byte> - Byte Utility
 
 L<SPVM::Short> - Short Utility
 
-=head2 SPVM::Integer
+=head2 SPVM::Int
 
-L<SPVM::Integer> - Integer Utility
+L<SPVM::Int> - Int Utility
 
 =head2 SPVM::Long
 

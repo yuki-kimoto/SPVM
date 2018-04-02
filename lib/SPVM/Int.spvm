@@ -1,4 +1,4 @@
-package Integer {
+package Int {
   sub MIN_VALUE : int ($class : class) { return -2147483648; }
   sub MAX_VALUE : int ($class : class) { return 2147483647; }
   sub BYTES : int ($class : class) { return 4; }

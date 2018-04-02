@@ -1,10 +1,10 @@
-package SPVM::Integer;
+package SPVM::Int;
 
 1;
 
 =head1 NAME
 
-SPVM::Integer - Integer Utility
+SPVM::Int - Int Utility
 
 =head1 CLASS METHODS
 

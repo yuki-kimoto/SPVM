@@ -47,7 +47,7 @@ sub MY::postamble {
     SPVM::Math
     SPVM::Byte
     SPVM::Short
-    SPVM::Integer
+    SPVM::Int
     SPVM::Long
     SPVM::Float
     SPVM::Double

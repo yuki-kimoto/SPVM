@@ -252,9 +252,9 @@ Above is same as the following.
 
 =head2 Number Literal
 
-=head3 Integer Literal
+=head3 Int Literal
 
-Integer Literal is composed of 
+Int Literal is composed of 
 
    [+|-][0x][0123456789abcdefABCDEF]...[L|f|d]
 
