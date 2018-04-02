@@ -7,6 +7,7 @@ use TestCase::Private;
 use TestCase::Template_int_long;
 
 use Byte;
+use Number::Util;
 use Short;
 use Int;
 use Long;
@@ -512,7 +513,7 @@ package TestCase {
   jit sub spvm_set_and_get_byte : int ($nums : byte[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == Byte->MAX_VALUE()) {
+      if ($nums->[1] == Number::Util->BYTE_MAX_VALUE()) {
         return 1;
       }
     }
@@ -1736,7 +1737,7 @@ package TestCase {
   jit sub object_field_set_and_get : int () {
     my $test_case = new TestCase;
     
-    $test_case->{x_byte} = Byte->MAX_VALUE();
+    $test_case->{x_byte} = Number::Util->BYTE_MAX_VALUE();
     $test_case->{x_short} = Short->MAX_VALUE();
     $test_case->{x_int} = Int->MAX_VALUE();
     $test_case->{x_long} = Long->MAX_VALUE();
@@ -1745,7 +1746,7 @@ package TestCase {
     my $minimal = TestCase::Minimal::new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
-    if ((int)$test_case->{x_byte} == (int)Byte->MAX_VALUE()) {
+    if ((int)$test_case->{x_byte} == (int)Number::Util->BYTE_MAX_VALUE()) {
       if ((int)$test_case->{x_short} == (int)Short->MAX_VALUE()) {
         if ($test_case->{x_int} == Int->MAX_VALUE()) {
           if ($test_case->{x_long} == Long->MAX_VALUE()) {
@@ -1767,7 +1768,7 @@ package TestCase {
   jit sub object_field_set_and_get_again : int () {
     my $test_case = new TestCase;
     
-    $test_case->{x_byte} = Byte->MAX_VALUE();
+    $test_case->{x_byte} = Number::Util->BYTE_MAX_VALUE();
     $test_case->{x_short} = Short->MAX_VALUE();
     $test_case->{x_int} = Int->MAX_VALUE();
     $test_case->{x_long} = Long->MAX_VALUE();
@@ -1777,7 +1778,7 @@ package TestCase {
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
 
-    $test_case->{x_byte} = Byte->MAX_VALUE();
+    $test_case->{x_byte} = Number::Util->BYTE_MAX_VALUE();
     $test_case->{x_short} = Short->MAX_VALUE();
     $test_case->{x_int} = Int->MAX_VALUE();
     $test_case->{x_long} = Long->MAX_VALUE();
@@ -1785,7 +1786,7 @@ package TestCase {
     $test_case->{x_double} = TestCase::DOUBLE_PRECICE();
     $test_case->{minimal} = $minimal;
 
-    if ((int)$test_case->{x_byte} == (int)Byte->MAX_VALUE()) {
+    if ((int)$test_case->{x_byte} == (int)Number::Util->BYTE_MAX_VALUE()) {
       if ((int)$test_case->{x_short} == (int)Short->MAX_VALUE()) {
         if ($test_case->{x_int} == Int->MAX_VALUE()) {
           if ($test_case->{x_long} == Long->MAX_VALUE()) {
@@ -1885,11 +1886,11 @@ package TestCase {
     return 0;
   }
   jit sub array_init_byte : int () {
-    my $nums = new byte[] {(byte)1, (byte)2, Byte->MAX_VALUE()};
+    my $nums = new byte[] {(byte)1, (byte)2, Number::Util->BYTE_MAX_VALUE()};
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
-        if ($nums->[2] == Byte->MAX_VALUE()) {
+        if ($nums->[2] == Number::Util->BYTE_MAX_VALUE()) {
           return 1;
         }
       }
@@ -3096,7 +3097,7 @@ package TestCase {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
-        if ($values->[2] == Byte->MAX_VALUE()) {
+        if ($values->[2] == Number::Util->BYTE_MAX_VALUE()) {
            if (@$values == 3) {
              return 1;
            }

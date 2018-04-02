@@ -8,26 +8,14 @@ SPVM::Byte - Byte Utility
 
 =head1 CLASS METHODS
 
-=head2 MIN_VALUE
+=head2 new
 
-B<sub MIN_VALUE : byte ($class : class)>
+B<sub new : Byte ($class : class, $value : byte)>
 
-A constant holding the minimum value a byte can have, C<-128>.
+Construct L<Byte|SPVM::Byte> object.
 
-=head2 MAX_VALUE
+=head1 METHODS
 
-B<MAX_VALUE : byte ($class : class)>
+B<sub get_value : byte ($self : self)>
 
-A constant holding the maximum value a byte can have, C<127>.
-
-=head2 BYTES
-
-B<sub BYTES : int ($class : class)>
-
-The number of bytes used to represent a byte value in two's complement binary form, C<1>.
-
-=head2 SIZE
-
-B<sub SIZE : int ($class : class)>
-
-The number of bits used to represent a byte value in two's complement binary form, C<8>.
+Get byte value.
