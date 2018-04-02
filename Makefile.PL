@@ -52,6 +52,7 @@ sub MY::postamble {
     SPVM::Float
     SPVM::Double
     SPVM::Arrays
+    SPVM::Number::Util
   );
   
   my $make_rule = '';
