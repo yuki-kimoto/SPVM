@@ -1,4 +1,4 @@
-package Int {
+package Int : private {
   has value : private int;
   
   sub new : Int ($class : class, $value : int) {

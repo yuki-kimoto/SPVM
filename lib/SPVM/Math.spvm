@@ -104,8 +104,8 @@ package Math {
   }
   
   sub signum : double ($class : class, $x : double) {
-    if (Double->is_nan($x)) {
-      return Double->NaN();
+    if (Number::Util->double_is_nan($x)) {
+      return Number::Util->DOUBLE_NAN();
     }
     elsif ($x > 0.0) {
       return 1.0;

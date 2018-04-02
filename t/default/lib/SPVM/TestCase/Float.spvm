@@ -2,10 +2,10 @@ use Float;
 
 package TestCase::Float {
   sub basic : int () {
-    my $obj_value = Float->new(3);
+    my $obj_value = Float->new(0.25);
     my $value = $obj_value->get_value;
     
-    if ($value == 3) {
+    if ($value == 0.25) {
       return 1;
     }
     

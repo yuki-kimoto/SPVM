@@ -1,4 +1,4 @@
-package Long {
+package Long : private {
   has value : private long;
   
   sub new : Long ($class : class, $value : long) {

@@ -8,29 +8,15 @@ SPVM::Double - Double Utility
 
 =head1 CLASS METHODS
 
-=head2 MIN_VALUE
+=head2 new
 
-B<sub MIN_VALUE : double ($class : class)>
+B<sub new : double ($class : class, $value : double)>
 
-A constant holding the minimum value a double can have, C<-128>.
+Construct L<double|SPVM::double> object.
 
-=head2 MAX_VALUE
+=head1 METHODS
 
-B<sub MAX_VALUE : double ($class : class)>
+B<sub get_value : double ($self : self)>
 
-A constant holding the maximum value a double can have, C<127>.
-
-=head2 SIZE
-
-B<sub SIZE : int ($class : class)>
-
-The number of bits used to represent a double value in two's complement binary form.
-
-=head2 BYTES
-
-B<sub BYTES : int ($class : class)>
-
-The number of doubles used to represent a double value in two's complement binary form.
-
-=head1 FUNCTIONS
+Get double value.
 

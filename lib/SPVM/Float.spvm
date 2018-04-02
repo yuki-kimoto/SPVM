@@ -1,4 +1,4 @@
-package Float {
+package Float : private {
   has value : private float;
   
   sub new : Float ($class : class, $value : float) {

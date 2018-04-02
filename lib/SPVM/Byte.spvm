@@ -1,4 +1,4 @@
-package Byte {
+package Byte : private {
   has value : private byte;
   
   sub new : Byte ($class : class, $value : byte) {

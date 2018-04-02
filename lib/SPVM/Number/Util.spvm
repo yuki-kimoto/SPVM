@@ -19,7 +19,6 @@ package Number::Util {
   sub LONG_BYTES : int ($class : class) { return 8; }
   sub LONG_SIZE : int ($class : class) { return 64; }
 
-
   enum {
     FLOAT_BYTES = 4,
     FLOAT_SIZE = 32,
@@ -41,4 +40,27 @@ package Number::Util {
   native sub float_float_to_int_bits : int ($class : class, $x : float);
   native sub float_float_to_raw_int_bits : int ($class : class, $x : float);
   native sub float_int_bits_to_float : float ($class : class, $x : int);
+
+
+  enum {
+    DOUBLE_BYTES = 8,
+    DOUBLE_SIZE = 64,
+    DOUBLE_MAX_EXPONENT = 1023,
+    DOUBLE_MIN_EXPONENT = -1022,
+  }
+  
+  native sub DOUBLE_POSITIVE_INFINITY : double ($class : class);
+  native sub DOUBLE_NEGATIVE_INFINITY : double ($class : class);
+  native sub DOUBLE_NAN : double ($class : class);
+  
+  native sub DOUBLE_MAX_VALUE : double ($class : class);
+  native sub DOUBLE_MIN_NORMAL : double ($class : class);
+  native sub DOUBLE_MIN_VALUE : double ($class : class);
+  
+  native sub double_is_infinite : int ($class : class, $x : double);
+  native sub double_is_finite : int ($class : class, $x : double);
+  native sub double_is_nan : int ($class : class, $x : double);
+  native sub double_double_to_long_bits : long ($class : class, $x : double);
+  native sub double_double_to_raw_long_bits : long ($class : class, $x : double);
+  native sub double_long_bits_to_double : double ($class : class, $x : long);
 }

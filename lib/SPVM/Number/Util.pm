@@ -4,7 +4,7 @@ package SPVM::Number::Util;
 
 =head1 NAME
 
-SPVM::Number::Util - Number utility
+SPVM::Number::Util - Number utilities
 
 =head1 CLASS METHODS
 
@@ -127,3 +127,28 @@ The number of bits used to represent a float value in two's complement binary fo
 B<sub FLOAT_BYTES : int ($class : class)>
 
 The number of floats used to represent a float value in two's complement binary form.
+
+=head2 DOUBLE_MIN_VALUE
+
+B<sub DOUBLE_MIN_VALUE : double ($class : class)>
+
+A constant holding the minimum value a double can have, C<-128>.
+
+=head2 DOUBLE_MAX_VALUE
+
+B<sub DOUBLE_MAX_VALUE : double ($class : class)>
+
+A constant holding the maximum value a double can have, C<127>.
+
+=head2 DOUBLE_SIZE
+
+B<sub DOUBLE_SIZE : int ($class : class)>
+
+The number of bits used to represent a double value in two's complement binary form.
+
+=head2 DOUBLE_BYTES
+
+B<sub DOUBLE_BYTES : int ($class : class)>
+
+The number of doubles used to represent a double value in two's complement binary form.
+

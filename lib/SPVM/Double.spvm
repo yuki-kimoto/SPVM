@@ -1,26 +1,15 @@
-package Double {
-
-  has value : double;
-
-  enum {
-    BYTES = 8,
-    SIZE = 64,
-    MAX_EXPONENT = 1023,
-    MIN_EXPONENT = -1022,
+package Double : private {
+  has value : private double;
+  
+  sub new : Double ($class : class, $value : double) {
+    my $self = new Double;
+    
+    $self->{value} = $value;
+    
+    return $self;
   }
   
-  native sub POSITIVE_INFINITY : double ($class : class);
-  native sub NEGATIVE_INFINITY : double ($class : class);
-  native sub NaN : double ($class : class);
-  
-  native sub MAX_VALUE : double ($class : class);
-  native sub MIN_NORMAL : double ($class : class);
-  native sub MIN_VALUE : double ($class : class);
-  
-  native sub is_infinite : int ($class : class, $x : double);
-  native sub is_finite : int ($class : class, $x : double);
-  native sub is_nan : int ($class : class, $x : double);
-  native sub double_to_long_bits : long ($class : class, $x : double);
-  native sub double_to_raw_long_bits : long ($class : class, $x : double);
-  native sub long_bits_to_double : double ($class : class, $x : long);
+  sub get_value : double ($self : self) {
+    return $self->{value};
+  }
 }
