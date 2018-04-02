@@ -8,29 +8,14 @@ SPVM::Float - Float Utility
 
 =head1 CLASS METHODS
 
-=head2 MIN_VALUE
+=head2 new
 
-B<sub MIN_VALUE : float ($class : class)>
+B<sub new : Float ($class : class, $value : float)>
 
-A constant holding the minimum value a float can have, C<-128>.
+Construct L<Float|SPVM::Float> object.
 
-=head2 MAX_VALUE
+=head1 METHODS
 
-B<sub MAX_VALUE : float ($class : class)>
+B<sub get_value : float ($self : self)>
 
-A constant holding the maximum value a float can have, C<127>.
-
-=head2 SIZE
-
-B<sub SIZE : int ($class : class)>
-
-The number of bits used to represent a float value in two's complement binary form.
-
-=head2 BYTES
-
-B<sub BYTES : int ($class : class)>
-
-The number of floats used to represent a float value in two's complement binary form.
-
-=head1 FUNCTIONS
-
+Get float value.

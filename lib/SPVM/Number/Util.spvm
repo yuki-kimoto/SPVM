@@ -13,4 +13,32 @@ package Number::Util {
   sub INT_MAX_VALUE : int ($class : class) { return 2147483647; }
   sub INT_BYTES : int ($class : class) { return 4; }
   sub INT_SIZE : int($class : class) { return 32; }
+
+  sub LONG_MIN_VALUE : long ($class : class) { return -9223372036854775808L; }
+  sub LONG_MAX_VALUE : long ($class : class) { return 9223372036854775807L; }
+  sub LONG_BYTES : int ($class : class) { return 8; }
+  sub LONG_SIZE : int ($class : class) { return 64; }
+
+
+  enum {
+    FLOAT_BYTES = 4,
+    FLOAT_SIZE = 32,
+    FLOAT_MAX_EXPONENT = 127,
+    FLOAT_MIN_EXPONENT = -126,
+  }
+  
+  native sub FLOAT_POSITIVE_INFINITY : float ($class : class);
+  native sub FLOAT_NEGATIVE_INFINITY : float ($class : class);
+  native sub FLOAT_NAN : float ($class : class);
+  
+  native sub FLOAT_MAX_VALUE : float ($class : class);
+  native sub FLOAT_MIN_NORMAL : float($class : class);
+  native sub FLOAT_MIN_VALUE : float($class : class);
+  
+  native sub float_is_infinite : int($class : class, $x : float);
+  native sub float_is_finite : int($class : class, $x : float);
+  native sub float_is_nan : int ($class : class, $x : float);
+  native sub float_float_to_int_bits : int ($class : class, $x : float);
+  native sub float_float_to_raw_int_bits : int ($class : class, $x : float);
+  native sub float_int_bits_to_float : float ($class : class, $x : int);
 }

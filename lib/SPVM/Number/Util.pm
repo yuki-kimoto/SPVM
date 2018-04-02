@@ -79,3 +79,51 @@ The number of ints used to represent a int value in two's complement binary form
 B<sub INT_SIZE : int ($class : class)>
 
 The number of bits used to represent a int value in two's complement binary form, C<32>.
+
+=head2 LONG_MIN_VALUE
+
+B<sub LONG_MIN_VALUE : long ($class : class)>
+
+A constant holding the minimum value a long can have, C<-9223372036854775808>.
+
+=head2 LONG_MAX_VALUE
+
+B<sub LONG_MAX_VALUE : long ($class : class)>
+
+A constant holding the maximum value a long can have, C<9223372036854775807>.
+
+=head2 LONG_BYTES
+
+B<sub LONG_BYTES : int ($class : class)>
+
+The number of longs used to represent a long value in two's complement binary form, C<8>.
+
+=head2 LONG_SIZE
+
+B<sub LONG_SIZE : int ($class : class)>
+
+The number of bits used to represent a long value in two's complement binary form, C<64>.
+
+=head2 FLOAT_MIN_VALUE
+
+B<sub FLOAT_MIN_VALUE : float ($class : class)>
+
+A constant holding the minimum value a float can have, C<-128>.
+
+=head2 FLOAT_MAX_VALUE
+
+B<sub FLOAT_MAX_VALUE : float ($class : class)>
+
+A constant holding the maximum value a float can have, C<127>.
+
+=head2 FLOAT_SIZE
+
+B<sub FLOAT_SIZE : int ($class : class)>
+
+The number of bits used to represent a float value in two's complement binary form.
+
+=head2 FLOAT_BYTES
+
+B<sub FLOAT_BYTES : int ($class : class)>
+
+The number of floats used to represent a float value in two's complement binary form.

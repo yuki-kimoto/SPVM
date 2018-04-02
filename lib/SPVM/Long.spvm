@@ -1,6 +1,15 @@
 package Long {
-  sub MIN_VALUE : long ($class : class) { return -9223372036854775808L; }
-  sub MAX_VALUE : long ($class : class) { return 9223372036854775807L; }
-  sub BYTES : int ($class : class) { return 8; }
-  sub SIZE : int ($class : class) { return 64; }
+  has value : private long;
+  
+  sub new : Long ($class : class, $value : long) {
+    my $self = new Long;
+    
+    $self->{value} = $value;
+    
+    return $self;
+  }
+  
+  sub get_value : long ($self : self) {
+    return $self->{value};
+  }
 }

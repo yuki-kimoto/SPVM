@@ -1,5 +1,6 @@
 use Float;
 use Double;
+use Number::Util;
 
 package Math {
   sub PI : double ($class : class) { return 3.141592653589793; }
@@ -118,8 +119,8 @@ package Math {
   }
   
   sub signum_float : float ($class : class, $x : float) {
-    if (Float->is_nan($x)) {
-      return Float->NaN();
+    if (Number::Util->float_is_nan($x)) {
+      return Number::Util->FLOAT_NAN();
     }
     elsif ($x > 0.0f) {
       return 1.0f;

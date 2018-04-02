@@ -1,26 +1,15 @@
 package Float {
-
-  has value : float;
-
-  enum {
-    BYTES = 4,
-    SIZE = 32,
-    MAX_EXPONENT = 127,
-    MIN_EXPONENT = -126,
+  has value : private float;
+  
+  sub new : Float ($class : class, $value : float) {
+    my $self = new Float;
+    
+    $self->{value} = $value;
+    
+    return $self;
   }
   
-  native sub POSITIVE_INFINITY : float ($class : class);
-  native sub NEGATIVE_INFINITY : float ($class : class);
-  native sub NaN : float ($class : class);
-  
-  native sub MAX_VALUE : float ($class : class);
-  native sub MIN_NORMAL : float($class : class);
-  native sub MIN_VALUE : float($class : class);
-  
-  native sub is_infinite : int($class : class, $x : float);
-  native sub is_finite : int($class : class, $x : float);
-  native sub is_nan : int ($class : class, $x : float);
-  native sub float_to_int_bits : int ($class : class, $x : float);
-  native sub float_to_raw_int_bits : int ($class : class, $x : float);
-  native sub int_bits_to_float : float ($class : class, $x : int);
+  sub get_value : float ($self : self) {
+    return $self->{value};
+  }
 }

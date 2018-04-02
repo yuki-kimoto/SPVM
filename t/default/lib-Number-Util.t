@@ -43,6 +43,38 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::Number::Util::int_constant());
 }
 
+# float
+{
+  ok(SPVM::TestCase::Number::Util::float_pass_positive_infinity($POSITIVE_INFINITY));
+  ok(SPVM::TestCase::Number::Util::float_pass_negative_infinity($NEGATIVE_INFINITY));
+  ok(SPVM::TestCase::Number::Util::float_pass_nan($NaN));
+  
+  ok(SPVM::TestCase::Number::Util::float_constant());
+  ok(SPVM::TestCase::Number::Util::float_is_infinite());
+  ok(SPVM::TestCase::Number::Util::float_is_finite());
+  ok(SPVM::TestCase::Number::Util::float_is_nan());
+  ok(SPVM::TestCase::Number::Util::float_int_bits_to_float());
+  ok(SPVM::TestCase::Number::Util::float_int_bits_to_float_nan_first_condition());
+  ok(SPVM::TestCase::Number::Util::float_int_bits_to_float_nan_first_condition_is_nan());
+  ok(SPVM::TestCase::Number::Util::float_int_bits_to_float_nan_second_condition());
+  ok(SPVM::TestCase::Number::Util::float_int_bits_to_float_nan_second_condition_is_nan());
+
+  ok(SPVM::TestCase::Number::Util::float_float_to_raw_int_bits());
+  ok(SPVM::TestCase::Number::Util::float_float_to_raw_int_bits_nan());
+  ok(SPVM::TestCase::Number::Util::float_float_to_int_bits());
+  ok(SPVM::TestCase::Number::Util::float_float_to_int_bits_nan());
+  
+  is(SPVM::Number::Util::FLOAT_POSITIVE_INFINITY(), $POSITIVE_INFINITY);
+  is(SPVM::Number::Util::FLOAT_NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
+  
+  cmp_ok(SPVM::Number::Util::FLOAT_NAN(), 'eq', $NaN);
+  
+  # Check not Inf or NaN in Perl value
+  like(SPVM::Number::Util::FLOAT_MAX_VALUE(), qr/[0-9]/);
+  like(SPVM::Number::Util::FLOAT_MIN_VALUE(), qr/[0-9]/);
+  like(SPVM::Number::Util::FLOAT_MIN_NORMAL(), qr/[0-9]/);
+}
+
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
