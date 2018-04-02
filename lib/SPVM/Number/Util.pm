@@ -31,3 +31,27 @@ The number of bytes used to represent a byte value in two's complement binary fo
 B<sub BYTE_SIZE : int ($class : class)>
 
 The number of bits used to represent a byte value in two's complement binary form, C<8>.
+
+=head2 SHORT_MIN_VALUE
+
+B<sub SHORT_MIN_VALUE : short ($class : class)>
+
+A constant holding the minimum value a short can have, C<-32768>.
+
+=head2 SHORT_MAX_VALUE
+
+B<sub SHORT_MAX_VALUE : short ($class : class)>
+
+A constant holding the maximum value a short can have, C<32767>.
+
+=head2 SHORT_BYTES
+
+B<sub SHORT_BYTES : int ($class : class)>
+
+The number of shorts used to represent a short value in two's complement binary form, C<2>.
+
+=head2 SHORT_SIZE
+
+B<sub SHORT_SIZE : int ($class : class)>
+
+The number of bits used to represent a short value in two's complement binary form, C<16>.

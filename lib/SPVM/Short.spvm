@@ -1,6 +1,15 @@
 package Short {
-  sub MIN_VALUE : short ($class : class) { return (short)-32768; }
-  sub MAX_VALUE : short ($class : class) { return (short)32767; }
-  sub BYTES : int ($class : class) { return 2; }
-  sub SIZE : int ($class : class) { return 16; }
+  has value : private short;
+  
+  sub new : Short ($class : class, $value : short) {
+    my $self = new Short;
+    
+    $self->{value} = $value;
+    
+    return $self;
+  }
+  
+  sub get_value : short ($self : self) {
+    return $self->{value};
+  }
 }

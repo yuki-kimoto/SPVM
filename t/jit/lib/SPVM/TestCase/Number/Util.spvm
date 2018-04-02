@@ -14,4 +14,18 @@ package TestCase::Number::Util {
     
     return 0;
   }
+
+  jit sub short_constant : int () {
+    if ((int)Number::Util->SHORT_MIN_VALUE() == (int)(short)-32768) {
+      if ((int)Number::Util->SHORT_MAX_VALUE() == (int)(short)32767) {
+        if (Number::Util->SHORT_BYTES() == 2) {
+          if (Number::Util->SHORT_SIZE() == 16) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
 }

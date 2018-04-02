@@ -3,4 +3,9 @@ package Number::Util {
   sub BYTE_MAX_VALUE : byte ($class : class) { return (byte)127; }
   sub BYTE_BYTES: int ($class : class) { return 1; }
   sub BYTE_SIZE: int ($class : class) { return 8; }
+
+  sub SHORT_MIN_VALUE : short ($class : class) { return (short)-32768; }
+  sub SHORT_MAX_VALUE : short ($class : class) { return (short)32767; }
+  sub SHORT_BYTES : int ($class : class) { return 2; }
+  sub SHORT_SIZE : int ($class : class) { return 16; }
 }

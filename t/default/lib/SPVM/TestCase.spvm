@@ -523,7 +523,7 @@ package TestCase {
   sub spvm_set_and_get_short : int ($nums : short[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == Short->MAX_VALUE()) {
+      if ($nums->[1] == Number::Util->SHORT_MAX_VALUE()) {
         return 1;
       }
     }
@@ -1738,7 +1738,7 @@ package TestCase {
     my $test_case = new TestCase;
     
     $test_case->{x_byte} = Number::Util->BYTE_MAX_VALUE();
-    $test_case->{x_short} = Short->MAX_VALUE();
+    $test_case->{x_short} = Number::Util->SHORT_MAX_VALUE();
     $test_case->{x_int} = Int->MAX_VALUE();
     $test_case->{x_long} = Long->MAX_VALUE();
     $test_case->{x_float} = TestCase::FLOAT_PRECICE();
@@ -1747,7 +1747,7 @@ package TestCase {
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
     if ((int)$test_case->{x_byte} == (int)Number::Util->BYTE_MAX_VALUE()) {
-      if ((int)$test_case->{x_short} == (int)Short->MAX_VALUE()) {
+      if ((int)$test_case->{x_short} == (int)Number::Util->SHORT_MAX_VALUE()) {
         if ($test_case->{x_int} == Int->MAX_VALUE()) {
           if ($test_case->{x_long} == Long->MAX_VALUE()) {
             if ($test_case->{x_float} == TestCase::FLOAT_PRECICE()) {
@@ -1769,7 +1769,7 @@ package TestCase {
     my $test_case = new TestCase;
     
     $test_case->{x_byte} = Number::Util->BYTE_MAX_VALUE();
-    $test_case->{x_short} = Short->MAX_VALUE();
+    $test_case->{x_short} = Number::Util->SHORT_MAX_VALUE();
     $test_case->{x_int} = Int->MAX_VALUE();
     $test_case->{x_long} = Long->MAX_VALUE();
     $test_case->{x_float} = TestCase::FLOAT_PRECICE();
@@ -1779,7 +1779,7 @@ package TestCase {
     $test_case->{minimal} = $minimal;
 
     $test_case->{x_byte} = Number::Util->BYTE_MAX_VALUE();
-    $test_case->{x_short} = Short->MAX_VALUE();
+    $test_case->{x_short} = Number::Util->SHORT_MAX_VALUE();
     $test_case->{x_int} = Int->MAX_VALUE();
     $test_case->{x_long} = Long->MAX_VALUE();
     $test_case->{x_float} = TestCase::FLOAT_PRECICE();
@@ -1787,7 +1787,7 @@ package TestCase {
     $test_case->{minimal} = $minimal;
 
     if ((int)$test_case->{x_byte} == (int)Number::Util->BYTE_MAX_VALUE()) {
-      if ((int)$test_case->{x_short} == (int)Short->MAX_VALUE()) {
+      if ((int)$test_case->{x_short} == (int)Number::Util->SHORT_MAX_VALUE()) {
         if ($test_case->{x_int} == Int->MAX_VALUE()) {
           if ($test_case->{x_long} == Long->MAX_VALUE()) {
             if ($test_case->{x_float} == TestCase::FLOAT_PRECICE()) {
@@ -3112,7 +3112,7 @@ package TestCase {
     
     if ((int)$values->[0] == (int)(short)97) {
       if ((int)$values->[1] == (int)(short)98) {
-        if ((int)$values->[2] == (int)(short)Short->MAX_VALUE()) {
+        if ((int)$values->[2] == (int)(short)Number::Util->SHORT_MAX_VALUE()) {
            if (@$values == 3) {
              return 1;
            }
