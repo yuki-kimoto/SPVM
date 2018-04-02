@@ -1,0 +1,5 @@
+use Number::Util;
+
+package TestCase::Number::Util {
+
+}
