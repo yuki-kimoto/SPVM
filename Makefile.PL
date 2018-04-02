@@ -45,9 +45,6 @@ sub MY::postamble {
   my @module_names = qw(
     SPVM::CORE
     SPVM::Math
-    SPVM::Short
-    SPVM::Int
-    SPVM::Long
     SPVM::Float
     SPVM::Double
     SPVM::Arrays
