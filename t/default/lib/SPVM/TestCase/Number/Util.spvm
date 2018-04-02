@@ -1,5 +1,17 @@
 use Number::Util;
 
 package TestCase::Number::Util {
-
+  sub byte_constant : int () {
+    if ((int)Number::Util->BYTE_MIN_VALUE() == (int)(byte)-128) {
+      if ((int)Number::Util->BYTE_MAX_VALUE() == (int)(byte)127) {
+        if (Number::Util->BYTE_BYTES() == 1) {
+          if (Number::Util->BYTE_SIZE() == 8) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
 }
