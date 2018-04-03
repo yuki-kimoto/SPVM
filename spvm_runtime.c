@@ -260,6 +260,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // Call sub arguments
   SPVM_API_VALUE call_sub_args[255];
   
+  char tmp_string[30];
+  
   // Call normal sub
   // If arg is object, increment reference count
   {
@@ -682,6 +684,54 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE:
         *(double*)&vars[opcode->operand0] = *(double*)&vars[opcode->operand1];
         break;
+      case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING: {
+        SPVM_API_int value = *(SPVM_API_int*)&vars[opcode->operand1];
+        
+        sprintf(tmp_string, "%" PRId32, value);
+        
+        int32_t string_length = strlen(tmp_string);
+
+        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, tmp_string, string_length);
+        
+        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING: {
+        SPVM_API_long value = *(SPVM_API_long*)&vars[opcode->operand1];
+        
+        sprintf(tmp_string, "%" PRId64, value);
+        
+        int32_t string_length = strlen(tmp_string);
+
+        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, tmp_string, string_length);
+        
+        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING: {
+        SPVM_API_float value = *(SPVM_API_float*)&vars[opcode->operand1];
+        
+        sprintf(tmp_string, "%f", value);
+        
+        int32_t string_length = strlen(tmp_string);
+
+        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, tmp_string, string_length);
+        
+        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING: {
+        SPVM_API_double value = *(SPVM_API_double*)&vars[opcode->operand1];
+        
+        sprintf(tmp_string, "%f", value);
+        
+        int32_t string_length = strlen(tmp_string);
+
+        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, tmp_string, string_length);
+        
+        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
+        break;
+      }
       case SPVM_OPCODE_C_ID_LOAD_UNDEF:
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = NULL;
         break;
