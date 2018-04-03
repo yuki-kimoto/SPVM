@@ -1,5 +1,6 @@
 0.0321 2018-04-02
   - rename Integer package to Int package
+  - add Number::Util and move many number util funtions of Byte, Short, Int, Long, Float, Double to Number::Util
 0.0320 2018-03-29
   - add private and public descriptor
   - add private field
