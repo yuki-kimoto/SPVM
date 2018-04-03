@@ -273,7 +273,8 @@ sub build_shared_lib {
     $cbuilder->compile(
       source => $src_file,
       object_file => $object_file,
-      include_dirs => $include_dirs
+      include_dirs => $include_dirs,
+      extra_compiler_flags => '-Wall -Wextra -std=c99'
     );
     push @$object_files, $object_file;
   }

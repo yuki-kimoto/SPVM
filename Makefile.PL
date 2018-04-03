@@ -19,7 +19,7 @@ my $debug;
 GetOptions('d' => \$debug);
 
 # Edit CCFLAGS
-my $ccflags = "$Config{ccflags} -Wall -Wextra";
+my $ccflags = "$Config{ccflags} -Wall -Wextra -std=c99";
 
 WriteMakefile(
     NAME              => 'SPVM',

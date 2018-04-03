@@ -7,6 +7,9 @@
 
 #include "spvm_api.h"
 
+#define SPVM__MATH__PI 3.14159265358979323846
+#define SPVM__MATH__E 2.7182818284590452354
+
 double SPVM__Math__sin(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
@@ -58,7 +61,7 @@ double SPVM__Math__atan(SPVM_API* api, SPVM_API_VALUE* args) {
 double SPVM__Math__to_radians(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  double value = args[0].double_value * M_PI / 180.0;
+  double value = args[0].double_value * SPVM__MATH__PI / 180.0;
   
   return value;
 }
@@ -66,7 +69,7 @@ double SPVM__Math__to_radians(SPVM_API* api, SPVM_API_VALUE* args) {
 double SPVM__Math__to_degrees(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  double value = args[0].double_value * 180.0 / M_PI;
+  double value = args[0].double_value * 180.0 / SPVM__MATH__PI;
   
   return value;
 }

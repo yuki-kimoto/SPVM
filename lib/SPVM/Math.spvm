@@ -3,8 +3,8 @@ use Double;
 use Number::Util;
 
 package Math {
-  sub PI : double ($class : class) { return 3.141592653589793; }
-  sub E : double ($class : class) { return 2.718281828459045; }
+  sub PI : double ($class : class) { return 3.14159265358979323846; }
+  sub E : double ($class : class) { return 2.7182818284590452354; }
   
   native sub sin : double ($class : class, $x : double);
   native sub cos : double ($class : class, $x : double);
