@@ -69,8 +69,8 @@ package TestCase {
       my $implement_interface1 : TestCase::Interface = new TestCase::ImplementInterface1;
       my $implement_interface2 : TestCase::Interface = new TestCase::ImplementInterface2;
       
-      print($implement_interface1->foo(0, 0) . "\n");
-      print($implement_interface2->foo(0, 0) . "\n");
+      print((String)$implement_interface1->foo(0, 0) . "\n");
+      print((String)$implement_interface2->foo(0, 0) . "\n");
       
       my $minimal = (TestCase::Minimal)$object;
       
@@ -91,7 +91,7 @@ package TestCase {
     
     {
       my $num = sum0(1, 2);
-      print($num . "\n");
+      print((String)$num . "\n");
     }
     
     {
@@ -105,7 +105,7 @@ package TestCase {
     {
       my $values = new int[] {1, 2, 3};
       
-      print($values->[0] . "\n");
+      print((String)$values->[0] . "\n");
     }
 
     {
@@ -157,7 +157,7 @@ package TestCase {
     {
       my $time = time();
       
-      print($time . "\n");
+      print((String)$time . "\n");
     }
 
     warn("warn");
@@ -181,7 +181,7 @@ package TestCase {
         
         $val2 .= "def";
         
-        print($val2 . "\n");
+        print((String)$val2 . "\n");
       }
       {
         1 . 3;
@@ -196,7 +196,7 @@ package TestCase {
         my $value2 = -9223372036854775808L;
         my $value3 = $value1 . $value2;
         
-        print($value3 . "\n");
+        print((String)$value3 . "\n");
       }
 
       {
@@ -204,7 +204,7 @@ package TestCase {
         my $value2 = -2147483648;
         my $value3 = $value1 . $value2;
         
-        print($value3 . "\n");
+        print((String)$value3 . "\n");
       }
 
       {
@@ -212,7 +212,7 @@ package TestCase {
         my $value2 = (short)13;
         my $value3 = $value1 . $value2;
         
-        print($value3 . "\n");
+        print((String)$value3 . "\n");
       }
 
       {
@@ -220,7 +220,7 @@ package TestCase {
         my $value2 = (byte)13;
         my $value3 = $value1 . $value2;
         
-        print($value3 . "\n");
+        print((String)$value3 . "\n");
       }
       
       # .
@@ -229,7 +229,7 @@ package TestCase {
         my $value2 = "def";
         my $value3 = $value1 . $value2;
         
-        print($value3 . "\n");
+        print((String)$value3 . "\n");
       }
     }
     
@@ -238,7 +238,7 @@ package TestCase {
       
       $num += 4;
       
-      print($num . "\n");
+      print((String)$num . "\n");
     }
     
     {
@@ -252,7 +252,7 @@ package TestCase {
     {
       my $ret = TestCase::error_eval();
       
-      print($ret . "\n");
+      print((String)$ret . "\n");
     }
     
     TestCase::error_eval();
@@ -310,7 +310,7 @@ package TestCase {
     # Use template package
     {
       my $num = TestCase::Template_int_long::get(100, 200, 300L,);
-      print($num . "\n");
+      print((String)$num . "\n");
     }
 
     # Get object from freelist
@@ -344,13 +344,13 @@ package TestCase {
     # Constant e
     {
       my $num = 0.25E+3;
-      print($num . "\n");
+      print((String)$num . "\n");
     }
 
     # Constant e
     {
       my $num = 0.25E-3f;
-      print($num . "\n");
+      print((String)$num . "\n");
     }
     # Convert to string to byte[]
     {
@@ -361,12 +361,12 @@ package TestCase {
     # MIN long constant;
     {
       my $num = -9223372036854775808L;
-      print($num . "\n");
+      print((String)$num . "\n");
     }
     {
       my $var = 3;
       while (my $var = 964) {
-        print($var . "\n");
+        print((String)$var . "\n");
         last;
       }
     }
@@ -375,7 +375,7 @@ package TestCase {
       my $error = "First";
       $@ = "Error";
       if (my $error = $@) {
-        print($error . "\n");
+        print((String)$error . "\n");
       }
     }
     
@@ -388,7 +388,7 @@ package TestCase {
     # Exception variable
     {
       $@ = "Exception";
-      print($@ . "\n");
+      print((String)$@ . "\n");
     }
     
     # $array->[0]{x}
@@ -396,7 +396,7 @@ package TestCase {
       my $objs = new TestCase::Minimal[3];
       $objs->[0] = TestCase::Minimal::new();
       $objs->[0]{x} = 111;
-      print($objs->[0]{x} . "\n");
+      print((String)$objs->[0]{x} . "\n");
     }
     
     # $obj->{x}[0]
@@ -404,7 +404,7 @@ package TestCase {
       my $obj = TestCase::Simple::new();
       $obj->{values1} = new int[5];
       $obj->{values1}[0] = 221;
-      print($obj->{values1}[0] . "\n");
+      print((String)$obj->{values1}[0] . "\n");
     }
     
     # Call new subroutine without variable
@@ -416,7 +416,7 @@ package TestCase {
     # Subroutine call from native
     {
       my $total = CORE::test1(3, 11);
-      print($total . "\n");
+      print((String)$total . "\n");
     }
     
     # Create temporary varialbe
@@ -444,7 +444,7 @@ package TestCase {
     {
       my $string = "abc\"\'\\\n\t\b\r\fdef";
      
-      print($string . "\n");
+      print((String)$string . "\n");
     }
     
     # Escape sequence
@@ -474,7 +474,7 @@ package TestCase {
       my $nums : int[][] = new int[][3];
       $nums->[0] = new int[1];
       $nums->[0][0] = 178;
-      print($nums->[0][0] . "\n");
+      print((String)$nums->[0][0] . "\n");
     }
     
     # Declare mutil array
@@ -484,12 +484,12 @@ package TestCase {
     
     # Core functions
     {
-      print((byte)1 . "\n");
-      print((short)1 . "\n");
-      print(1 . "\n");
-      print(1L . "\n");
-      print(1f . "\n");
-      print(1.0 . "\n");
+      print((String)(byte)1 . "\n");
+      print((String)(short)1 . "\n");
+      print((String)1 . "\n");
+      print((String)1L . "\n");
+      print((String)1f . "\n");
+      print((String)1.0 . "\n");
       print("end\n");
     }
 
@@ -510,7 +510,7 @@ package TestCase {
       my $nums = new int[150000000];
       my $len = @{$nums};
       $nums->[149999999] = 764;
-      print($nums->[149999999] . "\n");
+      print((String)$nums->[149999999] . "\n");
     }
     
     {
@@ -520,8 +520,8 @@ package TestCase {
       for ($i = 0; $i < $len; $i = $i + 1) {
         $nums->[$i] = $i;
       }
-      print($i . "\n");
-      print($nums->[$i - 1] . "\n");
+      print((String)$i . "\n");
+      print((String)$nums->[$i - 1] . "\n");
     }
     
     # Object to get long field is undef
@@ -588,14 +588,14 @@ package TestCase {
     {
       my $num = (byte)1;
       $num++;
-      print($num . "\n");
+      print((String)$num . "\n");
     }
     
     # Increment short 
     {
       my $num = (short)1;
       $num++;
-      print($num . "\n");
+      print((String)$num . "\n");
     }
     
     # increment int
@@ -641,28 +641,28 @@ package TestCase {
       $nums->[2] = 3;
       
       my $total = sum_int($nums);
-      print($total . "\n");
+      print((String)$total . "\n");
     }
     
     {
       my $string = "ace";
      
-      print($string . "\n");
+      print((String)$string . "\n");
     }
 
     {
       my $string = "ace";
      
-      print($string . "\n");
+      print((String)$string . "\n");
     }
     
     {
       my $num = (byte)3;
-      print($num . "\n");
+      print((String)$num . "\n");
       
       my $num2 = (long)1 + (long)$num;
       
-      print($num2 . "\n");
+      print((String)$num2 . "\n");
     }
     
     # get and set field
@@ -672,8 +672,8 @@ package TestCase {
       $m->{x} = 99;
       $m->{y} = 100;
       
-      print($m->{x} . "\n");
-      print($m->{y} . "\n");
+      print((String)$m->{x} . "\n");
+      print((String)$m->{y} . "\n");
     }
 
     # Free when assignment
@@ -704,76 +704,76 @@ package TestCase {
     }
     7;
     
-    print(TestCase::sum0(1, 1) . "\n");
-    print(TestCase::sum2(1, 2) . "\n");
+    print((String)TestCase::sum0(1, 1) . "\n");
+    print((String)TestCase::sum2(1, 2) . "\n");
 
     # Constant float
-    print(0.3f . "\n");
-    print(1f . "\n");
-    print(2f . "\n");
-    print(1.2f . "\n");
+    print((String)0.3f . "\n");
+    print((String)1f . "\n");
+    print((String)2f . "\n");
+    print((String)1.2f . "\n");
     
     # Constant double
-    print(0d . "\n");
-    print(1d . "\n");
-    print(1.2 . "\n");
+    print((String)0d . "\n");
+    print((String)1d . "\n");
+    print((String)1.2 . "\n");
 
     # Constant int
-    print(-2147483648 . "\n");
-    print(-32769 . "\n");
-    print(-32768 . "\n");
-    print(-129 . "\n");
-    print(-128 . "\n");
-    print(-2 . "\n");
-    print(-1 . "\n");
-    print(0 . "\n");
-    print(1 . "\n");
-    print(2 . "\n");
-    print(3 . "\n");
-    print(4 . "\n");
-    print(5 . "\n");
-    print(6 . "\n");
-    print(127 . "\n");
-    print(128 . "\n");
-    print(255 . "\n");
-    print(256 . "\n");
-    print(32767 . "\n");
-    print(32768 . "\n");
-    print(65535 . "\n");
-    print(65536 . "\n");
-    print(2147483647 . "\n");
+    print((String)-2147483648 . "\n");
+    print((String)-32769 . "\n");
+    print((String)-32768 . "\n");
+    print((String)-129 . "\n");
+    print((String)-128 . "\n");
+    print((String)-2 . "\n");
+    print((String)-1 . "\n");
+    print((String)0 . "\n");
+    print((String)1 . "\n");
+    print((String)2 . "\n");
+    print((String)3 . "\n");
+    print((String)4 . "\n");
+    print((String)5 . "\n");
+    print((String)6 . "\n");
+    print((String)127 . "\n");
+    print((String)128 . "\n");
+    print((String)255 . "\n");
+    print((String)256 . "\n");
+    print((String)32767 . "\n");
+    print((String)32768 . "\n");
+    print((String)65535 . "\n");
+    print((String)65536 . "\n");
+    print((String)2147483647 . "\n");
     
     # Constant long
-    print(-1L . "\n");
-    print(0L . "\n");
-    print(1L . "\n");
-    print(2L . "\n");
-    print(9223372036854775807L . "\n");
-    print(-9223372036854775807L . "\n");
-    print(-2147483648L . "\n");
-    print(-32769L . "\n");
-    print(-32768L . "\n");
-    print(-129L . "\n");
-    print(-128L . "\n");
-    print(-2L . "\n");
-    print(-1L . "\n");
-    print(0L . "\n");
-    print(1L . "\n");
-    print(2L . "\n");
-    print(3L . "\n");
-    print(4L . "\n");
-    print(5L . "\n");
-    print(6L . "\n");
-    print(127L . "\n");
-    print(128L . "\n");
-    print(255L . "\n");
-    print(256L . "\n");
-    print(32767L . "\n");
-    print(32768L . "\n");
-    print(65535L . "\n");
-    print(65536L . "\n");
-    print(2147483647L . "\n");
-    print(0xFFL . "\n");
+    print((String)-1L . "\n");
+    print((String)0L . "\n");
+    print((String)1L . "\n");
+    print((String)2L . "\n");
+    print((String)9223372036854775807L . "\n");
+    print((String)-9223372036854775807L . "\n");
+    print((String)-2147483648L . "\n");
+    print((String)-32769L . "\n");
+    print((String)-32768L . "\n");
+    print((String)-129L . "\n");
+    print((String)-128L . "\n");
+    print((String)-2L . "\n");
+    print((String)-1L . "\n");
+    print((String)0L . "\n");
+    print((String)1L . "\n");
+    print((String)2L . "\n");
+    print((String)3L . "\n");
+    print((String)4L . "\n");
+    print((String)5L . "\n");
+    print((String)6L . "\n");
+    print((String)127L . "\n");
+    print((String)128L . "\n");
+    print((String)255L . "\n");
+    print((String)256L . "\n");
+    print((String)32767L . "\n");
+    print((String)32768L . "\n");
+    print((String)65535L . "\n");
+    print((String)65536L . "\n");
+    print((String)2147483647L . "\n");
+    print((String)0xFFL . "\n");
     
     "abc";
     
@@ -783,16 +783,16 @@ package TestCase {
       
       switch($num) {
         case TestCase::EnumD->THREE():
-          print(1 . "\n");
+          print((String)1 . "\n");
           last;
         case TestCase::EnumD->FORE():
-          print(2 . "\n");
+          print((String)2 . "\n");
           last;
         case 5:
-          print(3 . "\n");
+          print((String)3 . "\n");
           last;
         default:
-          print(5 . "\n");
+          print((String)5 . "\n");
       }
     }
 
@@ -801,16 +801,16 @@ package TestCase {
       my $num = 3;
       switch ($num) {
         case 1:
-          print(1 . "\n");
+          print((String)1 . "\n");
           last;
         case 3:
-          print(2 . "\n");
+          print((String)2 . "\n");
           last;
         case 10000:
-          print(2 . "\n");
+          print((String)2 . "\n");
           last;
         default:
-          print(5 . "\n");
+          print((String)5 . "\n");
       }
     }
     
@@ -818,7 +818,7 @@ package TestCase {
     #   my $num = 5;
     #   switch($num) {
     #     default:
-    #       print(5 . "\n");
+    #       print((String)5 . "\n");
     #   }
     # }
     
@@ -836,7 +836,7 @@ package TestCase {
 
     my $simple3 : TestCase::Simple = TestCase::Simple::new();
     
-    print($simple3->{x} . "\n");
+    print((String)$simple3->{x} . "\n");
     $simple3->{x};
     
     $simple3->{y} = 2;
@@ -933,17 +933,17 @@ package TestCase {
       my $nums = new int[3];
       $nums->[0] = 13;
       $nums->[1] = 14;
-      print($nums->[0] . "\n");
-      print($nums->[1] . "\n");
+      print((String)$nums->[0] . "\n");
+      print((String)$nums->[1] . "\n");
     }
     
     {
       my $nums : long[] = new long[3];
       $nums->[0] = 11L;
       $nums->[1] = 12L;
-      print($nums->[0] . "\n");
-      print($nums->[1] . "\n");
-      print(@$nums . "\n");
+      print((String)$nums->[0] . "\n");
+      print((String)$nums->[1] . "\n");
+      print((String)@$nums . "\n");
       my $nums_length : int = @$nums;
     }
     
@@ -955,7 +955,7 @@ package TestCase {
     my $v3 : int;
     
     $v3 = $v2 = $v1 = 543;
-    print($v3 . "\n");
+    print((String)$v3 . "\n");
     
     100;
     1000;
@@ -1052,7 +1052,7 @@ package TestCase {
       my $num1 = (byte)1;
       my $num2 = (byte)2;
       my $num3 = (byte)((int)$num0 + (int)$num1 + (int)$num2);
-      print($num3 . "\n");
+      print((String)$num3 . "\n");
     }
 
     {
@@ -1060,7 +1060,7 @@ package TestCase {
       my $num1 = (short)1;
       my $num2 = (short)2;
       my $num3 = (short)((int)$num0 + (int)$num1 + (int)$num2);
-      print($num3 . "\n");
+      print((String)$num3 . "\n");
     }
 
     # my $error : String = "Error";
