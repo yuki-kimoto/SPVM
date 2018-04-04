@@ -958,10 +958,8 @@ L<Kazutake Hiramatsu|https://github.com/kazhiramatsu>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2017 by Yuki Kimoto
+Copyright (C) 2017-2018 by Yuki Kimoto
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.16.3 or,
-at your option, any later version of Perl 5 you may have available.
+MIT License
 
 =cut

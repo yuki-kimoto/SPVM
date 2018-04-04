@@ -54,7 +54,7 @@ lib_native/SPVM/Number/Util.native/Util.config
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
-README.pod
+README
 solo/Main.spvm
 solo/Makefile
 solo/README.md

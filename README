@@ -1,0 +1,67 @@
+SPVM
+
+  Provide Fast Calculation and Easy C/C++ Binding with perlish syntax and static typing to Perl
+
+  * Fast calculation
+  * Fast array operation
+  * Static typing
+  * Perlish syntax
+  * Reference count GC
+  * Low latency
+  * JIT compile
+
+EXAMPLE
+
+  SPVM Module:
+
+    # lib/SPVM/MyMath.spvm
+    package MyMath {
+      
+      # Sub Declaration
+      sub sum : int ($nums : int[]) {
+        
+        # Culcurate total
+        my $total = 0;
+        for (my $i = 0; $i < @$nums; $i++) {
+          $total += $nums->[$i];
+        }
+        
+        return $total;
+      }
+    }
+
+  Use SPVM Module from Perl
+    
+    use FindBin;
+    use lib "$FindBin::Bin/lib";
+    
+    # Use SPVM module
+    use SPVM 'MyMath';
+    
+    # New SPVM int array
+    my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
+    
+    # Call SPVM subroutine
+    my $total = SPVM::MyMath::sum($sp_nums);
+    
+    print $total . "\n";
+
+AUTHOR
+
+  Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
+
+CONTRIBUTERS
+
+  akinomyoga(Koichi Murase) https://github.com/akinomyoga
+  NAGAYASU Shinya https://github.com/nagayasu-shinya
+  Reini Urban https://github.com/rurban
+  chromatic https://github.com/chromatic
+  Kazutake Hiramatsu https://github.com/kazhiramatsu
+
+COPYRIGHT AND LICENSE
+
+  Copyright (C) 2017-2018 by Yuki Kimoto
+  
+  MIT License
+
+=cut
