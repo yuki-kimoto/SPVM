@@ -231,11 +231,19 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
         op_out = op_convert;
       }
     }
-    // Object type check
     else {
-      _Bool can_assign = SPVM_OP_CHECKER_can_assign(compiler, assign_to_type, assign_from_type);
-      if (!can_assign) {
-        SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
+      if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && assign_from_type->id == SPVM_TYPE_C_ID_STRING) {
+        // Convert String to numeric type
+      }
+      else if (assign_to_type->id == SPVM_TYPE_C_ID_STRING && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
+        // Convert numeric type to String
+      }
+      // Object type check
+      else {
+        _Bool can_assign = SPVM_OP_CHECKER_can_assign(compiler, assign_to_type, assign_from_type);
+        if (!can_assign) {
+          SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
+        }
       }
     }
   }
@@ -1935,6 +1943,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (SPVM_TYPE_is_numeric(compiler, term_type) && SPVM_TYPE_is_numeric(compiler, type_type)) {
                     can_convert = 1;
                   }
+                  else if (SPVM_TYPE_is_numeric(compiler, term_type) && type_type->id == SPVM_TYPE_C_ID_STRING) {
+                    can_convert = 1;
+                  }
                   else if (SPVM_TYPE_is_object(compiler, term_type) && SPVM_TYPE_is_object(compiler, type_type)) {
                     if (SPVM_TYPE_is_array_numeric(compiler, term_type) && !SPVM_TYPE_is_array_numeric(compiler, type_type)) {
                       can_convert = 0;
@@ -1956,7 +1967,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   if (!can_convert) {
-                    SPVM_yyerror_format(compiler, "can't convert type %s to %s at %s line %d\n",
+                    SPVM_yyerror_format(compiler, "can't convert %s to %s at %s line %d\n",
                     term_type->name, type_type->name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;

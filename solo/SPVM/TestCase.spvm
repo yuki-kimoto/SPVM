@@ -48,6 +48,19 @@ package TestCase {
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
+    my $byte_string = (String)(byte)23;
+    my $short_string = (String)(short)23;
+    my $int_string = (String)23;
+    my $long_string = (String)23L;
+    my $float_string = (String)0.25f;
+    my $double_string = (String)0.25;
+    
+    print($byte_string . "\n");
+    print($short_string . "\n");
+    print($int_string . "\n");
+    print($long_string . "\n");
+    print($float_string . "\n");
+    print($double_string . "\n");
 
     my $total = CORE::test1(3, 11);
     

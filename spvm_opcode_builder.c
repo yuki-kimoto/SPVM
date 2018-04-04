@@ -1194,6 +1194,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       else if (dist_type->id == SPVM_TYPE_C_ID_DOUBLE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_DOUBLE;
                       }
+                      else if (dist_type->id == SPVM_TYPE_C_ID_STRING) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING;
+                      }
                       else {
                         assert(0);
                       }
@@ -1216,6 +1219,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       else if (dist_type->id == SPVM_TYPE_C_ID_DOUBLE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_DOUBLE;
+                      }
+                      else if (dist_type->id == SPVM_TYPE_C_ID_STRING) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING;
                       }
                       else {
                         assert(0);
@@ -1240,6 +1246,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       else if (dist_type->id == SPVM_TYPE_C_ID_DOUBLE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_DOUBLE;
                       }
+                      else if (dist_type->id == SPVM_TYPE_C_ID_STRING) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING;
+                      }
                       else {
                         assert(0);
                       }
@@ -1262,6 +1271,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       else if (dist_type->id == SPVM_TYPE_C_ID_DOUBLE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_DOUBLE;
+                      }
+                      else if (dist_type->id == SPVM_TYPE_C_ID_STRING) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING;
                       }
                       else {
                         assert(0);
@@ -1286,6 +1298,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       else if (dist_type->id == SPVM_TYPE_C_ID_DOUBLE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_DOUBLE;
                       }
+                      else if (dist_type->id == SPVM_TYPE_C_ID_STRING) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING;
+                      }
                       else {
                         assert(0);
                       }
@@ -1308,6 +1323,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       else if (dist_type->id == SPVM_TYPE_C_ID_DOUBLE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE;
+                      }
+                      else if (dist_type->id == SPVM_TYPE_C_ID_STRING) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING;
                       }
                       else {
                         assert(0);
