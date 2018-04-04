@@ -411,8 +411,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_assign_from, -1);
                   }
-                  else if (op_assign_from->id == SPVM_OP_C_ID_CONCAT_STRING) {
-                    
+                  else if (op_assign_from->id == SPVM_OP_C_ID_CONCAT) {
                     
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_from->first);
                     assert(first_type->id == SPVM_TYPE_C_ID_STRING);
@@ -420,28 +419,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    if (last_type->id == SPVM_TYPE_C_ID_STRING) {
-                      opcode.id = SPVM_OPCODE_C_ID_CONCAT_STRING_STRING;
-                    }
-                    else if (last_type->id == SPVM_TYPE_C_ID_BYTE) {
-                      opcode.id = SPVM_OPCODE_C_ID_CONCAT_STRING_BYTE;
-                    }
-                    else if (last_type->id == SPVM_TYPE_C_ID_SHORT) {
-                      opcode.id = SPVM_OPCODE_C_ID_CONCAT_STRING_SHORT;
-                    }
-                    else if (last_type->id == SPVM_TYPE_C_ID_INT) {
-                      opcode.id = SPVM_OPCODE_C_ID_CONCAT_STRING_INT;
-                    }
-                    else if (last_type->id == SPVM_TYPE_C_ID_LONG) {
-                      opcode.id = SPVM_OPCODE_C_ID_CONCAT_STRING_LONG;
-                    }
-                    else if (last_type->id == SPVM_TYPE_C_ID_FLOAT) {
-                      opcode.id = SPVM_OPCODE_C_ID_CONCAT_STRING_FLOAT;
-                    }
-                    else if (last_type->id == SPVM_TYPE_C_ID_DOUBLE) {
-                      opcode.id = SPVM_OPCODE_C_ID_CONCAT_STRING_DOUBLE;
-                    }
-
+                    opcode.id = SPVM_OPCODE_C_ID_CONCAT;
+                    
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                     int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_assign_from->first);
                     int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_assign_from->last);

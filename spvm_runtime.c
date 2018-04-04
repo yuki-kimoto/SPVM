@@ -1463,62 +1463,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_CONCAT_STRING_STRING: {
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_string(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_OBJECT**)&vars[opcode->operand2]);
-        
-        if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          croak_flag = 1;
-        }
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONCAT_STRING_BYTE: {
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_byte(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_byte*)&vars[opcode->operand2]);
-        
-        if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          croak_flag = 1;
-        }
-
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONCAT_STRING_SHORT: {
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_short(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_short*)&vars[opcode->operand2]);
-        
-        if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          croak_flag = 1;
-        }
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONCAT_STRING_INT: {
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_int(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_int*)&vars[opcode->operand2]);
-        
-        if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          croak_flag = 1;
-        }
-
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONCAT_STRING_LONG: {
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_long(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_long*)&vars[opcode->operand2]);
-        
-        if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          croak_flag = 1;
-        }
-
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONCAT_STRING_FLOAT: {
-       *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_float(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(float*)&vars[opcode->operand2]);
-        
-        if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
-          croak_flag = 1;
-        }
-
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONCAT_STRING_DOUBLE: {
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat_string_double(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(double*)&vars[opcode->operand2]);
+      case SPVM_OPCODE_C_ID_CONCAT: {
+        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->concat(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_OBJECT**)&vars[opcode->operand2]);
         
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
           croak_flag = 1;

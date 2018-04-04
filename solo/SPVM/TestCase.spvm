@@ -124,7 +124,7 @@ package TestCase {
           return 1;
         }
       }
-      my $str = "" . $PACKAGE_VAR_INT;
+      my $str = "" . (String)$PACKAGE_VAR_INT;
     }
     
     {
@@ -138,7 +138,7 @@ package TestCase {
           return 1;
         }
       }
-      my $str = "" . $TestCase::PACKAGE_VAR_INT;
+      my $str = "" . (String)$TestCase::PACKAGE_VAR_INT;
     }
     
     
@@ -161,76 +161,20 @@ package TestCase {
     }
 
     warn("warn");
-    warn(1 . "\n");
-    warn(1L . "\n");
-    warn(0.5f . "\n");
-    warn(0.5 . "\n");
+    warn((String)1 . "\n");
+    warn((String)1L . "\n");
+    warn((String)0.5f . "\n");
+    warn((String)0.5 . "\n");
 
     warn("warn");
-    warn(1 . "\n");
-    warn(1L . "\n");
-    warn(0.5f . "\n");
-    warn(0.5 . "\n");
+    warn((String)1 . "\n");
+    warn((String)1L . "\n");
+    warn((String)0.5f . "\n");
+    warn((String)0.5 . "\n");
     
     # .
     {
-      {
-        my $val = 1 . 3;
-        
-        my $val2 = "abc";
-        
-        $val2 .= "def";
-        
-        print((String)$val2 . "\n");
-      }
-      {
-        1 . 3;
-      }
-
-      {
-        "abc" . "def";
-        "abc" . 13;
-      }
-      {
-        my $value1 = "abc";
-        my $value2 = -9223372036854775808L;
-        my $value3 = $value1 . $value2;
-        
-        print((String)$value3 . "\n");
-      }
-
-      {
-        my $value1 = "abc";
-        my $value2 = -2147483648;
-        my $value3 = $value1 . $value2;
-        
-        print((String)$value3 . "\n");
-      }
-
-      {
-        my $value1 = "abc";
-        my $value2 = (short)13;
-        my $value3 = $value1 . $value2;
-        
-        print((String)$value3 . "\n");
-      }
-
-      {
-        my $value1 = "abc";
-        my $value2 = (byte)13;
-        my $value3 = $value1 . $value2;
-        
-        print((String)$value3 . "\n");
-      }
-      
-      # .
-      {
-        my $value1 = "abc";
-        my $value2 = "def";
-        my $value3 = $value1 . $value2;
-        
-        print((String)$value3 . "\n");
-      }
+      my $foo = "abc" . "def";
     }
     
     {

@@ -123,7 +123,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "WEAKEN",
   "WEAKEN_FIELD",
   "SPECIAL_ASSIGN",
-  "CONCAT_STRING",
+  "CONCAT",
   "SET",
   "GET",
   "OUR",
@@ -930,7 +930,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_BOOL:
       type = SPVM_TYPE_get_int_type(compiler);
       break;
-    case SPVM_OP_C_ID_CONCAT_STRING:
+    case SPVM_OP_C_ID_CONCAT:
       type = SPVM_TYPE_get_string_type(compiler);
       break;
     case SPVM_OP_C_ID_ARRAY_LENGTH:
@@ -2260,8 +2260,8 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
     else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND) {
       op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_AND, op_assign->file, op_assign->line);
     }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT_STRING) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONCAT_STRING, op_assign->file, op_assign->line);
+    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT) {
+      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONCAT, op_assign->file, op_assign->line);
     }
     else {
       assert(0);

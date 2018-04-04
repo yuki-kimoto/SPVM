@@ -96,13 +96,7 @@ struct SPVM_api {
   void (*weaken)(SPVM_API* api, SPVM_API_OBJECT** object_address);
   int32_t (*isweak)(SPVM_API* api, SPVM_API_OBJECT* object);
   void (*unweaken)(SPVM_API* api, SPVM_API_OBJECT** object_address);
-  SPVM_API_OBJECT* (*concat_string_byte)(SPVM_API* api, SPVM_API_OBJECT* string1, int8_t string2);
-  SPVM_API_OBJECT* (*concat_string_short)(SPVM_API* api, SPVM_API_OBJECT* string1, int16_t string2);
-  SPVM_API_OBJECT* (*concat_string_int)(SPVM_API* api, SPVM_API_OBJECT* string1, int32_t string2);
-  SPVM_API_OBJECT* (*concat_string_long)(SPVM_API* api, SPVM_API_OBJECT* string1, int64_t string2);
-  SPVM_API_OBJECT* (*concat_string_float)(SPVM_API* api, SPVM_API_OBJECT* string1, float string2);
-  SPVM_API_OBJECT* (*concat_string_double)(SPVM_API* api, SPVM_API_OBJECT* string1, double string2);
-  SPVM_API_OBJECT* (*concat_string_string)(SPVM_API* api, SPVM_API_OBJECT* string1, SPVM_API_OBJECT* string2);
+  SPVM_API_OBJECT* (*concat)(SPVM_API* api, SPVM_API_OBJECT* string1, SPVM_API_OBJECT* string2);
   void (*weaken_object_field)(SPVM_API* api, SPVM_API_OBJECT* object, int32_t field_id);
   SPVM_API_OBJECT* (*create_exception_stack_trace)(SPVM_API* api, SPVM_API_OBJECT* excetpion, int32_t sub_id, int32_t current_line);
   int32_t (*compile_jit_sub)(SPVM_API* api, int32_t sub_id);

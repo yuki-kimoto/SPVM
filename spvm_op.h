@@ -123,7 +123,7 @@ enum {
   SPVM_OP_C_ID_WEAKEN,
   SPVM_OP_C_ID_WEAKEN_FIELD,
   SPVM_OP_C_ID_SPECIAL_ASSIGN,
-  SPVM_OP_C_ID_CONCAT_STRING,
+  SPVM_OP_C_ID_CONCAT,
   SPVM_OP_C_ID_SET,
   SPVM_OP_C_ID_GET,
   SPVM_OP_C_ID_OUR,
@@ -167,7 +167,7 @@ enum {
   SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR,
   SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_OR,
   SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND,
-  SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT_STRING,
+  SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT,
 };
 
 enum {
@@ -262,7 +262,7 @@ void SPVM_OP_convert_to_op_constant_false(SPVM_COMPILER* compiler, SPVM_OP* op);
 void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPVM_OP* op_package_current);
 void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field);
 
-SPVM_OP* SPVM_OP_build_concat_string(SPVM_COMPILER* compiler, SPVM_OP* op_cancat_string, SPVM_OP* op_first, SPVM_OP* op_last);
+SPVM_OP* SPVM_OP_build_concat(SPVM_COMPILER* compiler, SPVM_OP* op_cancat_string, SPVM_OP* op_first, SPVM_OP* op_last);
 SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_OP* op_term);
 SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP* op_term);
 SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* op_block);
