@@ -15,7 +15,7 @@
   #include "spvm_block.h"
 %}
 
-%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CLASS EQ NE GT GE LT LE
+%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CLASS STRING_EQ STRING_NE STRING_GT STRING_GE STRING_LT STRING_LE
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME INTERFACE
 %token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
@@ -587,27 +587,27 @@ binop
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | assignable_term EQ assignable_term
+  | assignable_term STRING_EQ assignable_term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | assignable_term NE assignable_term
+  | assignable_term STRING_NE assignable_term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | assignable_term GT assignable_term
+  | assignable_term STRING_GT assignable_term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | assignable_term GE assignable_term
+  | assignable_term STRING_GE assignable_term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | assignable_term LT assignable_term
+  | assignable_term STRING_LT assignable_term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | assignable_term LE assignable_term
+  | assignable_term STRING_LE assignable_term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }

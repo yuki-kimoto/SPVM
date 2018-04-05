@@ -54,12 +54,12 @@
      OUR = 270,
      SELF = 271,
      CLASS = 272,
-     EQ = 273,
-     NE = 274,
-     GT = 275,
-     GE = 276,
-     LT = 277,
-     LE = 278,
+     STRING_EQ = 273,
+     STRING_NE = 274,
+     STRING_GT = 275,
+     STRING_GE = 276,
+     STRING_LT = 277,
+     STRING_LE = 278,
      LAST = 279,
      NEXT = 280,
      NAME = 281,
@@ -120,12 +120,12 @@
 #define OUR 270
 #define SELF 271
 #define CLASS 272
-#define EQ 273
-#define NE 274
-#define GT 275
-#define GE 276
-#define LT 277
-#define LE 278
+#define STRING_EQ 273
+#define STRING_NE 274
+#define STRING_GT 275
+#define STRING_GE 276
+#define STRING_LT 277
+#define STRING_LE 278
 #define LAST 279
 #define NEXT 280
 #define NAME 281

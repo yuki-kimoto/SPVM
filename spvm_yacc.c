@@ -89,12 +89,12 @@
      OUR = 270,
      SELF = 271,
      CLASS = 272,
-     EQ = 273,
-     NE = 274,
-     GT = 275,
-     GE = 276,
-     LT = 277,
-     LE = 278,
+     STRING_EQ = 273,
+     STRING_NE = 274,
+     STRING_GT = 275,
+     STRING_GE = 276,
+     STRING_LT = 277,
+     STRING_LE = 278,
      LAST = 279,
      NEXT = 280,
      NAME = 281,
@@ -155,12 +155,12 @@
 #define OUR 270
 #define SELF 271
 #define CLASS 272
-#define EQ 273
-#define NE 274
-#define GT 275
-#define GE 276
-#define LT 277
-#define LE 278
+#define STRING_EQ 273
+#define STRING_NE 274
+#define STRING_GT 275
+#define STRING_GE 276
+#define STRING_LT 277
+#define STRING_LE 278
 #define LAST 279
 #define NEXT 280
 #define NAME 281
@@ -642,15 +642,16 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "MY", "HAS", "SUB", "PACKAGE", "IF",
   "ELSIF", "ELSE", "RETURN", "FOR", "WHILE", "USE", "NEW", "OUR", "SELF",
-  "CLASS", "EQ", "NE", "GT", "GE", "LT", "LE", "LAST", "NEXT", "NAME",
-  "CONSTANT", "ENUM", "DESCRIPTOR", "CORETYPE", "UNDEF", "CROAK",
-  "VAR_NAME", "INTERFACE", "SWITCH", "CASE", "DEFAULT", "VOID", "EVAL",
-  "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "STRING", "WEAKEN",
-  "';'", "SPECIAL_ASSIGN", "ASSIGN", "OR", "AND", "BIT_XOR", "BIT_OR",
-  "BIT_AND", "REL", "SHIFT", "'+'", "'-'", "'.'", "REMAINDER", "DIVIDE",
-  "MULTIPLY", "'~'", "UMINUS", "ARRAY_LENGTH", "NOT", "DEC", "INC", "')'",
-  "ARROW", "'('", "'['", "'{'", "'}'", "','", "':'", "']'", "$accept",
-  "grammar", "opt_declarations_in_grammar", "declarations_in_grammar",
+  "CLASS", "STRING_EQ", "STRING_NE", "STRING_GT", "STRING_GE", "STRING_LT",
+  "STRING_LE", "LAST", "NEXT", "NAME", "CONSTANT", "ENUM", "DESCRIPTOR",
+  "CORETYPE", "UNDEF", "CROAK", "VAR_NAME", "INTERFACE", "SWITCH", "CASE",
+  "DEFAULT", "VOID", "EVAL", "BYTE", "SHORT", "INT", "LONG", "FLOAT",
+  "DOUBLE", "STRING", "WEAKEN", "';'", "SPECIAL_ASSIGN", "ASSIGN", "OR",
+  "AND", "BIT_XOR", "BIT_OR", "BIT_AND", "REL", "SHIFT", "'+'", "'-'",
+  "'.'", "REMAINDER", "DIVIDE", "MULTIPLY", "'~'", "UMINUS",
+  "ARRAY_LENGTH", "NOT", "DEC", "INC", "')'", "ARROW", "'('", "'['", "'{'",
+  "'}'", "','", "':'", "']'", "$accept", "grammar",
+  "opt_declarations_in_grammar", "declarations_in_grammar",
   "declaration_in_grammar", "use", "package",
   "opt_declarations_in_package", "declarations_in_package",
   "declaration_in_package", "package_block", "enumeration_block",
@@ -2978,7 +2979,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2982 "spvm_yacc.tab.c"
+#line 2983 "spvm_yacc.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
