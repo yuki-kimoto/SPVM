@@ -1,4 +1,4 @@
-0.0322 2018-04-03
+0.0322 2018-04-04
   - allow numeric type to String convertion
   - remove string concat operator automatical type convertion
   - licence become MIT licence
