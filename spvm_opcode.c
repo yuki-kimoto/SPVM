@@ -323,6 +323,12 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "PUSH_ARG_DOUBLE",
   "PUSH_ARG_OBJECT",
   "CHECK_CAST",
+  "STRING_EQ",
+  "STRING_NE",
+  "STRING_GT",
+  "STRING_GE",
+  "STRING_LT",
+  "STRING_LE",
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {

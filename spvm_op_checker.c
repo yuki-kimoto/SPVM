@@ -1177,6 +1177,162 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
+                case SPVM_OP_C_ID_STRING_EQ: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  
+                  // undef check
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "eq left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (!last_type) {
+                    SPVM_yyerror_format(compiler, "eq right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  // Can receive only numeric type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "eq left type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "eq right type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_ID_STRING_NE: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  
+                  // undef check
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "ne left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (!last_type) {
+                    SPVM_yyerror_format(compiler, "ne right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  // Can receive only numeric type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "ne left type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "ne right type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_ID_STRING_GT: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  
+                  // undef check
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "gt left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (!last_type) {
+                    SPVM_yyerror_format(compiler, "gt right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  // Can receive only numeric type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "gt left type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "gt right type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_ID_STRING_GE: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  
+                  // undef check
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "ge left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (!last_type) {
+                    SPVM_yyerror_format(compiler, "ge right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  // Can receive only numeric type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "ge left type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "ge right type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_ID_STRING_LT: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  
+                  // undef check
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "lt left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (!last_type) {
+                    SPVM_yyerror_format(compiler, "lt right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  // Can receive only numeric type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "lt left type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "lt right type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_ID_STRING_LE: {
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                  
+                  // undef check
+                  if (!first_type) {
+                    SPVM_yyerror_format(compiler, "le left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (!last_type) {
+                    SPVM_yyerror_format(compiler, "le right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  // Can receive only numeric type
+                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "le left type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                    SPVM_yyerror_format(compiler, "le right type must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  
+                  break;
+                }
                 case SPVM_OP_C_ID_ARRAY_LENGTH: {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   
