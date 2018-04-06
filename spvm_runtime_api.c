@@ -178,6 +178,20 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_O
   return new_exception;
 }
 
+void SPVM_RUNTIME_API_print(SPVM_API* api, SPVM_OBJECT* string) {
+  (void)api;
+  
+  int8_t* bytes = api->get_string_bytes(api, string);
+  int32_t string_length = api->get_string_length(api, string);
+  
+  {
+    int32_t i;
+    for (i = 0; i < string_length; i++) {
+      putchar((char)bytes[i]);
+    }
+  }
+}
+
 SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_API* api, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
   (void)api;
 

@@ -129,10 +129,7 @@ int main(int argc, char *argv[])
   int32_t return_value = api->call_int_sub(api, sub_id, args);
   
   if (runtime->exception) {
-    void* message_object = runtime->exception;
-    int8_t* message = api->get_string_bytes(api, message_object);
-    
-    printf("%s", (char*)message);
+    SPVM_RUNTIME_API_print(api, runtime->exception);
     printf("\n");
   }
   else {

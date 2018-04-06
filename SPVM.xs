@@ -157,14 +157,14 @@ new_string(...)
   SV* sv_class = ST(0);
   (void)sv_class;
   
-  SV* sv_chars = ST(1);
-  int32_t length = sv_len(sv_chars);
+  SV* sv_bytes = ST(1);
+  int32_t length = sv_len(sv_bytes);
   
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New string
-  SPVM_API_OBJECT* string =  api->new_string(api, SvPV_nolen(sv_chars), length);
+  SPVM_API_OBJECT* string =  api->new_string(api, SvPV_nolen(sv_bytes), length);
   
   // Increment reference count
   api->inc_ref_count(api, string);
@@ -192,9 +192,9 @@ to_data(...)
   
   int32_t string_length = api->get_string_length(api, string);
   
-  int8_t* chars = api->get_string_bytes(api, string);
+  int8_t* bytes = api->get_string_bytes(api, string);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)chars, string_length));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)bytes, string_length));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -3727,8 +3727,8 @@ call_sub(...)
   SPVM_API_OBJECT* exception = api->get_exception(api);
   if (exception) {
     int32_t length = api->get_string_length(api, exception);
-    int8_t* exception_chars = (char*)api->get_string_bytes(api, exception);
-    SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_chars, length));
+    int8_t* exception_bytes = api->get_string_bytes(api, exception);
+    SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
     croak("%s", SvPV_nolen(sv_exception));
   }
   
