@@ -82,6 +82,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_new_double_array,
   SPVM_RUNTIME_API_new_object_array,
   SPVM_RUNTIME_API_new_string,
+  SPVM_RUNTIME_API_new_string_chars,
   SPVM_RUNTIME_API_get_string_length,
   SPVM_RUNTIME_API_get_string_bytes,
   SPVM_RUNTIME_API_get_exception,
@@ -684,6 +685,27 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* bytes, int32
       memcpy((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), bytes, length);
     }
   }
+  
+  int32_t string_type_id = SPVM_TYPE_C_ID_STRING;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_type_id);
+
+  static int32_t field_id;
+  field_id = SPVM_RUNTIME_API_get_field_id(api, object, "value");
+  
+  SPVM_RUNTIME_API_set_object_field(api, object, field_id, value);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_string_chars(SPVM_API* api, const char* chars) {
+  (void)api;
+  
+  int32_t length = (int32_t)strlen(chars);
+  
+  SPVM_OBJECT* value = SPVM_RUNTIME_API_new_byte_array(api, length + 1);
+  
+  memcpy((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), chars, length);
   
   int32_t string_type_id = SPVM_TYPE_C_ID_STRING;
   
