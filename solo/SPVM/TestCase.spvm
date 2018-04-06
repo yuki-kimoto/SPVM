@@ -52,10 +52,18 @@ package TestCase {
     # String comparison operator
     {
       my $string1 = "abc";
-      my $string2 = "ab";
+      my $string2 = "abc";
       
       if ($string1 eq $string2) {
         print("String is same\n");
+      }
+    }
+    {
+      my $string1 = "abc";
+      my $string2 = "ab";
+      
+      if ($string1 ne $string2) {
+        print("String is different\n");
       }
     }
     
