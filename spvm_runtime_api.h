@@ -67,7 +67,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_API* api, int32_t sub_id, SPV
 // String
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* chars, int32_t length);
 int32_t SPVM_RUNTIME_API_get_string_length(SPVM_API* api, SPVM_OBJECT* object);
-char* SPVM_RUNTIME_API_get_string_chars(SPVM_API* api, SPVM_OBJECT* object);
+int8_t* SPVM_RUNTIME_API_get_string_bytes(SPVM_API* api, SPVM_OBJECT* object);
 
 // Internal functions
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object);

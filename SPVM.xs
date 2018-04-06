@@ -192,9 +192,9 @@ to_data(...)
   
   int32_t string_length = api->get_string_length(api, string);
   
-  char* chars = api->get_string_chars(api, string);
+  int8_t* chars = api->get_string_bytes(api, string);
   
-  SV* sv_data = sv_2mortal(newSVpvn(chars, string_length));
+  SV* sv_data = sv_2mortal(newSVpvn((char*)chars, string_length));
   
   XPUSHs(sv_data);
   XSRETURN(1);
@@ -3727,8 +3727,8 @@ call_sub(...)
   SPVM_API_OBJECT* exception = api->get_exception(api);
   if (exception) {
     int32_t length = api->get_string_length(api, exception);
-    char* exception_chars = (char*)api->get_string_chars(api, exception);
-    SV* sv_exception = sv_2mortal(newSVpvn(exception_chars, length));
+    int8_t* exception_chars = (char*)api->get_string_bytes(api, exception);
+    SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_chars, length));
     croak("%s", SvPV_nolen(sv_exception));
   }
   

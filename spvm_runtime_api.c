@@ -83,7 +83,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_new_object_array,
   SPVM_RUNTIME_API_new_string,
   SPVM_RUNTIME_API_get_string_length,
-  SPVM_RUNTIME_API_get_string_chars,
+  SPVM_RUNTIME_API_get_string_bytes,
   SPVM_RUNTIME_API_get_exception,
   SPVM_RUNTIME_API_set_exception,
   SPVM_RUNTIME_API_get_ref_count,
@@ -136,7 +136,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_O
   const char* at = "() at ";
 
   // Exception
-  char* exception_chars = api->get_string_chars(api, exception);
+  int8_t* exception_bytes = api->get_string_bytes(api, exception);
   int32_t exception_length = api->get_string_length(api, exception);
   
   // Total string length
@@ -156,16 +156,16 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_O
   
   // Create exception message
   SPVM_API_OBJECT* new_exception = api->new_string(api, NULL, total_length);
-  char* new_exception_chars = api->get_string_chars(api, new_exception);
+  int8_t* new_exception_bytes = api->get_string_bytes(api, new_exception);
   
   memcpy(
-    (void*)(new_exception_chars),
-    (void*)(exception_chars),
+    (void*)(new_exception_bytes),
+    (void*)(exception_bytes),
     exception_length
   );
 
   sprintf(
-    new_exception_chars + exception_length,
+    (char*)new_exception_bytes + exception_length,
     "%s%s%s%s%s%" PRId32,
     from,
     sub_name,
@@ -198,12 +198,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_API* api, SPVM_OBJECT* string1, SPVM_O
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_string(api, NULL, string3_length);
   
-  char* string1_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string1);
-  char* string2_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string2);
-  char* string3_chars = (char*)SPVM_RUNTIME_API_get_string_chars(api, string3);
+  int8_t* string1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, string1);
+  int8_t* string2_bytes = SPVM_RUNTIME_API_get_string_bytes(api, string2);
+  int8_t* string3_bytes = SPVM_RUNTIME_API_get_string_bytes(api, string3);
   
-  memcpy(string3_chars, string1_chars, string1_length);
-  memcpy(string3_chars + string1_length, string2_chars, string2_length);
+  memcpy(string3_bytes, string1_bytes, string1_length);
+  memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
   
   return string3;
 }
@@ -651,23 +651,23 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_OBJECT* object) {
   return object->length;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* chars, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, const char* bytes, int32_t length) {
   (void)api;
 
   if (length == 0) {
-    if (chars != NULL) {
-      length = strlen(chars);
+    if (bytes != NULL) {
+      length = strlen(bytes);
     }
   }
   
   SPVM_OBJECT* value = SPVM_RUNTIME_API_new_byte_array(api, length + 1);
   
   if (length > 0) {
-    if (chars == NULL) {
+    if (bytes == NULL) {
       memset((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), 0, length);
     }
     else {
-      memcpy((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), chars, length);
+      memcpy((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), bytes, length);
     }
   }
   
@@ -696,7 +696,7 @@ int32_t SPVM_RUNTIME_API_get_string_length(SPVM_API* api, SPVM_OBJECT* object) {
   return length;
 }
 
-char* SPVM_RUNTIME_API_get_string_chars(SPVM_API* api, SPVM_OBJECT* object) {
+int8_t* SPVM_RUNTIME_API_get_string_bytes(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
 
   static int32_t field_id;
@@ -704,9 +704,9 @@ char* SPVM_RUNTIME_API_get_string_chars(SPVM_API* api, SPVM_OBJECT* object) {
 
   SPVM_OBJECT* value = SPVM_RUNTIME_API_get_object_field(api, object, field_id);
   
-  char* chars = (char*)SPVM_RUNTIME_API_get_byte_array_elements(api, value);
+  int8_t* bytes = SPVM_RUNTIME_API_get_byte_array_elements(api, value);
   
-  return chars;
+  return bytes;
 }
 
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_OBJECT* object) {

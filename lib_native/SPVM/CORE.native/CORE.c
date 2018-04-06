@@ -11,13 +11,13 @@ void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
   
   SPVM_API_OBJECT* object = args[0].object_value;
   
-  char* chars = api->get_string_chars(api, object);
+  int8_t* bytes = api->get_string_bytes(api, object);
   int32_t string_length = api->get_string_length(api, object);
   
   {
     int32_t i;
     for (i = 0; i < string_length; i++) {
-      putchar(chars[i]);
+      putchar((char)bytes[i]);
     }
   }
 }
@@ -27,13 +27,13 @@ void SPVM__CORE__warn(SPVM_API* api, SPVM_API_VALUE* args) {
   
   SPVM_API_OBJECT* object = args[0].object_value;
   
-  char* chars = api->get_string_chars(api, object);
+  int8_t* bytes = api->get_string_bytes(api, object);
   int32_t string_length = api->get_string_length(api, object);
   
   {
     int32_t i;
     for (i = 0; i < string_length; i++) {
-      putc(chars[i], stderr);
+      putc((char)bytes[i], stderr);
     }
   }
   

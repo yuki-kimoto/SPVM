@@ -130,9 +130,9 @@ int main(int argc, char *argv[])
   
   if (runtime->exception) {
     void* message_object = runtime->exception;
-    char* message = api->get_string_chars(api, message_object);
+    int8_t* message = api->get_string_bytes(api, message_object);
     
-    printf("%s", message);
+    printf("%s", (char*)message);
     printf("\n");
   }
   else {
