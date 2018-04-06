@@ -557,7 +557,7 @@ binop
     }
   | assignable_term '.' assignable_term
     {
-      $$ = SPVM_OP_build_concat_string(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_concat(compiler, $2, $1, $3);
     }
   | assignable_term MULTIPLY assignable_term
     {
