@@ -12,8 +12,14 @@ void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
   SPVM_API_OBJECT* object = args[0].object_value;
   
   char* chars = api->get_string_chars(api, object);
+  int32_t string_length = api->get_string_length(api, object);
   
-  printf("%s", (char*)chars);
+  {
+    int32_t i;
+    for (i = 0; i < string_length; i++) {
+      putchar(chars[i]);
+    }
+  }
 }
 
 void SPVM__CORE__warn(SPVM_API* api, SPVM_API_VALUE* args) {
@@ -22,8 +28,16 @@ void SPVM__CORE__warn(SPVM_API* api, SPVM_API_VALUE* args) {
   SPVM_API_OBJECT* object = args[0].object_value;
   
   char* chars = api->get_string_chars(api, object);
+  int32_t string_length = api->get_string_length(api, object);
   
-  fprintf(stderr, "%s", chars);
+  {
+    int32_t i;
+    for (i = 0; i < string_length; i++) {
+      putc(chars[i], stderr);
+    }
+  }
+  
+  fprintf(stderr, "\n");
 }
 
 int64_t SPVM__CORE__time(SPVM_API* api, SPVM_API_VALUE* args) {

@@ -161,16 +161,16 @@ package TestCase {
     }
 
     warn("warn");
-    warn((String)1 . "\n");
-    warn((String)1L . "\n");
-    warn((String)0.5f . "\n");
-    warn((String)0.5 . "\n");
+    warn((String)1);
+    warn((String)1L);
+    warn((String)0.5f);
+    warn((String)0.5);
 
     warn("warn");
-    warn((String)1 . "\n");
-    warn((String)1L . "\n");
-    warn((String)0.5f . "\n");
-    warn((String)0.5 . "\n");
+    warn((String)1);
+    warn((String)1L);
+    warn((String)0.5f);
+    warn((String)0.5);
     
     # .
     {
