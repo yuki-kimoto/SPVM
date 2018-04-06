@@ -226,7 +226,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_byte(SPVM_API* api, SPVM_API_VALUE* args)
   SPVM_API_OBJECT* original = args[0].object_value;
   
   if (!original) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "First argument must be not undef(SPVM::Arrays::copy_of_byte())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "First argument must be not undef");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -234,7 +234,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_byte(SPVM_API* api, SPVM_API_VALUE* args)
   int32_t new_length = args[1].int_value;
   
   if (new_length < 0) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "Second argument must be not negative value(SPVM::Arrays::copy_of_byte())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "Second argument must be not negative value");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -268,7 +268,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_short(SPVM_API* api, SPVM_API_VALUE* args
   SPVM_API_OBJECT* original = args[0].object_value;
   
   if (!original) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "First argument must be not undef(SPVM::Arrays::copy_of_short())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "First argument must be not undef");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -276,7 +276,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_short(SPVM_API* api, SPVM_API_VALUE* args
   int32_t new_length = args[1].int_value;
   
   if (new_length < 0) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "Second argument must be not negative value(SPVM::Arrays::copy_of_short())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "Second argument must be not negative value");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -310,7 +310,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_int(SPVM_API* api, SPVM_API_VALUE* args) 
   SPVM_API_OBJECT* original = args[0].object_value;
   
   if (!original) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "First argument must be not undef(SPVM::Arrays::copy_of_int())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "First argument must be not undef");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -318,7 +318,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_int(SPVM_API* api, SPVM_API_VALUE* args) 
   int32_t new_length = args[1].int_value;
   
   if (new_length < 0) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "Second argument must be not negative value(SPVM::Arrays::copy_of_int())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "Second argument must be not negative value");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -352,7 +352,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_long(SPVM_API* api, SPVM_API_VALUE* args)
   SPVM_API_OBJECT* original = args[0].object_value;
   
   if (!original) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "First argument must be not undef(SPVM::Arrays::copy_of_long())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "First argument must be not undef");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -360,7 +360,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_long(SPVM_API* api, SPVM_API_VALUE* args)
   int32_t new_length = args[1].int_value;
   
   if (new_length < 0) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "Second argument must be not negative value(SPVM::Arrays::copy_of_long())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "Second argument must be not negative value");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -394,7 +394,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_float(SPVM_API* api, SPVM_API_VALUE* args
   SPVM_API_OBJECT* original = args[0].object_value;
   
   if (!original) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "First argument must be not undef(SPVM::Arrays::copy_of_float())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "First argument must be not undef");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -402,7 +402,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_float(SPVM_API* api, SPVM_API_VALUE* args
   int32_t new_length = args[1].int_value;
   
   if (new_length < 0) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "Second argument must be not negative value(SPVM::Arrays::copy_of_float())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "Second argument must be not negative value");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -436,7 +436,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_double(SPVM_API* api, SPVM_API_VALUE* arg
   SPVM_API_OBJECT* original = args[0].object_value;
   
   if (!original) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "First argument must be not undef(SPVM::Arrays::copy_of_double())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "First argument must be not undef");
     api->set_exception(api, exception);
     return NULL;
   }
@@ -444,7 +444,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_double(SPVM_API* api, SPVM_API_VALUE* arg
   int32_t new_length = args[1].int_value;
   
   if (new_length < 0) {
-    SPVM_API_OBJECT* exception = api->new_string(api, "Second argument must be not negative value(SPVM::Arrays::copy_of_double())", 0);
+    SPVM_API_OBJECT* exception = api->new_string_chars(api, "Second argument must be not negative value");
     api->set_exception(api, exception);
     return NULL;
   }

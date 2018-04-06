@@ -164,7 +164,7 @@ new_string(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New string
-  SPVM_API_OBJECT* string =  api->new_string(api, SvPV_nolen(sv_bytes), length);
+  SPVM_API_OBJECT* string =  api->new_string(api, (int8_t*)SvPV_nolen(sv_bytes), length);
   
   // Increment reference count
   api->inc_ref_count(api, string);
