@@ -1192,11 +1192,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Can receive only numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "eq left type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, "eq right type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
@@ -1218,11 +1218,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Can receive only numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "ne left type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, "ne right type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
@@ -1244,11 +1244,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Can receive only numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "gt left type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, "gt right type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
@@ -1270,11 +1270,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Can receive only numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "ge left type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, "ge right type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
@@ -1296,11 +1296,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Can receive only numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "lt left type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, "lt right type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
@@ -1322,11 +1322,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Can receive only numeric type
-                  if (SPVM_TYPE_is_object(compiler, first_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, first_type)) {
                     SPVM_yyerror_format(compiler, "le left type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  if (SPVM_TYPE_is_object(compiler, last_type)) {
+                  if (!SPVM_TYPE_is_string(compiler, last_type)) {
                     SPVM_yyerror_format(compiler, "le right type must be String at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }

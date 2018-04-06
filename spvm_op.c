@@ -217,6 +217,12 @@ _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_GE:
     case SPVM_OP_C_ID_LT:
     case SPVM_OP_C_ID_LE:
+    case SPVM_OP_C_ID_STRING_EQ:
+    case SPVM_OP_C_ID_STRING_NE:
+    case SPVM_OP_C_ID_STRING_GT:
+    case SPVM_OP_C_ID_STRING_GE:
+    case SPVM_OP_C_ID_STRING_LT:
+    case SPVM_OP_C_ID_STRING_LE:
       return 1;
   }
   
@@ -934,6 +940,12 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_LT:
     case SPVM_OP_C_ID_LE:
     case SPVM_OP_C_ID_BOOL:
+    case SPVM_OP_C_ID_STRING_EQ:
+    case SPVM_OP_C_ID_STRING_NE:
+    case SPVM_OP_C_ID_STRING_GT:
+    case SPVM_OP_C_ID_STRING_GE:
+    case SPVM_OP_C_ID_STRING_LT:
+    case SPVM_OP_C_ID_STRING_LE:
       type = SPVM_TYPE_get_int_type(compiler);
       break;
     case SPVM_OP_C_ID_CONCAT:

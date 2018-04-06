@@ -48,6 +48,17 @@ package TestCase {
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
+    
+    # String comparison operator
+    {
+      my $string1 = "abc";
+      my $string2 = "ab";
+      
+      if ($string1 eq $string2) {
+        print("String is same\n");
+      }
+    }
+    
     my $byte_string = (String)(byte)23;
     my $short_string = (String)(short)23;
     my $int_string = (String)23;
