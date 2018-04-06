@@ -669,7 +669,7 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_OBJECT* object) {
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, int8_t* bytes, int32_t length) {
   (void)api;
 
-  SPVM_OBJECT* value = SPVM_RUNTIME_API_new_byte_array(api, length + 1);
+  SPVM_OBJECT* value = SPVM_RUNTIME_API_new_byte_array(api, length);
   
   if (length > 0) {
     if (bytes == NULL) {
@@ -699,7 +699,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_chars(SPVM_API* api, const char* chars)
   
   int32_t length = (int32_t)strlen(chars);
   
-  SPVM_OBJECT* value = SPVM_RUNTIME_API_new_byte_array(api, length + 1);
+  SPVM_OBJECT* value = SPVM_RUNTIME_API_new_byte_array(api, length);
   
   memcpy((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), chars, length);
   
@@ -723,7 +723,7 @@ int32_t SPVM_RUNTIME_API_get_string_length(SPVM_API* api, SPVM_OBJECT* object) {
 
   SPVM_OBJECT* value = SPVM_RUNTIME_API_get_object_field(api, object, field_id);
   
-  int32_t length = SPVM_RUNTIME_API_get_array_length(api, value) - 1;
+  int32_t length = SPVM_RUNTIME_API_get_array_length(api, value);
   
   return length;
 }

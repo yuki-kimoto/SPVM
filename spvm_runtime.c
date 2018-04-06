@@ -386,6 +386,57 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_LE_DOUBLE:
         condition_flag = *(double*)&vars[opcode->operand0] <= *(double*)&vars[opcode->operand1];
         break;
+      case SPVM_OPCODE_C_ID_STRING_EQ:
+      case SPVM_OPCODE_C_ID_STRING_NE:
+      case SPVM_OPCODE_C_ID_STRING_GT:
+      case SPVM_OPCODE_C_ID_STRING_GE:
+      case SPVM_OPCODE_C_ID_STRING_LT:
+      case SPVM_OPCODE_C_ID_STRING_LE:
+      {
+        SPVM_API_OBJECT* string1 = *(SPVM_API_OBJECT**)&vars[opcode->operand0];
+        SPVM_API_OBJECT* string2 = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
+        
+        int32_t string1_length = *(SPVM_API_int*)((intptr_t)string1 + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET);
+        int32_t string2_length = *(SPVM_API_int*)((intptr_t)string2 + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET);
+        
+        SPVM_API_byte* string1_bytes = *(SPVM_API_byte**)((intptr_t)string1 + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);
+        SPVM_API_byte* string2_bytes = *(SPVM_API_byte**)((intptr_t)string2 + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);
+        
+        int32_t short_string_length
+          = string1_length < string2_length ? string1_length : string2_length;
+        int32_t retval = memcmp(string1_bytes, string2_bytes, short_string_length);
+        int32_t cmp;
+        if (retval) {
+          cmp = retval < 0 ? -1 : 1;
+        } else if (string1_length == string2_length) {
+          cmp = 0;
+        } else {
+          cmp = string1_length < string2_length ? -1 : 1;
+        }
+        
+        switch (opcode->id) {
+          case SPVM_OPCODE_C_ID_STRING_EQ:
+            condition_flag = (cmp == 0);
+            break;
+          case SPVM_OPCODE_C_ID_STRING_NE:
+            condition_flag = (cmp != 0);
+            break;
+          case SPVM_OPCODE_C_ID_STRING_GT:
+            condition_flag = (cmp == 1);
+            break;
+          case SPVM_OPCODE_C_ID_STRING_GE:
+            condition_flag = (cmp >= 0);
+            break;
+          case SPVM_OPCODE_C_ID_STRING_LT:
+            condition_flag = (cmp == -1);
+            break;
+          case SPVM_OPCODE_C_ID_STRING_LE:
+            condition_flag = (cmp <= 0);
+            break;
+        }
+
+        break;
+      }
       case SPVM_OPCODE_C_ID_ADD_INT:
         *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)&vars[opcode->operand1] + *(SPVM_API_int*)&vars[opcode->operand2];
         break;
