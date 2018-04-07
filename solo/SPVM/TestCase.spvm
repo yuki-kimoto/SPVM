@@ -49,6 +49,10 @@ package TestCase {
   
   sub main : int ($mvar : int) {
     
+    if (!(1 == 2)) {
+      
+    }
+    
     # isa
     {
       my $minimal = new TestCase::Minimal;

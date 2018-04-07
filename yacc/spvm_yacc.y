@@ -422,6 +422,10 @@ term
   | relative_term
   | logical_term
   | isa
+  | '(' term ')'
+    {
+      $$ = $2;
+    }
 
 assignable_term
   : var
