@@ -172,6 +172,22 @@ package TestCase {
         }
       }
     }
+
+    # ne
+    my $ne_ok = 0;
+    if (!($string ne $string_same)) {
+      if (($string ne $string_short)) {
+        if (($string ne $string_long)) {
+          if (($string ne $string_different_short)) {
+            if (($string ne $string_different_long)) {
+              if (($string ne $string_empty)) {
+                $ne_ok = 1;
+              }
+            }
+          }
+        }
+      }
+    }
     
     if ($eq_ok) {
       return 1;
