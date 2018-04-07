@@ -746,76 +746,38 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE:
         *(double*)&vars[opcode->operand0] = *(double*)&vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING: {
-        SPVM_API_byte value = *(SPVM_API_byte*)&vars[opcode->operand1];
-        
-        sprintf(tmp_string, "%" PRId8, value);
-        
-        int32_t string_length = strlen(tmp_string);
-
-        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, (int8_t*)tmp_string, string_length);
-        
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING: {
-        SPVM_API_short value = *(SPVM_API_short*)&vars[opcode->operand1];
-        
-        sprintf(tmp_string, "%" PRId16, value);
-        
-        int32_t string_length = strlen(tmp_string);
-
-        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, (int8_t*)tmp_string, string_length);
-        
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING: {
-        SPVM_API_int value = *(SPVM_API_int*)&vars[opcode->operand1];
-        
-        sprintf(tmp_string, "%" PRId32, value);
-        
-        int32_t string_length = strlen(tmp_string);
-
-        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, (int8_t*)tmp_string, string_length);
-        
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING: {
-        SPVM_API_long value = *(SPVM_API_long*)&vars[opcode->operand1];
-        
-        sprintf(tmp_string, "%" PRId64, value);
+      case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING:
+      case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING:
+      case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING:
+      case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING:
+      case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING:
+      case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING:
+      {
+        switch (opcode->id) {
+          case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING:
+            sprintf(tmp_string, "%" PRId8, *(SPVM_API_byte*)&vars[opcode->operand1]);
+            break;
+          case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING:
+            sprintf(tmp_string, "%" PRId16, *(SPVM_API_short*)&vars[opcode->operand1]);
+            break;
+          case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING:
+            sprintf(tmp_string, "%" PRId32, *(SPVM_API_int*)&vars[opcode->operand1]);
+            break;
+          case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING:
+            sprintf(tmp_string, "%" PRId64, *(SPVM_API_long*)&vars[opcode->operand1]);
+            break;
+          case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING:
+            sprintf(tmp_string, "%f", *(SPVM_API_float*)&vars[opcode->operand1]);
+            break;
+          case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING:
+            sprintf(tmp_string, "%f", *(SPVM_API_double*)&vars[opcode->operand1]);
+            break;
+        }
         
         int32_t string_length = strlen(tmp_string);
-
-        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, (int8_t*)tmp_string, string_length);
-        
+        SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, string_length);
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING: {
-        SPVM_API_float value = *(SPVM_API_float*)&vars[opcode->operand1];
-        
-        sprintf(tmp_string, "%f", value);
-        
-        int32_t string_length = strlen(tmp_string);
 
-        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, (int8_t*)tmp_string, string_length);
-        
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING: {
-        SPVM_API_double value = *(SPVM_API_double*)&vars[opcode->operand1];
-        
-        sprintf(tmp_string, "%f", value);
-        
-        int32_t string_length = strlen(tmp_string);
-
-        SPVM_API_OBJECT* string = SPVM_RUNTIME_API_new_string(api, (int8_t*)tmp_string, string_length);
-        
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
         break;
       }
       case SPVM_OPCODE_C_ID_LOAD_UNDEF:

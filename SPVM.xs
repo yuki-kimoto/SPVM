@@ -109,7 +109,7 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   SP -= return_value_count;
   ax = (SP - PL_stack_base) + 1;
   
-  int32_t success = ST(0);
+  int32_t success = SvIV(ST(0));
 
   PUTBACK;
   FREETMPS;

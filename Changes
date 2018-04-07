@@ -1,5 +1,7 @@
 0.0324 2018-04-07
+  - implement string convertion
   - implement isa
+  - implement string comparison operator
   - fix (term) is not allowed bug
 0.0323 2018-04-06
   - fix file empty bug

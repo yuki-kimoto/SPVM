@@ -71,6 +71,11 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::convert_short_to_byte());
 }
 
+# Convert to string
+{
+  ok(SPVM::TestCase::convert_to_string());
+}
+
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
