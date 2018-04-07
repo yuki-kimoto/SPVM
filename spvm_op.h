@@ -140,6 +140,7 @@ enum {
   SPVM_OP_C_ID_STRING_GE,
   SPVM_OP_C_ID_STRING_LT,
   SPVM_OP_C_ID_STRING_LE,
+  SPVM_OP_C_ID_REF,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];
@@ -253,6 +254,8 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
 SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op_first, SPVM_OP* op_last);
 SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_first, SPVM_OP* op_last);
 SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op_first);
+
+SPVM_OP* SPVM_OP_build_ref_equal(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op_term, SPVM_OP* op_type);
 
 void SPVM_OP_resolve_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant);
 SPVM_OP* SPVM_OP_fold_constant(SPVM_COMPILER* compiler, SPVM_OP* op_cur);
