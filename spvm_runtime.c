@@ -414,8 +414,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_byte* string1_bytes = (SPVM_API_byte*)((intptr_t)string1_object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);
         SPVM_API_byte* string2_bytes = (SPVM_API_byte*)((intptr_t)string2_object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);
         
-        int32_t short_string_length
-          = string1_length < string2_length ? string1_length : string2_length;
+        int32_t short_string_length = string1_length < string2_length ? string1_length : string2_length;
         int32_t retval = memcmp(string1_bytes, string2_bytes, short_string_length);
         int32_t cmp;
         if (retval) {

@@ -836,6 +836,65 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         
         break;
       }
+      case SPVM_OPCODE_C_ID_STRING_EQ:
+      case SPVM_OPCODE_C_ID_STRING_NE:
+      case SPVM_OPCODE_C_ID_STRING_GT:
+      case SPVM_OPCODE_C_ID_STRING_GE:
+      case SPVM_OPCODE_C_ID_STRING_LT:
+      case SPVM_OPCODE_C_ID_STRING_LE:
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string1 = ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string2 = ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string1_object = *(SPVM_API_OBJECT**)((intptr_t)string1 + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string2_object = *(SPVM_API_OBJECT**)((intptr_t)string2 + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string1_length = *(SPVM_API_int*)((intptr_t)string1_object + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string2_length = *(SPVM_API_int*)((intptr_t)string2_object + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* string1_bytes = (SPVM_API_byte*)((intptr_t)string1_object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* string2_bytes = (SPVM_API_byte*)((intptr_t)string2_object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t short_string_length = string1_length < string2_length ? string1_length : string2_length;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t retval = memcmp(string1_bytes, string2_bytes, short_string_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cmp;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (retval) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      cmp = retval < 0 ? -1 : 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    } else if (string1_length == string2_length) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      cmp = 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    } else {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      cmp = string1_length < string2_length ? -1 : 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        
+        switch (opcode->id) {
+          case SPVM_OPCODE_C_ID_STRING_EQ:
+            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp == 0);\n");
+            break;
+          case SPVM_OPCODE_C_ID_STRING_NE:
+            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp != 0);\n");
+            break;
+          case SPVM_OPCODE_C_ID_STRING_GT:
+            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp == 1);\n");
+            break;
+          case SPVM_OPCODE_C_ID_STRING_GE:
+            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp >= 0);\n");
+            break;
+          case SPVM_OPCODE_C_ID_STRING_LT:
+            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp == -1);\n");
+            break;
+          case SPVM_OPCODE_C_ID_STRING_LE:
+            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp <= 0);\n");
+            break;
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+
+        break;
+      }
       case SPVM_OPCODE_C_ID_ADD_INT:
         SPVM_JITCODE_BUILDER_add_add(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
