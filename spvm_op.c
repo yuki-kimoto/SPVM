@@ -140,7 +140,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "STRING_GE",
   "STRING_LT",
   "STRING_LE",
-  "REF"
+  "ISA"
 };
 
 void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
@@ -947,7 +947,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_GE:
     case SPVM_OP_C_ID_STRING_LT:
     case SPVM_OP_C_ID_STRING_LE:
-    case SPVM_OP_C_ID_REF:
+    case SPVM_OP_C_ID_ISA:
       type = SPVM_TYPE_get_int_type(compiler);
       break;
     case SPVM_OP_C_ID_CONCAT:
@@ -2092,13 +2092,13 @@ SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP*
   return op_unary;
 }
 
-SPVM_OP* SPVM_OP_build_ref_equal(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op_term, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_term, SPVM_OP* op_type) {
   
   // Build op
-  SPVM_OP_insert_child(compiler, op_ref, op_ref->last, op_term);
-  SPVM_OP_insert_child(compiler, op_ref, op_ref->last, op_type);
+  SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_term);
+  SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_type);
   
-  return op_ref;
+  return op_isa;
 }
 
 SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {

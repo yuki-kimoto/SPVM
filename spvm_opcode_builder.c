@@ -2546,11 +2546,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 }
                 break;
               }
-              case SPVM_OP_C_ID_REF: {
+              case SPVM_OP_C_ID_ISA: {
                 SPVM_OPCODE opcode;
                 memset(&opcode, 0, sizeof(SPVM_OPCODE));
                 
-                opcode.id = SPVM_OPCODE_C_ID_REF;
+                opcode.id = SPVM_OPCODE_C_ID_ISA;
                 
                 int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->first);
                 SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->last);

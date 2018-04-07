@@ -72,37 +72,38 @@
      VAR_NAME = 288,
      INTERFACE = 289,
      REF = 290,
-     SWITCH = 291,
-     CASE = 292,
-     DEFAULT = 293,
-     VOID = 294,
-     EVAL = 295,
-     BYTE = 296,
-     SHORT = 297,
-     INT = 298,
-     LONG = 299,
-     FLOAT = 300,
-     DOUBLE = 301,
-     STRING = 302,
-     WEAKEN = 303,
-     SPECIAL_ASSIGN = 304,
-     ASSIGN = 305,
-     OR = 306,
-     AND = 307,
-     BIT_XOR = 308,
-     BIT_OR = 309,
-     BIT_AND = 310,
-     REL = 311,
-     SHIFT = 312,
-     REMAINDER = 313,
-     DIVIDE = 314,
-     MULTIPLY = 315,
-     UMINUS = 316,
-     ARRAY_LENGTH = 317,
-     NOT = 318,
-     DEC = 319,
-     INC = 320,
-     ARROW = 321
+     ISA = 291,
+     SWITCH = 292,
+     CASE = 293,
+     DEFAULT = 294,
+     VOID = 295,
+     EVAL = 296,
+     BYTE = 297,
+     SHORT = 298,
+     INT = 299,
+     LONG = 300,
+     FLOAT = 301,
+     DOUBLE = 302,
+     STRING = 303,
+     WEAKEN = 304,
+     SPECIAL_ASSIGN = 305,
+     ASSIGN = 306,
+     OR = 307,
+     AND = 308,
+     BIT_XOR = 309,
+     BIT_OR = 310,
+     BIT_AND = 311,
+     REL = 312,
+     SHIFT = 313,
+     REMAINDER = 314,
+     DIVIDE = 315,
+     MULTIPLY = 316,
+     UMINUS = 317,
+     ARRAY_LENGTH = 318,
+     NOT = 319,
+     DEC = 320,
+     INC = 321,
+     ARROW = 322
    };
 #endif
 /* Tokens.  */
@@ -139,37 +140,38 @@
 #define VAR_NAME 288
 #define INTERFACE 289
 #define REF 290
-#define SWITCH 291
-#define CASE 292
-#define DEFAULT 293
-#define VOID 294
-#define EVAL 295
-#define BYTE 296
-#define SHORT 297
-#define INT 298
-#define LONG 299
-#define FLOAT 300
-#define DOUBLE 301
-#define STRING 302
-#define WEAKEN 303
-#define SPECIAL_ASSIGN 304
-#define ASSIGN 305
-#define OR 306
-#define AND 307
-#define BIT_XOR 308
-#define BIT_OR 309
-#define BIT_AND 310
-#define REL 311
-#define SHIFT 312
-#define REMAINDER 313
-#define DIVIDE 314
-#define MULTIPLY 315
-#define UMINUS 316
-#define ARRAY_LENGTH 317
-#define NOT 318
-#define DEC 319
-#define INC 320
-#define ARROW 321
+#define ISA 291
+#define SWITCH 292
+#define CASE 293
+#define DEFAULT 294
+#define VOID 295
+#define EVAL 296
+#define BYTE 297
+#define SHORT 298
+#define INT 299
+#define LONG 300
+#define FLOAT 301
+#define DOUBLE 302
+#define STRING 303
+#define WEAKEN 304
+#define SPECIAL_ASSIGN 305
+#define ASSIGN 306
+#define OR 307
+#define AND 308
+#define BIT_XOR 309
+#define BIT_OR 310
+#define BIT_AND 311
+#define REL 312
+#define SHIFT 313
+#define REMAINDER 314
+#define DIVIDE 315
+#define MULTIPLY 316
+#define UMINUS 317
+#define ARRAY_LENGTH 318
+#define NOT 319
+#define DEC 320
+#define INC 321
+#define ARROW 322
 
 
 

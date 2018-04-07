@@ -386,7 +386,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_LE_DOUBLE:
         condition_flag = *(double*)&vars[opcode->operand0] <= *(double*)&vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_REF:
+      case SPVM_OPCODE_C_ID_ISA:
       {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand0];
         int32_t type_id = *(SPVM_API_int*)&vars[opcode->operand1];

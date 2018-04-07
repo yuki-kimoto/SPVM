@@ -16,11 +16,11 @@
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CLASS STRING_EQ STRING_NE STRING_GT STRING_GE STRING_LT STRING_LE
-%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME INTERFACE REF
+%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME INTERFACE REF ISA
 %token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
-%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement ref_equal
-%type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop
+%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
+%type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field our_var invocant
 %type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
@@ -467,10 +467,10 @@ expression
     }
   | weaken_field
 
-ref_equal
-  : REF term STRING_EQ type
+isa
+  : term ISA type
     {
-      $$ = SPVM_OP_build_ref_equal(compiler, $1, $2, $4);
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
     }
 
 new_object

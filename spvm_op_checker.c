@@ -1177,12 +1177,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
-                case SPVM_OP_C_ID_REF: {
+                case SPVM_OP_C_ID_ISA: {
                   SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_cur->first);
                   
                   // Can receive only numeric type
                   if (!SPVM_TYPE_is_object(compiler, term_type)) {
-                    SPVM_yyerror_format(compiler, "ref right value must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "isa left value must be object type at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
                   

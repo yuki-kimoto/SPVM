@@ -1229,6 +1229,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   return DESCRIPTOR;
                 }
+                else if (strcmp(keyword, "isa") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISA);
+                  return ISA;
+                }
                 break;
               case 'j' :
                 if (strcmp(keyword, "jit") == 0) {
@@ -1329,11 +1333,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 break;
               case 'r' :
-                if (strcmp(keyword, "ref") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REF);
-                  return REF;
-                }
-                else if (strcmp(keyword, "return") == 0) {
+                if (strcmp(keyword, "return") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_RETURN);
                   return RETURN;
                 }
