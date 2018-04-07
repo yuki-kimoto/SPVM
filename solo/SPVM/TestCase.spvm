@@ -48,18 +48,16 @@ package TestCase {
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
-=pod
     # isa
     {
       my $minimal = new TestCase::Minimal;
       if ($minimal isa TestCase::Minimal) {
-        print("ref OK\n");
+        print("isa OK\n");
       }
       if ($minimal isa TestCase::Simple) {
         print("isa NOT OK\n");
       }
     }
-=cut
     
     # String comparison operator
     {
