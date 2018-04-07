@@ -220,8 +220,24 @@ package TestCase {
         }
       }
     }
+
+    # lt
+    my $lt_ok = 0;
+    if ($string lt $string_same) {
+      if (!($string lt $string_short)) {
+        if ($string lt $string_long) {
+          if ($string lt $string_different_short) {
+            if ($string lt $string_different_long) {
+              if (!($string lt $string_empty)) {
+                $lt_ok = 1;
+              }
+            }
+          }
+        }
+      }
+    }
     
-    if ($eq_ok && $ne_ok && $gt_ok && $ge_ok) {
+    if ($eq_ok && $ne_ok && $gt_ok && $ge_ok && $lt_ok) {
       return 1;
     }
     
