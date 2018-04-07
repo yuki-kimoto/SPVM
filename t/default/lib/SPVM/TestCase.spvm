@@ -154,7 +154,7 @@ package TestCase {
     my $string_short = "ab";
     my $string_long = "abcd";
     my $string_different_short= "ad";
-    my $string_different_long= "ad";
+    my $string_different_long= "adcd";
     my $string_empty = "";
     
     # eq
@@ -188,8 +188,24 @@ package TestCase {
         }
       }
     }
+
+    # gt
+    my $gt_ok = 0;
+    if (!($string gt $string_same)) {
+      if ($string gt $string_short) {
+        if (!($string gt $string_long)) {
+          if (!($string gt $string_different_short)) {
+            if (!($string gt $string_different_long)) {
+              if ($string gt $string_empty) {
+                $gt_ok = 1;
+              }
+            }
+          }
+        }
+      }
+    }
     
-    if ($eq_ok) {
+    if ($eq_ok && $ne_ok && $gt_ok) {
       return 1;
     }
     
