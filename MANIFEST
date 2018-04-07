@@ -170,6 +170,7 @@ t/copy_default_to_jit.pl
 t/default/array.t
 t/default/assign-operator.t
 t/default/call-sub.t
+t/default/comparison-operator.t
 t/default/constant.t
 t/default/enum.t
 t/default/exception.t
@@ -234,6 +235,7 @@ t/default/weaken.t
 t/jit/array.t
 t/jit/assign-operator.t
 t/jit/call-sub.t
+t/jit/comparison-operator.t
 t/jit/constant.t
 t/jit/enum.t
 t/jit/exception.t
