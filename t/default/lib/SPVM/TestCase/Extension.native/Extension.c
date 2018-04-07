@@ -131,7 +131,7 @@ void SPVM__TestCase__Extension__call_void_sub_exception_native(SPVM_API* api, co
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* exception = api->new_string(api, "Exception", 0);
+  SPVM_API_OBJECT* exception = api->new_string_chars(api, "Exception");
   api->set_exception(api, exception);
   return;
 }
@@ -140,7 +140,7 @@ int8_t SPVM__TestCase__Extension__call_byte_sub_exception_native(SPVM_API* api, 
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* exception = api->new_string(api, "Exception", 0);
+  SPVM_API_OBJECT* exception = api->new_string_chars(api, "Exception");
   api->set_exception(api, exception);
   return 0;
 }
@@ -149,7 +149,7 @@ int16_t SPVM__TestCase__Extension__call_short_sub_exception_native(SPVM_API* api
   (void)api;
   (void)args;
 
-  SPVM_API_OBJECT* exception = api->new_string(api, "Exception", 0);
+  SPVM_API_OBJECT* exception = api->new_string_chars(api, "Exception");
   api->set_exception(api, exception);
   return 0;
 }
@@ -158,7 +158,7 @@ int32_t SPVM__TestCase__Extension__call_int_sub_exception_native(SPVM_API* api, 
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* exception = api->new_string(api, "Exception", 0);
+  SPVM_API_OBJECT* exception = api->new_string_chars(api, "Exception");
   api->set_exception(api, exception);
   return 0;
 }
@@ -167,7 +167,7 @@ int64_t SPVM__TestCase__Extension__call_long_sub_exception_native(SPVM_API* api,
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* exception = api->new_string(api, "Exception", 0);
+  SPVM_API_OBJECT* exception = api->new_string_chars(api, "Exception");
   api->set_exception(api, exception);
   return 0;
 }
@@ -176,7 +176,7 @@ float SPVM__TestCase__Extension__call_float_sub_exception_native(SPVM_API* api, 
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* exception = api->new_string(api, "Exception", 0);
+  SPVM_API_OBJECT* exception = api->new_string_chars(api, "Exception");
   api->set_exception(api, exception);
   return 0;
 }
@@ -185,7 +185,7 @@ double SPVM__TestCase__Extension__call_double_sub_exception_native(SPVM_API* api
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* exception = api->new_string(api, "Exception", 0);
+  SPVM_API_OBJECT* exception = api->new_string_chars(api, "Exception");
   api->set_exception(api, exception);
   return 0;
 }
@@ -194,7 +194,7 @@ SPVM_API_OBJECT* SPVM__TestCase__Extension__call_object_sub_exception_native(SPV
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* exception = api->new_string(api, "Exception", 0);
+  SPVM_API_OBJECT* exception = api->new_string_chars(api, "Exception");
   api->set_exception(api, exception);
   return NULL;
 }
