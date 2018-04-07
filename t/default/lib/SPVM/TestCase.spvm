@@ -236,8 +236,24 @@ package TestCase {
         }
       }
     }
+
+    # le
+    my $le_ok = 0;
+    if ($string le $string_same) {
+      if (!($string le $string_short)) {
+        if ($string le $string_long) {
+          if ($string le $string_different_short) {
+            if ($string le $string_different_long) {
+              if (!($string le $string_empty)) {
+                $le_ok = 1;
+              }
+            }
+          }
+        }
+      }
+    }
     
-    if ($eq_ok && $ne_ok && $gt_ok && $ge_ok && $lt_ok) {
+    if ($eq_ok && $ne_ok && $gt_ok && $ge_ok && $lt_ok && $le_ok) {
       return 1;
     }
     
