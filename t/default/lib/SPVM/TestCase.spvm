@@ -172,7 +172,9 @@ package TestCase {
   sub isa_basic : int () {
     my $minimal = new TestCase::Minimal;
     if ($minimal isa TestCase::Minimal) {
-      return 1;
+      if (!($minimal isa TestCase)) {
+        return 1;
+      }
     }
     
     return 0;
