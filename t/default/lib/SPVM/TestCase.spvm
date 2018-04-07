@@ -160,7 +160,7 @@ package TestCase {
     # eq
     my $eq_ok = 0;
     if ($string eq $string_same) {
-      if (!$string eq $string_short) {
+      if (!($string eq $string_short)) {
         if (!($string eq $string_long)) {
           if (!($string eq $string_different_short)) {
             if (!($string eq $string_different_long)) {
