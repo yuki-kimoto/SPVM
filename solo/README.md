@@ -12,7 +12,7 @@ For compile, bison command is needed.
 
 ## Cleanup
 
-  yacc/bison.sh && make -f solo/Makefile cleanup
+  make -f solo/Makefile clean
   
 ## Test
     
