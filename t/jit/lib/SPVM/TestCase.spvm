@@ -148,6 +148,27 @@ package TestCase {
     return 0;
   }
   
+  jit sub string_comparison_operator : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different= "adc";
+    my $string_empty = "";
+    
+    # eq
+    my $eq_ok = 0;
+    if ($string eq $string_same) {
+      $eq_ok = 1;
+    }
+    
+    if ($eq_ok) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   jit sub pre_inc : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
