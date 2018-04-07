@@ -1181,7 +1181,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else if (strcmp(keyword, "eq") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_EQ);
-                  return STRING_EQ;
+                  return REL;
                 }
                 else if (strcmp(keyword, "eval") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_EVAL);
@@ -1201,11 +1201,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               case 'g' :
                 if (strcmp(keyword, "gt") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_GT);
-                  return STRING_GT;
+                  return REL;
                 }
                 else if (strcmp(keyword, "ge") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_GE);
-                  return STRING_GE;
+                  return REL;
                 }
                 break;
               case 'h' :
@@ -1258,13 +1258,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_LT);
                   yylvalp->opval = op;
                   
-                  return STRING_LT;
+                  return REL;
                 }
                 else if (strcmp(keyword, "le") == 0) {
                   SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_LE);
                   yylvalp->opval = op;
                   
-                  return STRING_LE;
+                  return REL;
                 }
                 else if (strcmp(keyword, "long") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LONG);
@@ -1286,7 +1286,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else if (strcmp(keyword, "ne") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_NE);
-                  return STRING_NE;
+                  return REL;
                 }
                 else if (strcmp(keyword, "next") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEXT);
