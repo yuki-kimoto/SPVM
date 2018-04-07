@@ -204,8 +204,24 @@ package TestCase {
         }
       }
     }
+
+    # ge
+    my $ge_ok = 0;
+    if ($string ge $string_same) {
+      if ($string ge $string_short) {
+        if (!($string ge $string_long)) {
+          if (!($string ge $string_different_short)) {
+            if (!($string ge $string_different_long)) {
+              if ($string ge $string_empty) {
+                $ge_ok = 1;
+              }
+            }
+          }
+        }
+      }
+    }
     
-    if ($eq_ok && $ne_ok && $gt_ok) {
+    if ($eq_ok && $ne_ok && $gt_ok && $ge_ok) {
       return 1;
     }
     
