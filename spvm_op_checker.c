@@ -1066,6 +1066,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_ID_NEW: {
+                  assert(op_cur->first);
+                  
                   if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
                     SPVM_OP* op_type = op_cur->first;
                     SPVM_TYPE* type = op_type->uv.type;

@@ -177,7 +177,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->cur_src = cur_src;
               compiler->bufptr = cur_src;
               compiler->befbufptr = cur_src;
-              compiler->current_package_count = 0;
               compiler->cur_line = 1;
               compiler->cur_template_args = op_use->uv.use->template_args;
               break;
@@ -1306,12 +1305,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               case 'p' :
                 if (strcmp(keyword, "package") == 0) {
-                  // File can contains only one package
-                  if (compiler->current_package_count) {
-                    fprintf(stderr, "Can't write second package declaration in file at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
-                    exit(EXIT_FAILURE);
-                  }
-                  compiler->current_package_count++;
                   
                   compiler->before_is_package = 1;
                   

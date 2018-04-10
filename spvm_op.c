@@ -935,6 +935,12 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_TYPE*  type = NULL;
   
   switch (op->id) {
+    case SPVM_OP_C_ID_PACKAGE: {
+      SPVM_PACKAGE* package = op->uv.package;
+      const char* package_name = package->op_name->uv.name;
+      type = SPVM_HASH_search(compiler->type_symtable, package_name, strlen(package_name));
+      break;
+    }
     case SPVM_OP_C_ID_EQ:
     case SPVM_OP_C_ID_NE:
     case SPVM_OP_C_ID_GT:

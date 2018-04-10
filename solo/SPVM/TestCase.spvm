@@ -49,6 +49,20 @@ package TestCase {
   
   sub main : int ($mvar : int) {
     
+    # Anon package
+    {
+      my $point = new package {
+        has x : int;
+        has y : int;
+=pod
+        sub clear : void ($self : self) {
+          $self->{x} = 0;
+          $self->{y} = 0;
+        }
+=cut
+      };
+    }
+    
     if (!(1 == 2)) {
       
     }

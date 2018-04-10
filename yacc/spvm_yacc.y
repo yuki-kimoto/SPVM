@@ -498,6 +498,9 @@ new_object
       $$ = SPVM_OP_build_new_object(compiler, $1, $2, $4);
     }
   | NEW anon_package
+    {
+      $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
+    }
 
 convert_type
   : '(' type ')' assignable_term

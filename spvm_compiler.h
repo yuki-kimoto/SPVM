@@ -99,9 +99,6 @@ struct SPVM_compiler {
   // Syntax error count
   int32_t error_count;
   
-  // Current package count
-  int32_t current_package_count;
-  
   // Package Variable id
   int32_t package_var_length;
   
