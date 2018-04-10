@@ -19,6 +19,7 @@ struct SPVM_package {
   int32_t object_field_byte_offsets_length;
   _Bool is_interface;
   _Bool is_private;
+  _Bool is_anon;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);

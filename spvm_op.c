@@ -1366,6 +1366,20 @@ const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const c
 }
 
 SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
+
+  // Package
+  SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
+  
+  if (!op_name_package) {
+    // Package is anon
+    package->is_anon = 1;
+    
+    // Anon package name
+    char* name_package = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@anon2147483647"));
+    sprintf(name_package, "@anon%d", compiler->anon_package_length);
+    compiler->anon_package_length++;
+    op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
+  }
   
   SPVM_OP_insert_child(compiler, op_package, op_package->last, op_name_package);
   SPVM_OP_insert_child(compiler, op_package, op_package->last, op_block);
@@ -1380,8 +1394,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     return NULL;
   }
   
-  // Package
-  SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
   package->op_name = op_name_package;
 
   // Package is interface
