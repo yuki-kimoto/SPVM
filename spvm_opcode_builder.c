@@ -1535,6 +1535,25 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                     }
+                    else if (op_assign_from->first->id == SPVM_OP_C_ID_PACKAGE) {
+                      SPVM_OP* op_package = op_assign_from->first;
+                      SPVM_PACKAGE* package = op_package->uv.package;
+                      const char* package_name = package->op_name->uv.name;
+                      
+                      SPVM_OPCODE opcode;
+                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                      
+                      opcode.id = SPVM_OPCODE_C_ID_NEW_OBJECT;
+                      
+                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
+                      SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, package_name, strlen(package_name));
+                      int32_t type_id = type->id;
+                      assert(type_id);
+                      
+                      opcode.operand0 = index_out;
+                      opcode.operand1 = type_id;
+                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                    }
                     else {
                       assert(0);
                     }

@@ -1122,6 +1122,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
                     // Constant string
                   }
+                  else if (op_cur->first->id == SPVM_OP_C_ID_PACKAGE) {
+                    SPVM_OP* op_package = op_cur->first;
+                    SPVM_PACKAGE* package = op_package->uv.package;
+                    
+                    if (package->is_interface) {
+                      SPVM_yyerror_format(compiler, "Can't create object of interface package at %s line %d\n", op_cur->file, op_cur->line);
+                    }
+                    else if (package->is_private) {
+                      if (strcmp(package->op_name->uv.name, sub->op_package->uv.package->op_name->uv.name) != 0) {
+                        SPVM_yyerror_format(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                    }
+                  }
                   else {
                     assert(0);
                   }
