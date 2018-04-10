@@ -48,12 +48,17 @@ package TestCase {
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
-    
+
+=pod
     # Anon package
     {
       my $point = new package {
         has x : int;
         has y : int;
+        sub clear : void ($self : self) {
+          $self->{x} = 0;
+          $self->{y} = 0;
+        }
       };
       
       $point->{x} = 3;
@@ -61,6 +66,7 @@ package TestCase {
       print((String)$point->{x} . "\n");
       
     }
+=cut
     
     if (!(1 == 2)) {
       

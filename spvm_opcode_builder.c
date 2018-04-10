@@ -2737,16 +2737,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_OP_C_ID_RETURN: {
-                SPVM_OP* op_return_type = sub->op_return_type;
-                
-                SPVM_TYPE* return_type = op_return_type->uv.type;
-                if (return_type->id == SPVM_TYPE_C_ID_VOID) {
-                  SPVM_OPCODE opcode;
-                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.id = SPVM_OPCODE_C_ID_RETURN;
-                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                }
-                else {
+                if (op_cur->first) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.id = SPVM_OPCODE_C_ID_RETURN;
@@ -2755,6 +2746,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   opcode.operand0 = index_in;
                   
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                }
+                else {
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  opcode.id = SPVM_OPCODE_C_ID_RETURN;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
                 
