@@ -54,13 +54,12 @@ package TestCase {
       my $point = new package {
         has x : int;
         has y : int;
-=pod
-        sub clear : void ($self : self) {
-          $self->{x} = 0;
-          $self->{y} = 0;
-        }
-=cut
       };
+      
+      $point->{x} = 3;
+      
+      print((String)$point->{x} . "\n");
+      
     }
     
     if (!(1 == 2)) {
