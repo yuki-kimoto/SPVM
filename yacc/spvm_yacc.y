@@ -23,7 +23,7 @@
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field our_var invocant
-%type <opval> type package_name field_name sub_name package declarations_in_grammar opt_enumeration_values type_array
+%type <opval> type package_name field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values type_array
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var
 %type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement type_array_with_length
@@ -107,6 +107,12 @@ package
   : PACKAGE package_name opt_colon_descriptors package_block
     {
       $$ = SPVM_OP_build_package(compiler, $1, $2, $4, $3);
+    }
+
+anon_package
+  : PACKAGE opt_colon_descriptors package_block
+    {
+      $$ = SPVM_OP_build_package(compiler, $1, NULL, $3, $2);
     }
 
 opt_declarations_in_package
@@ -491,6 +497,7 @@ new_object
     {
       $$ = SPVM_OP_build_new_object(compiler, $1, $2, $4);
     }
+  | NEW anon_package
 
 convert_type
   : '(' type ')' assignable_term
