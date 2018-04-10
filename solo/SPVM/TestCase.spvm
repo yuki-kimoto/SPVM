@@ -49,7 +49,6 @@ package TestCase {
   
   sub main : int ($mvar : int) {
 
-=pod
     # Anon package
     {
       my $point = new package {
@@ -62,11 +61,10 @@ package TestCase {
       };
       
       $point->{x} = 3;
-      
       print((String)$point->{x} . "\n");
-      
+      $point->clear;
+      print((String)$point->{x} . "\n");
     }
-=cut
     
     if (!(1 == 2)) {
       
