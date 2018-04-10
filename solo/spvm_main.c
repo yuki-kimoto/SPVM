@@ -50,6 +50,12 @@ int main(int argc, char *argv[])
   if (compiler->error_count > 0) {
     exit(1);
   }
+  else {
+#ifdef DEBUG
+    // Dump spvm information
+    SPVM_DUMPER_dump_all(compiler);
+#endif
+  }
   
   // Build bytecode
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
@@ -86,17 +92,6 @@ int main(int argc, char *argv[])
       }
     }
   }
-  
-  if (compiler->error_count > 0) {
-    return 1;
-  }
-  else {
-#ifdef DEBUG
-    // Dump spvm information
-    SPVM_DUMPER_dump_all(compiler);
-#endif
-  }
-
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
