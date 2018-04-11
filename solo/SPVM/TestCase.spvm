@@ -15,6 +15,7 @@ use TestCase::Destructor;
 use TestCase::Interface;
 use TestCase::ImplementInterface1;
 use TestCase::ImplementInterface2;
+use TestCase::Comparator;
 
 =head1 NAME
 
@@ -48,7 +49,41 @@ package TestCase {
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
-
+    
+    # sort
+    {
+      my $comparator = new package {
+        sub compare : int ($self : self, $object1 : Object, $object2 : Object) {
+          my $minimal1 = (TestCase::Minimal)$object1;
+          my $minimal2 = (TestCase::Minimal)$object2;
+          
+          my $x1 = $minimal1->{x};
+          my $x2 = $minimal2->{x};
+          
+          if ($x1 > $x2) {
+            return 1;
+          }
+          elsif ($x1 < $x2) {
+            return -1;
+          }
+          else {
+            return 0;
+          }
+        }
+      };
+      
+      my $minimals = new TestCase::Minimal[3];
+      $minimals->[0] = new TestCase::Minimal;
+      $minimals->[0]{x} = 3;
+      $minimals->[1] = new TestCase::Minimal;
+      $minimals->[1]{x} = 1;
+      $minimals->[2] = new TestCase::Minimal;
+      $minimals->[2]{x} = 2;
+      
+      sort_obj($minimals, $comparator);
+      print((String)$minimals->[0]{x} . " " . (String)$minimals->[1]{x} . " " . (String)$minimals->[2]{x} . "\n");
+    }
+    
     # Anon package
     {
       my $point = new package {
@@ -1283,6 +1318,22 @@ package TestCase {
     return 0;
   }
 
+  sub sort_obj : void ($values : Object[], $comparator : TestCase::Comparator) {
+
+    my $change_cnt = @$values - 1;
+    while( $change_cnt > 0){
+      for (my $i = 0; $i < $change_cnt; $i++) {
+        my $ret = $comparator->compare($values->[$i], $values->[$i + 1]);
+        
+        if ($comparator->compare($values->[$i], $values->[$i + 1]) == 1) {
+          my $tmp_value = $values->[$i];
+          $values->[$i] = $values->[$i + 1];
+          $values->[$i + 1] = $tmp_value;
+        }
+      }
+      $change_cnt--;
+    }
+  }
 }
 
 =head1 NAME

@@ -1,0 +1,3 @@
+package TestCase::Comparator : interface {
+  sub compare : int ($self : self, $x : Object, $y : Object);
+}
