@@ -30,7 +30,7 @@ Signal Processing.
 SPVM have Numeric Type, Array Type, Package Type. Numeric Type is byte, short, int, long, float, double.
 You can calcurate number by these types. Array Type is Contiguous Area of numeric type. Package Type have, for example, x, y field.
 
-SPVM have Type Inference, GC, Memory Safety, Destructor, Package Template. GC is Reference Count GC. Template Package is like C++ Class Template.
+SPVM have Type Inference, GC, Memory Safety, Destructor, Interface. GC is Reference Count GC.
 
 =head1 Syntax
 
@@ -48,9 +48,6 @@ Package name is consist of Upper Case and Lower Case and Number and C<::>.
 Package name must start with Upper Case. Package name which start with Lower Case is forbidden.
 Package name which start with Lower Case is resolved for core.
 
-Note that package name can't contain Under Score C<_>.
-Under Score is used for C<Package Template>.
-
   # Legal
   Foo
   Foo2
@@ -62,7 +59,6 @@ Under Score is used for C<Package Template>.
   foo
   foo::Bar
   2Foo
-  Foo_Bar
 
 Package Definition must be just under file itself.
 

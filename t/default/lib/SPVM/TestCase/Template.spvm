@@ -1,8 +1,0 @@
-package TestCase::Template_type1_type2 {
-  sub sum : type1 ($var1 : type1, $var2 : type1, $var3 : type2) {
-    
-    my $var4 = $var1 + $var2 + (type1)$var3;
-    
-    return $var4;
-  }
-}

@@ -4,8 +4,6 @@ use TestCase::Destructor;
 use TestCase::Empty;
 use TestCase::Private;
 
-use TestCase::Template_int_long;
-
 use Byte;
 use Number::Util;
 use Short;
@@ -664,18 +662,6 @@ package TestCase {
     
     return 0;
   }
-  
-  # Package Template
-  sub template : int () {
-    my $value = TestCase::Template_int_long::sum(1, 2, 3L);
-    
-    if ($value == 6) {
-      return 1;
-    }
-    
-    return 0;
-  }
-  
   
   # SPVM set and get
   sub spvm_set_and_get_byte : int ($nums : byte[]) {

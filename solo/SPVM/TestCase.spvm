@@ -10,7 +10,6 @@ use TestCase::EnumC;
 use TestCase::EnumD;
 use TestCase::Simple;
 use TestCase::Minimal;
-use TestCase::Template_int_long;
 use TestCase::Destructor;
 use TestCase::Interface;
 use TestCase::ImplementInterface1;
@@ -335,12 +334,6 @@ package TestCase {
       if (TestCase::default_return_value_object_sub_empty() == undef) {
         1;
       }
-    }
-
-    # Use template package
-    {
-      my $num = TestCase::Template_int_long::get(100, 200, 300L,);
-      print((String)$num . "\n");
     }
 
     # Get object from freelist

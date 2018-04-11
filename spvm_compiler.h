@@ -29,7 +29,7 @@ struct SPVM_compiler {
   // Current file name
   const char* cur_file;
   
-  const char* cur_package_name_with_template_args;
+  const char* cur_package_name;
   
   // Source base_object
   char* cur_src;
