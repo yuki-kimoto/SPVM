@@ -19,7 +19,7 @@ use SPVM 'CORE'; my $use_core_line = __LINE__;
 
 use POSIX ();
 
-use SPVM::Core::Object::Package;
+use SPVM::Perl::Object::Package;
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -653,9 +653,9 @@ is_deeply(
 }
 
 
-# SPVM::Core::Object::Array
+# SPVM::Perl::Object::Array
 {
-  my $sp_values = SPVM::Core::Object::Array::Int->new_len(3);
+  my $sp_values = SPVM::Perl::Object::Array::Int->new_len(3);
   $sp_values->set_elements([1, 2, 3]);
 }
 

@@ -1,12 +1,12 @@
-package SPVM::Core::Object::Array::Long;
+package SPVM::Perl::Object::Array::Float;
 
-use base 'SPVM::Core::Object::Array';
+use base 'SPVM::Perl::Object::Array';
 
 1;
 
 =head1 NAME
 
-SPVM::Core::Object::Array::Long - Long Array Object
+SPVM::Perl::Object::Array::Float - Float Array Object
 
 =head1 METHODS
 
@@ -38,4 +38,4 @@ Method List:
 
 =back
 
-If you know Method Detail, see L<SPVM::Core::Document::Function>.
+If you know Method Detail, see L<SPVM::Document::PerlAPI>.

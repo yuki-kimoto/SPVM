@@ -1,6 +1,6 @@
-package SPVM::Core::Object::Package::String;
+package SPVM::Perl::Object::Package::String;
 
-use base 'SPVM::Core::Object::Package';
+use base 'SPVM::Perl::Object::Package';
 
 use Encode 'decode';
 
@@ -18,7 +18,7 @@ sub to_string {
 
 =head1 NAME
 
-SPVM::Core::Object::Package::String - String Object
+SPVM::Perl::Object::Package::String - String Object
 
 =head1 METHODS
 
@@ -34,5 +34,5 @@ Method List:
 
 =back
 
-If you know Method Detail, see L<SPVM::Core::Document::Function>.
+If you know Method Detail, see L<SPVM::Document::PerlAPI>.
 

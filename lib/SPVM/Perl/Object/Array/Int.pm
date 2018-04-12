@@ -1,12 +1,12 @@
-package SPVM::Core::Object::Array::Double;
+package SPVM::Perl::Object::Array::Int;
 
-use base 'SPVM::Core::Object::Array';
+use base 'SPVM::Perl::Object::Array';
 
 1;
 
 =head1 NAME
 
-SPVM::Core::Object::Array::Double - Double Array Object
+SPVM::Perl::Object::Array::Int - Int Array Object
 
 =head1 METHODS
 
@@ -38,4 +38,4 @@ Method List:
 
 =back
 
-If you know Method Detail, see L<SPVM::Core::Document::Function>.
+If you know Method Detail, see L<SPVM::Document::PerlAPI>.

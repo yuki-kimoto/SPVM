@@ -95,32 +95,32 @@ my $start_objects_count = SPVM::get_objects_count();
 {
   {
     my $sp_values = SPVM::TestCase::call_sub_return_byte_array();
-    is(ref $sp_values, 'SPVM::Core::Object::Array::Byte');
+    is(ref $sp_values, 'SPVM::Perl::Object::Array::Byte');
     SPVM::TestCase::call_sub_return_byte_array_check($sp_values);
   }
   {
     my $sp_values = SPVM::TestCase::call_sub_return_short_array();
-    is(ref $sp_values, 'SPVM::Core::Object::Array::Short');
+    is(ref $sp_values, 'SPVM::Perl::Object::Array::Short');
     SPVM::TestCase::call_sub_return_short_array_check($sp_values);
   }
   {
     my $sp_values = SPVM::TestCase::call_sub_return_int_array();
-    is(ref $sp_values, 'SPVM::Core::Object::Array::Int');
+    is(ref $sp_values, 'SPVM::Perl::Object::Array::Int');
     SPVM::TestCase::call_sub_return_int_array_check($sp_values);
   }
   {
     my $sp_values = SPVM::TestCase::call_sub_return_long_array();
-    is(ref $sp_values, 'SPVM::Core::Object::Array::Long');
+    is(ref $sp_values, 'SPVM::Perl::Object::Array::Long');
     SPVM::TestCase::call_sub_return_long_array_check($sp_values);
   }
   {
     my $sp_values = SPVM::TestCase::call_sub_return_float_array();
-    is(ref $sp_values, 'SPVM::Core::Object::Array::Float');
+    is(ref $sp_values, 'SPVM::Perl::Object::Array::Float');
     SPVM::TestCase::call_sub_return_float_array_check($sp_values);
   }
   {
     my $sp_values = SPVM::TestCase::call_sub_return_double_array();
-    is(ref $sp_values, 'SPVM::Core::Object::Array::Double');
+    is(ref $sp_values, 'SPVM::Perl::Object::Array::Double');
     SPVM::TestCase::call_sub_return_double_array_check($sp_values);
   }
 }
