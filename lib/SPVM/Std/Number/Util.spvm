@@ -41,7 +41,6 @@ package Std::Number::Util {
   native sub float_float_to_raw_int_bits : int ($class : class, $x : float);
   native sub float_int_bits_to_float : float ($class : class, $x : int);
 
-
   enum {
     DOUBLE_BYTES = 8,
     DOUBLE_SIZE = 64,

@@ -1,151 +1,53 @@
-use Float;
-use Double;
-use Std::Number::Util;
-
 package Std::Math {
   sub PI : double ($class : class) { return 3.14159265358979323846; }
   sub E : double ($class : class) { return 2.7182818284590452354; }
   
-  native sub sin : double ($class : class, $x : double);
-  native sub cos : double ($class : class, $x : double);
-  native sub tan : double ($class : class, $x : double);
-  native sub asin : double($class : class, $x : double);
+  # Trigonometric functions
   native sub acos : double ($class : class, $x : double);
+  native sub asin : double($class : class, $x : double);
   native sub atan : double ($class : class, $x : double);
-  native sub to_radians : double ($class : class, $x : double);
-  native sub to_degrees : double ($class : class, $x : double);
+  native sub atan2 : double ($class : class, $y : double, $x : double);
+  native sub cos : double ($class : class, $x : double);
+  native sub sin : double ($class : class, $x : double);
+  native sub tan : double ($class : class, $x : double);
+  
+  # Hyperbolic functions
+  native sub acosh : double ($class : class, $x : double);
+  native sub asinh : double ($class : class, $x : double);
+  native sub atanh : double ($class : class, $x : double);
+  native sub cosh : double ($class : class, $x : double);
+  native sub sinh : double ($class : class, $x : double);
+  native sub tanh : double ($class : class, $x : double);
+  
+  # Exponential functions and logarithmic functions
   native sub exp : double ($class : class, $x : double);
+  native sub exp2 : double ($class : class, $x : double);
+  native sub expm1 : double ($class : class, $x : double);
   native sub log : double ($class : class, $x : double);
   native sub log10 : double ($class : class, $x : double);
-  native sub sqrt : double ($class : class, $x : double);
+  native sub log1p : double ($class : class, $x : double);
+  
+  # Exponentiation functions and Absolute value functions
+  native sub abs : int ($class : class, $x : int);
+  native sub labs : long ($class : class, $x : long);
   native sub cbrt : double ($class : class, $x : double);
-  native sub IEEE_remainder : double ($class : class, $x1 : double, $x2 : double);
+  native sub fabs : double ($class : class, $x : double);
+  native sub hypot : double ($class : class, $x : double, $y : double);
+  native sub pow : double ($class : class, $x : double, $y : double);
+  native sub sqrt : double ($class : class, $x : double);
+  
+  # Error function and Gamma function
+  native sub erf : double ($class : class, $x : double);
+  native sub erfc : double ($class : class, $x : double);
+  native sub lgamma : double ($class : class, $x : double);
+  native sub tgamma : double ($class : class, $x : double);
+
+  # Nearest integer function
   native sub ceil : double ($class : class, $x : double);
   native sub floor : double ($class : class, $x : double);
-  native sub rint : double ($class : class, $x : double);
-  native sub atan2 : double ($class : class, $y : double, $x : double);
-  native sub pow : double ($class : class, $x : double, $y : double);
+  native sub nearbyint : double ($class : class, $x : double);
   native sub round : double ($class : class, $x : double);
-  native sub abs : int ($class : class, $x : int);
-  native sub abs_long : long ($class : class, $x : long);
-  native sub abs_float : float ($class : class, $x : float);
-  native sub abs_double : double ($class : class, $x : double);
   
-  sub max : int ($class : class, $x : int, $y : int) {
-    if ($x > $y) {
-      return $x;
-    }
-    else {
-      return $y;
-    }
-  }
-
-  sub max_long : long ($class : class, $x : long, $y : long) {
-    if ($x > $y) {
-      return $x;
-    }
-    else {
-      return $y;
-    }
-  }
-
-  sub max_float : float ($class : class, $x : float, $y : float) {
-    if ($x > $y) {
-      return $x;
-    }
-    else {
-      return $y;
-    }
-  }
-
-  sub max_double : double ($class : class, $x : double, $y : double) {
-    if ($x > $y) {
-      return $x;
-    }
-    else {
-      return $y;
-    }
-  }
-
-  sub min : int ($class : class, $x : int, $y : int) {
-    if ($x < $y) {
-      return $x;
-    }
-    else {
-      return $y;
-    }
-  }
-
-  sub min_long : long ($class : class, $x : long, $y : long) {
-    if ($x < $y) {
-      return $x;
-    }
-    else {
-      return $y;
-    }
-  }
-
-  sub min_float : float ($class : class, $x : float, $y : float) {
-    if ($x < $y) {
-      return $x;
-    }
-    else {
-      return $y;
-    }
-  }
-
-  sub min_double : double ($class : class, $x : double, $y : double) {
-    if ($x < $y) {
-      return $x;
-    }
-    else {
-      return $y;
-    }
-  }
-  
-  sub signum : double ($class : class, $x : double) {
-    if (Std::Number::Util->double_is_nan($x)) {
-      return Std::Number::Util->DOUBLE_NAN();
-    }
-    elsif ($x > 0.0) {
-      return 1.0;
-    }
-    elsif ($x < 0.0) {
-      return -1.0;
-    }
-    else {
-      return 0.0;
-    }
-  }
-  
-  sub signum_float : float ($class : class, $x : float) {
-    if (Std::Number::Util->float_is_nan($x)) {
-      return Std::Number::Util->FLOAT_NAN();
-    }
-    elsif ($x > 0.0f) {
-      return 1.0f;
-    }
-    elsif ($x < 0.0f) {
-      return -1.0f;
-    }
-    else {
-      return 0.0f;
-    }
-  }
-  native sub sinh : double ($class : class, $x : double);
-  native sub cosh : double ($class : class, $x : double);
-  native sub tanh : double ($class : class, $x : double);
-  native sub hypot : double ($class : class, $x : double, $y : double);
-  native sub expm1 : double ($class : class, $x : double);
-  native sub log1p : double ($class : class, $x : double);
-  native sub copy_sign : double ($class : class, $magnitude : double, $sign : double);
-  native sub copy_sign_float : float ($class : class, $magnitude : float, $sign : float);
-  
-  # TODO
-  # ulp
-  # getExponent
-  # nextAfter
-  # nextUp
-  # nextDown
-  # scalb
+  # Surplus functions
+  native sub remainder : double ($class : class, $x1 : double, $x2 : double);
 }

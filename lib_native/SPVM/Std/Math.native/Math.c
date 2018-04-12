@@ -42,6 +42,30 @@ double SPVM__Std__Math__asin(SPVM_API* api, SPVM_API_VALUE* args) {
   return value;
 }
 
+double SPVM__Std__Math__acosh(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = acosh(args[0].double_value);
+  
+  return value;
+}
+
+double SPVM__Std__Math__atanh(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = atanh(args[0].double_value);
+  
+  return value;
+}
+
+double SPVM__Std__Math__asinh(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = asinh(args[0].double_value);
+  
+  return value;
+}
+
 double SPVM__Std__Math__acos(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
@@ -58,26 +82,18 @@ double SPVM__Std__Math__atan(SPVM_API* api, SPVM_API_VALUE* args) {
   return value;
 }
 
-double SPVM__Std__Math__to_radians(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  double value = args[0].double_value * SPVM__MATH__PI / 180.0;
-  
-  return value;
-}
-
-double SPVM__Std__Math__to_degrees(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  double value = args[0].double_value * 180.0 / SPVM__MATH__PI;
-  
-  return value;
-}
-
 double SPVM__Std__Math__exp(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double value = exp(args[0].double_value);
+  
+  return value;
+}
+
+double SPVM__Std__Math__exp2(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = exp2(args[0].double_value);
   
   return value;
 }
@@ -122,11 +138,11 @@ double SPVM__Std__Math__ceil(SPVM_API* api, SPVM_API_VALUE* args) {
   return value;
 }
 
-double SPVM__Std__Math__IEEE_remainder(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Math__remainder(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   // x - Math.Round(x / y) * y
-  double value = args[0].double_value - round(args[0].double_value / args[1].double_value) * args[1].double_value;
+  double value = remainder(args[0].double_value, args[1].double_value);
 
   return value;
 }
@@ -139,10 +155,10 @@ double SPVM__Std__Math__floor(SPVM_API* api, SPVM_API_VALUE* args) {
   return value;
 }
 
-double SPVM__Std__Math__rint(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Math__nearbyint(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  double value = rint(args[0].double_value);
+  double value = nearbyint(args[0].double_value);
   
   return value;
 }
@@ -174,31 +190,55 @@ double SPVM__Std__Math__round(SPVM_API* api, SPVM_API_VALUE* args) {
 int32_t SPVM__Std__Math__abs(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  int32_t value = (int32_t)labs((long)args[0].int_value);
+  int32_t value = (int32_t)labs(args[0].int_value);
   
   return value;
 }
 
-int64_t SPVM__Std__Math__abs_long(SPVM_API* api, SPVM_API_VALUE* args) {
+int64_t SPVM__Std__Math__labs(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
-  int64_t value = (int64_t)labs((long long)args[0].long_value);
+  int64_t value = (int64_t)labs(args[0].long_value);
   
   return value;
 }
 
-float SPVM__Std__Math__abs_float(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  float value = fabsf(args[0].float_value);
-  
-  return value;
-}
-
-double SPVM__Std__Math__abs_double(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Math__fabs(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double value = fabs(args[0].double_value);
+  
+  return value;
+}
+
+double SPVM__Std__Math__erf(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = erf(args[0].double_value);
+  
+  return value;
+}
+
+double SPVM__Std__Math__erfc(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = erfc(args[0].double_value);
+  
+  return value;
+}
+
+double SPVM__Std__Math__lgamma(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = lgamma(args[0].double_value);
+  
+  return value;
+}
+
+double SPVM__Std__Math__tgamma(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  
+  double value = tgamma(args[0].double_value);
   
   return value;
 }
@@ -247,22 +287,6 @@ double SPVM__Std__Math__log1p(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   double value = log1p(args[0].double_value);
-  
-  return value;
-}
-
-double SPVM__Std__Math__copy_sign(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  double value = copysign(args[0].double_value, args[1].double_value);
-  
-  return value;
-}
-
-float SPVM__Std__Math__copy_sign_float(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  
-  float value = copysign(args[0].float_value, args[1].float_value);
   
   return value;
 }

@@ -536,11 +536,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       case SPVM_OPCODE_C_ID_REMAINDER_FLOAT:
         *(float*)&vars[opcode->operand0]
-          = (float)fmod((double)*(float*)&vars[opcode->operand1], *(float*)&vars[opcode->operand2]);
+          = (float)remainderf(*(float*)&vars[opcode->operand1], *(float*)&vars[opcode->operand2]);
         break;
       case SPVM_OPCODE_C_ID_REMAINDER_DOUBLE:
         *(double*)&vars[opcode->operand0]
-          = fmod(*(double*)&vars[opcode->operand1], *(double*)&vars[opcode->operand2]);
+          = remainder(*(double*)&vars[opcode->operand1], *(double*)&vars[opcode->operand2]);
         break;
       case SPVM_OPCODE_C_ID_LEFT_SHIFT_INT:
         *(SPVM_API_int*)&vars[opcode->operand0]
