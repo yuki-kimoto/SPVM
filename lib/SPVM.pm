@@ -894,27 +894,23 @@ List of SPVM functions:
 
 If you know Detail of SPVM Function, see L<SPVM::Document::DataConversionAPI>.
 
-=head2 SPVM Language Specification
+=head2 SPVM Specification
 
-L<SPVM::Document::LanguageSpecification> - SPVM Language Specification
+L<SPVM::Document::Specification> - SPVM Specification
 
 =head2 SPVM Native Interface
 
-L<SPVM::Document::NativeInterface> - SPVM Native Interface.
+L<SPVM::Document::NativeAPI> - SPVM Native Interface.
 
 Native API is C level API. You can write programing logic using C language and SPVM Native API.
 
 =head2 SPVM Standard Function
 
-L<SPVM::Document::StandardFunction> - SPVM Standard Function
+L<SPVM::Document::Functions> - SPVM Standard Functions
 
 =head2 SPVM Standard Module
 
-L<SPVM::Document::StandardModule> - SPVM Standard Module
-
-=head2 SPVM Cookbook
-
-L<SPVM::Document::Cookbook> - SPVM Cookbook, advanced technique and many examples.
+L<SPVM::Document::Modules> - SPVM Standard Modules
 
 =head2 SPVM FAQ
 

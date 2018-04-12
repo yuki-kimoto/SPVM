@@ -1,8 +1,8 @@
 =head1 NAME
 
-SPVM::Document::StandardModule - SPVM Standard Module(BETA before 1.0)
+SPVM::Document::Modules - SPVM Standard Modules(BETA before 1.0)
 
-=head1 SPVM Standard Module
+=head1 SPVM Standard Modules
 
 =head2 SPVM::CORE
 

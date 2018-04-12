@@ -1,10 +1,10 @@
 =head1 NAME
 
-SPVM::Document::DataConversionAPI - SPVM Funcion(BETA before 1.0)
+SPVM::Document::PerlAPI - SPVM Perl API
 
-=head1 What is Data Conversion API
+=head1 What is SPVM Perl API
 
-SPVM Data Convesion API is the API to create SPVM Data, and convert SPVM Data to Perl Data.
+SPVM Perl API is the API to manipulate SPVM data from Perl script.
 
 SPVM Data is Package Based Object and Array Object.
 
