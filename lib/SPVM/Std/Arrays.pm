@@ -4,7 +4,7 @@ package SPVM::Arrays;
 
 =head1 NAME
 
-SPVM::Arrays - Array Utility
+SPVM::Std::Arrays - Standard Array Utility
 
 =head1 CONSTANT FUNCTIONS
 

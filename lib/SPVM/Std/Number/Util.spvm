@@ -1,4 +1,4 @@
-package Number::Util {
+package Std::Number::Util {
   sub BYTE_MIN_VALUE : byte ($class : class)  { return (byte)-128; }
   sub BYTE_MAX_VALUE : byte ($class : class) { return (byte)127; }
   sub BYTE_BYTES: int ($class : class) { return 1; }

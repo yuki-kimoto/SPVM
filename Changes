@@ -1,5 +1,8 @@
 0.0325 2018-04-11
   - remove template feature
+  - rename Math to Std::Math
+  - rename Arrays to Std::Arrays
+  - rename Number::Util to Std::Number::Util
 0.0324 2018-04-07
   - implement string convertion
   - implement isa

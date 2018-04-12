@@ -4,7 +4,7 @@
 
 #include "spvm_api.h"
 
-SPVM_API_int SPVM__Arrays__equals_byte(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__Arrays__equals_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -40,7 +40,7 @@ SPVM_API_int SPVM__Arrays__equals_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-SPVM_API_int SPVM__Arrays__equals_short(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__Arrays__equals_short(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -76,7 +76,7 @@ SPVM_API_int SPVM__Arrays__equals_short(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-SPVM_API_int SPVM__Arrays__equals_int(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__Arrays__equals_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -112,7 +112,7 @@ SPVM_API_int SPVM__Arrays__equals_int(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-SPVM_API_int SPVM__Arrays__equals_long(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__Arrays__equals_long(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -148,7 +148,7 @@ SPVM_API_int SPVM__Arrays__equals_long(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-SPVM_API_int SPVM__Arrays__equals_float(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__Arrays__equals_float(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -184,7 +184,7 @@ SPVM_API_int SPVM__Arrays__equals_float(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-SPVM_API_int SPVM__Arrays__equals_double(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__Arrays__equals_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -220,7 +220,7 @@ SPVM_API_int SPVM__Arrays__equals_double(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-SPVM_API_OBJECT* SPVM__Arrays__copy_of_byte(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__Arrays__copy_of_byte(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -262,7 +262,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_byte(SPVM_API* api, SPVM_API_VALUE* args)
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Arrays__copy_of_short(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__Arrays__copy_of_short(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -304,7 +304,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_short(SPVM_API* api, SPVM_API_VALUE* args
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Arrays__copy_of_int(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__Arrays__copy_of_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -346,7 +346,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_int(SPVM_API* api, SPVM_API_VALUE* args) 
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Arrays__copy_of_long(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__Arrays__copy_of_long(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -388,7 +388,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_long(SPVM_API* api, SPVM_API_VALUE* args)
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Arrays__copy_of_float(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__Arrays__copy_of_float(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -430,7 +430,7 @@ SPVM_API_OBJECT* SPVM__Arrays__copy_of_float(SPVM_API* api, SPVM_API_VALUE* args
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Arrays__copy_of_double(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__Arrays__copy_of_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;

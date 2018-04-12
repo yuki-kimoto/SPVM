@@ -7,7 +7,7 @@
 
 #include "spvm_api.h"
 
-float SPVM__Number__Util__FLOAT_POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__Number__Util__FLOAT_POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -20,7 +20,7 @@ float SPVM__Number__Util__FLOAT_POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE*
   return positive_infinity;
 }
 
-float SPVM__Number__Util__FLOAT_NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__Number__Util__FLOAT_NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -33,7 +33,7 @@ float SPVM__Number__Util__FLOAT_NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE*
   return negative_infinity;
 }
 
-float SPVM__Number__Util__FLOAT_NAN(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__Number__Util__FLOAT_NAN(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -46,7 +46,7 @@ float SPVM__Number__Util__FLOAT_NAN(SPVM_API* api, SPVM_API_VALUE* args) {
   return nan;
 }
 
-float SPVM__Number__Util__FLOAT_MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__Number__Util__FLOAT_MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -59,7 +59,7 @@ float SPVM__Number__Util__FLOAT_MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   return max_value;
 }
 
-float SPVM__Number__Util__FLOAT_MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__Number__Util__FLOAT_MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -72,7 +72,7 @@ float SPVM__Number__Util__FLOAT_MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) 
   return min_normal;
 }
 
-float SPVM__Number__Util__FLOAT_MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__Number__Util__FLOAT_MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -85,7 +85,7 @@ float SPVM__Number__Util__FLOAT_MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   return min_value;
 }
 
-float SPVM__Number__Util__FLOAT_MAX_EXPONENT(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__Number__Util__FLOAT_MAX_EXPONENT(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -98,7 +98,7 @@ float SPVM__Number__Util__FLOAT_MAX_EXPONENT(SPVM_API* api, SPVM_API_VALUE* args
   return max_exponent;
 }
 
-int32_t SPVM__Number__Util__float_is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__Number__Util__float_is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -112,7 +112,7 @@ int32_t SPVM__Number__Util__float_is_infinite(SPVM_API* api, SPVM_API_VALUE* arg
   }
 }
 
-int32_t SPVM__Number__Util__float_is_finite(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__Number__Util__float_is_finite(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -126,7 +126,7 @@ int32_t SPVM__Number__Util__float_is_finite(SPVM_API* api, SPVM_API_VALUE* args)
   }
 }
 
-int32_t SPVM__Number__Util__float_is_nan(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__Number__Util__float_is_nan(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -140,7 +140,7 @@ int32_t SPVM__Number__Util__float_is_nan(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-int32_t SPVM__Number__Util__float_float_to_int_bits(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__Number__Util__float_float_to_int_bits(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
 
@@ -159,7 +159,7 @@ int32_t SPVM__Number__Util__float_float_to_int_bits(SPVM_API* api, SPVM_API_VALU
   }
 }
 
-int32_t SPVM__Number__Util__float_float_to_raw_int_bits(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__Number__Util__float_float_to_raw_int_bits(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -172,7 +172,7 @@ int32_t SPVM__Number__Util__float_float_to_raw_int_bits(SPVM_API* api, SPVM_API_
   return (int32_t)int_bits;
 }
 
-float SPVM__Number__Util__float_int_bits_to_float(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__Number__Util__float_int_bits_to_float(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -189,7 +189,7 @@ float SPVM__Number__Util__float_int_bits_to_float(SPVM_API* api, SPVM_API_VALUE*
   return float_value;
 }
 
-double SPVM__Number__Util__DOUBLE_POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Number__Util__DOUBLE_POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -202,7 +202,7 @@ double SPVM__Number__Util__DOUBLE_POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALU
   return positive_infinity;
 }
 
-double SPVM__Number__Util__DOUBLE_NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Number__Util__DOUBLE_NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -215,7 +215,7 @@ double SPVM__Number__Util__DOUBLE_NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALU
   return negative_infinity;
 }
 
-double SPVM__Number__Util__DOUBLE_NAN(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Number__Util__DOUBLE_NAN(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -228,7 +228,7 @@ double SPVM__Number__Util__DOUBLE_NAN(SPVM_API* api, SPVM_API_VALUE* args) {
   return nan;
 }
 
-double SPVM__Number__Util__DOUBLE_MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Number__Util__DOUBLE_MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -241,7 +241,7 @@ double SPVM__Number__Util__DOUBLE_MAX_VALUE(SPVM_API* api, SPVM_API_VALUE* args)
   return max_value;
 }
 
-double SPVM__Number__Util__DOUBLE_MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Number__Util__DOUBLE_MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -254,7 +254,7 @@ double SPVM__Number__Util__DOUBLE_MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args
   return min_normal;
 }
 
-double SPVM__Number__Util__DOUBLE_MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Number__Util__DOUBLE_MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -267,7 +267,7 @@ double SPVM__Number__Util__DOUBLE_MIN_VALUE(SPVM_API* api, SPVM_API_VALUE* args)
   return min_value;
 }
 
-int32_t SPVM__Number__Util__double_is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__Number__Util__double_is_infinite(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -281,7 +281,7 @@ int32_t SPVM__Number__Util__double_is_infinite(SPVM_API* api, SPVM_API_VALUE* ar
   }
 }
 
-int32_t SPVM__Number__Util__double_is_nan(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__Number__Util__double_is_nan(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -295,7 +295,7 @@ int32_t SPVM__Number__Util__double_is_nan(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-int32_t SPVM__Number__Util__double_is_finite(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__Number__Util__double_is_finite(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -309,7 +309,7 @@ int32_t SPVM__Number__Util__double_is_finite(SPVM_API* api, SPVM_API_VALUE* args
   }
 }
 
-int64_t SPVM__Number__Util__double_double_to_long_bits(SPVM_API* api, SPVM_API_VALUE* args) {
+int64_t SPVM__Std__Number__Util__double_double_to_long_bits(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -328,7 +328,7 @@ int64_t SPVM__Number__Util__double_double_to_long_bits(SPVM_API* api, SPVM_API_V
   }
 }
 
-int64_t SPVM__Number__Util__double_double_to_raw_long_bits(SPVM_API* api, SPVM_API_VALUE* args) {
+int64_t SPVM__Std__Number__Util__double_double_to_raw_long_bits(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -341,7 +341,7 @@ int64_t SPVM__Number__Util__double_double_to_raw_long_bits(SPVM_API* api, SPVM_A
   return (int64_t)long_bits;
 }
 
-double SPVM__Number__Util__double_long_bits_to_double(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__Number__Util__double_long_bits_to_double(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   

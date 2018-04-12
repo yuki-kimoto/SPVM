@@ -1,8 +1,8 @@
 use Float;
 use Double;
-use Number::Util;
+use Std::Number::Util;
 
-package Math {
+package Std::Math {
   sub PI : double ($class : class) { return 3.14159265358979323846; }
   sub E : double ($class : class) { return 2.7182818284590452354; }
   
@@ -104,8 +104,8 @@ package Math {
   }
   
   sub signum : double ($class : class, $x : double) {
-    if (Number::Util->double_is_nan($x)) {
-      return Number::Util->DOUBLE_NAN();
+    if (Std::Number::Util->double_is_nan($x)) {
+      return Std::Number::Util->DOUBLE_NAN();
     }
     elsif ($x > 0.0) {
       return 1.0;
@@ -119,8 +119,8 @@ package Math {
   }
   
   sub signum_float : float ($class : class, $x : float) {
-    if (Number::Util->float_is_nan($x)) {
-      return Number::Util->FLOAT_NAN();
+    if (Std::Number::Util->float_is_nan($x)) {
+      return Std::Number::Util->FLOAT_NAN();
     }
     elsif ($x > 0.0f) {
       return 1.0f;

@@ -1,18 +1,18 @@
-use Arrays;
+use Std::Arrays;
 use Byte;
 
-package TestCase::Arrays {
+package TestCase::Std::Arrays {
 
-  sub equals_byte : int () {
+  jit sub equals_byte : int () {
     my $x1 = new byte[] {(byte)1, (byte)2, (byte)3};
     my $x2 = new byte[] {(byte)1, (byte)2, (byte)3};
     my $x3 = new byte[] {(byte)1, (byte)2};
     
-    if (Arrays::equals_byte($x1, $x2)) {
-      if (!Arrays::equals_byte($x1, $x3)) {
-        if (Arrays::equals_byte(undef, undef)) {
-          if (!Arrays::equals_byte($x1, undef)) {
-            if (!Arrays::equals_byte(undef, $x1)) {
+    if (Std::Arrays::equals_byte($x1, $x2)) {
+      if (!Std::Arrays::equals_byte($x1, $x3)) {
+        if (Std::Arrays::equals_byte(undef, undef)) {
+          if (!Std::Arrays::equals_byte($x1, undef)) {
+            if (!Std::Arrays::equals_byte(undef, $x1)) {
               return 1;
             }
           }
@@ -23,16 +23,16 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub equals_short : int () {
+  jit sub equals_short : int () {
     my $x1 = new short[] {(short)1, (short)2, (short)3};
     my $x2 = new short[] {(short)1, (short)2, (short)3};
     my $x3 = new short[] {(short)1, (short)2};
     
-    if (Arrays::equals_short($x1, $x2)) {
-      if (!Arrays::equals_short($x1, $x3)) {
-        if (Arrays::equals_short(undef, undef)) {
-          if (!Arrays::equals_short($x1, undef)) {
-            if (!Arrays::equals_short(undef, $x1)) {
+    if (Std::Arrays::equals_short($x1, $x2)) {
+      if (!Std::Arrays::equals_short($x1, $x3)) {
+        if (Std::Arrays::equals_short(undef, undef)) {
+          if (!Std::Arrays::equals_short($x1, undef)) {
+            if (!Std::Arrays::equals_short(undef, $x1)) {
               return 1;
             }
           }
@@ -43,16 +43,16 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub equals_int : int () {
+  jit sub equals_int : int () {
     my $x1 = new int[] {1, 2, 3};
     my $x2 = new int[] {1, 2, 3};
     my $x3 = new int[] {1, 2};
     
-    if (Arrays::equals_int($x1, $x2)) {
-      if (!Arrays::equals_int($x1, $x3)) {
-        if (Arrays::equals_int(undef, undef)) {
-          if (!Arrays::equals_int($x1, undef)) {
-            if (!Arrays::equals_int(undef, $x1)) {
+    if (Std::Arrays::equals_int($x1, $x2)) {
+      if (!Std::Arrays::equals_int($x1, $x3)) {
+        if (Std::Arrays::equals_int(undef, undef)) {
+          if (!Std::Arrays::equals_int($x1, undef)) {
+            if (!Std::Arrays::equals_int(undef, $x1)) {
               return 1;
             }
           }
@@ -63,16 +63,16 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub equals_long : int () {
+  jit sub equals_long : int () {
     my $x1 = new long[] {1L, 2L, 3L};
     my $x2 = new long[] {1L, 2L, 3L};
     my $x3 = new long[] {1L, 2L};
     
-    if (Arrays::equals_long($x1, $x2)) {
-      if (!Arrays::equals_long($x1, $x3)) {
-        if (Arrays::equals_long(undef, undef)) {
-          if (!Arrays::equals_long($x1, undef)) {
-            if (!Arrays::equals_long(undef, $x1)) {
+    if (Std::Arrays::equals_long($x1, $x2)) {
+      if (!Std::Arrays::equals_long($x1, $x3)) {
+        if (Std::Arrays::equals_long(undef, undef)) {
+          if (!Std::Arrays::equals_long($x1, undef)) {
+            if (!Std::Arrays::equals_long(undef, $x1)) {
               return 1;
             }
           }
@@ -83,16 +83,16 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub equals_float : int () {
+  jit sub equals_float : int () {
     my $x1 = new float[] {1f, 0.5f, 0.025f};
     my $x2 = new float[] {1f, 0.5f, 0.025f};
     my $x3 = new float[] {1f, 0.5f};
     
-    if (Arrays::equals_float($x1, $x2)) {
-      if (!Arrays::equals_float($x1, $x3)) {
-        if (Arrays::equals_float(undef, undef)) {
-          if (!Arrays::equals_float($x1, undef)) {
-            if (!Arrays::equals_float(undef, $x1)) {
+    if (Std::Arrays::equals_float($x1, $x2)) {
+      if (!Std::Arrays::equals_float($x1, $x3)) {
+        if (Std::Arrays::equals_float(undef, undef)) {
+          if (!Std::Arrays::equals_float($x1, undef)) {
+            if (!Std::Arrays::equals_float(undef, $x1)) {
               return 1;
             }
           }
@@ -103,16 +103,16 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub equals_double : int () {
+  jit sub equals_double : int () {
     my $x1 = new double[] {1d, 0.5d, 0.025d};
     my $x2 = new double[] {1d, 0.5d, 0.025d};
     my $x3 = new double[] {1d, 0.5d};
     
-    if (Arrays::equals_double($x1, $x2)) {
-      if (!Arrays::equals_double($x1, $x3)) {
-        if (Arrays::equals_double(undef, undef)) {
-          if (!Arrays::equals_double($x1, undef)) {
-            if (!Arrays::equals_double(undef, $x1)) {
+    if (Std::Arrays::equals_double($x1, $x2)) {
+      if (!Std::Arrays::equals_double($x1, $x3)) {
+        if (Std::Arrays::equals_double(undef, undef)) {
+          if (!Std::Arrays::equals_double($x1, undef)) {
+            if (!Std::Arrays::equals_double(undef, $x1)) {
               return 1;
             }
           }
@@ -123,11 +123,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_byte : int () {
+  jit sub copy_of_byte : int () {
     
     my $values = new byte[] {(byte)0, (byte)1, (byte)2};
     
-    my $values2 = Arrays::copy_of_byte($values, len $values);
+    my $values2 = Std::Arrays::copy_of_byte($values, len $values);
     
     if (@$values2 == 3) {
       if ((int)$values2->[0] == (int)(byte)0) {
@@ -142,12 +142,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_byte_over : int () {
+  jit sub copy_of_byte_over : int () {
     
     my $values = new byte[] {(byte)0, (byte)1, (byte)2};
     
     my $length = len $values + 1;
-    my $values2 = Arrays::copy_of_byte($values, $length);
+    my $values2 = Std::Arrays::copy_of_byte($values, $length);
     
     if (@$values2 == 4) {
       if ((int)$values2->[0] == (int)(byte)0) {
@@ -164,12 +164,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_byte_less : int () {
+  jit sub copy_of_byte_less : int () {
     
     my $values = new byte[] {(byte)0, (byte)1, (byte)2};
     
     my $length = len $values - 1;
-    my $values2 = Arrays::copy_of_byte($values, $length);
+    my $values2 = Std::Arrays::copy_of_byte($values, $length);
     
     if (@$values2 == 2) {
       if ((int)$values2->[0] == (int)(byte)0) {
@@ -182,10 +182,10 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_byte_undef : int () {
+  jit sub copy_of_byte_undef : int () {
     
     eval {
-      Arrays::copy_of_byte(undef, 1);
+      Std::Arrays::copy_of_byte(undef, 1);
     };
     
     if ($@) {
@@ -195,11 +195,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_byte_negative : int () {
+  jit sub copy_of_byte_negative : int () {
     
     eval {
       my $values = new byte[] {(byte)0, (byte)1, (byte)2};
-      Arrays::copy_of_byte(undef, -1);
+      Std::Arrays::copy_of_byte(undef, -1);
     };
     
     if ($@) {
@@ -209,11 +209,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_short : int () {
+  jit sub copy_of_short : int () {
     
     my $values = new short[] {(short)0, (short)1, (short)2};
     
-    my $values2 = Arrays::copy_of_short($values, len $values);
+    my $values2 = Std::Arrays::copy_of_short($values, len $values);
     
     if (@$values2 == 3) {
       if ((int)$values2->[0] == (int)(short)0) {
@@ -228,12 +228,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_short_over : int () {
+  jit sub copy_of_short_over : int () {
     
     my $values = new short[] {(short)0, (short)1, (short)2};
     
     my $length = len $values + 1;
-    my $values2 = Arrays::copy_of_short($values, $length);
+    my $values2 = Std::Arrays::copy_of_short($values, $length);
     
     if (@$values2 == 4) {
       if ((int)$values2->[0] == (int)(short)0) {
@@ -250,12 +250,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_short_less : int () {
+  jit sub copy_of_short_less : int () {
     
     my $values = new short[] {(short)0, (short)1, (short)2};
     
     my $length = len $values - 1;
-    my $values2 = Arrays::copy_of_short($values, $length);
+    my $values2 = Std::Arrays::copy_of_short($values, $length);
     
     if (@$values2 == 2) {
       if ((int)$values2->[0] == (int)(short)0) {
@@ -268,10 +268,10 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_short_undef : int () {
+  jit sub copy_of_short_undef : int () {
     
     eval {
-      Arrays::copy_of_short(undef, 1);
+      Std::Arrays::copy_of_short(undef, 1);
     };
     
     if ($@) {
@@ -281,11 +281,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_short_negative : int () {
+  jit sub copy_of_short_negative : int () {
     
     eval {
       my $values = new short[] {(short)0, (short)1, (short)2};
-      Arrays::copy_of_short(undef, -1);
+      Std::Arrays::copy_of_short(undef, -1);
     };
     
     if ($@) {
@@ -296,11 +296,11 @@ package TestCase::Arrays {
   }
 
 
-  sub copy_of_int : int () {
+  jit sub copy_of_int : int () {
     
     my $values = new int[] {0, 1, 2};
     
-    my $values2 = Arrays::copy_of_int($values, len $values);
+    my $values2 = Std::Arrays::copy_of_int($values, len $values);
     
     if (@$values2 == 3) {
       if ($values2->[0] == 0) {
@@ -315,12 +315,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_int_over : int () {
+  jit sub copy_of_int_over : int () {
     
     my $values = new int[] {0, 1, 2};
     
     my $length = len $values + 1;
-    my $values2 = Arrays::copy_of_int($values, $length);
+    my $values2 = Std::Arrays::copy_of_int($values, $length);
     
     if (@$values2 == 4) {
       if ($values2->[0] == 0) {
@@ -337,12 +337,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_int_less : int () {
+  jit sub copy_of_int_less : int () {
     
     my $values = new int[] {0, 1, 2};
     
     my $length = len $values - 1;
-    my $values2 = Arrays::copy_of_int($values, $length);
+    my $values2 = Std::Arrays::copy_of_int($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0) {
@@ -355,10 +355,10 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_int_undef : int () {
+  jit sub copy_of_int_undef : int () {
     
     eval {
-      Arrays::copy_of_int(undef, 1);
+      Std::Arrays::copy_of_int(undef, 1);
     };
     
     if ($@) {
@@ -368,11 +368,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_int_negative : int () {
+  jit sub copy_of_int_negative : int () {
     
     eval {
       my $values = new int[] {0, 1, 2};
-      Arrays::copy_of_int(undef, -1);
+      Std::Arrays::copy_of_int(undef, -1);
     };
     
     if ($@) {
@@ -382,11 +382,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_long : int () {
+  jit sub copy_of_long : int () {
     
     my $values = new long[] {0L, 1L, 2L};
     
-    my $values2 = Arrays::copy_of_long($values, len $values);
+    my $values2 = Std::Arrays::copy_of_long($values, len $values);
     
     if (@$values2 == 3) {
       if ($values2->[0] == 0L) {
@@ -401,12 +401,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_long_over : int () {
+  jit sub copy_of_long_over : int () {
     
     my $values = new long[] {0L, 1L, 2L};
     
     my $length = len $values + 1;
-    my $values2 = Arrays::copy_of_long($values, $length);
+    my $values2 = Std::Arrays::copy_of_long($values, $length);
     
     if (@$values2 == 4) {
       if ($values2->[0] == 0L) {
@@ -423,12 +423,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_long_less : int () {
+  jit sub copy_of_long_less : int () {
     
     my $values = new long[] {0L, 1L, 2L};
     
     my $length = len $values - 1;
-    my $values2 = Arrays::copy_of_long($values, $length);
+    my $values2 = Std::Arrays::copy_of_long($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0L) {
@@ -441,10 +441,10 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_long_undef : int () {
+  jit sub copy_of_long_undef : int () {
     
     eval {
-      Arrays::copy_of_long(undef, 1);
+      Std::Arrays::copy_of_long(undef, 1);
     };
     
     if ($@) {
@@ -454,11 +454,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_long_negative : int () {
+  jit sub copy_of_long_negative : int () {
     
     eval {
       my $values = new long[] {0L, 1L, 2L};
-      Arrays::copy_of_long(undef, -1);
+      Std::Arrays::copy_of_long(undef, -1);
     };
     
     if ($@) {
@@ -468,11 +468,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_float : int () {
+  jit sub copy_of_float : int () {
     
     my $values = new float[] {0f, 1f, 2f};
     
-    my $values2 = Arrays::copy_of_float($values, len $values);
+    my $values2 = Std::Arrays::copy_of_float($values, len $values);
     
     if (@$values2 == 3) {
       if ($values2->[0] == 0f) {
@@ -487,12 +487,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_float_over : int () {
+  jit sub copy_of_float_over : int () {
     
     my $values = new float[] {0f, 1f, 2f};
     
     my $length = len $values + 1;
-    my $values2 = Arrays::copy_of_float($values, $length);
+    my $values2 = Std::Arrays::copy_of_float($values, $length);
     
     if (@$values2 == 4) {
       if ($values2->[0] == 0f) {
@@ -509,12 +509,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_float_less : int () {
+  jit sub copy_of_float_less : int () {
     
     my $values = new float[] {0f, 1f, 2f};
     
     my $length = len $values - 1;
-    my $values2 = Arrays::copy_of_float($values, $length);
+    my $values2 = Std::Arrays::copy_of_float($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0f) {
@@ -527,10 +527,10 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_float_undef : int () {
+  jit sub copy_of_float_undef : int () {
     
     eval {
-      Arrays::copy_of_float(undef, 1);
+      Std::Arrays::copy_of_float(undef, 1);
     };
     
     if ($@) {
@@ -540,11 +540,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_float_negative : int () {
+  jit sub copy_of_float_negative : int () {
     
     eval {
       my $values = new float[] {0f, 1f, 2f};
-      Arrays::copy_of_float(undef, -1);
+      Std::Arrays::copy_of_float(undef, -1);
     };
     
     if ($@) {
@@ -554,11 +554,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_double : int () {
+  jit sub copy_of_double : int () {
     
     my $values = new double[] {0d, 1d, 2d};
     
-    my $values2 = Arrays::copy_of_double($values, len $values);
+    my $values2 = Std::Arrays::copy_of_double($values, len $values);
     
     if (@$values2 == 3) {
       if ($values2->[0] == 0d) {
@@ -573,12 +573,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_double_over : int () {
+  jit sub copy_of_double_over : int () {
     
     my $values = new double[] {0d, 1d, 2d};
     
     my $length = len $values + 1;
-    my $values2 = Arrays::copy_of_double($values, $length);
+    my $values2 = Std::Arrays::copy_of_double($values, $length);
     
     if (@$values2 == 4) {
       if ($values2->[0] == 0d) {
@@ -595,12 +595,12 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_double_less : int () {
+  jit sub copy_of_double_less : int () {
     
     my $values = new double[] {0d, 1d, 2d};
     
     my $length = len $values - 1;
-    my $values2 = Arrays::copy_of_double($values, $length);
+    my $values2 = Std::Arrays::copy_of_double($values, $length);
     
     if (@$values2 == 2) {
       if ($values2->[0] == 0d) {
@@ -613,10 +613,10 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_double_undef : int () {
+  jit sub copy_of_double_undef : int () {
     
     eval {
-      Arrays::copy_of_double(undef, 1);
+      Std::Arrays::copy_of_double(undef, 1);
     };
     
     if ($@) {
@@ -626,11 +626,11 @@ package TestCase::Arrays {
     return 0;
   }
 
-  sub copy_of_double_negative : int () {
+  jit sub copy_of_double_negative : int () {
     
     eval {
       my $values = new double[] {0d, 1d, 2d};
-      Arrays::copy_of_double(undef, -1);
+      Std::Arrays::copy_of_double(undef, -1);
     };
     
     if ($@) {

@@ -1,5 +1,4 @@
 use Double;
-use Math;
 
 package TestCase::Double {
   jit sub basic : int () {

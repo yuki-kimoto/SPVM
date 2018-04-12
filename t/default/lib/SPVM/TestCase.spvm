@@ -5,14 +5,14 @@ use TestCase::Empty;
 use TestCase::Private;
 
 use Byte;
-use Number::Util;
 use Short;
 use Int;
 use Long;
 use Float;
 use Double;
 
-use Math;
+use Std::Math;
+use Std::Number::Util;
 
 package TestCase {
   our $PACKAGE_VAR_INT : int;
@@ -485,10 +485,10 @@ package TestCase {
   
   sub package_var : int () {
     if ($TestCase::PACKAGE_VAR_INT == 0) {
-      $TestCase::PACKAGE_VAR_INT = Number::Util->INT_MAX_VALUE();
-      if ($TestCase::PACKAGE_VAR_INT == Number::Util->INT_MAX_VALUE()) {
-        $TestCase::PACKAGE_VAR_LONG = Number::Util->LONG_MAX_VALUE();
-        if ($TestCase::PACKAGE_VAR_LONG == Number::Util->LONG_MAX_VALUE()) {
+      $TestCase::PACKAGE_VAR_INT = Std::Number::Util->INT_MAX_VALUE();
+      if ($TestCase::PACKAGE_VAR_INT == Std::Number::Util->INT_MAX_VALUE()) {
+        $TestCase::PACKAGE_VAR_LONG = Std::Number::Util->LONG_MAX_VALUE();
+        if ($TestCase::PACKAGE_VAR_LONG == Std::Number::Util->LONG_MAX_VALUE()) {
           $TestCase::PACKAGE_VAR_MINIMAL = TestCase::Minimal::new();
           
           $TestCase::PACKAGE_VAR_MINIMAL->{x} = 4;
@@ -505,10 +505,10 @@ package TestCase {
 
   sub package_var_rel_name : int () {
     if ($PACKAGE_VAR_INT2 == 0) {
-      $PACKAGE_VAR_INT2 = Number::Util->INT_MAX_VALUE();
-      if ($PACKAGE_VAR_INT2 == Number::Util->INT_MAX_VALUE()) {
-        $PACKAGE_VAR_LONG2 = Number::Util->LONG_MAX_VALUE();
-        if ($PACKAGE_VAR_LONG2 == Number::Util->LONG_MAX_VALUE()) {
+      $PACKAGE_VAR_INT2 = Std::Number::Util->INT_MAX_VALUE();
+      if ($PACKAGE_VAR_INT2 == Std::Number::Util->INT_MAX_VALUE()) {
+        $PACKAGE_VAR_LONG2 = Std::Number::Util->LONG_MAX_VALUE();
+        if ($PACKAGE_VAR_LONG2 == Std::Number::Util->LONG_MAX_VALUE()) {
           $PACKAGE_VAR_MINIMAL2 = TestCase::Minimal::new();
           
           $PACKAGE_VAR_MINIMAL2->{x} = 4;
@@ -667,7 +667,7 @@ package TestCase {
   sub spvm_set_and_get_byte : int ($nums : byte[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == Number::Util->BYTE_MAX_VALUE()) {
+      if ($nums->[1] == Std::Number::Util->BYTE_MAX_VALUE()) {
         return 1;
       }
     }
@@ -677,7 +677,7 @@ package TestCase {
   sub spvm_set_and_get_short : int ($nums : short[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == Number::Util->SHORT_MAX_VALUE()) {
+      if ($nums->[1] == Std::Number::Util->SHORT_MAX_VALUE()) {
         return 1;
       }
     }
@@ -687,7 +687,7 @@ package TestCase {
   sub spvm_set_and_get_int : int ($nums : int[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == Number::Util->INT_MAX_VALUE()) {
+      if ($nums->[1] == Std::Number::Util->INT_MAX_VALUE()) {
         return 1;
       }
     }
@@ -697,7 +697,7 @@ package TestCase {
   sub spvm_set_and_get_long : int ($nums : long[]) {
     
     if ($nums->[0] == 0L) {
-      if ($nums->[1] == Number::Util->LONG_MAX_VALUE()) {
+      if ($nums->[1] == Std::Number::Util->LONG_MAX_VALUE()) {
         return 1;
       }
     }
@@ -862,7 +862,7 @@ package TestCase {
     return 0;
   }
   sub sin : int () {
-    my $value = Math->sin(Math->PI());
+    my $value = Std::Math->sin(Std::Math->PI());
     
     if ($value < 0.000001 && $value > -0.000001) {
       return 1;
@@ -871,7 +871,7 @@ package TestCase {
   }
 
   sub cos : int () {
-    my $value = Math->cos(Math->PI() / 2.0);
+    my $value = Std::Math->cos(Std::Math->PI() / 2.0);
     
     if ($value < 0.000001 && $value > -0.000001) {
       return 1;
@@ -880,7 +880,7 @@ package TestCase {
   }
   
   sub tan : int () {
-    my $value = Math->tan(Math->PI() / 4.0);
+    my $value = Std::Math->tan(Std::Math->PI() / 4.0);
     
     if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
       return 1;
@@ -1845,19 +1845,19 @@ package TestCase {
   sub object_field_set_and_get : int () {
     my $test_case = new TestCase;
     
-    $test_case->{x_byte} = Number::Util->BYTE_MAX_VALUE();
-    $test_case->{x_short} = Number::Util->SHORT_MAX_VALUE();
-    $test_case->{x_int} = Number::Util->INT_MAX_VALUE();
-    $test_case->{x_long} = Number::Util->LONG_MAX_VALUE();
+    $test_case->{x_byte} = Std::Number::Util->BYTE_MAX_VALUE();
+    $test_case->{x_short} = Std::Number::Util->SHORT_MAX_VALUE();
+    $test_case->{x_int} = Std::Number::Util->INT_MAX_VALUE();
+    $test_case->{x_long} = Std::Number::Util->LONG_MAX_VALUE();
     $test_case->{x_float} = TestCase::FLOAT_PRECICE();
     $test_case->{x_double} = TestCase::DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal::new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
-    if ((int)$test_case->{x_byte} == (int)Number::Util->BYTE_MAX_VALUE()) {
-      if ((int)$test_case->{x_short} == (int)Number::Util->SHORT_MAX_VALUE()) {
-        if ($test_case->{x_int} == Number::Util->INT_MAX_VALUE()) {
-          if ($test_case->{x_long} == Number::Util->LONG_MAX_VALUE()) {
+    if ((int)$test_case->{x_byte} == (int)Std::Number::Util->BYTE_MAX_VALUE()) {
+      if ((int)$test_case->{x_short} == (int)Std::Number::Util->SHORT_MAX_VALUE()) {
+        if ($test_case->{x_int} == Std::Number::Util->INT_MAX_VALUE()) {
+          if ($test_case->{x_long} == Std::Number::Util->LONG_MAX_VALUE()) {
             if ($test_case->{x_float} == TestCase::FLOAT_PRECICE()) {
               if ($test_case->{x_double} == TestCase::DOUBLE_PRECICE()) {
                 if ($test_case->{minimal}->{x} == 3) {
@@ -1876,28 +1876,28 @@ package TestCase {
   sub object_field_set_and_get_again : int () {
     my $test_case = new TestCase;
     
-    $test_case->{x_byte} = Number::Util->BYTE_MAX_VALUE();
-    $test_case->{x_short} = Number::Util->SHORT_MAX_VALUE();
-    $test_case->{x_int} = Number::Util->INT_MAX_VALUE();
-    $test_case->{x_long} = Number::Util->LONG_MAX_VALUE();
+    $test_case->{x_byte} = Std::Number::Util->BYTE_MAX_VALUE();
+    $test_case->{x_short} = Std::Number::Util->SHORT_MAX_VALUE();
+    $test_case->{x_int} = Std::Number::Util->INT_MAX_VALUE();
+    $test_case->{x_long} = Std::Number::Util->LONG_MAX_VALUE();
     $test_case->{x_float} = TestCase::FLOAT_PRECICE();
     $test_case->{x_double} = TestCase::DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal::new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
 
-    $test_case->{x_byte} = Number::Util->BYTE_MAX_VALUE();
-    $test_case->{x_short} = Number::Util->SHORT_MAX_VALUE();
-    $test_case->{x_int} = Number::Util->INT_MAX_VALUE();
-    $test_case->{x_long} = Number::Util->LONG_MAX_VALUE();
+    $test_case->{x_byte} = Std::Number::Util->BYTE_MAX_VALUE();
+    $test_case->{x_short} = Std::Number::Util->SHORT_MAX_VALUE();
+    $test_case->{x_int} = Std::Number::Util->INT_MAX_VALUE();
+    $test_case->{x_long} = Std::Number::Util->LONG_MAX_VALUE();
     $test_case->{x_float} = TestCase::FLOAT_PRECICE();
     $test_case->{x_double} = TestCase::DOUBLE_PRECICE();
     $test_case->{minimal} = $minimal;
 
-    if ((int)$test_case->{x_byte} == (int)Number::Util->BYTE_MAX_VALUE()) {
-      if ((int)$test_case->{x_short} == (int)Number::Util->SHORT_MAX_VALUE()) {
-        if ($test_case->{x_int} == Number::Util->INT_MAX_VALUE()) {
-          if ($test_case->{x_long} == Number::Util->LONG_MAX_VALUE()) {
+    if ((int)$test_case->{x_byte} == (int)Std::Number::Util->BYTE_MAX_VALUE()) {
+      if ((int)$test_case->{x_short} == (int)Std::Number::Util->SHORT_MAX_VALUE()) {
+        if ($test_case->{x_int} == Std::Number::Util->INT_MAX_VALUE()) {
+          if ($test_case->{x_long} == Std::Number::Util->LONG_MAX_VALUE()) {
             if ($test_case->{x_float} == TestCase::FLOAT_PRECICE()) {
               if ($test_case->{x_double} == TestCase::DOUBLE_PRECICE()) {
                 if ($test_case->{minimal}->{x} == 3) {
@@ -1994,11 +1994,11 @@ package TestCase {
     return 0;
   }
   sub array_init_byte : int () {
-    my $nums = new byte[] {(byte)1, (byte)2, Number::Util->BYTE_MAX_VALUE()};
+    my $nums = new byte[] {(byte)1, (byte)2, Std::Number::Util->BYTE_MAX_VALUE()};
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
-        if ($nums->[2] == Number::Util->BYTE_MAX_VALUE()) {
+        if ($nums->[2] == Std::Number::Util->BYTE_MAX_VALUE()) {
           return 1;
         }
       }
@@ -3205,7 +3205,7 @@ package TestCase {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
-        if ($values->[2] == Number::Util->BYTE_MAX_VALUE()) {
+        if ($values->[2] == Std::Number::Util->BYTE_MAX_VALUE()) {
            if (@$values == 3) {
              return 1;
            }
@@ -3220,7 +3220,7 @@ package TestCase {
     
     if ((int)$values->[0] == (int)(short)97) {
       if ((int)$values->[1] == (int)(short)98) {
-        if ((int)$values->[2] == (int)(short)Number::Util->SHORT_MAX_VALUE()) {
+        if ((int)$values->[2] == (int)(short)Std::Number::Util->SHORT_MAX_VALUE()) {
            if (@$values == 3) {
              return 1;
            }
@@ -3235,7 +3235,7 @@ package TestCase {
     
     if ($values->[0] == (int)97) {
       if ($values->[1] == (int)98) {
-        if ($values->[2] == (int)Number::Util->INT_MAX_VALUE()) {
+        if ($values->[2] == (int)Std::Number::Util->INT_MAX_VALUE()) {
            if (@$values == 3) {
              return 1;
            }
@@ -3250,7 +3250,7 @@ package TestCase {
     
     if ($values->[0] == (long)97) {
       if ($values->[1] == (long)98) {
-        if ($values->[2] == (long)Number::Util->LONG_MAX_VALUE()) {
+        if ($values->[2] == (long)Std::Number::Util->LONG_MAX_VALUE()) {
            if (@$values == 3) {
              return 1;
            }

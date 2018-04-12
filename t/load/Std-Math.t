@@ -5,6 +5,6 @@ use Test::More 'no_plan';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'Math';
+use SPVM 'Std::Math';
 
 pass();

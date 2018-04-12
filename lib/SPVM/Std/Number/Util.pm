@@ -1,10 +1,10 @@
-package SPVM::Number::Util;
+package SPVM::Std::Number::Util;
 
 1;
 
 =head1 NAME
 
-SPVM::Number::Util - Number utilities
+SPVM::Std::Number::Util - Standard Number utilities
 
 =head1 CLASS METHODS
 
