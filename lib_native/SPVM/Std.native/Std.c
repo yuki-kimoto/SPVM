@@ -6,7 +6,7 @@
 
 #include "spvm_api.h"
 
-void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__Std__print(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* object = args[0].object_value;
@@ -22,7 +22,7 @@ void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-void SPVM__CORE__warn(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__Std__warn(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* object = args[0].object_value;
@@ -40,7 +40,7 @@ void SPVM__CORE__warn(SPVM_API* api, SPVM_API_VALUE* args) {
   fprintf(stderr, "\n");
 }
 
-int64_t SPVM__CORE__time(SPVM_API* api, SPVM_API_VALUE* args) {
+int64_t SPVM__Std__time(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
 
@@ -50,7 +50,7 @@ int64_t SPVM__CORE__time(SPVM_API* api, SPVM_API_VALUE* args) {
   return timer_value;
 }
 
-int32_t SPVM__CORE__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* array = args[0].object_value;
@@ -70,13 +70,13 @@ int32_t SPVM__CORE__sum_int(SPVM_API* api, SPVM_API_VALUE* args) {
   return total;
 }
 
-int32_t SPVM__CORE__test1(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__test1(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int32_t num1 = args[0].int_value;
   int32_t num2 = args[1].int_value;
   
-  int32_t sub_id = api->get_sub_id(api, "CORE::test2");
+  int32_t sub_id = api->get_sub_id(api, "Std::test2");
   
   SPVM_API_VALUE new_args[2];
   new_args[0].int_value = 5;
@@ -89,7 +89,7 @@ int32_t SPVM__CORE__test1(SPVM_API* api, SPVM_API_VALUE* args) {
   return num3;
 }
 
-int32_t SPVM__CORE__test2(SPVM_API* api, SPVM_API_VALUE* args) {
+int32_t SPVM__Std__test2(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   int32_t num1 = args[0].int_value;

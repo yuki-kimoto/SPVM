@@ -43,7 +43,7 @@ sub MY::postamble {
   my $spvm_build = SPVM::Build->new;
   
   my @module_names = qw(
-    SPVM::CORE
+    SPVM::Std
     SPVM::Std::Math
     SPVM::Std::Arrays
     SPVM::Std::Number::Util

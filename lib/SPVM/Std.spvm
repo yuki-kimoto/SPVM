@@ -1,4 +1,4 @@
-package CORE {
+package Std {
   native sub print : void ($value : String);
   native sub warn : void ($value : String);
   

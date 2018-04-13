@@ -15,7 +15,7 @@ my $file = basename $0;
 use FindBin;
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
-use SPVM 'CORE'; my $use_core_line = __LINE__;
+use SPVM 'Std'; my $use_core_line = __LINE__;
 
 use POSIX ();
 
@@ -52,7 +52,7 @@ my $NaN = SPVM::NaN();
 
 use SPVM 'Double';
 use SPVM 'Float';
-use SPVM 'CORE';
+use SPVM 'Std';
 
 {
   # SPVM::Build tests
@@ -67,7 +67,7 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # time
 {
-  cmp_ok(abs(time - SPVM::CORE::time()), '<', 2);
+  cmp_ok(abs(time - SPVM::Std::time()), '<', 2);
 }
 
 {
@@ -95,7 +95,7 @@ is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
     {name => 'TestCase', file => $file, line => $use_test_line},
-    {name => 'CORE', file => $file, line => $use_core_line}
+    {name => 'Std', file => $file, line => $use_core_line}
   ]
 );
 =cut

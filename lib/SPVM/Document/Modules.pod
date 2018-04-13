@@ -4,9 +4,9 @@ SPVM::Document::Modules - SPVM Standard Modules(BETA before 1.0)
 
 =head1 SPVM Standard Modules
 
-=head2 SPVM::CORE
+=head2 SPVM::Std
 
-L<SPVM::CORE> - SPVM Standard Functions
+L<SPVM::Std> - SPVM Standard Functions
 
 =head2 SPVM::Byte
 

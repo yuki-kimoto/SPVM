@@ -118,20 +118,20 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   }
   
   // use CORE module
-  SPVM_OP* op_use_core = SPVM_OP_new_op_use_from_package_name(compiler, "CORE", "CORE", 0);
+  SPVM_OP* op_use_core = SPVM_OP_new_op_use_from_package_name(compiler, "Std", "Std", 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_core);
-  SPVM_HASH_insert(compiler->op_use_symtable, "CORE", strlen("CORE"), op_use_core);
+  SPVM_HASH_insert(compiler->op_use_symtable, "Std", strlen("Std"), op_use_core);
   
   // use String module
-  SPVM_OP* op_use_string = SPVM_OP_new_op_use_from_package_name(compiler, "String", "CORE", 0);
+  SPVM_OP* op_use_string = SPVM_OP_new_op_use_from_package_name(compiler, "String", "Std", 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_string);
   SPVM_HASH_insert(compiler->op_use_symtable, "String", strlen("String"), op_use_string);
-
+  
   // use Object module
-  SPVM_OP* op_use_object = SPVM_OP_new_op_use_from_package_name(compiler, "Object", "CORE", 0);
+  SPVM_OP* op_use_object = SPVM_OP_new_op_use_from_package_name(compiler, "Object", "Std", 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_object);
   SPVM_HASH_insert(compiler->op_use_symtable, "Object", strlen("Object"), op_use_object);
-
+  
   /* call SPVM_yyparse */
   int32_t parse_success = SPVM_yyparse(compiler);
   

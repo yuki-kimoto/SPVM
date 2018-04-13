@@ -18,7 +18,7 @@
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
 
-#include "lib_native/SPVM/CORE.native/CORE.c"
+#include "lib_native/SPVM/Std.native/Std.c"
 
 #include <spvm_api.h>
 
@@ -71,23 +71,23 @@ int main(int argc, char *argv[])
         // Sub abs name
         const char* sub_abs_name = sub->abs_name;
         
-        if (strcmp(sub_abs_name, "CORE::print") == 0) {
-          sub->native_address = SPVM__CORE__print;
+        if (strcmp(sub_abs_name, "Std::print") == 0) {
+          sub->native_address = SPVM__Std__print;
         }
-        else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
-          sub->native_address = SPVM__CORE__warn;
+        else if (strcmp(sub_abs_name, "Std::warn") == 0) {
+          sub->native_address = SPVM__Std__warn;
         }
-        else if (strcmp(sub_abs_name, "CORE::time") == 0) {
-          sub->native_address = SPVM__CORE__time;
+        else if (strcmp(sub_abs_name, "Std::time") == 0) {
+          sub->native_address = SPVM__Std__time;
         }
-        else if (strcmp(sub_abs_name, "CORE::sum_int") == 0) {
-          sub->native_address = SPVM__CORE__sum_int;
+        else if (strcmp(sub_abs_name, "Std::sum_int") == 0) {
+          sub->native_address = SPVM__Std__sum_int;
         }
-        else if (strcmp(sub_abs_name, "CORE::test1") == 0) {
-          sub->native_address = SPVM__CORE__test1;
+        else if (strcmp(sub_abs_name, "Std::test1") == 0) {
+          sub->native_address = SPVM__Std__test1;
         }
-        else if (strcmp(sub_abs_name, "CORE::test2") == 0) {
-          sub->native_address = SPVM__CORE__test2;
+        else if (strcmp(sub_abs_name, "Std::test2") == 0) {
+          sub->native_address = SPVM__Std__test2;
         }
       }
     }
