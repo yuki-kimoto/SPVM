@@ -15,7 +15,7 @@
   #include "spvm_block.h"
 %}
 
-%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CLASS
+%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME INTERFACE REF ISA
 %token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
@@ -662,7 +662,7 @@ array_elem
 call_sub
   : sub_name '(' opt_assignable_terms  ')'
     {
-      $$ = SPVM_OP_build_call_sub(compiler, SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, $1->file, $1->line), $1, $3);
+      $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $3);
     }
   | package_name ARROW sub_name '(' opt_assignable_terms  ')'
     {
@@ -754,10 +754,6 @@ arg
 
 invocant
   : var ':' SELF
-    {
-      $$ = SPVM_OP_build_arg(compiler, $1, $3);
-    }
-  | var ':' CLASS
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3);
     }

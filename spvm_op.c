@@ -132,7 +132,6 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "BOOL",
   "LOOP_INCREMENT",
   "SELF",
-  "CLASS",
   "CHECK_CAST",
   "STRING_EQ",
   "STRING_NE",
@@ -1090,22 +1089,11 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
   
   SPVM_OP* found_op_sub;
   
-  if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD) {
-    const char* package_name = call_sub->op_name_package->uv.name;
-    const char* sub_name = call_sub->op_name->uv.name;
-    
-    const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
-    
-    found_op_sub= SPVM_HASH_search(
-      compiler->op_sub_symtable,
-      sub_abs_name,
-      strlen(sub_abs_name)
-    );
-  }
-  else if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
-    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_term);
+  const char* sub_name = call_sub->op_name->uv.name;
+  // $obj->sub_name
+  if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_invocant);
     const char* type_name = type->name;
-    const char* sub_name = call_sub->op_name->uv.name;
     const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, type_name, sub_name);
     
     found_op_sub= SPVM_HASH_search(
@@ -1114,18 +1102,18 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
       strlen(sub_abs_name)
     );
   }
-  else if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_SUB) {
-    const char* sub_name = call_sub->op_name->uv.name;
-    
-    if (strstr(sub_name, "::")) {
-      const char* sub_abs_name = call_sub->op_name->uv.name;
-      
+  else {
+    // Package->sub_name
+    if (call_sub->op_invocant) {
+      const char* package_name = call_sub->op_invocant->uv.name;
+      const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
       found_op_sub= SPVM_HASH_search(
         compiler->op_sub_symtable,
         sub_abs_name,
         strlen(sub_abs_name)
       );
     }
+    // sub_name
     else {
       // Search current pacakge
       SPVM_PACKAGE* package = op_package_current->uv.package;
@@ -1148,9 +1136,6 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
         );
       }
     }
-  }
-  else {
-    assert(0);
   }
   
   if (found_op_sub) {
@@ -1854,22 +1839,15 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
         // Call type
         SPVM_OP* op_type = op_arg->first->uv.my->op_type;
         if (op_type) {
-          if (op_type->id == SPVM_OP_C_ID_CLASS) {
-            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
-          }
-          else if (op_type->id == SPVM_OP_C_ID_SELF) {
+          if (op_type->id == SPVM_OP_C_ID_SELF) {
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
-            SPVM_LIST_push(sub->op_args, op_arg->first);
           }
           else {
-            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_SUB;
-            SPVM_LIST_push(sub->op_args, op_arg->first);
+            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
           }
         }
       }
-      else {
-        SPVM_LIST_push(sub->op_args, op_arg->first);
-      }
+      SPVM_LIST_push(sub->op_args, op_arg->first);
       sub_index++;
     }
   }
@@ -2036,28 +2014,24 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
   SPVM_CALL_SUB* call_sub = SPVM_CALL_SUB_new(compiler);
   
   const char* sub_name = op_name_sub->uv.name;
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_invocant->file, op_invocant->line);
   
-  // Normal call
-  if (op_invocant->id == SPVM_OP_C_ID_NULL) {
-    call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_SUB;
-    op_name->uv.name = sub_name;
-    call_sub->op_name = op_name;
+  if (strstr(sub_name, "::")) {
+    SPVM_yyerror_format(compiler, "subroutine name can't conatin :: at %s line %d\n", op_name_sub->file, op_name_sub->line);
   }
-  // Class method call
-  else if (op_invocant->id == SPVM_OP_C_ID_NAME) {
-    call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
-    op_name->uv.name = sub_name;
-    call_sub->op_name_package = op_invocant;
-    call_sub->op_name = op_name;
-  }
+  
   // Method call
-  else {
+  if (op_invocant && op_invocant->id != SPVM_OP_C_ID_NAME) {
     call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
-    call_sub->op_term = op_invocant;
+    call_sub->op_invocant = op_invocant;
     call_sub->op_name = op_name_sub;
     
     SPVM_OP_insert_child(compiler, op_terms, op_terms->first, op_invocant);
+  }
+  // Class method call
+  else {
+    call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
+    call_sub->op_invocant = op_invocant;
+    call_sub->op_name = op_name_sub;
   }
   
   op_call_sub->uv.call_sub = call_sub;

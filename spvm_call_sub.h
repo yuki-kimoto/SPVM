@@ -4,11 +4,10 @@
 #include "spvm_base.h"
 
 struct SPVM_call_sub {
-  SPVM_OP* op_term;
+  SPVM_OP* op_invocant;
   SPVM_OP* op_name;
   SPVM_SUB* sub;
   int32_t call_type_id;
-  SPVM_OP* op_name_package;
 };
 
 SPVM_CALL_SUB* SPVM_CALL_SUB_new(SPVM_COMPILER* compiler);

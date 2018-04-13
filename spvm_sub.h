@@ -4,9 +4,8 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_SUB_C_CALL_TYPE_ID_SUB,
-  SPVM_SUB_C_CALL_TYPE_ID_METHOD,
   SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD,
+  SPVM_SUB_C_CALL_TYPE_ID_METHOD,
 };
 
 // Method information
