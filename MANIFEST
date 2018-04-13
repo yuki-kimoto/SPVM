@@ -3,8 +3,6 @@ lib/SPVM.pm
 lib/SPVM/Build.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
-lib/SPVM/CORE.pm
-lib/SPVM/CORE.spvm
 lib/SPVM/Document/Extension.pod
 lib/SPVM/Document/FAQ.pod
 lib/SPVM/Document/Functions.pod
@@ -35,18 +33,25 @@ lib/SPVM/Perl/Object/Package/String.pm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/spvm_api.h
+lib/SPVM/Std.pm
+lib/SPVM/Std.spvm
 lib/SPVM/Std/Arrays.pm
 lib/SPVM/Std/Arrays.spvm
+lib/SPVM/Std/IO.pm
+lib/SPVM/Std/IO.spvm
 lib/SPVM/Std/Math.pm
 lib/SPVM/Std/Math.spvm
 lib/SPVM/Std/Number/Util.pm
 lib/SPVM/Std/Number/Util.spvm
+lib/SPVM/Std/Time.pm
+lib/SPVM/Std/Time.spvm
 lib/SPVM/String.pm
 lib/SPVM/String.spvm
-lib_native/SPVM/CORE.native/CORE.c
 lib_native/SPVM/Std/Arrays.native/Arrays.c
+lib_native/SPVM/Std/IO.native/IO.c
 lib_native/SPVM/Std/Math.native/Math.c
 lib_native/SPVM/Std/Number/Util.native/Util.c
+lib_native/SPVM/Std/Time.native/Time.c
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
