@@ -64,12 +64,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         SPVM_LIST* op_use_stack = compiler->op_use_stack;
         
         while (1) {
-          SPVM_OP* op_use = NULL;
           if (op_use_stack->length > 0) {
-            op_use = SPVM_LIST_pop(op_use_stack);
-          }
-          
-          if (op_use) {
+            SPVM_OP* op_use = SPVM_LIST_pop(op_use_stack);
+            
             const char* package_name = op_use->uv.use->package_name;
             
             SPVM_OP* found_op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
@@ -179,6 +176,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->cur_line = 1;
               break;
             }
+            
           }
           else {
             return 0;

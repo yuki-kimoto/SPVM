@@ -94,8 +94,7 @@ declarations_in_grammar
   | declaration_in_grammar
 
 declaration_in_grammar
-  : use
-  | package
+  : package
 
 use
   : USE package_name ';'
@@ -153,6 +152,7 @@ declaration_in_package
   | sub
   | enumeration
   | our_var ';'
+  | use;
 
 package_block
   : '{' opt_declarations_in_package '}'

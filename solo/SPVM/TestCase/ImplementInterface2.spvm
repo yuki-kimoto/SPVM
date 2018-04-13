@@ -1,6 +1,5 @@
-use TestCase::Minimal;
-
 package TestCase::ImplementInterface2 {
+  use TestCase::Minimal;
   
   sub foo : int ($self : self, $var1 : int, $var2 : long) {
     return 2;

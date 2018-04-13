@@ -1115,6 +1115,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
     }
     // sub_name
     else {
+      
       // Search current pacakge
       SPVM_PACKAGE* package = op_package_current->uv.package;
       const char* package_name = package->op_name->uv.name;
@@ -1450,6 +1451,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_yyerror_format(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
       }
       SPVM_LIST_push(op_ours, op_decl);
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_USE) {
+      // Static import
     }
     else {
       assert(0);

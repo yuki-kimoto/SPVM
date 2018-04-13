@@ -1,6 +1,6 @@
-use TestCase::EnumA;
-
 package TestCase::Simple {
+  use TestCase::EnumA;
+
   has x : int;
   has y : int;
   has values1 : int[];
