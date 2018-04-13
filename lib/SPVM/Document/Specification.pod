@@ -74,6 +74,19 @@ Package Definition must be just under file itself.
     }
   }
 
+=head2 Use Module
+
+Use Module.
+
+  use PackageName;
+
+use keyword must be just under package block.
+
+  package A {
+    use B;
+    use C;
+  }
+  
 =head2 Field Definition
 
 Field Definition is the following.

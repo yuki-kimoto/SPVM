@@ -659,6 +659,8 @@ SPVM Module:
 
   # lib/SPVM/MyMath.spvm
   package MyMath {
+    # Standard functions
+    use Std;
     
     # Sub Declaration
     sub sum : int ($nums : int[]) {
