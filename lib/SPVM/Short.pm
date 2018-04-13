@@ -10,7 +10,7 @@ SPVM::Short - Short Utility
 
 =head2 new
 
-B<sub new : Short ($class : class, $value : short)>
+B<sub new : Short ($value : short)>
 
 Construct L<Short|SPVM::Short> object.
 

@@ -1,7 +1,7 @@
 package Byte : private {
   has value : private byte;
   
-  sub new : Byte ($class : class, $value : byte) {
+  sub new : Byte ($value : byte) {
     my $self = new Byte;
     
     $self->{value} = $value;

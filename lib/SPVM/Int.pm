@@ -10,7 +10,7 @@ SPVM::Int - Int Utility
 
 =head2 new
 
-B<sub new : Int ($class : class, $value : int)>
+B<sub new : Int ($value : int)>
 
 Construct L<Int|SPVM::Int> object.
 

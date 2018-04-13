@@ -10,7 +10,7 @@ SPVM::Byte - Byte Utility
 
 =head2 new
 
-B<sub new : Byte ($class : class, $value : byte)>
+B<sub new : Byte ($value : byte)>
 
 Construct L<Byte|SPVM::Byte> object.
 

@@ -1,7 +1,7 @@
 package Double : private {
   has value : private double;
   
-  sub new : Double ($class : class, $value : double) {
+  sub new : Double ($value : double) {
     my $self = new Double;
     
     $self->{value} = $value;

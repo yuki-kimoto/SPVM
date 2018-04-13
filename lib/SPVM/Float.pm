@@ -10,7 +10,7 @@ SPVM::Float - Float Utility
 
 =head2 new
 
-B<sub new : Float ($class : class, $value : float)>
+B<sub new : Float ($value : float)>
 
 Construct L<Float|SPVM::Float> object.
 

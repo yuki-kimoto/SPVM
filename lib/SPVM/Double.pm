@@ -10,7 +10,7 @@ SPVM::Double - Double Utility
 
 =head2 new
 
-B<sub new : double ($class : class, $value : double)>
+B<sub new : double ($value : double)>
 
 Construct L<double|SPVM::double> object.
 

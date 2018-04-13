@@ -1,7 +1,7 @@
 package Float : private {
   has value : private float;
   
-  sub new : Float ($class : class, $value : float) {
+  sub new : Float ($value : float) {
     my $self = new Float;
     
     $self->{value} = $value;

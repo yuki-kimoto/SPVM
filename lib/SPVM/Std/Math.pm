@@ -22,7 +22,7 @@ The double value that is closer than any other to pi, the ratio of the circumfer
 
 =head2 sin
 
-B<sub sin : double ($class : class, $x : double)>
+B<sub sin : double ($x : double)>
 
 Returns the trigonometric sine of an angle. Special cases:
 
@@ -46,7 +46,7 @@ the sine of the argument.
 
 =head2 cos
 
-B<sub cos : double ($class : class, $x : double)>
+B<sub cos : double ($x : double)>
 
 Returns the trigonometric cosine of an angle. Special cases:
 
@@ -68,7 +68,7 @@ the cosine of the argument.
 
 =head2 tan
 
-B<sub tan : double ($class : class, $x : double)>
+B<sub tan : double ($x : double)>
 
 Returns the trigonometric tangent of an angle. Special cases:
 
@@ -92,7 +92,7 @@ the tangent of the argument.
 
 =head2 asin
 
-B<sub asin : double ($class : class, $x : double)>
+B<sub asin : double ($x : double)>
 
 Returns the arc sine of a value; the returned angle is in the range -pi/2 through pi/2. Special cases:
 
@@ -114,7 +114,7 @@ the arc sine of the argument.
 
 =head2 acos
 
-B<sub acos : double ($class : class, $x : double)>
+B<sub acos : double ($x : double)>
 
 Returns the arc cosine of a value; the returned angle is in the range 0.0 through pi. Special case:
 
@@ -136,7 +136,7 @@ the arc cosine of the argument.
 
 =head2 atan
 
-B<sub atan : double ($class : class, $x : double)>
+B<sub atan : double ($x : double)>
 
 Returns the arc tangent of a value; the returned angle is in the range -pi/2 through pi/2. Special cases:
 
@@ -160,8 +160,8 @@ the arc tangent of the argument.
 
 =head2 erf
 
-  native sub erf : double ($class : class, $x : double);
+  native sub erf : double ($x : double);
 
 =head2 erfc
 
-  native sub erfc : double ($class : class, $x : double);
+  native sub erfc : double ($x : double);
