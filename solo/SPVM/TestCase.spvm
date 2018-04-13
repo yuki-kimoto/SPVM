@@ -4,6 +4,7 @@ ABCDE
 
 =cut ppppp
 
+use Std;
 use TestCase::EnumA;
 use TestCase::EnumB;
 use TestCase::EnumC;

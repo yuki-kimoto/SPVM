@@ -117,11 +117,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     compiler->entry_point_sub_name = entry_point_sub_name;
   }
   
-  // use CORE module
-  SPVM_OP* op_use_core = SPVM_OP_new_op_use_from_package_name(compiler, "Std", "Std", 0);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_core);
-  SPVM_HASH_insert(compiler->op_use_symtable, "Std", strlen("Std"), op_use_core);
-  
   // use String module
   SPVM_OP* op_use_string = SPVM_OP_new_op_use_from_package_name(compiler, "String", "Std", 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_string);

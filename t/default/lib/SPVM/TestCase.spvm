@@ -1,3 +1,5 @@
+use Std;
+
 use TestCase::Weaken;
 use TestCase::Minimal;
 use TestCase::Destructor;
