@@ -146,8 +146,6 @@ package TestCase {
     print($long_string . "\n");
     print($float_string . "\n");
     print($double_string . "\n");
-
-    my $total = CORE->test1(3, 11);
     
     {
       my $object : Object = new TestCase::Minimal;
@@ -436,12 +434,6 @@ package TestCase {
       sum0(1, 3);
     }
     
-    # Subroutine call from native
-    {
-      my $total = CORE->test1(3, 11);
-      print((String)$total . "\n");
-    }
-    
     # Create temporary varialbe
     {
       TestCase::Minimal->new();
@@ -655,16 +647,6 @@ package TestCase {
       sum0(5, 6);
       2;
       print("Error" . "\n");
-    }
-    
-    {
-      my $nums = new int[3];
-      $nums->[0] = 1;
-      $nums->[1] = 2;
-      $nums->[2] = 3;
-      
-      my $total = sum_int($nums);
-      print((String)$total . "\n");
     }
     
     {

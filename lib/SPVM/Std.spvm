@@ -6,8 +6,4 @@ package Std {
   sub warn : void ($value : String) { return Std::IO->warn($value); }
   
   sub time : long () { return Std::Time->time(); }
-  
-  native sub sum_int : int ($values : int[]);
-  native sub test1 : int ($num1 : int, $num2 : int);
-  native sub test2 : int ($num1 : int, $num2 : int);
 }

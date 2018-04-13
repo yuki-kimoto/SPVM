@@ -125,13 +125,6 @@ my $start_objects_count = SPVM::get_objects_count();
   }
 }
 
-# Native subroutine
-{
-  my $sp_values = SPVM::new_int_array([1, 2, 3]);
-  my $total = SPVM::Std::sum_int($sp_values);
-  is($total, 6);
-}
-
 # Call subroutine
 {
   ok(SPVM::TestCase::sin());

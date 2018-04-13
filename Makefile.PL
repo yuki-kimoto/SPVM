@@ -43,7 +43,6 @@ sub MY::postamble {
   my $spvm_build = SPVM::Build->new;
   
   my @module_names = qw(
-    SPVM::Std
     SPVM::Std::IO
     SPVM::Std::Time
     SPVM::Std::Math
