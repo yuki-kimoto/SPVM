@@ -1,9 +1,9 @@
-use TestCase::Minimal;
-use TestCase::Interface::Interface;
-use TestCase::Interface::ImplementInterface1;
-use TestCase::Interface::ImplementInterface2;
-
 package TestCase::Interface {
+  use TestCase::Minimal;
+  use TestCase::Interface::Interface;
+  use TestCase::Interface::ImplementInterface1;
+  use TestCase::Interface::ImplementInterface2;
+
   jit sub basic : int () {
     my $object : Object = new TestCase::Minimal;
     my $implement_interface1 : TestCase::Interface::Interface = new TestCase::Interface::ImplementInterface1;

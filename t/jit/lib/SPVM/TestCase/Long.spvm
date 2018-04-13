@@ -1,6 +1,6 @@
-use Long;
-
 package TestCase::Long {
+  use Long;
+
   jit sub basic : int () {
     my $obj_value = Long->new(3);
     my $value = $obj_value->get_value;

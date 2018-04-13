@@ -1,6 +1,6 @@
-use Int;
-
 package TestCase::Int {
+  use Int;
+
   sub basic : int () {
     my $obj_value = Int->new(3);
     my $value = $obj_value->get_value;

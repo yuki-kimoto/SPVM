@@ -1,6 +1,6 @@
-use Double;
-
 package TestCase::Double {
+  use Double;
+
   jit sub basic : int () {
     my $obj_value = Double->new(0.25);
     my $value = $obj_value->get_value;

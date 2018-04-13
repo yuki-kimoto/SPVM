@@ -1,7 +1,6 @@
-use Std::Arrays;
-use Byte;
-
 package TestCase::Std::Arrays {
+  use Std::Arrays;
+  use Byte;
 
   sub equals_byte : int () {
     my $x1 = new byte[] {(byte)1, (byte)2, (byte)3};

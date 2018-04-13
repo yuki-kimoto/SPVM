@@ -1,6 +1,6 @@
-use Short;
-
 package TestCase::Short {
+  use Short;
+
   sub basic : int () {
     my $obj_value = Short->new(3);
     my $value = $obj_value->get_value;

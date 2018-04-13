@@ -1,6 +1,6 @@
-use TestCase::Minimal;
-
 package TestCase::Destructor {
+  use TestCase::Minimal;
+  
   has minimal : TestCase::Minimal;
   
   jit sub new : TestCase::Destructor () {

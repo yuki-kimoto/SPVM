@@ -1,6 +1,6 @@
-use Byte;
-
 package TestCase::Byte {
+  use Byte;
+
   jit sub basic : int () {
     my $obj_value = Byte->new(3);
     my $value = $obj_value->get_value;

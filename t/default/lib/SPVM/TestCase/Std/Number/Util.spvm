@@ -1,6 +1,6 @@
-use Std::Number::Util;
-
 package TestCase::Std::Number::Util {
+  use Std::Number::Util;
+
   sub byte_constant : int () {
     if ((int)Std::Number::Util->BYTE_MIN_VALUE() == (int)(byte)-128) {
       if ((int)Std::Number::Util->BYTE_MAX_VALUE() == (int)(byte)127) {

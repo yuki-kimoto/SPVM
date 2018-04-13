@@ -1,22 +1,22 @@
-use Std;
-
-use TestCase::Weaken;
-use TestCase::Minimal;
-use TestCase::Destructor;
-use TestCase::Empty;
-use TestCase::Private;
-
-use Byte;
-use Short;
-use Int;
-use Long;
-use Float;
-use Double;
-
-use Std::Math;
-use Std::Number::Util;
-
 package TestCase {
+  use Std;
+
+  use TestCase::Weaken;
+  use TestCase::Minimal;
+  use TestCase::Destructor;
+  use TestCase::Empty;
+  use TestCase::Private;
+
+  use Byte;
+  use Short;
+  use Int;
+  use Long;
+  use Float;
+  use Double;
+
+  use Std::Math;
+  use Std::Number::Util;
+
   our $PACKAGE_VAR_INT : int;
   our $PACKAGE_VAR_LONG : long;
   our $PACKAGE_VAR_MINIMAL : TestCase::Minimal;
