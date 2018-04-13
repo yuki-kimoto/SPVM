@@ -1,8 +1,11 @@
+use Std::IO;
+use Std::Time;
+
 package Std {
-  native sub print : void ($value : String);
-  native sub warn : void ($value : String);
+  sub print : void ($value : String) { return Std::IO->print($value); }
+  sub warn : void ($value : String) { return Std::IO->warn($value); }
   
-  native sub time : long ();
+  sub time : long () { return Std::Time->time(); }
   
   native sub sum_int : int ($values : int[]);
   native sub test1 : int ($num1 : int, $num2 : int);

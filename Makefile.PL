@@ -44,6 +44,8 @@ sub MY::postamble {
   
   my @module_names = qw(
     SPVM::Std
+    SPVM::Std::IO
+    SPVM::Std::Time
     SPVM::Std::Math
     SPVM::Std::Arrays
     SPVM::Std::Number::Util
