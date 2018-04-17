@@ -1,3 +1,11 @@
 package String {
   has value : byte[];
+  
+  sub get : byte ($self : self, $index : int) {
+    return $self->{value}[$index];
+  }
+  
+  sub length : int ($self : self) {
+    return @{$self->{value}};
+  }
 }
