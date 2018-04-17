@@ -1,5 +1,5 @@
 package TestCase::String {
-  use Std::Arrays;
+  use Std::Array::Util;
   
   sub basic : int () {
     # get_bytes
@@ -9,7 +9,7 @@ package TestCase::String {
       
       my $bytes = $string1->get_bytes;
       my $bytes_expected = new byte[] { 'a', 'b', 'c', 'd', 'e' };
-      if (Std::Arrays->equals_byte($bytes, $bytes_expected)) {
+      if (Std::Array::Util->eq_bytes($bytes, $bytes_expected)) {
         $get_bytes_ok = 1;
       }
     }

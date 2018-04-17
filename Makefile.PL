@@ -46,7 +46,7 @@ sub MY::postamble {
     SPVM::Std::IO
     SPVM::Std::Time
     SPVM::Std::Math
-    SPVM::Std::Arrays
+    SPVM::Std::Array::Util
     SPVM::Std::Number::Util
   );
   
