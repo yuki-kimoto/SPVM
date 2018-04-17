@@ -32,7 +32,6 @@ our $COMPILER;
 our $API;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
-our $HOME_DIR;
 our $SPVM_BUILD;
 
 require XSLoader;
@@ -122,7 +121,7 @@ sub compile_jit_sub {
   
   # Build JIT code
   my $tmp_dir = File::Temp->newdir;
-  my $jit_source_dir = $SPVM::HOME_DIR  || $tmp_dir->dirname;
+  my $jit_source_dir = $tmp_dir->dirname;
   my $jit_source_file = "$jit_source_dir/$jit_sub_name.c";
   my $jit_shared_lib_file = "$jit_source_dir/$jit_sub_name.$Config{dlext}";
   
@@ -137,15 +136,13 @@ sub compile_jit_sub {
     $old_sub_jitcode_source = '';
   }
   
-  # Only compile when source is different
-  if (!-f $jit_shared_lib_file || ($sub_jitcode_source ne $old_sub_jitcode_source)) {
-    open my $fh, '>', $jit_source_file
-      or die "Can't create $jit_source_file";
-    print $fh $sub_jitcode_source;
-    close $fh;
-    
-    compile_jitcode($jit_source_file);
-  }
+  # Compile JIT code
+  open my $fh, '>', $jit_source_file
+    or die "Can't create $jit_source_file";
+  print $fh $sub_jitcode_source;
+  close $fh;
+  
+  compile_jitcode($jit_source_file);
   
   my $sub_jit_address = search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   unless ($sub_jit_address) {
@@ -161,8 +158,6 @@ sub compile_jit_sub {
 
 sub import {
   my ($class, $package_name) = @_;
-  
-  $SPVM::HOME_DIR ||= $ENV{SPVM_HOME_DIR};
   
   # Add package informations
   if (defined $package_name) {
