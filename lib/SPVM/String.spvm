@@ -1,8 +1,33 @@
-package String {
-  has value : byte[];
+package String : private {
+  has value : private byte[];
   
-  sub get : byte ($self : self, $index : int) {
+  sub new_bytes : String ($bytes : byte[]) {
+    
+    my $new_value = new byte[@$bytes];
+    for (my $i = 0; $i < @$bytes; $i++) {
+      $new_value->[$i] = $bytes->[$i];
+    }
+    
+    my $self = new String;
+    $self->{value} = $new_value;
+    
+    return $self;
+  }
+  
+  sub at : byte ($self : self, $index : int) {
     return $self->{value}[$index];
+  }
+
+  sub get_bytes: byte[] ($self : self, $index : int) {
+    my $bytes = $self->{value};
+    my $length = @$bytes;
+    my $new_bytes = new byte[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_bytes->[$i] = $bytes->[$i];
+    }
+    
+    return $new_bytes;
   }
   
   sub length : int ($self : self) {
