@@ -115,7 +115,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   cur_file[file_name_length] = '\0';
                   
                   // Open source file
-                  fh = fopen(cur_file, "r");
+                  fh = fopen(cur_file, "rb");
                   if (fh) {
                     compiler->cur_file = cur_file;
                     break;

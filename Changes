@@ -3,6 +3,7 @@
   - rename Std::Arrays to Std::Array::Util
   - rename Std::Array::Util copy_of_xxx to copy_xxxs
   - rename Std::Array::Util equals_xxx to eq_xxxs
+  - fix windows source file reading bug
 0.0325 2018-04-13
   - remove template feature
   - rename Math to Std::Math
