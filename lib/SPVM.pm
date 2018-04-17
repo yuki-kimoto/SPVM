@@ -615,7 +615,7 @@ sub build_spvm_subs {
     no strict 'refs';
     
     # Declare package
-    my ($package_name) = $abs_name =~ /^(?:(.+)::)/;
+    my ($package_name, $sub_name) = $abs_name =~ /^(?:(.+)::)(.+)/;
     $package_name = "SPVM::$package_name";
     unless ($package_name_h->{$package_name}) {
       
@@ -630,6 +630,7 @@ sub build_spvm_subs {
     
     # Declare subroutine
     *{"SPVM::$abs_name"} = sub {
+      
       my $return_value;
       eval { $return_value = SPVM::call_sub("$abs_name", @_) };
       my $error = $@;
@@ -687,7 +688,7 @@ Use SPVM Module from Perl
   my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
   
   # Call SPVM subroutine
-  my $total = SPVM::MyMath::sum($sp_nums);
+  my $total = SPVM::MyMath->sum($sp_nums);
   
   print $total . "\n";
 
@@ -746,7 +747,7 @@ Use Extension Module from Perl:
   my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
   
   # Call SPVM subroutine
-  my $total = SPVM::MyMathNative::sum($sp_nums);
+  my $total = SPVM::MyMathNative->sum($sp_nums);
   
   print $total . "\n";
 

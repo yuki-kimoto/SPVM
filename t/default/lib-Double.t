@@ -38,7 +38,7 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # SPVM::Double
 {
-  ok(SPVM::TestCase::Double::basic());
+  ok(SPVM::TestCase::Double->basic());
 }
 
 # All object is freed

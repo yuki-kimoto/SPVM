@@ -13,7 +13,7 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # SPVM::Float
 {
-  ok(SPVM::TestCase::Float::basic());
+  ok(SPVM::TestCase::Float->basic());
 }
 
 # All object is freed

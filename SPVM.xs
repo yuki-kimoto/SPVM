@@ -3538,8 +3538,11 @@ call_sub(...)
   PPCODE:
 {
   (void)RETVAL;
+
+  int32_t stack_arg_start = 0;
   
   SV* sv_sub_abs_name = ST(0);
+  stack_arg_start++;
   
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -3554,16 +3557,22 @@ call_sub(...)
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
+  
   // Arguments
   {
+    // If class method, first argument is ignored
+    if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD) {
+      stack_arg_start++;
+    }
+    
     int32_t arg_index;
     // Check argument count
-    if (items - 1 != sub->op_args->length) {
+    if (items - stack_arg_start != sub->op_args->length) {
       croak("Argument count is defferent");
     }
     
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
-      SV* sv_value = ST(arg_index + 1);
+      SV* sv_value = ST(arg_index + stack_arg_start);
       
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;

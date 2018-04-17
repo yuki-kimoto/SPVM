@@ -13,7 +13,7 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Enumeration
 {
-  ok(SPVM::TestCase::enum_int());
+  ok(SPVM::TestCase->enum_int());
 }
 
 # All object is freed

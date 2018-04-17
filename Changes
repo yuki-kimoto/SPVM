@@ -1,5 +1,5 @@
 0.0326 2018-04-17
-  
+  - forbidden function call from Perl. All subroutine become method or class method
 0.0325 2018-04-13
   - remove template feature
   - rename Math to Std::Math

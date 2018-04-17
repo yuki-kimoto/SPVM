@@ -13,7 +13,7 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # SPVM::Byte
 {
-  ok(SPVM::TestCase::Byte::basic());
+  ok(SPVM::TestCase::Byte->basic());
 }
 
 # All object is freed

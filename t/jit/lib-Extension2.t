@@ -11,12 +11,16 @@ use SPVM 'TestCase::Extension2';
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
+  is(SPVM::TestCase::Extension2->mul(2, 3), 6);
+
+__END__
+
 # Native Exception
 {
-  is(SPVM::TestCase::Extension2::mul(2, 3), 6);
-  is(SPVM::TestCase::Extension2::one(), 1);
-  ok(SPVM::TestCase::Extension2::spvm_extension2());
-  ok(SPVM::TestCase::Extension2::spvm_extension2_binding());
+  is(SPVM::TestCase::Extension2->mul(2, 3), 6);
+  is(SPVM::TestCase::Extension2->one(), 1);
+  ok(SPVM::TestCase::Extension2->spvm_extension2());
+  ok(SPVM::TestCase::Extension2->spvm_extension2_binding());
 }
 
 # All object is freed
