@@ -1,25 +1,25 @@
 package String : private {
-  has value : private byte[];
+  has bytes : private byte[];
   
   sub new_bytes : String ($bytes : byte[]) {
     
-    my $new_value = new byte[@$bytes];
+    my $new_bytes = new byte[@$bytes];
     for (my $i = 0; $i < @$bytes; $i++) {
-      $new_value->[$i] = $bytes->[$i];
+      $new_bytes->[$i] = $bytes->[$i];
     }
     
     my $self = new String;
-    $self->{value} = $new_value;
+    $self->{bytes} = $new_bytes;
     
     return $self;
   }
   
   sub at : byte ($self : self, $index : int) {
-    return $self->{value}[$index];
+    return $self->{bytes}[$index];
   }
 
   sub get_bytes: byte[] ($self : self, $index : int) {
-    my $bytes = $self->{value};
+    my $bytes = $self->{bytes};
     my $length = @$bytes;
     my $new_bytes = new byte[$length];
     
@@ -31,6 +31,6 @@ package String : private {
   }
   
   sub length : int ($self : self) {
-    return @{$self->{value}};
+    return @{$self->{bytes}};
   }
 }
