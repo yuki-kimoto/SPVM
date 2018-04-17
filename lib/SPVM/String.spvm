@@ -17,8 +17,12 @@ package String : private {
   sub at : byte ($self : self, $index : int) {
     return $self->{bytes}[$index];
   }
-
-  sub get_bytes: byte[] ($self : self, $index : int) {
+  
+  sub length : int ($self : self) {
+    return @{$self->{bytes}};
+  }
+  
+  sub get_bytes: byte[] ($self : self) {
     my $bytes = $self->{bytes};
     my $length = @$bytes;
     my $new_bytes = new byte[$length];
@@ -28,9 +32,5 @@ package String : private {
     }
     
     return $new_bytes;
-  }
-  
-  sub length : int ($self : self) {
-    return @{$self->{bytes}};
   }
 }

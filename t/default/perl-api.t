@@ -699,6 +699,27 @@ is_deeply(
   cmp_ok($total, '==', 0.5);
 }
 
+# .
+{
+  {
+    is("ab", SPVM::TestCase->concat_special_assign()->to_data);
+    is("ab", SPVM::TestCase->concat()->to_data);
+  }
+}
+
+# String
+{
+  {
+    my $values = SPVM::TestCase->string_empty();
+    is($values->to_data, "");
+  }
+  
+  {
+    my $values = SPVM::TestCase->string_utf8();
+    is($values->to_string, "あいうえお");
+  }
+}
+
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
