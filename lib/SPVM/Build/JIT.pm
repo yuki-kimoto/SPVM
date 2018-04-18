@@ -24,8 +24,8 @@ sub compile_jitcode {
   my $include_dirs = [];
   
   # Default include path
-  my $api_header_include_dir = $INC{"SPVM/Build.pm"};
-  $api_header_include_dir =~ s/\/Build\.pm$//;
+  my $api_header_include_dir = $INC{"SPVM/Build/ExtUtil.pm"};
+  $api_header_include_dir =~ s/\/Build\/ExtUtil\.pm$//;
   push @$include_dirs, $api_header_include_dir;
   
   my $cbuilder_config = {};

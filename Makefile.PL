@@ -8,7 +8,7 @@ use Config;
 use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/lib";
-use SPVM::Build;
+use SPVM::Build::ExtUtil;
 
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
@@ -40,7 +40,7 @@ WriteMakefile(
 
 # Add Build shared library make rule
 sub MY::postamble {
-  my $spvm_build = SPVM::Build->new;
+  my $spvm_build = SPVM::Build::ExtUtil->new;
   
   my @module_names = qw(
     SPVM::Std::IO

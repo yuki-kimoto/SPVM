@@ -45,8 +45,8 @@ my $DOUBLE_PRECICE = 65536.5;
 use SPVM 'Std';
 
 {
-  # SPVM::Build tests
-  my $spvm_build = SPVM::Build->new;
+  # SPVM::Build::ExtUtil tests
+  my $spvm_build = SPVM::Build::ExtUtil->new;
   my $func_names = $spvm_build->get_native_func_names($ENV{SPVM_TEST_LIB_DIR}, 'SPVM::TestCase::Extension2');
   is($func_names->[0], 'SPVM__TestCase__Extension2__mul');
   is($func_names->[1], 'SPVM__TestCase__Extension2__one');

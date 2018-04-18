@@ -6,7 +6,6 @@ use warnings;
 
 use Config;
 use DynaLoader;
-use SPVM::Build;
 use File::Basename 'basename', 'dirname';
 use File::Temp ();
 
@@ -22,6 +21,7 @@ use SPVM::Perl::Object::Array::Object;
 use SPVM::Perl::Object::Package;
 use SPVM::Perl::Object::Package::String;
 
+use SPVM::Build::ExtUtil;
 use SPVM::Build::JIT;
 use SPVM::Build::Inline;
 
@@ -40,7 +40,7 @@ our $SPVM_BUILD;
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
-$SPVM_BUILD = SPVM::Build->new;
+$SPVM_BUILD = SPVM::Build::ExtUtil->new;
 
 sub import {
   my ($class, $package_name) = @_;

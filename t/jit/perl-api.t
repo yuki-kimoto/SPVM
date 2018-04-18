@@ -42,21 +42,11 @@ my $DOUBLE_PRECICE = 65536.5;
 # eval repeat
 # print
 
-# Positive infinity(unix like system : inf, Windows : 1.#INF)
-my $POSITIVE_INFINITY = 9**9**9;
-
-# Negative infinity(unix like system : -inf, Windows : -1.#INF)
-my $NEGATIVE_INFINITY = -9**9**9;
-
-my $NaN = SPVM::NaN();
-
-use SPVM 'Double';
-use SPVM 'Float';
 use SPVM 'Std';
 
 {
-  # SPVM::Build tests
-  my $spvm_build = SPVM::Build->new;
+  # SPVM::Build::ExtUtil tests
+  my $spvm_build = SPVM::Build::ExtUtil->new;
   my $func_names = $spvm_build->get_native_func_names($ENV{SPVM_TEST_LIB_DIR}, 'SPVM::TestCase::Extension2');
   is($func_names->[0], 'SPVM__TestCase__Extension2__mul');
   is($func_names->[1], 'SPVM__TestCase__Extension2__one');
@@ -68,16 +58,6 @@ my $start_objects_count = SPVM::get_objects_count();
 # time
 {
   cmp_ok(abs(time - SPVM::Std->time()), '<', 2);
-}
-
-{
-  like($POSITIVE_INFINITY, qr/inf/i);
-  cmp_ok($POSITIVE_INFINITY, '>', 0);
-  
-  like($NEGATIVE_INFINITY, qr/inf/i);
-  cmp_ok($NEGATIVE_INFINITY, '<', 0);
-  
-  like($NaN, qr/(nan|ind)/i);
 }
 
 # my variable
