@@ -103,7 +103,7 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   XPUSHs(sv_jitcode_source);
   PUTBACK;
 
-  return_value_count = call_pv("SPVM::compile_jit_sub", G_SCALAR);
+  return_value_count = call_pv("SPVM::Build::JIT::compile_jit_sub", G_SCALAR);
 
   SPAGAIN;
   SP -= return_value_count;
