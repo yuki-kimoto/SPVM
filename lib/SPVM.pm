@@ -169,7 +169,7 @@ sub import {
   return;
 }
 
-sub _get_dll_file {
+sub get_shared_lib_file {
   my $package_name = shift;
   
   my $package_name2 = $package_name;
@@ -215,13 +215,13 @@ sub get_sub_native_address {
   }
   
   my $dll_package_name = $package_name;
-  my $shared_lib_file = _get_dll_file($dll_package_name);
+  my $shared_lib_file = get_shared_lib_file($dll_package_name);
   
   my $shared_lib_func_name = $sub_abs_name;
   $shared_lib_func_name =~ s/:/_/g;
   my $native_address = search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
   
-  # Try runtime compile
+  # Try inline compile
   unless ($native_address) {
     
     my $module_name = $package_name;
@@ -242,7 +242,8 @@ sub get_sub_native_address {
       $shared_lib_file = $SPVM_BUILD->build_shared_lib(
         module_dir => $module_dir,
         module_name => "SPVM::$module_name",
-        object_dir => $tmp_dir->dirname
+        object_dir => $tmp_dir->dirname,
+        inline => 1
       );
     };
     
@@ -693,7 +694,7 @@ SPVM Module:
 
 C Source File;
 
-  // lib/SPVM/MyMathNative.native/MyMathNative.c
+  // lib/SPVM/MyMathNative.inline/MyMathNative.c
   #include <spvm_api.h>
 
   int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_API_VALUE* args) {

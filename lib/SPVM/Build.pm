@@ -166,7 +166,12 @@ sub build_shared_lib {
   
   my $native_dir = $module_name;
   $native_dir =~ s/::/\//g;
-  $native_dir .= '.native';
+  if ($opt{inline}) {
+    $native_dir .= '.inline';
+  }
+  else {
+    $native_dir .= '.native';
+  }
   $native_dir = "$source_dir/$native_dir";
   
   # Correct source files
