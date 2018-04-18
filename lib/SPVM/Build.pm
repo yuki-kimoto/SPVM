@@ -11,8 +11,6 @@ use File::Path 'mkpath';
 
 use File::Basename 'dirname', 'basename';
 
-my $compiled = {};
-
 sub new {
   my $class = shift;
   
@@ -157,10 +155,6 @@ sub build_shared_lib {
   # Object created directory
   my $object_dir = $opt{object_dir};
   
-  if ($compiled->{$module_name}) {
-    return $compiled->{$module_name};
-  }
-  
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
@@ -299,8 +293,6 @@ sub build_shared_lib {
     dl_func_list => $native_func_names,
     extra_linker_flags => ''
   );
-  
-  $compiled->{$module_name} = $shared_lib_file;
   
   return $shared_lib_file;
 }
