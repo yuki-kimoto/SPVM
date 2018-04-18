@@ -5,6 +5,8 @@ use Data::Dumper;
 use File::Basename 'basename';
 use FindBin;
 
+use SPVM::Build;
+
 use Test::More 'no_plan';
 
 my $file = 't/' . basename $0;
@@ -25,7 +27,7 @@ sub init_spvm {
   BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::InvalidType';
   BEGIN {
-    my $success = SPVM::compile_spvm();
+    my $success = SPVM::Build::compile_spvm();
     ok($success == 0);
   }
 }
@@ -34,7 +36,7 @@ sub init_spvm {
   BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndef';
   BEGIN {
-    my $success = SPVM::compile_spvm();
+    my $success = SPVM::Build::compile_spvm();
     ok($success == 0);
   }
 }
@@ -43,7 +45,7 @@ sub init_spvm {
   BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndefDefault';
   BEGIN {
-    my $success = SPVM::compile_spvm();
+    my $success = SPVM::Build::compile_spvm();
     ok($success == 0);
   }
 }
@@ -52,7 +54,7 @@ sub init_spvm {
   BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::AssignIncompatibleType::DifferentObject';
   BEGIN {
-    my $success = SPVM::compile_spvm();
+    my $success = SPVM::Build::compile_spvm();
     ok($success == 0);
   }
 }
@@ -61,7 +63,7 @@ sub init_spvm {
   BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::Field::Private';
   BEGIN {
-    my $success = SPVM::compile_spvm();
+    my $success = SPVM::Build::compile_spvm();
     ok($success == 0);
   }
 }
@@ -70,7 +72,7 @@ sub init_spvm {
   BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::New::Private';
   BEGIN {
-    my $success = SPVM::compile_spvm();
+    my $success = SPVM::Build::compile_spvm();
     ok($success == 0);
   }
 }

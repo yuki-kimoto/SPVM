@@ -3033,71 +3033,7 @@ get(...)
 
 MODULE = SPVM::Perl::Object::Array		PACKAGE = SPVM::Perl::Object::Array
 
-MODULE = SPVM::Build::JIT		PACKAGE = SPVM::Build::JIT
-
-SV*
-bind_jitcode_sub(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_sub_abs_name = ST(0);
-  SV* sv_sub_native_address = ST(1);
-  
-  const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
-  void* sub_jit_address = (void*)SvIV(sv_sub_native_address);
-  
-  // API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  int32_t sub_id = api->get_sub_id(api, sub_abs_name);
-
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  // Subroutine information
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
-  
-  sub->jit_address = sub_jit_address;
-  sub->is_jit = 1;
-  
-  XSRETURN(0);
-}
-
-MODULE = SPVM		PACKAGE = SPVM
-
-SV*
-NaN(...)
-  PPCODE :
-{
-  (void)RETVAL;
-
-  uint64_t nan_bits = 0x7ff8000000000000L;
-  
-  double nan;
-  
-  memcpy((void*)&nan, (void*)&nan_bits, sizeof(double));
-  
-  SV* sv_nan = sv_2mortal(newSVnv((NV)nan));
-  
-  XPUSHs(sv_nan);
-  XSRETURN(1);
-}
-
-SV*
-get_objects_count(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  int32_t objects_count = api->get_objects_count(api);
-  SV* sv_objects_count = sv_2mortal(newSViv(objects_count));
-  
-  XPUSHs(sv_objects_count);
-  XSRETURN(1);
-}
+MODULE = SPVM::Build		PACKAGE = SPVM::Build
 
 SV*
 compile(...)
@@ -3472,6 +3408,54 @@ free_compiler(...)
   sv_setsv(get_sv("SPVM::COMPILER", 0), &PL_sv_undef);
   
   XSRETURN(0);
+}
+
+MODULE = SPVM::Build::JIT		PACKAGE = SPVM::Build::JIT
+
+SV*
+bind_jitcode_sub(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_sub_abs_name = ST(0);
+  SV* sv_sub_native_address = ST(1);
+  
+  const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
+  void* sub_jit_address = (void*)SvIV(sv_sub_native_address);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  int32_t sub_id = api->get_sub_id(api, sub_abs_name);
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  // Subroutine information
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
+  
+  sub->jit_address = sub_jit_address;
+  sub->is_jit = 1;
+  
+  XSRETURN(0);
+}
+
+MODULE = SPVM		PACKAGE = SPVM
+
+SV*
+get_objects_count(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  int32_t objects_count = api->get_objects_count(api);
+  SV* sv_objects_count = sv_2mortal(newSViv(objects_count));
+  
+  XPUSHs(sv_objects_count);
+  XSRETURN(1);
 }
 
 SV*

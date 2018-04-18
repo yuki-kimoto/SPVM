@@ -31,7 +31,7 @@ my $POSITIVE_INFINITY = 9**9**9;
 # Negative infinity(unix like system : -inf, Windows : -1.#INF)
 my $NEGATIVE_INFINITY = -9**9**9;
 
-my $NaN = SPVM::NaN();
+my $NaN = 9**9**9 / 9**9**9;
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
