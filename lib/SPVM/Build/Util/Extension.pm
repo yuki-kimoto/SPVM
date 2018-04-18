@@ -1,4 +1,4 @@
-package SPVM::Build::Native;
+package SPVM::Build::Util::Extension;
 
 use strict;
 use warnings;
@@ -10,5 +10,8 @@ use File::Copy 'move';
 use File::Path 'mkpath';
 
 use File::Basename 'dirname', 'basename';
+
+# SPVM::Build::Util::Extension is used from Makefile.PL
+# so SPVM::Build::Util::Extension must be wrote as pure per script, not contain XS.
 
 1;
