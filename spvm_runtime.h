@@ -15,12 +15,6 @@
 #define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET))--)
 #define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
-enum {
-  SPVM_RUNTIME_C_JIT_MODE_AUTO,
-  SPVM_RUNTIME_C_JIT_MODE_NONE,
-  SPVM_RUNTIME_C_JIT_MODE_ALL,
-};
-
 struct SPVM_runtime {
   // API
   SPVM_API* api;
@@ -38,8 +32,6 @@ struct SPVM_runtime {
   SPVM_API_VALUE* package_vars;
   
   int32_t objects_count;
-  
-  int8_t jit_mode;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

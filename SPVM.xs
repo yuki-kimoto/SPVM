@@ -3033,44 +3033,39 @@ get(...)
 
 MODULE = SPVM::Perl::Object::Array		PACKAGE = SPVM::Perl::Object::Array
 
+MODULE = SPVM::Build::JIT		PACKAGE = SPVM::Build::JIT
+
+SV*
+bind_jitcode_sub(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_sub_abs_name = ST(0);
+  SV* sv_sub_native_address = ST(1);
+  
+  const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
+  void* sub_jit_address = (void*)SvIV(sv_sub_native_address);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  int32_t sub_id = api->get_sub_id(api, sub_abs_name);
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  // Subroutine information
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
+  
+  sub->jit_address = sub_jit_address;
+  sub->is_jit = 1;
+  
+  XSRETURN(0);
+}
 
 MODULE = SPVM		PACKAGE = SPVM
-
-SV*
-POSITIVE_INFINITY(...)
-  PPCODE :
-{
-  (void)RETVAL;
-
-  uint64_t positive_infinity_bits = 0x7ff0000000000000L;
-  
-  double positive_infinity;
-  
-  memcpy((void*)&positive_infinity, (void*)&positive_infinity_bits, sizeof(double));
-  
-  SV* sv_positive_infinity = sv_2mortal(newSVnv((NV)positive_infinity));
-  
-  XPUSHs(sv_positive_infinity);
-  XSRETURN(1);
-}
-
-SV*
-NEGATIVE_INFINITY(...)
-  PPCODE :
-{
-  (void)RETVAL;
-
-  uint64_t negative_infinity_bits = 0xfff0000000000000L;
-  
-  double negative_infinity;
-  
-  memcpy((void*)&negative_infinity, (void*)&negative_infinity_bits, sizeof(double));
-
-  SV* sv_negative_infinity = sv_2mortal(newSVnv((NV)negative_infinity));
-
-  XPUSHs(sv_negative_infinity);
-  XSRETURN(1);
-}
 
 SV*
 NaN(...)
@@ -3382,36 +3377,6 @@ bind_native_sub(...)
 }
 
 SV*
-bind_jitcode_sub(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_sub_abs_name = ST(0);
-  SV* sv_sub_native_address = ST(1);
-  
-  const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
-  void* sub_jit_address = (void*)SvIV(sv_sub_native_address);
-  
-  // API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  int32_t sub_id = api->get_sub_id(api, sub_abs_name);
-
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  // Subroutine information
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
-  
-  sub->jit_address = sub_jit_address;
-  sub->is_jit = 1;
-  
-  XSRETURN(0);
-}
-
-SV*
 build_field_symtable(...)
   PPCODE:
 {
@@ -3487,30 +3452,6 @@ build_runtime(...)
   sv_setsv(get_sv("SPVM::API", 0), sv_api);
   
   api->compile_jit_sub = &SPVM_XS_UTIL_compile_jit_sub;
-  
-  // JIT mode
-  HV* hv_env = get_hv("ENV", 0);
-  SV** sv_jit_mode_ptr = hv_fetch(hv_env, "SPVM_JIT_MODE", strlen("SPVM_JIT_MODE"), 0);
-  const char* pv_jit_mode;
-  if (sv_jit_mode_ptr) {
-    pv_jit_mode = SvPV_nolen(*sv_jit_mode_ptr);
-  }
-  else {
-    pv_jit_mode = "auto";
-  }
-  
-  if (strcmp(pv_jit_mode, "auto") == 0) {
-    runtime->jit_mode = SPVM_RUNTIME_C_JIT_MODE_AUTO;
-  }
-  else if (strcmp(pv_jit_mode, "all") == 0) {
-    runtime->jit_mode = SPVM_RUNTIME_C_JIT_MODE_ALL;
-  }
-  else if (strcmp(pv_jit_mode, "none") == 0) {
-    runtime->jit_mode = SPVM_RUNTIME_C_JIT_MODE_NONE;
-  }
-  else {
-    croak("Unknown jit mode");
-  }
   
   XSRETURN(0);
 }

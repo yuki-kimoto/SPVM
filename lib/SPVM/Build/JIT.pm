@@ -110,7 +110,7 @@ sub compile_jit_sub {
     confess "Can't get $sub_abs_name jitcode address";
   }
   
-  SPVM::bind_jitcode_sub($sub_abs_name, $sub_jit_address);
+  bind_jitcode_sub($sub_abs_name, $sub_jit_address);
   
   my $success = 1;
   

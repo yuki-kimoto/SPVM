@@ -43,10 +43,10 @@ my $DOUBLE_PRECICE = 65536.5;
 # print
 
 # Positive infinity(unix like system : inf, Windows : 1.#INF)
-my $POSITIVE_INFINITY = SPVM::POSITIVE_INFINITY();
+my $POSITIVE_INFINITY = 9**9**9;
 
 # Negative infinity(unix like system : -inf, Windows : -1.#INF)
-my $NEGATIVE_INFINITY = SPVM::NEGATIVE_INFINITY();
+my $NEGATIVE_INFINITY = -9**9**9;
 
 my $NaN = SPVM::NaN();
 
