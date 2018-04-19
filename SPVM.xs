@@ -3041,6 +3041,8 @@ compile(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
@@ -3116,6 +3118,8 @@ build_opcode(...)
   PPCODE:
 {
   (void)RETVAL;
+  
+  SV* sv_self = ST(0);
 
   // Get compiler
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
@@ -3132,7 +3136,9 @@ get_sub_name(...)
 {
   (void)RETVAL;
   
-  SV* sv_sub_id = ST(0);
+  SV* sv_self = ST(0);
+  SV* sv_sub_id = ST(1);
+  
   int32_t sub_id = (int32_t)SvIV(sv_sub_id);
   
   // API
@@ -3157,6 +3163,8 @@ get_sub_names(...)
   PPCODE:
 {
   (void)RETVAL;
+  
+  SV* sv_self = ST(0);
   
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -3191,6 +3199,8 @@ get_native_sub_names(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Get compiler
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
   
@@ -3222,6 +3232,8 @@ get_no_native_sub_names(...)
   PPCODE:
 {
   (void)RETVAL;
+  
+  SV* sv_self = ST(0);
   
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
@@ -3258,6 +3270,9 @@ get_package_load_path(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  SV* sv_package_name = ST(1);
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
@@ -3265,7 +3280,6 @@ get_package_load_path(...)
   SPVM_COMPILER* compiler = runtime->compiler;
 
 
-  SV* sv_package_name = ST(0);
   const char* package_name = SvPV_nolen(sv_package_name);
   
 
@@ -3288,14 +3302,16 @@ bind_native_sub(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  SV* sv_native_sub_name = ST(1);
+  SV* sv_native_address = ST(2);
+  
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  SV* sv_native_sub_name = ST(0);
-  SV* sv_native_address = ST(1);
   
   // Native subroutine name
   const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
@@ -3313,66 +3329,12 @@ bind_native_sub(...)
 }
 
 SV*
-build_field_symtable(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
-  
-  // Field symbol table
-  HV* hv_field_symtable = get_hv("SPVM::FIELD_SYMTABLE", 0);
-  
-  // name, arg_types, return_type
-  SPVM_LIST* op_packages = compiler->op_packages;
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_index);
-      const char* package_name = op_package->uv.package->op_name->uv.name;
-      
-      HV* hv_package_info = (HV*)sv_2mortal((SV*)newHV());
-      
-      SPVM_LIST* op_fields = op_package->uv.package->op_fields;
-      {
-        int32_t field_index;
-        for (field_index = 0; field_index < op_fields->length; field_index++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
-          SPVM_FIELD* field = op_field->uv.field;
-          const char* field_name = field->op_name->uv.name;
-          
-          // Field type id
-          int32_t field_type_id = field->op_type->uv.type->id;
-          SV* sv_field_type_id = sv_2mortal(newSViv(field_type_id));
-
-          // Field id
-          int32_t field_id = field->index;
-          SV* sv_field_id = sv_2mortal(newSViv(field_id));
-          
-          HV* hv_field = (HV*)sv_2mortal((SV*)newHV());
-          (void)hv_store(hv_field, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
-          (void)hv_store(hv_field, "id", strlen("id"), SvREFCNT_inc(sv_field_id), 0);
-          (void)hv_store(hv_field, "type_id", strlen("type_id"), SvREFCNT_inc(sv_field_type_id), 0);
-          SV* sv_field = sv_2mortal(newRV_inc((SV*)hv_field));
-          
-          (void)hv_store(hv_package_info, field_name, strlen(field_name), SvREFCNT_inc(sv_field), 0);
-        }
-      }
-      
-      SV* sv_package_info = sv_2mortal(newRV_inc((SV*)hv_package_info));
-      (void)hv_store(hv_field_symtable, package_name, strlen(package_name), SvREFCNT_inc(sv_package_info), 0);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 build_runtime(...)
   PPCODE:
 {
   (void)RETVAL;
+  
+  SV* sv_self = ST(0);
   
   // Get compiler
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
@@ -3397,6 +3359,8 @@ free_compiler(...)
   PPCODE:
 {
   (void)RETVAL;
+  
+  SV* sv_self = ST(0);
   
   // Get compiler
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));

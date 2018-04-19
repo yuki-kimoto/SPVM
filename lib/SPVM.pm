@@ -66,7 +66,7 @@ sub import {
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
   unless ($ENV{SPVM_NO_COMPILE}) {
-    my $compile_success = SPVM::Build::compile_spvm();
+    my $compile_success = SPVM::Build->new->compile_spvm();
     unless ($compile_success) {
       croak("SPVM compile error");
     }

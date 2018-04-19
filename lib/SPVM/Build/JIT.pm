@@ -11,6 +11,8 @@ use File::Path 'mkpath';
 
 use File::Basename 'dirname', 'basename';
 
+use SPVM::Build;
+
 sub compile_jitcode {
   my ($source_file) = @_;
   
@@ -54,7 +56,7 @@ sub compile_jitcode {
   push @$object_files, $object_file;
   
   # JIT Subroutine names
-  my $sub_names = SPVM::Build::get_sub_names();
+  my $sub_names = SPVM::Build->new->get_sub_names();
   my @jit_sub_names;
   for my $abs_name (@$sub_names) {
     my $jit_sub_name = $abs_name;
@@ -88,7 +90,7 @@ sub create_jit_sub_name {
 sub compile_jit_sub {
   my ($sub_id, $sub_jitcode_source) = @_;
   
-  my $sub_abs_name = SPVM::Build::get_sub_name($sub_id);
+  my $sub_abs_name = SPVM::Build->new->get_sub_name($sub_id);
   my $jit_sub_name = create_jit_sub_name($sub_abs_name);
   
   # Build JIT code
