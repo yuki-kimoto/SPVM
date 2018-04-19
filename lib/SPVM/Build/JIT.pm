@@ -7,7 +7,7 @@ use Carp 'croak', 'confess';
 use ExtUtils::CBuilder;
 use Config;
 use File::Copy 'move';
-use File::Path 'mkpath';
+use File::Path 'mkpath', 'rmtree';
 
 use File::Basename 'dirname', 'basename';
 
@@ -104,7 +104,7 @@ sub compile_jit_sub {
   my $jit_sub_name = $self->create_jit_sub_name($sub_abs_name);
   
   # Build JIT code
-  my $jit_source_dir = $SPVM::TMP_DIR;
+  my $jit_source_dir = File::Temp::tempdir("SPVM-XXXXXXXXXX", TMPDIR => 1);
   my $jit_source_file = "$jit_source_dir/$jit_sub_name.c";
   my $jit_shared_lib_file = "$jit_source_dir/$jit_sub_name.$Config{dlext}";
   
@@ -119,6 +119,8 @@ sub compile_jit_sub {
   my $sub_jit_address = $SPVM::BUILD->extutil->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   
   $self->bind_jitcode_sub($sub_abs_name, $sub_jit_address);
+  
+  rmtree $jit_source_dir;
   
   my $success = 1;
   
