@@ -21,6 +21,8 @@ sub new {
   my $self = {};
   
   $self->{extra_compiler_flags} = '-std=c99 -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable';
+
+  $self->{optimize} = '-O3';
   
   return bless $self, $class;
 }
@@ -29,6 +31,12 @@ sub extra_compiler_flags {
   my $self = shift;
   
   return $self->{extra_compiler_flags};
+}
+
+sub optimize {
+  my $self = shift;
+  
+  return $self->{optimize};
 }
 
 sub convert_module_path_to_shared_lib_path {
@@ -271,8 +279,8 @@ sub build_shared_lib {
     confess "$keys[0] is not supported option";
   }
   
-  # OPTIMIZE default is -O3
-  $cbuilder_config->{optimize} ||= '-O3';
+  # OPTIMIZE
+  $cbuilder_config->{optimize} ||= $self->optimize;
   
   # Compile source files
   my $quiet = 1;

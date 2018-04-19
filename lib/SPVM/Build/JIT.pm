@@ -40,8 +40,8 @@ sub compile_jitcode {
   
   my $cbuilder_config = {};
   
-  # OPTIMIZE default is -O3
-  $cbuilder_config->{optimize} ||= '-O3';
+  # OPTIMIZE
+  $cbuilder_config->{optimize} ||= $SPVM::BUILD->extutil->optimize;
   
   # Compile source files
   my $quiet = 1;

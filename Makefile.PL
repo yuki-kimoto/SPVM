@@ -33,7 +33,7 @@ WriteMakefile(
     LIBS              => ['-lm'], # e.g., '-lm'
     INC               => '-I. -Ilib/SPVM', # e.g., '-I. -I/usr/include/other'
     CCFLAGS => $ccflags,
-    OPTIMIZE => '-O3',
+    OPTIMIZE => $extutil->optimize,
     OBJECT            => '$(O_FILES)', # link all the C files too
     $debug ? (DEFINE => '-DDEBUG') : (),
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
