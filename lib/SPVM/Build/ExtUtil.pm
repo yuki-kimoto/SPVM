@@ -8,6 +8,7 @@ use ExtUtils::CBuilder;
 use Config;
 use File::Copy 'move';
 use File::Path 'mkpath';
+use DynaLoader;
 
 use File::Basename 'dirname', 'basename';
 
@@ -345,6 +346,27 @@ sub get_native_func_names {
   }
   
   return $native_func_names;
+}
+
+sub search_shared_lib_func_address {
+  my ($self, $shared_lib_file, $shared_lib_func_name) = @_;
+  
+  my $native_address;
+  
+  if ($shared_lib_file) {
+    my $dll_libref = DynaLoader::dl_load_file($shared_lib_file);
+    if ($dll_libref) {
+      $native_address = DynaLoader::dl_find_symbol($dll_libref, $shared_lib_func_name);
+    }
+    else {
+      return;
+    }
+  }
+  else {
+    return;
+  }
+  
+  return $native_address;
 }
 
 1;

@@ -119,7 +119,7 @@ sub compile_jit_sub {
   
   $self->compile_jitcode($jit_source_file);
   
-  my $sub_jit_address = $self->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
+  my $sub_jit_address = SPVM::Build::ExtUtil->new->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   unless ($sub_jit_address) {
     confess "Can't get $sub_abs_name jitcode address";
   }
@@ -129,27 +129,6 @@ sub compile_jit_sub {
   my $success = 1;
   
   return $success;
-}
-
-sub search_shared_lib_func_address {
-  my ($self, $shared_lib_file, $shared_lib_func_name) = @_;
-  
-  my $native_address;
-  
-  if ($shared_lib_file) {
-    my $dll_libref = DynaLoader::dl_load_file($shared_lib_file);
-    if ($dll_libref) {
-      $native_address = DynaLoader::dl_find_symbol($dll_libref, $shared_lib_func_name);
-    }
-    else {
-      return;
-    }
-  }
-  else {
-    return;
-  }
-  
-  return $native_address;
 }
 
 1;
