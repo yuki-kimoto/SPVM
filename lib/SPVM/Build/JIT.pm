@@ -58,11 +58,10 @@ sub compile_jitcode {
     source => $source_file,
     object_file => $object_file,
     include_dirs => $include_dirs,
-    extra_compiler_flags => '-std=c99'
-    # extra_compiler_flags => '-Wall -Wextra -Wno-unused-label'
+    extra_compiler_flags => '-std=c99' . ' -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable'
   );
   push @$object_files, $object_file;
-  
+
   # JIT Subroutine names
   my $sub_names = SPVM::Build::SPVMInfo::get_sub_names();
   my @jit_sub_names;
