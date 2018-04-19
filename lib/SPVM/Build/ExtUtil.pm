@@ -33,6 +33,18 @@ sub new {
   return bless $self, $class;
 }
 
+sub convert_module_path_to_shared_lib_path {
+  my ($self, $module_path) = @_;
+  
+  my $module_dir = dirname $module_path;
+  my $base_name = basename $module_path;
+  $base_name =~ s/\.[^.]+$//;
+  
+  my $shared_lib_path .= "$module_dir/$base_name.native/$base_name.$Config{dlext}";
+  
+  return $shared_lib_path;
+}
+
 sub convert_module_name_to_shared_lib_rel_dir {
   my ($self, $module_name) = @_;
   

@@ -6,6 +6,7 @@ use warnings;
 use Config;
 use Carp 'confess';
 
+use SPVM::Build::SPVMInfo;
 use SPVM::Build::ExtUtil;
 use SPVM::Build::JIT;
 use SPVM::Build::Inline;
@@ -46,7 +47,7 @@ my $package_name_h = {};
 sub build_spvm_subs {
   my $self = shift;
   
-  my $sub_names = $self->get_sub_names();
+  my $sub_names = SPVM::Build::SPVMInfo::get_sub_names();
   
   for my $abs_name (@$sub_names) {
     # Define SPVM subroutine
@@ -81,23 +82,22 @@ sub build_spvm_subs {
 }
 
 sub get_shared_lib_file {
-  my ($self, $package_name) = @_;
+  my ($self, $module_name) = @_;
   
-  my $package_name2 = $package_name;
-  $package_name2 =~ s/SPVM:://;
-  my @package_name_parts = split(/::/, $package_name2);
-  my $package_load_path = $self->get_package_load_path($package_name2);
-  my $dll_file = $package_load_path;
-  $dll_file =~ s/\.[^.]+$//;
-  $dll_file .= ".native/$package_name_parts[-1].$Config{dlext}";
+  my $module_name2 = $module_name;
+  $module_name2 =~ s/SPVM:://;
+  my @module_name_parts = split(/::/, $module_name2);
+  my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($module_name2);
   
-  return $dll_file;
+  my $shared_lib_path = SPVM::Build::ExtUtil->new->convert_module_path_to_shared_lib_path($module_load_path);
+  
+  return $shared_lib_path;
 }
 
 sub bind_native_subs {
   my $self = shift;
   
-  my $native_func_names = get_native_sub_names();
+  my $native_func_names = SPVM::Build::SPVMInfo::get_native_sub_names();
   for my $native_func_name (@$native_func_names) {
     my $native_func_name_spvm = "SPVM::$native_func_name";
     my $native_address = $self->get_sub_native_address($native_func_name_spvm);
@@ -132,7 +132,7 @@ sub get_sub_native_address {
     
     my $module_name = $package_name;
     $module_name =~ s/^SPVM:://;
-    my $module_dir = $self->get_package_load_path($module_name);
+    my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($module_name);
     $module_dir =~ s/\.spvm$//;
     
     my $module_name_slash = $package_name;

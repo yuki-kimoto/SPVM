@@ -3033,6 +3033,133 @@ get(...)
 
 MODULE = SPVM::Perl::Object::Array		PACKAGE = SPVM::Perl::Object::Array
 
+MODULE = SPVM::Build::SPVMInfo		PACKAGE = SPVM::Build::SPVMInfo
+
+SV*
+get_sub_name(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_sub_id = ST(0);
+  
+  int32_t sub_id = (int32_t)SvIV(sv_sub_id);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
+
+  const char* sub_name = sub->abs_name;
+  
+  SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
+  
+  XPUSHs(sv_sub_name);
+  XSRETURN(1);
+}
+
+SV*
+get_sub_names(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
+  
+  {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
+      SPVM_SUB* sub = op_sub->uv.sub;
+
+      const char* sub_name = sub->abs_name;
+      
+      SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
+      av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+    }
+  }
+  
+  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
+  
+  XPUSHs(sv_sub_names);
+  XSRETURN(1);
+}
+
+SV*
+get_native_sub_names(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  
+  // Get compiler
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+  
+  SPVM_LIST* op_subs = compiler->op_subs;
+  
+  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
+      SPVM_SUB* sub = op_sub->uv.sub;
+      
+      if (sub->is_native) {
+        const char* sub_name = sub->abs_name;
+        SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
+        av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+      }
+    }
+  }
+  
+  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
+  
+  XPUSHs(sv_sub_names);
+  XSRETURN(1);
+}
+
+SV*
+get_package_load_path(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_package_name = ST(0);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+
+  const char* package_name = SvPV_nolen(sv_package_name);
+  
+
+  // Subroutine information
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));;
+  SPVM_PACKAGE* package = op_package->uv.package;
+  
+  const char* package_load_path = package->load_path;
+  
+  SV* sv_package_load_path = sv_2mortal(newSVpvn(package_load_path, strlen(package_load_path)));
+  
+  XPUSHs(sv_package_load_path);
+  
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Build		PACKAGE = SPVM::Build
 
 SV*
@@ -3128,172 +3255,6 @@ build_opcode(...)
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
   
   XSRETURN(0);
-}
-
-SV*
-get_sub_name(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_sub_id = ST(1);
-  
-  int32_t sub_id = (int32_t)SvIV(sv_sub_id);
-  
-  // API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
-
-  const char* sub_name = sub->abs_name;
-  
-  SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
-  
-  XPUSHs(sv_sub_name);
-  XSRETURN(1);
-}
-
-SV*
-get_sub_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  
-  // API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
-  
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-
-      const char* sub_name = sub->abs_name;
-      
-      SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
-      av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
-    }
-  }
-  
-  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
-  
-  XPUSHs(sv_sub_names);
-  XSRETURN(1);
-}
-
-SV*
-get_native_sub_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  
-  // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
-  
-  SPVM_LIST* op_subs = compiler->op_subs;
-  
-  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      
-      if (sub->is_native) {
-        const char* sub_name = sub->abs_name;
-        SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
-        av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
-      }
-    }
-  }
-  
-  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
-  
-  XPUSHs(sv_sub_names);
-  XSRETURN(1);
-}
-
-SV*
-get_no_native_sub_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  
-  // API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-  
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
-  
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-
-      if (!sub->is_native) {
-        const char* sub_name = sub->abs_name;
-        
-        SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
-        av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
-      }
-    }
-  }
-  
-  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
-  
-  XPUSHs(sv_sub_names);
-  XSRETURN(1);
-}
-
-SV*
-get_package_load_path(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_package_name = ST(1);
-  
-  // API
-  SPVM_API* api = SPVM_XS_UTIL_get_api();
-
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
-  SPVM_COMPILER* compiler = runtime->compiler;
-
-
-  const char* package_name = SvPV_nolen(sv_package_name);
-  
-
-  // Subroutine information
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));;
-  SPVM_PACKAGE* package = op_package->uv.package;
-  
-  const char* package_load_path = package->load_path;
-  
-  SV* sv_package_load_path = sv_2mortal(newSVpvn(package_load_path, strlen(package_load_path)));
-  
-  XPUSHs(sv_package_load_path);
-  
-  XSRETURN(1);
 }
 
 SV*
