@@ -16,7 +16,23 @@ sub new {
   
   my $self = {};
   
+  $self->{extutil} = SPVM::Build::ExtUtil->new;
+  
+  $self->{jit} = SPVM::Build::JIT->new;
+  
   return bless $self, $class;
+}
+
+sub extutil {
+  my $self = shift;
+  
+  return $self->{extutil};
+}
+
+sub jit {
+  my $self = shift;
+  
+  return $self->{jit};
 }
 
 sub compile_spvm {
@@ -89,7 +105,7 @@ sub get_shared_lib_file {
   my @module_name_parts = split(/::/, $module_name2);
   my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($module_name2);
   
-  my $shared_lib_path = SPVM::Build::ExtUtil->new->convert_module_path_to_shared_lib_path($module_load_path);
+  my $shared_lib_path = $self->extutil->convert_module_path_to_shared_lib_path($module_load_path);
   
   return $shared_lib_path;
 }
@@ -125,7 +141,7 @@ sub get_sub_native_address {
   
   my $shared_lib_func_name = $sub_abs_name;
   $shared_lib_func_name =~ s/:/_/g;
-  my $native_address = SPVM::Build::ExtUtil->new->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
+  my $native_address = $self->extutil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
   
   # Try inline compile
   unless ($native_address) {
@@ -144,7 +160,7 @@ sub get_sub_native_address {
     my $shared_lib_file;
     
     eval {
-      $shared_lib_file = SPVM::Build::ExtUtil->new->build_shared_lib(
+      $shared_lib_file = $self->extutil->build_shared_lib(
         module_dir => $module_dir,
         module_name => "SPVM::$module_name",
         object_dir => $SPVM::TMP_DIR,
@@ -156,7 +172,7 @@ sub get_sub_native_address {
       return;
     }
     else {
-      $native_address = SPVM::Build::ExtUtil->new->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
+      $native_address = $self->extutil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
     }
   }
   

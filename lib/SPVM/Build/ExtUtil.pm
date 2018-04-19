@@ -1,5 +1,8 @@
 package SPVM::Build::ExtUtil;
 
+# SPVM::Build::ExtUtil is used from Makefile.PL
+# so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
+
 use strict;
 use warnings;
 use Carp 'croak', 'confess';
@@ -12,26 +15,20 @@ use DynaLoader;
 
 use File::Basename 'dirname', 'basename';
 
-# SPVM::Build::Util::Extension is used from Makefile.PL
-# so SPVM::Build::Util::Extension must be wrote as pure per script, not contain XS.
-
-use strict;
-use warnings;
-use Carp 'croak', 'confess';
-
-use ExtUtils::CBuilder;
-use Config;
-use File::Copy 'move';
-use File::Path 'mkpath';
-
-use File::Basename 'dirname', 'basename';
-
 sub new {
   my $class = shift;
   
   my $self = {};
   
+  $self->{extra_compiler_flags} = '-std=c99 -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable';
+  
   return bless $self, $class;
+}
+
+sub extra_compiler_flags {
+  my $self = shift;
+  
+  return $self->{extra_compiler_flags};
 }
 
 sub convert_module_path_to_shared_lib_path {
@@ -151,17 +148,15 @@ sub move_shared_lib_to_blib {
 sub build_shared_lib_blib {
   my ($self, $module_name) = @_;
 
-  my $spvm_build = SPVM::Build::ExtUtil->new;
-
   # Build shared library
-  my $shared_lib_file = $spvm_build->build_shared_lib(
+  my $shared_lib_file = $self->build_shared_lib(
     module_name => $module_name,
     module_dir => 'lib',
     source_dir => 'lib_native',
     object_dir => '.'
   );
   
-  $spvm_build->move_shared_lib_to_blib($shared_lib_file, $module_name);
+  $self->move_shared_lib_to_blib($shared_lib_file, $module_name);
 }
 
 sub build_shared_lib {
@@ -300,7 +295,7 @@ sub build_shared_lib {
       source => $src_file,
       object_file => $object_file,
       include_dirs => $include_dirs,
-      extra_compiler_flags => '-Wall -Wextra -std=c99'
+      extra_compiler_flags => $self->extra_compiler_flags
     );
     push @$object_files, $object_file;
   }

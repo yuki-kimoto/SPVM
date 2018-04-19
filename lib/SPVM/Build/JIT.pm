@@ -58,7 +58,7 @@ sub compile_jitcode {
     source => $source_file,
     object_file => $object_file,
     include_dirs => $include_dirs,
-    extra_compiler_flags => '-std=c99' . ' -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable'
+    extra_compiler_flags => $SPVM::BUILD->extutil->extra_compiler_flags
   );
   push @$object_files, $object_file;
 
@@ -95,7 +95,7 @@ sub create_jit_sub_name {
 }
 
 sub compile_jit_sub_func {
-  return __PACKAGE__->new->compile_jit_sub(@_);
+  return $SPVM::BUILD->jit->compile_jit_sub(@_);
 }
 
 sub compile_jit_sub {
@@ -117,7 +117,7 @@ sub compile_jit_sub {
   
   $self->compile_jitcode($jit_source_file);
   
-  my $sub_jit_address = SPVM::Build::ExtUtil->new->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
+  my $sub_jit_address = $SPVM::BUILD->extutil->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   
   $self->bind_jitcode_sub($sub_abs_name, $sub_jit_address);
   

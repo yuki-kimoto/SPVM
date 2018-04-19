@@ -10,6 +10,8 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 use SPVM::Build::ExtUtil;
 
+my $extutil= SPVM::Build::ExtUtil->new;
+
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
   die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
@@ -19,7 +21,7 @@ my $debug;
 GetOptions('d' => \$debug);
 
 # Edit CCFLAGS
-my $ccflags = "$Config{ccflags} -Wall -Wextra -std=c99";
+my $ccflags = "$Config{ccflags} " . $extutil->extra_compiler_flags;
 
 WriteMakefile(
     NAME              => 'SPVM',
@@ -40,7 +42,6 @@ WriteMakefile(
 
 # Add Build shared library make rule
 sub MY::postamble {
-  my $spvm_build = SPVM::Build::ExtUtil->new;
   
   my @module_names = qw(
     SPVM::Std::IO
@@ -52,7 +53,7 @@ sub MY::postamble {
   
   my $make_rule = '';
   for my $module_name (@module_names) {
-    $make_rule .= $spvm_build->create_build_shared_lib_make_rule($module_name);
+    $make_rule .= $extutil->create_build_shared_lib_make_rule($module_name);
   }
   
   return $make_rule;

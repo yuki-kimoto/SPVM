@@ -38,6 +38,8 @@ our %PACKAGE_INFO_SYMTABLE;
 # This directory is created at first of process and removed at end of process
 our $TMP_DIR;
 
+our $BUILD;
+
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
@@ -69,8 +71,10 @@ sub import {
 CHECK {
   $TMP_DIR = File::Temp::tempdir(CLEANUP => 1);
   
+  $BUILD = SPVM::Build->new;
+  
   unless ($ENV{SPVM_NO_COMPILE}) {
-    my $compile_success = SPVM::Build->new->compile_spvm();
+    my $compile_success = $BUILD->compile_spvm();
     unless ($compile_success) {
       croak("SPVM compile error");
     }
