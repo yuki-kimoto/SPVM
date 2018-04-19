@@ -164,7 +164,8 @@ sub get_sub_native_address {
         module_dir => $module_dir,
         module_name => "SPVM::$module_name",
         object_dir => $SPVM::TMP_DIR,
-        inline => 1
+        inline => 1,
+        quiet => 1,
       );
     };
     

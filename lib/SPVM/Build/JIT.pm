@@ -76,7 +76,6 @@ sub compile_jitcode {
     objects => $object_files,
     module_name => 'SPVM::JITCode',
     dl_func_list => ['SPVM_JITCODE_call_sub', @jit_sub_names],
-    extra_linker_flags => ''
   );
   
   return $lib_file;

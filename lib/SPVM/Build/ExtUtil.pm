@@ -185,6 +185,8 @@ sub build_shared_lib {
   # Object created directory
   my $object_dir = $opt{object_dir};
   
+  my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
+  
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
@@ -283,7 +285,6 @@ sub build_shared_lib {
   $cbuilder_config->{optimize} ||= $self->optimize;
   
   # Compile source files
-  my $quiet = 1;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
   my $object_files = [];
   unless (defined $object_dir) {
@@ -321,7 +322,7 @@ sub build_shared_lib {
     objects => $object_files,
     module_name => $module_name,
     dl_func_list => $native_func_names,
-    extra_linker_flags => ''
+    extra_linker_flags => $extra_linker_flags
   );
   
   return $shared_lib_file;
