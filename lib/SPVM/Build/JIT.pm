@@ -106,8 +106,7 @@ sub compile_jit_sub {
   my $jit_sub_name = $self->create_jit_sub_name($sub_abs_name);
   
   # Build JIT code
-  my $tmp_dir = File::Temp->newdir;
-  my $jit_source_dir = $tmp_dir->dirname;
+  my $jit_source_dir = $SPVM::TMP_DIR;
   my $jit_source_file = "$jit_source_dir/$jit_sub_name.c";
   my $jit_shared_lib_file = "$jit_source_dir/$jit_sub_name.$Config{dlext}";
   

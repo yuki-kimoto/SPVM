@@ -143,12 +143,11 @@ sub get_sub_native_address {
     
     my $shared_lib_file;
     
-    my $tmp_dir = File::Temp->newdir;
     eval {
       $shared_lib_file = $SPVM::SPVM_BUILD->build_shared_lib(
         module_dir => $module_dir,
         module_name => "SPVM::$module_name",
-        object_dir => $tmp_dir->dirname,
+        object_dir => $SPVM::TMP_DIR,
         inline => 1
       );
     };
