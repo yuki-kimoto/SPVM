@@ -13,8 +13,16 @@ use File::Basename 'dirname', 'basename';
 
 use SPVM::Build;
 
+sub new {
+  my $class = shift;
+  
+  my $self = {};
+  
+  return bless $self, $class;
+}
+
 sub compile_jitcode {
-  my ($source_file) = @_;
+  my ($self, $source_file) = @_;
   
   # Source directory
   my $source_dir = dirname $source_file;
@@ -76,7 +84,7 @@ sub compile_jitcode {
 }
 
 sub create_jit_sub_name {
-  my $sub_name = shift;
+  my ($self, $sub_name) = @_;
   
   my $jit_sub_name = $sub_name;
   
@@ -87,11 +95,15 @@ sub create_jit_sub_name {
   return $jit_sub_name;
 }
 
+sub compile_jit_sub_func {
+  return __PACKAGE__->new->compile_jit_sub(@_);
+}
+
 sub compile_jit_sub {
-  my ($sub_id, $sub_jitcode_source) = @_;
+  my ($self, $sub_id, $sub_jitcode_source) = @_;
   
   my $sub_abs_name = SPVM::Build->new->get_sub_name($sub_id);
-  my $jit_sub_name = create_jit_sub_name($sub_abs_name);
+  my $jit_sub_name = $self->create_jit_sub_name($sub_abs_name);
   
   # Build JIT code
   my $tmp_dir = File::Temp->newdir;
@@ -105,14 +117,14 @@ sub compile_jit_sub {
   print $fh $sub_jitcode_source;
   close $fh;
   
-  compile_jitcode($jit_source_file);
+  $self->compile_jitcode($jit_source_file);
   
-  my $sub_jit_address = search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
+  my $sub_jit_address = $self->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   unless ($sub_jit_address) {
     confess "Can't get $sub_abs_name jitcode address";
   }
   
-  bind_jitcode_sub($sub_abs_name, $sub_jit_address);
+  $self->bind_jitcode_sub($sub_abs_name, $sub_jit_address);
   
   my $success = 1;
   
@@ -120,7 +132,7 @@ sub compile_jit_sub {
 }
 
 sub search_shared_lib_func_address {
-  my ($shared_lib_file, $shared_lib_func_name) = @_;
+  my ($self, $shared_lib_file, $shared_lib_func_name) = @_;
   
   my $native_address;
   

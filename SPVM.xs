@@ -103,7 +103,7 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   XPUSHs(sv_jitcode_source);
   PUTBACK;
 
-  return_value_count = call_pv("SPVM::Build::JIT::compile_jit_sub", G_SCALAR);
+  return_value_count = call_pv("SPVM::Build::JIT::compile_jit_sub_func", G_SCALAR);
 
   SPAGAIN;
   SP -= return_value_count;
@@ -3382,8 +3382,9 @@ bind_jitcode_sub(...)
 {
   (void)RETVAL;
   
-  SV* sv_sub_abs_name = ST(0);
-  SV* sv_sub_native_address = ST(1);
+  SV* sv_self = ST(0);
+  SV* sv_sub_abs_name = ST(1);
+  SV* sv_sub_native_address = ST(2);
   
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   void* sub_jit_address = (void*)SvIV(sv_sub_native_address);
