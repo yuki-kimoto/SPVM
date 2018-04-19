@@ -32,7 +32,6 @@ our $COMPILER;
 our $API;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
-our $SPVM_BUILD;
 
 # Temporary directory is used inline compile adn JIT compile.
 # C source file and shared library file(.so .dll, etc) is created.
@@ -41,8 +40,6 @@ our $TMP_DIR;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
-
-$SPVM_BUILD = SPVM::Build::ExtUtil->new;
 
 sub import {
   my ($class, $package_name) = @_;

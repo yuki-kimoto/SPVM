@@ -118,9 +118,6 @@ sub compile_jit_sub {
   $self->compile_jitcode($jit_source_file);
   
   my $sub_jit_address = SPVM::Build::ExtUtil->new->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
-  unless ($sub_jit_address) {
-    confess "Can't get $sub_abs_name jitcode address";
-  }
   
   $self->bind_jitcode_sub($sub_abs_name, $sub_jit_address);
   
