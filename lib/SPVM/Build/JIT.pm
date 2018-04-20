@@ -3,6 +3,7 @@ package SPVM::Build::JIT;
 use strict;
 use warnings;
 use Carp 'croak', 'confess';
+use File::Spec;
 
 use ExtUtils::CBuilder;
 use Config;
@@ -108,7 +109,7 @@ sub compile_jit_sub {
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for JIT compile";
   }
-
+  
   my $jit_source_file = "$build_dir/$jit_sub_name.c";
   my $jit_shared_lib_file = "$build_dir/$jit_sub_name.$Config{dlext}";
   

@@ -12,6 +12,7 @@ use SPVM::Build::JIT;
 use SPVM::Build::Inline;
 
 use File::Path 'rmtree';
+use File::Spec;
 
 sub new {
   my $class = shift;
