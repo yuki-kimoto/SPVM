@@ -186,19 +186,26 @@ sub build_shared_lib {
   my $build_dir = $opt{build_dir};
   
   my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
+ 
+  my $inline = $opt{inline};
   
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
   my $native_dir = $module_name;
   $native_dir =~ s/::/\//g;
-  if ($opt{inline}) {
+  if ($inline) {
     $native_dir .= '.inline';
   }
   else {
     $native_dir .= '.native';
   }
   $native_dir = "$source_dir/$native_dir";
+  
+  unless (defined $build_dir && -d $build_dir) {
+    my $compile_type = $inline ? 'inline' : 'native';
+    confess "SPVM build directory must be specified for $compile_type compile";
+  }
   
   # Correct source files
   my $src_files = [];
@@ -287,9 +294,6 @@ sub build_shared_lib {
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
   my $object_files = [];
-  unless (defined $build_dir) {
-    confess "build_dir option is needed";
-  }
   for my $src_file (@$src_files) {
     # Object file
     my $object_file = $module_name;
