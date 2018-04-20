@@ -6,7 +6,6 @@ use warnings;
 
 use DynaLoader;
 use File::Basename 'basename', 'dirname';
-use File::Temp ();
 
 use SPVM::Perl::Object;
 use SPVM::Perl::Object::Array;
@@ -36,12 +35,6 @@ our $ENABLE_JIT;
 our $BUILD_DIR;
 our $INITIALIZED;
 our $BUILD;
-
-# Temporary directory is used inline compile adn JIT compile.
-# C source file and shared library file(.so .dll, etc) is created.
-# This directory is created at first of process and removed at end of process
-our $TMP_DIR;
-
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
@@ -78,8 +71,6 @@ sub import {
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
-  $TMP_DIR = File::Temp::tempdir(CLEANUP => 1);
-  
   $BUILD = SPVM::Build->new;
   
   unless ($ENV{SPVM_NO_COMPILE}) {

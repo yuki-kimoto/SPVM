@@ -104,9 +104,9 @@ sub compile_jit_sub {
   my $jit_sub_name = $self->create_jit_sub_name($sub_abs_name);
   
   # Build JIT code
-  my $jit_source_dir = File::Temp::tempdir("SPVM-XXXXXXXXXX", TMPDIR => 1);
-  my $jit_source_file = "$jit_source_dir/$jit_sub_name.c";
-  my $jit_shared_lib_file = "$jit_source_dir/$jit_sub_name.$Config{dlext}";
+  my $build_dir = $SPVM::BUILD_DIR;
+  my $jit_source_file = "$build_dir/$jit_sub_name.c";
+  my $jit_shared_lib_file = "$build_dir/$jit_sub_name.$Config{dlext}";
   
   # Compile JIT code
   open my $fh, '>', $jit_source_file
@@ -119,8 +119,6 @@ sub compile_jit_sub {
   my $sub_jit_address = $SPVM::BUILD->extutil->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   
   $self->bind_jitcode_sub($sub_abs_name, $sub_jit_address);
-  
-  rmtree $jit_source_dir;
   
   my $success = 1;
   

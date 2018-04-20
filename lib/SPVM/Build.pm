@@ -161,25 +161,21 @@ sub get_sub_native_address {
     
     my $shared_lib_file;
     
-    my $tmp_dir = File::Temp::tempdir("SPVM-XXXXXXXXXX", TMPDIR => 1);
-    
     eval {
       $shared_lib_file = $self->extutil->build_shared_lib(
         module_dir => $module_dir,
         module_name => "SPVM::$module_name",
-        build_dir => $tmp_dir,
+        build_dir => $SPVM::BUILD_DIR,
         inline => 1,
         quiet => 1,
       );
     };
     
     if ($@) {
-      rmtree $tmp_dir;
       return;
     }
     else {
       $native_address = $self->extutil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
-      rmtree $tmp_dir;
     }
   }
   

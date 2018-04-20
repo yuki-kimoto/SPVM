@@ -15,6 +15,7 @@ sub import {
   }
   else {
     $ENV{SPVM_TEST_LIB_DIR} = "t/default/lib";
+    $ENV{SPVM_BUILD_DIR} = 'spvm_build';
     push @INC, $ENV{SPVM_TEST_LIB_DIR};
   }
 }
