@@ -32,19 +32,28 @@ our $COMPILER;
 our $API;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
+our $ENABLE_JIT;
+our $BUILD_DIR;
+our $INITIALIZED;
+our $BUILD;
 
 # Temporary directory is used inline compile adn JIT compile.
 # C source file and shared library file(.so .dll, etc) is created.
 # This directory is created at first of process and removed at end of process
 our $TMP_DIR;
 
-our $BUILD;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
 sub import {
   my ($class, $package_name) = @_;
+  
+  unless ($INITIALIZED) {
+    $ENABLE_JIT = $ENV{SPVM_ENABLE_JIT};
+    $BUILD_DIR = $ENV{SPVM_BUILD_DIR};
+    $INITIALIZED = 1;
+  }
   
   # Add package informations
   if (defined $package_name) {

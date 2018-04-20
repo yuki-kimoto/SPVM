@@ -119,6 +119,8 @@ struct SPVM_compiler {
   SPVM_OP* cur_op_use;
   
   int32_t anon_package_length;
+  
+  _Bool enable_jit;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
