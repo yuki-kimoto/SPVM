@@ -105,6 +105,10 @@ sub compile_jit_sub {
   
   # Build JIT code
   my $build_dir = $SPVM::BUILD_DIR;
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for JIT compile";
+  }
+
   my $jit_source_file = "$build_dir/$jit_sub_name.c";
   my $jit_shared_lib_file = "$build_dir/$jit_sub_name.$Config{dlext}";
   
