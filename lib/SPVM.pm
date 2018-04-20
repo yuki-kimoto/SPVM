@@ -33,8 +33,7 @@ our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
 our $ENABLE_JIT;
 our $BUILD_DIR;
-our $BUILD_PROCESS_DIR;
-our $EXISTS_BUILD_DIR;
+our $PROCESS_START_TIME;
 our $INITIALIZED;
 our $BUILD;
 
@@ -47,7 +46,7 @@ sub import {
   unless ($INITIALIZED) {
     $ENABLE_JIT = $ENV{SPVM_ENABLE_JIT};
     $BUILD_DIR = $ENV{SPVM_BUILD_DIR};
-    
+    $PROCESS_START_TIME = time;
     $INITIALIZED = 1;
   }
 

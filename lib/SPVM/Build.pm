@@ -37,7 +37,7 @@ sub create_build_process_dir {
     confess "Can't create build process directory because build directory $build_dir don't eixsts";
   }
   
-  my $build_process_dir = File::Spec->catfile($build_dir, $$);
+  my $build_process_dir = File::Spec->catfile($build_dir, "$$.$SPVM::PROCESS_START_TIME");
   
   # Don't error check
   mkdir $build_process_dir;
@@ -188,11 +188,20 @@ sub get_sub_native_address {
     $module_dir =~ s/\/$//;
     
     my $shared_lib_file;
+
+    # Build inline code
+    my $build_dir = $SPVM::BUILD_DIR;
+    unless (defined $build_dir && -d $build_dir) {
+      confess "SPVM build directory must be specified for inline compile";
+    }
+    
+    # Create build process directory
+    my $build_process_dir = $SPVM::BUILD->create_build_process_dir;
     
     $shared_lib_file = $self->extutil->build_shared_lib(
       module_dir => $module_dir,
       module_name => "SPVM::$module_name",
-      build_dir => $SPVM::BUILD_DIR,
+      build_dir => $build_process_dir,
       inline => 1,
       quiet => 1,
     );
