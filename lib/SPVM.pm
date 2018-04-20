@@ -46,6 +46,10 @@ sub import {
   unless ($INITIALIZED) {
     $ENABLE_JIT = $ENV{SPVM_ENABLE_JIT};
     $BUILD_DIR = $ENV{SPVM_BUILD_DIR};
+    if (defined $BUILD_DIR) {
+      # Remove traling slash
+      $BUILD_DIR = File::Spec->catdir(File::Spec->splitdir($BUILD_DIR));
+    }
     $PROCESS_START_TIME = time;
     $INITIALIZED = 1;
   }
