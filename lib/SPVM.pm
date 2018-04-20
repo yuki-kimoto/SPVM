@@ -48,20 +48,6 @@ sub import {
     $ENABLE_JIT = $ENV{SPVM_ENABLE_JIT};
     $BUILD_DIR = $ENV{SPVM_BUILD_DIR};
     
-    if (defined $BUILD_DIR) {
-      if (-d $BUILD_DIR) {
-        $EXISTS_BUILD_DIR = 1;
-        $BUILD_PROCESS_DIR = File::Spec->catfile($BUILD_DIR, $$);
-        unless (-f $BUILD_PROCESS_DIR) {
-          mkdir $BUILD_PROCESS_DIR
-            or confess "Can't create build process directory $BUILD_PROCESS_DIR: $!";
-        }
-      }
-      else {
-        confess "Can't find build directory $BUILD_DIR";
-      }
-    }
-    
     $INITIALIZED = 1;
   }
 

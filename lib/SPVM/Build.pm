@@ -26,6 +26,34 @@ sub new {
   return bless $self, $class;
 }
 
+sub create_build_process_dir {
+  my $build_dir = $SPVM::BUILD_DIR;
+  
+  unless (defined $build_dir) {
+    confess "Can't create build process directory because build directory is not specified";
+  }
+  
+  unless (-d $build_dir) {
+    confess "Can't create build process directory because build directory $build_dir don't eixsts";
+  }
+  
+  my $build_process_dir = File::Spec->catfile($build_dir, $$);
+  
+  # Don't error check
+  mkdir $build_process_dir;
+  my $mkdir_error = $!;
+  
+  if (!-d $build_process_dir) {
+    my $message = "Can't create build process directory $build_process_dir because mkdir fail";
+    if ($mkdir_error) {
+      $message .= " : $!";
+    }
+    confess $message;
+  }
+  
+  return $build_process_dir;
+}
+
 sub extutil {
   my $self = shift;
   
