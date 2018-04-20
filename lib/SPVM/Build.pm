@@ -147,7 +147,6 @@ sub get_sub_native_address {
   
   # Try inline compile
   unless ($native_address) {
-    
     my $module_name = $package_name;
     $module_name =~ s/^SPVM:://;
     my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($module_name);
@@ -161,22 +160,15 @@ sub get_sub_native_address {
     
     my $shared_lib_file;
     
-    eval {
-      $shared_lib_file = $self->extutil->build_shared_lib(
-        module_dir => $module_dir,
-        module_name => "SPVM::$module_name",
-        build_dir => $SPVM::BUILD_DIR,
-        inline => 1,
-        quiet => 1,
-      );
-    };
+    $shared_lib_file = $self->extutil->build_shared_lib(
+      module_dir => $module_dir,
+      module_name => "SPVM::$module_name",
+      build_dir => $SPVM::BUILD_DIR,
+      inline => 1,
+      quiet => 1,
+    );
     
-    if ($@) {
-      return;
-    }
-    else {
-      $native_address = $self->extutil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
-    }
+    $native_address = $self->extutil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
   }
   
   return $native_address;
