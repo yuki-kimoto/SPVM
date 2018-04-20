@@ -23,7 +23,7 @@ sub new {
 }
 
 sub compile_jitcode {
-  my ($self, $source_file) = @_;
+  my ($self, $sub_abs_name, $source_file) = @_;
   
   # Source directory
   my $source_dir = dirname $source_file;
@@ -64,19 +64,14 @@ sub compile_jitcode {
   push @$object_files, $object_file;
 
   # JIT Subroutine names
-  my $sub_names = SPVM::Build::SPVMInfo::get_sub_names();
-  my @jit_sub_names;
-  for my $abs_name (@$sub_names) {
-    my $jit_sub_name = $abs_name;
-    $jit_sub_name =~ s/:/_/g;
-    $jit_sub_name = "SPVM_JITCODE_$jit_sub_name";
-    push @jit_sub_names, $jit_sub_name;
-  }
+  my $native_sub_name = $sub_abs_name;
+  $native_sub_name =~ s/:/_/g;
+  $native_sub_name = "SPVM_JITCODE_$native_sub_name";
   
   my $lib_file = $cbuilder->link(
     objects => $object_files,
-    module_name => 'SPVM::JITCode',
-    dl_func_list => ['SPVM_JITCODE_call_sub', @jit_sub_names],
+    module_name => $native_sub_name,
+    dl_func_list => [$native_sub_name],
   );
   
   return $lib_file;
@@ -122,7 +117,7 @@ sub compile_jit_sub {
   print $fh $sub_jitcode_source;
   close $fh;
   
-  $self->compile_jitcode($jit_source_file);
+  $self->compile_jitcode($sub_abs_name, $jit_source_file);
   
   my $sub_jit_address = $SPVM::BUILD->extutil->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   

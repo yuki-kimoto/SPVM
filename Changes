@@ -1,4 +1,6 @@
-0.0326 2018-04-17
+0.0327 2018-04-21
+  - fix jit link subroutine name bug
+0.0326 2018-04-20
   - forbidden function call from Perl. All subroutine become method or class method
   - rename Std::Arrays to Std::Array::Util
   - rename Std::Array::Util copy_of_xxx to copy_xxxs
