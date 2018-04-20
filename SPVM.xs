@@ -3173,6 +3173,10 @@ compile(...)
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
+  // Enable JIT
+  SV* sv_enable_jit = get_sv("SPVM::ENABLE_JIT", 0);
+  compiler->enable_jit = SvTRUE(sv_enable_jit) ? 1 : 0;
+  
   // Add package
   AV* av_package_infos = get_av("SPVM::PACKAGE_INFOS", 0);
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
