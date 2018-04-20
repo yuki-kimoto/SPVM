@@ -157,6 +157,8 @@ sub bind_native_subs {
   }
 }
 
+my $compiled_inline_shared_lib_file_h = {};
+
 sub get_sub_native_address {
   my ($self, $sub_abs_name) = @_;
   
@@ -178,35 +180,38 @@ sub get_sub_native_address {
   unless ($native_address) {
     my $module_name = $package_name;
     $module_name =~ s/^SPVM:://;
-    my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($module_name);
-    $module_dir =~ s/\.spvm$//;
     
-    my $module_name_slash = $package_name;
-    $module_name_slash =~ s/::/\//g;
-    
-    $module_dir =~ s/$module_name_slash$//;
-    $module_dir =~ s/\/$//;
-    
-    my $shared_lib_file;
-
-    # Build inline code
-    my $build_dir = $SPVM::BUILD_DIR;
-    unless (defined $build_dir && -d $build_dir) {
-      confess "SPVM build directory must be specified for inline compile";
+    unless ($compiled_inline_shared_lib_file_h->{$module_name}) {
+      my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($module_name);
+      $module_dir =~ s/\.spvm$//;
+      
+      my $module_name_slash = $package_name;
+      $module_name_slash =~ s/::/\//g;
+      
+      $module_dir =~ s/$module_name_slash$//;
+      $module_dir =~ s/\/$//;
+      
+      # Build inline code
+      my $build_dir = $SPVM::BUILD_DIR;
+      unless (defined $build_dir && -d $build_dir) {
+        confess "SPVM build directory must be specified for inline compile";
+      }
+      
+      # Create build process directory
+      my $build_process_dir = $SPVM::BUILD->create_build_process_dir;
+      
+      my $inline_shared_lib_file = $self->extutil->build_shared_lib(
+        module_dir => $module_dir,
+        module_name => "SPVM::$module_name",
+        build_dir => $build_process_dir,
+        inline => 1,
+        quiet => 1,
+      );
+      
+      $compiled_inline_shared_lib_file_h->{$module_name} = $inline_shared_lib_file;
     }
     
-    # Create build process directory
-    my $build_process_dir = $SPVM::BUILD->create_build_process_dir;
-    
-    $shared_lib_file = $self->extutil->build_shared_lib(
-      module_dir => $module_dir,
-      module_name => "SPVM::$module_name",
-      build_dir => $build_process_dir,
-      inline => 1,
-      quiet => 1,
-    );
-    
-    $native_address = $self->extutil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
+    $native_address = $self->extutil->search_shared_lib_func_address($compiled_inline_shared_lib_file_h->{$module_name}, $shared_lib_func_name);
   }
   
   return $native_address;
