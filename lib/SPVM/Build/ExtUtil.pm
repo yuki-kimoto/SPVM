@@ -161,7 +161,7 @@ sub build_shared_lib_blib {
     module_name => $module_name,
     module_dir => 'lib',
     source_dir => 'lib_native',
-    object_dir => '.'
+    build_dir => '.'
   );
   
   $self->move_shared_lib_to_blib($shared_lib_file, $module_name);
@@ -183,7 +183,7 @@ sub build_shared_lib {
   }
   
   # Object created directory
-  my $object_dir = $opt{object_dir};
+  my $build_dir = $opt{build_dir};
   
   my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
   
@@ -287,8 +287,8 @@ sub build_shared_lib {
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
   my $object_files = [];
-  unless (defined $object_dir) {
-    confess "object_dir option is needed";
+  unless (defined $build_dir) {
+    confess "build_dir option is needed";
   }
   for my $src_file (@$src_files) {
     # Object file
@@ -297,7 +297,7 @@ sub build_shared_lib {
     my $src_file_under_score = $src_file;
     $src_file_under_score =~ s/^.+\///;
     $src_file_under_score =~ s/[^a-zA-Z0-9]/_/g;
-    $object_file = "$object_dir/${object_file}____$src_file_under_score.o";
+    $object_file = "$build_dir/${object_file}____$src_file_under_score.o";
     
     # Compile source file
     $cbuilder->compile(

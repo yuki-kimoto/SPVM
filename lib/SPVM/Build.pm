@@ -167,7 +167,7 @@ sub get_sub_native_address {
       $shared_lib_file = $self->extutil->build_shared_lib(
         module_dir => $module_dir,
         module_name => "SPVM::$module_name",
-        object_dir => $tmp_dir,
+        build_dir => $tmp_dir,
         inline => 1,
         quiet => 1,
       );
