@@ -26,6 +26,39 @@ sub new {
   return bless $self, $class;
 }
 
+sub cleanup_build_dir {
+  my $build_dir = $SPVM::BUILD_DIR;
+  
+  if (defined $build_dir && -d $build_dir) {
+    opendir(my $build_dh, $build_dir);
+    if ($build_dh) {
+      while (my $build_process_dir_base = readdir $build_dh) {
+        if ($build_process_dir_base =~ /^([0-9]+?)\.([0-9]+)?$/) {
+          my $process_id = $1;
+          my $process_start_time = $2;
+          
+          # Remove only old directory than self-process
+          if ($process_start_time < $SPVM::PROCESS_START_TIME) {
+            my $alive = kill 0, $process_id;
+            
+            # Only remove finished process's directory
+            unless ($alive) {
+              my $build_process_dir = "$build_dir/$build_process_dir_base";
+              my @source_files =  glob "$build_process_dir/*";
+              for my $source_file (@source_files) {
+                # Never throw exception even if file is not removed.
+                unlink $source_file;
+              }
+              # Never throw exception even if directory is not removed.
+              rmdir $build_process_dir;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 sub create_build_process_dir {
   my $build_dir = $SPVM::BUILD_DIR;
   

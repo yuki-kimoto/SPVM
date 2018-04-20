@@ -44,6 +44,7 @@ sub import {
   my ($class, $package_name) = @_;
   
   unless ($INITIALIZED) {
+    $BUILD = SPVM::Build->new;
     $ENABLE_JIT = $ENV{SPVM_ENABLE_JIT};
     $BUILD_DIR = $ENV{SPVM_BUILD_DIR};
     if (defined $BUILD_DIR) {
@@ -51,6 +52,10 @@ sub import {
       $BUILD_DIR = File::Spec->catdir(File::Spec->splitdir($BUILD_DIR));
     }
     $PROCESS_START_TIME = time;
+    
+    # Cleanup build directory
+    $BUILD->cleanup_build_dir;
+    
     $INITIALIZED = 1;
   }
 
@@ -77,7 +82,6 @@ sub import {
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
-  $BUILD = SPVM::Build->new;
   
   unless ($ENV{SPVM_NO_COMPILE}) {
     my $compile_success = $BUILD->compile_spvm();

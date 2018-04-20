@@ -6,6 +6,7 @@
   - fix windows source file reading bug
   - inline source code must be in .inline instead of .native
   - fix temporary directory bug
+  - add build directory cleanup logic
 0.0325 2018-04-13
   - remove template feature
   - rename Math to Std::Math
