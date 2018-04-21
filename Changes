@@ -1,5 +1,6 @@
 0.0327 2018-04-21
   - fix jit link subroutine name bug
+  - only print warning message when SPVM_TEST_ENABLE_WARNINGS is defined
 0.0326 2018-04-20
   - forbidden function call from Perl. All subroutine become method or class method
   - rename Std::Arrays to Std::Array::Util
