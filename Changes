@@ -3,6 +3,7 @@
   - only print warning message when SPVM_TEST_ENABLE_WARNINGS is defined
   - double, float string convertion more portable
   - fix windows long constant bug
+  - fix windows jit dll file overwritten bug
 0.0326 2018-04-20
   - forbidden function call from Perl. All subroutine become method or class method
   - rename Std::Arrays to Std::Array::Util
