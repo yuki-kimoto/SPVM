@@ -766,12 +766,44 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING:
             sprintf(tmp_string, "%" PRId64, *(SPVM_API_long*)&vars[opcode->operand1]);
             break;
-          case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING:
-            sprintf(tmp_string, "%f", *(SPVM_API_float*)&vars[opcode->operand1]);
+          case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING: {
+            float value = *(SPVM_API_float*)&vars[opcode->operand1];
+            if (isnan(value)) {
+              sprintf(tmp_string, "nan");
+            }
+            else if (isinf(value)) {
+              if (value > 0) {
+                sprintf(tmp_string, "inf");
+              }
+              else {
+                sprintf(tmp_string, "-inf");
+              }
+            }
+            else {
+              sprintf(tmp_string, "%f", value);
+            }
+            
             break;
-          case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING:
-            sprintf(tmp_string, "%f", *(SPVM_API_double*)&vars[opcode->operand1]);
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING: {
+            double value = *(SPVM_API_double*)&vars[opcode->operand1];
+            if (isnan(value)) {
+              sprintf(tmp_string, "nan");
+            }
+            else if (isinf(value)) {
+              if (value > 0) {
+                sprintf(tmp_string, "inf");
+              }
+              else {
+                sprintf(tmp_string, "-inf");
+              }
+            }
+            else {
+              sprintf(tmp_string, "%f", value);
+            }
+            
             break;
+          }
         }
         
         int32_t string_length = strlen(tmp_string);
