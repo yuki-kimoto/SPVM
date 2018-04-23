@@ -1,5 +1,5 @@
-package Double : private {
-  has value : private double;
+package Double {
+  has value : double;
   
   sub new : Double ($value : double) {
     my $self = new Double;
@@ -11,5 +11,9 @@ package Double : private {
   
   sub get_value : double ($self : self) {
     return $self->{value};
+  }
+
+  sub set_value : void ($self : self, $value : double) {
+    $self->{value} = $value;
   }
 }

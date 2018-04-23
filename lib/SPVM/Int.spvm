@@ -1,5 +1,5 @@
-package Int : private {
-  has value : private int;
+package Int {
+  has value : int;
   
   sub new : Int ($value : int) {
     my $self = new Int;
@@ -11,5 +11,9 @@ package Int : private {
   
   sub get_value : int ($self : self) {
     return $self->{value};
+  }
+
+  sub set_value : void ($self : self, $value : int) {
+    $self->{value} = $value;
   }
 }

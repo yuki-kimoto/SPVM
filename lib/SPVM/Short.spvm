@@ -1,5 +1,5 @@
-package Short : private {
-  has value : private short;
+package Short {
+  has value : short;
   
   sub new : Short ($value : short) {
     my $self = new Short;
@@ -11,5 +11,9 @@ package Short : private {
   
   sub get_value : short ($self : self) {
     return $self->{value};
+  }
+  
+  sub set_value : void ($self : self, $value : short) {
+    $self->{value} = $value;
   }
 }

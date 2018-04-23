@@ -1,5 +1,5 @@
-package Byte : private {
-  has value : private byte;
+package Byte {
+  has value : byte;
   
   sub new : Byte ($value : byte) {
     my $self = new Byte;
@@ -11,5 +11,9 @@ package Byte : private {
   
   sub get_value : byte ($self : self) {
     return $self->{value};
+  }
+  
+  sub set_value : void ($self : self, $value : byte) {
+    $self->{value} = $value;
   }
 }

@@ -3,9 +3,12 @@ package TestCase::Int {
 
   sub basic : int () {
     my $obj_value = Int->new(3);
-    my $value = $obj_value->get_value;
+    my $value1 = $obj_value->get_value;
     
-    if ($value == 3) {
+    $obj_value->set_value(5);
+    my $value2 = $obj_value->get_value;
+    
+    if ($value1 == 3 && $value2 == 5) {
       return 1;
     }
     
