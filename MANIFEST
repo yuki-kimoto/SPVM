@@ -1,11 +1,14 @@
 Changes
 lib/SPVM.pm
+lib/SPVM/Bool.pm
+lib/SPVM/Bool.spvm
 lib/SPVM/Build.pm
 lib/SPVM/Build/ExtUtil.pm
 lib/SPVM/Build/Inline.pm
 lib/SPVM/Build/JIT.pm
 lib/SPVM/Build/SPVMInfo.pm
 lib/SPVM/BuildDir
+lib/SPVM/BuildDir.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
 lib/SPVM/Document/Extension.pod
@@ -18,6 +21,7 @@ lib/SPVM/Document/Specification.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
 lib/SPVM/EnableJIT
+lib/SPVM/EnableJIT.pm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
 lib/SPVM/Int.pm
@@ -183,6 +187,7 @@ t/default/constant.t
 t/default/enum.t
 t/default/exception.t
 t/default/interface.t
+t/default/lib-Bool.t
 t/default/lib-Byte.t
 t/default/lib-Double.t
 t/default/lib-Extension.t
@@ -194,6 +199,7 @@ t/default/lib-Short.t
 t/default/lib-Std-Array-Util.t
 t/default/lib-Std-Number-Util.t
 t/default/lib/SPVM/TestCase.spvm
+t/default/lib/SPVM/TestCase/Bool.spvm
 t/default/lib/SPVM/TestCase/Byte.spvm
 t/default/lib/SPVM/TestCase/ComparisonOperator.spvm
 t/default/lib/SPVM/TestCase/CompileError/AssignIncompatibleType/DifferentObject.spvm
@@ -247,6 +253,7 @@ t/jit/constant.t
 t/jit/enum.t
 t/jit/exception.t
 t/jit/interface.t
+t/jit/lib-Bool.t
 t/jit/lib-Byte.t
 t/jit/lib-Double.t
 t/jit/lib-Extension.t
@@ -258,6 +265,7 @@ t/jit/lib-Short.t
 t/jit/lib-Std-Array-Util.t
 t/jit/lib-Std-Number-Util.t
 t/jit/lib/SPVM/TestCase.spvm
+t/jit/lib/SPVM/TestCase/Bool.spvm
 t/jit/lib/SPVM/TestCase/Byte.spvm
 t/jit/lib/SPVM/TestCase/ComparisonOperator.spvm
 t/jit/lib/SPVM/TestCase/CompileError/AssignIncompatibleType/DifferentObject.spvm

@@ -1,6 +1,7 @@
-0.0328 2018-04-23
+0.0328 2018-04-24
   - Numeric class become not private, and set_value method.
   - add Bool package
+  - fix nan test bug
 0.0327 2018-04-21
   - fix jit link subroutine name bug
   - only print warning message when SPVM_TEST_ENABLE_WARNINGS is defined

@@ -33,6 +33,8 @@ my $NEGATIVE_INFINITY = -9**9**9;
 
 my $NaN = 9**9**9 / 9**9**9;
 
+my $nan_re = qr/(nan|ind)/i;
+
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
@@ -67,7 +69,7 @@ my $start_objects_count = SPVM::get_objects_count();
   is(SPVM::Std::Number::Util->FLOAT_POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Std::Number::Util->FLOAT_NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
   
-  cmp_ok(SPVM::Std::Number::Util->FLOAT_NAN(), 'eq', $NaN);
+  like(SPVM::Std::Number::Util->FLOAT_NAN(), $nan_re);
   
   # Check not Inf or NaN in Perl value
   like(SPVM::Std::Number::Util->FLOAT_MAX_VALUE(), qr/[0-9]/);
@@ -99,7 +101,7 @@ my $start_objects_count = SPVM::get_objects_count();
   is(SPVM::Std::Number::Util->DOUBLE_POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Std::Number::Util->DOUBLE_NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
   
-  cmp_ok(SPVM::Std::Number::Util->DOUBLE_NAN(), 'eq', $NaN);
+  like(SPVM::Std::Number::Util->DOUBLE_NAN(), $nan_re);
   
   # Check not Inf or NaN in Perl value
   like(SPVM::Std::Number::Util->DOUBLE_MAX_VALUE(), qr/[0-9]/);
