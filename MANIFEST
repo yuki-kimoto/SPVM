@@ -7,7 +7,6 @@ lib/SPVM/Build/ExtUtil.pm
 lib/SPVM/Build/Inline.pm
 lib/SPVM/Build/JIT.pm
 lib/SPVM/Build/SPVMInfo.pm
-lib/SPVM/BuildDir
 lib/SPVM/BuildDir.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
@@ -20,7 +19,6 @@ lib/SPVM/Document/PerlAPI.pod
 lib/SPVM/Document/Specification.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
-lib/SPVM/EnableJIT
 lib/SPVM/EnableJIT.pm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
