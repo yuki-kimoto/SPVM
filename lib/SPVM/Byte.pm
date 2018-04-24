@@ -4,21 +4,21 @@ package SPVM::Byte;
 
 =head1 NAME
 
-SPVM::Byte - Byte Utility
+SPVM::Byte - Byte object
 
 =head1 CLASS METHODS
 
 =head2 new
 
-B<sub new : Byte ($value : byte)>
+  sub new : Byte ($value : byte)
 
-Construct Byte object.
+Construct Byte object with specified value.
 
 =head1 METHODS
 
 =head2 get_value
 
-  sub get_value : byte ($self : self);
+  sub get_value : byte ($self : self)
 
 Get value.
 

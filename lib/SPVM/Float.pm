@@ -4,18 +4,26 @@ package SPVM::Float;
 
 =head1 NAME
 
-SPVM::Float - Float Utility
+SPVM::Float - Float object
 
 =head1 CLASS METHODS
 
 =head2 new
 
-B<sub new : Float ($value : float)>
+  sub new : Float ($value : float)
 
-Construct L<Float|SPVM::Float> object.
+Construct Float object with specified value.
 
 =head1 METHODS
 
-B<sub get_value : float ($self : self)>
+=head2 get_value
 
-Get float value.
+  sub get_value : float ($self : self)
+
+Get value.
+
+=head2 set_value
+
+  sub set_value : void ($self : self, $value : float)
+
+Set value.

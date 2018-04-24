@@ -4,19 +4,26 @@ package SPVM::Double;
 
 =head1 NAME
 
-SPVM::Double - Double Utility
+SPVM::Double - Double object
 
 =head1 CLASS METHODS
 
 =head2 new
 
-B<sub new : double ($value : double)>
+  sub new : Double ($value : double)
 
-Construct L<double|SPVM::double> object.
+Construct Double object with specified value.
 
 =head1 METHODS
 
-B<sub get_value : double ($self : self)>
+=head2 get_value
 
-Get double value.
+  sub get_value : double ($self : self)
 
+Get value.
+
+=head2 set_value
+
+  sub set_value : void ($self : self, $value : double)
+
+Set value.

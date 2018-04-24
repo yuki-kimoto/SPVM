@@ -4,20 +4,26 @@ package SPVM::Int;
 
 =head1 NAME
 
-SPVM::Int - Int Utility
+SPVM::Int - Int object
 
 =head1 CLASS METHODS
 
 =head2 new
 
-B<sub new : Int ($value : int)>
+  sub new : Int ($value : int)
 
-Construct L<Int|SPVM::Int> object.
+Construct Int object with specified value.
 
 =head1 METHODS
 
-B<sub get_value : int ($self : self)>
+=head2 get_value
 
-Get int value.
+  sub get_value : int ($self : self)
 
+Get value.
 
+=head2 set_value
+
+  sub set_value : void ($self : self, $value : int)
+
+Set value.
