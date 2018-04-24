@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Extension';
+use SPVM 'TestCase::Bool';
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
-# Native Exception
+# SPVM::Bool
 {
-  ok(SPVM::TestCase::Extension->call_void_sub_exception());
+  ok(SPVM::TestCase::Bool->basic());
 }
 
 # All object is freed

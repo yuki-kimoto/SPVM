@@ -1,5 +1,5 @@
 package Double {
-  has value : double;
+  has value : private double;
   
   sub new : Double ($value : double) {
     my $self = new Double;

@@ -1,5 +1,5 @@
 package Float {
-  has value : float;
+  has value : private float;
   
   sub new : Float ($value : float) {
     my $self = new Float;

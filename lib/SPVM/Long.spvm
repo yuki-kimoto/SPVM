@@ -1,5 +1,5 @@
 package Long {
-  has value : long;
+  has value : private long;
   
   sub new : Long ($value : long) {
     my $self = new Long;

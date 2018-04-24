@@ -12,10 +12,18 @@ SPVM::Byte - Byte Utility
 
 B<sub new : Byte ($value : byte)>
 
-Construct L<Byte|SPVM::Byte> object.
+Construct Byte object.
 
 =head1 METHODS
 
-B<sub get_value : byte ($self : self)>
+=head2 get_value
 
-Get byte value.
+  sub get_value : byte ($self : self);
+
+Get value.
+
+=head2 set_value
+
+  sub set_value : void ($self : self, $value : byte)
+
+Set value.

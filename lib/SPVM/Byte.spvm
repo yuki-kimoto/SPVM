@@ -1,5 +1,5 @@
 package Byte {
-  has value : byte;
+  has value : private byte;
   
   sub new : Byte ($value : byte) {
     my $self = new Byte;

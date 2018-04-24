@@ -1,5 +1,5 @@
 package Int {
-  has value : int;
+  has value : private int;
   
   sub new : Int ($value : int) {
     my $self = new Int;
