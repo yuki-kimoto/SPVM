@@ -50,6 +50,7 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
+    print((String)2.23e-9 . "\n");
     
     # sort
     {

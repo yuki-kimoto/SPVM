@@ -153,36 +153,16 @@ package TestCase {
     my $short_string = (String)(short)23;
     my $int_string = (String)23;
     my $long_string = (String)23L;
-    my $float_string = (String)0.25f;
-    my $double_string = (String)0.25;
-    
-    my $float_inf = (String)(1.0f / 0.0f);
-    my $float_minus_inf = (String)(-1.0f / 0.0f);
-    my $float_nan = (String)(0.0f / 0.0f);
-
-    my $double_inf = (String)(1.0 / 0.0);
-    my $double_minus_inf = (String)(-1.0 / 0.0);
-    my $double_nan = (String)(0.0 / 0.0);
+    my $float_string = (String)0.25000f;
+    my $double_string = (String)0.25000;
     
     if ($byte_string eq "23") {
       if ($short_string eq "23") {
         if ($int_string eq "23") {
           if ($long_string eq "23") {
-            if ($float_string eq "0.250000") {
-              if ($float_inf eq "inf") {
-                if ($float_minus_inf eq "-inf") {
-                  if ($float_nan eq "nan") {
-                    if ($double_string eq "0.250000") {
-                      if ($double_inf eq "inf") {
-                        if ($double_minus_inf eq "-inf") {
-                          if ($double_nan eq "nan") {
-                            return 1;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+            if ($float_string eq "0.25") {
+              if ($double_string eq "0.25") {
+                return 1;
               }
             }
           }

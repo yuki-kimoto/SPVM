@@ -1198,47 +1198,15 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    float value = \n");
-            SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_double", opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    if (isnan(value)) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      sprintf(tmp_string, \"nan\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    else if (isinf(value)) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      if (value > 0) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        sprintf(tmp_string, \"inf\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        sprintf(tmp_string, \"-inf\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      sprintf(tmp_string, \"%f\", value);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_string, \"%g\", ");
+            SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_float", opcode->operand1);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             
             break;
           case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    double value = \n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_string, \"%g\", ");
             SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_double", opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    if (isnan(value)) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      sprintf(tmp_string, \"nan\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    else if (isinf(value)) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      if (value > 0) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        sprintf(tmp_string, \"inf\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        sprintf(tmp_string, \"-inf\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      sprintf(tmp_string, \"%f\", value);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
         }
         
