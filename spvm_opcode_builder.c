@@ -1309,6 +1309,31 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         assert(0);
                       }
                     }
+                    else if (SPVM_TYPE_is_array_numeric(compiler, src_type)) {
+                      assert(dist_type->id == SPVM_TYPE_C_ID_STRING_ARRAY);
+                      
+                      if (src_type->id == SPVM_TYPE_C_ID_BYTE_ARRAY) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING_ARRAY;
+                      }
+                      else if (src_type->id == SPVM_TYPE_C_ID_SHORT_ARRAY) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_ARRAY_TO_STRING_ARRAY;
+                      }
+                      else if (src_type->id == SPVM_TYPE_C_ID_INT_ARRAY) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_ARRAY_TO_STRING_ARRAY;
+                      }
+                      else if (src_type->id == SPVM_TYPE_C_ID_LONG_ARRAY) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_ARRAY_TO_STRING_ARRAY;
+                      }
+                      else if (src_type->id == SPVM_TYPE_C_ID_FLOAT_ARRAY) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_ARRAY_TO_STRING_ARRAY;
+                      }
+                      else if (src_type->id == SPVM_TYPE_C_ID_DOUBLE_ARRAY) {
+                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_ARRAY_TO_STRING_ARRAY;
+                      }
+                      else {
+                        assert(0);
+                      }
+                    }
                     // Check cast
                     else {
                       SPVM_TYPE* dist_base_type = dist_type->base_type;
