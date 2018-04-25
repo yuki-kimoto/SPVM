@@ -79,7 +79,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       type->name = name;
       type->id = type_id;
       type->id = type_id;
-      if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_DOUBLE_ARRAY) {
+      if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_STRING_ARRAY) {
         type->dimension++;
         type->base_type = SPVM_LIST_fetch(compiler->types, type_id - SPVM_TYPE_C_ARRAY_SHIFT);
         SPVM_TYPE* base_type = type->base_type;
