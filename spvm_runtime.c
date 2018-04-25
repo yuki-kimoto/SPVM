@@ -780,6 +780,105 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
 
         break;
       }
+      case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING_ARRAY:
+      case SPVM_OPCODE_C_ID_CONVERT_SHORT_ARRAY_TO_STRING_ARRAY:
+      case SPVM_OPCODE_C_ID_CONVERT_INT_ARRAY_TO_STRING_ARRAY:
+      case SPVM_OPCODE_C_ID_CONVERT_LONG_ARRAY_TO_STRING_ARRAY:
+      case SPVM_OPCODE_C_ID_CONVERT_FLOAT_ARRAY_TO_STRING_ARRAY:
+      case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_ARRAY_TO_STRING_ARRAY:
+      {
+        SPVM_API_OBJECT* numeric_array = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
+
+        if (*(SPVM_API_OBJECT**)&vars[opcode->operand1] == NULL) {
+          SPVM_API_OBJECT* exception = api->new_string_chars(api, "Array must not be undef");
+          api->set_exception(api, exception);
+          croak_flag = 1;
+        }
+        else {
+          int32_t length = *(SPVM_API_int*)((intptr_t)*(SPVM_API_OBJECT**)&vars[opcode->operand1] + SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET);
+          
+          SPVM_API_OBJECT* string_array = api->new_object_array(api, SPVM_TYPE_C_ID_STRING, length);
+          
+          switch (opcode->id) {
+            case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING_ARRAY: {
+              int32_t index;
+              for (index = 0; index < length; index++) {
+                SPVM_API_byte value = *(SPVM_API_byte*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_byte) * index);
+                sprintf(tmp_string, "%" PRId8, value);
+                SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
+                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
+                *string_address = string;
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_CONVERT_SHORT_ARRAY_TO_STRING_ARRAY: {
+              int32_t index;
+              for (index = 0; index < length; index++) {
+                SPVM_API_short value = *(SPVM_API_short*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_short) * index);
+                sprintf(tmp_string, "%" PRId16, value);
+                SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
+                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
+                *string_address = string;
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_CONVERT_INT_ARRAY_TO_STRING_ARRAY: {
+              int32_t index;
+              for (index = 0; index < length; index++) {
+                SPVM_API_short value = *(SPVM_API_short*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_short) * index);
+                sprintf(tmp_string, "%" PRId32, value);
+                SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
+                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
+                *string_address = string;
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_CONVERT_LONG_ARRAY_TO_STRING_ARRAY: {
+              int32_t index;
+              for (index = 0; index < length; index++) {
+                SPVM_API_long value = *(SPVM_API_long*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_long) * index);
+                sprintf(tmp_string, "%" PRId64, value);
+                SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
+                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
+                *string_address = string;
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_CONVERT_FLOAT_ARRAY_TO_STRING_ARRAY: {
+              int32_t index;
+              for (index = 0; index < length; index++) {
+                SPVM_API_float value = *(SPVM_API_float*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_float) * index);
+                sprintf(tmp_string, "%g", value);
+                SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
+                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
+                *string_address = string;
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_ARRAY_TO_STRING_ARRAY: {
+              int32_t index;
+              for (index = 0; index < length; index++) {
+                SPVM_API_double value = *(SPVM_API_double*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_double) * index);
+                sprintf(tmp_string, "%g", value);
+                SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
+                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
+                *string_address = string;
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+              }
+              break;
+            }
+          }
+          
+          *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string_array;
+        }
+
+        break;
+      }
       case SPVM_OPCODE_C_ID_LOAD_UNDEF:
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = NULL;
         break;
