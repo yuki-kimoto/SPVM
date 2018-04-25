@@ -1,3 +1,5 @@
+0.0330 2018-04-25
+  - add numeric array to string array conversion
 0.0329 2018-04-24
   - use sprintf "%g" format for string conversion
 0.0328 2018-04-24

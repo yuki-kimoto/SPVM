@@ -2098,15 +2098,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   else if (SPVM_TYPE_is_object(compiler, term_type) && SPVM_TYPE_is_object(compiler, type_type)) {
                     if (SPVM_TYPE_is_array_numeric(compiler, term_type) && !SPVM_TYPE_is_array_numeric(compiler, type_type)) {
-                      can_convert = 0;
-                    }
-                    else if (!SPVM_TYPE_is_array_numeric(compiler, term_type) && SPVM_TYPE_is_array_numeric(compiler, type_type)) {
                       if (type_type->id == SPVM_TYPE_C_ID_STRING_ARRAY) {
                         can_convert = 1;
                       }
                       else {
                         can_convert = 0;
                       }
+                    }
+                    else if (!SPVM_TYPE_is_array_numeric(compiler, term_type) && SPVM_TYPE_is_array_numeric(compiler, type_type)) {
+                      can_convert = 0;
                     }
                     else {
                       if (term_type->dimension == type_type->dimension) {
@@ -2122,7 +2122,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   if (!can_convert) {
-                    SPVM_yyerror_format(compiler, "can't convert %s to %s at %s line %d\n",
+                    SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n",
                     term_type->name, type_type->name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;

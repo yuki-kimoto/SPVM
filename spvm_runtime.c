@@ -827,7 +827,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
             case SPVM_OPCODE_C_ID_CONVERT_INT_ARRAY_TO_STRING_ARRAY: {
               int32_t index;
               for (index = 0; index < length; index++) {
-                SPVM_API_short value = *(SPVM_API_short*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_short) * index);
+                SPVM_API_int value = *(SPVM_API_int*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_int) * index);
                 sprintf(tmp_string, "%" PRId32, value);
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
                 SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);

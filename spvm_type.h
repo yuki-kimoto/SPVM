@@ -6,7 +6,7 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_TYPE_C_CORE_LENGTH = 14
+  SPVM_TYPE_C_CORE_LENGTH = 15
 };
 
 enum {
