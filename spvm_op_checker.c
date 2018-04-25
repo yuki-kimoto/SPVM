@@ -2101,7 +2101,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       can_convert = 0;
                     }
                     else if (!SPVM_TYPE_is_array_numeric(compiler, term_type) && SPVM_TYPE_is_array_numeric(compiler, type_type)) {
-                      can_convert = 0;
+                      if (type_type->id == SPVM_TYPE_C_ID_STRING_ARRAY) {
+                        can_convert = 1;
+                      }
+                      else {
+                        can_convert = 0;
+                      }
                     }
                     else {
                       if (term_type->dimension == type_type->dimension) {
