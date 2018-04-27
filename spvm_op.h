@@ -140,6 +140,7 @@ enum {
   SPVM_OP_C_ID_STRING_LT,
   SPVM_OP_C_ID_STRING_LE,
   SPVM_OP_C_ID_ISA,
+  SPVM_OP_C_ID_INIT_OBJECT,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];

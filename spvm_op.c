@@ -140,6 +140,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "STRING_LT",
   "STRING_LE",
   "ISA"
+  "INIT_OBJECT",
 };
 
 void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
