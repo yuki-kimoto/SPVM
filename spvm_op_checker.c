@@ -1412,46 +1412,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // If needed, automatical numeric convertion op is added
                   SPVM_OP_CHECKER_check_and_convert_type(compiler, op_term_to, op_term_from);
                   
-                  // VAR = TERM
-                  if (op_term_to->id == SPVM_OP_C_ID_VAR) {
-                    // VAR = CONCAT
-                    if (op_term_from->id == SPVM_OP_C_ID_CONCAT) {
-                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_term_to);
-                      
-                      // VAR1 = VAR1 . VAR2
-                      if (op_term_from->first->id == SPVM_OP_C_ID_VAR) {
-                        int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_term_from->first);
-                        if (index_out == index_in1) {
-                          op_term_from->first->uv.var->create_tmp_var = 1;
-                        }
-                      }
-                      
-                      // VAR2 = VAR1 . VAR2
-                      if (op_term_from->last->id == SPVM_OP_C_ID_VAR) {
-                        int32_t index_in2 = SPVM_OP_get_my_index(compiler, op_term_from->last);
-                        if (index_out == index_in2) {
-                          op_term_from->last->uv.var->create_tmp_var = 1;
-                        }
-                      }
-                    }
-                    else if (op_term_from->id == SPVM_OP_C_ID_CALL_SUB) {
-                      int32_t index_out = SPVM_OP_get_my_index(compiler, op_term_to);
-                      
-                      // VAR_N = call VAR1, VAR_N, VAR3
-                      SPVM_OP* op_args =op_term_from->last;
-                      SPVM_OP* op_arg = op_args->first;
-                      while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-                        if (op_arg->id == SPVM_OP_C_ID_VAR) {
-                          int32_t index_arg = SPVM_OP_get_my_index(compiler, op_arg);
-                          if (index_arg == index_out) {
-                            op_arg->uv.var->create_tmp_var = 1;
-                            break;
-                          }
-                        }
-                      }
-                    }
-                  }
-                  
                   break;
                 }
                 case SPVM_OP_C_ID_RETURN: {
@@ -2170,6 +2130,56 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         SPVM_OP* op_cur = op_base;
         _Bool finish = 0;
         while (op_cur) {
+          // [START]Preorder traversal position
+          switch (op_cur->id) {
+            case SPVM_OP_C_ID_ASSIGN: {
+              SPVM_OP* op_term_to = op_cur->last;
+              SPVM_OP* op_term_from = op_cur->first;
+              
+              // VAR = TERM
+              if (op_term_to->id == SPVM_OP_C_ID_VAR) {
+                // VAR_N = VAR_N
+                if (op_term_from->id == SPVM_OP_C_ID_VAR) {
+                  assert(op_term_from->uv.var);
+                  assert(op_term_to->uv.var);
+                  if (op_term_from->uv.var->op_my == op_term_to->uv.var->op_my) {
+                    op_term_from->uv.var->create_tmp_var = 1;
+                  }
+                }
+                // VAR = CONCAT
+                else if (op_term_from->id == SPVM_OP_C_ID_CONCAT) {
+                  // VAR1 = VAR1 . VAR2
+                  if (op_term_from->first->id == SPVM_OP_C_ID_VAR) {
+                    if (op_term_to->uv.var->op_my == op_term_from->first->uv.var->op_my) {
+                      op_term_from->first->uv.var->create_tmp_var = 1;
+                    }
+                  }
+                  
+                  // VAR2 = VAR1 . VAR2
+                  if (op_term_from->last->id == SPVM_OP_C_ID_VAR) {
+                    if (op_term_to->uv.var->op_my == op_term_from->last->uv.var->op_my) {
+                      op_term_from->last->uv.var->create_tmp_var = 1;
+                    }
+                  }
+                }
+                else if (op_term_from->id == SPVM_OP_C_ID_CALL_SUB) {
+                  // VAR_N = call VAR1, VAR_N, VAR3
+                  SPVM_OP* op_args =op_term_from->last;
+                  SPVM_OP* op_arg = op_args->first;
+                  while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+                    if (op_arg->id == SPVM_OP_C_ID_VAR) {
+                      if (op_arg->uv.var->op_my == op_term_to->uv.var->op_my) {
+                        op_arg->uv.var->create_tmp_var = 1;
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+              
+              break;
+            }
+          }
           
           if (op_cur->first) {
             op_cur = op_cur->first;
