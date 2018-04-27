@@ -2138,16 +2138,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               
               // VAR = TERM
               if (op_term_to->id == SPVM_OP_C_ID_VAR) {
-                // VAR_N = VAR_N
-                if (op_term_from->id == SPVM_OP_C_ID_VAR) {
-                  assert(op_term_from->uv.var);
-                  assert(op_term_to->uv.var);
-                  if (op_term_from->uv.var->op_my == op_term_to->uv.var->op_my) {
-                    op_term_from->uv.var->create_tmp_var = 1;
-                  }
-                }
-                // VAR = CONCAT
-                else if (op_term_from->id == SPVM_OP_C_ID_CONCAT) {
+                if (op_term_from->id == SPVM_OP_C_ID_CONCAT) {
                   // VAR1 = VAR1 . VAR2
                   if (op_term_from->first->id == SPVM_OP_C_ID_VAR) {
                     if (op_term_to->uv.var->op_my == op_term_from->first->uv.var->op_my) {

@@ -225,6 +225,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
                   SPVM_TYPE* type_to = SPVM_OP_get_type(compiler, op_assign_to);
+                  
+                  // Skip if same variable assignment
+                  if (op_assign_from->id == SPVM_OP_C_ID_VAR) {
+                    int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_to);
+                    int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_from);
+                    if (index_in == index_out) {
+                      break;
+                    }
+                  }
 
                   int32_t do_dec_ref_count = 0;
                   

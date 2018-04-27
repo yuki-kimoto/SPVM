@@ -50,6 +50,12 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
+    # Assign same variable
+    {
+      my $var1 = new TestCase::Minimal;
+      $var1 = $var1;
+    }
+    
     print((String)2.23e-9 . "\n");
     
     # sort
