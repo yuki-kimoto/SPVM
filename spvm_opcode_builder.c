@@ -1603,10 +1603,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t do_inc_ref_count = 0;
                   // Variable type is object
                   if (SPVM_TYPE_is_object(compiler, type_to)) {
-                    // Right value is not undef
-                    if (op_assign_from->id != SPVM_OP_C_ID_UNDEF) {
-                      do_inc_ref_count = 1;
-                    }
+                    do_inc_ref_count = 1;
                   }
                   
                   if (do_inc_ref_count) {
