@@ -1259,7 +1259,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* object = api->new_object(api, type_id);
         
         // Push object
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         
         break;
       }
@@ -1271,7 +1271,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* object = api->new_byte_array(api, length);
         
         // Set array
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_SHORT_ARRAY: {
@@ -1282,7 +1282,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* object = api->new_short_array(api, length);
         
         // Set array
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_INT_ARRAY: {
@@ -1293,7 +1293,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* object = api->new_int_array(api, length);
         
         // Set array
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_LONG_ARRAY: {
@@ -1304,7 +1304,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* object = api->new_long_array(api, length);
         
         // Set array
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_FLOAT_ARRAY: {
@@ -1315,7 +1315,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* object = api->new_float_array(api, length);
         
         // Set array
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_DOUBLE_ARRAY: {
@@ -1326,7 +1326,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* object = api->new_double_array(api, length);
         
         // Set array
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
@@ -1338,7 +1338,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* object = api->new_object_array(api, element_type_id, length);
         
         // Set object
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
@@ -1350,7 +1350,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)constant->value.string_value, constant->string_length);
 
         // Set string
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0] , string);
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH:
