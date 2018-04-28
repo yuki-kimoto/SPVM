@@ -661,7 +661,23 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     }
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
-  
+
+  // Initialize object variable undef
+  {
+    int32_t my_index;
+    for (my_index = sub->op_args->length; my_index < sub->op_mys->length; my_index++) {
+      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
+      SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
+      
+      if (SPVM_TYPE_is_object(compiler, my_type)) {
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", my_index);
+        SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
+
   // Condition flag
   SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
   
@@ -1269,11 +1285,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_OBJECT:
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-        break;
       case SPVM_OPCODE_C_ID_LOAD_UNDEF:
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
