@@ -1541,27 +1541,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + opcode->operand1);
-          
-          if(*field_address != NULL) {
-            // If object is weak, unweaken
-            if (SPVM_RUNTIME_C_INLINE_ISWEAK(*field_address)) {
-              api->unweaken(api, field_address);
-            }
-            
-            if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*field_address) > 1) {
-              SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*field_address);
-            }
-            else {
-              api->dec_ref_count(api, *field_address);
-            }
-          }
-          
-          *field_address = *(SPVM_API_OBJECT**)&vars[opcode->operand2];
-          
-          if(*field_address != NULL) {
-            SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*field_address);
-          }
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
+            (SPVM_API_OBJECT**)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + opcode->operand1),
+            *(SPVM_API_OBJECT**)&vars[opcode->operand2]
+          );
         }
         break;
       }
