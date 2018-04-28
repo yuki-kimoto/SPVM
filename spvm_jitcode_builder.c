@@ -1414,7 +1414,11 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_move(string_buffer, "SPVM_API_double", opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_MOVE_OBJECT:
-        SPVM_JITCODE_BUILDER_add_move(string_buffer, "SPVM_API_OBJECT*", opcode->operand0, opcode->operand1);
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_INLINE_OBJECT_ASSIGN(");
+          SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+          SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       case SPVM_OPCODE_C_ID_INC_REF_COUNT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  if (");

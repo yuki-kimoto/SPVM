@@ -244,6 +244,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     do_inc_ref_count = 1;
                     switch (op_assign_from->id) {
                       case SPVM_OP_C_ID_CONCAT:
+                      case SPVM_OP_C_ID_VAR:
                         do_dec_ref_count = 0;
                         do_inc_ref_count = 0;
                         break;

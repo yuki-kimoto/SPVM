@@ -1232,7 +1232,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         *(SPVM_API_double*)&vars[opcode->operand0] = *(SPVM_API_double*)&vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_ID_MOVE_OBJECT:
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(*(SPVM_API_OBJECT**)&vars[opcode->operand0], *(SPVM_API_OBJECT**)&vars[opcode->operand1]);
         break;
       case SPVM_OPCODE_C_ID_INC_REF_COUNT:
         SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)&vars[opcode->operand0]);
