@@ -789,7 +789,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         
         int32_t string_length = strlen(tmp_string);
         SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, string_length);
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string;
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], string);
 
         break;
       }
@@ -887,7 +887,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
             }
           }
           
-          *(SPVM_API_OBJECT**)&vars[opcode->operand0] = string_array;
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], string_array);
         }
 
         break;
@@ -1706,12 +1706,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         int32_t cast_type_id = opcode->operand2;
         
         if (object_type_id == cast_type_id) {
-          *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         }
         else {
           _Bool can_assign = api->check_cast(api, cast_type_id, object);
           if (can_assign) {
-            *(SPVM_API_OBJECT**)&vars[opcode->operand0] = object;
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
           }
           else {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Can't cast uncompatible type.");
