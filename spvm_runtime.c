@@ -1589,10 +1589,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_CONCAT: {
-        SPVM_API_OBJECT* tmp_object = api->concat(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_OBJECT**)&vars[opcode->operand2]);
-        SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(tmp_object);
-        SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(*(SPVM_API_OBJECT**)&vars[opcode->operand0]);
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = tmp_object;
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
+          *(SPVM_API_OBJECT**)&vars[opcode->operand0],
+          api->concat(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_OBJECT**)&vars[opcode->operand2])
+        );
         
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
           croak_flag = 1;

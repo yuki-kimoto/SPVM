@@ -29,6 +29,13 @@ do {\
 } while (0)\
 
 #define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)
+#define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist, source) \
+do {\
+  SPVM_API_OBJECT* tmp_object = source;\
+  SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(tmp_object);\
+  SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(dist);\
+  dist = tmp_object;\
+} while (0)\
 
 struct SPVM_runtime {
   // API
