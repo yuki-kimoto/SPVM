@@ -273,7 +273,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       if (SPVM_TYPE_is_object(compiler, arg_type)) {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[arg_index];
         if (object != NULL) {
-          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object);
+          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);
         }
       }
     }
@@ -821,7 +821,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
                 SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
                 *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
               }
               break;
             }
@@ -833,7 +833,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
                 SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
                 *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
               }
               break;
             }
@@ -845,7 +845,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
                 SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
                 *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
               }
               break;
             }
@@ -857,7 +857,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
                 SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
                 *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
               }
               break;
             }
@@ -869,7 +869,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
                 SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
                 *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
               }
               break;
             }
@@ -881,7 +881,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
                 SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
                 *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
               }
               break;
             }
@@ -1207,7 +1207,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
 
             // Increment new object reference count
             if (*object_address != NULL) {
-              SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*object_address);
+              SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*object_address);
             }
           }
         }
@@ -1237,7 +1237,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_INC_REF_COUNT: {
         // Increment new value reference count
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] != NULL) {
-          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)&vars[opcode->operand0]);
+          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&vars[opcode->operand0]);
         }
         break;
       }
@@ -1577,7 +1577,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           *field_address = *(SPVM_API_OBJECT**)&vars[opcode->operand2];
           
           if(*field_address != NULL) {
-            SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*field_address);
+            SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*field_address);
           }
         }
         break;
@@ -1698,7 +1698,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         
         // Increment new value reference count
         if (*(SPVM_API_OBJECT**)package_var_address != NULL) {
-          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address);
+          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);
         }
         
         break;
@@ -1854,7 +1854,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           // Increment ref count of return value not to release by decrement
           if (sub_return_type_id > SPVM_TYPE_C_ID_DOUBLE) {
             if (*(SPVM_API_OBJECT**)&return_value != NULL) {
-              SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)&return_value);
+              SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&return_value);
             }
           }
         }
