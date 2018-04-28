@@ -702,6 +702,11 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", my_index);
         SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
       }
+      else {
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_JITCODE_BUILDER_add_var(string_buffer, "", my_index);
+        SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+      }
     }
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
@@ -1995,7 +2000,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_byte", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2016,7 +2021,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_short", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2037,7 +2042,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2058,7 +2063,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_long", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2079,7 +2084,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_float", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2100,7 +2105,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      ");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_double", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");

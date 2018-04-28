@@ -279,16 +279,14 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
     }
   }
 
-  // Initialize object variable undef
+  // Initialize variable undef
   {
     int32_t my_index;
     for (my_index = sub->op_args->length; my_index < sub->op_mys->length; my_index++) {
       SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
       SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
       
-      if (SPVM_TYPE_is_object(compiler, my_type)) {
-        *(SPVM_API_OBJECT**)&vars[my_index] = NULL;
-      }
+      memset(&vars[my_index], 0, sizeof(SPVM_API_VALUE));
     }
   }
   

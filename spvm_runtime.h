@@ -36,7 +36,7 @@ do {\
     SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(tmp_object);\
   }\
   if (*(SPVM_API_OBJECT**)(dist_ptr) != NULL) {\
-    if (SPVM_RUNTIME_C_INLINE_ISWEAK(*(SPVM_API_OBJECT**)(dist_ptr))) { api->unweaken(api, dist_ptr); }\
+    if (SPVM_RUNTIME_C_INLINE_ISWEAK(*(SPVM_API_OBJECT**)(dist_ptr))) { api->unweaken(api, (SPVM_API_OBJECT**)dist_ptr); }\
     if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)(dist_ptr)) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)(dist_ptr)); }\
     else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)(dist_ptr)); }\
   }\

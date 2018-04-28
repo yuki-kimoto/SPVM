@@ -28,7 +28,7 @@ sub new {
     $self->{extra_compiler_flags} .= " -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable";
   }
   
-  $self->{optimize} = '-O0';
+  $self->{optimize} = '-O3';
   
   return bless $self, $class;
 }
