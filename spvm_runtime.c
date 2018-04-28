@@ -1049,7 +1049,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
             croak_flag = 1;
           }
           else {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(*(SPVM_API_OBJECT**)&vars[opcode->operand0], *(SPVM_API_OBJECT**)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index));
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
+              *(SPVM_API_OBJECT**)&vars[opcode->operand0],
+              *(SPVM_API_OBJECT**)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index)
+            );
           }
         }
         break;
@@ -1190,25 +1193,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
             croak_flag = 1;
           }
           else {
-            SPVM_API_OBJECT** object_address = (SPVM_API_OBJECT**)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_OBJECT*) * index);
-            
-            // Decrement old object reference count
-            if (*object_address != NULL) {
-              if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*object_address) > 1) {
-                SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*object_address);
-              }
-              else {
-                api->dec_ref_count(api, *object_address);
-              }
-            }
-            
-            // Store address
-            *object_address = *(SPVM_API_OBJECT**)&vars[opcode->operand2];
-
-            // Increment new object reference count
-            if (*object_address != NULL) {
-              SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*object_address);
-            }
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
+              *(SPVM_API_OBJECT**)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_OBJECT*) * index),
+              *(SPVM_API_OBJECT**)&vars[opcode->operand2]
+            );
           }
         }
         break;
