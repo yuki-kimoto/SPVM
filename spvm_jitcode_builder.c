@@ -2017,55 +2017,166 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         // Call subroutine
         if (decl_sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
           SPVM_STRING_BUFFER_add(string_buffer, "    api->call_void_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          if (decl_sub_args_length > 0) {
+            SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_BYTE) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte value = api->call_byte_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          if (decl_sub_args_length > 0) {
+            SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_byte", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = api->call_byte_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_SHORT) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
-          SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = api->call_short_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_short value = api->call_short_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          if (decl_sub_args_length > 0) {
+            SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_short", opcode->operand0);
+          SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_INT) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_int value = api->call_int_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          if (decl_sub_args_length > 0) {
+            SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = api->call_int_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_LONG) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_long value = api->call_long_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          if (decl_sub_args_length > 0) {
+            SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_long", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = api->call_long_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_FLOAT) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
-          SPVM_JITCODE_BUILDER_add_operand(string_buffer, "float", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = api->call_float_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_float value = api->call_float_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          if (decl_sub_args_length > 0) {
+            SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_float", opcode->operand0);
+          SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_DOUBLE) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
-          SPVM_JITCODE_BUILDER_add_operand(string_buffer, "double", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = api->call_double_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_double value = api->call_double_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          if (decl_sub_args_length > 0) {
+            SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_double", opcode->operand0);
+          SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         else {
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* value = api->call_object_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, ", ");
+          if (decl_sub_args_length > 0) {
+            SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
+          }
+          else {
+            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
+          }
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = api->call_object_sub(api, call_sub_id");
+          SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         
-        SPVM_STRING_BUFFER_add(string_buffer, ", ");
-        if (decl_sub_args_length > 0) {
-          SPVM_STRING_BUFFER_add(string_buffer, "call_sub_args");
-        }
-        else {
-          SPVM_STRING_BUFFER_add(string_buffer, "NULL");
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (api->get_exception(api)) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "call_sub_arg_stack_top -= ");
