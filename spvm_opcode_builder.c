@@ -236,14 +236,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
 
                   int32_t do_dec_ref_count = 0;
+                  int32_t do_inc_ref_count = 0;
                   
                   // Do decrement reference count
-                 if (SPVM_TYPE_is_object(compiler, type_to)) {
+                  if (SPVM_TYPE_is_object(compiler, type_to)) {
                     do_dec_ref_count = 1;
+                    do_inc_ref_count = 1;
                     switch (op_assign_from->id) {
                       case SPVM_OP_C_ID_CONCAT:
                         do_dec_ref_count = 0;
-                        1;
+                        do_inc_ref_count = 0;
                         break;
                     }
                   }
@@ -1599,19 +1601,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     break;
                   }
 
-                  // Do increment reference count
-                  int32_t do_inc_ref_count = 0;
-                  // Variable type is object
-                  if (SPVM_TYPE_is_object(compiler, type_to)) {
-                    do_inc_ref_count = 1;
-                    switch (op_assign_from->id) {
-                      case SPVM_OP_C_ID_CONCAT:
-                        do_inc_ref_count = 0;
-                        1;
-                        break;
-                    }
-                  }
-                  
                   if (do_inc_ref_count) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
