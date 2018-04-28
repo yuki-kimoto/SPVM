@@ -805,9 +805,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_byte value = *(SPVM_API_byte*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_byte) * index);
                 sprintf(tmp_string, "%" PRId8, value);
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
-                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
-                *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
+                *(SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index) = string;
               }
               break;
             }
@@ -817,9 +816,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_short value = *(SPVM_API_short*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_short) * index);
                 sprintf(tmp_string, "%" PRId16, value);
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
-                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
-                *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
+                *(SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index) = string;
               }
               break;
             }
@@ -829,9 +827,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_int value = *(SPVM_API_int*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_int) * index);
                 sprintf(tmp_string, "%" PRId32, value);
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
-                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
-                *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
+                *(SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index) = string;
               }
               break;
             }
@@ -841,9 +838,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_long value = *(SPVM_API_long*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_long) * index);
                 sprintf(tmp_string, "%" PRId64, value);
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
-                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
-                *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
+                *(SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index) = string;
               }
               break;
             }
@@ -853,9 +849,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_float value = *(SPVM_API_float*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_float) * index);
                 sprintf(tmp_string, "%g", value);
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
-                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
-                *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
+                *(SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index) = string;
               }
               break;
             }
@@ -865,9 +860,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
                 SPVM_API_double value = *(SPVM_API_double*)((intptr_t)numeric_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_double) * index);
                 sprintf(tmp_string, "%g", value);
                 SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, strlen(tmp_string));
-                SPVM_API_OBJECT** string_address = (SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index);
-                *string_address = string;
-                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*string_address);
+                SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
+                *(SPVM_API_OBJECT**)((intptr_t)string_array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * index) = string;
               }
               break;
             }
