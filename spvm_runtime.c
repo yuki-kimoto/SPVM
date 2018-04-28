@@ -1762,29 +1762,67 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           api->call_void_sub(api, call_sub_id, call_sub_args);
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_BYTE) {
-          *(SPVM_API_byte*)&vars[opcode->operand0] = api->call_byte_sub(api, call_sub_id, call_sub_args);
+          SPVM_API_byte value = api->call_byte_sub(api, call_sub_id, call_sub_args);
+          if (api->get_exception(api)) {
+            croak_flag = 1;
+          }
+          else {
+            *(SPVM_API_byte*)&vars[opcode->operand0] = value;
+          }
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_SHORT) {
-          *(SPVM_API_short*)&vars[opcode->operand0] = api->call_short_sub(api, call_sub_id, call_sub_args);
+          SPVM_API_short value = api->call_short_sub(api, call_sub_id, call_sub_args);
+          if (api->get_exception(api)) {
+            croak_flag = 1;
+          }
+          else {
+            *(SPVM_API_short*)&vars[opcode->operand0] = value;
+          }
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_INT) {
-          *(SPVM_API_int*)&vars[opcode->operand0] = api->call_int_sub(api, call_sub_id, call_sub_args);
+          SPVM_API_int value = api->call_int_sub(api, call_sub_id, call_sub_args);
+          if (api->get_exception(api)) {
+            croak_flag = 1;
+          }
+          else {
+            *(SPVM_API_int*)&vars[opcode->operand0] = value;
+          }
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_LONG) {
-          *(SPVM_API_long*)&vars[opcode->operand0] = api->call_long_sub(api, call_sub_id, call_sub_args);
+          SPVM_API_long value = api->call_long_sub(api, call_sub_id, call_sub_args);
+          if (api->get_exception(api)) {
+            croak_flag = 1;
+          }
+          else {
+            *(SPVM_API_long*)&vars[opcode->operand0] = value;
+          }
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_FLOAT) {
-          *(float*)&vars[opcode->operand0] = api->call_float_sub(api, call_sub_id, call_sub_args);
+          SPVM_API_float value = api->call_float_sub(api, call_sub_id, call_sub_args);
+          if (api->get_exception(api)) {
+            croak_flag = 1;
+          }
+          else {
+            *(SPVM_API_float*)&vars[opcode->operand0] = value;
+          }
         }
         else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_DOUBLE) {
-          *(double*)&vars[opcode->operand0] = api->call_double_sub(api, call_sub_id, call_sub_args);
+          SPVM_API_double value = api->call_double_sub(api, call_sub_id, call_sub_args);
+          if (api->get_exception(api)) {
+            croak_flag = 1;
+          }
+          else {
+            *(SPVM_API_double*)&vars[opcode->operand0] = value;
+          }
         }
         else {
-          *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->call_object_sub(api, call_sub_id, call_sub_args);
-        }
-        
-        if (api->get_exception(api)) {
-          croak_flag = 1;
+          SPVM_API_OBJECT* value = api->call_object_sub(api, call_sub_id, call_sub_args);
+          if (api->get_exception(api)) {
+            croak_flag = 1;
+          }
+          else {
+            *(SPVM_API_OBJECT**)&vars[opcode->operand0] = value;
+          }
         }
         
         break;
