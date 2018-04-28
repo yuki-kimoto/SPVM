@@ -107,7 +107,7 @@ void SPVM_OPCODE_BUILDER_push_inc_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_AR
 
 void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   
-  // Bytecode
+  // Operation code
   SPVM_OPCODE_ARRAY* opcode_array = compiler->opcode_array;
   
   {
@@ -171,6 +171,24 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_LIST* op_block_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       int32_t object_var_index_stack_max = 0;
+      
+      // Initialize object variable
+      {
+        int32_t my_index;
+        for (my_index = sub->op_args->length; my_index < sub->op_mys->length; my_index++) {
+          SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
+          SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
+          
+          if (SPVM_TYPE_is_object(compiler, my_type)) {
+            SPVM_OPCODE opcode;
+            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+            opcode.id = SPVM_OPCODE_C_ID_INIT_OBJECT;
+            opcode.operand0 = op_my->uv.my->index;
+            
+            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+          }
+        }
+      }
       
       while (op_cur) {
         // [START]Preorder traversal position

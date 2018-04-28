@@ -335,7 +335,8 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "STRING_GE",
   "STRING_LT",
   "STRING_LE",
-  "ISA"
+  "ISA",
+  "INIT_OBJECT",
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {
