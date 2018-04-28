@@ -320,7 +320,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "PUSH_OBJECT_VAR_INDEX",
   "ENTER_SCOPE",
   "LEAVE_SCOPE",
-  "END",
   "PUSH_ARG_BYTE",
   "PUSH_ARG_SHORT",
   "PUSH_ARG_INT",
@@ -336,6 +335,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "STRING_LT",
   "STRING_LE",
   "ISA",
+  "END_SUB",
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {

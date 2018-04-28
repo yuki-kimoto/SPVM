@@ -1941,30 +1941,29 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         
         continue;
       }
-      case SPVM_OPCODE_C_ID_END: {
-        goto label_END;
+      case SPVM_OPCODE_C_ID_END_SUB: {
+        goto label_END_SUB;
       }
     }
     opcode_index++;
   }
 
-  label_END: {
+  label_END_SUB:
     
-    // Croak
-    if (!croak_flag) {
-      // Decrement ref count of return value
-      if (sub_return_type_id > SPVM_TYPE_C_ID_DOUBLE) {
-        if (*(SPVM_API_OBJECT**)&return_value != NULL) {
-          SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&return_value);
-        }
+  // Croak
+  if (!croak_flag) {
+    // Decrement ref count of return value
+    if (sub_return_type_id > SPVM_TYPE_C_ID_DOUBLE) {
+      if (*(SPVM_API_OBJECT**)&return_value != NULL) {
+        SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&return_value);
       }
-      
-      api->set_exception(api, NULL);
     }
     
-    // Free call stack
-    SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, call_stack_object);
-    
-    return return_value;
+    api->set_exception(api, NULL);
   }
+  
+  // Free call stack
+  SPVM_RUNTIME_ALLOCATOR_free_object(api, runtime->allocator, call_stack_object);
+  
+  return return_value;
 }
