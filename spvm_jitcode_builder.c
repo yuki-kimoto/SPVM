@@ -1625,7 +1625,21 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
-        SPVM_JITCODE_BUILDER_add_get_field(string_buffer, "SPVM_API_OBJECT*", opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string_chars(api, \"Object must be not undef.\"));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", *(SPVM_API_OBJECT**)((intptr_t)");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
