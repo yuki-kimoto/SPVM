@@ -1222,12 +1222,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_MOVE_OBJECT:
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], *(SPVM_API_OBJECT**)&vars[opcode->operand1]);
         break;
-      case SPVM_OPCODE_C_ID_INC_REF_COUNT:
-        SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(*(SPVM_API_OBJECT**)&vars[opcode->operand0]);
-        break;
-      case SPVM_OPCODE_C_ID_DEC_REF_COUNT:
-        SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(*(SPVM_API_OBJECT**)&vars[opcode->operand0]);
-        break;
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
         mortal_stack_top++;
         *(int32_t*)&mortal_stack[mortal_stack_top] = opcode->operand0;
@@ -1863,7 +1857,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         if (sub_return_type_id != SPVM_TYPE_C_ID_VOID) {
           return_value = vars[opcode->operand0];
           
-          // Increment ref count of return value not to release by decrement
+          // Increment ref count of return value not to release by leave scope
           if (sub_return_type_id > SPVM_TYPE_C_ID_DOUBLE) {
             if (*(SPVM_API_OBJECT**)&return_value != NULL) {
               SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&return_value);

@@ -235,41 +235,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                   }
 
-                  int32_t do_dec_ref_count = 0;
-                  int32_t do_inc_ref_count = 0;
-                  
-                  // Do decrement reference count
-                  if (SPVM_TYPE_is_object(compiler, type_to)) {
-                    do_dec_ref_count = 1;
-                    do_inc_ref_count = 1;
-                    switch (op_assign_from->id) {
-                      case SPVM_OP_C_ID_CONCAT:
-                      case SPVM_OP_C_ID_VAR:
-                      case SPVM_OP_C_ID_ARRAY_ELEM:
-                      case SPVM_OP_C_ID_CALL_FIELD:
-                      case SPVM_OP_C_ID_NEW:
-                      case SPVM_OP_C_ID_CONVERT:
-                      case SPVM_OP_C_ID_UNDEF:
-                      case SPVM_OP_C_ID_EXCEPTION_VAR:
-                      case SPVM_OP_C_ID_PACKAGE_VAR:
-                      case SPVM_OP_C_ID_CALL_SUB:
-                        do_dec_ref_count = 0;
-                        do_inc_ref_count = 0;
-                        break;
-                    }
-                  }
-                  
-                  // Decrement refernece count
-                  if (do_dec_ref_count) {
-                    int32_t index_dec_ref_count = SPVM_OP_get_my_index(compiler, op_assign_to);
-                    
-                    SPVM_OPCODE opcode;
-                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.id = SPVM_OPCODE_C_ID_DEC_REF_COUNT;
-                    opcode.operand0 = index_dec_ref_count;
-                    
-                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                  }
                   if (0) {
                     
                   }
@@ -1608,16 +1573,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   else {
                     break;
-                  }
-
-                  if (do_inc_ref_count) {
-                    SPVM_OPCODE opcode;
-                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    int32_t index_inc_ref_count = SPVM_OP_get_my_index(compiler, op_assign_to);
-                    
-                    opcode.id = SPVM_OPCODE_C_ID_INC_REF_COUNT;
-                    opcode.operand0 = index_inc_ref_count;
-                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                 }
                 else if (op_assign_to->id == SPVM_OP_C_ID_PACKAGE_VAR) {
