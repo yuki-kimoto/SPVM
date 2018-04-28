@@ -2131,32 +2131,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         _Bool finish = 0;
         while (op_cur) {
           // [START]Preorder traversal position
-          switch (op_cur->id) {
-            case SPVM_OP_C_ID_ASSIGN: {
-              SPVM_OP* op_term_to = op_cur->last;
-              SPVM_OP* op_term_from = op_cur->first;
-              
-              // VAR = TERM
-              if (op_term_to->id == SPVM_OP_C_ID_VAR) {
-                if (op_term_from->id == SPVM_OP_C_ID_CALL_SUB) {
-                  // VAR_N = call VAR1, VAR_N, VAR3
-                  SPVM_OP* op_args =op_term_from->last;
-                  SPVM_OP* op_arg = op_args->first;
-                  while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-                    if (op_arg->id == SPVM_OP_C_ID_VAR) {
-                      if (op_arg->uv.var->op_my == op_term_to->uv.var->op_my) {
-                        op_arg->uv.var->create_tmp_var = 1;
-                        break;
-                      }
-                    }
-                  }
-                }
-              }
-              
-              break;
-            }
-          }
-          
           if (op_cur->first) {
             op_cur = op_cur->first;
           }

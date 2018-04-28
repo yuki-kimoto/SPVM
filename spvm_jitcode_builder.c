@@ -2170,9 +2170,9 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      \n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
           SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = value;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, ", value);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
