@@ -1232,7 +1232,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_DEC_REF_COUNT: {
-        warn("CCCCCCCCCCCCC");
         // Decrement reference count
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] != NULL) {
           if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&vars[opcode->operand0]) > 1) {
