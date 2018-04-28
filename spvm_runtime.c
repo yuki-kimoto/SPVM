@@ -879,6 +879,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
 
         break;
       }
+      case SPVM_OPCODE_C_ID_INIT_OBJECT:
+        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = NULL;
+        break;
       case SPVM_OPCODE_C_ID_LOAD_UNDEF:
         *(SPVM_API_OBJECT**)&vars[opcode->operand0] = NULL;
         break;
@@ -1229,6 +1232,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_DEC_REF_COUNT: {
+        warn("CCCCCCCCCCCCC");
         // Decrement reference count
         if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] != NULL) {
           if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&vars[opcode->operand0]) > 1) {
@@ -1256,6 +1260,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
             if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&vars[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&vars[var_index]); }
             else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)&vars[var_index]); }
           }
+          
+          *(SPVM_API_OBJECT**)&vars[var_index] = NULL;
         }
         
         object_var_index_stack_top = object_var_index_stack_current_base - 1;

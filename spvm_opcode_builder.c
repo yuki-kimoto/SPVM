@@ -259,9 +259,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Variable type is object
                   if (SPVM_TYPE_is_object(compiler, type_to)) {
                     // Variable is not initialize
-                    if (!(op_assign_to->first && op_assign_to->first->id == SPVM_OP_C_ID_MY)) {
                       do_dec_ref_count = 1;
-                    }
                   }
                   
                   // Decrement refernece count
