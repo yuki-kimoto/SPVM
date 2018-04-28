@@ -250,6 +250,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_NEW:
                       case SPVM_OP_C_ID_CONVERT:
                       case SPVM_OP_C_ID_UNDEF:
+                      case SPVM_OP_C_ID_EXCEPTION_VAR:
+                      case SPVM_OP_C_ID_PACKAGE_VAR:
                         do_dec_ref_count = 0;
                         do_inc_ref_count = 0;
                         break;

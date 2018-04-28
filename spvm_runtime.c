@@ -1560,19 +1560,21 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_CONCAT: {
-        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-          (SPVM_API_OBJECT**)&vars[opcode->operand0],
-          api->concat(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_OBJECT**)&vars[opcode->operand2])
-        );
-        
-        if (*(SPVM_API_OBJECT**)&vars[opcode->operand0] == NULL) {
+        SPVM_API_OBJECT* concat_string = api->concat(api, *(SPVM_API_OBJECT**)&vars[opcode->operand1], *(SPVM_API_OBJECT**)&vars[opcode->operand2]);
+        if (concat_string == NULL) {
           croak_flag = 1;
+        }
+        else {
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
+            (SPVM_API_OBJECT**)&vars[opcode->operand0],
+            concat_string
+          );
         }
         
         break;
       }
       case SPVM_OPCODE_C_ID_LOAD_EXCEPTION_VAR: {
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = api->get_exception(api);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], api->get_exception(api));
         
         break;
       }
@@ -1615,7 +1617,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_OBJECT: {
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = *(SPVM_API_OBJECT**)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand1];
+       SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], *(SPVM_API_OBJECT**)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand1]);
         
         break;
       }

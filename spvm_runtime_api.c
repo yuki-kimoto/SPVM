@@ -398,7 +398,7 @@ void SPVM_RUNTIME_API_set_exception(SPVM_API* api, SPVM_OBJECT* exception) {
     SPVM_RUNTIME_API_dec_ref_count(api, (SPVM_OBJECT*)runtime->exception);
   }
   
-  runtime->exception = exception;
+  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&runtime->exception, exception);
   
   if (runtime->exception != NULL) {
     runtime->exception->ref_count++;
