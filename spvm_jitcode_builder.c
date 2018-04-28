@@ -1681,22 +1681,15 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT** field_address = (SPVM_API_OBJECT**)((intptr_t)");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      (SPVM_API_OBJECT**)((intptr_t)");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + ");
+        SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + \n");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if(*field_address != NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (SPVM_RUNTIME_C_INLINE_ISWEAK(*field_address)) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        api->unweaken(api, field_address);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*field_address) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*field_address); }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      else { api->dec_ref_count(api, *field_address); }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    *field_address = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "),\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand2);
-        SPVM_STRING_BUFFER_add(string_buffer, "  ;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if(*field_address != NULL) { SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*field_address); }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    );\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
