@@ -1315,9 +1315,9 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       }
       case SPVM_OPCODE_C_ID_LOAD_UNDEF:
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", NULL);\n");
         break;
       case SPVM_OPCODE_C_ID_ARRAY_LOAD_BYTE:
         SPVM_JITCODE_BUILDER_add_array_load(string_buffer, "SPVM_API_byte", opcode->operand0, opcode->operand1, opcode->operand2);

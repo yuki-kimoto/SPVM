@@ -893,7 +893,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_LOAD_UNDEF:
-        *(SPVM_API_OBJECT**)&vars[opcode->operand0] = NULL;
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], NULL);
         break;
       case SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE:
         *(SPVM_API_byte*)&vars[opcode->operand0] = *(SPVM_API_byte*)&opcode->operand1;
