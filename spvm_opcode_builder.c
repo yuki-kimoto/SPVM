@@ -238,11 +238,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t do_dec_ref_count = 0;
                   
                   // Do decrement reference count
-                  if (SPVM_TYPE_is_object(compiler, type_to)) {
+                 if (SPVM_TYPE_is_object(compiler, type_to)) {
                     do_dec_ref_count = 1;
                     switch (op_assign_from->id) {
-                      case SPVM_OPCODE_C_ID_CONCAT:
-                        // do_dec_ref_count = 0;
+                      case SPVM_OP_C_ID_CONCAT:
+                        do_dec_ref_count = 0;
                         1;
                         break;
                     }
@@ -259,7 +259,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
-                  
                   if (0) {
                     
                   }
@@ -410,7 +409,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_assign_from, -1);
                   }
                   else if (op_assign_from->id == SPVM_OP_C_ID_CONCAT) {
-                    
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_from->first);
                     assert(first_type->id == SPVM_TYPE_C_ID_STRING);
                     
@@ -1607,8 +1605,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   if (SPVM_TYPE_is_object(compiler, type_to)) {
                     do_inc_ref_count = 1;
                     switch (op_assign_from->id) {
-                      case SPVM_OPCODE_C_ID_CONCAT:
-                        // do_inc_ref_count = 0;
+                      case SPVM_OP_C_ID_CONCAT:
+                        do_inc_ref_count = 0;
                         1;
                         break;
                     }

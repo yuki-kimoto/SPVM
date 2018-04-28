@@ -50,6 +50,13 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
+    # Concat
+    {
+      my $str1 = "a";
+      my $str2 = "b";
+      $str2 .= $str1;
+    }
+    
     # Create object in loop
     for (my $i = 0; $i < 3; $i++) {
       my $minimal = new TestCase::Minimal;
