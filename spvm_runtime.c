@@ -1632,25 +1632,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_OBJECT: {
-        SPVM_API_OBJECT** package_var_address = (SPVM_API_OBJECT**)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand0];
-        
-        // Decrement reference count
-        if (*(SPVM_API_OBJECT**)package_var_address != NULL) {
-          if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)package_var_address) > 1) {
-            SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);
-          }
-          else {
-            api->dec_ref_count(api, *(SPVM_API_OBJECT**)package_var_address);
-          }
-        }
-        
-        // Store object
-        *(SPVM_API_OBJECT**)package_var_address = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
-        
-        // Increment new value reference count
-        if (*(SPVM_API_OBJECT**)package_var_address != NULL) {
-          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)package_var_address);
-        }
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&(*(SPVM_API_VALUE**)(api->get_runtime(api) + offsetof(SPVM_RUNTIME, package_vars)))[opcode->operand0], *(SPVM_API_OBJECT**)&vars[opcode->operand1]);
         
         break;
       }

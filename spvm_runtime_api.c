@@ -800,15 +800,7 @@ void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_OBJECT* objec
   assert(index >= 0);
   assert(index <= object->length);
   
-  if(values[index] != NULL) {
-    SPVM_RUNTIME_API_dec_ref_count(api, values[index]);
-  }
-  
-  values[index] = object_value;
-  
-  if(values[index] != NULL) {
-    SPVM_RUNTIME_API_inc_ref_count(api, values[index]);
-  }
+  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&values[index], object_value);
 }
 
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
@@ -1318,22 +1310,8 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
     SPVM_RUNTIME_API_set_exception(api, exception);
     return;
   }
-
-  SPVM_OBJECT** field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
   
-  if(*field_address != NULL) {
-    // If object is weak, unweaken
-    if (SPVM_RUNTIME_API_isweak(api, *field_address)) {
-      SPVM_RUNTIME_API_unweaken(api, (SPVM_OBJECT**)field_address);
-    }
-    SPVM_RUNTIME_API_dec_ref_count(api, *field_address);
-  }
-  
-  *field_address = value;
-  
-  if(*field_address != NULL) {
-    SPVM_RUNTIME_API_inc_ref_count(api, *field_address);
-  }
+  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset), value);
 }
 
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
