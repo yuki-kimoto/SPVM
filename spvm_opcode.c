@@ -97,7 +97,6 @@
 
 
 const char* const SPVM_OPCODE_C_ID_NAMES[] = {
-  "NOP",
   "ADD_INT",
   "ADD_LONG",
   "ADD_FLOAT",
@@ -132,10 +131,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "BIT_XOR_LONG",
   "COMPLEMENT_INT",
   "COMPLEMENT_LONG",
-  "PLUS_INT",
-  "PLUS_LONG",
-  "PLUS_FLOAT",
-  "PLUS_DOUBLE",
   "NEGATE_INT",
   "NEGATE_LONG",
   "NEGATE_FLOAT",
@@ -272,7 +267,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "CROAK",
   "LOAD_EXCEPTION_VAR",
   "STORE_EXCEPTION_VAR",
-  "CURRENT_LINE",
   "WEAKEN_FIELD",
   "NEW_BYTE_ARRAY",
   "NEW_SHORT_ARRAY",
@@ -283,7 +277,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "CONCAT",
   "PUSH_EVAL",
   "POP_EVAL",
-  "PUSH_ARG",
   "LOAD_PACKAGE_VAR_BYTE",
   "LOAD_PACKAGE_VAR_SHORT",
   "LOAD_PACKAGE_VAR_INT",
@@ -316,7 +309,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "MOVE_DOUBLE",
   "MOVE_OBJECT",
   "PUSH_MORTAL",
-  "ENTER_SCOPE",
   "LEAVE_SCOPE",
   "PUSH_ARG_BYTE",
   "PUSH_ARG_SHORT",

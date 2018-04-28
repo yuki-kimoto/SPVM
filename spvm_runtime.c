@@ -298,8 +298,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
     SPVM_OPCODE* opcode = &(opcodes[opcode_index]);
     
     switch (opcode->id) {
-      case SPVM_OPCODE_C_ID_NOP:
-        abort();
       case SPVM_OPCODE_C_ID_BOOL_INT:
         condition_flag = !!*(SPVM_API_int*)&vars[opcode->operand0];
         break;
@@ -602,18 +600,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_BIT_XOR_LONG:
         *(SPVM_API_long*)&vars[opcode->operand0]
           = *(SPVM_API_long*)&vars[opcode->operand1] ^ *(SPVM_API_long*)&vars[opcode->operand2];
-        break;
-      case SPVM_OPCODE_C_ID_PLUS_INT:
-        *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_ID_PLUS_LONG:
-        *(SPVM_API_long*)&vars[opcode->operand0] = *(SPVM_API_long*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_ID_PLUS_FLOAT:
-        *(float*)&vars[opcode->operand0] = *(float*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_ID_PLUS_DOUBLE:
-        *(double*)&vars[opcode->operand0] = *(double*)&vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_ID_NEGATE_INT:
         *(SPVM_API_int*)&vars[opcode->operand0] = -*(SPVM_API_int*)&vars[opcode->operand1];

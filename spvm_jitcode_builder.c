@@ -772,8 +772,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
 
     
     switch (opcode->id) {
-      case SPVM_OPCODE_C_ID_NOP:
-        abort();
       case SPVM_OPCODE_C_ID_BOOL_INT:
         SPVM_JITCODE_BUILDER_add_bool(string_buffer, "SPVM_API_int", opcode->operand0);
         break;
@@ -1057,18 +1055,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       case SPVM_OPCODE_C_ID_BIT_XOR_LONG:
         SPVM_JITCODE_BUILDER_add_bit_xor(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1, opcode->operand2);
-        break;
-      case SPVM_OPCODE_C_ID_PLUS_INT:
-        SPVM_JITCODE_BUILDER_add_plus(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_PLUS_LONG:
-        SPVM_JITCODE_BUILDER_add_plus(string_buffer, "SPVM_API_long", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_PLUS_FLOAT:
-        SPVM_JITCODE_BUILDER_add_plus(string_buffer, "float", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_PLUS_DOUBLE:
-        SPVM_JITCODE_BUILDER_add_plus(string_buffer, "double", opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_NEGATE_INT:
         SPVM_JITCODE_BUILDER_add_negate(string_buffer, "SPVM_API_int", opcode->operand0, opcode->operand1);

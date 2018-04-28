@@ -1018,16 +1018,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                    
                     switch (type_to->id) {
                       case SPVM_TYPE_C_ID_INT:
-                        opcode.id = SPVM_OPCODE_C_ID_PLUS_INT;
+                        opcode.id = SPVM_OPCODE_C_ID_MOVE_INT;
                         break;
                       case SPVM_TYPE_C_ID_LONG:
-                        opcode.id = SPVM_OPCODE_C_ID_PLUS_LONG;
+                        opcode.id = SPVM_OPCODE_C_ID_MOVE_LONG;
                         break;
                       case SPVM_TYPE_C_ID_FLOAT:
-                        opcode.id = SPVM_OPCODE_C_ID_PLUS_FLOAT;
+                        opcode.id = SPVM_OPCODE_C_ID_MOVE_FLOAT;
                         break;
                       case SPVM_TYPE_C_ID_DOUBLE:
-                        opcode.id = SPVM_OPCODE_C_ID_PLUS_DOUBLE;
+                        opcode.id = SPVM_OPCODE_C_ID_MOVE_DOUBLE;
                         break;
                       default:
                         assert(0);
