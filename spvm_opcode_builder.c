@@ -240,6 +240,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Do decrement reference count
                   if (SPVM_TYPE_is_object(compiler, type_to)) {
                     do_dec_ref_count = 1;
+                    switch (op_assign_from->id) {
+                      case SPVM_OPCODE_C_ID_CONCAT:
+                        // do_dec_ref_count = 0;
+                        1;
+                        break;
+                    }
                   }
                   
                   // Decrement refernece count
@@ -1600,6 +1606,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Variable type is object
                   if (SPVM_TYPE_is_object(compiler, type_to)) {
                     do_inc_ref_count = 1;
+                    switch (op_assign_from->id) {
+                      case SPVM_OPCODE_C_ID_CONCAT:
+                        // do_inc_ref_count = 0;
+                        1;
+                        break;
+                    }
                   }
                   
                   if (do_inc_ref_count) {
