@@ -27,7 +27,7 @@ struct SPVM_sub {
   int32_t call_sub_arg_stack_max;
   int32_t id;
   int32_t eval_stack_max_length;
-  int32_t object_var_index_stack_max;
+  int32_t mortal_stack_max;
   int32_t object_mys_length;
   int8_t call_type_id;
   _Bool is_native;

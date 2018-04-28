@@ -116,7 +116,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_pos);
       SPVM_SUB* sub = op_sub->uv.sub;
       
-      SPVM_LIST* object_var_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_LIST* mortal_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       SPVM_LIST* object_var_index_block_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
       // Check sub information
@@ -170,7 +170,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       // Block stack
       SPVM_LIST* op_block_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
       
-      int32_t object_var_index_stack_max = 0;
+      int32_t mortal_stack_max = 0;
       
       while (op_cur) {
         // [START]Preorder traversal position
@@ -200,12 +200,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             }
             
             int32_t* object_var_index_block_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-            *object_var_index_block_base_ptr = object_var_index_stack->length;
+            *object_var_index_block_base_ptr = mortal_stack->length;
             SPVM_LIST_push(object_var_index_block_base_stack, object_var_index_block_base_ptr);
             
             if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS || op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
               int32_t* object_var_index_block_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-              *object_var_index_block_base_ptr = object_var_index_stack->length;
+              *object_var_index_block_base_ptr = mortal_stack->length;
             }
           }
         }
@@ -2177,8 +2177,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
                 
                 if (op_block_current->uv.block->need_leave_scope) {
-                  while (object_var_index_stack->length > object_var_index_block_base) {
-                    SPVM_LIST_pop(object_var_index_stack);
+                  while (mortal_stack->length > object_var_index_block_base) {
+                    SPVM_LIST_pop(mortal_stack);
                   }
                   
                   SPVM_OPCODE opcode;
@@ -2257,17 +2257,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 if (SPVM_TYPE_is_object(compiler, type)) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.id = SPVM_OPCODE_C_ID_PUSH_OBJECT_VAR_INDEX;
+                  opcode.id = SPVM_OPCODE_C_ID_PUSH_MORTAL;
                   opcode.operand0 = my->index;
                   
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   
                   int32_t* my_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
                   *my_index_ptr = my->index;
-                  SPVM_LIST_push(object_var_index_stack, my_index_ptr);
+                  SPVM_LIST_push(mortal_stack, my_index_ptr);
                   
-                  if (object_var_index_stack->length > object_var_index_stack_max) {
-                    object_var_index_stack_max = object_var_index_stack->length;
+                  if (mortal_stack->length > mortal_stack_max) {
+                    mortal_stack_max = mortal_stack->length;
                   }
                   
                   SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
@@ -2775,7 +2775,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
       sub->opcode_length = opcode_array->length - sub->opcode_base;
-      sub->object_var_index_stack_max = object_var_index_stack_max;
+      sub->mortal_stack_max = mortal_stack_max;
     }
   }
 }

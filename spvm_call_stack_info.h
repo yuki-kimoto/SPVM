@@ -7,9 +7,9 @@
 
 struct SPVM_call_stack_info {
   int32_t length;
-  int32_t object_var_index_stack_top_index;
-  int32_t object_var_index_stack_base;
-  int32_t* object_var_index_stack;
+  int32_t mortal_stack_top_index;
+  int32_t mortal_stack_base;
+  int32_t* mortal_stack;
 };
 
 void SPVM_CALL_STACK_init_call_stack_info(SPVM_CALL_STACK_INFO* call_stack_info, SPVM_RUNTIME* runtime, int32_t sub_id);
