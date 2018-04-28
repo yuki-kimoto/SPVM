@@ -29,7 +29,7 @@ do {\
 } while (0)\
 
 #define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)
-#define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN_PTR(dist_ptr, source) \
+#define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist_ptr, source) \
 do {\
   SPVM_API_OBJECT* tmp_object = source;\
   if (tmp_object != NULL) {\
