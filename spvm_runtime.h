@@ -37,6 +37,14 @@ do {\
   dist = tmp_object;\
 } while (0)\
 
+#define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN_PTR(dist_ptr, source) \
+do {\
+  SPVM_API_OBJECT* tmp_object = source;\
+  SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(tmp_object);\
+  SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(*(SPVM_API_OBJECT**)(dist_ptr));\
+  *(SPVM_API_OBJECT**)(dist_ptr) = tmp_object;\
+} while (0)\
+
 struct SPVM_runtime {
   // API
   SPVM_API* api;
