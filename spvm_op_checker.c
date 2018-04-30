@@ -1439,6 +1439,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                     }
+                    else if (op_term->id == SPVM_OP_C_ID_CALL_SUB) {
+                      SPVM_CALL_SUB* call_sub = op_term->uv.call_sub;
+                      SPVM_SUB* sub = call_sub->sub;
+                      if (sub->op_return_type->uv.type->id == SPVM_TYPE_C_ID_VOID) {
+                        SPVM_yyerror_format(compiler, "Can't return value of void subroutine at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                    }
                     // Normal
                     else if (op_term) {
                       if (first_type->id != sub_return_type->id) {

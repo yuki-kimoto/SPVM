@@ -2,8 +2,8 @@ package Std {
   use Std::IO;
   use Std::Time;
 
-  sub print : void ($value : String) { return Std::IO->print($value); }
-  sub warn : void ($value : String) { return Std::IO->warn($value); }
+  sub print : void ($value : String) { Std::IO->print($value); }
+  sub warn : void ($value : String) { Std::IO->warn($value); }
   
   sub time : long () { return Std::Time->time(); }
 }

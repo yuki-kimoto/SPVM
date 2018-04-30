@@ -231,8 +231,19 @@ _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return 0;
 }
 
-int32_t SPVM_OP_get_my_index(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
+int32_t SPVM_OP_get_my_index(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
+  
+  SPVM_OP* op_var;
+  if (op->id == SPVM_OP_C_ID_VAR) {
+    op_var = op;
+  }
+  else if (op->id == SPVM_OP_C_ID_ASSIGN){
+    op_var = op->last;
+  }
+  else {
+    assert(0);
+  }
   
   return op_var->uv.var->op_my->uv.my->index;
 }
