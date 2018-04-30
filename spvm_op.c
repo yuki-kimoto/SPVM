@@ -2284,24 +2284,12 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   
   op_assign_to->is_assign_to = 1;
   
-  SPVM_OP* op_parent;
-  
   op_assign_from->is_assign_from = 1;
-  
-  // Return variable if first children is var
+
   if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
     op_assign_from->is_var_assign_from = 1;
-    
-    SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_assign->file, op_assign->line);
-    op_var->uv.var = op_assign_to->uv.var;
-    SPVM_OP_insert_child(compiler, op_var, op_var->last, op_assign);
-    
-    op_parent = op_var;
   }
-  else {
-    op_parent = op_assign;
-  }
-  
+
   // Assign left child is var and it has variable declaration, try type inference
   if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
     SPVM_OP* op_var = op_assign_to;
@@ -2313,7 +2301,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
     }
   }
   
-  return op_parent;
+  return op_assign;
 }
 
 

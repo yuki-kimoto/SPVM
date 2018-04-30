@@ -1536,7 +1536,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
                   }
-                  else if (op_assign_from->id == SPVM_OP_C_ID_VAR) {
+                  else if (op_assign_from->id == SPVM_OP_C_ID_VAR || op_assign_from->id == SPVM_OP_C_ID_ASSIGN) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
@@ -2650,6 +2650,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       default:
                         opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
                     }
+                    
 
                     int32_t index_arg = SPVM_OP_get_my_index(compiler, op_arg);
                     opcode.operand0 = index_arg;

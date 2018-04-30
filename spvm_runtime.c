@@ -1320,9 +1320,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_CONSTANT* constant = op_constant->uv.constant;
         
         SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)constant->value.string_value, constant->string_length);
-
+        
         // Set string
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0] , string);
+
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH:
