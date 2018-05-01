@@ -648,69 +648,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   // Call subroutine argument stack top
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t call_sub_arg_stack_top = -1;\n");
 
-  // Copy arguments to variables
-  {
-    int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
-      
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
-      int32_t arg_type_id = arg_type->id;
-      const char* arg_type_name = SPVM_JITCODE_BUILDER_get_type_name(arg_type_id);
-
-      // Assign argument
-      SPVM_STRING_BUFFER_add(string_buffer, "  ");
-      SPVM_JITCODE_BUILDER_add_operand(string_buffer, arg_type_name, arg_index);
-      SPVM_STRING_BUFFER_add(string_buffer, " = ");
-      SPVM_STRING_BUFFER_add(string_buffer, "*(");
-      SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(arg_type_id));
-      SPVM_STRING_BUFFER_add(string_buffer, "*)&args[");
-      SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "]");
-      
-      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-    }
-  }
-  
-  // If arg is object, increment reference count
-  {
-    int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
-      
-      if (SPVM_TYPE_is_object(compiler, arg_type)) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", arg_index);
-        SPVM_STRING_BUFFER_add(string_buffer, " != NULL) { SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(");
-        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", arg_index);
-        SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  }
-
-  // Initialize object variable undef
-  {
-    int32_t my_index;
-    for (my_index = sub->op_args->length; my_index < sub->op_mys->length; my_index++) {
-      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
-      SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
-      
-      if (SPVM_TYPE_is_object(compiler, my_type)) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", my_index);
-        SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-      }
-      else {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_JITCODE_BUILDER_add_var(string_buffer, "", my_index);
-        SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  }
-
   // Condition flag
   SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
   
@@ -754,7 +691,70 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t croak_flag = 0;\n");
+
+  // Initialize variables
+  {
+    int32_t my_index;
+    for (my_index = sub->op_args->length; my_index < sub->op_mys->length; my_index++) {
+      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
+      SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
+      
+      if (SPVM_TYPE_is_object(compiler, my_type)) {
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", my_index);
+        SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+      }
+      else {
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_JITCODE_BUILDER_add_var(string_buffer, "", my_index);
+        SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
+
+  // Copy arguments to variables
+  {
+    int32_t arg_index;
+    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+      
+      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
+      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
+      int32_t arg_type_id = arg_type->id;
+      const char* arg_type_name = SPVM_JITCODE_BUILDER_get_type_name(arg_type_id);
+
+      // Assign argument
+      SPVM_STRING_BUFFER_add(string_buffer, "  ");
+      SPVM_JITCODE_BUILDER_add_operand(string_buffer, arg_type_name, arg_index);
+      SPVM_STRING_BUFFER_add(string_buffer, " = ");
+      SPVM_STRING_BUFFER_add(string_buffer, "*(");
+      SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(arg_type_id));
+      SPVM_STRING_BUFFER_add(string_buffer, "*)&args[");
+      SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
+      SPVM_STRING_BUFFER_add(string_buffer, "]");
+      
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+    }
+  }
   
+  // If arg is object, increment reference count
+  {
+    int32_t arg_index;
+    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
+      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
+      
+      if (SPVM_TYPE_is_object(compiler, arg_type)) {
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", arg_index);
+        SPVM_STRING_BUFFER_add(string_buffer, " != NULL) { SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", arg_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
+
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
   int32_t opcode_base = sub->opcode_base;
   int32_t opcode_length = sub->opcode_length;
