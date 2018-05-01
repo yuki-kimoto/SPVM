@@ -8,8 +8,6 @@ use Test::More 'no_plan';
 
 use SPVM 'TestCase::Std::Number::Util';
 
-use POSIX ();
-
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
 my $SHORT_MAX = 32767;
@@ -18,10 +16,6 @@ my $INT_MAX = 2147483647;
 my $INT_MIN = -2147483648;
 my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
-my $FLOAT_MAX = POSIX::FLT_MAX();
-my $FLOAT_MIN = POSIX::FLT_MIN();
-my $DOUBLE_MAX = POSIX::DBL_MAX();
-my $DOUBLE_MIN = POSIX::DBL_MIN();
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
@@ -102,11 +96,6 @@ my $start_objects_count = SPVM::get_objects_count();
   is(SPVM::Std::Number::Util->DOUBLE_NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
   
   like(SPVM::Std::Number::Util->DOUBLE_NAN(), $nan_re);
-  
-  # Check not Inf or NaN in Perl value
-  like(SPVM::Std::Number::Util->DOUBLE_MAX_VALUE(), qr/[0-9]/);
-  like(SPVM::Std::Number::Util->DOUBLE_MIN_VALUE(), qr/[0-9]/);
-  like(SPVM::Std::Number::Util->DOUBLE_MIN_NORMAL(), qr/[0-9]/);
 }
 
 # All object is freed

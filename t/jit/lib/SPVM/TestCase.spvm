@@ -675,7 +675,15 @@ package TestCase {
       }
     }
     
-    if ($success_constant_narrow && $success_constant_wide) {
+    # Assign same name variable
+    my $success_assign_same_name_variable = 0;
+    {
+      my $obj = new TestCase::Minimal;
+      $obj = $obj;
+      $success_assign_same_name_variable = 1;
+    }
+    
+    if ($success_constant_narrow && $success_constant_wide && $success_assign_same_name_variable) {
       return 1;
     }
     

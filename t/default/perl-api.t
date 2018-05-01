@@ -17,8 +17,6 @@ use FindBin;
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'Std'; my $use_core_line = __LINE__;
 
-use POSIX ();
-
 use SPVM::Perl::Object::Package;
 
 my $BYTE_MAX = 127;
@@ -29,10 +27,6 @@ my $INT_MAX = 2147483647;
 my $INT_MIN = -2147483648;
 my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
-my $FLOAT_MAX = POSIX::FLT_MAX();
-my $FLOAT_MIN = POSIX::FLT_MIN();
-my $DOUBLE_MAX = POSIX::DBL_MAX();
-my $DOUBLE_MIN = POSIX::DBL_MIN();
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
@@ -268,16 +262,6 @@ is_deeply(
       my $sp_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
       my $values = $sp_values->get_elements;
       is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
-    }
-    {
-      my $sp_values = SPVM::new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
-      my $values = $sp_values->get_elements;
-      is_deeply($values, [1, $FLOAT_MAX, $FLOAT_MIN]);
-    }
-    {
-      my $sp_values = SPVM::new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
-      my $values = $sp_values->get_elements;
-      is_deeply($values, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
     }
   }
 
