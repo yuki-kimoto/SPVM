@@ -231,19 +231,30 @@ _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return 0;
 }
 
-int32_t SPVM_OP_get_my_index(SPVM_COMPILER* compiler, SPVM_OP* op) {
+int32_t SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   SPVM_OP* op_var;
   if (op->id == SPVM_OP_C_ID_VAR) {
     op_var = op;
   }
-  else if (op->id == SPVM_OP_C_ID_ASSIGN){
-    op_var = op->last;
+  else if (op->id == SPVM_OP_C_ID_ASSIGN) {
+    op_var = SPVM_OP_get_target_op_var(compiler, op->last);
+  }
+  else if (op->id == SPVM_OP_C_ID_ARRAY_INIT) {
+    op_var = SPVM_OP_get_target_op_var(compiler, op->first);
   }
   else {
     assert(0);
   }
+  
+  return op_var;
+}
+
+int32_t SPVM_OP_get_my_index(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
   
   return op_var->uv.var->op_my->uv.my->index;
 }
@@ -998,6 +1009,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_NEGATE:
     case SPVM_OP_C_ID_NEW:
     case SPVM_OP_C_ID_CHECK_CAST:
+    case SPVM_OP_C_ID_ARRAY_INIT:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
