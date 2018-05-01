@@ -143,6 +143,22 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "INIT_OBJECT",
 };
 
+SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+
+  // Temparary variable name
+  char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@@tmp2147483647"));
+  sprintf(name, "@@tmp%d", compiler->tmp_var_length);
+  compiler->tmp_var_length++;
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
+  op_name->uv.name = name;
+  SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
+  SPVM_OP_build_my(compiler, op_my, op_var, NULL);
+  
+  return op_var;
+}
+
+
 void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
@@ -415,18 +431,6 @@ SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   SPVM_LIST_push(compiler->op_types, op_type_new);
   
   return op_type_new;
-}
-
-SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-
-  // Temparary variable name
-  char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@@tmp2147483647"));
-  sprintf(name, "@@tmp%d", compiler->tmp_var_index++);
-  SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, name, file, line);
-  
-  SPVM_OP* op_var_tmp = SPVM_OP_new_op_var(compiler, op_name);
-  
-  return op_var_tmp;
 }
 
 SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line) {

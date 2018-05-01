@@ -102,7 +102,7 @@ struct SPVM_compiler {
   // Package Variable id
   int32_t package_var_length;
   
-  int32_t tmp_var_index;
+  int32_t tmp_var_length;
   
   // Error is fatal
   _Bool fatal_error;
