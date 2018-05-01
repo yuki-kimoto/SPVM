@@ -240,9 +240,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   
   // Variables
   SPVM_API_VALUE* vars = call_stack;
-  
-  // Copy arguments
-  memcpy(call_stack, args, args_length * sizeof(SPVM_API_VALUE));
 
   // Auto decrement reference count variable index stack top
   SPVM_API_VALUE* mortal_stack = &call_stack[call_stack_info.mortal_stack_base];
@@ -261,8 +258,15 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   SPVM_API_VALUE call_sub_args[255];
   
   char tmp_string[30];
+
+  register int32_t opcode_index = sub_opcode_base;
+
+  // Initialize variables
+  memset(vars, 0, sizeof(SPVM_API_VALUE) * sub->op_mys->length);
   
-  // Call normal sub
+  // Copy arguments to variables
+  memcpy(vars, args, args_length * sizeof(SPVM_API_VALUE));
+  
   // If arg is object, increment reference count
   {
     int32_t arg_index;
@@ -278,19 +282,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       }
     }
   }
-
-  // Initialize variable undef
-  {
-    int32_t my_index;
-    for (my_index = sub->op_args->length; my_index < sub->op_mys->length; my_index++) {
-      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
-      SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
-      
-      memset(&vars[my_index], 0, sizeof(SPVM_API_VALUE));
-    }
-  }
-  
-  register int32_t opcode_index = sub_opcode_base;
   
   while (1) {
     SPVM_OPCODE* opcode = &(opcodes[opcode_index]);
