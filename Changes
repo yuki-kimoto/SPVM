@@ -1,6 +1,7 @@
 0.0330 2018-05-01
   - fix many assign reference count bug.
-  - 
+  - Object type become generic purpose type
+  - Object can be assigned any array object
 0.0329 2018-04-24
   - use sprintf "%g" format for string conversion
 0.0328 2018-04-24

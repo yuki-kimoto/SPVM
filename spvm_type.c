@@ -21,6 +21,7 @@ const char* const SPVM_TYPE_C_ID_NAMES[] = {
   "long",
   "float",
   "double",
+  "Object",
   "String",
   "byte[]",
   "short[]",
@@ -28,6 +29,7 @@ const char* const SPVM_TYPE_C_ID_NAMES[] = {
   "long[]",
   "float[]",
   "double[]",
+  "Object[]",
   "String[]",
 };
 
@@ -200,6 +202,13 @@ _Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   
   return type->dimension > 0;
 }
+
+_Bool SPVM_TYPE_is_any_object(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+  (void)compiler;
+  
+  return type && type->id == SPVM_TYPE_C_ID_OBJECT;
+}
+
 
 _Bool SPVM_TYPE_is_string(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;

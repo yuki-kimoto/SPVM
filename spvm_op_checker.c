@@ -95,41 +95,59 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
   }
   // Different type
   else {
-    // Different dimension
-    if (assign_to_type->dimension != assign_from_type->dimension) {
+    // To dimension is greater than from dimension
+    if (assign_to_type->dimension > assign_from_type->dimension) {
       can_assign = 0;
     }
-    // Same dimension
-    else {
+    // To dimension is less than or equal to from dimension
+    else if (assign_to_type->dimension <= assign_from_type->dimension) {
       const char* assign_to_base_type_name = assign_to_type->base_type_name;
       const char* assign_from_base_type_name = assign_from_type->base_type_name;
       
       SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_type_name, strlen(assign_to_base_type_name));
       SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_type_name, strlen(assign_from_base_type_name));
       
-      // Same base type
-      if (assign_to_base_type->id == assign_from_base_type->id) {
+      // Base type is Object
+      if (SPVM_TYPE_is_any_object(compiler, assign_to_base_type)) {
         can_assign = 1;
       }
-      // Different base type
       else {
-        SPVM_OP* assign_to_base_type_op_package = assign_to_base_type->op_package;
-        SPVM_OP* assign_from_base_type_op_package = assign_from_base_type->op_package;
-        
-        // At least one base type is number
-        if (!assign_to_base_type_op_package || !assign_from_base_type_op_package) {
+        if (assign_to_type->dimension != assign_from_type->dimension) {
           can_assign = 0;
         }
+        // Same dimension
         else {
-          SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
-          SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
+          const char* assign_to_base_type_name = assign_to_type->base_type_name;
+          const char* assign_from_base_type_name = assign_from_type->base_type_name;
           
-          // Left base type is interface
-          if (package_assign_to_base->is_interface) {
-            can_assign = SPVM_OP_CHECKER_has_interface(compiler, package_assign_from_base, package_assign_to_base);
+          SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_type_name, strlen(assign_to_base_type_name));
+          SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_type_name, strlen(assign_from_base_type_name));
+          
+          // Same base type
+          if (assign_to_base_type->id == assign_from_base_type->id) {
+            can_assign = 1;
           }
+          // Different base type
           else {
-            can_assign = 0;
+            SPVM_OP* assign_to_base_type_op_package = assign_to_base_type->op_package;
+            SPVM_OP* assign_from_base_type_op_package = assign_from_base_type->op_package;
+            
+            // At least one base type is number
+            if (!assign_to_base_type_op_package || !assign_from_base_type_op_package) {
+              can_assign = 0;
+            }
+            else {
+              SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
+              SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
+              
+              // Left base type is interface
+              if (package_assign_to_base->is_interface) {
+                can_assign = SPVM_OP_CHECKER_has_interface(compiler, package_assign_from_base, package_assign_to_base);
+              }
+              else {
+                can_assign = 0;
+              }
+            }
           }
         }
       }
@@ -314,12 +332,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       if (
         SPVM_TYPE_is_array(compiler, type) || strcmp(base_name, "void") == 0 || strcmp(base_name, "byte") == 0
         || strcmp(base_name, "short") == 0 || strcmp(base_name, "int") == 0 || strcmp(base_name, "long") == 0
-        || strcmp(base_name, "float") == 0 || strcmp(base_name, "double") == 0 || strcmp(base_name, "string") == 0
+        || strcmp(base_name, "float") == 0 || strcmp(base_name, "double") == 0 || strcmp(base_name, "Object") == 0
       )
       {
         // Nothing
       }
       else {
+        
         // Package
         SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
         SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, base_name, strlen(base_name));
