@@ -131,6 +131,16 @@ SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
+SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler) {
+  (void)compiler;
+  
+  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_OBJECT);
+  
+  assert(type);
+  
+  return type;
+}
+
 char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name) {
   int32_t type_name_length = (int32_t)strlen(type_name);
   char* type_base_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_name_length);

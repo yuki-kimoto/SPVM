@@ -76,5 +76,6 @@ SPVM_TYPE* SPVM_TYPE_get_float_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler);
 
 #endif
