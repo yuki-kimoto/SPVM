@@ -222,7 +222,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "BOOL_FLOAT",
   "BOOL_DOUBLE",
   "BOOL_OBJECT",
-  "LOAD_UNDEF",
   "NEW_OBJECT",
   "NEW_STRING",
   "NEW_OBJECT_ARRAY",
