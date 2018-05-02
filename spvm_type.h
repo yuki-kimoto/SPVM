@@ -69,6 +69,7 @@ _Bool SPVM_TYPE_is_object(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_is_any_object(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 
 SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_get_undef_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_short_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_int_type(SPVM_COMPILER* compiler);
