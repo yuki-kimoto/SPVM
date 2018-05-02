@@ -1044,7 +1044,12 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_UNDEF : {
-      type = SPVM_TYPE_get_object_type(compiler);
+      if (op->uv.undef->type) {
+        type = op->uv.undef->type;
+      }
+      else {
+        type = NULL;
+      }
       break;
     }
     case SPVM_OP_C_ID_CONSTANT: {

@@ -34,6 +34,15 @@ sub init_spvm {
 
 {
   BEGIN { init_spvm() }
+  use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndef';
+  BEGIN {
+    my $success = SPVM::Build->new->compile_spvm();
+    ok($success == 0);
+  }
+}
+
+{
+  BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndefDefault';
   BEGIN {
     my $success = SPVM::Build->new->compile_spvm();
