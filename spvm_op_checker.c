@@ -84,6 +84,10 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
 
 _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_type, SPVM_TYPE* assign_from_type) {
   
+  if (SPVM_TYPE_is_undef(compiler, assign_from_type)) {
+    return 1;
+  }
+  
   assert(SPVM_TYPE_is_object(compiler, assign_to_type));
   assert(SPVM_TYPE_is_object(compiler, assign_from_type));
   
@@ -168,12 +172,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
     SPVM_yyerror_format(compiler, "Can't convert undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
   }
   else {
-    // Copy left type to undef
-    if (op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
-      assign_from_type = assign_to_type;
-      op_assign_from->uv.undef->type = assign_from_type;
-    }
-    
     // Numeric type check
     if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
       int32_t do_convert = 0;
@@ -250,10 +248,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
       }
     }
     else {
-      if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && assign_from_type->id == SPVM_TYPE_C_ID_STRING) {
-        // Convert String to numeric type
-      }
-      else if (assign_to_type->id == SPVM_TYPE_C_ID_STRING && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
+      if (assign_to_type->id == SPVM_TYPE_C_ID_STRING && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
         // Convert numeric type to String
       }
       // Object type check

@@ -261,7 +261,6 @@ int32_t SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->first);
   }
   else {
-    warn("BBBBBBBBB %s", SPVM_OP_C_ID_NAMES[op->id]);
     assert(0);
   }
   
