@@ -28,7 +28,6 @@
 #include "spvm_limit.h"
 #include "spvm_our.h"
 #include "spvm_package_var.h"
-#include "spvm_undef.h"
 #include "spvm_block.h"
 
 _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
@@ -1422,6 +1421,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_term_to = op_cur->last;
                   SPVM_OP* op_term_from = op_cur->first;
                   
+                  SPVM_TYPE* to_type = SPVM_OP_get_type(compiler, op_term_to);
+                  SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_term_from);
+                  
+                  
+                  if (to_type->id == SPVM_TYPE_C_ID_UNDEF && from_type->id == SPVM_TYPE_C_ID_UNDEF) {
+                    SPVM_yyerror_format(compiler, "undef can't be assigned to empty type at %s line %d\n", op_cur->file, op_cur->line);
+                  }
+                  
                   // Check if source value can be assigned to distination value
                   // If needed, automatical numeric convertion op is added
                   SPVM_OP_CHECKER_check_and_convert_type(compiler, op_term_to, op_term_from);
@@ -1447,9 +1454,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       else {
                         if (SPVM_TYPE_is_numeric(compiler, sub_return_type)) {
                           is_invalid = 1;
-                        }
-                        else {
-                          op_term->uv.undef->type = sub_return_type;
                         }
                       }
                     }
@@ -1754,16 +1758,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_ID_CROAK: {
-                  if (op_cur->first->id == SPVM_OP_C_ID_UNDEF) {
-                    op_cur->first->uv.undef->type = SPVM_TYPE_get_string_type(compiler);
-                  }
-                  else {
-                    SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                    if (first_type->id != SPVM_TYPE_C_ID_STRING) {
-                      SPVM_yyerror_format(compiler, "croak argument type must be String at %s line %d\n", op_cur->file, op_cur->line);
-                      compiler->fatal_error = 1;
-                      return;
-                    }
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  if (first_type->id != SPVM_TYPE_C_ID_STRING) {
+                    SPVM_yyerror_format(compiler, "croak argument must be String at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
                   }
                   break;
                 }

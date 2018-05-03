@@ -203,7 +203,6 @@ struct SPVM_op {
     SPVM_CALL_FIELD* call_field;
     SPVM_OUR* our;
     SPVM_PACKAGE_VAR* package_var;
-    SPVM_UNDEF* undef;
     SPVM_BLOCK* block;
     SPVM_DESCRIPTOR* descriptor;
   } uv;
