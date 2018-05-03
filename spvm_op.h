@@ -211,8 +211,7 @@ struct SPVM_op {
   int32_t line;
   _Bool moresib;
   _Bool is_assign_to;
-  _Bool is_assign_from;
-  _Bool is_var_assign_from;
+  _Bool is_assigned_to_var;
 };
 
 const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub);

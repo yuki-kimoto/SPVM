@@ -237,11 +237,9 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
         
         SPVM_OP_replace_op(compiler, op_stab, op_convert);
 
-        op_convert->is_var_assign_from = op_convert->first->is_var_assign_from;
-        op_convert->is_assign_from = op_convert->first->is_assign_from;
+        op_convert->is_assigned_to_var = op_convert->first->is_assigned_to_var;
         
-        op_convert->first->is_var_assign_from = 0;
-        op_convert->first->is_assign_from = 0;
+        op_convert->first->is_assigned_to_var = 0;
         
         op_out = op_convert;
       }
@@ -2156,12 +2154,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
           else {
             while (1) {
-              // Create temporary variable for no is_var_assign_from term which is not variable
+              // Create temporary variable for no is_assigned_to_var term which is not variable
               int32_t create_tmp_var = 0;
               SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
               
               // [START]Postorder traversal position
-              if (!op_cur->is_assign_to && !op_cur->is_var_assign_from) {
+              if (!op_cur->is_assign_to && !op_cur->is_assigned_to_var) {
                 switch (op_cur->id) {
                   case SPVM_OP_C_ID_CONVERT:
                     create_tmp_var = 1;
