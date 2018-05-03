@@ -2196,12 +2196,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_ID_SWITCH_CONDITION:
                     create_tmp_var = 1;
                     break;
-                  case SPVM_OP_C_ID_UNDEF: {
-                    if (op_cur->uv.undef->type) {
-                      create_tmp_var = 1;
-                    }
-                    break;
-                  }
                   case SPVM_OP_C_ID_CONSTANT: {
                     if (SPVM_TYPE_is_numeric(compiler, tmp_var_type) && op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
                       create_tmp_var = 1;

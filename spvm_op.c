@@ -261,6 +261,7 @@ int32_t SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->first);
   }
   else {
+    warn("BBBBBBBBB %s", SPVM_OP_C_ID_NAMES[op->id]);
     assert(0);
   }
   
@@ -1044,12 +1045,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_UNDEF : {
-      if (op->uv.undef->type) {
-        type = op->uv.undef->type;
-      }
-      else {
-        type = NULL;
-      }
+      type = SPVM_TYPE_get_undef_type(compiler);
       break;
     }
     case SPVM_OP_C_ID_CONSTANT: {

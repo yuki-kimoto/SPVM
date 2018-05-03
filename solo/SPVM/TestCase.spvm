@@ -49,7 +49,30 @@ SPVM::Test - SPVM test module
   sub FLOAT_PRECICE : float () { return 32767f; }
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
+  sub receive_undef : void ($test_case : TestCase) {
+    
+  }
   sub main : int ($mvar : int) {
+    # UNDEF
+    {
+      $PACKAGE_VAR_TEST_CASE = undef;
+      $@ = undef;
+      {
+        my $test_case = new TestCase;
+        $test_case->{minimal} = undef;
+      }
+      {
+        my $nums = new TestCase[3];
+        $nums->[0] = undef;
+      }
+      {
+        my $minimal = new TestCase::Minimal;
+        $minimal = undef;
+      }
+      {
+        receive_undef(undef);
+      }
+    }
     
     # Concat
     {
