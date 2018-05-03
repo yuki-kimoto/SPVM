@@ -2276,6 +2276,112 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         
         break;
       }
+      case SPVM_OPCODE_C_ID_RETURN_VOID:
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_BYTE:
+      {
+        const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_byte*)&return_value = ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_SHORT:
+      {
+        const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_short*)&return_value = ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_INT:
+      {
+        const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_int*)&return_value = ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_LONG:
+      {
+        const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_long*)&return_value = ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_FLOAT:
+      {
+        const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_float*)&return_value = ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_DOUBLE:
+      {
+        const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_double*)&return_value = ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_OBJECT:
+      {
+        const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_OBJECT**)&return_value = ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        // Increment ref count of return value not to release by decrement
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (return_value != NULL) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(return_value);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_UNDEF:
+      {
+        const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_OBJECT**)&return_value = NULL;\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
         // 1  default
         // 5  npare

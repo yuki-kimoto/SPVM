@@ -1900,6 +1900,59 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         opcode_index = opcode->operand1;
         continue;
       }
+      case SPVM_OPCODE_C_ID_RETURN_VOID:
+      {
+        opcode_index = opcode->operand1;
+        continue;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_BYTE:
+      {
+        *(SPVM_API_byte*)&return_value = *(SPVM_API_byte*)&vars[opcode->operand0];
+        opcode_index = opcode->operand1;
+        continue;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_SHORT:
+      {
+        *(SPVM_API_short*)&return_value = *(SPVM_API_short*)&vars[opcode->operand0];
+        opcode_index = opcode->operand1;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_INT:
+      {
+        *(SPVM_API_int*)&return_value = *(SPVM_API_int*)&vars[opcode->operand0];
+        opcode_index = opcode->operand1;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_LONG:
+      {
+        *(SPVM_API_long*)&return_value = *(SPVM_API_long*)&vars[opcode->operand0];
+        opcode_index = opcode->operand1;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_FLOAT:
+      {
+        *(SPVM_API_float*)&return_value = *(SPVM_API_float*)&vars[opcode->operand0];
+        opcode_index = opcode->operand1;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_DOUBLE:
+      {
+        *(SPVM_API_double*)&return_value = *(SPVM_API_double*)&vars[opcode->operand0];
+        opcode_index = opcode->operand1;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_OBJECT:
+      {
+        *(SPVM_API_OBJECT**)&return_value = *(SPVM_API_OBJECT**)&vars[opcode->operand0];
+        opcode_index = opcode->operand1;
+        // Increment ref count of return value not to release by leave scope
+        if (*(SPVM_API_OBJECT**)&return_value != NULL) {
+          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&return_value);
+        }
+        opcode_index = opcode->operand1;
+        continue;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_UNDEF:
+      {
+        *(SPVM_API_OBJECT**)&return_value = NULL;
+        opcode_index = opcode->operand1;
+        continue;
+      }
       case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
         // default offset
         int32_t default_offset = opcode->operand1;
