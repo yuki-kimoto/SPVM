@@ -686,7 +686,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT*");
       }
     }
-    SPVM_STRING_BUFFER_add(string_buffer, " return_value;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, " return_value = 0;\n");
   }
   
   // Exception
@@ -2253,29 +2253,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "  croak_flag = 1;\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_RETURN:
-      {
-        // Get return value
-        if (sub_return_type_id != SPVM_TYPE_C_ID_VOID) {
-          const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
-          SPVM_STRING_BUFFER_add(string_buffer, "  return_value = ");
-          SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-        
-        // Increment ref count of return value not to release by decrement
-        if (sub_return_type_id > SPVM_TYPE_C_ID_DOUBLE) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  if (return_value != NULL) {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(return_value);\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-        }
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_RETURN_VOID:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
@@ -2355,9 +2332,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
         SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_OBJECT**)&return_value = ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         // Increment ref count of return value not to release by decrement

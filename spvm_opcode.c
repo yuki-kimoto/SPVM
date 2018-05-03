@@ -264,7 +264,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "GOTO",
   "CALL_SUB",
   "CALL_INTERFACE_METHOD",
-  "RETURN",
   "RETURN_VOID",
   "RETURN_BYTE",
   "RETURN_SHORT",

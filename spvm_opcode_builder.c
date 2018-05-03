@@ -2684,9 +2684,33 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_ID_RETURN: {
                 if (op_cur->first) {
+                  SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.id = SPVM_OPCODE_C_ID_RETURN;
+                  
+                  switch (sub->op_return_type->uv.type->id) {
+                    case SPVM_TYPE_C_ID_BYTE:
+                      opcode.id = SPVM_OPCODE_C_ID_RETURN_BYTE;
+                      break;
+                    case SPVM_TYPE_C_ID_SHORT:
+                      opcode.id = SPVM_OPCODE_C_ID_RETURN_SHORT;
+                      break;
+                    case SPVM_TYPE_C_ID_INT:
+                      opcode.id = SPVM_OPCODE_C_ID_RETURN_INT;
+                      break;
+                    case SPVM_TYPE_C_ID_LONG:
+                      opcode.id = SPVM_OPCODE_C_ID_RETURN_LONG;
+                      break;
+                    case SPVM_TYPE_C_ID_FLOAT:
+                      opcode.id = SPVM_OPCODE_C_ID_RETURN_FLOAT;
+                      break;
+                    case SPVM_TYPE_C_ID_DOUBLE:
+                      opcode.id = SPVM_OPCODE_C_ID_RETURN_DOUBLE;
+                      break;
+                    default:
+                      opcode.id = SPVM_OPCODE_C_ID_RETURN_OBJECT;
+                  }
                   
                   int32_t index_in = SPVM_OP_get_my_index(compiler, op_cur->first);
                   
@@ -2697,7 +2721,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 else {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                  opcode.id = SPVM_OPCODE_C_ID_RETURN;
+                  opcode.id = SPVM_OPCODE_C_ID_RETURN_VOID;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
                 
