@@ -295,3 +295,14 @@ _Bool SPVM_TYPE_is_object(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
     return 0;
   }
 }
+
+_Bool SPVM_TYPE_is_undef(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+  (void)compiler;
+  
+  if (type->id == SPVM_TYPE_C_ID_UNDEF) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
