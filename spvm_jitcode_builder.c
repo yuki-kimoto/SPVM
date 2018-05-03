@@ -2240,9 +2240,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, "));\n");
-        if (sub_return_type_id != SPVM_TYPE_C_ID_VOID) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    return_value = 0;\n");
-        }
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");

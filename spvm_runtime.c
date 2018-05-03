@@ -1874,9 +1874,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         if (croak_flag) {
           // Exception stack trace
           api->set_exception(api, api->create_exception_stack_trace(api, api->get_exception(api), opcode->operand1, opcode->operand2));
-          if (sub_return_type_id != SPVM_TYPE_C_ID_VOID) {
-            memset(&return_value, 0, sizeof(SPVM_API_VALUE));
-          }
           opcode_index = opcode->operand0;
           continue;
         }
