@@ -1729,8 +1729,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  op_cur->first->is_lvalue = 1;
-                  
                   break;
                 }
                 case SPVM_OP_C_ID_LOOP: {
