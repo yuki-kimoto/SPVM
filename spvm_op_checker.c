@@ -2220,15 +2220,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     break;
                   }
-                  case SPVM_OP_C_ID_VAR: {
-                    if (op_cur->uv.var->create_tmp_var) {
-                      if (!op_cur->uv.var->created_tmp_var) {
-                        create_tmp_var = 1;
-                        op_cur->uv.var->created_tmp_var = 1;
-                      }
-                    }
-                    break;
-                  }
                 }
               }
 
