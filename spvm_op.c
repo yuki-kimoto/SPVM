@@ -2290,7 +2290,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_from);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_to);
   
-  op_assign_to->is_assign_to = 1;
+  op_assign_to->is_lvalue = 1;
 
   if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
     op_assign_from->is_assigned_to_var = 1;

@@ -210,7 +210,7 @@ struct SPVM_op {
   int32_t flag;
   int32_t line;
   _Bool moresib;
-  _Bool is_assign_to;
+  _Bool is_lvalue;
   _Bool is_assigned_to_var;
 };
 

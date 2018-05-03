@@ -1716,7 +1716,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_ID_POST_DEC: {
                   SPVM_OP* op_first = op_cur->first;
                   if (op_first->id != SPVM_OP_C_ID_VAR) {
-                    SPVM_yyerror_format(compiler, "invalid is_assign_to in increment at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "Only increment/decrement var at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1729,7 +1729,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
-                  op_cur->first->is_assign_to = 1;
+                  op_cur->first->is_lvalue = 1;
                   
                   break;
                 }
@@ -1826,7 +1826,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP* op_my = op_cur->first;
                     SPVM_MY* my = op_my->uv.my;
                     
-                    if (!op_cur->is_assign_to && !my->is_arg) {
+                    if (!op_cur->is_lvalue && !my->is_arg) {
                       // Before
                       // VAR
                       
@@ -2159,7 +2159,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
               
               // [START]Postorder traversal position
-              if (!op_cur->is_assign_to && !op_cur->is_assigned_to_var) {
+              if (!op_cur->is_lvalue && !op_cur->is_assigned_to_var) {
                 switch (op_cur->id) {
                   case SPVM_OP_C_ID_CONVERT:
                     create_tmp_var = 1;
