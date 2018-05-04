@@ -162,7 +162,9 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_T
   op_my->uv.my->op_type->uv.type = type;
   
   // Add op mys
-  SPVM_LIST_push(op_sub->uv.sub->op_mys, op_my);
+  if (op_sub) {
+    SPVM_LIST_push(op_sub->uv.sub->op_mys, op_my);
+  }
   
   return op_var;
 }
