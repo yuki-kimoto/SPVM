@@ -1,4 +1,6 @@
-0.0330 2018-05-01
+0.0332 2018-05-04
+  - Cleanup internal ast
+0.0331 2018-05-01
   - fix many assign reference count bug.
   - Object type become generic purpose type
   - Object can be assigned any array object

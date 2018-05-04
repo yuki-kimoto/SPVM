@@ -26,7 +26,6 @@ lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
 lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
-lib/SPVM/Object.spvm
 lib/SPVM/Perl/Object.pm
 lib/SPVM/Perl/Object/Array.pm
 lib/SPVM/Perl/Object/Array/Byte.pm
@@ -163,8 +162,6 @@ spvm_toke.c
 spvm_toke.h
 spvm_type.c
 spvm_type.h
-spvm_undef.c
-spvm_undef.h
 spvm_use.c
 spvm_use.h
 spvm_util_allocator.c
