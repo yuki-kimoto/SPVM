@@ -1732,8 +1732,51 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       op_cur = op_sequence;
                     }
+                    // Convert POST_INC
+                    // [before]
+                    // POST_INC
+                    //   VAR
+                    // 
+                    // [after]
+                    // SEQUENCE
+                    //   ASSIGN
+                    //     VAR_FROM
+                    //     VAR_TMP
+                    //   INC
+                    //     VAR_INC
+                    //   VAR_RET
                     else if (op_cur->id == SPVM_OP_C_ID_POST_INC) {
+                      SPVM_OP* op_var = op_cur->first;
+                    
+                      SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
+                      SPVM_OP* op_var_from = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
+                      op_var_from->uv.var = op_var->uv.var;
                       
+                      SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_cur->file, op_cur->line);
+                      SPVM_OP* op_my_tmp = op_var_tmp->first;
+                      op_my_tmp->uv.my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_var_tmp->file, op_var_tmp->line);
+                      op_my_tmp->uv.my->op_type->uv.type = op_var->uv.var->op_my->uv.my->op_type->uv.type;
+                      SPVM_LIST_push(op_mys, op_my_tmp);
+                
+                      SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                      SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
+                      
+                      SPVM_OP* op_var_inc = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
+                      op_var_inc->uv.var = op_var->uv.var;
+                      
+                      SPVM_OP* op_inc = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INC, op_cur->file, op_cur->line);
+                      SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_var_inc);
+                      
+                      SPVM_OP* op_var_ret = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
+                      op_var_ret->uv.var = op_var_tmp->uv.var;
+                      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
+                      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_inc);
+                      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
+                      
+                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                      SPVM_OP_replace_op(compiler, op_stab, op_sequence);
+                      
+                      op_cur = op_sequence;
                     }
                     else {
                       assert(0);
