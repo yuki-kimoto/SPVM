@@ -365,13 +365,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
   // Calcurate fild byte offset and package byte size
   SPVM_LIST* op_packages = compiler->op_packages;
-  int32_t alignment;
-  if (sizeof(void*) > sizeof(int64_t)) {
-    alignment = sizeof(void*);
-  }
-  else {
-    alignment = sizeof(int64_t);
-  }
+  int32_t alignment = sizeof(int32_t);
   
   {
     int32_t package_pos;
@@ -381,7 +375,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_LIST* op_fields = package->op_fields;
       
       // Separate reference type and value type
-      int32_t next_max_byte_size = alignment;
       int32_t current_byte_offset = 0;
       {
         int32_t field_pos;
@@ -415,31 +408,24 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
           
-          int32_t padding = 0;
-          if (current_byte_offset % field_byte_size != 0) {
-            padding = field_byte_size - (current_byte_offset % field_byte_size);
-          }
-          current_byte_offset += padding;
-          
-          if (current_byte_offset + field_byte_size <= next_max_byte_size) {
-            field->byte_offset = current_byte_offset;
+          // Padding
+          int32_t padding;
+          if ((current_byte_offset % alignment) == 0) {
+            padding = 0;
           }
           else {
-            current_byte_offset = next_max_byte_size;
-            field->byte_offset = current_byte_offset;
+            padding = alignment - (current_byte_offset % alignment);
           }
+          
+          if (padding != 0 && field_byte_size > padding) {
+            current_byte_offset += padding;
+          }
+          
+          field->byte_offset = current_byte_offset;
           current_byte_offset += field_byte_size;
-          if (current_byte_offset % alignment == 0) {
-            next_max_byte_size += alignment;
-          }
         }
       }
-      if (current_byte_offset % alignment == 0) {
-        package->byte_size = next_max_byte_size - alignment;
-      }
-      else {
-        package->byte_size = next_max_byte_size;
-      }
+      package->byte_size = current_byte_offset;
     }
   }
   
