@@ -1752,11 +1752,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_var_from = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
                       op_var_from->uv.var = op_var->uv.var;
                       
-                      SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_cur->file, op_cur->line);
-                      SPVM_OP* op_my_tmp = op_var_tmp->first;
-                      op_my_tmp->uv.my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_var_tmp->file, op_var_tmp->line);
-                      op_my_tmp->uv.my->op_type->uv.type = op_var->uv.var->op_my->uv.my->op_type->uv.type;
-                      SPVM_LIST_push(op_mys, op_my_tmp);
+                      SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_sub, op_var->uv.var->op_my->uv.my->op_type->uv.type, op_cur->file, op_cur->line);
                 
                       SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                       SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
@@ -1858,11 +1854,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_var_from = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
                       op_var_from->uv.var = op_var->uv.var;
                       
-                      SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_cur->file, op_cur->line);
-                      SPVM_OP* op_my_tmp = op_var_tmp->first;
-                      op_my_tmp->uv.my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_var_tmp->file, op_var_tmp->line);
-                      op_my_tmp->uv.my->op_type->uv.type = op_var->uv.var->op_my->uv.my->op_type->uv.type;
-                      SPVM_LIST_push(op_mys, op_my_tmp);
+                      SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_sub, op_var->uv.var->op_my->uv.my->op_type->uv.type, op_cur->file, op_cur->line);
                 
                       SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                       SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
@@ -2309,17 +2301,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
               // Create temporary variable
               if (create_tmp_var) {
-                SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_cur->file, op_cur->line);
+                SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_sub, tmp_var_type, op_cur->file, op_cur->line);
                 
-                SPVM_OP* op_my_tmp = op_var_tmp->first;
-                
-                // Set type to my var
-                op_my_tmp->uv.my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_var_tmp->file, op_var_tmp->line);
-                op_my_tmp->uv.my->op_type->uv.type = tmp_var_type;
-                
-                // Add op mys
-                SPVM_LIST_push(op_mys, op_my_tmp);
-  
                 if (op_var_tmp == NULL) {
                   return;
                 }

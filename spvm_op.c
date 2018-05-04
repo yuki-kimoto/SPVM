@@ -145,7 +145,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "SEQUENCE",
 };
 
-SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {
 
   // Temparary variable name
   char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
@@ -156,10 +156,16 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32
   SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
   SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
   SPVM_OP_build_my(compiler, op_my, op_var, NULL);
+
+  // Set type to my var
+  op_my->uv.my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+  op_my->uv.my->op_type->uv.type = type;
+  
+  // Add op mys
+  SPVM_LIST_push(op_sub->uv.sub->op_mys, op_my);
   
   return op_var;
 }
-
 
 void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   
