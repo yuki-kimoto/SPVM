@@ -1,5 +1,6 @@
-0.0333 2018-05-04
+0.0333 2018-05-05
   - fix array init type bug
+  - fix 32bit environment not work bug
 0.0332 2018-05-04
   - Cleanup internal ast
 0.0331 2018-05-01
