@@ -35,6 +35,7 @@
 #include "spvm_block.h"
 
 
+
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
   "ELSIF",
@@ -58,6 +59,8 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "CLASS_BLOCK",
   "TYPE",
   "CONSTANT",
+  "INC",
+  "DEC",
   "PRE_INC",
   "POST_INC",
   "PRE_DEC",
@@ -139,7 +142,6 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "STRING_LT",
   "STRING_LE",
   "ISA"
-  "INIT_OBJECT",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32_t line) {
@@ -994,8 +996,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_MULTIPLY:
     case SPVM_OP_C_ID_DIVIDE:
     case SPVM_OP_C_ID_REMAINDER:
+    case SPVM_OP_C_ID_INC:
     case SPVM_OP_C_ID_PRE_INC:
     case SPVM_OP_C_ID_POST_INC:
+    case SPVM_OP_C_ID_DEC:
     case SPVM_OP_C_ID_PRE_DEC:
     case SPVM_OP_C_ID_POST_DEC:
     case SPVM_OP_C_ID_LEFT_SHIFT:

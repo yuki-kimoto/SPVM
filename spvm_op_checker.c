@@ -1699,6 +1699,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     return;
                   }
                   
+                  if (!op_cur->is_assigned_to_var && !op_cur->is_passed_to_sub) {
+                    warn("AAAAAAAAAA");
+                    op_cur->id = SPVM_OP_C_ID_INC;
+                  }
+                  
                   break;
                 }
                 case SPVM_OP_C_ID_PRE_DEC:
@@ -1717,6 +1722,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_yyerror_format(compiler, "decrement operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
+                  }
+
+                  if (!op_cur->is_assigned_to_var && !op_cur->is_passed_to_sub) {
+                    op_cur->id = SPVM_OP_C_ID_DEC;
                   }
                   
                   break;

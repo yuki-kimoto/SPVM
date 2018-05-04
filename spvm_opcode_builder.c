@@ -2297,28 +2297,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 break;
               }
-              case SPVM_OP_C_ID_PRE_INC: {
-                if (!op_cur->is_assigned_to_var) {
-                  SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, 1);
-                }
+              case SPVM_OP_C_ID_INC: {
+                SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, 1);
                 break;
               }
-              case SPVM_OP_C_ID_POST_INC: {
-                if (!op_cur->is_assigned_to_var) {
-                  SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, 1);
-                }
-                break;
-              }
-              case SPVM_OP_C_ID_PRE_DEC: {
-                if (!op_cur->is_assigned_to_var) {
-                  SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, -1);
-                }
-                break;
-              }
-              case SPVM_OP_C_ID_POST_DEC: {
-                if (!op_cur->is_assigned_to_var) {
-                  SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, -1);
-                }
+              case SPVM_OP_C_ID_DEC: {
+                SPVM_OPCODE_BUILDER_push_inc_opcode(compiler, opcode_array, op_cur, -1);
                 break;
               }
               
