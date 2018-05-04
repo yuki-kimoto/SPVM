@@ -1700,7 +1700,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   if (!op_cur->is_assigned_to_var && !op_cur->is_passed_to_sub) {
-                    warn("AAAAAAAAAA");
                     op_cur->id = SPVM_OP_C_ID_INC;
                   }
                   
