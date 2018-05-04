@@ -1683,11 +1683,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 case SPVM_OP_C_ID_PRE_INC:
                 case SPVM_OP_C_ID_POST_INC:
-                case SPVM_OP_C_ID_PRE_DEC:
-                case SPVM_OP_C_ID_POST_DEC: {
+                {
                   SPVM_OP* op_first = op_cur->first;
                   if (op_first->id != SPVM_OP_C_ID_VAR) {
-                    SPVM_yyerror_format(compiler, "Only increment/decrement var at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "Only increment var at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -1695,7 +1694,27 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Numeric type
                   if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
-                    SPVM_yyerror_format(compiler, "increment or decrement operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_yyerror_format(compiler, "increment operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_ID_PRE_DEC:
+                case SPVM_OP_C_ID_POST_DEC:
+                {
+                  SPVM_OP* op_first = op_cur->first;
+                  if (op_first->id != SPVM_OP_C_ID_VAR) {
+                    SPVM_yyerror_format(compiler, "Only decrement var at %s line %d\n", op_cur->file, op_cur->line);
+                    compiler->fatal_error = 1;
+                    return;
+                  }
+                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
+                  
+                  // Numeric type
+                  if (!SPVM_TYPE_is_numeric(compiler, first_type)) {
+                    SPVM_yyerror_format(compiler, "decrement operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }

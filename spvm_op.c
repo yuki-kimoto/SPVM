@@ -2027,12 +2027,12 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   return op_enumeration;
 }
 
-SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_sub, SPVM_OP* op_terms) {
+SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_sub, SPVM_OP* op_list_terms) {
   
   // Build OP_SUB
   SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_SUB, op_name_sub->file, op_name_sub->line);
   SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_name_sub);
-  SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_terms);
+  SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_list_terms);
   
   SPVM_CALL_SUB* call_sub = SPVM_CALL_SUB_new(compiler);
   
@@ -2048,13 +2048,19 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     call_sub->op_invocant = op_invocant;
     call_sub->op_name = op_name_sub;
     
-    SPVM_OP_insert_child(compiler, op_terms, op_terms->first, op_invocant);
+    SPVM_OP_insert_child(compiler, op_list_terms, op_list_terms->first, op_invocant);
   }
   // Class method call
   else {
     call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
     call_sub->op_invocant = op_invocant;
     call_sub->op_name = op_name_sub;
+  }
+  
+  // term is passed to subroutine
+  SPVM_OP* op_term = op_list_terms->first;
+  while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+    op_term->is_passed_to_sub = 1;
   }
   
   op_call_sub->uv.call_sub = call_sub;

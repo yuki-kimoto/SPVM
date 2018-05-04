@@ -212,6 +212,7 @@ struct SPVM_op {
   _Bool moresib;
   _Bool is_lvalue;
   _Bool is_assigned_to_var;
+  _Bool is_passed_to_sub;
 };
 
 const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub);
