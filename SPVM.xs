@@ -39,7 +39,7 @@ SPVM_API* SPVM_XS_UTIL_get_api() {
   
   SV* sv_api = get_sv("SPVM::API", 0);
   
-  SPVM_API* api = (SPVM_API*)SvIV(SvRV(sv_api));
+  SPVM_API* api = INT2PTR(SPVM_API*, SvIV(SvRV(sv_api)));
   
   return api;
 }
@@ -3104,7 +3104,7 @@ get_native_sub_names(...)
   SV* sv_self = ST(0);
   
   // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
   
   SPVM_LIST* op_subs = compiler->op_subs;
   
@@ -3253,7 +3253,7 @@ build_opcode(...)
   SV* sv_self = ST(0);
 
   // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
   
   // Build opcode
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
@@ -3282,13 +3282,13 @@ bind_native_sub(...)
   const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
   
   // Native address
-  IV native_address = SvIV(sv_native_address);
+  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
   // Set native address to subroutine
   SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   
-  sub->native_address = (void*)native_address;
+  sub->native_address = native_address;
   
   XSRETURN(0);
 }
@@ -3302,7 +3302,7 @@ build_runtime(...)
   SV* sv_self = ST(0);
   
   // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
@@ -3328,7 +3328,7 @@ free_compiler(...)
   SV* sv_self = ST(0);
   
   // Get compiler
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)SvIV(SvRV(get_sv("SPVM::COMPILER", 0)));
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
   
   // Free compiler
   SPVM_COMPILER_free(compiler);
@@ -3352,7 +3352,7 @@ bind_jitcode_sub(...)
   SV* sv_sub_native_address = ST(2);
   
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
-  void* sub_jit_address = (void*)SvIV(sv_sub_native_address);
+  void* sub_jit_address = INT2PTR(void*, SvIV(sv_sub_native_address));
   
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
