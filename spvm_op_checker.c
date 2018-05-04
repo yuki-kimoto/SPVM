@@ -1702,6 +1702,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (!op_cur->is_assigned_to_var && !op_cur->is_passed_to_sub) {
                     op_cur->id = SPVM_OP_C_ID_INC;
                   }
+                  else {
+                    if (op_cur->id == SPVM_OP_C_ID_PRE_INC) {
+                      
+                    }
+                    else if (op_cur->id == SPVM_OP_C_ID_POST_INC) {
+                      
+                    }
+                    else {
+                      assert(0);
+                    }
+                  }
                   
                   break;
                 }
@@ -1725,6 +1736,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                   if (!op_cur->is_assigned_to_var && !op_cur->is_passed_to_sub) {
                     op_cur->id = SPVM_OP_C_ID_DEC;
+                  }
+                  else {
+                    if (op_cur->id == SPVM_OP_C_ID_PRE_DEC) {
+                      
+                    }
+                    else if (op_cur->id == SPVM_OP_C_ID_POST_DEC) {
+                      
+                    }
+                    else {
+                      assert(0);
+                    }
                   }
                   
                   break;

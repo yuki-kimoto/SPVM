@@ -142,6 +142,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "STRING_LT",
   "STRING_LE",
   "ISA"
+  "SEQUENCE",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32_t line) {
