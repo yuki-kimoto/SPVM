@@ -145,8 +145,8 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32_t line) {
 
   // Temparary variable name
-  char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@@tmp2147483647"));
-  sprintf(name, "@@tmp%d", compiler->tmp_var_length);
+  char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
+  sprintf(name, "@tmp%d", compiler->tmp_var_length);
   compiler->tmp_var_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
@@ -246,7 +246,7 @@ _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return 0;
 }
 
-int32_t SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
+SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   SPVM_OP* op_var;

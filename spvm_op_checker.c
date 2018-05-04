@@ -265,29 +265,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
   return op_out;
 }
 
-SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-
-  // Create temporary variable
-  // my
-  SPVM_MY* my = SPVM_MY_new(compiler);
-
-  // Temparary variable name
-  char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
-  sprintf(name, "@tmp%d", compiler->tmp_var_length);
-  compiler->tmp_var_length++;
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
-  op_name->uv.name = name;
-  my->op_name = op_name;
-
-  // op my
-  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
-  op_my->uv.my = my;
-
-  SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my(compiler, op_my);
-  
-  return op_var;
-}
-
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   SPVM_LIST* op_types = compiler->op_types;
@@ -2147,7 +2124,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
               // Create temporary variable
               if (create_tmp_var) {
-                SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, op_cur->file, op_cur->line);
+                SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_cur->file, op_cur->line);
                 
                 SPVM_OP* op_my_tmp = op_var_tmp->first;
                 
