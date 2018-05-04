@@ -889,7 +889,32 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
   
   SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
   
-  // Array initialization
+  // Convert ARRAY_INIT
+  // [before]
+  //   NEW
+  //    TYPE
+  // [after]
+  //   SEQUENCE
+  //     ASSIGN
+  //       NEW
+  //         TYPE
+  //       VAR_TMP_NEW
+  //     ASSIGN
+  //       TERM
+  //       ARRAY_ELEM
+  //         VAR_TMP_ARRAY
+  //         CONSTANT 0
+  //     ASSIGN
+  //       TERM
+  //       ARRAY_ELEM
+  //         VAR_TMP_ARRAY
+  //         CONSTANT 1
+  //     ASSIGN
+  //       TERM
+  //       ARRAY_ELEM
+  //         VAR_TMP_ARRAY
+  //         CONSTANT 2
+  //     VAR_TMP_RET
   if (op_list_elements) {
     // NEW
     //   TYPE
