@@ -223,6 +223,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 SPVM_OP* op_assign_to = op_cur->last;
                 SPVM_OP* op_assign_from = op_cur->first;
                 
+                if (op_assign_from->id == SPVM_OP_C_ID_SEQUENCE) {
+                  op_assign_from = op_assign_from->last;
+                }
+                
                 if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
                   SPVM_TYPE* type_to = SPVM_OP_get_type(compiler, op_assign_to);
                   

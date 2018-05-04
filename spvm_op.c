@@ -141,7 +141,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "STRING_GE",
   "STRING_LT",
   "STRING_LE",
-  "ISA"
+  "ISA",
   "SEQUENCE",
 };
 
@@ -247,34 +247,6 @@ _Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   }
   
   return 0;
-}
-
-SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var;
-  if (op->id == SPVM_OP_C_ID_VAR) {
-    op_var = op;
-  }
-  else if (op->id == SPVM_OP_C_ID_ASSIGN) {
-    op_var = SPVM_OP_get_target_op_var(compiler, op->last);
-  }
-  else if (op->id == SPVM_OP_C_ID_ARRAY_INIT) {
-    op_var = SPVM_OP_get_target_op_var(compiler, op->first);
-  }
-  else {
-    assert(0);
-  }
-  
-  return op_var;
-}
-
-int32_t SPVM_OP_get_my_index(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->op_my->uv.my->index;
 }
 
 void SPVM_OP_insert_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op_parent, SPVM_OP* op_child) {
@@ -954,6 +926,35 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
   return op_new;
 }
 
+SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  SPVM_OP* op_var;
+  if (op->id == SPVM_OP_C_ID_VAR) {
+    op_var = op;
+  }
+  else if (op->id == SPVM_OP_C_ID_ASSIGN) {
+    op_var = SPVM_OP_get_target_op_var(compiler, op->last);
+  }
+  else if (op->id == SPVM_OP_C_ID_SEQUENCE) {
+    op_var = SPVM_OP_get_target_op_var(compiler, op->last);
+  }
+  else {
+    assert(0);
+  }
+  
+  return op_var;
+}
+
+int32_t SPVM_OP_get_my_index(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
+  
+  return op_var->uv.var->op_my->uv.my->index;
+}
+
+
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   SPVM_TYPE*  type = NULL;
@@ -1019,6 +1020,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
     }
+    case SPVM_OP_C_ID_SEQUENCE:
+      type = SPVM_OP_get_type(compiler, op->last);
+      break;
     case SPVM_OP_C_ID_ASSIGN: {
       type = SPVM_OP_get_type(compiler, op->last);
       break;

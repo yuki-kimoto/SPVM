@@ -53,6 +53,12 @@ SPVM::Test - SPVM test module
     
   }
   sub main : int ($mvar : int) {
+    # Post increment and assign
+    {
+      my $num1 = 0;
+      my $num2 = ++$num1;
+      print((String)$num2);
+    }
     
     # UNDEF
     {

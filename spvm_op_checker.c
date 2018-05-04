@@ -1393,7 +1393,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* to_type = SPVM_OP_get_type(compiler, op_term_to);
                   SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_term_from);
                   
-                  
                   if (to_type->id == SPVM_TYPE_C_ID_UNDEF && from_type->id == SPVM_TYPE_C_ID_UNDEF) {
                     SPVM_yyerror_format(compiler, "undef can't be assigned to empty type at %s line %d\n", op_cur->file, op_cur->line);
                   }
@@ -1703,8 +1702,35 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     op_cur->id = SPVM_OP_C_ID_INC;
                   }
                   else {
+                    SPVM_OP* op_var = op_cur->first;
+                    
+                    // Create PRE_INC to AST
+                    // [before]
+                    // PRE_INC
+                    //   VAR
+                    // 
+                    // [after]
+                    // SEQUENCE
+                    //   INC
+                    //     VAR_INC
+                    //   VAR_RET
                     if (op_cur->id == SPVM_OP_C_ID_PRE_INC) {
+                      SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
+                      SPVM_OP* op_var_inc = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
+                      op_var_inc->uv.var = op_var->uv.var;
                       
+                      SPVM_OP* op_inc = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INC, op_cur->file, op_cur->line);
+                      SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_var_inc);
+                      
+                      SPVM_OP* op_var_ret = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
+                      op_var_ret->uv.var = op_var->uv.var;
+                      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_inc);
+                      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
+                      
+                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                      SPVM_OP_replace_op(compiler, op_stab, op_sequence);
+                      
+                      op_cur = op_sequence;
                     }
                     else if (op_cur->id == SPVM_OP_C_ID_POST_INC) {
                       
@@ -1738,6 +1764,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     op_cur->id = SPVM_OP_C_ID_DEC;
                   }
                   else {
+                    SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
                     if (op_cur->id == SPVM_OP_C_ID_PRE_DEC) {
                       
                     }
@@ -1748,10 +1775,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
                   }
-                  
-                  break;
-                }
-                case SPVM_OP_C_ID_LOOP: {
                   
                   break;
                 }
