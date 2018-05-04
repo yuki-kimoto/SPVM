@@ -265,7 +265,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
   return op_out;
 }
 
-SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_LIST* op_mys, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, const char* file, int32_t line) {
 
   // Create temporary variable
   // my
@@ -273,22 +273,16 @@ SPVM_OP* SPVM_OP_CHECKEKR_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
 
   // Temparary variable name
   char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
-  sprintf(name, "@tmp%d", op_mys->length);
+  sprintf(name, "@tmp%d", compiler->tmp_var_length);
+  compiler->tmp_var_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
   my->op_name = op_name;
-
-  // Set type to my var
-  my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-  my->op_type->uv.type = type;
 
   // op my
   SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
   op_my->uv.my = my;
 
-  // Add my var
-  SPVM_LIST_push(op_mys, op_my);
-  
   SPVM_OP* op_var = SPVM_OP_new_op_var_from_op_my(compiler, op_my);
   
   return op_var;
@@ -2153,7 +2147,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
               // Create temporary variable
               if (create_tmp_var) {
-                SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, tmp_var_type, op_mys, op_cur->file, op_cur->line);
+                SPVM_OP* op_var_tmp = SPVM_OP_CHECKEKR_new_op_var_tmp(compiler, op_cur->file, op_cur->line);
+                
+                SPVM_OP* op_my_tmp = op_var_tmp->first;
+                
+                // Set type to my var
+                op_my_tmp->uv.my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_var_tmp->file, op_var_tmp->line);
+                op_my_tmp->uv.my->op_type->uv.type = tmp_var_type;
+                
+                // Add op mys
+                SPVM_LIST_push(op_mys, op_my_tmp);
+  
                 if (op_var_tmp == NULL) {
                   return;
                 }
