@@ -49,6 +49,8 @@ struct SPVM_type {
   const char* base_type_name;
   int32_t element_type_id;
   int32_t parent_type_id;
+  SPVM_OP* op_term_type_inference;
+  _Bool try_type_inference;
 };
 
 char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name);

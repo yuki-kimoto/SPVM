@@ -19,7 +19,7 @@
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME INTERFACE REF ISA
 %token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
 
-%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement
+%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field our_var invocant
@@ -445,6 +445,7 @@ assignable_term
   | array_elem
   | convert_type
   | new_object
+  | array_init
   | array_length
   | my_var
   | binop
@@ -500,6 +501,12 @@ new_object
   | NEW anon_package
     {
       $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
+    }
+
+array_init
+  : '[' opt_assignable_terms ']'
+    {
+      $$ = SPVM_OP_build_array_init(compiler, $2);
     }
 
 convert_type

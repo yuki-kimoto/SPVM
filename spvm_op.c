@@ -972,6 +972,94 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
   return op_new;
 }
 
+SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elements) {
+  
+  SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_list_elements->file, op_list_elements->line);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_list_elements->file, op_list_elements->line);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  op_type->uv.type = type;
+  SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
+  
+  // Create array initialize AST
+  //   SEQUENCE
+  //     ASSIGN_NEW
+  //       NEW
+  //         TYPE
+  //           TYPE_ELEMENT
+  //           CONSTANT_LENGTH
+  //       VAR_TMP_NEW
+  //     ASSIGN_AELEM
+  //       TERM
+  //       ARRAY_ELEM
+  //         VAR_TMP_AELEM
+  //         CONSTANT 0
+  //     ASSIGN_AELEM
+  //       TERM
+  //       ARRAY_ELEM
+  //         VAR_TMP_ARRAY
+  //         CONSTANT_INDEX
+  //     ASSIGN_AELEM
+  //       TERM
+  //       ARRAY_ELEM
+  //         VAR_TMP_ARRAY
+  //         CONSTANT_INDEX
+  //     VAR_TMP_RET
+  const char* file = op_new->file;
+  int32_t line = op_new->line;
+  
+  SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
+  SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+  SPVM_OP* op_var_tmp_new = SPVM_OP_new_op_var_tmp(compiler, NULL, NULL, file, line);
+  
+  SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
+
+  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
+  
+  int32_t length;
+  {
+    SPVM_OP* op_term_element = op_list_elements->first;
+    int32_t index = 0;
+    while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+      if (index == 0) {
+        type->try_type_inference = 1;
+        type->op_term_type_inference = op_term_element;
+        
+        op_var_tmp_new->uv.var->op_my->uv.my->try_type_inference = 1;
+        op_var_tmp_new->uv.var->op_my->uv.my->op_term_type_inference = op_term_element;
+      }
+      
+      SPVM_OP* op_assign_aelem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
+      
+      SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEM, file, line);
+
+      SPVM_OP* op_var_tmp_aelem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
+      op_var_tmp_aelem->uv.var = op_var_tmp_new->uv.var;
+      SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_tmp_aelem);
+
+      SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, file, line);
+      SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
+      
+      SPVM_OP_build_assign(compiler, op_assign_aelem, op_array_elem, op_term_element);
+      
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_aelem);
+      
+      index++;
+      op_term_element = op_stab;
+    }
+    length = index;
+  }
+  SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
+  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_constant_length);
+  
+  SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
+  op_var_tmp_ret->uv.var = op_var_tmp_new->uv.var;
+  
+  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
+  
+  return op_sequence;
+}
+
 SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   

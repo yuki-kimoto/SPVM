@@ -4,10 +4,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-// spvm_array_init.h
-struct SPVM_array_init;
-typedef struct SPVM_array_init SPVM_ARRAY_INIT;
-
 // spvm_call_stack_info.h
 struct SPVM_call_stack_info;
 typedef struct SPVM_call_stack_info SPVM_CALL_STACK_INFO;

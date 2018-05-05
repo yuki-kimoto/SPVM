@@ -336,4 +336,6 @@ SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* o);
 void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_unary);
 void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last);
 
+SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elements);
+
 #endif
