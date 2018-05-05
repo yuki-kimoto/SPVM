@@ -155,12 +155,13 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_T
   op_name->uv.name = name;
   SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
   SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
-  SPVM_OP_build_my(compiler, op_my, op_var, NULL);
+  SPVM_OP* op_type = NULL;
+  if (type) {
+    op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+    op_type->uv.type = type;
+  }
+  SPVM_OP_build_my(compiler, op_my, op_var, op_type);
 
-  // Set type to my var
-  op_my->uv.my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-  op_my->uv.my->op_type->uv.type = type;
-  
   // Add op mys
   if (op_sub) {
     SPVM_LIST_push(op_sub->uv.sub->op_mys, op_my);
