@@ -1068,20 +1068,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   assert(op_cur->first);
 
                   if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
-                    SPVM_OP* op_type = op_cur->first;
-                    
                     // Type inference when array initialization
                     if (op_cur->uv.any) {
                       SPVM_OP* op_term_type_inference = (SPVM_OP*)op_cur->uv.any;
                       SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_term_type_inference);
                       SPVM_TYPE* parent_type = SPVM_LIST_fetch(compiler->types, element_type->parent_type_id);
-                      op_type->uv.type = parent_type;
+                      op_cur->first->uv.type = parent_type;
                     }
+                    SPVM_OP* op_type = op_cur->first;
                     
                     SPVM_TYPE* type = op_type->uv.type;
                     
                     // Array
                     if (SPVM_TYPE_is_array(compiler, type)) {
+                      
                       SPVM_OP* op_index_term = op_type->last;
 
                       SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
@@ -2355,9 +2355,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
         }
-      
-        // SPVM_DUMPER_dump_ast(compiler, op_base);
-
       }
 
       assert(sub->file_name);
