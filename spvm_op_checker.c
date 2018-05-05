@@ -1069,6 +1069,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                   if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
                     SPVM_OP* op_type = op_cur->first;
+                    
+                    // Type inference when array initialization
+                    if (op_cur->uv.any) {
+                      SPVM_OP* op_term_type_inference = (SPVM_OP*)op_cur->uv.any;
+                      SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_term_type_inference);
+                      SPVM_TYPE* parent_type = SPVM_LIST_fetch(compiler->types, element_type->parent_type_id);
+                      op_type->uv.type = parent_type;
+                    }
+                    
                     SPVM_TYPE* type = op_type->uv.type;
                     
                     // Array

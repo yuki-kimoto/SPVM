@@ -973,7 +973,7 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
 }
 
 SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elements) {
-
+  
   // Create array initialize AST
   //   SEQUENCE
   //     ASSIGN_NEW
@@ -1028,8 +1028,8 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
           SPVM_yyerror_format(compiler, "Array initialization first element must not be undef at %s line %d\n", file, line);
         }
         
-        type->try_type_inference = 1;
-        type->op_term_type_inference = op_term_element;
+        // Use type inference
+        op_new->uv.any = op_term_element;
         
         op_var_tmp_new->uv.var->op_my->uv.my->try_type_inference = 1;
         op_var_tmp_new->uv.var->op_my->uv.my->op_term_type_inference = op_term_element;
