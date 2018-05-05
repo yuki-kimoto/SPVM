@@ -973,13 +973,7 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
 }
 
 SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elements) {
-  
-  SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_list_elements->file, op_list_elements->line);
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_list_elements->file, op_list_elements->line);
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  op_type->uv.type = type;
-  SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
-  
+
   // Create array initialize AST
   //   SEQUENCE
   //     ASSIGN_NEW
@@ -1004,8 +998,17 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   //         VAR_TMP_ARRAY
   //         CONSTANT_INDEX
   //     VAR_TMP_RET
-  const char* file = op_new->file;
-  int32_t line = op_new->line;
+  const char* file = op_list_elements->file;
+  int32_t line = op_list_elements->line;
+  
+  SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, file, line);
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  op_type->uv.type = type;
+  SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
+  
+  SPVM_OP* op_type_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_element);
   
   SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
   SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
@@ -1021,6 +1024,10 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
     int32_t index = 0;
     while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
       if (index == 0) {
+        if (op_term_element->id == SPVM_OP_C_ID_UNDEF) {
+          SPVM_yyerror_format(compiler, "Array initialization first element must not be undef at %s line %d\n", file, line);
+        }
+        
         type->try_type_inference = 1;
         type->op_term_type_inference = op_term_element;
         
@@ -1049,6 +1056,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
     }
     length = index;
   }
+
   SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_constant_length);
   
@@ -1056,6 +1064,10 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   op_var_tmp_ret->uv.var = op_var_tmp_new->uv.var;
   
   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
+
+  if (length == 0) {
+    SPVM_yyerror_format(compiler, "Array initialization need at least one element at %s line %d\n", file, line);
+  }
   
   return op_sequence;
 }
