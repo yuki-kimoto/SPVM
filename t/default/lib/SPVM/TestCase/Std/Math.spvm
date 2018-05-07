@@ -27,4 +27,108 @@ package TestCase::Std::Math {
     }
     return 0;
   }
+
+  sub isinff: int () {
+    if (Std::Math->isinff(Std::Math->INFINITYF())) {
+      if (!Std::Math->isinff(Std::Math->NANF())) {
+        if (!Std::Math->isinff(0.1f)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub isfinitef: int () {
+    if (!Std::Math->isfinitef(Std::Math->INFINITYF())) {
+      if (!Std::Math->isfinitef(Std::Math->NANF())) {
+        if (Std::Math->isfinitef(0.1f)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub isnanf: int () {
+    if (!Std::Math->isnanf(Std::Math->INFINITYF())) {
+      if (Std::Math->isnanf(Std::Math->NANF())) {
+        if (!Std::Math->isnanf(0.1f)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub float_pass_positive_infinity : int ($value : float) {
+    if ($value == Std::Math->INFINITYF()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub float_pass_nan : int ($value : float) {
+    if (Std::Math->isnanf($value)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub isinf : int () {
+    if (Std::Math->isinf(Std::Math->INFINITY())) {
+      if (!Std::Math->isinf(Std::Math->NAN())) {
+        if (!Std::Math->isinf(0.1)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub isfinite : int () {
+    if (!Std::Math->isfinite(Std::Math->INFINITY())) {
+      if (!Std::Math->isfinite(Std::Math->NAN())) {
+        if (Std::Math->isfinite(0.1)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub isnan : int () {
+    if (!Std::Math->isnan(Std::Math->INFINITY())) {
+      if (Std::Math->isnan(Std::Math->NAN())) {
+        if (!Std::Math->isnan(0.1)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub double_pass_nan : int ($value : double) {
+    if (Std::Math->isnan($value)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub double_pass_positive_infinity : int ($value : double) {
+    if ($value == Std::Math->INFINITY()) {
+      return 1;
+    }
+    
+    return 0;
+  }
 }

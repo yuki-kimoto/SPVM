@@ -25,20 +25,6 @@ package Std::TypeUtil {
   native sub FLT_MAX : float ();
   native sub FLT_MIN : float();
   
-  native sub INFINITYF : float ();
-  native sub NANF : float ();
-  
-  native sub isinff : int($x : float);
-  native sub isfinitef : int($x : float);
-  native sub isnanf : int ($x : float);
-  
   native sub DBL_MAX : double ();
   native sub DBL_MIN : double ();
-  
-  native sub INFINITY : double ();
-  native sub NAN : double ();
-  
-  native sub isinf : int ($x : double);
-  native sub isfinite : int ($x : double);
-  native sub isnan : int ($x : double);
 }

@@ -10,6 +10,88 @@
 #define SPVM__MATH__PI 3.14159265358979323846
 #define SPVM__MATH__E 2.7182818284590452354
 
+int32_t SPVM__Std__Math__isinff(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  float float_value = args[0].float_value;
+  
+  return isinf(float_value);
+}
+
+int32_t SPVM__Std__Math__isfinitef(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  float float_value = args[0].float_value;
+  
+  return isfinite(float_value);
+}
+
+int32_t SPVM__Std__Math__isnanf(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  float float_value = args[0].float_value;
+  
+  return isnan(float_value);
+}
+
+float SPVM__Std__Math__INFINITYF(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  return (float)INFINITY;
+}
+
+float SPVM__Std__Math__NANF(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  return (float)NAN;
+}
+
+double SPVM__Std__Math__INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  return (double)INFINITY;
+}
+
+double SPVM__Std__Math__NAN(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  return (double)NAN;
+}
+
+int32_t SPVM__Std__Math__isinf(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  double double_value = args[0].double_value;
+  
+  return isinf(double_value);
+}
+
+int32_t SPVM__Std__Math__isnan(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  double double_value = args[0].double_value;
+  
+  return isnan(double_value);
+}
+
+int32_t SPVM__Std__Math__isfinite(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  double double_value = args[0].double_value;
+  
+  return isfinite(double_value);
+}
+
 double SPVM__Std__Math__sin(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   

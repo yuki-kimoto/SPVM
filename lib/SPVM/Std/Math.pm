@@ -8,6 +8,46 @@ SPVM::Math - Math Library
 
 =head1 FUNCTIONS
 
+=head2 INFINITYF
+
+  sub INFINITYF : float ()
+
+=head2 NANF
+
+  sub NANF : float ()
+  
+=head2 isinff
+
+  sub isinff : int($x : float)
+
+=head2 isfinitef
+
+  sub isfinitef : int($x : float)
+
+=head2 isnanf
+
+  sub isnanf : int ($x : float)
+  
+=head2 INFINITY
+
+  sub INFINITY : double ()
+
+=head2 NAN
+
+  sub NAN : double ()
+  
+=head2 isinf
+
+  sub isinf : int ($x : double)
+
+=head2 isfinite
+
+  sub isfinite : int ($x : double)
+
+=head2 isnan
+
+  sub isnan : int ($x : double)
+
 =head2 E
 
 B<sub E : double ()>
@@ -160,8 +200,8 @@ the arc tangent of the argument.
 
 =head2 erf
 
-  native sub erf : double ($x : double);
+  sub erf : double ($x : double);
 
 =head2 erfc
 
-  native sub erfc : double ($x : double);
+  sub erfc : double ($x : double);

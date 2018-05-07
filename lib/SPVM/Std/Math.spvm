@@ -1,4 +1,18 @@
 package Std::Math {
+  native sub INFINITYF : float ();
+  native sub NANF : float ();
+  
+  native sub isinff : int($x : float);
+  native sub isfinitef : int($x : float);
+  native sub isnanf : int ($x : float);
+  
+  native sub INFINITY : double ();
+  native sub NAN : double ();
+  
+  native sub isinf : int ($x : double);
+  native sub isfinite : int ($x : double);
+  native sub isnan : int ($x : double);
+
   sub PI : double () { return 3.14159265358979323846; }
   sub E : double () { return 2.7182818284590452354; }
   
