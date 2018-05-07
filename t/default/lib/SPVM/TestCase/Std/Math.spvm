@@ -1,0 +1,30 @@
+package TestCase::Std::Math {
+  use Std::Math;
+  
+  sub sin : int () {
+    my $value = Std::Math->sin(Std::Math->PI());
+    
+    if ($value < 0.000001 && $value > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub cos : int () {
+    my $value = Std::Math->cos(Std::Math->PI() / 2.0);
+    
+    if ($value < 0.000001 && $value > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub tan : int () {
+    my $value = Std::Math->tan(Std::Math->PI() / 4.0);
+    
+    if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+}
