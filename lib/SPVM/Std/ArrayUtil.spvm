@@ -1,4 +1,4 @@
-package Std::Array::Util {
+package Std::ArrayUtil {
   native sub copy_bytes : byte[] ($original : byte[], $new_length : int);
   native sub copy_shorts : short[] ($original : short[], $new_length : int);
   native sub copy_ints : int[] ($original : int[], $new_length : int);

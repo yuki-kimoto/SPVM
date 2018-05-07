@@ -4,7 +4,7 @@
 
 #include "spvm_api.h"
 
-SPVM_API_int SPVM__Std__Array__Util__eq_bytes(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__ArrayUtil__eq_bytes(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -40,7 +40,7 @@ SPVM_API_int SPVM__Std__Array__Util__eq_bytes(SPVM_API* api, SPVM_API_VALUE* arg
   }
 }
 
-SPVM_API_int SPVM__Std__Array__Util__eq_shorts(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__ArrayUtil__eq_shorts(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -76,7 +76,7 @@ SPVM_API_int SPVM__Std__Array__Util__eq_shorts(SPVM_API* api, SPVM_API_VALUE* ar
   }
 }
 
-SPVM_API_int SPVM__Std__Array__Util__eq_ints(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__ArrayUtil__eq_ints(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -112,7 +112,7 @@ SPVM_API_int SPVM__Std__Array__Util__eq_ints(SPVM_API* api, SPVM_API_VALUE* args
   }
 }
 
-SPVM_API_int SPVM__Std__Array__Util__eq_longs(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__ArrayUtil__eq_longs(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -148,7 +148,7 @@ SPVM_API_int SPVM__Std__Array__Util__eq_longs(SPVM_API* api, SPVM_API_VALUE* arg
   }
 }
 
-SPVM_API_int SPVM__Std__Array__Util__eq_floats(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__ArrayUtil__eq_floats(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -184,7 +184,7 @@ SPVM_API_int SPVM__Std__Array__Util__eq_floats(SPVM_API* api, SPVM_API_VALUE* ar
   }
 }
 
-SPVM_API_int SPVM__Std__Array__Util__eq_doubles(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_int SPVM__Std__ArrayUtil__eq_doubles(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* x1 = args[0].object_value;
@@ -220,7 +220,7 @@ SPVM_API_int SPVM__Std__Array__Util__eq_doubles(SPVM_API* api, SPVM_API_VALUE* a
   }
 }
 
-SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_bytes(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__ArrayUtil__copy_bytes(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -262,7 +262,7 @@ SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_bytes(SPVM_API* api, SPVM_API_VALU
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_shorts(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__ArrayUtil__copy_shorts(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -304,7 +304,7 @@ SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_shorts(SPVM_API* api, SPVM_API_VAL
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_ints(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__ArrayUtil__copy_ints(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -346,7 +346,7 @@ SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_ints(SPVM_API* api, SPVM_API_VALUE
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_longs(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__ArrayUtil__copy_longs(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -388,7 +388,7 @@ SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_longs(SPVM_API* api, SPVM_API_VALU
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_floats(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__ArrayUtil__copy_floats(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;
@@ -430,7 +430,7 @@ SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_floats(SPVM_API* api, SPVM_API_VAL
   return copy;
 }
 
-SPVM_API_OBJECT* SPVM__Std__Array__Util__copy_doubles(SPVM_API* api, SPVM_API_VALUE* args) {
+SPVM_API_OBJECT* SPVM__Std__ArrayUtil__copy_doubles(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* original = args[0].object_value;

@@ -1,4 +1,4 @@
-package SPVM::Array::Util;
+package SPVM::ArrayUtil;
 
 1;
 
