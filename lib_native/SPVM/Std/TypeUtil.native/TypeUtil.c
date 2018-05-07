@@ -3,99 +3,36 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <math.h>
-#include <string.h>
+#include <float.h>
 
 #include "spvm_api.h"
 
-float SPVM__Std__TypeUtil__FLOAT_POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__TypeUtil__INFINITYF(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
-  uint32_t positive_infinity_bits = 0x7f800000;
-  
-  float positive_infinity;
-  
-  memcpy((void*)&positive_infinity, (void*)&positive_infinity_bits, sizeof(float));
-  
-  return positive_infinity;
+  return (float)INFINITY;
 }
 
-float SPVM__Std__TypeUtil__FLOAT_NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__TypeUtil__NANF(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
-  uint32_t negative_infinity_bits = 0xff800000;
-  
-  float negative_infinity;
-  
-  memcpy((void*)&negative_infinity, (void*)&negative_infinity_bits, sizeof(float));
-  
-  return negative_infinity;
+  return (float)NAN;
 }
 
-float SPVM__Std__TypeUtil__FLOAT_NAN(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__TypeUtil__FLT_MAX(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
-  uint32_t nan_bits = 0x7fc00000;
-  
-  float nan;
-  
-  memcpy((void*)&nan, (void*)&nan_bits, sizeof(float));
-  
-  return nan;
+  return FLT_MAX;
 }
 
-float SPVM__Std__TypeUtil__FLOAT_MAX(SPVM_API* api, SPVM_API_VALUE* args) {
+float SPVM__Std__TypeUtil__FLT_MIN(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
-  uint32_t max_value_bits = 0x7f7fffff;
-  
-  float max_value;
-  
-  memcpy((void*)&max_value, (void*)&max_value_bits, sizeof(float));
-  
-  return max_value;
-}
-
-float SPVM__Std__TypeUtil__FLOAT_MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  (void)args;
-  
-  uint32_t min_normal_bits = 0x00800000;
-  
-  float min_normal;
-  
-  memcpy((void*)&min_normal, (void*)&min_normal_bits, sizeof(float));
-  
-  return min_normal;
-}
-
-float SPVM__Std__TypeUtil__FLOAT_MIN(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  (void)args;
-  
-  uint32_t min_value_bits = 0x1;
-  
-  float min_value;
-  
-  memcpy((void*)&min_value, (void*)&min_value_bits, sizeof(float));
-  
-  return min_value;
-}
-
-float SPVM__Std__TypeUtil__FLOAT_MAX_EXPONENT(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  (void)args;
-  
-  uint32_t max_exponent_bits = 0x1;
-  
-  float max_exponent;
-  
-  memcpy((void*)&max_exponent, (void*)&max_exponent_bits, sizeof(float));
-  
-  return max_exponent;
+  return FLT_MIN;
 }
 
 int32_t SPVM__Std__TypeUtil__isinff(SPVM_API* api, SPVM_API_VALUE* args) {
@@ -125,82 +62,32 @@ int32_t SPVM__Std__TypeUtil__isnanf(SPVM_API* api, SPVM_API_VALUE* args) {
   return isnan(float_value);
 }
 
-double SPVM__Std__TypeUtil__DOUBLE_POSITIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__TypeUtil__INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
-  uint64_t positive_infinity_bits = 0x7ff0000000000000L;
-  
-  double positive_infinity;
-  
-  memcpy((void*)&positive_infinity, (void*)&positive_infinity_bits, sizeof(double));
-  
-  return positive_infinity;
+  return (double)INFINITY;
 }
 
-double SPVM__Std__TypeUtil__DOUBLE_NEGATIVE_INFINITY(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__TypeUtil__NAN(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
-  uint64_t negative_infinity_bits = 0xfff0000000000000L;
-  
-  double negative_infinity;
-  
-  memcpy((void*)&negative_infinity, (void*)&negative_infinity_bits, sizeof(double));
-  
-  return negative_infinity;
+  return (double)NAN;
 }
 
-double SPVM__Std__TypeUtil__DOUBLE_NAN(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__TypeUtil__DBL_MAX(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
-  uint64_t nan_bits = 0x7ff8000000000000L;
-  
-  double nan;
-  
-  memcpy((void*)&nan, (void*)&nan_bits, sizeof(double));
-  
-  return nan;
+  return DBL_MAX;
 }
 
-double SPVM__Std__TypeUtil__DOUBLE_MAX(SPVM_API* api, SPVM_API_VALUE* args) {
+double SPVM__Std__TypeUtil__DBL_MIN(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
   
-  uint64_t max_value_bits = 0x7fefffffffffffffL;
-  
-  double max_value;
-  
-  memcpy((void*)&max_value, (void*)&max_value_bits, sizeof(double));
-  
-  return max_value;
-}
-
-double SPVM__Std__TypeUtil__DOUBLE_MIN_NORMAL(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  (void)args;
-  
-  uint64_t min_normal_bits = 0x0010000000000000L;
-  
-  double min_normal;
-  
-  memcpy((void*)&min_normal, (void*)&min_normal_bits, sizeof(double));
-  
-  return min_normal;
-}
-
-double SPVM__Std__TypeUtil__DOUBLE_MIN(SPVM_API* api, SPVM_API_VALUE* args) {
-  (void)api;
-  (void)args;
-  
-  uint64_t min_value_bits = 0x1L;
-  
-  double min_value;
-  
-  memcpy((void*)&min_value, (void*)&min_value_bits, sizeof(double));
-  
-  return min_value;
+  return DBL_MIN;
 }
 
 int32_t SPVM__Std__TypeUtil__isinf(SPVM_API* api, SPVM_API_VALUE* args) {

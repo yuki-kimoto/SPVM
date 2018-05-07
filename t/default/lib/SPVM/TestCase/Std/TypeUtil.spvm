@@ -43,12 +43,10 @@ package TestCase::Std::TypeUtil {
 
 
   sub isinff: int () {
-    if (Std::TypeUtil->isinff(Std::TypeUtil->FLOAT_POSITIVE_INFINITY())) {
-      if (Std::TypeUtil->isinff(Std::TypeUtil->FLOAT_NEGATIVE_INFINITY())) {
-        if (!Std::TypeUtil->isinff(Std::TypeUtil->FLOAT_NAN())) {
-          if (!Std::TypeUtil->isinff(0.1f)) {
-            return 1;
-          }
+    if (Std::TypeUtil->isinff(Std::TypeUtil->INFINITYF())) {
+      if (!Std::TypeUtil->isinff(Std::TypeUtil->NANF())) {
+        if (!Std::TypeUtil->isinff(0.1f)) {
+          return 1;
         }
       }
     }
@@ -57,12 +55,10 @@ package TestCase::Std::TypeUtil {
   }
 
   sub isfinitef: int () {
-    if (!Std::TypeUtil->isfinitef(Std::TypeUtil->FLOAT_POSITIVE_INFINITY())) {
-      if (!Std::TypeUtil->isfinitef(Std::TypeUtil->FLOAT_NEGATIVE_INFINITY())) {
-        if (!Std::TypeUtil->isfinitef(Std::TypeUtil->FLOAT_NAN())) {
-          if (Std::TypeUtil->isfinitef(0.1f)) {
-            return 1;
-          }
+    if (!Std::TypeUtil->isfinitef(Std::TypeUtil->INFINITYF())) {
+      if (!Std::TypeUtil->isfinitef(Std::TypeUtil->NANF())) {
+        if (Std::TypeUtil->isfinitef(0.1f)) {
+          return 1;
         }
       }
     }
@@ -71,12 +67,10 @@ package TestCase::Std::TypeUtil {
   }
 
   sub isnanf: int () {
-    if (!Std::TypeUtil->isnanf(Std::TypeUtil->FLOAT_POSITIVE_INFINITY())) {
-      if (!Std::TypeUtil->isnanf(Std::TypeUtil->FLOAT_NEGATIVE_INFINITY())) {
-        if (Std::TypeUtil->isnanf(Std::TypeUtil->FLOAT_NAN())) {
-          if (!Std::TypeUtil->isnanf(0.1f)) {
-            return 1;
-          }
+    if (!Std::TypeUtil->isnanf(Std::TypeUtil->INFINITYF())) {
+      if (Std::TypeUtil->isnanf(Std::TypeUtil->NANF())) {
+        if (!Std::TypeUtil->isnanf(0.1f)) {
+          return 1;
         }
       }
     }
@@ -85,15 +79,7 @@ package TestCase::Std::TypeUtil {
   }
   
   sub float_pass_positive_infinity : int ($value : float) {
-    if ($value == Std::TypeUtil->FLOAT_POSITIVE_INFINITY()) {
-      return 1;
-    }
-    
-    return 0;
-  }
-  
-  sub float_pass_negative_infinity : int ($value : float) {
-    if ($value == Std::TypeUtil->FLOAT_NEGATIVE_INFINITY()) {
+    if ($value == Std::TypeUtil->INFINITYF()) {
       return 1;
     }
     
@@ -109,12 +95,10 @@ package TestCase::Std::TypeUtil {
   }
 
   sub isinf : int () {
-    if (Std::TypeUtil->isinf(Std::TypeUtil->DOUBLE_POSITIVE_INFINITY())) {
-      if (Std::TypeUtil->isinf(Std::TypeUtil->DOUBLE_NEGATIVE_INFINITY())) {
-        if (!Std::TypeUtil->isinf(Std::TypeUtil->DOUBLE_NAN())) {
-          if (!Std::TypeUtil->isinf(0.1)) {
-            return 1;
-          }
+    if (Std::TypeUtil->isinf(Std::TypeUtil->INFINITY())) {
+      if (!Std::TypeUtil->isinf(Std::TypeUtil->NAN())) {
+        if (!Std::TypeUtil->isinf(0.1)) {
+          return 1;
         }
       }
     }
@@ -123,12 +107,10 @@ package TestCase::Std::TypeUtil {
   }
 
   sub isfinite : int () {
-    if (!Std::TypeUtil->isfinite(Std::TypeUtil->DOUBLE_POSITIVE_INFINITY())) {
-      if (!Std::TypeUtil->isfinite(Std::TypeUtil->DOUBLE_NEGATIVE_INFINITY())) {
-        if (!Std::TypeUtil->isfinite(Std::TypeUtil->DOUBLE_NAN())) {
-          if (Std::TypeUtil->isfinite(0.1)) {
-            return 1;
-          }
+    if (!Std::TypeUtil->isfinite(Std::TypeUtil->INFINITY())) {
+      if (!Std::TypeUtil->isfinite(Std::TypeUtil->NAN())) {
+        if (Std::TypeUtil->isfinite(0.1)) {
+          return 1;
         }
       }
     }
@@ -137,12 +119,10 @@ package TestCase::Std::TypeUtil {
   }
 
   sub isnan : int () {
-    if (!Std::TypeUtil->isnan(Std::TypeUtil->DOUBLE_POSITIVE_INFINITY())) {
-      if (!Std::TypeUtil->isnan(Std::TypeUtil->DOUBLE_NEGATIVE_INFINITY())) {
-        if (Std::TypeUtil->isnan(Std::TypeUtil->DOUBLE_NAN())) {
-          if (!Std::TypeUtil->isnan(0.1)) {
-            return 1;
-          }
+    if (!Std::TypeUtil->isnan(Std::TypeUtil->INFINITY())) {
+      if (Std::TypeUtil->isnan(Std::TypeUtil->NAN())) {
+        if (!Std::TypeUtil->isnan(0.1)) {
+          return 1;
         }
       }
     }
@@ -159,19 +139,10 @@ package TestCase::Std::TypeUtil {
   }
   
   sub double_pass_positive_infinity : int ($value : double) {
-    if ($value == Std::TypeUtil->DOUBLE_POSITIVE_INFINITY()) {
+    if ($value == Std::TypeUtil->INFINITY()) {
       return 1;
     }
     
     return 0;
   }
-
-  sub double_pass_negative_infinity : int ($value : double) {
-    if ($value == Std::TypeUtil->DOUBLE_NEGATIVE_INFINITY()) {
-      return 1;
-    }
-    
-    return 0;
-  }
-
 }

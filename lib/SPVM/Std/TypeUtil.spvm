@@ -22,25 +22,21 @@ package Std::TypeUtil {
   sub LONG_MIN : long () { return -9223372036854775808L; }
   sub LONG_MAX : long () { return 9223372036854775807L; }
 
-  native sub FLOAT_POSITIVE_INFINITY : float ();
-  native sub FLOAT_NEGATIVE_INFINITY : float ();
-  native sub FLOAT_NAN : float ();
+  native sub FLT_MAX : float ();
+  native sub FLT_MIN : float();
   
-  native sub FLOAT_MAX : float ();
-  native sub FLOAT_MIN_NORMAL : float();
-  native sub FLOAT_MIN : float();
+  native sub INFINITYF : float ();
+  native sub NANF : float ();
   
   native sub isinff : int($x : float);
   native sub isfinitef : int($x : float);
   native sub isnanf : int ($x : float);
   
-  native sub DOUBLE_POSITIVE_INFINITY : double ();
-  native sub DOUBLE_NEGATIVE_INFINITY : double ();
-  native sub DOUBLE_NAN : double ();
+  native sub DBL_MAX : double ();
+  native sub DBL_MIN : double ();
   
-  native sub DOUBLE_MAX : double ();
-  native sub DOUBLE_MIN_NORMAL : double ();
-  native sub DOUBLE_MIN : double ();
+  native sub INFINITY : double ();
+  native sub NAN : double ();
   
   native sub isinf : int ($x : double);
   native sub isfinite : int ($x : double);
