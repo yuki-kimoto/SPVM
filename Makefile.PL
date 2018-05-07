@@ -48,7 +48,7 @@ sub MY::postamble {
     SPVM::Std::Time
     SPVM::Std::Math
     SPVM::Std::Array::Util
-    SPVM::Std::Number::Util
+    SPVM::Std::TypeUtil
   );
   
   my $make_rule = '';

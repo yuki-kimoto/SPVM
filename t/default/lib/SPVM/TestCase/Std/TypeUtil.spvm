@@ -1,0 +1,177 @@
+package TestCase::Std::TypeUtil {
+  use Std::TypeUtil;
+
+  sub byte_constant : int () {
+    if ((int)Std::TypeUtil->BYTE_MIN() == (int)(byte)-128) {
+      if ((int)Std::TypeUtil->BYTE_MAX() == (int)(byte)127) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub short_constant : int () {
+    if ((int)Std::TypeUtil->SHORT_MIN() == (int)(short)-32768) {
+      if ((int)Std::TypeUtil->SHORT_MAX() == (int)(short)32767) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub int_constant : int () {
+    if (Std::TypeUtil->INT_MIN() == -2147483648) {
+      if (Std::TypeUtil->INT_MAX() == 2147483647) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub long_constant : int () {
+    if (Std::TypeUtil->LONG_MIN() == -9223372036854775808L) {
+      if (Std::TypeUtil->LONG_MAX() == 9223372036854775807L) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+
+  sub isinff: int () {
+    if (Std::TypeUtil->isinff(Std::TypeUtil->FLOAT_POSITIVE_INFINITY())) {
+      if (Std::TypeUtil->isinff(Std::TypeUtil->FLOAT_NEGATIVE_INFINITY())) {
+        if (!Std::TypeUtil->isinff(Std::TypeUtil->FLOAT_NAN())) {
+          if (!Std::TypeUtil->isinff(0.1f)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub isfinitef: int () {
+    if (!Std::TypeUtil->isfinitef(Std::TypeUtil->FLOAT_POSITIVE_INFINITY())) {
+      if (!Std::TypeUtil->isfinitef(Std::TypeUtil->FLOAT_NEGATIVE_INFINITY())) {
+        if (!Std::TypeUtil->isfinitef(Std::TypeUtil->FLOAT_NAN())) {
+          if (Std::TypeUtil->isfinitef(0.1f)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub isnanf: int () {
+    if (!Std::TypeUtil->isnanf(Std::TypeUtil->FLOAT_POSITIVE_INFINITY())) {
+      if (!Std::TypeUtil->isnanf(Std::TypeUtil->FLOAT_NEGATIVE_INFINITY())) {
+        if (Std::TypeUtil->isnanf(Std::TypeUtil->FLOAT_NAN())) {
+          if (!Std::TypeUtil->isnanf(0.1f)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub float_pass_positive_infinity : int ($value : float) {
+    if ($value == Std::TypeUtil->FLOAT_POSITIVE_INFINITY()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub float_pass_negative_infinity : int ($value : float) {
+    if ($value == Std::TypeUtil->FLOAT_NEGATIVE_INFINITY()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub float_pass_nan : int ($value : float) {
+    if (Std::TypeUtil->isnanf($value)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub isinf : int () {
+    if (Std::TypeUtil->isinf(Std::TypeUtil->DOUBLE_POSITIVE_INFINITY())) {
+      if (Std::TypeUtil->isinf(Std::TypeUtil->DOUBLE_NEGATIVE_INFINITY())) {
+        if (!Std::TypeUtil->isinf(Std::TypeUtil->DOUBLE_NAN())) {
+          if (!Std::TypeUtil->isinf(0.1)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub isfinite : int () {
+    if (!Std::TypeUtil->isfinite(Std::TypeUtil->DOUBLE_POSITIVE_INFINITY())) {
+      if (!Std::TypeUtil->isfinite(Std::TypeUtil->DOUBLE_NEGATIVE_INFINITY())) {
+        if (!Std::TypeUtil->isfinite(Std::TypeUtil->DOUBLE_NAN())) {
+          if (Std::TypeUtil->isfinite(0.1)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub isnan : int () {
+    if (!Std::TypeUtil->isnan(Std::TypeUtil->DOUBLE_POSITIVE_INFINITY())) {
+      if (!Std::TypeUtil->isnan(Std::TypeUtil->DOUBLE_NEGATIVE_INFINITY())) {
+        if (Std::TypeUtil->isnan(Std::TypeUtil->DOUBLE_NAN())) {
+          if (!Std::TypeUtil->isnan(0.1)) {
+            return 1;
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub double_pass_nan : int ($value : double) {
+    if (Std::TypeUtil->isnan($value)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub double_pass_positive_infinity : int ($value : double) {
+    if ($value == Std::TypeUtil->DOUBLE_POSITIVE_INFINITY()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub double_pass_negative_infinity : int ($value : double) {
+    if ($value == Std::TypeUtil->DOUBLE_NEGATIVE_INFINITY()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+}

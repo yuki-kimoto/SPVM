@@ -1,0 +1,48 @@
+=pod
+
+TypeUtil is type utility class.
+
+This package contains the folloing C language functions
+
+  inttype.h
+  float.h
+
+=cut
+
+package Std::TypeUtil {
+  sub BYTE_MIN : byte ()  { return (byte)-128; }
+  sub BYTE_MAX : byte () { return (byte)127; }
+
+  sub SHORT_MIN : short () { return (short)-32768; }
+  sub SHORT_MAX : short () { return (short)32767; }
+
+  sub INT_MIN : int () { return -2147483648; }
+  sub INT_MAX : int () { return 2147483647; }
+
+  sub LONG_MIN : long () { return -9223372036854775808L; }
+  sub LONG_MAX : long () { return 9223372036854775807L; }
+
+  native sub FLOAT_POSITIVE_INFINITY : float ();
+  native sub FLOAT_NEGATIVE_INFINITY : float ();
+  native sub FLOAT_NAN : float ();
+  
+  native sub FLOAT_MAX : float ();
+  native sub FLOAT_MIN_NORMAL : float();
+  native sub FLOAT_MIN : float();
+  
+  native sub isinff : int($x : float);
+  native sub isfinitef : int($x : float);
+  native sub isnanf : int ($x : float);
+  
+  native sub DOUBLE_POSITIVE_INFINITY : double ();
+  native sub DOUBLE_NEGATIVE_INFINITY : double ();
+  native sub DOUBLE_NAN : double ();
+  
+  native sub DOUBLE_MAX : double ();
+  native sub DOUBLE_MIN_NORMAL : double ();
+  native sub DOUBLE_MIN : double ();
+  
+  native sub isinf : int ($x : double);
+  native sub isfinite : int ($x : double);
+  native sub isnan : int ($x : double);
+}
