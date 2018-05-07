@@ -4,6 +4,7 @@
     my $nums = [0.1, 0.4, 0.8];
   - remove Std::Number::Util many subtoutines
   - rename Std::Number::Util to Std::TypeUtil
+  - rename Std::Array::Util to Std::ArrayUtil
 0.0333 2018-05-05
   - fix array init type bug
   - fix 32bit environment not work bug
