@@ -1,15 +1,14 @@
 package TestCase::String {
-  use Std::ArrayUtil;
   
   sub basic : int () {
     # get_bytes
     my $get_bytes_ok = 0;
     {
-      my $string1 = "abcde";
+      my $string1 = "abc";
       
       my $bytes = $string1->get_bytes;
-      my $bytes_expected = new byte[] { 'a', 'b', 'c', 'd', 'e' };
-      if (Std::ArrayUtil->eq_bytes($bytes, $bytes_expected)) {
+      my $len = @$bytes;
+      if ($bytes->[0] == 'a' && $bytes->[1] == 'b' && $bytes->[2] == 'c' &&  $len == 3) {
         $get_bytes_ok = 1;
       }
     }
