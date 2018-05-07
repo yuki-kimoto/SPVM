@@ -49,16 +49,6 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::Std::Number::Util->float_is_infinite());
   ok(SPVM::TestCase::Std::Number::Util->float_is_finite());
   ok(SPVM::TestCase::Std::Number::Util->float_is_nan());
-  ok(SPVM::TestCase::Std::Number::Util->float_int_bits_to_float());
-  ok(SPVM::TestCase::Std::Number::Util->float_int_bits_to_float_nan_first_condition());
-  ok(SPVM::TestCase::Std::Number::Util->float_int_bits_to_float_nan_first_condition_is_nan());
-  ok(SPVM::TestCase::Std::Number::Util->float_int_bits_to_float_nan_second_condition());
-  ok(SPVM::TestCase::Std::Number::Util->float_int_bits_to_float_nan_second_condition_is_nan());
-
-  ok(SPVM::TestCase::Std::Number::Util->float_float_to_raw_int_bits());
-  ok(SPVM::TestCase::Std::Number::Util->float_float_to_raw_int_bits_nan());
-  ok(SPVM::TestCase::Std::Number::Util->float_float_to_int_bits());
-  ok(SPVM::TestCase::Std::Number::Util->float_float_to_int_bits_nan());
   
   is(SPVM::Std::Number::Util->FLOAT_POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Std::Number::Util->FLOAT_NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);
@@ -81,16 +71,6 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(SPVM::TestCase::Std::Number::Util->double_is_infinite());
   ok(SPVM::TestCase::Std::Number::Util->double_is_finite());
   ok(SPVM::TestCase::Std::Number::Util->double_is_nan());
-  ok(SPVM::TestCase::Std::Number::Util->double_long_bits_to_double());
-  ok(SPVM::TestCase::Std::Number::Util->double_long_bits_to_double_nan_first_condition());
-  ok(SPVM::TestCase::Std::Number::Util->double_long_bits_to_double_nan_first_condition_is_nan());
-  ok(SPVM::TestCase::Std::Number::Util->double_long_bits_to_double_nan_second_condition());
-  ok(SPVM::TestCase::Std::Number::Util->double_long_bits_to_double_nan_second_condition_is_nan());
-  
-  ok(SPVM::TestCase::Std::Number::Util->double_double_to_raw_long_bits());
-  ok(SPVM::TestCase::Std::Number::Util->double_double_to_raw_long_bits_nan());
-  ok(SPVM::TestCase::Std::Number::Util->double_double_to_long_bits());
-  ok(SPVM::TestCase::Std::Number::Util->double_double_to_long_bits_nan());
   
   is(SPVM::Std::Number::Util->DOUBLE_POSITIVE_INFINITY(), $POSITIVE_INFINITY);
   is(SPVM::Std::Number::Util->DOUBLE_NEGATIVE_INFINITY(), $NEGATIVE_INFINITY);

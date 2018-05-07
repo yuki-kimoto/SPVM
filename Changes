@@ -1,3 +1,8 @@
+0.0334 2018-05-07
+  - add new array init syntax.
+    my $nums = [3, 4, 5];
+    my $nums = [0.1, 0.4, 0.8];
+  - remove Std::Number::Util many subtoutines
 0.0333 2018-05-05
   - fix array init type bug
   - fix 32bit environment not work bug

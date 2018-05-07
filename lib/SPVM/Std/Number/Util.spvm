@@ -37,9 +37,6 @@ package Std::Number::Util {
   native sub float_is_infinite : int($x : float);
   native sub float_is_finite : int($x : float);
   native sub float_is_nan : int ($x : float);
-  native sub float_float_to_int_bits : int ($x : float);
-  native sub float_float_to_raw_int_bits : int ($x : float);
-  native sub float_int_bits_to_float : float ($x : int);
 
   enum {
     DOUBLE_BYTES = 8,
@@ -59,7 +56,4 @@ package Std::Number::Util {
   native sub double_is_infinite : int ($x : double);
   native sub double_is_finite : int ($x : double);
   native sub double_is_nan : int ($x : double);
-  native sub double_double_to_long_bits : long ($x : double);
-  native sub double_double_to_raw_long_bits : long ($x : double);
-  native sub double_long_bits_to_double : double ($x : long);
 }
