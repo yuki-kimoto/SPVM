@@ -216,7 +216,12 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) 
       SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, i);
       SPVM_PACKAGE* package = op_package->uv.package;
       
-      printf("  name => \"%s\"\n", package->op_name->uv.name);
+      if (package->op_name) {
+        printf("  name => \"%s\"\n", package->op_name->uv.name);
+      }
+      else {
+        printf("  name => \"ANON\"\n");
+      }
       
       printf("  byte_size => %" PRId32 "\n", package->op_fields->length);
       
