@@ -14,6 +14,7 @@
 #include "spvm_package.h"
 
 const char* const SPVM_TYPE_C_ID_NAMES[] = {
+  "unknown",
   "void",
   "undef",
   "byte",

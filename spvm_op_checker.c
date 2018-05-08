@@ -293,7 +293,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
       // Core type or array
       if (
-        SPVM_TYPE_is_array(compiler, type) || strcmp(base_name, "void") == 0 || strcmp(base_name, "byte") == 0
+        SPVM_TYPE_is_array(compiler, type) || strcmp(base_name, "unknown") == 0 || strcmp(base_name, "void") == 0 || strcmp(base_name, "byte") == 0
         || strcmp(base_name, "short") == 0 || strcmp(base_name, "int") == 0 || strcmp(base_name, "long") == 0
         || strcmp(base_name, "float") == 0 || strcmp(base_name, "double") == 0 || strcmp(base_name, "Object") == 0
       )
@@ -317,7 +317,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       }
       
       // Create resolved type id
-      
       SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name));
       if (found_type) {
         op_type->uv.type = found_type;
@@ -1079,6 +1078,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     SPVM_TYPE* type = op_type->uv.type;
                     
+                    
                     // Array
                     if (SPVM_TYPE_is_array(compiler, type)) {
                       
@@ -1087,7 +1087,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
                       
                       if (!index_type) {
-                        SPVM_yyerror_format(compiler, "new operator can't create array which don't have length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
+                        SPVM_yyerror_format(compiler, "Can't create no length array \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
                         return;
                       }
                       else {
