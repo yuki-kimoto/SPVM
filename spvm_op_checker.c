@@ -132,8 +132,8 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
           }
           // Different base type
           else {
-            SPVM_OP* assign_to_base_type_op_package = assign_to_base_type->op_package;
-            SPVM_OP* assign_from_base_type_op_package = assign_from_base_type->op_package;
+            SPVM_OP* assign_to_base_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_to_base_type->name, strlen(assign_to_base_type->name));
+            SPVM_OP* assign_from_base_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_from_base_type->name, strlen(assign_from_base_type->name));
             
             // At least one base type is number
             if (!assign_to_base_type_op_package || !assign_from_base_type_op_package) {
