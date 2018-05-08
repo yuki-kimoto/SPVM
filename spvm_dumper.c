@@ -95,7 +95,12 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       printf(" \"%s\"", op_cur->uv.name);
     }
     else if (id == SPVM_OP_C_ID_TYPE) {
-      printf(" \"%s\"", op_cur->uv.type->name);
+      if (op_cur->uv.type) {
+        printf(" \"%s\"", op_cur->uv.type->name);
+      }
+      else {
+        printf(" \"Unknown\"");
+      }
     }
     else if (id == SPVM_OP_C_ID_PACKAGE) {
       if (strcmp(op_cur->uv.package->op_name->uv.name, "Std") == 0) {
