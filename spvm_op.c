@@ -2517,7 +2517,7 @@ SPVM_OP* SPVM_OP_build_type_byte(SPVM_COMPILER* compiler, SPVM_OP* op_byte) {
   
   // Type op
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_byte->file, op_byte->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_BYTE);
+  op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
   
   return op_type;
 }
@@ -2526,7 +2526,7 @@ SPVM_OP* SPVM_OP_build_type_short(SPVM_COMPILER* compiler, SPVM_OP* op_short) {
 
   // Type op
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_short->file, op_short->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_SHORT);
+  op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
   
   return op_type;
 }
@@ -2534,7 +2534,7 @@ SPVM_OP* SPVM_OP_build_type_short(SPVM_COMPILER* compiler, SPVM_OP* op_short) {
 SPVM_OP* SPVM_OP_build_type_int(SPVM_COMPILER* compiler, SPVM_OP* op_int) {
   // Type op
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_int->file, op_int->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_INT);
+  op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
   
   return op_type;
 }
@@ -2542,7 +2542,7 @@ SPVM_OP* SPVM_OP_build_type_int(SPVM_COMPILER* compiler, SPVM_OP* op_int) {
 SPVM_OP* SPVM_OP_build_type_long(SPVM_COMPILER* compiler, SPVM_OP* op_long) {
   // Type op
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_long->file, op_long->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_LONG);
+  op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
   
   return op_type;
 }
@@ -2550,7 +2550,7 @@ SPVM_OP* SPVM_OP_build_type_long(SPVM_COMPILER* compiler, SPVM_OP* op_long) {
 SPVM_OP* SPVM_OP_build_type_float(SPVM_COMPILER* compiler, SPVM_OP* op_float) {
   // Type op
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_float->file, op_float->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_FLOAT);
+  op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
   
   return op_type;
 }
@@ -2558,7 +2558,7 @@ SPVM_OP* SPVM_OP_build_type_float(SPVM_COMPILER* compiler, SPVM_OP* op_float) {
 SPVM_OP* SPVM_OP_build_type_double(SPVM_COMPILER* compiler, SPVM_OP* op_double) {
   // Type op
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_double->file, op_double->line);
-  op_type->uv.type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_DOUBLE);
+  op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
   
   return op_type;
 }
