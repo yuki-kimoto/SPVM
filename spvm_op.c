@@ -1333,7 +1333,8 @@ void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field)
   SPVM_OP* op_name = op_call_field->last;
   
   SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_term);
-  SPVM_PACKAGE* package = invoker_type->op_package->uv.package;
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, invoker_type->name, strlen(invoker_type->name));
+  SPVM_PACKAGE* package = op_package->uv.package;
   const char* field_name = op_name->uv.name;
   
   SPVM_OP* found_op_field = SPVM_HASH_search(
