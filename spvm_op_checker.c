@@ -351,7 +351,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         new_parent_type->name = parent_type_name;
         new_parent_type->dimension = type->dimension + 1;
         new_parent_type->id = compiler->types->length;
-        new_parent_type->base_type = type;
         new_parent_type->base_type_name = type->name;
         new_parent_type->element_type_id = type->id;
         new_parent_type->parent_type_id = -1;

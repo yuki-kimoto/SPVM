@@ -1140,8 +1140,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     // Check cast
                     else {
-                      SPVM_TYPE* dist_base_type = dist_type->base_type;
-                      
+                      SPVM_TYPE* dist_base_type = SPVM_HASH_search(compiler->type_symtable, dist_type->base_type_name, strlen(dist_type->base_type_name));
                       opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
                       opcode.operand2 = dist_base_type->id;
                     }
