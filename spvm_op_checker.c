@@ -1112,7 +1112,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_yyerror_format(compiler, "new operator can't receive numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     }
                     else if (SPVM_TYPE_is_object(compiler, type)) {
-                      SPVM_OP* op_package = type->op_package;
+                      SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
                       assert(op_package);
                       SPVM_PACKAGE* package = op_package->uv.package;
                       
@@ -2120,8 +2120,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term_invocker);
+                  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
                   
-                  if (!(type && type->op_package)) {
+                  if (!(type && op_package)) {
                     SPVM_yyerror_format(compiler, "Invalid invoker at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
