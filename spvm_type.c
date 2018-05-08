@@ -46,7 +46,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_VOID);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "void", strlen("void"));
   
   assert(type);
   
@@ -56,7 +56,7 @@ SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_undef_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_UNDEF);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "undef", strlen("undef"));
   
   assert(type);
   
@@ -66,7 +66,7 @@ SPVM_TYPE* SPVM_TYPE_get_undef_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_BYTE);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
   
   assert(type);
   
@@ -76,7 +76,7 @@ SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_short_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_SHORT);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
   
   assert(type);
   
@@ -86,7 +86,7 @@ SPVM_TYPE* SPVM_TYPE_get_short_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_int_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_INT);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
   
   assert(type);
   
@@ -96,7 +96,7 @@ SPVM_TYPE* SPVM_TYPE_get_int_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_long_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_LONG);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
   
   assert(type);
   
@@ -106,7 +106,7 @@ SPVM_TYPE* SPVM_TYPE_get_long_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_float_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_FLOAT);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
   
   assert(type);
   
@@ -116,7 +116,7 @@ SPVM_TYPE* SPVM_TYPE_get_float_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_DOUBLE);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
   
   assert(type);
   
@@ -126,7 +126,7 @@ SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_BYTE_ARRAY);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
   
   assert(type);
   
@@ -136,7 +136,7 @@ SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_STRING);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "String", strlen("String"));
   
   assert(type);
   
@@ -146,7 +146,7 @@ SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_OBJECT);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "Object", strlen("Object"));
   
   assert(type);
   
