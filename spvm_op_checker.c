@@ -270,7 +270,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   SPVM_LIST* op_types = compiler->op_types;
   
   // Resolve String type
-  SPVM_TYPE* type_string = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_STRING);
+  SPVM_TYPE* type_string = SPVM_HASH_search(compiler->type_symtable, "String", strlen("String"));
   
   // Resolve types
   {
