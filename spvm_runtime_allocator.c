@@ -137,8 +137,8 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
       case SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT: {
         // Runtime
         SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
-
-        SPVM_PACKAGE* package = type->op_package->uv.package;
+        SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+        SPVM_PACKAGE* package = op_package->uv.package;
 
         byte_size = sizeof(SPVM_OBJECT) + package->byte_size;
         break;

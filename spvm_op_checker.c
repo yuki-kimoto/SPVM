@@ -271,7 +271,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Resolve String type
   SPVM_TYPE* type_string = SPVM_LIST_fetch(compiler->types, SPVM_TYPE_C_ID_STRING);
-  type_string->op_package = SPVM_HASH_search(compiler->op_package_symtable, "String", strlen("String"));
   
   // Resolve types
   {
@@ -329,8 +328,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         memcpy(new_type, type, sizeof(SPVM_TYPE));
         SPVM_LIST_push(compiler->types, new_type);
         SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
-        
-        new_type->op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
         
         op_type->uv.type = new_type;
       }
