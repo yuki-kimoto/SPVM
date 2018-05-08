@@ -104,11 +104,11 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
     }
     // To dimension is less than or equal to from dimension
     else if (assign_to_type->dimension <= assign_from_type->dimension) {
-      const char* assign_to_base_type_name = assign_to_type->base_type_name;
-      const char* assign_from_base_type_name = assign_from_type->base_type_name;
+      const char* assign_to_base_name = assign_to_type->base_name;
+      const char* assign_from_base_name = assign_from_type->base_name;
       
-      SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_type_name, strlen(assign_to_base_type_name));
-      SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_type_name, strlen(assign_from_base_type_name));
+      SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_name, strlen(assign_to_base_name));
+      SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_name, strlen(assign_from_base_name));
       
       // Base type is Object
       if (SPVM_TYPE_is_any_object(compiler, assign_to_base_type)) {
@@ -120,11 +120,11 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
         }
         // Same dimension
         else {
-          const char* assign_to_base_type_name = assign_to_type->base_type_name;
-          const char* assign_from_base_type_name = assign_from_type->base_type_name;
+          const char* assign_to_base_name = assign_to_type->base_name;
+          const char* assign_from_base_name = assign_from_type->base_name;
           
-          SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_type_name, strlen(assign_to_base_type_name));
-          SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_type_name, strlen(assign_from_base_type_name));
+          SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_name, strlen(assign_to_base_name));
+          SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_name, strlen(assign_from_base_name));
           
           // Same base type
           if (assign_to_base_type->id == assign_from_base_type->id) {
@@ -351,7 +351,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         new_parent_type->name = parent_type_name;
         new_parent_type->dimension = type->dimension + 1;
         new_parent_type->id = compiler->types->length;
-        new_parent_type->base_type_name = type->name;
+        new_parent_type->base_name = type->name;
         new_parent_type->element_type_id = type->id;
         new_parent_type->parent_type_id = -1;
         

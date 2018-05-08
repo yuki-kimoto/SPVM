@@ -50,7 +50,7 @@ SPVM_TYPE* SPVM_TYPE_search_parent_type(SPVM_COMPILER* compiler, SPVM_TYPE* type
   
   for (i = 0; i < length; i++) {
     SPVM_TYPE* parent_type = SPVM_LIST_fetch(compiler->types, i);
-    if (strcmp(type->base_type_name, parent_type->base_type_name) == 0 && type->dimension + 1 == parent_type->dimension) {
+    if (strcmp(type->base_name, parent_type->base_name) == 0 && type->dimension + 1 == parent_type->dimension) {
       return parent_type;
     }
   }
@@ -65,7 +65,7 @@ SPVM_TYPE* SPVM_TYPE_search_element_type(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   
   for (i = 0; i < length; i++) {
     SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, i);
-    if (strcmp(type->base_type_name, element_type->base_type_name) == 0 && type->dimension - 1 == element_type->dimension) {
+    if (strcmp(type->base_name, element_type->base_name) == 0 && type->dimension - 1 == element_type->dimension) {
       return element_type;
     }
   }

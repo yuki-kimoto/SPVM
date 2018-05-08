@@ -94,10 +94,10 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_STRING_ARRAY) {
         type->dimension++;
         SPVM_TYPE* base_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name) - 2);
-        type->base_type_name = base_type->name;
+        type->base_name = base_type->name;
       }
       else {
-        type->base_type_name = type->name;
+        type->base_name = type->name;
       }
       SPVM_LIST_push(compiler->types, type);
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
