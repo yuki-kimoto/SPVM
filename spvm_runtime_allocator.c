@@ -133,8 +133,8 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
   else {
     // Byte size
     int64_t byte_size;
-    switch (object->object_type_id) {
-      case SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT: {
+    switch (object->category) {
+      case SPVM_OBJECT_C_CATEGORY_OBJECT: {
         // Runtime
         SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
         SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));

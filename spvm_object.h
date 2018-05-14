@@ -5,11 +5,11 @@
 #include "spvm_api.h"
 
 enum {
-  SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT,
-  SPVM_OBJECT_C_OBJECT_TYPE_CODE_NUMERIC_ARRAY,
-  SPVM_OBJECT_C_OBJECT_TYPE_CODE_OBJECT_ARRAY,
-  SPVM_OBJECT_C_OBJECT_TYPE_CODE_ADDRESS_ARRAY,
-  SPVM_OBJECT_C_OBJECT_TYPE_CODE_CALL_STACK,
+  SPVM_OBJECT_C_CATEGORY_OBJECT,
+  SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY,
+  SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY,
+  SPVM_OBJECT_C_CATEGORY_ADDRESS_ARRAY,
+  SPVM_OBJECT_C_CATEGORY_CALL_STACK,
 };
 
 // SPVM_OBJECT
@@ -22,10 +22,12 @@ struct SPVM_object {
   int32_t ref_count;
   int32_t weaken_back_refs_length;
   int32_t length;
+  int32_t basic_type_id;
   int8_t element_byte_size;
   int8_t has_destructor;
   int8_t in_destroy;
-  int8_t object_type_id;
+  int8_t category;
+  int8_t dimension;
 };
 
 #endif
