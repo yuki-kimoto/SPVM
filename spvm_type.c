@@ -347,3 +347,13 @@ _Bool SPVM_TYPE_equal(SPVM_COMPILER* compiler, SPVM_TYPE* type1, SPVM_TYPE* type
     return 0;
   }
 }
+
+_Bool SPVM_TYPE_is_int(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+  
+  if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT && type->dimension == 0) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
