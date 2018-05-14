@@ -4,9 +4,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-// spvm_simple_type.h
-struct SPVM_simple_type;
-typedef struct SPVM_simple_type SPVM_SIMPLE_TYPE;
+// spvm_basic_type.h
+struct SPVM_basic_type;
+typedef struct SPVM_basic_type SPVM_BASIC_TYPE;
 
 // spvm_call_stack_info.h
 struct SPVM_call_stack_info;

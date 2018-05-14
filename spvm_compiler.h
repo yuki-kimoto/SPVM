@@ -83,10 +83,10 @@ struct SPVM_compiler {
   SPVM_HASH* type_symtable;
 
   // Single types
-  SPVM_LIST* simple_types;
+  SPVM_LIST* basic_types;
   
   // Resolved type symbol table
-  SPVM_HASH* simple_type_symtable;
+  SPVM_HASH* basic_type_symtable;
   
   // Current case statements in switch statement
   SPVM_LIST* cur_op_cases;
