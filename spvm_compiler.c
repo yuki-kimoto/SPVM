@@ -84,30 +84,17 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   // Bytecodes
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
-  
-  // Add default basic types
-  {
-    int32_t type_id;
-    for (type_id = 0; type_id < SPVM_TYPE_C_CORE_LENGTH; type_id++) {
-      // Type
-      SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-      const char* name = SPVM_TYPE_C_ID_NAMES[type_id];
-      type->name = name;
-      type->id = type_id;
-      
-      if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_STRING_ARRAY) {
-        type->dimension++;
-        SPVM_TYPE* basic_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name) - 2);
-        type->basic_type_name = basic_type->name;
-      }
-      else {
-        type->basic_type_name = type->name;
-      }
-      SPVM_LIST_push(compiler->types, type);
-      SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
-    }
-  }
 
+  // Add unknown basic_type
+  {
+     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+     basic_type->id = SPVM_BASIC_TYPE_C_ID_UNKNOWN;
+     basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_UNKNOWN;
+     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
+     SPVM_LIST_push(compiler->basic_types, basic_type);
+     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+  
   // Add void basic_type
   {
      SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
@@ -206,6 +193,34 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
      SPVM_LIST_push(compiler->basic_types, basic_type);
      SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+
+  // Add default types
+  {
+    int32_t type_id;
+    for (type_id = 0; type_id < SPVM_TYPE_C_CORE_LENGTH; type_id++) {
+      // Type
+      SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+      const char* name = SPVM_TYPE_C_ID_NAMES[type_id];
+      type->name = name;
+      type->id = type_id;
+      
+      if (type_id >= SPVM_TYPE_C_ID_BYTE_ARRAY && type_id <= SPVM_TYPE_C_ID_STRING_ARRAY) {
+        type->dimension++;
+        SPVM_TYPE* basic_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name) - 2);
+        type->basic_type_name = basic_type->name;
+      }
+      else {
+        type->basic_type_name = type->name;
+      }
+      
+      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
+      assert(basic_type);
+      type->basic_type = basic_type;
+      
+      SPVM_LIST_push(compiler->types, type);
+      SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
+    }
   }
 
   return compiler;
