@@ -33,194 +33,11 @@
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
-  SPVM_LIST* op_types = compiler->op_types;
-  
   // Resolve types
-  {
-    int32_t i;
-    for (i = 0; i < op_types->length; i++) {
-      assert(compiler->types->length <= SPVM_LIMIT_C_TYPES);
-      
-      SPVM_OP* op_type = SPVM_LIST_fetch(op_types, i);
-      
-      if (compiler->types->length == SPVM_LIMIT_C_TYPES) {
-        SPVM_yyerror_format(compiler, "too many types at %s line %d\n", op_type->file, op_type->line);
-        compiler->fatal_error = 1;
-        return;
-      }
-      
-      SPVM_TYPE* type = op_type->uv.type;
-      
-      const char* basic_type_name = SPVM_TYPE_get_basic_type_name(compiler, type->name);
-        
-      // Core type or array
-      if (
-        SPVM_TYPE_is_array(compiler, type) || strcmp(basic_type_name, "unknown") == 0 || strcmp(basic_type_name, "void") == 0 || strcmp(basic_type_name, "byte") == 0
-        || strcmp(basic_type_name, "short") == 0 || strcmp(basic_type_name, "int") == 0 || strcmp(basic_type_name, "long") == 0
-        || strcmp(basic_type_name, "float") == 0 || strcmp(basic_type_name, "double") == 0 || strcmp(basic_type_name, "Object") == 0
-      )
-      {
-        // Nothing
-      }
-      else {
-        
-        // Package
-        SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
-        SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, basic_type_name, strlen(basic_type_name));
-        
-        if (op_found_package) {
-          // Nothing
-        }
-        else {
-          SPVM_yyerror_format(compiler, "Unknown package \"%s\" at %s line %d\n", basic_type_name, op_type->file, op_type->line);
-          compiler->fatal_error = 1;
-          return;
-        }
-      }
-      
-      // Create resolved type id
-      SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name));
-      if (found_type) {
-        op_type->uv.type = found_type;
-      }
-      else {
-        type->id = compiler->types->length;
-        type->id = compiler->types->length;
-        
-        SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
-        memcpy(new_type, type, sizeof(SPVM_TYPE));
-        SPVM_LIST_push(compiler->types, new_type);
-        SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
-        
-        op_type->uv.type = new_type;
-      }
-    }
-  }
+  SPVM_OP_CHECKER_resolve_types(compiler);
   
-  // Set parent type id and element type id
-  {
-    int32_t i;
-    int32_t length = compiler->types->length;
-    for (i = 0; i < length; i++) {
-      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
-      
-      char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
-      SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
-      if (parent_type) {
-        type->parent_type_id = parent_type->id;
-      }
-      else {
-        SPVM_TYPE* new_parent_type = SPVM_TYPE_new(compiler);
-        new_parent_type->name = parent_type_name;
-        new_parent_type->dimension = type->dimension + 1;
-        new_parent_type->id = compiler->types->length;
-        new_parent_type->basic_type_name = type->name;
-        new_parent_type->element_type_id = type->id;
-        new_parent_type->parent_type_id = -1;
-        
-        SPVM_LIST_push(compiler->types, new_parent_type);
-        SPVM_HASH_insert(compiler->type_symtable, new_parent_type->name, strlen(new_parent_type->name), new_parent_type);
-      }
-      
-      // Element type id
-      char* element_type_name = SPVM_TYPE_get_element_name(compiler, type->name);
-      if (element_type_name) {
-        SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
-        if (element_type) {
-          type->element_type_id = element_type->id;
-        }
-        else {
-          assert(0);
-        }
-      }
-    }
-  }
-
-  // Calcurate fild byte offset and package byte size
-  SPVM_LIST* op_packages = compiler->op_packages;
-  int32_t alignment = sizeof(int32_t);
-  
-  {
-    int32_t package_pos;
-    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_pos);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      SPVM_LIST* op_fields = package->op_fields;
-      
-      // Separate reference type and value type
-      int32_t current_byte_offset = 0;
-      {
-        int32_t field_pos;
-        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
-          SPVM_TYPE* field_type = field->op_type->uv.type;
-          
-          int32_t field_byte_size;
-          switch (field_type->id) {
-            case SPVM_TYPE_C_ID_BYTE:
-              field_byte_size = sizeof(int8_t);
-              break;
-            case SPVM_TYPE_C_ID_SHORT:
-              field_byte_size = sizeof(int16_t);
-              break;
-            case SPVM_TYPE_C_ID_INT:
-              field_byte_size = sizeof(int32_t);
-              break;
-            case SPVM_TYPE_C_ID_LONG:
-              field_byte_size = sizeof(int64_t);
-              break;
-            case SPVM_TYPE_C_ID_FLOAT:
-              field_byte_size = sizeof(float);
-              break;
-            case SPVM_TYPE_C_ID_DOUBLE:
-              field_byte_size = sizeof(double);
-              break;
-            default: {
-              field_byte_size = sizeof(SPVM_OBJECT*);
-            }
-          }
-          
-          // Padding
-          int32_t padding;
-          if ((current_byte_offset % alignment) == 0) {
-            padding = 0;
-          }
-          else {
-            padding = alignment - (current_byte_offset % alignment);
-          }
-          
-          if (padding != 0 && field_byte_size > padding) {
-            current_byte_offset += padding;
-          }
-          
-          field->byte_offset = current_byte_offset;
-          current_byte_offset += field_byte_size;
-        }
-      }
-      package->byte_size = current_byte_offset;
-    }
-  }
-  
-  // Resolve package
-  {
-    int32_t package_pos;
-    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_pos);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      SPVM_LIST* op_fields = package->op_fields;
-      
-      // Calculate package byte size
-      {
-        int32_t field_pos;
-        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
-          field->index = field_pos;
-        }
-      }
-    }
-  }
+  // Resolve packages
+  SPVM_OP_CHECKER_resolve_packages(compiler);
   
   {
     int32_t sub_index;
@@ -2376,4 +2193,198 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
   }
   
   return op_out;
+}
+
+void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
+
+  SPVM_LIST* op_types = compiler->op_types;
+  
+  // Resolve types
+  {
+    int32_t i;
+    for (i = 0; i < op_types->length; i++) {
+      assert(compiler->types->length <= SPVM_LIMIT_C_TYPES);
+      
+      SPVM_OP* op_type = SPVM_LIST_fetch(op_types, i);
+      
+      if (compiler->types->length == SPVM_LIMIT_C_TYPES) {
+        SPVM_yyerror_format(compiler, "too many types at %s line %d\n", op_type->file, op_type->line);
+        compiler->fatal_error = 1;
+        return;
+      }
+      
+      SPVM_TYPE* type = op_type->uv.type;
+      
+      const char* basic_type_name = SPVM_TYPE_get_basic_type_name(compiler, type->name);
+        
+      // Core type or array
+      if (
+        SPVM_TYPE_is_array(compiler, type) || strcmp(basic_type_name, "unknown") == 0 || strcmp(basic_type_name, "void") == 0 || strcmp(basic_type_name, "byte") == 0
+        || strcmp(basic_type_name, "short") == 0 || strcmp(basic_type_name, "int") == 0 || strcmp(basic_type_name, "long") == 0
+        || strcmp(basic_type_name, "float") == 0 || strcmp(basic_type_name, "double") == 0 || strcmp(basic_type_name, "Object") == 0
+      )
+      {
+        // Nothing
+      }
+      else {
+        
+        // Package
+        SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
+        SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, basic_type_name, strlen(basic_type_name));
+        
+        if (op_found_package) {
+          // Nothing
+        }
+        else {
+          SPVM_yyerror_format(compiler, "Unknown package \"%s\" at %s line %d\n", basic_type_name, op_type->file, op_type->line);
+          compiler->fatal_error = 1;
+          return;
+        }
+      }
+      
+      // Create resolved type id
+      SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name));
+      if (found_type) {
+        op_type->uv.type = found_type;
+      }
+      else {
+        type->id = compiler->types->length;
+        type->id = compiler->types->length;
+        
+        SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
+        memcpy(new_type, type, sizeof(SPVM_TYPE));
+        SPVM_LIST_push(compiler->types, new_type);
+        SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
+        
+        op_type->uv.type = new_type;
+      }
+    }
+  }
+  
+  // Set parent type id and element type id
+  {
+    int32_t i;
+    int32_t length = compiler->types->length;
+    for (i = 0; i < length; i++) {
+      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
+      
+      char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
+      SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
+      if (parent_type) {
+        type->parent_type_id = parent_type->id;
+      }
+      else {
+        SPVM_TYPE* new_parent_type = SPVM_TYPE_new(compiler);
+        new_parent_type->name = parent_type_name;
+        new_parent_type->dimension = type->dimension + 1;
+        new_parent_type->id = compiler->types->length;
+        new_parent_type->basic_type_name = type->name;
+        new_parent_type->element_type_id = type->id;
+        new_parent_type->parent_type_id = -1;
+        
+        SPVM_LIST_push(compiler->types, new_parent_type);
+        SPVM_HASH_insert(compiler->type_symtable, new_parent_type->name, strlen(new_parent_type->name), new_parent_type);
+      }
+      
+      // Element type id
+      char* element_type_name = SPVM_TYPE_get_element_name(compiler, type->name);
+      if (element_type_name) {
+        SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
+        if (element_type) {
+          type->element_type_id = element_type->id;
+        }
+        else {
+          assert(0);
+        }
+      }
+    }
+  }
+}
+
+void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
+  // Calcurate fild byte offset and package byte size
+  SPVM_LIST* op_packages = compiler->op_packages;
+  int32_t alignment = sizeof(int32_t);
+  
+  {
+    int32_t package_pos;
+    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
+      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_pos);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      SPVM_LIST* op_fields = package->op_fields;
+      
+      // Separate reference type and value type
+      int32_t current_byte_offset = 0;
+      {
+        int32_t field_pos;
+        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
+          SPVM_FIELD* field = op_field->uv.field;
+          SPVM_TYPE* field_type = field->op_type->uv.type;
+          
+          int32_t field_byte_size;
+          switch (field_type->id) {
+            case SPVM_TYPE_C_ID_BYTE:
+              field_byte_size = sizeof(int8_t);
+              break;
+            case SPVM_TYPE_C_ID_SHORT:
+              field_byte_size = sizeof(int16_t);
+              break;
+            case SPVM_TYPE_C_ID_INT:
+              field_byte_size = sizeof(int32_t);
+              break;
+            case SPVM_TYPE_C_ID_LONG:
+              field_byte_size = sizeof(int64_t);
+              break;
+            case SPVM_TYPE_C_ID_FLOAT:
+              field_byte_size = sizeof(float);
+              break;
+            case SPVM_TYPE_C_ID_DOUBLE:
+              field_byte_size = sizeof(double);
+              break;
+            default: {
+              field_byte_size = sizeof(SPVM_OBJECT*);
+            }
+          }
+          
+          // Padding
+          int32_t padding;
+          if ((current_byte_offset % alignment) == 0) {
+            padding = 0;
+          }
+          else {
+            padding = alignment - (current_byte_offset % alignment);
+          }
+          
+          if (padding != 0 && field_byte_size > padding) {
+            current_byte_offset += padding;
+          }
+          
+          field->byte_offset = current_byte_offset;
+          current_byte_offset += field_byte_size;
+        }
+      }
+      package->byte_size = current_byte_offset;
+    }
+  }
+  
+  // Resolve package
+  {
+    int32_t package_pos;
+    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
+      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_pos);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      SPVM_LIST* op_fields = package->op_fields;
+      
+      // Calculate package byte size
+      {
+        int32_t field_pos;
+        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
+          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
+          SPVM_FIELD* field = op_field->uv.field;
+          field->index = field_pos;
+        }
+      }
+    }
+  }
 }

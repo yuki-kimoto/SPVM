@@ -6,5 +6,7 @@
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler);
 _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_type, SPVM_TYPE* assign_from_type);
 SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from);
+void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler);
+void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler);
 
 #endif
