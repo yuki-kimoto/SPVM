@@ -825,30 +825,6 @@ type_name
     {
       $$ = SPVM_OP_build_basic_type(compiler, $1);
     }
-  | BYTE
-    {
-      $$ = SPVM_OP_build_type_byte(compiler, $1);
-    }
-  | SHORT
-    {
-      $$ = SPVM_OP_build_type_short(compiler, $1);
-    }
-  | INT
-    {
-      $$ = SPVM_OP_build_basic_type(compiler, $1);
-    }
-  | LONG
-    {
-      $$ = SPVM_OP_build_type_long(compiler, $1);
-    }
-  | FLOAT
-    {
-      $$ = SPVM_OP_build_type_float(compiler, $1);
-    }
-  | DOUBLE
-    {
-      $$ = SPVM_OP_build_type_double(compiler, $1);
-    }
 
 type_array
   : type_name '[' ']'

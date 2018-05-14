@@ -2572,8 +2572,23 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
   
-  if (strcmp(name, "int") == 0) {
+  if (strcmp(name, "byte") == 0) {
+    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+  }
+  else if (strcmp(name, "short") == 0) {
+    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
+  }
+  else if (strcmp(name, "int") == 0) {
     op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+  }
+  else if (strcmp(name, "long") == 0) {
+    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
+  }
+  else if (strcmp(name, "float") == 0) {
+    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
+  }
+  else if (strcmp(name, "double") == 0) {
+    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
   }
   else {
     SPVM_TYPE* type = SPVM_TYPE_new(compiler);

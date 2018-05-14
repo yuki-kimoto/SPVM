@@ -1048,12 +1048,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (!expect_name) {
             switch (keyword[0]) {
               // Keyword
-              case 'b' :
-                if (strcmp(keyword, "byte") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BYTE);
-                  return BYTE;
-                }
-                break;
               case 'c' :
                 if (strcmp(keyword, "case") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CASE);
@@ -1068,10 +1062,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(keyword, "default") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DEFAULT);
                   return DEFAULT;
-                }
-                else if (strcmp(keyword, "double") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DOUBLE);
-                  return DOUBLE;
                 }
                 break;
               case 'e' :
@@ -1101,10 +1091,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FOR);
                   return FOR;
                 }
-                else if (strcmp(keyword, "float") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FLOAT);
-                  return FLOAT;
-                }
                 break;
               case 'g' :
                 if (strcmp(keyword, "gt") == 0) {
@@ -1126,11 +1112,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(keyword, "if") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IF);
                   return IF;
-                }
-                else if (strcmp(keyword, "int") == 0) {
-                  SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "int", compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_name;
-                  return NAME;
                 }
                 else if (strcmp(keyword, "interface") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_INTERFACE, compiler->cur_file, compiler->cur_line);
@@ -1174,10 +1155,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = op;
                   
                   return REL;
-                }
-                else if (strcmp(keyword, "long") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LONG);
-                  return LONG;
                 }
                 break;
               case 'm' :
@@ -1256,10 +1233,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   return SUB;
                 }
-                else if (strcmp(keyword, "short") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SHORT);
-                  return SHORT;
-                }
                 else if (strcmp(keyword, "string") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING);
                   return STRING;
@@ -1299,8 +1272,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
             }
           }
-
-    
           
           if (has_double_underline) {
             fprintf(stderr, "Can't contain __ in package, subroutine or field name at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
