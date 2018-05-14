@@ -12,6 +12,7 @@
 #include "spvm_package.h"
 #include "spvm_limit.h"
 #include "spvm_package.h"
+#include "spvm_basic_type.h"
 
 const char* const SPVM_TYPE_C_ID_NAMES[] = {
   "unknown",
@@ -331,6 +332,15 @@ _Bool SPVM_TYPE_is_undef(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
   if (type->id == SPVM_TYPE_C_ID_UNDEF) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+_Bool SPVM_TYPE_equal(SPVM_COMPILER* compiler, SPVM_TYPE* type1, SPVM_TYPE* type2) {
+  if (type1->basic_type->id == type2->basic_type->id && type1->dimension == type2->dimension) {
     return 1;
   }
   else {
