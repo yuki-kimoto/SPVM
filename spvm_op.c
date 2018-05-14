@@ -33,6 +33,7 @@
 #include "spvm_package_var.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_block.h"
+#include "spvm_basic_type.h"
 
 
 
@@ -2563,7 +2564,7 @@ SPVM_OP* SPVM_OP_build_type_double(SPVM_COMPILER* compiler, SPVM_OP* op_double) 
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
+SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
@@ -2579,10 +2580,21 @@ SPVM_OP* SPVM_OP_build_type_name(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
   type->basic_type_name = type->name;
   
+  // Add basic type
+  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->name, strlen(type->name));
+  if (!found_basic_type) {
+    SPVM_BASIC_TYPE* new_basic_type = SPVM_BASIC_TYPE_new(compiler);
+    new_basic_type->id = compiler->basic_types->length;
+    new_basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_PACKAGE;
+    new_basic_type->name = type->name;
+    SPVM_LIST_push(compiler->basic_types, new_basic_type);
+    SPVM_HASH_insert(compiler->basic_type_symtable, new_basic_type->name, strlen(new_basic_type->name), new_basic_type);
+  }
+  
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_type_array(SPVM_COMPILER* compiler, SPVM_OP* op_type_child, SPVM_OP* op_term_length) {
+SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child, SPVM_OP* op_term_length) {
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);

@@ -823,7 +823,7 @@ type
 type_name
   : NAME
     {
-      $$ = SPVM_OP_build_type_name(compiler, $1);
+      $$ = SPVM_OP_build_basic_type(compiler, $1);
     }
   | BYTE
     {
@@ -853,21 +853,21 @@ type_name
 type_array
   : type_name '[' ']'
     {
-      $$ = SPVM_OP_build_type_array(compiler, $1, NULL);
+      $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
     }
   | type_array '[' ']'
     {
-      $$ = SPVM_OP_build_type_array(compiler, $1, NULL);
+      $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
     }
 
 type_array_with_length
   : type_name '[' assignable_term ']'
     {
-      $$ = SPVM_OP_build_type_array(compiler, $1, $3);
+      $$ = SPVM_OP_build_array_type(compiler, $1, $3);
     }
   | type_array '[' assignable_term ']'
     {
-      $$ = SPVM_OP_build_type_array(compiler, $1, $3);
+      $$ = SPVM_OP_build_array_type(compiler, $1, $3);
     }
 
 type_or_void

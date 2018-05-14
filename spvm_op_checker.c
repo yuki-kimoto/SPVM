@@ -2227,7 +2227,6 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
         // Nothing
       }
       else {
-        
         // Package
         SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
         SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, basic_type_name, strlen(basic_type_name));
