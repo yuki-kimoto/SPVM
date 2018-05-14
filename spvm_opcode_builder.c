@@ -1140,9 +1140,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     // Check cast
                     else {
-                      SPVM_TYPE* dist_base_type = SPVM_HASH_search(compiler->type_symtable, dist_type->base_name, strlen(dist_type->base_name));
+                      SPVM_TYPE* dist_basic_type = SPVM_HASH_search(compiler->type_symtable, dist_type->base_name, strlen(dist_type->base_name));
                       opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
-                      opcode.operand2 = dist_base_type->id;
+                      opcode.operand2 = dist_basic_type->id;
                     }
 
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_dist_term);

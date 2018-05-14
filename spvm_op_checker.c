@@ -107,11 +107,11 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
       const char* assign_to_base_name = assign_to_type->base_name;
       const char* assign_from_base_name = assign_from_type->base_name;
       
-      SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_name, strlen(assign_to_base_name));
-      SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_name, strlen(assign_from_base_name));
+      SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_name, strlen(assign_to_base_name));
+      SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_name, strlen(assign_from_base_name));
       
       // Base type is Object
-      if (SPVM_TYPE_is_any_object(compiler, assign_to_base_type)) {
+      if (SPVM_TYPE_is_any_object(compiler, assign_to_basic_type)) {
         can_assign = 1;
       }
       else {
@@ -123,25 +123,25 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
           const char* assign_to_base_name = assign_to_type->base_name;
           const char* assign_from_base_name = assign_from_type->base_name;
           
-          SPVM_TYPE* assign_to_base_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_name, strlen(assign_to_base_name));
-          SPVM_TYPE* assign_from_base_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_name, strlen(assign_from_base_name));
+          SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_name, strlen(assign_to_base_name));
+          SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_name, strlen(assign_from_base_name));
           
           // Same base type
-          if (assign_to_base_type->id == assign_from_base_type->id) {
+          if (assign_to_basic_type->id == assign_from_basic_type->id) {
             can_assign = 1;
           }
           // Different base type
           else {
-            SPVM_OP* assign_to_base_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_to_base_type->name, strlen(assign_to_base_type->name));
-            SPVM_OP* assign_from_base_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_from_base_type->name, strlen(assign_from_base_type->name));
+            SPVM_OP* assign_to_basic_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_to_basic_type->name, strlen(assign_to_basic_type->name));
+            SPVM_OP* assign_from_basic_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_from_basic_type->name, strlen(assign_from_basic_type->name));
             
             // At least one base type is number
-            if (!assign_to_base_type_op_package || !assign_from_base_type_op_package) {
+            if (!assign_to_basic_type_op_package || !assign_from_basic_type_op_package) {
               can_assign = 0;
             }
             else {
-              SPVM_PACKAGE* package_assign_to_base = assign_to_base_type_op_package->uv.package;
-              SPVM_PACKAGE* package_assign_from_base = assign_from_base_type_op_package->uv.package;
+              SPVM_PACKAGE* package_assign_to_base = assign_to_basic_type_op_package->uv.package;
+              SPVM_PACKAGE* package_assign_from_base = assign_from_basic_type_op_package->uv.package;
               
               // Left base type is interface
               if (package_assign_to_base->is_interface) {
