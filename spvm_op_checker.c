@@ -104,11 +104,11 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
     }
     // To dimension is less than or equal to from dimension
     else if (assign_to_type->dimension <= assign_from_type->dimension) {
-      const char* assign_to_base_name = assign_to_type->base_name;
-      const char* assign_from_base_name = assign_from_type->base_name;
+      const char* assign_to_basic_type_name = assign_to_type->basic_type_name;
+      const char* assign_from_basic_type_name = assign_from_type->basic_type_name;
       
-      SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_name, strlen(assign_to_base_name));
-      SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_name, strlen(assign_from_base_name));
+      SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_basic_type_name, strlen(assign_to_basic_type_name));
+      SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_basic_type_name, strlen(assign_from_basic_type_name));
       
       // Base type is Object
       if (SPVM_TYPE_is_any_object(compiler, assign_to_basic_type)) {
@@ -120,11 +120,11 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_t
         }
         // Same dimension
         else {
-          const char* assign_to_base_name = assign_to_type->base_name;
-          const char* assign_from_base_name = assign_from_type->base_name;
+          const char* assign_to_basic_type_name = assign_to_type->basic_type_name;
+          const char* assign_from_basic_type_name = assign_from_type->basic_type_name;
           
-          SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_base_name, strlen(assign_to_base_name));
-          SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_base_name, strlen(assign_from_base_name));
+          SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_basic_type_name, strlen(assign_to_basic_type_name));
+          SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_basic_type_name, strlen(assign_from_basic_type_name));
           
           // Same base type
           if (assign_to_basic_type->id == assign_from_basic_type->id) {
@@ -288,13 +288,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       
       SPVM_TYPE* type = op_type->uv.type;
       
-      const char* base_name = SPVM_TYPE_get_base_name(compiler, type->name);
+      const char* basic_type_name = SPVM_TYPE_get_basic_type_name(compiler, type->name);
         
       // Core type or array
       if (
-        SPVM_TYPE_is_array(compiler, type) || strcmp(base_name, "unknown") == 0 || strcmp(base_name, "void") == 0 || strcmp(base_name, "byte") == 0
-        || strcmp(base_name, "short") == 0 || strcmp(base_name, "int") == 0 || strcmp(base_name, "long") == 0
-        || strcmp(base_name, "float") == 0 || strcmp(base_name, "double") == 0 || strcmp(base_name, "Object") == 0
+        SPVM_TYPE_is_array(compiler, type) || strcmp(basic_type_name, "unknown") == 0 || strcmp(basic_type_name, "void") == 0 || strcmp(basic_type_name, "byte") == 0
+        || strcmp(basic_type_name, "short") == 0 || strcmp(basic_type_name, "int") == 0 || strcmp(basic_type_name, "long") == 0
+        || strcmp(basic_type_name, "float") == 0 || strcmp(basic_type_name, "double") == 0 || strcmp(basic_type_name, "Object") == 0
       )
       {
         // Nothing
@@ -303,13 +303,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         
         // Package
         SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
-        SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, base_name, strlen(base_name));
+        SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, basic_type_name, strlen(basic_type_name));
         
         if (op_found_package) {
           // Nothing
         }
         else {
-          SPVM_yyerror_format(compiler, "Unknown package \"%s\" at %s line %d\n", base_name, op_type->file, op_type->line);
+          SPVM_yyerror_format(compiler, "Unknown package \"%s\" at %s line %d\n", basic_type_name, op_type->file, op_type->line);
           compiler->fatal_error = 1;
           return;
         }
@@ -351,7 +351,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         new_parent_type->name = parent_type_name;
         new_parent_type->dimension = type->dimension + 1;
         new_parent_type->id = compiler->types->length;
-        new_parent_type->base_name = type->name;
+        new_parent_type->basic_type_name = type->name;
         new_parent_type->element_type_id = type->id;
         new_parent_type->parent_type_id = -1;
         

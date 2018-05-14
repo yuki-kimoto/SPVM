@@ -50,7 +50,7 @@ SPVM_TYPE* SPVM_TYPE_search_parent_type(SPVM_COMPILER* compiler, SPVM_TYPE* type
   
   for (i = 0; i < length; i++) {
     SPVM_TYPE* parent_type = SPVM_LIST_fetch(compiler->types, i);
-    if (strcmp(type->base_name, parent_type->base_name) == 0 && type->dimension + 1 == parent_type->dimension) {
+    if (strcmp(type->basic_type_name, parent_type->basic_type_name) == 0 && type->dimension + 1 == parent_type->dimension) {
       return parent_type;
     }
   }
@@ -65,7 +65,7 @@ SPVM_TYPE* SPVM_TYPE_search_element_type(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   
   for (i = 0; i < length; i++) {
     SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, i);
-    if (strcmp(type->base_name, element_type->base_name) == 0 && type->dimension - 1 == element_type->dimension) {
+    if (strcmp(type->basic_type_name, element_type->basic_type_name) == 0 && type->dimension - 1 == element_type->dimension) {
       return element_type;
     }
   }
@@ -183,40 +183,40 @@ SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name) {
+char* SPVM_TYPE_get_basic_type_name(SPVM_COMPILER* compiler, const char* type_name) {
   int32_t type_name_length = (int32_t)strlen(type_name);
-  char* type_base_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_name_length);
+  char* type_basic_type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_name_length);
   
   char* found_ptr = strchr(type_name, '[');
-  int32_t type_base_name_length;
+  int32_t type_basic_type_name_length;
   if (found_ptr) {
-    type_base_name_length = (int32_t)(found_ptr - type_name);
+    type_basic_type_name_length = (int32_t)(found_ptr - type_name);
   }
   else {
-    type_base_name_length = type_name_length;
+    type_basic_type_name_length = type_name_length;
   }
   
-  strncpy(type_base_name, type_name, type_base_name_length);
-  type_base_name[type_base_name_length] = '\0';
+  strncpy(type_basic_type_name, type_name, type_basic_type_name_length);
+  type_basic_type_name[type_basic_type_name_length] = '\0';
   
-  return type_base_name;
+  return type_basic_type_name;
 }
 
 char* SPVM_TYPE_get_element_name(SPVM_COMPILER* compiler, const char* type_name) {
-  int32_t type_base_name_length;
+  int32_t type_basic_type_name_length;
   if (strchr(type_name, '[')) {
-    type_base_name_length = strlen(type_name) - 2;
+    type_basic_type_name_length = strlen(type_name) - 2;
   }
   else {
     return NULL;
   }
 
-  char* type_base_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_base_name_length);
+  char* type_basic_type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_basic_type_name_length);
   
-  strncpy(type_base_name, type_name, type_base_name_length);
-  type_base_name[type_base_name_length] = '\0';
+  strncpy(type_basic_type_name, type_name, type_basic_type_name_length);
+  type_basic_type_name[type_basic_type_name_length] = '\0';
   
-  return type_base_name;
+  return type_basic_type_name;
 }
 
 char* SPVM_TYPE_get_parent_name(SPVM_COMPILER* compiler, const char* type_name) {
@@ -233,16 +233,16 @@ char* SPVM_TYPE_get_parent_name(SPVM_COMPILER* compiler, const char* type_name) 
 }
 
 // Create array name
-char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* base_name) {
+char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
-  int32_t base_name_length = strlen(base_name);
-  int32_t name_length = base_name_length + 2;
+  int32_t basic_type_name_length = strlen(basic_type_name);
+  int32_t name_length = basic_type_name_length + 2;
   char* type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, name_length);
   
   int32_t cur_pos = 0;
-  memcpy(type_name, base_name, base_name_length);
-  type_name[base_name_length] = '[';
-  type_name[base_name_length + 1] = ']';
+  memcpy(type_name, basic_type_name, basic_type_name_length);
+  type_name[basic_type_name_length] = '[';
+  type_name[basic_type_name_length + 1] = ']';
   cur_pos += 2;
   type_name[name_length] = '\0';
   

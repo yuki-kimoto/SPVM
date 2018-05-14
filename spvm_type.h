@@ -41,13 +41,13 @@ struct SPVM_type {
   const char* name;
   int32_t id;
   int32_t dimension;
-  const char* base_name;
+  const char* basic_type_name;
   int32_t element_type_id;
   int32_t parent_type_id;
 };
 
-char* SPVM_TYPE_get_base_name(SPVM_COMPILER* compiler, const char* type_name);
-char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* base_name);
+char* SPVM_TYPE_get_basic_type_name(SPVM_COMPILER* compiler, const char* type_name);
+char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* basic_type_name);
 char* SPVM_TYPE_get_element_name(SPVM_COMPILER* compiler, const char* type_name);
 char* SPVM_TYPE_get_parent_name(SPVM_COMPILER* compiler, const char* type_name);
 
