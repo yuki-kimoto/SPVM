@@ -44,36 +44,6 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_search_parent_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
-  int32_t length = compiler->types->length;
-  
-  int32_t i;
-  
-  for (i = 0; i < length; i++) {
-    SPVM_TYPE* parent_type = SPVM_LIST_fetch(compiler->types, i);
-    if (strcmp(type->basic_type_name, parent_type->basic_type_name) == 0 && type->dimension + 1 == parent_type->dimension) {
-      return parent_type;
-    }
-  }
-  
-  return NULL;
-}
-
-SPVM_TYPE* SPVM_TYPE_search_element_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
-  int32_t length = compiler->types->length;
-  
-  int32_t i;
-  
-  for (i = 0; i < length; i++) {
-    SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, i);
-    if (strcmp(type->basic_type_name, element_type->basic_type_name) == 0 && type->dimension - 1 == element_type->dimension) {
-      return element_type;
-    }
-  }
-  
-  return NULL;
-}
-
 SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   

@@ -77,8 +77,6 @@ SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler);
 
-SPVM_TYPE* SPVM_TYPE_search_parent_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-SPVM_TYPE* SPVM_TYPE_search_element_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_equal(SPVM_COMPILER* compiler, SPVM_TYPE* type1, SPVM_TYPE* type2);
 
 #endif
