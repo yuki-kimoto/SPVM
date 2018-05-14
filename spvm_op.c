@@ -2566,14 +2566,23 @@ SPVM_OP* SPVM_OP_build_type_double(SPVM_COMPILER* compiler, SPVM_OP* op_double) 
 
 SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
-  // Type
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->name = op_name->uv.name;
+  const char* name = op_name->uv.name;
   
   // Type op
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
-  op_type->uv.type = type;
+  
+  if (strcmp(name, "int") == 0) {
+    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+  }
+  else {
+    SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+    op_type->uv.type = type;
+  }
+  
+  // Type
+  SPVM_TYPE* type = op_type->uv.type;
+  type->name = op_name->uv.name;
   
   // Add types
   SPVM_LIST_push(compiler->op_types, op_type);

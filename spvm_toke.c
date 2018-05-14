@@ -1128,8 +1128,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return IF;
                 }
                 else if (strcmp(keyword, "int") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
-                  return INT;
+                  SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "int", compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_name;
+                  return NAME;
                 }
                 else if (strcmp(keyword, "interface") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_INTERFACE, compiler->cur_file, compiler->cur_line);

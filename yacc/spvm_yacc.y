@@ -835,7 +835,7 @@ type_name
     }
   | INT
     {
-      $$ = SPVM_OP_build_type_int(compiler, $1);
+      $$ = SPVM_OP_build_basic_type(compiler, $1);
     }
   | LONG
     {
