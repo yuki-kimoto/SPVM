@@ -2248,7 +2248,6 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
       }
       else {
         type->id = compiler->types->length;
-        type->id = compiler->types->length;
         
         SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
         memcpy(new_type, type, sizeof(SPVM_TYPE));
