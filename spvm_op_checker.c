@@ -12,6 +12,7 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_yacc_util.h"
 #include "spvm_op.h"
+#include "spvm_op_checker.h"
 #include "spvm_sub.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"
@@ -30,247 +31,9 @@
 #include "spvm_package_var.h"
 #include "spvm_block.h"
 
-_Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
-  // When left package is interface, right package have all methods which left package have
-  assert(interface->is_interface);
-  assert(!package->is_interface);
-  
-  SPVM_LIST* op_subs_interface = interface->op_subs;
-  SPVM_LIST* op_subs_package = package->op_subs;
-  
-  int32_t* has_interface_cache_ptr = SPVM_HASH_search(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
-  
-  int32_t has_interface = 1;
-  if (has_interface_cache_ptr) {
-    has_interface = *has_interface_cache_ptr;
-  }
-  else {
-    _Bool has_interface = 1;
-    
-    {
-      int32_t sub_index_interface;
-      for (sub_index_interface = 0; sub_index_interface < op_subs_interface->length; sub_index_interface++) {
-        SPVM_OP* op_sub_interface = SPVM_LIST_fetch(op_subs_interface, sub_index_interface);
-        SPVM_SUB* sub_interface = op_sub_interface->uv.sub;
-        assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
-        
-        _Bool found = 0;
-        {
-          int32_t sub_index_package;
-          for (sub_index_package = 0; sub_index_package < op_subs_package->length; sub_index_package++) {
-            SPVM_OP* op_sub_package = SPVM_LIST_fetch(op_subs_package, sub_index_package);
-            SPVM_SUB* sub_package = op_sub_package->uv.sub;
-            
-            if (strcmp(sub_interface->method_signature, sub_package->method_signature) == 0) {
-              found = 1;
-            }
-          }
-        }
-        if (!found) {
-          has_interface = 0;
-          break;
-        }
-      }
-    }
-    
-    int32_t* new_has_interface_cache_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
-    *new_has_interface_cache_ptr = has_interface;
-    SPVM_HASH_insert(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name), new_has_interface_cache_ptr);
-  }
-  
-  return has_interface;
-}
-
-_Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_type, SPVM_TYPE* assign_from_type) {
-  
-  if (SPVM_TYPE_is_undef(compiler, assign_from_type)) {
-    return 1;
-  }
-  
-  assert(SPVM_TYPE_is_object(compiler, assign_to_type));
-  assert(SPVM_TYPE_is_object(compiler, assign_from_type));
-  
-  _Bool can_assign;
-  
-  // Same type
-  if (assign_to_type->id == assign_from_type->id) {
-    can_assign = 1;
-  }
-  // Different type
-  else {
-    // To dimension is greater than from dimension
-    if (assign_to_type->dimension > assign_from_type->dimension) {
-      can_assign = 0;
-    }
-    // To dimension is less than or equal to from dimension
-    else if (assign_to_type->dimension <= assign_from_type->dimension) {
-      const char* assign_to_basic_type_name = assign_to_type->basic_type_name;
-      const char* assign_from_basic_type_name = assign_from_type->basic_type_name;
-      
-      SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_basic_type_name, strlen(assign_to_basic_type_name));
-      SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_basic_type_name, strlen(assign_from_basic_type_name));
-      
-      // Base type is Object
-      if (SPVM_TYPE_is_any_object(compiler, assign_to_basic_type)) {
-        can_assign = 1;
-      }
-      else {
-        if (assign_to_type->dimension != assign_from_type->dimension) {
-          can_assign = 0;
-        }
-        // Same dimension
-        else {
-          const char* assign_to_basic_type_name = assign_to_type->basic_type_name;
-          const char* assign_from_basic_type_name = assign_from_type->basic_type_name;
-          
-          SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_basic_type_name, strlen(assign_to_basic_type_name));
-          SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_basic_type_name, strlen(assign_from_basic_type_name));
-          
-          // Same base type
-          if (assign_to_basic_type->id == assign_from_basic_type->id) {
-            can_assign = 1;
-          }
-          // Different base type
-          else {
-            SPVM_OP* assign_to_basic_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_to_basic_type->name, strlen(assign_to_basic_type->name));
-            SPVM_OP* assign_from_basic_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_from_basic_type->name, strlen(assign_from_basic_type->name));
-            
-            // At least one base type is number
-            if (!assign_to_basic_type_op_package || !assign_from_basic_type_op_package) {
-              can_assign = 0;
-            }
-            else {
-              SPVM_PACKAGE* package_assign_to_base = assign_to_basic_type_op_package->uv.package;
-              SPVM_PACKAGE* package_assign_from_base = assign_from_basic_type_op_package->uv.package;
-              
-              // Left base type is interface
-              if (package_assign_to_base->is_interface) {
-                can_assign = SPVM_OP_CHECKER_has_interface(compiler, package_assign_from_base, package_assign_to_base);
-              }
-              else {
-                can_assign = 0;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  return can_assign;
-}
-
-SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
-  SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
-  SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
-  
-  SPVM_OP* op_out = NULL;
-  
-  // Can't assign undef to numeric value
-  if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
-    SPVM_yyerror_format(compiler, "Can't convert undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
-  }
-  else {
-    // Numeric type check
-    if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
-      int32_t do_convert = 0;
-      if (assign_to_type->id > assign_from_type->id) {
-        do_convert = 1;
-      }
-      // Narrowng convetion only when constant is in range
-      else if (assign_to_type->id < assign_from_type->id) {
-        int32_t compile_error = 0;
-        if (op_assign_from->id == SPVM_OP_C_ID_CONSTANT) {
-          int32_t compile_error = 0;
-          SPVM_CONSTANT* constant = op_assign_from->uv.constant;
-          int64_t constant_value;
-          if (constant->type->id == SPVM_TYPE_C_ID_INT || constant->type->id == SPVM_TYPE_C_ID_LONG) {
-            if (constant->type->id == SPVM_TYPE_C_ID_INT) {
-              constant_value = constant->value.int_value;
-            }
-            else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
-              constant_value = constant->value.long_value;
-            }
-            
-            if (assign_to_type->id == SPVM_OP_C_ID_BYTE) {
-              if (!(constant_value >= INT8_MIN && constant_value <= INT8_MAX)) {
-                compile_error = 1;
-              }
-            }
-            else if (assign_to_type->id == SPVM_OP_C_ID_SHORT) {
-              if (!(constant_value >= INT16_MIN && constant_value <= INT16_MAX)) {
-                compile_error = 1;
-              }
-            }
-            else if (assign_to_type->id == SPVM_OP_C_ID_INT) {
-              if (!(constant_value >= INT32_MIN && constant_value <= INT32_MAX)) {
-                compile_error = 1;
-              }
-            }
-            else {
-              compile_error = 1;
-            }
-          }
-          else {
-            compile_error = 1;
-          }
-        }
-        else {
-          compile_error = 1;
-        }
-        
-        if (compile_error) {
-          SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
-        }
-        else {
-          do_convert = 1;
-        }
-      }
-      
-      if (do_convert) {
-        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
-        
-        SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_assign_from->file, op_assign_from->line);
-        SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_assign_from->file, op_assign_from->line);
-        op_dist_type->uv.type = assign_to_type;
-        SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_assign_from);
-        
-        SPVM_OP_replace_op(compiler, op_stab, op_convert);
-
-        op_convert->is_assigned_to_var = op_convert->first->is_assigned_to_var;
-        
-        op_convert->first->is_assigned_to_var = 0;
-        
-        op_out = op_convert;
-      }
-    }
-    else {
-      if (assign_to_type->id == SPVM_TYPE_C_ID_STRING && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
-        // Convert numeric type to String
-      }
-      // Object type check
-      else {
-        _Bool can_assign = SPVM_OP_CHECKER_can_assign(compiler, assign_to_type, assign_from_type);
-        if (!can_assign) {
-          SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
-        }
-      }
-    }
-  }
-  
-  if (!op_out) {
-    op_out = op_assign_from;
-  }
-  
-  return op_out;
-}
-
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   SPVM_LIST* op_types = compiler->op_types;
-  
-  // Resolve String type
-  SPVM_TYPE* type_string = SPVM_HASH_search(compiler->type_symtable, "String", strlen("String"));
   
   // Resolve types
   {
@@ -2378,4 +2141,239 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       constant->id = constant_index;
     }
   }
+}
+
+_Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
+  // When left package is interface, right package have all methods which left package have
+  assert(interface->is_interface);
+  assert(!package->is_interface);
+  
+  SPVM_LIST* op_subs_interface = interface->op_subs;
+  SPVM_LIST* op_subs_package = package->op_subs;
+  
+  int32_t* has_interface_cache_ptr = SPVM_HASH_search(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
+  
+  int32_t has_interface = 1;
+  if (has_interface_cache_ptr) {
+    has_interface = *has_interface_cache_ptr;
+  }
+  else {
+    _Bool has_interface = 1;
+    
+    {
+      int32_t sub_index_interface;
+      for (sub_index_interface = 0; sub_index_interface < op_subs_interface->length; sub_index_interface++) {
+        SPVM_OP* op_sub_interface = SPVM_LIST_fetch(op_subs_interface, sub_index_interface);
+        SPVM_SUB* sub_interface = op_sub_interface->uv.sub;
+        assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+        
+        _Bool found = 0;
+        {
+          int32_t sub_index_package;
+          for (sub_index_package = 0; sub_index_package < op_subs_package->length; sub_index_package++) {
+            SPVM_OP* op_sub_package = SPVM_LIST_fetch(op_subs_package, sub_index_package);
+            SPVM_SUB* sub_package = op_sub_package->uv.sub;
+            
+            if (strcmp(sub_interface->method_signature, sub_package->method_signature) == 0) {
+              found = 1;
+            }
+          }
+        }
+        if (!found) {
+          has_interface = 0;
+          break;
+        }
+      }
+    }
+    
+    int32_t* new_has_interface_cache_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+    *new_has_interface_cache_ptr = has_interface;
+    SPVM_HASH_insert(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name), new_has_interface_cache_ptr);
+  }
+  
+  return has_interface;
+}
+
+_Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* assign_to_type, SPVM_TYPE* assign_from_type) {
+  
+  if (SPVM_TYPE_is_undef(compiler, assign_from_type)) {
+    return 1;
+  }
+  
+  assert(SPVM_TYPE_is_object(compiler, assign_to_type));
+  assert(SPVM_TYPE_is_object(compiler, assign_from_type));
+  
+  _Bool can_assign;
+  
+  // Same type
+  if (assign_to_type->id == assign_from_type->id) {
+    can_assign = 1;
+  }
+  // Different type
+  else {
+    // To dimension is greater than from dimension
+    if (assign_to_type->dimension > assign_from_type->dimension) {
+      can_assign = 0;
+    }
+    // To dimension is less than or equal to from dimension
+    else if (assign_to_type->dimension <= assign_from_type->dimension) {
+      const char* assign_to_basic_type_name = assign_to_type->basic_type_name;
+      const char* assign_from_basic_type_name = assign_from_type->basic_type_name;
+      
+      SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_basic_type_name, strlen(assign_to_basic_type_name));
+      SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_basic_type_name, strlen(assign_from_basic_type_name));
+      
+      // Base type is Object
+      if (SPVM_TYPE_is_any_object(compiler, assign_to_basic_type)) {
+        can_assign = 1;
+      }
+      else {
+        if (assign_to_type->dimension != assign_from_type->dimension) {
+          can_assign = 0;
+        }
+        // Same dimension
+        else {
+          const char* assign_to_basic_type_name = assign_to_type->basic_type_name;
+          const char* assign_from_basic_type_name = assign_from_type->basic_type_name;
+          
+          SPVM_TYPE* assign_to_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_to_basic_type_name, strlen(assign_to_basic_type_name));
+          SPVM_TYPE* assign_from_basic_type = SPVM_HASH_search(compiler->type_symtable, assign_from_basic_type_name, strlen(assign_from_basic_type_name));
+          
+          // Same base type
+          if (assign_to_basic_type->id == assign_from_basic_type->id) {
+            can_assign = 1;
+          }
+          // Different base type
+          else {
+            SPVM_OP* assign_to_basic_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_to_basic_type->name, strlen(assign_to_basic_type->name));
+            SPVM_OP* assign_from_basic_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_from_basic_type->name, strlen(assign_from_basic_type->name));
+            
+            // At least one base type is number
+            if (!assign_to_basic_type_op_package || !assign_from_basic_type_op_package) {
+              can_assign = 0;
+            }
+            else {
+              SPVM_PACKAGE* package_assign_to_base = assign_to_basic_type_op_package->uv.package;
+              SPVM_PACKAGE* package_assign_from_base = assign_from_basic_type_op_package->uv.package;
+              
+              // Left base type is interface
+              if (package_assign_to_base->is_interface) {
+                can_assign = SPVM_OP_CHECKER_has_interface(compiler, package_assign_from_base, package_assign_to_base);
+              }
+              else {
+                can_assign = 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  return can_assign;
+}
+
+SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
+  SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
+  SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
+  
+  SPVM_OP* op_out = NULL;
+  
+  // Can't assign undef to numeric value
+  if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
+    SPVM_yyerror_format(compiler, "Can't convert undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
+  }
+  else {
+    // Numeric type check
+    if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
+      int32_t do_convert = 0;
+      if (assign_to_type->id > assign_from_type->id) {
+        do_convert = 1;
+      }
+      // Narrowng convetion only when constant is in range
+      else if (assign_to_type->id < assign_from_type->id) {
+        int32_t compile_error = 0;
+        if (op_assign_from->id == SPVM_OP_C_ID_CONSTANT) {
+          int32_t compile_error = 0;
+          SPVM_CONSTANT* constant = op_assign_from->uv.constant;
+          int64_t constant_value;
+          if (constant->type->id == SPVM_TYPE_C_ID_INT || constant->type->id == SPVM_TYPE_C_ID_LONG) {
+            if (constant->type->id == SPVM_TYPE_C_ID_INT) {
+              constant_value = constant->value.int_value;
+            }
+            else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
+              constant_value = constant->value.long_value;
+            }
+            
+            if (assign_to_type->id == SPVM_OP_C_ID_BYTE) {
+              if (!(constant_value >= INT8_MIN && constant_value <= INT8_MAX)) {
+                compile_error = 1;
+              }
+            }
+            else if (assign_to_type->id == SPVM_OP_C_ID_SHORT) {
+              if (!(constant_value >= INT16_MIN && constant_value <= INT16_MAX)) {
+                compile_error = 1;
+              }
+            }
+            else if (assign_to_type->id == SPVM_OP_C_ID_INT) {
+              if (!(constant_value >= INT32_MIN && constant_value <= INT32_MAX)) {
+                compile_error = 1;
+              }
+            }
+            else {
+              compile_error = 1;
+            }
+          }
+          else {
+            compile_error = 1;
+          }
+        }
+        else {
+          compile_error = 1;
+        }
+        
+        if (compile_error) {
+          SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
+        }
+        else {
+          do_convert = 1;
+        }
+      }
+      
+      if (do_convert) {
+        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
+        
+        SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_assign_from->file, op_assign_from->line);
+        SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_assign_from->file, op_assign_from->line);
+        op_dist_type->uv.type = assign_to_type;
+        SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_assign_from);
+        
+        SPVM_OP_replace_op(compiler, op_stab, op_convert);
+
+        op_convert->is_assigned_to_var = op_convert->first->is_assigned_to_var;
+        
+        op_convert->first->is_assigned_to_var = 0;
+        
+        op_out = op_convert;
+      }
+    }
+    else {
+      if (assign_to_type->id == SPVM_TYPE_C_ID_STRING && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
+        // Convert numeric type to String
+      }
+      // Object type check
+      else {
+        _Bool can_assign = SPVM_OP_CHECKER_can_assign(compiler, assign_to_type, assign_from_type);
+        if (!can_assign) {
+          SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
+        }
+      }
+    }
+  }
+  
+  if (!op_out) {
+    op_out = op_assign_from;
+  }
+  
+  return op_out;
 }
