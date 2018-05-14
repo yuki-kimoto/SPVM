@@ -22,6 +22,7 @@
 #include "spvm_field.h"
 #include "spvm_api.h"
 #include "spvm_opcode.h"
+#include "spvm_simple_type.h"
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
@@ -66,8 +67,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_use_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->bufptr = "";
-  compiler->types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  compiler->type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->simple_types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  compiler->simple_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
@@ -77,6 +78,9 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->package_load_path_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
 
   compiler->enum_default_type_id = SPVM_TYPE_C_ID_INT;
+
+  compiler->types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  compiler->type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
 
   // Bytecodes
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
@@ -103,7 +107,107 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
       SPVM_HASH_insert(compiler->type_symtable, name, strlen(name), type);
     }
   }
+
+  // Add void type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_VOID;
+     type->category = SPVM_SIMPLE_TYPE_C_CATEGORY_VOID;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
   
+  // Add undef type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_UNDEF;
+     type->category = SPVM_SIMPLE_TYPE_C_ID_UNDEF;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
+
+  // Add byte type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_BYTE;
+     type->category = SPVM_SIMPLE_TYPE_C_CATEGORY_NUMERIC;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
+
+  // Add short type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_SHORT;
+     type->category = SPVM_SIMPLE_TYPE_C_CATEGORY_NUMERIC;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
+
+  // Add int type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_INT;
+     type->category = SPVM_SIMPLE_TYPE_C_CATEGORY_NUMERIC;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
+
+  // Add long type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_LONG;
+     type->category = SPVM_SIMPLE_TYPE_C_CATEGORY_NUMERIC;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
+
+  // Add float type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_FLOAT;
+     type->category = SPVM_SIMPLE_TYPE_C_CATEGORY_NUMERIC;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
+
+  // Add double type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_DOUBLE;
+     type->category = SPVM_SIMPLE_TYPE_C_CATEGORY_NUMERIC;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
+
+  // Add Object type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_ANY_OBJECT;
+     type->category = SPVM_SIMPLE_TYPE_C_CATEGORY_ANY_OBJECT;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
+
+  // Add String type
+  {
+     SPVM_SIMPLE_TYPE* type = SPVM_SIMPLE_TYPE_new(compiler);
+     type->id = SPVM_SIMPLE_TYPE_C_ID_STRING;
+     type->category = SPVM_SIMPLE_TYPE_C_CATEGORY_PACKAGE;
+     type->name = SPVM_SIMPLE_TYPE_C_ID_NAMES[type->id];
+     SPVM_LIST_push(compiler->simple_types, type);
+     SPVM_HASH_insert(compiler->simple_type_symtable, type->name, strlen(type->name), type);
+  }
+
   return compiler;
 }
 
