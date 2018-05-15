@@ -174,7 +174,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_switch_condition->first);
                   
                   // Check type
-                  if (!term_type || !(term_type->id == SPVM_TYPE_C_ID_INT)) {
+                  if (!term_type || !(term_type->dimension == 0 && term_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
                     SPVM_yyerror_format(compiler, "Switch condition need int value at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -564,7 +564,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (SPVM_TYPE_is_integral(compiler, last_type)) {
                     SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
                     
-                    if (last_type->id >= SPVM_TYPE_C_ID_LONG) {
+                    if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                       SPVM_yyerror_format(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
@@ -595,7 +595,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (SPVM_TYPE_is_integral(compiler, last_type)) {
                     SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
                     
-                    if (last_type->id >= SPVM_TYPE_C_ID_LONG) {
+                    if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                       SPVM_yyerror_format(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
@@ -626,7 +626,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (SPVM_TYPE_is_integral(compiler, last_type)) {
                     SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
                     
-                    if (last_type->id >= SPVM_TYPE_C_ID_LONG) {
+                    if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                       SPVM_yyerror_format(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
@@ -673,7 +673,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
                           
-                          if (index_type->id >= SPVM_TYPE_C_ID_LONG) {
+                          if (index_type->dimension == 0 && index_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                             SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
                             return;
                           }
@@ -959,7 +959,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
                     SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                     
-                    if (last_type->id != SPVM_TYPE_C_ID_INT) {
+                    if (last_type->dimension == 0 && last_type->basic_type->id != SPVM_BASIC_TYPE_C_ID_INT) {
                       SPVM_yyerror_format(compiler, "array index must be int type at %s line %d\n", op_cur->file, op_cur->line);
                       compiler->fatal_error = 1;
                       return;
@@ -1003,7 +1003,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // Undef
                     if (op_term->id == SPVM_OP_C_ID_UNDEF) {
-                      if (sub->op_return_type->uv.type->id == SPVM_TYPE_C_ID_VOID) {
+                      if (sub->op_return_type->uv.type->dimension == 0 && sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
                         is_invalid = 1;
                       }
                       else {
@@ -1015,7 +1015,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     else if (op_term->id == SPVM_OP_C_ID_CALL_SUB) {
                       SPVM_CALL_SUB* call_sub = op_term->uv.call_sub;
                       SPVM_SUB* sub = call_sub->sub;
-                      if (sub->op_return_type->uv.type->id == SPVM_TYPE_C_ID_VOID) {
+                      if (sub->op_return_type->uv.type->dimension == 0 && sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
                         SPVM_yyerror_format(compiler, "Can't return value of void subroutine at %s line %d\n", op_cur->file, op_cur->line);
                       }
                     }
@@ -1027,7 +1027,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     // Empty
                     else {
-                      if (sub->op_return_type->uv.type->id != SPVM_TYPE_C_ID_VOID) {
+                      if (!(sub->op_return_type->uv.type->dimension == 0 && sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
                         is_invalid = 1;
                       }
                     }
@@ -1490,7 +1490,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
                 case SPVM_OP_C_ID_CROAK: {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                  if (first_type->id != SPVM_TYPE_C_ID_STRING) {
+                  if (first_type->dimension == 0 && first_type->basic_type->id != SPVM_BASIC_TYPE_C_ID_STRING) {
                     SPVM_yyerror_format(compiler, "croak argument must be String at %s line %d\n", op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
@@ -1731,7 +1731,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
                   
-                  if (type->id <= SPVM_TYPE_C_ID_DOUBLE) {
+                  if (type->dimension == 0 && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
                     SPVM_yyerror_format(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d\n",
                       field->op_package->uv.package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
@@ -1755,12 +1755,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (SPVM_TYPE_is_numeric(compiler, term_type) && SPVM_TYPE_is_numeric(compiler, type_type)) {
                     can_convert = 1;
                   }
-                  else if (SPVM_TYPE_is_numeric(compiler, term_type) && type_type->id == SPVM_TYPE_C_ID_STRING) {
+                  else if (SPVM_TYPE_is_numeric(compiler, term_type) && type_type->dimension == 0 && type_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
                     can_convert = 1;
                   }
                   else if (SPVM_TYPE_is_object(compiler, term_type) && SPVM_TYPE_is_object(compiler, type_type)) {
                     if (SPVM_TYPE_is_array_numeric(compiler, term_type) && !SPVM_TYPE_is_array_numeric(compiler, type_type)) {
-                      if (type_type->id == SPVM_TYPE_C_ID_STRING_ARRAY) {
+                      if (type_type->dimension == 1 && type_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
                         can_convert = 1;
                       }
                       else {
@@ -1879,7 +1879,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     break;
                   }
                   case SPVM_OP_C_ID_CALL_SUB: {
-                    if (tmp_var_type->id != SPVM_TYPE_C_ID_VOID) {
+                    if (!(tmp_var_type->dimension == 0 && tmp_var_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
                       create_tmp_var = 1;
                     }
                     break;
@@ -2115,25 +2115,27 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
           int32_t compile_error = 0;
           SPVM_CONSTANT* constant = op_assign_from->uv.constant;
           int64_t constant_value;
-          if (constant->type->id == SPVM_TYPE_C_ID_INT || constant->type->id == SPVM_TYPE_C_ID_LONG) {
-            if (constant->type->id == SPVM_TYPE_C_ID_INT) {
+          if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)
+            || (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG))
+          {
+            if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
               constant_value = constant->value.int_value;
             }
-            else if (constant->type->id == SPVM_TYPE_C_ID_LONG) {
+            else if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG)) {
               constant_value = constant->value.long_value;
             }
             
-            if (assign_to_type->id == SPVM_OP_C_ID_BYTE) {
+            if ((assign_to_type->dimension == 0 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
               if (!(constant_value >= INT8_MIN && constant_value <= INT8_MAX)) {
                 compile_error = 1;
               }
             }
-            else if (assign_to_type->id == SPVM_OP_C_ID_SHORT) {
+            else if ((assign_to_type->dimension == 0 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT)) {
               if (!(constant_value >= INT16_MIN && constant_value <= INT16_MAX)) {
                 compile_error = 1;
               }
             }
-            else if (assign_to_type->id == SPVM_OP_C_ID_INT) {
+            else if ((assign_to_type->dimension == 0 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
               if (!(constant_value >= INT32_MIN && constant_value <= INT32_MAX)) {
                 compile_error = 1;
               }
