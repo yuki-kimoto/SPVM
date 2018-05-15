@@ -872,8 +872,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
         return;
       }
       else {
-        SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
-        SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+        SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
         SPVM_PACKAGE* package = op_package->uv.package;
         
         // Call destructor
@@ -905,8 +905,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
     else if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT) {
       
       // Type
-      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
-      SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+      SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
       SPVM_PACKAGE* package = op_package->uv.package;
       
       {
@@ -1027,8 +1027,8 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   SPVM_COMPILER* compiler = runtime->compiler;
   
   // Type
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
   
   SPVM_LIST* op_fields = op_package->uv.package->op_fields;
   
@@ -1077,10 +1077,8 @@ int32_t SPVM_RUNTIME_API_get_sub_id_interface_method(SPVM_API* api, SPVM_OBJECT*
 
   const char* method_signature = op_sub_decl_sub->uv.sub->method_signature;
   
-  int32_t type_id = object->type_id;
-  
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));  
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));  
   SPVM_PACKAGE* package = op_package->uv.package;
   
   SPVM_SUB* sub_call_sub = SPVM_HASH_search(package->method_signature_symtable, method_signature, strlen(method_signature));
@@ -1098,8 +1096,8 @@ int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_API* api, SPVM_OBJECT* object, c
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
 
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
   SPVM_PACKAGE* package = op_package->uv.package;
   
   int32_t sub_id = -1;
@@ -1351,8 +1349,8 @@ int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
   SPVM_PACKAGE* package = op_package->uv.package;
 
   int32_t length = package->op_fields->length;
@@ -1367,8 +1365,8 @@ int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_API* api, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
   SPVM_PACKAGE* package = op_package->uv.package;
 
   {
