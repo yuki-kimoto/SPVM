@@ -348,7 +348,7 @@ enum {
 extern const char* const SPVM_OPCODE_C_ID_NAMES[];
 
 struct SPVM_opcode {
-  uint16_t id;
+  int32_t id;
   int32_t operand0;
   int32_t operand1;
   int32_t operand2;
