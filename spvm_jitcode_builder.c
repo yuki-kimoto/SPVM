@@ -29,6 +29,7 @@
 #include "spvm_op.h"
 #include "spvm_opcode_array.h"
 #include "spvm_constant.h"
+#include "spvm_basic_type.h"
 
 void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t index) {
   if (strcmp(type_name, "SPVM_API_OBJECT*") == 0) {
@@ -443,25 +444,25 @@ void SPVM_JITCODE_BUILDER_add_set_field(SPVM_STRING_BUFFER* string_buffer, const
 char* SPVM_JITCODE_BUILDER_get_type_name(int32_t type_id) {
   
   switch (type_id ) {
-    case SPVM_TYPE_C_ID_VOID:
+    case SPVM_BASIC_TYPE_C_ID_VOID:
       assert(0);
       break;
-    case SPVM_TYPE_C_ID_BYTE:
+    case SPVM_BASIC_TYPE_C_ID_BYTE:
       return "SPVM_API_byte";
       break;
-    case SPVM_TYPE_C_ID_SHORT:
+    case SPVM_BASIC_TYPE_C_ID_SHORT:
       return "SPVM_API_short";
       break;
-    case SPVM_TYPE_C_ID_INT:
+    case SPVM_BASIC_TYPE_C_ID_INT:
       return "SPVM_API_int";
       break;
-    case SPVM_TYPE_C_ID_LONG:
+    case SPVM_BASIC_TYPE_C_ID_LONG:
       return "SPVM_API_long";
       break;
-    case SPVM_TYPE_C_ID_FLOAT:
+    case SPVM_BASIC_TYPE_C_ID_FLOAT:
       return "SPVM_API_float";
       break;
-    case SPVM_TYPE_C_ID_DOUBLE:
+    case SPVM_BASIC_TYPE_C_ID_DOUBLE:
       return "SPVM_API_double";
       break;
     default:
@@ -482,6 +483,10 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   
   // Subroutine return type id
   int32_t sub_return_type_id = sub_return_type->id;
+
+  int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
+  
+  int32_t sub_return_type_dimension = sub_return_type->dimension;
 
   assert(!sub->is_native);
   
@@ -563,30 +568,35 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   const char* sub_abs_name = sub->abs_name;
 
   // Return type
-  switch (sub_return_type_id) {
-    case SPVM_TYPE_C_ID_VOID:
-      SPVM_STRING_BUFFER_add(string_buffer, "void ");
-      break;
-    case SPVM_TYPE_C_ID_BYTE:
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_byte ");
-      break;
-    case SPVM_TYPE_C_ID_SHORT:
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_short ");
-      break;
-    case SPVM_TYPE_C_ID_INT:
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_int ");
-      break;
-    case SPVM_TYPE_C_ID_LONG:
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_long ");
-      break;
-    case SPVM_TYPE_C_ID_FLOAT:
-      SPVM_STRING_BUFFER_add(string_buffer, "float ");
-      break;
-    case SPVM_TYPE_C_ID_DOUBLE:
-      SPVM_STRING_BUFFER_add(string_buffer, "double ");
-      break;
-    default:
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
+  if (sub_return_type_dimension == 0 && sub_return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+    switch (sub_return_basic_type_id) {
+      case SPVM_BASIC_TYPE_C_ID_VOID:
+        SPVM_STRING_BUFFER_add(string_buffer, "void ");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_BYTE:
+        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_byte ");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_SHORT:
+        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_short ");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_INT:
+        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_int ");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_LONG:
+        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_long ");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_FLOAT:
+        SPVM_STRING_BUFFER_add(string_buffer, "float ");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+        SPVM_STRING_BUFFER_add(string_buffer, "double ");
+        break;
+      default:
+        assert(0);
+    }
+  }
+  else {
+    SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT* ");
   }
 
   // Subroutine name. Replace : to _
@@ -655,36 +665,38 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_string[30];\n");
 
   // Return value
-  if (sub_return_type_id != SPVM_TYPE_C_ID_VOID) {
+  if (!(sub_return_type_dimension == 0 && sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID)) {
     SPVM_STRING_BUFFER_add(string_buffer, "  ");
-    switch (sub_return_type_id) {
-      case SPVM_TYPE_C_ID_BYTE : {
-        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_byte");
-        break;
+    if (sub_return_type_dimension == 0 && sub_return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+      switch (sub_return_type_id) {
+        case SPVM_BASIC_TYPE_C_ID_BYTE : {
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_byte");
+          break;
+        }
+        case  SPVM_BASIC_TYPE_C_ID_SHORT : {
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_short");
+          break;
+        }
+        case  SPVM_BASIC_TYPE_C_ID_INT : {
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_int");
+          break;
+        }
+        case  SPVM_BASIC_TYPE_C_ID_LONG : {
+          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_long");
+          break;
+        }
+        case  SPVM_BASIC_TYPE_C_ID_FLOAT : {
+          SPVM_STRING_BUFFER_add(string_buffer, "float");
+          break;
+        }
+        case  SPVM_BASIC_TYPE_C_ID_DOUBLE : {
+          SPVM_STRING_BUFFER_add(string_buffer, "double");
+          break;
+        }
       }
-      case  SPVM_TYPE_C_ID_SHORT : {
-        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_short");
-        break;
-      }
-      case  SPVM_TYPE_C_ID_INT : {
-        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_int");
-        break;
-      }
-      case  SPVM_TYPE_C_ID_LONG : {
-        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_long");
-        break;
-      }
-      case  SPVM_TYPE_C_ID_FLOAT : {
-        SPVM_STRING_BUFFER_add(string_buffer, "float");
-        break;
-      }
-      case  SPVM_TYPE_C_ID_DOUBLE : {
-        SPVM_STRING_BUFFER_add(string_buffer, "double");
-        break;
-      }
-      default : {
-        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT*");
-      }
+    }
+    else {
+      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_API_OBJECT*");
     }
     SPVM_STRING_BUFFER_add(string_buffer, " return_value = 0;\n");
   }
@@ -2017,6 +2029,8 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         
         // Declare subroutine return type id
         int32_t decl_sub_return_type_id = decl_sub_return_type->id;
+        int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
+        int32_t decl_sub_return_type_dimension = decl_sub_return_type->dimension;
         
         // Declare subroutine argument length
         int32_t decl_sub_args_length = decl_sub->op_args->length;
@@ -2046,7 +2060,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         }
         
         // Call subroutine
-        if (decl_sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
+        if ((decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID)) {
           SPVM_STRING_BUFFER_add(string_buffer, "    api->call_void_sub(api, call_sub_id");
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
           if (decl_sub_args_length > 0) {
@@ -2060,7 +2074,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         }
-        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_BYTE) {
+        else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {");
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte value = api->call_byte_sub(api, call_sub_id");
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -2081,7 +2095,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
-        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_SHORT) {
+        else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {");
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_short value = api->call_short_sub(api, call_sub_id");
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -2102,7 +2116,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
-        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_INT) {
+        else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {");
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_int value = api->call_int_sub(api, call_sub_id");
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -2123,7 +2137,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
-        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_LONG) {
+        else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {");
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_long value = api->call_long_sub(api, call_sub_id");
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -2144,7 +2158,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
-        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_FLOAT) {
+        else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {");
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_float value = api->call_float_sub(api, call_sub_id");
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -2165,7 +2179,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
-        else if (decl_sub_return_type_id == SPVM_TYPE_C_ID_DOUBLE) {
+        else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {");
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_double value = api->call_double_sub(api, call_sub_id");
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -2436,13 +2450,13 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
 
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!croak_flag) {\n");
-  if (sub_return_type_id > SPVM_TYPE_C_ID_DOUBLE) {
+  if (sub_return_type_dimension > 0 || sub_return_basic_type_id > SPVM_BASIC_TYPE_C_ID_DOUBLE) {
     SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(return_value); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, NULL);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
-  if (sub_return_type_id == SPVM_TYPE_C_ID_VOID) {
+  if (sub_return_type_dimension == 0 && sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
     SPVM_STRING_BUFFER_add(string_buffer, "  return;\n");
   }
   else {
