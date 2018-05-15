@@ -3439,66 +3439,72 @@ call_sub(...)
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
       
-      switch (arg_type->id) {
-        case SPVM_TYPE_C_ID_BYTE : {
-          int8_t value = (int8_t)SvIV(sv_value);
-          call_sub_args[arg_index].byte_value = value;
-          break;
-        }
-        case  SPVM_TYPE_C_ID_SHORT : {
-          int16_t value = (int16_t)SvIV(sv_value);
-          call_sub_args[arg_index].short_value = value;
-          break;
-        }
-        case  SPVM_TYPE_C_ID_INT : {
-          int32_t value = (int32_t)SvIV(sv_value);
-          call_sub_args[arg_index].int_value = value;
-          break;
-        }
-        case  SPVM_TYPE_C_ID_LONG : {
-          int64_t value = (int64_t)SvIV(sv_value);
-          call_sub_args[arg_index].long_value = value;
-          break;
-        }
-        case  SPVM_TYPE_C_ID_FLOAT : {
-          float value = (float)SvNV(sv_value);
-          call_sub_args[arg_index].float_value = value;
-          break;
-        }
-        case  SPVM_TYPE_C_ID_DOUBLE : {
-          double value = (double)SvNV(sv_value);
-          call_sub_args[arg_index].double_value = value;
-          break;
-        }
-        default :
-          if (!SvOK(sv_value)) {
-            call_sub_args[arg_index].object_value = NULL;
+      int32_t arg_basic_type_id = arg_type->basic_type->id;
+      int32_t arg_type_dimension = arg_type->dimension;
+      
+      if (arg_type_dimension == 0 && arg_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && arg_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+        switch (arg_type->basic_type->id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE : {
+            int8_t value = (int8_t)SvIV(sv_value);
+            call_sub_args[arg_index].byte_value = value;
+            break;
           }
-          else {
-            if (sv_isobject(sv_value)) {
-              SV* sv_base_object = sv_value;
-              if (sv_derived_from(sv_base_object, "SPVM::Perl::Object")) {
-                
-                SPVM_OBJECT* base_object = SPVM_XS_UTIL_get_object(sv_base_object);
-                
-                int32_t base_object_type_id = base_object->type_id;
-                
-                SPVM_TYPE* base_object_type = SPVM_LIST_fetch(compiler->types, base_object_type_id);
-                
-                if (base_object_type->id != arg_type->id) {
-                  croak("Argument base_object type need %s, but %s", arg_type->name, base_object_type->name);
-                }
-                
-                call_sub_args[arg_index].object_value = base_object;
+          case  SPVM_BASIC_TYPE_C_ID_SHORT : {
+            int16_t value = (int16_t)SvIV(sv_value);
+            call_sub_args[arg_index].short_value = value;
+            break;
+          }
+          case  SPVM_BASIC_TYPE_C_ID_INT : {
+            int32_t value = (int32_t)SvIV(sv_value);
+            call_sub_args[arg_index].int_value = value;
+            break;
+          }
+          case  SPVM_BASIC_TYPE_C_ID_LONG : {
+            int64_t value = (int64_t)SvIV(sv_value);
+            call_sub_args[arg_index].long_value = value;
+            break;
+          }
+          case  SPVM_BASIC_TYPE_C_ID_FLOAT : {
+            float value = (float)SvNV(sv_value);
+            call_sub_args[arg_index].float_value = value;
+            break;
+          }
+          case  SPVM_BASIC_TYPE_C_ID_DOUBLE : {
+            double value = (double)SvNV(sv_value);
+            call_sub_args[arg_index].double_value = value;
+            break;
+          }
+        }
+      }
+      else {
+        if (!SvOK(sv_value)) {
+          call_sub_args[arg_index].object_value = NULL;
+        }
+        else {
+          if (sv_isobject(sv_value)) {
+            SV* sv_base_object = sv_value;
+            if (sv_derived_from(sv_base_object, "SPVM::Perl::Object")) {
+              
+              SPVM_OBJECT* base_object = SPVM_XS_UTIL_get_object(sv_base_object);
+              
+              int32_t base_object_type_id = base_object->type_id;
+              
+              SPVM_TYPE* base_object_type = SPVM_LIST_fetch(compiler->types, base_object_type_id);
+              
+              if (base_object_type->id != arg_type->id) {
+                croak("Argument base_object type need %s, but %s", arg_type->name, base_object_type->name);
               }
-              else {
-                croak("Object must be derived from SPVM::Perl::Object");
-              }
+              
+              call_sub_args[arg_index].object_value = base_object;
             }
             else {
-              croak("Argument must be numeric value or SPVM::Perl::Object subclass");
+              croak("Object must be derived from SPVM::Perl::Object");
             }
           }
+          else {
+            croak("Argument must be numeric value or SPVM::Perl::Object subclass");
+          }
+        }
       }
     }
   }
