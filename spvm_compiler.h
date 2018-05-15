@@ -128,8 +128,8 @@ struct SPVM_compiler {
   
   _Bool enable_jit;
   
-  SPVM_HASH* type_name_symtable;
-  char* type_name_constant_pool;
+  SPVM_HASH* basic_type_name_symtable;
+  SPVM_CONSTANT_POOL* basic_type_name_constant_pool;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

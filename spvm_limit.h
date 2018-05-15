@@ -24,6 +24,8 @@ enum {
   
   /* Case statements count limit */
   SPVM_LIMIT_C_CASES = INT32_MAX,
+  
+  SPVM_LIMIT_DIMENSION = UINT8_MAX,
 };
 
 #endif

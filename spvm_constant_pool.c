@@ -9,6 +9,7 @@
 #include "spvm_op.h"
 #include "spvm_hash.h"
 #include "spvm_compiler.h"
+#include "spvm_limit.h"
 
 void SPVM_CONSTANT_POOL_adjust_alignment(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, int32_t byte_size) {
   
@@ -196,6 +197,36 @@ int32_t SPVM_CONSTANT_POOL_push_string(SPVM_COMPILER* compiler, SPVM_CONSTANT_PO
   }
 }
 */
+
+int32_t SPVM_CONSTANT_POOL_push_basic_type_name(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, const char* basic_type_name) {
+  
+  int32_t id = (int32_t)(intptr_t)SPVM_HASH_search(compiler->basic_type_name_symtable, basic_type_name, strlen(basic_type_name));
+  
+  if (id > 0) {
+    return id;
+  }
+  else {
+    int32_t id = constant_pool->length;
+    
+    // Add @@@...@@@int, @ count is 255
+    int32_t dimension_max = SPVM_LIMIT_DIMENSION;
+    
+    // Add basic_type_name length
+    int32_t cp_type_name_length = (int32_t)strlen(basic_type_name) + dimension_max;
+    
+    // Add basic_type_name base_object
+    int32_t extend_length = SPVM_CONSTANT_POOL_calculate_extend_length(compiler, constant_pool, cp_type_name_length + 1);
+    SPVM_CONSTANT_POOL_extend(compiler, constant_pool, extend_length);
+    memset(&constant_pool->values[constant_pool->length], '@', dimension_max);;
+    memcpy(&constant_pool->values[constant_pool->length + dimension_max], basic_type_name, strlen(basic_type_name) + 1);
+    
+    constant_pool->length += extend_length;
+    
+    SPVM_HASH_insert(compiler->basic_type_name_symtable, basic_type_name, strlen(basic_type_name), (void*)(intptr_t)id);
+    
+    return id;
+  }
+}
 
 void SPVM_CONSTANT_POOL_free(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool) {
   (void)compiler;
