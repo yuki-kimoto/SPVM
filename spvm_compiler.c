@@ -82,6 +82,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
 
+  compiler->type_name_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->type_name_constant_pool = SPVM_CONSTANT_POOL_new(compiler);
 
   // Bytecodes
