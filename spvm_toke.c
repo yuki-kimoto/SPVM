@@ -21,6 +21,7 @@
 #include "spvm_descriptor.h"
 #include "spvm_type.h"
 #include "spvm_use.h"
+#include "spvm_basic_type.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -913,7 +914,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Constant op
           SPVM_OP* op_constant;
           
-          if (constant_type->id == SPVM_TYPE_C_ID_FLOAT) {
+          if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -923,7 +924,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num, compiler->cur_file, compiler->cur_line);
           }
           // double
-          else if (constant_type->id == SPVM_TYPE_C_ID_DOUBLE) {
+          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
@@ -933,7 +934,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_double(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // int
-          else if (constant_type->id == SPVM_TYPE_C_ID_INT) {
+          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
             int64_t num;
             errno = 0;
             _Bool out_of_range = 0;
@@ -970,7 +971,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_int(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // long
-          else if (constant_type->id == SPVM_TYPE_C_ID_LONG) {
+          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
             int64_t num;
             errno = 0;
             _Bool out_of_range = 0;
