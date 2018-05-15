@@ -309,7 +309,7 @@ _Bool SPVM_TYPE_is_int(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
 _Bool SPVM_TYPE_is_object(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  if (type->id > SPVM_TYPE_C_ID_DOUBLE) {
+  if (type->dimension > 0 || (type->dimension == 0 && type->basic_type->id > SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
     return 1;
   }
   else {
@@ -320,7 +320,7 @@ _Bool SPVM_TYPE_is_object(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
 _Bool SPVM_TYPE_is_undef(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  if (type->id == SPVM_TYPE_C_ID_UNDEF) {
+  if (type->dimension == 0 && type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
     return 1;
   }
   else {

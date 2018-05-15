@@ -980,7 +980,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* to_type = SPVM_OP_get_type(compiler, op_term_to);
                   SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_term_from);
                   
-                  if (to_type->id == SPVM_TYPE_C_ID_UNDEF && from_type->id == SPVM_TYPE_C_ID_UNDEF) {
+                  if ((to_type->dimension == 0 && to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) && (from_type->dimension == 0 && from_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF)) {
                     SPVM_yyerror_format(compiler, "undef can't be assigned to empty type at %s line %d\n", op_cur->file, op_cur->line);
                   }
                   
@@ -2178,7 +2178,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
       }
     }
     else {
-      if (assign_to_type->id == SPVM_TYPE_C_ID_STRING && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
+      if ((assign_to_type->dimension && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
         // Convert numeric type to String
       }
       // Object type check

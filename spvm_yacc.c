@@ -650,7 +650,7 @@ static const char *const yytname[] =
   "unop", "binop", "relative_term", "logical_term", "array_elem",
   "call_sub", "opt_args", "args", "arg", "invocant",
   "opt_colon_descriptors", "opt_descriptors", "descriptors", "type",
-  "type_name", "type_array", "type_array_with_length", "type_or_void",
+  "basic_type", "array_type", "array_type_with_length", "type_or_void",
   "field_name", "sub_name", "var", "eval_block", 0
 };
 #endif
