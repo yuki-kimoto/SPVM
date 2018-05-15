@@ -17,12 +17,12 @@
 #include "spvm_package.h"
 #include "spvm_sub.h"
 #include "spvm_package.h"
-#include "spvm_type.h"
 #include "spvm_field.h"
 #include "spvm_compiler.h"
 #include "spvm_my.h"
 #include "spvm_op.h"
 #include "spvm_list.h"
+#include "spvm_basic_type.h"
 
 SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   (void)runtime;
@@ -136,8 +136,8 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
     switch (object->category) {
       case SPVM_OBJECT_C_CATEGORY_OBJECT: {
         // Runtime
-        SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, object->type_id);
-        SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+        SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
         SPVM_PACKAGE* package = op_package->uv.package;
 
         byte_size = sizeof(SPVM_OBJECT) + package->byte_size;
