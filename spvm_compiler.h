@@ -127,6 +127,8 @@ struct SPVM_compiler {
   int32_t anon_package_length;
   
   _Bool enable_jit;
+  
+  char* type_name_constant_pool;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
