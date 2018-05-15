@@ -32,6 +32,7 @@
 #include "spvm_list.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_string_buffer.h"
+#include "spvm_basic_type.h"
 
 static SPVM_API_VALUE call_sub_args[255];
 
@@ -2889,7 +2890,7 @@ new_len(...)
   if (type_id < 0) {
     croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Perl::Object::Array::Object::new())", type_name);
   }
-  if (type_id >= SPVM_TYPE_C_ID_BYTE && type_id <= SPVM_TYPE_C_ID_DOUBLE) {
+  if (type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
     croak("Type is not object array %s(SPVM::Perl::Object::Array::Object::new())", type_name);
   }
   
@@ -2991,39 +2992,45 @@ get(...)
   }
   
   SV* sv_base_object;
-  switch (element_type->id) {
-    case SPVM_TYPE_C_ID_BYTE_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Byte");
-      break;
-    case SPVM_TYPE_C_ID_SHORT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Short");
-      break;
-    case SPVM_TYPE_C_ID_INT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Int");
-      break;
-    case SPVM_TYPE_C_ID_LONG_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Long");
-      break;
-    case SPVM_TYPE_C_ID_FLOAT_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Float");
-      break;
-    case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Double");
-      break;
-    case SPVM_TYPE_C_ID_STRING :
-      sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Package::String");
-      break;
-    default : {
-      if (element_type->dimension > 0) {
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Object");
-      }
-      else {
+  if (element_type->dimension == 0) {
+    switch (element_type->basic_type->id) {
+      case SPVM_BASIC_TYPE_C_ID_STRING :
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Package::String");
+        break;
+      default: {
         SV* sv_element_type_name = sv_2mortal(newSVpv("SPVM::", 0));
         sv_catpv(sv_element_type_name, element_type->name);
         
         sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, SvPV_nolen(sv_element_type_name));
       }
     }
+  }
+  else if (element_type->dimension == 1) {
+    switch (element_type->basic_type->id) {
+      case SPVM_BASIC_TYPE_C_ID_BYTE :
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Byte");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_SHORT :
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Short");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_INT :
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Int");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_LONG :
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Long");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_FLOAT :
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Float");
+        break;
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE :
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Double");
+        break;
+      default :
+        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Object");
+    }
+  }
+  else {
+    sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Object");
   }
   
   XPUSHs(sv_base_object);
@@ -3499,90 +3506,99 @@ call_sub(...)
   // Return type id
   SPVM_TYPE* return_type = sub->op_return_type->uv.type;
   int32_t return_type_id = return_type->id;
+
+  int32_t return_basic_type_id = return_type->basic_type->id;
+  int32_t return_type_dimension = return_type->dimension;
   
   PUSHMARK(SP);
           
   // Return count
   SV* sv_return_value = NULL;
-  switch (return_type_id) {
-    case SPVM_TYPE_C_ID_VOID:  {
-      api->call_void_sub(api, sub_id, call_sub_args);
-      break;
+  if (return_type_dimension == 0 && return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+    switch (return_basic_type_id) {
+      case SPVM_BASIC_TYPE_C_ID_VOID:  {
+        api->call_void_sub(api, sub_id, call_sub_args);
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        int8_t return_value = api->call_byte_sub(api, sub_id, call_sub_args);
+        sv_return_value = sv_2mortal(newSViv(return_value));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        int16_t return_value = api->call_short_sub(api, sub_id, call_sub_args);
+        sv_return_value = sv_2mortal(newSViv(return_value));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_INT: {
+        int32_t return_value = api->call_int_sub(api, sub_id, call_sub_args);
+        sv_return_value = sv_2mortal(newSViv(return_value));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_LONG: {
+        int64_t return_value = api->call_long_sub(api, sub_id, call_sub_args);
+        sv_return_value = sv_2mortal(newSViv(return_value));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        float return_value = api->call_float_sub(api, sub_id, call_sub_args);
+        sv_return_value = sv_2mortal(newSVnv(return_value));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        double return_value = api->call_double_sub(api, sub_id, call_sub_args);
+        sv_return_value = sv_2mortal(newSVnv(return_value));
+        break;
+      }
+      default:
+        assert(0);
     }
-    case SPVM_TYPE_C_ID_BYTE: {
-      int8_t return_value = api->call_byte_sub(api, sub_id, call_sub_args);
-      sv_return_value = sv_2mortal(newSViv(return_value));
-      break;
-    }
-    case SPVM_TYPE_C_ID_SHORT: {
-      int16_t return_value = api->call_short_sub(api, sub_id, call_sub_args);
-      sv_return_value = sv_2mortal(newSViv(return_value));
-      break;
-    }
-    case SPVM_TYPE_C_ID_INT: {
-      int32_t return_value = api->call_int_sub(api, sub_id, call_sub_args);
-      sv_return_value = sv_2mortal(newSViv(return_value));
-      break;
-    }
-    case SPVM_TYPE_C_ID_LONG: {
-      int64_t return_value = api->call_long_sub(api, sub_id, call_sub_args);
-      sv_return_value = sv_2mortal(newSViv(return_value));
-      break;
-    }
-    case SPVM_TYPE_C_ID_FLOAT: {
-      float return_value = api->call_float_sub(api, sub_id, call_sub_args);
-      sv_return_value = sv_2mortal(newSVnv(return_value));
-      break;
-    }
-    case SPVM_TYPE_C_ID_DOUBLE: {
-      double return_value = api->call_double_sub(api, sub_id, call_sub_args);
-      sv_return_value = sv_2mortal(newSVnv(return_value));
-      break;
-    }
-    default: {
-      SPVM_API_OBJECT* return_value = api->call_object_sub(api, sub_id, call_sub_args);
-      sv_return_value = NULL;
-      if (return_value != NULL) {
-        api->inc_ref_count(api, return_value);
-        
-        switch(return_type_id) {
-          case SPVM_TYPE_C_ID_BYTE_ARRAY :
+  }
+  else {
+    SPVM_API_OBJECT* return_value = api->call_object_sub(api, sub_id, call_sub_args);
+    sv_return_value = NULL;
+    if (return_value != NULL) {
+      api->inc_ref_count(api, return_value);
+      
+      if (return_type_dimension == 0 && return_basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
+        sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Package::String");
+      }
+      else if (return_type_dimension == 1) {
+        switch(return_basic_type_id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Byte");
             break;
-          case SPVM_TYPE_C_ID_SHORT_ARRAY :
+          case SPVM_BASIC_TYPE_C_ID_SHORT :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Short");
             break;
-          case SPVM_TYPE_C_ID_INT_ARRAY :
+          case SPVM_BASIC_TYPE_C_ID_INT :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Int");
             break;
-          case SPVM_TYPE_C_ID_LONG_ARRAY :
+          case SPVM_BASIC_TYPE_C_ID_LONG :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Long");
             break;
-          case SPVM_TYPE_C_ID_FLOAT_ARRAY :
+          case SPVM_BASIC_TYPE_C_ID_FLOAT :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Float");
             break;
-          case SPVM_TYPE_C_ID_DOUBLE_ARRAY :
+          case SPVM_BASIC_TYPE_C_ID_DOUBLE :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Double");
-            break;
-          case SPVM_TYPE_C_ID_STRING :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Package::String");
-            break;
-          default : {
-            if (return_type->dimension > 0) {
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Object");
-            }
-            else {
-              SV* sv_return_type_name = sv_2mortal(newSVpv("SPVM::", 0));
-              sv_catpv(sv_return_type_name, return_type->name);
-              
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
-            }
-          }
+            break;        
         }
       }
       else {
-        sv_return_value = &PL_sv_undef;
+        if (return_type->dimension > 0) {
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Object");
+        }
+        else {
+          SV* sv_return_type_name = sv_2mortal(newSVpv("SPVM::", 0));
+          sv_catpv(sv_return_type_name, return_type->name);
+          
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
+        }
       }
+    }
+    else {
+      sv_return_value = &PL_sv_undef;
     }
   }
   SPAGAIN;
@@ -3597,7 +3613,7 @@ call_sub(...)
   }
   
   int32_t return_count;
-  if (return_type_id == SPVM_TYPE_C_ID_VOID) {
+  if (return_type_dimension == 0 && return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
     return_count = 0;
   }
   else {
