@@ -4049,6 +4049,9 @@ package TestCase {
   }
 
   sub array : int () {
+    {
+      my $nums : int[][] = new int[][3];
+    }
     
     my $nums = new int[(byte)3];
     $nums->[2] = 4;
