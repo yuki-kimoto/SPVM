@@ -32,6 +32,7 @@
 #include "spvm_dumper.h"
 #include "spvm_opcode.h"
 #include "spvm_block.h"
+#include "spvm_basic_type.h"
 
 void SPVM_OPCODE_BUILDER_push_if_croak(
   SPVM_COMPILER* compiler,
@@ -211,7 +212,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   else if (op_assign_from->id == SPVM_OP_C_ID_CONCAT) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_from->first);
-                    assert(first_type->id == SPVM_TYPE_C_ID_STRING);
+                    
+                    assert(first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING && first_type->dimension == 0);
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
