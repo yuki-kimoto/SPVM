@@ -176,7 +176,7 @@ void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
   
   SPVM_TYPE* dist_type;
-  if (type->id <= SPVM_TYPE_C_ID_INT) {
+  if (type->dimension == 0 && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_INT) {
     dist_type = SPVM_TYPE_get_int_type(compiler);
   }
   else {
@@ -201,13 +201,13 @@ void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op
   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_last);
   
   SPVM_TYPE* dist_type;
-  if (first_type->id == SPVM_TYPE_C_ID_DOUBLE || last_type->id == SPVM_TYPE_C_ID_DOUBLE) {
+  if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
     dist_type = SPVM_TYPE_get_double_type(compiler);
   }
-  else if (first_type->id == SPVM_TYPE_C_ID_FLOAT || last_type->id == SPVM_TYPE_C_ID_FLOAT) {
+  else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) || (last_type->dimension == 0 && last_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT)) {
     dist_type = SPVM_TYPE_get_float_type(compiler);
   }
-  else if (first_type->id == SPVM_TYPE_C_ID_LONG || last_type->id == SPVM_TYPE_C_ID_LONG) {
+  else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) || (last_type->dimension == 0 && last_type->id == SPVM_BASIC_TYPE_C_ID_LONG)) {
     dist_type = SPVM_TYPE_get_long_type(compiler);
   }
   else {
@@ -563,7 +563,7 @@ SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_CONSTANT* constant = op_constant->uv.constant;
   
-  if (constant->type->id == SPVM_TYPE_C_ID_STRING) {
+  if (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
     SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_constant->file, op_constant->line);
     SPVM_OP_insert_child(compiler, op_new, op_new->last, op_constant);
     return op_new;
@@ -2048,7 +2048,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   if (strcmp(sub->op_name->uv.name, "DESTROY") == 0) {
     sub->is_destructor = 1;
     // DESTROY return type must be void
-    if (sub->op_return_type->uv.type->id != SPVM_TYPE_C_ID_VOID) {
+    if (!(sub->op_return_type->uv.type->dimension == 0 && sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
       SPVM_yyerror_format(compiler, "DESTROY return type must be void\n", op_block->file, op_block->line);
     }
   }
@@ -2072,30 +2072,30 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       SPVM_TYPE* return_type = sub->op_return_type->uv.type;
       
       SPVM_OP* op_constant;
-      if (return_type->id == SPVM_TYPE_C_ID_VOID) {
+      if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
         // Nothing
       }
-      else if (return_type->id == SPVM_TYPE_C_ID_BYTE) {
+      else if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
         op_constant = SPVM_OP_new_op_constant_byte(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->id == SPVM_TYPE_C_ID_SHORT) {
+      else if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
         op_constant = SPVM_OP_new_op_constant_short(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->id == SPVM_TYPE_C_ID_INT) {
+      else if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
         op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->id == SPVM_TYPE_C_ID_LONG) {
+      else if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
         op_constant = SPVM_OP_new_op_constant_long(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->id == SPVM_TYPE_C_ID_FLOAT) {
+      else if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
         op_constant = SPVM_OP_new_op_constant_float(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
-      else if (return_type->id == SPVM_TYPE_C_ID_DOUBLE) {
+      else if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
         op_constant = SPVM_OP_new_op_constant_double(compiler, 0, op_list_statement->file, op_list_statement->line);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
       }
@@ -2123,7 +2123,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     
     SPVM_CONSTANT* constant = op_constant->uv.constant;
     
-    if (constant->type->id == SPVM_TYPE_C_ID_INT) {
+    if (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
       compiler->enum_default_value = constant->value.int_value;
     }
     else {
@@ -2181,7 +2181,6 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   
   // Reset enum information
   compiler->enum_default_value = 0;
-  compiler->enum_default_type_id = SPVM_TYPE_C_ID_INT;
   
   return op_enumeration;
 }
