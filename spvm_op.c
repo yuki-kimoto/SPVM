@@ -1535,12 +1535,12 @@ const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const c
   return abs_name;
 }
 
-SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_name_package, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
-
+SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
+  
   // Package
   SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
   
-  if (!op_name_package) {
+  if (!op_type) {
     // Package is anon
     package->is_anon = 1;
     
@@ -1548,13 +1548,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     char* name_package = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@anon2147483647"));
     sprintf(name_package, "@anon%d", compiler->anon_package_length);
     compiler->anon_package_length++;
-    op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
+    SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
+    op_type = SPVM_OP_build_basic_type(compiler, op_name_package);
   }
   
-  SPVM_OP_insert_child(compiler, op_package, op_package->last, op_name_package);
+  SPVM_OP_insert_child(compiler, op_package, op_package->last, op_type);
   SPVM_OP_insert_child(compiler, op_package, op_package->last, op_block);
   
-  const char* package_name = op_name_package->uv.name;
+  const char* package_name = op_type->uv.type->basic_type->name;
   SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
   
   // Redeclaration package error
@@ -1564,6 +1565,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     return NULL;
   }
   
+  SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
   package->op_name = op_name_package;
 
   // Package is interface
@@ -1591,13 +1593,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_TYPE* type_package = SPVM_TYPE_new(compiler);
   type_package->name = package_name;
   type_package->basic_type_name = package_name;
-  
-  // Type OP
-  SPVM_OP* op_type_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name_package->file, op_name_package->line);
-  op_type_package->uv.type = type_package;
-  
-  // Add type
-  SPVM_LIST_push(compiler->op_types, op_type_package);
   
   SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -1732,7 +1727,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         if (op_arg_first->uv.my->op_type) {
           if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
             op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
-            op_arg_first_type->uv.type = op_type_package->uv.type;
+            op_arg_first_type->uv.type = op_type->uv.type;
             op_arg_first->uv.my->op_type = op_arg_first_type;
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
           }
@@ -1742,7 +1737,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         }
         else {
           op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
-          op_arg_first_type->uv.type = op_type_package->uv.type;
+          op_arg_first_type->uv.type = op_type->uv.type;
           op_arg_first->uv.my->op_type = op_arg_first_type;
         }
         if (op_arg_first->uv.my->op_type) {

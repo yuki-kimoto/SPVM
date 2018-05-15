@@ -23,10 +23,10 @@
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field our_var invocant
-%type <opval> type package_name field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values type_array
+%type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var
-%type <opval> call_field array_elem convert_type enumeration new_object type_name array_length declaration_in_grammar
-%type <opval> switch_statement case_statement default_statement type_array_with_length
+%type <opval> call_field array_elem convert_type enumeration new_object basic_type array_length declaration_in_grammar
+%type <opval> switch_statement case_statement default_statement array_type_with_length
 %type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
 
 
@@ -97,13 +97,13 @@ declaration_in_grammar
   : package
 
 use
-  : USE type_name ';'
+  : USE basic_type ';'
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2);
     }
 
 package
-  : PACKAGE package_name opt_colon_descriptors package_block
+  : PACKAGE basic_type opt_colon_descriptors package_block
     {
       $$ = SPVM_OP_build_package(compiler, $1, $2, $4, $3);
     }
@@ -486,15 +486,15 @@ isa
     }
 
 new_object
-  : NEW type_name
+  : NEW basic_type
     {
       $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
     }
-  | NEW type_array_with_length
+  | NEW array_type_with_length
     {
       $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
     }
-  | NEW type_array '{' opt_assignable_terms '}'
+  | NEW array_type '{' opt_assignable_terms '}'
     {
       $$ = SPVM_OP_build_new_object(compiler, $1, $2, $4);
     }
@@ -671,11 +671,11 @@ call_sub
     {
       $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $3);
     }
-  | type_name ARROW sub_name '(' opt_assignable_terms  ')'
+  | basic_type ARROW sub_name '(' opt_assignable_terms  ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
     }
-  | type_name ARROW sub_name
+  | basic_type ARROW sub_name
     {
       SPVM_OP* op_assignable_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_assignable_terms);
@@ -817,31 +817,31 @@ descriptors
   | DESCRIPTOR
 
 type
-  : type_name
-  | type_array
+  : basic_type
+  | array_type
 
-type_name
+basic_type
   : NAME
     {
       $$ = SPVM_OP_build_basic_type(compiler, $1);
     }
 
-type_array
-  : type_name '[' ']'
+array_type
+  : basic_type '[' ']'
     {
       $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
     }
-  | type_array '[' ']'
+  | array_type '[' ']'
     {
       $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
     }
 
-type_array_with_length
-  : type_name '[' assignable_term ']'
+array_type_with_length
+  : basic_type '[' assignable_term ']'
     {
       $$ = SPVM_OP_build_array_type(compiler, $1, $3);
     }
-  | type_array '[' assignable_term ']'
+  | array_type '[' assignable_term ']'
     {
       $$ = SPVM_OP_build_array_type(compiler, $1, $3);
     }
@@ -855,7 +855,6 @@ type_or_void
 
 field_name : NAME
 sub_name : NAME
-package_name : NAME
 
 var
   : VAR_NAME
