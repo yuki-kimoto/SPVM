@@ -671,11 +671,11 @@ call_sub
     {
       $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $3);
     }
-  | package_name ARROW sub_name '(' opt_assignable_terms  ')'
+  | type_name ARROW sub_name '(' opt_assignable_terms  ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
     }
-  | package_name ARROW sub_name
+  | type_name ARROW sub_name
     {
       SPVM_OP* op_assignable_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_assignable_terms);
