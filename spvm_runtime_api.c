@@ -27,6 +27,7 @@
 #include "spvm_op.h"
 #include "spvm_list.h"
 #include "spvm_op_checker.h"
+#include "spvm_basic_type.h"
 
 
 
@@ -465,6 +466,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   
   // Set type id
   object->type_id = SPVM_TYPE_C_ID_BYTE_ARRAY;
+
+  object->dimension = 1;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
   
   // Set array length
   object->length = length;
@@ -491,6 +495,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
   // Set type id
   object->type_id = SPVM_TYPE_C_ID_SHORT_ARRAY;
   
+  object->dimension = 1;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_SHORT;
+  
   // Set array length
   object->length = length;
 
@@ -516,6 +523,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
   // Set type id
   object->type_id = SPVM_TYPE_C_ID_INT_ARRAY;
   
+  object->dimension = 1;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_INT;
+
   // Set array length
   object->length = length;
 
@@ -541,6 +551,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
   // Set type id
   object->type_id = SPVM_TYPE_C_ID_LONG_ARRAY;
   
+  object->dimension = 1;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_LONG;
+
   // Set array length
   object->length = length;
 
@@ -566,6 +579,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
   // Set type id
   object->type_id = SPVM_TYPE_C_ID_FLOAT_ARRAY;
   
+  object->dimension = 1;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_FLOAT;
+
   // Set array length
   object->length = length;
 
@@ -590,6 +606,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   
   // Set type id
   object->type_id = SPVM_TYPE_C_ID_DOUBLE_ARRAY;
+
+  object->dimension = 1;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE;
   
   // Set array length
   object->length = length;
@@ -621,6 +640,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   int32_t type_id = element_type->parent_type_id;
   object->type_id = type_id;
   
+  object->basic_type_id = element_type->basic_type->id;
+  object->dimension = element_type->dimension;
+  
   // Set array length
   object->length = length;
   
@@ -643,12 +665,17 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
   SPVM_PACKAGE* package = op_package->uv.package;
   
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->name, strlen(type->name));
+  
   // Allocate memory
   int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)package->byte_size;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
   
   // Type id
   object->type_id = type_id;
+  
+  object->basic_type_id = basic_type->id;
+  object->dimension = 0;
   
   // Object type id
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
@@ -682,8 +709,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, int8_t* bytes, int32_t l
   }
   
   int32_t string_type_id = SPVM_TYPE_C_ID_STRING;
-  
+
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_type_id);
+
+  object->dimension = 0;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   
   static int32_t field_id;
   field_id = SPVM_RUNTIME_API_get_field_id(api, object, "bytes");
