@@ -97,7 +97,7 @@ declaration_in_grammar
   : package
 
 use
-  : USE package_name ';'
+  : USE type_name ';'
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2);
     }

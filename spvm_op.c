@@ -1811,11 +1811,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   return op_package;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_package) {
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type) {
   
-  SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package);
+  SPVM_OP_insert_child(compiler, op_use, op_use->last, op_type);
   
-  const char* package_name = op_name_package->uv.name;
+  const char* package_name = op_type->uv.type->basic_type->name;
   
   SPVM_USE* use = SPVM_USE_new(compiler);
   op_use->uv.use = use;
