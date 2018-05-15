@@ -30,6 +30,7 @@
 #include "spvm_our.h"
 #include "spvm_package_var.h"
 #include "spvm_block.h"
+#include "spvm_basic_type.h"
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
@@ -2321,28 +2322,33 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
           int32_t field_byte_size;
-          switch (field_type->id) {
-            case SPVM_TYPE_C_ID_BYTE:
-              field_byte_size = sizeof(int8_t);
-              break;
-            case SPVM_TYPE_C_ID_SHORT:
-              field_byte_size = sizeof(int16_t);
-              break;
-            case SPVM_TYPE_C_ID_INT:
-              field_byte_size = sizeof(int32_t);
-              break;
-            case SPVM_TYPE_C_ID_LONG:
-              field_byte_size = sizeof(int64_t);
-              break;
-            case SPVM_TYPE_C_ID_FLOAT:
-              field_byte_size = sizeof(float);
-              break;
-            case SPVM_TYPE_C_ID_DOUBLE:
-              field_byte_size = sizeof(double);
-              break;
-            default: {
-              field_byte_size = sizeof(SPVM_OBJECT*);
+          if (field_type->dimension == 0) {
+            switch (field_type->basic_type->id) {
+              case SPVM_BASIC_TYPE_C_ID_BYTE:
+                field_byte_size = sizeof(int8_t);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_SHORT:
+                field_byte_size = sizeof(int16_t);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_INT:
+                field_byte_size = sizeof(int32_t);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_LONG:
+                field_byte_size = sizeof(int64_t);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                field_byte_size = sizeof(float);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                field_byte_size = sizeof(double);
+                break;
+              default: {
+                field_byte_size = sizeof(SPVM_OBJECT*);
+              }
             }
+          }
+          else {
+            field_byte_size = sizeof(SPVM_OBJECT*);
           }
           
           // Padding
