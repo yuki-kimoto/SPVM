@@ -5,7 +5,7 @@
 
 // Array
 struct SPVM_constant_pool {
-  int32_t* values;
+  char* values;
   int32_t length;
   int32_t capacity;
 };
