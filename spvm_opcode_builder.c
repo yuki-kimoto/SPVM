@@ -1349,7 +1349,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                          opcode.id = SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY;
+                          opcode.id = SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY;
 
                           int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                           SPVM_TYPE* type = op_assign_from->first->first->uv.type;

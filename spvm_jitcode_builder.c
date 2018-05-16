@@ -1585,6 +1585,16 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "));\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", api->new_object_array(api, ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "));\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t constant_id = opcode->operand1;
         
