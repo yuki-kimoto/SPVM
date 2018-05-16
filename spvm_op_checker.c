@@ -2253,7 +2253,8 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
       }
       // Object type check
       else {
-        _Bool can_assign = SPVM_OP_CHECKER_can_assign(compiler, assign_to_type, assign_from_type);
+        _Bool can_assign = SPVM_OP_CHECKER_can_assign_basic(
+          compiler, assign_to_type->basic_type->id, assign_to_type->dimension, assign_from_type->basic_type->id,  assign_from_type->dimension);
         if (!can_assign) {
           SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
         }
