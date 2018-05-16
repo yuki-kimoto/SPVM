@@ -1442,7 +1442,9 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
   // Calcurate signature length
   {
     // Return type
-    length += strlen(sub->op_return_type->uv.type->name);
+    length += strlen(sub->op_return_type->uv.type->basic_type->name);
+    
+    length += sub->op_return_type->uv.type->dimension * 2;
     
     // Space
     length += 1;
@@ -1460,7 +1462,10 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
         SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, op_arg_sub);
         
         // TYPE
-        length += strlen(type_arg_sub->name);
+        length += strlen(type_arg_sub->basic_type->name);
+        
+        // Dimension
+        length += type_arg_sub->dimension * 2;
         
         // ,
         if (arg_index != sub->op_args->length - 1) {
@@ -1479,9 +1484,15 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
   char* bufptr = method_signature;
   {
     // Return type
-    memcpy(bufptr, sub->op_return_type->uv.type->name, strlen(sub->op_return_type->uv.type->name));
-    bufptr += strlen(sub->op_return_type->uv.type->name);
-
+    memcpy(bufptr, sub->op_return_type->uv.type->basic_type->name, strlen(sub->op_return_type->uv.type->basic_type->name));
+    bufptr += strlen(sub->op_return_type->uv.type->basic_type->name);
+    
+    int32_t dim_index;
+    for (dim_index = 0; dim_index < sub->op_return_type->uv.type->dimension; dim_index++) {
+      memcpy(bufptr, "[]", 2);
+      bufptr += 2;
+    }
+    
     // Space
     memcpy(bufptr, " ", 1);
     bufptr += 1;
@@ -1501,8 +1512,14 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
         SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, op_arg_sub);
         
         // TYPE
-        memcpy(bufptr, type_arg_sub->name, strlen(type_arg_sub->name));
-        bufptr += strlen(type_arg_sub->name);
+        memcpy(bufptr, type_arg_sub->basic_type->name, strlen(type_arg_sub->basic_type->name));
+        bufptr += strlen(type_arg_sub->basic_type->name);
+
+        int32_t dim_index;
+        for (dim_index = 0; dim_index < type_arg_sub->dimension; dim_index++) {
+          memcpy(bufptr, "[]", 2);
+          bufptr += 2;
+        }
         
         // ,
         if (arg_index != sub->op_args->length - 1) {
