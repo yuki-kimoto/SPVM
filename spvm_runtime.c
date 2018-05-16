@@ -1349,15 +1349,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
-        int32_t element_type_id = opcode->operand1;
+        int32_t basic_type_id = (uint32_t)opcode->operand1 & 0xFFFFFF;
+        int32_t dimension  = (uint32_t)opcode->operand1 >> 24;
         
         // length
         int32_t length = *(SPVM_API_int*)&vars[opcode->operand2];
         
-        SPVM_API_OBJECT* object = api->new_multi_array(api, element_type_id, length);
+        SPVM_API_OBJECT* object = api->new_multi_array(api, basic_type_id, dimension, length);
         
         // Set object
-         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {

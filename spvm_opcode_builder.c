@@ -1355,9 +1355,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                           SPVM_TYPE* type = op_assign_from->first->first->uv.type;
                           int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
-
+                          
                           opcode.operand0 = index_out;
-                          opcode.operand1 = type->id;
+                          opcode.operand1 = ((uint32_t)type->basic_type->id + ((uint32_t)type->dimension << 24));
                           opcode.operand2 = index_index;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
