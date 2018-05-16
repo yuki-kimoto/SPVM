@@ -47,7 +47,9 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "void", strlen("void"));
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "void", strlen("void"));
+  type->dimension = 0;
   
   assert(type);
   
@@ -57,7 +59,9 @@ SPVM_TYPE* SPVM_TYPE_get_void_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_undef_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "undef", strlen("undef"));
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "undef", strlen("undef"));
+  type->dimension = 0;
   
   assert(type);
   
