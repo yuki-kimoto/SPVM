@@ -508,10 +508,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_STRING_BUFFER_add_int(string_buffer, SPVM_RUNTIME_C_OBJECT_LENGTH_BYTE_OFFSET);
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET);
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_OBJECT_BASIC_TYPE_ID_BYTE_OFFSET ");
   SPVM_STRING_BUFFER_add_int(string_buffer, SPVM_RUNTIME_C_OBJECT_BASIC_TYPE_ID_BYTE_OFFSET);
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
