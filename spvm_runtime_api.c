@@ -112,8 +112,6 @@ int32_t SPVM_RUNTIME_API_check_cast(SPVM_API* api, int32_t cast_type_id, SPVM_OB
   SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_TYPE* cast_type = SPVM_LIST_fetch(compiler->types, cast_type_id);
- 
-  SPVM_TYPE* object_type = SPVM_LIST_fetch(compiler->types, object->type_id);
   
   return SPVM_OP_CHECKER_can_assign(compiler, cast_type->basic_type->id, cast_type->dimension, object->basic_type_id, object->dimension);
 }

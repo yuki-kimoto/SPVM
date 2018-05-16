@@ -1763,22 +1763,16 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       case SPVM_OPCODE_C_ID_CHECK_CAST: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
-        int32_t category = *(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET);
         int32_t cast_type_id = opcode->operand2;
         
-        if (category == cast_type_id) {
+        _Bool can_assign = api->check_cast(api, cast_type_id, object);
+        if (can_assign) {
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         }
         else {
-          _Bool can_assign = api->check_cast(api, cast_type_id, object);
-          if (can_assign) {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
-          }
-          else {
-            SPVM_API_OBJECT* exception = api->new_string_chars(api, "Can't cast uncompatible type.");
-            api->set_exception(api, exception);
-            croak_flag = 1;
-          }
+          SPVM_API_OBJECT* exception = api->new_string_chars(api, "Can't cast uncompatible type.");
+          api->set_exception(api, exception);
+          croak_flag = 1;
         }
         
         break;
