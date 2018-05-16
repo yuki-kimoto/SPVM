@@ -653,29 +653,28 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t type_id) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t basic_type_id) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
-  SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
 
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
   SPVM_PACKAGE* package = op_package->uv.package;
-  
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->name, strlen(type->name));
   
   // Allocate memory
   int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)package->byte_size;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
   
-  // Type id
-  object->type_id = type_id;
-  
   object->basic_type_id = basic_type->id;
   object->dimension = 0;
+  
+  SPVM_TYPE* type = SPVM_TYPE_search_type(compiler, basic_type->id, 0);
+  assert(type);
+  object->type_id = type->id;
   
   // Object type id
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;

@@ -1261,9 +1261,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         // Get subroutine ID
-        int32_t type_id = opcode->operand1;
+        int32_t basic_type_id = opcode->operand1;
         
-        SPVM_API_OBJECT* object = api->new_object(api, type_id);
+        SPVM_API_OBJECT* object = api->new_object(api, basic_type_id);
         
         // Push object
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
