@@ -667,11 +667,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_API* api, int32_t element_typ
   
   ((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
-  // Type id
   SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, element_type_id);
+  
+  SPVM_TYPE* type = SPVM_TYPE_search_type(compiler, element_type->basic_type->id, element_type->dimension + 1);
 
-  int32_t type_id = element_type->parent_type_id;
-  object->type_id = type_id;
+  object->type_id = type->id;
   
   object->basic_type_id = element_type->basic_type->id;
   object->dimension = element_type->dimension;

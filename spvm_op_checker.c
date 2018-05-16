@@ -648,7 +648,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     if (op_cur->uv.any) {
                       SPVM_OP* op_term_type_inference = (SPVM_OP*)op_cur->uv.any;
                       SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_term_type_inference);
-                      SPVM_TYPE* parent_type = SPVM_LIST_fetch(compiler->types, element_type->parent_type_id);
+                      SPVM_TYPE* parent_type = SPVM_TYPE_search_type(compiler, element_type->basic_type->id, element_type->dimension + 1);
                       op_cur->first->uv.type = parent_type;
                     }
                     SPVM_OP* op_type = op_cur->first;
@@ -2258,32 +2258,6 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
         SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
         
         op_type->uv.type = new_type;
-      }
-    }
-  }
-  
-  // Set parent type id
-  {
-    int32_t i;
-    int32_t length = compiler->types->length;
-    for (i = 0; i < length; i++) {
-      SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, i);
-      
-      char* parent_type_name = SPVM_TYPE_get_parent_name(compiler, type->name);
-      SPVM_TYPE* parent_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, parent_type_name, strlen(parent_type_name));
-      if (parent_type) {
-        type->parent_type_id = parent_type->id;
-      }
-      else {
-        SPVM_TYPE* new_parent_type = SPVM_TYPE_new(compiler);
-        new_parent_type->name = parent_type_name;
-        new_parent_type->dimension = type->dimension + 1;
-        new_parent_type->id = compiler->types->length;
-        new_parent_type->basic_type_name = type->name;
-        new_parent_type->parent_type_id = -1;
-        
-        SPVM_LIST_push(compiler->types, new_parent_type);
-        SPVM_HASH_insert(compiler->type_symtable, new_parent_type->name, strlen(new_parent_type->name), new_parent_type);
       }
     }
   }
