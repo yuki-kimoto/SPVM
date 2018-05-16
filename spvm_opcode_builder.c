@@ -1223,7 +1223,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from->first);
                       
-                      if (SPVM_TYPE_is_array(compiler, type)) {
+                      if (type->dimension > 0) {
                         /*
                           NEW op_assign_from
                              TYPE op_assign_from->first
@@ -1334,11 +1334,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               opcode.id = SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY;
 
                               int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
-                              SPVM_TYPE* element_type = op_assign_from->first->first->uv.type;
+                              SPVM_TYPE* type = op_assign_from->first->first->uv.type;
                               int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                               opcode.operand0 = index_out;
-                              opcode.operand1 = element_type->id;
+                              opcode.operand1 = type->id;
                               opcode.operand2 = index_index;
 
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -1352,11 +1352,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.id = SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY;
 
                           int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
-                          SPVM_TYPE* element_type = op_assign_from->first->first->uv.type;
+                          SPVM_TYPE* type = op_assign_from->first->first->uv.type;
                           int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                           opcode.operand0 = index_out;
-                          opcode.operand1 = element_type->id;
+                          opcode.operand1 = type->id;
                           opcode.operand2 = index_index;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
