@@ -2947,21 +2947,11 @@ get(...)
   // Get array
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  // Array type id
-  int32_t array_type_id = array->type_id;
-  
   // Dimension
   int32_t dimension = array->dimension - 1;
   
-  // Array type
-  SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, array_type_id);
-  
-  // Element type name sv
-  SV* sv_element_type_name = sv_2mortal(newSVpvn(array_type->name, strlen(array_type->name) - 2));
-  const char* element_type_name = SvPV_nolen(sv_element_type_name);
-  
   // Element type id
-  SPVM_TYPE* element_type = SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -2972,20 +2962,20 @@ get(...)
   
   SV* sv_basic_object;
   if (dimension == 0) {
-    switch (element_type->basic_type->id) {
+    switch (basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_STRING :
         sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Package::String");
         break;
       default: {
-        SV* sv_element_type_name = sv_2mortal(newSVpv("SPVM::", 0));
-        sv_catpv(sv_element_type_name, element_type->name);
+        SV* sv_basic_type_name = sv_2mortal(newSVpv("SPVM::", 0));
+        sv_catpv(sv_basic_type_name, basic_type->name);
         
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, SvPV_nolen(sv_element_type_name));
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, SvPV_nolen(sv_basic_type_name));
       }
     }
   }
   else if (dimension == 1) {
-    switch (element_type->basic_type->id) {
+    switch (basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE :
         sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Byte");
         break;
