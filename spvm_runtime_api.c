@@ -115,7 +115,7 @@ int32_t SPVM_RUNTIME_API_check_cast(SPVM_API* api, int32_t cast_type_id, SPVM_OB
  
   SPVM_TYPE* object_type = SPVM_LIST_fetch(compiler->types, object->type_id);
   
-  return SPVM_OP_CHECKER_can_assign_basic(compiler, cast_type->basic_type->id, cast_type->dimension, object->basic_type_id, object->dimension);
+  return SPVM_OP_CHECKER_can_assign(compiler, cast_type->basic_type->id, cast_type->dimension, object->basic_type_id, object->dimension);
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_OBJECT* exception, int32_t sub_id, int32_t current_line) {
