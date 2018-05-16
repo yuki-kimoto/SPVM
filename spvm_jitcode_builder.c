@@ -2009,20 +2009,21 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       }
       case SPVM_OPCODE_C_ID_CHECK_CAST: {
+        int32_t cast_basic_type_id = (uint32_t)opcode->operand2 & 0xFFFFFF;
+        int32_t cast_type_dimension  = (uint32_t)opcode->operand2 >> 24;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cast_basic_type_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, cast_basic_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cast_type_dimension = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, cast_type_dimension);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object = ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t object_type_id = *(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cast_type_id = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t can_assign = api->check_cast(api, cast_type_id, object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t can_assign = api->check_cast(api, cast_basic_type_id, cast_type_dimension, object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (can_assign) { SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object); }\n");

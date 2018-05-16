@@ -101,6 +101,6 @@ struct SPVM_api {
   void (*weaken_object_field)(SPVM_API* api, SPVM_API_OBJECT* object, int32_t field_id);
   SPVM_API_OBJECT* (*create_exception_stack_trace)(SPVM_API* api, SPVM_API_OBJECT* excetpion, int32_t sub_id, int32_t current_line);
   int32_t (*compile_jit_sub)(SPVM_API* api, int32_t sub_id);
-  int32_t (*check_cast)(SPVM_API* api, int32_t cast_type_id, SPVM_API_OBJECT* object);
+  int32_t (*check_cast)(SPVM_API* api, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_API_OBJECT* object);
 };
 #endif

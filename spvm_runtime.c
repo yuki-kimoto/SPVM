@@ -1763,9 +1763,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       case SPVM_OPCODE_C_ID_CHECK_CAST: {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
-        int32_t cast_type_id = opcode->operand2;
+
+        int32_t cast_basic_type_id = (uint32_t)opcode->operand2 & 0xFFFFFF;
+        int32_t cast_type_dimension  = (uint32_t)opcode->operand2 >> 24;
         
-        _Bool can_assign = api->check_cast(api, cast_type_id, object);
+        _Bool can_assign = api->check_cast(api, cast_basic_type_id, cast_type_dimension, object);
         if (can_assign) {
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
         }

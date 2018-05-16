@@ -1191,7 +1191,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     else {
                       SPVM_TYPE* dist_basic_type = SPVM_HASH_search(compiler->type_symtable, dist_type->basic_type_name, strlen(dist_type->basic_type_name));
                       opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
-                      opcode.operand2 = dist_basic_type->id;
+                      opcode.operand2 = ((uint32_t)dist_basic_type->basic_type->id + ((uint32_t)dist_basic_type->dimension << 24));
                     }
 
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_dist_term);
