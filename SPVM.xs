@@ -2979,6 +2979,9 @@ get(...)
   // Array type id
   int32_t array_type_id = array->type_id;
   
+  // Dimension
+  int32_t dimension = array->dimension - 1;
+  
   // Array type
   SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, array_type_id);
   
@@ -2998,7 +3001,7 @@ get(...)
   }
   
   SV* sv_base_object;
-  if (element_type->dimension == 0) {
+  if (dimension == 0) {
     switch (element_type->basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_STRING :
         sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Package::String");
@@ -3011,7 +3014,7 @@ get(...)
       }
     }
   }
-  else if (element_type->dimension == 1) {
+  else if (dimension == 1) {
     switch (element_type->basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE :
         sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Byte");

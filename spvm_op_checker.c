@@ -2262,7 +2262,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Set parent type id and element type id
+  // Set parent type id
   {
     int32_t i;
     int32_t length = compiler->types->length;
@@ -2280,23 +2280,10 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
         new_parent_type->dimension = type->dimension + 1;
         new_parent_type->id = compiler->types->length;
         new_parent_type->basic_type_name = type->name;
-        new_parent_type->element_type_id = type->id;
         new_parent_type->parent_type_id = -1;
         
         SPVM_LIST_push(compiler->types, new_parent_type);
         SPVM_HASH_insert(compiler->type_symtable, new_parent_type->name, strlen(new_parent_type->name), new_parent_type);
-      }
-      
-      // Element type id
-      char* element_type_name = SPVM_TYPE_get_element_name(compiler, type->name);
-      if (element_type_name) {
-        SPVM_TYPE* element_type = (SPVM_TYPE*)SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
-        if (element_type) {
-          type->element_type_id = element_type->id;
-        }
-        else {
-          assert(0);
-        }
       }
     }
   }
