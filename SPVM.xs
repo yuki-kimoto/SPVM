@@ -2890,7 +2890,8 @@ new_len(...)
   // Type id
   const char* type_name = SvPV_nolen(sv_type_name);
   
-  int32_t type_id = api->get_type_id(api, type_name);
+  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, type_name, strlen(type_name));
+  int32_t type_id = type->id;
   
   if (type_id < 0) {
     croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Perl::Object::Array::Object::new())", type_name);
@@ -2986,8 +2987,8 @@ get(...)
   const char* element_type_name = SvPV_nolen(sv_element_type_name);
   
   // Element type id
-  int32_t element_type_id = api->get_type_id(api, element_type_name);
-  SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, element_type_id);
+  SPVM_TYPE* element_type = SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
+  int32_t type_id = element_type->id;
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);

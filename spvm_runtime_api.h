@@ -35,7 +35,6 @@ void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_OBJECT* array
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_API* api, SPVM_OBJECT* array, int32_t index);
 
 // Object functions
-int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name);
 int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const char* name);
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id);
 int16_t SPVM_RUNTIME_API_get_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id);

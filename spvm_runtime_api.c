@@ -73,7 +73,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_call_float_sub,
   SPVM_RUNTIME_API_call_double_sub,
   SPVM_RUNTIME_API_call_object_sub,
-  SPVM_RUNTIME_API_get_type_id,
   SPVM_RUNTIME_API_new_object,
   SPVM_RUNTIME_API_new_byte_array,
   SPVM_RUNTIME_API_new_short_array,
@@ -1170,25 +1169,6 @@ int32_t SPVM_RUNTIME_API_get_class_method_sub_id(SPVM_API* api, const char* pack
   }
   
   return sub_id;
-}
-
-int32_t SPVM_RUNTIME_API_get_type_id(SPVM_API* api, const char* name) {
-  (void)api;
-  
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, name, strlen(name));
-  
-  // Can't find type id
-  if (type == NULL) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Unknown type(SPVM_RUNTIME_API_get_type_id())");
-    SPVM_RUNTIME_API_set_exception(api, exception);
-    
-    return 0;
-  }
-  
-  return type->id;
 }
 
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset) {
