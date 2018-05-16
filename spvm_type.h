@@ -78,5 +78,6 @@ SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler);
 
 _Bool SPVM_TYPE_equal(SPVM_COMPILER* compiler, SPVM_TYPE* type1, SPVM_TYPE* type2);
+SPVM_TYPE* SPVM_TYPE_search_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension);
 
 #endif

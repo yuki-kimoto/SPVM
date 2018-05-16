@@ -154,6 +154,22 @@ SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
+SPVM_TYPE* SPVM_TYPE_search_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
+  
+  SPVM_LIST* types = compiler->types;
+  
+  int32_t i;
+  for (i = 0; i < types->length; i++) {
+    SPVM_TYPE* type = SPVM_LIST_fetch(types, i);
+    
+    if (basic_type_id == type->basic_type->id && dimension == type->dimension) {
+      return type;
+    }
+  }
+  
+  return NULL;
+}
+
 char* SPVM_TYPE_get_basic_type_name(SPVM_COMPILER* compiler, const char* type_name) {
   int32_t type_name_length = (int32_t)strlen(type_name);
   char* type_basic_type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_name_length);
