@@ -2887,19 +2887,6 @@ new_len(...)
   SV* sv_type_name = sv_2mortal(newSVsv(sv_basic_type_name));
   sv_catpv(sv_type_name, "[]");
   
-  // Type id
-  const char* type_name = SvPV_nolen(sv_type_name);
-  
-  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, type_name, strlen(type_name));
-  int32_t type_id = type->id;
-  
-  if (type_id < 0) {
-    croak("Unknown type %s. Type must be used in SPVM module at least one(SPVM::Perl::Object::Array::Object::new())", type_name);
-  }
-  if (type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-    croak("Type is not object array %s(SPVM::Perl::Object::Array::Object::new())", type_name);
-  }
-  
   // Increment reference count
   api->inc_ref_count(api, array);
   
@@ -2991,7 +2978,6 @@ get(...)
   
   // Element type id
   SPVM_TYPE* element_type = SPVM_HASH_search(compiler->type_symtable, element_type_name, strlen(element_type_name));
-  int32_t type_id = element_type->id;
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -3500,7 +3486,7 @@ call_sub(...)
               
               SPVM_TYPE* base_object_type = SPVM_LIST_fetch(compiler->types, base_object_type_id);
               
-              if (base_object_type->id != arg_type->id) {
+              if (!(base_object_type->basic_type->id == arg_type->basic_type->id && base_object_type->dimension == arg_type->dimension)) {
                 croak("Argument base_object type need %s, but %s", arg_type->name, base_object_type->name);
               }
               
@@ -3520,7 +3506,6 @@ call_sub(...)
   
   // Return type id
   SPVM_TYPE* return_type = sub->op_return_type->uv.type;
-  int32_t return_type_id = return_type->id;
 
   int32_t return_basic_type_id = return_type->basic_type->id;
   int32_t return_type_dimension = return_type->dimension;

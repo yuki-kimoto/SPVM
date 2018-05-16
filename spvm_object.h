@@ -27,7 +27,7 @@ struct SPVM_object {
   int8_t has_destructor;
   int8_t in_destroy;
   int8_t category;
-  int8_t dimension;
+  uint8_t dimension;
 };
 
 #endif
