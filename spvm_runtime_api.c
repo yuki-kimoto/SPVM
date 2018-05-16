@@ -82,6 +82,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_new_float_array,
   SPVM_RUNTIME_API_new_double_array,
   SPVM_RUNTIME_API_new_object_array,
+  SPVM_RUNTIME_API_new_multi_array,
   SPVM_RUNTIME_API_new_string,
   SPVM_RUNTIME_API_new_string_chars,
   SPVM_RUNTIME_API_get_string_length,
@@ -621,6 +622,39 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_type_id, int32_t length) {
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
+  
+  // Allocate array
+  // alloc length + 1. Last value is 0
+  int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)length * (int64_t)sizeof(SPVM_OBJECT*);
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
+  
+  ((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
+  
+  // Type id
+  SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, element_type_id);
+
+  int32_t type_id = element_type->parent_type_id;
+  object->type_id = type_id;
+  
+  object->basic_type_id = element_type->basic_type->id;
+  object->dimension = element_type->dimension;
+  
+  // Set array length
+  object->length = length;
+  
+  object->element_byte_size = sizeof(SPVM_OBJECT*);
+
+  object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_API* api, int32_t element_type_id, int32_t length) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;

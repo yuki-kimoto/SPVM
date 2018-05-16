@@ -1354,7 +1354,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         // length
         int32_t length = *(SPVM_API_int*)&vars[opcode->operand2];
         
-        SPVM_API_OBJECT* object = api->new_object_array(api, element_type_id, length);
+        SPVM_API_OBJECT* object = api->new_multi_array(api, element_type_id, length);
         
         // Set object
          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0], object);
