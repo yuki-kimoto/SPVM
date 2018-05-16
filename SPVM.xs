@@ -2863,23 +2863,28 @@ new_len(...)
   SV* sv_class = ST(0);
   (void)sv_class;
   
-  SV* sv_element_type_name = ST(1);
+  SV* sv_basic_type_name = ST(1);
   SV* sv_length = ST(2);
   
   // API
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   int32_t length = (int32_t)SvIV(sv_length);
-  
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
+
   // Element type id
-  const char* element_type_name = SvPV_nolen(sv_element_type_name);
-  int32_t element_type_id = api->get_type_id(api, element_type_name);
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  assert(basic_type);
   
   // New array
-  SPVM_API_OBJECT* array =  api->new_object_array(api, element_type_id, length);
+  SPVM_API_OBJECT* array = api->new_object_array(api, basic_type->id, length);
   
   // Fix type name(int[] -> int[][]);
-  SV* sv_type_name = sv_2mortal(newSVsv(sv_element_type_name));
+  SV* sv_type_name = sv_2mortal(newSVsv(sv_basic_type_name));
   sv_catpv(sv_type_name, "[]");
   
   // Type id

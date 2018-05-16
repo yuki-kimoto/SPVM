@@ -76,6 +76,7 @@ is_deeply(
 
 # SPVM new_object_array_len
 {
+=pod
   # element byte array
   {
     my $object_array = SPVM::new_object_array_len("byte[]", 3);
@@ -172,6 +173,7 @@ is_deeply(
     is_deeply($object1_get->get_elements, [1, 2, 3]);
     is_deeply($object2_get->get_elements, [4, 5, 6]);
   }
+=cut
 
   # element object array
   {

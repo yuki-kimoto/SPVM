@@ -621,7 +621,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_type_id, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t basic_type_id, int32_t length) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
@@ -635,15 +635,15 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t element_ty
   
   ((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT)))[length] = 0;
   
-  // Type id
-  SPVM_TYPE* element_type = SPVM_LIST_fetch(compiler->types, element_type_id);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
 
-  int32_t type_id = element_type->parent_type_id;
-  object->type_id = type_id;
-  
-  object->basic_type_id = element_type->basic_type->id;
-  object->dimension = element_type->dimension;
-  
+  object->basic_type_id = basic_type->id;
+  object->dimension = 1;
+
+  SPVM_TYPE* object_type = SPVM_TYPE_search_type(compiler, basic_type->id, 1);
+  assert(object_type);
+  object->type_id = object_type->id;
+
   // Set array length
   object->length = length;
   
