@@ -511,6 +511,14 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET ");
   SPVM_STRING_BUFFER_add_int(string_buffer, SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET);
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
+
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_OBJECT_BASIC_TYPE_ID_BYTE_OFFSET ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, SPVM_RUNTIME_C_OBJECT_BASIC_TYPE_ID_BYTE_OFFSET);
+  SPVM_STRING_BUFFER_add(string_buffer, "\n");
+
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_OBJECT_DIMENSION_BYTE_OFFSET ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, SPVM_RUNTIME_C_OBJECT_DIMENSION_BYTE_OFFSET);
+  SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET ");
   SPVM_STRING_BUFFER_add_int(string_buffer, SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET);
@@ -894,14 +902,20 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       case SPVM_OPCODE_C_ID_ISA:
       {
+        int32_t basic_type_id = opcode->operand1;
+        int32_t dimension = opcode->operand2;
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  {");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, basic_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t dimension = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, dimension);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object = ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t type_id = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (*(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET) == type_id);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (*(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_BASIC_TYPE_ID_BYTE_OFFSET) == basic_type_id && *(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_DIMENSION_BYTE_OFFSET) == dimension);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
@@ -1385,8 +1399,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT:
       {
-        char* element_type_name = "SPVM_API_OBJECT*";
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
@@ -1421,8 +1433,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       }
       case SPVM_OPCODE_C_ID_ARRAY_STORE_UNDEF:
       {
-        char* element_type_name = "SPVM_API_OBJECT*";
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
@@ -2049,7 +2059,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
         
         // Declare subroutine return type id
-        int32_t decl_sub_return_type_id = decl_sub_return_type->id;
         int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
         int32_t decl_sub_return_type_dimension = decl_sub_return_type->dimension;
         
@@ -2379,7 +2388,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       }
       case SPVM_OPCODE_C_ID_RETURN_UNDEF:
       {
-        const char* return_type_name = SPVM_JITCODE_BUILDER_get_type_name(sub_return_type_id);
         SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_OBJECT**)&return_value = NULL;\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");

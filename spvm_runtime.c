@@ -409,9 +409,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_ISA:
       {
         SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[opcode->operand0];
-        int32_t type_id = opcode->operand1;
+        int32_t basic_type_id = opcode->operand1;
+        int32_t dimension = opcode->operand2;
         
-        condition_flag = (*(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_TYPE_ID_BYTE_OFFSET) == type_id);
+        condition_flag = (*(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_BASIC_TYPE_ID_BYTE_OFFSET) == basic_type_id && *(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_DIMENSION_BYTE_OFFSET) == dimension);
         
         break;
       }

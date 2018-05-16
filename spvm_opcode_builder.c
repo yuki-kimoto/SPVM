@@ -2471,8 +2471,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->last);
                 
                 opcode.operand0 = index_in1;
-                opcode.operand1 = type->id;
-                opcode.operand2 = type->basic_type->id + type->dimension << 28;
+                opcode.operand1 = type->basic_type->id;
+                opcode.operand2 = type->dimension;
                 
                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 
