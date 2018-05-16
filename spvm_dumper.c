@@ -47,7 +47,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     if (op_cur->id == SPVM_OP_C_ID_CONSTANT) {
       SPVM_CONSTANT* constant = op_cur->uv.constant;
       printf(" %s", SPVM_BASIC_TYPE_C_ID_NAMES[constant->type->basic_type->id]);
-      switch (constant->type->id) {
+      switch (constant->type->basic_type->id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE:
           printf(" %" PRId8, constant->value.byte_value);
           break;
@@ -251,7 +251,8 @@ void SPVM_DUMPER_dump_types(SPVM_COMPILER* compiler, SPVM_LIST* types) {
       printf("type[%" PRId32 "]\n", i);
       SPVM_TYPE* type = SPVM_LIST_fetch(types, i);
       printf("    name => \"%s\"\n", type->name);
-      printf("    id => \"%" PRId32 "\"\n", type->id);
+      printf("    id => \"%" PRId32 "\"\n", type->basic_type->id);
+      printf("    dimension => \"%" PRId32 "\"\n", type->dimension);
     }
   }
 }
