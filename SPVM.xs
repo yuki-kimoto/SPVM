@@ -2917,24 +2917,8 @@ set(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  // Array type id
-  int32_t array_type_id = array->type_id;
-  
-  // Array type
-  SPVM_TYPE* array_type = SPVM_LIST_fetch(compiler->types, array_type_id);
-
   // Get object
   SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
-  
-  // Object type id
-  int32_t object_type_id = object->type_id;
-
-  // Object type
-  SPVM_TYPE* object_type = SPVM_LIST_fetch(compiler->types, object_type_id);
-
-  if (strncmp(array_type->name, object_type->name, strlen(array_type->name - 2)) != 0) {
-    croak("Invalid type %s is set to object array %s(SPVM::Perl::Object::Array::Object::set())", object_type->name, array_type->name);
-  }
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -2981,54 +2965,54 @@ get(...)
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
-  SPVM_API_OBJECT* base_object = api->get_object_array_element(api, array, index);
-  if (base_object != NULL) {
-    api->inc_ref_count(api, base_object);
+  SPVM_API_OBJECT* basic_object = api->get_object_array_element(api, array, index);
+  if (basic_object != NULL) {
+    api->inc_ref_count(api, basic_object);
   }
   
-  SV* sv_base_object;
+  SV* sv_basic_object;
   if (dimension == 0) {
     switch (element_type->basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_STRING :
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Package::String");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Package::String");
         break;
       default: {
         SV* sv_element_type_name = sv_2mortal(newSVpv("SPVM::", 0));
         sv_catpv(sv_element_type_name, element_type->name);
         
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, SvPV_nolen(sv_element_type_name));
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, SvPV_nolen(sv_element_type_name));
       }
     }
   }
   else if (dimension == 1) {
     switch (element_type->basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE :
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Byte");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Byte");
         break;
       case SPVM_BASIC_TYPE_C_ID_SHORT :
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Short");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Short");
         break;
       case SPVM_BASIC_TYPE_C_ID_INT :
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Int");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Int");
         break;
       case SPVM_BASIC_TYPE_C_ID_LONG :
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Long");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Long");
         break;
       case SPVM_BASIC_TYPE_C_ID_FLOAT :
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Float");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Float");
         break;
       case SPVM_BASIC_TYPE_C_ID_DOUBLE :
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Double");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Double");
         break;
       default :
-        sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Object");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Object");
     }
   }
   else {
-    sv_base_object = SPVM_XS_UTIL_new_sv_object(base_object, "SPVM::Perl::Object::Array::Object");
+    sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Object");
   }
   
-  XPUSHs(sv_base_object);
+  XPUSHs(sv_basic_object);
   
   XSRETURN(1);
 }
@@ -3477,20 +3461,17 @@ call_sub(...)
         }
         else {
           if (sv_isobject(sv_value)) {
-            SV* sv_base_object = sv_value;
-            if (sv_derived_from(sv_base_object, "SPVM::Perl::Object")) {
+            SV* sv_basic_object = sv_value;
+            if (sv_derived_from(sv_basic_object, "SPVM::Perl::Object")) {
               
-              SPVM_OBJECT* base_object = SPVM_XS_UTIL_get_object(sv_base_object);
+              SPVM_OBJECT* basic_object = SPVM_XS_UTIL_get_object(sv_basic_object);
               
-              int32_t base_object_type_id = base_object->type_id;
-              
-              SPVM_TYPE* base_object_type = SPVM_LIST_fetch(compiler->types, base_object_type_id);
-              
-              if (!(base_object_type->basic_type->id == arg_type->basic_type->id && base_object_type->dimension == arg_type->dimension)) {
-                croak("Argument base_object type need %s, but %s", arg_type->name, base_object_type->name);
+              if (!(basic_object->basic_type_id == arg_type->basic_type->id && basic_object->dimension == arg_type->dimension)) {
+                SPVM_TYPE* basic_object_type = SPVM_LIST_fetch(compiler->basic_types, basic_object->basic_type_id);
+                croak("Argument basic_object type need %s, but %s", arg_type->name, basic_object_type->name);
               }
               
-              call_sub_args[arg_index].object_value = base_object;
+              call_sub_args[arg_index].object_value = basic_object;
             }
             else {
               croak("Object must be derived from SPVM::Perl::Object");
