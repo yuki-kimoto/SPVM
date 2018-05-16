@@ -75,7 +75,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, 0);
           SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
           
-          if (arg_type->id != package_type->id) {
+          if (!(arg_type->basic_type->id == package_type->basic_type->id && arg_type->dimension == package_type->dimension)) {
             error = 1;
           }
         }
@@ -199,7 +199,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
                       
-                      if (case_value_type->id != term_type->id) {
+                      if (!(case_value_type->basic_type->id == term_type->basic_type->id && case_value_type->dimension == term_type->dimension)) {
                         SPVM_yyerror_format(compiler, "case value type must be same as switch condition value type at %s line %d\n", op_case->file, op_case->line);
                         compiler->fatal_error = 1;
                         return;
@@ -1021,7 +1021,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     // Normal
                     else if (op_term) {
-                      if (first_type->id != sub_return_type->id) {
+                      if (!(first_type->basic_type->id == sub_return_type->basic_type->id && first_type->dimension == sub_return_type->dimension)) {
                         is_invalid = 1;
                       }
                     }
@@ -2096,11 +2096,11 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
     // Numeric type check
     if (SPVM_TYPE_is_numeric(compiler, assign_to_type) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
       int32_t do_convert = 0;
-      if (assign_to_type->id > assign_from_type->id) {
+      if (assign_to_type->basic_type->id > assign_from_type->basic_type->id) {
         do_convert = 1;
       }
       // Narrowng convetion only when constant is in range
-      else if (assign_to_type->id < assign_from_type->id) {
+      else if (assign_to_type->basic_type->id < assign_from_type->basic_type->id) {
         int32_t compile_error = 0;
         if (op_assign_from->id == SPVM_OP_C_ID_CONSTANT) {
           int32_t compile_error = 0;
