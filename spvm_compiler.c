@@ -71,6 +71,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Bytecodes
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   
+  compiler->const_string_symtable = SPVM_HASH_new(0);
+  
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
 

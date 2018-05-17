@@ -15,6 +15,8 @@ SPVM_VMCODE* SPVM_COMPILER_ALLOCATOR_alloc_vmcode(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator);
 
+const char* SPVM_COMPILER_ALLOCATOR_alloc_const_string(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, const char* string);
+
 // Parser information
 struct SPVM_compiler_allocator {
   // Memory_pool - This is compile time memory pool. This memory pool save short string and object except array, hash

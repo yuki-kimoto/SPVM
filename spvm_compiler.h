@@ -124,6 +124,8 @@ struct SPVM_compiler {
   SPVM_HASH* basic_type_name_symtable;
   
   char tmp_buffer[UINT16_MAX];
+  
+  SPVM_HASH* const_string_symtable;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
