@@ -34,8 +34,8 @@
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
-  // Resolve types
-  SPVM_OP_CHECKER_resolve_types(compiler);
+  // Check types
+  SPVM_OP_CHECKER_check_types(compiler);
   
   // Resolve packages
   SPVM_OP_CHECKER_resolve_packages(compiler);
@@ -2196,7 +2196,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
   return op_out;
 }
 
-void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
+void SPVM_OP_CHECKER_check_types(SPVM_COMPILER* compiler) {
 
   SPVM_LIST* op_types = compiler->op_types;
   
@@ -2204,30 +2204,21 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
   {
     int32_t i;
     for (i = 0; i < op_types->length; i++) {
-      assert(compiler->types->length <= SPVM_LIMIT_C_TYPES);
-      
       SPVM_OP* op_type = SPVM_LIST_fetch(op_types, i);
-      
-      if (compiler->types->length == SPVM_LIMIT_C_TYPES) {
-        SPVM_yyerror_format(compiler, "too many types at %s line %d\n", op_type->file, op_type->line);
-        compiler->fatal_error = 1;
-        return;
-      }
       
       SPVM_TYPE* type = op_type->uv.type;
       
-      const char* basic_type_name = type->basic_type->name;
-        
-      // Core type or array
-      if (
-        SPVM_TYPE_is_array(compiler, type) || strcmp(basic_type_name, "unknown") == 0 || strcmp(basic_type_name, "void") == 0 || strcmp(basic_type_name, "byte") == 0
-        || strcmp(basic_type_name, "short") == 0 || strcmp(basic_type_name, "int") == 0 || strcmp(basic_type_name, "long") == 0
-        || strcmp(basic_type_name, "float") == 0 || strcmp(basic_type_name, "double") == 0 || strcmp(basic_type_name, "Object") == 0
-      )
+      // Default core type is ok
+      if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID
+        || (type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)
+        || type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING
+        || type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT)
       {
         // Nothing
       }
       else {
+        const char* basic_type_name = type->basic_type->name;
+        
         // Package
         SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
         SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, basic_type_name, strlen(basic_type_name));
@@ -2241,13 +2232,6 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
           return;
         }
       }
-      
-      // Create resolved type id
-      SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
-      memcpy(new_type, type, sizeof(SPVM_TYPE));
-      SPVM_LIST_push(compiler->types, new_type);
-      
-      op_type->uv.type = new_type;
     }
   }
 }
