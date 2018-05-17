@@ -178,7 +178,9 @@ SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "String", strlen("String"));
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "String", strlen("String"));
+  type->dimension = 0;
   
   assert(type);
   
@@ -188,7 +190,9 @@ SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "Object", strlen("Object"));
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "Object", strlen("Object"));
+  type->dimension = 0;
   
   assert(type);
   

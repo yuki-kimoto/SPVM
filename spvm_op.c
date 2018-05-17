@@ -1272,8 +1272,8 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
   // $obj->sub_name
   if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_invocant);
-    const char* type_name = type->name;
-    const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, type_name, sub_name);
+    const char* basic_type_name = type->basic_type->name;
+    const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, basic_type_name, sub_name);
     
     found_op_sub= SPVM_HASH_search(
       compiler->op_sub_symtable,
