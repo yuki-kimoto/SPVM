@@ -70,7 +70,14 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   // Bytecodes
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
+  
+  // Add basic types
+  SPVM_COMPILER_add_basic_types(compiler);
 
+  return compiler;
+}
+
+void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   // Add unknown basic_type
   {
      SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
@@ -180,7 +187,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_LIST_push(compiler->basic_types, basic_type);
      SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
   }
-  return compiler;
 }
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
