@@ -183,7 +183,7 @@ void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_
     return;
   }
   
-  if (type->id != dist_type->id) {
+  if (!(type->basic_type->id == dist_type->basic_type->id && type->dimension == dist_type->dimension)) {
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
     
     SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_term->file, op_term->line);
@@ -204,17 +204,17 @@ void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op
   if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
     dist_type = SPVM_TYPE_get_double_type(compiler);
   }
-  else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) || (last_type->dimension == 0 && last_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT)) {
+  else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT)) {
     dist_type = SPVM_TYPE_get_float_type(compiler);
   }
-  else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) || (last_type->dimension == 0 && last_type->id == SPVM_BASIC_TYPE_C_ID_LONG)) {
+  else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG)) {
     dist_type = SPVM_TYPE_get_long_type(compiler);
   }
   else {
     dist_type = SPVM_TYPE_get_int_type(compiler);
   }
   
-  if (first_type->id != dist_type->id) {
+  if (!(first_type->basic_type->id == dist_type->basic_type->id && first_type->dimension == dist_type->dimension)) {
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
     
     SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_first->file, op_first->line);
@@ -225,7 +225,7 @@ void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op
     SPVM_OP_replace_op(compiler, op_stab, op_convert);
   }
   
-  if (last_type->id != dist_type->id) {
+  if (!(last_type->basic_type->id == dist_type->basic_type->id && last_type->dimension == dist_type->dimension)) {
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_last);
     
     SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_last->file, op_last->line);
