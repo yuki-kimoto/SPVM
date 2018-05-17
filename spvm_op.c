@@ -1335,7 +1335,7 @@ void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field)
   SPVM_OP* op_name = op_call_field->last;
   
   SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_term);
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, invoker_type->name, strlen(invoker_type->name));
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
   SPVM_PACKAGE* package = op_package->uv.package;
   const char* field_name = op_name->uv.name;
   
@@ -1611,7 +1611,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   // Type(type is same as package name)
   SPVM_TYPE* type_package = SPVM_TYPE_new(compiler);
-  type_package->name = package_name;
   type_package->basic_type_name = package_name;
   
   SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -2561,15 +2560,14 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
   // Type
   SPVM_TYPE* type = op_type->uv.type;
-  type->name = op_name->uv.name;
   
   // Add types
   SPVM_LIST_push(compiler->op_types, op_type);
   
-  type->basic_type_name = type->name;
+  type->basic_type_name = name;
   
   // Add basic type
-  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->name, strlen(type->name));
+  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_search(compiler->basic_type_symtable, name, strlen(name));
   if (found_basic_type) {
     type->basic_type = found_basic_type;
   }
@@ -2577,13 +2575,13 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
     SPVM_BASIC_TYPE* new_basic_type = SPVM_BASIC_TYPE_new(compiler);
     new_basic_type->id = compiler->basic_types->length;
     new_basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_PACKAGE;
-    new_basic_type->name = type->name;
+    new_basic_type->name = name;
     SPVM_LIST_push(compiler->basic_types, new_basic_type);
     SPVM_HASH_insert(compiler->basic_type_symtable, new_basic_type->name, strlen(new_basic_type->name), new_basic_type);
     type->basic_type = new_basic_type;
   }
   
-  SPVM_CONSTANT_POOL_push_basic_type_name(compiler, compiler->basic_type_name_constant_pool, type->name);
+  SPVM_CONSTANT_POOL_push_basic_type_name(compiler, compiler->basic_type_name_constant_pool, name);
   
   return op_type;
 }
@@ -2593,8 +2591,6 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->dimension = op_type_child->uv.type->dimension + 1;
-  type->name = SPVM_TYPE_create_array_name(compiler, op_type_child->uv.type->name);
-  
   type->basic_type_name = op_type_child->uv.type->basic_type_name;
   type->basic_type = op_type_child->uv.type->basic_type;
   

@@ -1717,7 +1717,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   if (field->is_private) {
-                    if (strcmp(type->name, sub->op_package->uv.package->op_name->uv.name) != 0) {
+                    if (strcmp(type->basic_type->name, sub->op_package->uv.package->op_name->uv.name) != 0) {
                       char* type_name = compiler->tmp_buffer;
                       SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension);
                       SPVM_yyerror_format(compiler, "Can't access to private field %s::%s at %s line %d\n",
@@ -1787,9 +1787,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   if (!can_convert) {
-                    char* type_name = compiler->tmp_buffer;
-                    SPVM_TYPE_sprint_type_name(compiler, type_name, term_type->basic_type->id, term_type->dimension);
-                    SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n", term_type->name, type_type->name, op_cur->file, op_cur->line);
+                    char* type_type_name = compiler->tmp_buffer;
+                    SPVM_TYPE_sprint_type_name(compiler, type_type_name, type_type->basic_type->id, type_type->dimension);
+                    SPVM_yyerror_format(compiler, "Can't convert to %s at %s line %d\n", type_type_name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
