@@ -955,7 +955,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = index_out;
 
                     assert(type_to->dimension == 0);
-                    switch (type_to->id) {
+                    switch (type_to->basic_type->id) {
                       case SPVM_BASIC_TYPE_C_ID_BYTE:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE;
                         *(SPVM_API_byte*)&opcode.operand1 = *(SPVM_API_byte*)&constant->value;
@@ -1370,9 +1370,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.id = SPVM_OPCODE_C_ID_NEW_OBJECT;
                         
                         int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
-                        int32_t type_id = op_assign_from->first->uv.type->id;
                         int32_t basic_type_id = op_assign_from->first->uv.type->basic_type->id;
-                        assert(type_id);
                         
                         opcode.operand0 = index_out;
                         opcode.operand1 = basic_type_id;
