@@ -75,9 +75,6 @@ struct SPVM_compiler {
   // Subroutine name symtable
   SPVM_HASH* method_signature_symtable;
   
-  // Types(This is unique types)
-  SPVM_LIST* types;
-  
   // Single types
   SPVM_LIST* basic_types;
   
