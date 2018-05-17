@@ -211,55 +211,6 @@ SPVM_TYPE* SPVM_TYPE_search_type(SPVM_COMPILER* compiler, int32_t basic_type_id,
   return NULL;
 }
 
-char* SPVM_TYPE_get_basic_type_name(SPVM_COMPILER* compiler, const char* type_name) {
-  int32_t type_name_length = (int32_t)strlen(type_name);
-  char* type_basic_type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_name_length);
-  
-  char* found_ptr = strchr(type_name, '[');
-  int32_t type_basic_type_name_length;
-  if (found_ptr) {
-    type_basic_type_name_length = (int32_t)(found_ptr - type_name);
-  }
-  else {
-    type_basic_type_name_length = type_name_length;
-  }
-  
-  strncpy(type_basic_type_name, type_name, type_basic_type_name_length);
-  type_basic_type_name[type_basic_type_name_length] = '\0';
-  
-  return type_basic_type_name;
-}
-
-char* SPVM_TYPE_get_element_name(SPVM_COMPILER* compiler, const char* type_name) {
-  int32_t type_basic_type_name_length;
-  if (strchr(type_name, '[')) {
-    type_basic_type_name_length = strlen(type_name) - 2;
-  }
-  else {
-    return NULL;
-  }
-
-  char* type_basic_type_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_basic_type_name_length);
-  
-  strncpy(type_basic_type_name, type_name, type_basic_type_name_length);
-  type_basic_type_name[type_basic_type_name_length] = '\0';
-  
-  return type_basic_type_name;
-}
-
-char* SPVM_TYPE_get_parent_name(SPVM_COMPILER* compiler, const char* type_name) {
-  int32_t type_name_length = (int32_t)strlen(type_name);
-  int32_t type_parent_name_length = type_name_length + 2;
-  char* type_parent_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, type_parent_name_length);
-  
-  strncpy(type_parent_name, type_name, type_name_length);
-  type_parent_name[type_name_length] = '[';
-  type_parent_name[type_name_length + 1] = ']';
-  type_parent_name[type_parent_name_length] = '\0';
-  
-  return type_parent_name;
-}
-
 // Create array name
 char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* basic_type_name) {
   

@@ -2589,8 +2589,8 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->name = SPVM_TYPE_create_array_name(compiler, op_type_child->uv.type->name);
   type->dimension = op_type_child->uv.type->dimension + 1;
+  type->name = SPVM_TYPE_create_array_name(compiler, op_type_child->uv.type->name);
   
   type->basic_type_name = op_type_child->uv.type->basic_type_name;
   type->basic_type = op_type_child->uv.type->basic_type;
