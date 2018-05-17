@@ -122,7 +122,6 @@ struct SPVM_compiler {
   _Bool enable_jit;
   
   SPVM_HASH* basic_type_name_symtable;
-  SPVM_CONSTANT_POOL* basic_type_name_constant_pool;
   
   char tmp_buffer[UINT16_MAX];
 };

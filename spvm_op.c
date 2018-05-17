@@ -2581,8 +2581,6 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
     type->basic_type = new_basic_type;
   }
   
-  SPVM_CONSTANT_POOL_push_basic_type_name(compiler, compiler->basic_type_name_constant_pool, name);
-  
   return op_type;
 }
 
