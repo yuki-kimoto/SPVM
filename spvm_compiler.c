@@ -419,15 +419,16 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
-  // Add Ojbect type
+  // Add Object type
   {
      SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-     type->name = "Ojbect[]";
+     type->name = "Object[]";
      type->id = compiler->types->length;
-     type->basic_type_name = "Ojbect";
+     type->basic_type_name = "Object";
      type->dimension = 1;
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
+     assert(type->basic_type);
      SPVM_LIST_push(compiler->types, type);
      SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
