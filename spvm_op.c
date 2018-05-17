@@ -1113,7 +1113,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_PACKAGE: {
       SPVM_PACKAGE* package = op->uv.package;
       const char* package_name = package->op_name->uv.name;
-      type = SPVM_HASH_search(compiler->type_symtable, package_name, strlen(package_name));
+      type = package->op_type->uv.type;
       break;
     }
     case SPVM_OP_C_ID_EQ:
@@ -1568,6 +1568,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
     op_type = SPVM_OP_build_basic_type(compiler, op_name_package);
   }
+  
+  package->op_type = op_type;
   
   SPVM_OP_insert_child(compiler, op_package, op_package->last, op_type);
   SPVM_OP_insert_child(compiler, op_package, op_package->last, op_block);
@@ -2534,22 +2536,22 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
   
   if (strcmp(name, "byte") == 0) {
-    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+    op_type->uv.type = SPVM_TYPE_get_byte_type(compiler);
   }
   else if (strcmp(name, "short") == 0) {
-    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
+    op_type->uv.type = SPVM_TYPE_get_short_type(compiler);
   }
   else if (strcmp(name, "int") == 0) {
-    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "int", strlen("int"));
+    op_type->uv.type = SPVM_TYPE_get_int_type(compiler);
   }
   else if (strcmp(name, "long") == 0) {
-    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "long", strlen("long"));
+    op_type->uv.type = SPVM_TYPE_get_long_type(compiler);
   }
   else if (strcmp(name, "float") == 0) {
-    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "float", strlen("float"));
+    op_type->uv.type = SPVM_TYPE_get_float_type(compiler);
   }
   else if (strcmp(name, "double") == 0) {
-    op_type->uv.type = SPVM_HASH_search(compiler->type_symtable, "double", strlen("double"));
+    op_type->uv.type = SPVM_TYPE_get_double_type(compiler);
   }
   else {
     SPVM_TYPE* type = SPVM_TYPE_new(compiler);

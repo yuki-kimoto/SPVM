@@ -49,7 +49,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_OP* op_package = sub->op_package;
       SPVM_PACKAGE* package = op_package->uv.package;
       const char* package_name = package->op_name->uv.name;
-      SPVM_TYPE* package_type = SPVM_HASH_search(compiler->type_symtable, package_name, strlen(package_name));
+      SPVM_TYPE* package_type = package->op_type->uv.type;
       
       // Set subroutine id
       sub->id = sub_index;
@@ -105,7 +105,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 SPVM_OP* op_package = op_cur->first;
                 SPVM_PACKAGE* package = op_package->uv.package;
 
-                SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, package->op_name->uv.name, strlen(package->op_name->uv.name));
+                SPVM_TYPE* type = package->op_type->uv.type;
                 
                 SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_package->file, op_package->line);
                 op_type->uv.type = type;
