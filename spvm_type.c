@@ -76,8 +76,6 @@ int32_t SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
   
-  type->id = SPVM_TYPE_C_ID_UNKNOWN;
-  
   return type;
 }
 
@@ -108,7 +106,9 @@ SPVM_TYPE* SPVM_TYPE_get_undef_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "byte", strlen("byte"));
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "byte", strlen("byte"));
+  type->dimension = 0;
   
   assert(type);
   
@@ -118,7 +118,9 @@ SPVM_TYPE* SPVM_TYPE_get_byte_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_get_short_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "short", strlen("short"));
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "short", strlen("short"));
+  type->dimension = 0;
   
   assert(type);
   
@@ -336,7 +338,7 @@ _Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   
   assert(type);
   
-  if (type->dimension == 0 && (type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
+  if (type->dimension == 0 && (type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
     return 1;
   }
   else {
