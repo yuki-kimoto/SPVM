@@ -1611,7 +1611,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   // Type(type is same as package name)
   SPVM_TYPE* type_package = SPVM_TYPE_new(compiler);
-  type_package->basic_type_name = package_name;
   
   SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -2564,8 +2563,6 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   // Add types
   SPVM_LIST_push(compiler->op_types, op_type);
   
-  type->basic_type_name = name;
-  
   // Add basic type
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_search(compiler->basic_type_symtable, name, strlen(name));
   if (found_basic_type) {
@@ -2591,7 +2588,6 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->dimension = op_type_child->uv.type->dimension + 1;
-  type->basic_type_name = op_type_child->uv.type->basic_type_name;
   type->basic_type = op_type_child->uv.type->basic_type;
   
   // Type OP
