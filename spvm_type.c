@@ -36,6 +36,40 @@ const char* const SPVM_TYPE_C_ID_NAMES[] = {
   "String[]",
 };
 
+int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_id, strlen(basic_type_id));
+  assert(basic_type);
+  
+  int32_t length = strlen(basic_type->name) + dimension * 2;
+}
+
+int32_t SPVM_TYPE_fprint_type_name(SPVM_COMPILER* compiler, FILE* fh, int32_t basic_type_id, int32_t dimension) {
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_id, strlen(basic_type_id));
+  assert(basic_type);
+  
+  fprintf(fh, "%s", basic_type->name);
+  int32_t dim_index;
+  for (dim_index = 0; dim_index < dimension; dim_index++) {
+    fprintf(fh, "[]");
+  }
+}
+
+int32_t SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_t basic_type_id, int32_t dimension) {
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_id, strlen(basic_type_id));
+  assert(basic_type);
+  
+  char* cur = buffer;
+  
+  sprintf(cur, "%s", basic_type->name);
+  cur += strlen(basic_type->name);
+  
+  int32_t dim_index;
+  for (dim_index = 0; dim_index < dimension; dim_index++) {
+    sprintf(cur, "[]");
+    cur += 2;
+  }
+}
+
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_TYPE));
   
