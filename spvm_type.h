@@ -10,8 +10,6 @@ struct SPVM_type {
   SPVM_BASIC_TYPE* basic_type;
 };
 
-char* SPVM_TYPE_create_array_name(SPVM_COMPILER* compiler, const char* basic_type_name);
-
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 
 _Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type);
