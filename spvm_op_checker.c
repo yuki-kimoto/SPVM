@@ -677,7 +677,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       else {
-                        SPVM_yyerror_format(compiler, "new operator can't create array which don't have numeric length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
+                        char* type_name = compiler->tmp_buffer;
+                        SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension);
+                        SPVM_yyerror_format(compiler, "new operator can't create array which don't have numeric length \"%s\" at %s line %d\n", type_name, op_cur->file, op_cur->line);
                         return;
                       }
                     }
@@ -686,7 +688,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_yyerror_format(compiler, "new operator can't receive numeric type at %s line %d\n", op_cur->file, op_cur->line);
                     }
                     else if (SPVM_TYPE_is_object(compiler, type)) {
-                      SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+                      SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->basic_type->name, strlen(type->basic_type->name));
                       assert(op_package);
                       SPVM_PACKAGE* package = op_package->uv.package;
                       
@@ -1694,7 +1696,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term_invocker);
-                  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->name, strlen(type->name));
+                  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->basic_type->name, strlen(type->basic_type->name));
                   
                   if (!(type && op_package)) {
                     SPVM_yyerror_format(compiler, "Invalid invoker at %s line %d\n", op_cur->file, op_cur->line);
@@ -1707,15 +1709,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   SPVM_FIELD* field = op_cur->uv.call_field->field;
                   
                   if (!field) {
+                    char* type_name = compiler->tmp_buffer;
+                    SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension);
                     SPVM_yyerror_format(compiler, "Unknown field %s::%s at %s line %d\n",
-                      type->name, op_name->uv.name, op_cur->file, op_cur->line);
+                      type_name, op_name->uv.name, op_cur->file, op_cur->line);
                     return;
                   }
                   
                   if (field->is_private) {
                     if (strcmp(type->name, sub->op_package->uv.package->op_name->uv.name) != 0) {
+                      char* type_name = compiler->tmp_buffer;
+                      SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension);
                       SPVM_yyerror_format(compiler, "Can't access to private field %s::%s at %s line %d\n",
-                        type->name, op_name->uv.name, op_cur->file, op_cur->line);
+                        type_name, op_name->uv.name, op_cur->file, op_cur->line);
                     }
                   }
                   
@@ -1781,8 +1787,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   if (!can_convert) {
-                    SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n",
-                    term_type->name, type_type->name, op_cur->file, op_cur->line);
+                    char* type_name = compiler->tmp_buffer;
+                    SPVM_TYPE_sprint_type_name(compiler, type_name, term_type->basic_type->id, term_type->dimension);
+                    SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n", term_type->name, type_type->name, op_cur->file, op_cur->line);
                     compiler->fatal_error = 1;
                     return;
                   }
@@ -2207,7 +2214,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
       
       SPVM_TYPE* type = op_type->uv.type;
       
-      const char* basic_type_name = SPVM_TYPE_get_basic_type_name(compiler, type->name);
+      const char* basic_type_name = type->basic_type->name;
         
       // Core type or array
       if (
