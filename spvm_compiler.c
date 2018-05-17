@@ -49,17 +49,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->op_packages = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   
-  // Temporary not duplicate type id
-  {
-    int32_t i;
-    for (i = 0; i < SPVM_TYPE_C_CORE_LENGTH; i++) {
-      SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, NULL, 0);
-      SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
-      op_package->uv.package = package;
-      SPVM_LIST_push(compiler->op_packages, op_package);
-    }
-  }
-  
   compiler->op_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->op_our_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->op_types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -76,8 +65,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->method_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
 
   compiler->package_load_path_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
-
-  compiler->enum_default_type_id = SPVM_TYPE_C_ID_INT;
 
   compiler->types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 

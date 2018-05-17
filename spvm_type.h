@@ -5,38 +5,6 @@
 
 #include "spvm_base.h"
 
-enum {
-  SPVM_TYPE_C_CORE_LENGTH = 19
-};
-
-enum {
-  SPVM_TYPE_C_ARRAY_SHIFT = 8
-};
-
-enum {
-  SPVM_TYPE_C_ID_UNKNOWN,
-  SPVM_TYPE_C_ID_VOID,
-  SPVM_TYPE_C_ID_UNDEF,
-  SPVM_TYPE_C_ID_BYTE,
-  SPVM_TYPE_C_ID_SHORT,
-  SPVM_TYPE_C_ID_INT,
-  SPVM_TYPE_C_ID_LONG,
-  SPVM_TYPE_C_ID_FLOAT,
-  SPVM_TYPE_C_ID_DOUBLE,
-  SPVM_TYPE_C_ID_OBJECT,
-  SPVM_TYPE_C_ID_STRING,
-  SPVM_TYPE_C_ID_BYTE_ARRAY,
-  SPVM_TYPE_C_ID_SHORT_ARRAY,
-  SPVM_TYPE_C_ID_INT_ARRAY,
-  SPVM_TYPE_C_ID_LONG_ARRAY,
-  SPVM_TYPE_C_ID_FLOAT_ARRAY,
-  SPVM_TYPE_C_ID_DOUBLE_ARRAY,
-  SPVM_TYPE_C_ID_OBJECT_ARRAY,
-  SPVM_TYPE_C_ID_STRING_ARRAY,
-};
-
-extern const char* const SPVM_TYPE_C_ID_NAMES[];
-
 struct SPVM_type {
   int32_t dimension;
   SPVM_BASIC_TYPE* basic_type;
@@ -68,7 +36,6 @@ SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler);
 
 _Bool SPVM_TYPE_equal(SPVM_COMPILER* compiler, SPVM_TYPE* type1, SPVM_TYPE* type2);
-SPVM_TYPE* SPVM_TYPE_search_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension);
 
 int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension);
 int32_t SPVM_TYPE_fprint_type_name(SPVM_COMPILER* compiler, FILE* fh, int32_t basic_type_id, int32_t dimension);

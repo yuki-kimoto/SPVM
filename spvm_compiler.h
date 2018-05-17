@@ -41,7 +41,6 @@ struct SPVM_compiler {
   SPVM_LIST* op_constants;
   
   int64_t enum_default_value;
-  int32_t enum_default_type_id;
 
   // Packages
   SPVM_LIST* op_packages;

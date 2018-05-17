@@ -14,28 +14,6 @@
 #include "spvm_package.h"
 #include "spvm_basic_type.h"
 
-const char* const SPVM_TYPE_C_ID_NAMES[] = {
-  "unknown",
-  "void",
-  "undef",
-  "byte",
-  "short",
-  "int",
-  "long",
-  "float",
-  "double",
-  "Object",
-  "String",
-  "byte[]",
-  "short[]",
-  "int[]",
-  "long[]",
-  "float[]",
-  "double[]",
-  "Object[]",
-  "String[]",
-};
-
 int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   assert(basic_type);
@@ -197,22 +175,6 @@ SPVM_TYPE* SPVM_TYPE_get_object_type(SPVM_COMPILER* compiler) {
   assert(type);
   
   return type;
-}
-
-SPVM_TYPE* SPVM_TYPE_search_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
-  
-  SPVM_LIST* types = compiler->types;
-  
-  int32_t i;
-  for (i = 0; i < types->length; i++) {
-    SPVM_TYPE* type = SPVM_LIST_fetch(types, i);
-    assert(type->basic_type);
-    if (basic_type_id == type->basic_type->id && dimension == type->dimension) {
-      return type;
-    }
-  }
-  
-  return NULL;
 }
 
 // Create array name

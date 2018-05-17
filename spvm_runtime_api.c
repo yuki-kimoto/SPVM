@@ -704,7 +704,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, int8_t* bytes, int32_t l
     }
   }
   
-  int32_t string_type_id = SPVM_TYPE_C_ID_STRING;
+  int32_t string_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
 
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_type_id);
 
@@ -730,9 +730,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_chars(SPVM_API* api, const char* chars)
   
   memcpy((void*)((intptr_t)value + sizeof(SPVM_OBJECT)), chars, length);
   
-  int32_t string_type_id = SPVM_TYPE_C_ID_STRING;
+  int32_t string_basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_type_id);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object(api, string_basic_type_id);
 
   static int32_t field_id;
   field_id = SPVM_RUNTIME_API_get_field_id(api, object, "bytes");

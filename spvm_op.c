@@ -1140,8 +1140,11 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     case SPVM_OP_C_ID_ARRAY_ELEM: {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
-      assert(first_type->basic_type);
-      type = SPVM_TYPE_search_type(compiler, first_type->basic_type->id, first_type->dimension - 1);
+      type = SPVM_TYPE_new(compiler);
+      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, first_type->basic_type->name, strlen(first_type->basic_type->name));
+      type->basic_type = basic_type;
+      assert(first_type->dimension > 0);
+      type->dimension = first_type->dimension - 1;
       break;
     }
     case SPVM_OP_C_ID_ADD:
