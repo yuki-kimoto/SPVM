@@ -56,6 +56,26 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
   return sv_object;
 }
 
+SV* SPVM_XS_UTIL_create_sv_type_name(int32_t basic_type_id, int32_t dimension) {
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+  assert(basic_type);
+
+  SV* sv_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
+  
+  int32_t dim_index;
+  for (dim_index = 0; dim_index < dimension; dim_index++) {
+    sv_catpv(sv_type_name, "[]");
+  }
+  
+  return sv_type_name;
+}
+
 SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   
   if (SvOK(sv_object)) {
