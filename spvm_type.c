@@ -175,16 +175,6 @@ SPVM_TYPE* SPVM_TYPE_get_double_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_get_byte_array_type(SPVM_COMPILER* compiler) {
-  (void)compiler;
-  
-  SPVM_TYPE* type = SPVM_HASH_search(compiler->type_symtable, "byte[]", strlen("byte[]"));
-  
-  assert(type);
-  
-  return type;
-}
-
 SPVM_TYPE* SPVM_TYPE_get_string_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
