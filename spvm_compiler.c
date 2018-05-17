@@ -80,7 +80,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->enum_default_type_id = SPVM_TYPE_C_ID_INT;
 
   compiler->types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  compiler->type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
 
   compiler->basic_type_name_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->basic_type_name_constant_pool = SPVM_CONSTANT_POOL_new(compiler);
@@ -218,7 +217,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add void type
@@ -230,7 +228,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add byte type
@@ -242,7 +239,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add short type
@@ -254,7 +250,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add int type
@@ -266,7 +261,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add long type
@@ -278,7 +272,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add float type
@@ -290,7 +283,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add double type
@@ -302,7 +294,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add undef type
@@ -314,7 +305,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add Object type
@@ -326,7 +316,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add String type
@@ -338,7 +327,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add byte type
@@ -351,7 +339,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add short type
@@ -364,7 +351,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add int type
@@ -377,7 +363,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add long type
@@ -390,7 +375,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add float type
@@ -403,7 +387,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add double type
@@ -416,7 +399,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add Object type
@@ -430,7 +412,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      type->basic_type = basic_type;
      assert(type->basic_type);
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   // Add String type
@@ -443,7 +424,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, type->basic_type_name, strlen(type->basic_type_name));
      type->basic_type = basic_type;
      SPVM_LIST_push(compiler->types, type);
-     SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), type);
   }
 
   return compiler;

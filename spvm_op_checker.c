@@ -2241,20 +2241,13 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
       }
       
       // Create resolved type id
-      SPVM_TYPE* found_type = SPVM_HASH_search(compiler->type_symtable, type->name, strlen(type->name));
-      if (found_type) {
-        op_type->uv.type = found_type;
-      }
-      else {
-        type->id = compiler->types->length;
-        
-        SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
-        memcpy(new_type, type, sizeof(SPVM_TYPE));
-        SPVM_LIST_push(compiler->types, new_type);
-        SPVM_HASH_insert(compiler->type_symtable, type->name, strlen(type->name), new_type);
-        
-        op_type->uv.type = new_type;
-      }
+      type->id = compiler->types->length;
+      
+      SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
+      memcpy(new_type, type, sizeof(SPVM_TYPE));
+      SPVM_LIST_push(compiler->types, new_type);
+      
+      op_type->uv.type = new_type;
     }
   }
 }

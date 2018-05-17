@@ -79,9 +79,6 @@ struct SPVM_compiler {
   // Types(This is unique types)
   SPVM_LIST* types;
   
-  // Resolved type symbol table
-  SPVM_HASH* type_symtable;
-
   // Single types
   SPVM_LIST* basic_types;
   
