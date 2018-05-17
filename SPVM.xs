@@ -66,7 +66,9 @@ SV* SPVM_XS_UTIL_create_sv_type_name(int32_t basic_type_id, int32_t dimension) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   assert(basic_type);
 
-  SV* sv_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
+  SV* sv_type_name = sv_2mortal(newSVpv("SPVM::", 0));
+  
+  sv_catpv(sv_type_name, basic_type->name);
   
   int32_t dim_index;
   for (dim_index = 0; dim_index < dimension; dim_index++) {
@@ -3478,7 +3480,10 @@ call_sub(...)
               
               if (!(basic_object->basic_type_id == arg_type->basic_type->id && basic_object->dimension == arg_type->dimension)) {
                 SPVM_TYPE* basic_object_type = SPVM_LIST_fetch(compiler->basic_types, basic_object->basic_type_id);
-                croak("Argument basic_object type need %s, but %s", arg_type->name, basic_object_type->name);
+                SV* sv_arg_type_name = SPVM_XS_UTIL_create_sv_type_name(arg_type->basic_type->id, arg_type->dimension);
+                SV* sv_basic_object_type = SPVM_XS_UTIL_create_sv_type_name(basic_object_type->basic_type->id, basic_object_type->dimension);
+                
+                croak("Argument basic_object type need %s, but %s", SvPV_nolen(sv_arg_type_name), SvPV_nolen(sv_basic_object_type));
               }
               
               call_sub_args[arg_index].object_value = basic_object;
@@ -3581,8 +3586,7 @@ call_sub(...)
           sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Object");
         }
         else {
-          SV* sv_return_type_name = sv_2mortal(newSVpv("SPVM::", 0));
-          sv_catpv(sv_return_type_name, return_type->name);
+          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);
           
           sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
         }

@@ -37,14 +37,14 @@ const char* const SPVM_TYPE_C_ID_NAMES[] = {
 };
 
 int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_id, strlen(basic_type_id));
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   assert(basic_type);
   
   int32_t length = strlen(basic_type->name) + dimension * 2;
 }
 
 int32_t SPVM_TYPE_fprint_type_name(SPVM_COMPILER* compiler, FILE* fh, int32_t basic_type_id, int32_t dimension) {
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_id, strlen(basic_type_id));
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   assert(basic_type);
   
   fprintf(fh, "%s", basic_type->name);
@@ -55,7 +55,7 @@ int32_t SPVM_TYPE_fprint_type_name(SPVM_COMPILER* compiler, FILE* fh, int32_t ba
 }
 
 int32_t SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_t basic_type_id, int32_t dimension) {
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_id, strlen(basic_type_id));
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   assert(basic_type);
   
   char* cur = buffer;
@@ -68,6 +68,9 @@ int32_t SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_
     sprintf(cur, "[]");
     cur += 2;
   }
+  
+  *cur = '\0';
+  cur++;
 }
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {

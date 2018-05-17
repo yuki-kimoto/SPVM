@@ -25,7 +25,11 @@ enum {
   /* Case statements count limit */
   SPVM_LIMIT_C_CASES = INT32_MAX,
   
+  /* Type dimension limit */
   SPVM_LIMIT_DIMENSION = UINT8_MAX,
+  
+  /* Basic type name length limit */
+  SPVM_LIMIT_BASIC_TYPE_NAME = INT16_MAX,
 };
 
 #endif

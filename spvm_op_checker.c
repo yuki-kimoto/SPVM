@@ -663,25 +663,22 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                       SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
                       
-                      if (!index_type) {
-                        SPVM_yyerror_format(compiler, "Can't create no length array \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
-                        return;
-                      }
-                      else {
-                        if (SPVM_TYPE_is_numeric(compiler, index_type)) {
-                          SPVM_OP_apply_unary_numeric_promotion(compiler, op_index_term);
-                          
-                          SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
-                          
-                          if (index_type->dimension == 0 && index_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
-                            SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
-                            return;
-                          }
-                        }
-                        else {
-                          SPVM_yyerror_format(compiler, "new operator can't create array which don't have numeric length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
+                      assert(index_type);
+                      if (SPVM_TYPE_is_numeric(compiler, index_type)) {
+                        SPVM_OP_apply_unary_numeric_promotion(compiler, op_index_term);
+                        
+                        SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
+                        
+                        if (!(index_type->dimension == 0 && index_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && index_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_INT)) {
+                          char* type_name = compiler->tmp_buffer;
+                          SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension);
+                          SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type_name, op_cur->file, op_cur->line);
                           return;
                         }
+                      }
+                      else {
+                        SPVM_yyerror_format(compiler, "new operator can't create array which don't have numeric length \"%s\" at %s line %d\n", type->name, op_cur->file, op_cur->line);
+                        return;
                       }
                     }
                     // 
