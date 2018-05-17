@@ -175,8 +175,8 @@ void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
   printf("\n[AST]\n");
   SPVM_DUMPER_dump_ast(compiler, compiler->op_grammar);
   
-  printf("\n[Types]\n");
-  SPVM_DUMPER_dump_types(compiler, compiler->types);
+  printf("\n[Basic types]\n");
+  SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
   
   printf("\n[Packages]\n");
   SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
@@ -242,19 +242,15 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) 
   }
 }
 
-void SPVM_DUMPER_dump_types(SPVM_COMPILER* compiler, SPVM_LIST* types) {
+void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_types) {
   (void)compiler;
   
   {
     int32_t i;
-    for (i = 0; i < types->length; i++) {
-      printf("type[%" PRId32 "]\n", i);
-      SPVM_TYPE* type = SPVM_LIST_fetch(types, i);
-      printf("    name => ");
-      SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension);
-      printf("\n");
-      printf("    id => \"%" PRId32 "\"\n", type->basic_type->id);
-      printf("    dimension => \"%" PRId32 "\"\n", type->dimension);
+    for (i = 0; i < basic_types->length; i++) {
+      printf("basic_type[%" PRId32 "]\n", i);
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(basic_types, i);
+      printf("    name => %s", basic_type->name);
     }
   }
 }
