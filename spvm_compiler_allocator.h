@@ -15,7 +15,7 @@ SPVM_VMCODE* SPVM_COMPILER_ALLOCATOR_alloc_vmcode(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator);
 
-const char* SPVM_COMPILER_ALLOCATOR_alloc_const_string(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, const char* string);
+const char* SPVM_COMPILER_ALLOCATOR_alloc_const_string(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, const char* string, int32_t length);
 
 // Parser information
 struct SPVM_compiler_allocator {

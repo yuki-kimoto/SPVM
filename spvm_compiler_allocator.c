@@ -76,16 +76,16 @@ char* SPVM_COMPILER_ALLOCATOR_alloc_string(SPVM_COMPILER* compiler, SPVM_COMPILE
   return str;
 }
 
-const char* SPVM_COMPILER_ALLOCATOR_alloc_const_string(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, const char* string) {
+const char* SPVM_COMPILER_ALLOCATOR_alloc_const_string(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, const char* string, int32_t length) {
   (void)compiler;
   
-  const char* found_constant_string = SPVM_HASH_search(compiler->const_string_symtable, string, strlen(string));
+  const char* found_constant_string = SPVM_HASH_search(compiler->const_string_symtable, string, length);
   if (found_constant_string) {
     return found_constant_string;
   }
   else {
-    const char* alloc_string = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, strlen(string) + 1);
-    SPVM_HASH_insert(compiler->const_string_symtable, alloc_string, strlen(alloc_string), alloc_string);
+    const char* alloc_string = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, length + 1);
+    SPVM_HASH_insert(compiler->const_string_symtable, alloc_string, length, alloc_string);
     return alloc_string;
   }
 }
