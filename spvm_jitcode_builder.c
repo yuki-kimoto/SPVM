@@ -32,23 +32,15 @@
 #include "spvm_basic_type.h"
 
 void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t index) {
-  if (strcmp(type_name, "SPVM_API_OBJECT*") == 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, index);
-    SPVM_STRING_BUFFER_add(string_buffer, "]");
-  }
-  else {
-    SPVM_STRING_BUFFER_add(string_buffer, "var");
-    SPVM_STRING_BUFFER_add_int(string_buffer, index);
-  }
+  SPVM_STRING_BUFFER_add(string_buffer, "vars[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, index);
+  SPVM_STRING_BUFFER_add(string_buffer, "]");
 }
 
 void SPVM_JITCODE_BUILDER_add_operand(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t var_index) {
-  if (strcmp(type_name, "SPVM_API_OBJECT*") == 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "*(");
-    SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
-    SPVM_STRING_BUFFER_add(string_buffer, "*)&");
-  }
+  SPVM_STRING_BUFFER_add(string_buffer, "*(");
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "*)&");
   SPVM_JITCODE_BUILDER_add_var(string_buffer, type_name, var_index);
 }
 
@@ -632,22 +624,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   
-  {
-    int32_t my_index;
-    for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
-      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
-      SPVM_MY* my = op_my->uv.my;
-      SPVM_TYPE* type = my->op_type->uv.type;
-      if (!SPVM_TYPE_is_object(compiler, type)) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_STRING_BUFFER_add(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(type->basic_type->id, type->dimension));
-        SPVM_STRING_BUFFER_add(string_buffer, " var");
-        SPVM_STRING_BUFFER_add_int(string_buffer, my->index);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-      }
-    }
-  }
-  
   if (sub->mortal_stack_max > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_VALUE mortal_stack[");
     SPVM_STRING_BUFFER_add_int(string_buffer, sub->mortal_stack_max);
@@ -724,7 +700,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       }
       else {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_JITCODE_BUILDER_add_var(string_buffer, "", my_index);
+        SPVM_JITCODE_BUILDER_add_operand(string_buffer, SPVM_JITCODE_BUILDER_get_type_name(my_type->basic_type->id, my_type->dimension), my_index);
         SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
       }
     }
