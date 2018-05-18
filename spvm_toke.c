@@ -35,8 +35,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
   // Save buf pointer
   compiler->befbufptr = compiler->bufptr;
-  _Bool before_is_comma = compiler->before_is_comma;
-  compiler->before_is_comma = 0;
 
   _Bool before_is_package = compiler->before_is_package;
   compiler->before_is_package = 0;
@@ -1296,14 +1294,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op_name;
           
           return NAME;
-        }
-        
-        if (*compiler->bufptr == ',') {
-          if (before_is_comma && *compiler->bufptr == ',') {
-            fprintf(stderr, "Double camma is forbidden at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
-            exit(EXIT_FAILURE);
-          }
-          compiler->before_is_comma = 1;
         }
         
         /* Return character */
