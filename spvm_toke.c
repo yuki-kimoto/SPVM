@@ -36,9 +36,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   // Save buf pointer
   compiler->befbufptr = compiler->bufptr;
 
-  _Bool before_is_package = compiler->before_is_package;
-  compiler->before_is_package = 0;
-  
   // Constant minus sign
   int32_t minus = 0;
   
@@ -1192,8 +1189,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               case 'p' :
                 if (strcmp(keyword, "package") == 0) {
                   
-                  compiler->before_is_package = 1;
-                  
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_PACKAGE);
                   
                   return PACKAGE;
@@ -1275,18 +1270,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (has_double_underline) {
             fprintf(stderr, "Can't contain __ in package, subroutine or field name at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
             exit(EXIT_FAILURE);
-          }
-          
-          // Package name must be same as use package name
-          if (before_is_package) {
-            
-            SPVM_OP* op_use = compiler->cur_op_use;
-            SPVM_USE* use = op_use->uv.use;
-            
-            if (strcmp(keyword, use->package_name) != 0) {
-              fprintf(stderr, "Package name \"%s\" must be match corresponding file path at %s line %" PRId32 "\n", keyword, compiler->cur_file, compiler->cur_line);
-              exit(EXIT_FAILURE);
-            }
           }
           
           SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);

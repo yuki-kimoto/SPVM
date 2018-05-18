@@ -106,9 +106,6 @@ struct SPVM_compiler {
   // Error is fatal
   _Bool fatal_error;
   
-  // Before is package
-  _Bool before_is_package;
-  
   // Expect name
   _Bool expect_name;
   
