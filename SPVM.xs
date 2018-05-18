@@ -3203,7 +3203,6 @@ compile(...)
       // push package to compiler use stack
       SPVM_OP* op_use_package = SPVM_OP_new_op_use_from_package_name(compiler, name, file, line);
       SPVM_LIST_push(compiler->op_use_stack, op_use_package);
-      SPVM_HASH_insert(compiler->op_use_symtable, name, strlen(name), op_use_package);
     }
   }
   
@@ -3216,7 +3215,7 @@ compile(...)
       SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
       SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
       char* include_path = SvPV_nolen(sv_include_path);
-      SPVM_LIST_push(compiler->include_pathes, include_path);
+      SPVM_LIST_push(compiler->module_include_pathes, include_path);
     }
   }
   

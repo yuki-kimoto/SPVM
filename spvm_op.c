@@ -1844,12 +1844,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   op_use->uv.use = use;
   use->package_name = package_name;
   
-  SPVM_OP* found_op_use = SPVM_HASH_search(compiler->op_use_symtable, package_name, strlen(package_name));
-  
-  if (!found_op_use) {
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-    SPVM_HASH_insert(compiler->op_use_symtable, package_name, strlen(package_name), op_use);
-  }
+  SPVM_LIST_push(compiler->op_use_stack, op_use);
   
   return op_use;
 }

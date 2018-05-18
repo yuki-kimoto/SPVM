@@ -36,6 +36,12 @@ struct SPVM_compiler {
   
   // Current case statements in switch statement
   SPVM_LIST* cur_op_cases;
+
+  // Include pathes
+  SPVM_LIST* module_include_pathes;
+
+  // Class loading stack
+  SPVM_LIST* op_use_stack;
   
   // Constants
   SPVM_LIST* op_constants;
@@ -52,18 +58,6 @@ struct SPVM_compiler {
   // Use module pathes
   SPVM_HASH* package_load_path_symtable;
   
-  // Current use
-  SPVM_OP* cur_op_use;
-  
-  // Class loading stack
-  SPVM_LIST* op_use_stack;
-  
-  // use symbol table
-  SPVM_HASH* op_use_symtable;
-  
-  // Include pathes
-  SPVM_LIST* include_pathes;
-
   // Single types
   SPVM_LIST* basic_types;
   

@@ -98,11 +98,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               // Search module file
               char* cur_file = NULL;
               FILE* fh = NULL;
-              int32_t include_pathes_length = compiler->include_pathes->length;
+              int32_t module_include_pathes_length = compiler->module_include_pathes->length;
               {
                 int32_t i;
-                for (i = 0; i < include_pathes_length; i++) {
-                  const char* include_path = (const char*) SPVM_LIST_fetch(compiler->include_pathes, i);
+                for (i = 0; i < module_include_pathes_length; i++) {
+                  const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
                   
                   // File name
                   int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(module_path_base));
@@ -124,8 +124,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   fprintf(stderr, "Can't locate %s in @INC (@INC contains:", module_path_base);
                   {
                     int32_t i;
-                    for (i = 0; i < include_pathes_length; i++) {
-                      const char* include_path = (const char*) SPVM_LIST_fetch(compiler->include_pathes, i);
+                    for (i = 0; i < module_include_pathes_length; i++) {
+                      const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
                       fprintf(stderr, " %s", include_path);
                     }
                   }
@@ -138,7 +138,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               
               compiler->cur_file = cur_file;
-              compiler->cur_op_use = op_use;
               
               // Read file content
               fseek(fh, 0, SEEK_END);

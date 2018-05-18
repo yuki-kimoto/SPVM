@@ -61,9 +61,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
 
-  compiler->op_use_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
   compiler->op_use_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  compiler->include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  compiler->module_include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
   compiler->bufptr = "";
 
   compiler->method_signatures = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
@@ -80,7 +79,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // use String module
   SPVM_OP* op_use_string = SPVM_OP_new_op_use_from_package_name(compiler, "String", "Std", 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_string);
-  SPVM_HASH_insert(compiler->op_use_symtable, "String", strlen("String"), op_use_string);
   
   return compiler;
 }
@@ -205,7 +203,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     // Create use op for entry point package
     SPVM_OP* op_use_entry_point = SPVM_OP_new_op_use_from_package_name(compiler, entyr_point_package_name, "main", 1);
     SPVM_LIST_push(compiler->op_use_stack, op_use_entry_point);
-    SPVM_HASH_insert(compiler->op_use_symtable, entyr_point_package_name, strlen(entyr_point_package_name), op_use_entry_point);
     
     // Entry point
     int32_t entyr_point_package_name_length = (int32_t)strlen(entyr_point_package_name);
