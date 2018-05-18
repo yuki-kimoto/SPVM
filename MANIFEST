@@ -84,11 +84,11 @@ solo/t/spvm_t_hash.c
 solo/t/spvm_t_memory_pool.c
 SPVM.xs
 spvm_base.h
+spvm_basic_type.c
+spvm_basic_type.h
 spvm_block.c
 spvm_block.h
 spvm_build/.gitkeep
-spvm_call_field.c
-spvm_call_field.h
 spvm_call_stack_info.c
 spvm_call_stack_info.h
 spvm_call_sub.c
@@ -99,6 +99,8 @@ spvm_compiler_allocator.c
 spvm_compiler_allocator.h
 spvm_constant.c
 spvm_constant.h
+spvm_constant_pool.c
+spvm_constant_pool.h
 spvm_descriptor.c
 spvm_descriptor.h
 spvm_dumper.c
@@ -109,6 +111,8 @@ spvm_enumeration_value.c
 spvm_enumeration_value.h
 spvm_field.c
 spvm_field.h
+spvm_field_access.c
+spvm_field_access.h
 spvm_global.h
 spvm_hash.c
 spvm_hash.h

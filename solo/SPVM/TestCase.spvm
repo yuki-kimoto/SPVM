@@ -50,6 +50,14 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
+    // Multi array init
+    {
+      my $nums1 = [
+        [1, 2, 3],
+        [5, 6, 7]
+      ];
+    }
+
     {
       # get_bytes
       my $get_bytes_ok = 0;

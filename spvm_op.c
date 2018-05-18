@@ -1042,6 +1042,8 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
         type_new->basic_type = type_term_element->basic_type;
         type_new->dimension = type_term_element->dimension + 1;
         op_type_new->uv.type= type_new;
+        
+        op_var_tmp_new->uv.var->op_my->uv.my->op_type = op_type_new;
       }
       
       SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
