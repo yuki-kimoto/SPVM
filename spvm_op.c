@@ -1843,6 +1843,9 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   SPVM_USE* use = SPVM_USE_new(compiler);
   op_use->uv.use = use;
   use->package_name = package_name;
+  use->op_type = op_type;
+  
+  assert(op_type);
   
   SPVM_LIST_push(compiler->op_use_stack, op_use);
   

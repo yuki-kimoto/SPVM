@@ -5,6 +5,7 @@
 
 struct SPVM_use {
   const char* package_name;
+  SPVM_OP* op_type;
 };
 
 SPVM_USE* SPVM_USE_new(SPVM_COMPILER* compiler);

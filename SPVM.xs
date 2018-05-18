@@ -33,6 +33,7 @@
 #include "spvm_jitcode_builder.h"
 #include "spvm_string_buffer.h"
 #include "spvm_basic_type.h"
+#include "spvm_use.h"
 
 static SPVM_API_VALUE call_sub_args[255];
 
@@ -3201,7 +3202,10 @@ compile(...)
       int32_t line = (int32_t)SvIV(sv_line);
       
       // push package to compiler use stack
+      SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name, file, line);
+      SPVM_OP* op_type_package = SPVM_OP_build_basic_type(compiler, op_name_package);
       SPVM_OP* op_use_package = SPVM_OP_new_op_use_from_package_name(compiler, name, file, line);
+      op_use_package->uv.use->op_type = op_type_package;
       SPVM_LIST_push(compiler->op_use_stack, op_use_package);
     }
   }

@@ -63,7 +63,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (op_use_stack->length > 0) {
             SPVM_OP* op_use = SPVM_LIST_pop(op_use_stack);
             
-            const char* package_name = op_use->uv.use->package_name;
+            assert(op_use->uv.use->op_type);
+            assert(op_use->uv.use->op_type->uv.type->dimension == 0);
+            const char* package_name = op_use->uv.use->op_type->uv.type->basic_type->name;
+            
+            assert(package_name);
             
             SPVM_OP* found_op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
             
