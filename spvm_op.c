@@ -1019,7 +1019,6 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
   
   int32_t length;
-  SPVM_TYPE* type_new = NULL;
   {
     SPVM_OP* op_term_element = op_list_elements->first;
     int32_t index = 0;
@@ -1031,7 +1030,15 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
         }
 
         SPVM_TYPE* type_term_element = SPVM_OP_get_type(compiler, op_term_element);
-        type_new = SPVM_TYPE_new(compiler);
+
+        // Create element type
+        SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
+        type_element->basic_type = type_term_element->basic_type;
+        type_element->dimension = type_term_element->dimension;
+        op_type_element->uv.type = type_element;
+        
+        // Create array type
+        SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
         type_new->basic_type = type_term_element->basic_type;
         type_new->dimension = type_term_element->dimension + 1;
         op_type_new->uv.type= type_new;
