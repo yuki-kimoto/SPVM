@@ -13,6 +13,9 @@ struct SPVM_compiler {
   // Current parsed source
   char* cur_src;
 
+  // Current line number
+  int32_t cur_line;
+  
   // Allocator
   SPVM_COMPILER_ALLOCATOR* allocator;
   
@@ -27,7 +30,13 @@ struct SPVM_compiler {
   
   // Current enum value
   int32_t current_enum_value;
-
+  
+  // Temporary variable length
+  int32_t tmp_var_length;
+  
+  // Current case statements in switch statement
+  SPVM_LIST* cur_op_cases;
+  
   // Constants
   SPVM_LIST* op_constants;
 
@@ -37,14 +46,38 @@ struct SPVM_compiler {
   // OP package symtable
   SPVM_HASH* op_package_symtable;
   
-  // OP our symtable
-  SPVM_HASH* op_our_symtable;
+  // Anonimous package length
+  int32_t anon_package_length;
+  
+  // Use module pathes
+  SPVM_HASH* package_load_path_symtable;
+  
+  // Current use
+  SPVM_OP* cur_op_use;
   
   // Class loading stack
   SPVM_LIST* op_use_stack;
   
+  // use symbol table
+  SPVM_HASH* op_use_symtable;
+  
   // Include pathes
   SPVM_LIST* include_pathes;
+
+  // Single types
+  SPVM_LIST* basic_types;
+  
+  // Resolved type symbol table
+  SPVM_HASH* basic_type_symtable;
+  
+  // Types
+  SPVM_LIST* op_types;
+
+  // OP our symtable
+  SPVM_HASH* op_our_symtable;
+
+  // Package Variable length
+  int32_t package_var_length;
   
   // Subroutine ops
   SPVM_LIST* op_subs;
@@ -52,26 +85,11 @@ struct SPVM_compiler {
   // Subroutine absolute name symbol table
   SPVM_HASH* op_sub_symtable;
 
-  // use symbol table
-  SPVM_HASH* op_use_symtable;
-  
-  // Types(This is all type ops in source id)
-  SPVM_LIST* op_types;
-
-  // Subroutine names
+  // Method signature
   SPVM_LIST* method_signatures;
 
-  // Subroutine name symtable
+  // Method signature symbol table
   SPVM_HASH* method_signature_symtable;
-  
-  // Single types
-  SPVM_LIST* basic_types;
-  
-  // Resolved type symbol table
-  SPVM_HASH* basic_type_symtable;
-  
-  // Current case statements in switch statement
-  SPVM_LIST* cur_op_cases;
   
   // Entry point subroutine name
   const char* start_sub_name;
@@ -85,33 +103,20 @@ struct SPVM_compiler {
   // Entry point subroutine name
   const char* entry_point_sub_name;
 
-  // Use module pathes
-  SPVM_HASH* package_load_path_symtable;
-  
-  // Current line number
-  int32_t cur_line;
-  
   // Syntax error count
   int32_t error_count;
-  
-  // Package Variable id
-  int32_t package_var_length;
-  
-  int32_t tmp_var_length;
   
   // Error is fatal
   _Bool fatal_error;
   
-  SPVM_OP* cur_op_use;
-  
-  int32_t anon_package_length;
-  
-  _Bool enable_jit;
-  
+  // Temporary buffer
   char tmp_buffer[UINT16_MAX];
-
-  // Opcodes
+  
+  // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
+  
+  // Enable JIT
+  _Bool enable_jit;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
