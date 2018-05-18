@@ -71,8 +71,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   compiler->package_load_path_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
 
-  compiler->basic_type_name_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
-
   // Operation codes
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   

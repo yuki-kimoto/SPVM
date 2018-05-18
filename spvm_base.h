@@ -104,10 +104,6 @@ typedef struct SPVM_dumper SPVM_DUMPER;
 struct SPVM_vmcodes;
 typedef struct SPVM_vmcodes SPVM_VMCODES;
 
-// spvm_constant_pool.h
-struct SPVM_constant_pool;
-typedef struct SPVM_constant_pool SPVM_CONSTANT_POOL;
-
 // spvm_vmcode.h
 struct SPVM_vmcode;
 typedef struct SPVM_vmcode SPVM_VMCODE;

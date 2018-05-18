@@ -108,8 +108,6 @@ struct SPVM_compiler {
   
   _Bool enable_jit;
   
-  SPVM_HASH* basic_type_name_symtable;
-  
   char tmp_buffer[UINT16_MAX];
 
   // Opcodes
