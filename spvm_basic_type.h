@@ -37,4 +37,6 @@ struct SPVM_basic_type {
   int32_t id;
 };
 
+SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler);
+
 #endif

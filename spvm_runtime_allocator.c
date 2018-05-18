@@ -13,6 +13,7 @@
 #include "spvm_runtime.h"
 #include "spvm_api.h"
 #include "spvm_object.h"
+#include "spvm_hash.h"
 
 #include "spvm_package.h"
 #include "spvm_sub.h"

@@ -34,6 +34,9 @@ int32_t SPVM_FIELD_get_byte_size(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     else if (field_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG || field_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
       byte_size = sizeof(int64_t);
     }
+    else {
+      assert(0);
+    }
   }
   else {
     byte_size = sizeof(void*);
