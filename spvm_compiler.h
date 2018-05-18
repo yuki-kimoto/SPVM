@@ -13,6 +13,9 @@ struct SPVM_compiler {
   // Current parsed source
   char* cur_src;
 
+  // Allocator
+  SPVM_COMPILER_ALLOCATOR* allocator;
+  
   // Current buffer position
   char* bufptr;
   
@@ -22,22 +25,11 @@ struct SPVM_compiler {
   // Expect subroutine name
   _Bool expect_sub_name;
   
-  // Entry point package name
-  const char* entry_point_package_name;
-  
-  // Entry point subroutine name
-  const char* entry_point_sub_name;
+  // Current enum value
+  int32_t current_enum_value;
 
-  // Allocator
-  SPVM_COMPILER_ALLOCATOR* allocator;
-  
-  // AST grammar
-  SPVM_OP* op_grammar;
-  
   // Constants
   SPVM_LIST* op_constants;
-  
-  int64_t enum_default_value;
 
   // Packages
   SPVM_LIST* op_packages;
@@ -83,8 +75,15 @@ struct SPVM_compiler {
   
   // Entry point subroutine name
   const char* start_sub_name;
+
+  // AST grammar
+  SPVM_OP* op_grammar;
   
-  SPVM_LIST* cur_template_args;
+  // Entry point package name
+  const char* entry_point_package_name;
+  
+  // Entry point subroutine name
+  const char* entry_point_sub_name;
 
   // Use module pathes
   SPVM_HASH* package_load_path_symtable;

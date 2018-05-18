@@ -2147,19 +2147,19 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     SPVM_CONSTANT* constant = op_constant->uv.constant;
     
     if (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-      compiler->enum_default_value = constant->value.int_value;
+      compiler->current_enum_value = constant->value.int_value;
     }
     else {
       SPVM_yyerror_format(compiler, "enum value must be int type at %s line %d\n", op_constant->file, op_constant->line);
       return NULL;
     }
     
-    compiler->enum_default_value++;
+    compiler->current_enum_value++;
   }
   else {
-    op_constant = SPVM_OP_new_op_constant_int(compiler, (int32_t)compiler->enum_default_value, op_name->file, op_name->line);
+    op_constant = SPVM_OP_new_op_constant_int(compiler, (int32_t)compiler->current_enum_value, op_name->file, op_name->line);
     
-    compiler->enum_default_value++;
+    compiler->current_enum_value++;
   }
   
   // Return
@@ -2203,7 +2203,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   SPVM_OP_insert_child(compiler, op_enumeration, op_enumeration->last, op_enumeration_block);
   
   // Reset enum information
-  compiler->enum_default_value = 0;
+  compiler->current_enum_value = 0;
   
   return op_enumeration;
 }
