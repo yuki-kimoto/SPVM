@@ -91,9 +91,6 @@ struct SPVM_compiler {
   // Method signature symbol table
   SPVM_HASH* method_signature_symtable;
   
-  // Entry point subroutine name
-  const char* start_sub_name;
-
   // AST grammar
   SPVM_OP* op_grammar;
   
@@ -102,7 +99,7 @@ struct SPVM_compiler {
   
   // Entry point subroutine name
   const char* entry_point_sub_name;
-
+  
   // Syntax error count
   int32_t error_count;
   
