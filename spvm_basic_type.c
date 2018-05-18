@@ -30,7 +30,7 @@ const char* const SPVM_BASIC_TYPE_C_ID_NAMES[] = {
 };
 
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
-  SPVM_BASIC_TYPE* basic_type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_BASIC_TYPE));
+  SPVM_BASIC_TYPE* basic_type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, sizeof(SPVM_BASIC_TYPE));
   
   return basic_type;
 }

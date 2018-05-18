@@ -4,5 +4,5 @@
 #include "spvm_compiler.h"
 
 SPVM_ENUMERATION* SPVM_ENUMERATION_new(SPVM_COMPILER* compiler) {
-  return SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_ENUMERATION));
+  return SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, sizeof(SPVM_ENUMERATION));
 }

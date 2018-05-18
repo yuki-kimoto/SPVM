@@ -58,11 +58,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       int32_t loop_block_stack_length = 0;
       
       SPVM_LIST* op_mys = sub->op_mys;
-      SPVM_LIST* op_my_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-      SPVM_LIST* block_my_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_LIST* op_my_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+      SPVM_LIST* block_my_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
       
       // Switch stack
-      SPVM_LIST* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+      SPVM_LIST* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
       
       // Destructor must receive own package object
       if (sub->is_destructor) {
@@ -124,7 +124,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             case SPVM_OP_C_ID_BLOCK: {
               
               int32_t block_my_base = op_my_stack->length;
-              int32_t* block_my_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+              int32_t* block_my_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler);
               *block_my_base_ptr = block_my_base;
               SPVM_LIST_push(block_my_base_stack, block_my_base_ptr);
               
@@ -2000,7 +2000,7 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
       }
     }
     
-    int32_t* new_has_interface_cache_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+    int32_t* new_has_interface_cache_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler);
     *new_has_interface_cache_ptr = has_interface;
     SPVM_HASH_insert(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name), new_has_interface_cache_ptr);
   }

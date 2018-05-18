@@ -13,5 +13,5 @@ const char* const SPVM_DESCRIPTOR_C_ID_NAMES[] = {
 };
 
 SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_COMPILER* compiler) {
-  return SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_DESCRIPTOR));
+  return SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, sizeof(SPVM_DESCRIPTOR));
 }

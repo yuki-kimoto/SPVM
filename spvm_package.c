@@ -8,14 +8,14 @@
 #include "spvm_type.h"
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
-  SPVM_PACKAGE* package = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_PACKAGE));
+  SPVM_PACKAGE* package = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, sizeof(SPVM_PACKAGE));
   
-  package->op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  package->op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
 
-  package->op_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
-  package->op_our_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
-  package->method_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
-  package->has_interface_cache_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  package->op_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->op_our_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->method_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->has_interface_cache_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   
   return package;
 }

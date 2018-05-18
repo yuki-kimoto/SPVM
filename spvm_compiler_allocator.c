@@ -20,16 +20,18 @@ SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new(SPVM_COMPILER* compiler) {
   allocator->memory_pool = SPVM_MEMORY_POOL_new(0);
   
   // Arrays - these arrays are created at compile time
-  allocator->arrays = SPVM_LIST_new(0);
+  allocator->arrays = SPVM_LIST_new(8);
   
   // Hashed - these hashes are created at compile time
-  allocator->hashes = SPVM_LIST_new(0);
+  allocator->hashes = SPVM_LIST_new(8);
   
   return allocator;
 }
 
-void* SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, int32_t size) {
+void* SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(SPVM_COMPILER* compiler, int32_t size) {
   (void)compiler;
+  
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
   void* block = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, size);
   memset(block, 0, size);
@@ -37,8 +39,10 @@ void* SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(SPVM_COMPILER* compiler, SPVM_CO
   return block;
 }
 
-SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_array(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, int32_t capacity) {
+SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_array(SPVM_COMPILER* compiler, int32_t capacity) {
   (void)compiler;
+
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
   SPVM_LIST* array = SPVM_LIST_new(capacity);
   
@@ -47,8 +51,10 @@ SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_array(SPVM_COMPILER* compiler, SPVM_COM
   return array;
 }
 
-SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, int32_t capacity) {
+SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t capacity) {
   (void)compiler;
+
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
   SPVM_HASH* hash = SPVM_HASH_new(capacity);
   
@@ -57,16 +63,20 @@ SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, SPVM_COMP
   return hash;
 }
 
-int32_t* SPVM_COMPILER_ALLOCATOR_alloc_int(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator) {
+int32_t* SPVM_COMPILER_ALLOCATOR_alloc_int(SPVM_COMPILER* compiler) {
   (void)compiler;
+
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
   int32_t* value = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, sizeof(int32_t));
   
   return value;
 }
 
-char* SPVM_COMPILER_ALLOCATOR_alloc_string(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator, int32_t length) {
+char* SPVM_COMPILER_ALLOCATOR_alloc_string(SPVM_COMPILER* compiler, int32_t length) {
   (void)compiler;
+
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
   assert(length >= 0);
   assert(length <= 0xFFFF);
@@ -76,8 +86,10 @@ char* SPVM_COMPILER_ALLOCATOR_alloc_string(SPVM_COMPILER* compiler, SPVM_COMPILE
   return str;
 }
 
-void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler, SPVM_COMPILER_ALLOCATOR* allocator) {
+void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   (void)compiler;
+
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
   // Free memory pool */
   SPVM_MEMORY_POOL_free(allocator->memory_pool);

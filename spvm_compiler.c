@@ -46,29 +46,29 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->allocator = SPVM_COMPILER_ALLOCATOR_new(compiler);
   
   // Parser information
-  compiler->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  compiler->op_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+  compiler->op_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   
-  compiler->op_packages = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  compiler->op_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->op_packages = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+  compiler->op_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
-  compiler->op_our_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->op_our_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
-  compiler->op_types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  compiler->op_types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
 
-  compiler->basic_types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  compiler->basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->basic_types = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+  compiler->basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
-  compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
 
-  compiler->op_use_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  compiler->module_include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  compiler->op_use_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+  compiler->module_include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
   compiler->bufptr = "";
 
-  compiler->method_signatures = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  compiler->method_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->method_signatures = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+  compiler->method_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
-  compiler->package_load_path_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, compiler->allocator, 0);
+  compiler->package_load_path_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   // Operation codes
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
@@ -223,7 +223,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   // Free allocator
-  SPVM_COMPILER_ALLOCATOR_free(compiler, compiler->allocator);
+  SPVM_COMPILER_ALLOCATOR_free(compiler);
   
   // Free opcode array
   SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);

@@ -74,7 +74,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               
               // Append "SPVM/", change :: to / and add ".spvm"
               int32_t module_path_base_length = (int32_t)(5 + strlen(package_name) + 6);
-              char* module_path_base = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, module_path_base_length);
+              char* module_path_base = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, module_path_base_length);
               const char* bufptr_orig = package_name;
               char* bufptr_to = module_path_base;
               strncpy(bufptr_to, "SPVM/", 5);
@@ -106,7 +106,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   // File name
                   int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(module_path_base));
-                  cur_file = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, file_name_length);
+                  cur_file = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, file_name_length);
                   sprintf(cur_file, "%s/%s", include_path, module_path_base);
                   cur_file[file_name_length] = '\0';
                   
@@ -660,7 +660,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         char* str;
         int32_t str_length = 0;
         if (*(compiler->bufptr) == '"') {
-          str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, 0);
+          str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, 0);
           str[0] = '\0';
           compiler->bufptr++;
         }
@@ -691,7 +691,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
           compiler->bufptr++;
           
-          str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, str_tmp_len);
+          str = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, str_tmp_len);
           {
             char* char_ptr = (char*)cur_token_ptr;
             while (char_ptr != compiler->bufptr - 1) {
@@ -779,7 +779,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          char* var_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, str_len);
+          char* var_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, str_len);
           memcpy(var_name, cur_token_ptr, str_len);
           var_name[str_len] = '\0';
 
@@ -1034,7 +1034,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          char* keyword = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, str_len);
+          char* keyword = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, str_len);
           
           memcpy(keyword, cur_token_ptr, str_len);
           keyword[str_len] = '\0';

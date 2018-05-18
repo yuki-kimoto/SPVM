@@ -28,7 +28,7 @@ void SPVM_yyerror_format(SPVM_COMPILER* compiler, const char* message_template, 
   
   // Messsage template with prefix
   int32_t message_template_with_prefix_length = prefix_length + message_template_length;
-  char* message_template_with_prefix = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, message_template_with_prefix_length);
+  char* message_template_with_prefix = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, message_template_with_prefix_length);
   strncpy(message_template_with_prefix, prefix, prefix_length);
   strncpy(message_template_with_prefix + prefix_length, message_template, message_template_length);
   message_template_with_prefix[message_template_with_prefix_length] = '\0';
@@ -62,7 +62,7 @@ void SPVM_yyerror_format(SPVM_COMPILER* compiler, const char* message_template, 
   }
   va_end(args);
   
-  char* message = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, message_length);
+  char* message = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, message_length);
   
   va_start(args, message_template);
   vsprintf(message, message_template_with_prefix, args);

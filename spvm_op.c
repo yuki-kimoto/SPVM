@@ -149,7 +149,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {
 
   // Temparary variable name
-  char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@tmp2147483647"));
+  char* name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, strlen("@tmp2147483647"));
   sprintf(name, "@tmp%d", compiler->tmp_var_length);
   compiler->tmp_var_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
@@ -1437,7 +1437,7 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
 const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
   int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
   
-  char* abs_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+  char* abs_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, length);
   
   sprintf(abs_name, "%s::%s", package_name, name);
   
@@ -1489,7 +1489,7 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
     length += 1;
   }
   
-  char* method_signature = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+  char* method_signature = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, length);
   
   // Calcurate signature length
   char* bufptr = method_signature;
@@ -1556,7 +1556,7 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
 const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
   int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
   
-  char* abs_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, length);
+  char* abs_name = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, length);
   
   sprintf(abs_name, "$%s::%s", package_name, &name[1]);
   
@@ -1573,7 +1573,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     package->is_anon = 1;
     
     // Anon package name
-    char* name_package = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, compiler->allocator, strlen("@anon2147483647"));
+    char* name_package = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, strlen("@anon2147483647"));
     sprintf(name_package, "@anon%d", compiler->anon_package_length);
     compiler->anon_package_length++;
     SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
@@ -1622,9 +1622,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Type(type is same as package name)
   SPVM_TYPE* type_package = SPVM_TYPE_new(compiler);
   
-  SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
-  SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, compiler->allocator, 0);
+  SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+  SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+  SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
   
   SPVM_OP* op_decls = op_block->first;
   SPVM_OP* op_decl = op_decls->first;
@@ -1811,7 +1811,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           int32_t* found_index_ptr = SPVM_HASH_search(compiler->method_signature_symtable, method_signature, strlen(method_signature));
           if (!found_index_ptr) {
             SPVM_LIST_push(compiler->method_signatures, (char*)method_signature);
-            int32_t* new_found_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler, compiler->allocator);
+            int32_t* new_found_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler);
             *new_found_index_ptr = compiler->method_signatures->length - 1;
             SPVM_HASH_insert(compiler->method_signature_symtable, method_signature, strlen(method_signature), new_found_index_ptr);
           }
@@ -2627,7 +2627,7 @@ SPVM_OP* SPVM_OP_new_op_list(SPVM_COMPILER* compiler, const char* file, int32_t 
 
 SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
 
-  SPVM_OP *op = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_OP));
+  SPVM_OP *op = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, sizeof(SPVM_OP));
   
   memset(op, 0, sizeof(SPVM_OP));
   

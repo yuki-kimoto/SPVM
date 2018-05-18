@@ -343,7 +343,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {
-  SPVM_OPCODE* opcode = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, compiler->allocator, sizeof(SPVM_OPCODE));
+  SPVM_OPCODE* opcode = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, sizeof(SPVM_OPCODE));
   
   return opcode;
 }
