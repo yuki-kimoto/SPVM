@@ -979,7 +979,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   //   SEQUENCE
   //     ASSIGN_NEW
   //       NEW
-  //         TYPE
+  //         TYPE_NEW
   //           TYPE_ELEMENT
   //           CONSTANT_LENGTH
   //       VAR_TMP_NEW
@@ -1004,11 +1004,11 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   int32_t line = op_list_elements->line;
   
   SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, file, line);
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-  SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
+  SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+  SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
   
   SPVM_OP* op_type_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_element);
+  SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
   
   SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
   SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
@@ -1019,14 +1019,22 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
   
   int32_t length;
+  SPVM_TYPE* type_new = NULL;
   {
     SPVM_OP* op_term_element = op_list_elements->first;
     int32_t index = 0;
     while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
       if (index == 0) {
+        
         if (op_term_element->id == SPVM_OP_C_ID_UNDEF) {
           SPVM_yyerror_format(compiler, "Array initialization first element must not be undef at %s line %d\n", file, line);
         }
+
+        SPVM_TYPE* type_term_element = SPVM_OP_get_type(compiler, op_term_element);
+        type_new = SPVM_TYPE_new(compiler);
+        type_new->basic_type = type_term_element->basic_type;
+        type_new->dimension = type_term_element->dimension + 1;
+        op_type_new->uv.type= type_new;
         
         // Use type inference
         op_new->uv.any = op_term_element;
@@ -1058,7 +1066,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   }
 
   SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
-  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_constant_length);
+  SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
   
   SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
   op_var_tmp_ret->uv.var = op_var_tmp_new->uv.var;
