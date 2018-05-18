@@ -1042,12 +1042,6 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
         type_new->basic_type = type_term_element->basic_type;
         type_new->dimension = type_term_element->dimension + 1;
         op_type_new->uv.type= type_new;
-        
-        // Use type inference
-        op_new->uv.any = op_term_element;
-        
-        op_var_tmp_new->uv.var->op_my->uv.my->try_type_inference = 1;
-        op_var_tmp_new->uv.var->op_my->uv.my->op_term_type_inference = op_term_element;
       }
       
       SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
@@ -1083,10 +1077,6 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   if (length == 0) {
     SPVM_yyerror_format(compiler, "Array initialization need at least one element at %s line %d\n", file, line);
   }
-  
-        
-  op_var_tmp_new->uv.var->op_my->uv.my->try_type_inference = 1;
-  op_var_tmp_new->uv.var->op_my->uv.my->op_term_type_inference = op_new->first;
   
   return op_sequence;
 }

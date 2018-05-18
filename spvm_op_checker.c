@@ -644,19 +644,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   assert(op_cur->first);
 
                   if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
-                    // Type inference when array initialization
-                    if (op_cur->uv.any) {
-                      SPVM_OP* op_term_type_inference = (SPVM_OP*)op_cur->uv.any;
-                      SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_term_type_inference);
-                      SPVM_TYPE* parent_type = SPVM_TYPE_new(compiler);
-                      parent_type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, element_type->basic_type->name, strlen(element_type->basic_type->name));
-                      parent_type->dimension = element_type->dimension + 1;
-                      op_cur->first->uv.type = parent_type;
-                    }
                     SPVM_OP* op_type = op_cur->first;
                     
                     SPVM_TYPE* type = op_type->uv.type;
-                    
                     
                     // Array
                     if (SPVM_TYPE_is_array(compiler, type)) {
