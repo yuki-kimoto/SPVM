@@ -904,17 +904,17 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
   //         TYPE
   //         CONSTANT_LENGTH
   //       VAR_TMP_NEW
-  //     ASSIGN_AELEM
+  //     ASSIGN_ARRAY_ELEM
   //       TERM
   //       ARRAY_ELEM
-  //         VAR_TMP_AELEM
+  //         VAR_TMP_ARRAY_ELEM
   //         CONSTANT 0
-  //     ASSIGN_AELEM
+  //     ASSIGN_ARRAY_ELEM
   //       TERM
   //       ARRAY_ELEM
   //         VAR_TMP_ARRAY
   //         CONSTANT_INDEX
-  //     ASSIGN_AELEM
+  //     ASSIGN_ARRAY_ELEM
   //       TERM
   //       ARRAY_ELEM
   //         VAR_TMP_ARRAY
@@ -938,21 +938,21 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
       int32_t index = 0;
       while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
         
-        SPVM_OP* op_assign_aelem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+        SPVM_OP* op_assign_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
         
         SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEM, file, line);
 
-        SPVM_OP* op_var_tmp_aelem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
-        op_var_tmp_aelem->uv.var = op_var_tmp_new->uv.var;
-        SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_tmp_aelem);
+        SPVM_OP* op_var_tmp_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
+        op_var_tmp_array_elem->uv.var = op_var_tmp_new->uv.var;
+        SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_tmp_array_elem);
 
         SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, file, line);
         SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
         
-        SPVM_OP_build_assign(compiler, op_assign_aelem, op_array_elem, op_term_element);
+        SPVM_OP_build_assign(compiler, op_assign_array_elem, op_array_elem, op_term_element);
         
-        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_aelem);
+        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_elem);
         
         index++;
         op_term_element = op_stab;
@@ -984,17 +984,17 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   //           CONSTANT_LENGTH
   //       VAR_TMP_NEW
   //         MY
-  //     ASSIGN_AELEM
+  //     ASSIGN_ARRAY_ELEM
   //       TERM
   //       ARRAY_ELEM
-  //         VAR_TMP_AELEM
+  //         VAR_TMP_ARRAY_ELEM
   //         CONSTANT 0
-  //     ASSIGN_AELEM
+  //     ASSIGN_ARRAY_ELEM
   //       TERM
   //       ARRAY_ELEM
   //         VAR_TMP_ARRAY
   //         CONSTANT_INDEX
-  //     ASSIGN_AELEM
+  //     ASSIGN_ARRAY_ELEM
   //       TERM
   //       ARRAY_ELEM
   //         VAR_TMP_ARRAY
@@ -1043,21 +1043,21 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
         op_var_tmp_new->uv.var->op_my->uv.my->op_term_type_inference = op_term_element;
       }
       
-      SPVM_OP* op_assign_aelem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+      SPVM_OP* op_assign_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
       SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
       
       SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEM, file, line);
 
-      SPVM_OP* op_var_tmp_aelem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
-      op_var_tmp_aelem->uv.var = op_var_tmp_new->uv.var;
-      SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_tmp_aelem);
+      SPVM_OP* op_var_tmp_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
+      op_var_tmp_array_elem->uv.var = op_var_tmp_new->uv.var;
+      SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_tmp_array_elem);
 
       SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, file, line);
       SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
       
-      SPVM_OP_build_assign(compiler, op_assign_aelem, op_array_elem, op_term_element);
+      SPVM_OP_build_assign(compiler, op_assign_array_elem, op_array_elem, op_term_element);
       
-      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_aelem);
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_elem);
       
       index++;
       op_term_element = op_stab;
