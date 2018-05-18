@@ -121,8 +121,8 @@ struct SPVM_package;
 typedef struct SPVM_package SPVM_PACKAGE;
 
 // spvm_type.h
-struct SPVM_call_field;
-typedef struct SPVM_call_field SPVM_CALL_FIELD;
+struct SPVM_field_access;
+typedef struct SPVM_field_access SPVM_FIELD_ACCESS;
 
 // spvm_type.h
 struct SPVM_type;
@@ -173,8 +173,8 @@ struct SPVM_sub;
 typedef struct SPVM_sub SPVM_SUB;
 
 // spvm_list_element.h
-struct SPVM_array_element;
-typedef struct SPVM_array_element SPVM_LIST_ELEMENT;
+struct SPVM_array_accessent;
+typedef struct SPVM_array_accessent SPVM_LIST_ELEMENT;
 
 // spvm_list.h
 struct SPVM_list;

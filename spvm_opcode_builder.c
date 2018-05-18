@@ -19,7 +19,7 @@
 #include "spvm_my.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_package.h"
-#include "spvm_call_field.h"
+#include "spvm_field_access.h"
 #include "spvm_call_sub.h"
 #include "spvm_hash.h"
 #include "spvm_field.h"
@@ -342,17 +342,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, sub->id, op_cur->line);
                   }
-                  else if (op_assign_from->id == SPVM_OP_C_ID_CALL_FIELD) {
+                  else if (op_assign_from->id == SPVM_OP_C_ID_FIELD_ACCESS) {
                     
                     // $VAR = $VAR_OBJECT->{NAME}
-                    SPVM_OP* op_call_field = op_assign_from;
-                    SPVM_OP* op_term_object = op_call_field->first;
+                    SPVM_OP* op_field_access = op_assign_from;
+                    SPVM_OP* op_term_object = op_field_access->first;
                     
                     // Call field
-                    SPVM_CALL_FIELD* call_field = op_call_field->uv.call_field;
-                    SPVM_FIELD* field = call_field->field;
+                    SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
+                    SPVM_FIELD* field = field_access->field;
                     
-                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
+                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -395,14 +395,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, sub->id, op_cur->line);
                   }
-                  else if (op_assign_from->id == SPVM_OP_C_ID_ARRAY_ELEM) {
+                  else if (op_assign_from->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
                     
                     // $VAR = $VAR_ARRAY->[$VAR_INDEX]
-                    SPVM_OP* op_array_elem = op_assign_from;
-                    SPVM_OP* op_term_array = op_array_elem->first;
-                    SPVM_OP* op_term_index = op_array_elem->last;
+                    SPVM_OP* op_array_access = op_assign_from;
+                    SPVM_OP* op_term_array = op_array_access->first;
+                    SPVM_OP* op_term_index = op_array_access->last;
                     
-                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_array_elem);
+                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_array_access);
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1501,13 +1501,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                 }
-                else if (op_assign_to->id == SPVM_OP_C_ID_ARRAY_ELEM) {
+                else if (op_assign_to->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
                   
                   // $VAR_ARRAY->[$VAR_INDEX] = $VAR_TERM
                   
-                  SPVM_OP* op_array_elem = op_assign_to;
-                  SPVM_OP* op_term_array = op_array_elem->first;
-                  SPVM_OP* op_term_index = op_array_elem->last;
+                  SPVM_OP* op_array_access = op_assign_to;
+                  SPVM_OP* op_term_array = op_array_access->first;
+                  SPVM_OP* op_term_index = op_array_access->last;
                   
                   SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_assign_from);
 
@@ -1569,16 +1569,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, sub->id, op_cur->line);
                   }
                 }
-                else if (op_assign_to->id == SPVM_OP_C_ID_CALL_FIELD) {
+                else if (op_assign_to->id == SPVM_OP_C_ID_FIELD_ACCESS) {
                   
                   // $VAR_ARRAY->{NAME} = $VAR_TERM
                   
-                  SPVM_OP* op_call_field = op_assign_to;
-                  SPVM_OP* op_term_object = op_call_field->first;
+                  SPVM_OP* op_field_access = op_assign_to;
+                  SPVM_OP* op_term_object = op_field_access->first;
 
                   // Call field
-                  SPVM_CALL_FIELD* call_field = op_call_field->uv.call_field;
-                  SPVM_FIELD* field = call_field->field;
+                  SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
+                  SPVM_FIELD* field = field_access->field;
 
                   SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_assign_from);
                   
@@ -1892,15 +1892,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 }
                 break;
               }
-              case SPVM_OP_C_ID_CALL_FIELD: {
+              case SPVM_OP_C_ID_FIELD_ACCESS: {
                 
                 // Weaken field
-                if (op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN) {
+                if (op_cur->flag &= SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
                   SPVM_OPCODE opcode;
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
                   opcode.id = SPVM_OPCODE_C_ID_WEAKEN_FIELD_OBJECT;
-                  SPVM_FIELD* field = op_cur->uv.call_field->field;
+                  SPVM_FIELD* field = op_cur->uv.field_access->field;
                   
                   SPVM_OP* op_term_object = op_cur->first;
                   int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);

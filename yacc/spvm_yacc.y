@@ -25,7 +25,7 @@
 %type <opval> enumeration_values enumeration_value weaken_field our_var invocant
 %type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var
-%type <opval> call_field array_elem convert_type enumeration new_object basic_type array_length declaration_in_grammar
+%type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement array_type_with_length
 %type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
 
@@ -441,8 +441,8 @@ assignable_term
     }
   | UNDEF
   | call_sub
-  | call_field
-  | array_elem
+  | field_access
+  | array_access
   | convert_type
   | new_object
   | array_init
@@ -469,11 +469,11 @@ expression
     {
       $$ = SPVM_OP_build_croak(compiler, $1, $2);
     }
-  | call_field ASSIGN assignable_term
+  | field_access ASSIGN assignable_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
-  | array_elem ASSIGN assignable_term
+  | array_access ASSIGN assignable_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
@@ -516,22 +516,22 @@ convert_type
       $$ = SPVM_OP_build_convert(compiler, op_convert, $2, $4);
     }
 
-call_field
+field_access
   : assignable_term ARROW '{' field_name '}'
     {
-      $$ = SPVM_OP_build_call_field(compiler, $1, $4);
+      $$ = SPVM_OP_build_field_access(compiler, $1, $4);
     }
-  | call_field '{' field_name '}'
+  | field_access '{' field_name '}'
     {
-      $$ = SPVM_OP_build_call_field(compiler, $1, $3);
+      $$ = SPVM_OP_build_field_access(compiler, $1, $3);
     }
-  | array_elem '{' field_name '}'
+  | array_access '{' field_name '}'
     {
-      $$ = SPVM_OP_build_call_field(compiler, $1, $3);
+      $$ = SPVM_OP_build_field_access(compiler, $1, $3);
     }
 
 weaken_field
-  : WEAKEN call_field
+  : WEAKEN field_access
     {
       $$ = SPVM_OP_build_weaken_field(compiler, $1, $2);
     }
@@ -652,18 +652,18 @@ logical_term
       $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
 
-array_elem
+array_access
   : assignable_term ARROW '[' assignable_term ']'
     {
-      $$ = SPVM_OP_build_array_elem(compiler, $1, $4);
+      $$ = SPVM_OP_build_array_access(compiler, $1, $4);
     }
-  | array_elem '[' assignable_term ']'
+  | array_access '[' assignable_term ']'
     {
-      $$ = SPVM_OP_build_array_elem(compiler, $1, $3);
+      $$ = SPVM_OP_build_array_access(compiler, $1, $3);
     }
-  | call_field '[' assignable_term ']'
+  | field_access '[' assignable_term ']'
     {
-      $$ = SPVM_OP_build_array_elem(compiler, $1, $3);
+      $$ = SPVM_OP_build_array_access(compiler, $1, $3);
     }
 
 call_sub

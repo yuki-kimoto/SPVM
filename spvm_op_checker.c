@@ -22,7 +22,7 @@
 #include "spvm_type.h"
 #include "spvm_enumeration.h"
 #include "spvm_package.h"
-#include "spvm_call_field.h"
+#include "spvm_field_access.h"
 #include "spvm_call_sub.h"
 #include "spvm_type.h"
 #include "spvm_switch_info.h"
@@ -944,7 +944,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
-                case SPVM_OP_C_ID_ARRAY_ELEM: {
+                case SPVM_OP_C_ID_ARRAY_ACCESS: {
                   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                   
@@ -1689,7 +1689,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   break;
                 }
-                case SPVM_OP_C_ID_CALL_FIELD: {
+                case SPVM_OP_C_ID_FIELD_ACCESS: {
                   SPVM_OP* op_term_invocker = op_cur->first;
                   SPVM_OP* op_name = op_cur->last;
                   
@@ -1706,9 +1706,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                   
                   // Check field name
-                  SPVM_OP_resolve_call_field(compiler, op_cur);
+                  SPVM_OP_resolve_field_access(compiler, op_cur);
                   
-                  SPVM_FIELD* field = op_cur->uv.call_field->field;
+                  SPVM_FIELD* field = op_cur->uv.field_access->field;
                   
                   if (!field) {
                     char* type_name = compiler->tmp_buffer;
@@ -1730,11 +1730,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   break;
                 }
                 case SPVM_OP_C_ID_WEAKEN_FIELD: {
-                  SPVM_OP* op_call_field = op_cur->first;
+                  SPVM_OP* op_field_access = op_cur->first;
                   
-                  SPVM_FIELD* field = op_call_field->uv.call_field->field;
+                  SPVM_FIELD* field = op_field_access->uv.field_access->field;
                   
-                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_call_field);
+                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
                   
                   if (type->dimension == 0 && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
                     SPVM_yyerror_format(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d\n",
@@ -1868,7 +1868,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_ID_CONCAT:
                   case SPVM_OP_C_ID_EXCEPTION_VAR:
                   case SPVM_OP_C_ID_PACKAGE_VAR:
-                  case SPVM_OP_C_ID_ARRAY_ELEM:
+                  case SPVM_OP_C_ID_ARRAY_ACCESS:
                   case SPVM_OP_C_ID_SWITCH_CONDITION:
                     create_tmp_var = 1;
                     break;
@@ -1878,8 +1878,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     break;
                   }
-                  case SPVM_OP_C_ID_CALL_FIELD: {
-                    if (!(op_cur->flag &= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN)) {
+                  case SPVM_OP_C_ID_FIELD_ACCESS: {
+                    if (!(op_cur->flag &= SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN)) {
                       create_tmp_var = 1;
                     }
                     break;

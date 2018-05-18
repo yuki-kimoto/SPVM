@@ -45,8 +45,8 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_long_array_elements,
   SPVM_RUNTIME_API_get_float_array_elements,
   SPVM_RUNTIME_API_get_double_array_elements,
-  SPVM_RUNTIME_API_get_object_array_element,
-  SPVM_RUNTIME_API_set_object_array_element,
+  SPVM_RUNTIME_API_get_object_array_accessent,
+  SPVM_RUNTIME_API_set_object_array_accessent,
   SPVM_RUNTIME_API_get_field_id,
   SPVM_RUNTIME_API_get_byte_field,
   SPVM_RUNTIME_API_get_short_field,
@@ -804,7 +804,7 @@ double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_OBJECT* o
   return (double*)((intptr_t)object + sizeof(SPVM_OBJECT));
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_API* api, SPVM_OBJECT* object, int32_t index) {
+SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_accessent(SPVM_API* api, SPVM_OBJECT* object, int32_t index) {
   (void)api;
   
   SPVM_OBJECT** values = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT));
@@ -818,7 +818,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_API* api, SPVM_OBJEC
   return object_value;
 }
 
-void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* object_value) {
+void SPVM_RUNTIME_API_set_object_array_accessent(SPVM_API* api, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* object_value) {
   (void)api;
   
   SPVM_OBJECT** values = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT));

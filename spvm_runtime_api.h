@@ -31,8 +31,8 @@ int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_API* api, SPVM_OBJECT* arr
 int64_t* SPVM_RUNTIME_API_get_long_array_elements(SPVM_API* api, SPVM_OBJECT* array);
 float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_API* api, SPVM_OBJECT* array);
 double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_API* api, SPVM_OBJECT* array);
-void SPVM_RUNTIME_API_set_object_array_element(SPVM_API* api, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* value);
-SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_API* api, SPVM_OBJECT* array, int32_t index);
+void SPVM_RUNTIME_API_set_object_array_accessent(SPVM_API* api, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* value);
+SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_accessent(SPVM_API* api, SPVM_OBJECT* array, int32_t index);
 
 // Object functions
 int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const char* name);

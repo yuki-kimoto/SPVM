@@ -19,7 +19,7 @@
 #include "spvm_type.h"
 #include "spvm_enumeration.h"
 #include "spvm_package.h"
-#include "spvm_call_field.h"
+#include "spvm_field_access.h"
 #include "spvm_call_sub.h"
 #include "spvm_type.h"
 #include "spvm_opcode_builder.h"
@@ -90,10 +90,10 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "AND",
   "OR",
   "NOT",
-  "ARRAY_ELEM",
+  "ARRAY_ACCESS",
   "ASSIGN",
   "CALL_SUB",
-  "CALL_FIELD",
+  "FIELD_ACCESS",
   "USE",
   "RETURN",
   "LAST",
@@ -904,19 +904,19 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
   //         TYPE
   //         CONSTANT_LENGTH
   //       VAR_TMP_NEW
-  //     ASSIGN_ARRAY_ELEM
+  //     ASSIGN_ARRAY_ACCESS
   //       TERM
-  //       ARRAY_ELEM
-  //         VAR_TMP_ARRAY_ELEM
+  //       ARRAY_ACCESS
+  //         VAR_TMP_ARRAY_ACCESS
   //         CONSTANT 0
-  //     ASSIGN_ARRAY_ELEM
+  //     ASSIGN_ARRAY_ACCESS
   //       TERM
-  //       ARRAY_ELEM
+  //       ARRAY_ACCESS
   //         VAR_TMP_ARRAY
   //         CONSTANT_INDEX
-  //     ASSIGN_ARRAY_ELEM
+  //     ASSIGN_ARRAY_ACCESS
   //       TERM
-  //       ARRAY_ELEM
+  //       ARRAY_ACCESS
   //         VAR_TMP_ARRAY
   //         CONSTANT_INDEX
   //     VAR_TMP_RET
@@ -938,21 +938,21 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
       int32_t index = 0;
       while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
         
-        SPVM_OP* op_assign_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+        SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
         
-        SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEM, file, line);
+        SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
 
-        SPVM_OP* op_var_tmp_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
-        op_var_tmp_array_elem->uv.var = op_var_tmp_new->uv.var;
-        SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_tmp_array_elem);
+        SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
+        op_var_tmp_array_access->uv.var = op_var_tmp_new->uv.var;
+        SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
 
         SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, file, line);
-        SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
+        SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
         
-        SPVM_OP_build_assign(compiler, op_assign_array_elem, op_array_elem, op_term_element);
+        SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_term_element);
         
-        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_elem);
+        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
         
         index++;
         op_term_element = op_stab;
@@ -984,19 +984,19 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
   //           CONSTANT_LENGTH
   //       VAR_TMP_NEW
   //         MY
-  //     ASSIGN_ARRAY_ELEM
+  //     ASSIGN_ARRAY_ACCESS
   //       TERM
-  //       ARRAY_ELEM
-  //         VAR_TMP_ARRAY_ELEM
+  //       ARRAY_ACCESS
+  //         VAR_TMP_ARRAY_ACCESS
   //         CONSTANT 0
-  //     ASSIGN_ARRAY_ELEM
+  //     ASSIGN_ARRAY_ACCESS
   //       TERM
-  //       ARRAY_ELEM
+  //       ARRAY_ACCESS
   //         VAR_TMP_ARRAY
   //         CONSTANT_INDEX
-  //     ASSIGN_ARRAY_ELEM
+  //     ASSIGN_ARRAY_ACCESS
   //       TERM
-  //       ARRAY_ELEM
+  //       ARRAY_ACCESS
   //         VAR_TMP_ARRAY
   //         CONSTANT_INDEX
   //     VAR_TMP_RET
@@ -1043,21 +1043,21 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
         op_var_tmp_new->uv.var->op_my->uv.my->op_term_type_inference = op_term_element;
       }
       
-      SPVM_OP* op_assign_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+      SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
       SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
       
-      SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEM, file, line);
+      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
 
-      SPVM_OP* op_var_tmp_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
-      op_var_tmp_array_elem->uv.var = op_var_tmp_new->uv.var;
-      SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var_tmp_array_elem);
+      SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
+      op_var_tmp_array_access->uv.var = op_var_tmp_new->uv.var;
+      SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
 
       SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, file, line);
-      SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_constant_index);
+      SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
       
-      SPVM_OP_build_assign(compiler, op_assign_array_elem, op_array_elem, op_term_element);
+      SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_term_element);
       
-      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_elem);
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
       
       index++;
       op_term_element = op_stab;
@@ -1146,7 +1146,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_ARRAY_LENGTH:
       type = SPVM_TYPE_get_int_type(compiler);
       break;
-    case SPVM_OP_C_ID_ARRAY_ELEM: {
+    case SPVM_OP_C_ID_ARRAY_ACCESS: {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
       type = SPVM_TYPE_new(compiler);
       SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, first_type->basic_type->name, strlen(first_type->basic_type->name));
@@ -1254,9 +1254,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = sub->op_return_type->uv.type;
       break;
     }
-    case SPVM_OP_C_ID_CALL_FIELD: {
-      SPVM_CALL_FIELD* call_field = op->uv.call_field;
-      SPVM_FIELD* field = call_field->field;
+    case SPVM_OP_C_ID_FIELD_ACCESS: {
+      SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
+      SPVM_FIELD* field = field_access->field;
       type = field->op_type->uv.type;
       break;
     }
@@ -1334,16 +1334,16 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
   }
 }
 
-void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field) {
+void SPVM_OP_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access) {
 
-  SPVM_CALL_FIELD* call_field = op_call_field->uv.call_field;
+  SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
 
-  if (call_field->field) {
+  if (field_access->field) {
     return;
   }
 
-  SPVM_OP* op_term = op_call_field->first;
-  SPVM_OP* op_name = op_call_field->last;
+  SPVM_OP* op_term = op_field_access->first;
+  SPVM_OP* op_name = op_field_access->last;
   
   SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_term);
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
@@ -1356,44 +1356,44 @@ void SPVM_OP_resolve_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_call_field)
     strlen(field_name)
   );
   if (found_op_field) {
-    op_call_field->uv.call_field->field = found_op_field->uv.field;
+    op_field_access->uv.field_access->field = found_op_field->uv.field;
   }
 }
 
-SPVM_OP* SPVM_OP_build_array_elem(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term) {
   
-  SPVM_OP* op_array_elem = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEM, op_var->file, op_var->line);
-  SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_var);
-  SPVM_OP_insert_child(compiler, op_array_elem, op_array_elem->last, op_term);
+  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, op_var->file, op_var->line);
+  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var);
+  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_term);
   
-  return op_array_elem;
+  return op_array_access;
 }
 
-SPVM_OP* SPVM_OP_build_call_field(SPVM_COMPILER* compiler, SPVM_OP* op_term, SPVM_OP* op_name_field) {
-  SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_FIELD, op_term->file, op_term->line);
+SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_term, SPVM_OP* op_name_field) {
+  SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD_ACCESS, op_term->file, op_term->line);
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_term);
   SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
   
-  SPVM_CALL_FIELD* call_field = SPVM_CALL_FIELD_new(compiler);
+  SPVM_FIELD_ACCESS* field_access = SPVM_FIELD_ACCESS_new(compiler);
   
   if (strchr(op_name_field->uv.name, ':')) {
     SPVM_yyerror_format(compiler, "field name \"%s\" can't contain :: at %s line %d\n",
       op_name_field, op_name_field->file, op_name_field->line);
   }
   
-  call_field->op_term = op_term;
-  call_field->op_name = op_name_field;
-  op_field->uv.call_field = call_field;
+  field_access->op_term = op_term;
+  field_access->op_name = op_name_field;
+  op_field->uv.field_access = field_access;
   
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_call_field) {
+SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_field_access) {
   
   SPVM_OP* op_weaken_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_WEAKEN_FIELD, op_weaken->file, op_weaken->line);
-  SPVM_OP_insert_child(compiler, op_weaken_field, op_weaken_field->last, op_call_field);
+  SPVM_OP_insert_child(compiler, op_weaken_field, op_weaken_field->last, op_field_access);
   
-  op_call_field->flag |= SPVM_OP_C_FLAG_CALL_FIELD_WEAKEN;
+  op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN;
   
   return op_weaken_field;
 }

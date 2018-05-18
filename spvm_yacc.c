@@ -646,9 +646,9 @@ static const char *const yytname[] =
   "if_statement", "else_statement", "field", "sub", "enumeration",
   "my_var", "our_var", "opt_assignable_terms", "assignable_terms",
   "array_length", "term", "assignable_term", "expression", "isa",
-  "new_object", "array_init", "convert_type", "call_field", "weaken_field",
-  "unop", "binop", "relative_term", "logical_term", "array_elem",
-  "call_sub", "opt_args", "args", "arg", "invocant",
+  "new_object", "array_init", "convert_type", "field_access",
+  "weaken_field", "unop", "binop", "relative_term", "logical_term",
+  "array_access", "call_sub", "opt_args", "args", "arg", "invocant",
   "opt_colon_descriptors", "opt_descriptors", "descriptors", "type",
   "basic_type", "array_type", "array_type_with_length", "type_or_void",
   "field_name", "sub_name", "var", "eval_block", 0
@@ -2363,21 +2363,21 @@ yyreduce:
   case 105:
 #line 521 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_call_field(compiler, (yyvsp[(1) - (5)].opval), (yyvsp[(4) - (5)].opval));
+      (yyval.opval) = SPVM_OP_build_field_access(compiler, (yyvsp[(1) - (5)].opval), (yyvsp[(4) - (5)].opval));
     ;}
     break;
 
   case 106:
 #line 525 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_call_field(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
+      (yyval.opval) = SPVM_OP_build_field_access(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
     ;}
     break;
 
   case 107:
 #line 529 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_call_field(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
+      (yyval.opval) = SPVM_OP_build_field_access(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
     ;}
     break;
 
@@ -2574,21 +2574,21 @@ yyreduce:
   case 134:
 #line 657 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_array_elem(compiler, (yyvsp[(1) - (5)].opval), (yyvsp[(4) - (5)].opval));
+      (yyval.opval) = SPVM_OP_build_array_access(compiler, (yyvsp[(1) - (5)].opval), (yyvsp[(4) - (5)].opval));
     ;}
     break;
 
   case 135:
 #line 661 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_array_elem(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
+      (yyval.opval) = SPVM_OP_build_array_access(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
     ;}
     break;
 
   case 136:
 #line 665 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_array_elem(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
+      (yyval.opval) = SPVM_OP_build_array_access(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
     ;}
     break;
 
