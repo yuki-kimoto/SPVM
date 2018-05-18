@@ -573,19 +573,6 @@ SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   }
 }
 
-SPVM_OP* SPVM_OP_new_op_use_from_package_name(SPVM_COMPILER* compiler, const char* package_name, const char* file, int32_t line) {
-
-  SPVM_OP* op_name_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
-  op_name_package->uv.name = package_name;
-  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file, line);
-  SPVM_USE* use = SPVM_USE_new(compiler);
-  use->package_name = package_name;
-  op_use->uv.use = use;
-  SPVM_OP_insert_child(compiler, op_use, op_use->last, op_name_package);
-  
-  return op_use;
-}
-
 SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, const char* file, int32_t line) {
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
@@ -1119,7 +1106,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   switch (op->id) {
     case SPVM_OP_C_ID_PACKAGE: {
       SPVM_PACKAGE* package = op->uv.package;
-      const char* package_name = package->op_name->uv.name;
       type = package->op_type->uv.type;
       break;
     }
@@ -1620,8 +1606,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   }
   
   // Type(type is same as package name)
-  SPVM_TYPE* type_package = SPVM_TYPE_new(compiler);
-  
   SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
   SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
   SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
@@ -1842,10 +1826,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   
   SPVM_USE* use = SPVM_USE_new(compiler);
   op_use->uv.use = use;
-  use->package_name = package_name;
   use->op_type = op_type;
-  
-  assert(op_type);
   
   SPVM_LIST_push(compiler->op_use_stack, op_use);
   

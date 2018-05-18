@@ -80,8 +80,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // use String module
   SPVM_OP* op_name_string = SPVM_OP_new_op_name(compiler, "String", "Std", 0);
   SPVM_OP* op_type_string = SPVM_OP_build_basic_type(compiler, op_name_string);
-  SPVM_OP* op_use_string = SPVM_OP_new_op_use_from_package_name(compiler, "String", "Std", 0);
-  op_use_string->uv.use->op_type = op_type_string;
+  SPVM_OP* op_use_string = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, "Std", 0);
+  SPVM_OP_build_use(compiler, op_use_string, op_type_string);
   SPVM_LIST_push(compiler->op_use_stack, op_use_string);
   
   return compiler;
@@ -207,8 +207,8 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     // Create use op for entry point package
     SPVM_OP* op_name_entry_point = SPVM_OP_new_op_name(compiler, entyr_point_package_name, "Std", 0);
     SPVM_OP* op_type_entry_point = SPVM_OP_build_basic_type(compiler, op_name_entry_point);
-    SPVM_OP* op_use_entry_point = SPVM_OP_new_op_use_from_package_name(compiler, entyr_point_package_name, "Std", 0);
-    op_use_entry_point->uv.use->op_type = op_type_entry_point;
+    SPVM_OP* op_use_entry_point = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, "Std", 0);
+    SPVM_OP_build_use(compiler, op_use_entry_point, op_type_entry_point);
     SPVM_LIST_push(compiler->op_use_stack, op_use_entry_point);
     
     // Entry point

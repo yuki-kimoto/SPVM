@@ -4,7 +4,6 @@
 #include "spvm_base.h"
 
 struct SPVM_use {
-  const char* package_name;
   SPVM_OP* op_type;
 };
 
