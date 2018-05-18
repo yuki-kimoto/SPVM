@@ -77,6 +77,11 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
 
+  // use String module
+  SPVM_OP* op_use_string = SPVM_OP_new_op_use_from_package_name(compiler, "String", "Std", 0);
+  SPVM_LIST_push(compiler->op_use_stack, op_use_string);
+  SPVM_HASH_insert(compiler->op_use_symtable, "String", strlen("String"), op_use_string);
+  
   return compiler;
 }
 
@@ -211,11 +216,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     entry_point_sub_name[entry_point_sub_name_length] = '\0';
     compiler->entry_point_sub_name = entry_point_sub_name;
   }
-  
-  // use String module
-  SPVM_OP* op_use_string = SPVM_OP_new_op_use_from_package_name(compiler, "String", "Std", 0);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_string);
-  SPVM_HASH_insert(compiler->op_use_symtable, "String", strlen("String"), op_use_string);
   
   /* call SPVM_yyparse */
   int32_t parse_success = SPVM_yyparse(compiler);
