@@ -7,10 +7,21 @@
 
 // Parser information
 struct SPVM_compiler {
-  
-  // Opcodes
-  SPVM_OPCODE_ARRAY* opcode_array;
+  // Current parsed file name
+  const char* cur_file;
 
+  // Current parsed source
+  char* cur_src;
+
+  // Current buffer position
+  char* bufptr;
+  
+  // Before buffer position
+  char* befbufptr;
+
+  // Expect subroutine name
+  _Bool expect_sub_name;
+  
   // Entry point package name
   const char* entry_point_package_name;
   
@@ -19,20 +30,6 @@ struct SPVM_compiler {
 
   // Allocator
   SPVM_COMPILER_ALLOCATOR* allocator;
-  
-  // Before buffer position
-  char* befbufptr;
-  
-  // Current buffer position
-  char* bufptr;
-  
-  // Current file name
-  const char* cur_file;
-  
-  const char* cur_package_name;
-  
-  // Source base_object
-  char* cur_src;
   
   // AST grammar
   SPVM_OP* op_grammar;
@@ -106,9 +103,6 @@ struct SPVM_compiler {
   // Error is fatal
   _Bool fatal_error;
   
-  // Expect name
-  _Bool expect_name;
-  
   SPVM_OP* cur_op_use;
   
   int32_t anon_package_length;
@@ -118,8 +112,9 @@ struct SPVM_compiler {
   SPVM_HASH* basic_type_name_symtable;
   
   char tmp_buffer[UINT16_MAX];
-  
-  SPVM_HASH* const_string_symtable;
+
+  // Opcodes
+  SPVM_OPCODE_ARRAY* opcode_array;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

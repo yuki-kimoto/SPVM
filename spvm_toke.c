@@ -40,8 +40,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   int32_t minus = 0;
   
   // Expect name
-  _Bool expect_name = compiler->expect_name;
-  compiler->expect_name = 0;
+  _Bool expect_sub_name = compiler->expect_sub_name;
+  compiler->expect_sub_name = 0;
   
   while(1) {
     // Get current character
@@ -138,7 +138,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               
               compiler->cur_file = cur_file;
-              compiler->cur_package_name = package_name;
               compiler->cur_op_use = op_use;
               
               // Read file content
@@ -257,7 +256,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else if (*compiler->bufptr == '>') {
           compiler->bufptr++;
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
-          compiler->expect_name = 1;
+          compiler->expect_sub_name = 1;
           
           return ARROW;
         }
@@ -1041,7 +1040,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           memcpy(keyword, cur_token_ptr, str_len);
           keyword[str_len] = '\0';
           
-          if (!expect_name) {
+          if (!expect_sub_name) {
             switch (keyword[0]) {
               // Keyword
               case 'c' :
@@ -1223,7 +1222,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else if (strcmp(keyword, "sub") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SUB);
-                  compiler->expect_name = 1;
+                  compiler->expect_sub_name = 1;
                   
                   return SUB;
                 }
@@ -1265,11 +1264,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 break;
             }
-          }
-          
-          if (has_double_underline) {
-            fprintf(stderr, "Can't contain __ in package, subroutine or field name at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
-            exit(EXIT_FAILURE);
           }
           
           SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);
