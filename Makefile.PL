@@ -17,6 +17,10 @@ if ($ivsize < 8) {
   die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
 }
 
+if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
+  die "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
+}
+
 my $debug;
 GetOptions('d' => \$debug);
 
