@@ -1,4 +1,4 @@
-0.0336
+0.0336 2018-05-19
   - fix hash insert and search bug
   - name string is shared intenally
   - only support NetBSD 7+, not support NetBSD 6
