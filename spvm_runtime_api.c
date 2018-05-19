@@ -911,9 +911,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       SPVM_PACKAGE* package = op_package->uv.package;
       
       {
-        int32_t field_index;
-        for (field_index = 0; field_index < package->op_fields->length; field_index++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
+        int32_t field_id;
+        for (field_id = 0; field_id < package->op_fields->length; field_id++) {
+          SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_id);
           SPVM_FIELD* field = op_field->uv.field;
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
@@ -1033,9 +1033,8 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   
   int32_t field_id;
   {
-    int32_t field_index;
-    for (field_index = 0; field_index < op_fields->length; field_index++) {
-      SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
+    for (field_id = 0; field_id < op_fields->length; field_id++) {
+      SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_id);
       SPVM_FIELD* field = op_field->uv.field;
       if (strcmp(name, field->op_name->uv.name) == 0) {
         field_id = sizeof(SPVM_API_VALUE) * field->id;
