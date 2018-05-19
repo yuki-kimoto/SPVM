@@ -1957,6 +1957,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 }
 
 _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
+  (void)compiler;
+  
   // When left package is interface, right package have all methods which left package have
   assert(interface->is_interface);
   assert(!package->is_interface);

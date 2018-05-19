@@ -40,6 +40,9 @@ struct SPVM_compiler {
   // Include pathes
   SPVM_LIST* module_include_pathes;
 
+  // OP name symtable
+  SPVM_HASH* name_symtable;
+
   // Class loading stack
   SPVM_LIST* op_use_stack;
   

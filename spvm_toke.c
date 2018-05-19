@@ -1028,11 +1028,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           
-          int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          char* keyword = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, str_len);
           
-          memcpy(keyword, cur_token_ptr, str_len);
-          keyword[str_len] = '\0';
+          char* keyword;
+          int32_t str_len = (compiler->bufptr - cur_token_ptr);
+          SPVM_HASH* found_name = SPVM_HASH_search(compiler->name_symtable, cur_token_ptr, str_len);
+          if (found_name) {
+            keyword = found_name;
+          }
+          else {
+            keyword = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, str_len);
+            memcpy(keyword, cur_token_ptr, str_len);
+            keyword[str_len] = '\0';
+            SPVM_HASH_insert(compiler->name_symtable, keyword, str_len, keyword);
+          }
           
           if (!expect_sub_name) {
             switch (keyword[0]) {

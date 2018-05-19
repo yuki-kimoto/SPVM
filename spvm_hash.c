@@ -98,7 +98,7 @@ void SPVM_HASH_free(SPVM_HASH* hash) {
   free(hash);
 }
 
-int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, void* value) {
+int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, int32_t key_length, void* value) {
   
   assert(hash);
   assert(key);
@@ -107,12 +107,11 @@ int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, void* value) 
   
   SPVM_HASH_maybe_extend_entries(hash);
   
-  int32_t key_length = strlen(key);
   SPVM_HASH_maybe_extend_key_buffer(hash, key_length);
   
   hash->entries[index].key_index = hash->key_buffer_length;
   
-  strncpy(&hash->key_buffer[hash->key_buffer_length], key, key_length);
+  memcpy(&hash->key_buffer[hash->key_buffer_length], key, key_length);
   hash->key_buffer[hash->key_buffer_length + key_length] = '\0';
   
   hash->key_buffer_length += key_length + 1;
@@ -185,7 +184,9 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
           match_string = 1;
         }
       }
-      else if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0) {
+      else if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0
+        && length == (int32_t)strlen(&hash->key_buffer[hash->entries[entry_index].key_index]))
+      {
         match_string = 1;
       }
       
@@ -198,7 +199,7 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
           entry_index = hash->entries[entry_index].next_index;
         }
         else {
-          int32_t new_entry_index = SPVM_HASH_new_hash_entry(hash, key, value);
+          int32_t new_entry_index = SPVM_HASH_new_hash_entry(hash, key, length, value);
           hash->entries[entry_index].next_index = new_entry_index;
           break;
         }
@@ -206,7 +207,7 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
     }
   }
   else {
-    int32_t new_entry_index = SPVM_HASH_new_hash_entry(hash, key, value);
+    int32_t new_entry_index = SPVM_HASH_new_hash_entry(hash, key, length, value);
     hash->table[table_index] = new_entry_index;
   }
 }
@@ -249,7 +250,9 @@ void* SPVM_HASH_search(SPVM_HASH* hash, const char* key, int32_t length) {
           match_string = 1;
         }
       }
-      else if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0) {
+      else if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0
+        && length == (int32_t)strlen(&hash->key_buffer[hash->entries[entry_index].key_index]))
+      {
         match_string = 1;
       }
       

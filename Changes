@@ -1,3 +1,6 @@
+0.0336
+  - fix hash insert and search bug
+  - name string is shared intenally
 0.0335 2018-05-18
   - support multi dimension array initialization
     my $nums = [
