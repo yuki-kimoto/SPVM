@@ -63,16 +63,6 @@ SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t c
   return hash;
 }
 
-int32_t* SPVM_COMPILER_ALLOCATOR_alloc_int(SPVM_COMPILER* compiler) {
-  (void)compiler;
-
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
-  
-  int32_t* value = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, sizeof(int32_t));
-  
-  return value;
-}
-
 char* SPVM_COMPILER_ALLOCATOR_alloc_string(SPVM_COMPILER* compiler, int32_t length) {
   (void)compiler;
 
