@@ -16,14 +16,14 @@ enum {
 struct SPVM_object {
   SPVM_OBJECT* weaken_back_refs;
   int32_t ref_count;
-  int32_t weaken_back_refs_length;
-  int32_t units_length;
   int32_t basic_type_id;
-  int8_t unit_byte_size;
-  int8_t has_destructor;
-  int8_t in_destroy;
-  int8_t category;
-  uint8_t dimension;
+  int32_t units_length;
+  int32_t weaken_back_refs_length;
+  int16_t unit_byte_size;
+  int16_t dimension;
+  unsigned has_destructor : 1;
+  unsigned in_destroy : 1;
+  unsigned category : 3;
 };
 
 #endif
