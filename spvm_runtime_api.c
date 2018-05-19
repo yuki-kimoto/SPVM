@@ -1138,7 +1138,7 @@ int32_t SPVM_RUNTIME_API_get_class_method_sub_id(SPVM_API* api, const char* pack
   return sub_id;
 }
 
-int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset) {
+int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(get_byte_field).");
@@ -1146,12 +1146,12 @@ int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32
     return 0;
   }
   
-  int8_t value = *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
+  int8_t value = *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
   
   return value;
 }
 
-int16_t SPVM_RUNTIME_API_get_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset) {
+int16_t SPVM_RUNTIME_API_get_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(get_short_field).");
@@ -1159,12 +1159,12 @@ int16_t SPVM_RUNTIME_API_get_short_field(SPVM_API* api, SPVM_OBJECT* object, int
     return 0;
   }
 
-  int16_t value = *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
+  int16_t value = *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
   
   return value;
 }
 
-int32_t SPVM_RUNTIME_API_get_int_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset) {
+int32_t SPVM_RUNTIME_API_get_int_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(get_int_field).");
@@ -1172,11 +1172,11 @@ int32_t SPVM_RUNTIME_API_get_int_field(SPVM_API* api, SPVM_OBJECT* object, int32
     return 0;
   }
 
-  int32_t value = *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
+  int32_t value = *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
   
   return value;
 }
-int64_t SPVM_RUNTIME_API_get_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset) {
+int64_t SPVM_RUNTIME_API_get_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(get_long_field).");
@@ -1184,12 +1184,12 @@ int64_t SPVM_RUNTIME_API_get_long_field(SPVM_API* api, SPVM_OBJECT* object, int3
     return 0;
   }
 
-  int64_t value = *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
+  int64_t value = *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
   
   return value;
 }
 
-float SPVM_RUNTIME_API_get_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset) {
+float SPVM_RUNTIME_API_get_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(get_float_field).");
@@ -1197,12 +1197,12 @@ float SPVM_RUNTIME_API_get_float_field(SPVM_API* api, SPVM_OBJECT* object, int32
     return 0;
   }
 
-  float value = *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
+  float value = *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
   
   return value;
 }
 
-double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset) {
+double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(get_double_field).");
@@ -1210,12 +1210,12 @@ double SPVM_RUNTIME_API_get_double_field(SPVM_API* api, SPVM_OBJECT* object, int
     return 0;
   }
 
-  double value = *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
+  double value = *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
   
   return value;
 }
 
-void SPVM_RUNTIME_API_weaken_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset) {
+void SPVM_RUNTIME_API_weaken_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
 
   if (__builtin_expect(!object, 0)) {
     SPVM_OBJECT* exception = api->new_string_chars(api, "Object to weaken an object field must not be undefined.");
@@ -1223,7 +1223,7 @@ void SPVM_RUNTIME_API_weaken_object_field(SPVM_API* api, SPVM_OBJECT* object, in
     return;
   }
 
-  SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
+  SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
   
   // Weaken object field
   if (*object_address != NULL) {
@@ -1233,7 +1233,7 @@ void SPVM_RUNTIME_API_weaken_object_field(SPVM_API* api, SPVM_OBJECT* object, in
   return;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset) {
+SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(get_object_field).");
@@ -1241,12 +1241,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* objec
     return NULL;
   }
 
-  SPVM_API_OBJECT* value = *(SPVM_API_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset);
+  SPVM_API_OBJECT* value = *(SPVM_API_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
   
   return value;
 }
 
-void SPVM_RUNTIME_API_set_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset, int8_t value) {
+void SPVM_RUNTIME_API_set_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, int8_t value) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(set_byte_field).");
@@ -1254,10 +1254,10 @@ void SPVM_RUNTIME_API_set_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t
     return;
   }
 
-  *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset) = value;
+  *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id) = value;
 }
 
-void SPVM_RUNTIME_API_set_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset, int16_t value) {
+void SPVM_RUNTIME_API_set_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, int16_t value) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(set_short_field).");
@@ -1265,10 +1265,10 @@ void SPVM_RUNTIME_API_set_short_field(SPVM_API* api, SPVM_OBJECT* object, int32_
     return;
   }
 
-  *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset) = value;
+  *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id) = value;
 }
 
-void SPVM_RUNTIME_API_set_int_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset, int32_t value) {
+void SPVM_RUNTIME_API_set_int_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, int32_t value) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(set_int_field).");
@@ -1276,10 +1276,10 @@ void SPVM_RUNTIME_API_set_int_field(SPVM_API* api, SPVM_OBJECT* object, int32_t 
     return;
   }
 
-  *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset) = value;
+  *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id) = value;
 }
 
-void SPVM_RUNTIME_API_set_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset, int64_t value) {
+void SPVM_RUNTIME_API_set_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, int64_t value) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(set_long_field).");
@@ -1287,10 +1287,10 @@ void SPVM_RUNTIME_API_set_long_field(SPVM_API* api, SPVM_OBJECT* object, int32_t
     return;
   }
 
-  *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset) = value;
+  *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id) = value;
 }
 
-void SPVM_RUNTIME_API_set_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset, float value) {
+void SPVM_RUNTIME_API_set_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, float value) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(set_float_field).");
@@ -1298,10 +1298,10 @@ void SPVM_RUNTIME_API_set_float_field(SPVM_API* api, SPVM_OBJECT* object, int32_
     return;
   }
   
-  *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset) = value;
+  *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id) = value;
 }
 
-void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset, double value) {
+void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, double value) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(set_double_field).");
@@ -1309,10 +1309,10 @@ void SPVM_RUNTIME_API_set_double_field(SPVM_API* api, SPVM_OBJECT* object, int32
     return;
   }
 
-  *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset) = value;
+  *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id) = value;
 }
 
-void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_byte_offset, SPVM_OBJECT* value) {
+void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id, SPVM_OBJECT* value) {
 
   if (__builtin_expect(object == NULL, 0)) {
     SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_chars(api, "Object must be not undef(set_object_field).");
@@ -1320,7 +1320,7 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_API* api, SPVM_OBJECT* object, int32
     return;
   }
   
-  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_byte_offset), value);
+  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id), value);
 }
 
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_API* api, SPVM_OBJECT* object) {
