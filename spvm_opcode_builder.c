@@ -79,6 +79,45 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   {
     int32_t sub_pos;
     for (sub_pos = 0; sub_pos < compiler->op_subs->length; sub_pos++) {
+      // opcode index stack for if start
+      SPVM_LIST* if_eq_or_if_ne_opcode_index_stack = SPVM_LIST_new(0);
+      
+      // opcode index stack for if end
+      SPVM_LIST* if_block_end_goto_opcode_index_stack = SPVM_LIST_new(0);
+      
+      // opcode index stack for loop start
+      SPVM_LIST* loop_first_goto_opcode_index_stack = SPVM_LIST_new(0);
+      
+      // opcode index stack for last
+      SPVM_LIST* last_goto_opcode_index_stack = SPVM_LIST_new(0);
+      
+      // opcode index stack for next
+      SPVM_LIST* next_goto_opcode_index_stack = SPVM_LIST_new(0);
+      
+      // opcode index stack for eval start
+      SPVM_LIST* push_eval_opcode_index_stack = SPVM_LIST_new(0);
+      
+      // IF_CROAK_CATCH opcode index stack
+      SPVM_LIST* if_croak_catch_goto_opcode_index_stack = SPVM_LIST_new(0);
+
+      // IF_CROAK_RETURN opcode index stack
+      SPVM_LIST* if_croak_return_goto_opcode_index_stack = SPVM_LIST_new(0);
+
+      // RETURN goto opcode index stack
+      SPVM_LIST* return_goto_opcode_index_stack = SPVM_LIST_new(0);
+      
+      // Switch stack
+      SPVM_LIST* switch_info_stack = SPVM_LIST_new(0);
+      
+      // Block stack
+      SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
+      
+      // Mortal variable stack
+      SPVM_LIST* mortal_stack = SPVM_LIST_new(0);
+      
+      // Mortal variable base stack
+      SPVM_LIST* mortal_base_stack = SPVM_LIST_new(0);
+
       SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_pos);
       SPVM_SUB* sub = op_sub->uv.sub;
       
@@ -99,45 +138,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
       SPVM_OP* op_cur = op_base;
       _Bool finish = 0;
-      
-      // opcode index stack for if start
-      SPVM_LIST* if_eq_or_if_ne_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // opcode index stack for if end
-      SPVM_LIST* if_block_end_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // opcode index stack for loop start
-      SPVM_LIST* loop_first_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // opcode index stack for last
-      SPVM_LIST* last_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // opcode index stack for next
-      SPVM_LIST* next_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // opcode index stack for eval start
-      SPVM_LIST* push_eval_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // IF_CROAK_CATCH opcode index stack
-      SPVM_LIST* if_croak_catch_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-
-      // IF_CROAK_RETURN opcode index stack
-      SPVM_LIST* if_croak_return_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-
-      // RETURN goto opcode index stack
-      SPVM_LIST* return_goto_opcode_index_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // Switch stack
-      SPVM_LIST* switch_info_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // Block stack
-      SPVM_LIST* op_block_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // Mortal variable stack
-      SPVM_LIST* mortal_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      
-      // Mortal variable base stack
-      SPVM_LIST* mortal_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
       
       int32_t mortal_stack_max = 0;
       
@@ -2718,6 +2718,21 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
       sub->opcode_length = opcode_array->length - sub->opcode_base;
       sub->mortal_stack_max = mortal_stack_max;
+      
+      // Free list
+      SPVM_LIST_free(if_eq_or_if_ne_opcode_index_stack);
+      SPVM_LIST_free(if_block_end_goto_opcode_index_stack);
+      SPVM_LIST_free(loop_first_goto_opcode_index_stack);
+      SPVM_LIST_free(last_goto_opcode_index_stack);
+      SPVM_LIST_free(next_goto_opcode_index_stack);
+      SPVM_LIST_free(push_eval_opcode_index_stack);
+      SPVM_LIST_free(if_croak_catch_goto_opcode_index_stack);
+      SPVM_LIST_free(if_croak_return_goto_opcode_index_stack);
+      SPVM_LIST_free(return_goto_opcode_index_stack);
+      SPVM_LIST_free(switch_info_stack);
+      SPVM_LIST_free(op_block_stack);
+      SPVM_LIST_free(mortal_stack);
+      SPVM_LIST_free(mortal_base_stack);
     }
   }
 }
