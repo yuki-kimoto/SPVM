@@ -88,11 +88,8 @@ struct SPVM_compiler {
   // AST grammar
   SPVM_OP* op_grammar;
   
-  // Entry point package name
-  const char* entry_point_package_name;
-  
   // Entry point subroutine name
-  const char* entry_point_sub_name;
+  const char* start_sub_name;
   
   // Syntax error count
   int32_t error_count;

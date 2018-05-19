@@ -180,26 +180,6 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
-  const char* entyr_point_package_name = compiler->entry_point_package_name;
-  
-  if (entyr_point_package_name) {
-    // Create use op for entry point package
-    SPVM_OP* op_name_entry_point = SPVM_OP_new_op_name(compiler, entyr_point_package_name, "Std", 0);
-    SPVM_OP* op_type_entry_point = SPVM_OP_build_basic_type(compiler, op_name_entry_point);
-    SPVM_OP* op_use_entry_point = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, "Std", 0);
-    SPVM_OP_build_use(compiler, op_use_entry_point, op_type_entry_point);
-    SPVM_LIST_push(compiler->op_use_stack, op_use_entry_point);
-    
-    // Entry point
-    int32_t entyr_point_package_name_length = (int32_t)strlen(entyr_point_package_name);
-    int32_t entry_point_sub_name_length =  (int32_t)(entyr_point_package_name_length + 6);
-    char* entry_point_sub_name = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(entry_point_sub_name_length + 1);
-    strncpy(entry_point_sub_name, entyr_point_package_name, entyr_point_package_name_length);
-    strncpy(entry_point_sub_name + entyr_point_package_name_length, "::main", 6);
-    entry_point_sub_name[entry_point_sub_name_length] = '\0';
-    compiler->entry_point_sub_name = entry_point_sub_name;
-  }
-  
   /* call SPVM_yyparse */
   int32_t parse_success = SPVM_yyparse(compiler);
   
