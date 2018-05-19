@@ -55,9 +55,6 @@ struct SPVM_compiler {
   // Anonimous package length
   int32_t anon_package_length;
   
-  // Use module pathes
-  SPVM_HASH* package_load_path_symtable;
-  
   // Single types
   SPVM_LIST* basic_types;
   

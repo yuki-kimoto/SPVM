@@ -12,7 +12,8 @@ struct SPVM_package {
   SPVM_HASH* method_signature_symtable;
   SPVM_HASH* has_interface_cache_symtable;
   SPVM_OP* op_sub_destructor;
-  char* load_path;
+  SPVM_OP* op_use;
+  const char* load_path;
   SPVM_OP* op_type;
   int32_t id;
   int32_t byte_size;

@@ -1554,6 +1554,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Package
   SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
   
+  package->load_path = compiler->cur_file;
+  
   if (!op_type) {
     // Package is anon
     package->is_anon = 1;
@@ -1711,10 +1713,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  // Add package load path
-  const char* package_load_path = SPVM_HASH_search(compiler->package_load_path_symtable, package_name, strlen(package_name));
-  package->load_path = (char*)package_load_path;
-  
   // Add package
   op_package->uv.package = package;
   
@@ -1814,7 +1812,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   package->id = compiler->op_packages->length;
   SPVM_LIST_push(compiler->op_packages, op_package);
   SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
-  
+
   return op_package;
 }
 
