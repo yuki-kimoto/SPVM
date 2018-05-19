@@ -911,22 +911,17 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
       SPVM_PACKAGE* package = op_package->uv.package;
       
       {
-        int32_t field_id;
-        for (field_id = 0; field_id < package->op_fields->length; field_id++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_id);
-          SPVM_FIELD* field = op_field->uv.field;
-          SPVM_TYPE* field_type = field->op_type->uv.type;
-          
-          if (SPVM_TYPE_is_object(compiler, field_type)) {
-            SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_API_VALUE) * field->id);
-            if (*object_field_address != NULL) {
-              // If object is weak, unweaken
-              if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
-                SPVM_RUNTIME_API_unweaken(api, object_field_address);
-              }
-              else {
-                SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);
-              }
+        int32_t index;
+        for (index = 0; index < package->object_field_ids->length; index++) {
+          int32_t object_field_id = (intptr_t)SPVM_LIST_fetch(package->object_field_ids, index);
+          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_API_VALUE) * object_field_id);
+          if (*object_field_address != NULL) {
+            // If object is weak, unweaken
+            if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
+              SPVM_RUNTIME_API_unweaken(api, object_field_address);
+            }
+            else {
+              SPVM_RUNTIME_API_dec_ref_count(api, *object_field_address);
             }
           }
         }
