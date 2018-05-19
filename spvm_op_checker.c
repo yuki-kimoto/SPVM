@@ -2246,83 +2246,18 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       SPVM_PACKAGE* package = op_package->uv.package;
       SPVM_LIST* op_fields = package->op_fields;
       
-      // Separate reference type and value type
       int32_t current_byte_offset = 0;
       {
         int32_t field_pos;
         for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
           SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
           SPVM_FIELD* field = op_field->uv.field;
-          SPVM_TYPE* field_type = field->op_type->uv.type;
-          
-          int32_t field_byte_size;
-          if (field_type->dimension == 0) {
-            switch (field_type->basic_type->id) {
-              case SPVM_BASIC_TYPE_C_ID_BYTE:
-                field_byte_size = sizeof(int8_t);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_SHORT:
-                field_byte_size = sizeof(int16_t);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_INT:
-                field_byte_size = sizeof(int32_t);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_LONG:
-                field_byte_size = sizeof(int64_t);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                field_byte_size = sizeof(float);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                field_byte_size = sizeof(double);
-                break;
-              default: {
-                field_byte_size = sizeof(SPVM_OBJECT*);
-              }
-            }
-          }
-          else {
-            field_byte_size = sizeof(SPVM_OBJECT*);
-          }
-          
-          // Padding
-          int32_t padding;
-          if ((current_byte_offset % alignment) == 0) {
-            padding = 0;
-          }
-          else {
-            padding = alignment - (current_byte_offset % alignment);
-          }
-          
-          if (padding != 0 && field_byte_size > padding) {
-            current_byte_offset += padding;
-          }
-          
+          int32_t field_byte_size = sizeof(SPVM_API_VALUE);
           field->byte_offset = current_byte_offset;
           current_byte_offset += field_byte_size;
         }
       }
-      package->byte_size = current_byte_offset;
-    }
-  }
-  
-  // Resolve package
-  {
-    int32_t package_pos;
-    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_pos);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      SPVM_LIST* op_fields = package->op_fields;
-      
-      // Calculate package byte size
-      {
-        int32_t field_pos;
-        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
-          field->index = field_pos;
-        }
-      }
+      package->byte_size = sizeof(SPVM_API_VALUE) * op_fields->length;
     }
   }
 }
