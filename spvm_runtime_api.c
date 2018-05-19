@@ -665,13 +665,19 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t basic_type_id) {
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
   SPVM_PACKAGE* package = op_package->uv.package;
   
+  int32_t length = package->op_fields->length;
+  int32_t element_byte_size = sizeof(SPVM_API_VALUE);
+  
   // Allocate memory
-  int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)sizeof(SPVM_API_VALUE) * package->op_fields->length;
+  int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)element_byte_size * length;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, object_byte_size);
   
   object->basic_type_id = basic_type->id;
   object->dimension = 0;
-  
+
+  object->length = length;
+  object->element_byte_size = element_byte_size;
+
   // Object type id
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
   

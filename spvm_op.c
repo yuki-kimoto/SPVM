@@ -1672,8 +1672,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         // Add op package
         field->op_package = op_package;
-        
-        
       }
     }
   }

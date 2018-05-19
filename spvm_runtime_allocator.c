@@ -126,28 +126,13 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* 
 
 void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   if (object == NULL) {
     return;
   }
   else {
     // Byte size
-    int64_t byte_size;
-    switch (object->category) {
-      case SPVM_OBJECT_C_CATEGORY_OBJECT: {
-        // Runtime
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-        SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-        SPVM_PACKAGE* package = op_package->uv.package;
-
-        byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_API_VALUE) * package->op_fields->length;
-        break;
-      }
-      default: {
-        byte_size = sizeof(SPVM_OBJECT) + object->length * object->element_byte_size;
-      }
-    }
+    int64_t byte_size = sizeof(SPVM_OBJECT) + object->length * object->element_byte_size;
     
     assert(byte_size > 0);
     
