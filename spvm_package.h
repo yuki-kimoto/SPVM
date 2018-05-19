@@ -15,8 +15,6 @@ struct SPVM_package {
   const char* load_path;
   SPVM_OP* op_type;
   int32_t id;
-  int32_t object_field_byte_offsets_base;
-  int32_t object_field_byte_offsets_length;
   _Bool is_interface;
   _Bool is_private;
   _Bool is_anon;
