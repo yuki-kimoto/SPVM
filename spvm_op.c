@@ -1555,6 +1555,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
   SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
   SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+  SPVM_LIST* object_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
 
   // Package
   SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
@@ -1673,8 +1674,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         // Add op package
         field->op_package = op_package;
       }
+      
+      if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
+        SPVM_LIST_push(object_field_ids, (void*)(intptr_t)field->id);
+      }
     }
   }
+  
+  package->object_field_ids = object_field_ids;
 
   // Register package variable
   {

@@ -8,6 +8,7 @@ struct SPVM_package {
   SPVM_LIST* op_subs;
   SPVM_LIST* op_fields;
   SPVM_HASH* op_field_symtable;
+  SPVM_LIST* object_field_ids;
   SPVM_HASH* op_our_symtable;
   SPVM_HASH* method_signature_symtable;
   SPVM_HASH* has_interface_cache_symtable;
