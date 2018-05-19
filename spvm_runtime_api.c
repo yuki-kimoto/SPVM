@@ -912,7 +912,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
           SPVM_TYPE* field_type = field->op_type->uv.type;
           
           if (SPVM_TYPE_is_object(compiler, field_type)) {
-            SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_API_VALUE) * field->index);
+            SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_API_VALUE) * field->id);
             if (*object_field_address != NULL) {
               // If object is weak, unweaken
               if (__builtin_expect(SPVM_RUNTIME_API_isweak(api, *object_field_address), 0)) {
@@ -1032,7 +1032,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
       SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
       SPVM_FIELD* field = op_field->uv.field;
       if (strcmp(name, field->op_name->uv.name) == 0) {
-        field_id = sizeof(SPVM_API_VALUE) * field->index;
+        field_id = sizeof(SPVM_API_VALUE) * field->id;
         break;
       }
       else {
