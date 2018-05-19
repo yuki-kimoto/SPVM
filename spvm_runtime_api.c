@@ -307,7 +307,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_API* api, SPVM_OBJECT** object_address) {
     object->uv.weaken_back_refs->ref_count++;
   }
   
-  int32_t capacity = object->uv.weaken_back_refs->length;
+  int32_t capacity = object->uv.weaken_back_refs->units_length;
   int32_t length = object->weaken_back_refs_length;
   
   // Extend capacity
@@ -420,9 +420,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_address_array(SPVM_API* api, int32_t length) {
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   
   // Set array length
-  object->length = length;
+  object->units_length = length;
   
-  object->element_byte_size = sizeof(void*);
+  object->unit_byte_size = sizeof(void*);
   
   object->category = SPVM_OBJECT_C_CATEGORY_ADDRESS_ARRAY;
   
@@ -439,9 +439,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_call_stack_object(SPVM_API* api, int32_t lengt
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(api, allocator, array_byte_size);
   
   // Set array length
-  object->length = length;
+  object->units_length = length;
   
-  object->element_byte_size = sizeof(SPVM_API_VALUE);
+  object->unit_byte_size = sizeof(SPVM_API_VALUE);
   
   object->category = SPVM_OBJECT_C_CATEGORY_CALL_STACK;
   
@@ -464,9 +464,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_API* api, int32_t length) {
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
   
   // Set array length
-  object->length = length;
+  object->units_length = length;
   
-  object->element_byte_size = sizeof(int8_t);
+  object->unit_byte_size = sizeof(int8_t);
   
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
@@ -489,9 +489,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_API* api, int32_t length) {
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_SHORT;
   
   // Set array length
-  object->length = length;
+  object->units_length = length;
 
-  object->element_byte_size = sizeof(int16_t);
+  object->unit_byte_size = sizeof(int16_t);
 
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
 
@@ -514,9 +514,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_API* api, int32_t length) {
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_INT;
 
   // Set array length
-  object->length = length;
+  object->units_length = length;
 
-  object->element_byte_size = sizeof(int32_t);
+  object->unit_byte_size = sizeof(int32_t);
 
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
@@ -539,9 +539,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_API* api, int32_t length) {
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_LONG;
 
   // Set array length
-  object->length = length;
+  object->units_length = length;
 
-  object->element_byte_size = sizeof(int64_t);
+  object->unit_byte_size = sizeof(int64_t);
 
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
@@ -564,9 +564,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_API* api, int32_t length) {
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_FLOAT;
 
   // Set array length
-  object->length = length;
+  object->units_length = length;
 
-  object->element_byte_size = sizeof(float);
+  object->unit_byte_size = sizeof(float);
 
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
@@ -589,9 +589,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_API* api, int32_t length) {
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE;
   
   // Set array length
-  object->length = length;
+  object->units_length = length;
 
-  object->element_byte_size = sizeof(double);
+  object->unit_byte_size = sizeof(double);
 
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
@@ -618,9 +618,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t basic_type
   object->dimension = 1;
 
   // Set array length
-  object->length = length;
+  object->units_length = length;
   
-  object->element_byte_size = sizeof(SPVM_OBJECT*);
+  object->unit_byte_size = sizeof(SPVM_OBJECT*);
 
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
   
@@ -644,9 +644,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_API* api, int32_t basic_type_
   object->dimension = dimension;
   
   // Set array length
-  object->length = length;
+  object->units_length = length;
   
-  object->element_byte_size = sizeof(SPVM_OBJECT*);
+  object->unit_byte_size = sizeof(SPVM_OBJECT*);
 
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
   
@@ -675,8 +675,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t basic_type_id) {
   object->basic_type_id = basic_type->id;
   object->dimension = 0;
 
-  object->length = length;
-  object->element_byte_size = element_byte_size;
+  object->units_length = length;
+  object->unit_byte_size = element_byte_size;
 
   // Object type id
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
@@ -692,7 +692,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_API* api, int32_t basic_type_id) {
 int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
   
-  return object->length;
+  return object->units_length;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, int8_t* bytes, int32_t length) {
@@ -816,7 +816,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_accessent(SPVM_API* api, SPVM_OBJ
 
   assert(object);
   assert(index >= 0);
-  assert(index <= object->length);
+  assert(index <= object->units_length);
   
   SPVM_OBJECT* object_value = values[index];
   
@@ -830,7 +830,7 @@ void SPVM_RUNTIME_API_set_object_array_accessent(SPVM_API* api, SPVM_OBJECT* obj
   
   assert(object);
   assert(index >= 0);
-  assert(index <= object->length);
+  assert(index <= object->units_length);
   
   SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&values[index], object_value);
 }
@@ -892,7 +892,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
     }
     
     if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY) {
-      int32_t length = object->length;
+      int32_t length = object->units_length;
       {
         int32_t i;
         for (i = 0; i < length; i++) {

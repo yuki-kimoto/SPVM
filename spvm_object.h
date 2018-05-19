@@ -20,9 +20,9 @@ struct SPVM_object {
   } uv;
   int32_t ref_count;
   int32_t weaken_back_refs_length;
-  int32_t length;
+  int32_t units_length;
   int32_t basic_type_id;
-  int8_t element_byte_size;
+  int8_t unit_byte_size;
   int8_t has_destructor;
   int8_t in_destroy;
   int8_t category;
