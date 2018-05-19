@@ -2526,7 +2526,6 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   else {
     SPVM_BASIC_TYPE* new_basic_type = SPVM_BASIC_TYPE_new(compiler);
     new_basic_type->id = compiler->basic_types->length;
-    new_basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_PACKAGE;
     new_basic_type->name = name;
     SPVM_LIST_push(compiler->basic_types, new_basic_type);
     SPVM_HASH_insert(compiler->basic_type_symtable, new_basic_type->name, strlen(new_basic_type->name), new_basic_type);

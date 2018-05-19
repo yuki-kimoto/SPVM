@@ -6,15 +6,6 @@
 #include "spvm_basic_type.h"
 #include "spvm_compiler_allocator.h"
 
-const char* const SPVM_BASIC_TYPE_C_CATEGORY_NAMES[] = {
-  "unknown",
-  "void",
-  "undef",
-  "numeric",
-  "any_object",
-  "package",
-};
-
 const char* const SPVM_BASIC_TYPE_C_ID_NAMES[] = {
   "unknown",
   "void",

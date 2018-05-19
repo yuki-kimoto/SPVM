@@ -99,8 +99,6 @@ spvm_compiler_allocator.c
 spvm_compiler_allocator.h
 spvm_constant.c
 spvm_constant.h
-spvm_constant_pool.c
-spvm_constant_pool.h
 spvm_descriptor.c
 spvm_descriptor.h
 spvm_dumper.c
