@@ -154,10 +154,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               opcode.id = SPVM_OPCODE_C_ID_GOTO;
               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
               
-              int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler);
-              *opcode_index_ptr = opcode_array->length - 1;
+              int32_t opcode_index = opcode_array->length - 1;
               
-              SPVM_LIST_push(loop_first_goto_opcode_index_stack, opcode_index_ptr);
+              SPVM_LIST_push(loop_first_goto_opcode_index_stack, (intptr_t)opcode_index);
             }
             else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
               int32_t* opcode_index_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler);
@@ -2081,8 +2080,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_ID_LOOP_INCREMENT: {
                 // Set loop first GOTO opcode
-                int32_t* loop_first_opcode_index_ptr = SPVM_LIST_fetch(loop_first_goto_opcode_index_stack, loop_first_goto_opcode_index_stack->length - 1);
-                int32_t loop_first_opcode_index = *loop_first_opcode_index_ptr;
+                int32_t loop_first_opcode_index = (intptr_t)SPVM_LIST_fetch(loop_first_goto_opcode_index_stack, loop_first_goto_opcode_index_stack->length - 1);
                 
                 SPVM_OPCODE* opcode_loop_first = (opcode_array->values + loop_first_opcode_index);
                 opcode_loop_first->operand0 = opcode_array->length;
@@ -2114,8 +2112,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 else if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
                   assert(loop_first_goto_opcode_index_stack->length > 0);
                   
-                  int32_t* loop_first_opcode_index_ptr = SPVM_LIST_pop(loop_first_goto_opcode_index_stack);
-                  int32_t loop_first_opcode_index = *loop_first_opcode_index_ptr;
+                  int32_t loop_first_opcode_index = (intptr_t)SPVM_LIST_pop(loop_first_goto_opcode_index_stack);
                   
                   opcode.operand0 = loop_first_opcode_index + 1;
                 }
