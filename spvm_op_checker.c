@@ -1956,14 +1956,15 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   SPVM_LIST* op_subs_interface = interface->op_subs;
   SPVM_LIST* op_subs_package = package->op_subs;
   
-  int32_t* has_interface_cache_ptr = SPVM_HASH_search(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
+  int32_t has_interface_cache = (intptr_t)SPVM_HASH_search(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
   
-  int32_t has_interface = 1;
-  if (has_interface_cache_ptr) {
-    has_interface = *has_interface_cache_ptr;
+  int32_t is_cached = has_interface_cache & 1;
+  int32_t has_interface;
+  if (is_cached) {
+    has_interface = has_interface_cache & 2;
   }
   else {
-    _Bool has_interface = 1;
+    has_interface = 1;
     
     {
       int32_t sub_index_interface;
@@ -1991,9 +1992,15 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
       }
     }
     
-    int32_t* new_has_interface_cache_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler);
-    *new_has_interface_cache_ptr = has_interface;
-    SPVM_HASH_insert(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name), new_has_interface_cache_ptr);
+    // 1 bit : is cached
+    // 2 bit : has interface
+    int32_t new_has_interface_cache = 0;
+    new_has_interface_cache |= 1;
+    if (has_interface) {
+      new_has_interface_cache |= 2;
+    }
+    
+    SPVM_HASH_insert(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name), (void*)(intptr_t)new_has_interface_cache);
   }
   
   return has_interface;
