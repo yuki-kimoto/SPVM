@@ -123,9 +123,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             case SPVM_OP_C_ID_BLOCK: {
               
               int32_t block_my_base = op_my_stack->length;
-              int32_t* block_my_base_ptr = SPVM_COMPILER_ALLOCATOR_alloc_int(compiler);
-              *block_my_base_ptr = block_my_base;
-              SPVM_LIST_push(block_my_base_stack, block_my_base_ptr);
+              SPVM_LIST_push(block_my_base_stack, (void*)(intptr_t)block_my_base);
               
               if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                 loop_block_stack_length++;
@@ -1490,8 +1488,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_ID_BLOCK: {
                   // Pop block my variable base
                   assert(block_my_base_stack->length > 0);
-                  int32_t* block_my_base_ptr = SPVM_LIST_pop(block_my_base_stack);
-                  int32_t block_my_base = *block_my_base_ptr;
+                  int32_t block_my_base = (intptr_t)SPVM_LIST_pop(block_my_base_stack);
                     
                   int32_t my_stack_pop_count = op_my_stack->length - block_my_base;
                   
@@ -1550,11 +1547,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   // Redeclaration error if same name variable is declare in same block
                   _Bool found = 0;
-                  int32_t* block_my_base_ptr = SPVM_LIST_fetch(
-                    block_my_base_stack,
-                    block_my_base_stack->length - 1
-                  );
-                  int32_t block_my_base = *block_my_base_ptr;
+                  int32_t block_my_base = (intptr_t)SPVM_LIST_fetch(block_my_base_stack, block_my_base_stack->length - 1);
                   {
                     int32_t i;
                     for (i = block_my_base; i < op_my_stack->length; i++) {
