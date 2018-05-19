@@ -48,7 +48,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_SUB* sub = op_sub->uv.sub;
       SPVM_OP* op_package = sub->op_package;
       SPVM_PACKAGE* package = op_package->uv.package;
-      const char* package_name = package->op_name->uv.name;
       SPVM_TYPE* package_type = package->op_type->uv.type;
       
       // Set subroutine id
@@ -1333,7 +1332,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_sub, op_var->uv.var->op_my->uv.my->op_type->uv.type, op_cur->file, op_cur->line);
                 
                       SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                      SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
+                      SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
                       
                       SPVM_OP* op_var_inc = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
                       op_var_inc->uv.var = op_var->uv.var;
@@ -1381,7 +1380,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     op_cur->id = SPVM_OP_C_ID_DEC;
                   }
                   else {
-                    SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
                     // Convert PRE_DEC
                     // [before]
                     // PRE_DEC
@@ -1435,7 +1433,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_sub, op_var->uv.var->op_my->uv.my->op_type->uv.type, op_cur->file, op_cur->line);
                 
                       SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                      SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
+                      SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
                       
                       SPVM_OP* op_var_dec = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
                       op_var_dec->uv.var = op_var->uv.var;

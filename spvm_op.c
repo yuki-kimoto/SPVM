@@ -1820,8 +1820,6 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   
   SPVM_OP_insert_child(compiler, op_use, op_use->last, op_type);
   
-  const char* package_name = op_type->uv.type->basic_type->name;
-  
   SPVM_USE* use = SPVM_USE_new(compiler);
   op_use->uv.use = use;
   use->op_type = op_type;

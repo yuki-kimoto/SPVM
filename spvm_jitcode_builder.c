@@ -31,7 +31,7 @@
 #include "spvm_constant.h"
 #include "spvm_basic_type.h"
 
-void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t index) {
+void SPVM_JITCODE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
   SPVM_STRING_BUFFER_add_int(string_buffer, index);
   SPVM_STRING_BUFFER_add(string_buffer, "]");
@@ -41,7 +41,7 @@ void SPVM_JITCODE_BUILDER_add_operand(SPVM_STRING_BUFFER* string_buffer, const c
   SPVM_STRING_BUFFER_add(string_buffer, "*(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "*)&");
-  SPVM_JITCODE_BUILDER_add_var(string_buffer, type_name, var_index);
+  SPVM_JITCODE_BUILDER_add_var(string_buffer, var_index);
 }
 
 void SPVM_JITCODE_BUILDER_add_bool(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t in_index) {

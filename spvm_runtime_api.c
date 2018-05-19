@@ -630,7 +630,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_API* api, int32_t basic_type
 SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_API* api, int32_t basic_type_id, int32_t dimension, int32_t length) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
