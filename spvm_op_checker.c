@@ -37,9 +37,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   // Check types
   SPVM_OP_CHECKER_check_types(compiler);
   
-  // Resolve packages
-  SPVM_OP_CHECKER_resolve_packages(compiler);
-  
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
@@ -2230,23 +2227,6 @@ void SPVM_OP_CHECKER_check_types(SPVM_COMPILER* compiler) {
           return;
         }
       }
-    }
-  }
-}
-
-void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
-  // Calcurate fild byte offset and package byte size
-  SPVM_LIST* op_packages = compiler->op_packages;
-  int32_t alignment = sizeof(int32_t);
-  
-  {
-    int32_t package_pos;
-    for (package_pos = 0; package_pos < op_packages->length; package_pos++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, package_pos);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      SPVM_LIST* op_fields = package->op_fields;
-      
-      package->byte_size = sizeof(SPVM_API_VALUE) * op_fields->length;
     }
   }
 }

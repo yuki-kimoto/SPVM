@@ -141,7 +141,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* a
         SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
         SPVM_PACKAGE* package = op_package->uv.package;
 
-        byte_size = sizeof(SPVM_OBJECT) + package->byte_size;
+        byte_size = sizeof(SPVM_OBJECT) + sizeof(SPVM_API_VALUE) * package->op_fields->length;
         break;
       }
       default: {
