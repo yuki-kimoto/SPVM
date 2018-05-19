@@ -57,11 +57,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       int32_t loop_block_stack_length = 0;
       
       SPVM_LIST* op_mys = sub->op_mys;
-      SPVM_LIST* op_my_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-      SPVM_LIST* block_my_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+      
+      // My stack
+      SPVM_LIST* op_my_stack = SPVM_LIST_new(0);
+      
+      // Block my base stack
+      SPVM_LIST* block_my_base_stack = SPVM_LIST_new(0);
       
       // Switch stack
-      SPVM_LIST* op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+      SPVM_LIST* op_switch_stack = SPVM_LIST_new(0);
       
       // Destructor must receive own package object
       if (sub->is_destructor) {
@@ -1933,9 +1937,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           my->index = my_index;
         }
       }
+      
+      // Free list
+      SPVM_LIST_free(op_my_stack);
+      SPVM_LIST_free(block_my_base_stack);
+      SPVM_LIST_free(op_switch_stack);
     }
   }
-  
 
   // Resolve constant id
   {

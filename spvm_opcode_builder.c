@@ -1780,6 +1780,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 }
                 // lookupswitch
                 else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
+                  SPVM_LIST* ordered_op_cases = SPVM_LIST_new(0);
+                  SPVM_LIST* ordered_case_opcode_indexes = SPVM_LIST_new(0);
+
                   // Default branch
                   if (!default_opcode_index) {
                     default_opcode_index = opcode_array->length;
@@ -1788,7 +1791,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t case_length = (int32_t) switch_info->op_cases->length;
                   
-                  SPVM_LIST* ordered_op_cases = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
                   {
                     int32_t i;
                     for (i = 0; i < case_length; i++) {
@@ -1796,7 +1798,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_LIST_push(ordered_op_cases, op_case);
                     }
                   }
-                  SPVM_LIST* ordered_case_opcode_indexes = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
                   {
                     int32_t i;
                     for (i = 0; i < case_length; i++) {
@@ -1852,6 +1853,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode_case->operand1 = case_opcode_index;
                     }
                   }
+                  SPVM_LIST_free(ordered_op_cases);
+                  SPVM_LIST_free(ordered_case_opcode_indexes);
                 }
                 
                 // Set last position
