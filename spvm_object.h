@@ -14,10 +14,7 @@ enum {
 
 // SPVM_OBJECT
 struct SPVM_object {
-  union {
-    SPVM_OBJECT* weaken_back_refs;
-    SPVM_API_VALUE alignment;
-  } uv;
+  SPVM_OBJECT* weaken_back_refs;
   int32_t ref_count;
   int32_t weaken_back_refs_length;
   int32_t units_length;
