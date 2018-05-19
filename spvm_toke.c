@@ -1015,7 +1015,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           compiler->bufptr++;
           
-          _Bool has_double_underline = 0;
+          // Go to end of name
           while(isalnum(*compiler->bufptr)
             || *compiler->bufptr == '_'
             || (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':'))
@@ -1023,15 +1023,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':') {
               compiler->bufptr += 2;
             }
-            else if (*compiler->bufptr == '_' && *(compiler->bufptr + 1) == '_') {
-              has_double_underline = 1;
-              compiler->bufptr += 2;
-            }
             else {
               compiler->bufptr++;
             }
           }
-          
           
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
           char* keyword = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, str_len);
@@ -1266,7 +1261,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);
-          
           yylvalp->opval = op_name;
           
           return NAME;
