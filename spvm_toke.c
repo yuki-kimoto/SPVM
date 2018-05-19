@@ -882,23 +882,23 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           SPVM_TYPE* constant_type;
           
           if (*compiler->bufptr == 'L')  {
-            constant_type = SPVM_TYPE_get_long_type(compiler);
+            constant_type = SPVM_TYPE_create_long_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'f')  {
-            constant_type = SPVM_TYPE_get_float_type(compiler);
+            constant_type = SPVM_TYPE_create_float_type(compiler);
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'd')  {
-            constant_type = SPVM_TYPE_get_double_type(compiler);
+            constant_type = SPVM_TYPE_create_double_type(compiler);
             compiler->bufptr++;
           }
           else {
             if (is_floating_number) {
-              constant_type = SPVM_TYPE_get_double_type(compiler);
+              constant_type = SPVM_TYPE_create_double_type(compiler);
             }
             else {
-              constant_type = SPVM_TYPE_get_int_type(compiler);
+              constant_type = SPVM_TYPE_create_int_type(compiler);
             }
           }
           

@@ -177,7 +177,7 @@ void SPVM_OP_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_
   
   SPVM_TYPE* dist_type;
   if (type->dimension == 0 && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_INT) {
-    dist_type = SPVM_TYPE_get_int_type(compiler);
+    dist_type = SPVM_TYPE_create_int_type(compiler);
   }
   else {
     return;
@@ -202,16 +202,16 @@ void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op
   
   SPVM_TYPE* dist_type;
   if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
-    dist_type = SPVM_TYPE_get_double_type(compiler);
+    dist_type = SPVM_TYPE_create_double_type(compiler);
   }
   else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT)) {
-    dist_type = SPVM_TYPE_get_float_type(compiler);
+    dist_type = SPVM_TYPE_create_float_type(compiler);
   }
   else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG)) {
-    dist_type = SPVM_TYPE_get_long_type(compiler);
+    dist_type = SPVM_TYPE_create_long_type(compiler);
   }
   else {
-    dist_type = SPVM_TYPE_get_int_type(compiler);
+    dist_type = SPVM_TYPE_create_int_type(compiler);
   }
   
   if (!(first_type->basic_type->id == dist_type->basic_type->id && first_type->dimension == dist_type->dimension)) {
@@ -578,7 +578,7 @@ SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, con
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.byte_value = value;
-  constant->type = SPVM_TYPE_get_byte_type(compiler);
+  constant->type = SPVM_TYPE_create_byte_type(compiler);
   
   op_constant->uv.constant = constant;
 
@@ -592,7 +592,7 @@ SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, c
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.short_value = value;
-  constant->type = SPVM_TYPE_get_short_type(compiler);
+  constant->type = SPVM_TYPE_create_short_type(compiler);
   
   op_constant->uv.constant = constant;
 
@@ -606,7 +606,7 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.int_value = value;
-  constant->type = SPVM_TYPE_get_int_type(compiler);
+  constant->type = SPVM_TYPE_create_int_type(compiler);
   
   op_constant->uv.constant = constant;
 
@@ -620,7 +620,7 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.long_value = value;
-  constant->type = SPVM_TYPE_get_long_type(compiler);
+  constant->type = SPVM_TYPE_create_long_type(compiler);
   
   op_constant->uv.constant = constant;
 
@@ -634,7 +634,7 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.float_value = value;
-  constant->type = SPVM_TYPE_get_float_type(compiler);
+  constant->type = SPVM_TYPE_create_float_type(compiler);
   
   op_constant->uv.constant = constant;
 
@@ -648,7 +648,7 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
   constant->value.double_value = value;
-  constant->type = SPVM_TYPE_get_double_type(compiler);
+  constant->type = SPVM_TYPE_create_double_type(compiler);
   
   op_constant->uv.constant = constant;
   
@@ -662,7 +662,7 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, i
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   constant->value.string_value = string;
-  constant->type = SPVM_TYPE_get_string_type(compiler);
+  constant->type = SPVM_TYPE_create_string_type(compiler);
   constant->string_length = length;
   op_constant->uv.constant = constant;
   
@@ -1123,13 +1123,13 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_LT:
     case SPVM_OP_C_ID_STRING_LE:
     case SPVM_OP_C_ID_ISA:
-      type = SPVM_TYPE_get_int_type(compiler);
+      type = SPVM_TYPE_create_int_type(compiler);
       break;
     case SPVM_OP_C_ID_CONCAT:
-      type = SPVM_TYPE_get_string_type(compiler);
+      type = SPVM_TYPE_create_string_type(compiler);
       break;
     case SPVM_OP_C_ID_ARRAY_LENGTH:
-      type = SPVM_TYPE_get_int_type(compiler);
+      type = SPVM_TYPE_create_int_type(compiler);
       break;
     case SPVM_OP_C_ID_ARRAY_ACCESS: {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
@@ -1197,7 +1197,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_UNDEF : {
-      type = SPVM_TYPE_get_undef_type(compiler);
+      type = SPVM_TYPE_create_undef_type(compiler);
       break;
     }
     case SPVM_OP_C_ID_CONSTANT: {
@@ -1220,7 +1220,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_EXCEPTION_VAR: {
-      type = SPVM_TYPE_get_string_type(compiler);
+      type = SPVM_TYPE_create_string_type(compiler);
       break;
     }
     case SPVM_OP_C_ID_MY: {
@@ -2506,7 +2506,7 @@ SPVM_OP* SPVM_OP_new_op_void(SPVM_COMPILER* compiler, const char* file, int32_t 
   // Type op
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
   
-  op_type->uv.type = SPVM_TYPE_get_void_type(compiler);
+  op_type->uv.type = SPVM_TYPE_create_void_type(compiler);
   
   return op_type;
 }
@@ -2520,22 +2520,22 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
   
   if (strcmp(name, "byte") == 0) {
-    op_type->uv.type = SPVM_TYPE_get_byte_type(compiler);
+    op_type->uv.type = SPVM_TYPE_create_byte_type(compiler);
   }
   else if (strcmp(name, "short") == 0) {
-    op_type->uv.type = SPVM_TYPE_get_short_type(compiler);
+    op_type->uv.type = SPVM_TYPE_create_short_type(compiler);
   }
   else if (strcmp(name, "int") == 0) {
-    op_type->uv.type = SPVM_TYPE_get_int_type(compiler);
+    op_type->uv.type = SPVM_TYPE_create_int_type(compiler);
   }
   else if (strcmp(name, "long") == 0) {
-    op_type->uv.type = SPVM_TYPE_get_long_type(compiler);
+    op_type->uv.type = SPVM_TYPE_create_long_type(compiler);
   }
   else if (strcmp(name, "float") == 0) {
-    op_type->uv.type = SPVM_TYPE_get_float_type(compiler);
+    op_type->uv.type = SPVM_TYPE_create_float_type(compiler);
   }
   else if (strcmp(name, "double") == 0) {
-    op_type->uv.type = SPVM_TYPE_get_double_type(compiler);
+    op_type->uv.type = SPVM_TYPE_create_double_type(compiler);
   }
   else {
     SPVM_TYPE* type = SPVM_TYPE_new(compiler);

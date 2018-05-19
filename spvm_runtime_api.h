@@ -10,13 +10,13 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_API* api, SPVM_OBJECT* string1, SPVM_O
 
 int32_t SPVM_RUNTIME_API_is_debug(SPVM_API* api);
 
-int32_t SPVM_RUNTIME_API_get_void_type_id(SPVM_API* api);
-int32_t SPVM_RUNTIME_API_get_byte_type_id(SPVM_API* api);
-int32_t SPVM_RUNTIME_API_get_short_type_id(SPVM_API* api);
-int32_t SPVM_RUNTIME_API_get_int_type_id(SPVM_API* api);
-int32_t SPVM_RUNTIME_API_get_long_type_id(SPVM_API* api);
-int32_t SPVM_RUNTIME_API_get_float_type_id(SPVM_API* api);
-int32_t SPVM_RUNTIME_API_get_double_type_id(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_create_void_type_id(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_create_byte_type_id(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_create_short_type_id(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_create_int_type_id(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_create_long_type_id(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_create_float_type_id(SPVM_API* api);
+int32_t SPVM_RUNTIME_API_create_double_type_id(SPVM_API* api);
 
 SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime();
 void SPVM_RUNTIME_API_dec_ref_count_only(SPVM_API* api, SPVM_OBJECT* object);
