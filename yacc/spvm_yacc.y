@@ -16,8 +16,9 @@
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF
-%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE UNDEF CROAK VAR_NAME INTERFACE REF ISA
-%token <opval> SWITCH CASE DEFAULT VOID EVAL BYTE SHORT INT LONG FLOAT DOUBLE STRING WEAKEN
+%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE REF ISA
+%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
@@ -824,6 +825,62 @@ basic_type
   : NAME
     {
       $$ = SPVM_OP_build_basic_type(compiler, $1);
+    }
+  | BYTE
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_byte_type(compiler);
+      
+      $$ = op_type;
+    }
+  | SHORT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_short_type(compiler);
+      
+      $$ = op_type;
+    }
+  | INT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_int_type(compiler);
+      
+      $$ = op_type;
+    }
+  | LONG
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_long_type(compiler);
+      
+      $$ = op_type;
+    }
+  | FLOAT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_float_type(compiler);
+      
+      $$ = op_type;
+    }
+  | DOUBLE
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_double_type(compiler);
+      
+      $$ = op_type;
+    }
+  | OBJECT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_object_type(compiler);
+      
+      $$ = op_type;
+    }
+  | STRING
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_string_type(compiler);
+      
+      $$ = op_type;
     }
 
 array_type

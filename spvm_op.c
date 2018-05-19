@@ -123,6 +123,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "FLOAT",
   "DOUBLE",
   "STRING",
+  "OBJECT",
   "WEAKEN",
   "WEAKEN_FIELD",
   "SPECIAL_ASSIGN",
@@ -2510,31 +2511,8 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
   
-  if (strcmp(name, "byte") == 0) {
-    op_type->uv.type = SPVM_TYPE_create_byte_type(compiler);
-  }
-  else if (strcmp(name, "short") == 0) {
-    op_type->uv.type = SPVM_TYPE_create_short_type(compiler);
-  }
-  else if (strcmp(name, "int") == 0) {
-    op_type->uv.type = SPVM_TYPE_create_int_type(compiler);
-  }
-  else if (strcmp(name, "long") == 0) {
-    op_type->uv.type = SPVM_TYPE_create_long_type(compiler);
-  }
-  else if (strcmp(name, "float") == 0) {
-    op_type->uv.type = SPVM_TYPE_create_float_type(compiler);
-  }
-  else if (strcmp(name, "double") == 0) {
-    op_type->uv.type = SPVM_TYPE_create_double_type(compiler);
-  }
-  else {
-    SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-    op_type->uv.type = type;
-  }
-  
-  // Type
-  SPVM_TYPE* type = op_type->uv.type;
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  op_type->uv.type = type;
   
   // Add types
   SPVM_LIST_push(compiler->op_types, op_type);

@@ -63,7 +63,7 @@ SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "void", strlen("void"));
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_VOID);
   type->dimension = 0;
   
   assert(type);
@@ -75,7 +75,7 @@ SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "undef", strlen("undef"));
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_UNDEF);
   type->dimension = 0;
   
   assert(type);
@@ -99,7 +99,7 @@ SPVM_TYPE* SPVM_TYPE_create_short_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "short", strlen("short"));
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT);
   type->dimension = 0;
   
   assert(type);
@@ -111,7 +111,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "int", strlen("int"));
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT);
   type->dimension = 0;
   
   assert(type);
@@ -123,7 +123,7 @@ SPVM_TYPE* SPVM_TYPE_create_long_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "long", strlen("long"));
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG);
   type->dimension = 0;
   
   assert(type);
@@ -135,7 +135,7 @@ SPVM_TYPE* SPVM_TYPE_create_float_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "float", strlen("float"));
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT);
   type->dimension = 0;
   
   assert(type);
@@ -147,7 +147,7 @@ SPVM_TYPE* SPVM_TYPE_create_double_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "double", strlen("double"));
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE);
   type->dimension = 0;
   
   assert(type);
@@ -159,7 +159,7 @@ SPVM_TYPE* SPVM_TYPE_create_string_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "String", strlen("String"));
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_STRING);
   type->dimension = 0;
   
   assert(type);
@@ -171,7 +171,7 @@ SPVM_TYPE* SPVM_TYPE_create_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "Object", strlen("Object"));
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
   type->dimension = 0;
   
   assert(type);

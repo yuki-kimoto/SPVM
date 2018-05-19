@@ -1031,7 +1031,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           char* keyword;
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          SPVM_HASH* found_name = SPVM_HASH_search(compiler->name_symtable, cur_token_ptr, str_len);
+          char* found_name = SPVM_HASH_search(compiler->name_symtable, cur_token_ptr, str_len);
           if (found_name) {
             keyword = found_name;
           }
@@ -1045,6 +1045,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (!expect_sub_name) {
             switch (keyword[0]) {
               // Keyword
+              case 'b' :
+                if (strcmp(keyword, "byte") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BYTE);
+                  return BYTE;
+                }
+                break;
               case 'c' :
                 if (strcmp(keyword, "case") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CASE);
@@ -1059,6 +1065,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(keyword, "default") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DEFAULT);
                   return DEFAULT;
+                }
+                else if (strcmp(keyword, "double") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DOUBLE);
+                  return DOUBLE;
                 }
                 break;
               case 'e' :
@@ -1087,6 +1097,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(keyword, "for") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FOR);
                   return FOR;
+                }
+                else if (strcmp(keyword, "float") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FLOAT);
+                  return FLOAT;
                 }
                 break;
               case 'g' :
@@ -1119,6 +1133,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "isa") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISA);
                   return ISA;
+                }
+                else if (strcmp(keyword, "int") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
+                  return INT;
                 }
                 break;
               case 'j' :
@@ -1153,6 +1171,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   return REL;
                 }
+                else if (strcmp(keyword, "long") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LONG);
+                  return LONG;
+                }
                 break;
               case 'm' :
                 if (strcmp(keyword, "my") == 0) {
@@ -1186,6 +1208,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return OUR;
                 }
                 
+                break;
+              case 'O' :
+                if (strcmp(keyword, "Object") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_OBJECT);
+                  return OBJECT;
+                }
                 break;
               case 'p' :
                 if (strcmp(keyword, "package") == 0) {
@@ -1229,6 +1257,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return SUB;
                 }
                 else if (strcmp(keyword, "string") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING);
+                  return STRING;
+                }
+                else if (strcmp(keyword, "short") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SHORT);
+                  return SHORT;
+                }
+                break;
+              case 'S' :
+                if (strcmp(keyword, "String") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING);
                   return STRING;
                 }
