@@ -1031,17 +1031,13 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const 
   
   SPVM_LIST* op_fields = op_package->uv.package->op_fields;
   
-  int32_t field_id;
+  int32_t field_id = -1;
   {
     for (field_id = 0; field_id < op_fields->length; field_id++) {
       SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_id);
       SPVM_FIELD* field = op_field->uv.field;
       if (strcmp(name, field->op_name->uv.name) == 0) {
-        field_id = sizeof(SPVM_API_VALUE) * field->id;
-        break;
-      }
-      else {
-        field_id = -1;
+        return field->id;
       }
     }
   }
