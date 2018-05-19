@@ -8,7 +8,6 @@ struct SPVM_field {
   SPVM_OP* op_package;
   SPVM_OP* op_name;
   SPVM_OP* op_type;
-  int32_t id;
   int32_t index;
   _Bool is_private;
 };

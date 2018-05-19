@@ -425,7 +425,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     printf("\n");
     printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_get_byte_size(compiler, field));
     
-    printf("      id => \"%" PRId32 "\"\n", field->id);
+    printf("      index => \"%" PRId32 "\"\n", field->index);
   }
   else {
     printf("        None\n");
