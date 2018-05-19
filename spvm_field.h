@@ -10,9 +10,6 @@ struct SPVM_field {
   SPVM_OP* op_type;
   int32_t id;
   int32_t index;
-  _Bool has_getter;
-  _Bool has_setter;
-  int32_t byte_offset;
   _Bool is_private;
 };
 

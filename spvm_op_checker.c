@@ -2246,17 +2246,6 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       SPVM_PACKAGE* package = op_package->uv.package;
       SPVM_LIST* op_fields = package->op_fields;
       
-      int32_t current_byte_offset = 0;
-      {
-        int32_t field_pos;
-        for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
-          SPVM_FIELD* field = op_field->uv.field;
-          int32_t field_byte_size = sizeof(SPVM_API_VALUE);
-          field->byte_offset = current_byte_offset;
-          current_byte_offset += field_byte_size;
-        }
-      }
       package->byte_size = sizeof(SPVM_API_VALUE) * op_fields->length;
     }
   }

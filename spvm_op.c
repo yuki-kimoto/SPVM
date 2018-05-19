@@ -1653,6 +1653,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, i);
       
       SPVM_FIELD* field = op_field->uv.field;
+      field->index = i;
       const char* field_name = field->op_name->uv.name;
       
       SPVM_OP* found_op_field = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
