@@ -292,6 +292,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
     int32_t index;
     for (index = 0; index < sub->object_arg_ids->length; index++) {
       int32_t object_arg_index = (intptr_t)SPVM_LIST_fetch(sub->object_arg_ids, index);
+      
       SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[object_arg_index];
       if (object != NULL) {
         SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);

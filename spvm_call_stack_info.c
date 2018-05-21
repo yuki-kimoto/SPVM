@@ -19,7 +19,5 @@ void SPVM_CALL_STACK_init_call_stack_info(SPVM_CALL_STACK_INFO* call_stack_info,
   
   // Length
   call_stack_info->length = sub->op_mys->length + 1 + sub->mortal_stack_max;
-  
-  call_stack_info->mortal_stack_top_index = sub->op_mys->length;
-  call_stack_info->mortal_stack_base = call_stack_info->mortal_stack_top_index + 1;
+  call_stack_info->mortal_stack_base = sub->op_mys->length + 1;
 }

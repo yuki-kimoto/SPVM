@@ -7,7 +7,6 @@
 
 struct SPVM_call_stack_info {
   int32_t length;
-  int32_t mortal_stack_top_index;
   int32_t mortal_stack_base;
   int32_t* mortal_stack;
 };
