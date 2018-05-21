@@ -3222,6 +3222,22 @@ compile(...)
       SPVM_LIST_push(compiler->module_include_pathes, include_path);
     }
   }
+
+  // Add package
+  AV* av_jit_package_names = get_av("SPVM::JIT_PACKAGE_NAMES", 0);
+  int32_t av_jit_package_names_length = (int32_t)av_len(av_jit_package_names) + 1;
+  {
+    int32_t i;
+    for (i = 0; i < av_jit_package_names_length; i++) {
+      SV** sv_jit_package_name_ptr = av_fetch(av_jit_package_names, i, 0);
+      SV* sv_jit_package_name = sv_jit_package_name_ptr ? *sv_jit_package_name_ptr : &PL_sv_undef;
+      
+      char* jit_package_name = SvPV_nolen(sv_jit_package_name);
+      
+      SPVM_LIST_push(compiler->jit_package_names, jit_package_name);
+      SPVM_HASH_insert(compiler->jit_package_name_symtable, jit_package_name, strlen(jit_package_name), (void*)(intptr_t)1);
+    }
+  }
   
   // Set compiler
   size_t iv_compiler = PTR2IV(compiler);

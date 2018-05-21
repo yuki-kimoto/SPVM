@@ -36,6 +36,7 @@ our $BUILD_DIR;
 our $PROCESS_START_TIME;
 our $INITIALIZED;
 our $BUILD;
+our @JIT_PACKAGE_NAMES;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);

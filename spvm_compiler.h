@@ -55,6 +55,12 @@ struct SPVM_compiler {
   // OP package symtable
   SPVM_HASH* op_package_symtable;
   
+  // JIT package symtable
+  SPVM_HASH* jit_package_name_symtable;
+
+  // JIT package names
+  SPVM_LIST* jit_package_names;
+  
   // Anonimous package length
   int32_t anon_package_length;
   

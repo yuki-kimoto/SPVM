@@ -10,7 +10,7 @@ sub import {
   my ($class, $package_name) = @_;
   
   # Enable runtime JIT compile
-  $SPVM::JIT{$package_name} = 1;
+  push @SPVM::JIT_MODULES, $package_name;
 }
 
 1;
