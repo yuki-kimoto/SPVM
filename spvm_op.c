@@ -1552,10 +1552,10 @@ const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const c
 
 SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
 
-  SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-  SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-  SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
-  SPVM_LIST* object_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_array(compiler, 0);
+  SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  SPVM_LIST* object_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
   // Package
   SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);

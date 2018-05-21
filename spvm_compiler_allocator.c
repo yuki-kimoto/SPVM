@@ -39,7 +39,7 @@ void* SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(SPVM_COMPILER* compiler, int32_t
   return block;
 }
 
-SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_array(SPVM_COMPILER* compiler, int32_t capacity) {
+SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t capacity) {
   (void)compiler;
 
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;

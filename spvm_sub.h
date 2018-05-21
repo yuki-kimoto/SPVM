@@ -18,6 +18,7 @@ struct SPVM_sub {
   SPVM_OP* op_package;
   SPVM_OP* op_constant;
   SPVM_LIST* op_args;
+  SPVM_LIST* object_arg_ids;
   SPVM_LIST* op_mys;
   const char* abs_name;
   const char* file_name;
