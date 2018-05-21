@@ -103,6 +103,12 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_create_exception_stack_trace,
   NULL,
   SPVM_RUNTIME_API_check_cast,
+  NULL, // object_header_byte_size
+  NULL, // object_ref_count_byte_offset
+  NULL, // object_basic_type_id_byte_offset
+  NULL, // object_dimension_byte_offset
+  NULL, // object_units_length_byte_offset
+  NULL, // runtime_exception_byte_offset
 };
 
 int32_t SPVM_RUNTIME_API_check_cast(SPVM_API* api, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object) {
@@ -239,7 +245,16 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   // Runtime memory allocator
   runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
   
-  runtime->api = (SPVM_API*)SPVM_NATIVE_INTERFACE;
+  SPVM_API* api = (SPVM_API*)SPVM_NATIVE_INTERFACE;
+  
+  api->object_header_byte_size = (void*)(intptr_t)sizeof(SPVM_OBJECT);
+  api->object_ref_count_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count);
+  api->object_basic_type_id_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id);
+  api->object_dimension_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, dimension);
+  api->object_units_length_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, units_length);
+  api->runtime_exception_byte_offset = (void*)(intptr_t)offsetof(SPVM_RUNTIME, exception);
+  
+  runtime->api = api;
   
   return runtime;
 }
