@@ -1714,7 +1714,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   // Add package
   op_package->uv.package = package;
-  
+
   // Register subrotuine
   {
     int32_t i;
@@ -1795,6 +1795,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
   }
+
+  // JIT compile
+  _Bool jit = (_Bool)SPVM_HASH_search(compiler->jit_package_name_symtable, package_name, strlen(package_name));
+  package->is_jit = 1;
   
   package->id = compiler->op_packages->length;
   SPVM_LIST_push(compiler->op_packages, op_package);
