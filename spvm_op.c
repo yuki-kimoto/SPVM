@@ -1552,11 +1552,6 @@ const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const c
 
 SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
 
-  SPVM_LIST* op_fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  SPVM_LIST* op_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  SPVM_LIST* op_ours = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  SPVM_LIST* object_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-
   // Package
   SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
   
@@ -1620,24 +1615,24 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       if (package->is_interface) {
         SPVM_yyerror_format(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
       }
-      SPVM_LIST_push(op_fields, op_decl);
+      SPVM_LIST_push(package->op_fields, op_decl);
     }
     else if (op_decl->id == SPVM_OP_C_ID_SUB) {
-      SPVM_LIST_push(op_subs, op_decl);
+      SPVM_LIST_push(package->op_subs, op_decl);
     }
     else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
       SPVM_OP* op_enum_block = op_decl->first;
       SPVM_OP* op_enumeration_values = op_enum_block->first;
       SPVM_OP* op_sub = op_enumeration_values->first;
       while ((op_sub = SPVM_OP_sibling(compiler, op_sub))) {
-        SPVM_LIST_push(op_subs, op_sub);
+        SPVM_LIST_push(package->op_subs, op_sub);
       }
     }
     else if (op_decl->id == SPVM_OP_C_ID_OUR) {
       if (package->is_interface) {
         SPVM_yyerror_format(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
       }
-      SPVM_LIST_push(op_ours, op_decl);
+      SPVM_LIST_push(package->op_ours, op_decl);
     }
     else if (op_decl->id == SPVM_OP_C_ID_USE) {
       // Static import
@@ -1650,8 +1645,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Register field
   {
     int32_t i;
-    for (i = 0; i < op_fields->length; i++) {
-      SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, i);
+    for (i = 0; i < package->op_fields->length; i++) {
+      SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, i);
       
       SPVM_FIELD* field = op_field->uv.field;
       field->id = i;
@@ -1659,12 +1654,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       SPVM_OP* found_op_field = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
       
-      assert(op_fields->length <= SPVM_LIMIT_C_FIELDS);
+      assert(package->op_fields->length <= SPVM_LIMIT_C_FIELDS);
       
       if (found_op_field) {
         SPVM_yyerror_format(compiler, "Redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, op_field->file, op_field->line);
       }
-      else if (op_fields->length == SPVM_LIMIT_C_FIELDS) {
+      else if (package->op_fields->length == SPVM_LIMIT_C_FIELDS) {
         SPVM_yyerror_format(compiler, "Too many fields, field \"%s\" ignored at %s line %d\n", field_name, op_field->file, op_field->line);
         compiler->fatal_error = 1;
       }
@@ -1676,31 +1671,29 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       
       if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
-        SPVM_LIST_push(object_field_ids, (void*)(intptr_t)field->id);
+        SPVM_LIST_push(package->object_field_ids, (void*)(intptr_t)field->id);
       }
     }
   }
-  
-  package->object_field_ids = object_field_ids;
 
   // Register package variable
   {
     int32_t i;
-    for (i = 0; i < op_ours->length; i++) {
+    for (i = 0; i < package->op_ours->length; i++) {
 
-      SPVM_OP* op_our = SPVM_LIST_fetch(op_ours, i);
+      SPVM_OP* op_our = SPVM_LIST_fetch(package->op_ours, i);
       
       SPVM_OUR* our = op_our->uv.our;
       const char* package_var_name = our->op_package_var->uv.package_var->op_name->uv.name;
       
       SPVM_OP* found_op_our = SPVM_HASH_search(package->op_our_symtable, package_var_name, strlen(package_var_name));
       
-      assert(op_ours->length <= SPVM_LIMIT_C_OURS);
+      assert(package->op_ours->length <= SPVM_LIMIT_C_OURS);
       
       if (found_op_our) {
         SPVM_yyerror_format(compiler, "Redeclaration of our \"%s::%s\" at %s line %d\n", package_name, package_var_name, op_our->file, op_our->line);
       }
-      else if (op_ours->length == SPVM_LIMIT_C_OURS) {
+      else if (package->op_ours->length == SPVM_LIMIT_C_OURS) {
         SPVM_yyerror_format(compiler, "Too many ours, our \"%s\" ignored at %s line %d\n", package_var_name, op_our->file, op_our->line);
         compiler->fatal_error = 1;
       }
@@ -1725,8 +1718,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Register subrotuine
   {
     int32_t i;
-    for (i = 0; i < op_subs->length; i++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, i);
+    for (i = 0; i < package->op_subs->length; i++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
 
       SPVM_SUB* sub = op_sub->uv.sub;
 
@@ -1771,7 +1764,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       if (found_op_sub) {
         SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
       }
-      else if (op_subs->length == SPVM_LIMIT_C_SUBS) {
+      else if (package->op_subs->length == SPVM_LIMIT_C_SUBS) {
         SPVM_yyerror_format(compiler, "Too many subroutines at %s line %d\n", sub_name, op_sub->file, op_sub->line);
         compiler->fatal_error = 1;
       }
@@ -1802,10 +1795,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
   }
-  
-  // Add op fields
-  package->op_fields = op_fields;
-  package->op_subs = op_subs;
   
   package->id = compiler->op_packages->length;
   SPVM_LIST_push(compiler->op_packages, op_package);
