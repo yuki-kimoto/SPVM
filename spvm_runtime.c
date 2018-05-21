@@ -251,8 +251,9 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   SPVM_CALL_STACK_init_call_stack_info(&call_stack_info, runtime, sub_id);
 
   // Subroutine stack
-  // This is used Variables, Auto decrement stack, loop count
-  SPVM_API_OBJECT* call_stack_object = SPVM_RUNTIME_API_new_call_stack_object(api, call_stack_info.length);
+  // This is used Variables, mortal stack
+  int32_t call_stack_length = sub->op_mys->length + 1 + sub->mortal_stack_max;
+  SPVM_API_OBJECT* call_stack_object = SPVM_RUNTIME_API_new_call_stack_object(api, call_stack_length);
   SPVM_API_VALUE* call_stack = call_stack_object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE;
   
   // Variables
