@@ -4,14 +4,8 @@
 #include "spvm_base.h"
 #include "spvm_api.h"
 
-#define SPVM_RUNTIME_C_OBJECT_BASIC_TYPE_ID_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, basic_type_id))
-#define SPVM_RUNTIME_C_OBJECT_DIMENSION_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, dimension))
-#define SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, units_length))
-#define SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET ((int32_t)offsetof(SPVM_OBJECT, ref_count))
-#define SPVM_RUNTIME_C_RUNTIME_EXCEPTION_BYTE_OFFSET ((int32_t)offsetof(SPVM_RUNTIME, exception))
-
-#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET)))
-#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET))++)
+#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_API_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset)))
+#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))++)
 #define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -19,7 +13,7 @@ do {\
   }\
 } while (0)\
 
-#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + SPVM_RUNTIME_C_OBJECT_REF_COUNT_BYTE_OFFSET))--)
+#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))--)
 #define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\

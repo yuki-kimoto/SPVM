@@ -407,7 +407,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         int32_t basic_type_id = opcode->operand1;
         int32_t dimension = opcode->operand2;
         
-        condition_flag = (*(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_BASIC_TYPE_ID_BYTE_OFFSET) == basic_type_id && *(int32_t*)(object + SPVM_RUNTIME_C_OBJECT_DIMENSION_BYTE_OFFSET) == dimension);
+        condition_flag = (*(int32_t*)(object + (intptr_t)api->object_basic_type_id_byte_offset) == basic_type_id && *(int32_t*)(object + (intptr_t)api->object_dimension_byte_offset) == dimension);
         
         break;
       }
@@ -424,8 +424,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_API_OBJECT* string1_object = *(SPVM_API_OBJECT**)((intptr_t)string1 + (intptr_t)api->object_header_byte_size);
         SPVM_API_OBJECT* string2_object = *(SPVM_API_OBJECT**)((intptr_t)string2 + (intptr_t)api->object_header_byte_size);
 
-        int32_t string1_length = *(SPVM_API_int*)((intptr_t)string1_object + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET);
-        int32_t string2_length = *(SPVM_API_int*)((intptr_t)string2_object + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET);
+        int32_t string1_length = *(SPVM_API_int*)((intptr_t)string1_object + (intptr_t)api->object_units_length_byte_offset);
+        int32_t string2_length = *(SPVM_API_int*)((intptr_t)string2_object + (intptr_t)api->object_units_length_byte_offset);
         
         SPVM_API_byte* string1_bytes = (SPVM_API_byte*)((intptr_t)string1_object + (intptr_t)api->object_header_byte_size);
         SPVM_API_byte* string2_bytes = (SPVM_API_byte*)((intptr_t)string2_object + (intptr_t)api->object_header_byte_size);
@@ -799,7 +799,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          int32_t length = *(SPVM_API_int*)((intptr_t)*(SPVM_API_OBJECT**)&vars[opcode->operand1] + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET);
+          int32_t length = *(SPVM_API_int*)((intptr_t)*(SPVM_API_OBJECT**)&vars[opcode->operand1] + (intptr_t)api->object_units_length_byte_offset);
           
           SPVM_API_OBJECT* string_array = api->new_object_array(api, SPVM_BASIC_TYPE_C_ID_STRING, length);
           
@@ -907,7 +907,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -927,7 +927,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -948,7 +948,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -968,7 +968,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -988,7 +988,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1008,7 +1008,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1028,7 +1028,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1051,7 +1051,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1071,7 +1071,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1091,7 +1091,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1111,7 +1111,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1131,7 +1131,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1151,7 +1151,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1172,7 +1172,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1196,7 +1196,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_API_int*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) {
             SPVM_API_OBJECT* exception = api->new_string_chars(api, "Index is out of range");
             api->set_exception(api, exception);
             croak_flag = 1;
@@ -1377,7 +1377,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           croak_flag = 1;
         }
         else {
-          *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)((intptr_t)*(SPVM_API_OBJECT**)&vars[opcode->operand1] + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET);
+          *(SPVM_API_int*)&vars[opcode->operand0] = *(SPVM_API_int*)((intptr_t)*(SPVM_API_OBJECT**)&vars[opcode->operand1] + (intptr_t)api->object_units_length_byte_offset);
         }
         break;
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
