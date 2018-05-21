@@ -89,8 +89,6 @@ spvm_basic_type.h
 spvm_block.c
 spvm_block.h
 spvm_build/.gitkeep
-spvm_call_stack_info.c
-spvm_call_stack_info.h
 spvm_call_sub.c
 spvm_call_sub.h
 spvm_compiler.c

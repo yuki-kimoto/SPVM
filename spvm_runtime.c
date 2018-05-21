@@ -16,7 +16,6 @@
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_allocator.h"
-#include "spvm_call_stack_info.h"
 
 #include "spvm_package.h"
 #include "spvm_sub.h"
@@ -247,9 +246,6 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   // Opcode base
   int32_t sub_opcode_base = sub->opcode_base;
   
-  SPVM_CALL_STACK_INFO call_stack_info;
-  SPVM_CALL_STACK_init_call_stack_info(&call_stack_info, runtime, sub_id);
-
   // Subroutine stack
   // This is used Variables, mortal stack
   int32_t call_stack_length = sub->op_mys->length + 1 + sub->mortal_stack_max;
@@ -260,7 +256,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   SPVM_API_VALUE* vars = call_stack;
 
   // Auto decrement reference count variable index stack top
-  SPVM_API_VALUE* mortal_stack = &call_stack[call_stack_info.mortal_stack_base];
+  int32_t mortal_stack_base = sub->op_mys->length + 1;
+  SPVM_API_VALUE* mortal_stack = &call_stack[mortal_stack_base];
   int32_t mortal_stack_top = -1;
 
   // Call subroutine argument stack top
