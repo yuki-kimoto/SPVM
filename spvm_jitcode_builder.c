@@ -340,7 +340,7 @@ void SPVM_JITCODE_BUILDER_add_array_load(SPVM_STRING_BUFFER* string_buffer, cons
   SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", array_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(");
+  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)api->object_header_byte_size + sizeof(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, ") * ");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", index_index);
@@ -373,7 +373,7 @@ void SPVM_JITCODE_BUILDER_add_array_store(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", array_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(");
+  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)api->object_header_byte_size + sizeof(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, ") * ");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", index_index);
@@ -407,7 +407,7 @@ void SPVM_JITCODE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", object_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + ");
+  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)api->object_header_byte_size + ");
   SPVM_STRING_BUFFER_add_int(string_buffer, field_byte_offset);
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -425,7 +425,7 @@ void SPVM_JITCODE_BUILDER_add_set_field(SPVM_STRING_BUFFER* string_buffer, const
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", object_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + ");
+  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)api->object_header_byte_size + ");
   SPVM_STRING_BUFFER_add_int(string_buffer, field_byte_offset);
   SPVM_STRING_BUFFER_add(string_buffer, ") = ");
   SPVM_JITCODE_BUILDER_add_operand(string_buffer, field_type_name, in_index);
@@ -490,12 +490,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   
   // API header
   SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_api.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
-  // Constant macro
-  SPVM_STRING_BUFFER_add(string_buffer, "#define NULL 0\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET ");
@@ -908,14 +902,14 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string1_object = *(SPVM_API_OBJECT**)((intptr_t)string1 + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string2_object = *(SPVM_API_OBJECT**)((intptr_t)string2 + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string1_object = *(SPVM_API_OBJECT**)((intptr_t)string1 + (intptr_t)api->object_header_byte_size);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string2_object = *(SPVM_API_OBJECT**)((intptr_t)string2 + (intptr_t)api->object_header_byte_size);\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string1_length = *(SPVM_API_int*)((intptr_t)string1_object + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string2_length = *(SPVM_API_int*)((intptr_t)string2_object + SPVM_RUNTIME_C_OBJECT_UNITS_LENGTH_BYTE_OFFSET);\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* string1_bytes = (SPVM_API_byte*)((intptr_t)string1_object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* string2_bytes = (SPVM_API_byte*)((intptr_t)string2_object + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* string1_bytes = (SPVM_API_byte*)((intptr_t)string1_object + (intptr_t)api->object_header_byte_size);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* string2_bytes = (SPVM_API_byte*)((intptr_t)string2_object + (intptr_t)api->object_header_byte_size);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t short_string_length = string1_length < string2_length ? string1_length : string2_length;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t retval = memcmp(string1_bytes, string2_bytes, short_string_length);\n");
@@ -1345,7 +1339,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", *(SPVM_API_OBJECT**)((intptr_t)");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_API_OBJECT*) * ");
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)api->object_header_byte_size + sizeof(SPVM_API_OBJECT*) * ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ")); \n");
         SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
@@ -1392,7 +1386,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        &*(SPVM_API_OBJECT**)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_OBJECT*) * \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        &*(SPVM_API_OBJECT**)((intptr_t)array + (intptr_t)api->object_header_byte_size + sizeof(SPVM_OBJECT*) * \n");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, "),\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        ");
@@ -1426,7 +1420,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        &*(SPVM_API_OBJECT**)((intptr_t)array + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + sizeof(SPVM_OBJECT*) * \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        &*(SPVM_API_OBJECT**)((intptr_t)array + (intptr_t)api->object_header_byte_size + sizeof(SPVM_OBJECT*) * \n");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, "),\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        NULL");
@@ -1666,7 +1660,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", *(SPVM_API_OBJECT**)((intptr_t)");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + ");
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)api->object_header_byte_size + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, "));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -1708,7 +1702,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      (SPVM_API_OBJECT**)((intptr_t)");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + \n");
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)api->object_header_byte_size + \n");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, "),\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -1730,7 +1724,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      (SPVM_API_OBJECT**)((intptr_t)");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " + SPVM_RUNTIME_C_OBJECT_HEADER_BYTE_SIZE + \n");
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)api->object_header_byte_size + \n");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, "),\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      NULL");
