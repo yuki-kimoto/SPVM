@@ -14,7 +14,7 @@ SPVM_LIST* SPVM_LIST_new(int32_t capacity) {
   array->length = 0;
   
   if (capacity == 0) {
-    array->capacity = 128;
+    array->capacity = 8;
   }
   else {
     array->capacity = capacity;
