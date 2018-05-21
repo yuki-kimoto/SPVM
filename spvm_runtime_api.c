@@ -252,7 +252,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   api->object_basic_type_id_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id);
   api->object_dimension_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, dimension);
   api->object_units_length_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, units_length);
-  api->runtime_exception_byte_offset = (void*)(intptr_t)offsetof(SPVM_RUNTIME, exception);
   
   runtime->api = api;
   

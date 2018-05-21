@@ -107,6 +107,5 @@ struct SPVM_api {
   void* object_basic_type_id_byte_offset;
   void* object_dimension_byte_offset;
   void* object_units_length_byte_offset;
-  void* runtime_exception_byte_offset;
 };
 #endif
