@@ -1715,6 +1715,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Add package
   op_package->uv.package = package;
 
+
+  // JIT compile
+  _Bool jit = (_Bool)SPVM_HASH_search(compiler->jit_package_name_symtable, package_name, strlen(package_name));
+  package->is_jit = 1;
+
   // Register subrotuine
   {
     int32_t i;
@@ -1789,16 +1794,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           sub->method_signature = method_signature;
           SPVM_HASH_insert(sub->op_package->uv.package->method_signature_symtable, method_signature, strlen(method_signature), sub);
         }
+
+        sub->have_jit_desc = package->is_jit;
         
         SPVM_LIST_push(compiler->op_subs, op_sub);
         SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
       }
     }
   }
-
-  // JIT compile
-  _Bool jit = (_Bool)SPVM_HASH_search(compiler->jit_package_name_symtable, package_name, strlen(package_name));
-  package->is_jit = 1;
   
   package->id = compiler->op_packages->length;
   SPVM_LIST_push(compiler->op_packages, op_package);
