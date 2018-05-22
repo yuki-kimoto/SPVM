@@ -3076,11 +3076,21 @@ get_subs_from_package_id(...)
       int32_t sub_id = sub->id;
       SV* sv_sub_id = sv_2mortal(newSViv(sub_id));
 
+      // Subroutine is_enum
+      int32_t sub_is_enum = sub->is_enum;
+      SV* sv_sub_is_enum = sv_2mortal(newSViv(sub_is_enum));
+
+      // Subroutine is_native
+      int32_t sub_is_native = sub->is_native;
+      SV* sv_sub_is_native = sv_2mortal(newSViv(sub_is_native));
+
       // Subroutine
       HV* hv_sub = (HV*)sv_2mortal((SV*)newHV());
       
       hv_store(hv_sub, "name", strlen("name"), SvREFCNT_inc(sv_sub_name), 0);
       hv_store(hv_sub, "id", strlen("id"), SvREFCNT_inc(sv_sub_id), 0);
+      hv_store(hv_sub, "is_enum", strlen("is_enum"), SvREFCNT_inc(sv_sub_is_enum), 0);
+      hv_store(hv_sub, "is_native", strlen("is_native"), SvREFCNT_inc(sv_sub_is_native), 0);
       
       SV* sv_sub = sv_2mortal(newRV_inc((SV*)hv_sub));
       av_push(av_subs, SvREFCNT_inc((SV*)sv_sub));
@@ -3125,6 +3135,10 @@ get_packages(...)
       // Is JIT
       int32_t package_is_jit = package->is_jit;
       SV* sv_package_is_jit = sv_2mortal(newSViv(package_is_jit));
+
+      // Is interface
+      int32_t package_is_interface = package->is_interface;
+      SV* sv_package_is_interface = sv_2mortal(newSViv(package_is_interface));
       
       // Package
       HV* hv_package = (HV*)sv_2mortal((SV*)newHV());
@@ -3132,6 +3146,7 @@ get_packages(...)
       hv_store(hv_package, "name", strlen("name"), SvREFCNT_inc(sv_package_name), 0);
       hv_store(hv_package, "id", strlen("id"), SvREFCNT_inc(sv_package_id), 0);
       hv_store(hv_package, "is_jit", strlen("is_jit"), SvREFCNT_inc(sv_package_is_jit), 0);
+      hv_store(hv_package, "is_interface", strlen("is_interface"), SvREFCNT_inc(sv_package_is_interface), 0);
       
       SV* sv_package = sv_2mortal(newRV_inc((SV*)hv_package));
       av_push(av_packages, SvREFCNT_inc((SV*)sv_package));
