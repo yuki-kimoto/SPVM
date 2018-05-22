@@ -1,5 +1,0 @@
-package TestCase::CompileError::InvalidType {
-  sub main : int () {
-    my $num : aaa;
-  }
-}

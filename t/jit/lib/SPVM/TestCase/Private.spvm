@@ -1,5 +1,0 @@
-package TestCase::Private : private {
-  sub new : TestCase::Private () {
-    new TestCase::Private;
-  }
-}
