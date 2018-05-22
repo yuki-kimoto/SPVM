@@ -1794,8 +1794,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           sub->method_signature = method_signature;
           SPVM_HASH_insert(sub->op_package->uv.package->method_signature_symtable, method_signature, strlen(method_signature), sub);
         }
-
-        sub->have_jit_desc = package->is_jit;
         
         SPVM_LIST_push(compiler->op_subs, op_sub);
         SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
@@ -1988,15 +1986,9 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       sub->is_native = 1;
       sub->disable_jit = 1;
     }
-    else if (descriptor->id == SPVM_DESCRIPTOR_C_ID_JIT){
-      sub->have_jit_desc = 1;
-    }
     else {
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
     }
-  }
-  if (sub->is_native && sub->have_jit_desc) {
-    SPVM_yyerror_format(compiler, "native and jit descriptor can't be used together", op_descriptors->file, op_descriptors->line);
   }
   
   // Native subroutine can't have block

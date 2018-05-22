@@ -33,9 +33,8 @@ struct SPVM_sub {
   _Bool is_native;
   _Bool is_enum;
   _Bool is_destructor;
-  _Bool is_jit;
+  _Bool is_jit_compiled;
   _Bool disable_jit;
-  _Bool have_jit_desc;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

@@ -105,7 +105,7 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
-  if (sub->is_jit || sub->disable_jit) {
+  if (sub->is_jit_compiled || sub->disable_jit) {
     return 1;
   }
   
@@ -3384,7 +3384,7 @@ bind_jitcode_sub(...)
   SPVM_SUB* sub = op_sub->uv.sub;
   
   sub->jit_address = sub_jit_address;
-  sub->is_jit = 1;
+  sub->is_jit_compiled = 1;
   
   XSRETURN(0);
 }

@@ -46,12 +46,12 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   if (sub->is_native) {
     return SPVM_RUNTIME_call_sub_native(api, sub_id, args);
   }
-  else if (sub->is_jit) {
+  else if (sub->is_jit_compiled) {
     return SPVM_RUNTIME_call_sub_jit(api, sub_id, args);
   }
   else {
     // Compile JIT subroutine
-    if (compiler->enable_jit && sub->have_jit_desc) {
+    if (compiler->enable_jit && sub->is_jit_compiled) {
       api->compile_jit_sub(api, sub_id);
       return SPVM_RUNTIME_call_sub_jit(api, sub_id, args);
     }
@@ -82,7 +82,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API
   SPVM_API_VALUE return_value;
   
   // Subroutine is JIT
-  assert(sub->is_jit);
+  assert(sub->is_jit_compiled);
   
   void* sub_jit_address = sub->jit_address;
   
