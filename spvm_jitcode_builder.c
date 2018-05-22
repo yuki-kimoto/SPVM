@@ -1345,35 +1345,33 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         break;
       case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* array = ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    api->set_exception(api, api->new_string_chars(api, \"Array must not be undef\")); \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  else { \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t index = ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0 || ");
-        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, "  >= *(int32_t*)((intptr_t)");
-        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)api->object_units_length_byte_offset), 0)) { \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        api->set_exception(api, api->new_string_chars(api, \"Index is out of range\")); \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(array == NULL, 0)) { \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      api->set_exception(api, api->new_string_chars(api, \"Array must not be undef\")); \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)api->object_units_length_byte_offset), 0)) { \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "          api->set_exception(api, api->new_string_chars(api, \"Index is out of range\")); \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "          croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        &*(SPVM_API_OBJECT**)((intptr_t)array + (intptr_t)api->object_header_byte_size + sizeof(SPVM_OBJECT*) * \n");
-        SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_int", opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, "),\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "          &*(SPVM_API_OBJECT**)((intptr_t)array + (intptr_t)api->object_header_byte_size + sizeof(SPVM_API_OBJECT*) * index),\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand2);
-        SPVM_STRING_BUFFER_add(string_buffer, "      );\n");
-
+        SPVM_STRING_BUFFER_add(string_buffer, "\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        );\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }");
         
         break;
       }

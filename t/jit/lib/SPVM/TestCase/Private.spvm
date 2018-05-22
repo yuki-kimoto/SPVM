@@ -1,5 +1,5 @@
 package TestCase::Private : private {
-  jit sub new : TestCase::Private () {
+  sub new : TestCase::Private () {
     new TestCase::Private;
   }
 }

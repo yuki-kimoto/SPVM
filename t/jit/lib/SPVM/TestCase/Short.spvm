@@ -1,7 +1,7 @@
 package TestCase::Short {
   use Short;
 
-  jit sub basic : int () {
+  sub basic : int () {
     my $obj_value = Short->new(3);
     my $value1 = $obj_value->get_value;
     

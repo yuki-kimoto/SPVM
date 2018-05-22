@@ -6,11 +6,11 @@ package TestCase::Weaken {
   has weaken2 : TestCase::Weaken2;
   has test_cases : TestCase[];
   
-  jit sub new : TestCase::Weaken () {
+  sub new : TestCase::Weaken () {
     return new TestCase::Weaken;
   }
   
-  jit sub weaken_test_case : void ($self : self) {
+  sub weaken_test_case : void ($self : self) {
     weaken $self->{test_case};
   }
 }

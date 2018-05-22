@@ -1,5 +1,5 @@
 package TestCase::CompileError::TypeCantBeDetectedUndef {
-  jit sub main : int () {
+  sub main : int () {
     my $value = undef;
   }
 }

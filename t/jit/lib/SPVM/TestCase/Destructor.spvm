@@ -3,11 +3,11 @@ package TestCase::Destructor {
   
   has minimal : TestCase::Minimal;
   
-  jit sub new : TestCase::Destructor () {
+  sub new : TestCase::Destructor () {
     return new TestCase::Destructor;
   }
   
-  jit sub DESTROY : void ($self : self) {
+  sub DESTROY : void ($self : self) {
     $self->{minimal}->{x} = 3;
   }
 }

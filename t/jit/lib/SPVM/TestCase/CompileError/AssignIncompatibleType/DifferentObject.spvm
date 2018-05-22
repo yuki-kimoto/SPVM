@@ -2,7 +2,7 @@ package TestCase::CompileError::AssignIncompatibleType::DifferentObject {
   use TestCase::Minimal;
   use TestCase::Simple;
 
-  jit sub main : int () {
+  sub main : int () {
     my $minimal : TestCase::Minimal = new TestCase::Simple;
   }
 }

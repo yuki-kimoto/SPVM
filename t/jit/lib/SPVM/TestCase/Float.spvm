@@ -1,7 +1,7 @@
 package TestCase::Float {
   use Float;
 
-  jit sub basic : int () {
+  sub basic : int () {
     my $obj_value = Float->new(0.25);
     my $value1 = $obj_value->get_value;
 

@@ -43,8 +43,6 @@ find(
         
         my $content = do { local $/; <$fh> };
         
-        $content =~ s/^(\s+)sub/${1}jit sub/mg;
-        
         mkpath $to_dir;
         
         open my $to_fh, '>', $to_file

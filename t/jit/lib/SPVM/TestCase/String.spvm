@@ -1,6 +1,6 @@
 package TestCase::String {
-  
-  jit sub basic : int () {
+  sub basic : int () {
+    
     # get_bytes
     my $get_bytes_ok = 0;
     {
