@@ -3095,6 +3095,57 @@ get_sub_names(...)
 }
 
 SV*
+get_subs_from_package_id(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_package_id = ST(0);
+  int32_t package_id = SvIV(sv_package_id);
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_id);
+  SPVM_PACKAGE* package = op_package->uv.package;
+  
+  AV* av_subs = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < package->op_subs->length; sub_index++) {
+      
+      SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, sub_index);
+      SPVM_SUB* sub = op_sub->uv.sub;
+      
+      // Subroutine name
+      const char* sub_name = sub->abs_name;
+      SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
+      
+      // Subroutine id
+      int32_t sub_id = sub->id;
+      SV* sv_sub_id = sv_2mortal(newSViv(sub_id));
+
+      // Subroutine
+      HV* hv_sub = (HV*)sv_2mortal((SV*)newHV());
+      
+      hv_store(hv_sub, "name", strlen("name"), SvREFCNT_inc(sv_sub_name), 0);
+      hv_store(hv_sub, "id", strlen("id"), SvREFCNT_inc(sv_sub_id), 0);
+      
+      SV* sv_sub = sv_2mortal(newRV_inc((SV*)hv_sub));
+      av_push(av_subs, SvREFCNT_inc((SV*)sv_sub));
+    }
+  }
+  
+  SV* sv_subs = sv_2mortal(newRV_inc((SV*)av_subs));
+  
+  XPUSHs(sv_subs);
+  XSRETURN(1);
+}
+
+SV*
 get_packages(...)
   PPCODE:
 {
@@ -3122,16 +3173,20 @@ get_packages(...)
       // Package id
       int32_t package_id = package->id;
       SV* sv_package_id = sv_2mortal(newSViv(package_id));
+
+      // Is JIT
+      int32_t package_is_jit = package->is_jit;
+      SV* sv_package_is_jit = sv_2mortal(newSViv(package_is_jit));
       
       // Package
       HV* hv_package = (HV*)sv_2mortal((SV*)newHV());
       
       hv_store(hv_package, "name", strlen("name"), SvREFCNT_inc(sv_package_name), 0);
       hv_store(hv_package, "id", strlen("id"), SvREFCNT_inc(sv_package_id), 0);
+      hv_store(hv_package, "is_jit", strlen("is_jit"), SvREFCNT_inc(sv_package_is_jit), 0);
       
       SV* sv_package = sv_2mortal(newRV_inc((SV*)hv_package));
-      
-      av_push(av_packages, SvREFCNT_inc((SV*)hv_package));
+      av_push(av_packages, SvREFCNT_inc((SV*)sv_package));
     }
   }
   
