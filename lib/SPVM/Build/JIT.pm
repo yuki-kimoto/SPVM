@@ -27,10 +27,16 @@ sub compile_packages {
   
   my $packages = SPVM::Build::SPVMInfo::get_packages();
   for my $package (@$packages) {
-    my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_id($package->{id});
-    for my $sub (@$subs) {
-      my $sub_name = $sub->{name};
-      my $sub_id = $sub->{id};
+    if ($package->{is_jit}) {
+      my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_id($package->{id});
+      for my $sub (@$subs) {
+        my $sub_name = $sub->{name};
+        my $sub_id = $sub->{id};
+        
+        my $jitcode = $self->build_jitcode($sub_id);
+        
+        $self->compile_jit_sub($sub_id, $jitcode);
+      }
     }
   }
 }

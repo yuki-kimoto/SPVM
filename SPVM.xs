@@ -3457,6 +3457,28 @@ free_compiler(...)
 MODULE = SPVM::Build::JIT		PACKAGE = SPVM::Build::JIT
 
 SV*
+build_jitcode(...)
+  PPCODE:
+{
+  SV* sv_self = ST(0);
+  SV* sv_sub_id = ST(1);
+  int32_t sub_id = SvIV(sv_sub_id);
+  
+  // String buffer for jitcode
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
+  
+  // Build sub jitcode
+  SPVM_JITCODE_BUILDER_build_sub_jitcode(string_buffer, sub_id);
+  
+  SV* sv_jitcode_source = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
+  
+  SPVM_STRING_BUFFER_free(string_buffer);
+  
+  XPUSHs(sv_jitcode_source);
+  XSRETURN(1);
+}
+
+SV*
 bind_jitcode_sub(...)
   PPCODE:
 {
