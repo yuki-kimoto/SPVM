@@ -108,9 +108,6 @@ struct SPVM_compiler {
   
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
-  
-  // Enable JIT
-  _Bool enable_jit;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

@@ -105,7 +105,7 @@ int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
-  if (sub->is_jit_compiled || sub->disable_jit) {
+  if (sub->is_jit_compiled || sub->is_enum || sub->is_native) {
     return 1;
   }
   
@@ -3171,10 +3171,6 @@ compile(...)
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
-  
-  // Enable JIT
-  SV* sv_enable_jit = get_sv("SPVM::ENABLE_JIT", 0);
-  compiler->enable_jit = SvTRUE(sv_enable_jit) ? 1 : 0;
   
   // Add package
   AV* av_package_infos = get_av("SPVM::PACKAGE_INFOS", 0);

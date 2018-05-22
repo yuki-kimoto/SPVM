@@ -51,7 +51,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VAL
   }
   else {
     // Compile JIT subroutine
-    if (compiler->enable_jit && sub->is_jit_compiled) {
+    if (!sub->is_jit_compiled && sub->op_package->uv.package->is_jit) {
       api->compile_jit_sub(api, sub_id);
       return SPVM_RUNTIME_call_sub_jit(api, sub_id, args);
     }

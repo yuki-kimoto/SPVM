@@ -1718,7 +1718,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
 
   // JIT compile
   _Bool jit = (_Bool)SPVM_HASH_search(compiler->jit_package_name_symtable, package_name, strlen(package_name));
-  package->is_jit = 1;
+  package->is_jit = jit;
 
   // Register subrotuine
   {
@@ -1984,7 +1984,6 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     
     if (descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
       sub->is_native = 1;
-      sub->disable_jit = 1;
     }
     else {
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
@@ -2152,7 +2151,6 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   
   // Subroutine is constant
   op_sub->uv.sub->is_enum = 1;
-  op_sub->uv.sub->disable_jit = 1;
   op_sub->uv.sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
   
   return op_sub;

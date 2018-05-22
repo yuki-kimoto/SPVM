@@ -31,7 +31,6 @@ our $COMPILER;
 our $API;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
-our $ENABLE_JIT;
 our $BUILD_DIR;
 our $PROCESS_START_TIME;
 our $INITIALIZED;
@@ -46,7 +45,6 @@ sub import {
   
   unless ($INITIALIZED) {
     $BUILD = SPVM::Build->new;
-    $ENABLE_JIT = $ENV{SPVM_ENABLE_JIT};
     $BUILD_DIR = $ENV{SPVM_BUILD_DIR};
     if (defined $BUILD_DIR) {
       # Remove traling slash
