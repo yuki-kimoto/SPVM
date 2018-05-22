@@ -112,6 +112,9 @@ sub compile_spvm {
     # Build run-time
     $self->build_runtime;
     
+    # Build JIT code
+    $self->jit->compile_packages;
+    
     # Bind native subroutines
     $self->bind_native_subs;
     

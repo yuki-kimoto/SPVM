@@ -22,6 +22,13 @@ sub new {
   return bless $self, $class;
 }
 
+sub compile_packages {
+  my $self = shift;
+  
+  my $packages = SPVM::Build::SPVMInfo::get_packages();
+  
+}
+
 sub create_jit_sub_name {
   my ($self, $sub_name) = @_;
   

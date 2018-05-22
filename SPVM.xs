@@ -3095,6 +3095,53 @@ get_sub_names(...)
 }
 
 SV*
+get_packages(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_API* api = SPVM_XS_UTIL_get_api();
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  AV* av_packages = (AV*)sv_2mortal((SV*)newAV());
+  
+  {
+    int32_t package_index;
+    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
+  
+      SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      
+      // Package name
+      const char* package_name = package->op_name->uv.name;
+      SV* sv_package_name = sv_2mortal(newSVpvn(package_name, strlen(package_name)));
+      
+      // Package id
+      int32_t package_id = package->id;
+      SV* sv_package_id = sv_2mortal(newSViv(package_id));
+      
+      // Package
+      HV* hv_package = (HV*)sv_2mortal((SV*)newHV());
+      
+      hv_store(hv_package, "name", strlen("name"), SvREFCNT_inc(sv_package_name), 0);
+      hv_store(hv_package, "id", strlen("id"), SvREFCNT_inc(sv_package_id), 0);
+      
+      SV* sv_package = sv_2mortal(newRV_inc((SV*)hv_package));
+      
+      av_push(av_packages, SvREFCNT_inc((SV*)hv_package));
+    }
+  }
+  
+  SV* sv_packages = sv_2mortal(newRV_inc((SV*)av_packages));
+  
+  XPUSHs(sv_packages);
+  XSRETURN(1);
+}
+
+SV*
 get_native_sub_names(...)
   PPCODE:
 {
