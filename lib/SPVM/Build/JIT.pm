@@ -71,10 +71,6 @@ sub create_jit_sub_file_name {
   return $jit_sub_file_name;
 }
 
-sub compile_jit_sub_func {
-  return $SPVM::BUILD->jit->compile_jit_sub(@_);
-}
-
 sub compile_jit_sub {
   my ($self, $sub_id, $sub_jitcode_source) = @_;
   

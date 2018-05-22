@@ -92,58 +92,6 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   }
 }
 
-int SPVM_XS_UTIL_compile_jit_sub(SPVM_API* api, int32_t sub_id) {
-  dSP;
-  I32 ax;
-  int return_value_count;  
-
-  (void)api;
-
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
-  
-  if (sub->is_jit_compiled || sub->is_enum || sub->is_native) {
-    return 1;
-  }
-  
-  // String buffer for jitcode
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
-  
-  // Build sub jitcode
-  SPVM_JITCODE_BUILDER_build_sub_jitcode(string_buffer, sub_id);
-  
-  SV* sv_jitcode_source = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
-  
-  SV* sv_sub_id = sv_2mortal(newSViv(sub_id));
-  
-  ENTER;
-  SAVETMPS;
-
-  PUSHMARK(SP);
-  XPUSHs(sv_sub_id);
-  XPUSHs(sv_jitcode_source);
-  PUTBACK;
-
-  return_value_count = call_pv("SPVM::Build::JIT::compile_jit_sub_func", G_SCALAR);
-
-  SPAGAIN;
-  SP -= return_value_count;
-  ax = (SP - PL_stack_base) + 1;
-  
-  int32_t success = SvIV(ST(0));
-
-  PUTBACK;
-  FREETMPS;
-  LEAVE;
-  
-  SPVM_STRING_BUFFER_free(string_buffer);
-  
-  return success;
-}
-
 MODULE = SPVM::Perl::Object		PACKAGE = SPVM::Perl::Object
 
 SV*
@@ -3428,8 +3376,6 @@ build_runtime(...)
   SV* sviv_api = sv_2mortal(newSViv(iv_api));
   SV* sv_api = sv_2mortal(newRV_inc(sviv_api));
   sv_setsv(get_sv("SPVM::API", 0), sv_api);
-  
-  api->compile_jit_sub = &SPVM_XS_UTIL_compile_jit_sub;
   
   XSRETURN(0);
 }

@@ -101,7 +101,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_concat,
   SPVM_RUNTIME_API_weaken_object_field,
   SPVM_RUNTIME_API_create_exception_stack_trace,
-  NULL,
   SPVM_RUNTIME_API_check_cast,
   NULL, // object_header_byte_size
   NULL, // object_ref_count_byte_offset

@@ -100,7 +100,6 @@ struct SPVM_api {
   SPVM_API_OBJECT* (*concat)(SPVM_API* api, SPVM_API_OBJECT* string1, SPVM_API_OBJECT* string2);
   void (*weaken_object_field)(SPVM_API* api, SPVM_API_OBJECT* object, int32_t field_id);
   SPVM_API_OBJECT* (*create_exception_stack_trace)(SPVM_API* api, SPVM_API_OBJECT* excetpion, int32_t sub_id, int32_t current_line);
-  int32_t (*compile_jit_sub)(SPVM_API* api, int32_t sub_id);
   int32_t (*check_cast)(SPVM_API* api, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_API_OBJECT* object);
   void* object_header_byte_size;
   void* object_ref_count_byte_offset;
