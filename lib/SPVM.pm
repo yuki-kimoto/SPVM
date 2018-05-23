@@ -32,7 +32,6 @@ our $API;
 our @PACKAGE_INFOS;
 our %PACKAGE_INFO_SYMTABLE;
 our $BUILD_DIR;
-our $PROCESS_START_TIME;
 our $INITIALIZED;
 our $BUILD;
 our @JIT_PACKAGE_NAMES;
@@ -50,10 +49,6 @@ sub import {
       # Remove traling slash
       $BUILD_DIR = File::Spec->catdir(File::Spec->splitdir($BUILD_DIR));
     }
-    $PROCESS_START_TIME = time;
-    
-    # Cleanup build directory
-    $BUILD->cleanup_build_dir;
     
     $INITIALIZED = 1;
   }
