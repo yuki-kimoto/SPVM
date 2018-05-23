@@ -1,3 +1,9 @@
+0.0336 2018-05-24
+  - remove jit descriptor
+  - add SPVM::JIT moudle
+  - JIT compile unit become package
+  - implement JIT compile cache system
+  - improve test peformance very much
 0.0336 2018-05-19
   - fix hash insert and search bug
   - name string is shared intenally
