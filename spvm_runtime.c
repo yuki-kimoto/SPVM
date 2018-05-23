@@ -1890,8 +1890,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         if (croak_flag) {
           croak_flag = 0;
           
+          int32_t sub_id = opcode->operand1;
+          int32_t line = opcode->operand2;
+          
           // Exception stack trace
-          api->set_exception(api, api->create_exception_stack_trace(api, api->get_exception(api), opcode->operand1, opcode->operand2));
+          api->set_exception(api, api->create_exception_stack_trace(api, api->get_exception(api), sub_id, line));
           opcode_index = opcode->operand0;
           continue;
         }
@@ -1899,8 +1902,11 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
         if (croak_flag) {
+          int32_t sub_id = opcode->operand1;
+          int32_t line = opcode->operand2;
+
           // Exception stack trace
-          api->set_exception(api, api->create_exception_stack_trace(api, api->get_exception(api), opcode->operand1, opcode->operand2));
+          api->set_exception(api, api->create_exception_stack_trace(api, api->get_exception(api), sub_id, line));
           opcode_index = opcode->operand0;
           continue;
         }
