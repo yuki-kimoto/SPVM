@@ -1987,7 +1987,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t cast_basic_type_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (cast_basic_type_id == -1) { cast_basic_type_id = api->get_basic_type_id(api, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, cast_basic_type->name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type->name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cast_type_dimension = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, cast_type_dimension);
