@@ -2038,8 +2038,8 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
           SPVM_STRING_BUFFER_add(string_buffer, "];\n");
           
-           SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t decl_sub_id = -1;\n");
-         SPVM_STRING_BUFFER_add(string_buffer, "    if (decl_sub_id == -1) { decl_sub_id = api->get_sub_id(api, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t decl_sub_id = -1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (decl_sub_id == -1) { decl_sub_id = api->get_sub_id(api, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = api->get_sub_id_interface_method(api, object, decl_sub_id);\n");
@@ -2225,9 +2225,10 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_SUB* sub = op_sub->uv.sub;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t sub_id = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (sub_id == -1) { sub_id = api->get_sub_id(api, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2246,9 +2247,10 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_SUB* sub = op_sub->uv.sub;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t sub_id = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (sub_id == -1) { sub_id = api->get_sub_id(api, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
