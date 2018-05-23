@@ -1701,18 +1701,18 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         break;
       }
       case SPVM_OPCODE_C_ID_GOTO:
-        opcode_index = opcode->operand0 - sub_opcode_base;
+        opcode_index = opcode->operand0;
         continue;
       case SPVM_OPCODE_C_ID_IF_EQ_ZERO: {
         if (condition_flag == 0) {
-          opcode_index = opcode->operand0 - sub_opcode_base;
+          opcode_index = opcode->operand0;
           continue;
         }
         break;
       }
       case SPVM_OPCODE_C_ID_IF_NE_ZERO: {
         if (condition_flag) {
-          opcode_index = opcode->operand0 - sub_opcode_base;
+          opcode_index = opcode->operand0;
           continue;
         }
         break;
@@ -1898,7 +1898,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           
           // Exception stack trace
           api->set_exception(api, api->create_exception_stack_trace(api, api->get_exception(api), opcode->operand1, opcode->operand2));
-          opcode_index = opcode->operand0 - sub_opcode_base;
+          opcode_index = opcode->operand0;
           continue;
         }
         break;
@@ -1907,7 +1907,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         if (croak_flag) {
           // Exception stack trace
           api->set_exception(api, api->create_exception_stack_trace(api, api->get_exception(api), opcode->operand1, opcode->operand2));
-          opcode_index = opcode->operand0 - sub_opcode_base;
+          opcode_index = opcode->operand0;
           continue;
         }
         break;
@@ -1918,43 +1918,43 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       }
       case SPVM_OPCODE_C_ID_RETURN_VOID:
       {
-        opcode_index = opcode->operand1 - sub_opcode_base;
+        opcode_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_BYTE:
       {
         *(SPVM_API_byte*)&return_value = *(SPVM_API_byte*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1 - sub_opcode_base;
+        opcode_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_SHORT:
       {
         *(SPVM_API_short*)&return_value = *(SPVM_API_short*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1 - sub_opcode_base;
+        opcode_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_INT:
       {
         *(SPVM_API_int*)&return_value = *(SPVM_API_int*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1 - sub_opcode_base;
+        opcode_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_LONG:
       {
         *(SPVM_API_long*)&return_value = *(SPVM_API_long*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1 - sub_opcode_base;
+        opcode_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_FLOAT:
       {
         *(SPVM_API_float*)&return_value = *(SPVM_API_float*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1 - sub_opcode_base;
+        opcode_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_DOUBLE:
       {
         *(SPVM_API_double*)&return_value = *(SPVM_API_double*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1 - sub_opcode_base;
+        opcode_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_OBJECT:
@@ -1964,13 +1964,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         if (*(SPVM_API_OBJECT**)&return_value != NULL) {
           SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&return_value);
         }
-        opcode_index = opcode->operand1 - sub_opcode_base;
+        opcode_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_UNDEF:
       {
         *(SPVM_API_OBJECT**)&return_value = NULL;
-        opcode_index = opcode->operand1 - sub_opcode_base;
+        opcode_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
@@ -1985,10 +1985,10 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         
         if (*(SPVM_API_int*)&vars[opcode->operand0] >= min && *(SPVM_API_int*)&vars[opcode->operand0] <= max) {
           int32_t branch_offset = (opcode + 2 + *(SPVM_API_int*)&vars[opcode->operand0] - min)->operand1;
-          opcode_index = branch_offset - sub_opcode_base;
+          opcode_index = branch_offset;
         }
         else {
-          opcode_index = default_offset - sub_opcode_base;
+          opcode_index = default_offset;
         }
         
         continue;
@@ -2019,7 +2019,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
           
           while (1) {
             if (cur_max_pos < cur_min_pos) {
-              opcode_index = default_branch - sub_opcode_base;
+              opcode_index = default_branch;
               break;
             }
             int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
@@ -2033,13 +2033,13 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
             }
             else {
               int32_t branch = (opcode + 1 + cur_half_pos)->operand1;
-              opcode_index = branch - sub_opcode_base;
+              opcode_index = branch;
               break;
             }
           }
         }
         else {
-          opcode_index = default_branch - sub_opcode_base;
+          opcode_index = default_branch;
         }
         
         continue;
