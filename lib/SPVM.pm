@@ -411,23 +411,11 @@ SPVM provide B<easy way to Bind C/C++ Language to Perl>.
 
 =item *
 
-B<Fast calculation> - The Perl's biggest weak point is the calculation performance. SPVM provides fast calculations.
+B<Fast array operation>, B<Fast numeric operation>, B<Static typing>, B<Virtual machine>, B<JIT>, B<Pre compile>
 
 =item *
 
-B<Static typing> - Static typing for performance
-
-=item *
-
-B<VM> - Byte codes are generated so that you can run them on SPVM language
-
-=item *
-
-B<Perlish syntax> - SPVM syntax is very similar to Perl
-
-=item *
-
-B<Perl module> - SPVM function can be called from Perl itself.
+B<Perlish syntax>, B<Easy way to C/C++ binding>, B<C99 math functions>
 
 =back
 
