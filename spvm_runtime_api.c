@@ -65,6 +65,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_sub_id,
   SPVM_RUNTIME_API_get_sub_id_interface_method,
   SPVM_RUNTIME_API_get_class_method_sub_id,
+  SPVM_RUNTIME_API_get_basic_type_id,
   SPVM_RUNTIME_API_call_void_sub,
   SPVM_RUNTIME_API_call_byte_sub,
   SPVM_RUNTIME_API_call_short_sub,
@@ -1139,6 +1140,27 @@ int32_t SPVM_RUNTIME_API_get_class_method_sub_id(SPVM_API* api, const char* pack
   }
   
   return sub_id;
+}
+
+
+int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_API* api, const char* name) {
+  (void)api;
+  
+  if (name == NULL) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, name, strlen(name));
+  if (basic_type) {
+    int32_t basic_type_id = basic_type->id;
+    return basic_type_id;
+  }
+  else {
+    return -1;
+  }
 }
 
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_API* api, SPVM_OBJECT* object, int32_t field_id) {
