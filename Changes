@@ -1,4 +1,4 @@
-0.0336 2018-05-24
+0.0337 2018-05-24
   - remove jit descriptor
   - add SPVM::JIT moudle
   - JIT compile unit become package
