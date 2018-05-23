@@ -851,10 +851,13 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         int32_t basic_type_id = opcode->operand1;
         int32_t dimension = opcode->operand2;
         
+        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  {");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, basic_type_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t basic_type_id = -1;");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (basic_type_id == -1) { basic_type_id = api->get_basic_type_id(api, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, basic_type->name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t dimension = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
