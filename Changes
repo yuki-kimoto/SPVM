@@ -1,3 +1,6 @@
+0.0377 2018-05-24
+  - add examples
+  
 0.0337 2018-05-24
   - remove jit descriptor
   - add SPVM::JIT moudle
