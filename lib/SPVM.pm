@@ -25,7 +25,7 @@ use Encode 'encode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0336';
+our $VERSION = '0.0337';
 
 our $COMPILER;
 our $API;
@@ -643,10 +643,6 @@ L<SPVM::Document::Functions> - SPVM Standard Functions
 =head2 SPVM Standard Module
 
 L<SPVM::Document::Modules> - SPVM Standard Modules
-
-=head2 SPVM FAQ
-
-L<SPVM::Document::FAQ> - Oftten asked question.
 
 =head2 SUPPORT
 
