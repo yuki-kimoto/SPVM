@@ -377,13 +377,69 @@ sub new_object {
 
 =head1 NAME
 
-SPVM - Fast Calculation and Easy C/C++ Binding with perlish syntax and static typing
+SPVM - Fast array and numeric operation, and provide easy way to C/C++ Binding
 
 B<SPVM is before 1.0 under development! I will change implementation and specification without warnings.>
 
+Curent SPVM version is 0.3 serieses. This means implementation is finshed by 30% of version 1.0.
+
 =head1 SYNOPSIS
 
-=head2 Fast Array Operation using SPVM.
+  package MyMath {
+    use Std;
+    
+    sub sum : int ($nums : int[]) {
+      
+      my $total = 0;
+      for (my $i = 0; $i < @$nums; $i++) {
+        $total += $nums->[$i];
+      }
+      
+      return $total;
+    }
+  }
+
+=head1 DESCRIPTION
+
+SPVM provide B<fast array and numeric operation>.
+
+SPVM provide B<easy way to Bind C/C++ Language to Perl>.
+
+=head1 FEATURES
+
+=over 4
+
+=item *
+
+B<Fast calculation> - The Perl's biggest weak point is the calculation performance. SPVM provides fast calculations.
+
+=item *
+
+B<Static typing> - Static typing for performance
+
+=item *
+
+B<VM> - Byte codes are generated so that you can run them on SPVM language
+
+=item *
+
+B<Perlish syntax> - SPVM syntax is very similar to Perl
+
+=item *
+
+B<Perl module> - SPVM function can be called from Perl itself.
+
+=back
+
+=head1 EXAMPLES
+
+L<SPVM> is a language which is similar with Perl. SPVM is very similar to Perl, and you can write same syntax of Perl in most part.
+
+L<SPVM> communicate with Perl. You can call SPVM function directory from Perl.
+
+L<SPVM> is very fast and provide array data structure. Now SPVM array operation is about 6x faster.
+
+=head2 How to use SPVM from Perl
 
 SPVM Module:
 
@@ -484,46 +540,6 @@ If you know more SPVM Extension, see L<SPVM::Document::Extension>.
 
 If you know the APIs to manipulate SPVM data, see L<SPVM::Document::NativeAPI>.
 
-=head1 DESCRIPTION
-
-SPVM provide Fast Culcuration and Easy way to Bind C/C++ Language to Perl.
-
-=over 4
-
-=item *
-
-B<Fast calculation> - The Perl's biggest weak point is the calculation performance. SPVM provides fast calculations.
-
-=item *
-
-B<GC> - You don't need to care about freeing memory
-
-=item *
-
-B<Static typing> - Static typing for performance
-
-=item *
-
-B<VM> - Byte codes are generated so that you can run them on SPVM language
-
-=item *
-
-B<Perlish syntax> - SPVM syntax is very similar to Perl
-
-=item *
-
-B<Perl module> - SPVM function can be called from Perl itself.
-
-=back
-
-=head1 SPVM Tutorial
-
-L<SPVM> is a language which is similar with Perl. SPVM is very similar to Perl, and you can write same syntax of Perl in most part.
-
-L<SPVM> communicate with Perl. You can call SPVM function directory from Perl.
-
-L<SPVM> is very fast and provide array data structure. Now SPVM array operation is about 6x faster.
-
 =head2 SPVM module
 
 At first, you can write SPVM module. 
@@ -592,71 +608,36 @@ And call SPVM subroutine. If SPVM subroutine absolute name is C<MyModule1::sum>,
   my $total = SPVM::MyModule1::sum(3, 5);
   print $total . "\n";
 
-=head1 Document
-
-=head2 SPVM Functions
-
-L<SPVM::Document::DataConversionAPI> - SPVM data convertion functions.
-
-List of SPVM functions:
-
-=over 2
-
-=item * new_byte_array
-
-=item * new_byte_array_data
-
-=item * new_byte_array_string
-
-=item * new_short_array
-
-=item * new_int_array
-
-=item * new_long_array
-
-=item * new_float_array
-
-=item * new_double_array
-
-=item * new_object_array_len
-
-=item * new_object
-
-=back
-
-If you know Detail of SPVM Function, see L<SPVM::Document::DataConversionAPI>.
-
-=head2 SPVM Specification
+=head1 SPVM Specification
 
 L<SPVM::Document::Specification> - SPVM Specification
 
-=head2 SPVM Native Interface
-
-L<SPVM::Document::NativeAPI> - SPVM Native Interface.
-
 Native API is C level API. You can write programing logic using C language and SPVM Native API.
 
-=head2 SPVM Standard Function
+=head1 STANDARD FUNCTIONS
 
-L<SPVM::Document::Functions> - SPVM Standard Functions
+L<SPVM::Document::Functions>
 
-=head2 SUPPORT
+print, warn, time
+
+=head1 STANDARD MODULES
+
+L<SPVM::Std>, L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>,
+L<SPVM::Std::Math>, L<SPVM::Std::IO>, L<SPVM::Std::TypeUtil>
+
+=head1 PERL API
+
+L<SPVM::Document::PerlAPI>
+
+=head1 Native API
+
+L<SPVM::Document::NativeAPI>
+
+=head1 SUPPORT
 
 If you have problems or find bugs, comment to GitHub Issue.
 
 L<SPVM(GitHub)|https://github.com/yuki-kimoto/SPVM>.
-
-=head1 NAME
-
-SPVM::Document::Modules - SPVM Standard Modules(BETA before 1.0)
-
-=head1 Standard Modules
-
-L<SPVM::Std>
-
-L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>
-
-L<SPVM::Std::Math>, L<SPVM::Std::IO>, L<SPVM::Std::TypeUtil>
 
 =head1 AUTHOR
 

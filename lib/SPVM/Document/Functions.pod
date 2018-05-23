@@ -1,6 +1,6 @@
 =head1 NAME
 
-SPVM::Document::Functions - SPVM Standard Functions (BETA before 1.0)
+SPVM::Document::Functions - SPVM Standard Functions
 
 =head1 SPVM Standard Functions
 
