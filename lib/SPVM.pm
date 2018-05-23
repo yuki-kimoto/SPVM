@@ -640,15 +640,23 @@ Native API is C level API. You can write programing logic using C language and S
 
 L<SPVM::Document::Functions> - SPVM Standard Functions
 
-=head2 SPVM Standard Module
-
-L<SPVM::Document::Modules> - SPVM Standard Modules
-
 =head2 SUPPORT
 
 If you have problems or find bugs, comment to GitHub Issue.
 
 L<SPVM(GitHub)|https://github.com/yuki-kimoto/SPVM>.
+
+=head1 NAME
+
+SPVM::Document::Modules - SPVM Standard Modules(BETA before 1.0)
+
+=head1 Standard Modules
+
+L<SPVM::Std>
+
+L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>
+
+L<SPVM::Std::Math>, L<SPVM::Std::IO>, L<SPVM::Std::TypeUtil>
 
 =head1 AUTHOR
 
