@@ -722,20 +722,20 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   }
 
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
-  int32_t opcode_base = sub->opcode_base;
+  int32_t sub_opcode_base = sub->opcode_base;
   int32_t opcode_length = sub->opcode_length;
-  int32_t opcode_index = opcode_base;
+  int32_t opcode_index = 0;
   
   SPVM_OPCODE* opcode = NULL;
   
-  while (opcode_index < opcode_base + opcode_length) {
+  while (opcode_index < opcode_length) {
 
     // Line label
     SPVM_STRING_BUFFER_add(string_buffer, "L");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index);
     SPVM_STRING_BUFFER_add(string_buffer, ": ");
     
-    opcode = &(opcodes[opcode_index]);
+    opcode = &(opcodes[sub_opcode_base + opcode_index]);
 
     SPVM_STRING_BUFFER_add(string_buffer, "// ");
     SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_OPCODE_C_ID_NAMES[opcode->id]);
@@ -1747,19 +1747,19 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       }
       case SPVM_OPCODE_C_ID_GOTO: {
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
       case SPVM_OPCODE_C_ID_IF_EQ_ZERO: {
         SPVM_STRING_BUFFER_add(string_buffer, "  if (condition_flag == 0) { goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, "; }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_IF_NE_ZERO: {
         SPVM_STRING_BUFFER_add(string_buffer, "  if (condition_flag) { goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, "; }\n");
         break;
       }
@@ -2216,7 +2216,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, "));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
+        SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
@@ -2231,7 +2231,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, "));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
@@ -2243,7 +2243,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_ID_RETURN_VOID:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         break;
@@ -2255,7 +2255,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
@@ -2266,7 +2266,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
@@ -2277,7 +2277,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
@@ -2288,7 +2288,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
@@ -2299,7 +2299,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
@@ -2310,7 +2310,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
@@ -2327,7 +2327,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         break;
@@ -2337,7 +2337,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_API_OBJECT**)&return_value = NULL;\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1 - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         break;
@@ -2370,12 +2370,12 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
             SPVM_STRING_BUFFER_add(string_buffer, "    case ");
             SPVM_STRING_BUFFER_add_int(string_buffer, min + case_index);
             SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
-            SPVM_STRING_BUFFER_add_int(string_buffer, branch);
+            SPVM_STRING_BUFFER_add_int(string_buffer, branch - sub_opcode_base);
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           }
         }
         SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, default_branch);
+        SPVM_STRING_BUFFER_add_int(string_buffer, default_branch - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 
@@ -2407,12 +2407,12 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
             SPVM_STRING_BUFFER_add(string_buffer, "    case ");
             SPVM_STRING_BUFFER_add_int(string_buffer, match);
             SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
-            SPVM_STRING_BUFFER_add_int(string_buffer, branch);
+            SPVM_STRING_BUFFER_add_int(string_buffer, branch - sub_opcode_base);
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           }
         }
         SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, default_branch);
+        SPVM_STRING_BUFFER_add_int(string_buffer, default_branch - sub_opcode_base);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 
