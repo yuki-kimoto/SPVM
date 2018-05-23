@@ -1994,8 +1994,6 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {
         int32_t decl_sub_id = opcode->operand1;
-
-        // Declare subroutine
         SPVM_OP* op_sub_decl = SPVM_LIST_fetch(compiler->op_subs, decl_sub_id);
         SPVM_SUB* decl_sub = op_sub_decl->uv.sub;
         
@@ -2016,18 +2014,19 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
 
         // Call subroutine id
         if (opcode->id == SPVM_OPCODE_C_ID_CALL_SUB) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = ");
-          SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_id);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t call_sub_id = api->get_sub_id(api, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object = *(SPVM_API_OBJECT**)&vars[");
           SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
           SPVM_STRING_BUFFER_add(string_buffer, "];\n");
           
-          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = api->get_sub_id_interface_method(api, object, ");
-          SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_id);
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t decl_sub_id = api->get_sub_id(api, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = api->get_sub_id_interface_method(api, object, decl_sub_id);\n");
         }
         else {
           assert(0);
@@ -2049,7 +2048,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         }
         else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  {");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte value = api->call_byte_sub(api, call_sub_id");
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
           if (decl_sub_args_length > 0) {
