@@ -268,7 +268,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   
   char tmp_string[30];
 
-  register int32_t opcode_index = sub_opcode_base;
+  register int32_t opcode_index = 0;
 
   // Initialize variables
   memset(vars, 0, sizeof(SPVM_API_VALUE) * sub->op_mys->length);
@@ -293,7 +293,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
   }
   
   while (1) {
-    SPVM_OPCODE* opcode = &(opcodes[opcode_index]);
+    SPVM_OPCODE* opcode = &(opcodes[sub_opcode_base + opcode_index]);
     
     switch (opcode->id) {
       case SPVM_OPCODE_C_ID_BOOL_INT:

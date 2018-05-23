@@ -722,20 +722,20 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   }
 
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
-  int32_t opcode_base = sub->opcode_base;
+  int32_t sub_opcode_base = sub->opcode_base;
   int32_t opcode_length = sub->opcode_length;
-  int32_t opcode_index = opcode_base;
+  int32_t opcode_index = 0;
   
   SPVM_OPCODE* opcode = NULL;
   
-  while (opcode_index < opcode_base + opcode_length) {
+  while (opcode_index < opcode_length) {
 
     // Line label
     SPVM_STRING_BUFFER_add(string_buffer, "L");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index);
     SPVM_STRING_BUFFER_add(string_buffer, ": ");
     
-    opcode = &(opcodes[opcode_index]);
+    opcode = &(opcodes[sub_opcode_base + opcode_index]);
 
     SPVM_STRING_BUFFER_add(string_buffer, "// ");
     SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_OPCODE_C_ID_NAMES[opcode->id]);
