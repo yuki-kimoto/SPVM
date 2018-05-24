@@ -1188,8 +1188,39 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     // Check cast
                     else {
-                      opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
-                      opcode.operand2 = ((uint32_t)dist_type->basic_type->id + ((uint32_t)dist_type->dimension << 24));
+                      if (src_type->basic_type->id == dist_type->basic_type->id && src_type->dimension == dist_type->dimension) {
+                        if (src_type->dimension == 0) {
+                          switch (src_type->basic_type->id) {
+                            case SPVM_BASIC_TYPE_C_ID_BYTE:
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_BYTE;
+                              break;
+                            case SPVM_BASIC_TYPE_C_ID_SHORT:
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_SHORT;
+                              break;
+                            case SPVM_BASIC_TYPE_C_ID_INT:
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_INT;
+                              break;
+                            case SPVM_BASIC_TYPE_C_ID_LONG:
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_LONG;
+                              break;
+                            case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_FLOAT;
+                              break;
+                            case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_DOUBLE;
+                              break;
+                            default:
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_OBJECT;
+                          }
+                        }
+                        else {
+                          opcode.id = SPVM_OPCODE_C_ID_MOVE_OBJECT;
+                        }
+                      }
+                      else {
+                        opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
+                        opcode.operand2 = ((uint32_t)dist_type->basic_type->id + ((uint32_t)dist_type->dimension << 24));
+                      }
                     }
 
                     int32_t index_out = SPVM_OP_get_my_index(compiler, op_dist_term);

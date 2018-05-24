@@ -165,7 +165,7 @@ to_data(...)
   int32_t string_length = api->get_string_length(api, string);
   
   int8_t* bytes = api->get_string_bytes(api, string);
-  
+
   SV* sv_data = sv_2mortal(newSVpvn((char*)bytes, string_length));
   
   XPUSHs(sv_data);

@@ -1,3 +1,2 @@
 package String : private {
-  has bytes : private byte[];
 }

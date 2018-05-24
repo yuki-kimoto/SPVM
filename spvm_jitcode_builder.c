@@ -877,31 +877,28 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
       case SPVM_OPCODE_C_ID_STRING_LE:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  {");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string1 = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object1 = ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string2 = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* object2 = ");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string1_object = *(SPVM_API_OBJECT**)((intptr_t)string1 + (intptr_t)api->object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string2_object = *(SPVM_API_OBJECT**)((intptr_t)string2 + (intptr_t)api->object_header_byte_size);\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string1_length = *(SPVM_API_int*)((intptr_t)string1_object + (intptr_t)api->object_units_length_byte_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string2_length = *(SPVM_API_int*)((intptr_t)string2_object + (intptr_t)api->object_units_length_byte_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length1 = *(SPVM_API_int*)((intptr_t)object1 + (intptr_t)api->object_units_length_byte_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t lenght2 = *(SPVM_API_int*)((intptr_t)object2 + (intptr_t)api->object_units_length_byte_offset);\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* string1_bytes = (SPVM_API_byte*)((intptr_t)string1_object + (intptr_t)api->object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* string2_bytes = (SPVM_API_byte*)((intptr_t)string2_object + (intptr_t)api->object_header_byte_size);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* bytes1 = (SPVM_API_byte*)((intptr_t)object1 + (intptr_t)api->object_header_byte_size);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_byte* bytes2 = (SPVM_API_byte*)((intptr_t)object2 + (intptr_t)api->object_header_byte_size);\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t short_string_length = string1_length < string2_length ? string1_length : string2_length;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t retval = memcmp(string1_bytes, string2_bytes, short_string_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t short_string_length = length1 < lenght2 ? length1 : lenght2;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t retval = memcmp(bytes1, bytes2, short_string_length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cmp;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (retval) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      cmp = retval < 0 ? -1 : 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    } else if (string1_length == string2_length) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    } else if (length1 == lenght2) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      cmp = 0;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    } else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      cmp = string1_length < string2_length ? -1 : 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      cmp = length1 < lenght2 ? -1 : 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         
         switch (opcode->id) {

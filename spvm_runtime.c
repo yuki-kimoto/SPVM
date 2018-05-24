@@ -412,27 +412,24 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
       case SPVM_OPCODE_C_ID_STRING_LT:
       case SPVM_OPCODE_C_ID_STRING_LE:
       {
-        SPVM_API_OBJECT* string1 = *(SPVM_API_OBJECT**)&vars[opcode->operand0];
-        SPVM_API_OBJECT* string2 = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
+        SPVM_API_OBJECT* object1 = *(SPVM_API_OBJECT**)&vars[opcode->operand0];
+        SPVM_API_OBJECT* object2 = *(SPVM_API_OBJECT**)&vars[opcode->operand1];
 
-        SPVM_API_OBJECT* string1_object = *(SPVM_API_OBJECT**)((intptr_t)string1 + (intptr_t)api->object_header_byte_size);
-        SPVM_API_OBJECT* string2_object = *(SPVM_API_OBJECT**)((intptr_t)string2 + (intptr_t)api->object_header_byte_size);
-
-        int32_t string1_length = *(SPVM_API_int*)((intptr_t)string1_object + (intptr_t)api->object_units_length_byte_offset);
-        int32_t string2_length = *(SPVM_API_int*)((intptr_t)string2_object + (intptr_t)api->object_units_length_byte_offset);
+        int32_t length1 = *(SPVM_API_int*)((intptr_t)object1 + (intptr_t)api->object_units_length_byte_offset);
+        int32_t length2 = *(SPVM_API_int*)((intptr_t)object2 + (intptr_t)api->object_units_length_byte_offset);
         
-        SPVM_API_byte* string1_bytes = (SPVM_API_byte*)((intptr_t)string1_object + (intptr_t)api->object_header_byte_size);
-        SPVM_API_byte* string2_bytes = (SPVM_API_byte*)((intptr_t)string2_object + (intptr_t)api->object_header_byte_size);
+        SPVM_API_byte* bytes1 = (SPVM_API_byte*)((intptr_t)object1 + (intptr_t)api->object_header_byte_size);
+        SPVM_API_byte* bytes2 = (SPVM_API_byte*)((intptr_t)object2 + (intptr_t)api->object_header_byte_size);
         
-        int32_t short_string_length = string1_length < string2_length ? string1_length : string2_length;
-        int32_t retval = memcmp(string1_bytes, string2_bytes, short_string_length);
+        int32_t short_string_length = length1 < length1 ? length1 : length2;
+        int32_t retval = memcmp(bytes1, bytes2, short_string_length);
         int32_t cmp;
         if (retval) {
           cmp = retval < 0 ? -1 : 1;
-        } else if (string1_length == string2_length) {
+        } else if (length1 == length2) {
           cmp = 0;
         } else {
-          cmp = string1_length < string2_length ? -1 : 1;
+          cmp = length1 < length2 ? -1 : 1;
         }
         
         switch (opcode->id) {
@@ -1358,6 +1355,8 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_CONSTANT* constant = op_constant->uv.constant;
         
         SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)constant->value.string_value, constant->string_length);
+        
+        int8_t* bytes = api->get_string_bytes(api, string);
         
         // Set string
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0] , string);

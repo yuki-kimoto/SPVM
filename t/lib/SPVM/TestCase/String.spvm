@@ -6,6 +6,12 @@ package TestCase::String {
       my $str1_const : const byte[] = new byte[3];
     }
     
+    # Concat string
+    {
+      my $error = "First";
+      (String)$error . "\n";
+    }
+
     return 1;
 
     return 0;
