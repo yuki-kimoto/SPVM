@@ -2950,7 +2950,7 @@ yyreduce:
   case 171:
 #line 899 "yacc/spvm_yacc.y"
     {
-      SPVM_OP_build_const_array_type(compiler, (yyvsp[(2) - (2)].opval));
+      (yyval.opval) = SPVM_OP_build_const_array_type(compiler, (yyvsp[(2) - (2)].opval));
     ;}
     break;
 

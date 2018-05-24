@@ -2540,6 +2540,8 @@ SPVM_OP* SPVM_OP_build_const_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_typ
   
   type->is_const = 1;
   
+  warn("BBBBBBBBBB %s %d", basic_type->name, dimension);
+  
   return op_type;
 }
 
