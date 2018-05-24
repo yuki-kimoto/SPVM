@@ -1,4 +1,4 @@
 package Std::IO {
-  native sub print : void ($value : String);
-  native sub warn : void ($value : String);
+  native sub print : void ($value : string);
+  native sub warn : void ($value : string);
 }

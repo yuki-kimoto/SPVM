@@ -149,12 +149,12 @@ package TestCase {
   }
   
   sub convert_to_string : int () {
-    my $byte_string = (String)(byte)23;
-    my $short_string = (String)(short)23;
-    my $int_string = (String)23;
-    my $long_string = (String)23L;
-    my $float_string = (String)0.25000f;
-    my $double_string = (String)0.25000;
+    my $byte_string = (string)(byte)23;
+    my $short_string = (string)(short)23;
+    my $int_string = (string)23;
+    my $long_string = (string)23L;
+    my $float_string = (string)0.25000f;
+    my $double_string = (string)0.25000;
     
     if ($byte_string eq "23") {
       if ($short_string eq "23") {
@@ -596,7 +596,7 @@ package TestCase {
   }
   
   # Concat
-  sub concat_special_assign : String () {
+  sub concat_special_assign : string () {
     
     my $value = "a";
     
@@ -605,7 +605,7 @@ package TestCase {
     return $value;
   }
   
-  sub concat : String () {
+  sub concat : string () {
     "a" . "b";
     
     my $value = "a" . "b";
@@ -613,13 +613,13 @@ package TestCase {
     return $value;
   }
   
-  # String
-  sub string_utf8 : String () {
+  # string
+  sub string_utf8 : string () {
     my $value = "あいうえお";
     
     return $value;
   }
-  sub string_empty : String () {
+  sub string_empty : string () {
     my $value = "";
     
     return $value;

@@ -9,7 +9,7 @@ package TestCase::String {
     # Concat string
     {
       my $error = "First";
-      (String)$error . "\n";
+      (string)$error . "\n";
     }
 
     return 1;
