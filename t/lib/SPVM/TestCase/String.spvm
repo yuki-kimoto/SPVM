@@ -6,56 +6,8 @@ package TestCase::String {
       my $str1_const : const byte[] = new byte[3];
     }
     
-    # get_bytes
-    my $get_bytes_ok = 0;
-    {
-      my $string1 = "abc";
-      
-      my $bytes = $string1->get_bytes;
-      my $len = @$bytes;
-      if ($bytes->[0] == 'a' && $bytes->[1] == 'b' && $bytes->[2] == 'c' &&  $len == 3) {
-        $get_bytes_ok = 1;
-      }
-    }
-    
-    # at
-    my $at_ok = 0;
-    {
-      my $string1 = "abcde";
-      
-      my $byte = $string1->at(2);
-      if ($byte == 'c') {
-        $at_ok = 1;
-      }
-    }
-    
+    return 1;
 
-    # at
-    my $length_ok = 0;
-    {
-      my $string1 = "abcde";
-      
-      my $length = $string1->length;
-      if ($length == 5) {
-        $length_ok = 1;
-      }
-    }
-
-    # new_bytes
-    my $new_bytes_ok = 0;
-    {
-      my $bytes = new byte[] {'a', 'b', 'c', 'd', 'e'};
-      my $string = String->new_bytes($bytes);
-      my $string_expect = "abcde";
-      if ($string eq $string_expect) {
-        $new_bytes_ok = 1;
-      }
-    }
-    
-    if ($get_bytes_ok && $at_ok && $length_ok && $new_bytes_ok) {
-      return 1;
-    }
-    
     return 0;
   }
 }
