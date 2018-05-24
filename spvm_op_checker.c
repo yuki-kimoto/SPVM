@@ -2181,7 +2181,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
       }
     }
     else {
-      if ((assign_to_type->dimension && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
+      if ((assign_to_type->dimension == 0 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
         // Convert numeric type to String
       }
       // Object type check
