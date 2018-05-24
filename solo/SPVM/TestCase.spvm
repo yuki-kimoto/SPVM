@@ -50,7 +50,11 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
   sub main : int ($mvar : int) {
-    my $str : const byte[] = new byte[3];
+    # const
+    {
+      my $str1_const : const byte[] = new byte[3];
+      my $str2 : byte[] = $str1_const;
+    }
     
     # Multi array init
     {

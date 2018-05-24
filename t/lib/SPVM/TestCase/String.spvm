@@ -1,5 +1,10 @@
 package TestCase::String {
   sub basic : int () {
+
+    # const
+    {
+      my $str1_const : const byte[] = new byte[3];
+    }
     
     # get_bytes
     my $get_bytes_ok = 0;

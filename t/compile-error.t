@@ -61,6 +61,15 @@ sub init_spvm {
 
 {
   BEGIN { init_spvm() }
+  use SPVM 'TestCase::CompileError::AssignIncompatibleType::ConstToNoConst';
+  BEGIN {
+    my $success = SPVM::Build->new->compile_spvm();
+    ok($success == 0);
+  }
+}
+
+{
+  BEGIN { init_spvm() }
   use SPVM 'TestCase::CompileError::Field::Private';
   BEGIN {
     my $success = SPVM::Build->new->compile_spvm();
