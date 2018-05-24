@@ -11,9 +11,7 @@ lib/SPVM/BuildDir.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
 lib/SPVM/Document/Extension.pod
-lib/SPVM/Document/FAQ.pod
 lib/SPVM/Document/Functions.pod
-lib/SPVM/Document/Modules.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Document/PerlAPI.pod
 lib/SPVM/Document/Specification.pod
