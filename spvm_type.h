@@ -8,6 +8,7 @@
 struct SPVM_type {
   int32_t dimension;
   SPVM_BASIC_TYPE* basic_type;
+  _Bool is_const;
 };
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
