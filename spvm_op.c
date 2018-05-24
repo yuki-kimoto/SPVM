@@ -2527,6 +2527,22 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   return op_type;
 }
 
+SPVM_OP* SPVM_OP_build_const_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
+  
+  SPVM_TYPE* type = op_type->uv.type;
+  
+  SPVM_BASIC_TYPE* basic_type = type->basic_type;
+  int32_t dimension = type->dimension;
+  
+  if (!(basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE && dimension == 1)) {
+    SPVM_yyerror_format(compiler, "const only can specify byte array at %s line %d\n", op_type->file, op_type->line);
+  }
+  
+  type->is_const = 1;
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child, SPVM_OP* op_term_length) {
   
   // Type

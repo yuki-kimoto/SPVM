@@ -27,7 +27,7 @@
 %type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var
 %type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
-%type <opval> switch_statement case_statement default_statement array_type_with_length
+%type <opval> switch_statement case_statement default_statement array_type_with_length const_array_type
 %type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
 
 
@@ -893,6 +893,12 @@ array_type
       $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
     }
 
+const_array_type
+  : CONST array_type
+    {
+      SPVM_OP_build_array_type(compiler, $2);
+    }
+
 array_type_with_length
   : basic_type '[' assignable_term ']'
     {
@@ -902,6 +908,7 @@ array_type_with_length
     {
       $$ = SPVM_OP_build_array_type(compiler, $1, $3);
     }
+
 
 type_or_void
   : type
