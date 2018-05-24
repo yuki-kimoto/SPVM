@@ -142,7 +142,7 @@ SPVM::Test - SPVM test module
     # sort
     {
       my $comparator = new package {
-        sub compare : int ($self : self, $object1 : Object, $object2 : Object) {
+        sub compare : int ($self : self, $object1 : object, $object2 : object) {
           my $minimal1 = (TestCase::Minimal)$object1;
           my $minimal2 = (TestCase::Minimal)$object2;
           
@@ -238,7 +238,7 @@ SPVM::Test - SPVM test module
     print($double_string . "\n");
     
     {
-      my $object : Object = new TestCase::Minimal;
+      my $object : object = new TestCase::Minimal;
       my $implement_interface1 : TestCase::Interface = new TestCase::ImplementInterface1;
       my $implement_interface2 : TestCase::Interface = new TestCase::ImplementInterface2;
       
@@ -629,13 +629,13 @@ SPVM::Test - SPVM test module
       print((string)$nums->[$i - 1] . "\n");
     }
     
-    # Object to get long field is undef
+    # object to get long field is undef
     #{
     #  my $obj : TestCase::Minimal;
     #  $obj{x} = 1L;
     #}
 
-    # Object to get long field is undef
+    # object to get long field is undef
     #{
     #  my $obj : TestCase::Minimal;
     #  $obj{x};
@@ -1383,7 +1383,7 @@ SPVM::Test - SPVM test module
     return 0;
   }
 
-  sub sort_obj : void ($values : Object[], $comparator : TestCase::Comparator) {
+  sub sort_obj : void ($values : object[], $comparator : TestCase::Comparator) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){

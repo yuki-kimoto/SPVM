@@ -2045,7 +2045,7 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, int32_t assign_to_basi
     // To dimension is less than or equal to from dimension
     else if (assign_to_type_dimension <= assign_from_type_dimension) {
       
-      // To basic type is any Object
+      // To basic type is any object
       if (assign_to_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
         can_assign = 1;
       }
@@ -2184,7 +2184,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
       if ((assign_to_type->dimension == 0 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) && SPVM_TYPE_is_numeric(compiler, assign_from_type)) {
         // Convert numeric type to String
       }
-      // Object type check
+      // object type check
       else {
         _Bool can_assign = SPVM_OP_CHECKER_can_assign(
           compiler, assign_to_type->basic_type->id, assign_to_type->dimension, assign_from_type->basic_type->id,  assign_from_type->dimension);

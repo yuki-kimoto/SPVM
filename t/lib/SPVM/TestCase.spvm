@@ -1679,7 +1679,7 @@ package TestCase {
     return 0;
   }
   
-  # Object field is initialized zero
+  # object field is initialized zero
   sub object_field_initialized_zero : int () {
     my $obj = new TestCase;
     if ($obj->{x_byte} == 0) {
@@ -1692,7 +1692,7 @@ package TestCase {
     return 0;
   }
   
-  # Object field set and get
+  # object field set and get
   sub object_field_set_and_get : int () {
     my $test_case = new TestCase;
     
@@ -1723,7 +1723,7 @@ package TestCase {
     return 0;
   }
 
-  # Object field set and get
+  # object field set and get
   sub object_field_set_and_get_again : int () {
     my $test_case = new TestCase;
     

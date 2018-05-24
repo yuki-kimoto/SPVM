@@ -16,7 +16,7 @@ const char* const SPVM_BASIC_TYPE_C_ID_NAMES[] = {
   "long",
   "float",
   "double",
-  "Object",
+  "object",
   "string",
 };
 
