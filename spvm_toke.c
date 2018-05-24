@@ -1061,6 +1061,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return CROAK;
                 }
                 else if (strcmp(keyword, "const") == 0) {
+                  warn("AAAAAAAAAA");
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CONST);
                   return CONST;
                 }

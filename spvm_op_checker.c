@@ -2191,6 +2191,10 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
         if (!can_assign) {
           SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
         }
+        // Const check
+        if (!assign_to_type->is_const && assign_from_type->is_const) {
+          SPVM_yyerror_format(compiler, "Can't assign const type to no const type at %s line %d\n", op_assign_from->file, op_assign_from->line);
+        }
       }
     }
   }

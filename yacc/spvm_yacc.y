@@ -820,6 +820,7 @@ descriptors
 type
   : basic_type
   | array_type
+  | const_array_type
 
 basic_type
   : NAME
@@ -896,7 +897,7 @@ array_type
 const_array_type
   : CONST array_type
     {
-      SPVM_OP_build_array_type(compiler, $2);
+      SPVM_OP_build_const_array_type(compiler, $2);
     }
 
 array_type_with_length
