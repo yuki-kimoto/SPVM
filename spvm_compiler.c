@@ -71,13 +71,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
-
-  // use String module
-  SPVM_OP* op_name_string = SPVM_OP_new_op_name(compiler, "String", "Std", 0);
-  SPVM_OP* op_type_string = SPVM_OP_build_basic_type(compiler, op_name_string);
-  SPVM_OP* op_use_string = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, "Std", 0);
-  SPVM_OP_build_use(compiler, op_use_string, op_type_string);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_string);
   
   return compiler;
 }
