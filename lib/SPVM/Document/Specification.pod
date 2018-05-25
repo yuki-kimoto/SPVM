@@ -362,11 +362,17 @@ String Literal is the following.
 
   "abc"
 
-Type of String literal is C<byte[]>.
+Type of String literal is C<const byte[]>.
 
-  my $string : byte[] = "abc";
+  my $string : const byte[] = "abc";
 
-Note that String Literal is Not Shared. New Byte Array is created and String literal is Copied to the byte array. 
+C<string> is short name of C<const byte[]>. You can also write the following.
+
+  my $string : string = "abc";
+
+If you use type inference, you can also write the follwoing.
+
+  my $string = "abc";
 
 =head3 Escape Sequences
 

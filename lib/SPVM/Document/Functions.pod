@@ -10,13 +10,13 @@ SPVM::Document::Functions - SPVM Standard Functions
 
 Print string to stdout.
 
-  sub print : void ($string : String);
+  sub print : void ($string : string);
 
 =head2 warn
 
 Print string with file name and line number to stderr. line break is added to end of string.
 
-  sub warn : void ($string : String);
+  sub warn : void ($string : string);
 
 =head2 time
 
