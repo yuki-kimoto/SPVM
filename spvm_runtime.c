@@ -1356,7 +1356,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         
         SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)constant->value.string_value, constant->string_length);
         
-        int8_t* bytes = api->get_string_bytes(api, string);
+        int8_t* bytes = api->get_byte_array_elements(api, string);
         
         // Set string
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_API_OBJECT**)&vars[opcode->operand0] , string);

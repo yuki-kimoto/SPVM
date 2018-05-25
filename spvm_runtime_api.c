@@ -86,7 +86,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_new_string,
   SPVM_RUNTIME_API_new_string_chars,
   SPVM_RUNTIME_API_get_string_length,
-  SPVM_RUNTIME_API_get_string_bytes,
   SPVM_RUNTIME_API_get_exception,
   SPVM_RUNTIME_API_set_exception,
   SPVM_RUNTIME_API_get_ref_count,
@@ -737,14 +736,6 @@ int32_t SPVM_RUNTIME_API_get_string_length(SPVM_API* api, SPVM_OBJECT* object) {
   (void)api;
 
   return object->units_length;
-}
-
-int8_t* SPVM_RUNTIME_API_get_string_bytes(SPVM_API* api, SPVM_OBJECT* object) {
-  (void)api;
-  
-  int8_t* bytes = (int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT));
-
-  return bytes;
 }
 
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_API* api, SPVM_OBJECT* object) {
