@@ -1,4 +1,4 @@
-package Std::Math {
+package Math {
   native sub INFINITYF : float ();
   native sub NANF : float ();
   

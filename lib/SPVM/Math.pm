@@ -1,4 +1,4 @@
-package SPVM::Std::Math;
+package SPVM::Math;
 
 1;
 

@@ -9,7 +9,7 @@ This package contains the folloing C language functions
 
 =cut
 
-package Std::TypeUtil {
+package TypeUtil {
   sub BYTE_MIN : byte ()  { return (byte)-128; }
   sub BYTE_MAX : byte () { return (byte)127; }
 

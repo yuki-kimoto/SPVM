@@ -12,12 +12,12 @@ SPVM Standard Functions. Std module provide alias of the following standard func
 
 =head2 print
 
-see L<SPVM::Std::IO/"print">
+see L<SPVM::IO/"print">
 
 =head2 warn
 
-see L<SPMV::Std::IO/"warn">
+see L<SPMV::IO/"warn">
 
 =head2 time
 
-see L<SPVM::Std::Time/"time">
+see L<SPVM::Time/"time">

@@ -1,3 +1,8 @@
+0.0339 2018-05-25
+  - rename Std::Math to Math
+  - renmae Std::Time to Time
+  - renmae Std::TypeUtil to TypeUtil
+  - rename Std::IO to IO
 0.0338 2018-05-25
   - add examples
   - add const byte[] type

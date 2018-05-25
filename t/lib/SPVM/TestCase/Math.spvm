@@ -1,8 +1,8 @@
-package TestCase::Std::Math {
-  use Std::Math;
+package TestCase::Math {
+  use Math;
   
   sub sin : int () {
-    my $value = Std::Math->sin(Std::Math->PI());
+    my $value = Math->sin(Math->PI());
     
     if ($value < 0.000001 && $value > -0.000001) {
       return 1;
@@ -11,7 +11,7 @@ package TestCase::Std::Math {
   }
 
   sub cos : int () {
-    my $value = Std::Math->cos(Std::Math->PI() / 2.0);
+    my $value = Math->cos(Math->PI() / 2.0);
     
     if ($value < 0.000001 && $value > -0.000001) {
       return 1;
@@ -20,7 +20,7 @@ package TestCase::Std::Math {
   }
   
   sub tan : int () {
-    my $value = Std::Math->tan(Std::Math->PI() / 4.0);
+    my $value = Math->tan(Math->PI() / 4.0);
     
     if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
       return 1;
@@ -29,9 +29,9 @@ package TestCase::Std::Math {
   }
 
   sub isinff: int () {
-    if (Std::Math->isinff(Std::Math->INFINITYF())) {
-      if (!Std::Math->isinff(Std::Math->NANF())) {
-        if (!Std::Math->isinff(0.1f)) {
+    if (Math->isinff(Math->INFINITYF())) {
+      if (!Math->isinff(Math->NANF())) {
+        if (!Math->isinff(0.1f)) {
           return 1;
         }
       }
@@ -41,9 +41,9 @@ package TestCase::Std::Math {
   }
 
   sub isfinitef: int () {
-    if (!Std::Math->isfinitef(Std::Math->INFINITYF())) {
-      if (!Std::Math->isfinitef(Std::Math->NANF())) {
-        if (Std::Math->isfinitef(0.1f)) {
+    if (!Math->isfinitef(Math->INFINITYF())) {
+      if (!Math->isfinitef(Math->NANF())) {
+        if (Math->isfinitef(0.1f)) {
           return 1;
         }
       }
@@ -53,9 +53,9 @@ package TestCase::Std::Math {
   }
 
   sub isnanf: int () {
-    if (!Std::Math->isnanf(Std::Math->INFINITYF())) {
-      if (Std::Math->isnanf(Std::Math->NANF())) {
-        if (!Std::Math->isnanf(0.1f)) {
+    if (!Math->isnanf(Math->INFINITYF())) {
+      if (Math->isnanf(Math->NANF())) {
+        if (!Math->isnanf(0.1f)) {
           return 1;
         }
       }
@@ -65,7 +65,7 @@ package TestCase::Std::Math {
   }
   
   sub float_pass_positive_infinity : int ($value : float) {
-    if ($value == Std::Math->INFINITYF()) {
+    if ($value == Math->INFINITYF()) {
       return 1;
     }
     
@@ -73,7 +73,7 @@ package TestCase::Std::Math {
   }
   
   sub float_pass_nan : int ($value : float) {
-    if (Std::Math->isnanf($value)) {
+    if (Math->isnanf($value)) {
       return 1;
     }
     
@@ -81,9 +81,9 @@ package TestCase::Std::Math {
   }
 
   sub isinf : int () {
-    if (Std::Math->isinf(Std::Math->INFINITY())) {
-      if (!Std::Math->isinf(Std::Math->NAN())) {
-        if (!Std::Math->isinf(0.1)) {
+    if (Math->isinf(Math->INFINITY())) {
+      if (!Math->isinf(Math->NAN())) {
+        if (!Math->isinf(0.1)) {
           return 1;
         }
       }
@@ -93,9 +93,9 @@ package TestCase::Std::Math {
   }
 
   sub isfinite : int () {
-    if (!Std::Math->isfinite(Std::Math->INFINITY())) {
-      if (!Std::Math->isfinite(Std::Math->NAN())) {
-        if (Std::Math->isfinite(0.1)) {
+    if (!Math->isfinite(Math->INFINITY())) {
+      if (!Math->isfinite(Math->NAN())) {
+        if (Math->isfinite(0.1)) {
           return 1;
         }
       }
@@ -105,9 +105,9 @@ package TestCase::Std::Math {
   }
 
   sub isnan : int () {
-    if (!Std::Math->isnan(Std::Math->INFINITY())) {
-      if (Std::Math->isnan(Std::Math->NAN())) {
-        if (!Std::Math->isnan(0.1)) {
+    if (!Math->isnan(Math->INFINITY())) {
+      if (Math->isnan(Math->NAN())) {
+        if (!Math->isnan(0.1)) {
           return 1;
         }
       }
@@ -117,7 +117,7 @@ package TestCase::Std::Math {
   }
   
   sub double_pass_nan : int ($value : double) {
-    if (Std::Math->isnan($value)) {
+    if (Math->isnan($value)) {
       return 1;
     }
     
@@ -125,7 +125,7 @@ package TestCase::Std::Math {
   }
   
   sub double_pass_positive_infinity : int ($value : double) {
-    if ($value == Std::Math->INFINITY()) {
+    if ($value == Math->INFINITY()) {
       return 1;
     }
     

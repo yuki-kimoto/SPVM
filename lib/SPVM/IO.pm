@@ -1,4 +1,4 @@
-package SPVM::Std::IO;
+package SPVM::IO;
 
 1;
 

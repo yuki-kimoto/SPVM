@@ -1,9 +1,9 @@
 package Std {
-  use Std::IO;
-  use Std::Time;
+  use IO;
+  use Time;
 
-  sub print : void ($value : string) { Std::IO->print($value); }
-  sub warn : void ($value : string) { Std::IO->warn($value); }
+  sub print : void ($value : string) { IO->print($value); }
+  sub warn : void ($value : string) { IO->warn($value); }
   
-  sub time : long () { return Std::Time->time(); }
+  sub time : long () { return Time->time(); }
 }

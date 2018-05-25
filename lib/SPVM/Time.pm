@@ -1,4 +1,4 @@
-package SPVM::Std::Time;
+package SPVM::Time;
 
 1;
 

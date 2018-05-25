@@ -2,7 +2,7 @@
 
 #include "spvm_api.h"
 
-int64_t SPVM__Std__Time__time(SPVM_API* api, SPVM_API_VALUE* args) {
+int64_t SPVM__Time__time(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   (void)args;
 

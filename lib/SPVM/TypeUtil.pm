@@ -1,10 +1,10 @@
-package SPVM::Std::TypeUtil;
+package SPVM::TypeUtil;
 
 1;
 
 =head1 NAME
 
-SPVM::Std::TypeUtil - Standard Type utilities
+SPVM::TypeUtil - Standard Type utilities
 
 =head1 CLASS METHODS
 
