@@ -35,7 +35,6 @@ lib/SPVM/Perl/Object/Array/Long.pm
 lib/SPVM/Perl/Object/Array/Object.pm
 lib/SPVM/Perl/Object/Array/Short.pm
 lib/SPVM/Perl/Object/Package.pm
-lib/SPVM/Perl/Object/Package/String.pm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/spvm_api.h
@@ -49,8 +48,6 @@ lib/SPVM/Std/Time.pm
 lib/SPVM/Std/Time.spvm
 lib/SPVM/Std/TypeUtil.pm
 lib/SPVM/Std/TypeUtil.spvm
-lib/SPVM/String.pm
-lib/SPVM/String.spvm
 lib_native/SPVM/Std/IO.native/IO.c
 lib_native/SPVM/Std/Math.native/Math.c
 lib_native/SPVM/Std/Time.native/Time.c
@@ -235,6 +232,7 @@ t/lib/SPVM/TestCase.spvm
 t/lib/SPVM/TestCase/Bool.spvm
 t/lib/SPVM/TestCase/Byte.spvm
 t/lib/SPVM/TestCase/ComparisonOperator.spvm
+t/lib/SPVM/TestCase/CompileError/AssignIncompatibleType/ConstToNoConst.spvm
 t/lib/SPVM/TestCase/CompileError/AssignIncompatibleType/DifferentObject.spvm
 t/lib/SPVM/TestCase/CompileError/Field/Private.spvm
 t/lib/SPVM/TestCase/CompileError/InvalidType.spvm

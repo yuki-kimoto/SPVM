@@ -3,6 +3,7 @@
   - add const byte[] type
   - String type become string type to express it is core type.
   - Otring type become object type to express it is core type.
+  - string type become syntax sugar of const byte[].
 0.0337 2018-05-24
   - remove jit descriptor
   - add SPVM::JIT moudle

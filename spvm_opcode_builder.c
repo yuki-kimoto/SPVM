@@ -212,7 +212,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   else if (op_assign_from->id == SPVM_OP_C_ID_CONCAT) {
                     SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_from->first);
                     
-                    assert(first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING && first_type->dimension == 0);
+                    assert(first_type->dimension == 1 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE);
                     
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1000,26 +1000,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
                     if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                      assert(dist_type->dimension == 0);
-                      if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE;
+                      if (dist_type->dimension == 0) {
+                        if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_SHORT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_INT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_LONG;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_FLOAT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_DOUBLE;
+                        }
                       }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_SHORT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_INT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_LONG;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_FLOAT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_DOUBLE;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+                      else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING;
                       }
                       else {
@@ -1027,26 +1028,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                      assert(dist_type->dimension == 0);
-                      if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_BYTE;
+                      if (dist_type->dimension == 0) {
+                        if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_BYTE;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_INT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_LONG;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_FLOAT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_DOUBLE;
+                        }
                       }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_INT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_LONG;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_FLOAT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_DOUBLE;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+                      else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING;
                       }
                       else {
@@ -1054,26 +1056,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                      assert(dist_type->dimension == 0);
-                      if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_BYTE;
+                      if (dist_type->dimension == 0) {
+                        if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_BYTE;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_SHORT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_LONG;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_FLOAT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_DOUBLE;
+                        }
                       }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_SHORT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_LONG;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_FLOAT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_DOUBLE;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+                      else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING;
                       }
                       else {
@@ -1081,26 +1084,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                      assert(dist_type->dimension == 0);
-                      if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_BYTE;
+                      if (dist_type->dimension == 0) {
+                        if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_BYTE;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_SHORT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_INT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_FLOAT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_DOUBLE;
+                        }
                       }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_SHORT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_INT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_FLOAT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_DOUBLE;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+                      else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING;
                       }
                       else {
@@ -1108,26 +1112,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                      assert(dist_type->dimension == 0);
-                      if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_BYTE;
+                      if (dist_type->dimension == 0) {
+                        if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_BYTE;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_SHORT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_INT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_LONG;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_DOUBLE;
+                        }
                       }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_SHORT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_INT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_LONG;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_DOUBLE;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+                      else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING;
                       }
                       else {
@@ -1135,26 +1140,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                      assert(dist_type->dimension == 0);
-                      if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_BYTE;
+                      if (dist_type->dimension == 0) {
+                        if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_BYTE;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_SHORT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_INT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_LONG;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_FLOAT;
+                        }
+                        else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE;
+                        }
                       }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_SHORT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_INT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_LONG;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_FLOAT;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE;
-                      }
-                      else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+                      else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
                         opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING;
                       }
                       else {
@@ -1162,28 +1168,35 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (SPVM_TYPE_is_array_numeric(compiler, src_type)) {
-                      assert(dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING);
-                      
-                      if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING_ARRAY;
+                      if (dist_type->dimension == 1) {
+                        assert(dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE);
+                        
+                        opcode.id = SPVM_OPCODE_C_ID_MOVE_OBJECT;
                       }
-                      else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_ARRAY_TO_STRING_ARRAY;
-                      }
-                      else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_ARRAY_TO_STRING_ARRAY;
-                      }
-                      else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_ARRAY_TO_STRING_ARRAY;
-                      }
-                      else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_ARRAY_TO_STRING_ARRAY;
-                      }
-                      else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                        opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_ARRAY_TO_STRING_ARRAY;
-                      }
-                      else {
-                        assert(0);
+                      else if (dist_type->dimension == 2) {
+                        assert(dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE);
+                        
+                        if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING_ARRAY;
+                        }
+                        else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_ARRAY_TO_STRING_ARRAY;
+                        }
+                        else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_ARRAY_TO_STRING_ARRAY;
+                        }
+                        else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_ARRAY_TO_STRING_ARRAY;
+                        }
+                        else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_ARRAY_TO_STRING_ARRAY;
+                        }
+                        else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                          opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_ARRAY_TO_STRING_ARRAY;
+                        }
+                        else {
+                          assert(0);
+                        }
                       }
                     }
                     // Check cast

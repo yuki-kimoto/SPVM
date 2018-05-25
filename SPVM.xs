@@ -2933,17 +2933,10 @@ get(...)
   
   SV* sv_basic_object;
   if (dimension == 0) {
-    switch (basic_type->id) {
-      case SPVM_BASIC_TYPE_C_ID_STRING :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Package::String");
-        break;
-      default: {
-        SV* sv_basic_type_name = sv_2mortal(newSVpv("SPVM::", 0));
-        sv_catpv(sv_basic_type_name, basic_type->name);
-        
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, SvPV_nolen(sv_basic_type_name));
-      }
-    }
+    SV* sv_basic_type_name = sv_2mortal(newSVpv("SPVM::", 0));
+    sv_catpv(sv_basic_type_name, basic_type->name);
+    
+    sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, SvPV_nolen(sv_basic_type_name));
   }
   else if (dimension == 1) {
     switch (basic_type->id) {
@@ -3656,10 +3649,7 @@ call_sub(...)
     if (return_value != NULL) {
       api->inc_ref_count(api, return_value);
       
-      if (return_type_dimension == 0 && return_basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
-        sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Package::String");
-      }
-      else if (return_type_dimension == 1) {
+      if (return_type_dimension == 1) {
         switch(return_basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE :
             sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Byte");

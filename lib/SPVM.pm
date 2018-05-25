@@ -17,7 +17,6 @@ use SPVM::Perl::Object::Array::Float;
 use SPVM::Perl::Object::Array::Double;
 use SPVM::Perl::Object::Array::Object;
 use SPVM::Perl::Object::Package;
-use SPVM::Perl::Object::Package::String;
 
 use SPVM::Build;
 

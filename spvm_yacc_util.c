@@ -120,28 +120,31 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
     case CONSTANT: {
       SPVM_CONSTANT* constant = yylval.opval->uv.constant;
       
-      switch(constant->type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE:
-          fprintf(file, "int %" PRId8, constant->value.byte_value);
-          break;
-        case SPVM_BASIC_TYPE_C_ID_SHORT:
-          fprintf(file, "int %" PRId16, constant->value.short_value);
-          break;
-        case SPVM_BASIC_TYPE_C_ID_INT:
-          fprintf(file, "int %" PRId32, constant->value.int_value);
-          break;
-        case SPVM_BASIC_TYPE_C_ID_LONG:
-          fprintf(file, "long %" PRId64, constant->value.long_value);
-          break;
-        case SPVM_BASIC_TYPE_C_ID_FLOAT:
-          fprintf(file, "float %f", constant->value.float_value);
-          break;
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-          fprintf(file, "double %f", constant->value.double_value);
-          break;
-        case SPVM_BASIC_TYPE_C_ID_STRING:
-          fprintf(file, "String %s", constant->value.string_value);
-          break;
+      if (constant->type->dimension == 0) {
+        switch(constant->type->basic_type->id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE:
+            fprintf(file, "int %" PRId8, constant->value.byte_value);
+            break;
+          case SPVM_BASIC_TYPE_C_ID_SHORT:
+            fprintf(file, "int %" PRId16, constant->value.short_value);
+            break;
+          case SPVM_BASIC_TYPE_C_ID_INT:
+            fprintf(file, "int %" PRId32, constant->value.int_value);
+            break;
+          case SPVM_BASIC_TYPE_C_ID_LONG:
+            fprintf(file, "long %" PRId64, constant->value.long_value);
+            break;
+          case SPVM_BASIC_TYPE_C_ID_FLOAT:
+            fprintf(file, "float %f", constant->value.float_value);
+            break;
+          case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+            fprintf(file, "double %f", constant->value.double_value);
+            break;
+        }
+      }
+      else if (constant->type->dimension == 1 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+        fprintf(file, "string %s", constant->value.string_value);
+        break;
       }
     }
   }

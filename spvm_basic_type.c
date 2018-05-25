@@ -17,7 +17,6 @@ const char* const SPVM_BASIC_TYPE_C_ID_NAMES[] = {
   "float",
   "double",
   "object",
-  "string",
 };
 
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
