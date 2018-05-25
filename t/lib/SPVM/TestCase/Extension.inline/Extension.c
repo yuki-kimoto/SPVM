@@ -1,6 +1,20 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include <spvm_api.h>
+
+int8_t SPVM__TestCase__Extension__native_use_strlen(SPVM_API* api, const SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  SPVM_API_OBJECT* string = args[0].object_value;
+  
+  int8_t* bytes = api->get_byte_array_elements(api, string);
+  
+  int8_t length = (int8_t)strlen((char*)bytes);
+  
+  return length;
+}
 
 int8_t SPVM__TestCase__Extension__native_api_get_byte_field(SPVM_API* api, const SPVM_API_VALUE* args) {
   (void)api;

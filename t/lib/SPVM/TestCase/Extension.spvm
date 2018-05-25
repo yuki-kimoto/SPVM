@@ -27,6 +27,18 @@ package TestCase::Extension {
     
     return 0;
   }
+  
+  sub native_use_strlen_test : int () {
+    my $string = "abcde";
+    my $length = native_use_strlen($string);
+    if ($length == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub native_use_strlen : int ($string : string);
 
   native sub native_api_get_byte_field : byte ($test_case : TestCase);
   native sub native_api_get_short_field : short ($test_case : TestCase);
