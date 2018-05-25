@@ -1221,7 +1221,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string_length = strlen(tmp_string);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string = api->new_string(api, (int8_t*)tmp_string, string_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT* string = api->new_string(api, tmp_string, string_length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");
@@ -1584,7 +1584,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_JITCODE_BUILDER_add_operand(string_buffer, "SPVM_API_OBJECT*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
-        SPVM_STRING_BUFFER_add(string_buffer, "api->new_string(api, (int8_t*)\"");
+        SPVM_STRING_BUFFER_add(string_buffer, "api->new_string(api, \"");
         
         {
           int32_t i;
