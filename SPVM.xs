@@ -162,9 +162,9 @@ to_data(...)
   // Get object
   SPVM_API_OBJECT* string = SPVM_XS_UTIL_get_object(sv_string);
   
-  int32_t string_length = api->get_string_length(api, string);
+  int32_t string_length = api->get_array_length(api, string);
   
-  int8_t* bytes = api->get_string_bytes(api, string);
+  int8_t* bytes = api->get_byte_array_elements(api, string);
 
   SV* sv_data = sv_2mortal(newSVpvn((char*)bytes, string_length));
   
@@ -3691,8 +3691,8 @@ call_sub(...)
   
   SPVM_API_OBJECT* exception = api->get_exception(api);
   if (exception) {
-    int32_t length = api->get_string_length(api, exception);
-    int8_t* exception_bytes = api->get_string_bytes(api, exception);
+    int32_t length = api->get_array_length(api, exception);
+    int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
     croak("%s", SvPV_nolen(sv_exception));
   }

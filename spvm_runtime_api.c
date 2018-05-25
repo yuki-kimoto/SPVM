@@ -140,8 +140,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_O
   const char* at = "() at ";
 
   // Exception
-  int8_t* exception_bytes = api->get_string_bytes(api, exception);
-  int32_t exception_length = api->get_string_length(api, exception);
+  int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
+  int32_t exception_length = api->get_array_length(api, exception);
   
   // Total string length
   int32_t total_length = 0;
@@ -160,7 +160,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_O
   
   // Create exception message
   SPVM_API_OBJECT* new_exception = api->new_string(api, NULL, total_length);
-  int8_t* new_exception_bytes = api->get_string_bytes(api, new_exception);
+  int8_t* new_exception_bytes = api->get_byte_array_elements(api, new_exception);
   
   memcpy(
     (void*)(new_exception_bytes),
@@ -185,8 +185,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_O
 void SPVM_RUNTIME_API_print(SPVM_API* api, SPVM_OBJECT* string) {
   (void)api;
   
-  int8_t* bytes = api->get_string_bytes(api, string);
-  int32_t string_length = api->get_string_length(api, string);
+  int8_t* bytes = api->get_byte_array_elements(api, string);
+  int32_t string_length = api->get_array_length(api, string);
   
   {
     int32_t i;
@@ -210,15 +210,15 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_API* api, SPVM_OBJECT* string1, SPVM_O
     return NULL;
   }
   
-  int32_t string1_length = SPVM_RUNTIME_API_get_string_length(api, string1);
-  int32_t string2_length = SPVM_RUNTIME_API_get_string_length(api, string2);
+  int32_t string1_length = SPVM_RUNTIME_API_get_array_length(api, string1);
+  int32_t string2_length = SPVM_RUNTIME_API_get_array_length(api, string2);
   
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_string(api, NULL, string3_length);
   
-  int8_t* string1_bytes = SPVM_RUNTIME_API_get_string_bytes(api, string1);
-  int8_t* string2_bytes = SPVM_RUNTIME_API_get_string_bytes(api, string2);
-  int8_t* string3_bytes = SPVM_RUNTIME_API_get_string_bytes(api, string3);
+  int8_t* string1_bytes = SPVM_RUNTIME_API_get_byte_array_elements(api, string1);
+  int8_t* string2_bytes = SPVM_RUNTIME_API_get_byte_array_elements(api, string2);
+  int8_t* string3_bytes = SPVM_RUNTIME_API_get_byte_array_elements(api, string3);
   
   memcpy(string3_bytes, string1_bytes, string1_length);
   memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
