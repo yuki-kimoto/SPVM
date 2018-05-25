@@ -699,8 +699,12 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_API* api, SPVM_OBJECT* object) {
   return object->units_length;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, int8_t* bytes, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, char* bytes, int32_t length) {
   (void)api;
+
+  if (length == 0) {
+    length = strlen((char*)bytes);
+  }
 
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array(api, length);
   
@@ -712,9 +716,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_API* api, int8_t* bytes, int32_t l
       memcpy((void*)((intptr_t)object + sizeof(SPVM_OBJECT)), (char*)bytes, length);
     }
   }
-
-  
-  int8_t* bytes2 = (int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT));
 
   return object;
 }
