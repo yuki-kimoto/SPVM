@@ -15,7 +15,7 @@ my $file = basename $0;
 use FindBin;
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
-use SPVM 'Std'; my $use_core_line = __LINE__;
+use SPVM 'CORE'; my $use_core_line = __LINE__;
 
 use SPVM::Perl::Object::Package;
 
@@ -36,7 +36,7 @@ my $DOUBLE_PRECICE = 65536.5;
 # eval repeat
 # print
 
-use SPVM 'Std';
+use SPVM 'CORE';
 
 {
   # SPVM::Build::ExtUtil tests
@@ -51,7 +51,7 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # time
 {
-  cmp_ok(abs(time - SPVM::Std->time()), '<', 2);
+  cmp_ok(abs(time - SPVM::CORE->time()), '<', 2);
 }
 
 # my variable
@@ -69,7 +69,7 @@ is_deeply(
   \@SPVM::PACKAGE_INFOS,
   [
     {name => 'TestCase', file => $file, line => $use_test_line},
-    {name => 'Std', file => $file, line => $use_core_line}
+    {name => 'CORE', file => $file, line => $use_core_line}
   ]
 );
 =cut

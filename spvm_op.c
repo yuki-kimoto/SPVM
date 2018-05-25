@@ -1305,7 +1305,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
       
       // Search CORE
       if (!found_op_sub) {
-        sub_abs_name = SPVM_OP_create_abs_name(compiler, "Std", sub_name);
+        sub_abs_name = SPVM_OP_create_abs_name(compiler, "CORE", sub_name);
         
         found_op_sub= SPVM_HASH_search(
           compiler->op_sub_symtable,

@@ -3,6 +3,7 @@
   - renmae Std::Time to Time
   - renmae Std::TypeUtil to TypeUtil
   - rename Std::IO to IO
+  - rename Std to CORE
 0.0338 2018-05-25
   - add examples
   - add const byte[] type

@@ -385,7 +385,7 @@ Curent SPVM version is 0.3 serieses. This means implementation is finshed by 30%
 =head1 SYNOPSIS
 
   package MyMath {
-    use Std;
+    use CORE;
     
     sub sum : int ($nums : int[]) {
       
@@ -426,7 +426,7 @@ SPVM Module:
 
   # lib/SPVM/MyMath.spvm
   package MyMath {
-    use Std;
+    use CORE;
     
     sub sum : int ($nums : int[]) {
       
@@ -521,7 +521,7 @@ print, warn, time
 
 =head1 STANDARD MODULES
 
-L<SPVM::Std>, L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>,
+L<SPVM::CORE>, L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>,
 L<SPVM::Math>, L<SPVM::IO>, L<SPVM::TypeUtil>
 
 =head1 PERL API

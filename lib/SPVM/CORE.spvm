@@ -1,4 +1,4 @@
-package Std {
+package CORE {
   use IO;
   use Time;
 
