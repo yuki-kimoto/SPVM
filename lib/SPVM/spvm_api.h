@@ -83,7 +83,6 @@ struct SPVM_api {
   SPVM_API_OBJECT* (*new_object_array)(SPVM_API*, int32_t, int32_t);
   SPVM_API_OBJECT* (*new_multi_array)(SPVM_API*, int32_t, int32_t, int32_t);
   SPVM_API_OBJECT* (*new_string)(SPVM_API* api, char* bytes, int32_t length);
-  SPVM_API_OBJECT* (*new_string_chars)(SPVM_API* api, const char* chars);
   SPVM_API_OBJECT* (*get_exception)(SPVM_API* api);
   void (*set_exception)(SPVM_API* api, SPVM_API_OBJECT* exception);
   int32_t (*get_ref_count)(SPVM_API* api, SPVM_API_OBJECT* base_object);
