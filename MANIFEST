@@ -10,7 +10,6 @@ lib/SPVM/Build/SPVMInfo.pm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
-lib/SPVM/CORE.pm
 lib/SPVM/CORE.spvm
 lib/SPVM/Document/Extension.pod
 lib/SPVM/Document/Functions.pod
@@ -44,7 +43,6 @@ lib/SPVM/Short.spvm
 lib/SPVM/spvm_api.h
 lib/SPVM/TypeUtil.pm
 lib/SPVM/TypeUtil.spvm
-lib_native/SPVM/CORE.native/CORE.c
 lib_native/SPVM/Math.native/Math.c
 lib_native/SPVM/TypeUtil.native/TypeUtil.c
 Makefile.PL
