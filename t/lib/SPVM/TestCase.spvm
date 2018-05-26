@@ -1,6 +1,4 @@
 package TestCase {
-  use CORE;
-
   use TestCase::Weaken;
   use TestCase::Minimal;
   use TestCase::Destructor;

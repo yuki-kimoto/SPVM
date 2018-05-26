@@ -1,5 +1,4 @@
 package TestCase {
-  use CORE;
   use TestCase::EnumA;
   use TestCase::EnumB;
   use TestCase::EnumC;

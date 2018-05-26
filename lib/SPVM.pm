@@ -385,8 +385,6 @@ Curent SPVM version is 0.3 serieses. This means implementation is finshed by 30%
 =head1 SYNOPSIS
 
   package MyMath {
-    use CORE;
-    
     sub sum : int ($nums : int[]) {
       
       my $total = 0;
@@ -426,8 +424,6 @@ SPVM Module:
 
   # lib/SPVM/MyMath.spvm
   package MyMath {
-    use CORE;
-    
     sub sum : int ($nums : int[]) {
       
       my $total = 0;

@@ -37,8 +37,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   // Initialize Package Variables
   runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_API_VALUE) * (compiler->package_var_length + 1));
   
-  SPVM_API* api = runtime->api;
-  
   return runtime;
 }
 
@@ -71,7 +69,14 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
-  
+
+  // use CORE module
+  SPVM_OP* op_name_core = SPVM_OP_new_op_name(compiler, "CORE", "CORE", 0);
+  SPVM_OP* op_type_core = SPVM_OP_build_basic_type(compiler, op_name_core);
+  SPVM_OP* op_use_core = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name_core->file, op_name_core->line);
+  SPVM_OP_build_use(compiler, op_use_core, op_type_core);
+  SPVM_LIST_push(compiler->op_use_stack, op_use_core);
+
   return compiler;
 }
 
