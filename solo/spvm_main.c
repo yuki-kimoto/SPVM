@@ -17,8 +17,7 @@
 #include "spvm_runtime_api.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
-
-#include "lib_native/SPVM/CORE.native/CORE.c"
+#include "spvm_core_func.h"
 
 #include <spvm_api.h>
 
@@ -72,30 +71,6 @@ int main(int argc, char *argv[])
     // Dump spvm information
     SPVM_DUMPER_dump_all(compiler);
 #endif
-  
-  // Bind native subroutine
-  {
-    int32_t i;
-    for (i = 0; i < compiler->op_subs->length; i++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, i);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      
-      if (sub->is_native) {
-        // Sub abs name
-        const char* sub_abs_name = sub->abs_name;
-        
-        if (strcmp(sub_abs_name, "CORE::print") == 0) {
-          sub->native_address = SPVM__CORE__print;
-        }
-        else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
-          sub->native_address = SPVM__CORE__warn;
-        }
-        else if (strcmp(sub_abs_name, "CORE::time") == 0) {
-          sub->native_address = SPVM__CORE__time;
-        }
-      }
-    }
-  }
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);

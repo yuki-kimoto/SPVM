@@ -34,6 +34,7 @@
 #include "spvm_jitcode_builder.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
+#include "spvm_core_func.h"
 
 
 
@@ -1798,6 +1799,32 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         SPVM_LIST_push(compiler->op_subs, op_sub);
         SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
+      }
+    }
+  }
+  
+  if (strcmp(package_name, "CORE") == 0) {
+    // Bind native subroutine
+    {
+      int32_t i;
+      for (i = 0; i < package->op_subs->length; i++) {
+        SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
+        SPVM_SUB* sub = op_sub->uv.sub;
+        
+        if (sub->is_native) {
+          // Sub abs name
+          const char* sub_abs_name = sub->abs_name;
+          
+          if (strcmp(sub_abs_name, "CORE::print") == 0) {
+            sub->native_address = SPVM_CORE_FUNC_print;
+          }
+          else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
+            sub->native_address = SPVM_CORE_FUNC_warn;
+          }
+          else if (strcmp(sub_abs_name, "CORE::time") == 0) {
+            sub->native_address = SPVM_CORE_FUNC_time;
+          }
+        }
       }
     }
   }
