@@ -1,10 +1,21 @@
+#include <time.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
 
 #include "spvm_api.h"
 
-void SPVM__IO__print(SPVM_API* api, SPVM_API_VALUE* args) {
+int64_t SPVM__CORE__time(SPVM_API* api, SPVM_API_VALUE* args) {
+  (void)api;
+  (void)args;
+
+  int64_t timer_value = (int64_t)time(NULL);
+  
+  
+  return timer_value;
+}
+
+void SPVM__CORE__print(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* object = args[0].object_value;
@@ -20,7 +31,7 @@ void SPVM__IO__print(SPVM_API* api, SPVM_API_VALUE* args) {
   }
 }
 
-void SPVM__IO__warn(SPVM_API* api, SPVM_API_VALUE* args) {
+void SPVM__CORE__warn(SPVM_API* api, SPVM_API_VALUE* args) {
   (void)api;
   
   SPVM_API_OBJECT* object = args[0].object_value;

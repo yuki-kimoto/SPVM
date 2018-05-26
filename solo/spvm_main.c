@@ -18,8 +18,7 @@
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
 
-#include "lib_native/SPVM/Std/IO.native/IO.c"
-#include "lib_native/SPVM/Std/Time.native/Time.c"
+#include "lib_native/SPVM/CORE.native/CORE.c"
 
 #include <spvm_api.h>
 
@@ -85,14 +84,14 @@ int main(int argc, char *argv[])
         // Sub abs name
         const char* sub_abs_name = sub->abs_name;
         
-        if (strcmp(sub_abs_name, "Std::IO::print") == 0) {
-          sub->native_address = SPVM__Std__IO__print;
+        if (strcmp(sub_abs_name, "CORE::print") == 0) {
+          sub->native_address = SPVM__CORE__print;
         }
-        else if (strcmp(sub_abs_name, "Std::IO::warn") == 0) {
-          sub->native_address = SPVM__Std__IO__warn;
+        else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
+          sub->native_address = SPVM__CORE__warn;
         }
-        else if (strcmp(sub_abs_name, "Std::Time::time") == 0) {
-          sub->native_address = SPVM__Std__Time__time;
+        else if (strcmp(sub_abs_name, "CORE::time") == 0) {
+          sub->native_address = SPVM__CORE__time;
         }
       }
     }

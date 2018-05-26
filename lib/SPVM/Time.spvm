@@ -1,3 +1,0 @@
-package Time {
-  native sub time : long ();
-}

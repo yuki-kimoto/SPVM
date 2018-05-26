@@ -48,8 +48,7 @@ WriteMakefile(
 sub MY::postamble {
   
   my @module_names = qw(
-    SPVM::IO
-    SPVM::Time
+    SPVM::CORE
     SPVM::Math
     SPVM::TypeUtil
   );
