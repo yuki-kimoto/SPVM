@@ -1,4 +1,4 @@
-0.0339 2018-05-25
+0.0339 2018-05-26
   - rename Std::Math to Math
   - renmae Std::Time to Time
   - renmae Std::TypeUtil to TypeUtil
@@ -6,6 +6,8 @@
   - rename Std to CORE
   - merged CORE::Time to CORE
   - merged CORE::IO to CORE
+  - CORE module is loaded by default
+  - CORE functions become static functions
 0.0338 2018-05-25
   - add examples
   - add const byte[] type

@@ -9,7 +9,6 @@ use Carp 'confess';
 use SPVM::Build::SPVMInfo;
 use SPVM::Build::ExtUtil;
 use SPVM::Build::JIT;
-use SPVM::Build::Inline;
 
 use File::Path 'rmtree';
 use File::Spec;
@@ -121,6 +120,7 @@ sub bind_native_subs {
   
   my $native_func_names = SPVM::Build::SPVMInfo::get_native_sub_names();
   for my $native_func_name (@$native_func_names) {
+    next if $native_func_name =~ /^CORE::/;
     my $native_func_name_spvm = "SPVM::$native_func_name";
     my $native_address = $self->get_sub_native_address($native_func_name_spvm);
     unless ($native_address) {
