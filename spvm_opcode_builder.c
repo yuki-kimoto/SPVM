@@ -1812,7 +1812,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_constant = op_case->first;
                       SPVM_OPCODE* opcode_case = (opcode_array->values + sub_opcode_base + switch_opcode_index + 2 + i);
 
-                      if (op_constant->uv.constant->value.int_value - min == i) {
+                      if (op_constant->uv.constant->value.ival - min == i) {
                         // Branch
                         int32_t case_opcode_index = (intptr_t)SPVM_LIST_fetch(case_opcode_indexes, case_pos);
                         int32_t case_branch = case_opcode_index;
@@ -1865,8 +1865,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         for (j = i + 1; j < case_length; j++) {
                           SPVM_OP* op_case_i = SPVM_LIST_fetch(ordered_op_cases, i);
                           SPVM_OP* op_case_j = SPVM_LIST_fetch(ordered_op_cases, j);
-                          int32_t match_i = op_case_i->first->uv.constant->value.int_value;
-                          int32_t match_j = op_case_j->first->uv.constant->value.int_value;
+                          int32_t match_i = op_case_i->first->uv.constant->value.ival;
+                          int32_t match_j = op_case_j->first->uv.constant->value.ival;
                           
                           int32_t* case_opcode_index_i = SPVM_LIST_fetch(ordered_case_opcode_indexes, i);
                           int32_t* case_opcode_index_j = SPVM_LIST_fetch(ordered_case_opcode_indexes, j);
@@ -1888,7 +1888,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     for (i = 0; i < case_length; i++) {
                       SPVM_OP* op_case = SPVM_LIST_fetch(ordered_op_cases, i);
                       SPVM_OP* op_constant = op_case->first;
-                      int32_t match = op_constant->uv.constant->value.int_value;
+                      int32_t match = op_constant->uv.constant->value.ival;
 
                       int32_t case_opcode_index = (intptr_t)SPVM_LIST_fetch(ordered_case_opcode_indexes, i);
                       

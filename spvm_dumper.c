@@ -50,27 +50,27 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       if (constant->type->dimension == 0) {
         switch (constant->type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE:
-            printf(" %" PRId8, constant->value.byte_value);
+            printf(" %" PRId8, constant->value.bval);
             break;
           case SPVM_BASIC_TYPE_C_ID_SHORT:
-            printf(" %" PRId16, constant->value.short_value);
+            printf(" %" PRId16, constant->value.sval);
             break;
           case SPVM_BASIC_TYPE_C_ID_INT:
-            printf(" %" PRId32, constant->value.int_value);
+            printf(" %" PRId32, constant->value.ival);
             break;
           case SPVM_BASIC_TYPE_C_ID_LONG:
-            printf(" %" PRId64, constant->value.long_value);
+            printf(" %" PRId64, constant->value.lval);
             break;
           case SPVM_BASIC_TYPE_C_ID_FLOAT:
-            printf(" %f", constant->value.float_value);
+            printf(" %f", constant->value.fval);
             break;
           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-            printf(" %f", constant->value.double_value);
+            printf(" %f", constant->value.dval);
             break;
         }
       }
       else if (constant->type->dimension == 1 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-        printf(" \"%s\"", constant->value.string_value);
+        printf(" \"%s\"", constant->value.oval);
         break;
       }
       printf(" (index %" PRId32 ")", constant->id);
@@ -342,28 +342,28 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
   if (constant->type->dimension == 0) {
     switch(constant->type->basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE:
-        printf("      int %" PRId8 "\n", constant->value.byte_value);
+        printf("      int %" PRId8 "\n", constant->value.bval);
         break;
       case SPVM_BASIC_TYPE_C_ID_SHORT:
-        printf("      int %" PRId16 "\n", constant->value.short_value);
+        printf("      int %" PRId16 "\n", constant->value.sval);
         break;
       case SPVM_BASIC_TYPE_C_ID_INT:
-        printf("      int %" PRId32 "\n", constant->value.int_value);
+        printf("      int %" PRId32 "\n", constant->value.ival);
         break;
       case SPVM_BASIC_TYPE_C_ID_LONG:
-        printf("      long %" PRId64 "\n", constant->value.long_value);
+        printf("      long %" PRId64 "\n", constant->value.lval);
         break;
       case SPVM_BASIC_TYPE_C_ID_FLOAT:
-        printf("      float %f\n", constant->value.float_value);
+        printf("      float %f\n", constant->value.fval);
         break;
       case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-        printf("      double %f\n", constant->value.double_value);
+        printf("      double %f\n", constant->value.dval);
         break;
     }
   }
   else if (constant->type->dimension == 1) {
     if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-      printf("      String \"%s\"\n", constant->value.string_value);
+      printf("      String \"%s\"\n", constant->value.oval);
     }
   }
   printf("      address => %" PRId32 "\n", constant->id);
@@ -446,7 +446,7 @@ void SPVM_DUMPER_dump_enumeration_value(SPVM_COMPILER* compiler, SPVM_ENUMERATIO
   if (enumeration_value) {
     printf("      name => \"%s\"\n", enumeration_value->op_name->uv.name);
     // TODO add types
-    printf("      value => %" PRId32 "\n", enumeration_value->op_constant->uv.constant->value.int_value);
+    printf("      value => %" PRId32 "\n", enumeration_value->op_constant->uv.constant->value.ival);
   }
   else {
     printf("      None\n");

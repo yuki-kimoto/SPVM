@@ -6,7 +6,7 @@ int32_t SPVM__TestCase__Extension2__mul(SPVM_API* api, const SPVM_API_VALUE* arg
   (void)api;
   (void)args;
 
-  int32_t total = args[0].int_value * args[1].int_value;
+  int32_t total = args[0].ival * args[1].ival;
   
   return total;
 }

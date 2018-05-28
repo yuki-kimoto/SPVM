@@ -1,3 +1,12 @@
+0.0340 2018-05-28
+  - rename byte_value to bval
+  - rename short_value to sval
+  - rename int_value to ival
+  - rename long_value to lval
+  - rename float_value to fval
+  - rename double_value to dval
+  - rename object_value to oval
+  - pointer_value, string_value, object_address_value is merged to oval
 0.0339 2018-05-26
   - rename Std::Math to Math
   - renmae Std::Time to Time

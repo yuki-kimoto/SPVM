@@ -16,7 +16,7 @@ SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler) {
 SPVM_CONSTANT* SPVM_CONSTANT_create_int_1(SPVM_COMPILER* compiler) {
   
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-  constant->value.int_value = 1;
+  constant->value.ival = 1;
   constant->type = SPVM_TYPE_create_int_type(compiler);
   
   return constant;

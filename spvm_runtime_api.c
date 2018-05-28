@@ -764,12 +764,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_accessent(SPVM_API* api, SPVM_OBJ
   assert(index >= 0);
   assert(index <= object->units_length);
   
-  SPVM_OBJECT* object_value = values[index];
+  SPVM_OBJECT* oval = values[index];
   
-  return object_value;
+  return oval;
 }
 
-void SPVM_RUNTIME_API_set_object_array_accessent(SPVM_API* api, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* object_value) {
+void SPVM_RUNTIME_API_set_object_array_accessent(SPVM_API* api, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* oval) {
   (void)api;
   
   SPVM_OBJECT** values = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT));
@@ -778,7 +778,7 @@ void SPVM_RUNTIME_API_set_object_array_accessent(SPVM_API* api, SPVM_OBJECT* obj
   assert(index >= 0);
   assert(index <= object->units_length);
   
-  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&values[index], object_value);
+  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&values[index], oval);
 }
 
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
@@ -825,7 +825,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_API* api, SPVM_OBJECT* object) {
         
         // Call destructor
         SPVM_API_VALUE args[1];
-        args[0].object_value = object;
+        args[0].oval = object;
         object->in_destroy = 1;
         SPVM_RUNTIME_API_call_void_sub(api, package->op_sub_destructor->uv.sub->id, args);
         object->in_destroy = 0;
@@ -908,7 +908,7 @@ int8_t SPVM_RUNTIME_API_call_byte_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VA
   
   SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
   
-  return return_value.byte_value;
+  return return_value.bval;
 }
 
 int16_t SPVM_RUNTIME_API_call_short_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
@@ -916,7 +916,7 @@ int16_t SPVM_RUNTIME_API_call_short_sub(SPVM_API* api, int32_t sub_id, SPVM_API_
   
   SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
   
-  return return_value.short_value;
+  return return_value.sval;
 }
 
 int32_t SPVM_RUNTIME_API_call_int_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
@@ -924,7 +924,7 @@ int32_t SPVM_RUNTIME_API_call_int_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VA
   
   SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
   
-  return return_value.int_value;
+  return return_value.ival;
 }
 
 int64_t SPVM_RUNTIME_API_call_long_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
@@ -932,7 +932,7 @@ int64_t SPVM_RUNTIME_API_call_long_sub(SPVM_API* api, int32_t sub_id, SPVM_API_V
   
   SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
   
-  return return_value.long_value;
+  return return_value.lval;
 }
 
 float SPVM_RUNTIME_API_call_float_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
@@ -940,7 +940,7 @@ float SPVM_RUNTIME_API_call_float_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VA
   
   SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
   
-  return return_value.float_value;
+  return return_value.fval;
 }
 
 double SPVM_RUNTIME_API_call_double_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
@@ -948,7 +948,7 @@ double SPVM_RUNTIME_API_call_double_sub(SPVM_API* api, int32_t sub_id, SPVM_API_
   
   SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
   
-  return return_value.double_value;
+  return return_value.dval;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args) {
@@ -956,7 +956,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_API* api, int32_t sub_id, SPV
   
   SPVM_API_VALUE return_value = SPVM_RUNTIME_call_sub(api, sub_id, args);
   
-  return return_value.object_value;
+  return return_value.oval;
 }
 
 int32_t SPVM_RUNTIME_API_get_field_id(SPVM_API* api, SPVM_OBJECT* object, const char* name) {

@@ -223,7 +223,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     for (i = 0; i < length; i++) {
                       SPVM_OP* op_case = SPVM_LIST_fetch(op_cases, i);
                       SPVM_OP* op_constant = op_case->first;
-                      int32_t value = op_constant->uv.constant->value.int_value;
+                      int32_t value = op_constant->uv.constant->value.ival;
                       
                       if (value < min) {
                         min = value;
@@ -2122,10 +2122,10 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
             || (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG))
           {
             if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
-              constant_value = constant->value.int_value;
+              constant_value = constant->value.ival;
             }
             else if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG)) {
-              constant_value = constant->value.long_value;
+              constant_value = constant->value.lval;
             }
             
             if ((assign_to_type->dimension == 0 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {

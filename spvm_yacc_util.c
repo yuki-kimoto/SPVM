@@ -123,27 +123,27 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
       if (constant->type->dimension == 0) {
         switch(constant->type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE:
-            fprintf(file, "int %" PRId8, constant->value.byte_value);
+            fprintf(file, "int %" PRId8, constant->value.bval);
             break;
           case SPVM_BASIC_TYPE_C_ID_SHORT:
-            fprintf(file, "int %" PRId16, constant->value.short_value);
+            fprintf(file, "int %" PRId16, constant->value.sval);
             break;
           case SPVM_BASIC_TYPE_C_ID_INT:
-            fprintf(file, "int %" PRId32, constant->value.int_value);
+            fprintf(file, "int %" PRId32, constant->value.ival);
             break;
           case SPVM_BASIC_TYPE_C_ID_LONG:
-            fprintf(file, "long %" PRId64, constant->value.long_value);
+            fprintf(file, "long %" PRId64, constant->value.lval);
             break;
           case SPVM_BASIC_TYPE_C_ID_FLOAT:
-            fprintf(file, "float %f", constant->value.float_value);
+            fprintf(file, "float %f", constant->value.fval);
             break;
           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-            fprintf(file, "double %f", constant->value.double_value);
+            fprintf(file, "double %f", constant->value.dval);
             break;
         }
       }
       else if (constant->type->dimension == 1 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-        fprintf(file, "string %s", constant->value.string_value);
+        fprintf(file, "string %s", constant->value.oval);
         break;
       }
     }

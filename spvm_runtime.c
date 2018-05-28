@@ -1232,7 +1232,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         int32_t mortal_stack_current_base = opcode->operand0;
         int32_t object_var_index_index;
         for (object_var_index_index = mortal_stack_current_base; object_var_index_index <= mortal_stack_top; object_var_index_index++) {
-          int32_t var_index = mortal_stack[object_var_index_index].int_value;
+          int32_t var_index = mortal_stack[object_var_index_index].ival;
           
           if (*(SPVM_API_OBJECT**)&vars[var_index] != NULL) {
             if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)&vars[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)&vars[var_index]); }
@@ -1354,7 +1354,7 @@ SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_
         SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, constant_id);
         SPVM_CONSTANT* constant = op_constant->uv.constant;
         
-        SPVM_API_OBJECT* string = api->new_string(api, constant->value.string_value, constant->string_length);
+        SPVM_API_OBJECT* string = api->new_string(api, constant->value.oval, constant->string_length);
         
         int8_t* bytes = api->get_byte_array_elements(api, string);
         

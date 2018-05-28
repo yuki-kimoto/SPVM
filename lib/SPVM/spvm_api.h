@@ -9,16 +9,13 @@ typedef void SPVM_API_OBJECT;
 typedef void SPVM_API_RUNTIME;
 
 union SPVM_API_value {
-  int8_t byte_value;
-  int16_t short_value;
-  int32_t int_value;
-  int64_t long_value;
-  float float_value;
-  double double_value;
-  SPVM_API_OBJECT* object_value;
-  SPVM_API_OBJECT** object_address_value;
-  char* string_value;
-  void* pointer_value;
+  int8_t bval;
+  int16_t sval;
+  int32_t ival;
+  int64_t lval;
+  float fval;
+  double dval;
+  void* oval;
 };
 
 // spvm_api.h

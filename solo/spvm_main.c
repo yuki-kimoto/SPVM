@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
   }
 
   SPVM_API_VALUE args[1];
-  args[0].int_value = 2;
+  args[0].ival = 2;
   
   // Run
   int32_t return_value = api->call_int_sub(api, sub_id, args);

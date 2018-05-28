@@ -580,7 +580,7 @@ SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, con
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->value.byte_value = value;
+  constant->value.bval = value;
   constant->type = SPVM_TYPE_create_byte_type(compiler);
   
   op_constant->uv.constant = constant;
@@ -594,7 +594,7 @@ SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, c
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->value.short_value = value;
+  constant->value.sval = value;
   constant->type = SPVM_TYPE_create_short_type(compiler);
   
   op_constant->uv.constant = constant;
@@ -608,7 +608,7 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->value.int_value = value;
+  constant->value.ival = value;
   constant->type = SPVM_TYPE_create_int_type(compiler);
   
   op_constant->uv.constant = constant;
@@ -622,7 +622,7 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->value.long_value = value;
+  constant->value.lval = value;
   constant->type = SPVM_TYPE_create_long_type(compiler);
   
   op_constant->uv.constant = constant;
@@ -636,7 +636,7 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->value.float_value = value;
+  constant->value.fval = value;
   constant->type = SPVM_TYPE_create_float_type(compiler);
   
   op_constant->uv.constant = constant;
@@ -650,7 +650,7 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   
-  constant->value.double_value = value;
+  constant->value.dval = value;
   constant->type = SPVM_TYPE_create_double_type(compiler);
   
   op_constant->uv.constant = constant;
@@ -664,7 +664,7 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, i
 
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-  constant->value.string_value = string;
+  constant->value.oval = string;
   constant->type = SPVM_TYPE_create_string_type(compiler);
   constant->string_length = length;
   op_constant->uv.constant = constant;
@@ -2135,7 +2135,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     SPVM_CONSTANT* constant = op_constant->uv.constant;
     
     if (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-      compiler->current_enum_value = constant->value.int_value;
+      compiler->current_enum_value = constant->value.ival;
     }
     else {
       SPVM_yyerror_format(compiler, "enum value must be int type at %s line %d\n", op_constant->file, op_constant->line);

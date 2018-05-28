@@ -7,7 +7,7 @@ int8_t SPVM__TestCase__Extension__native_use_strlen(SPVM_API* api, const SPVM_AP
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* string = args[0].object_value;
+  SPVM_API_OBJECT* string = args[0].oval;
   
   int8_t* bytes = api->get_byte_array_elements(api, string);
   
@@ -20,7 +20,7 @@ int8_t SPVM__TestCase__Extension__native_api_get_byte_field(SPVM_API* api, const
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* test_case = args[0].object_value;
+  SPVM_API_OBJECT* test_case = args[0].oval;
   
   int32_t field_id = api->get_field_id(api, test_case, "x_byte");
   
@@ -33,7 +33,7 @@ int16_t SPVM__TestCase__Extension__native_api_get_short_field(SPVM_API* api, con
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* test_case = args[0].object_value;
+  SPVM_API_OBJECT* test_case = args[0].oval;
   
   int32_t field_id = api->get_field_id(api, test_case, "x_short");
   
@@ -46,7 +46,7 @@ int32_t SPVM__TestCase__Extension__native_api_get_int_field(SPVM_API* api, const
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* test_case = args[0].object_value;
+  SPVM_API_OBJECT* test_case = args[0].oval;
   
   int32_t field_id = api->get_field_id(api, test_case, "x_int");
   
@@ -59,7 +59,7 @@ int64_t SPVM__TestCase__Extension__native_api_get_long_field(SPVM_API* api, cons
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* test_case = args[0].object_value;
+  SPVM_API_OBJECT* test_case = args[0].oval;
   
   int32_t field_id = api->get_field_id(api, test_case, "x_long");
   
@@ -72,7 +72,7 @@ float SPVM__TestCase__Extension__native_api_get_float_field(SPVM_API* api, const
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* test_case = args[0].object_value;
+  SPVM_API_OBJECT* test_case = args[0].oval;
   
   int32_t field_id = api->get_field_id(api, test_case, "x_float");
   
@@ -85,7 +85,7 @@ int32_t SPVM__TestCase__Extension__native_api_get_double_field(SPVM_API* api, co
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* test_case = args[0].object_value;
+  SPVM_API_OBJECT* test_case = args[0].oval;
   
   int32_t field_id = api->get_field_id(api, test_case, "x_double");
   
@@ -98,7 +98,7 @@ SPVM_API_OBJECT* SPVM__TestCase__Extension__native_api_get_object_field(SPVM_API
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* test_case = args[0].object_value;
+  SPVM_API_OBJECT* test_case = args[0].oval;
   
   int32_t field_id = api->get_field_id(api, test_case, "minimal");
   
@@ -111,7 +111,7 @@ int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, const SPVM_API_VALUE* args
   (void)api;
   (void)args;
   
-  int32_t total = args[0].int_value + args[1].int_value;
+  int32_t total = args[0].ival + args[1].ival;
   
   return total;
 }
@@ -120,8 +120,8 @@ SPVM_API_OBJECT* SPVM__TestCase__Extension__add_int_array(SPVM_API* api, const S
   (void)api;
   (void)args;
   
-  SPVM_API_OBJECT* obj_nums1 = args[0].object_value;
-  SPVM_API_OBJECT* obj_nums2 = args[1].object_value;
+  SPVM_API_OBJECT* obj_nums1 = args[0].oval;
+  SPVM_API_OBJECT* obj_nums2 = args[1].oval;
   
   int32_t length = api->get_array_length(api, obj_nums1);
   

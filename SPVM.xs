@@ -136,7 +136,7 @@ new_string(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New string
-  SPVM_API_OBJECT* string =  api->new_string(api, (int8_t*)SvPV_nolen(sv_bytes), length);
+  SPVM_API_OBJECT* string =  api->new_string(api, SvPV_nolen(sv_bytes), length);
   
   // Increment reference count
   api->inc_ref_count(api, string);
@@ -3530,39 +3530,39 @@ call_sub(...)
         switch (arg_type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE : {
             int8_t value = (int8_t)SvIV(sv_value);
-            call_sub_args[arg_index].byte_value = value;
+            call_sub_args[arg_index].bval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_SHORT : {
             int16_t value = (int16_t)SvIV(sv_value);
-            call_sub_args[arg_index].short_value = value;
+            call_sub_args[arg_index].sval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_INT : {
             int32_t value = (int32_t)SvIV(sv_value);
-            call_sub_args[arg_index].int_value = value;
+            call_sub_args[arg_index].ival = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_LONG : {
             int64_t value = (int64_t)SvIV(sv_value);
-            call_sub_args[arg_index].long_value = value;
+            call_sub_args[arg_index].lval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_FLOAT : {
             float value = (float)SvNV(sv_value);
-            call_sub_args[arg_index].float_value = value;
+            call_sub_args[arg_index].fval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_DOUBLE : {
             double value = (double)SvNV(sv_value);
-            call_sub_args[arg_index].double_value = value;
+            call_sub_args[arg_index].dval = value;
             break;
           }
         }
       }
       else {
         if (!SvOK(sv_value)) {
-          call_sub_args[arg_index].object_value = NULL;
+          call_sub_args[arg_index].oval = NULL;
         }
         else {
           if (sv_isobject(sv_value)) {
@@ -3579,7 +3579,7 @@ call_sub(...)
                 croak("Argument basic_object type need %s, but %s", SvPV_nolen(sv_arg_type_name), SvPV_nolen(sv_basic_object_type));
               }
               
-              call_sub_args[arg_index].object_value = basic_object;
+              call_sub_args[arg_index].oval = basic_object;
             }
             else {
               croak("Object must be derived from SPVM::Perl::Object");
