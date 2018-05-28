@@ -7,16 +7,16 @@ use warnings;
 use DynaLoader;
 use File::Basename 'basename', 'dirname';
 
-use SPVM::Perl::Object;
-use SPVM::Perl::Object::Array;
-use SPVM::Perl::Object::Array::Byte;
-use SPVM::Perl::Object::Array::Short;
-use SPVM::Perl::Object::Array::Int;
-use SPVM::Perl::Object::Array::Long;
-use SPVM::Perl::Object::Array::Float;
-use SPVM::Perl::Object::Array::Double;
-use SPVM::Perl::Object::Array::Object;
-use SPVM::Perl::Object::Package;
+use SPVM::Object;
+use SPVM::Object::Array;
+use SPVM::Object::Array::Byte;
+use SPVM::Object::Array::Short;
+use SPVM::Object::Array::Int;
+use SPVM::Object::Array::Long;
+use SPVM::Object::Array::Float;
+use SPVM::Object::Array::Double;
+use SPVM::Object::Array::Object;
+use SPVM::Object::Package;
 
 use SPVM::Build;
 
@@ -87,7 +87,7 @@ CHECK {
 sub new_byte_array_len {
   my $length = shift;
   
-  my $array = SPVM::Perl::Object::Array::Byte->new_len($length);
+  my $array = SPVM::Object::Array::Byte->new_len($length);
   
   return $array;
 }
@@ -103,7 +103,7 @@ sub new_byte_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Perl::Object::Array::Byte->new_len($length);
+  my $array = SPVM::Object::Array::Byte->new_len($length);
   
   $array->set_elements($elements);
   
@@ -121,7 +121,7 @@ sub new_short_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Perl::Object::Array::Short->new_len($length);
+  my $array = SPVM::Object::Array::Short->new_len($length);
   
   $array->set_elements($elements);
   
@@ -133,7 +133,7 @@ sub new_byte_array_bin {
   
   my $length = length $bin;
   
-  my $array = SPVM::Perl::Object::Array::Byte->new_len($length);
+  my $array = SPVM::Object::Array::Byte->new_len($length);
   
   $array->set_bin($bin);
   
@@ -144,7 +144,7 @@ sub new_byte_array_bin {
 sub new_short_array_len {
   my $length = shift;
   
-  my $array = SPVM::Perl::Object::Array::Short->new_len($length);
+  my $array = SPVM::Object::Array::Short->new_len($length);
   
   return $array;
 }
@@ -171,7 +171,7 @@ sub new_short_array_bin {
   
   my $length = int($byte_length / 2);
   
-  my $array = SPVM::Perl::Object::Array::Short->new_len($length);
+  my $array = SPVM::Object::Array::Short->new_len($length);
   
   $array->set_bin($bin);
   
@@ -181,7 +181,7 @@ sub new_short_array_bin {
 sub new_int_array_len {
   my $length = shift;
   
-  my $array = SPVM::Perl::Object::Array::Int->new_len($length);
+  my $array = SPVM::Object::Array::Int->new_len($length);
   
   return $array;
 }
@@ -197,7 +197,7 @@ sub new_int_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Perl::Object::Array::Int->new_len($length);
+  my $array = SPVM::Object::Array::Int->new_len($length);
   
   $array->set_elements($elements);
   
@@ -215,7 +215,7 @@ sub new_int_array_bin {
   
   my $length = int($byte_length / 4);
   
-  my $array = SPVM::Perl::Object::Array::Int->new_len($length);
+  my $array = SPVM::Object::Array::Int->new_len($length);
   
   $array->set_bin($bin);
   
@@ -225,7 +225,7 @@ sub new_int_array_bin {
 sub new_long_array_len {
   my $length = shift;
   
-  my $array = SPVM::Perl::Object::Array::Long->new_len($length);
+  my $array = SPVM::Object::Array::Long->new_len($length);
   
   return $array;
 }
@@ -241,7 +241,7 @@ sub new_long_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Perl::Object::Array::Long->new_len($length);
+  my $array = SPVM::Object::Array::Long->new_len($length);
   
   $array->set_elements($elements);
   
@@ -259,7 +259,7 @@ sub new_long_array_bin {
   
   my $length = $byte_length / 8;
   
-  my $array = SPVM::Perl::Object::Array::Long->new_len($length);
+  my $array = SPVM::Object::Array::Long->new_len($length);
   
   $array->set_bin($bin);
   
@@ -269,7 +269,7 @@ sub new_long_array_bin {
 sub new_float_array_len {
   my $length = shift;
   
-  my $array = SPVM::Perl::Object::Array::Float->new_len($length);
+  my $array = SPVM::Object::Array::Float->new_len($length);
   
   return $array;
 }
@@ -285,7 +285,7 @@ sub new_float_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Perl::Object::Array::Float->new_len($length);
+  my $array = SPVM::Object::Array::Float->new_len($length);
   
   $array->set_elements($elements);
   
@@ -303,7 +303,7 @@ sub new_float_array_bin {
   
   my $length = $byte_length / 4;
   
-  my $array = SPVM::Perl::Object::Array::Float->new_len($length);
+  my $array = SPVM::Object::Array::Float->new_len($length);
   
   $array->set_bin($bin);
   
@@ -313,7 +313,7 @@ sub new_float_array_bin {
 sub new_double_array_len {
   my $length = shift;
   
-  my $array = SPVM::Perl::Object::Array::Double->new_len($length);
+  my $array = SPVM::Object::Array::Double->new_len($length);
   
   return $array;
 }
@@ -329,7 +329,7 @@ sub new_double_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Perl::Object::Array::Double->new_len($length);
+  my $array = SPVM::Object::Array::Double->new_len($length);
   
   $array->set_elements($elements);
   
@@ -347,7 +347,7 @@ sub new_double_array_bin {
   
   my $length = $byte_length / 8;
   
-  my $array = SPVM::Perl::Object::Array::Double->new_len($length);
+  my $array = SPVM::Object::Array::Double->new_len($length);
   
   $array->set_bin($bin);
   
@@ -357,7 +357,7 @@ sub new_double_array_bin {
 sub new_object_array_len {
   my ($type_name, $length) = @_;
   
-  my $array = SPVM::Perl::Object::Array::Object->new_len($type_name, $length);
+  my $array = SPVM::Object::Array::Object->new_len($type_name, $length);
   
   return $array;
 }
@@ -365,7 +365,7 @@ sub new_object_array_len {
 sub new_object {
   my $package_name = shift;
   
-  my $object = SPVM::Perl::Object::Package->new($package_name);
+  my $object = SPVM::Object::Package->new($package_name);
   
   return $object;
 }

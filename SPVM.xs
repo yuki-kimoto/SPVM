@@ -92,7 +92,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   }
 }
 
-MODULE = SPVM::Perl::Object		PACKAGE = SPVM::Perl::Object
+MODULE = SPVM::Object		PACKAGE = SPVM::Object
 
 SV*
 DESTROY(...)
@@ -118,7 +118,7 @@ DESTROY(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Perl::Object::Package::String		PACKAGE = SPVM::Perl::Object::Package::String
+MODULE = SPVM::Object::Package::String		PACKAGE = SPVM::Object::Package::String
 
 SV*
 new_string(...)
@@ -142,7 +142,7 @@ new_string(...)
   env->inc_ref_count(env, string);
   
   // New sv string
-  SV* sv_string = SPVM_XS_UTIL_new_sv_object(string, "SPVM::Perl::Object::Package::String");
+  SV* sv_string = SPVM_XS_UTIL_new_sv_object(string, "SPVM::Object::Package::String");
   
   XPUSHs(sv_string);
   XSRETURN(1);
@@ -172,7 +172,7 @@ to_bin(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Perl::Object::Array::Byte		PACKAGE = SPVM::Perl::Object::Array::Byte
+MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
 
 SV*
 new_len(...)
@@ -197,7 +197,7 @@ new_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Byte");
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Byte");
   
   XPUSHs(sv_byte_array);
   XSRETURN(1);
@@ -315,7 +315,7 @@ set_element(...)
 }
 
 SV*
-get(...)
+get_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -405,7 +405,7 @@ to_bin(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Perl::Object::Array::Short		PACKAGE = SPVM::Perl::Object::Array::Short
+MODULE = SPVM::Object::Array::Short		PACKAGE = SPVM::Object::Array::Short
 
 SV*
 new_len(...)
@@ -430,7 +430,7 @@ new_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Short");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Short");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -543,7 +543,7 @@ set_element(...)
 }
 
 SV*
-get(...)
+get_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -633,7 +633,7 @@ to_bin(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Perl::Object::Array::Int		PACKAGE = SPVM::Perl::Object::Array::Int
+MODULE = SPVM::Object::Array::Int		PACKAGE = SPVM::Object::Array::Int
 
 SV*
 new_len(...)
@@ -658,7 +658,7 @@ new_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Int");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Int");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -771,7 +771,7 @@ set_element(...)
 }
 
 SV*
-get(...)
+get_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -861,7 +861,7 @@ to_bin(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Perl::Object::Array::Long		PACKAGE = SPVM::Perl::Object::Array::Long
+MODULE = SPVM::Object::Array::Long		PACKAGE = SPVM::Object::Array::Long
 
 SV*
 new_len(...)
@@ -886,7 +886,7 @@ new_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Long");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Long");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -999,7 +999,7 @@ set_element(...)
 }
 
 SV*
-get(...)
+get_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1089,7 +1089,7 @@ to_bin(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Perl::Object::Array::Float		PACKAGE = SPVM::Perl::Object::Array::Float
+MODULE = SPVM::Object::Array::Float		PACKAGE = SPVM::Object::Array::Float
 
 SV*
 new_len(...)
@@ -1114,7 +1114,7 @@ new_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Float");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Float");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1227,7 +1227,7 @@ set_element(...)
 }
 
 SV*
-get(...)
+get_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1317,7 +1317,7 @@ to_bin(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Perl::Object::Array::Double		PACKAGE = SPVM::Perl::Object::Array::Double
+MODULE = SPVM::Object::Array::Double		PACKAGE = SPVM::Object::Array::Double
 
 SV*
 new_len(...)
@@ -1342,7 +1342,7 @@ new_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Double");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Double");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1455,7 +1455,7 @@ set_element(...)
 }
 
 SV*
-get(...)
+get_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1545,7 +1545,7 @@ to_bin(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Perl::Object::Array::Object		PACKAGE = SPVM::Perl::Object::Array::Object
+MODULE = SPVM::Object::Array::Object		PACKAGE = SPVM::Object::Array::Object
 
 SV*
 new_len(...)
@@ -1584,7 +1584,7 @@ new_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Object");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Object");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1622,7 +1622,7 @@ set_element(...)
 }
 
 SV*
-get(...)
+get_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1663,29 +1663,29 @@ get(...)
   else if (dimension == 1) {
     switch (basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Byte");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Byte");
         break;
       case SPVM_BASIC_TYPE_C_ID_SHORT :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Short");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Short");
         break;
       case SPVM_BASIC_TYPE_C_ID_INT :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Int");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Int");
         break;
       case SPVM_BASIC_TYPE_C_ID_LONG :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Long");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Long");
         break;
       case SPVM_BASIC_TYPE_C_ID_FLOAT :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Float");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Float");
         break;
       case SPVM_BASIC_TYPE_C_ID_DOUBLE :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Double");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Double");
         break;
       default :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Object");
+        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Object");
     }
   }
   else {
-    sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Perl::Object::Array::Object");
+    sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Object");
   }
   
   XPUSHs(sv_basic_object);
@@ -1693,7 +1693,7 @@ get(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Perl::Object::Array		PACKAGE = SPVM::Perl::Object::Array
+MODULE = SPVM::Object::Array		PACKAGE = SPVM::Object::Array
 
 MODULE = SPVM::Build::SPVMInfo		PACKAGE = SPVM::Build::SPVMInfo
 
@@ -2289,7 +2289,7 @@ call_sub(...)
         else {
           if (sv_isobject(sv_value)) {
             SV* sv_basic_object = sv_value;
-            if (sv_derived_from(sv_basic_object, "SPVM::Perl::Object")) {
+            if (sv_derived_from(sv_basic_object, "SPVM::Object")) {
               
               SPVM_OBJECT* basic_object = SPVM_XS_UTIL_get_object(sv_basic_object);
               
@@ -2304,11 +2304,11 @@ call_sub(...)
               call_sub_args[arg_index].oval = basic_object;
             }
             else {
-              croak("Object must be derived from SPVM::Perl::Object");
+              croak("Object must be derived from SPVM::Object");
             }
           }
           else {
-            croak("Argument must be numeric value or SPVM::Perl::Object subclass");
+            croak("Argument must be numeric value or SPVM::Object subclass");
           }
         }
       }
@@ -2374,28 +2374,28 @@ call_sub(...)
       if (return_type_dimension == 1) {
         switch(return_basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Byte");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Byte");
             break;
           case SPVM_BASIC_TYPE_C_ID_SHORT :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Short");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Short");
             break;
           case SPVM_BASIC_TYPE_C_ID_INT :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Int");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Int");
             break;
           case SPVM_BASIC_TYPE_C_ID_LONG :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Long");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Long");
             break;
           case SPVM_BASIC_TYPE_C_ID_FLOAT :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Float");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Float");
             break;
           case SPVM_BASIC_TYPE_C_ID_DOUBLE :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Double");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Double");
             break;        
         }
       }
       else {
         if (return_type->dimension > 0) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Perl::Object::Array::Object");
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array::Object");
         }
         else {
           SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);

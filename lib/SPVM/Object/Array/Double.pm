@@ -1,12 +1,12 @@
-package SPVM::Perl::Object::Array::Float;
+package SPVM::Object::Array::Double;
 
-use base 'SPVM::Perl::Object::Array';
+use base 'SPVM::Object::Array';
 
 1;
 
 =head1 NAME
 
-SPVM::Perl::Object::Array::Float - Float Array Object
+SPVM::Object::Array::Double - Double Array Object
 
 =head1 METHODS
 
@@ -19,8 +19,6 @@ Method List:
 =item * set_elements
 
 =item * set_bin
-
-=item * set_bin_range
 
 =item * set_element
 

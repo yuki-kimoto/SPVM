@@ -26,7 +26,8 @@
   - rename SPVM::new_float_array_data to SPVM::new_float_array_bin
   - rename SPVM::new_double_array_data to SPVM::new_double_array_bin
   - remove range methods
-  
+  - rename $array->set to $array->set_element
+  - rename SPVM::Perl::Object to SPVM::Object
 0.0339 2018-05-26
   - rename Std::Math to Math
   - renmae Std::Time to Time

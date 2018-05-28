@@ -1,12 +1,12 @@
-package SPVM::Perl::Object::Array::Short;
+package SPVM::Object::Array::Long;
 
-use base 'SPVM::Perl::Object::Array';
+use base 'SPVM::Object::Array';
 
 1;
 
 =head1 NAME
 
-SPVM::Perl::Object::Array::Short - Short Array Object
+SPVM::Object::Array::Long - Long Array Object
 
 =head1 METHODS
 

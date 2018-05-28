@@ -1,12 +1,12 @@
-package SPVM::Perl::Object::Array::Object;
+package SPVM::Object::Array::Object;
 
-use base 'SPVM::Perl::Object::Array';
+use base 'SPVM::Object::Array';
 
 1;
 
 =head1 NAME
 
-SPVM::Perl::Object::Array::Object - Object Array Object
+SPVM::Object::Array::Object - Object Array Object
 
 =head1 METHODS
 

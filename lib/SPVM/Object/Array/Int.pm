@@ -1,12 +1,12 @@
-package SPVM::Perl::Object::Array::Int;
+package SPVM::Object::Array::Int;
 
-use base 'SPVM::Perl::Object::Array';
+use base 'SPVM::Object::Array';
 
 1;
 
 =head1 NAME
 
-SPVM::Perl::Object::Array::Int - Int Array Object
+SPVM::Object::Array::Int - Int Array Object
 
 =head1 METHODS
 

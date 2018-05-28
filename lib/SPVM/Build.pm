@@ -79,7 +79,7 @@ sub build_spvm_subs {
     $package_name = "SPVM::$package_name";
     unless ($package_name_h->{$package_name}) {
       
-      my $code = "package $package_name; our \@ISA = ('SPVM::Perl::Object::Package');";
+      my $code = "package $package_name; our \@ISA = ('SPVM::Object::Package');";
       eval $code;
       
       if (my $error = $@) {

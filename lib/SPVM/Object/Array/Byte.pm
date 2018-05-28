@@ -1,6 +1,6 @@
-package SPVM::Perl::Object::Array::Byte;
+package SPVM::Object::Array::Byte;
 
-use base 'SPVM::Perl::Object::Array';
+use base 'SPVM::Object::Array';
 
 use Encode 'decode';
 
@@ -18,7 +18,7 @@ sub to_string {
 
 =head1 NAME
 
-SPVM::Perl::Object::Array::Byte - Byte Array Object
+SPVM::Object::Array::Byte - Byte Array Object
 
 =head1 METHODS
 
