@@ -51,7 +51,7 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   return allocator;
 }
 
-int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t byte_size) {
+int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_ENV* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t byte_size) {
   (void)api;
   (void)allocator;
   
@@ -88,7 +88,7 @@ int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_API* api, SPVM_RUNTIME_AL
   return index;
 }
 
-void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t byte_size) {
+void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_ENV* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t byte_size) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   
   assert(byte_size > 0);
@@ -124,7 +124,7 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* 
   return block;
 }
 
-void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_API* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* object) {
+void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_ENV* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* object) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
   
   if (object == NULL) {

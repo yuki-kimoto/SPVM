@@ -3,7 +3,7 @@
 
 #include <spvm_api.h>
 
-int8_t SPVM__TestCase__Extension__native_use_strlen(SPVM_API* api, const SPVM_VALUE* args) {
+int8_t SPVM__TestCase__Extension__native_use_strlen(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -16,7 +16,7 @@ int8_t SPVM__TestCase__Extension__native_use_strlen(SPVM_API* api, const SPVM_VA
   return length;
 }
 
-int8_t SPVM__TestCase__Extension__native_api_get_byte_field(SPVM_API* api, const SPVM_VALUE* args) {
+int8_t SPVM__TestCase__Extension__native_api_get_byte_field(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -29,7 +29,7 @@ int8_t SPVM__TestCase__Extension__native_api_get_byte_field(SPVM_API* api, const
   return value;
 }
 
-int16_t SPVM__TestCase__Extension__native_api_get_short_field(SPVM_API* api, const SPVM_VALUE* args) {
+int16_t SPVM__TestCase__Extension__native_api_get_short_field(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -42,7 +42,7 @@ int16_t SPVM__TestCase__Extension__native_api_get_short_field(SPVM_API* api, con
   return value;
 }
 
-int32_t SPVM__TestCase__Extension__native_api_get_int_field(SPVM_API* api, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_api_get_int_field(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -55,7 +55,7 @@ int32_t SPVM__TestCase__Extension__native_api_get_int_field(SPVM_API* api, const
   return value;
 }
 
-int64_t SPVM__TestCase__Extension__native_api_get_long_field(SPVM_API* api, const SPVM_VALUE* args) {
+int64_t SPVM__TestCase__Extension__native_api_get_long_field(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -68,7 +68,7 @@ int64_t SPVM__TestCase__Extension__native_api_get_long_field(SPVM_API* api, cons
   return value;
 }
 
-float SPVM__TestCase__Extension__native_api_get_float_field(SPVM_API* api, const SPVM_VALUE* args) {
+float SPVM__TestCase__Extension__native_api_get_float_field(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -81,7 +81,7 @@ float SPVM__TestCase__Extension__native_api_get_float_field(SPVM_API* api, const
   return value;
 }
 
-int32_t SPVM__TestCase__Extension__native_api_get_double_field(SPVM_API* api, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_api_get_double_field(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -94,7 +94,7 @@ int32_t SPVM__TestCase__Extension__native_api_get_double_field(SPVM_API* api, co
   return value;
 }
 
-void* SPVM__TestCase__Extension__native_api_get_object_field(SPVM_API* api, const SPVM_VALUE* args) {
+void* SPVM__TestCase__Extension__native_api_get_object_field(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -107,7 +107,7 @@ void* SPVM__TestCase__Extension__native_api_get_object_field(SPVM_API* api, cons
   return value;
 }
 
-int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__sum(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -116,7 +116,7 @@ int32_t SPVM__TestCase__Extension__sum(SPVM_API* api, const SPVM_VALUE* args) {
   return total;
 }
 
-void* SPVM__TestCase__Extension__add_int_array(SPVM_API* api, const SPVM_VALUE* args) {
+void* SPVM__TestCase__Extension__add_int_array(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -141,7 +141,7 @@ void* SPVM__TestCase__Extension__add_int_array(SPVM_API* api, const SPVM_VALUE* 
   return obj_nums3;
 }
 
-void SPVM__TestCase__Extension__call_void_sub_exception_native(SPVM_API* api, const SPVM_VALUE* args) {
+void SPVM__TestCase__Extension__call_void_sub_exception_native(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -150,7 +150,7 @@ void SPVM__TestCase__Extension__call_void_sub_exception_native(SPVM_API* api, co
   return;
 }
 
-int8_t SPVM__TestCase__Extension__call_byte_sub_exception_native(SPVM_API* api, const SPVM_VALUE* args) {
+int8_t SPVM__TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -159,7 +159,7 @@ int8_t SPVM__TestCase__Extension__call_byte_sub_exception_native(SPVM_API* api, 
   return 0;
 }
 
-int16_t SPVM__TestCase__Extension__call_short_sub_exception_native(SPVM_API* api, const SPVM_VALUE* args) {
+int16_t SPVM__TestCase__Extension__call_short_sub_exception_native(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
 
@@ -168,16 +168,7 @@ int16_t SPVM__TestCase__Extension__call_short_sub_exception_native(SPVM_API* api
   return 0;
 }
 
-int32_t SPVM__TestCase__Extension__call_int_sub_exception_native(SPVM_API* api, const SPVM_VALUE* args) {
-  (void)api;
-  (void)args;
-  
-  void* exception = api->new_string(api, "Exception", 0);
-  api->set_exception(api, exception);
-  return 0;
-}
-
-int64_t SPVM__TestCase__Extension__call_long_sub_exception_native(SPVM_API* api, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__call_int_sub_exception_native(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -186,7 +177,7 @@ int64_t SPVM__TestCase__Extension__call_long_sub_exception_native(SPVM_API* api,
   return 0;
 }
 
-float SPVM__TestCase__Extension__call_float_sub_exception_native(SPVM_API* api, const SPVM_VALUE* args) {
+int64_t SPVM__TestCase__Extension__call_long_sub_exception_native(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -195,7 +186,7 @@ float SPVM__TestCase__Extension__call_float_sub_exception_native(SPVM_API* api, 
   return 0;
 }
 
-double SPVM__TestCase__Extension__call_double_sub_exception_native(SPVM_API* api, const SPVM_VALUE* args) {
+float SPVM__TestCase__Extension__call_float_sub_exception_native(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   
@@ -204,7 +195,16 @@ double SPVM__TestCase__Extension__call_double_sub_exception_native(SPVM_API* api
   return 0;
 }
 
-void* SPVM__TestCase__Extension__call_object_sub_exception_native(SPVM_API* api, const SPVM_VALUE* args) {
+double SPVM__TestCase__Extension__call_double_sub_exception_native(SPVM_ENV* api, const SPVM_VALUE* args) {
+  (void)api;
+  (void)args;
+  
+  void* exception = api->new_string(api, "Exception", 0);
+  api->set_exception(api, exception);
+  return 0;
+}
+
+void* SPVM__TestCase__Extension__call_object_sub_exception_native(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   

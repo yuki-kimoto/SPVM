@@ -2,7 +2,7 @@
 
 #include <Extension2_util.h>
 
-int32_t SPVM__TestCase__Extension2__mul(SPVM_API* api, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension2__mul(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
 
@@ -11,7 +11,7 @@ int32_t SPVM__TestCase__Extension2__mul(SPVM_API* api, const SPVM_VALUE* args) {
   return total;
 }
 
-int32_t SPVM__TestCase__Extension2__one(SPVM_API* api, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension2__one(SPVM_ENV* api, const SPVM_VALUE* args) {
   (void)api;
   (void)args;
   

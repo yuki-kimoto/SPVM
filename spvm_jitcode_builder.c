@@ -585,7 +585,7 @@ void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, i
   }
 
   // Arguments
-  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_API* api, SPVM_VALUE* args)");
+  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_ENV* api, SPVM_VALUE* args)");
   
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");

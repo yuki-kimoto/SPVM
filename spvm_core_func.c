@@ -6,7 +6,7 @@
 
 #include "spvm_api.h"
 
-int64_t SPVM_CORE_FUNC_time(SPVM_API* api, SPVM_VALUE* args) {
+int64_t SPVM_CORE_FUNC_time(SPVM_ENV* api, SPVM_VALUE* args) {
   (void)api;
   (void)args;
 
@@ -16,7 +16,7 @@ int64_t SPVM_CORE_FUNC_time(SPVM_API* api, SPVM_VALUE* args) {
   return timer_value;
 }
 
-void SPVM_CORE_FUNC_print(SPVM_API* api, SPVM_VALUE* args) {
+void SPVM_CORE_FUNC_print(SPVM_ENV* api, SPVM_VALUE* args) {
   (void)api;
   
   void* object = args[0].oval;
@@ -32,7 +32,7 @@ void SPVM_CORE_FUNC_print(SPVM_API* api, SPVM_VALUE* args) {
   }
 }
 
-void SPVM_CORE_FUNC_warn(SPVM_API* api, SPVM_VALUE* args) {
+void SPVM_CORE_FUNC_warn(SPVM_ENV* api, SPVM_VALUE* args) {
   (void)api;
   
   void* object = args[0].oval;

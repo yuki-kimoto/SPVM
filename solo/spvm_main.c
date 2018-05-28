@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
-  SPVM_API* api = runtime->api;
+  SPVM_ENV* api = runtime->api;
 
   // Entry point subroutine address
   SPVM_OP* op_sub_start;

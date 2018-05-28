@@ -40,7 +40,7 @@ do {\
 
 struct SPVM_runtime {
   // API
-  SPVM_API* api;
+  SPVM_ENV* api;
   
   // Compiler
   SPVM_COMPILER* compiler;
@@ -59,12 +59,12 @@ struct SPVM_runtime {
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
-SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime);
+SPVM_ENV* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime);
 
-SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
 
-SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
-SPVM_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
-SPVM_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
+SPVM_VALUE SPVM_RUNTIME_call_sub_native(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
+SPVM_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
 
 #endif

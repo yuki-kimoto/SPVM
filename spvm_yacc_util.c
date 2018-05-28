@@ -143,7 +143,7 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
         }
       }
       else if (constant->type->dimension == 1 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-        fprintf(file, "string %s", constant->value.oval);
+        fprintf(file, "string %s", (char*)constant->value.oval);
         break;
       }
     }

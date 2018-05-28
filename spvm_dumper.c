@@ -70,7 +70,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         }
       }
       else if (constant->type->dimension == 1 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-        printf(" \"%s\"", constant->value.oval);
+        printf(" \"%s\"", (char*)constant->value.oval);
         break;
       }
       printf(" (index %" PRId32 ")", constant->id);
@@ -363,7 +363,7 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
   }
   else if (constant->type->dimension == 1) {
     if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-      printf("      String \"%s\"\n", constant->value.oval);
+      printf("      String \"%s\"\n", (char*)constant->value.oval);
     }
   }
   printf("      address => %" PRId32 "\n", constant->id);

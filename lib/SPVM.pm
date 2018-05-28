@@ -468,7 +468,7 @@ C Source File;
   // lib/SPVM/MyMathNative.inline/MyMathNative.c
   #include <spvm_api.h>
 
-  int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_VALUE* args) {
+  int32_t SPVM__MyMathNative__sum(SPVM_ENV* api, SPVM_VALUE* args) {
     
     // First argument
     void* sp_nums = args[0].oval;
