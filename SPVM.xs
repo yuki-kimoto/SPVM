@@ -246,71 +246,6 @@ set_elements(...)
 }
 
 SV*
-set_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_values = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check if sv values is array reference
-  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece)");
-  }
-  
-  AV* av_values = (AV*)SvRV(sv_values);
-  
-  // Check elements length
-  if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument)");
-  }
-  
-  // Elements
-  int8_t* elements = env->get_byte_array_elements(env, array);
-  
-  // Set element value
-  {
-    int32_t i;
-    
-    for (i = 0; i < count; i++) {
-      SV** sv_value_ptr = av_fetch(av_values, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elements[index + i] = (int8_t)SvIV(sv_value);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 set_bin(...)
   PPCODE:
 {
@@ -336,60 +271,6 @@ set_bin(...)
   
   if (length > 0) {
     memcpy(elements, SvPV_nolen(sv_bin), length);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
-set_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_bin = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check bin byte size
-  int32_t bin_byte_size = (int32_t)sv_len(sv_bin);
-  
-  if (bin_byte_size != count) {
-    croak("Data byte size must be same as count argument)");
-  }
-  
-  // Elements
-  int8_t* elements = env->get_byte_array_elements(env, array);
-  
-  // Copy bin
-  if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_bin), count);
   }
   
   XSRETURN(0);
@@ -501,57 +382,6 @@ to_elements(...)
 }
 
 SV*
-to_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  int8_t* elements = env->get_byte_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = index; i < index + count; i++) {
-      SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
-
-SV*
 to_bin(...)
   PPCODE:
 {
@@ -570,49 +400,6 @@ to_bin(...)
   int8_t* elements = env->get_byte_array_elements(env, array);
   
   SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-SV*
-to_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  int8_t* elements = env->get_byte_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count));
   
   XPUSHs(sv_bin);
   XSRETURN(1);
@@ -687,71 +474,6 @@ set_elements(...)
 }
 
 SV*
-set_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_values = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check if sv values is array reference
-  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece)");
-  }
-  
-  AV* av_values = (AV*)SvRV(sv_values);
-  
-  // Check elements length
-  if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument)");
-  }
-  
-  // Elements
-  int16_t* elements = env->get_short_array_elements(env, array);
-  
-  // Set element value
-  {
-    int32_t i;
-    
-    for (i = 0; i < count; i++) {
-      SV** sv_value_ptr = av_fetch(av_values, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elements[index + i] = (int16_t)SvIV(sv_value);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 set_bin(...)
   PPCODE:
 {
@@ -777,60 +499,6 @@ set_bin(...)
   
   if (length > 0) {
     memcpy(elements, SvPV_nolen(sv_bin), length * 2);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
-set_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_bin = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check bin short size
-  int32_t bin_short_size = (int32_t)sv_len(sv_bin);
-  
-  if (bin_short_size != count * 2) {
-    croak("Data byte size must be same as count argument * 2)");
-  }
-  
-  // Elements
-  int16_t* elements = env->get_short_array_elements(env, array);
-  
-  // Copy bin
-  if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_bin), count * 2);
   }
   
   XSRETURN(0);
@@ -942,57 +610,6 @@ to_elements(...)
 }
 
 SV*
-to_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  int16_t* elements = env->get_short_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = index; i < index + count; i++) {
-      SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
-
-SV*
 to_bin(...)
   PPCODE:
 {
@@ -1011,49 +628,6 @@ to_bin(...)
   int16_t* elements = env->get_short_array_elements(env, array);
   
   SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 2));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-SV*
-to_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  int16_t* elements = env->get_short_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 2));
   
   XPUSHs(sv_bin);
   XSRETURN(1);
@@ -1128,71 +702,6 @@ set_elements(...)
 }
 
 SV*
-set_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_values = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check if sv values is array reference
-  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece)");
-  }
-  
-  AV* av_values = (AV*)SvRV(sv_values);
-  
-  // Check elements length
-  if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument)");
-  }
-  
-  // Elements
-  int32_t* elements = env->get_int_array_elements(env, array);
-  
-  // Set element value
-  {
-    int32_t i;
-    
-    for (i = 0; i < count; i++) {
-      SV** sv_value_ptr = av_fetch(av_values, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elements[index + i] = (int32_t)SvIV(sv_value);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 set_bin(...)
   PPCODE:
 {
@@ -1218,60 +727,6 @@ set_bin(...)
   
   if (length > 0) {
     memcpy(elements, SvPV_nolen(sv_bin), length * 4);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
-set_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_bin = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check bin int size
-  int32_t bin_int_size = (int32_t)sv_len(sv_bin);
-  
-  if (bin_int_size != count * 4) {
-    croak("Data byte size must be same as count argument * 4)");
-  }
-  
-  // Elements
-  int32_t* elements = env->get_int_array_elements(env, array);
-  
-  // Copy bin
-  if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_bin), count * 4);
   }
   
   XSRETURN(0);
@@ -1383,57 +838,6 @@ to_elements(...)
 }
 
 SV*
-to_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  int32_t* elements = env->get_int_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = index; i < index + count; i++) {
-      SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
-
-SV*
 to_bin(...)
   PPCODE:
 {
@@ -1452,49 +856,6 @@ to_bin(...)
   int32_t* elements = env->get_int_array_elements(env, array);
   
   SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-SV*
-to_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  int32_t* elements = env->get_int_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
   
   XPUSHs(sv_bin);
   XSRETURN(1);
@@ -1569,71 +930,6 @@ set_elements(...)
 }
 
 SV*
-set_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_values = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check if sv values is array reference
-  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece)");
-  }
-  
-  AV* av_values = (AV*)SvRV(sv_values);
-  
-  // Check elements length
-  if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument)");
-  }
-  
-  // Elements
-  int64_t* elements = env->get_long_array_elements(env, array);
-  
-  // Set element value
-  {
-    int32_t i;
-    
-    for (i = 0; i < count; i++) {
-      SV** sv_value_ptr = av_fetch(av_values, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elements[index + i] = (int64_t)SvIV(sv_value);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 set_bin(...)
   PPCODE:
 {
@@ -1659,60 +955,6 @@ set_bin(...)
   
   if (length > 0) {
     memcpy(elements, SvPV_nolen(sv_bin), length * 8);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
-set_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_bin = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check bin long size
-  int32_t bin_long_size = (int32_t)sv_len(sv_bin);
-  
-  if (bin_long_size != count * 8) {
-    croak("Data byte size must be same as count argument * 8)");
-  }
-  
-  // Elements
-  int64_t* elements = env->get_long_array_elements(env, array);
-  
-  // Copy bin
-  if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_bin), count * 8);
   }
   
   XSRETURN(0);
@@ -1824,57 +1066,6 @@ to_elements(...)
 }
 
 SV*
-to_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  int64_t* elements = env->get_long_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = index; i < index + count; i++) {
-      SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
-
-SV*
 to_bin(...)
   PPCODE:
 {
@@ -1893,49 +1084,6 @@ to_bin(...)
   int64_t* elements = env->get_long_array_elements(env, array);
   
   SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-SV*
-to_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  int64_t* elements = env->get_long_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
   
   XPUSHs(sv_bin);
   XSRETURN(1);
@@ -2010,71 +1158,6 @@ set_elements(...)
 }
 
 SV*
-set_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_values = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check if sv values is array reference
-  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece)");
-  }
-  
-  AV* av_values = (AV*)SvRV(sv_values);
-  
-  // Check elements length
-  if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument)");
-  }
-  
-  // Elements
-  float* elements = env->get_float_array_elements(env, array);
-  
-  // Set element value
-  {
-    int32_t i;
-    
-    for (i = 0; i < count; i++) {
-      SV** sv_value_ptr = av_fetch(av_values, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elements[index + i] = (float)SvNV(sv_value);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 set_bin(...)
   PPCODE:
 {
@@ -2100,60 +1183,6 @@ set_bin(...)
   
   if (length > 0) {
     memcpy(elements, SvPV_nolen(sv_bin), length * 4);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
-set_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_bin = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check bin float size
-  int32_t bin_float_size = (int32_t)sv_len(sv_bin);
-  
-  if (bin_float_size != count * 4) {
-    croak("Data byte size must be same as count argument * 4)");
-  }
-  
-  // Elements
-  float* elements = env->get_float_array_elements(env, array);
-  
-  // Copy bin
-  if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_bin), count * 4);
   }
   
   XSRETURN(0);
@@ -2265,57 +1294,6 @@ to_elements(...)
 }
 
 SV*
-to_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  float* elements = env->get_float_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = index; i < index + count; i++) {
-      SV* sv_value = sv_2mortal(newSVnv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
-
-SV*
 to_bin(...)
   PPCODE:
 {
@@ -2334,49 +1312,6 @@ to_bin(...)
   float* elements = env->get_float_array_elements(env, array);
   
   SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-SV*
-to_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  float* elements = env->get_float_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
   
   XPUSHs(sv_bin);
   XSRETURN(1);
@@ -2451,71 +1386,6 @@ set_elements(...)
 }
 
 SV*
-set_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_values = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check if sv values is array reference
-  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece)");
-  }
-  
-  AV* av_values = (AV*)SvRV(sv_values);
-  
-  // Check elements length
-  if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument)");
-  }
-  
-  // Elements
-  double* elements = env->get_double_array_elements(env, array);
-  
-  // Set element value
-  {
-    int32_t i;
-    
-    for (i = 0; i < count; i++) {
-      SV** sv_value_ptr = av_fetch(av_values, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elements[index + i] = (double)SvNV(sv_value);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 set_bin(...)
   PPCODE:
 {
@@ -2541,60 +1411,6 @@ set_bin(...)
   
   if (length > 0) {
     memcpy(elements, SvPV_nolen(sv_bin), length * 8);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
-set_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  SV* sv_bin = ST(3);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  // Check bin double size
-  int32_t bin_double_size = (int32_t)sv_len(sv_bin);
-  
-  if (bin_double_size != count * 8) {
-    croak("Data byte size must be same as count argument * 8)");
-  }
-  
-  // Elements
-  double* elements = env->get_double_array_elements(env, array);
-  
-  // Copy bin
-  if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_bin), count * 8);
   }
   
   XSRETURN(0);
@@ -2706,57 +1522,6 @@ to_elements(...)
 }
 
 SV*
-to_elements_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  double* elements = env->get_double_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = index; i < index + count; i++) {
-      SV* sv_value = sv_2mortal(newSVnv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
-
-SV*
 to_bin(...)
   PPCODE:
 {
@@ -2775,49 +1540,6 @@ to_bin(...)
   double* elements = env->get_double_array_elements(env, array);
   
   SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-SV*
-to_bin_range(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_count = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  // Count
-  int32_t count = (int32_t)SvIV(sv_count);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check index
-  if (index < 0 || index > length - 1) {
-    croak("Index is out of range)");
-  }
-  
-  // Check count
-  if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range)");
-  }
-  
-  double* elements = env->get_double_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
   
   XPUSHs(sv_bin);
   XSRETURN(1);
