@@ -19,7 +19,7 @@
 #include "spvm_jitcode_builder.h"
 #include "spvm_core_func.h"
 
-#include <spvm_api.h>
+#include <spvm_native.h>
 
 int main(int argc, char *argv[])
 {
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
-  SPVM_ENV* api = runtime->api;
+  SPVM_ENV* env = runtime->env;
 
   // Entry point subroutine address
   SPVM_OP* op_sub_start;
@@ -98,17 +98,17 @@ int main(int argc, char *argv[])
   args[0].ival = 2;
   
   // Run
-  int32_t return_value = api->call_int_sub(api, sub_id, args);
+  int32_t return_value = env->call_int_sub(env, sub_id, args);
   
   if (runtime->exception) {
-    SPVM_RUNTIME_API_print(api, runtime->exception);
+    SPVM_RUNTIME_API_print(env, runtime->exception);
     printf("\n");
   }
   else {
     printf("TEST return_value: %" PRId32 "\n", return_value);
   }
   
-  SPVM_RUNTIME_API_free_runtime(api, runtime);
+  SPVM_RUNTIME_API_free_runtime(env, runtime);
   
   return 0;
 }

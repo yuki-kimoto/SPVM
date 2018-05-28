@@ -6,9 +6,9 @@ package TestCase::Inline {
 
 __NATIVE__
 
-#include "spvm_api.h"
+#include "spvm_native.h"
 
-int32_t SPVM__Test__Inline(SPVM_ENV api, SPVM_VALUE* args) {
+int32_t SPVM__Test__Inline(SPVM_ENV env, SPVM_VALUE* args) {
   int32_t total = args[0].ival + args[1].ival;
   
   return total;

@@ -11,7 +11,7 @@
 #include "spvm_memory_pool.h"
 #include "spvm_list.h"
 #include "spvm_runtime.h"
-#include "spvm_api.h"
+#include "spvm_native.h"
 #include "spvm_object.h"
 #include "spvm_hash.h"
 
@@ -51,8 +51,8 @@ SPVM_RUNTIME_ALLOCATOR* SPVM_RUNTIME_ALLOCATOR_new(SPVM_RUNTIME* runtime) {
   return allocator;
 }
 
-int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_ENV* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t byte_size) {
-  (void)api;
+int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_ENV* env, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t byte_size) {
+  (void)env;
   (void)allocator;
   
   assert(byte_size > 1);
@@ -88,11 +88,11 @@ int32_t SPVM_RUNTIME_ALLOCATOR_get_freelist_index(SPVM_ENV* api, SPVM_RUNTIME_AL
   return index;
 }
 
-void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_ENV* api, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t byte_size) {
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_ENV* env, SPVM_RUNTIME_ALLOCATOR* allocator, int64_t byte_size) {
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
   
   assert(byte_size > 0);
-  int32_t index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(api, allocator, byte_size);
+  int32_t index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(env, allocator, byte_size);
   int32_t alloc_byte_size = pow(2, index + 1);
   
   void* block;
@@ -124,8 +124,8 @@ void* SPVM_RUNTIME_ALLOCATOR_malloc_zero(SPVM_ENV* api, SPVM_RUNTIME_ALLOCATOR* 
   return block;
 }
 
-void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_ENV* api, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* object) {
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(api);
+void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_ENV* env, SPVM_RUNTIME_ALLOCATOR* allocator, SPVM_OBJECT* object) {
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
   
   if (object == NULL) {
     return;
@@ -148,7 +148,7 @@ void SPVM_RUNTIME_ALLOCATOR_free_object(SPVM_ENV* api, SPVM_RUNTIME_ALLOCATOR* a
     }
     else {
       // Freelist index
-      int32_t freelist_index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(api, allocator, byte_size);
+      int32_t freelist_index = SPVM_RUNTIME_ALLOCATOR_get_freelist_index(env, allocator, byte_size);
       
       // Push free address
       SPVM_LIST_push(allocator->freelists[freelist_index], object);

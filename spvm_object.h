@@ -2,7 +2,7 @@
 #define SPVM_OBJECT_H
 
 #include "spvm_base.h"
-#include "spvm_api.h"
+#include "spvm_native.h"
 
 enum {
   SPVM_OBJECT_C_CATEGORY_OBJECT,

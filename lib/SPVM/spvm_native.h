@@ -1,19 +1,38 @@
-=head1 NAME
+#ifndef SPVM_NATIVE_H
+#define SPVM_NATIVE_H
 
-SPVM::Document::NativeAPI - SPVM Native API
+#include <stdint.h>
 
-=head1 What is Native API
+struct SPVM_env;
+typedef struct SPVM_env SPVM_ENV;
 
-Native API is the API to manipulate array and object, and call subroutine in C Level.
+union SPVM_value {
+  int8_t bval;
+  int16_t sval;
+  int32_t ival;
+  int64_t lval;
+  float fval;
+  double dval;
+  void* oval;
+};
 
-To improve peformance, you can write programing logic by C language and Native API.
+// spvm_native.h
+typedef union SPVM_value SPVM_VALUE;
 
-You can do the following by SPVM Native API.
+typedef int8_t SPVM_VALUE_byte;
+typedef int16_t SPVM_VALUE_short;
+typedef int32_t SPVM_VALUE_int;
+typedef int64_t SPVM_VALUE_long;
+typedef float SPVM_VALUE_float;
+typedef double SPVM_VALUE_double;
+typedef void* SPVM_VALUE_object;
 
-=head1 NATIVE API
 
-List of Native APIs.
 
+
+
+
+struct SPVM_env {
   int32_t (*get_array_length)(SPVM_ENV*, void*);
   int8_t* (*get_byte_array_elements)(SPVM_ENV*, void*);
   int16_t* (*get_short_array_elements)(SPVM_ENV*, void*);
@@ -59,19 +78,16 @@ List of Native APIs.
   void* (*new_double_array)(SPVM_ENV*, int32_t);
   void* (*new_object_array)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_multi_array)(SPVM_ENV*, int32_t, int32_t, int32_t);
-  void* (*new_string)(SPVM_ENV* env, int8_t* bytes, int32_t length);
-  void* (*new_string_chars)(SPVM_ENV* env, const char* chars);
-  int32_t (*get_string_length)(SPVM_ENV* env, void*);
-  int8_t* (*get_string_bytes)(SPVM_ENV* env, void*);
+  void* (*new_string)(SPVM_ENV* env, char* bytes, int32_t length);
   void* (*get_exception)(SPVM_ENV* env);
   void (*set_exception)(SPVM_ENV* env, void* exception);
-  int32_t (*get_ref_count)(SPVM_ENV* env, void* base_object);
-  void (*inc_ref_count)(SPVM_ENV* env, void* base_object);
-  void (*dec_ref_count)(SPVM_ENV* env, void* base_object);
-  void (*inc_dec_ref_count)(SPVM_ENV* env, void* base_object);
+  int32_t (*get_ref_count)(SPVM_ENV* env, void* object);
+  void (*inc_ref_count)(SPVM_ENV* env, void* object);
+  void (*dec_ref_count)(SPVM_ENV* env, void* object);
+  void (*inc_dec_ref_count)(SPVM_ENV* env, void* object);
   int32_t (*get_objects_count)(SPVM_ENV* env);
   void* (*get_runtime)(SPVM_ENV* env);
-  void (*dec_ref_count_only)(SPVM_ENV* env, void* base_object);
+  void (*dec_ref_count_only)(SPVM_ENV* env, void* object);
   void (*weaken)(SPVM_ENV* env, void** object_address);
   int32_t (*isweak)(SPVM_ENV* env, void* object);
   void (*unweaken)(SPVM_ENV* env, void** object_address);
@@ -84,3 +100,5 @@ List of Native APIs.
   void* object_basic_type_id_byte_offset;
   void* object_dimension_byte_offset;
   void* object_units_length_byte_offset;
+};
+#endif

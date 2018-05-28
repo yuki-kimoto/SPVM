@@ -20,7 +20,7 @@
 #include "spvm_runtime_api.h"
 #include "spvm_sub.h"
 #include "spvm_field.h"
-#include "spvm_api.h"
+#include "spvm_native.h"
 #include "spvm_opcode.h"
 #include "spvm_basic_type.h"
 #include "spvm_use.h"
@@ -32,7 +32,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->compiler = compiler;
   
   // Set global runtime
-  SPVM_RUNTIME_API_set_runtime(runtime->api, runtime);
+  SPVM_RUNTIME_API_set_runtime(runtime->env, runtime);
   
   // Initialize Package Variables
   runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_var_length + 1));

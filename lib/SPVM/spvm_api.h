@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-struct SPVM_api;
-typedef struct SPVM_api SPVM_ENV;
+struct SPVM_env;
+typedef struct SPVM_env SPVM_ENV;
 
 union SPVM_value {
   int8_t bval;
@@ -16,7 +16,7 @@ union SPVM_value {
   void* oval;
 };
 
-// spvm_api.h
+// spvm_native.h
 typedef union SPVM_value SPVM_VALUE;
 
 typedef int8_t SPVM_VALUE_byte;
@@ -31,7 +31,7 @@ typedef double SPVM_VALUE_double;
 
 
 
-struct SPVM_api {
+struct SPVM_env {
   int32_t (*get_array_length)(SPVM_ENV*, void*);
   int8_t* (*get_byte_array_elements)(SPVM_ENV*, void*);
   int16_t* (*get_short_array_elements)(SPVM_ENV*, void*);
@@ -60,14 +60,14 @@ struct SPVM_api {
   int32_t (*get_sub_id_interface_method)(SPVM_ENV*, void* object, int32_t);
   int32_t (*get_class_method_sub_id)(SPVM_ENV*, const char*, const char*);
   int32_t (*get_basic_type_id)(SPVM_ENV*, const char*);
-  void (*call_void_sub)(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
-  int8_t (*call_byte_sub)(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
-  int16_t (*call_short_sub)(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
-  int32_t (*call_int_sub)(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
-  int64_t (*call_long_sub)(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
-  float (*call_float_sub)(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
-  double (*call_double_sub)(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
-  void* (*call_object_sub)(SPVM_ENV* api, int32_t sub_id, SPVM_VALUE* args);
+  void (*call_void_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  int8_t (*call_byte_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  int16_t (*call_short_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  int32_t (*call_int_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  int64_t (*call_long_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  float (*call_float_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  double (*call_double_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  void* (*call_object_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
   void* (*new_object)(SPVM_ENV*, int32_t);
   void* (*new_byte_array)(SPVM_ENV*, int32_t);
   void* (*new_short_array)(SPVM_ENV*, int32_t);
@@ -77,23 +77,23 @@ struct SPVM_api {
   void* (*new_double_array)(SPVM_ENV*, int32_t);
   void* (*new_object_array)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_multi_array)(SPVM_ENV*, int32_t, int32_t, int32_t);
-  void* (*new_string)(SPVM_ENV* api, char* bytes, int32_t length);
-  void* (*get_exception)(SPVM_ENV* api);
-  void (*set_exception)(SPVM_ENV* api, void* exception);
-  int32_t (*get_ref_count)(SPVM_ENV* api, void* object);
-  void (*inc_ref_count)(SPVM_ENV* api, void* object);
-  void (*dec_ref_count)(SPVM_ENV* api, void* object);
-  void (*inc_dec_ref_count)(SPVM_ENV* api, void* object);
-  int32_t (*get_objects_count)(SPVM_ENV* api);
-  void* (*get_runtime)(SPVM_ENV* api);
-  void (*dec_ref_count_only)(SPVM_ENV* api, void* object);
-  void (*weaken)(SPVM_ENV* api, void** object_address);
-  int32_t (*isweak)(SPVM_ENV* api, void* object);
-  void (*unweaken)(SPVM_ENV* api, void** object_address);
-  void* (*concat)(SPVM_ENV* api, void* string1, void* string2);
-  void (*weaken_object_field)(SPVM_ENV* api, void* object, int32_t field_id);
-  void* (*create_exception_stack_trace)(SPVM_ENV* api, void* excetpion, int32_t sub_id, int32_t current_line);
-  int32_t (*check_cast)(SPVM_ENV* api, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
+  void* (*new_string)(SPVM_ENV* env, char* bytes, int32_t length);
+  void* (*get_exception)(SPVM_ENV* env);
+  void (*set_exception)(SPVM_ENV* env, void* exception);
+  int32_t (*get_ref_count)(SPVM_ENV* env, void* object);
+  void (*inc_ref_count)(SPVM_ENV* env, void* object);
+  void (*dec_ref_count)(SPVM_ENV* env, void* object);
+  void (*inc_dec_ref_count)(SPVM_ENV* env, void* object);
+  int32_t (*get_objects_count)(SPVM_ENV* env);
+  void* (*get_runtime)(SPVM_ENV* env);
+  void (*dec_ref_count_only)(SPVM_ENV* env, void* object);
+  void (*weaken)(SPVM_ENV* env, void** object_address);
+  int32_t (*isweak)(SPVM_ENV* env, void* object);
+  void (*unweaken)(SPVM_ENV* env, void** object_address);
+  void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
+  void (*weaken_object_field)(SPVM_ENV* env, void* object, int32_t field_id);
+  void* (*create_exception_stack_trace)(SPVM_ENV* env, void* excetpion, int32_t sub_id, int32_t current_line);
+  int32_t (*check_cast)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
   void* object_header_byte_size;
   void* object_ref_count_byte_offset;
   void* object_basic_type_id_byte_offset;

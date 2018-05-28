@@ -26,7 +26,7 @@
 #include "spvm_type.h"
 #include "spvm_field.h"
 #include "spvm_object.h"
-#include "spvm_api.h"
+#include "spvm_native.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_jitcode_builder.h"
 #include "spvm_list.h"
@@ -37,13 +37,13 @@
 
 static SPVM_VALUE call_sub_args[255];
 
-SPVM_ENV* SPVM_XS_UTIL_get_api() {
+SPVM_ENV* SPVM_XS_UTIL_get_env() {
   
-  SV* sv_api = get_sv("SPVM::API", 0);
+  SV* sv_env = get_sv("SPVM::API", 0);
   
-  SPVM_ENV* api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api)));
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  return api;
+  return env;
 }
 
 SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
@@ -59,9 +59,9 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
 
 SV* SPVM_XS_UTIL_create_sv_type_name(int32_t basic_type_id, int32_t dimension) {
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
 
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
@@ -105,15 +105,15 @@ DESTROY(...)
   assert(SvOK(sv_object));
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* object = SPVM_XS_UTIL_get_object(sv_object);
   
-  assert(api->get_ref_count(api, object));
+  assert(env->get_ref_count(env, object));
   
   // Decrement reference count
-  api->dec_ref_count(api, object);
+  env->dec_ref_count(env, object);
   
   XSRETURN(0);
 }
@@ -133,13 +133,13 @@ new_string(...)
   int32_t length = sv_len(sv_bytes);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New string
-  void* string =  api->new_string(api, SvPV_nolen(sv_bytes), length);
+  void* string =  env->new_string(env, SvPV_nolen(sv_bytes), length);
   
   // Increment reference count
-  api->inc_ref_count(api, string);
+  env->inc_ref_count(env, string);
   
   // New sv string
   SV* sv_string = SPVM_XS_UTIL_new_sv_object(string, "SPVM::Perl::Object::Package::String");
@@ -157,14 +157,14 @@ to_data(...)
   SV* sv_string = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* string = SPVM_XS_UTIL_get_object(sv_string);
   
-  int32_t string_length = api->get_array_length(api, string);
+  int32_t string_length = env->get_array_length(env, string);
   
-  int8_t* bytes = api->get_byte_array_elements(api, string);
+  int8_t* bytes = env->get_byte_array_elements(env, string);
 
   SV* sv_data = sv_2mortal(newSVpvn((char*)bytes, string_length));
   
@@ -188,13 +188,13 @@ new_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  api->new_byte_array(api, length);
+  void* array =  env->new_byte_array(env, length);
   
   // Increment reference count
-  api->inc_ref_count(api, array);
+  env->inc_ref_count(env, array);
   
   // New sv array
   SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Byte");
@@ -219,14 +219,14 @@ set_elements(...)
   AV* av_values = (AV*)SvRV(sv_values);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
 
   // Check length
   if (av_len(av_values) + 1 != length) {
@@ -263,13 +263,13 @@ set_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -294,7 +294,7 @@ set_elements_range(...)
   }
   
   // Elements
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
   
   // Set element value
   {
@@ -320,14 +320,14 @@ set_data(...)
   SV* sv_data = ST(1);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length) {
@@ -359,13 +359,13 @@ set_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -385,7 +385,7 @@ set_data_range(...)
   }
   
   // Elements
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
   
   // Copy data
   if (count > 0) {
@@ -402,7 +402,7 @@ set(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -415,7 +415,7 @@ set(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -426,7 +426,7 @@ set(...)
   int8_t value = (int8_t)SvIV(sv_value);
   
   // Set element
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
   
   elements[index] = value;
   
@@ -440,7 +440,7 @@ get(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -452,7 +452,7 @@ get(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -460,7 +460,7 @@ get(...)
   }
   
   // Get element
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
   int8_t value = elements[index];
   SV* sv_value = sv_2mortal(newSViv(value));
   
@@ -477,14 +477,14 @@ get_elements(...)
   SV* sv_array = ST(0);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -517,13 +517,13 @@ get_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -535,7 +535,7 @@ get_elements_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Byte::get_elements_range())");
   }
   
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -560,14 +560,14 @@ to_data(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length));
   
@@ -592,13 +592,13 @@ to_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -610,7 +610,7 @@ to_data_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Byte::to_data_range())");
   }
   
-  int8_t* elements = api->get_byte_array_elements(api, array);
+  int8_t* elements = env->get_byte_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count));
   
@@ -634,13 +634,13 @@ new_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  api->new_short_array(api, length);
+  void* array =  env->new_short_array(env, length);
   
   // Increment reference count
-  api->inc_ref_count(api, array);
+  env->inc_ref_count(env, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Short");
@@ -660,14 +660,14 @@ set_elements(...)
   AV* av_values = (AV*)SvRV(sv_values);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
 
   // Check range
   if (av_len(av_values) + 1 != length) {
@@ -704,13 +704,13 @@ set_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -735,7 +735,7 @@ set_elements_range(...)
   }
   
   // Elements
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
   
   // Set element value
   {
@@ -761,14 +761,14 @@ set_data(...)
   SV* sv_data = ST(1);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 2) {
@@ -800,13 +800,13 @@ set_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -826,7 +826,7 @@ set_data_range(...)
   }
   
   // Elements
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
   
   // Copy data
   if (count > 0) {
@@ -843,7 +843,7 @@ set(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -856,7 +856,7 @@ set(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -867,7 +867,7 @@ set(...)
   int16_t value = (int16_t)SvIV(sv_value);
   
   // Set element
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
   
   elements[index] = value;
   
@@ -881,7 +881,7 @@ get(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -893,7 +893,7 @@ get(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -901,7 +901,7 @@ get(...)
   }
   
   // Get element
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
   int16_t value = elements[index];
   SV* sv_value = sv_2mortal(newSViv(value));
   
@@ -918,14 +918,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -958,13 +958,13 @@ get_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -976,7 +976,7 @@ get_elements_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Short::get_elements_range())");
   }
   
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -1001,14 +1001,14 @@ to_data(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 2));
   
@@ -1033,13 +1033,13 @@ to_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -1051,7 +1051,7 @@ to_data_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Short::to_data_range())");
   }
   
-  int16_t* elements = api->get_short_array_elements(api, array);
+  int16_t* elements = env->get_short_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 2));
   
@@ -1075,13 +1075,13 @@ new_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  api->new_int_array(api, length);
+  void* array =  env->new_int_array(env, length);
 
   // Increment reference count
-  api->inc_ref_count(api, array);
+  env->inc_ref_count(env, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Int");
@@ -1101,14 +1101,14 @@ set_elements(...)
   AV* av_values = (AV*)SvRV(sv_values);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
 
   // Check range
   if (av_len(av_values) + 1 != length) {
@@ -1145,13 +1145,13 @@ set_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -1176,7 +1176,7 @@ set_elements_range(...)
   }
   
   // Elements
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
   
   // Set element value
   {
@@ -1202,14 +1202,14 @@ set_data(...)
   SV* sv_data = ST(1);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 4) {
@@ -1241,13 +1241,13 @@ set_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -1267,7 +1267,7 @@ set_data_range(...)
   }
   
   // Elements
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
   
   // Copy data
   if (count > 0) {
@@ -1284,7 +1284,7 @@ set(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -1297,7 +1297,7 @@ set(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -1308,7 +1308,7 @@ set(...)
   int32_t value = (int32_t)SvIV(sv_value);
   
   // Set element
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
   
   elements[index] = value;
   
@@ -1322,7 +1322,7 @@ get(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -1334,7 +1334,7 @@ get(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -1342,7 +1342,7 @@ get(...)
   }
   
   // Get element
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
   int32_t value = elements[index];
   SV* sv_value = sv_2mortal(newSViv(value));
   
@@ -1359,14 +1359,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -1399,13 +1399,13 @@ get_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -1417,7 +1417,7 @@ get_elements_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Int::get_elements_range())");
   }
   
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -1442,14 +1442,14 @@ to_data(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 4));
   
@@ -1474,13 +1474,13 @@ to_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -1492,7 +1492,7 @@ to_data_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Int::to_data_range())");
   }
   
-  int32_t* elements = api->get_int_array_elements(api, array);
+  int32_t* elements = env->get_int_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
   
@@ -1516,13 +1516,13 @@ new_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  api->new_long_array(api, length);
+  void* array =  env->new_long_array(env, length);
   
   // Increment reference count
-  api->inc_ref_count(api, array);
+  env->inc_ref_count(env, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Long");
@@ -1542,14 +1542,14 @@ set_elements(...)
   AV* av_values = (AV*)SvRV(sv_values);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
 
   // Check range
   if (av_len(av_values) + 1 != length) {
@@ -1586,13 +1586,13 @@ set_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -1617,7 +1617,7 @@ set_elements_range(...)
   }
   
   // Elements
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
   
   // Set element value
   {
@@ -1643,14 +1643,14 @@ set_data(...)
   SV* sv_data = ST(1);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
 
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 8) {
@@ -1682,13 +1682,13 @@ set_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -1708,7 +1708,7 @@ set_data_range(...)
   }
   
   // Elements
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
   
   // Copy data
   if (count > 0) {
@@ -1725,7 +1725,7 @@ set(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -1738,7 +1738,7 @@ set(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -1749,7 +1749,7 @@ set(...)
   int64_t value = (int64_t)SvIV(sv_value);
   
   // Set element
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
   
   elements[index] = value;
   
@@ -1763,7 +1763,7 @@ get(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -1775,7 +1775,7 @@ get(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -1783,7 +1783,7 @@ get(...)
   }
   
   // Get element
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
   int64_t value = elements[index];
   SV* sv_value = sv_2mortal(newSViv(value));
   
@@ -1800,14 +1800,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -1840,13 +1840,13 @@ get_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -1858,7 +1858,7 @@ get_elements_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Long::get_elements_range())");
   }
   
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -1883,14 +1883,14 @@ to_data(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 8));
   
@@ -1915,13 +1915,13 @@ to_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -1933,7 +1933,7 @@ to_data_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Long::to_data_range())");
   }
   
-  int64_t* elements = api->get_long_array_elements(api, array);
+  int64_t* elements = env->get_long_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
   
@@ -1957,13 +1957,13 @@ new_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  api->new_float_array(api, length);
+  void* array =  env->new_float_array(env, length);
   
   // Increment reference count
-  api->inc_ref_count(api, array);
+  env->inc_ref_count(env, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Float");
@@ -1983,14 +1983,14 @@ set_elements(...)
   AV* av_values = (AV*)SvRV(sv_values);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
 
   // Check range
   if (av_len(av_values) + 1 != length) {
@@ -2027,13 +2027,13 @@ set_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -2058,7 +2058,7 @@ set_elements_range(...)
   }
   
   // Elements
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
   
   // Set element value
   {
@@ -2084,14 +2084,14 @@ set_data(...)
   SV* sv_data = ST(1);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
 
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 4) {
@@ -2123,13 +2123,13 @@ set_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -2149,7 +2149,7 @@ set_data_range(...)
   }
   
   // Elements
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
   
   // Copy data
   if (count > 0) {
@@ -2166,7 +2166,7 @@ set(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -2179,7 +2179,7 @@ set(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -2190,7 +2190,7 @@ set(...)
   float value = (float)SvNV(sv_value);
   
   // Set element
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
   
   elements[index] = value;
   
@@ -2204,7 +2204,7 @@ get(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -2216,7 +2216,7 @@ get(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -2224,7 +2224,7 @@ get(...)
   }
   
   // Get element
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
   float value = elements[index];
   SV* sv_value = sv_2mortal(newSVnv(value));
   
@@ -2241,14 +2241,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -2281,13 +2281,13 @@ get_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -2299,7 +2299,7 @@ get_elements_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Float::get_elements_range())");
   }
   
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -2324,14 +2324,14 @@ to_data(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 4));
   
@@ -2356,13 +2356,13 @@ to_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -2374,7 +2374,7 @@ to_data_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Float::to_data_range())");
   }
   
-  float* elements = api->get_float_array_elements(api, array);
+  float* elements = env->get_float_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
   
@@ -2398,13 +2398,13 @@ new_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  api->new_double_array(api, length);
+  void* array =  env->new_double_array(env, length);
   
   // Increment reference count
-  api->inc_ref_count(api, array);
+  env->inc_ref_count(env, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Double");
@@ -2424,14 +2424,14 @@ set_elements(...)
   AV* av_values = (AV*)SvRV(sv_values);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
 
   // Check range
   if (av_len(av_values) + 1 != length) {
@@ -2468,13 +2468,13 @@ set_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -2499,7 +2499,7 @@ set_elements_range(...)
   }
   
   // Elements
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
   
   // Set element value
   {
@@ -2525,14 +2525,14 @@ set_data(...)
   SV* sv_data = ST(1);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
 
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 8) {
@@ -2564,13 +2564,13 @@ set_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -2590,7 +2590,7 @@ set_data_range(...)
   }
   
   // Elements
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
   
   // Copy data
   if (count > 0) {
@@ -2607,7 +2607,7 @@ set(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -2620,7 +2620,7 @@ set(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -2631,7 +2631,7 @@ set(...)
   double value = (double)SvNV(sv_value);
   
   // Set element
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
   
   elements[index] = value;
   
@@ -2645,7 +2645,7 @@ get(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -2657,7 +2657,7 @@ get(...)
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check range
   if (index < 0 || index > length - 1) {
@@ -2665,7 +2665,7 @@ get(...)
   }
   
   // Get element
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
   double value = elements[index];
   SV* sv_value = sv_2mortal(newSVnv(value));
   
@@ -2682,14 +2682,14 @@ get_elements(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -2722,13 +2722,13 @@ get_elements_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -2740,7 +2740,7 @@ get_elements_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Double::get_elements_range())");
   }
   
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   {
@@ -2765,14 +2765,14 @@ to_data(...)
   SV* sv_array = ST(0);
 
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 8));
   
@@ -2797,13 +2797,13 @@ to_data_range(...)
   int32_t count = (int32_t)SvIV(sv_count);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
-  int32_t length = api->get_array_length(api, array);
+  int32_t length = env->get_array_length(env, array);
   
   // Check index
   if (index < 0 || index > length - 1) {
@@ -2815,7 +2815,7 @@ to_data_range(...)
     croak("Index + count is out of range(SPVM::Perl::Object::Array::Double::to_data_range())");
   }
   
-  double* elements = api->get_double_array_elements(api, array);
+  double* elements = env->get_double_array_elements(env, array);
   
   SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
   
@@ -2838,11 +2838,11 @@ new_len(...)
   SV* sv_length = ST(2);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   int32_t length = (int32_t)SvIV(sv_length);
 
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
   // Element type id
@@ -2852,14 +2852,14 @@ new_len(...)
   assert(basic_type);
   
   // New array
-  void* array = api->new_object_array(api, basic_type->id, length);
+  void* array = env->new_object_array(env, basic_type->id, length);
   
   // Fix type name(int[] -> int[][]);
   SV* sv_type_name = sv_2mortal(newSVsv(sv_basic_type_name));
   sv_catpv(sv_type_name, "[]");
   
   // Increment reference count
-  api->inc_ref_count(api, array);
+  env->inc_ref_count(env, array);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Perl::Object::Array::Object");
@@ -2879,13 +2879,13 @@ set(...)
   SV* sv_object = ST(2);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get array
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
   // Get object
@@ -2894,7 +2894,7 @@ set(...)
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
   
-  api->set_object_array_element(api, array, index, (void*)object);
+  env->set_object_array_element(env, array, index, (void*)object);
   
   XSRETURN(0);
 }
@@ -2909,10 +2909,10 @@ get(...)
   SV* sv_index = ST(1);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
   // Get array
@@ -2926,9 +2926,9 @@ get(...)
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
-  void* basic_object = api->get_object_array_element(api, array, index);
+  void* basic_object = env->get_object_array_element(env, array, index);
   if (basic_object != NULL) {
-    api->inc_ref_count(api, basic_object);
+    env->inc_ref_count(env, basic_object);
   }
   
   SV* sv_basic_object;
@@ -2986,9 +2986,9 @@ get_sub_name(...)
   int32_t sub_id = (int32_t)SvIV(sv_sub_id);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
@@ -3009,9 +3009,9 @@ get_sub_names(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
@@ -3045,9 +3045,9 @@ get_subs_from_package_id(...)
   int32_t package_id = SvIV(sv_package_id);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
   SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_id);
@@ -3103,9 +3103,9 @@ get_packages(...)
   (void)RETVAL;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
   AV* av_packages = (AV*)sv_2mortal((SV*)newAV());
@@ -3195,9 +3195,9 @@ get_package_load_path(...)
   SV* sv_package_name = ST(0);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
 
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
 
@@ -3343,9 +3343,9 @@ bind_native_sub(...)
   SV* sv_native_address = ST(2);
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
 
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
   
@@ -3379,11 +3379,11 @@ build_runtime(...)
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
   
   // Set API
-  SPVM_ENV* api = runtime->api;
-  size_t iv_api = PTR2IV(api);
-  SV* sviv_api = sv_2mortal(newSViv(iv_api));
-  SV* sv_api = sv_2mortal(newRV_inc(sviv_api));
-  sv_setsv(get_sv("SPVM::API", 0), sv_api);
+  SPVM_ENV* env = runtime->env;
+  size_t iv_env = PTR2IV(env);
+  SV* sviv_env = sv_2mortal(newSViv(iv_env));
+  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+  sv_setsv(get_sv("SPVM::API", 0), sv_env);
   
   XSRETURN(0);
 }
@@ -3446,11 +3446,11 @@ bind_jitcode_sub(...)
   void* sub_jit_address = INT2PTR(void*, SvIV(sv_sub_native_address));
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
-  int32_t sub_id = api->get_sub_id(api, sub_abs_name);
+  int32_t sub_id = env->get_sub_id(env, sub_abs_name);
 
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
   // Subroutine information
@@ -3471,8 +3471,8 @@ get_objects_count(...)
 {
   (void)RETVAL;
   
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
-  int32_t objects_count = api->get_objects_count(api);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  int32_t objects_count = env->get_objects_count(env);
   SV* sv_objects_count = sv_2mortal(newSViv(objects_count));
   
   XPUSHs(sv_objects_count);
@@ -3491,12 +3491,12 @@ call_sub(...)
   stack_arg_start++;
   
   // API
-  SPVM_ENV* api = SPVM_XS_UTIL_get_api();
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
 
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
-  int32_t sub_id = api->get_sub_id(api, sub_abs_name);
+  int32_t sub_id = env->get_sub_id(env, sub_abs_name);
   
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)api->get_runtime(api);
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
   // Subroutine information
@@ -3606,36 +3606,36 @@ call_sub(...)
   if (return_type_dimension == 0 && return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
     switch (return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {
-        api->call_void_sub(api, sub_id, call_sub_args);
+        env->call_void_sub(env, sub_id, call_sub_args);
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        int8_t return_value = api->call_byte_sub(api, sub_id, call_sub_args);
+        int8_t return_value = env->call_byte_sub(env, sub_id, call_sub_args);
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        int16_t return_value = api->call_short_sub(api, sub_id, call_sub_args);
+        int16_t return_value = env->call_short_sub(env, sub_id, call_sub_args);
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        int32_t return_value = api->call_int_sub(api, sub_id, call_sub_args);
+        int32_t return_value = env->call_int_sub(env, sub_id, call_sub_args);
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        int64_t return_value = api->call_long_sub(api, sub_id, call_sub_args);
+        int64_t return_value = env->call_long_sub(env, sub_id, call_sub_args);
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        float return_value = api->call_float_sub(api, sub_id, call_sub_args);
+        float return_value = env->call_float_sub(env, sub_id, call_sub_args);
         sv_return_value = sv_2mortal(newSVnv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        double return_value = api->call_double_sub(api, sub_id, call_sub_args);
+        double return_value = env->call_double_sub(env, sub_id, call_sub_args);
         sv_return_value = sv_2mortal(newSVnv(return_value));
         break;
       }
@@ -3644,10 +3644,10 @@ call_sub(...)
     }
   }
   else {
-    void* return_value = api->call_object_sub(api, sub_id, call_sub_args);
+    void* return_value = env->call_object_sub(env, sub_id, call_sub_args);
     sv_return_value = NULL;
     if (return_value != NULL) {
-      api->inc_ref_count(api, return_value);
+      env->inc_ref_count(env, return_value);
       
       if (return_type_dimension == 1) {
         switch(return_basic_type_id) {
@@ -3689,10 +3689,10 @@ call_sub(...)
   SPAGAIN;
   ax = (SP - PL_stack_base) + 1;
   
-  void* exception = api->get_exception(api);
+  void* exception = env->get_exception(env);
   if (exception) {
-    int32_t length = api->get_array_length(api, exception);
-    int8_t* exception_bytes = api->get_byte_array_elements(api, exception);
+    int32_t length = env->get_array_length(env, exception);
+    int8_t* exception_bytes = env->get_byte_array_elements(env, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
     croak("%s", SvPV_nolen(sv_exception));
   }

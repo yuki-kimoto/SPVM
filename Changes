@@ -14,7 +14,8 @@
   - rename SPVM_API_float to SPVM_VALUE_float
   - rename SPVM_API_double to SPVM_VALUE_double
   - rename SPVM_API_OBJECT to SPVM_VALUE_object
-  
+  - rename SPVM_API to SPVM_ENV
+  - rename spvm_api.h to spvm_native.h
 0.0339 2018-05-26
   - rename Std::Math to Math
   - renmae Std::Time to Time

@@ -466,18 +466,18 @@ SPVM Module:
 C Source File;
 
   // lib/SPVM/MyMathNative.inline/MyMathNative.c
-  #include <spvm_api.h>
+  #include <spvm_native.h>
 
-  int32_t SPVM__MyMathNative__sum(SPVM_ENV* api, SPVM_VALUE* args) {
+  int32_t SPVM__MyMathNative__sum(SPVM_ENV* env, SPVM_VALUE* args) {
     
     // First argument
     void* sp_nums = args[0].oval;
     
     // Array length
-    int32_t length = api->get_array_length(api, sp_nums);
+    int32_t length = env->get_array_length(env, sp_nums);
     
     // Elements pointer
-    int32_t* nums = api->get_int_array_elements(api, sp_nums);
+    int32_t* nums = env->get_int_array_elements(env, sp_nums);
     
     // Culcurate total
     int32_t total = 0;
