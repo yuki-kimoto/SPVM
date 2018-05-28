@@ -4,8 +4,8 @@
 #include "spvm_base.h"
 #include "spvm_api.h"
 
-#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset)))
-#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(SPVM_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))++)
+#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset)))
+#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))++)
 #define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -13,7 +13,7 @@ do {\
   }\
 } while (0)\
 
-#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))--)
+#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))--)
 #define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -25,16 +25,16 @@ do {\
 #define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 #define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist_ptr, source) \
 do {\
-  SPVM_object* tmp_object = source;\
+  void* tmp_object = source;\
   if (tmp_object != NULL) {\
     SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(tmp_object);\
   }\
-  if (*(SPVM_object**)(dist_ptr) != NULL) {\
-    if (SPVM_RUNTIME_C_INLINE_ISWEAK(*(SPVM_object**)(dist_ptr))) { api->unweaken(api, (SPVM_object**)dist_ptr); }\
-    if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_object**)(dist_ptr)) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_object**)(dist_ptr)); }\
-    else { api->dec_ref_count(api, *(SPVM_object**)(dist_ptr)); }\
+  if (*(void**)(dist_ptr) != NULL) {\
+    if (SPVM_RUNTIME_C_INLINE_ISWEAK(*(void**)(dist_ptr))) { api->unweaken(api, (void**)dist_ptr); }\
+    if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(void**)(dist_ptr)) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)(dist_ptr)); }\
+    else { api->dec_ref_count(api, *(void**)(dist_ptr)); }\
   }\
-  *(SPVM_object**)(dist_ptr) = tmp_object;\
+  *(void**)(dist_ptr) = tmp_object;\
 } while (0)\
 
 

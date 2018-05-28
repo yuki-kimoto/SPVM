@@ -156,7 +156,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_API* api, SPVM_O
   total_length += strlen(line_str);
   
   // Create exception message
-  SPVM_object* new_exception = api->new_string(api, NULL, total_length);
+  void* new_exception = api->new_string(api, NULL, total_length);
   int8_t* new_exception_bytes = api->get_byte_array_elements(api, new_exception);
   
   memcpy(
@@ -1198,7 +1198,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_API* api, SPVM_OBJECT* objec
     return NULL;
   }
 
-  SPVM_object* value = *(SPVM_object**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
+  void* value = *(void**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_id);
   
   return value;
 }

@@ -10,7 +10,7 @@ void boot_SPVM__std() {}
 int32_t SPVM__std__sum_int(SPVM_API* api, SPVM_VALUE* args) {
   (void)api;
   
-  SPVM_object* array = args[0].oval;
+  void* array = args[0].oval;
   
   int32_t length = api->get_array_length(api, array);
   
@@ -60,7 +60,7 @@ int32_t SPVM__std__test2(SPVM_API* api, SPVM_VALUE* args) {
 void SPVM__std__print(SPVM_API* api, SPVM_VALUE* args) {
   (void)api;
   
-  SPVM_object* array = args[0].oval;
+  void* array = args[0].oval;
 
   int8_t* string = api->get_byte_array_elements(api, array);
   
@@ -70,7 +70,7 @@ void SPVM__std__print(SPVM_API* api, SPVM_VALUE* args) {
 void SPVM__std__say(SPVM_API* api, SPVM_VALUE* args) {
   (void)api;
   
-  SPVM_object* array = args[0].oval;
+  void* array = args[0].oval;
 
   int8_t* string = api->get_byte_array_elements(api, array);
 

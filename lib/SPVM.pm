@@ -471,7 +471,7 @@ C Source File;
   int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_VALUE* args) {
     
     // First argument
-    SPVM_object* sp_nums = args[0].oval;
+    void* sp_nums = args[0].oval;
     
     // Array length
     int32_t length = api->get_array_length(api, sp_nums);

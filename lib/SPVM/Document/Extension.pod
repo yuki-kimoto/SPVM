@@ -75,5 +75,5 @@ Type of return value is corresponding the folloing type.
   long                int64_t
   float               float
   double              double
-  [Object value]      SPVM_object*
+  [Object value]      void*
 

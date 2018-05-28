@@ -957,27 +957,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     switch (type_to->basic_type->id) {
                       case SPVM_BASIC_TYPE_C_ID_BYTE:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE;
-                        *(SPVM_byte*)&opcode.operand1 = *(SPVM_byte*)&constant->value;
+                        *(SPVM_VALUE_byte*)&opcode.operand1 = *(SPVM_VALUE_byte*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_SHORT:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_SHORT;
-                        *(SPVM_short*)&opcode.operand1 = *(SPVM_short*)&constant->value;
+                        *(SPVM_VALUE_short*)&opcode.operand1 = *(SPVM_VALUE_short*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_INT:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_INT;
-                        *(SPVM_int*)&opcode.operand1 = *(SPVM_int*)&constant->value;
+                        *(SPVM_VALUE_int*)&opcode.operand1 = *(SPVM_VALUE_int*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_LONG:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_LONG;
-                        *(SPVM_long*)&opcode.operand1 = *(SPVM_long*)&constant->value;
+                        *(SPVM_VALUE_long*)&opcode.operand1 = *(SPVM_VALUE_long*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_FLOAT:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_FLOAT;
-                        *(SPVM_float*)&opcode.operand1 = *(SPVM_float*)&constant->value;
+                        *(SPVM_VALUE_float*)&opcode.operand1 = *(SPVM_VALUE_float*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_DOUBLE;
-                        *(SPVM_double*)&opcode.operand1 = *(SPVM_double*)&constant->value;
+                        *(SPVM_VALUE_double*)&opcode.operand1 = *(SPVM_VALUE_double*)&constant->value;
                         break;
                       default:
                         assert(0);
