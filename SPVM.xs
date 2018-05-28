@@ -213,7 +213,7 @@ set_elements(...)
   SV* sv_values = ST(1);
   
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece(SPVM::Perl::Object::Array::Byte::set_elements())");
+    croak("Values must be array refenrece)");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
@@ -230,7 +230,7 @@ set_elements(...)
 
   // Check length
   if (av_len(av_values) + 1 != length) {
-    croak("Elements length must be same as array length(SPVM::Perl::Object::Array::Byte::set_elements())");
+    croak("Elements length must be same as array length)");
   }
   
   {
@@ -273,24 +273,24 @@ set_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Byte::set_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Byte::set_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check if sv values is array reference
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece(SPVM::Perl::Object::Array::Byte::set_elements_range())");
+    croak("Values must be array refenrece)");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
   
   // Check elements length
   if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument(SPVM::Perl::Object::Array::Byte::set_elements_range())");
+    croak("Elements length must be same as count argument)");
   }
   
   // Elements
@@ -331,7 +331,7 @@ set_data(...)
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length) {
-    croak("Data total byte size must be same as array length(SPVM::Perl::Object::Array::Byte::set_data())");
+    croak("Data total byte size must be same as array length)");
   }
   
   if (length > 0) {
@@ -369,19 +369,19 @@ set_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Byte::set_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Byte::set_data_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check data byte size
   int32_t data_byte_size = (int32_t)sv_len(sv_data);
   
   if (data_byte_size != count) {
-    croak("Data byte size must be same as count argument(SPVM::Perl::Object::Array::Byte::set_data_range())");
+    croak("Data byte size must be same as count argument)");
   }
   
   // Elements
@@ -419,7 +419,7 @@ set(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Byte::set())");
+    croak("Out of range)");
   }
   
   // Value
@@ -456,7 +456,7 @@ get(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Byte::set())");
+    croak("Out of range)");
   }
   
   // Get element
@@ -469,7 +469,7 @@ get(...)
 }
 
 SV*
-get_elements(...)
+to_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -501,7 +501,7 @@ get_elements(...)
 }
 
 SV*
-get_elements_range(...)
+to_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -527,12 +527,12 @@ get_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Byte::get_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Byte::get_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   int8_t* elements = env->get_byte_array_elements(env, array);
@@ -602,12 +602,12 @@ to_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Byte::to_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Byte::to_data_range())");
+    croak("Index + count is out of range)");
   }
   
   int8_t* elements = env->get_byte_array_elements(env, array);
@@ -671,7 +671,7 @@ set_elements(...)
 
   // Check range
   if (av_len(av_values) + 1 != length) {
-    croak("Elements length must be same as array length(SPVM::Perl::Object::Array::Short::set_elements())");
+    croak("Elements length must be same as array length)");
   }
   
   {
@@ -714,24 +714,24 @@ set_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Short::set_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Short::set_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check if sv values is array reference
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece(SPVM::Perl::Object::Array::Short::set_elements_range())");
+    croak("Values must be array refenrece)");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
   
   // Check elements length
   if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument(SPVM::Perl::Object::Array::Short::set_elements_range())");
+    croak("Elements length must be same as count argument)");
   }
   
   // Elements
@@ -772,7 +772,7 @@ set_data(...)
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 2) {
-    croak("Data total byte size must be same as array length * 2(SPVM::Perl::Object::Array::Short::set_data())");
+    croak("Data total byte size must be same as array length * 2)");
   }
   
   if (length > 0) {
@@ -810,19 +810,19 @@ set_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Short::set_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Short::set_data_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check data short size
   int32_t data_short_size = (int32_t)sv_len(sv_data);
   
   if (data_short_size != count * 2) {
-    croak("Data byte size must be same as count argument * 2(SPVM::Perl::Object::Array::Short::set_data_range())");
+    croak("Data byte size must be same as count argument * 2)");
   }
   
   // Elements
@@ -860,7 +860,7 @@ set(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Short::set())");
+    croak("Out of range)");
   }
   
   // Value
@@ -897,7 +897,7 @@ get(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Short::set())");
+    croak("Out of range)");
   }
   
   // Get element
@@ -910,7 +910,7 @@ get(...)
 }
 
 SV*
-get_elements(...)
+to_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -942,7 +942,7 @@ get_elements(...)
 }
 
 SV*
-get_elements_range(...)
+to_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -968,12 +968,12 @@ get_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Short::get_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Short::get_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   int16_t* elements = env->get_short_array_elements(env, array);
@@ -1043,12 +1043,12 @@ to_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Short::to_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Short::to_data_range())");
+    croak("Index + count is out of range)");
   }
   
   int16_t* elements = env->get_short_array_elements(env, array);
@@ -1112,7 +1112,7 @@ set_elements(...)
 
   // Check range
   if (av_len(av_values) + 1 != length) {
-    croak("Elements length must be same as array length(SPVM::Perl::Object::Array::Int::set_elements())");
+    croak("Elements length must be same as array length)");
   }
   
   {
@@ -1155,24 +1155,24 @@ set_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Int::set_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Int::set_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check if sv values is array reference
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece(SPVM::Perl::Object::Array::Int::set_elements_range())");
+    croak("Values must be array refenrece)");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
   
   // Check elements length
   if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument(SPVM::Perl::Object::Array::Int::set_elements_range())");
+    croak("Elements length must be same as count argument)");
   }
   
   // Elements
@@ -1213,7 +1213,7 @@ set_data(...)
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 4) {
-    croak("Data total byte size must be same as array length * 4(SPVM::Perl::Object::Array::Int::set_data())");
+    croak("Data total byte size must be same as array length * 4)");
   }
   
   if (length > 0) {
@@ -1251,19 +1251,19 @@ set_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Int::set_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Int::set_data_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check data int size
   int32_t data_int_size = (int32_t)sv_len(sv_data);
   
   if (data_int_size != count * 4) {
-    croak("Data byte size must be same as count argument * 4(SPVM::Perl::Object::Array::Int::set_data_range())");
+    croak("Data byte size must be same as count argument * 4)");
   }
   
   // Elements
@@ -1301,7 +1301,7 @@ set(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Int::set())");
+    croak("Out of range)");
   }
   
   // Value
@@ -1338,7 +1338,7 @@ get(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Int::set())");
+    croak("Out of range)");
   }
   
   // Get element
@@ -1351,7 +1351,7 @@ get(...)
 }
 
 SV*
-get_elements(...)
+to_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1383,7 +1383,7 @@ get_elements(...)
 }
 
 SV*
-get_elements_range(...)
+to_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1409,12 +1409,12 @@ get_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Int::get_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Int::get_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   int32_t* elements = env->get_int_array_elements(env, array);
@@ -1484,12 +1484,12 @@ to_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Int::to_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Int::to_data_range())");
+    croak("Index + count is out of range)");
   }
   
   int32_t* elements = env->get_int_array_elements(env, array);
@@ -1553,7 +1553,7 @@ set_elements(...)
 
   // Check range
   if (av_len(av_values) + 1 != length) {
-    croak("Elements length must be same as array length(SPVM::Perl::Object::Array::Long::set_elements())");
+    croak("Elements length must be same as array length)");
   }
   
   {
@@ -1596,24 +1596,24 @@ set_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Long::set_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Long::set_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check if sv values is array reference
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece(SPVM::Perl::Object::Array::Long::set_elements_range())");
+    croak("Values must be array refenrece)");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
   
   // Check elements length
   if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument(SPVM::Perl::Object::Array::Long::set_elements_range())");
+    croak("Elements length must be same as count argument)");
   }
   
   // Elements
@@ -1654,7 +1654,7 @@ set_data(...)
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 8) {
-    croak("Data total byte size must be same as array length * 8(SPVM::Perl::Object::Array::Long::set_data())");
+    croak("Data total byte size must be same as array length * 8)");
   }
   
   if (length > 0) {
@@ -1692,19 +1692,19 @@ set_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Long::set_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Long::set_data_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check data long size
   int32_t data_long_size = (int32_t)sv_len(sv_data);
   
   if (data_long_size != count * 8) {
-    croak("Data byte size must be same as count argument * 8(SPVM::Perl::Object::Array::Long::set_data_range())");
+    croak("Data byte size must be same as count argument * 8)");
   }
   
   // Elements
@@ -1742,7 +1742,7 @@ set(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Long::set())");
+    croak("Out of range)");
   }
   
   // Value
@@ -1779,7 +1779,7 @@ get(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Long::set())");
+    croak("Out of range)");
   }
   
   // Get element
@@ -1792,7 +1792,7 @@ get(...)
 }
 
 SV*
-get_elements(...)
+to_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1824,7 +1824,7 @@ get_elements(...)
 }
 
 SV*
-get_elements_range(...)
+to_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1850,12 +1850,12 @@ get_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Long::get_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Long::get_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   int64_t* elements = env->get_long_array_elements(env, array);
@@ -1925,12 +1925,12 @@ to_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Long::to_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Long::to_data_range())");
+    croak("Index + count is out of range)");
   }
   
   int64_t* elements = env->get_long_array_elements(env, array);
@@ -1994,7 +1994,7 @@ set_elements(...)
 
   // Check range
   if (av_len(av_values) + 1 != length) {
-    croak("Elements length must be same as array length(SPVM::Perl::Object::Array::Float::set_elements())");
+    croak("Elements length must be same as array length)");
   }
   
   {
@@ -2037,24 +2037,24 @@ set_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Float::set_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Float::set_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check if sv values is array reference
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece(SPVM::Perl::Object::Array::Float::set_elements_range())");
+    croak("Values must be array refenrece)");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
   
   // Check elements length
   if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument(SPVM::Perl::Object::Array::Float::set_elements_range())");
+    croak("Elements length must be same as count argument)");
   }
   
   // Elements
@@ -2095,7 +2095,7 @@ set_data(...)
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 4) {
-    croak("Data total byte size must be same as array length * 4(SPVM::Perl::Object::Array::Float::set_data())");
+    croak("Data total byte size must be same as array length * 4)");
   }
   
   if (length > 0) {
@@ -2133,19 +2133,19 @@ set_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Float::set_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Float::set_data_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check data float size
   int32_t data_float_size = (int32_t)sv_len(sv_data);
   
   if (data_float_size != count * 4) {
-    croak("Data byte size must be same as count argument * 4(SPVM::Perl::Object::Array::Float::set_data_range())");
+    croak("Data byte size must be same as count argument * 4)");
   }
   
   // Elements
@@ -2183,7 +2183,7 @@ set(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Float::set())");
+    croak("Out of range)");
   }
   
   // Value
@@ -2220,7 +2220,7 @@ get(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Float::set())");
+    croak("Out of range)");
   }
   
   // Get element
@@ -2233,7 +2233,7 @@ get(...)
 }
 
 SV*
-get_elements(...)
+to_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2265,7 +2265,7 @@ get_elements(...)
 }
 
 SV*
-get_elements_range(...)
+to_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2291,12 +2291,12 @@ get_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Float::get_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Float::get_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   float* elements = env->get_float_array_elements(env, array);
@@ -2366,12 +2366,12 @@ to_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Float::to_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Float::to_data_range())");
+    croak("Index + count is out of range)");
   }
   
   float* elements = env->get_float_array_elements(env, array);
@@ -2435,7 +2435,7 @@ set_elements(...)
 
   // Check range
   if (av_len(av_values) + 1 != length) {
-    croak("Elements length must be same as array length(SPVM::Perl::Object::Array::Double::set_elements())");
+    croak("Elements length must be same as array length)");
   }
   
   {
@@ -2478,24 +2478,24 @@ set_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Double::set_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Double::set_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check if sv values is array reference
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece(SPVM::Perl::Object::Array::Double::set_elements_range())");
+    croak("Values must be array refenrece)");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
   
   // Check elements length
   if (av_len(av_values) + 1 != count) {
-    croak("Elements length must be same as count argument(SPVM::Perl::Object::Array::Double::set_elements_range())");
+    croak("Elements length must be same as count argument)");
   }
   
   // Elements
@@ -2536,7 +2536,7 @@ set_data(...)
   
   // Check range
   if ((int32_t)sv_len(sv_data) != length * 8) {
-    croak("Data total byte size must be same as array length * 8(SPVM::Perl::Object::Array::Double::set_data())");
+    croak("Data total byte size must be same as array length * 8)");
   }
   
   if (length > 0) {
@@ -2574,19 +2574,19 @@ set_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Double::set_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Double::set_data_range())");
+    croak("Index + count is out of range)");
   }
   
   // Check data double size
   int32_t data_double_size = (int32_t)sv_len(sv_data);
   
   if (data_double_size != count * 8) {
-    croak("Data byte size must be same as count argument * 8(SPVM::Perl::Object::Array::Double::set_data_range())");
+    croak("Data byte size must be same as count argument * 8)");
   }
   
   // Elements
@@ -2624,7 +2624,7 @@ set(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Double::set())");
+    croak("Out of range)");
   }
   
   // Value
@@ -2661,7 +2661,7 @@ get(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range(SPVM::Perl::Object::Array::Double::set())");
+    croak("Out of range)");
   }
   
   // Get element
@@ -2674,7 +2674,7 @@ get(...)
 }
 
 SV*
-get_elements(...)
+to_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2706,7 +2706,7 @@ get_elements(...)
 }
 
 SV*
-get_elements_range(...)
+to_elements_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2732,12 +2732,12 @@ get_elements_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Double::get_elements_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Double::get_elements_range())");
+    croak("Index + count is out of range)");
   }
   
   double* elements = env->get_double_array_elements(env, array);
@@ -2807,12 +2807,12 @@ to_data_range(...)
   
   // Check index
   if (index < 0 || index > length - 1) {
-    croak("Index is out of range(SPVM::Perl::Object::Array::Double::to_data_range())");
+    croak("Index is out of range)");
   }
   
   // Check count
   if (count < 0 || index + count > length - 1) {
-    croak("Index + count is out of range(SPVM::Perl::Object::Array::Double::to_data_range())");
+    croak("Index + count is out of range)");
   }
   
   double* elements = env->get_double_array_elements(env, array);

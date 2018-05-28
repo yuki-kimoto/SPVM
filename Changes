@@ -16,6 +16,7 @@
   - rename SPVM_API_OBJECT to SPVM_VALUE_object
   - rename SPVM_API to SPVM_ENV
   - rename spvm_api.h to spvm_native.h
+  - rename $obj->get_elements to $obj->to_elements
 0.0339 2018-05-26
   - rename Std::Math to Math
   - renmae Std::Time to Time

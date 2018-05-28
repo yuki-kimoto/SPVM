@@ -28,9 +28,9 @@ Method List:
 
 =item * get
 
-=item * get_elements
+=item * to_elements
 
-=item * get_elements_range
+=item * to_elements_range
 
 =item * to_data
 
