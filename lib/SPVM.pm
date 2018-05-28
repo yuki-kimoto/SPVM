@@ -468,10 +468,10 @@ C Source File;
   // lib/SPVM/MyMathNative.inline/MyMathNative.c
   #include <spvm_api.h>
 
-  int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_API_VALUE* args) {
+  int32_t SPVM__MyMathNative__sum(SPVM_API* api, SPVM_VALUE* args) {
     
     // First argument
-    SPVM_API_OBJECT* sp_nums = args[0].oval;
+    SPVM_object* sp_nums = args[0].oval;
     
     // Array length
     int32_t length = api->get_array_length(api, sp_nums);

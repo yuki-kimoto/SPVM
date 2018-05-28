@@ -35,7 +35,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_use.h"
 
-static SPVM_API_VALUE call_sub_args[255];
+static SPVM_VALUE call_sub_args[255];
 
 SPVM_API* SPVM_XS_UTIL_get_api() {
   
@@ -108,7 +108,7 @@ DESTROY(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_object* object = SPVM_XS_UTIL_get_object(sv_object);
   
   assert(api->get_ref_count(api, object));
   
@@ -136,7 +136,7 @@ new_string(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New string
-  SPVM_API_OBJECT* string =  api->new_string(api, SvPV_nolen(sv_bytes), length);
+  SPVM_object* string =  api->new_string(api, SvPV_nolen(sv_bytes), length);
   
   // Increment reference count
   api->inc_ref_count(api, string);
@@ -160,7 +160,7 @@ to_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* string = SPVM_XS_UTIL_get_object(sv_string);
+  SPVM_object* string = SPVM_XS_UTIL_get_object(sv_string);
   
   int32_t string_length = api->get_array_length(api, string);
   
@@ -191,7 +191,7 @@ new_len(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New array
-  SPVM_API_OBJECT* array =  api->new_byte_array(api, length);
+  SPVM_object* array =  api->new_byte_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -222,7 +222,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -266,7 +266,7 @@ set_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -323,7 +323,7 @@ set_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -362,7 +362,7 @@ set_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -412,7 +412,7 @@ set(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -449,7 +449,7 @@ get(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -480,7 +480,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -520,7 +520,7 @@ get_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -563,7 +563,7 @@ to_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -595,7 +595,7 @@ to_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -637,7 +637,7 @@ new_len(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New array
-  SPVM_API_OBJECT* array =  api->new_short_array(api, length);
+  SPVM_object* array =  api->new_short_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -663,7 +663,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -707,7 +707,7 @@ set_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -764,7 +764,7 @@ set_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -803,7 +803,7 @@ set_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -853,7 +853,7 @@ set(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -890,7 +890,7 @@ get(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -921,7 +921,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -961,7 +961,7 @@ get_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1004,7 +1004,7 @@ to_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -1036,7 +1036,7 @@ to_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1078,7 +1078,7 @@ new_len(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New array
-  SPVM_API_OBJECT* array =  api->new_int_array(api, length);
+  SPVM_object* array =  api->new_int_array(api, length);
 
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -1104,7 +1104,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -1148,7 +1148,7 @@ set_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1205,7 +1205,7 @@ set_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -1244,7 +1244,7 @@ set_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1294,7 +1294,7 @@ set(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1331,7 +1331,7 @@ get(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1362,7 +1362,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -1402,7 +1402,7 @@ get_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1445,7 +1445,7 @@ to_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -1477,7 +1477,7 @@ to_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1519,7 +1519,7 @@ new_len(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New array
-  SPVM_API_OBJECT* array =  api->new_long_array(api, length);
+  SPVM_object* array =  api->new_long_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -1545,7 +1545,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -1589,7 +1589,7 @@ set_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1646,7 +1646,7 @@ set_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -1685,7 +1685,7 @@ set_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1735,7 +1735,7 @@ set(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1772,7 +1772,7 @@ get(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1803,7 +1803,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -1843,7 +1843,7 @@ get_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1886,7 +1886,7 @@ to_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -1918,7 +1918,7 @@ to_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -1960,7 +1960,7 @@ new_len(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New array
-  SPVM_API_OBJECT* array =  api->new_float_array(api, length);
+  SPVM_object* array =  api->new_float_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -1986,7 +1986,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -2030,7 +2030,7 @@ set_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2087,7 +2087,7 @@ set_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -2126,7 +2126,7 @@ set_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2176,7 +2176,7 @@ set(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2213,7 +2213,7 @@ get(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2244,7 +2244,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -2284,7 +2284,7 @@ get_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2327,7 +2327,7 @@ to_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -2359,7 +2359,7 @@ to_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2401,7 +2401,7 @@ new_len(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // New array
-  SPVM_API_OBJECT* array =  api->new_double_array(api, length);
+  SPVM_object* array =  api->new_double_array(api, length);
   
   // Increment reference count
   api->inc_ref_count(api, array);
@@ -2427,7 +2427,7 @@ set_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -2471,7 +2471,7 @@ set_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2528,7 +2528,7 @@ set_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
 
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -2567,7 +2567,7 @@ set_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2617,7 +2617,7 @@ set(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2654,7 +2654,7 @@ get(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2685,7 +2685,7 @@ get_elements(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -2725,7 +2725,7 @@ get_elements_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2768,7 +2768,7 @@ to_data(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = api->get_array_length(api, array);
   
@@ -2800,7 +2800,7 @@ to_data_range(...)
   SPVM_API* api = SPVM_XS_UTIL_get_api();
   
   // Get object
-  SPVM_API_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_object* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = api->get_array_length(api, array);
@@ -2852,7 +2852,7 @@ new_len(...)
   assert(basic_type);
   
   // New array
-  SPVM_API_OBJECT* array = api->new_object_array(api, basic_type->id, length);
+  SPVM_object* array = api->new_object_array(api, basic_type->id, length);
   
   // Fix type name(int[] -> int[][]);
   SV* sv_type_name = sv_2mortal(newSVsv(sv_basic_type_name));
@@ -2894,7 +2894,7 @@ set(...)
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
   
-  api->set_object_array_element(api, array, index, (SPVM_API_OBJECT*)object);
+  api->set_object_array_element(api, array, index, (SPVM_object*)object);
   
   XSRETURN(0);
 }
@@ -2926,7 +2926,7 @@ get(...)
 
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
-  SPVM_API_OBJECT* basic_object = api->get_object_array_element(api, array, index);
+  SPVM_object* basic_object = api->get_object_array_element(api, array, index);
   if (basic_object != NULL) {
     api->inc_ref_count(api, basic_object);
   }
@@ -3644,7 +3644,7 @@ call_sub(...)
     }
   }
   else {
-    SPVM_API_OBJECT* return_value = api->call_object_sub(api, sub_id, call_sub_args);
+    SPVM_object* return_value = api->call_object_sub(api, sub_id, call_sub_args);
     sv_return_value = NULL;
     if (return_value != NULL) {
       api->inc_ref_count(api, return_value);
@@ -3689,7 +3689,7 @@ call_sub(...)
   SPAGAIN;
   ax = (SP - PL_stack_base) + 1;
   
-  SPVM_API_OBJECT* exception = api->get_exception(api);
+  SPVM_object* exception = api->get_exception(api);
   if (exception) {
     int32_t length = api->get_array_length(api, exception);
     int8_t* exception_bytes = api->get_byte_array_elements(api, exception);

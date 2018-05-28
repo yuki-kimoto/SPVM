@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
   }
 
-  SPVM_API_VALUE args[1];
+  SPVM_VALUE args[1];
   args[0].ival = 2;
   
   // Run

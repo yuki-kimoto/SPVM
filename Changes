@@ -7,6 +7,14 @@
   - rename double_value to dval
   - rename object_value to oval
   - pointer_value, string_value, object_address_value is merged to oval
+  - rename SPVM_API_byte to SPVM_byte
+  - rename SPVM_API_short to SPVM_short
+  - rename SPVM_API_int to SPVM_int
+  - rename SPVM_API_long to SPVM_long
+  - rename SPVM_API_float to SPVM_float
+  - rename SPVM_API_double to SPVM_double
+  - rename SPVM_API_OBJECT to SPVM_object
+  
 0.0339 2018-05-26
   - rename Std::Math to Math
   - renmae Std::Time to Time

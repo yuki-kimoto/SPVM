@@ -388,7 +388,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     opcode.operand0 = index_out;
                     opcode.operand1 = index_term_object;
-                    opcode.operand2 = sizeof(SPVM_API_VALUE) * field->id;
+                    opcode.operand2 = sizeof(SPVM_VALUE) * field->id;
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -957,27 +957,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     switch (type_to->basic_type->id) {
                       case SPVM_BASIC_TYPE_C_ID_BYTE:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE;
-                        *(SPVM_API_byte*)&opcode.operand1 = *(SPVM_API_byte*)&constant->value;
+                        *(SPVM_byte*)&opcode.operand1 = *(SPVM_byte*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_SHORT:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_SHORT;
-                        *(SPVM_API_short*)&opcode.operand1 = *(SPVM_API_short*)&constant->value;
+                        *(SPVM_short*)&opcode.operand1 = *(SPVM_short*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_INT:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_INT;
-                        *(SPVM_API_int*)&opcode.operand1 = *(SPVM_API_int*)&constant->value;
+                        *(SPVM_int*)&opcode.operand1 = *(SPVM_int*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_LONG:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_LONG;
-                        *(SPVM_API_long*)&opcode.operand1 = *(SPVM_API_long*)&constant->value;
+                        *(SPVM_long*)&opcode.operand1 = *(SPVM_long*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_FLOAT:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_FLOAT;
-                        *(SPVM_API_float*)&opcode.operand1 = *(SPVM_API_float*)&constant->value;
+                        *(SPVM_float*)&opcode.operand1 = *(SPVM_float*)&constant->value;
                         break;
                       case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                         opcode.id = SPVM_OPCODE_C_ID_LOAD_CONSTANT_DOUBLE;
-                        *(SPVM_API_double*)&opcode.operand1 = *(SPVM_API_double*)&constant->value;
+                        *(SPVM_double*)&opcode.operand1 = *(SPVM_double*)&constant->value;
                         break;
                       default:
                         assert(0);
@@ -1634,7 +1634,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
                     
                     opcode.operand0 = index_term_object;
-                    opcode.operand1 = sizeof(SPVM_API_VALUE) * field->id;
+                    opcode.operand1 = sizeof(SPVM_VALUE) * field->id;
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                     SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
@@ -1674,7 +1674,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                     
                     opcode.operand0 = index_term_object;
-                    opcode.operand1 = sizeof(SPVM_API_VALUE) * field->id;
+                    opcode.operand1 = sizeof(SPVM_VALUE) * field->id;
                     opcode.operand2 = index_in;
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -1948,7 +1948,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
                     
                   opcode.operand0 = index_term_object;
-                  opcode.operand1 = sizeof(SPVM_API_VALUE) * field->id;
+                  opcode.operand1 = sizeof(SPVM_VALUE) * field->id;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                   SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);

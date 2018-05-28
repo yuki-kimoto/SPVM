@@ -6,7 +6,7 @@
 
 struct SPVM_constant {
   SPVM_TYPE* type;
-  SPVM_API_VALUE value;
+  SPVM_VALUE value;
   int32_t string_length;
   int32_t id;
 };

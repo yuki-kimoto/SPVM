@@ -4,8 +4,8 @@
 #include "spvm_base.h"
 #include "spvm_api.h"
 
-#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_API_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset)))
-#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))++)
+#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset)))
+#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(SPVM_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))++)
 #define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -13,7 +13,7 @@ do {\
   }\
 } while (0)\
 
-#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_API_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))--)
+#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_int*)((intptr_t)object + (intptr_t)api->object_ref_count_byte_offset))--)
 #define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -25,16 +25,16 @@ do {\
 #define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 #define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist_ptr, source) \
 do {\
-  SPVM_API_OBJECT* tmp_object = source;\
+  SPVM_object* tmp_object = source;\
   if (tmp_object != NULL) {\
     SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(tmp_object);\
   }\
-  if (*(SPVM_API_OBJECT**)(dist_ptr) != NULL) {\
-    if (SPVM_RUNTIME_C_INLINE_ISWEAK(*(SPVM_API_OBJECT**)(dist_ptr))) { api->unweaken(api, (SPVM_API_OBJECT**)dist_ptr); }\
-    if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_API_OBJECT**)(dist_ptr)) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_API_OBJECT**)(dist_ptr)); }\
-    else { api->dec_ref_count(api, *(SPVM_API_OBJECT**)(dist_ptr)); }\
+  if (*(SPVM_object**)(dist_ptr) != NULL) {\
+    if (SPVM_RUNTIME_C_INLINE_ISWEAK(*(SPVM_object**)(dist_ptr))) { api->unweaken(api, (SPVM_object**)dist_ptr); }\
+    if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(SPVM_object**)(dist_ptr)) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(SPVM_object**)(dist_ptr)); }\
+    else { api->dec_ref_count(api, *(SPVM_object**)(dist_ptr)); }\
   }\
-  *(SPVM_API_OBJECT**)(dist_ptr) = tmp_object;\
+  *(SPVM_object**)(dist_ptr) = tmp_object;\
 } while (0)\
 
 
@@ -52,7 +52,7 @@ struct SPVM_runtime {
   SPVM_OBJECT* exception;
   
   // Package variables
-  SPVM_API_VALUE* package_vars;
+  SPVM_VALUE* package_vars;
   
   int32_t objects_count;
 };
@@ -61,10 +61,10 @@ SPVM_RUNTIME* SPVM_RUNTIME_new();
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
 SPVM_API* SPVM_RUNTIME_new_api(SPVM_RUNTIME* runtime);
 
-SPVM_API_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
+SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
 
-SPVM_API_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-SPVM_API_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
-SPVM_API_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_API_VALUE* args);
+SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+SPVM_VALUE SPVM_RUNTIME_call_sub_native(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
+SPVM_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_API* api, int32_t sub_id, SPVM_VALUE* args);
 
 #endif
