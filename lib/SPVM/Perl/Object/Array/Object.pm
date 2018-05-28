@@ -16,9 +16,9 @@ Method List:
 
 =item * new_len
 
-=item * set
+=item * set_element
 
-=item * get
+=item * get_element
 
 =back
 

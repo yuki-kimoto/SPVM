@@ -277,7 +277,7 @@ set_bin(...)
 }
 
 SV*
-set(...)
+set_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -505,7 +505,7 @@ set_bin(...)
 }
 
 SV*
-set(...)
+set_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -733,7 +733,7 @@ set_bin(...)
 }
 
 SV*
-set(...)
+set_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -961,7 +961,7 @@ set_bin(...)
 }
 
 SV*
-set(...)
+set_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1189,7 +1189,7 @@ set_bin(...)
 }
 
 SV*
-set(...)
+set_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1417,7 +1417,7 @@ set_bin(...)
 }
 
 SV*
-set(...)
+set_element(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1591,7 +1591,7 @@ new_len(...)
 }
 
 SV*
-set(...)
+set_element(...)
   PPCODE:
 {
   (void)RETVAL;

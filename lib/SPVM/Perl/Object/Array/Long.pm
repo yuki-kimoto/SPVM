@@ -20,9 +20,9 @@ Method List:
 
 =item * set_bin
 
-=item * set
+=item * set_element
 
-=item * get
+=item * get_element
 
 =item * to_elements
 
