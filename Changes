@@ -17,6 +17,15 @@
   - rename SPVM_API to SPVM_ENV
   - rename spvm_api.h to spvm_native.h
   - rename $obj->get_elements to $obj->to_elements
+  - rename $obj->to_data to $obj->to_bin
+  - rename $obj->set_data to $obj->set_bin
+  - rename SPVM::new_byte_array_data to SPVM::new_byte_array_bin
+  - rename SPVM::new_short_array_data to SPVM::new_short_array_bin
+  - rename SPVM::new_int_array_data to SPVM::new_int_array_bin
+  - rename SPVM::new_long_array_data to SPVM::new_long_array_bin
+  - rename SPVM::new_float_array_data to SPVM::new_float_array_bin
+  - rename SPVM::new_double_array_data to SPVM::new_double_array_bin
+  
 0.0339 2018-05-26
   - rename Std::Math to Math
   - renmae Std::Time to Time

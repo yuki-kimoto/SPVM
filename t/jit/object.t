@@ -28,7 +28,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $object = SPVM::TestCase->new();
     $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    $object->set_x_string(SPVM::new_byte_array_data("abc"));
+    $object->set_x_string(SPVM::new_byte_array_bin("abc"));
     ok(SPVM::TestCase->spvm_object_set_object($object));
   }
   # Create object

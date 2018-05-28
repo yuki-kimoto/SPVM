@@ -149,7 +149,7 @@ new_string(...)
 }
 
 SV*
-to_data(...)
+to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -166,9 +166,9 @@ to_data(...)
   
   int8_t* bytes = env->get_byte_array_elements(env, string);
 
-  SV* sv_data = sv_2mortal(newSVpvn((char*)bytes, string_length));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)bytes, string_length));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
@@ -311,13 +311,13 @@ set_elements_range(...)
 }
 
 SV*
-set_data(...)
+set_bin(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_data = ST(1);
+  SV* sv_bin = ST(1);
   
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
@@ -330,19 +330,19 @@ set_data(...)
   int8_t* elements = env->get_byte_array_elements(env, array);
   
   // Check range
-  if ((int32_t)sv_len(sv_data) != length) {
+  if ((int32_t)sv_len(sv_bin) != length) {
     croak("Data total byte size must be same as array length)");
   }
   
   if (length > 0) {
-    memcpy(elements, SvPV_nolen(sv_data), length);
+    memcpy(elements, SvPV_nolen(sv_bin), length);
   }
   
   XSRETURN(0);
 }
 
 SV*
-set_data_range(...)
+set_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -350,7 +350,7 @@ set_data_range(...)
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   SV* sv_count = ST(2);
-  SV* sv_data = ST(3);
+  SV* sv_bin = ST(3);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -377,19 +377,19 @@ set_data_range(...)
     croak("Index + count is out of range)");
   }
   
-  // Check data byte size
-  int32_t data_byte_size = (int32_t)sv_len(sv_data);
+  // Check bin byte size
+  int32_t bin_byte_size = (int32_t)sv_len(sv_bin);
   
-  if (data_byte_size != count) {
+  if (bin_byte_size != count) {
     croak("Data byte size must be same as count argument)");
   }
   
   // Elements
   int8_t* elements = env->get_byte_array_elements(env, array);
   
-  // Copy data
+  // Copy bin
   if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_data), count);
+    memcpy(elements + index, SvPV_nolen(sv_bin), count);
   }
   
   XSRETURN(0);
@@ -552,7 +552,7 @@ to_elements_range(...)
 }
 
 SV*
-to_data(...)
+to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -569,14 +569,14 @@ to_data(...)
   
   int8_t* elements = env->get_byte_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
 SV*
-to_data_range(...)
+to_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -612,9 +612,9 @@ to_data_range(...)
   
   int8_t* elements = env->get_byte_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
@@ -752,13 +752,13 @@ set_elements_range(...)
 }
 
 SV*
-set_data(...)
+set_bin(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_data = ST(1);
+  SV* sv_bin = ST(1);
   
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
@@ -771,19 +771,19 @@ set_data(...)
   int16_t* elements = env->get_short_array_elements(env, array);
   
   // Check range
-  if ((int32_t)sv_len(sv_data) != length * 2) {
+  if ((int32_t)sv_len(sv_bin) != length * 2) {
     croak("Data total byte size must be same as array length * 2)");
   }
   
   if (length > 0) {
-    memcpy(elements, SvPV_nolen(sv_data), length * 2);
+    memcpy(elements, SvPV_nolen(sv_bin), length * 2);
   }
   
   XSRETURN(0);
 }
 
 SV*
-set_data_range(...)
+set_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -791,7 +791,7 @@ set_data_range(...)
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   SV* sv_count = ST(2);
-  SV* sv_data = ST(3);
+  SV* sv_bin = ST(3);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -818,19 +818,19 @@ set_data_range(...)
     croak("Index + count is out of range)");
   }
   
-  // Check data short size
-  int32_t data_short_size = (int32_t)sv_len(sv_data);
+  // Check bin short size
+  int32_t bin_short_size = (int32_t)sv_len(sv_bin);
   
-  if (data_short_size != count * 2) {
+  if (bin_short_size != count * 2) {
     croak("Data byte size must be same as count argument * 2)");
   }
   
   // Elements
   int16_t* elements = env->get_short_array_elements(env, array);
   
-  // Copy data
+  // Copy bin
   if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_data), count * 2);
+    memcpy(elements + index, SvPV_nolen(sv_bin), count * 2);
   }
   
   XSRETURN(0);
@@ -993,7 +993,7 @@ to_elements_range(...)
 }
 
 SV*
-to_data(...)
+to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1010,14 +1010,14 @@ to_data(...)
   
   int16_t* elements = env->get_short_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 2));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 2));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
 SV*
-to_data_range(...)
+to_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1053,9 +1053,9 @@ to_data_range(...)
   
   int16_t* elements = env->get_short_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 2));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 2));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
@@ -1193,13 +1193,13 @@ set_elements_range(...)
 }
 
 SV*
-set_data(...)
+set_bin(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_data = ST(1);
+  SV* sv_bin = ST(1);
   
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
@@ -1212,19 +1212,19 @@ set_data(...)
   int32_t* elements = env->get_int_array_elements(env, array);
   
   // Check range
-  if ((int32_t)sv_len(sv_data) != length * 4) {
+  if ((int32_t)sv_len(sv_bin) != length * 4) {
     croak("Data total byte size must be same as array length * 4)");
   }
   
   if (length > 0) {
-    memcpy(elements, SvPV_nolen(sv_data), length * 4);
+    memcpy(elements, SvPV_nolen(sv_bin), length * 4);
   }
   
   XSRETURN(0);
 }
 
 SV*
-set_data_range(...)
+set_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1232,7 +1232,7 @@ set_data_range(...)
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   SV* sv_count = ST(2);
-  SV* sv_data = ST(3);
+  SV* sv_bin = ST(3);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -1259,19 +1259,19 @@ set_data_range(...)
     croak("Index + count is out of range)");
   }
   
-  // Check data int size
-  int32_t data_int_size = (int32_t)sv_len(sv_data);
+  // Check bin int size
+  int32_t bin_int_size = (int32_t)sv_len(sv_bin);
   
-  if (data_int_size != count * 4) {
+  if (bin_int_size != count * 4) {
     croak("Data byte size must be same as count argument * 4)");
   }
   
   // Elements
   int32_t* elements = env->get_int_array_elements(env, array);
   
-  // Copy data
+  // Copy bin
   if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_data), count * 4);
+    memcpy(elements + index, SvPV_nolen(sv_bin), count * 4);
   }
   
   XSRETURN(0);
@@ -1434,7 +1434,7 @@ to_elements_range(...)
 }
 
 SV*
-to_data(...)
+to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1451,14 +1451,14 @@ to_data(...)
   
   int32_t* elements = env->get_int_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 4));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
 SV*
-to_data_range(...)
+to_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1494,9 +1494,9 @@ to_data_range(...)
   
   int32_t* elements = env->get_int_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
@@ -1634,13 +1634,13 @@ set_elements_range(...)
 }
 
 SV*
-set_data(...)
+set_bin(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_data = ST(1);
+  SV* sv_bin = ST(1);
   
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
@@ -1653,19 +1653,19 @@ set_data(...)
   int64_t* elements = env->get_long_array_elements(env, array);
   
   // Check range
-  if ((int32_t)sv_len(sv_data) != length * 8) {
+  if ((int32_t)sv_len(sv_bin) != length * 8) {
     croak("Data total byte size must be same as array length * 8)");
   }
   
   if (length > 0) {
-    memcpy(elements, SvPV_nolen(sv_data), length * 8);
+    memcpy(elements, SvPV_nolen(sv_bin), length * 8);
   }
   
   XSRETURN(0);
 }
 
 SV*
-set_data_range(...)
+set_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1673,7 +1673,7 @@ set_data_range(...)
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   SV* sv_count = ST(2);
-  SV* sv_data = ST(3);
+  SV* sv_bin = ST(3);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -1700,19 +1700,19 @@ set_data_range(...)
     croak("Index + count is out of range)");
   }
   
-  // Check data long size
-  int32_t data_long_size = (int32_t)sv_len(sv_data);
+  // Check bin long size
+  int32_t bin_long_size = (int32_t)sv_len(sv_bin);
   
-  if (data_long_size != count * 8) {
+  if (bin_long_size != count * 8) {
     croak("Data byte size must be same as count argument * 8)");
   }
   
   // Elements
   int64_t* elements = env->get_long_array_elements(env, array);
   
-  // Copy data
+  // Copy bin
   if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_data), count * 8);
+    memcpy(elements + index, SvPV_nolen(sv_bin), count * 8);
   }
   
   XSRETURN(0);
@@ -1875,7 +1875,7 @@ to_elements_range(...)
 }
 
 SV*
-to_data(...)
+to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1892,14 +1892,14 @@ to_data(...)
   
   int64_t* elements = env->get_long_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 8));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
 SV*
-to_data_range(...)
+to_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1935,9 +1935,9 @@ to_data_range(...)
   
   int64_t* elements = env->get_long_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
@@ -2075,13 +2075,13 @@ set_elements_range(...)
 }
 
 SV*
-set_data(...)
+set_bin(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_data = ST(1);
+  SV* sv_bin = ST(1);
   
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
@@ -2094,19 +2094,19 @@ set_data(...)
   float* elements = env->get_float_array_elements(env, array);
   
   // Check range
-  if ((int32_t)sv_len(sv_data) != length * 4) {
+  if ((int32_t)sv_len(sv_bin) != length * 4) {
     croak("Data total byte size must be same as array length * 4)");
   }
   
   if (length > 0) {
-    memcpy(elements, SvPV_nolen(sv_data), length * 4);
+    memcpy(elements, SvPV_nolen(sv_bin), length * 4);
   }
   
   XSRETURN(0);
 }
 
 SV*
-set_data_range(...)
+set_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2114,7 +2114,7 @@ set_data_range(...)
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   SV* sv_count = ST(2);
-  SV* sv_data = ST(3);
+  SV* sv_bin = ST(3);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -2141,19 +2141,19 @@ set_data_range(...)
     croak("Index + count is out of range)");
   }
   
-  // Check data float size
-  int32_t data_float_size = (int32_t)sv_len(sv_data);
+  // Check bin float size
+  int32_t bin_float_size = (int32_t)sv_len(sv_bin);
   
-  if (data_float_size != count * 4) {
+  if (bin_float_size != count * 4) {
     croak("Data byte size must be same as count argument * 4)");
   }
   
   // Elements
   float* elements = env->get_float_array_elements(env, array);
   
-  // Copy data
+  // Copy bin
   if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_data), count * 4);
+    memcpy(elements + index, SvPV_nolen(sv_bin), count * 4);
   }
   
   XSRETURN(0);
@@ -2316,7 +2316,7 @@ to_elements_range(...)
 }
 
 SV*
-to_data(...)
+to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2333,14 +2333,14 @@ to_data(...)
   
   float* elements = env->get_float_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 4));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
 SV*
-to_data_range(...)
+to_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2376,9 +2376,9 @@ to_data_range(...)
   
   float* elements = env->get_float_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 4));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
@@ -2516,13 +2516,13 @@ set_elements_range(...)
 }
 
 SV*
-set_data(...)
+set_bin(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-  SV* sv_data = ST(1);
+  SV* sv_bin = ST(1);
   
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
@@ -2535,19 +2535,19 @@ set_data(...)
   double* elements = env->get_double_array_elements(env, array);
   
   // Check range
-  if ((int32_t)sv_len(sv_data) != length * 8) {
+  if ((int32_t)sv_len(sv_bin) != length * 8) {
     croak("Data total byte size must be same as array length * 8)");
   }
   
   if (length > 0) {
-    memcpy(elements, SvPV_nolen(sv_data), length * 8);
+    memcpy(elements, SvPV_nolen(sv_bin), length * 8);
   }
   
   XSRETURN(0);
 }
 
 SV*
-set_data_range(...)
+set_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2555,7 +2555,7 @@ set_data_range(...)
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   SV* sv_count = ST(2);
-  SV* sv_data = ST(3);
+  SV* sv_bin = ST(3);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -2582,19 +2582,19 @@ set_data_range(...)
     croak("Index + count is out of range)");
   }
   
-  // Check data double size
-  int32_t data_double_size = (int32_t)sv_len(sv_data);
+  // Check bin double size
+  int32_t bin_double_size = (int32_t)sv_len(sv_bin);
   
-  if (data_double_size != count * 8) {
+  if (bin_double_size != count * 8) {
     croak("Data byte size must be same as count argument * 8)");
   }
   
   // Elements
   double* elements = env->get_double_array_elements(env, array);
   
-  // Copy data
+  // Copy bin
   if (count > 0) {
-    memcpy(elements + index, SvPV_nolen(sv_data), count * 8);
+    memcpy(elements + index, SvPV_nolen(sv_bin), count * 8);
   }
   
   XSRETURN(0);
@@ -2757,7 +2757,7 @@ to_elements_range(...)
 }
 
 SV*
-to_data(...)
+to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2774,14 +2774,14 @@ to_data(...)
   
   double* elements = env->get_double_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)elements, length * 8));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 
 SV*
-to_data_range(...)
+to_bin_range(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2817,9 +2817,9 @@ to_data_range(...)
   
   double* elements = env->get_double_array_elements(env, array);
   
-  SV* sv_data = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
+  SV* sv_bin = sv_2mortal(newSVpvn((char*)(elements + index), count * 8));
   
-  XPUSHs(sv_data);
+  XPUSHs(sv_bin);
   XSRETURN(1);
 }
 

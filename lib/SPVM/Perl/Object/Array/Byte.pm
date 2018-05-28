@@ -7,9 +7,9 @@ use Encode 'decode';
 sub to_string {
   my $self = shift;
   
-  my $data = $self->to_data;
+  my $bin = $self->to_bin;
   
-  my $string = decode('UTF-8', $data);
+  my $string = decode('UTF-8', $bin);
   
   return $string;
 }
@@ -32,9 +32,9 @@ Method List:
 
 =item * set_elements_range
 
-=item * set_data
+=item * set_bin
 
-=item * set_data_range
+=item * set_bin_range
 
 =item * set_string
 
@@ -42,13 +42,13 @@ Method List:
 
 =item * get
 
-=item * get_elements
+=item * to_elements
 
-=item * get_elements_range
+=item * to_elements_range
 
-=item * to_data
+=item * to_bin
 
-=item * to_data_range
+=item * to_bin_range
 
 =item * to_string
 

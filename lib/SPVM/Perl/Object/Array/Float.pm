@@ -20,9 +20,9 @@ Method List:
 
 =item * set_elements_range
 
-=item * set_data
+=item * set_bin
 
-=item * set_data_range
+=item * set_bin_range
 
 =item * set
 
@@ -32,9 +32,9 @@ Method List:
 
 =item * to_elements_range
 
-=item * to_data
+=item * to_bin
 
-=item * to_data_range
+=item * to_bin_range
 
 =back
 

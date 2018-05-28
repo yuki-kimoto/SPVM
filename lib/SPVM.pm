@@ -128,14 +128,14 @@ sub new_short_array {
   return $array;
 }
 
-sub new_byte_array_data {
-  my $data = shift;
+sub new_byte_array_bin {
+  my $bin = shift;
   
-  my $length = length $data;
+  my $length = length $bin;
   
   my $array = SPVM::Perl::Object::Array::Byte->new_len($length);
   
-  $array->set_data($data);
+  $array->set_bin($bin);
   
   return $array;
 }
@@ -153,27 +153,27 @@ sub new_byte_array_string {
   my $string = shift;
   
   # Encode internal string to UTF-8 string
-  my $data = Encode::encode('UTF-8', $string);
+  my $bin = Encode::encode('UTF-8', $string);
   
-  my $array = SPVM::new_byte_array_data($data);
+  my $array = SPVM::new_byte_array_bin($bin);
   
   return $array;
 }
 
-sub new_short_array_data {
-  my $data = shift;
+sub new_short_array_bin {
+  my $bin = shift;
   
-  my $byte_length = length $data;
+  my $byte_length = length $bin;
   
   unless ($byte_length % 2 == 0) {
-    confess("data byte length must be divide by 2(SPVM::new_short_array_data())");
+    confess("bin byte length must be divide by 2(SPVM::new_short_array_bin())");
   }
   
   my $length = int($byte_length / 2);
   
   my $array = SPVM::Perl::Object::Array::Short->new_len($length);
   
-  $array->set_data($data);
+  $array->set_bin($bin);
   
   return $array;
 }
@@ -204,20 +204,20 @@ sub new_int_array {
   return $array;
 }
 
-sub new_int_array_data {
-  my $data = shift;
+sub new_int_array_bin {
+  my $bin = shift;
   
-  my $byte_length = length $data;
+  my $byte_length = length $bin;
   
   unless ($byte_length % 4 == 0) {
-    confess("data byte length must be divide by 4(SPVM::new_int_array_data())");
+    confess("bin byte length must be divide by 4(SPVM::new_int_array_bin())");
   }
   
   my $length = int($byte_length / 4);
   
   my $array = SPVM::Perl::Object::Array::Int->new_len($length);
   
-  $array->set_data($data);
+  $array->set_bin($bin);
   
   return $array;
 }
@@ -248,20 +248,20 @@ sub new_long_array {
   return $array;
 }
 
-sub new_long_array_data {
-  my $data = shift;
+sub new_long_array_bin {
+  my $bin = shift;
   
-  my $byte_length = length $data;
+  my $byte_length = length $bin;
   
   unless ($byte_length % 8 == 0) {
-    confess("data byte length must be divide by 8(SPVM::new_long_array_data())");
+    confess("bin byte length must be divide by 8(SPVM::new_long_array_bin())");
   }
   
   my $length = $byte_length / 8;
   
   my $array = SPVM::Perl::Object::Array::Long->new_len($length);
   
-  $array->set_data($data);
+  $array->set_bin($bin);
   
   return $array;
 }
@@ -292,20 +292,20 @@ sub new_float_array {
   return $array;
 }
 
-sub new_float_array_data {
-  my $data = shift;
+sub new_float_array_bin {
+  my $bin = shift;
   
-  my $byte_length = length $data;
+  my $byte_length = length $bin;
   
   unless ($byte_length % 4 == 0) {
-    confess("data byte length must be divide by 4(SPVM::new_float_array_data())");
+    confess("bin byte length must be divide by 4(SPVM::new_float_array_bin())");
   }
   
   my $length = $byte_length / 4;
   
   my $array = SPVM::Perl::Object::Array::Float->new_len($length);
   
-  $array->set_data($data);
+  $array->set_bin($bin);
   
   return $array;
 }
@@ -336,20 +336,20 @@ sub new_double_array {
   return $array;
 }
 
-sub new_double_array_data {
-  my $data = shift;
+sub new_double_array_bin {
+  my $bin = shift;
   
-  my $byte_length = length $data;
+  my $byte_length = length $bin;
   
   unless ($byte_length % 8 == 0) {
-    confess("data byte length must be divide by 8(SPVM::new_double_array_data())");
+    confess("bin byte length must be divide by 8(SPVM::new_double_array_bin())");
   }
   
   my $length = $byte_length / 8;
   
   my $array = SPVM::Perl::Object::Array::Double->new_len($length);
   
-  $array->set_data($data);
+  $array->set_bin($bin);
   
   return $array;
 }
