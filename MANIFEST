@@ -40,7 +40,7 @@ lib/SPVM/Perl/Object/Array/Short.pm
 lib/SPVM/Perl/Object/Package.pm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
-lib/SPVM/spvm_api.h
+lib/SPVM/spvm_native.h
 lib/SPVM/TypeUtil.pm
 lib/SPVM/TypeUtil.spvm
 lib_native/SPVM/Math.native/Math.c
