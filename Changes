@@ -25,6 +25,7 @@
   - rename SPVM::new_long_array_data to SPVM::new_long_array_bin
   - rename SPVM::new_float_array_data to SPVM::new_float_array_bin
   - rename SPVM::new_double_array_data to SPVM::new_double_array_bin
+  - remove range methods
   
 0.0339 2018-05-26
   - rename Std::Math to Math
