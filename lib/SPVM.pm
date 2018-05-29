@@ -7,9 +7,9 @@ use warnings;
 use DynaLoader;
 use File::Basename 'basename', 'dirname';
 
-use SPVM::Object;
-use SPVM::Object::Array;
-use SPVM::Object::Package;
+use SPVM::Data;
+use SPVM::Data::Array;
+use SPVM::Data::Package;
 
 use SPVM::Build;
 
@@ -302,7 +302,7 @@ sub new_double_array_bin {
 sub new_object {
   my $package_name = shift;
   
-  my $object = SPVM::Object::Package->new($package_name);
+  my $object = SPVM::Data::Package->new($package_name);
   
   return $object;
 }

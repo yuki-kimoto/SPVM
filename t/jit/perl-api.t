@@ -17,8 +17,6 @@ use FindBin;
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'CORE'; my $use_core_line = __LINE__;
 
-use SPVM::Object::Package;
-
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
 my $SHORT_MAX = 32767;
