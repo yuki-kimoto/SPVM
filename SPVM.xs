@@ -226,7 +226,7 @@ set_elements(...)
         }
         break;
       }
-      defalut:
+      default:
         croak("Invalid type");
     }
   }
@@ -320,7 +320,7 @@ set_bin(...)
         }
         break;
       }
-      defalut:
+      default:
         croak("Invalid type");
     }
   }
@@ -423,13 +423,19 @@ set_element(...)
         elements[index] = value;
         break;
       }
-      defalut: {
-        croak("Invalid type");
+      default: {
+        // Get object
+        SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
+        
+        env->set_object_array_element(env, array, index, value);
       }
     }
   }
   else if (dimension > 1) {
-    croak("Invalid type");
+    // Get object
+    SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
+    
+    env->set_object_array_element(env, array, index, value);
   }
   else {
     assert(0);
@@ -512,7 +518,7 @@ get_element(...)
         sv_value = sv_2mortal(newSVnv(value));
         break;
       }
-      defalut:
+      default:
         croak("Invalid type");
     }
   }
@@ -624,7 +630,7 @@ to_elements(...)
         sv_values = sv_2mortal(newRV_inc((SV*)av_values));
         break;
       }
-      defalut:
+      default:
         croak("Invalid type");
     }
   }
@@ -694,7 +700,7 @@ to_bin(...)
         sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
         break;
       }
-      defalut:
+      default:
         croak("Invalid type");
     }
   }
@@ -707,37 +713,6 @@ to_bin(...)
 }
 
 MODULE = SPVM::Object::Array::Object		PACKAGE = SPVM::Object::Array::Object
-
-SV*
-set_element(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_value = ST(2);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get array
-  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  // Get object
-  SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  
-  env->set_object_array_element(env, array, index, value);
-  
-  XSRETURN(0);
-}
 
 SV*
 get_element(...)
