@@ -28,6 +28,7 @@
   - remove range methods
   - rename $array->set to $array->set_element
   - rename SPVM::Perl::Object to SPVM::Object
+  - add SPVM::new_multi_array_len
 0.0339 2018-05-26
   - rename Std::Math to Math
   - renmae Std::Time to Time

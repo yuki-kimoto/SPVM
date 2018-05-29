@@ -432,6 +432,7 @@ set_element(...)
     }
   }
   else if (dimension > 1) {
+    
     // Get object
     SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
     
@@ -1633,6 +1634,45 @@ new_object_array_len(...)
   
   // New array
   void* array = env->new_object_array(env, basic_type->id, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_multi_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_basic_type_name = ST(0);
+  SV* sv_element_dimension = ST(1);
+  SV* sv_length = ST(2);
+  
+  // API
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+
+  int32_t element_dimension = (int32_t)SvIV(sv_element_dimension);
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+  // Element type id
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  assert(basic_type);
+  
+  // New array
+  void* array = env->new_multi_array(env, basic_type->id, element_dimension, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);

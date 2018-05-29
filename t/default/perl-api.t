@@ -28,14 +28,6 @@ my $LONG_MIN = -9223372036854775808;
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
-# TODO
-# remainder float double
-# duplicate loop
-# eval repeat
-# print
-
-use SPVM 'CORE';
-
 {
   # SPVM::Build::ExtUtil tests
   my $spvm_build = SPVM::Build::ExtUtil->new;
@@ -94,10 +86,9 @@ is_deeply(
     is_deeply($object2_get->get_x_int, 2);
   }
 
-=pod
   # element byte array
   {
-    my $object_array = SPVM::new_object_array_len("byte[]", 3);
+    my $object_array = SPVM::new_multi_array_len("byte", 1, 3);
     
     my $object1 = SPVM::new_byte_array([1, 2, 3]);
     $object_array->set_element(0, $object1);
@@ -114,7 +105,7 @@ is_deeply(
 
   # element short array
   {
-    my $object_array = SPVM::new_object_array_len("short[]", 3);
+    my $object_array = SPVM::new_multi_array_len("short", 1, 3);
     my $object1 = SPVM::new_short_array([1, 2, 3]);
     $object_array->set_element(0, $object1);
     my $object2 = SPVM::new_short_array([4, 5, 6]);
@@ -130,7 +121,7 @@ is_deeply(
 
   # element int array
   {
-    my $object_array = SPVM::new_object_array_len("int[]", 3);
+    my $object_array = SPVM::new_multi_array_len("int", 1, 3);
     my $object1 = SPVM::new_int_array([1, 2, 3]);
     $object_array->set_element(0, $object1);
     my $object2 = SPVM::new_int_array([4, 5, 6]);
@@ -146,7 +137,7 @@ is_deeply(
 
   # element long array
   {
-    my $object_array = SPVM::new_object_array_len("long[]", 3);
+    my $object_array = SPVM::new_multi_array_len("long", 1, 3);
     my $object1 = SPVM::new_long_array([1, 2, 3]);
     $object_array->set_element(0, $object1);
     my $object2 = SPVM::new_long_array([4, 5, 6]);
@@ -162,7 +153,7 @@ is_deeply(
 
   # element float array
   {
-    my $object_array = SPVM::new_object_array_len("float[]", 3);
+    my $object_array = SPVM::new_multi_array_len("float", 1, 3);
     my $object1 = SPVM::new_float_array([1, 2, 3]);
     $object_array->set_element(0, $object1);
     my $object2 = SPVM::new_float_array([4, 5, 6]);
@@ -178,7 +169,7 @@ is_deeply(
 
   # element double array
   {
-    my $object_array = SPVM::new_object_array_len("double[]", 3);
+    my $object_array = SPVM::new_multi_array_len("double", 1, 3);
     my $object1 = SPVM::new_double_array([1, 2, 3]);
     $object_array->set_element(0, $object1);
     my $object2 = SPVM::new_double_array([4, 5, 6]);
@@ -191,7 +182,6 @@ is_deeply(
     is_deeply($object1_get->to_elements, [1, 2, 3]);
     is_deeply($object2_get->to_elements, [4, 5, 6]);
   }
-=cut
 }
 
 # get and set
