@@ -474,6 +474,7 @@ get_element(...)
   int32_t dimension = array->dimension;
 
   SV* sv_value;
+  _Bool is_object = 0;
   if (dimension == 1) {
     switch (basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -519,11 +520,15 @@ get_element(...)
         break;
       }
       default:
-        croak("Invalid type");
+        is_object = 1;
     }
   }
   else if (dimension > 1) {
-    croak("Invalid type");
+    is_object = 1;
+  }
+  
+  if (is_object) {
+    
   }
   
   XPUSHs(sv_value);
@@ -732,56 +737,58 @@ get_element(...)
   
   // Get array
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+
+  int32_t index = (int32_t)SvIV(sv_index);
   
-  // Dimension
-  int32_t dimension = array->dimension - 1;
+  SV* sv_value;
+
+  // Element dimension
+  int32_t element_dimension = array->dimension - 1;
   
   // Element type id
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
 
   // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-  void* basic_object = env->get_object_array_element(env, array, index);
-  if (basic_object != NULL) {
-    env->inc_ref_count(env, basic_object);
+  SPVM_OBJECT* value = env->get_object_array_element(env, array, index);
+  if (value != NULL) {
+    env->inc_ref_count(env, value);
   }
   
-  SV* sv_basic_object;
-  if (dimension == 0) {
+  if (element_dimension == 0) {
     SV* sv_basic_type_name = sv_2mortal(newSVpv("SPVM::", 0));
     sv_catpv(sv_basic_type_name, basic_type->name);
     
-    sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, SvPV_nolen(sv_basic_type_name));
+    sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
   }
-  else if (dimension == 1) {
+  else if (element_dimension == 1) {
     switch (basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Byte");
+        sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Byte");
         break;
       case SPVM_BASIC_TYPE_C_ID_SHORT :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Short");
+        sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Short");
         break;
       case SPVM_BASIC_TYPE_C_ID_INT :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Int");
+        sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Int");
         break;
       case SPVM_BASIC_TYPE_C_ID_LONG :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Long");
+        sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Long");
         break;
       case SPVM_BASIC_TYPE_C_ID_FLOAT :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Float");
+        sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Float");
         break;
       case SPVM_BASIC_TYPE_C_ID_DOUBLE :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Double");
+        sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Double");
         break;
       default :
-        sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Object");
+        sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Object");
     }
   }
   else {
-    sv_basic_object = SPVM_XS_UTIL_new_sv_object(basic_object, "SPVM::Object::Array::Object");
+    sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array::Object");
   }
   
-  XPUSHs(sv_basic_object);
+  XPUSHs(sv_value);
   
   XSRETURN(1);
 }
