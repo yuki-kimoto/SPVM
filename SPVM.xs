@@ -118,6 +118,186 @@ DESTROY(...)
   XSRETURN(0);
 }
 
+MODULE = SPVM::Object::Array		PACKAGE = SPVM::Object::Array
+
+SV*
+set_elements(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_values = ST(1);
+  
+  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
+    croak("Values must be array refenrece)");
+  }
+  
+  AV* av_values = (AV*)SvRV(sv_values);
+  
+  // API
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  
+  // Get object
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = env->get_array_length(env, array);
+  
+  int8_t* elements = env->get_byte_array_elements(env, array);
+
+  // Check length
+  if (av_len(av_values) + 1 != length) {
+    croak("Elements length must be same as array length)");
+  }
+  
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_values, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[i] = (int8_t)SvIV(sv_value);
+    }
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+set_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  SV* sv_bin = ST(1);
+  
+  // API
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  
+  // Get object
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = env->get_array_length(env, array);
+  
+  int8_t* elements = env->get_byte_array_elements(env, array);
+  
+  // Check range
+  if ((int32_t)sv_len(sv_bin) != length) {
+    croak("Data total byte size must be same as array length)");
+  }
+  
+  if (length > 0) {
+    memcpy(elements, SvPV_nolen(sv_bin), length);
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+set_element(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  SV* sv_value = ST(2);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = env->get_array_length(env, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range)");
+  }
+  
+  // Value
+  int8_t value = (int8_t)SvIV(sv_value);
+  
+  // Set element
+  int8_t* elements = env->get_byte_array_elements(env, array);
+  
+  elements[index] = value;
+  
+  XSRETURN(0);
+}
+
+SV*
+get_element(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // API
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+  
+  // Index
+  int32_t index = (int32_t)SvIV(sv_index);
+
+  // Array
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  // Length
+  int32_t length = env->get_array_length(env, array);
+  
+  // Check range
+  if (index < 0 || index > length - 1) {
+    croak("Out of range)");
+  }
+  
+  // Get element
+  int8_t* elements = env->get_byte_array_elements(env, array);
+  int8_t value = elements[index];
+  SV* sv_value = sv_2mortal(newSViv(value));
+  
+  XPUSHs(sv_value);
+  XSRETURN(1);
+}
+
+SV*
+to_elements(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_array = ST(0);
+  
+  // API
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  
+  // Get object
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = env->get_array_length(env, array);
+  
+  int8_t* elements = env->get_byte_array_elements(env, array);
+  
+  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV* sv_value = sv_2mortal(newSViv(elements[i]));
+      av_push(av_values, SvREFCNT_inc(sv_value));
+    }
+  }
+  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
+  
+  XPUSHs(sv_values);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
 
 SV*
