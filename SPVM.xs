@@ -1725,10 +1725,6 @@ new_object_array_len(...)
   // New array
   void* array = env->new_object_array(env, basic_type->id, length);
   
-  // Fix type name(int[] -> int[][]);
-  SV* sv_type_name = sv_2mortal(newSVsv(sv_basic_type_name));
-  sv_catpv(sv_type_name, "[]");
-  
   // Increment reference count
   env->inc_ref_count(env, array);
   
