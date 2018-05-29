@@ -18,17 +18,17 @@ sub new {
   
   my $self = {};
   
-  $self->{extutil} = SPVM::Build::PPUtil->new;
+  $self->{pputil} = SPVM::Build::PPUtil->new;
   
   $self->{jit} = SPVM::Build::JIT->new;
   
   return bless $self, $class;
 }
 
-sub extutil {
+sub pputil {
   my $self = shift;
   
-  return $self->{extutil};
+  return $self->{pputil};
 }
 
 sub jit {
@@ -110,7 +110,7 @@ sub get_shared_lib_file {
   my @module_name_parts = split(/::/, $module_name2);
   my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($module_name2);
   
-  my $shared_lib_path = $self->extutil->convert_module_path_to_shared_lib_path($module_load_path);
+  my $shared_lib_path = $self->pputil->convert_module_path_to_shared_lib_path($module_load_path);
   
   return $shared_lib_path;
 }
@@ -149,7 +149,7 @@ sub get_sub_native_address {
   
   my $shared_lib_func_name = $sub_abs_name;
   $shared_lib_func_name =~ s/:/_/g;
-  my $native_address = $self->extutil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
+  my $native_address = $self->pputil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
   
   # Try inline compile
   unless ($native_address) {
@@ -172,7 +172,7 @@ sub get_sub_native_address {
         confess "SPVM build directory must be specified for inline compile";
       }
       
-      my $inline_shared_lib_file = $self->extutil->build_shared_lib(
+      my $inline_shared_lib_file = $self->pputil->build_shared_lib(
         module_dir => $module_dir,
         module_name => "SPVM::$module_name",
         build_dir => $build_dir,
@@ -183,7 +183,7 @@ sub get_sub_native_address {
       $compiled_inline_shared_lib_file_h->{$module_name} = $inline_shared_lib_file;
     }
     
-    $native_address = $self->extutil->search_shared_lib_func_address($compiled_inline_shared_lib_file_h->{$module_name}, $shared_lib_func_name);
+    $native_address = $self->pputil->search_shared_lib_func_address($compiled_inline_shared_lib_file_h->{$module_name}, $shared_lib_func_name);
   }
   
   return $native_address;

@@ -110,7 +110,7 @@ sub compile_jit_package {
       my $cbuilder_config = {};
       
       # OPTIMIZE
-      $cbuilder_config->{optimize} ||= $SPVM::BUILD->extutil->optimize;
+      $cbuilder_config->{optimize} ||= $SPVM::BUILD->pputil->optimize;
       
       # Compile source files
       my $quiet = 1;
@@ -127,7 +127,7 @@ sub compile_jit_package {
         source => $source_file,
         object_file => $object_file,
         include_dirs => $include_dirs,
-        extra_compiler_flags => $SPVM::BUILD->extutil->extra_compiler_flags
+        extra_compiler_flags => $SPVM::BUILD->pputil->extra_compiler_flags
       );
       push @$object_files, $object_file;
       
@@ -144,7 +144,7 @@ sub compile_jit_package {
   for my $sub (@$subs) {
     my $sub_name = $sub->{name};
     my $native_sub_name = $sub->{native_sub_name};
-    my $sub_jit_address = $SPVM::BUILD->extutil->search_shared_lib_func_address($jit_shared_lib_file, $native_sub_name);
+    my $sub_jit_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($jit_shared_lib_file, $native_sub_name);
     
     $self->bind_jitcode_sub($sub_name, $sub_jit_address);
   }
@@ -209,7 +209,7 @@ sub compile_jit_sub {
     my $cbuilder_config = {};
     
     # OPTIMIZE
-    $cbuilder_config->{optimize} ||= $SPVM::BUILD->extutil->optimize;
+    $cbuilder_config->{optimize} ||= $SPVM::BUILD->pputil->optimize;
     
     # Compile source files
     my $quiet = 1;
@@ -226,7 +226,7 @@ sub compile_jit_sub {
       source => $source_file,
       object_file => $object_file,
       include_dirs => $include_dirs,
-      extra_compiler_flags => $SPVM::BUILD->extutil->extra_compiler_flags
+      extra_compiler_flags => $SPVM::BUILD->pputil->extra_compiler_flags
     );
     push @$object_files, $object_file;
 
@@ -242,7 +242,7 @@ sub compile_jit_sub {
     );
   }
   
-  my $sub_jit_address = $SPVM::BUILD->extutil->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
+  my $sub_jit_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   
   $self->bind_jitcode_sub($sub_abs_name, $sub_jit_address);
   
