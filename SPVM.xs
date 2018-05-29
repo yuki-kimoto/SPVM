@@ -348,7 +348,7 @@ set_element(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = env->get_array_length(env, array);
@@ -357,14 +357,79 @@ set_element(...)
   if (index < 0 || index > length - 1) {
     croak("Out of range)");
   }
-  
-  // Value
-  int8_t value = (int8_t)SvIV(sv_value);
-  
-  // Set element
-  int8_t* elements = env->get_byte_array_elements(env, array);
-  
-  elements[index] = value;
+
+  int32_t basic_type_id = array->basic_type_id;
+  int32_t dimension = array->dimension;
+
+  if (dimension == 1) {
+    switch (basic_type_id) {
+      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        // Value
+        int8_t value = (int8_t)SvIV(sv_value);
+        
+        // Set element
+        int8_t* elements = env->get_byte_array_elements(env, array);
+        
+        elements[index] = value;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        // Value
+        int16_t value = (int16_t)SvIV(sv_value);
+        
+        // Set element
+        int16_t* elements = env->get_short_array_elements(env, array);
+        
+        elements[index] = value;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_INT: {
+        // Value
+        int32_t value = (int32_t)SvIV(sv_value);
+        
+        // Set element
+        int32_t* elements = env->get_int_array_elements(env, array);
+        
+        elements[index] = value;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_LONG: {
+        // Value
+        int64_t value = (int64_t)SvIV(sv_value);
+        
+        // Set element
+        int64_t* elements = env->get_long_array_elements(env, array);
+        
+        elements[index] = value;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        // Value
+        float value = (float)SvNV(sv_value);
+        
+        // Set element
+        float* elements = env->get_float_array_elements(env, array);
+        
+        elements[index] = value;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        // Value
+        double value = (double)SvNV(sv_value);
+        
+        // Set element
+        double* elements = env->get_double_array_elements(env, array);
+        
+        elements[index] = value;
+        break;
+      }
+      defalut:
+        croak("Invalid type");
+    }
+  }
+  else if (dimension > 1) {
+    croak("Invalid type");
+  }
   
   XSRETURN(0);
 }
@@ -437,44 +502,6 @@ to_elements(...)
 }
 
 MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
-
-SV*
-set_element(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_value = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-
-  // Array
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check range
-  if (index < 0 || index > length - 1) {
-    croak("Out of range)");
-  }
-  
-  // Value
-  int8_t value = (int8_t)SvIV(sv_value);
-  
-  // Set element
-  int8_t* elements = env->get_byte_array_elements(env, array);
-  
-  elements[index] = value;
-  
-  XSRETURN(0);
-}
 
 SV*
 get_element(...)
@@ -570,44 +597,6 @@ to_bin(...)
 MODULE = SPVM::Object::Array::Short		PACKAGE = SPVM::Object::Array::Short
 
 SV*
-set_element(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_value = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-
-  // Array
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check range
-  if (index < 0 || index > length - 1) {
-    croak("Out of range)");
-  }
-  
-  // Value
-  int16_t value = (int16_t)SvIV(sv_value);
-  
-  // Set element
-  int16_t* elements = env->get_short_array_elements(env, array);
-  
-  elements[index] = value;
-  
-  XSRETURN(0);
-}
-
-SV*
 get_element(...)
   PPCODE:
 {
@@ -699,44 +688,6 @@ to_bin(...)
 }
 
 MODULE = SPVM::Object::Array::Int		PACKAGE = SPVM::Object::Array::Int
-
-SV*
-set_element(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_value = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-
-  // Array
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check range
-  if (index < 0 || index > length - 1) {
-    croak("Out of range)");
-  }
-  
-  // Value
-  int32_t value = (int32_t)SvIV(sv_value);
-  
-  // Set element
-  int32_t* elements = env->get_int_array_elements(env, array);
-  
-  elements[index] = value;
-  
-  XSRETURN(0);
-}
 
 SV*
 get_element(...)
@@ -832,44 +783,6 @@ to_bin(...)
 MODULE = SPVM::Object::Array::Long		PACKAGE = SPVM::Object::Array::Long
 
 SV*
-set_element(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_value = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-
-  // Array
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check range
-  if (index < 0 || index > length - 1) {
-    croak("Out of range)");
-  }
-  
-  // Value
-  int64_t value = (int64_t)SvIV(sv_value);
-  
-  // Set element
-  int64_t* elements = env->get_long_array_elements(env, array);
-  
-  elements[index] = value;
-  
-  XSRETURN(0);
-}
-
-SV*
 get_element(...)
   PPCODE:
 {
@@ -963,44 +876,6 @@ to_bin(...)
 MODULE = SPVM::Object::Array::Float		PACKAGE = SPVM::Object::Array::Float
 
 SV*
-set_element(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_value = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-
-  // Array
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check range
-  if (index < 0 || index > length - 1) {
-    croak("Out of range)");
-  }
-  
-  // Value
-  float value = (float)SvNV(sv_value);
-  
-  // Set element
-  float* elements = env->get_float_array_elements(env, array);
-  
-  elements[index] = value;
-  
-  XSRETURN(0);
-}
-
-SV*
 get_element(...)
   PPCODE:
 {
@@ -1092,44 +967,6 @@ to_bin(...)
 }
 
 MODULE = SPVM::Object::Array::Double		PACKAGE = SPVM::Object::Array::Double
-
-SV*
-set_element(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_value = ST(2);
-  
-  // Index
-  int32_t index = (int32_t)SvIV(sv_index);
-
-  // Array
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  // Length
-  int32_t length = env->get_array_length(env, array);
-  
-  // Check range
-  if (index < 0 || index > length - 1) {
-    croak("Out of range)");
-  }
-  
-  // Value
-  double value = (double)SvNV(sv_value);
-  
-  // Set element
-  double* elements = env->get_double_array_elements(env, array);
-  
-  elements[index] = value;
-  
-  XSRETURN(0);
-}
 
 SV*
 get_element(...)
