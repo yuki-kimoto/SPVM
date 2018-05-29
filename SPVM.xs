@@ -118,60 +118,6 @@ DESTROY(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Object::Package::String		PACKAGE = SPVM::Object::Package::String
-
-SV*
-new_string(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_class = ST(0);
-  (void)sv_class;
-  
-  SV* sv_bytes = ST(1);
-  int32_t length = sv_len(sv_bytes);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // New string
-  void* string =  env->new_string(env, SvPV_nolen(sv_bytes), length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, string);
-  
-  // New sv string
-  SV* sv_string = SPVM_XS_UTIL_new_sv_object(string, "SPVM::Object::Package::String");
-  
-  XPUSHs(sv_string);
-  XSRETURN(1);
-}
-
-SV*
-to_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_string = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* string = SPVM_XS_UTIL_get_object(sv_string);
-  
-  int32_t string_length = env->get_array_length(env, string);
-  
-  int8_t* bytes = env->get_byte_array_elements(env, string);
-
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)bytes, string_length));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
 MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
 
 SV*
