@@ -632,8 +632,6 @@ to_elements(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
-
 SV*
 to_bin(...)
   PPCODE:
@@ -641,148 +639,64 @@ to_bin(...)
   (void)RETVAL;
   
   SV* sv_array = ST(0);
-
+  
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = env->get_array_length(env, array);
-  
-  int8_t* elements = env->get_byte_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
 
-MODULE = SPVM::Object::Array::Short		PACKAGE = SPVM::Object::Array::Short
-
-SV*
-to_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
+  int32_t basic_type_id = array->basic_type_id;
+  int32_t dimension = array->dimension;
   
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  int16_t* elements = env->get_short_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 2));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-MODULE = SPVM::Object::Array::Int		PACKAGE = SPVM::Object::Array::Int
-
-SV*
-to_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  int32_t* elements = env->get_int_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-MODULE = SPVM::Object::Array::Long		PACKAGE = SPVM::Object::Array::Long
-
-SV*
-to_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  int64_t* elements = env->get_long_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-MODULE = SPVM::Object::Array::Float		PACKAGE = SPVM::Object::Array::Float
-
-SV*
-to_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  float* elements = env->get_float_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
-  
-  XPUSHs(sv_bin);
-  XSRETURN(1);
-}
-
-MODULE = SPVM::Object::Array::Double		PACKAGE = SPVM::Object::Array::Double
-
-SV*
-to_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  double* elements = env->get_double_array_elements(env, array);
-  
-  SV* sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
+  SV* sv_bin;
+  if (dimension == 1) {
+    switch (basic_type_id) {
+      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        int8_t* elements = env->get_byte_array_elements(env, array);
+        
+        sv_bin = sv_2mortal(newSVpvn((char*)elements, length));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        int16_t* elements = env->get_short_array_elements(env, array);
+        
+        sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 2));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_INT: {
+        int32_t* elements = env->get_int_array_elements(env, array);
+        
+        sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_LONG: {
+        int64_t* elements = env->get_long_array_elements(env, array);
+        
+        sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        float* elements = env->get_float_array_elements(env, array);
+        
+        sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        double* elements = env->get_double_array_elements(env, array);
+        
+        sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
+        break;
+      }
+      defalut:
+        croak("Invalid type");
+    }
+  }
+  else if (dimension > 1) {
+    croak("Invalid type");
+  }
   
   XPUSHs(sv_bin);
   XSRETURN(1);
@@ -892,8 +806,6 @@ get_element(...)
   
   XSRETURN(1);
 }
-
-MODULE = SPVM::Object::Array		PACKAGE = SPVM::Object::Array
 
 MODULE = SPVM::Build::SPVMInfo		PACKAGE = SPVM::Build::SPVMInfo
 
