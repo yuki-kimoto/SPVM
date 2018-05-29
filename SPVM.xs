@@ -135,28 +135,40 @@ set_elements(...)
   
   AV* av_values = (AV*)SvRV(sv_values);
   
-  // API
+    // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
+  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+
   int32_t length = env->get_array_length(env, array);
-  
-  int8_t* elements = env->get_byte_array_elements(env, array);
 
   // Check length
   if (av_len(av_values) + 1 != length) {
     croak("Elements length must be same as array length)");
   }
   
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_values, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elements[i] = (int8_t)SvIV(sv_value);
+  int32_t basic_type_id = array->basic_type_id;
+  int32_t dimension = array->dimension;
+  
+  if (dimension == 1) {
+    switch (basic_type_id) {
+      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        int8_t* elements = env->get_byte_array_elements(env, array);
+        {
+          int32_t i;
+          for (i = 0; i < length; i++) {
+            SV** sv_value_ptr = av_fetch(av_values, i, 0);
+            SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+            elements[i] = (int8_t)SvIV(sv_value);
+          }
+        }
+        break;
+      }
     }
+  }
+  else if (dimension > 1) {
+    
   }
   
   XSRETURN(0);
@@ -299,48 +311,6 @@ to_elements(...)
 }
 
 MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
-
-SV*
-set_elements(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  SV* sv_values = ST(1);
-  
-  if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece)");
-  }
-  
-  AV* av_values = (AV*)SvRV(sv_values);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  int8_t* elements = env->get_byte_array_elements(env, array);
-
-  // Check length
-  if (av_len(av_values) + 1 != length) {
-    croak("Elements length must be same as array length)");
-  }
-  
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_values, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elements[i] = (int8_t)SvIV(sv_value);
-    }
-  }
-  
-  XSRETURN(0);
-}
 
 SV*
 set_bin(...)
