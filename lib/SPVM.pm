@@ -84,14 +84,6 @@ CHECK {
   }
 }
 
-sub new_byte_array_len {
-  my $length = shift;
-  
-  my $array = SPVM::Object::Array::Byte->new_len($length);
-  
-  return $array;
-}
-
 sub new_byte_array {
   my $elements = shift;
   
@@ -103,7 +95,7 @@ sub new_byte_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::Object::Array::Byte->new_len($length);
+  my $array = SPVM::new_byte_array_len($length);
   
   $array->set_elements($elements);
   
@@ -133,7 +125,7 @@ sub new_byte_array_bin {
   
   my $length = length $bin;
   
-  my $array = SPVM::Object::Array::Byte->new_len($length);
+  my $array = SPVM::new_byte_array_len($length);
   
   $array->set_bin($bin);
   

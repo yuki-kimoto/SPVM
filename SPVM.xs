@@ -121,35 +121,6 @@ DESTROY(...)
 MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
 
 SV*
-new_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_class = ST(0);
-  (void)sv_class;
-  
-  SV* sv_length = ST(1);
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // New array
-  void* array =  env->new_byte_array(env, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Byte");
-  
-  XPUSHs(sv_byte_array);
-  XSRETURN(1);
-}
-
-SV*
 set_elements(...)
   PPCODE:
 {
@@ -2376,3 +2347,30 @@ call_sub(...)
   
   XSRETURN(return_count);
 }
+
+SV*
+new_byte_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_length = ST(0);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // API
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  
+  // New array
+  void* array =  env->new_byte_array(env, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array::Byte");
+  
+  XPUSHs(sv_byte_array);
+  XSRETURN(1);
+}
+
