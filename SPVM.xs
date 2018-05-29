@@ -532,59 +532,107 @@ to_elements(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
+  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = env->get_array_length(env, array);
+
+  int32_t basic_type_id = array->basic_type_id;
+  int32_t dimension = array->dimension;
   
-  int8_t* elements = env->get_byte_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
+  SV* sv_values;
+  if (dimension == 1) {
+    switch (basic_type_id) {
+      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        int8_t* elements = env->get_byte_array_elements(env, array);
+        AV* av_values = (AV*)sv_2mortal((SV*)newAV());
+        {
+          int32_t i;
+          for (i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSViv(elements[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
+          }
+        }
+        sv_values = sv_2mortal(newRV_inc((SV*)av_values));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        int16_t* elements = env->get_short_array_elements(env, array);
+        AV* av_values = (AV*)sv_2mortal((SV*)newAV());
+        {
+          int32_t i;
+          for (i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSViv(elements[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
+          }
+        }
+        sv_values = sv_2mortal(newRV_inc((SV*)av_values));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_INT: {
+        int32_t* elements = env->get_int_array_elements(env, array);
+        AV* av_values = (AV*)sv_2mortal((SV*)newAV());
+        {
+          int32_t i;
+          for (i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSViv(elements[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
+          }
+        }
+        sv_values = sv_2mortal(newRV_inc((SV*)av_values));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_LONG: {
+        int64_t* elements = env->get_long_array_elements(env, array);
+        AV* av_values = (AV*)sv_2mortal((SV*)newAV());
+        {
+          int32_t i;
+          for (i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSViv(elements[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
+          }
+        }
+        sv_values = sv_2mortal(newRV_inc((SV*)av_values));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        float* elements = env->get_float_array_elements(env, array);
+        AV* av_values = (AV*)sv_2mortal((SV*)newAV());
+        {
+          int32_t i;
+          for (i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSVnv(elements[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
+          }
+        }
+        sv_values = sv_2mortal(newRV_inc((SV*)av_values));
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        double* elements = env->get_double_array_elements(env, array);
+        AV* av_values = (AV*)sv_2mortal((SV*)newAV());
+        {
+          int32_t i;
+          for (i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSVnv(elements[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
+          }
+        }
+        sv_values = sv_2mortal(newRV_inc((SV*)av_values));
+        break;
+      }
+      defalut:
+        croak("Invalid type");
     }
   }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
+  else if (dimension > 1) {
+    croak("Invalid type");
+  }
   
   XPUSHs(sv_values);
   XSRETURN(1);
 }
 
 MODULE = SPVM::Object::Array::Byte		PACKAGE = SPVM::Object::Array::Byte
-
-SV*
-to_elements(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  int8_t* elements = env->get_byte_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
 
 SV*
 to_bin(...)
@@ -613,38 +661,6 @@ to_bin(...)
 MODULE = SPVM::Object::Array::Short		PACKAGE = SPVM::Object::Array::Short
 
 SV*
-to_elements(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  int16_t* elements = env->get_short_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
-
-SV*
 to_bin(...)
   PPCODE:
 {
@@ -669,38 +685,6 @@ to_bin(...)
 }
 
 MODULE = SPVM::Object::Array::Int		PACKAGE = SPVM::Object::Array::Int
-
-SV*
-to_elements(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  int32_t* elements = env->get_int_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
 
 SV*
 to_bin(...)
@@ -729,38 +713,6 @@ to_bin(...)
 MODULE = SPVM::Object::Array::Long		PACKAGE = SPVM::Object::Array::Long
 
 SV*
-to_elements(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  int64_t* elements = env->get_long_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV* sv_value = sv_2mortal(newSViv(elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
-
-SV*
 to_bin(...)
   PPCODE:
 {
@@ -787,38 +739,6 @@ to_bin(...)
 MODULE = SPVM::Object::Array::Float		PACKAGE = SPVM::Object::Array::Float
 
 SV*
-to_elements(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  float* elements = env->get_float_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV* sv_value = sv_2mortal(newSVnv((NV)elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
-
-SV*
 to_bin(...)
   PPCODE:
 {
@@ -843,38 +763,6 @@ to_bin(...)
 }
 
 MODULE = SPVM::Object::Array::Double		PACKAGE = SPVM::Object::Array::Double
-
-SV*
-to_elements(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_array = ST(0);
-
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // Get object
-  void* array = SPVM_XS_UTIL_get_object(sv_array);
-  
-  int32_t length = env->get_array_length(env, array);
-  
-  double* elements = env->get_double_array_elements(env, array);
-  
-  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV* sv_value = sv_2mortal(newSVnv((NV)elements[i]));
-      av_push(av_values, SvREFCNT_inc(sv_value));
-    }
-  }
-  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
-  
-  XPUSHs(sv_values);
-  XSRETURN(1);
-}
 
 SV*
 to_bin(...)
