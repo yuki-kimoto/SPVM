@@ -549,31 +549,7 @@ get_element(...)
       
       sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
     }
-    else if (element_dimension == 1) {
-      switch (basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE :
-          sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array");
-          break;
-        case SPVM_BASIC_TYPE_C_ID_SHORT :
-          sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array");
-          break;
-        case SPVM_BASIC_TYPE_C_ID_INT :
-          sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array");
-          break;
-        case SPVM_BASIC_TYPE_C_ID_LONG :
-          sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array");
-          break;
-        case SPVM_BASIC_TYPE_C_ID_FLOAT :
-          sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array");
-          break;
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE :
-          sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array");
-          break;
-        default :
-          sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array");
-      }
-    }
-    else {
+    else if (element_dimension > 0) {
       sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array");
     }
   }
@@ -1440,37 +1416,13 @@ call_sub(...)
     if (return_value != NULL) {
       env->inc_ref_count(env, return_value);
       
-      if (return_type_dimension == 1) {
-        switch(return_basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array");
-            break;
-          case SPVM_BASIC_TYPE_C_ID_SHORT :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array");
-            break;
-          case SPVM_BASIC_TYPE_C_ID_INT :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array");
-            break;
-          case SPVM_BASIC_TYPE_C_ID_LONG :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array");
-            break;
-          case SPVM_BASIC_TYPE_C_ID_FLOAT :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array");
-            break;
-          case SPVM_BASIC_TYPE_C_ID_DOUBLE :
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array");
-            break;        
-        }
+      if (return_type_dimension == 0) {
+        SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);
+        
+        sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
       }
-      else {
-        if (return_type->dimension > 0) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array");
-        }
-        else {
-          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);
-          
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
-        }
+      else if (return_type_dimension > 0) {
+        sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array");
       }
     }
     else {
