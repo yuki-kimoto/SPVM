@@ -2,6 +2,18 @@ package SPVM::Object::Array;
 
 use base 'SPVM::Object';
 
+use Encode 'decode';
+
+sub to_string {
+  my $self = shift;
+  
+  my $bin = $self->to_bin;
+  
+  my $string = decode('UTF-8', $bin);
+  
+  return $string;
+}
+
 1;
 
 =head1 NAME

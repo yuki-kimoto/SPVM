@@ -9,13 +9,6 @@ use File::Basename 'basename', 'dirname';
 
 use SPVM::Object;
 use SPVM::Object::Array;
-use SPVM::Object::Array::Byte;
-use SPVM::Object::Array::Short;
-use SPVM::Object::Array::Int;
-use SPVM::Object::Array::Long;
-use SPVM::Object::Array::Float;
-use SPVM::Object::Array::Double;
-use SPVM::Object::Array::Object;
 use SPVM::Object::Package;
 
 use SPVM::Build;
