@@ -409,7 +409,7 @@ is_deeply(
 
 # SPVM::Object::Array
 {
-  my $sp_values = SPVM::Object::Array::Int->new_len(3);
+  my $sp_values = SPVM::new_int_array_len(3);
   $sp_values->set_elements([1, 2, 3]);
 }
 
