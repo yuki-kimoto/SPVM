@@ -102,24 +102,6 @@ sub new_byte_array {
   return $array;
 }
 
-sub new_short_array {
-  my $elements = shift;
-
-  return undef unless defined $elements;
-
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::new_short_array_len($length);
-  
-  $array->set_elements($elements);
-  
-  return $array;
-}
-
 sub new_byte_array_bin {
   my $bin = shift;
   
@@ -144,13 +126,31 @@ sub new_byte_array_string {
   return $array;
 }
 
+sub new_short_array {
+  my $elements = shift;
+
+  return undef unless defined $elements;
+
+  if (ref $elements ne 'ARRAY') {
+    confess "Argument must be array reference";
+  }
+  
+  my $length = @$elements;
+  
+  my $array = SPVM::new_short_array_len($length);
+  
+  $array->set_elements($elements);
+  
+  return $array;
+}
+
 sub new_short_array_bin {
   my $bin = shift;
   
   my $byte_length = length $bin;
   
   unless ($byte_length % 2 == 0) {
-    confess("bin byte length must be divide by 2(SPVM::new_short_array_bin())");
+    confess("bin byte length must be divide by 2");
   }
   
   my $length = int($byte_length / 2);
@@ -186,7 +186,7 @@ sub new_int_array_bin {
   my $byte_length = length $bin;
   
   unless ($byte_length % 4 == 0) {
-    confess("bin byte length must be divide by 4(SPVM::new_int_array_bin())");
+    confess("bin byte length must be divide by 4");
   }
   
   my $length = int($byte_length / 4);
@@ -222,7 +222,7 @@ sub new_long_array_bin {
   my $byte_length = length $bin;
   
   unless ($byte_length % 8 == 0) {
-    confess("bin byte length must be divide by 8(SPVM::new_long_array_bin())");
+    confess("bin byte length must be divide by 8");
   }
   
   my $length = $byte_length / 8;
@@ -258,7 +258,7 @@ sub new_float_array_bin {
   my $byte_length = length $bin;
   
   unless ($byte_length % 4 == 0) {
-    confess("bin byte length must be divide by 4(SPVM::new_float_array_bin())");
+    confess("bin byte length must be divide by 4");
   }
   
   my $length = $byte_length / 4;
@@ -294,7 +294,7 @@ sub new_double_array_bin {
   my $byte_length = length $bin;
   
   unless ($byte_length % 8 == 0) {
-    confess("bin byte length must be divide by 8(SPVM::new_double_array_bin())");
+    confess("bin byte length must be divide by 8");
   }
   
   my $length = $byte_length / 8;
