@@ -423,12 +423,16 @@ set_element(...)
         elements[index] = value;
         break;
       }
-      defalut:
+      defalut: {
         croak("Invalid type");
+      }
     }
   }
   else if (dimension > 1) {
     croak("Invalid type");
+  }
+  else {
+    assert(0);
   }
   
   XSRETURN(0);
@@ -712,7 +716,7 @@ set_element(...)
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
-  SV* sv_object = ST(2);
+  SV* sv_value = ST(2);
   
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
@@ -725,12 +729,12 @@ set_element(...)
   SPVM_COMPILER* compiler = runtime->compiler;
   
   // Get object
-  SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_object);
+  SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
   
-  env->set_object_array_element(env, array, index, (void*)object);
+  env->set_object_array_element(env, array, index, value);
   
   XSRETURN(0);
 }
