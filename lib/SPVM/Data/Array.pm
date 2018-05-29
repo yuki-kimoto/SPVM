@@ -1,6 +1,6 @@
-package SPVM::Object::Array;
+package SPVM::Data::Array;
 
-use base 'SPVM::Object';
+use base 'SPVM::Data';
 
 use Encode 'decode';
 
@@ -18,7 +18,7 @@ sub to_string {
 
 =head1 NAME
 
-SPVM::Object::Array - Array object
+SPVM::Data::Array - Array object
 
 =head1 METHODS
 

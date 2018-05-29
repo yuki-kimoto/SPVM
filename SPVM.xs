@@ -92,7 +92,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
   }
 }
 
-MODULE = SPVM::Object		PACKAGE = SPVM::Object
+MODULE = SPVM::Data		PACKAGE = SPVM::Data
 
 SV*
 DESTROY(...)
@@ -118,7 +118,7 @@ DESTROY(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Object::Array		PACKAGE = SPVM::Object::Array
+MODULE = SPVM::Data::Array		PACKAGE = SPVM::Data::Array
 
 SV*
 set_elements(...)
@@ -550,7 +550,7 @@ get_element(...)
       sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
     }
     else if (element_dimension > 0) {
-      sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Object::Array");
+      sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
     }
   }
   
@@ -1334,7 +1334,7 @@ call_sub(...)
         else {
           if (sv_isobject(sv_value)) {
             SV* sv_basic_object = sv_value;
-            if (sv_derived_from(sv_basic_object, "SPVM::Object")) {
+            if (sv_derived_from(sv_basic_object, "SPVM::Data")) {
               
               SPVM_OBJECT* basic_object = SPVM_XS_UTIL_get_object(sv_basic_object);
               
@@ -1349,11 +1349,11 @@ call_sub(...)
               call_sub_args[arg_index].oval = basic_object;
             }
             else {
-              croak("Object must be derived from SPVM::Object");
+              croak("Data must be derived from SPVM::Data");
             }
           }
           else {
-            croak("Argument must be numeric value or SPVM::Object subclass");
+            croak("Argument must be numeric value or SPVM::Data subclass");
           }
         }
       }
@@ -1422,7 +1422,7 @@ call_sub(...)
         sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
       }
       else if (return_type_dimension > 0) {
-        sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Object::Array");
+        sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Data::Array");
       }
     }
     else {
@@ -1472,7 +1472,7 @@ new_byte_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array");
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
   
   XPUSHs(sv_byte_array);
   XSRETURN(1);
@@ -1498,7 +1498,7 @@ new_short_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_short_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array");
+  SV* sv_short_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
   
   XPUSHs(sv_short_array);
   XSRETURN(1);
@@ -1524,7 +1524,7 @@ new_int_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array");
+  SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
   
   XPUSHs(sv_int_array);
   XSRETURN(1);
@@ -1550,7 +1550,7 @@ new_long_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_long_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array");
+  SV* sv_long_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
   
   XPUSHs(sv_long_array);
   XSRETURN(1);
@@ -1576,7 +1576,7 @@ new_float_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_float_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array");
+  SV* sv_float_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
   
   XPUSHs(sv_float_array);
   XSRETURN(1);
@@ -1602,7 +1602,7 @@ new_double_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_double_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array");
+  SV* sv_double_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
   
   XPUSHs(sv_double_array);
   XSRETURN(1);
@@ -1638,7 +1638,7 @@ new_object_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Object::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
