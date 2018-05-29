@@ -7,7 +7,7 @@ use Config;
 use Carp 'confess';
 
 use SPVM::Build::SPVMInfo;
-use SPVM::Build::ExtUtil;
+use SPVM::Build::PPUtil;
 use SPVM::Build::JIT;
 
 use File::Path 'rmtree';
@@ -18,7 +18,7 @@ sub new {
   
   my $self = {};
   
-  $self->{extutil} = SPVM::Build::ExtUtil->new;
+  $self->{extutil} = SPVM::Build::PPUtil->new;
   
   $self->{jit} = SPVM::Build::JIT->new;
   

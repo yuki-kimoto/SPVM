@@ -103,8 +103,8 @@ sub compile_jit_package {
       my $include_dirs = [];
       
       # Default include path
-      my $env_header_include_dir = $INC{"SPVM/Build/ExtUtil.pm"};
-      $env_header_include_dir =~ s/\/Build\/ExtUtil\.pm$//;
+      my $env_header_include_dir = $INC{"SPVM/Build/PPUtil.pm"};
+      $env_header_include_dir =~ s/\/Build\/PPUtil\.pm$//;
       push @$include_dirs, $env_header_include_dir;
       
       my $cbuilder_config = {};
@@ -202,8 +202,8 @@ sub compile_jit_sub {
     my $include_dirs = [];
     
     # Default include path
-    my $env_header_include_dir = $INC{"SPVM/Build/ExtUtil.pm"};
-    $env_header_include_dir =~ s/\/Build\/ExtUtil\.pm$//;
+    my $env_header_include_dir = $INC{"SPVM/Build/PPUtil.pm"};
+    $env_header_include_dir =~ s/\/Build\/PPUtil\.pm$//;
     push @$include_dirs, $env_header_include_dir;
     
     my $cbuilder_config = {};

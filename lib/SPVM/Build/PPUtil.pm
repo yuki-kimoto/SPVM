@@ -1,6 +1,6 @@
-package SPVM::Build::ExtUtil;
+package SPVM::Build::PPUtil;
 
-# SPVM::Build::ExtUtil is used from Makefile.PL
+# SPVM::Build::PPtUtil is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
 
 use strict;
@@ -139,7 +139,7 @@ sub create_build_shared_lib_make_rule {
   $make_rule
     .= "$shared_lib_bilb_file :: @deps\n\n";
   $make_rule
-    .= "\tperl -Ilib -MSPVM::Build::ExtUtil -e \"SPVM::Build::ExtUtil->new->build_shared_lib_blib('$module_name')\"\n\n";
+    .= "\tperl -Ilib -MSPVM::Build::PPUtil -e \"SPVM::Build::PPUtil->new->build_shared_lib_blib('$module_name')\"\n\n";
   
   return $make_rule;
 }
@@ -234,8 +234,8 @@ sub build_shared_lib {
   my $include_dirs = [];
   
   # Default include path
-  my $env_header_include_dir = $INC{"SPVM/Build/ExtUtil.pm"};
-  $env_header_include_dir =~ s/\/Build\/ExtUtil\.pm$//;
+  my $env_header_include_dir = $INC{"SPVM/Build/PPUtil.pm"};
+  $env_header_include_dir =~ s/\/Build\/PPUtil\.pm$//;
   push @$include_dirs, $env_header_include_dir;
   
   push @$include_dirs, $native_dir;

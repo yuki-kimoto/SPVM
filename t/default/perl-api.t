@@ -28,14 +28,6 @@ my $LONG_MIN = -9223372036854775808;
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
-{
-  # SPVM::Build::ExtUtil tests
-  my $spvm_build = SPVM::Build::ExtUtil->new;
-  my $func_names = $spvm_build->get_native_func_names($ENV{SPVM_TEST_LIB_DIR}, 'SPVM::TestCase::Extension2');
-  is($func_names->[0], 'SPVM__TestCase__Extension2__mul');
-  is($func_names->[1], 'SPVM__TestCase__Extension2__one');
-}
-
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 

@@ -8,9 +8,9 @@ use Config;
 use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/lib";
-use SPVM::Build::ExtUtil;
+use SPVM::Build::PPUtil;
 
-my $extutil= SPVM::Build::ExtUtil->new;
+my $extutil= SPVM::Build::PPUtil->new;
 
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
