@@ -9,7 +9,6 @@ use File::Basename 'basename', 'dirname';
 
 use SPVM::Data;
 use SPVM::Data::Array;
-use SPVM::Data::Package;
 
 use SPVM::Build;
 
