@@ -12,7 +12,6 @@ require SPVM::JIT;
 
 sub import {
   if ($FindBin::Bin =~ /\/jit$/) {
-    $ENV{SPVM_ENABLE_JIT} = 1;
     my $test_jit_dir = 't/lib';
     
     find(
