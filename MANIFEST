@@ -21,7 +21,6 @@ lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
-lib/SPVM/Inline.pm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
 lib/SPVM/Long.pm
@@ -29,6 +28,7 @@ lib/SPVM/Long.spvm
 lib/SPVM/Math.native/Math.c
 lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
+lib/SPVM/Native.pm
 lib/SPVM/Object.pm
 lib/SPVM/Precompile.pm
 lib/SPVM/Short.pm

@@ -9,7 +9,7 @@ use File::Find;
 use File::Basename 'basename', 'dirname';
 
 require SPVM::Precompile;
-require SPVM::Inline;
+require SPVM::Native;
 
 sub import {
   if ($FindBin::Bin =~ /\/precompile$/) {
@@ -35,7 +35,7 @@ sub import {
   }
   my @inline_modules = qw(SPVM::TestCase::Extension SPVM::TestCase::Extension2);
   
-  SPVM::Inline->import($_) for @inline_modules;
+  SPVM::Native->import($_) for @inline_modules;
   
   $ENV{SPVM_BUILD_DIR} = 'spvm_build';
   $ENV{SPVM_TEST_LIB_DIR} = "t/lib";
