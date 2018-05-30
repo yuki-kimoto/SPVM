@@ -17,7 +17,7 @@
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE REF ISA
-%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN
+%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN COMPILE
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init

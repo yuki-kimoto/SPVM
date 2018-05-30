@@ -147,6 +147,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "ISA",
   "SEQUENCE",
   "COSNT",
+  "COMPILE",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {
@@ -2017,7 +2018,11 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
     }
   }
-  
+
+  if (sub->is_native && sub->is_compile) {
+    SPVM_yyerror_format(compiler, "native and compile descriptor can't be used together", op_descriptors->file, op_descriptors->line);
+  }
+
   // Native subroutine can't have block
   if (sub->is_native && op_block) {
     SPVM_yyerror_format(compiler, "Native subroutine can't have block", op_block->file, op_block->line);

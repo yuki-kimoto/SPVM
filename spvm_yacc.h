@@ -71,34 +71,35 @@
      DEFAULT = 287,
      EVAL = 288,
      WEAKEN = 289,
-     UNDEF = 290,
-     VOID = 291,
-     BYTE = 292,
-     SHORT = 293,
-     INT = 294,
-     LONG = 295,
-     FLOAT = 296,
-     DOUBLE = 297,
-     STRING = 298,
-     OBJECT = 299,
-     SPECIAL_ASSIGN = 300,
-     ASSIGN = 301,
-     OR = 302,
-     AND = 303,
-     BIT_XOR = 304,
-     BIT_OR = 305,
-     BIT_AND = 306,
-     REL = 307,
-     SHIFT = 308,
-     REMAINDER = 309,
-     DIVIDE = 310,
-     MULTIPLY = 311,
-     UMINUS = 312,
-     ARRAY_LENGTH = 313,
-     NOT = 314,
-     DEC = 315,
-     INC = 316,
-     ARROW = 317
+     COMPILE = 290,
+     UNDEF = 291,
+     VOID = 292,
+     BYTE = 293,
+     SHORT = 294,
+     INT = 295,
+     LONG = 296,
+     FLOAT = 297,
+     DOUBLE = 298,
+     STRING = 299,
+     OBJECT = 300,
+     SPECIAL_ASSIGN = 301,
+     ASSIGN = 302,
+     OR = 303,
+     AND = 304,
+     BIT_XOR = 305,
+     BIT_OR = 306,
+     BIT_AND = 307,
+     REL = 308,
+     SHIFT = 309,
+     REMAINDER = 310,
+     DIVIDE = 311,
+     MULTIPLY = 312,
+     UMINUS = 313,
+     ARRAY_LENGTH = 314,
+     NOT = 315,
+     DEC = 316,
+     INC = 317,
+     ARROW = 318
    };
 #endif
 /* Tokens.  */
@@ -134,34 +135,35 @@
 #define DEFAULT 287
 #define EVAL 288
 #define WEAKEN 289
-#define UNDEF 290
-#define VOID 291
-#define BYTE 292
-#define SHORT 293
-#define INT 294
-#define LONG 295
-#define FLOAT 296
-#define DOUBLE 297
-#define STRING 298
-#define OBJECT 299
-#define SPECIAL_ASSIGN 300
-#define ASSIGN 301
-#define OR 302
-#define AND 303
-#define BIT_XOR 304
-#define BIT_OR 305
-#define BIT_AND 306
-#define REL 307
-#define SHIFT 308
-#define REMAINDER 309
-#define DIVIDE 310
-#define MULTIPLY 311
-#define UMINUS 312
-#define ARRAY_LENGTH 313
-#define NOT 314
-#define DEC 315
-#define INC 316
-#define ARROW 317
+#define COMPILE 290
+#define UNDEF 291
+#define VOID 292
+#define BYTE 293
+#define SHORT 294
+#define INT 295
+#define LONG 296
+#define FLOAT 297
+#define DOUBLE 298
+#define STRING 299
+#define OBJECT 300
+#define SPECIAL_ASSIGN 301
+#define ASSIGN 302
+#define OR 303
+#define AND 304
+#define BIT_XOR 305
+#define BIT_OR 306
+#define BIT_AND 307
+#define REL 308
+#define SHIFT 309
+#define REMAINDER 310
+#define DIVIDE 311
+#define MULTIPLY 312
+#define UMINUS 313
+#define ARRAY_LENGTH 314
+#define NOT 315
+#define DEC 316
+#define INC 317
+#define ARROW 318
 
 
 

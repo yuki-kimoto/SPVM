@@ -145,6 +145,7 @@ enum {
   SPVM_OP_C_ID_ISA,
   SPVM_OP_C_ID_SEQUENCE,
   SPVM_OP_C_ID_CONST,
+  SPVM_OP_C_ID_COMPILE,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];
