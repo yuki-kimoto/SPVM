@@ -342,4 +342,74 @@ sub get_native_func_names {
   return $native_func_names;
 }
 
+my $compiled_native_shared_lib_file_h = {};
+
+sub get_sub_native_address {
+  my ($self, $sub_abs_name) = @_;
+  
+  my $package_name;
+  my $sub_name;
+  if ($sub_abs_name =~ /^(?:(.+)::)(.+)$/) {
+    $package_name = $1;
+    $sub_name = $2;
+  }
+  
+  my $dll_package_name = $package_name;
+  my $shared_lib_file = $self->get_shared_lib_file($dll_package_name);
+  
+  my $shared_lib_func_name = $sub_abs_name;
+  $shared_lib_func_name =~ s/:/_/g;
+  my $native_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
+  
+  # Try inline compile
+  unless ($native_address) {
+    my $module_name = $package_name;
+    $module_name =~ s/^SPVM:://;
+    
+    unless ($compiled_native_shared_lib_file_h->{$module_name}) {
+      my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($module_name);
+      $module_dir =~ s/\.spvm$//;
+      
+      my $module_name_slash = $package_name;
+      $module_name_slash =~ s/::/\//g;
+      
+      $module_dir =~ s/$module_name_slash$//;
+      $module_dir =~ s/\/$//;
+      
+      # Build native code
+      my $build_dir = $SPVM::BUILD_DIR;
+      unless (defined $build_dir && -d $build_dir) {
+        confess "SPVM build directory must be specified for native compile";
+      }
+      
+      my $native_shared_lib_file = $self->build_shared_lib(
+        module_dir => $module_dir,
+        module_name => "SPVM::$module_name",
+        build_dir => $build_dir,
+        native => 1,
+        quiet => 1,
+      );
+      
+      $compiled_native_shared_lib_file_h->{$module_name} = $native_shared_lib_file;
+    }
+    
+    $native_address = SPVM::Build::Util::get_shared_lib_func_address($compiled_native_shared_lib_file_h->{$module_name}, $shared_lib_func_name);
+  }
+  
+  return $native_address;
+}
+
+sub get_shared_lib_file {
+  my ($self, $module_name) = @_;
+  
+  my $module_name2 = $module_name;
+  $module_name2 =~ s/SPVM:://;
+  my @module_name_parts = split(/::/, $module_name2);
+  my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($module_name2);
+  
+  my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, 'native');
+  
+  return $shared_lib_path;
+}
+
 1;
