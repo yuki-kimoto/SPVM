@@ -26,7 +26,7 @@ my $debug;
 GetOptions('d' => \$debug);
 
 # Edit CCFLAGS
-my $ccflags = "$Config{ccflags} " . $build_native->extra_compiler_flags;
+my $ccflags = "$Config{ccflags} " . SPVM::Build::Util::default_extra_compiler_flags();
 
 WriteMakefile(
     NAME              => 'SPVM',
@@ -38,7 +38,7 @@ WriteMakefile(
     LIBS              => ['-lm'], # e.g., '-lm'
     INC               => '-I. -Ilib/SPVM', # e.g., '-I. -I/usr/include/other'
     CCFLAGS => $ccflags,
-    OPTIMIZE => $build_native->optimize,
+    OPTIMIZE => SPVM::Build::Util::default_optimize(),
     OBJECT            => '$(O_FILES)', # link all the C files too
     $debug ? (DEFINE => '-DDEBUG') : (),
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
