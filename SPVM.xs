@@ -841,9 +841,9 @@ get_subs_from_package_id(...)
       int32_t sub_is_enum = sub->is_enum;
       SV* sv_sub_is_enum = sv_2mortal(newSViv(sub_is_enum));
 
-      // Subroutine is_native
-      int32_t sub_is_native = sub->is_native;
-      SV* sv_sub_is_native = sv_2mortal(newSViv(sub_is_native));
+      // Subroutine have_native_desc
+      int32_t sub_have_native_desc = sub->have_native_desc;
+      SV* sv_sub_have_native_desc = sv_2mortal(newSViv(sub_have_native_desc));
 
       // Subroutine
       HV* hv_sub = (HV*)sv_2mortal((SV*)newHV());
@@ -851,7 +851,7 @@ get_subs_from_package_id(...)
       hv_store(hv_sub, "name", strlen("name"), SvREFCNT_inc(sv_sub_name), 0);
       hv_store(hv_sub, "id", strlen("id"), SvREFCNT_inc(sv_sub_id), 0);
       hv_store(hv_sub, "is_enum", strlen("is_enum"), SvREFCNT_inc(sv_sub_is_enum), 0);
-      hv_store(hv_sub, "is_native", strlen("is_native"), SvREFCNT_inc(sv_sub_is_native), 0);
+      hv_store(hv_sub, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
       
       SV* sv_sub = sv_2mortal(newRV_inc((SV*)hv_sub));
       av_push(av_subs, SvREFCNT_inc((SV*)sv_sub));
@@ -940,7 +940,7 @@ get_native_sub_names(...)
       SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       
-      if (sub->is_native) {
+      if (sub->have_native_desc) {
         const char* sub_name = sub->abs_name;
         SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
         av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
@@ -1226,7 +1226,7 @@ bind_csource_sub(...)
   SPVM_SUB* sub = op_sub->uv.sub;
   
   sub->jit_address = sub_jit_address;
-  sub->is_jit_compiled = 1;
+  sub->is_compiled = 1;
   
   XSRETURN(0);
 }

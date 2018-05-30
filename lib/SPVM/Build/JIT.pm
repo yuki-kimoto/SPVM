@@ -40,7 +40,7 @@ sub compile_jit_package {
   my $package_name = $package->{name};
   
   my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_id($package->{id});
-  $subs = [grep { !$_->{is_native} && !$_->{is_enum} } @$subs];
+  $subs = [grep { !$_->{have_native_desc} && !$_->{is_enum} } @$subs];
 
   my $csource_source = '';
   for my $sub (@$subs) {

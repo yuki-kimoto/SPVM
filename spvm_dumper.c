@@ -380,7 +380,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     SPVM_TYPE_fprint_type_name(compiler, stdout, sub->op_return_type->uv.type->basic_type->id, sub->op_return_type->uv.type->dimension);
     printf("\n");
     printf("      is_enum => %d\n", sub->is_enum);
-    printf("      is_native => %d\n", sub->is_native);
+    printf("      have_native_desc => %d\n", sub->have_native_desc);
     
     printf("      args\n");
     SPVM_LIST* op_args = sub->op_args;
@@ -394,7 +394,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       }
     }
     
-    if (!sub->is_native) {
+    if (!sub->have_native_desc) {
       printf("      mys\n");
       SPVM_LIST* op_mys = sub->op_mys;
       {

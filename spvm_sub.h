@@ -30,11 +30,11 @@ struct SPVM_sub {
   int32_t eval_stack_max_length;
   int32_t mortal_stack_max;
   int8_t call_type_id;
-  _Bool is_native;
-  _Bool is_compile;
+  _Bool have_native_desc;
+  _Bool have_compile_desc;
   _Bool is_enum;
   _Bool is_destructor;
-  _Bool is_jit_compiled;
+  _Bool is_compiled;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

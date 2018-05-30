@@ -43,10 +43,10 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
-  if (sub->is_native) {
+  if (sub->have_native_desc) {
     return SPVM_RUNTIME_call_sub_native(env, sub_id, args);
   }
-  else if (sub->is_jit_compiled) {
+  else if (sub->is_compiled) {
     return SPVM_RUNTIME_call_sub_jit(env, sub_id, args);
   }
   else {
@@ -76,7 +76,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   SPVM_VALUE return_value;
   
   // Subroutine is JIT
-  assert(sub->is_jit_compiled);
+  assert(sub->is_compiled);
   
   void* sub_jit_address = sub->jit_address;
   
@@ -143,7 +143,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALU
   SPVM_SUB* sub = op_sub->uv.sub;
 
   // Subroutine is native
-  assert(sub->is_native);
+  assert(sub->have_native_desc);
 
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;

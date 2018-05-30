@@ -96,12 +96,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
-      if (package->is_interface && (sub->op_block || sub->is_native)) {
+      if (package->is_interface && (sub->op_block || sub->have_native_desc)) {
         SPVM_yyerror_format(compiler, "Subroutine in interface package can't have implementation\n", op_sub->file, op_sub->line);
       }
       
       // Only process normal subroutine
-      if (!sub->is_native) {
+      if (!sub->have_native_desc) {
         
         // Run OPs
         SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
@@ -1819,7 +1819,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
-      if (!sub->is_native) {
+      if (!sub->have_native_desc) {
         // Run OPs
         SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
         SPVM_OP* op_cur = op_base;

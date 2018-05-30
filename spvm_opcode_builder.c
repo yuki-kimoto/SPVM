@@ -132,7 +132,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       assert(sub->abs_name);
       assert(sub->file_name);
       
-      if (sub->is_native) {
+      if (sub->have_native_desc) {
         continue;
       }
       

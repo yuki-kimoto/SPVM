@@ -1812,7 +1812,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
         SPVM_SUB* sub = op_sub->uv.sub;
         
-        if (sub->is_native) {
+        if (sub->have_native_desc) {
           // Sub abs name
           const char* sub_abs_name = sub->abs_name;
           
@@ -2012,19 +2012,19 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
     
     if (descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
-      sub->is_native = 1;
+      sub->have_native_desc = 1;
     }
     else {
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
     }
   }
 
-  if (sub->is_native && sub->is_compile) {
+  if (sub->have_native_desc && sub->have_compile_desc) {
     SPVM_yyerror_format(compiler, "native and compile descriptor can't be used together", op_descriptors->file, op_descriptors->line);
   }
 
   // Native subroutine can't have block
-  if (sub->is_native && op_block) {
+  if (sub->have_native_desc && op_block) {
     SPVM_yyerror_format(compiler, "Native subroutine can't have block", op_block->file, op_block->line);
   }
   
@@ -2051,7 +2051,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   }
 
   // Native my vars is same as arguments
-  if (sub->is_native) {
+  if (sub->have_native_desc) {
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
       SPVM_LIST_push(sub->op_mys, op_arg->first);
