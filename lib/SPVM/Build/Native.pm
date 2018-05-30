@@ -7,6 +7,8 @@ use strict;
 use warnings;
 use Carp 'croak', 'confess';
 
+use SPVM::Build::Util;
+
 use ExtUtils::CBuilder;
 use Config;
 use File::Copy 'move';

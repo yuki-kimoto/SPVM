@@ -5,6 +5,8 @@ use warnings;
 use Carp 'croak', 'confess';
 use File::Spec;
 
+use SPVM::Build::Util;
+
 use ExtUtils::CBuilder;
 use Config;
 use File::Copy 'move';
