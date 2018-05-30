@@ -6,6 +6,7 @@ lib/SPVM/Build.pm
 lib/SPVM/Build/Native.pm
 lib/SPVM/Build/Precompile.pm
 lib/SPVM/Build/SPVMInfo.pm
+lib/SPVM/Build/Util.pm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
