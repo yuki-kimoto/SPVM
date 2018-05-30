@@ -1,5 +1,5 @@
 use lib "t/lib";
-use JITTestAuto;
+use TestAuto;
 
 use strict;
 use warnings;

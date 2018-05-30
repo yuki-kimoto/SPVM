@@ -1,4 +1,4 @@
-package JITTestAuto;
+package TestAuto;
 
 use strict;
 use warnings;
