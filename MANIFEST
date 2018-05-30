@@ -3,7 +3,7 @@ lib/SPVM.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Bool.spvm
 lib/SPVM/Build.pm
-lib/SPVM/Build/PPUtil.pm
+lib/SPVM/Build/Native.pm
 lib/SPVM/Build/Precompile.pm
 lib/SPVM/Build/SPVMInfo.pm
 lib/SPVM/BuildDir.pm

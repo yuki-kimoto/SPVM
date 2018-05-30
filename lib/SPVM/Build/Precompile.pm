@@ -103,14 +103,14 @@ sub compile_precompile_package {
       my $include_dirs = [];
       
       # Default include path
-      my $env_header_include_dir = $INC{"SPVM/Build/PPUtil.pm"};
-      $env_header_include_dir =~ s/\/Build\/PPUtil\.pm$//;
+      my $env_header_include_dir = $INC{"SPVM/Build/Native.pm"};
+      $env_header_include_dir =~ s/\/Build\/Native\.pm$//;
       push @$include_dirs, $env_header_include_dir;
       
       my $cbuilder_config = {};
       
       # OPTIMIZE
-      $cbuilder_config->{optimize} ||= $SPVM::BUILD->pputil->optimize;
+      $cbuilder_config->{optimize} ||= $SPVM::BUILD->native->optimize;
       
       # Compile source files
       my $quiet = 1;
@@ -127,7 +127,7 @@ sub compile_precompile_package {
         source => $source_file,
         object_file => $object_file,
         include_dirs => $include_dirs,
-        extra_compiler_flags => $SPVM::BUILD->pputil->extra_compiler_flags
+        extra_compiler_flags => $SPVM::BUILD->native->extra_compiler_flags
       );
       push @$object_files, $object_file;
       
@@ -144,7 +144,7 @@ sub compile_precompile_package {
   for my $sub (@$subs) {
     my $sub_name = $sub->{name};
     my $native_sub_name = $sub->{native_sub_name};
-    my $sub_precompile_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($precompile_shared_lib_file, $native_sub_name);
+    my $sub_precompile_address = $SPVM::BUILD->native->search_shared_lib_func_address($precompile_shared_lib_file, $native_sub_name);
     
     $self->bind_csource_sub($sub_name, $sub_precompile_address);
   }
@@ -202,14 +202,14 @@ sub compile_precompile_sub {
     my $include_dirs = [];
     
     # Default include path
-    my $env_header_include_dir = $INC{"SPVM/Build/PPUtil.pm"};
-    $env_header_include_dir =~ s/\/Build\/PPUtil\.pm$//;
+    my $env_header_include_dir = $INC{"SPVM/Build/Native.pm"};
+    $env_header_include_dir =~ s/\/Build\/Native\.pm$//;
     push @$include_dirs, $env_header_include_dir;
     
     my $cbuilder_config = {};
     
     # OPTIMIZE
-    $cbuilder_config->{optimize} ||= $SPVM::BUILD->pputil->optimize;
+    $cbuilder_config->{optimize} ||= $SPVM::BUILD->native->optimize;
     
     # Compile source files
     my $quiet = 1;
@@ -226,7 +226,7 @@ sub compile_precompile_sub {
       source => $source_file,
       object_file => $object_file,
       include_dirs => $include_dirs,
-      extra_compiler_flags => $SPVM::BUILD->pputil->extra_compiler_flags
+      extra_compiler_flags => $SPVM::BUILD->native->extra_compiler_flags
     );
     push @$object_files, $object_file;
 
@@ -242,7 +242,7 @@ sub compile_precompile_sub {
     );
   }
   
-  my $sub_precompile_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($precompile_shared_lib_file, $precompile_sub_name);
+  my $sub_precompile_address = $SPVM::BUILD->native->search_shared_lib_func_address($precompile_shared_lib_file, $precompile_sub_name);
   
   $self->bind_csource_sub($sub_abs_name, $sub_precompile_address);
   

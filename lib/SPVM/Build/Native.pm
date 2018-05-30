@@ -1,4 +1,4 @@
-package SPVM::Build::PPUtil;
+package SPVM::Build::Native;
 
 # SPVM::Build::PPtUtil is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
@@ -139,7 +139,7 @@ sub create_build_shared_lib_make_rule {
   $make_rule
     .= "$shared_lib_bilb_file :: @deps\n\n";
   $make_rule
-    .= "\tperl -Ilib -MSPVM::Build::PPUtil -e \"SPVM::Build::PPUtil->new->build_shared_lib_blib('$module_name')\"\n\n";
+    .= "\tperl -Ilib -MSPVM::Build::Native -e \"SPVM::Build::Native->new->build_shared_lib_blib('$module_name')\"\n\n";
   
   return $make_rule;
 }
@@ -226,8 +226,8 @@ sub build_shared_lib {
   my $include_dirs = [];
   
   # Default include path
-  my $env_header_include_dir = $INC{"SPVM/Build/PPUtil.pm"};
-  $env_header_include_dir =~ s/\/Build\/PPUtil\.pm$//;
+  my $env_header_include_dir = $INC{"SPVM/Build/Native.pm"};
+  $env_header_include_dir =~ s/\/Build\/Native\.pm$//;
   push @$include_dirs, $env_header_include_dir;
   
   push @$include_dirs, $native_dir;

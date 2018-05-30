@@ -7,7 +7,7 @@ use Config;
 use Carp 'confess';
 
 use SPVM::Build::SPVMInfo;
-use SPVM::Build::PPUtil;
+use SPVM::Build::Native;
 use SPVM::Build::Precompile;
 
 use File::Path 'rmtree';
@@ -18,17 +18,17 @@ sub new {
   
   my $self = {};
   
-  $self->{pputil} = SPVM::Build::PPUtil->new;
+  $self->{native} = SPVM::Build::Native->new;
   
   $self->{precompile} = SPVM::Build::Precompile->new;
   
   return bless $self, $class;
 }
 
-sub pputil {
+sub native {
   my $self = shift;
   
-  return $self->{pputil};
+  return $self->{native};
 }
 
 sub precompile {
@@ -110,7 +110,7 @@ sub get_shared_lib_file {
   my @module_name_parts = split(/::/, $module_name2);
   my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($module_name2);
   
-  my $shared_lib_path = $self->pputil->convert_module_path_to_shared_lib_path($module_load_path);
+  my $shared_lib_path = $self->native->convert_module_path_to_shared_lib_path($module_load_path);
   
   return $shared_lib_path;
 }
@@ -149,7 +149,7 @@ sub get_sub_native_address {
   
   my $shared_lib_func_name = $sub_abs_name;
   $shared_lib_func_name =~ s/:/_/g;
-  my $native_address = $self->pputil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
+  my $native_address = $self->native->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
   
   # Try inline compile
   unless ($native_address) {
@@ -172,7 +172,7 @@ sub get_sub_native_address {
         confess "SPVM build directory must be specified for native compile";
       }
       
-      my $native_shared_lib_file = $self->pputil->build_shared_lib(
+      my $native_shared_lib_file = $self->native->build_shared_lib(
         module_dir => $module_dir,
         module_name => "SPVM::$module_name",
         build_dir => $build_dir,
@@ -183,7 +183,7 @@ sub get_sub_native_address {
       $compiled_native_shared_lib_file_h->{$module_name} = $native_shared_lib_file;
     }
     
-    $native_address = $self->pputil->search_shared_lib_func_address($compiled_native_shared_lib_file_h->{$module_name}, $shared_lib_func_name);
+    $native_address = $self->native->search_shared_lib_func_address($compiled_native_shared_lib_file_h->{$module_name}, $shared_lib_func_name);
   }
   
   return $native_address;
