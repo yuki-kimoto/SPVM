@@ -193,24 +193,16 @@ sub build_shared_lib {
   
   my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
  
-  my $inline = $opt{inline};
-  
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
   my $native_dir = $module_name;
   $native_dir =~ s/::/\//g;
-  if ($inline) {
-    $native_dir .= '.inline';
-  }
-  else {
-    $native_dir .= '.native';
-  }
+  $native_dir .= '.native';
   $native_dir = "$source_dir/$native_dir";
   
   unless (defined $build_dir && -d $build_dir) {
-    my $compile_type = $inline ? 'inline' : 'native';
-    confess "SPVM build directory must be specified for $compile_type compile";
+    confess "SPVM build directory must be specified for native compile";
   }
   
   # Correct source files
