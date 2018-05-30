@@ -52,7 +52,7 @@ sub compile_spvm {
     $self->build_runtime;
     
     # Build Precompile code
-    $self->precompile->compile_packages;
+    $self->bind_precompile_subs;
     
     # Bind native subroutines
     $self->bind_native_subs;
@@ -101,6 +101,12 @@ sub build_spvm_subs {
       $return_value;
     };
   }
+}
+
+sub bind_precompile_subs {
+  my $self = shift;
+  
+  $self->precompile->compile_packages;
 }
 
 sub bind_native_subs {

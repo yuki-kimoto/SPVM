@@ -332,7 +332,7 @@ sub get_native_func_names {
   
   my $src = do { local $/; <$module_fh> };
   
-  while ($src =~ /native\s+sub\s+([^\s]+)\s/g) {
+  while ($src =~ /native\b(.*?)\bsub\s+([^\s]+)\s/g) {
     my $sub_name = $1;
     my $native_func_name = "${module_name}::$sub_name";
     $native_func_name =~ s/:/_/g;
