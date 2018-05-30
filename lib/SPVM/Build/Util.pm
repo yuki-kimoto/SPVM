@@ -76,5 +76,19 @@ sub get_precompile_sub_names_from_module_file {
   return $native_sub_names;
 }
 
+sub convert_module_name_to_shared_lib_rel_dir {
+  my ($module_name, $category) = @_;
+  
+  my $module_base_name = $module_name;
+  $module_base_name =~ s/^.+:://;
+  
+  my $shared_lib_rel_dir = $module_name;
+  $shared_lib_rel_dir =~ s/::/\//g;
+  $shared_lib_rel_dir = "$shared_lib_rel_dir.$category";
+  
+  return $shared_lib_rel_dir;
+}
+
+
 1;
 

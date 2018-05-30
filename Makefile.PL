@@ -9,8 +9,9 @@ use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use SPVM::Build::Native;
+use SPVM::Build::Util;
 
-my $extutil= SPVM::Build::Native->new;
+my $build_native= SPVM::Build::Native->new;
 
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
@@ -25,7 +26,7 @@ my $debug;
 GetOptions('d' => \$debug);
 
 # Edit CCFLAGS
-my $ccflags = "$Config{ccflags} " . $extutil->extra_compiler_flags;
+my $ccflags = "$Config{ccflags} " . $build_native->extra_compiler_flags;
 
 WriteMakefile(
     NAME              => 'SPVM',
@@ -37,7 +38,7 @@ WriteMakefile(
     LIBS              => ['-lm'], # e.g., '-lm'
     INC               => '-I. -Ilib/SPVM', # e.g., '-I. -I/usr/include/other'
     CCFLAGS => $ccflags,
-    OPTIMIZE => $extutil->optimize,
+    OPTIMIZE => $build_native->optimize,
     OBJECT            => '$(O_FILES)', # link all the C files too
     $debug ? (DEFINE => '-DDEBUG') : (),
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
@@ -54,7 +55,7 @@ sub MY::postamble {
   
   my $make_rule = '';
   for my $module_name (@module_names) {
-    $make_rule .= $extutil->create_build_shared_lib_make_rule($module_name);
+    $make_rule .= $build_native->create_build_shared_lib_make_rule($module_name);
   }
   
   return $make_rule;

@@ -30,7 +30,15 @@ sub new {
   
   $self->{optimize} = '-O3';
   
+  $self->{category} = 'native';
+  
   return bless $self, $class;
+}
+
+sub category {
+  my $self = shift;
+  
+  $self->{category};
 }
 
 sub extra_compiler_flags {
@@ -45,19 +53,6 @@ sub optimize {
   return $self->{optimize};
 }
 
-sub convert_module_name_to_shared_lib_rel_dir {
-  my ($self, $module_name) = @_;
-  
-  my $module_base_name = $module_name;
-  $module_base_name =~ s/^.+:://;
-  
-  my $shared_lib_rel_dir = $module_name;
-  $shared_lib_rel_dir =~ s/::/\//g;
-  $shared_lib_rel_dir = "$shared_lib_rel_dir.native";
-  
-  return $shared_lib_rel_dir;
-}
-
 sub convert_module_name_to_shared_lib_rel_file {
   my ($self, $module_name) = @_;
   
@@ -66,7 +61,7 @@ sub convert_module_name_to_shared_lib_rel_file {
   my $module_base_name = $module_name;
   $module_base_name =~ s/^.+:://;
   
-  my $shared_lib_rel_dir = $self->convert_module_name_to_shared_lib_rel_dir($module_name);
+  my $shared_lib_rel_dir = SPVM::Build::Util::convert_module_name_to_shared_lib_rel_dir($module_name, $self->category);
   my $shared_lib_rel_file = "$shared_lib_rel_dir/$module_base_name.$dlext";
   
   return $shared_lib_rel_file;
@@ -86,7 +81,7 @@ sub convert_module_name_to_shared_lib_blib_dir {
   my ($self, $module_name) = @_;
   
   # Shared library file
-  my $shared_lib_rel_dir = $self->convert_module_name_to_shared_lib_rel_dir($module_name);
+  my $shared_lib_rel_dir = SPVM::Build::Util::convert_module_name_to_shared_lib_rel_dir($module_name, $self->category);
   my $shared_lib_blib_dir = "blib/lib/$shared_lib_rel_dir";
   
   return $shared_lib_blib_dir;
