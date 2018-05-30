@@ -144,7 +144,7 @@ sub compile_precompile_package {
   for my $sub (@$subs) {
     my $sub_name = $sub->{name};
     my $native_sub_name = $sub->{native_sub_name};
-    my $sub_precompile_address = $SPVM::BUILD->native->search_shared_lib_func_address($precompile_shared_lib_file, $native_sub_name);
+    my $sub_precompile_address = $SPVM::BUILD->native->get_shared_lib_func_address($precompile_shared_lib_file, $native_sub_name);
     
     $self->bind_csource_sub($sub_name, $sub_precompile_address);
   }
@@ -242,7 +242,7 @@ sub compile_precompile_sub {
     );
   }
   
-  my $sub_precompile_address = $SPVM::BUILD->native->search_shared_lib_func_address($precompile_shared_lib_file, $precompile_sub_name);
+  my $sub_precompile_address = $SPVM::BUILD->native->get_shared_lib_func_address($precompile_shared_lib_file, $precompile_sub_name);
   
   $self->bind_csource_sub($sub_abs_name, $sub_precompile_address);
   

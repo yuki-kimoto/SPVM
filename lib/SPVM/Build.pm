@@ -149,7 +149,7 @@ sub get_sub_native_address {
   
   my $shared_lib_func_name = $sub_abs_name;
   $shared_lib_func_name =~ s/:/_/g;
-  my $native_address = $self->native->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
+  my $native_address = $self->native->get_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
   
   # Try inline compile
   unless ($native_address) {
@@ -183,7 +183,7 @@ sub get_sub_native_address {
       $compiled_native_shared_lib_file_h->{$module_name} = $native_shared_lib_file;
     }
     
-    $native_address = $self->native->search_shared_lib_func_address($compiled_native_shared_lib_file_h->{$module_name}, $shared_lib_func_name);
+    $native_address = $self->native->get_shared_lib_func_address($compiled_native_shared_lib_file_h->{$module_name}, $shared_lib_func_name);
   }
   
   return $native_address;

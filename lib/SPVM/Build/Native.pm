@@ -354,7 +354,7 @@ sub get_native_func_names {
   return $native_func_names;
 }
 
-sub search_shared_lib_func_address {
+sub get_shared_lib_func_address {
   my ($self, $shared_lib_file, $shared_lib_func_name) = @_;
   
   my $native_address;
