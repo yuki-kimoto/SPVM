@@ -1,4 +1,4 @@
-package SPVM::Build::JIT;
+package SPVM::Build::Precompile;
 
 use strict;
 use warnings;
@@ -50,7 +50,7 @@ sub compile_precompile_package {
     my $sub_csource_source = $self->build_csource($sub_id);
     $csource_source .= "$sub_csource_source\n";
 
-    # JIT Subroutine names
+    # Precompile Subroutine names
     my $native_sub_name = $sub_name;
     $native_sub_name =~ s/:/_/g;
     $native_sub_name = "SPVM_BUILD_COMPILE_$native_sub_name";
@@ -58,10 +58,10 @@ sub compile_precompile_package {
     $sub->{native_sub_name} = $native_sub_name;
   }
 
-  # Build JIT code
+  # Build Precompile code
   my $build_dir = $SPVM::BUILD_DIR;
   unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for JIT compile";
+    confess "SPVM build directory must be specified for precompile";
   }
   
   my $precompile_package_file_name = $package_name;
@@ -84,7 +84,7 @@ sub compile_precompile_package {
   # Only compile when source is different
   if ($csource_source ne $old_csource_source) {
   
-    # Compile JIT code
+    # Compile Precompile code
     open my $fh, '>', $precompile_source_file
       or die "Can't create $precompile_source_file";
     print $fh $csource_source;
@@ -174,16 +174,16 @@ sub compile_precompile_sub {
   my $precompile_sub_name = $self->create_precompile_sub_name($sub_abs_name);
   my $precompile_sub_file_name = $self->create_precompile_sub_file_name($sub_abs_name);
   
-  # Build JIT code
+  # Build Precompile code
   my $build_dir = $SPVM::BUILD_DIR;
   unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for JIT compile";
+    confess "SPVM build directory must be specified for precompile";
   }
   
   my $precompile_source_file = "$build_dir/$precompile_sub_file_name.c";
   my $precompile_shared_lib_file = "$build_dir/$precompile_sub_file_name.$Config{dlext}";
 
-  # Compile JIT code
+  # Compile Precompile code
   open my $fh, '>', $precompile_source_file
     or die "Can't create $precompile_source_file";
   print $fh $sub_csource_source;
@@ -230,7 +230,7 @@ sub compile_precompile_sub {
     );
     push @$object_files, $object_file;
 
-    # JIT Subroutine names
+    # Precompile Subroutine names
     my $native_sub_name = $sub_abs_name;
     $native_sub_name =~ s/:/_/g;
     $native_sub_name = "SPVM_BUILD_COMPILE_$native_sub_name";

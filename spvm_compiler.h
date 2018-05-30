@@ -55,10 +55,10 @@ struct SPVM_compiler {
   // OP package symtable
   SPVM_HASH* op_package_symtable;
   
-  // JIT package symtable
+  // Precompile package symtable
   SPVM_HASH* precompile_package_name_symtable;
 
-  // JIT package names
+  // Precompile package names
   SPVM_LIST* precompile_package_names;
   
   // Anonimous package length

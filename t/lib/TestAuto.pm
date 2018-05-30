@@ -8,7 +8,7 @@ use lib "t/lib";
 use File::Find;
 use File::Basename 'basename', 'dirname';
 
-require SPVM::JIT;
+require SPVM::Precompile;
 require SPVM::Inline;
 
 sub import {
@@ -25,7 +25,7 @@ sub import {
             $package_name =~ s|/|::|g;
             $package_name =~ s|\.spvm$||;
             
-            SPVM::JIT->import($package_name);
+            SPVM::Precompile->import($package_name);
           }
         },
         no_chdir => 1,

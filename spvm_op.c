@@ -1719,7 +1719,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   op_package->uv.package = package;
 
 
-  // JIT compile
+  // precompile
   _Bool precompile = (_Bool)SPVM_HASH_search(compiler->precompile_package_name_symtable, package_name, strlen(package_name));
   package->is_precompile = precompile;
 

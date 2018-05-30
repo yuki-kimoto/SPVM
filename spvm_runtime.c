@@ -75,12 +75,12 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_
   // Return value
   SPVM_VALUE return_value;
   
-  // Subroutine is JIT
+  // Subroutine is Precompile
   assert(sub->is_compiled);
   
   void* sub_precompile_address = sub->precompile_address;
   
-  // Call JIT subroutine
+  // Call Precompile subroutine
   if (sub_return_type_dimension == 0) {
     if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
       void (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;

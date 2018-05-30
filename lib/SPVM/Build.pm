@@ -8,7 +8,7 @@ use Carp 'confess';
 
 use SPVM::Build::SPVMInfo;
 use SPVM::Build::PPUtil;
-use SPVM::Build::JIT;
+use SPVM::Build::Precompile;
 
 use File::Path 'rmtree';
 use File::Spec;
@@ -20,7 +20,7 @@ sub new {
   
   $self->{pputil} = SPVM::Build::PPUtil->new;
   
-  $self->{precompile} = SPVM::Build::JIT->new;
+  $self->{precompile} = SPVM::Build::Precompile->new;
   
   return bless $self, $class;
 }
@@ -50,7 +50,7 @@ sub compile_spvm {
     # Build run-time
     $self->build_runtime;
     
-    # Build JIT code
+    # Build Precompile code
     $self->precompile->compile_packages;
     
     # Bind native subroutines

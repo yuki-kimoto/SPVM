@@ -893,7 +893,7 @@ get_packages(...)
       int32_t package_id = package->id;
       SV* sv_package_id = sv_2mortal(newSViv(package_id));
 
-      // Is JIT
+      // Is Precompile
       int32_t package_is_precompile = package->is_precompile;
       SV* sv_package_is_precompile = sv_2mortal(newSViv(package_is_precompile));
 
@@ -1046,7 +1046,7 @@ compile(...)
   }
 
   // Add package
-  AV* av_precompile_package_names = get_av("SPVM::JIT_PACKAGE_NAMES", 0);
+  AV* av_precompile_package_names = get_av("SPVM::PRECOMPILE_PACKAGE_NAMES", 0);
   int32_t av_precompile_package_names_length = (int32_t)av_len(av_precompile_package_names) + 1;
   {
     int32_t i;
@@ -1176,7 +1176,7 @@ free_compiler(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Build::JIT		PACKAGE = SPVM::Build::JIT
+MODULE = SPVM::Build::Precompile		PACKAGE = SPVM::Build::Precompile
 
 SV*
 build_csource(...)

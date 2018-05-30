@@ -25,7 +25,7 @@ our %PACKAGE_INFO_SYMTABLE;
 our $BUILD_DIR;
 our $INITIALIZED;
 our $BUILD;
-our @JIT_PACKAGE_NAMES;
+our @PRECOMPILE_PACKAGE_NAMES;
 our @INLINE_PACKAGE_NAMES;
 
 require XSLoader;
@@ -345,7 +345,7 @@ SPVM provide B<easy way to Bind C/C++ Language to Perl>.
 
 =item *
 
-B<Fast array operation>, B<Fast numeric operation>, B<Static typing>, B<Virtual machine>, B<JIT>, B<Pre compile>
+B<Fast array operation>, B<Fast numeric operation>, B<Static typing>, B<Virtual machine>, B<Precompile>, B<Pre compile>
 
 =item *
 

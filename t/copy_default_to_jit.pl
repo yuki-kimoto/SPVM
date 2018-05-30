@@ -4,7 +4,7 @@ use File::Copy 'copy';
 use File::Basename 'basename', 'dirname';
 use File::Path 'mkpath', 'rmtree';
 
-# remove and copy test files for JIT
+# remove and copy test files for Precompile
 my @old_precompile_test_files = glob 't/precompile/*';
 for my $old_precompile_test_file (@old_precompile_test_files) {
   if (-f $old_precompile_test_file) {
