@@ -20,16 +20,8 @@ sub new {
   
   my $self = {};
   
-  $self->{extra_compiler_flags} = '-std=c99';
-  
-  # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
-  # so I dicide not to print warning in release version
-  if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-    $self->{extra_compiler_flags} .= " -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable";
-  }
-  
-  $self->{optimize} = '-O3';
-  
+  $self->{extra_compiler_flags} = SPVM::Build::Util::default_extra_compiler_flags();
+  $self->{optimize} = SPVM::Build::Util::default_optimize();
   $self->{category} = 'native';
   
   return bless $self, $class;
