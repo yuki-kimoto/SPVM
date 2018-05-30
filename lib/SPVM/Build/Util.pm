@@ -2,6 +2,7 @@ package SPVM::Build::Util;
 
 use strict;
 use warnings;
+use Carp 'croak';
 use Config;
 use File::Basename 'dirname', 'basename';
 
@@ -40,6 +41,24 @@ sub convert_module_path_to_shared_lib_path {
   
   return $shared_lib_path;
 }
+
+sub get_native_sub_names_from_module_file {
+  my ($module_file) = @_;
+  
+  open my $module_fh, '<', $module_file
+    or croak "Can't open $module_file: $!";
+  
+  my $src = do { local $/; <$module_fh> };
+  
+  my $native_sub_names = [];
+  while ($src =~ /native\b(.*?)\bsub\s+([^\s]+)\s/g) {
+    my $sub_name = $1;
+    push @$native_sub_names, $sub_name;
+  }
+  
+  return $native_sub_names;
+}
+
 
 1;
 
