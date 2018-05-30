@@ -300,8 +300,21 @@ sub build_shared_lib {
   }
   
   my $dlext = $Config{dlext};
-  my $native_func_names = $self->get_native_sub_names($module_dir, $module_name);
+  
+  # Module file
+  my $module_file = $module_name;
+  $module_file =~ s/::/\//g;
+  $module_file = "$module_dir/$module_file.spvm";
+  
+  my $native_sub_names = $self->get_native_sub_names_from_module_file($module_file);
 
+  my $native_func_names = [];
+  for my $native_sub_name (@$native_sub_names) {
+    my $native_func_name = "${module_name}::$native_sub_name";
+    $native_func_name =~ s/:/_/g;
+    push @$native_func_names, $native_func_name;
+  }
+  
   # This is dummy to suppress boot strap function
   # This is bad hack
   unless (@$native_func_names) {
@@ -318,33 +331,21 @@ sub build_shared_lib {
   return $shared_lib_file;
 }
 
-sub get_native_sub_names {
-  my ($self, $module_dir, $module_name) = @_;
-  
-  my $module_file = $module_name;
-  $module_file =~ s/::/\//g;
-  $module_file = "$module_dir/$module_file.spvm";
+sub get_native_sub_names_from_module_file {
+  my ($self, $module_file) = @_;
   
   open my $module_fh, '<', $module_file
     or croak "Can't open $module_file: $!";
   
-  
   my $src = do { local $/; <$module_fh> };
   
-  my @native_sub_names;
+  my $native_sub_names = [];
   while ($src =~ /native\b(.*?)\bsub\s+([^\s]+)\s/g) {
     my $sub_name = $1;
-    push @native_sub_names, $sub_name;
+    push @$native_sub_names, $sub_name;
   }
   
-  my $native_func_names = [];
-  for my $native_sub_name (@native_sub_names) {
-    my $native_func_name = "${module_name}::$native_sub_name";
-    $native_func_name =~ s/:/_/g;
-    push @$native_func_names, $native_func_name;
-  }
-  
-  return $native_func_names;
+  return $native_sub_names;
 }
 
 my $compiled_native_shared_lib_file_h = {};
