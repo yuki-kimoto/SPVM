@@ -26,6 +26,7 @@ our $BUILD_DIR;
 our $INITIALIZED;
 our $BUILD;
 our @JIT_PACKAGE_NAMES;
+our @INLINE_PACKAGE_NAMES;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
@@ -504,10 +505,11 @@ L<Kazutake Hiramatsu|https://github.com/kazhiramatsu>
 
 =back
 
-=head1 COPYRIGHT AND LICENSE
+=head1 COPYRIGHT & LICENSE
 
-Copyright (C) 2017-2018 by Yuki Kimoto
+Copyright 2017-2018 Yuki Kimoto, all rights reserved.
 
-MIT License
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
 
 =cut

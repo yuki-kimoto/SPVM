@@ -8,6 +8,8 @@ use lib "t/lib";
 use File::Find;
 use File::Basename 'basename', 'dirname';
 
+require SPVM::JIT;
+
 sub import {
   if ($FindBin::Bin =~ /\/jit$/) {
     $ENV{SPVM_ENABLE_JIT} = 1;
@@ -23,7 +25,7 @@ sub import {
             $package_name =~ s|/|::|g;
             $package_name =~ s|\.spvm$||;
             
-            push @SPVM::JIT_PACKAGE_NAMES, $package_name;
+            SPVM::JIT->import($package_name);
           }
         },
         no_chdir => 1,
