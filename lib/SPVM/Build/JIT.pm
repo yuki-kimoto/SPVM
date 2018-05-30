@@ -53,7 +53,7 @@ sub compile_jit_package {
     # JIT Subroutine names
     my $native_sub_name = $sub_name;
     $native_sub_name =~ s/:/_/g;
-    $native_sub_name = "SPVM_JITCODE_$native_sub_name";
+    $native_sub_name = "SPVM_BUILD_COMPILE_$native_sub_name";
     
     $sub->{native_sub_name} = $native_sub_name;
   }
@@ -162,7 +162,7 @@ sub create_jit_sub_file_name {
   # I want to prevent this. so '-' is appended to upper case character
   $jit_sub_file_name =~ s/([A-Z])/-$1/g;
   
-  $jit_sub_file_name = "SPVM_JITCODE_$jit_sub_file_name";
+  $jit_sub_file_name = "SPVM_BUILD_COMPILE_$jit_sub_file_name";
 
   return $jit_sub_file_name;
 }
@@ -233,7 +233,7 @@ sub compile_jit_sub {
     # JIT Subroutine names
     my $native_sub_name = $sub_abs_name;
     $native_sub_name =~ s/:/_/g;
-    $native_sub_name = "SPVM_JITCODE_$native_sub_name";
+    $native_sub_name = "SPVM_BUILD_COMPILE_$native_sub_name";
     
     my $lib_file = $cbuilder->link(
       objects => $object_files,

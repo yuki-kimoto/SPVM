@@ -571,7 +571,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_csource(SPVM_STRING_BUFFER* string_buffer, i
   }
 
   // Subroutine name. Replace : to _
-  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_JITCODE_");
+  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_BUILD_COMPILE_");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_abs_name);
   {
     int32_t index = string_buffer->length - strlen(sub_abs_name);
