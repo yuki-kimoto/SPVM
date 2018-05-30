@@ -3,9 +3,8 @@ lib/SPVM.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Bool.spvm
 lib/SPVM/Build.pm
-lib/SPVM/Build/ExtUtil.pm
-lib/SPVM/Build/Inline.pm
 lib/SPVM/Build/JIT.pm
+lib/SPVM/Build/PPUtil.pm
 lib/SPVM/Build/SPVMInfo.pm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Byte.pm
@@ -81,6 +80,8 @@ spvm_constant.c
 spvm_constant.h
 spvm_core_func.c
 spvm_core_func.h
+spvm_csource_builder.c
+spvm_csource_builder.h
 spvm_descriptor.c
 spvm_descriptor.h
 spvm_dumper.c
@@ -99,8 +100,6 @@ spvm_hash.h
 spvm_hash_entry.h
 spvm_hash_func.c
 spvm_hash_func.h
-spvm_jitcode_builder.c
-spvm_jitcode_builder.h
 spvm_lib_std.c
 spvm_limit.h
 spvm_list.c

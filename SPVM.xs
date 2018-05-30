@@ -1190,7 +1190,7 @@ build_csource(...)
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
   // Build sub csource
-  SPVM_JITCODE_BUILDER_build_sub_csource(string_buffer, sub_id);
+  SPVM_CSOURCE_BUILDER_build_sub_csource(string_buffer, sub_id);
   
   SV* sv_csource_source = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   
