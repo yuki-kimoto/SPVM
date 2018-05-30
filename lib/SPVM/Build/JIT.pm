@@ -42,13 +42,13 @@ sub compile_jit_package {
   my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_id($package->{id});
   $subs = [grep { !$_->{is_native} && !$_->{is_enum} } @$subs];
 
-  my $jitcode_source = '';
+  my $csource_source = '';
   for my $sub (@$subs) {
     my $sub_name = $sub->{name};
     my $sub_id = $sub->{id};
     
-    my $sub_jitcode_source = $self->build_jitcode($sub_id);
-    $jitcode_source .= "$sub_jitcode_source\n";
+    my $sub_csource_source = $self->build_csource($sub_id);
+    $csource_source .= "$sub_csource_source\n";
 
     # JIT Subroutine names
     my $native_sub_name = $sub_name;
@@ -70,24 +70,24 @@ sub compile_jit_package {
   my $jit_source_file = "$build_dir/$jit_package_file_name.c";
   my $jit_shared_lib_file = "$build_dir/$jit_package_file_name.$Config{dlext}";
 
-  # Get old jitcode source
-  my $old_jitcode_source;
+  # Get old csource source
+  my $old_csource_source;
   if (-f $jit_source_file) {
     open my $fh, '<', $jit_source_file
       or die "Can't open $jit_source_file";
-    $old_jitcode_source = do { local $/; <$fh> };
+    $old_csource_source = do { local $/; <$fh> };
   }
   else {
-    $old_jitcode_source = '';
+    $old_csource_source = '';
   }
   
   # Only compile when source is different
-  if ($jitcode_source ne $old_jitcode_source) {
+  if ($csource_source ne $old_csource_source) {
   
     # Compile JIT code
     open my $fh, '>', $jit_source_file
       or die "Can't create $jit_source_file";
-    print $fh $jitcode_source;
+    print $fh $csource_source;
     close $fh;
     
     {
@@ -146,7 +146,7 @@ sub compile_jit_package {
     my $native_sub_name = $sub->{native_sub_name};
     my $sub_jit_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($jit_shared_lib_file, $native_sub_name);
     
-    $self->bind_jitcode_sub($sub_name, $sub_jit_address);
+    $self->bind_csource_sub($sub_name, $sub_jit_address);
   }
 }
 
@@ -168,7 +168,7 @@ sub create_jit_sub_file_name {
 }
 
 sub compile_jit_sub {
-  my ($self, $sub_id, $sub_jitcode_source) = @_;
+  my ($self, $sub_id, $sub_csource_source) = @_;
   
   my $sub_abs_name = SPVM::Build::SPVMInfo::get_sub_name($sub_id);
   my $jit_sub_name = $self->create_jit_sub_name($sub_abs_name);
@@ -186,7 +186,7 @@ sub compile_jit_sub {
   # Compile JIT code
   open my $fh, '>', $jit_source_file
     or die "Can't create $jit_source_file";
-  print $fh $sub_jitcode_source;
+  print $fh $sub_csource_source;
   close $fh;
   
   {
@@ -244,7 +244,7 @@ sub compile_jit_sub {
   
   my $sub_jit_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
   
-  $self->bind_jitcode_sub($sub_abs_name, $sub_jit_address);
+  $self->bind_csource_sub($sub_abs_name, $sub_jit_address);
   
   my $success = 1;
   

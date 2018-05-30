@@ -18,15 +18,15 @@ For compile, bison command is needed.
     
   yacc/bison.sh && make -f solo/Makefile DEFINE=-DDEBUG test
 
-## Build jitcode
+## Build csource
 
-  gcc -g -O -Ilib/SPVM -c -o solo/jitcode/spvm_jitcode.o solo/jitcode/spvm_jitcode.c
+  gcc -g -O -Ilib/SPVM -c -o solo/csource/spvm_csource.o solo/csource/spvm_csource.c
   
   # Once
-  yacc/bison.sh && make -f solo/Makefile && ./spvm TestCase && gcc -g -O -Ilib/SPVM -c -o solo/jitcode/spvm_jitcode.o solo/jitcode/spvm_jitcode.c
+  yacc/bison.sh && make -f solo/Makefile && ./spvm TestCase && gcc -g -O -Ilib/SPVM -c -o solo/csource/spvm_csource.o solo/csource/spvm_csource.c
 
   # Once with warnings
-  yacc/bison.sh && make -f solo/Makefile && ./spvm TestCase && gcc -g -O -Wall -Wextra -Ilib/SPVM -c -o solo/jitcode/spvm_jitcode.o solo/jitcode/spvm_jitcode.c
+  yacc/bison.sh && make -f solo/Makefile && ./spvm TestCase && gcc -g -O -Wall -Wextra -Ilib/SPVM -c -o solo/csource/spvm_csource.o solo/csource/spvm_csource.c
 
 # Contributors
 

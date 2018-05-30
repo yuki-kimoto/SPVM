@@ -16,7 +16,7 @@
 #include "spvm_yacc_util.h"
 #include "spvm_runtime_api.h"
 #include "spvm_opcode_builder.h"
-#include "spvm_jitcode_builder.h"
+#include "spvm_csource_builder.h"
 #include "spvm_core_func.h"
 
 #include <spvm_native.h>

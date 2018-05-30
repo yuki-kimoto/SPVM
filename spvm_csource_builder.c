@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <stddef.h>
 
-#include "spvm_jitcode_builder.h"
+#include "spvm_csource_builder.h"
 #include "spvm_string_buffer.h"
 #include "spvm_sub.h"
 #include "spvm_op.h"
@@ -467,7 +467,7 @@ char* SPVM_JITCODE_BUILDER_get_type_name(int32_t basic_type_id, int32_t dimensio
   }
 }
 
-void SPVM_JITCODE_BUILDER_build_sub_jitcode(SPVM_STRING_BUFFER* string_buffer, int32_t sub_id) {
+void SPVM_JITCODE_BUILDER_build_sub_csource(SPVM_STRING_BUFFER* string_buffer, int32_t sub_id) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
 
   SPVM_COMPILER* compiler = runtime->compiler;
