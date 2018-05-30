@@ -19,9 +19,9 @@ lib/SPVM/Document/PerlAPI.pod
 lib/SPVM/Document/Specification.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
-lib/SPVM/EnableJIT.pm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
+lib/SPVM/Inline.pm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
 lib/SPVM/JIT.pm

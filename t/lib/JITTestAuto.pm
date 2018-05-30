@@ -9,6 +9,7 @@ use File::Find;
 use File::Basename 'basename', 'dirname';
 
 require SPVM::JIT;
+require SPVM::Inline;
 
 sub import {
   if ($FindBin::Bin =~ /\/jit$/) {
@@ -32,6 +33,10 @@ sub import {
       $test_jit_dir
     );
   }
+  my @inline_modules = qw(SPVM::TestCase::Extension SPVM::TestCase::Extension2);
+  
+  SPVM::Inline->import($_) for @inline_modules;
+  
   $ENV{SPVM_BUILD_DIR} = 'spvm_build';
   $ENV{SPVM_TEST_LIB_DIR} = "t/lib";
   push @INC, $ENV{SPVM_TEST_LIB_DIR};

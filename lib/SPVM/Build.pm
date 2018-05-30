@@ -151,7 +151,7 @@ sub get_sub_native_address {
   $shared_lib_func_name =~ s/:/_/g;
   my $native_address = $self->pputil->search_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
   
-  # Try rutime native compile
+  # Try inline compile
   unless ($native_address) {
     my $module_name = $package_name;
     $module_name =~ s/^SPVM:://;
