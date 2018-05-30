@@ -59,6 +59,22 @@ sub get_native_sub_names_from_module_file {
   return $native_sub_names;
 }
 
+sub get_precompile_sub_names_from_module_file {
+  my ($module_file) = @_;
+  
+  open my $module_fh, '<', $module_file
+    or croak "Can't open $module_file: $!";
+  
+  my $src = do { local $/; <$module_fh> };
+  
+  my $native_sub_names = [];
+  while ($src =~ /compile\b(.*?)\bsub\s+([^\s]+)\s/g) {
+    my $sub_name = $1;
+    push @$native_sub_names, $sub_name;
+  }
+  
+  return $native_sub_names;
+}
 
 1;
 
