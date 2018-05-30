@@ -125,7 +125,7 @@ sub create_build_shared_lib_make_rule {
   
   my $src_dir = $module_name;
   $src_dir =~ s/::/\//g;
-  $src_dir = "lib_native/$src_dir.native";
+  $src_dir = "lib/$src_dir.native";
   
   # Dependency
   my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
@@ -166,7 +166,7 @@ sub build_shared_lib_blib {
   my $shared_lib_file = $self->build_shared_lib(
     module_name => $module_name,
     module_dir => 'lib',
-    source_dir => 'lib_native',
+    source_dir => 'lib',
     build_dir => '.'
   );
   
