@@ -2,6 +2,8 @@ package SPVM::Build::Util;
 
 use strict;
 use warnings;
+use Config;
+use File::Basename 'dirname', 'basename';
 
 # SPVM::Build::tUtil is used from Makefile.PL and SPVM::Build, SPVM::Build::Precompile, SPVM::Build::Native
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
@@ -25,6 +27,18 @@ sub get_shared_lib_func_address {
   }
   
   return $native_address;
+}
+
+sub convert_module_path_to_shared_lib_path {
+  my ($module_path, $category) = @_;
+  
+  my $module_dir = dirname $module_path;
+  my $base_name = basename $module_path;
+  $base_name =~ s/\.[^.]+$//;
+  
+  my $shared_lib_path .= "$module_dir/$base_name.$category/$base_name.$Config{dlext}";
+  
+  return $shared_lib_path;
 }
 
 1;

@@ -111,7 +111,7 @@ sub get_shared_lib_file {
   my @module_name_parts = split(/::/, $module_name2);
   my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($module_name2);
   
-  my $shared_lib_path = $self->native->convert_module_path_to_shared_lib_path($module_load_path);
+  my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, 'native');
   
   return $shared_lib_path;
 }
