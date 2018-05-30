@@ -19,6 +19,8 @@ sub new {
   my $class = shift;
   
   my $self = {};
+
+  $self->{category} = 'precompile';
   
   return bless $self, $class;
 }
