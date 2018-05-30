@@ -12,8 +12,8 @@ require SPVM::JIT;
 require SPVM::Inline;
 
 sub import {
-  if ($FindBin::Bin =~ /\/jit$/) {
-    my $test_jit_dir = 't/lib';
+  if ($FindBin::Bin =~ /\/precompile$/) {
+    my $test_precompile_dir = 't/lib';
     
     find(
       {
@@ -30,7 +30,7 @@ sub import {
         },
         no_chdir => 1,
       },
-      $test_jit_dir
+      $test_precompile_dir
     );
   }
   my @inline_modules = qw(SPVM::TestCase::Extension SPVM::TestCase::Extension2);
@@ -48,4 +48,4 @@ sub import {
 
 =DESCRITPION
 
-if test scritp file is in jit directory, jit test is automatically on.
+if test scritp file is in precompile directory, precompile test is automatically on.

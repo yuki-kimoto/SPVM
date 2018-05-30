@@ -47,14 +47,14 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
     return SPVM_RUNTIME_call_sub_native(env, sub_id, args);
   }
   else if (sub->is_compiled) {
-    return SPVM_RUNTIME_call_sub_jit(env, sub_id, args);
+    return SPVM_RUNTIME_call_sub_precompile(env, sub_id, args);
   }
   else {
     return SPVM_RUNTIME_call_sub_vm(env, sub_id, args);
   }
 }
 
-SPVM_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
+SPVM_VALUE SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
   (void)env;
   
   // Runtime
@@ -78,54 +78,54 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   // Subroutine is JIT
   assert(sub->is_compiled);
   
-  void* sub_jit_address = sub->jit_address;
+  void* sub_precompile_address = sub->precompile_address;
   
   // Call JIT subroutine
   if (sub_return_type_dimension == 0) {
     if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
-      void (*jit_address)(SPVM_ENV*, SPVM_VALUE*) = sub_jit_address;
-      (*jit_address)(env, (SPVM_VALUE*)args);
+      void (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;
+      (*precompile_address)(env, (SPVM_VALUE*)args);
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-      SPVM_VALUE_byte (*jit_address)(SPVM_ENV*, SPVM_VALUE*) = sub_jit_address;
-      SPVM_VALUE_byte return_value_jit = (*jit_address)(env, (SPVM_VALUE*)args);
-      *(SPVM_VALUE_byte*)&return_value = return_value_jit;
+      SPVM_VALUE_byte (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;
+      SPVM_VALUE_byte return_value_precompile = (*precompile_address)(env, (SPVM_VALUE*)args);
+      *(SPVM_VALUE_byte*)&return_value = return_value_precompile;
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-      SPVM_VALUE_short (*jit_address)(SPVM_ENV*, SPVM_VALUE*) = sub_jit_address;
-      SPVM_VALUE_short return_value_jit = (*jit_address)(env, (SPVM_VALUE*)args);
-      *(SPVM_VALUE_short*)&return_value = return_value_jit;
+      SPVM_VALUE_short (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;
+      SPVM_VALUE_short return_value_precompile = (*precompile_address)(env, (SPVM_VALUE*)args);
+      *(SPVM_VALUE_short*)&return_value = return_value_precompile;
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
-      SPVM_VALUE_int (*jit_address)(SPVM_ENV*, SPVM_VALUE*) = sub_jit_address;
-      SPVM_VALUE_int return_value_jit = (*jit_address)(env, (SPVM_VALUE*)args);
-      *(SPVM_VALUE_int*)&return_value = return_value_jit;
+      SPVM_VALUE_int (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;
+      SPVM_VALUE_int return_value_precompile = (*precompile_address)(env, (SPVM_VALUE*)args);
+      *(SPVM_VALUE_int*)&return_value = return_value_precompile;
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
-      SPVM_VALUE_long (*jit_address)(SPVM_ENV*, SPVM_VALUE*) = sub_jit_address;
-      SPVM_VALUE_long return_value_jit = (*jit_address)(env, (SPVM_VALUE*)args);
-      *(SPVM_VALUE_long*)&return_value = return_value_jit;
+      SPVM_VALUE_long (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;
+      SPVM_VALUE_long return_value_precompile = (*precompile_address)(env, (SPVM_VALUE*)args);
+      *(SPVM_VALUE_long*)&return_value = return_value_precompile;
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-      float (*jit_address)(SPVM_ENV*, SPVM_VALUE*) = sub_jit_address;
-      float return_value_jit = (*jit_address)(env, (SPVM_VALUE*)args);
-      *(float*)&return_value = return_value_jit;
+      float (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;
+      float return_value_precompile = (*precompile_address)(env, (SPVM_VALUE*)args);
+      *(float*)&return_value = return_value_precompile;
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-      double (*jit_address)(SPVM_ENV*, SPVM_VALUE*) = sub_jit_address;
-      double return_value_jit = (*jit_address)(env, (SPVM_VALUE*)args);
-      *(double*)&return_value = return_value_jit;
+      double (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;
+      double return_value_precompile = (*precompile_address)(env, (SPVM_VALUE*)args);
+      *(double*)&return_value = return_value_precompile;
     }
     else {
-      void* (*jit_address)(SPVM_ENV*, SPVM_VALUE*) = sub_jit_address;
-      void* return_value_jit = (*jit_address)(env, (SPVM_VALUE*)args);
-      *(void**)&return_value = return_value_jit;
+      void* (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;
+      void* return_value_precompile = (*precompile_address)(env, (SPVM_VALUE*)args);
+      *(void**)&return_value = return_value_precompile;
     }
   }
   else {
-    void* (*jit_address)(SPVM_ENV*, SPVM_VALUE*) = sub_jit_address;
-    void* return_value_jit = (*jit_address)(env, (SPVM_VALUE*)args);
-    *(void**)&return_value = return_value_jit;
+    void* (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub_precompile_address;
+    void* return_value_precompile = (*precompile_address)(env, (SPVM_VALUE*)args);
+    *(void**)&return_value = return_value_precompile;
   }
   
   return return_value;

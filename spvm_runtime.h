@@ -65,6 +65,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
 
 SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
 SPVM_VALUE SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
-SPVM_VALUE SPVM_RUNTIME_call_sub_jit(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+SPVM_VALUE SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
 
 #endif

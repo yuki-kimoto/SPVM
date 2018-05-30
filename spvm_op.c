@@ -1720,8 +1720,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
 
 
   // JIT compile
-  _Bool jit = (_Bool)SPVM_HASH_search(compiler->jit_package_name_symtable, package_name, strlen(package_name));
-  package->is_jit = jit;
+  _Bool precompile = (_Bool)SPVM_HASH_search(compiler->precompile_package_name_symtable, package_name, strlen(package_name));
+  package->is_precompile = precompile;
 
   // Register subrotuine
   {

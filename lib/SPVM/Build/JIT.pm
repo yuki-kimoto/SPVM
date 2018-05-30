@@ -27,13 +27,13 @@ sub compile_packages {
   
   my $packages = SPVM::Build::SPVMInfo::get_packages();
   for my $package (@$packages) {
-    if ($package->{is_jit} && !$package->{is_interface}) {
-      $self->compile_jit_package($package);
+    if ($package->{is_precompile} && !$package->{is_interface}) {
+      $self->compile_precompile_package($package);
     }
   }
 }
 
-sub compile_jit_package {
+sub compile_precompile_package {
   my ($self, $package) = @_;
   
   my $package_id = $package->{id};
@@ -64,17 +64,17 @@ sub compile_jit_package {
     confess "SPVM build directory must be specified for JIT compile";
   }
   
-  my $jit_package_file_name = $package_name;
-  $jit_package_file_name =~ s/::/__/g;
+  my $precompile_package_file_name = $package_name;
+  $precompile_package_file_name =~ s/::/__/g;
   
-  my $jit_source_file = "$build_dir/$jit_package_file_name.c";
-  my $jit_shared_lib_file = "$build_dir/$jit_package_file_name.$Config{dlext}";
+  my $precompile_source_file = "$build_dir/$precompile_package_file_name.c";
+  my $precompile_shared_lib_file = "$build_dir/$precompile_package_file_name.$Config{dlext}";
 
   # Get old csource source
   my $old_csource_source;
-  if (-f $jit_source_file) {
-    open my $fh, '<', $jit_source_file
-      or die "Can't open $jit_source_file";
+  if (-f $precompile_source_file) {
+    open my $fh, '<', $precompile_source_file
+      or die "Can't open $precompile_source_file";
     $old_csource_source = do { local $/; <$fh> };
   }
   else {
@@ -85,13 +85,13 @@ sub compile_jit_package {
   if ($csource_source ne $old_csource_source) {
   
     # Compile JIT code
-    open my $fh, '>', $jit_source_file
-      or die "Can't create $jit_source_file";
+    open my $fh, '>', $precompile_source_file
+      or die "Can't create $precompile_source_file";
     print $fh $csource_source;
     close $fh;
     
     {
-      my $source_file = $jit_source_file;
+      my $source_file = $precompile_source_file;
       
       # Source directory
       my $source_dir = dirname $source_file;
@@ -134,45 +134,45 @@ sub compile_jit_package {
       my $native_sub_names = [map { $_->{native_sub_name} } @$subs];
       my $lib_file = $cbuilder->link(
         objects => $object_files,
-        module_name => $jit_package_file_name,
+        module_name => $precompile_package_file_name,
         dl_func_list => $native_sub_names,
       );
     }
   }
   
-  # Bind jit subroutine
+  # Bind precompile subroutine
   for my $sub (@$subs) {
     my $sub_name = $sub->{name};
     my $native_sub_name = $sub->{native_sub_name};
-    my $sub_jit_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($jit_shared_lib_file, $native_sub_name);
+    my $sub_precompile_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($precompile_shared_lib_file, $native_sub_name);
     
-    $self->bind_csource_sub($sub_name, $sub_jit_address);
+    $self->bind_csource_sub($sub_name, $sub_precompile_address);
   }
 }
 
-sub create_jit_sub_file_name {
+sub create_precompile_sub_file_name {
   my ($self, $sub_name) = @_;
   
-  my $jit_sub_file_name = $sub_name;
+  my $precompile_sub_file_name = $sub_name;
   
-  $jit_sub_file_name =~ s/:/_/g;
+  $precompile_sub_file_name =~ s/:/_/g;
 
   # In windows, upper case file name and lower case file name.
   # so If FOO and foo subroutine is exists, one overwrite another.
   # I want to prevent this. so '-' is appended to upper case character
-  $jit_sub_file_name =~ s/([A-Z])/-$1/g;
+  $precompile_sub_file_name =~ s/([A-Z])/-$1/g;
   
-  $jit_sub_file_name = "SPVM_BUILD_COMPILE_$jit_sub_file_name";
+  $precompile_sub_file_name = "SPVM_BUILD_COMPILE_$precompile_sub_file_name";
 
-  return $jit_sub_file_name;
+  return $precompile_sub_file_name;
 }
 
-sub compile_jit_sub {
+sub compile_precompile_sub {
   my ($self, $sub_id, $sub_csource_source) = @_;
   
   my $sub_abs_name = SPVM::Build::SPVMInfo::get_sub_name($sub_id);
-  my $jit_sub_name = $self->create_jit_sub_name($sub_abs_name);
-  my $jit_sub_file_name = $self->create_jit_sub_file_name($sub_abs_name);
+  my $precompile_sub_name = $self->create_precompile_sub_name($sub_abs_name);
+  my $precompile_sub_file_name = $self->create_precompile_sub_file_name($sub_abs_name);
   
   # Build JIT code
   my $build_dir = $SPVM::BUILD_DIR;
@@ -180,17 +180,17 @@ sub compile_jit_sub {
     confess "SPVM build directory must be specified for JIT compile";
   }
   
-  my $jit_source_file = "$build_dir/$jit_sub_file_name.c";
-  my $jit_shared_lib_file = "$build_dir/$jit_sub_file_name.$Config{dlext}";
+  my $precompile_source_file = "$build_dir/$precompile_sub_file_name.c";
+  my $precompile_shared_lib_file = "$build_dir/$precompile_sub_file_name.$Config{dlext}";
 
   # Compile JIT code
-  open my $fh, '>', $jit_source_file
-    or die "Can't create $jit_source_file";
+  open my $fh, '>', $precompile_source_file
+    or die "Can't create $precompile_source_file";
   print $fh $sub_csource_source;
   close $fh;
   
   {
-    my $source_file = $jit_source_file;
+    my $source_file = $precompile_source_file;
     
     # Source directory
     my $source_dir = dirname $source_file;
@@ -237,14 +237,14 @@ sub compile_jit_sub {
     
     my $lib_file = $cbuilder->link(
       objects => $object_files,
-      module_name => $jit_sub_file_name,
+      module_name => $precompile_sub_file_name,
       dl_func_list => [$native_sub_name],
     );
   }
   
-  my $sub_jit_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($jit_shared_lib_file, $jit_sub_name);
+  my $sub_precompile_address = $SPVM::BUILD->pputil->search_shared_lib_func_address($precompile_shared_lib_file, $precompile_sub_name);
   
-  $self->bind_csource_sub($sub_abs_name, $sub_jit_address);
+  $self->bind_csource_sub($sub_abs_name, $sub_precompile_address);
   
   my $success = 1;
   

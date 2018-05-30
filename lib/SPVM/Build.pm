@@ -20,7 +20,7 @@ sub new {
   
   $self->{pputil} = SPVM::Build::PPUtil->new;
   
-  $self->{jit} = SPVM::Build::JIT->new;
+  $self->{precompile} = SPVM::Build::JIT->new;
   
   return bless $self, $class;
 }
@@ -31,10 +31,10 @@ sub pputil {
   return $self->{pputil};
 }
 
-sub jit {
+sub precompile {
   my $self = shift;
   
-  return $self->{jit};
+  return $self->{precompile};
 }
 
 sub compile_spvm {
@@ -51,7 +51,7 @@ sub compile_spvm {
     $self->build_runtime;
     
     # Build JIT code
-    $self->jit->compile_packages;
+    $self->precompile->compile_packages;
     
     # Bind native subroutines
     $self->bind_native_subs;

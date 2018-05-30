@@ -20,7 +20,7 @@ struct SPVM_package {
   _Bool is_interface;
   _Bool is_private;
   _Bool is_anon;
-  _Bool is_jit;
+  _Bool is_precompile;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
