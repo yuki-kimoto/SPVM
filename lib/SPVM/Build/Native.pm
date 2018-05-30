@@ -53,40 +53,6 @@ sub optimize {
   return $self->{optimize};
 }
 
-sub convert_module_name_to_shared_lib_rel_file {
-  my ($self, $module_name) = @_;
-  
-  my $dlext = $Config{dlext};
-  
-  my $module_base_name = $module_name;
-  $module_base_name =~ s/^.+:://;
-  
-  my $shared_lib_rel_dir = SPVM::Build::Util::convert_module_name_to_shared_lib_rel_dir($module_name, $self->category);
-  my $shared_lib_rel_file = "$shared_lib_rel_dir/$module_base_name.$dlext";
-  
-  return $shared_lib_rel_file;
-}
-
-sub convert_module_name_to_shared_lib_bilb_file {
-  my ($self, $module_name) = @_;
-
-  # Shared library file
-  my $shared_lib_rel_file = $self->convert_module_name_to_shared_lib_rel_file($module_name);
-  my $shared_lib_bilb_file = "blib/lib/$shared_lib_rel_file";
-
-  return $shared_lib_bilb_file;
-}
-
-sub convert_module_name_to_shared_lib_blib_dir {
-  my ($self, $module_name) = @_;
-  
-  # Shared library file
-  my $shared_lib_rel_dir = SPVM::Build::Util::convert_module_name_to_shared_lib_rel_dir($module_name, $self->category);
-  my $shared_lib_blib_dir = "blib/lib/$shared_lib_rel_dir";
-  
-  return $shared_lib_blib_dir;
-}
-
 sub create_build_shared_lib_make_rule {
   my ($self, $module_name) = @_;
   
@@ -114,7 +80,7 @@ sub create_build_shared_lib_make_rule {
   my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
   
   # Shared library file
-  my $shared_lib_bilb_file = $self->convert_module_name_to_shared_lib_bilb_file($module_name);
+  my $shared_lib_bilb_file = SPVM::Build::Util::convert_module_name_to_shared_lib_bilb_file($module_name, $self->category);
   
   # Get native source files
   $make_rule
@@ -131,11 +97,11 @@ sub move_shared_lib_to_blib {
   my ($self, $shared_lib_file, $module_name) = @_;
   
   # Create shared lib blib directory
-  my $shared_lib_blib_dir = $self->convert_module_name_to_shared_lib_blib_dir($module_name);
+  my $shared_lib_blib_dir = SPVM::Build::Util::convert_module_name_to_shared_lib_blib_dir($module_name, $self->category);
   mkpath $shared_lib_blib_dir;
   
   # shared lib blib file
-  my $shared_lib_blib_file = $self->convert_module_name_to_shared_lib_bilb_file($module_name);
+  my $shared_lib_blib_file = SPVM::Build::Util::convert_module_name_to_shared_lib_bilb_file($module_name, $self->category);
   
   # Move shared library file to blib directory
   move($shared_lib_file, $shared_lib_blib_file)
