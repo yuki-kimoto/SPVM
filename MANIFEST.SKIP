@@ -25,4 +25,5 @@ SPVM-.*
 ^core\.
 ^solo/jitcode/
 ^spvm_build/[^\.]
+^t/spvm_build/[^\.]
 ^SPVM-

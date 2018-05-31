@@ -253,5 +253,6 @@ t/precompile/string.t
 t/precompile/switch.t
 t/precompile/type-convertion.t
 t/precompile/weaken.t
+t/spvm_build/.gitkeep
 yacc/bison.sh
 yacc/spvm_yacc.y
