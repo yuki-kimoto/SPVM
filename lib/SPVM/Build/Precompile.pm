@@ -47,18 +47,7 @@ sub optimize {
   return $self->{optimize};
 }
 
-sub compile_packages {
-  my $self = shift;
-  
-  my $packages = SPVM::Build::SPVMInfo::get_packages();
-  for my $package (@$packages) {
-    if ($package->{is_precompile} && !$package->{is_interface}) {
-      $self->compile_precompile_package($package);
-    }
-  }
-}
-
-sub compile_precompile_package {
+sub compile_package {
   my ($self, $package) = @_;
   
   my $package_id = $package->{id};
@@ -178,7 +167,12 @@ sub compile_precompile_package {
 sub build_runtime_packages {
   my $self = shift;
   
-  $self->compile_packages;
+  my $packages = SPVM::Build::SPVMInfo::get_packages();
+  for my $package (@$packages) {
+    if ($package->{is_precompile} && !$package->{is_interface}) {
+      $self->compile_package($package);
+    }
+  }
 }
 
 sub bind_subs {
