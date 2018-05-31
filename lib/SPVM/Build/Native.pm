@@ -377,4 +377,14 @@ sub bind_subs {
 
 }
 
+sub build_and_bind {
+  my $self = shift;
+  
+  # Build Precompile packages
+  $self->build_runtime_packages;
+  
+  # Bind precompile subroutines
+  $self->bind_subs;
+}
+
 1;
