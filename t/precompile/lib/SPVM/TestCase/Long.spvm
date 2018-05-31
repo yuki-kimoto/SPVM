@@ -1,0 +1,17 @@
+package TestCase::Long {
+  use Long;
+
+  compile sub basic : int () {
+    my $obj_value = Long->new(3);
+    my $value1 = $obj_value->get_value;
+    
+    $obj_value->set_value(5);
+    my $value2 = $obj_value->get_value;
+    
+    if ($value1 == 3 && $value2 == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+}

@@ -2014,6 +2014,9 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     if (descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
       sub->have_native_desc = 1;
     }
+    else if (descriptor->id == SPVM_DESCRIPTOR_C_ID_COMPILE) {
+      sub->have_compile_desc = 1;
+    }
     else {
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
     }

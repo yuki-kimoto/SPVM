@@ -1,0 +1,7 @@
+package TestCase::CompileError::New::Private {
+  use TestCase::Private;
+
+  compile sub main : int () {
+    new TestCase::Private;
+  }
+}

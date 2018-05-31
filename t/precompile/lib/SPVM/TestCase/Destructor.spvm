@@ -1,0 +1,13 @@
+package TestCase::Destructor {
+  use TestCase::Minimal;
+  
+  has minimal : TestCase::Minimal;
+  
+  compile sub new : TestCase::Destructor () {
+    return new TestCase::Destructor;
+  }
+  
+  compile sub DESTROY : void ($self : self) {
+    $self->{minimal}->{x} = 3;
+  }
+}

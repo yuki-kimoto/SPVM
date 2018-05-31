@@ -1,0 +1,134 @@
+package TestCase::Math {
+  use Math;
+  
+  compile sub sin : int () {
+    my $value = Math->sin(Math->PI());
+    
+    if ($value < 0.000001 && $value > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+
+  compile sub cos : int () {
+    my $value = Math->cos(Math->PI() / 2.0);
+    
+    if ($value < 0.000001 && $value > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  compile sub tan : int () {
+    my $value = Math->tan(Math->PI() / 4.0);
+    
+    if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+
+  compile sub isinff: int () {
+    if (Math->isinff(Math->INFINITYF())) {
+      if (!Math->isinff(Math->NANF())) {
+        if (!Math->isinff(0.1f)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  compile sub isfinitef: int () {
+    if (!Math->isfinitef(Math->INFINITYF())) {
+      if (!Math->isfinitef(Math->NANF())) {
+        if (Math->isfinitef(0.1f)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  compile sub isnanf: int () {
+    if (!Math->isnanf(Math->INFINITYF())) {
+      if (Math->isnanf(Math->NANF())) {
+        if (!Math->isnanf(0.1f)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  compile sub float_pass_positive_infinity : int ($value : float) {
+    if ($value == Math->INFINITYF()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  compile sub float_pass_nan : int ($value : float) {
+    if (Math->isnanf($value)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  compile sub isinf : int () {
+    if (Math->isinf(Math->INFINITY())) {
+      if (!Math->isinf(Math->NAN())) {
+        if (!Math->isinf(0.1)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  compile sub isfinite : int () {
+    if (!Math->isfinite(Math->INFINITY())) {
+      if (!Math->isfinite(Math->NAN())) {
+        if (Math->isfinite(0.1)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  compile sub isnan : int () {
+    if (!Math->isnan(Math->INFINITY())) {
+      if (Math->isnan(Math->NAN())) {
+        if (!Math->isnan(0.1)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  compile sub double_pass_nan : int ($value : double) {
+    if (Math->isnan($value)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  compile sub double_pass_positive_infinity : int ($value : double) {
+    if ($value == Math->INFINITY()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+}
