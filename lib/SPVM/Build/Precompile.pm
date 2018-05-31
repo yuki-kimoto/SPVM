@@ -65,11 +65,11 @@ sub compile_package {
     $csource_source .= "$sub_csource_source\n";
 
     # Precompile Subroutine names
-    my $native_sub_name = $sub_name;
-    $native_sub_name =~ s/:/_/g;
-    $native_sub_name = "SPVM_BUILD_PRECOMPILE_$native_sub_name";
+    my $cfunc_name = $sub_name;
+    $cfunc_name =~ s/:/_/g;
+    $cfunc_name = "SPVM_BUILD_PRECOMPILE_$cfunc_name";
     
-    $sub->{native_sub_name} = $native_sub_name;
+    $sub->{cfunc_name} = $cfunc_name;
   }
 
   # Build Precompile code
@@ -145,11 +145,11 @@ sub compile_package {
       );
       push @$object_files, $object_file;
       
-      my $native_sub_names = [map { $_->{native_sub_name} } @$subs];
+      my $cfunc_names = [map { $_->{cfunc_name} } @$subs];
       my $lib_file = $cbuilder->link(
         objects => $object_files,
         module_name => $package_file_name,
-        dl_func_list => $native_sub_names,
+        dl_func_list => $cfunc_names,
       );
     }
   }
@@ -157,8 +157,8 @@ sub compile_package {
   # Bind precompile subroutine
   for my $sub (@$subs) {
     my $sub_name = $sub->{name};
-    my $native_sub_name = $sub->{native_sub_name};
-    my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $native_sub_name);
+    my $cfunc_name = $sub->{cfunc_name};
+    my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $cfunc_name);
     
     $self->bind_csource_sub($sub_name, $sub_address);
   }
