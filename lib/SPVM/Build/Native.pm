@@ -28,6 +28,18 @@ sub new {
   return $self;
 }
 
+sub get_sub_names_from_module_file {
+  my ($self, $module_file) = @_;
+  
+  return SPVM::Build::Util::get_native_sub_names_from_module_file($module_file);
+}
+
+sub get_subs_from_package_id {
+  my ($self, $package_id) = @_;
+  
+  return SPVM::Build::SPVMInfo::get_native_subs_from_package_id($package_id);;
+}
+
 sub build_shared_lib {
   my ($self, %opt) = @_;
   
@@ -190,18 +202,6 @@ sub build_shared_lib {
   );
   
   return $shared_lib_file;
-}
-
-sub get_sub_names_from_module_file {
-  my ($self, $module_file) = @_;
-  
-  return SPVM::Build::Util::get_native_sub_names_from_module_file($module_file);
-}
-
-sub get_subs_from_package_id {
-  my ($self, $package_id) = @_;
-  
-  return SPVM::Build::SPVMInfo::get_native_subs_from_package_id($package_id);;
 }
 
 1;
