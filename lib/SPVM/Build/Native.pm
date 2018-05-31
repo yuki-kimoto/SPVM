@@ -339,34 +339,18 @@ sub get_sub_native_address_runtime {
   return $native_address;
 }
 
-sub get_sub_native_address {
-  my ($self, $sub_abs_name) = @_;
-  
-  my $package_name;
-  my $sub_name;
-  if ($sub_abs_name =~ /^(?:(.+)::)(.+)$/) {
-    $package_name = $1;
-    $sub_name = $2;
-  }
-  
-  my $dll_package_name = $package_name;
-  my $shared_lib_file = $self->get_installed_shared_lib_path($dll_package_name);
-  
-  my $shared_lib_func_name = $sub_abs_name;
-  $shared_lib_func_name =~ s/:/_/g;
-  my $native_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
-  
-  return $native_address;
-}
-
 sub bind_subs {
-  my ($self, $subs) = @_;
+  my ($self, $shared_lib_path, $subs) = @_;
   
   for my $sub (@$subs) {
     my $sub_name = $sub->{name};
     next if $sub_name =~ /^CORE::/;
     my $sub_name_spvm = "SPVM::$sub_name";
-    my $native_address = $self->get_sub_native_address($sub_name_spvm);
+
+    my $shared_lib_func_name = $sub_name_spvm;
+    $shared_lib_func_name =~ s/:/_/g;
+    my $native_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $shared_lib_func_name);
+
     unless ($native_address) {
       my $sub_name_c = $sub_name_spvm;
       $sub_name_c =~ s/:/_/g;
@@ -403,7 +387,7 @@ sub build_and_bind {
       
       # Shared library is already installed
       if (-f $installed_shared_lib_path) {
-        $self->bind_subs($subs);
+        $self->bind_subs($installed_shared_lib_path, $subs);
       }
       # Shared library is not installed
       else {
