@@ -48,7 +48,7 @@ sub optimize {
 }
 
 sub create_build_shared_lib_make_rule {
-  my ($self, $module_name) = @_;
+  my ($self, $package_name) = @_;
   
   my $make_rule;
   
@@ -56,17 +56,17 @@ sub create_build_shared_lib_make_rule {
   $make_rule
   = "dynamic :: ";
 
-  my $module_name_under_score = $module_name;
-  $module_name_under_score =~ s/:/_/g;
+  my $package_name_under_score = $package_name;
+  $package_name_under_score =~ s/:/_/g;
   
   $make_rule
-    .= "shared_lib_$module_name_under_score ";
+    .= "shared_lib_$package_name_under_score ";
   $make_rule .= "\n\n";
   
-  my $module_base_name = $module_name;
+  my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $src_dir = $module_name;
+  my $src_dir = $package_name;
   $src_dir =~ s/::/\//g;
   $src_dir = "lib/$src_dir.native";
   
@@ -74,28 +74,28 @@ sub create_build_shared_lib_make_rule {
   my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
   
   # Shared library file
-  my $shared_lib_bilb_file = SPVM::Build::Util::convert_module_name_to_shared_lib_bilb_file($module_name, $self->category);
+  my $shared_lib_bilb_file = SPVM::Build::Util::convert_package_name_to_shared_lib_bilb_file($package_name, $self->category);
   
   # Get native source files
   $make_rule
-    .= "shared_lib_$module_name_under_score :: $shared_lib_bilb_file\n\n";
+    .= "shared_lib_$package_name_under_score :: $shared_lib_bilb_file\n\n";
   $make_rule
     .= "$shared_lib_bilb_file :: @deps\n\n";
   $make_rule
-    .= "\tperl -Ilib -MSPVM::Build::Native -e \"SPVM::Build::Native->new->build_shared_lib_blib('$module_name')\"\n\n";
+    .= "\tperl -Ilib -MSPVM::Build::Native -e \"SPVM::Build::Native->new->build_shared_lib_blib('$package_name')\"\n\n";
   
   return $make_rule;
 }
 
 sub move_shared_lib_to_blib {
-  my ($self, $shared_lib_file, $module_name) = @_;
+  my ($self, $shared_lib_file, $package_name) = @_;
   
   # Create shared lib blib directory
-  my $shared_lib_blib_dir = SPVM::Build::Util::convert_module_name_to_shared_lib_blib_dir($module_name, $self->category);
+  my $shared_lib_blib_dir = SPVM::Build::Util::convert_package_name_to_shared_lib_blib_dir($package_name, $self->category);
   mkpath $shared_lib_blib_dir;
   
   # shared lib blib file
-  my $shared_lib_blib_file = SPVM::Build::Util::convert_module_name_to_shared_lib_bilb_file($module_name, $self->category);
+  my $shared_lib_blib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_bilb_file($package_name, $self->category);
   
   # Move shared library file to blib directory
   move($shared_lib_file, $shared_lib_blib_file)
@@ -103,24 +103,24 @@ sub move_shared_lib_to_blib {
 }
 
 sub build_shared_lib_blib {
-  my ($self, $module_name) = @_;
+  my ($self, $package_name) = @_;
 
   # Build shared library
   my $shared_lib_file = $self->build_shared_lib(
-    module_name => $module_name,
+    package_name => $package_name,
     module_dir => 'lib',
     source_dir => 'lib',
     build_dir => '.'
   );
   
-  $self->move_shared_lib_to_blib($shared_lib_file, $module_name);
+  $self->move_shared_lib_to_blib($shared_lib_file, $package_name);
 }
 
 sub build_shared_lib {
   my ($self, %opt) = @_;
   
   # Module name
-  my $module_name = $opt{module_name};
+  my $package_name = $opt{package_name};
   
   # Module directory
   my $module_dir = $opt{module_dir};
@@ -136,10 +136,10 @@ sub build_shared_lib {
   
   my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
  
-  my $module_base_name = $module_name;
+  my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $native_dir = $module_name;
+  my $native_dir = $package_name;
   $native_dir =~ s/::/\//g;
   $native_dir .= '.native';
   $native_dir = "$source_dir/$native_dir";
@@ -237,7 +237,7 @@ sub build_shared_lib {
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
-    my $object_file = $module_name;
+    my $object_file = $package_name;
     $object_file =~ s/:/_/g;
     my $src_file_under_score = $src_file;
     $src_file_under_score =~ s/^.+\///;
@@ -257,7 +257,7 @@ sub build_shared_lib {
   my $dlext = $Config{dlext};
   
   # Module file
-  my $module_file = $module_name;
+  my $module_file = $package_name;
   $module_file =~ s/::/\//g;
   $module_file = "$module_dir/$module_file.spvm";
   
@@ -265,7 +265,7 @@ sub build_shared_lib {
 
   my $native_func_names = [];
   for my $native_sub_name (@$native_sub_names) {
-    my $native_func_name = "${module_name}::$native_sub_name";
+    my $native_func_name = "${package_name}::$native_sub_name";
     $native_func_name =~ s/:/_/g;
     push @$native_func_names, $native_func_name;
   }
@@ -278,7 +278,7 @@ sub build_shared_lib {
   
   my $shared_lib_file = $cbuilder->link(
     objects => $object_files,
-    module_name => $module_name,
+    package_name => $package_name,
     dl_func_list => $native_func_names,
     extra_linker_flags => $extra_linker_flags
   );
@@ -307,17 +307,17 @@ sub get_sub_native_address {
   
   # Try inline compile
   unless ($native_address) {
-    my $module_name = $package_name;
-    $module_name =~ s/^SPVM:://;
+    my $package_name_with_spvm = $package_name;
+    $package_name_with_spvm =~ s/^SPVM:://;
     
-    unless ($compiled_native_shared_lib_file_h->{$module_name}) {
-      my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($module_name);
+    unless ($compiled_native_shared_lib_file_h->{$package_name_with_spvm}) {
+      my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name_with_spvm);
       $module_dir =~ s/\.spvm$//;
       
-      my $module_name_slash = $package_name;
-      $module_name_slash =~ s/::/\//g;
+      my $package_name_with_spvm_slash = $package_name;
+      $package_name_with_spvm_slash =~ s/::/\//g;
       
-      $module_dir =~ s/$module_name_slash$//;
+      $module_dir =~ s/$package_name_with_spvm_slash$//;
       $module_dir =~ s/\/$//;
       
       # Build native code
@@ -328,28 +328,28 @@ sub get_sub_native_address {
       
       my $native_shared_lib_file = $self->build_shared_lib(
         module_dir => $module_dir,
-        module_name => "SPVM::$module_name",
+        package_name => "SPVM::$package_name_with_spvm",
         build_dir => $build_dir,
         native => 1,
         quiet => 1,
       );
       
-      $compiled_native_shared_lib_file_h->{$module_name} = $native_shared_lib_file;
+      $compiled_native_shared_lib_file_h->{$package_name_with_spvm} = $native_shared_lib_file;
     }
     
-    $native_address = SPVM::Build::Util::get_shared_lib_func_address($compiled_native_shared_lib_file_h->{$module_name}, $shared_lib_func_name);
+    $native_address = SPVM::Build::Util::get_shared_lib_func_address($compiled_native_shared_lib_file_h->{$package_name_with_spvm}, $shared_lib_func_name);
   }
   
   return $native_address;
 }
 
 sub get_shared_lib_file {
-  my ($self, $module_name) = @_;
+  my ($self, $package_name) = @_;
   
-  my $module_name2 = $module_name;
-  $module_name2 =~ s/SPVM:://;
-  my @module_name_parts = split(/::/, $module_name2);
-  my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($module_name2);
+  my $package_name2 = $package_name;
+  $package_name2 =~ s/SPVM:://;
+  my @package_name_parts = split(/::/, $package_name2);
+  my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($package_name2);
   
   my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   
