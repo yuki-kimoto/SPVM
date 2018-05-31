@@ -76,48 +76,48 @@ sub get_precompile_sub_names_from_module_file {
   return $native_sub_names;
 }
 
-sub convert_module_name_to_shared_lib_rel_dir {
-  my ($module_name, $category) = @_;
+sub convert_package_name_to_shared_lib_rel_dir {
+  my ($package_name, $category) = @_;
   
-  my $module_base_name = $module_name;
+  my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $shared_lib_rel_dir = $module_name;
+  my $shared_lib_rel_dir = $package_name;
   $shared_lib_rel_dir =~ s/::/\//g;
   $shared_lib_rel_dir = "$shared_lib_rel_dir.$category";
   
   return $shared_lib_rel_dir;
 }
 
-sub convert_module_name_to_shared_lib_rel_file {
-  my ($module_name, $category) = @_;
+sub convert_package_name_to_shared_lib_rel_file {
+  my ($package_name, $category) = @_;
   
   my $dlext = $Config{dlext};
   
-  my $module_base_name = $module_name;
+  my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $shared_lib_rel_dir = convert_module_name_to_shared_lib_rel_dir($module_name, $category);
+  my $shared_lib_rel_dir = convert_package_name_to_shared_lib_rel_dir($package_name, $category);
   my $shared_lib_rel_file = "$shared_lib_rel_dir/$module_base_name.$dlext";
   
   return $shared_lib_rel_file;
 }
 
-sub convert_module_name_to_shared_lib_bilb_file {
-  my ($module_name, $category) = @_;
+sub convert_package_name_to_shared_lib_bilb_file {
+  my ($package_name, $category) = @_;
 
   # Shared library file
-  my $shared_lib_rel_file = convert_module_name_to_shared_lib_rel_file($module_name, $category);
+  my $shared_lib_rel_file = convert_package_name_to_shared_lib_rel_file($package_name, $category);
   my $shared_lib_bilb_file = "blib/lib/$shared_lib_rel_file";
 
   return $shared_lib_bilb_file;
 }
 
-sub convert_module_name_to_shared_lib_blib_dir {
-  my ($module_name, $category) = @_;
+sub convert_package_name_to_shared_lib_blib_dir {
+  my ($package_name, $category) = @_;
   
   # Shared library file
-  my $shared_lib_rel_dir = convert_module_name_to_shared_lib_rel_dir($module_name, $category);
+  my $shared_lib_rel_dir = convert_package_name_to_shared_lib_rel_dir($package_name, $category);
   my $shared_lib_blib_dir = "blib/lib/$shared_lib_rel_dir";
   
   return $shared_lib_blib_dir;
