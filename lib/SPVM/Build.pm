@@ -52,10 +52,10 @@ sub compile_spvm {
     $self->build_runtime;
     
     # Build Precompile code
-    $self->bind_precompile_subs;
+    $self->precompile->build_runtime_precompile_subs;
     
     # Bind native subroutines
-    $self->bind_native_subs;
+    $self->native->build_runtime_native_subs;
     
     # Build SPVM subroutines
     $self->build_spvm_subs;
@@ -100,29 +100,6 @@ sub build_spvm_subs {
       }
       $return_value;
     };
-  }
-}
-
-sub bind_precompile_subs {
-  my $self = shift;
-  
-  $self->precompile->compile_packages;
-}
-
-sub bind_native_subs {
-  my $self = shift;
-  
-  my $native_func_names = SPVM::Build::SPVMInfo::get_native_sub_names();
-  for my $native_func_name (@$native_func_names) {
-    next if $native_func_name =~ /^CORE::/;
-    my $native_func_name_spvm = "SPVM::$native_func_name";
-    my $native_address = $self->native->get_sub_native_address($native_func_name_spvm);
-    unless ($native_address) {
-      my $native_func_name_c = $native_func_name_spvm;
-      $native_func_name_c =~ s/:/_/g;
-      confess "Can't find native address of $native_func_name_spvm(). Native function name must be $native_func_name_c";
-    }
-    $self->bind_native_sub($native_func_name, $native_address);
   }
 }
 

@@ -1101,38 +1101,6 @@ build_opcode(...)
 }
 
 SV*
-bind_native_sub(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_native_sub_name = ST(1);
-  SV* sv_native_address = ST(2);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  
-  // Native subroutine name
-  const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
-  
-  // Native address
-  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
-  
-  // Set native address to subroutine
-  SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
-  SPVM_SUB* sub = op_sub->uv.sub;
-  
-  sub->native_address = native_address;
-  
-  XSRETURN(0);
-}
-
-SV*
 build_runtime(...)
   PPCODE:
 {
@@ -1172,6 +1140,40 @@ free_compiler(...)
   
   // Set undef to compiler
   sv_setsv(get_sv("SPVM::COMPILER", 0), &PL_sv_undef);
+  
+  XSRETURN(0);
+}
+
+MODULE = SPVM::Build::Native		PACKAGE = SPVM::Build::Native
+
+SV*
+bind_native_sub(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_native_sub_name = ST(1);
+  SV* sv_native_address = ST(2);
+  
+  // API
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  
+  // Native subroutine name
+  const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
+  
+  // Native address
+  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
+  
+  // Set native address to subroutine
+  SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
+  SPVM_SUB* sub = op_sub->uv.sub;
+  
+  sub->native_address = native_address;
   
   XSRETURN(0);
 }

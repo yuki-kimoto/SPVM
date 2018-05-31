@@ -175,4 +175,11 @@ sub compile_precompile_package {
   }
 }
 
+sub build_runtime_precompile_subs {
+  my $self = shift;
+  
+  $self->compile_packages;
+}
+
+
 1;
