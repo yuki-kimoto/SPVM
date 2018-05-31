@@ -67,7 +67,7 @@ sub compile_package {
     # Precompile Subroutine names
     my $native_sub_name = $sub_name;
     $native_sub_name =~ s/:/_/g;
-    $native_sub_name = "SPVM_BUILD_COMPILE_$native_sub_name";
+    $native_sub_name = "SPVM_BUILD_PRECOMPILE_$native_sub_name";
     
     $sub->{native_sub_name} = $native_sub_name;
   }
