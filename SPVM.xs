@@ -1147,7 +1147,7 @@ free_compiler(...)
 MODULE = SPVM::Build::Native		PACKAGE = SPVM::Build::Native
 
 SV*
-bind_native_sub(...)
+bind_sub(...)
   PPCODE:
 {
   (void)RETVAL;
