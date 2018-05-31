@@ -8,6 +8,7 @@ use warnings;
 use Carp 'croak', 'confess';
 
 use SPVM::Build::Util;
+use SPVM::Build::SPVMInfo;
 
 use ExtUtils::CBuilder;
 use Config;
@@ -358,6 +359,8 @@ sub get_shared_lib_file {
 
 sub build_and_bind {
   my $self = shift;
+  
+  my $packages = SPVM::Build::SPVMInfo::get_native_packages();
   
   my $native_func_names = SPVM::Build::SPVMInfo::get_native_sub_names();
   for my $native_func_name (@$native_func_names) {
