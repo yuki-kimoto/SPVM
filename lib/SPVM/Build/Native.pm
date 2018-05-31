@@ -37,12 +37,6 @@ sub build_shared_lib {
   # Module directory
   my $module_dir = $opt{module_dir};
 
-  # Source directory
-  my $source_dir = $opt{source_dir};
-  unless (defined $source_dir) {
-    $source_dir = $module_dir;
-  }
-  
   # Object created directory
   my $build_dir = $opt{build_dir};
   
@@ -51,26 +45,26 @@ sub build_shared_lib {
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $native_dir = $package_name;
-  $native_dir =~ s/::/\//g;
-  $native_dir .= '.native';
-  $native_dir = "$source_dir/$native_dir";
+  my $source_dir = $package_name;
+  $source_dir =~ s/::/\//g;
+  $source_dir .= '.' . $self->category;
+  $source_dir = "$module_dir/$source_dir";
   
   unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for native compile";
+    confess "SPVM build directory must be specified for " . $self->category . " build";
   }
   
   # Correct source files
   my $src_files = [];
   my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
-  for my $src_file (glob "$native_dir/*") {
+  for my $src_file (glob "$source_dir/*") {
     if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
       push @$src_files, $src_file;
     }
   }
   
   # Config
-  my $config_file = "$native_dir/$module_base_name.config";
+  my $config_file = "$source_dir/$module_base_name.config";
   my $config;
   if (-f $config_file) {
     $config = do $config_file
@@ -85,7 +79,7 @@ sub build_shared_lib {
   $env_header_include_dir =~ s/\/Build\/Native\.pm$//;
   push @$include_dirs, $env_header_include_dir;
   
-  push @$include_dirs, $native_dir;
+  push @$include_dirs, $source_dir;
   
   # CBuilder config
   my $cbuilder_config = {};
@@ -173,29 +167,35 @@ sub build_shared_lib {
   $module_file =~ s/::/\//g;
   $module_file = "$module_dir/$module_file.spvm";
   
-  my $native_sub_names = SPVM::Build::Util::get_native_sub_names_from_module_file($module_file);
+  my $sub_names = $self->get_sub_names_from_module_file($module_file);
 
-  my $native_func_names = [];
-  for my $native_sub_name (@$native_sub_names) {
-    my $native_func_name = "${package_name}::$native_sub_name";
-    $native_func_name =~ s/:/_/g;
-    push @$native_func_names, $native_func_name;
+  my $cfunc_names = [];
+  for my $sub_name (@$sub_names) {
+    my $cfunc_name = "${package_name}::$sub_name";
+    $cfunc_name =~ s/:/_/g;
+    push @$cfunc_names, $cfunc_name;
   }
   
   # This is dummy to suppress boot strap function
   # This is bad hack
-  unless (@$native_func_names) {
-    push @$native_func_names, '';
+  unless (@$cfunc_names) {
+    push @$cfunc_names, '';
   }
   
   my $shared_lib_file = $cbuilder->link(
     objects => $object_files,
     package_name => $package_name,
-    dl_func_list => $native_func_names,
+    dl_func_list => $cfunc_names,
     extra_linker_flags => $extra_linker_flags
   );
   
   return $shared_lib_file;
+}
+
+sub get_sub_names_from_module_file {
+  my ($self, $module_file) = @_;
+  
+  return SPVM::Build::Util::get_native_sub_names_from_module_file($module_file);
 }
 
 sub get_subs_from_package_id {
