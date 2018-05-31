@@ -175,7 +175,7 @@ sub compile_precompile_package {
   }
 }
 
-sub build_runtime_precompile_subs {
+sub build_runtime_precompile_packages {
   my $self = shift;
   
   $self->compile_packages;

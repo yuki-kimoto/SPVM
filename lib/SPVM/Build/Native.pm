@@ -356,7 +356,7 @@ sub get_shared_lib_file {
   return $shared_lib_path;
 }
 
-sub build_runtime_native_subs {
+sub build_runtime_native_packages {
   my $self = shift;
   
   my $native_func_names = SPVM::Build::SPVMInfo::get_native_sub_names();

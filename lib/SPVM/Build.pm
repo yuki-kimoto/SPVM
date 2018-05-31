@@ -52,10 +52,10 @@ sub compile_spvm {
     $self->build_runtime;
     
     # Build Precompile code
-    $self->precompile->build_runtime_precompile_subs;
+    $self->precompile->build_runtime_precompile_packages;
     
     # Bind native subroutines
-    $self->native->build_runtime_native_subs;
+    $self->native->build_runtime_native_packages;
     
     # Build SPVM subroutines
     $self->build_spvm_subs;
