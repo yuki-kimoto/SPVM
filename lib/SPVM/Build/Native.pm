@@ -292,30 +292,29 @@ my $compiled_native_shared_lib_file_h = {};
 sub get_sub_native_address_runtime {
   my ($self, $sub_abs_name) = @_;
   
-  my $package_name;
+  my $tmp_package_name_with_spvm;
   my $sub_name;
   if ($sub_abs_name =~ /^(?:(.+)::)(.+)$/) {
-    $package_name = $1;
+    $tmp_package_name_with_spvm = $1;
     $sub_name = $2;
   }
   
-  my $dll_package_name = $package_name;
-  my $shared_lib_file = $self->get_installed_shared_lib_path($dll_package_name);
+  my $dll_package_name = $tmp_package_name_with_spvm;
   
   my $shared_lib_func_name = $sub_abs_name;
   $shared_lib_func_name =~ s/:/_/g;
   
-  my $package_name_with_spvm = $package_name;
-  $package_name_with_spvm =~ s/^SPVM:://;
+  my $package_name = $tmp_package_name_with_spvm;
+  $package_name =~ s/^SPVM:://;
   
-  unless ($compiled_native_shared_lib_file_h->{$package_name_with_spvm}) {
-    my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name_with_spvm);
+  unless ($compiled_native_shared_lib_file_h->{$package_name}) {
+    my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
     $module_dir =~ s/\.spvm$//;
     
-    my $package_name_with_spvm_slash = $package_name;
-    $package_name_with_spvm_slash =~ s/::/\//g;
+    my $package_name_slash = $tmp_package_name_with_spvm;
+    $package_name_slash =~ s/::/\//g;
     
-    $module_dir =~ s/$package_name_with_spvm_slash$//;
+    $module_dir =~ s/$package_name_slash$//;
     $module_dir =~ s/\/$//;
     
     # Build native code
@@ -326,16 +325,16 @@ sub get_sub_native_address_runtime {
     
     my $native_shared_lib_file = $self->build_shared_lib(
       module_dir => $module_dir,
-      package_name => "SPVM::$package_name_with_spvm",
+      package_name => "SPVM::$package_name",
       build_dir => $build_dir,
       native => 1,
       quiet => 1,
     );
     
-    $compiled_native_shared_lib_file_h->{$package_name_with_spvm} = $native_shared_lib_file;
+    $compiled_native_shared_lib_file_h->{$package_name} = $native_shared_lib_file;
   }
   
-  my $native_address = SPVM::Build::Util::get_shared_lib_func_address($compiled_native_shared_lib_file_h->{$package_name_with_spvm}, $shared_lib_func_name);
+  my $native_address = SPVM::Build::Util::get_shared_lib_func_address($compiled_native_shared_lib_file_h->{$package_name}, $shared_lib_func_name);
   
   return $native_address;
 }
@@ -358,6 +357,23 @@ sub get_sub_native_address {
   my $native_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
   
   return $native_address;
+}
+
+sub bind_subs {
+  my ($self, $subs) = @_;
+  
+  for my $sub (@$subs) {
+    my $sub_name = $sub->{name};
+    next if $sub_name =~ /^CORE::/;
+    my $sub_name_spvm = "SPVM::$sub_name";
+    my $native_address = $self->get_sub_native_address($sub_name_spvm);
+    unless ($native_address) {
+      my $sub_name_c = $sub_name_spvm;
+      $sub_name_c =~ s/:/_/g;
+      confess "Can't find native address of $sub_name_spvm(). Native function name must be $sub_name_c";
+    }
+    $self->bind_native_sub($sub_name, $native_address);
+  }
 }
 
 sub get_installed_shared_lib_path {
@@ -387,18 +403,7 @@ sub build_and_bind {
       
       # Shared library is already installed
       if (-f $installed_shared_lib_path) {
-        for my $sub (@$subs) {
-          my $sub_name = $sub->{name};
-          next if $sub_name =~ /^CORE::/;
-          my $sub_name_spvm = "SPVM::$sub_name";
-          my $native_address = $self->get_sub_native_address($sub_name_spvm);
-          unless ($native_address) {
-            my $sub_name_c = $sub_name_spvm;
-            $sub_name_c =~ s/:/_/g;
-            confess "Can't find native address of $sub_name_spvm(). Native function name must be $sub_name_c";
-          }
-          $self->bind_native_sub($sub_name, $native_address);
-        }
+        $self->bind_subs($subs);
       }
       # Shared library is not installed
       else {
