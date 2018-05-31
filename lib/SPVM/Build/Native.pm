@@ -356,7 +356,7 @@ sub get_shared_lib_file {
   return $shared_lib_path;
 }
 
-sub build_runtime_packages {
+sub build_and_bind {
   my $self = shift;
   
   my $native_func_names = SPVM::Build::SPVMInfo::get_native_sub_names();
@@ -371,20 +371,6 @@ sub build_runtime_packages {
     }
     $self->bind_native_sub($native_func_name, $native_address);
   }
-}
-
-sub bind_subs {
-
-}
-
-sub build_and_bind {
-  my $self = shift;
-  
-  # Build Precompile packages
-  $self->build_runtime_packages;
-  
-  # Bind precompile subroutines
-  $self->bind_subs;
 }
 
 1;
