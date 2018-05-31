@@ -289,6 +289,57 @@ sub build_shared_lib {
 
 my $compiled_native_shared_lib_file_h = {};
 
+sub get_sub_native_address_runtime {
+  my ($self, $sub_abs_name) = @_;
+  
+  my $package_name;
+  my $sub_name;
+  if ($sub_abs_name =~ /^(?:(.+)::)(.+)$/) {
+    $package_name = $1;
+    $sub_name = $2;
+  }
+  
+  my $dll_package_name = $package_name;
+  my $shared_lib_file = $self->get_installed_shared_lib_path($dll_package_name);
+  
+  my $shared_lib_func_name = $sub_abs_name;
+  $shared_lib_func_name =~ s/:/_/g;
+  
+  my $package_name_with_spvm = $package_name;
+  $package_name_with_spvm =~ s/^SPVM:://;
+  
+  unless ($compiled_native_shared_lib_file_h->{$package_name_with_spvm}) {
+    my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name_with_spvm);
+    $module_dir =~ s/\.spvm$//;
+    
+    my $package_name_with_spvm_slash = $package_name;
+    $package_name_with_spvm_slash =~ s/::/\//g;
+    
+    $module_dir =~ s/$package_name_with_spvm_slash$//;
+    $module_dir =~ s/\/$//;
+    
+    # Build native code
+    my $build_dir = $SPVM::BUILD_DIR;
+    unless (defined $build_dir && -d $build_dir) {
+      confess "SPVM build directory must be specified for native compile";
+    }
+    
+    my $native_shared_lib_file = $self->build_shared_lib(
+      module_dir => $module_dir,
+      package_name => "SPVM::$package_name_with_spvm",
+      build_dir => $build_dir,
+      native => 1,
+      quiet => 1,
+    );
+    
+    $compiled_native_shared_lib_file_h->{$package_name_with_spvm} = $native_shared_lib_file;
+  }
+  
+  my $native_address = SPVM::Build::Util::get_shared_lib_func_address($compiled_native_shared_lib_file_h->{$package_name_with_spvm}, $shared_lib_func_name);
+  
+  return $native_address;
+}
+
 sub get_sub_native_address {
   my ($self, $sub_abs_name) = @_;
   
@@ -305,41 +356,6 @@ sub get_sub_native_address {
   my $shared_lib_func_name = $sub_abs_name;
   $shared_lib_func_name =~ s/:/_/g;
   my $native_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $shared_lib_func_name);
-  
-  # Try inline compile
-  unless ($native_address) {
-    my $package_name_with_spvm = $package_name;
-    $package_name_with_spvm =~ s/^SPVM:://;
-    
-    unless ($compiled_native_shared_lib_file_h->{$package_name_with_spvm}) {
-      my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name_with_spvm);
-      $module_dir =~ s/\.spvm$//;
-      
-      my $package_name_with_spvm_slash = $package_name;
-      $package_name_with_spvm_slash =~ s/::/\//g;
-      
-      $module_dir =~ s/$package_name_with_spvm_slash$//;
-      $module_dir =~ s/\/$//;
-      
-      # Build native code
-      my $build_dir = $SPVM::BUILD_DIR;
-      unless (defined $build_dir && -d $build_dir) {
-        confess "SPVM build directory must be specified for native compile";
-      }
-      
-      my $native_shared_lib_file = $self->build_shared_lib(
-        module_dir => $module_dir,
-        package_name => "SPVM::$package_name_with_spvm",
-        build_dir => $build_dir,
-        native => 1,
-        quiet => 1,
-      );
-      
-      $compiled_native_shared_lib_file_h->{$package_name_with_spvm} = $native_shared_lib_file;
-    }
-    
-    $native_address = SPVM::Build::Util::get_shared_lib_func_address($compiled_native_shared_lib_file_h->{$package_name_with_spvm}, $shared_lib_func_name);
-  }
   
   return $native_address;
 }
@@ -390,7 +406,7 @@ sub build_and_bind {
           my $sub_name = $sub->{name};
           next if $sub_name =~ /^CORE::/;
           my $sub_name_spvm = "SPVM::$sub_name";
-          my $native_address = $self->get_sub_native_address($sub_name_spvm);
+          my $native_address = $self->get_sub_native_address_runtime($sub_name_spvm);
           unless ($native_address) {
             my $sub_name_c = $sub_name_spvm;
             $sub_name_c =~ s/:/_/g;
