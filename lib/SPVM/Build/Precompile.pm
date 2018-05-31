@@ -47,14 +47,41 @@ sub optimize {
   return $self->{optimize};
 }
 
+sub create_cfunc_name {
+  my ($self, $sub_name) = @_;
+
+  # Precompile Subroutine names
+  my $cfunc_name = $sub_name;
+  $cfunc_name =~ s/:/_/g;
+  $cfunc_name = "SPVM_BUILD_PRECOMPILE_$cfunc_name";
+  
+  return $cfunc_name;
+}
+
+sub create_shared_lib_file_name {
+  my ($self, $package_name) = @_;
+  
+  # Build Precompile code
+  my $build_dir = $SPVM::BUILD_DIR;
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for precompile";
+  }
+  
+  my $package_file_name = $package_name;
+  $package_file_name =~ s/::/__/g;
+  
+  my $shared_lib_file_name = "$build_dir/$package_file_name.$Config{dlext}";
+  
+  return $shared_lib_file_name;
+}
+
 sub compile_package {
   my ($self, $package) = @_;
   
   my $package_id = $package->{id};
   my $package_name = $package->{name};
   
-  my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_id($package->{id});
-  $subs = [grep { !$_->{have_native_desc} && !$_->{is_enum} } @$subs];
+  my $subs = SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package->{id});
 
   my $csource_source = '';
   for my $sub (@$subs) {
@@ -63,13 +90,6 @@ sub compile_package {
     
     my $sub_csource_source = $self->build_csource($sub_id);
     $csource_source .= "$sub_csource_source\n";
-
-    # Precompile Subroutine names
-    my $cfunc_name = $sub_name;
-    $cfunc_name =~ s/:/_/g;
-    $cfunc_name = "SPVM_BUILD_PRECOMPILE_$cfunc_name";
-    
-    $sub->{cfunc_name} = $cfunc_name;
   }
 
   # Build Precompile code
@@ -82,7 +102,7 @@ sub compile_package {
   $package_file_name =~ s/::/__/g;
   
   my $source_file = "$build_dir/$package_file_name.c";
-  my $shared_lib_file = "$build_dir/$package_file_name.$Config{dlext}";
+  my $shared_lib_file = $self->create_shared_lib_file_name($package_name);
 
   # Get old csource source
   my $old_csource_source;
@@ -145,22 +165,13 @@ sub compile_package {
       );
       push @$object_files, $object_file;
       
-      my $cfunc_names = [map { $_->{cfunc_name} } @$subs];
+      my $cfunc_names = [map { $self->create_cfunc_name($_->{name}) } @$subs];
       my $lib_file = $cbuilder->link(
         objects => $object_files,
         module_name => $package_file_name,
         dl_func_list => $cfunc_names,
       );
     }
-  }
-  
-  # Bind precompile subroutine
-  for my $sub (@$subs) {
-    my $sub_name = $sub->{name};
-    my $cfunc_name = $sub->{cfunc_name};
-    my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $cfunc_name);
-    
-    $self->bind_csource_sub($sub_name, $sub_address);
   }
 }
 
@@ -176,7 +187,30 @@ sub build_runtime_packages {
 }
 
 sub bind_subs {
+  my $self = shift;
+  
+  my $packages = SPVM::Build::SPVMInfo::get_packages();
+  for my $package (@$packages) {
+    if ($package->{is_precompile} && !$package->{is_interface}) {
+      my $package_id = $package->{id};
+      my $package_name = $package->{name};
+      
+      my $subs = SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package->{id});
+      my $shared_lib_file = $self->create_shared_lib_file_name($package_name);
+      
+      # Bind precompile subroutine
+      for my $sub (@$subs) {
+        my $sub_name = $sub->{name};
+        my $cfunc_name = $self->create_cfunc_name($sub_name);
+        my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $cfunc_name);
+        
+        $self->bind_csource_sub($sub_name, $sub_address);
+      }
 
+      
+      $self->compile_package($package);
+    }
+  }
 }
 
 1;
