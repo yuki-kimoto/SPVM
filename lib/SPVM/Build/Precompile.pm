@@ -78,17 +78,17 @@ sub compile_package {
     confess "SPVM build directory must be specified for precompile";
   }
   
-  my $precompile_package_file_name = $package_name;
-  $precompile_package_file_name =~ s/::/__/g;
+  my $package_file_name = $package_name;
+  $package_file_name =~ s/::/__/g;
   
-  my $precompile_source_file = "$build_dir/$precompile_package_file_name.c";
-  my $precompile_shared_lib_file = "$build_dir/$precompile_package_file_name.$Config{dlext}";
+  my $source_file = "$build_dir/$package_file_name.c";
+  my $shared_lib_file = "$build_dir/$package_file_name.$Config{dlext}";
 
   # Get old csource source
   my $old_csource_source;
-  if (-f $precompile_source_file) {
-    open my $fh, '<', $precompile_source_file
-      or die "Can't open $precompile_source_file";
+  if (-f $source_file) {
+    open my $fh, '<', $source_file
+      or die "Can't open $source_file";
     $old_csource_source = do { local $/; <$fh> };
   }
   else {
@@ -99,13 +99,13 @@ sub compile_package {
   if ($csource_source ne $old_csource_source) {
   
     # Compile Precompile code
-    open my $fh, '>', $precompile_source_file
-      or die "Can't create $precompile_source_file";
+    open my $fh, '>', $source_file
+      or die "Can't create $source_file";
     print $fh $csource_source;
     close $fh;
     
     {
-      my $source_file = $precompile_source_file;
+      my $source_file = $source_file;
       
       # Source directory
       my $source_dir = dirname $source_file;
@@ -148,7 +148,7 @@ sub compile_package {
       my $native_sub_names = [map { $_->{native_sub_name} } @$subs];
       my $lib_file = $cbuilder->link(
         objects => $object_files,
-        module_name => $precompile_package_file_name,
+        module_name => $package_file_name,
         dl_func_list => $native_sub_names,
       );
     }
@@ -158,9 +158,9 @@ sub compile_package {
   for my $sub (@$subs) {
     my $sub_name = $sub->{name};
     my $native_sub_name = $sub->{native_sub_name};
-    my $sub_precompile_address = SPVM::Build::Util::get_shared_lib_func_address($precompile_shared_lib_file, $native_sub_name);
+    my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $native_sub_name);
     
-    $self->bind_csource_sub($sub_name, $sub_precompile_address);
+    $self->bind_csource_sub($sub_name, $sub_address);
   }
 }
 
