@@ -26,7 +26,6 @@ our $BUILD_DIR;
 our $INITIALIZED;
 our $BUILD;
 our @PRECOMPILE_PACKAGE_NAMES;
-our @NATIVE_PACKAGE_NAMES;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
