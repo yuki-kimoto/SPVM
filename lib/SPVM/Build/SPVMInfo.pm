@@ -12,6 +12,15 @@ sub get_precompile_subs_from_package_id {
   return $subs;
 }
 
+sub get_native_subs_from_package_id {
+  my ($package_id) = @_;
+  
+  my $subs = get_subs_from_package_id($package_id);
+  $subs = [grep { $_->{have_native_desc} } @$subs];
+  
+  return $subs;
+}
+
 sub get_native_packages {
   my $packages = SPVM::Build::SPVMInfo::get_packages();
   my $native_packages = [];

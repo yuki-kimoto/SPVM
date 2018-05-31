@@ -195,7 +195,7 @@ sub bind_subs {
       my $package_id = $package->{id};
       my $package_name = $package->{name};
       
-      my $subs = SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package->{id});
+      my $subs = SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package_id);
       my $shared_lib_file = $self->create_shared_lib_file_name($package_name);
       
       # Bind precompile subroutine
