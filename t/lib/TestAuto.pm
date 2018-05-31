@@ -37,7 +37,7 @@ sub import {
   
   SPVM::Native->import($_) for @inline_modules;
   
-  $ENV{SPVM_BUILD_DIR} = 'spvm_build';
+  $ENV{SPVM_BUILD_DIR} = 't/spvm_build';
   $ENV{SPVM_TEST_LIB_DIR} = "t/lib";
   push @INC, $ENV{SPVM_TEST_LIB_DIR};
 }

@@ -41,7 +41,8 @@ WriteMakefile(
     OPTIMIZE => SPVM::Build::Util::default_optimize(),
     OBJECT            => '$(O_FILES)', # link all the C files too
     $debug ? (DEFINE => '-DDEBUG') : (),
-    test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
+    test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
+    clean => {FILES => "spvm_build/*.o spvm_build/*.c spvm_build/*.so t/spvm_build/*.o t/spvm_build/*.c t/spvm_build/*.so"},
 );
 
 

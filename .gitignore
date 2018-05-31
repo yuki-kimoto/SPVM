@@ -30,3 +30,5 @@ solo/jitcode/*
 !solo/jitcode/.gitkeep
 spvm_build/*
 !spvm_build/.gitkeep
+t/spvm_build/*
+!t/spvm_build/.gitkeep
