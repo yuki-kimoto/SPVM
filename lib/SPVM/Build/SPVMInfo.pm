@@ -21,16 +21,4 @@ sub get_native_subs_from_package_id {
   return $subs;
 }
 
-sub get_native_packages {
-  my $packages = SPVM::Build::SPVMInfo::get_packages();
-  my $native_packages = [];
-  for my $package (@$packages) {
-    if ($package->{have_native_desc} && !$package->{is_interface}) {
-      push @$native_packages, $package;
-    }
-  }
-  
-  return $native_packages;
-}
-
 1;

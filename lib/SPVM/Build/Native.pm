@@ -360,22 +360,24 @@ sub get_shared_lib_file {
 sub build_and_bind {
   my $self = shift;
   
-  my $packages = SPVM::Build::SPVMInfo::get_native_packages();
+  my $packages = SPVM::Build::SPVMInfo::get_packages();
   for my $package (@$packages) {
+    my $package_id = $package->{id};
+    my $package_name = $package->{name};
     
-  }
-  
-  my $sub_names = SPVM::Build::SPVMInfo::get_native_sub_names();
-  for my $sub_name (@$sub_names) {
-    next if $sub_name =~ /^CORE::/;
-    my $sub_name_spvm = "SPVM::$sub_name";
-    my $native_address = $self->get_sub_native_address($sub_name_spvm);
-    unless ($native_address) {
-      my $sub_name_c = $sub_name_spvm;
-      $sub_name_c =~ s/:/_/g;
-      confess "Can't find native address of $sub_name_spvm(). Native function name must be $sub_name_c";
+    my $subs = SPVM::Build::SPVMInfo::get_native_subs_from_package_id($package_id);
+    for my $sub (@$subs) {
+      my $sub_name = $sub->{name};
+      next if $sub_name =~ /^CORE::/;
+      my $sub_name_spvm = "SPVM::$sub_name";
+      my $native_address = $self->get_sub_native_address($sub_name_spvm);
+      unless ($native_address) {
+        my $sub_name_c = $sub_name_spvm;
+        $sub_name_c =~ s/:/_/g;
+        confess "Can't find native address of $sub_name_spvm(). Native function name must be $sub_name_c";
+      }
+      $self->bind_native_sub($sub_name, $native_address);
     }
-    $self->bind_native_sub($sub_name, $native_address);
   }
 }
 
