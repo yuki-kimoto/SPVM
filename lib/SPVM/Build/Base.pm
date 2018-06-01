@@ -299,7 +299,8 @@ sub build_shared_lib_runtime {
   $module_dir =~ s/$package_name_slash$//;
   $module_dir =~ s/\/$//;
   
-  my $sub_names = $self->get_subs_from_package_id($package_id);
+  my $subs = $self->get_subs_from_package_id($package_id);
+  my $sub_names = [map { $_->{name} } @$subs];
   
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
