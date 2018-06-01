@@ -166,7 +166,7 @@ sub build_package_runtime {
     }
   }
   
-  return $self->create_shared_lib_file_name($package_name);;
+  return $self->create_shared_lib_file_name($package_name);
 }
 
 sub bind_subs {
@@ -179,34 +179,6 @@ sub bind_subs {
     my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
     
     $self->bind_csource_sub($sub_name, $sub_address);
-  }
-}
-
-sub build_and_bind {
-  my $self = shift;
-  
-  my $packages = SPVM::Build::SPVMInfo::get_packages();
-  for my $package (@$packages) {
-    my $package_id = $package->{id};
-    my $package_name = $package->{name};
-    
-    next if $package_name eq "CORE";
-    
-    my $subs = $self->get_subs_from_package_id($package_id);
-    if (@$subs) {
-      my $installed_shared_lib_path = $self->get_installed_shared_lib_path($package_name);
-      
-      # Shared library is already installed
-      if (-f $installed_shared_lib_path) {
-        $self->bind_subs($installed_shared_lib_path, $subs);
-      }
-      # Shared library is not installed
-      else {
-        # Try runtime compile
-        my $runtime_shared_lib_path = $self->build_package_runtime($package);
-        $self->bind_subs($runtime_shared_lib_path, $subs);
-      }
-    }
   }
 }
 

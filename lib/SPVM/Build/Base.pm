@@ -114,7 +114,9 @@ sub build_dist_shared_lib {
 }
 
 sub build_package_runtime {
-  my ($self, $package_name) = @_;
+  my ($self, $package) = @_;
+  
+  my $package_name = $package->{name};
   
   my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
   $module_dir =~ s/\.spvm$//;
@@ -196,7 +198,7 @@ sub build_and_bind {
       # Shared library is not installed
       else {
         # Try runtime compile
-        my $runtime_shared_lib_path = $self->build_package_runtime($package_name);
+        my $runtime_shared_lib_path = $self->build_package_runtime($package);
         $self->bind_subs($runtime_shared_lib_path, $subs);
       }
     }
