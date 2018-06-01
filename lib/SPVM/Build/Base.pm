@@ -102,7 +102,7 @@ sub build_shared_lib_dist {
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     source_dir => $source_dir,
-    build_dir => '.',
+    output_dir => '.',
     sub_names => $sub_names,
   );
   
@@ -129,8 +129,8 @@ sub build_shared_lib_runtime {
   $source_dir =~ s/\.spvm$/.$category/;
   
   # Build native code
-  my $build_dir = $SPVM::BUILD_DIR;
-  unless (defined $build_dir && -d $build_dir) {
+  my $output_dir = $SPVM::BUILD_DIR;
+  unless (defined $output_dir && -d $output_dir) {
     confess "SPVM build directory must be specified for native compile";
   }
 
@@ -156,7 +156,7 @@ sub build_shared_lib_runtime {
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     source_dir => $source_dir,
-    build_dir => $build_dir,
+    output_dir => $output_dir,
     quiet => 1,
     sub_names => $sub_names
   );

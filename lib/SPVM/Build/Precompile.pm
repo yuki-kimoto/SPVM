@@ -54,15 +54,15 @@ sub create_shared_lib_file_name {
   my ($self, $package_name) = @_;
   
   # Build Precompile code
-  my $build_dir = $SPVM::BUILD_DIR;
-  unless (defined $build_dir && -d $build_dir) {
+  my $output_dir = $SPVM::BUILD_DIR;
+  unless (defined $output_dir && -d $output_dir) {
     confess "SPVM build directory must be specified for precompile";
   }
   
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
   
-  my $shared_lib_file_name = "$build_dir/$package_file_name.$Config{dlext}";
+  my $shared_lib_file_name = "$output_dir/$package_file_name.$Config{dlext}";
   
   return $shared_lib_file_name;
 }
@@ -85,15 +85,15 @@ sub build_shared_lib_runtime {
   }
 
   # Build Precompile code
-  my $build_dir = $SPVM::BUILD_DIR;
-  unless (defined $build_dir && -d $build_dir) {
+  my $output_dir = $SPVM::BUILD_DIR;
+  unless (defined $output_dir && -d $output_dir) {
     confess "SPVM build directory must be specified for precompile";
   }
   
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
   
-  my $source_file = "$build_dir/$package_file_name.c";
+  my $source_file = "$output_dir/$package_file_name.c";
   my $shared_lib_file = $self->create_shared_lib_file_name($package_name);
 
   # Get old csource source

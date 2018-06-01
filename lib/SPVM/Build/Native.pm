@@ -71,7 +71,7 @@ sub build_shared_lib {
   my $package_name = $opt{package_name};
   
   # Object created directory
-  my $build_dir = $opt{build_dir};
+  my $output_dir = $opt{output_dir};
   
   my $sub_names = $opt{sub_names};
   
@@ -83,7 +83,7 @@ sub build_shared_lib {
   
   my $source_dir = $opt{source_dir};
   
-  unless (defined $build_dir && -d $build_dir) {
+  unless (defined $output_dir && -d $output_dir) {
     confess "SPVM build directory must be specified for " . $self->category . " build";
   }
   
@@ -181,7 +181,7 @@ sub build_shared_lib {
     my $src_file_under_score = $src_file;
     $src_file_under_score =~ s/^.+\///;
     $src_file_under_score =~ s/[^a-zA-Z0-9]/_/g;
-    $object_file = "$build_dir/${object_file}____$src_file_under_score.o";
+    $object_file = "$output_dir/${object_file}____$src_file_under_score.o";
     
     # Compile source file
     $cbuilder->compile(
