@@ -845,6 +845,10 @@ get_subs_from_package_id(...)
       int32_t sub_have_native_desc = sub->have_native_desc;
       SV* sv_sub_have_native_desc = sv_2mortal(newSViv(sub_have_native_desc));
 
+      // Subroutine have_compile_desc
+      int32_t sub_have_compile_desc = sub->have_compile_desc;
+      SV* sv_sub_have_compile_desc = sv_2mortal(newSViv(sub_have_compile_desc));
+
       // Subroutine
       HV* hv_sub = (HV*)sv_2mortal((SV*)newHV());
       
@@ -852,6 +856,7 @@ get_subs_from_package_id(...)
       hv_store(hv_sub, "id", strlen("id"), SvREFCNT_inc(sv_sub_id), 0);
       hv_store(hv_sub, "is_enum", strlen("is_enum"), SvREFCNT_inc(sv_sub_is_enum), 0);
       hv_store(hv_sub, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
+      hv_store(hv_sub, "have_compile_desc", strlen("have_compile_desc"), SvREFCNT_inc(sv_sub_have_compile_desc), 0);
       
       SV* sv_sub = sv_2mortal(newRV_inc((SV*)hv_sub));
       av_push(av_subs, SvREFCNT_inc((SV*)sv_sub));
