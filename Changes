@@ -1,3 +1,7 @@
+0.0342 2018-06-01
+  - remove SPVM::Native
+  - remove SPVM::Precompile
+  - add compile descriptor to precompile
 0.0340 2018-05-28
   - rename byte_value to bval
   - rename short_value to sval
