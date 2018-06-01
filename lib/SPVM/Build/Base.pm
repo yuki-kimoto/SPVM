@@ -95,12 +95,16 @@ sub build_shared_lib_dist {
   
   my $source_dir = $self->source_dir_dist($package_name);
   
+  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
+  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
+  
   # Build shared library
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     module_dir => 'lib',
     source_dir => $source_dir,
-    build_dir => '.'
+    build_dir => '.',
+    sub_names => $sub_names,
   );
   
   # Create shared lib blib directory
@@ -118,6 +122,7 @@ sub build_shared_lib_dist {
 sub build_shared_lib_runtime {
   my ($self, $package) = @_;
   
+  my $package_id = $package->{id};
   my $package_name = $package->{name};
   
   my $source_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
@@ -139,12 +144,23 @@ sub build_shared_lib_runtime {
   $module_dir =~ s/$package_name_slash$//;
   $module_dir =~ s/\/$//;
   
+  my $sub_names;
+  if ($self->category eq 'native') {
+    my $subs = SPVM::Build::SPVMInfo::get_native_subs_from_package_id($package_id);
+    $sub_names = [map { $_->{name} } @$subs];
+  }
+  else {
+    my $subs = SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package_id);
+    $sub_names = [map { $_->{name} } @$subs];
+  }
+  
   my $shared_lib_file = $self->build_shared_lib(
     module_dir => $module_dir,
     package_name => $package_name,
     source_dir => $source_dir,
     build_dir => $build_dir,
     quiet => 1,
+    sub_names => $sub_names
   );
   
   return $shared_lib_file;

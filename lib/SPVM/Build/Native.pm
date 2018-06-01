@@ -76,6 +76,8 @@ sub build_shared_lib {
   # Object created directory
   my $build_dir = $opt{build_dir};
   
+  my $sub_names = $opt{sub_names};
+  
   # Quiet output
   my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
  
@@ -92,10 +94,6 @@ sub build_shared_lib {
     $source_dir .= '.' . $self->category;
     $source_dir = "$module_dir/$source_dir";
   }
-
-  # Get sub names from module file
-  my $package_load_path = SPVM::Build::Util::create_package_load_path($module_dir, $package_name);
-  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
   
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for " . $self->category . " build";
