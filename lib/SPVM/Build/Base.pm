@@ -118,6 +118,16 @@ sub build_package_runtime {
   
   my $package_name = $package->{name};
   
+  my $source_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
+  my $category = $self->category;
+  $source_dir =~ s/\.spvm$/.$category/;
+  
+  # Build native code
+  my $build_dir = $SPVM::BUILD_DIR;
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for native compile";
+  }
+
   my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
   $module_dir =~ s/\.spvm$//;
   
@@ -127,15 +137,10 @@ sub build_package_runtime {
   $module_dir =~ s/$package_name_slash$//;
   $module_dir =~ s/\/$//;
   
-  # Build native code
-  my $build_dir = $SPVM::BUILD_DIR;
-  unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for native compile";
-  }
-  
   my $shared_lib_file = $self->build_shared_lib(
     module_dir => $module_dir,
     package_name => $package_name,
+    source_dir => $source_dir,
     build_dir => $build_dir,
     quiet => 1,
   );

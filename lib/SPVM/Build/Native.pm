@@ -51,8 +51,21 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
+sub source_dir_dist {
+  my ($self, $package_name) = @_;
+  
+  my $source_dir = SPVM::Build::Util::create_package_load_path('lib', $package_name);
+  my $category = $self->category;
+  $source_dir =~ s/\.spvm$/$category/;
+  
+  return $source_dir;
+}
+
 sub build_shared_lib {
   my ($self, %opt) = @_;
+  
+  # Source directory
+  my $source_dir_new = $opt{source_dir};
   
   # Module name
   my $package_name = $opt{package_name};
@@ -69,10 +82,20 @@ sub build_shared_lib {
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $source_dir = $package_name;
-  $source_dir =~ s/::/\//g;
-  $source_dir .= '.' . $self->category;
-  $source_dir = "$module_dir/$source_dir";
+  my $source_dir;
+  if ($opt{source_dir}) {
+    $source_dir = $opt{source_dir};
+  }
+  else {
+    $source_dir = $package_name;
+    $source_dir =~ s/::/\//g;
+    $source_dir .= '.' . $self->category;
+    $source_dir = "$module_dir/$source_dir";
+  }
+
+  # Get sub names from module file
+  my $package_load_path = SPVM::Build::Util::create_package_load_path($module_dir, $package_name);
+  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
   
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for " . $self->category . " build";
@@ -186,10 +209,6 @@ sub build_shared_lib {
   
   my $dlext = $Config{dlext};
   
-  # Get sub names from module file
-  my $package_load_path = SPVM::Build::Util::create_package_load_path($module_dir, $package_name);
-  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
-
   my $cfunc_names = [];
   for my $sub_name (@$sub_names) {
     my $cfunc_name = "${package_name}::$sub_name";
