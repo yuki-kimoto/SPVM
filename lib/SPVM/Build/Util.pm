@@ -9,6 +9,16 @@ use File::Basename 'dirname', 'basename';
 # SPVM::Build::tUtil is used from Makefile.PL and SPVM::Build, SPVM::Build::Precompile, SPVM::Build::Native
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
 
+sub create_package_load_path {
+  my ($top_dir, $package_name) = @_;
+  
+  my $package_load_path = $package_name;
+  $package_load_path =~ s/::/\//g;
+  $package_load_path = "$top_dir/$package_load_path.spvm";
+  
+  return $package_load_path;
+}
+
 sub get_shared_lib_func_address {
   my ($shared_lib_file, $shared_lib_func_name) = @_;
   

@@ -63,6 +63,7 @@ sub build_shared_lib {
   # Object created directory
   my $build_dir = $opt{build_dir};
   
+  # Quiet output
   my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
  
   my $module_base_name = $package_name;
@@ -185,12 +186,9 @@ sub build_shared_lib {
   
   my $dlext = $Config{dlext};
   
-  # Module file
-  my $module_file = $package_name;
-  $module_file =~ s/::/\//g;
-  $module_file = "$module_dir/$module_file.spvm";
-  
-  my $sub_names = $self->get_sub_names_from_module_file($module_file);
+  # Get sub names from module file
+  my $package_load_path = SPVM::Build::Util::create_package_load_path($module_dir, $package_name);
+  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
 
   my $cfunc_names = [];
   for my $sub_name (@$sub_names) {
