@@ -67,7 +67,7 @@ sub create_shared_lib_file_name {
   return $shared_lib_file_name;
 }
 
-sub build_package_runtime {
+sub build_shared_lib_runtime {
   my ($self, $package) = @_;
   
   my $package_id = $package->{id};

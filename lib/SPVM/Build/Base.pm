@@ -85,12 +85,12 @@ sub create_build_shared_lib_make_rule {
   $make_rule
     .= "$shared_lib_bilb_file :: @deps\n\n";
   $make_rule
-    .= "\tperl -Ilib -MSPVM::Build::$module_category -e \"SPVM::Build::$module_category->new->build_dist_shared_lib('$package_name')\"\n\n";
+    .= "\tperl -Ilib -MSPVM::Build::$module_category -e \"SPVM::Build::$module_category->new->build_shared_lib_dist('$package_name')\"\n\n";
   
   return $make_rule;
 }
 
-sub build_dist_shared_lib {
+sub build_shared_lib_dist {
   my ($self, $package_name) = @_;
   
   my $source_dir = $self->source_dir_dist($package_name);
@@ -115,7 +115,7 @@ sub build_dist_shared_lib {
     or die "Can't move $shared_lib_file to $shared_lib_blib_file";
 }
 
-sub build_package_runtime {
+sub build_shared_lib_runtime {
   my ($self, $package) = @_;
   
   my $package_name = $package->{name};
@@ -204,7 +204,7 @@ sub build_and_bind {
       # Shared library is not installed
       else {
         # Try runtime compile
-        my $runtime_shared_lib_path = $self->build_package_runtime($package);
+        my $runtime_shared_lib_path = $self->build_shared_lib_runtime($package);
         $self->bind_subs($runtime_shared_lib_path, $subs);
       }
     }
