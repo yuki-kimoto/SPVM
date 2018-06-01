@@ -2,6 +2,8 @@ package SPVM::Build::Precompile;
 
 use strict;
 use warnings;
+use base 'SPVM::Build::Base';
+
 use Carp 'croak', 'confess';
 use File::Spec;
 
@@ -18,33 +20,23 @@ use SPVM::Build::SPVMInfo;
 use SPVM::Build::Util;
 
 sub new {
-  my $class = shift;
-  
-  my $self = {};
+  my $self = shift->SUPER::new(@_);
 
-  $self->{extra_compiler_flags} = SPVM::Build::Util::default_extra_compiler_flags();
-  $self->{optimize} = SPVM::Build::Util::default_optimize();
   $self->{category} = 'precompile';
   
-  return bless $self, $class;
+  return $self;
 }
 
-sub category {
-  my $self = shift;
+sub get_sub_names_from_module_file {
+  my ($self, $module_file) = @_;
   
-  $self->{category};
+  return SPVM::Build::Util::get_precompile_sub_names_from_module_file($module_file);
 }
 
-sub extra_compiler_flags {
-  my $self = shift;
+sub get_subs_from_package_id {
+  my ($self, $package_id) = @_;
   
-  return $self->{extra_compiler_flags};
-}
-
-sub optimize {
-  my $self = shift;
-  
-  return $self->{optimize};
+  return SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package_id);;
 }
 
 sub create_cfunc_name {
@@ -75,7 +67,7 @@ sub create_shared_lib_file_name {
   return $shared_lib_file_name;
 }
 
-sub compile_package {
+sub build_package_runtime {
   my ($self, $package) = @_;
   
   my $package_id = $package->{id};
@@ -173,23 +165,24 @@ sub compile_package {
       );
     }
   }
-}
-
-sub build_runtime_packages {
-  my $self = shift;
   
-  my $packages = SPVM::Build::SPVMInfo::get_packages();
-  for my $package (@$packages) {
-    my $package_id = $package->{id};
-    
-    my $subs = SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package_id);
-    if (@$subs) {
-      $self->compile_package($package);
-    }
-  }
+  return $self->create_shared_lib_file_name($package_name);;
 }
 
 sub bind_subs {
+  my ($self, $shared_lib_path, $subs) = @_;
+  
+  # Bind precompile subroutine
+  for my $sub (@$subs) {
+    my $sub_name = $sub->{name};
+    my $cfunc_name = $self->create_cfunc_name($sub_name);
+    my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
+    
+    $self->bind_csource_sub($sub_name, $sub_address);
+  }
+}
+
+sub build_and_bind {
   my $self = shift;
   
   my $packages = SPVM::Build::SPVMInfo::get_packages();
@@ -197,30 +190,24 @@ sub bind_subs {
     my $package_id = $package->{id};
     my $package_name = $package->{name};
     
-    my $subs = SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package_id);
-    my $shared_lib_file = $self->create_shared_lib_file_name($package_name);
+    next if $package_name eq "CORE";
     
-    # Bind precompile subroutine
-    for my $sub (@$subs) {
-      my $sub_name = $sub->{name};
-      my $cfunc_name = $self->create_cfunc_name($sub_name);
-      my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_file, $cfunc_name);
+    my $subs = $self->get_subs_from_package_id($package_id);
+    if (@$subs) {
+      my $installed_shared_lib_path = $self->get_installed_shared_lib_path($package_name);
       
-      $self->bind_csource_sub($sub_name, $sub_address);
+      # Shared library is already installed
+      if (-f $installed_shared_lib_path) {
+        $self->bind_subs($installed_shared_lib_path, $subs);
+      }
+      # Shared library is not installed
+      else {
+        # Try runtime compile
+        my $runtime_shared_lib_path = $self->build_package_runtime($package);
+        $self->bind_subs($runtime_shared_lib_path, $subs);
+      }
     }
-    
-    $self->compile_package($package);
   }
-}
-
-sub build_and_bind {
-  my $self = shift;
-  
-  # Build Precompile packages
-  $self->build_runtime_packages;
-  
-  # Bind precompile subroutines
-  $self->bind_subs;
 }
 
 1;
