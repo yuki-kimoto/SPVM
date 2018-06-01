@@ -51,21 +51,21 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
-sub source_dir_dist {
+sub input_dir_dist {
   my ($self, $package_name) = @_;
   
-  my $source_dir = SPVM::Build::Util::create_package_load_path('lib', $package_name);
+  my $input_dir = SPVM::Build::Util::create_package_load_path('lib', $package_name);
   my $category = $self->category;
-  $source_dir =~ s/\.spvm$/.$category/;
+  $input_dir =~ s/\.spvm$/.$category/;
   
-  return $source_dir;
+  return $input_dir;
 }
 
 sub build_shared_lib {
   my ($self, %opt) = @_;
   
   # Source directory
-  my $source_dir_new = $opt{source_dir};
+  my $input_dir_new = $opt{input_dir};
   
   # Package name
   my $package_name = $opt{package_name};
@@ -81,7 +81,7 @@ sub build_shared_lib {
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $source_dir = $opt{source_dir};
+  my $input_dir = $opt{input_dir};
   
   unless (defined $output_dir && -d $output_dir) {
     confess "SPVM build directory must be specified for " . $self->category . " build";
@@ -90,14 +90,14 @@ sub build_shared_lib {
   # Correct source files
   my $src_files = [];
   my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
-  for my $src_file (glob "$source_dir/*") {
+  for my $src_file (glob "$input_dir/*") {
     if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
       push @$src_files, $src_file;
     }
   }
   
   # Config
-  my $config_file = "$source_dir/$module_base_name.config";
+  my $config_file = "$input_dir/$module_base_name.config";
   my $config;
   if (-f $config_file) {
     $config = do $config_file
@@ -112,7 +112,7 @@ sub build_shared_lib {
   $env_header_include_dir =~ s/\/Build\/Native\.pm$//;
   push @$include_dirs, $env_header_include_dir;
   
-  push @$include_dirs, $source_dir;
+  push @$include_dirs, $input_dir;
   
   # CBuilder config
   my $cbuilder_config = {};

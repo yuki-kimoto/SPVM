@@ -120,10 +120,10 @@ sub build_shared_lib_runtime {
       my $source_file = $source_file;
       
       # Source directory
-      my $source_dir = dirname $source_file;
+      my $input_dir = dirname $source_file;
       
       # Object created directory
-      my $object_dir = $source_dir;
+      my $object_dir = $input_dir;
       
       # Include directory
       my $include_dirs = [];

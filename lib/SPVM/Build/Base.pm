@@ -93,7 +93,7 @@ sub create_build_shared_lib_make_rule {
 sub build_shared_lib_dist {
   my ($self, $package_name) = @_;
   
-  my $source_dir = $self->source_dir_dist($package_name);
+  my $input_dir = $self->input_dir_dist($package_name);
   
   my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
   my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
@@ -101,7 +101,7 @@ sub build_shared_lib_dist {
   # Build shared library
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
-    source_dir => $source_dir,
+    input_dir => $input_dir,
     output_dir => '.',
     sub_names => $sub_names,
   );
@@ -124,9 +124,9 @@ sub build_shared_lib_runtime {
   my $package_id = $package->{id};
   my $package_name = $package->{name};
   
-  my $source_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
+  my $input_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
   my $category = $self->category;
-  $source_dir =~ s/\.spvm$/.$category/;
+  $input_dir =~ s/\.spvm$/.$category/;
   
   # Build native code
   my $output_dir = $SPVM::BUILD_DIR;
@@ -155,7 +155,7 @@ sub build_shared_lib_runtime {
   
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
-    source_dir => $source_dir,
+    input_dir => $input_dir,
     output_dir => $output_dir,
     quiet => 1,
     sub_names => $sub_names
