@@ -151,14 +151,13 @@ sub bind_subs {
     next if $sub_name =~ /^CORE::/;
     my $sub_name_spvm = "SPVM::$sub_name";
 
-    my $shared_lib_func_name = $sub_name_spvm;
-    $shared_lib_func_name =~ s/:/_/g;
-    my $native_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $shared_lib_func_name);
+    my $cfunc_name = $self->create_cfunc_name($sub_name);
+    my $native_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
 
     unless ($native_address) {
       my $sub_name_c = $sub_name_spvm;
       $sub_name_c =~ s/:/_/g;
-      confess "Can't find native address of $sub_name_spvm(). Native function name must be $sub_name_c";
+      confess "Can't find function address of $sub_name_spvm(). Native function name must be $sub_name_c";
     }
     $self->bind_sub($sub_name, $native_address);
   }

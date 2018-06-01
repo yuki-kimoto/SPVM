@@ -40,6 +40,17 @@ sub get_subs_from_package_id {
   return SPVM::Build::SPVMInfo::get_native_subs_from_package_id($package_id);;
 }
 
+sub create_cfunc_name {
+  my ($self, $sub_name) = @_;
+
+  my $sub_name_spvm = "SPVM::$sub_name";
+
+  my $cfunc_name = $sub_name_spvm;
+  $cfunc_name =~ s/:/_/g;
+  
+  return $cfunc_name;
+}
+
 sub build_shared_lib {
   my ($self, %opt) = @_;
   

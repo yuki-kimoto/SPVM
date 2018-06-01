@@ -178,7 +178,7 @@ sub bind_subs {
     my $cfunc_name = $self->create_cfunc_name($sub_name);
     my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
     
-    $self->bind_csource_sub($sub_name, $sub_address);
+    $self->bind_sub($sub_name, $sub_address);
   }
 }
 

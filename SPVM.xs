@@ -1187,7 +1187,7 @@ build_csource(...)
 }
 
 SV*
-bind_csource_sub(...)
+bind_sub(...)
   PPCODE:
 {
   (void)RETVAL;
