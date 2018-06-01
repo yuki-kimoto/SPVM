@@ -56,7 +56,7 @@ sub source_dir_dist {
   
   my $source_dir = SPVM::Build::Util::create_package_load_path('lib', $package_name);
   my $category = $self->category;
-  $source_dir =~ s/\.spvm$/$category/;
+  $source_dir =~ s/\.spvm$/.$category/;
   
   return $source_dir;
 }

@@ -92,12 +92,14 @@ sub create_build_shared_lib_make_rule {
 
 sub build_dist_shared_lib {
   my ($self, $package_name) = @_;
-
+  
+  my $source_dir = $self->source_dir_dist($package_name);
+  
   # Build shared library
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     module_dir => 'lib',
-    source_dir => 'lib',
+    source_dir => $source_dir,
     build_dir => '.'
   );
   
