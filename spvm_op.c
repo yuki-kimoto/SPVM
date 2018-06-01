@@ -1730,11 +1730,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
 
       SPVM_SUB* sub = op_sub->uv.sub;
-
+      
       SPVM_OP* op_name_sub = sub->op_name;
       const char* sub_name = op_name_sub->uv.name;
       const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
-      
+
       // Method check
       
       // Set first argument type if not set

@@ -180,7 +180,10 @@ sub build_runtime_packages {
   
   my $packages = SPVM::Build::SPVMInfo::get_packages();
   for my $package (@$packages) {
-    if ($package->{is_precompile} && !$package->{is_interface}) {
+    my $package_id = $package->{id};
+    
+    my $subs = SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package_id);
+    if (@$subs) {
       $self->compile_package($package);
     }
   }

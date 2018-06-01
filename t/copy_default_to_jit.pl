@@ -43,8 +43,10 @@ find(
         
         my $content = do { local $/; <$fh> };
         
-        $content =~ s/\bsub\b/compile sub/g;
-        $content =~ s/\bnative\s+compile\b/native/g;
+        unless ($content =~ /:\s+interface\s+{/) {
+          $content =~ s/\bsub\b/compile sub/g;
+          $content =~ s/\bnative\s+compile\b/native/g;
+        }
         
         mkpath $to_dir;
         

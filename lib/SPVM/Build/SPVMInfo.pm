@@ -7,7 +7,7 @@ sub get_precompile_subs_from_package_id {
   my ($package_id) = @_;
   
   my $subs = get_subs_from_package_id($package_id);
-  $subs = [grep { !$_->{have_compile_desc} && !$_->{is_enum} } @$subs];
+  $subs = [grep { $_->{have_compile_desc} } @$subs];
   
   return $subs;
 }
