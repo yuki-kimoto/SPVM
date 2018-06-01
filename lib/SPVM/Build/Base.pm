@@ -101,7 +101,6 @@ sub build_shared_lib_dist {
   # Build shared library
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
-    module_dir => 'lib',
     source_dir => $source_dir,
     build_dir => '.',
     sub_names => $sub_names,
@@ -155,7 +154,6 @@ sub build_shared_lib_runtime {
   }
   
   my $shared_lib_file = $self->build_shared_lib(
-    module_dir => $module_dir,
     package_name => $package_name,
     source_dir => $source_dir,
     build_dir => $build_dir,

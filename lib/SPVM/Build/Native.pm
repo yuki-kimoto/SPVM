@@ -67,12 +67,9 @@ sub build_shared_lib {
   # Source directory
   my $source_dir_new = $opt{source_dir};
   
-  # Module name
+  # Package name
   my $package_name = $opt{package_name};
   
-  # Module directory
-  my $module_dir = $opt{module_dir};
-
   # Object created directory
   my $build_dir = $opt{build_dir};
   
@@ -84,16 +81,7 @@ sub build_shared_lib {
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $source_dir;
-  if ($opt{source_dir}) {
-    $source_dir = $opt{source_dir};
-  }
-  else {
-    $source_dir = $package_name;
-    $source_dir =~ s/::/\//g;
-    $source_dir .= '.' . $self->category;
-    $source_dir = "$module_dir/$source_dir";
-  }
+  my $source_dir = $opt{source_dir};
   
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for " . $self->category . " build";
