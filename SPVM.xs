@@ -898,10 +898,6 @@ get_packages(...)
       int32_t package_id = package->id;
       SV* sv_package_id = sv_2mortal(newSViv(package_id));
 
-      // Is Precompile
-      int32_t package_is_precompile = package->is_precompile;
-      SV* sv_package_is_precompile = sv_2mortal(newSViv(package_is_precompile));
-
       // Is interface
       int32_t package_is_interface = package->is_interface;
       SV* sv_package_is_interface = sv_2mortal(newSViv(package_is_interface));
@@ -911,7 +907,6 @@ get_packages(...)
       
       hv_store(hv_package, "name", strlen("name"), SvREFCNT_inc(sv_package_name), 0);
       hv_store(hv_package, "id", strlen("id"), SvREFCNT_inc(sv_package_id), 0);
-      hv_store(hv_package, "is_precompile", strlen("is_precompile"), SvREFCNT_inc(sv_package_is_precompile), 0);
       hv_store(hv_package, "is_interface", strlen("is_interface"), SvREFCNT_inc(sv_package_is_interface), 0);
       
       SV* sv_package = sv_2mortal(newRV_inc((SV*)hv_package));
@@ -1050,22 +1045,6 @@ compile(...)
     }
   }
 
-  // Add package
-  AV* av_precompile_package_names = get_av("SPVM::PRECOMPILE_PACKAGE_NAMES", 0);
-  int32_t av_precompile_package_names_length = (int32_t)av_len(av_precompile_package_names) + 1;
-  {
-    int32_t i;
-    for (i = 0; i < av_precompile_package_names_length; i++) {
-      SV** sv_precompile_package_name_ptr = av_fetch(av_precompile_package_names, i, 0);
-      SV* sv_precompile_package_name = sv_precompile_package_name_ptr ? *sv_precompile_package_name_ptr : &PL_sv_undef;
-      
-      char* precompile_package_name = SvPV_nolen(sv_precompile_package_name);
-      
-      SPVM_LIST_push(compiler->precompile_package_names, precompile_package_name);
-      SPVM_HASH_insert(compiler->precompile_package_name_symtable, precompile_package_name, strlen(precompile_package_name), (void*)(intptr_t)1);
-    }
-  }
-  
   // Set compiler
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));

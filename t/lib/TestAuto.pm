@@ -8,8 +8,6 @@ use lib "t/lib";
 use File::Find;
 use File::Basename 'basename', 'dirname';
 
-require SPVM::Precompile;
-
 sub import {
   if ($FindBin::Bin =~ /\/precompile$/) {
     my $test_precompile_dir = 't/precompile/lib';
