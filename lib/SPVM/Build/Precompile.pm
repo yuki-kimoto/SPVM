@@ -169,17 +169,4 @@ sub build_package_runtime {
   return $self->create_shared_lib_file_name($package_name);
 }
 
-sub bind_subs {
-  my ($self, $shared_lib_path, $subs) = @_;
-  
-  # Bind precompile subroutine
-  for my $sub (@$subs) {
-    my $sub_name = $sub->{name};
-    my $cfunc_name = $self->create_cfunc_name($sub_name);
-    my $sub_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
-    
-    $self->bind_sub($sub_name, $sub_address);
-  }
-}
-
 1;
