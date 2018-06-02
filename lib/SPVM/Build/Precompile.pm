@@ -74,16 +74,17 @@ sub build_shared_lib_runtime {
   my $package_name = $package->{name};
 
   # Output directory
-  my $output_dir = $SPVM::BUILD_DIR;
+  my $build_dir = $SPVM::BUILD_DIR;
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  }
 
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
-  my $input_dir = "$output_dir/$package_file_name." . $self->category;
+  my $input_dir = "$build_dir/$package_file_name." . $self->category;
+  my $output_dir = $input_dir;
 
   # Build Precompile code
-  unless (defined $output_dir && -d $output_dir) {
-    confess "SPVM build directory must be specified for precompile";
-  }
   mkpath $input_dir;
   
   my $subs = $self->get_subs_from_package_id($package->{id});
@@ -142,8 +143,6 @@ sub build_shared_lib {
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
   
-  my ($source_file) = glob "$input_dir/*.c";
-  
   # Include directory
   my $include_dirs = [];
   
@@ -163,10 +162,11 @@ sub build_shared_lib {
   my $object_files = [];
   
   # Object file
-  my $object_file = $source_file;
+  my ($source_file) = glob "$input_dir/*.c";
+  my $object_file = "$output_dir/" . basename($source_file);
   $object_file =~ s/\.c$//;
   $object_file .= '.o';
-  
+ 
   # Compile source file
   $cbuilder->compile(
     source => $source_file,
