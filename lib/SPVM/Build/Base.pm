@@ -315,12 +315,15 @@ sub build_shared_lib {
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
-    my $object_file = $package_name;
-    $object_file =~ s/:/_/g;
-    my $src_file_under_score = $src_file;
-    $src_file_under_score =~ s/^.+\///;
-    $src_file_under_score =~ s/[^a-zA-Z0-9]/_/g;
-    $object_file = "$output_dir/$src_file_under_score.o";
+    my $object_file = "$output_dir/" . basename($src_file);
+    $object_file =~ s/\.c$//;
+    $object_file =~ s/\.C$//;
+    $object_file =~ s/\.cpp$//;
+    $object_file =~ s/\.i$//;
+    $object_file =~ s/\.s$//;
+    $object_file =~ s/\.cxx$//;
+    $object_file =~ s/\.cc$//;
+    $object_file .= '.o';
     
     # Compile source file
     $cbuilder->compile(
