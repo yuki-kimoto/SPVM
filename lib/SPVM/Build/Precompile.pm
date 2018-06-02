@@ -68,25 +68,29 @@ sub create_shared_lib_file_name {
 }
 
 sub build_shared_lib_runtime {
-  my $self = shift;
-  
-  $self->build_shared_lib(@_);
-}
-
-sub build_shared_lib {
   my ($self, $package) = @_;
-  
+
   my $package_id = $package->{id};
   my $package_name = $package->{name};
   
-  my $subs = SPVM::Build::SPVMInfo::get_precompile_subs_from_package_id($package->{id});
+  my $subs = $self->get_subs_from_package_id($package->{id});
+  my $sub_names = [map { $_->{name} } @$subs];
+  
+  $self->build_shared_lib(
+    package_name => $package_name,
+    sub_names => $sub_names
+  );
+}
+
+sub build_shared_lib {
+  my ($self, %opt) = @_;
+  
+  my $package_name = $opt{package_name};
+  my $sub_names = $opt{sub_names};
 
   my $csource_source = '';
-  for my $sub (@$subs) {
-    my $sub_name = $sub->{name};
-    my $sub_id = $sub->{id};
-    
-    my $sub_csource_source = $self->build_csource($sub_id);
+  for my $sub_name (@$sub_names) {
+    my $sub_csource_source = $self->build_csource($sub_name);
     $csource_source .= "$sub_csource_source\n";
   }
 
@@ -163,7 +167,7 @@ sub build_shared_lib {
       );
       push @$object_files, $object_file;
       
-      my $cfunc_names = [map { $self->create_cfunc_name($_->{name}) } @$subs];
+      my $cfunc_names = [map { $self->create_cfunc_name($_) } @$sub_names];
       my $lib_file = $cbuilder->link(
         objects => $object_files,
         module_name => $package_file_name,

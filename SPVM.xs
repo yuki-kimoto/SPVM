@@ -1169,8 +1169,15 @@ build_csource(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
-  SV* sv_sub_id = ST(1);
-  int32_t sub_id = SvIV(sv_sub_id);
+  SV* sv_sub_name = ST(1);
+  const char* sub_name = SvPV_nolen(sv_sub_name);
+
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_name, strlen(sub_name));
+  int32_t sub_id = op_sub->uv.sub->id;
   
   // String buffer for csource
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
