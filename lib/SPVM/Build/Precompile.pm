@@ -79,6 +79,12 @@ sub build_shared_lib_runtime {
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
   my $input_dir = "$output_dir/$package_file_name." . $self->category;
+
+  # Build Precompile code
+  unless (defined $output_dir && -d $output_dir) {
+    confess "SPVM build directory must be specified for precompile";
+  }
+  mkpath $input_dir;
   
   my $subs = $self->get_subs_from_package_id($package->{id});
   my $sub_names = [map { $_->{name} } @$subs];
@@ -113,8 +119,6 @@ sub build_shared_lib {
   
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
-  
-  mkpath $input_dir;
   
   my $source_file = "$input_dir/$package_file_name.c";
   my $shared_lib_file = $self->create_shared_lib_file_name($package_name);
