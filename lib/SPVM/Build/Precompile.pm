@@ -62,7 +62,7 @@ sub create_shared_lib_file_name {
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
   
-  my $shared_lib_file_name = "$output_dir/$package_file_name.$Config{dlext}";
+  my $shared_lib_file_name = "$output_dir/$package_file_name.precompile/$package_file_name.$Config{dlext}";
   
   return $shared_lib_file_name;
 }
@@ -75,12 +75,17 @@ sub build_shared_lib_runtime {
 
   # Output directory
   my $output_dir = $SPVM::BUILD_DIR;
+
+  my $package_file_name = $package_name;
+  $package_file_name =~ s/::/__/g;
+  my $input_dir = "$output_dir/$package_file_name." . $self->category;
   
   my $subs = $self->get_subs_from_package_id($package->{id});
   my $sub_names = [map { $_->{name} } @$subs];
   
   $self->build_shared_lib(
     package_name => $package_name,
+    input_dir => $input_dir,
     output_dir => $output_dir,
     quiet => 1,
     sub_names => $sub_names
@@ -93,7 +98,8 @@ sub build_shared_lib {
   my $package_name = $opt{package_name};
   my $sub_names = $opt{sub_names};
   my $output_dir = $opt{output_dir};
-
+  my $input_dir = $opt{input_dir};
+  
   my $csource_source = '';
   for my $sub_name (@$sub_names) {
     my $sub_csource_source = $self->build_csource($sub_name);
@@ -108,7 +114,9 @@ sub build_shared_lib {
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
   
-  my $source_file = "$output_dir/$package_file_name.c";
+  mkpath $input_dir;
+  
+  my $source_file = "$input_dir/$package_file_name.c";
   my $shared_lib_file = $self->create_shared_lib_file_name($package_name);
 
   # Get old csource source
@@ -124,7 +132,8 @@ sub build_shared_lib {
   
   # Only compile when source is different
   if ($csource_source ne $old_csource_source) {
-  
+    
+    
     # Compile Precompile code
     open my $fh, '>', $source_file
       or die "Can't create $source_file";

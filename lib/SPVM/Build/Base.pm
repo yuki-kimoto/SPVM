@@ -127,7 +127,7 @@ sub bind_subs {
 
     my $cfunc_name = $self->create_cfunc_name($sub_name);
     my $cfunc_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
-
+    
     unless ($cfunc_address) {
       my $sub_name_c = $sub_name_spvm;
       $sub_name_c =~ s/:/_/g;
