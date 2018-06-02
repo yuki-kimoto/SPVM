@@ -88,40 +88,13 @@ sub build_shared_lib_runtime {
   
   my $subs = $self->get_subs_from_package_id($package->{id});
   my $sub_names = [map { $_->{name} } @$subs];
-  
-  $self->build_shared_lib(
-    package_name => $package_name,
-    input_dir => $input_dir,
-    output_dir => $output_dir,
-    quiet => 1,
-    sub_names => $sub_names
-  );
-}
 
-sub build_shared_lib {
-  my ($self, %opt) = @_;
-  
-  my $package_name = $opt{package_name};
-  my $sub_names = $opt{sub_names};
-  my $output_dir = $opt{output_dir};
-  my $input_dir = $opt{input_dir};
-  
   my $csource_source = '';
   for my $sub_name (@$sub_names) {
     my $sub_csource_source = $self->build_csource($sub_name);
     $csource_source .= "$sub_csource_source\n";
   }
-
-  # Build Precompile code
-  unless (defined $output_dir && -d $output_dir) {
-    confess "SPVM build directory must be specified for precompile";
-  }
-  
-  my $package_file_name = $package_name;
-  $package_file_name =~ s/::/__/g;
-  
   my $source_file = "$input_dir/$package_file_name.c";
-  my $shared_lib_file = $self->create_shared_lib_file_name($package_name);
 
   # Get old csource source
   my $old_csource_source;
@@ -133,66 +106,82 @@ sub build_shared_lib {
   else {
     $old_csource_source = '';
   }
+
+  # Compile Precompile code
+  open my $fh, '>', $source_file
+    or die "Can't create $source_file";
+  print $fh $csource_source;
+  close $fh;
   
-  # Only compile when source is different
   if ($csource_source ne $old_csource_source) {
-    
-    
-    # Compile Precompile code
-    open my $fh, '>', $source_file
-      or die "Can't create $source_file";
-    print $fh $csource_source;
-    close $fh;
-    
-    {
-      my $source_file = $source_file;
-      
-      # Source directory
-      my $input_dir = dirname $source_file;
-      
-      # Object created directory
-      my $object_dir = $input_dir;
-      
-      # Include directory
-      my $include_dirs = [];
-      
-      # Default include path
-      my $env_header_include_dir = $INC{"SPVM/Build/Base.pm"};
-      $env_header_include_dir =~ s/\/Build\/Base\.pm$//;
-      push @$include_dirs, $env_header_include_dir;
-      
-      my $cbuilder_config = {};
-      
-      # OPTIMIZE
-      $cbuilder_config->{optimize} ||= $self->optimize;
-      
-      # Compile source files
-      my $quiet = 1;
-      my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
-      my $object_files = [];
-      
-      # Object file
-      my $object_file = $source_file;
-      $object_file =~ s/\.c$//;
-      $object_file .= '.o';
-      
-      # Compile source file
-      $cbuilder->compile(
-        source => $source_file,
-        object_file => $object_file,
-        include_dirs => $include_dirs,
-        extra_compiler_flags => $self->extra_compiler_flags
-      );
-      push @$object_files, $object_file;
-      
-      my $cfunc_names = [map { $self->create_cfunc_name($_) } @$sub_names];
-      my $lib_file = $cbuilder->link(
-        objects => $object_files,
-        module_name => $package_file_name,
-        dl_func_list => $cfunc_names,
-      );
-    }
+    $self->build_shared_lib(
+      package_name => $package_name,
+      input_dir => $input_dir,
+      output_dir => $output_dir,
+      quiet => 1,
+      sub_names => $sub_names,
+    );
   }
+  
+  return $self->create_shared_lib_file_name($package_name);
+}
+
+sub build_shared_lib {
+  my ($self, %opt) = @_;
+  
+  my $package_name = $opt{package_name};
+  my $sub_names = $opt{sub_names};
+  my $output_dir = $opt{output_dir};
+  my $input_dir = $opt{input_dir};
+  
+  # Build Precompile code
+  unless (defined $output_dir && -d $output_dir) {
+    confess "SPVM build directory must be specified for precompile";
+  }
+  
+  my $package_file_name = $package_name;
+  $package_file_name =~ s/::/__/g;
+  
+  my ($source_file) = glob "$input_dir/*.c";
+  
+  # Include directory
+  my $include_dirs = [];
+  
+  # Default include path
+  my $env_header_include_dir = $INC{"SPVM/Build/Base.pm"};
+  $env_header_include_dir =~ s/\/Build\/Base\.pm$//;
+  push @$include_dirs, $env_header_include_dir;
+  
+  my $cbuilder_config = {};
+  
+  # OPTIMIZE
+  $cbuilder_config->{optimize} ||= $self->optimize;
+  
+  # Compile source files
+  my $quiet = 1;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
+  my $object_files = [];
+  
+  # Object file
+  my $object_file = $source_file;
+  $object_file =~ s/\.c$//;
+  $object_file .= '.o';
+  
+  # Compile source file
+  $cbuilder->compile(
+    source => $source_file,
+    object_file => $object_file,
+    include_dirs => $include_dirs,
+    extra_compiler_flags => $self->extra_compiler_flags
+  );
+  push @$object_files, $object_file;
+  
+  my $cfunc_names = [map { $self->create_cfunc_name($_) } @$sub_names];
+  my $lib_file = $cbuilder->link(
+    objects => $object_files,
+    module_name => $package_file_name,
+    dl_func_list => $cfunc_names,
+  );
   
   return $self->create_shared_lib_file_name($package_name);
 }
