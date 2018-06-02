@@ -174,10 +174,18 @@ sub build_shared_lib_runtime {
   my $input_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
   my $category = $self->category;
   $input_dir =~ s/\.spvm$/.$category/;
-  
-  # Output directory
-  my $output_dir = $SPVM::BUILD_DIR;
 
+  # Build directory
+  my $build_dir = $SPVM::BUILD_DIR;
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  }
+  
+  my $package_file_name = $package_name;
+  $package_file_name =~ s/::/__/g;
+  my $output_dir = "$build_dir/$package_file_name." . $self->category;
+  mkpath $output_dir;
+  
   my $subs = $self->get_subs_from_package_id($package_id);
   my $sub_names = [map { $_->{name} } @$subs];
   

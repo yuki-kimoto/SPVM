@@ -81,11 +81,10 @@ sub build_shared_lib_runtime {
 
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
-  my $input_dir = "$build_dir/$package_file_name." . $self->category;
-  my $output_dir = $input_dir;
+  my $output_dir = "$build_dir/$package_file_name." . $self->category;
+  mkpath $output_dir;
 
-  # Build Precompile code
-  mkpath $input_dir;
+  my $input_dir = $output_dir;
   
   my $subs = $self->get_subs_from_package_id($package->{id});
   my $sub_names = [map { $_->{name} } @$subs];
