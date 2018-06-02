@@ -89,6 +89,121 @@ sub create_build_shared_lib_make_rule {
   return $make_rule;
 }
 
+sub build_and_bind {
+  my $self = shift;
+  
+  my $packages = SPVM::Build::SPVMInfo::get_packages();
+  for my $package (@$packages) {
+    my $package_id = $package->{id};
+    my $package_name = $package->{name};
+    
+    next if $package_name eq "CORE";
+    
+    my $subs = $self->get_subs_from_package_id($package_id);
+    if (@$subs) {
+      my $installed_shared_lib_path = $self->get_installed_shared_lib_path($package_name);
+      
+      # Shared library is already installed in distribution directory
+      if (-f $installed_shared_lib_path) {
+        $self->bind_subs($installed_shared_lib_path, $subs);
+      }
+      # Shared library is not installed, so try runtime build
+      else {
+        # Try runtime compile
+        my $runtime_shared_lib_path = $self->build_shared_lib_runtime($package);
+        $self->bind_subs($runtime_shared_lib_path, $subs);
+      }
+    }
+  }
+}
+
+sub bind_subs {
+  my ($self, $shared_lib_path, $subs) = @_;
+  
+  for my $sub (@$subs) {
+    my $sub_name = $sub->{name};
+    next if $sub_name =~ /^CORE::/;
+    my $sub_name_spvm = "SPVM::$sub_name";
+
+    my $cfunc_name = $self->create_cfunc_name($sub_name);
+    my $cfunc_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
+
+    unless ($cfunc_address) {
+      my $sub_name_c = $sub_name_spvm;
+      $sub_name_c =~ s/:/_/g;
+      confess "Can't find function address of $sub_name_spvm(). Native function name must be $sub_name_c";
+    }
+    $self->bind_sub($sub_name, $cfunc_address);
+  }
+}
+
+sub build_shared_lib_dist {
+  my ($self, $package_name) = @_;
+  
+  my $input_dir = $self->input_dir_dist($package_name);
+  
+  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
+  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
+  
+  # Build shared library
+  my $shared_lib_file = $self->build_shared_lib(
+    package_name => $package_name,
+    input_dir => $input_dir,
+    output_dir => '.',
+    sub_names => $sub_names,
+  );
+  
+  # Create shared lib blib directory
+  my $shared_lib_blib_dir = SPVM::Build::Util::convert_package_name_to_shared_lib_blib_dir($package_name, $self->category);
+  mkpath $shared_lib_blib_dir;
+  
+  # shared lib blib file
+  my $shared_lib_blib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_bilb_file($package_name, $self->category);
+  
+  # Move shared library file to blib directory
+  move($shared_lib_file, $shared_lib_blib_file)
+    or die "Can't move $shared_lib_file to $shared_lib_blib_file";
+}
+
+sub build_shared_lib_runtime {
+  my ($self, $package) = @_;
+  
+  my $package_id = $package->{id};
+  my $package_name = $package->{name};
+  
+  my $input_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
+  my $category = $self->category;
+  $input_dir =~ s/\.spvm$/.$category/;
+  
+  # Output directory
+  my $output_dir = $SPVM::BUILD_DIR;
+  unless (defined $output_dir && -d $output_dir) {
+    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  }
+
+  my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
+  $module_dir =~ s/\.spvm$//;
+  
+  my $package_name_slash = $package_name;
+  $package_name_slash =~ s/::/\//g;
+  
+  $module_dir =~ s/$package_name_slash$//;
+  $module_dir =~ s/\/$//;
+  
+  my $subs = $self->get_subs_from_package_id($package_id);
+  my $sub_names = [map { $_->{name} } @$subs];
+  
+  my $shared_lib_file = $self->build_shared_lib(
+    package_name => $package_name,
+    input_dir => $input_dir,
+    output_dir => $output_dir,
+    quiet => 1,
+    sub_names => $sub_names
+  );
+  
+  return $shared_lib_file;
+}
+
 sub build_shared_lib {
   my ($self, %opt) = @_;
   
@@ -136,8 +251,8 @@ sub build_shared_lib {
   my $include_dirs = [];
   
   # Default include path
-  my $env_header_include_dir = $INC{"SPVM/Build/Native.pm"};
-  $env_header_include_dir =~ s/\/Build\/Native\.pm$//;
+  my $env_header_include_dir = $INC{"SPVM/Build/Base.pm"};
+  $env_header_include_dir =~ s/\/Build\/Base\.pm$//;
   push @$include_dirs, $env_header_include_dir;
   
   push @$include_dirs, $input_dir;
@@ -246,93 +361,6 @@ sub build_shared_lib {
   return $shared_lib_file;
 }
 
-sub build_shared_lib_dist {
-  my ($self, $package_name) = @_;
-  
-  my $input_dir = $self->input_dir_dist($package_name);
-  
-  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
-  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
-  
-  # Build shared library
-  my $shared_lib_file = $self->build_shared_lib(
-    package_name => $package_name,
-    input_dir => $input_dir,
-    output_dir => '.',
-    sub_names => $sub_names,
-  );
-  
-  # Create shared lib blib directory
-  my $shared_lib_blib_dir = SPVM::Build::Util::convert_package_name_to_shared_lib_blib_dir($package_name, $self->category);
-  mkpath $shared_lib_blib_dir;
-  
-  # shared lib blib file
-  my $shared_lib_blib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_bilb_file($package_name, $self->category);
-  
-  # Move shared library file to blib directory
-  move($shared_lib_file, $shared_lib_blib_file)
-    or die "Can't move $shared_lib_file to $shared_lib_blib_file";
-}
-
-sub build_shared_lib_runtime {
-  my ($self, $package) = @_;
-  
-  my $package_id = $package->{id};
-  my $package_name = $package->{name};
-  
-  my $input_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
-  my $category = $self->category;
-  $input_dir =~ s/\.spvm$/.$category/;
-  
-  # Output directory
-  my $output_dir = $SPVM::BUILD_DIR;
-  unless (defined $output_dir && -d $output_dir) {
-    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
-  }
-
-  my $module_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
-  $module_dir =~ s/\.spvm$//;
-  
-  my $package_name_slash = $package_name;
-  $package_name_slash =~ s/::/\//g;
-  
-  $module_dir =~ s/$package_name_slash$//;
-  $module_dir =~ s/\/$//;
-  
-  my $subs = $self->get_subs_from_package_id($package_id);
-  my $sub_names = [map { $_->{name} } @$subs];
-  
-  my $shared_lib_file = $self->build_shared_lib(
-    package_name => $package_name,
-    input_dir => $input_dir,
-    output_dir => $output_dir,
-    quiet => 1,
-    sub_names => $sub_names
-  );
-  
-  return $shared_lib_file;
-}
-
-sub bind_subs {
-  my ($self, $shared_lib_path, $subs) = @_;
-  
-  for my $sub (@$subs) {
-    my $sub_name = $sub->{name};
-    next if $sub_name =~ /^CORE::/;
-    my $sub_name_spvm = "SPVM::$sub_name";
-
-    my $cfunc_name = $self->create_cfunc_name($sub_name);
-    my $cfunc_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
-
-    unless ($cfunc_address) {
-      my $sub_name_c = $sub_name_spvm;
-      $sub_name_c =~ s/:/_/g;
-      confess "Can't find function address of $sub_name_spvm(). Native function name must be $sub_name_c";
-    }
-    $self->bind_sub($sub_name, $cfunc_address);
-  }
-}
-
 sub get_installed_shared_lib_path {
   my ($self, $package_name) = @_;
   
@@ -344,34 +372,6 @@ sub get_installed_shared_lib_path {
   my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   
   return $shared_lib_path;
-}
-
-sub build_and_bind {
-  my $self = shift;
-  
-  my $packages = SPVM::Build::SPVMInfo::get_packages();
-  for my $package (@$packages) {
-    my $package_id = $package->{id};
-    my $package_name = $package->{name};
-    
-    next if $package_name eq "CORE";
-    
-    my $subs = $self->get_subs_from_package_id($package_id);
-    if (@$subs) {
-      my $installed_shared_lib_path = $self->get_installed_shared_lib_path($package_name);
-      
-      # Shared library is already installed in distribution directory
-      if (-f $installed_shared_lib_path) {
-        $self->bind_subs($installed_shared_lib_path, $subs);
-      }
-      # Shared library is not installed, so try runtime build
-      else {
-        # Try runtime compile
-        my $runtime_shared_lib_path = $self->build_shared_lib_runtime($package);
-        $self->bind_subs($runtime_shared_lib_path, $subs);
-      }
-    }
-  }
 }
 
 1;

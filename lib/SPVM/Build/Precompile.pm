@@ -68,6 +68,12 @@ sub create_shared_lib_file_name {
 }
 
 sub build_shared_lib_runtime {
+  my $self = shift;
+  
+  $self->build_shared_lib(@_);
+}
+
+sub build_shared_lib {
   my ($self, $package) = @_;
   
   my $package_id = $package->{id};
@@ -129,8 +135,8 @@ sub build_shared_lib_runtime {
       my $include_dirs = [];
       
       # Default include path
-      my $env_header_include_dir = $INC{"SPVM/Build/Native.pm"};
-      $env_header_include_dir =~ s/\/Build\/Native\.pm$//;
+      my $env_header_include_dir = $INC{"SPVM/Build/Base.pm"};
+      $env_header_include_dir =~ s/\/Build\/Base\.pm$//;
       push @$include_dirs, $env_header_include_dir;
       
       my $cbuilder_config = {};
