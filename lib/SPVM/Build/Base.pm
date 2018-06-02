@@ -320,7 +320,7 @@ sub build_shared_lib {
     my $src_file_under_score = $src_file;
     $src_file_under_score =~ s/^.+\///;
     $src_file_under_score =~ s/[^a-zA-Z0-9]/_/g;
-    $object_file = "$output_dir/${object_file}____$src_file_under_score.o";
+    $object_file = "$output_dir/$src_file_under_score.o";
     
     # Compile source file
     $cbuilder->compile(
