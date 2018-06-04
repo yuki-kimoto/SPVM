@@ -139,19 +139,14 @@ sub bind_subs {
 sub build_shared_lib {
   my ($self, %opt) = @_;
   
-  # Source directory
-  my $input_dir_new = $opt{input_dir};
-  
   # Package name
   my $package_name = $opt{package_name};
   
   # Build directory
-  my $build_dir = $opt{build_dir};
-  unless (defined $build_dir && -d $build_dir) {
-    confess "Build directory must be specified for " . $self->category . " build";
+  my $work_dir = $opt{work_dir};
+  unless (defined $work_dir && -d $work_dir) {
+    confess "Work directory must be specified for " . $self->category . " build";
   }
-  my $build_work_dir = "$build_dir/work/" . $self->category;
-  mkpath $build_work_dir;
   
   # Output directory
   my $output_dir = $opt{output_dir};
@@ -258,7 +253,7 @@ sub build_shared_lib {
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
-    my $object_file = "$build_work_dir/" . basename($src_file);
+    my $object_file = "$work_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file =~ s/\.C$//;
     $object_file =~ s/\.cpp$//;

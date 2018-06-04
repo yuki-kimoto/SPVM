@@ -69,11 +69,14 @@ sub build_shared_lib_dist {
   my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
   my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
   
+  my $work_dir = "spvm_build/work/" . $self->category;
+  mkpath $work_dir;
+  
   # Build shared library
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
-    build_dir => 'spvm_build',
+    work_dir => $work_dir,
     output_dir => 'blib/lib',
     sub_names => $sub_names,
   );
@@ -94,6 +97,9 @@ sub build_shared_lib_runtime {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
   
+  my $work_dir = "$build_dir/work/" . $self->category;
+  mkpath $work_dir;
+  
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
   
@@ -103,7 +109,7 @@ sub build_shared_lib_runtime {
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
-    build_dir => $build_dir,
+    work_dir => $work_dir,
     output_dir => $output_dir,
     quiet => 1,
     sub_names => $sub_names

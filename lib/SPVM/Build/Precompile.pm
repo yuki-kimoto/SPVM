@@ -58,7 +58,10 @@ sub build_shared_lib_runtime {
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
-
+  
+  my $work_dir = "$build_dir/work/" . $self->category;
+  mkpath $work_dir;
+  
   my $package_file_name = $package_name;
   $package_file_name =~ s/::/__/g;
   my $input_dir = "$build_dir/$package_file_name." . $self->category;
@@ -98,7 +101,7 @@ sub build_shared_lib_runtime {
     $self->build_shared_lib(
       package_name => $package_name,
       input_dir => $input_dir,
-      build_dir => $build_dir,
+      work_dir => $work_dir,
       output_dir => $output_dir,
       quiet => 1,
       sub_names => $sub_names,
