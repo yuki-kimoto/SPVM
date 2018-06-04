@@ -86,6 +86,17 @@ sub get_precompile_sub_names_from_module_file {
   return $native_sub_names;
 }
 
+sub remove_package_part_from_path {
+  my ($path, $package_name) = @_;
+  
+  $path =~ s/\.spvm$//;
+  my $package_path = $package_name;
+  $package_path =~ s/::/\//g;
+  $path =~ s/$package_path$//;
+  
+  return $path;
+}
+
 sub convert_package_name_to_path {
   my ($package_name, $category) = @_;
   
