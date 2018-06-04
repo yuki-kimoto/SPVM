@@ -74,6 +74,7 @@ sub build_shared_lib_dist {
     package_name => $package_name,
     input_dir => $input_dir,
     output_dir => './spvm_build',
+    build_dir => './spvm_build',
     sub_names => $sub_names,
   );
   
@@ -114,6 +115,7 @@ sub build_shared_lib_runtime {
     package_name => $package_name,
     input_dir => $input_dir,
     output_dir => $output_dir,
+    build_dir => $output_dir,
     quiet => 1,
     sub_names => $sub_names
   );

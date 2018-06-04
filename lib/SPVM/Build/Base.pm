@@ -145,8 +145,10 @@ sub build_shared_lib {
   # Package name
   my $package_name = $opt{package_name};
   
-  # Object created directory
+  # Output directory
   my $output_dir = $opt{output_dir};
+
+  my $build_dir = $opt{build_dir};
   
   my $sub_names = $opt{sub_names};
   
@@ -159,7 +161,11 @@ sub build_shared_lib {
   my $input_dir = $opt{input_dir};
   
   unless (defined $output_dir && -d $output_dir) {
-    confess "SPVM build directory must be specified for " . $self->category . " build";
+    confess "Output directory must be specified for " . $self->category . " build";
+  }
+
+  unless (defined $build_dir && -d $build_dir) {
+    confess "Build directory must be specified for " . $self->category . " build";
   }
   
   # Correct source files
@@ -251,7 +257,7 @@ sub build_shared_lib {
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
-    my $object_file = "$output_dir/" . basename($src_file);
+    my $object_file = "$build_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file =~ s/\.C$//;
     $object_file =~ s/\.cpp$//;

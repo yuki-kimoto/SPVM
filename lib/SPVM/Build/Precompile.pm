@@ -74,6 +74,10 @@ sub build_shared_lib_dist {
   
   my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
   my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
+
+  my $package_file_name = $package_name;
+  $package_file_name =~ s/::/__/g;
+  my $source_file = "$input_dir/$package_file_name.c";
   
   # Create c source file
   my $csource_source = '';
@@ -81,9 +85,6 @@ sub build_shared_lib_dist {
     my $sub_csource_source = $self->build_csource($sub_name);
     $csource_source .= "$sub_csource_source\n";
   }
-  my $package_file_name = $package_name;
-  $package_file_name =~ s/::/__/g;
-  my $source_file = "$input_dir/$package_file_name.c";
   open my $fh, '>', $source_file
     or die "Can't create $source_file";
   print $fh $csource_source;
@@ -94,6 +95,7 @@ sub build_shared_lib_dist {
     package_name => $package_name,
     input_dir => $input_dir,
     output_dir => './spvm_build',
+    build_dir => './spvm_build',
     sub_names => $sub_names,
   );
   
@@ -128,11 +130,6 @@ sub build_shared_lib_runtime {
   my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
 
-  my $csource_source = '';
-  for my $sub_name (@$sub_names) {
-    my $sub_csource_source = $self->build_csource($sub_name);
-    $csource_source .= "$sub_csource_source\n";
-  }
   my $source_file = "$input_dir/$package_file_name.c";
 
   # Get old csource source
@@ -145,8 +142,13 @@ sub build_shared_lib_runtime {
   else {
     $old_csource_source = '';
   }
-
-  # Compile Precompile code
+  
+  # Create c source file
+  my $csource_source = '';
+  for my $sub_name (@$sub_names) {
+    my $sub_csource_source = $self->build_csource($sub_name);
+    $csource_source .= "$sub_csource_source\n";
+  }
   open my $fh, '>', $source_file
     or die "Can't create $source_file";
   print $fh $csource_source;
@@ -157,6 +159,7 @@ sub build_shared_lib_runtime {
       package_name => $package_name,
       input_dir => $input_dir,
       output_dir => $output_dir,
+      build_dir => $output_dir,
       quiet => 1,
       sub_names => $sub_names,
     );
