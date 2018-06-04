@@ -296,7 +296,8 @@ sub build_shared_lib {
   );
 
   # Create shared lib blib directory
-  my $shared_lib_dir = SPVM::Build::Util::convert_package_name_to_shared_lib_dir($output_dir, $package_name, $self->category);
+  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
+  my $shared_lib_dir = "$output_dir/$package_path";
   mkpath $shared_lib_dir;
   
   # shared lib blib file
