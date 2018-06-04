@@ -167,6 +167,9 @@ sub build_shared_lib {
   my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
   my $input_src_dir = "$input_dir/$package_path";
   
+  my $work_object_dir = "$work_dir/$package_path";
+  mkpath $work_object_dir;
+  
   # Correct source files
   my $src_files = [];
   my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
@@ -255,7 +258,7 @@ sub build_shared_lib {
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
-    my $object_file = "$work_dir/" . basename($src_file);
+    my $object_file = "$work_object_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file =~ s/\.C$//;
     $object_file =~ s/\.cpp$//;

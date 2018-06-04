@@ -59,9 +59,8 @@ sub build_shared_lib_runtime {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
   
-  my $work_dir = "$build_dir/work/" . $self->category;
+  my $work_dir = "$build_dir/work";
   mkpath $work_dir;
-  
   
   my $input_dir = "$build_dir/work";
   my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
