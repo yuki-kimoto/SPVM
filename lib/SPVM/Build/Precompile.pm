@@ -50,23 +50,6 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
-sub create_shared_lib_file_name {
-  my ($self, $package_name) = @_;
-  
-  # Build Precompile code
-  my $output_dir = $SPVM::BUILD_DIR;
-  unless (defined $output_dir && -d $output_dir) {
-    confess "SPVM build directory must be specified for precompile";
-  }
-  
-  my $package_file_name = $package_name;
-  $package_file_name =~ s/::/__/g;
-  
-  my $shared_lib_file_name = "$output_dir/$package_file_name.precompile/$package_file_name.$Config{dlext}";
-  
-  return $shared_lib_file_name;
-}
-
 sub build_shared_lib_runtime {
   my ($self, $package_name) = @_;
 
@@ -114,14 +97,16 @@ sub build_shared_lib_runtime {
     $self->build_shared_lib(
       package_name => $package_name,
       input_dir => $input_dir,
+      build_dir => $build_dir,
       output_dir => $output_dir,
-      build_dir => $output_dir,
       quiet => 1,
       sub_names => $sub_names,
     );
   }
   
-  return $self->create_shared_lib_file_name($package_name);
+  my $shared_lib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_file($output_dir, $package_name, $self->category);
+  
+  return $shared_lib_file;
 }
 
 1;
