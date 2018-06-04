@@ -1,3 +1,5 @@
+0.0343 2018-06-05
+  - do inline expasion in subroutien of same precompile package
 0.0342 2018-06-02
   - remove SPVM::Native
   - remove SPVM::Precompile
