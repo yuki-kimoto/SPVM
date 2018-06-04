@@ -137,69 +137,6 @@ sub bind_subs {
   }
 }
 
-sub build_shared_lib_dist {
-  my ($self, $package_name) = @_;
-  
-  my $input_dir = $self->input_dir_dist($package_name);
-  
-  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
-  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
-  
-  # Build shared library
-  my $shared_lib_file = $self->build_shared_lib(
-    package_name => $package_name,
-    input_dir => $input_dir,
-    output_dir => './spvm_build',
-    sub_names => $sub_names,
-  );
-  
-  # Create shared lib blib directory
-  my $shared_lib_blib_dir = SPVM::Build::Util::convert_package_name_to_shared_lib_blib_dir($package_name, $self->category);
-  mkpath $shared_lib_blib_dir;
-  
-  # shared lib blib file
-  my $shared_lib_blib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_bilb_file($package_name, $self->category);
-  
-  # Move shared library file to blib directory
-  move($shared_lib_file, $shared_lib_blib_file)
-    or die "Can't move $shared_lib_file to $shared_lib_blib_file";
-}
-
-sub build_shared_lib_runtime {
-  my ($self, $package) = @_;
-  
-  my $package_id = $package->{id};
-  my $package_name = $package->{name};
-  
-  my $input_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
-  my $category = $self->category;
-  $input_dir =~ s/\.spvm$/.$category/;
-
-  # Build directory
-  my $build_dir = $SPVM::BUILD_DIR;
-  unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
-  }
-  
-  my $package_file_name = $package_name;
-  $package_file_name =~ s/::/__/g;
-  my $output_dir = "$build_dir/$package_file_name." . $self->category;
-  mkpath $output_dir;
-  
-  my $subs = $self->get_subs_from_package_id($package_id);
-  my $sub_names = [map { $_->{name} } @$subs];
-  
-  my $shared_lib_file = $self->build_shared_lib(
-    package_name => $package_name,
-    input_dir => $input_dir,
-    output_dir => $output_dir,
-    quiet => 1,
-    sub_names => $sub_names
-  );
-  
-  return $shared_lib_file;
-}
-
 sub build_shared_lib {
   my ($self, %opt) = @_;
   
