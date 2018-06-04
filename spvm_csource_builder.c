@@ -474,6 +474,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_STRING_BUFFER* string_buffe
   SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_id);
   SPVM_PACKAGE* package = op_package->uv.package;
   SPVM_LIST* op_subs = package->op_subs;
+  SPVM_CSOURCE_BUILDER_build_head_csource(string_buffer);
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
@@ -486,23 +487,8 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_STRING_BUFFER* string_buffe
   }
 }
 
-void SPVM_CSOURCE_BUILDER_build_sub_csource(SPVM_STRING_BUFFER* string_buffer, int32_t sub_id) {
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+void SPVM_CSOURCE_BUILDER_build_head_csource(SPVM_STRING_BUFFER* string_buffer) {
 
-  SPVM_COMPILER* compiler = runtime->compiler;
-
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
-
-  // Subroutine return type
-  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
-  
-  int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
-  
-  int32_t sub_return_type_dimension = sub_return_type->dimension;
-  
-  assert(sub->have_compile_desc);
-  
   // Include header
   SPVM_STRING_BUFFER_add(string_buffer, "#ifndef SPVM_CSOURCE_BUILDER_H\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_CSOURCE_BUILDER_H\n");
@@ -553,6 +539,24 @@ void SPVM_CSOURCE_BUILDER_build_sub_csource(SPVM_STRING_BUFFER* string_buffer, i
   SPVM_STRING_BUFFER_add(string_buffer, "} while (0)\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#endif\n");
+}
+
+void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_STRING_BUFFER* string_buffer, int32_t sub_id) {
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
+
+  // Subroutine return type
+  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
+  
+  int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
+  
+  int32_t sub_return_type_dimension = sub_return_type->dimension;
+  
+  assert(sub->have_compile_desc);
   
   // Subroutine name
   const char* sub_abs_name = sub->abs_name;
@@ -605,6 +609,29 @@ void SPVM_CSOURCE_BUILDER_build_sub_csource(SPVM_STRING_BUFFER* string_buffer, i
 
   // Arguments
   SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_ENV* env, SPVM_VALUE* args)");
+}
+
+void SPVM_CSOURCE_BUILDER_build_sub_csource(SPVM_STRING_BUFFER* string_buffer, int32_t sub_id) {
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
+  SPVM_SUB* sub = op_sub->uv.sub;
+
+  // Subroutine return type
+  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
+  
+  int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
+  
+  int32_t sub_return_type_dimension = sub_return_type->dimension;
+  
+  assert(sub->have_compile_desc);
+  
+  // Subroutine name
+  const char* sub_abs_name = sub->abs_name;
+
+  SPVM_CSOURCE_BUILDER_build_sub_declaration(string_buffer, sub_id);
   
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");

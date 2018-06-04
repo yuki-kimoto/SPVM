@@ -33,6 +33,8 @@
 
 
 void SPVM_CSOURCE_BUILDER_build_csource();
+void SPVM_CSOURCE_BUILDER_build_head_csource(SPVM_STRING_BUFFER* string_buffer);
 void SPVM_CSOURCE_BUILDER_build_sub_csource(SPVM_STRING_BUFFER* string_buffer, int32_t sub_id);
+void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_STRING_BUFFER* string_buffer, int32_t sub_id);
 
 #endif
