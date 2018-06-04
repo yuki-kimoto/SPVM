@@ -42,7 +42,7 @@ WriteMakefile(
     OBJECT            => '$(O_FILES)', # link all the C files too
     $debug ? (DEFINE => '-DDEBUG') : (),
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-    clean => {FILES => "spvm_build/work spvm_build/lib t/spvm_build/work t/spvm_build/lib t/spvm_build/*.precompile t/spvm_build/*.native"},
+    clean => {FILES => "spvm_build/src spvm_build/work spvm_build/lib t/spvm_build/src t/spvm_build/work t/spvm_build/lib"},
 );
 
 

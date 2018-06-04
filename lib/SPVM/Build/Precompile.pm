@@ -62,7 +62,7 @@ sub build_shared_lib_runtime {
   my $work_dir = "$build_dir/work";
   mkpath $work_dir;
   
-  my $input_dir = "$build_dir/work";
+  my $input_dir = "$build_dir/src";
   my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
   my $input_src_dir = "$input_dir/$package_path";
   mkpath $input_src_dir;
