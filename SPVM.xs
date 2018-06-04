@@ -1200,7 +1200,7 @@ build_package_csource(...)
   SV* sv_self = ST(0);
   SV* sv_package_name = ST(1);
   const char* package_name = SvPV_nolen(sv_package_name);
-
+  
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;

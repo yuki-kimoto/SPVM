@@ -471,7 +471,8 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_STRING_BUFFER* string_buffe
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->op_packages, package_id);
+  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_id);
+  SPVM_PACKAGE* package = op_package->uv.package;
   SPVM_LIST* op_subs = package->op_subs;
   {
     int32_t sub_index;

@@ -79,28 +79,24 @@ sub build_shared_lib_runtime {
   my $source_file = "$input_src_dir/$module_base_name.c";
 
   # Get old csource source
-  my $old_csource_source;
+  my $old_package_csource;
   if (-f $source_file) {
     open my $fh, '<', $source_file
       or die "Can't open $source_file";
-    $old_csource_source = do { local $/; <$fh> };
+    $old_package_csource = do { local $/; <$fh> };
   }
   else {
-    $old_csource_source = '';
+    $old_package_csource = '';
   }
   
   # Create c source file
-  my $csource_source = '';
-  for my $sub_name (@$sub_names) {
-    my $sub_csource_source = $self->build_csource($sub_name);
-    $csource_source .= "$sub_csource_source\n";
-  }
+  my $package_csource = $self->build_package_csource($package_name);
   open my $fh, '>', $source_file
     or die "Can't create $source_file";
-  print $fh $csource_source;
+  print $fh $package_csource;
   close $fh;
   
-  if ($csource_source ne $old_csource_source) {
+  if ($package_csource ne $old_package_csource) {
     $self->build_shared_lib(
       package_name => $package_name,
       input_dir => $input_dir,
