@@ -149,7 +149,7 @@ sub build_shared_lib_dist {
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
-    output_dir => '.',
+    output_dir => './spvm_build',
     sub_names => $sub_names,
   );
   
