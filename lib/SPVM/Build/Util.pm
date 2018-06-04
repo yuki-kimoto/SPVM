@@ -86,7 +86,7 @@ sub get_precompile_sub_names_from_module_file {
   return $native_sub_names;
 }
 
-sub convert_package_name_to_shared_lib_rel_dir {
+sub convert_package_name_to_path {
   my ($package_name, $category) = @_;
   
   my $module_base_name = $package_name;
@@ -107,7 +107,7 @@ sub convert_package_name_to_shared_lib_rel_file {
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $shared_lib_rel_dir = convert_package_name_to_shared_lib_rel_dir($package_name, $category);
+  my $shared_lib_rel_dir = convert_package_name_to_path($package_name, $category);
   my $shared_lib_rel_file = "$shared_lib_rel_dir/$module_base_name.$dlext";
   
   return $shared_lib_rel_file;
@@ -127,7 +127,7 @@ sub convert_package_name_to_shared_lib_dir {
   my ($lib_dir, $package_name, $category) = @_;
   
   # Shared library file
-  my $shared_lib_rel_dir = convert_package_name_to_shared_lib_rel_dir($package_name, $category);
+  my $shared_lib_rel_dir = convert_package_name_to_path($package_name, $category);
   my $shared_lib_dir = "$lib_dir/$shared_lib_rel_dir";
   
   return $shared_lib_dir;
