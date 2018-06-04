@@ -114,21 +114,21 @@ sub convert_package_name_to_shared_lib_rel_file {
 }
 
 sub convert_package_name_to_shared_lib_bilb_file {
-  my ($package_name, $category) = @_;
+  my ($lib_dir, $package_name, $category) = @_;
 
   # Shared library file
   my $shared_lib_rel_file = convert_package_name_to_shared_lib_rel_file($package_name, $category);
-  my $shared_lib_bilb_file = "blib/lib/$shared_lib_rel_file";
+  my $shared_lib_bilb_file = "$lib_dir/$shared_lib_rel_file";
 
   return $shared_lib_bilb_file;
 }
 
 sub convert_package_name_to_shared_lib_blib_dir {
-  my ($package_name, $category) = @_;
+  my ($lib_dir, $package_name, $category) = @_;
   
   # Shared library file
   my $shared_lib_rel_dir = convert_package_name_to_shared_lib_rel_dir($package_name, $category);
-  my $shared_lib_blib_dir = "blib/lib/$shared_lib_rel_dir";
+  my $shared_lib_blib_dir = "$lib_dir/$shared_lib_rel_dir";
   
   return $shared_lib_blib_dir;
 }
