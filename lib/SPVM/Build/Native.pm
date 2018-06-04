@@ -71,7 +71,11 @@ sub build_shared_lib_dist {
   
   my $work_dir = "spvm_build/work/" . $self->category;
   mkpath $work_dir;
-  
+
+  my $module_base_name = $package_name;
+  $module_base_name =~ s/^.+:://;
+  my $config_file = "$input_dir/$module_base_name.config";
+
   # Build shared library
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
@@ -79,6 +83,7 @@ sub build_shared_lib_dist {
     work_dir => $work_dir,
     output_dir => 'blib/lib',
     sub_names => $sub_names,
+    config_file => $config_file,
   );
   
   return $shared_lib_file;
@@ -106,13 +111,18 @@ sub build_shared_lib_runtime {
   my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
   
+  my $module_base_name = $package_name;
+  $module_base_name =~ s/^.+:://;
+  my $config_file = "$input_dir/$module_base_name.config";
+
   my $shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
     work_dir => $work_dir,
     output_dir => $output_dir,
     quiet => 1,
-    sub_names => $sub_names
+    sub_names => $sub_names,
+    config_file => $config_file,
   );
   
   return $shared_lib_file;

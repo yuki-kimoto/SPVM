@@ -140,6 +140,9 @@ sub bind_subs {
 sub build_shared_lib {
   my ($self, %opt) = @_;
   
+  # Config file
+  my $config_file = $opt{config_file};
+  
   # Package name
   my $package_name = $opt{package_name};
   
@@ -175,9 +178,8 @@ sub build_shared_lib {
   }
   
   # Config
-  my $config_file = "$input_dir/$module_base_name.config";
   my $config;
-  if (-f $config_file) {
+  if (defined $config_file && -f $config_file) {
     $config = do $config_file
       or confess "Can't parser $config_file: $!$@";
   }
