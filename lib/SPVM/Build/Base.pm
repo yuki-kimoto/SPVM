@@ -150,6 +150,8 @@ sub build_shared_lib {
   unless (defined $build_dir && -d $build_dir) {
     confess "Build directory must be specified for " . $self->category . " build";
   }
+  my $build_work_dir = "$build_dir/work/" . $self->category;
+  mkpath $build_work_dir;
   
   # Output directory
   my $output_dir = $opt{output_dir};
@@ -256,7 +258,7 @@ sub build_shared_lib {
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
-    my $object_file = "$build_dir/" . basename($src_file);
+    my $object_file = "$build_work_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file =~ s/\.C$//;
     $object_file =~ s/\.cpp$//;
