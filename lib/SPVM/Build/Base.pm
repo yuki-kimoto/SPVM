@@ -94,12 +94,11 @@ sub build_and_bind {
   
   my $packages = SPVM::Build::SPVMInfo::get_packages();
   for my $package (@$packages) {
-    my $package_id = $package->{id};
     my $package_name = $package->{name};
     
     next if $package_name eq "CORE";
     
-    my $subs = $self->get_subs_from_package_id($package_id);
+    my $subs = $self->get_subs_from_package_name($package_name);
     if (@$subs) {
       my $installed_shared_lib_path = $self->get_installed_shared_lib_path($package_name);
       
@@ -110,7 +109,7 @@ sub build_and_bind {
       # Shared library is not installed, so try runtime build
       else {
         # Try runtime compile
-        my $runtime_shared_lib_path = $self->build_shared_lib_runtime($package);
+        my $runtime_shared_lib_path = $self->build_shared_lib_runtime($package_name);
         $self->bind_subs($runtime_shared_lib_path, $subs);
       }
     }

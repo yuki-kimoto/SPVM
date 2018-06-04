@@ -804,13 +804,13 @@ get_sub_names(...)
 }
 
 SV*
-get_subs_from_package_id(...)
+get_subs_from_package_name(...)
   PPCODE:
 {
   (void)RETVAL;
   
-  SV* sv_package_id = ST(0);
-  int32_t package_id = SvIV(sv_package_id);
+  SV* sv_package_name = ST(0);
+  const char* package_name = SvPV_nolen(sv_package_name);
   
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
@@ -818,7 +818,7 @@ get_subs_from_package_id(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
-  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_id);
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
   SPVM_PACKAGE* package = op_package->uv.package;
   
   AV* av_subs = (AV*)sv_2mortal((SV*)newAV());

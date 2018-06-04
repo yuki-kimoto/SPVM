@@ -34,10 +34,10 @@ sub get_sub_names_from_module_file {
   return SPVM::Build::Util::get_native_sub_names_from_module_file($module_file);
 }
 
-sub get_subs_from_package_id {
-  my ($self, $package_id) = @_;
+sub get_subs_from_package_name {
+  my ($self, $package_name) = @_;
   
-  return SPVM::Build::SPVMInfo::get_native_subs_from_package_id($package_id);;
+  return SPVM::Build::SPVMInfo::get_native_subs_from_package_name($package_name);;
 }
 
 sub create_cfunc_name {
@@ -90,10 +90,7 @@ sub build_shared_lib_dist {
 }
 
 sub build_shared_lib_runtime {
-  my ($self, $package) = @_;
-  
-  my $package_id = $package->{id};
-  my $package_name = $package->{name};
+  my ($self, $package_name) = @_;
   
   my $input_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
   my $category = $self->category;
@@ -110,7 +107,7 @@ sub build_shared_lib_runtime {
   my $output_dir = "$build_dir/$package_file_name." . $self->category;
   mkpath $output_dir;
   
-  my $subs = $self->get_subs_from_package_id($package_id);
+  my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
   
   my $shared_lib_file = $self->build_shared_lib(
