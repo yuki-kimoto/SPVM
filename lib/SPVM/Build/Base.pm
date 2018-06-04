@@ -74,15 +74,15 @@ sub create_build_shared_lib_make_rule {
   my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
   
   # Shared library file
-  my $shared_lib_bilb_file = SPVM::Build::Util::convert_package_name_to_shared_lib_bilb_file("blib/lib", $package_name, $self->category);
+  my $shared_lib_blib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_blib_file("blib/lib", $package_name, $self->category);
   
   # Get source files
   my $module_category = $self->category;
   $module_category = ucfirst $module_category;
   $make_rule
-    .= "shared_lib_$package_name_under_score :: $shared_lib_bilb_file\n\n";
+    .= "shared_lib_$package_name_under_score :: $shared_lib_blib_file\n\n";
   $make_rule
-    .= "$shared_lib_bilb_file :: @deps\n\n";
+    .= "$shared_lib_blib_file :: @deps\n\n";
   $make_rule
     .= "\tperl -Ilib -MSPVM::Build::$module_category -e \"SPVM::Build::$module_category->new->build_shared_lib_dist('$package_name')\"\n\n";
   

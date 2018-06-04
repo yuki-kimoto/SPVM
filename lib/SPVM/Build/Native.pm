@@ -83,7 +83,7 @@ sub build_shared_lib_dist {
   mkpath $shared_lib_blib_dir;
   
   # shared lib blib file
-  my $shared_lib_blib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_bilb_file('blib/lib', $package_name, $self->category);
+  my $shared_lib_blib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_blib_file('blib/lib', $package_name, $self->category);
   
   # Move shared library file to blib directory
   move($shared_lib_file, $shared_lib_blib_file)

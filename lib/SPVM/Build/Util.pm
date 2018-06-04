@@ -113,14 +113,14 @@ sub convert_package_name_to_shared_lib_rel_file {
   return $shared_lib_rel_file;
 }
 
-sub convert_package_name_to_shared_lib_bilb_file {
+sub convert_package_name_to_shared_lib_blib_file {
   my ($lib_dir, $package_name, $category) = @_;
 
   # Shared library file
   my $shared_lib_rel_file = convert_package_name_to_shared_lib_rel_file($package_name, $category);
-  my $shared_lib_bilb_file = "$lib_dir/$shared_lib_rel_file";
+  my $shared_lib_blib_file = "$lib_dir/$shared_lib_rel_file";
 
-  return $shared_lib_bilb_file;
+  return $shared_lib_blib_file;
 }
 
 sub convert_package_name_to_shared_lib_blib_dir {
