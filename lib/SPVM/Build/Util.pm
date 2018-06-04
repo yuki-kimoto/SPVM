@@ -107,8 +107,8 @@ sub convert_package_name_to_shared_lib_rel_file {
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $shared_lib_rel_dir = convert_package_name_to_path($package_name, $category);
-  my $shared_lib_rel_file = "$shared_lib_rel_dir/$module_base_name.$dlext";
+  my $package_path = convert_package_name_to_path($package_name, $category);
+  my $shared_lib_rel_file = "$package_path/$module_base_name.$dlext";
   
   return $shared_lib_rel_file;
 }

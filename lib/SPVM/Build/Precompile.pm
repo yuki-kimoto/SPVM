@@ -108,7 +108,8 @@ sub build_shared_lib_runtime {
     );
   }
   
-  my $shared_lib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_file($output_dir, $package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
   
   return $shared_lib_file;
 }

@@ -74,7 +74,8 @@ sub create_build_shared_lib_make_rule {
   my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
   
   # Shared library file
-  my $shared_lib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_file("blib/lib", $package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
   
   # Get source files
   my $module_category = $self->category;
@@ -301,7 +302,8 @@ sub build_shared_lib {
   mkpath $shared_lib_dir;
   
   # shared lib blib file
-  my $shared_lib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_file($output_dir, $package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
   
   # Move shared library file to blib directory
   move($tmp_shared_lib_file, $shared_lib_file)
