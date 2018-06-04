@@ -70,7 +70,7 @@ sub build_shared_lib_dist {
   my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
   
   # Build shared library
-  my $shared_lib_file = $self->build_shared_lib(
+  my $tmp_shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
     output_dir => './spvm_build',
@@ -79,15 +79,15 @@ sub build_shared_lib_dist {
   );
   
   # Create shared lib blib directory
-  my $shared_lib_blib_dir = SPVM::Build::Util::convert_package_name_to_shared_lib_blib_dir('blib/lib', $package_name, $self->category);
-  mkpath $shared_lib_blib_dir;
+  my $shared_lib_dir = SPVM::Build::Util::convert_package_name_to_shared_lib_dir('blib/lib', $package_name, $self->category);
+  mkpath $shared_lib_dir;
   
   # shared lib blib file
-  my $shared_lib_blib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_blib_file('blib/lib', $package_name, $self->category);
+  my $shared_lib_file = SPVM::Build::Util::convert_package_name_to_shared_lib_file('blib/lib', $package_name, $self->category);
   
   # Move shared library file to blib directory
-  move($shared_lib_file, $shared_lib_blib_file)
-    or die "Can't move $shared_lib_file to $shared_lib_blib_file";
+  move($tmp_shared_lib_file, $shared_lib_file)
+    or die "Can't move $tmp_shared_lib_file to $shared_lib_file";
 }
 
 sub build_shared_lib_runtime {
@@ -111,7 +111,7 @@ sub build_shared_lib_runtime {
   my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
   
-  my $shared_lib_file = $self->build_shared_lib(
+  my $tmp_shared_lib_file = $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
     output_dir => $output_dir,
@@ -120,7 +120,7 @@ sub build_shared_lib_runtime {
     sub_names => $sub_names
   );
   
-  return $shared_lib_file;
+  return $tmp_shared_lib_file;
 }
 
 1;
