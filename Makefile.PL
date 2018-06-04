@@ -8,10 +8,7 @@ use Config;
 use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/lib";
-use SPVM::Build::Native;
 use SPVM::Build::Util;
-
-my $build_native= SPVM::Build::Native->new;
 
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
@@ -56,7 +53,7 @@ sub MY::postamble {
   
   my $make_rule = '';
   for my $module_name (@module_names) {
-    $make_rule .= $build_native->create_build_shared_lib_make_rule($module_name);
+    $make_rule .= SPVM::Build::Util::create_build_shared_lib_make_rule($module_name, 'native');
   }
   
   return $make_rule;

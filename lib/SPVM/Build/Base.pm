@@ -47,49 +47,6 @@ sub optimize {
   return $self->{optimize};
 }
 
-sub create_build_shared_lib_make_rule {
-  my ($self, $package_name) = @_;
-  
-  my $make_rule;
-  
-  # dynamic section
-  $make_rule
-  = "dynamic :: ";
-
-  my $package_name_under_score = $package_name;
-  $package_name_under_score =~ s/:/_/g;
-  
-  $make_rule
-    .= "shared_lib_$package_name_under_score ";
-  $make_rule .= "\n\n";
-  
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  
-  my $src_dir = $package_name;
-  $src_dir =~ s/::/\//g;
-  $src_dir = "lib/$src_dir." . $self->category;
-  
-  # Dependency
-  my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
-  
-  # Shared library file
-  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
-  my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
-  
-  # Get source files
-  my $module_category = $self->category;
-  $module_category = ucfirst $module_category;
-  $make_rule
-    .= "shared_lib_$package_name_under_score :: $shared_lib_file\n\n";
-  $make_rule
-    .= "$shared_lib_file :: @deps\n\n";
-  $make_rule
-    .= "\tperl -Ilib -MSPVM::Build::$module_category -e \"SPVM::Build::$module_category->new->build_shared_lib_dist('$package_name')\"\n\n";
-  
-  return $make_rule;
-}
-
 sub build_and_bind {
   my $self = shift;
   

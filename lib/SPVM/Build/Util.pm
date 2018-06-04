@@ -6,7 +6,7 @@ use Carp 'croak';
 use Config;
 use File::Basename 'dirname', 'basename';
 
-# SPVM::Build::tUtil is used from Makefile.PL and SPVM::Build, SPVM::Build::Precompile, SPVM::Build::Native
+# SPVM::Build::tUtil is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
 
 sub create_package_load_path {
@@ -95,6 +95,49 @@ sub remove_package_part_from_path {
   $path =~ s/$package_path$//;
   
   return $path;
+}
+
+sub create_build_shared_lib_make_rule {
+  my ($package_name, $category) = @_;
+  
+  my $make_rule;
+  
+  # dynamic section
+  $make_rule
+  = "dynamic :: ";
+
+  my $package_name_under_score = $package_name;
+  $package_name_under_score =~ s/:/_/g;
+  
+  $make_rule
+    .= "shared_lib_$package_name_under_score ";
+  $make_rule .= "\n\n";
+  
+  my $module_base_name = $package_name;
+  $module_base_name =~ s/^.+:://;
+  
+  my $src_dir = $package_name;
+  $src_dir =~ s/::/\//g;
+  $src_dir = "lib/$src_dir." . $category;
+  
+  # Dependency
+  my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
+  
+  # Shared library file
+  my $shared_lib_rel_file = convert_package_name_to_shared_lib_rel_file($package_name, $category);
+  my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
+  
+  # Get source files
+  my $module_category = $category;
+  $module_category = ucfirst $module_category;
+  $make_rule
+    .= "shared_lib_$package_name_under_score :: $shared_lib_file\n\n";
+  $make_rule
+    .= "$shared_lib_file :: @deps\n\n";
+  $make_rule
+    .= "\tperl -Mblib -MSPVM::Build::$module_category -e \"SPVM::Build::$module_category->new->build_shared_lib_dist('$package_name')\"\n\n";
+  
+  return $make_rule;
 }
 
 sub convert_package_name_to_path {
