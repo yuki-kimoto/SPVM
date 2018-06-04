@@ -1194,6 +1194,35 @@ build_csource(...)
 }
 
 SV*
+build_package_csource(...)
+  PPCODE:
+{
+  SV* sv_self = ST(0);
+  SV* sv_package_name = ST(1);
+  const char* package_name = SvPV_nolen(sv_package_name);
+
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  int32_t package_id = op_package->uv.package->id;
+  
+  // String buffer for csource
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
+  
+  // Build package csource
+  SPVM_CSOURCE_BUILDER_build_package_csource(string_buffer, package_id);
+  
+  SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
+  
+  SPVM_STRING_BUFFER_free(string_buffer);
+  
+  XPUSHs(sv_package_csource);
+  XSRETURN(1);
+}
+
+SV*
 bind_sub(...)
   PPCODE:
 {
