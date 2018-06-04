@@ -62,18 +62,22 @@ sub build_shared_lib_runtime {
   my $work_dir = "$build_dir/work/" . $self->category;
   mkpath $work_dir;
   
-  my $package_file_name = $package_name;
-  $package_file_name =~ s/::/__/g;
-  my $input_dir = "$build_dir/$package_file_name." . $self->category;
-  mkpath $input_dir;
-
+  
+  my $input_dir = "$build_dir/work";
+  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
+  my $input_src_dir = "$input_dir/$package_path";
+  mkpath $input_src_dir;
+  
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
   
   my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
 
-  my $source_file = "$input_dir/$package_file_name.c";
+  my $module_base_name = $package_name;
+  $module_base_name =~ s/^.+:://;
+  
+  my $source_file = "$input_src_dir/$module_base_name.c";
 
   # Get old csource source
   my $old_csource_source;

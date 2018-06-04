@@ -163,15 +163,14 @@ sub build_shared_lib {
   # Quiet output
   my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
  
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  
   my $input_dir = $opt{input_dir};
+  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
+  my $input_src_dir = "$input_dir/$package_path";
   
   # Correct source files
   my $src_files = [];
   my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
-  for my $src_file (glob "$input_dir/*") {
+  for my $src_file (glob "$input_src_dir/*") {
     if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
       push @$src_files, $src_file;
     }
@@ -192,7 +191,7 @@ sub build_shared_lib {
   $env_header_include_dir =~ s/\/Build\/Base\.pm$//;
   push @$include_dirs, $env_header_include_dir;
   
-  push @$include_dirs, $input_dir;
+  push @$include_dirs, $input_src_dir;
   
   # CBuilder config
   my $cbuilder_config = {};
@@ -299,7 +298,6 @@ sub build_shared_lib {
   );
 
   # Create shared lib blib directory
-  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
   my $shared_lib_dir = "$output_dir/$package_path";
   mkpath $shared_lib_dir;
   

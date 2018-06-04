@@ -51,20 +51,11 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
-sub input_dir_dist {
-  my ($self, $package_name) = @_;
-  
-  my $input_dir = SPVM::Build::Util::create_package_load_path('lib', $package_name);
-  my $category = $self->category;
-  $input_dir =~ s/\.spvm$/.$category/;
-  
-  return $input_dir;
-}
-
 sub build_shared_lib_dist {
   my ($self, $package_name) = @_;
   
-  my $input_dir = $self->input_dir_dist($package_name);
+  my $input_dir = 'lib';
+  my $output_dir = 'blib/lib';
   
   my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
   my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
@@ -81,7 +72,7 @@ sub build_shared_lib_dist {
     package_name => $package_name,
     input_dir => $input_dir,
     work_dir => $work_dir,
-    output_dir => 'blib/lib',
+    output_dir => $output_dir,
     sub_names => $sub_names,
     config_file => $config_file,
   );
@@ -92,9 +83,8 @@ sub build_shared_lib_dist {
 sub build_shared_lib_runtime {
   my ($self, $package_name) = @_;
   
-  my $input_dir = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
-  my $category = $self->category;
-  $input_dir =~ s/\.spvm$/.$category/;
+  my $package_load_path = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
+  my $input_dir = SPVM::Build::Util::remove_package_part_from_path($package_load_path, $package_name);
 
   # Build directory
   my $build_dir = $SPVM::BUILD_DIR;
