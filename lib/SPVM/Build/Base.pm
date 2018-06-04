@@ -145,10 +145,17 @@ sub build_shared_lib {
   # Package name
   my $package_name = $opt{package_name};
   
+  # Build directory
+  my $build_dir = $opt{build_dir};
+  unless (defined $build_dir && -d $build_dir) {
+    confess "Build directory must be specified for " . $self->category . " build";
+  }
+  
   # Output directory
   my $output_dir = $opt{output_dir};
-
-  my $build_dir = $opt{build_dir};
+  unless (defined $output_dir && -d $output_dir) {
+    confess "Output directory must be specified for " . $self->category . " build";
+  }
   
   my $sub_names = $opt{sub_names};
   
@@ -159,14 +166,6 @@ sub build_shared_lib {
   $module_base_name =~ s/^.+:://;
   
   my $input_dir = $opt{input_dir};
-  
-  unless (defined $output_dir && -d $output_dir) {
-    confess "Output directory must be specified for " . $self->category . " build";
-  }
-
-  unless (defined $build_dir && -d $build_dir) {
-    confess "Build directory must be specified for " . $self->category . " build";
-  }
   
   # Correct source files
   my $src_files = [];
@@ -292,14 +291,14 @@ sub build_shared_lib {
     push @$cfunc_names, '';
   }
   
-  my $shared_lib_file = $cbuilder->link(
+  my $tmp_shared_lib_file = $cbuilder->link(
     objects => $object_files,
     package_name => $package_name,
     dl_func_list => $cfunc_names,
     extra_linker_flags => $extra_linker_flags
   );
   
-  return $shared_lib_file;
+  return $tmp_shared_lib_file;
 }
 
 sub get_installed_shared_lib_path {
