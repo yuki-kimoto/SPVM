@@ -474,7 +474,27 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_STRING_BUFFER* string_buffe
   SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_id);
   SPVM_PACKAGE* package = op_package->uv.package;
   SPVM_LIST* op_subs = package->op_subs;
+  
+  // Head part - include and define
   SPVM_CSOURCE_BUILDER_build_head(string_buffer);
+  
+  // Subroutine decrations
+  SPVM_STRING_BUFFER_add(string_buffer, "// Function Declarations\n");
+  {
+    int32_t sub_index;
+    for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
+      SPVM_SUB* sub = op_sub->uv.sub;
+      if (sub->have_compile_desc) {
+        SPVM_CSOURCE_BUILDER_build_sub_declaration(string_buffer, sub->id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+      }
+    }
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  
+  // Subroutine implementations
+  SPVM_STRING_BUFFER_add(string_buffer, "// Function Implementations\n");
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
@@ -485,6 +505,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_STRING_BUFFER* string_buffe
       }
     }
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "\n");
 }
 
 void SPVM_CSOURCE_BUILDER_build_head(SPVM_STRING_BUFFER* string_buffer) {
