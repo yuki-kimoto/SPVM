@@ -357,7 +357,7 @@ B<Perlish syntax>, B<Easy way to C/C++ binding>, B<C99 math functions>
 
 SPVM Module:
 
-  # lib/SPVM/MyMath.spvm
+  # lib/MyMath.spvm
   package MyMath {
     sub sum : int ($nums : int[]) {
       
@@ -381,7 +381,7 @@ Use SPVM Module from Perl
   my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
   
   # Call subroutine
-  my $total = SPVM::MyMath->sum($sp_nums);
+  my $total = MyMath->sum($sp_nums);
   
   print $total . "\n";
 
@@ -391,7 +391,7 @@ See also L<SPVM::Document::PerlAPI>.
 
 SPVM Module:
 
-  # lib/SPVM/MyMathNative.spvm
+  # lib/MyMathNative.spvm
   package MyMathNative {
     
     # Sub Declaration
@@ -400,7 +400,7 @@ SPVM Module:
 
 C Source File;
 
-  // lib/SPVM/MyMathNative.inline/MyMathNative.c
+  // lib/MyMathNative.inline/MyMathNative.c
   #include <spvm_native.h>
 
   int32_t SPVM__MyMathNative__sum(SPVM_ENV* env, SPVM_VALUE* args) {
@@ -438,7 +438,7 @@ Use Extension Module from Perl:
   my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
   
   # Call SPVM subroutine
-  my $total = SPVM::MyMathNative->sum($sp_nums);
+  my $total = MyMathNative->sum($sp_nums);
   
   print $total . "\n";
 
