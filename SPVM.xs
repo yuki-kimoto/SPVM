@@ -1242,7 +1242,7 @@ call_sub(...)
   PPCODE:
 {
   (void)RETVAL;
-
+  
   int32_t stack_arg_start = 0;
   
   SV* sv_sub_abs_name = ST(0);

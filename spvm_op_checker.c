@@ -41,6 +41,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     int32_t sub_index;
     for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
       
+
       SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
       SPVM_OP* op_package = sub->op_package;

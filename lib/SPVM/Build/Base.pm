@@ -274,10 +274,8 @@ sub build_shared_lib {
 sub get_installed_shared_lib_path {
   my ($self, $package_name) = @_;
   
-  my $package_name_with_spvm = $package_name;
-  $package_name_with_spvm =~ s/SPVM:://;
-  my @package_name_parts = split(/::/, $package_name_with_spvm);
-  my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($package_name_with_spvm);
+  my @package_name_parts = split(/::/, $package_name);
+  my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
   
   my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   
