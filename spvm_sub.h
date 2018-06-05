@@ -35,6 +35,8 @@ struct SPVM_sub {
   _Bool is_enum;
   _Bool is_destructor;
   _Bool is_compiled;
+  _Bool is_core;
+  _Bool is_static;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
