@@ -1809,16 +1809,26 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         if (sub->have_native_desc) {
           // Sub abs name
-          const char* sub_abs_name = sub->abs_name;
-          
-          if (strcmp(sub_abs_name, "SPVM::CORE::print") == 0) {
-            sub->native_address = SPVM_CORE_FUNC_print;
-          }
-          else if (strcmp(sub_abs_name, "SPVM::CORE::warn") == 0) {
-            sub->native_address = SPVM_CORE_FUNC_warn;
-          }
-          else if (strcmp(sub_abs_name, "SPVM::CORE::time") == 0) {
-            sub->native_address = SPVM_CORE_FUNC_time;
+          const char* sub_name = sub->op_name->uv.name;
+          switch (sub_name[0]) {
+            case 'p':
+              if (strcmp(sub_name, "print") == 0) {
+                sub->native_address = SPVM_CORE_FUNC_print;
+              }
+              break;
+            case 'w':
+              if (strcmp(sub_name, "warn") == 0) {
+                sub->native_address = SPVM_CORE_FUNC_warn;
+              }
+            
+              break;
+            case 't':
+              if (strcmp(sub_name, "time") == 0) {
+                sub->native_address = SPVM_CORE_FUNC_time;
+              }
+              break;
+            default:
+              assert(0);
           }
         }
       }
