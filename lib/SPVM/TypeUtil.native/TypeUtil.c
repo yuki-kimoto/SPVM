@@ -6,28 +6,28 @@
 
 #include "spvm_native.h"
 
-float SPVM__TypeUtil__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+float SPVM__SPVM__TypeUtil__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
   return FLT_MAX;
 }
 
-float SPVM__TypeUtil__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+float SPVM__SPVM__TypeUtil__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
   return FLT_MIN;
 }
 
-double SPVM__TypeUtil__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+double SPVM__SPVM__TypeUtil__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
   return DBL_MAX;
 }
 
-double SPVM__TypeUtil__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+double SPVM__SPVM__TypeUtil__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   

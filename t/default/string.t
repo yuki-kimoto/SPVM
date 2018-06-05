@@ -13,7 +13,7 @@ use SPVM 'TestCase::String';
 my $start_objects_count = SPVM::get_objects_count();
 
 {
-  ok(SPVM::TestCase::String->basic());
+  ok(TestCase::String->basic());
 }
 
 # All object is freed

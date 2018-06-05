@@ -43,9 +43,7 @@ sub get_subs_from_package_name {
 sub create_cfunc_name {
   my ($self, $sub_name) = @_;
 
-  my $sub_name_spvm = "SPVM::$sub_name";
-
-  my $cfunc_name = $sub_name_spvm;
+  my $cfunc_name = "SPVM__$sub_name";
   $cfunc_name =~ s/:/_/g;
   
   return $cfunc_name;

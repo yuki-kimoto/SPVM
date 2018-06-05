@@ -67,8 +67,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
 
-  // use CORE module
-  SPVM_OP* op_name_core = SPVM_OP_new_op_name(compiler, "CORE", "CORE", 0);
+  // use SPVM::CORE module
+  SPVM_OP* op_name_core = SPVM_OP_new_op_name(compiler, "SPVM::CORE", "SPVM::CORE", 0);
   SPVM_OP* op_type_core = SPVM_OP_build_basic_type(compiler, op_name_core);
   SPVM_OP* op_use_core = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name_core->file, op_name_core->line);
   SPVM_OP_build_use(compiler, op_use_core, op_type_core);

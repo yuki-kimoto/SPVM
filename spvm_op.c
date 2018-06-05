@@ -1305,9 +1305,9 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
         strlen(sub_abs_name)
       );
       
-      // Search CORE
+      // Search SPVM::CORE
       if (!found_op_sub) {
-        sub_abs_name = SPVM_OP_create_abs_name(compiler, "CORE", sub_name);
+        sub_abs_name = SPVM_OP_create_abs_name(compiler, "SPVM::CORE", sub_name);
         
         found_op_sub= SPVM_HASH_search(
           compiler->op_sub_symtable,
@@ -1799,7 +1799,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  if (strcmp(package_name, "CORE") == 0) {
+  if (strcmp(package_name, "SPVM::CORE") == 0) {
     // Bind native subroutine
     {
       int32_t i;
@@ -1811,13 +1811,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           // Sub abs name
           const char* sub_abs_name = sub->abs_name;
           
-          if (strcmp(sub_abs_name, "CORE::print") == 0) {
+          if (strcmp(sub_abs_name, "SPVM::CORE::print") == 0) {
             sub->native_address = SPVM_CORE_FUNC_print;
           }
-          else if (strcmp(sub_abs_name, "CORE::warn") == 0) {
+          else if (strcmp(sub_abs_name, "SPVM::CORE::warn") == 0) {
             sub->native_address = SPVM_CORE_FUNC_warn;
           }
-          else if (strcmp(sub_abs_name, "CORE::time") == 0) {
+          else if (strcmp(sub_abs_name, "SPVM::CORE::time") == 0) {
             sub->native_address = SPVM_CORE_FUNC_time;
           }
         }

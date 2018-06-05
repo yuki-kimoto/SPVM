@@ -77,7 +77,7 @@ sub build_spvm_subs {
     
     # Declare package
     my ($package_name, $sub_name) = $abs_name =~ /^(?:(.+)::)(.+)/;
-    $package_name = "SPVM::$package_name";
+    $package_name = "$package_name";
     unless ($package_name_h->{$package_name}) {
       
       my $code = "package $package_name; our \@ISA = ('SPVM::Data');";
@@ -90,7 +90,7 @@ sub build_spvm_subs {
     }
     
     # Declare subroutine
-    *{"SPVM::$abs_name"} = sub {
+    *{"$abs_name"} = sub {
       
       my $return_value;
       eval { $return_value = SPVM::call_sub("$abs_name", @_) };

@@ -81,8 +81,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               char* module_path_base = SPVM_COMPILER_ALLOCATOR_alloc_string(compiler, module_path_base_length);
               const char* bufptr_orig = package_name;
               char* bufptr_to = module_path_base;
-              strncpy(bufptr_to, "SPVM/", 5);
-              bufptr_to += 5;
               while (*bufptr_orig) {
                 if (*bufptr_orig == ':' && *(bufptr_orig + 1) == ':') {
                   *bufptr_to = '/';

@@ -13,7 +13,7 @@ my $file = basename $0;
 
 # Exception
 {
-  eval { SPVM::TestCase->exception_zero_divide_int() }; my $line = __LINE__;
+  eval { TestCase->exception_zero_divide_int() }; my $line = __LINE__;
   like($@, qr|\Q0 division|);
   like($@, qr/\Q$file/);
   like($@, qr/$line/);
@@ -22,55 +22,55 @@ my $file = basename $0;
 # Exception
 {
   {
-    ok(SPVM::TestCase->exception_eval_call_sub());
+    ok(TestCase->exception_eval_call_sub());
   }
   
   {
-    eval { SPVM::TestCase->exception_call_stack() };
+    eval { TestCase->exception_call_stack() };
     like($@, qr/Error/);
     like($@, qr/exception_croak_return_int/);
     like($@, qr/exception_call_stack/);
   }
 
   {
-    eval { SPVM::TestCase->exception_croak_return_byte() };
+    eval { TestCase->exception_croak_return_byte() };
     like($@, qr/Error/);
     like($@, qr/exception_croak_return_byte/);
   }
   {
-    eval { SPVM::TestCase->exception_croak_return_short() };
+    eval { TestCase->exception_croak_return_short() };
     like($@, qr/Error/);
   }
   {
-    eval { SPVM::TestCase->exception_croak_return_int() };
+    eval { TestCase->exception_croak_return_int() };
     like($@, qr/Error/);
     like($@, qr/exception_croak_return_int/);
     like($@, qr/TestCase\.spvm/);
   }
   {
-    eval { SPVM::TestCase->exception_croak_return_long() };
+    eval { TestCase->exception_croak_return_long() };
     like($@, qr/Error/);
   }
   {
-    eval { SPVM::TestCase->exception_croak_return_float() };
+    eval { TestCase->exception_croak_return_float() };
     like($@, qr/Error/);
   }
   {
-    eval { SPVM::TestCase->exception_croak_return_double() };
+    eval { TestCase->exception_croak_return_double() };
     like($@, qr/Error/);
   }
   {
-    eval { SPVM::TestCase->exception_croak_return_void() };
+    eval { TestCase->exception_croak_return_void() };
     like($@, qr/Error/);
   }
   {
-    ok(SPVM::TestCase->exception_croak_return_int_eval_catch());
+    ok(TestCase->exception_croak_return_int_eval_catch());
   }
   {
-    eval { SPVM::TestCase->exception_croak_return_object() };
+    eval { TestCase->exception_croak_return_object() };
     like($@, qr/Error/);
   }
 }
 
-eval { SPVM::TestCase->eval_block_stack_check() };
+eval { TestCase->eval_block_stack_check() };
 ok($@);

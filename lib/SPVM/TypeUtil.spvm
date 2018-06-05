@@ -9,7 +9,7 @@ This package contains the folloing C language functions
 
 =cut
 
-package TypeUtil {
+package SPVM::TypeUtil {
   sub BYTE_MIN : byte ()  { return (byte)-128; }
   sub BYTE_MAX : byte () { return (byte)127; }
 

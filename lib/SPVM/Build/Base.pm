@@ -54,7 +54,7 @@ sub build_and_bind {
   for my $package (@$packages) {
     my $package_name = $package->{name};
     
-    next if $package_name eq "CORE";
+    next if $package_name eq "SPVM::CORE";
     
     my $subs = $self->get_subs_from_package_name($package_name);
     if (@$subs) {
@@ -79,16 +79,15 @@ sub bind_subs {
   
   for my $sub (@$subs) {
     my $sub_name = $sub->{name};
-    next if $sub_name =~ /^CORE::/;
-    my $sub_name_spvm = "SPVM::$sub_name";
+    next if $sub_name =~ /^SPVM::CORE::/;
 
     my $cfunc_name = $self->create_cfunc_name($sub_name);
     my $cfunc_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
     
     unless ($cfunc_address) {
-      my $sub_name_c = $sub_name_spvm;
+      my $sub_name_c = "SPVM__$sub_name";
       $sub_name_c =~ s/:/_/g;
-      confess "Can't find function address of $sub_name_spvm(). Native function name must be $sub_name_c";
+      confess "Can't find function address of $sub_name(). Native function name must be $sub_name_c";
     }
     $self->bind_sub($sub_name, $cfunc_address);
   }

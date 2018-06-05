@@ -1,18 +1,18 @@
-package Bool {
+package SPVM::Bool {
   has value : private int;
   
-  sub new_true : Bool () {
+  sub new_true : SPVM::Bool () {
     
-    my $self = new Bool;
+    my $self = new SPVM::Bool;
     
     $self->{value} = 1;
     
     return $self;
   }
   
-  sub new_false : Bool () {
+  sub new_false : SPVM::Bool () {
 
-    my $self = new Bool;
+    my $self = new SPVM::Bool;
     
     $self->{value} = 0;
     

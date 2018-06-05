@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
   compiler->start_sub_name = start_sub_name;
 
   SPVM_LIST_push(compiler->module_include_pathes, "lib");
-  SPVM_LIST_push(compiler->module_include_pathes, "solo");
+  SPVM_LIST_push(compiler->module_include_pathes, "solo/lib");
   
   SPVM_COMPILER_compile(compiler);
   

@@ -26,14 +26,14 @@ my $start_objects_count = SPVM::get_objects_count();
 {
   # Create object
   {
-    my $object = SPVM::TestCase->new();
+    my $object = TestCase->new();
     $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
     $object->set_x_string(SPVM::new_byte_array_bin("abc"));
-    ok(SPVM::TestCase->spvm_object_set_object($object));
+    ok(TestCase->spvm_object_set_object($object));
   }
   # Create object
   {
-    my $object = SPVM::TestCase->new();
+    my $object = TestCase->new();
     $object->set_x_byte($BYTE_MAX);
     $object->set_x_short($SHORT_MAX);
     $object->set_x_int($INT_MAX);
@@ -42,11 +42,11 @@ my $start_objects_count = SPVM::get_objects_count();
     $object->set_x_double($DOUBLE_PRECICE);
     $object->set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
     $object->set_x_string(SPVM::new_byte_array_string("Hello"));
-    my $minimal = SPVM::TestCase::Minimal->new;
+    my $minimal = TestCase::Minimal->new;
     $minimal->set_x(3);
     $object->set_minimal($minimal);
     
-    ok(SPVM::TestCase->spvm_object_set($object));
+    ok(TestCase->spvm_object_set($object));
     
     is($object->get_x_byte,$BYTE_MAX);
     is($object->get_x_short, $SHORT_MAX);
@@ -60,42 +60,42 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Field
 {
-  ok(SPVM::TestCase->object_field_set_and_get());
+  ok(TestCase->object_field_set_and_get());
 }
 
 # Set field exception
 {
-  ok(SPVM::TestCase->set_field_exception_object_undef());
+  ok(TestCase->set_field_exception_object_undef());
 }
 
 # Get field exception
 {
-  ok(SPVM::TestCase->get_field_exception_object_undef());
+  ok(TestCase->get_field_exception_object_undef());
 }
 
 # Field
 {
-  ok(SPVM::TestCase->object_field_set_and_get());
-  ok(SPVM::TestCase->object_field_set_and_get_again());
+  ok(TestCase->object_field_set_and_get());
+  ok(TestCase->object_field_set_and_get_again());
 }
 
 {
-  ok(SPVM::TestCase->object_field_initialized_zero());
+  ok(TestCase->object_field_initialized_zero());
 }
 
 # Get object from freelist
 {
-  ok(SPVM::TestCase->get_object_from_freelist());
+  ok(TestCase->get_object_from_freelist());
 }
 
 # Destructor
 {
-  ok(SPVM::TestCase->destructor());
+  ok(TestCase->destructor());
 }
 
 # isa
 {
-  ok(SPVM::TestCase->isa_basic());
+  ok(TestCase->isa_basic());
 }
 
 # All object is freed

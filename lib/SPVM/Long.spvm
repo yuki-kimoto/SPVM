@@ -1,8 +1,8 @@
-package Long {
+package SPVM::Long {
   has value : private long;
   
-  sub new : Long ($value : long) {
-    my $self = new Long;
+  sub new : SPVM::Long ($value : long) {
+    my $self = new SPVM::Long;
     
     $self->{value} = $value;
     

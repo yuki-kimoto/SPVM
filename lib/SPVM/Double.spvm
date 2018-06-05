@@ -1,8 +1,8 @@
-package Double {
+package SPVM::Double {
   has value : private double;
   
-  sub new : Double ($value : double) {
-    my $self = new Double;
+  sub new : SPVM::Double ($value : double) {
+    my $self = new SPVM::Double;
     
     $self->{value} = $value;
     

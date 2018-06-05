@@ -67,9 +67,7 @@ SV* SPVM_XS_UTIL_create_sv_type_name(int32_t basic_type_id, int32_t dimension) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   assert(basic_type);
 
-  SV* sv_type_name = sv_2mortal(newSVpv("SPVM::", 0));
-  
-  sv_catpv(sv_type_name, basic_type->name);
+  SV* sv_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
   
   int32_t dim_index;
   for (dim_index = 0; dim_index < dimension; dim_index++) {
@@ -545,8 +543,7 @@ get_element(...)
     }
     
     if (element_dimension == 0) {
-      SV* sv_basic_type_name = sv_2mortal(newSVpv("SPVM::", 0));
-      sv_catpv(sv_basic_type_name, basic_type->name);
+      SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
       
       sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
     }

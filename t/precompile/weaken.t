@@ -16,7 +16,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
-      ok(SPVM::TestCase->weaken_target4_weaken_object_assign());
+      ok(TestCase->weaken_target4_weaken_object_assign());
     }
     my $end_objects_count = SPVM::get_objects_count();
     is($end_objects_count, $start_objects_count);
@@ -24,7 +24,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
-      ok(SPVM::TestCase->weaken_target4());
+      ok(TestCase->weaken_target4());
     }
     my $end_objects_count = SPVM::get_objects_count();
     is($end_objects_count, $start_objects_count);
@@ -32,7 +32,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
-      ok(SPVM::TestCase->weaken_weaken_object_undef());
+      ok(TestCase->weaken_weaken_object_undef());
     }
     my $end_objects_count = SPVM::get_objects_count();
     is($end_objects_count, $start_objects_count);
@@ -40,7 +40,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
-      ok(SPVM::TestCase->weaken_target_object_undef());
+      ok(TestCase->weaken_target_object_undef());
     }
     my $end_objects_count = SPVM::get_objects_count();
     is($end_objects_count, $start_objects_count);
@@ -48,7 +48,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
-      SPVM::TestCase->weaken_recursive3();
+      TestCase->weaken_recursive3();
     }
     my $end_objects_count = SPVM::get_objects_count();
     is($end_objects_count, $start_objects_count);
@@ -56,7 +56,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
-      SPVM::TestCase->weaken_recursive_again();
+      TestCase->weaken_recursive_again();
     }
     my $end_objects_count = SPVM::get_objects_count();
     is($end_objects_count, $start_objects_count);
@@ -64,7 +64,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
-      ok(SPVM::TestCase->weaken_recursive());
+      ok(TestCase->weaken_recursive());
     }
     my $end_objects_count = SPVM::get_objects_count();
     is($end_objects_count, $start_objects_count);
@@ -72,7 +72,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
-      ok(SPVM::TestCase->weaken_reference_count1_object());
+      ok(TestCase->weaken_reference_count1_object());
     }
     my $end_objects_count = SPVM::get_objects_count();
     is($end_objects_count, $start_objects_count);
@@ -80,7 +80,7 @@ my $start_objects_count = SPVM::get_objects_count();
   {
     my $start_objects_count = SPVM::get_objects_count();
     {
-      ok(SPVM::TestCase->weaken_self_recuresive());
+      ok(TestCase->weaken_self_recuresive());
     }
     my $end_objects_count = SPVM::get_objects_count();
     is($end_objects_count, $start_objects_count);

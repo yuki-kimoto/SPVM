@@ -1,4 +1,4 @@
-package Math {
+package SPVM::Math {
   native sub INFINITYF : float ();
   native sub NANF : float ();
   
