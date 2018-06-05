@@ -64,6 +64,18 @@ my $start_objects_count = SPVM::get_objects_count();
   like(SPVM::Math->NAN(), $nan_re);
 }
 
+{
+  ok(TestCase::Math->byte_constant());
+  ok(TestCase::Math->short_constant());
+  ok(TestCase::Math->int_constant());
+}
+
+{
+  # Check not Inf or NaN in Perl value
+  like(SPVM::Math->FLT_MAX(), qr/[0-9]/);
+  like(SPVM::Math->FLT_MIN(), qr/[0-9]/);
+}
+
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);

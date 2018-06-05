@@ -453,7 +453,7 @@ print, warn, time
 =head1 STANDARD MODULES
 
 L<SPVM::CORE>, L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>,
-L<SPVM::Math>, L<SPVM::IO>, L<SPVM::TypeUtil>
+L<SPVM::Math>, L<SPVM::IO>
 
 =head1 PERL API
 

@@ -49,7 +49,6 @@ sub MY::postamble {
   
   my @module_names = qw(
     SPVM::Math
-    SPVM::TypeUtil
   );
   
   my $make_rule = '';

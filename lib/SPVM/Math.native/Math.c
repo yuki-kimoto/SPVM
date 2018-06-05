@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include <math.h>
 #include <stdlib.h>
+#include <float.h>
 
 #include "spvm_native.h"
 
@@ -372,3 +373,32 @@ double SPVM__SPVM__Math__log1p(SPVM_ENV* env, SPVM_VALUE* args) {
   
   return value;
 }
+
+float SPVM__SPVM__Math__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return FLT_MAX;
+}
+
+float SPVM__SPVM__Math__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return FLT_MIN;
+}
+
+double SPVM__SPVM__Math__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return DBL_MAX;
+}
+
+double SPVM__SPVM__Math__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return DBL_MIN;
+}
+
