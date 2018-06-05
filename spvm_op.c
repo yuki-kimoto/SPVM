@@ -34,8 +34,7 @@
 #include "spvm_csource_builder.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
-#include "spvm_core_func.h"
-
+#include "spvm_core_func_bind.h"
 
 
 const char* const SPVM_OP_C_ID_NAMES[] = {
@@ -1799,42 +1798,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
+  // Bind core functions
   if (strcmp(package_name, "SPVM::CORE") == 0) {
-    // Bind native subroutine
-    {
-      int32_t i;
-      for (i = 0; i < package->op_subs->length; i++) {
-        SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
-        SPVM_SUB* sub = op_sub->uv.sub;
-        
-        if (sub->have_native_desc) {
-          // Sub abs name
-          const char* sub_name = sub->op_name->uv.name;
-          switch (sub_name[0]) {
-            case 'p':
-              if (strcmp(sub_name, "print") == 0) {
-                sub->native_address = SPVM_CORE_FUNC_print;
-              }
-              break;
-            case 'w':
-              if (strcmp(sub_name, "warn") == 0) {
-                sub->native_address = SPVM_CORE_FUNC_warn;
-              }
-            
-              break;
-            case 't':
-              if (strcmp(sub_name, "time") == 0) {
-                sub->native_address = SPVM_CORE_FUNC_time;
-              }
-              break;
-            default:
-              assert(0);
-          }
-        }
-      }
-    }
+    SPVM_CORE_FUNC_BIND_bind_core_func(compiler, package->op_subs);
   }
-
+  
   package->id = compiler->op_packages->length;
   SPVM_LIST_push(compiler->op_packages, op_package);
   SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);

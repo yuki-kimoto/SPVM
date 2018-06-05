@@ -2,6 +2,7 @@
 #define SPVM_CORE_FUNC_H
 
 #include "spvm_base.h"
+#include "spvm_native.h"
 
 #define SPVM_CORE_FUNC_C_PI 3.14159265358979323846
 #define SPVM_CORE_FUNC_C_E 2.7182818284590452354
