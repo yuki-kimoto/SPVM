@@ -24,9 +24,35 @@ void SPVM_CORE_FUNC_BIND_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_s
         // Sub abs name
         const char* sub_name = sub->op_name->uv.name;
         switch (sub_name[0]) {
+          case 'a':
+            break;
+          case 'c':
+            break;
+          case 'e':
+            break;
+          case 'f':
+            break;
+          case 'h':
+            break;
+          case 'i':
+            break;
+          case 'l':
+            break;
+          case 'n':
+            break;
           case 'p':
             if (strcmp(sub_name, "print") == 0) {
               sub->native_address = SPVM_CORE_FUNC_print;
+            }
+            break;
+            break;
+          case 'r':
+            break;
+          case 's':
+            break;
+          case 't':
+            if (strcmp(sub_name, "time") == 0) {
+              sub->native_address = SPVM_CORE_FUNC_time;
             }
             break;
           case 'w':
@@ -34,14 +60,26 @@ void SPVM_CORE_FUNC_BIND_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_s
               sub->native_address = SPVM_CORE_FUNC_warn;
             }
             break;
-          case 't':
-            if (strcmp(sub_name, "time") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_time;
-            }
+          case 'B':
+            break;
+          case 'D':
+            break;
+          case 'E':
+            break;
+          case 'F':
+            break;
+          case 'I':
+            break;
+          case 'L':
+            break;
+          case 'N':
+            break;
+          case 'P':
+            break;
+          case 'S':
             break;
           default:
-            1;
-            // assert(0);
+            assert(0);
         }
       }
     }
