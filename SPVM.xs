@@ -1369,32 +1369,38 @@ call_sub(...)
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        int8_t return_value = env->call_byte_sub(env, sub_id, args);
+        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
+        int8_t return_value = tmp_value.bval;
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        int16_t return_value = env->call_short_sub(env, sub_id, args);
+        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
+        int16_t return_value = tmp_value.sval;
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        int32_t return_value = env->call_int_sub(env, sub_id, args);
+        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
+        int32_t return_value = tmp_value.ival;
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        int64_t return_value = env->call_long_sub(env, sub_id, args);
+        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
+        int64_t return_value = tmp_value.lval;
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        float return_value = env->call_float_sub(env, sub_id, args);
+        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
+        float return_value = tmp_value.fval;
         sv_return_value = sv_2mortal(newSVnv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        double return_value = env->call_double_sub(env, sub_id, args);
+        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
+        double return_value = tmp_value.dval;
         sv_return_value = sv_2mortal(newSVnv(return_value));
         break;
       }
@@ -1403,7 +1409,8 @@ call_sub(...)
     }
   }
   else {
-    void* return_value = env->call_object_sub(env, sub_id, args);
+    SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
+    void* return_value = tmp_value.oval;
     sv_return_value = NULL;
     if (return_value != NULL) {
       env->inc_ref_count(env, return_value);
