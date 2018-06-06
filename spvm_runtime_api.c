@@ -827,7 +827,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         SPVM_VALUE args[1];
         args[0].oval = object;
         object->in_destroy = 1;
-        SPVM_RUNTIME_API_call_void_sub(env, package->op_sub_destructor->uv.sub->id, args);
+        SPVM_RUNTIME_call_sub(env, package->op_sub_destructor->uv.sub->id, args);
         object->in_destroy = 0;
         
         if (object->ref_count < 0) {
