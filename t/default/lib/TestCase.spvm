@@ -12,7 +12,7 @@ package TestCase {
   use SPVM::Float;
   use SPVM::Double;
 
-  use SPVM::Math;
+  use SPVM::Example;
 
   our $PACKAGE_VAR_INT : int;
   our $PACKAGE_VAR_LONG : long;
@@ -352,10 +352,10 @@ package TestCase {
   
   sub package_var : int () {
     if ($TestCase::PACKAGE_VAR_INT == 0) {
-      $TestCase::PACKAGE_VAR_INT = SPVM::Math->INT32_MAX();
-      if ($TestCase::PACKAGE_VAR_INT == SPVM::Math->INT32_MAX()) {
-        $TestCase::PACKAGE_VAR_LONG = SPVM::Math->INT64_MAX();
-        if ($TestCase::PACKAGE_VAR_LONG == SPVM::Math->INT64_MAX()) {
+      $TestCase::PACKAGE_VAR_INT = INT32_MAX();
+      if ($TestCase::PACKAGE_VAR_INT == INT32_MAX()) {
+        $TestCase::PACKAGE_VAR_LONG = INT64_MAX();
+        if ($TestCase::PACKAGE_VAR_LONG == INT64_MAX()) {
           $TestCase::PACKAGE_VAR_MINIMAL = TestCase::Minimal->new();
           
           $TestCase::PACKAGE_VAR_MINIMAL->{x} = 4;
@@ -372,10 +372,10 @@ package TestCase {
 
   sub package_var_rel_name : int () {
     if ($PACKAGE_VAR_INT2 == 0) {
-      $PACKAGE_VAR_INT2 = SPVM::Math->INT32_MAX();
-      if ($PACKAGE_VAR_INT2 == SPVM::Math->INT32_MAX()) {
-        $PACKAGE_VAR_LONG2 = SPVM::Math->INT64_MAX();
-        if ($PACKAGE_VAR_LONG2 == SPVM::Math->INT64_MAX()) {
+      $PACKAGE_VAR_INT2 = INT32_MAX();
+      if ($PACKAGE_VAR_INT2 == INT32_MAX()) {
+        $PACKAGE_VAR_LONG2 = INT64_MAX();
+        if ($PACKAGE_VAR_LONG2 == INT64_MAX()) {
           $PACKAGE_VAR_MINIMAL2 = TestCase::Minimal->new();
           
           $PACKAGE_VAR_MINIMAL2->{x} = 4;
@@ -534,7 +534,7 @@ package TestCase {
   sub spvm_set_and_get_byte : int ($nums : byte[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == SPVM::Math->INT8_MAX()) {
+      if ($nums->[1] == INT8_MAX()) {
         return 1;
       }
     }
@@ -544,7 +544,7 @@ package TestCase {
   sub spvm_set_and_get_short : int ($nums : short[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == SPVM::Math->INT16_MAX()) {
+      if ($nums->[1] == INT16_MAX()) {
         return 1;
       }
     }
@@ -554,7 +554,7 @@ package TestCase {
   sub spvm_set_and_get_int : int ($nums : int[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == SPVM::Math->INT32_MAX()) {
+      if ($nums->[1] == INT32_MAX()) {
         return 1;
       }
     }
@@ -564,7 +564,7 @@ package TestCase {
   sub spvm_set_and_get_long : int ($nums : long[]) {
     
     if ($nums->[0] == 0L) {
-      if ($nums->[1] == SPVM::Math->INT64_MAX()) {
+      if ($nums->[1] == INT64_MAX()) {
         return 1;
       }
     }
@@ -1693,19 +1693,19 @@ package TestCase {
   sub object_field_set_and_get : int () {
     my $test_case = new TestCase;
     
-    $test_case->{x_byte} = SPVM::Math->INT8_MAX();
-    $test_case->{x_short} = SPVM::Math->INT16_MAX();
-    $test_case->{x_int} = SPVM::Math->INT32_MAX();
-    $test_case->{x_long} = SPVM::Math->INT64_MAX();
+    $test_case->{x_byte} = INT8_MAX();
+    $test_case->{x_short} = INT16_MAX();
+    $test_case->{x_int} = INT32_MAX();
+    $test_case->{x_long} = INT64_MAX();
     $test_case->{x_float} = TestCase->FLOAT_PRECICE();
     $test_case->{x_double} = TestCase->DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal->new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
-    if ((int)$test_case->{x_byte} == (int)SPVM::Math->INT8_MAX()) {
-      if ((int)$test_case->{x_short} == (int)SPVM::Math->INT16_MAX()) {
-        if ($test_case->{x_int} == SPVM::Math->INT32_MAX()) {
-          if ($test_case->{x_long} == SPVM::Math->INT64_MAX()) {
+    if ((int)$test_case->{x_byte} == (int)INT8_MAX()) {
+      if ((int)$test_case->{x_short} == (int)INT16_MAX()) {
+        if ($test_case->{x_int} == INT32_MAX()) {
+          if ($test_case->{x_long} == INT64_MAX()) {
             if ($test_case->{x_float} == TestCase->FLOAT_PRECICE()) {
               if ($test_case->{x_double} == TestCase->DOUBLE_PRECICE()) {
                 if ($test_case->{minimal}->{x} == 3) {
@@ -1724,28 +1724,28 @@ package TestCase {
   sub object_field_set_and_get_again : int () {
     my $test_case = new TestCase;
     
-    $test_case->{x_byte} = SPVM::Math->INT8_MAX();
-    $test_case->{x_short} = SPVM::Math->INT16_MAX();
-    $test_case->{x_int} = SPVM::Math->INT32_MAX();
-    $test_case->{x_long} = SPVM::Math->INT64_MAX();
+    $test_case->{x_byte} = INT8_MAX();
+    $test_case->{x_short} = INT16_MAX();
+    $test_case->{x_int} = INT32_MAX();
+    $test_case->{x_long} = INT64_MAX();
     $test_case->{x_float} = FLOAT_PRECICE();
     $test_case->{x_double} = DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal->new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
 
-    $test_case->{x_byte} = SPVM::Math->INT8_MAX();
-    $test_case->{x_short} = SPVM::Math->INT16_MAX();
-    $test_case->{x_int} = SPVM::Math->INT32_MAX();
-    $test_case->{x_long} = SPVM::Math->INT64_MAX();
+    $test_case->{x_byte} = INT8_MAX();
+    $test_case->{x_short} = INT16_MAX();
+    $test_case->{x_int} = INT32_MAX();
+    $test_case->{x_long} = INT64_MAX();
     $test_case->{x_float} = FLOAT_PRECICE();
     $test_case->{x_double} = DOUBLE_PRECICE();
     $test_case->{minimal} = $minimal;
 
-    if ((int)$test_case->{x_byte} == (int)SPVM::Math->INT8_MAX()) {
-      if ((int)$test_case->{x_short} == (int)SPVM::Math->INT16_MAX()) {
-        if ($test_case->{x_int} == SPVM::Math->INT32_MAX()) {
-          if ($test_case->{x_long} == SPVM::Math->INT64_MAX()) {
+    if ((int)$test_case->{x_byte} == (int)INT8_MAX()) {
+      if ((int)$test_case->{x_short} == (int)INT16_MAX()) {
+        if ($test_case->{x_int} == INT32_MAX()) {
+          if ($test_case->{x_long} == INT64_MAX()) {
             if ($test_case->{x_float} == FLOAT_PRECICE()) {
               if ($test_case->{x_double} == DOUBLE_PRECICE()) {
                 if ($test_case->{minimal}->{x} == 3) {
@@ -1842,11 +1842,11 @@ package TestCase {
     return 0;
   }
   sub array_init_byte : int () {
-    my $nums = new byte[] {(byte)1, (byte)2, SPVM::Math->INT8_MAX()};
+    my $nums = new byte[] {(byte)1, (byte)2, INT8_MAX()};
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
-        if ($nums->[2] == SPVM::Math->INT8_MAX()) {
+        if ($nums->[2] == INT8_MAX()) {
           return 1;
         }
       }
@@ -3061,7 +3061,7 @@ package TestCase {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
-        if ($values->[2] == SPVM::Math->INT8_MAX()) {
+        if ($values->[2] == INT8_MAX()) {
            if (@$values == 3) {
              return 1;
            }
@@ -3076,7 +3076,7 @@ package TestCase {
     
     if ((int)$values->[0] == (int)(short)97) {
       if ((int)$values->[1] == (int)(short)98) {
-        if ((int)$values->[2] == (int)(short)SPVM::Math->INT16_MAX()) {
+        if ((int)$values->[2] == (int)(short)INT16_MAX()) {
            if (@$values == 3) {
              return 1;
            }
@@ -3091,7 +3091,7 @@ package TestCase {
     
     if ($values->[0] == (int)97) {
       if ($values->[1] == (int)98) {
-        if ($values->[2] == (int)SPVM::Math->INT32_MAX()) {
+        if ($values->[2] == (int)INT32_MAX()) {
            if (@$values == 3) {
              return 1;
            }
@@ -3106,7 +3106,7 @@ package TestCase {
     
     if ($values->[0] == (long)97) {
       if ($values->[1] == (long)98) {
-        if ($values->[2] == (long)SPVM::Math->INT64_MAX()) {
+        if ($values->[2] == (long)INT64_MAX()) {
            if (@$values == 3) {
              return 1;
            }

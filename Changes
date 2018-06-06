@@ -1,6 +1,9 @@
 0.0343 2018-06-05
   - do inline expasion in subroutien of same precompile package
   - SPVM module loading path become same as Perl. You don't need to create SPVM/ directory.
+  - remove SPVM::Math
+  - remove SPVM::TypeUtil
+  - Move SPVM::Math and SPVM::TypeUtil functions to CORE namespace
 0.0342 2018-06-02
   - remove SPVM::Native
   - remove SPVM::Precompile
