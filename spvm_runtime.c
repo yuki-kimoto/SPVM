@@ -69,11 +69,9 @@ int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VAL
   // Subroutine is Precompile
   assert(sub->is_compiled);
   
-  // Native address
+  // Call precompile subroutine
   int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub->precompile_address;
-  int32_t croak_flag = (*precompile_address)(env, args);
-  
-  return croak_flag;
+  return (*precompile_address)(env, args);
 }
 
 int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
@@ -93,11 +91,9 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   // Set exception to NULL at start of subroutine
   env->set_exception(env, NULL);
   
-  // Native address
+  // Call native subrotuine
   int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub->native_address;
-  int32_t croak_flag = (*native_address)(env, args);
-  
-  return croak_flag;
+  return (*native_address)(env, args);
 }
 
 int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
