@@ -1659,9 +1659,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
         int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object(compiler, decl_sub_return_type);
         
-        int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
-        int32_t decl_sub_return_return_dimension = decl_sub_return_type->dimension;
-        
         // Declare subroutine argument length
         int32_t decl_sub_args_length = decl_sub->op_args->length;
         
@@ -1691,6 +1688,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           }
         }
         else {
+          int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
           if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
             env->call_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
