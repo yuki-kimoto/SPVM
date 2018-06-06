@@ -1747,13 +1747,14 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
         // Call subroutine
         if (decl_sub_return_return_dimension == 0) {
           if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
-            env->call_void_sub(env, call_sub_id, args);
+            env->call_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-            SPVM_VALUE_byte value = env->call_byte_sub(env, call_sub_id, args);
+            SPVM_VALUE tmp_value = env->call_sub(env, call_sub_id, args);
+            SPVM_VALUE_byte value = tmp_value.bval;
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1762,7 +1763,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-            SPVM_VALUE_short value = env->call_short_sub(env, call_sub_id, args);
+            SPVM_VALUE tmp_value = env->call_sub(env, call_sub_id, args);
+            SPVM_VALUE_short value = tmp_value.sval;
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1782,7 +1784,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
-            SPVM_VALUE_long value = env->call_long_sub(env, call_sub_id, args);
+            SPVM_VALUE tmp_value = env->call_sub(env, call_sub_id, args);
+            SPVM_VALUE_long value = tmp_value.lval;
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1791,7 +1794,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-            SPVM_VALUE_float value = env->call_float_sub(env, call_sub_id, args);
+            SPVM_VALUE tmp_value = env->call_sub(env, call_sub_id, args);
+            SPVM_VALUE_float value = tmp_value.fval;
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1800,7 +1804,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-            SPVM_VALUE_double value = env->call_double_sub(env, call_sub_id, args);
+            SPVM_VALUE tmp_value = env->call_sub(env, call_sub_id, args);
+            SPVM_VALUE_double value = tmp_value.dval;
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1809,7 +1814,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else {
-            void* value = env->call_object_sub(env, call_sub_id, args);
+            SPVM_VALUE tmp_value = env->call_sub(env, call_sub_id, args);
+            void* value = tmp_value.oval;
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1819,7 +1825,8 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
           }
         }
         else {
-          void* value = env->call_object_sub(env, call_sub_id, args);
+          SPVM_VALUE tmp_value = env->call_sub(env, call_sub_id, args);
+          void* value = tmp_value.oval;
           if (env->get_exception(env)) {
             croak_flag = 1;
           }
