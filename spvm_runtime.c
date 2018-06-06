@@ -113,6 +113,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
   int32_t sub_return_type_dimension = sub_return_type->dimension;
   
+  int32_t sub_return_type_is_object = SPVM_TYPE_is_object(compiler, sub_return_type);
+  
   // Args length
   int32_t args_length = sub->op_args->length;
   
@@ -1655,6 +1657,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
+        int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object(compiler, decl_sub_return_type);
         
         int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
         int32_t decl_sub_return_return_dimension = decl_sub_return_type->dimension;
@@ -1678,7 +1681,16 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         call_sub_arg_stack_top -= decl_sub_args_length;
         
         // Call subroutine
-        if (decl_sub_return_return_dimension == 0) {
+        if (decl_sub_return_type_is_object) {
+          env->call_sub(env, call_sub_id, args);
+          if (env->get_exception(env)) {
+            croak_flag = 1;
+          }
+          else {
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], args[0].oval);
+          }
+        }
+        else {
           if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
             env->call_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
@@ -1741,22 +1753,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
             }
           }
           else {
-            env->call_sub(env, call_sub_id, args);
-            if (env->get_exception(env)) {
-              croak_flag = 1;
-            }
-            else {
-              SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], args[0].oval);
-            }
-          }
-        }
-        else {
-          env->call_sub(env, call_sub_id, args);
-          if (env->get_exception(env)) {
-            croak_flag = 1;
-          }
-          else {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], args[0].oval);
+            assert(0);
           }
         }
         
@@ -1932,7 +1929,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   // Croak
   if (!croak_flag) {
     // Decrement ref count of return value
-    if (sub_return_type_dimension > 0 || sub_return_basic_type_id > SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+    if (sub_return_type_is_object) {
       if (*(void**)&args[0] != NULL) {
         SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&args[0]);
       }
