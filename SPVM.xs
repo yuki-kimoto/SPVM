@@ -35,8 +35,6 @@
 #include "spvm_basic_type.h"
 #include "spvm_use.h"
 
-static SPVM_VALUE call_sub_args[255];
-
 SPVM_ENV* SPVM_XS_UTIL_get_env() {
   
   SV* sv_env = get_sv("SPVM::API", 0);
@@ -1284,43 +1282,45 @@ call_sub(...)
       int32_t arg_basic_type_id = arg_type->basic_type->id;
       int32_t arg_type_dimension = arg_type->dimension;
       
+      SPVM_VALUE* args = compiler->args;
+      
       if (arg_type_dimension == 0 && arg_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && arg_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
         switch (arg_type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE : {
             int8_t value = (int8_t)SvIV(sv_value);
-            call_sub_args[arg_index].bval = value;
+            args[arg_index].bval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_SHORT : {
             int16_t value = (int16_t)SvIV(sv_value);
-            call_sub_args[arg_index].sval = value;
+            args[arg_index].sval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_INT : {
             int32_t value = (int32_t)SvIV(sv_value);
-            call_sub_args[arg_index].ival = value;
+            args[arg_index].ival = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_LONG : {
             int64_t value = (int64_t)SvIV(sv_value);
-            call_sub_args[arg_index].lval = value;
+            args[arg_index].lval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_FLOAT : {
             float value = (float)SvNV(sv_value);
-            call_sub_args[arg_index].fval = value;
+            args[arg_index].fval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_DOUBLE : {
             double value = (double)SvNV(sv_value);
-            call_sub_args[arg_index].dval = value;
+            args[arg_index].dval = value;
             break;
           }
         }
       }
       else {
         if (!SvOK(sv_value)) {
-          call_sub_args[arg_index].oval = NULL;
+          args[arg_index].oval = NULL;
         }
         else {
           if (sv_isobject(sv_value)) {
@@ -1337,7 +1337,7 @@ call_sub(...)
                 croak("Argument basic_object type need %s, but %s", SvPV_nolen(sv_arg_type_name), SvPV_nolen(sv_basic_object_type));
               }
               
-              call_sub_args[arg_index].oval = basic_object;
+              args[arg_index].oval = basic_object;
             }
             else {
               croak("Data must be derived from SPVM::Data");
@@ -1361,39 +1361,40 @@ call_sub(...)
           
   // Return count
   SV* sv_return_value = NULL;
+  SPVM_VALUE* args = compiler->args;
   if (return_type_dimension == 0 && return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
     switch (return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {
-        env->call_void_sub(env, sub_id, call_sub_args);
+        env->call_void_sub(env, sub_id, args);
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        int8_t return_value = env->call_byte_sub(env, sub_id, call_sub_args);
+        int8_t return_value = env->call_byte_sub(env, sub_id, args);
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        int16_t return_value = env->call_short_sub(env, sub_id, call_sub_args);
+        int16_t return_value = env->call_short_sub(env, sub_id, args);
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        int32_t return_value = env->call_int_sub(env, sub_id, call_sub_args);
+        int32_t return_value = env->call_int_sub(env, sub_id, args);
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        int64_t return_value = env->call_long_sub(env, sub_id, call_sub_args);
+        int64_t return_value = env->call_long_sub(env, sub_id, args);
         sv_return_value = sv_2mortal(newSViv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        float return_value = env->call_float_sub(env, sub_id, call_sub_args);
+        float return_value = env->call_float_sub(env, sub_id, args);
         sv_return_value = sv_2mortal(newSVnv(return_value));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        double return_value = env->call_double_sub(env, sub_id, call_sub_args);
+        double return_value = env->call_double_sub(env, sub_id, args);
         sv_return_value = sv_2mortal(newSVnv(return_value));
         break;
       }
@@ -1402,7 +1403,7 @@ call_sub(...)
     }
   }
   else {
-    void* return_value = env->call_object_sub(env, sub_id, call_sub_args);
+    void* return_value = env->call_object_sub(env, sub_id, args);
     sv_return_value = NULL;
     if (return_value != NULL) {
       env->inc_ref_count(env, return_value);
