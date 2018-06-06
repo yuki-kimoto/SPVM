@@ -65,14 +65,6 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_sub_id_interface_method,
   SPVM_RUNTIME_API_get_class_method_sub_id,
   SPVM_RUNTIME_API_get_basic_type_id,
-  SPVM_RUNTIME_API_call_void_sub,
-  SPVM_RUNTIME_API_call_byte_sub,
-  SPVM_RUNTIME_API_call_short_sub,
-  SPVM_RUNTIME_API_call_int_sub,
-  SPVM_RUNTIME_API_call_long_sub,
-  SPVM_RUNTIME_API_call_float_sub,
-  SPVM_RUNTIME_API_call_double_sub,
-  SPVM_RUNTIME_API_call_object_sub,
   SPVM_RUNTIME_API_new_object,
   SPVM_RUNTIME_API_new_byte_array,
   SPVM_RUNTIME_API_new_short_array,
@@ -895,68 +887,6 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return object->ref_count;
-}
-
-void SPVM_RUNTIME_API_call_void_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
-  (void)env;
-  
-  (void)SPVM_RUNTIME_call_sub(env, sub_id, args);
-}
-
-int8_t SPVM_RUNTIME_API_call_byte_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
-  (void)env;
-  
-  SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(env, sub_id, args);
-  
-  return return_value.bval;
-}
-
-int16_t SPVM_RUNTIME_API_call_short_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
-  (void)env;
-  
-  SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(env, sub_id, args);
-  
-  return return_value.sval;
-}
-
-int32_t SPVM_RUNTIME_API_call_int_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
-  (void)env;
-  
-  SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(env, sub_id, args);
-  
-  return return_value.ival;
-}
-
-int64_t SPVM_RUNTIME_API_call_long_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
-  (void)env;
-  
-  SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(env, sub_id, args);
-  
-  return return_value.lval;
-}
-
-float SPVM_RUNTIME_API_call_float_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
-  (void)env;
-  
-  SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(env, sub_id, args);
-  
-  return return_value.fval;
-}
-
-double SPVM_RUNTIME_API_call_double_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
-  (void)env;
-  
-  SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(env, sub_id, args);
-  
-  return return_value.dval;
-}
-
-SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
-  (void)env;
-  
-  SPVM_VALUE return_value = SPVM_RUNTIME_call_sub(env, sub_id, args);
-  
-  return return_value.oval;
 }
 
 int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* name) {

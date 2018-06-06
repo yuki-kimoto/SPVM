@@ -98,7 +98,8 @@ int main(int argc, char *argv[])
   args[0].ival = 2;
   
   // Run
-  int32_t return_value = env->call_int_sub(env, sub_id, args);
+  SPVM_VALUE tmp_return_value = env->call_sub(env, sub_id, args);
+  int32_t return_value = tmp_return_value.ival;
   
   if (runtime->exception) {
     SPVM_RUNTIME_API_print(env, runtime->exception);

@@ -65,14 +65,6 @@ struct SPVM_env {
   int32_t (*get_sub_id_interface_method)(SPVM_ENV*, void* object, int32_t);
   int32_t (*get_class_method_sub_id)(SPVM_ENV*, const char*, const char*);
   int32_t (*get_basic_type_id)(SPVM_ENV*, const char*);
-  void (*call_void_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
-  int8_t (*call_byte_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
-  int16_t (*call_short_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
-  int32_t (*call_int_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
-  int64_t (*call_long_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
-  float (*call_float_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
-  double (*call_double_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
-  void* (*call_object_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
   void* (*new_object)(SPVM_ENV*, int32_t);
   void* (*new_byte_array)(SPVM_ENV*, int32_t);
   void* (*new_short_array)(SPVM_ENV*, int32_t);

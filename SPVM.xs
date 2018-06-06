@@ -1365,7 +1365,7 @@ call_sub(...)
   if (return_type_dimension == 0 && return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
     switch (return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {
-        env->call_void_sub(env, sub_id, args);
+        env->call_sub(env, sub_id, args);
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_BYTE: {

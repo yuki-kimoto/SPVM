@@ -39,7 +39,8 @@ int32_t SPVM__std__test1(SPVM_ENV* env, SPVM_VALUE* args) {
   new_args[0].ival = 5;
   new_args[1].ival = 3;
   
-  int32_t ret = env->call_int_sub(env, sub_id, new_args);
+  SPVM_VALUE tmp_ret = env->call_sub(env, sub_id, new_args);
+  int32_t ret = tmp_ret.ival;
   
   int32_t num3 = num1 + num2 + ret;
   
