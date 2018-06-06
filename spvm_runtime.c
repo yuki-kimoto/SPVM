@@ -1697,63 +1697,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
               croak_flag = 1;
             }
           }
-          else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-            env->call_sub(env, call_sub_id, args);
-            if (env->get_exception(env)) {
-              croak_flag = 1;
-            }
-            else {
-              *(SPVM_VALUE_byte*)&vars[opcode->operand0] = args[0].bval;
-            }
-          }
-          else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-            env->call_sub(env, call_sub_id, args);
-            if (env->get_exception(env)) {
-              croak_flag = 1;
-            }
-            else {
-              *(SPVM_VALUE_short*)&vars[opcode->operand0] = args[0].sval;
-            }
-          }
-          else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
-            env->call_sub(env, call_sub_id, args);
-            
-            if (env->get_exception(env)) {
-              croak_flag = 1;
-            }
-            else {
-              *(SPVM_VALUE_int*)&vars[opcode->operand0] = args[0].ival;
-            }
-          }
-          else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
-            env->call_sub(env, call_sub_id, args);
-            if (env->get_exception(env)) {
-              croak_flag = 1;
-            }
-            else {
-              *(SPVM_VALUE_long*)&vars[opcode->operand0] = args[0].lval;
-            }
-          }
-          else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-            env->call_sub(env, call_sub_id, args);
-            if (env->get_exception(env)) {
-              croak_flag = 1;
-            }
-            else {
-              *(SPVM_VALUE_float*)&vars[opcode->operand0] = args[0].fval;
-            }
-          }
-          else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-            env->call_sub(env, call_sub_id, args);
-            if (env->get_exception(env)) {
-              croak_flag = 1;
-            }
-            else {
-              *(SPVM_VALUE_double*)&vars[opcode->operand0] = args[0].dval;
-            }
-          }
           else {
-            assert(0);
+            env->call_sub(env, call_sub_id, args);
+            if (env->get_exception(env)) {
+              croak_flag = 1;
+            }
+            else {
+              vars[opcode->operand0] = args[0];
+            }
           }
         }
         
