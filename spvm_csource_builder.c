@@ -133,7 +133,7 @@ void SPVM_CSOURCE_BUILDER_add_divide_integral(SPVM_STRING_BUFFER* string_buffer,
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, type_name, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string(env, \"0 division\", 0));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "  } else {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    ");
@@ -162,7 +162,7 @@ void SPVM_CSOURCE_BUILDER_add_remainder_integral(SPVM_STRING_BUFFER* string_buff
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string(env, \"0 division\", 0);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    ");
@@ -320,7 +320,7 @@ void SPVM_CSOURCE_BUILDER_add_array_load(SPVM_STRING_BUFFER* string_buffer, cons
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", array_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string(env, \"Array must not be undef\", 0)); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
   SPVM_STRING_BUFFER_add(string_buffer, "  else { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
@@ -331,7 +331,7 @@ void SPVM_CSOURCE_BUILDER_add_array_load(SPVM_STRING_BUFFER* string_buffer, cons
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", array_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        croak_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -354,7 +354,7 @@ void SPVM_CSOURCE_BUILDER_add_array_store(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", array_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string(env, \"Array must not be undef\", 0)); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
   SPVM_STRING_BUFFER_add(string_buffer, "  else { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
@@ -365,7 +365,7 @@ void SPVM_CSOURCE_BUILDER_add_array_store(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", array_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        croak_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
   
@@ -398,7 +398,7 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", object_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string(env, \"Object must be not undef.\", 0));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    ");
@@ -418,7 +418,7 @@ void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_STRING_BUFFER* string_buffer, const
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", object_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string(env, \"Object must be not undef.\", 0));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    *(");
@@ -646,7 +646,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_string[30];\n");
 
   // Exception
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t croak_flag = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
 
   // Initialize variables
   {
@@ -1289,7 +1289,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string(env, \"Array must not be undef\", 0)); \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "  else { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
@@ -1300,7 +1300,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
@@ -1343,12 +1343,12 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(array == NULL, 0)) { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string(env, \"Array must not be undef\", 0)); \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "          env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "          croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "          exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
         
@@ -1370,7 +1370,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string(env, \"Array must not be undef\", 0)); \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "  else { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
@@ -1381,7 +1381,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         
@@ -1592,7 +1592,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string(env, \"Can't get array length of undef value.\", 0));\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    ");
@@ -1632,7 +1632,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string(env, \"Object must be not undef.\", 0));\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
@@ -1675,7 +1675,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string(env, \"Object must be not undef.\", 0));\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
@@ -1697,7 +1697,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string(env, \"Object must be not undef.\", 0));\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
@@ -1719,7 +1719,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  if (env->get_exception(env)) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       }
@@ -1733,7 +1733,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "    if (concat_string == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
@@ -1989,7 +1989,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string(env, \"Can't cast uncompatible type.\", 0);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
@@ -2062,10 +2062,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
           SPVM_STRING_BUFFER_add(string_buffer, "    env->call_sub(env, call_sub_id, args);\n");
         }
         */
-        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = env->call_sub(env, call_sub_id, args);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = env->call_sub(env, call_sub_id, args);\n");
         
         // Call subroutine
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (!croak_flag) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
         if (decl_sub_return_type_is_object) {
           SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
           SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
@@ -2090,7 +2090,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
         SPVM_SUB* sub = op_sub->uv.sub;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (sub_id == -1) { sub_id = env->get_sub_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
@@ -2098,7 +2098,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    croak_flag = 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 0;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), sub_id, line));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
@@ -2112,7 +2112,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
         SPVM_SUB* sub = op_sub->uv.sub;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (croak_flag) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (sub_id == -1) { sub_id = env->get_sub_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
@@ -2128,7 +2128,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CROAK_FLAG_TRUE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  croak_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  exception_flag = 1;\n");
         break;
       }
       case SPVM_OPCODE_C_ID_RETURN_VOID:
@@ -2315,14 +2315,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
   }
 
   // No exception
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (!croak_flag) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
   if (sub_return_type_is_object) {
     SPVM_STRING_BUFFER_add(string_buffer, "    if (args[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(args[0].oval); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, NULL);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  return croak_flag;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  return exception_flag;\n");
   
   // Close subroutine
   SPVM_STRING_BUFFER_add(string_buffer, "}\n");
