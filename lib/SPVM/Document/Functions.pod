@@ -222,53 +222,37 @@ the arc tangent of the argument.
 
   sub erfc : double ($x : double);
 
-=head2 BYTE_MIN
+=head2 INT8_MIN
 
-B<sub BYTE_MIN : byte ()>
+B<sub INT8_MIN : byte ()>
 
-A constant holding the minimum value a byte can have, C<-128>.
+=head2 INT8_MAX
 
-=head2 BYTE_MAX
+B<INT8_MAX : byte ()>
 
-B<BYTE_MAX : byte ()>
+=head2 INT16_MIN
 
-A constant holding the maximum value a byte can have, C<127>.
+B<sub INT16_MIN : short ()>
 
-=head2 SHORT_MIN
+=head2 INT16_MAX
 
-B<sub SHORT_MIN : short ()>
+B<sub INT16_MAX : short ()>
 
-A constant holding the minimum value a short can have, C<-32768>.
+=head2 INT32_MIN
 
-=head2 SHORT_MAX
+B<sub INT32_MIN : int ()>
 
-B<sub SHORT_MAX : short ()>
+=head2 INT32_MAX
 
-A constant holding the maximum value a short can have, C<32767>.
+B<sub INT32_MAX : int ()>
 
-=head2 INT_MIN
+=head2 INT64_MIN
 
-B<sub INT_MIN : int ()>
+B<sub INT64_MIN : long ()>
 
-A constant holding the minimum value a int can have, C<-2147483648>.
+=head2 INT64_MAX
 
-=head2 INT_MAX
-
-B<sub INT_MAX : int ()>
-
-A constant holding the maximum value a int can have, C<2147483647>.
-
-=head2 LONG_MIN
-
-B<sub LONG_MIN : long ()>
-
-A constant holding the minimum value a long can have, C<-9223372036854775808>.
-
-=head2 LONG_MAX
-
-B<sub LONG_MAX : long ()>
-
-A constant holding the maximum value a long can have, C<9223372036854775807>.
+B<sub INT64_MAX : long ()>
 
 =head2 FLT_MIN
 
