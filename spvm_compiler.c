@@ -182,6 +182,8 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
+  free(compiler->args);
+
   // Free allocator
   SPVM_COMPILER_ALLOCATOR_free(compiler);
   
