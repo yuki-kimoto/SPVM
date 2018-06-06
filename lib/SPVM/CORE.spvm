@@ -17,8 +17,8 @@ package SPVM::CORE {
   native sub isfinite : int ($x : double);
   native sub isnan : int ($x : double);
 
-  sub PI : double () { return 3.14159265358979323846; }
-  sub E : double () { return 2.7182818284590452354; }
+  native sub PI : double ();
+  native sub E : double ();
   
   # Trigonometric functions
   native sub acos : double ($x : double);
@@ -86,5 +86,4 @@ package SPVM::CORE {
   
   native sub DBL_MAX : double ();
   native sub DBL_MIN : double ();
-
 }

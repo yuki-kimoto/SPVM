@@ -140,23 +140,23 @@ void SPVM_CORE_FUNC_BIND_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_s
   native sub tanh : double ($x : double);
   native sub tgamma : double ($x : double);
 
-  sub BYTE_MIN : byte ()  { return (byte)-128; }
-  sub BYTE_MAX : byte () { return (byte)127; }
 
   native sub DBL_MAX : double ();
   native sub DBL_MIN : double ();
-  sub E : double () { return 2.7182818284590452354; }
+  native sub E : double ();
   native sub FLT_MAX : float ();
   native sub FLT_MIN : float();
-  sub INT_MIN : int () { return -2147483648; }
-  sub INT_MAX : int () { return 2147483647; }
   native sub INFINITYF : float ();
   native sub INFINITY : double ();
-  sub LONG_MIN : long () { return -9223372036854775808L; }
-  sub LONG_MAX : long () { return 9223372036854775807L; }
   native sub NANF : float ();
   native sub NAN : double ();
-  sub PI : double () { return 3.14159265358979323846; }
-  sub SHORT_MIN : short () { return (short)-32768; }
-  sub SHORT_MAX : short () { return (short)32767; }
+  native sub PI : double ();
+  native sub INT8_MIN : byte ();
+  native sub INT8_MAX : byte ();
+  native sub INT16_MIN : short ();
+  native sub INT16_MAX : short ();
+  native sub INT32_MIN : int ();
+  native sub INT32_MAX : int ();
+  native sub INT64_MIN : long ();
+  native sub INT64_MAX : long ();
 */

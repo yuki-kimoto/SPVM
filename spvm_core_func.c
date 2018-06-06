@@ -443,6 +443,20 @@ double SPVM_CORE_FUNC_DBL_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
   return DBL_MIN;
 }
 
+double SPVM__SPVM__Math__PI(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return 3.14159265358979323846;
+}
+
+double SPVM__SPVM__Math__E(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return 2.7182818284590452354;
+}
+
 int8_t SPVM_CORE_FUNC_INT8_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
