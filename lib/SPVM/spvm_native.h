@@ -97,6 +97,6 @@ struct SPVM_env {
   void* object_dimension_byte_offset;
   void* object_units_length_byte_offset;
   void* runtime_exception_byte_offset;
-  SPVM_VALUE (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
 };
 #endif
