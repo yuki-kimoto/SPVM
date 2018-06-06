@@ -1369,39 +1369,33 @@ call_sub(...)
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
-        int8_t return_value = tmp_value.bval;
-        sv_return_value = sv_2mortal(newSViv(return_value));
+        env->call_sub(env, sub_id, args);
+        sv_return_value = sv_2mortal(newSViv(args[0].bval));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
-        int16_t return_value = tmp_value.sval;
-        sv_return_value = sv_2mortal(newSViv(return_value));
+        env->call_sub(env, sub_id, args);
+        sv_return_value = sv_2mortal(newSViv(args[0].sval));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
-        int32_t return_value = tmp_value.ival;
-        sv_return_value = sv_2mortal(newSViv(return_value));
+        env->call_sub(env, sub_id, args);
+        sv_return_value = sv_2mortal(newSViv(args[0].ival));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
-        int64_t return_value = tmp_value.lval;
-        sv_return_value = sv_2mortal(newSViv(return_value));
+        env->call_sub(env, sub_id, args);
+        sv_return_value = sv_2mortal(newSViv(args[0].lval));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
-        float return_value = tmp_value.fval;
-        sv_return_value = sv_2mortal(newSVnv(return_value));
+        env->call_sub(env, sub_id, args);
+        sv_return_value = sv_2mortal(newSVnv(args[0].fval));
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
-        double return_value = tmp_value.dval;
-        sv_return_value = sv_2mortal(newSVnv(return_value));
+        env->call_sub(env, sub_id, args);
+        sv_return_value = sv_2mortal(newSVnv(args[0].dval));
         break;
       }
       default:
@@ -1409,8 +1403,16 @@ call_sub(...)
     }
   }
   else {
-    SPVM_VALUE tmp_value = env->call_sub(env, sub_id, args);
-    void* return_value = tmp_value.oval;
+    env->call_sub(env, sub_id, args);
+    void* exception = env->get_exception(env);
+    if (exception) {
+      int32_t length = env->get_array_length(env, exception);
+      int8_t* exception_bytes = env->get_byte_array_elements(env, exception);
+      SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
+      croak("%s", SvPV_nolen(sv_exception));
+    }
+    
+    void* return_value = args[0].oval;
     sv_return_value = NULL;
     if (return_value != NULL) {
       env->inc_ref_count(env, return_value);

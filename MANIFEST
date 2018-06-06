@@ -98,7 +98,6 @@ spvm_hash.h
 spvm_hash_entry.h
 spvm_hash_func.c
 spvm_hash_func.h
-spvm_lib_std.c
 spvm_limit.h
 spvm_list.c
 spvm_list.h
@@ -182,7 +181,7 @@ t/default/lib/TestCase/Empty.spvm
 t/default/lib/TestCase/Example.spvm
 t/default/lib/TestCase/Extension.native/Extension.c
 t/default/lib/TestCase/Extension.spvm
-t/default/lib/TestCase/Extension2.native/Extension.c
+t/default/lib/TestCase/Extension2.native/Extension2.c
 t/default/lib/TestCase/Extension2.native/Extension2.config
 t/default/lib/TestCase/Extension2.native/Extension2_util.c
 t/default/lib/TestCase/Extension2.native/Extension2_util.h
@@ -243,7 +242,7 @@ t/precompile/lib/TestCase/Empty.spvm
 t/precompile/lib/TestCase/Example.spvm
 t/precompile/lib/TestCase/Extension.native/Extension.c
 t/precompile/lib/TestCase/Extension.spvm
-t/precompile/lib/TestCase/Extension2.native/Extension.c
+t/precompile/lib/TestCase/Extension2.native/Extension2.c
 t/precompile/lib/TestCase/Extension2.native/Extension2.config
 t/precompile/lib/TestCase/Extension2.native/Extension2_util.c
 t/precompile/lib/TestCase/Extension2.native/Extension2_util.h

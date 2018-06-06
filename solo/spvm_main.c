@@ -98,15 +98,14 @@ int main(int argc, char *argv[])
   args[0].ival = 2;
   
   // Run
-  SPVM_VALUE tmp_return_value = env->call_sub(env, sub_id, args);
-  int32_t return_value = tmp_return_value.ival;
+  env->call_sub(env, sub_id, args);
   
   if (runtime->exception) {
     SPVM_RUNTIME_API_print(env, runtime->exception);
     printf("\n");
   }
   else {
-    printf("TEST return_value: %" PRId32 "\n", return_value);
+    printf("TEST return_value: %" PRId32 "\n", args[0].ival);
   }
   
   SPVM_RUNTIME_API_free_runtime(env, runtime);
