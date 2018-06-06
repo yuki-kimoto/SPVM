@@ -65,17 +65,17 @@ package SPVM::Math {
   # Surplus functions
   native sub remainder : double ($x1 : double, $x2 : double);
 
-  sub BYTE_MIN : byte ()  { return (byte)-128; }
-  sub BYTE_MAX : byte () { return (byte)127; }
+  native sub BYTE_MIN : byte ();
+  native sub BYTE_MAX : byte ();
 
-  sub SHORT_MIN : short () { return (short)-32768; }
-  sub SHORT_MAX : short () { return (short)32767; }
+  native sub SHORT_MIN : short ();
+  native sub SHORT_MAX : short ();
 
-  sub INT_MIN : int () { return -2147483648; }
-  sub INT_MAX : int () { return 2147483647; }
+  native sub INT_MIN : int ();
+  native sub INT_MAX : int ();
 
-  sub LONG_MIN : long () { return -9223372036854775808L; }
-  sub LONG_MAX : long () { return 9223372036854775807L; }
+  native sub LONG_MIN : long ();
+  native sub LONG_MAX : long ();
 
   native sub FLT_MAX : float ();
   native sub FLT_MIN : float();

@@ -11,6 +11,62 @@
 #define SPVM__SPVM__MATH__PI 3.14159265358979323846
 #define SPVM__SPVM__MATH__E 2.7182818284590452354
 
+int8_t SPVM__SPVM__Math__BYTE_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int8_t)-128;
+}
+
+int8_t SPVM__SPVM__Math__BYTE_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int8_t)127;
+}
+
+int16_t SPVM__SPVM__Math__SHORT_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int16_t)-32768;
+}
+
+int16_t SPVM__SPVM__Math__SHORT_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int16_t)32767;
+}
+
+int32_t SPVM__SPVM__Math__INT_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int32_t)-2147483648L;
+}
+
+int32_t SPVM__SPVM__Math__INT_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int32_t)2147483647L;
+}
+
+int64_t SPVM__SPVM__Math__LONG_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int64_t)-9223372036854775808LL;
+}
+
+int64_t SPVM__SPVM__Math__LONG_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int64_t)9223372036854775807LL;
+}
+
 int32_t SPVM__SPVM__Math__isinff(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
