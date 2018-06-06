@@ -133,8 +133,8 @@ package TestCase::Math {
   }
 
   compile sub byte_constant : int () {
-    if ((int)SPVM::Math->BYTE_MIN() == (int)(byte)-128) {
-      if ((int)SPVM::Math->BYTE_MAX() == (int)(byte)127) {
+    if ((int)SPVM::Math->INT8_MIN() == (int)(byte)-128) {
+      if ((int)SPVM::Math->INT8_MAX() == (int)(byte)127) {
         return 1;
       }
     }
@@ -143,8 +143,8 @@ package TestCase::Math {
   }
 
   compile sub short_constant : int () {
-    if ((int)SPVM::Math->SHORT_MIN() == (int)(short)-32768) {
-      if ((int)SPVM::Math->SHORT_MAX() == (int)(short)32767) {
+    if ((int)SPVM::Math->INT16_MIN() == (int)(short)-32768) {
+      if ((int)SPVM::Math->INT16_MAX() == (int)(short)32767) {
         return 1;
       }
     }
@@ -153,8 +153,8 @@ package TestCase::Math {
   }
 
   compile sub int_constant : int () {
-    if (SPVM::Math->INT_MIN() == -2147483648) {
-      if (SPVM::Math->INT_MAX() == 2147483647) {
+    if (SPVM::Math->INT32_MIN() == -2147483648) {
+      if (SPVM::Math->INT32_MAX() == 2147483647) {
         return 1;
       }
     }
@@ -163,8 +163,8 @@ package TestCase::Math {
   }
 
   compile sub long_constant : int () {
-    if (SPVM::Math->LONG_MIN() == -9223372036854775808L) {
-      if (SPVM::Math->LONG_MAX() == 9223372036854775807L) {
+    if (SPVM::Math->INT64_MIN() == -9223372036854775808L) {
+      if (SPVM::Math->INT64_MAX() == 9223372036854775807L) {
         return 1;
       }
     }

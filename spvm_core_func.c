@@ -443,3 +443,58 @@ double SPVM_CORE_FUNC_DBL_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
   return DBL_MIN;
 }
 
+int8_t SPVM_CORE_FUNC_INT8_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int8_t)-128;
+}
+
+int8_t SPVM_CORE_FUNC_INT8_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int8_t)127;
+}
+
+int16_t SPVM_CORE_FUNC_INT16_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int16_t)-32768;
+}
+
+int16_t SPVM_CORE_FUNC_INT16_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int16_t)32767;
+}
+
+int32_t SPVM_CORE_FUNC_INT32_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int32_t)-2147483648L;
+}
+
+int32_t SPVM_CORE_FUNC_INT32_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int32_t)2147483647L;
+}
+
+int64_t SPVM_CORE_FUNC_INT64_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int64_t)-9223372036854775808LL;
+}
+
+int64_t SPVM_CORE_FUNC_INT64_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return (int64_t)9223372036854775807LL;
+}
