@@ -423,7 +423,11 @@ C Source File;
       }
     }
     
-    return total;
+    // Return value is set to args[0]
+    args[0].ival = total;
+    
+    // If function success, return 0
+    return 0;
   }
 
 Use Extension Module from Perl:

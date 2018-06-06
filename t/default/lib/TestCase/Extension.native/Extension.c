@@ -3,7 +3,7 @@
 
 #include <spvm_native.h>
 
-int8_t SPVM__TestCase__Extension__native_use_strlen(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -11,12 +11,14 @@ int8_t SPVM__TestCase__Extension__native_use_strlen(SPVM_ENV* env, const SPVM_VA
   
   int8_t* bytes = env->get_byte_array_elements(env, string);
   
-  int8_t length = (int8_t)strlen((char*)bytes);
+  int32_t length = (int32_t)strlen((char*)bytes);
   
-  return length;
+  args[0].ival = length;
+  
+  return 0;
 }
 
-int8_t SPVM__TestCase__Extension__native_env_get_byte_field(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_env_get_byte_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -26,10 +28,12 @@ int8_t SPVM__TestCase__Extension__native_env_get_byte_field(SPVM_ENV* env, const
   
   int8_t value = env->get_byte_field(env, test_case, field_id);
   
-  return value;
+  args[0].bval = value;
+  
+  return 0;
 }
 
-int16_t SPVM__TestCase__Extension__native_env_get_short_field(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_env_get_short_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -39,10 +43,12 @@ int16_t SPVM__TestCase__Extension__native_env_get_short_field(SPVM_ENV* env, con
   
   int16_t value = env->get_short_field(env, test_case, field_id);
   
-  return value;
+  args[0].sval = value;
+  
+  return 0;
 }
 
-int32_t SPVM__TestCase__Extension__native_env_get_int_field(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_env_get_int_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -52,10 +58,12 @@ int32_t SPVM__TestCase__Extension__native_env_get_int_field(SPVM_ENV* env, const
   
   int32_t value = env->get_int_field(env, test_case, field_id);
   
-  return value;
+  args[0].ival = value;
+  
+  return 0;
 }
 
-int64_t SPVM__TestCase__Extension__native_env_get_long_field(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_env_get_long_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -65,10 +73,12 @@ int64_t SPVM__TestCase__Extension__native_env_get_long_field(SPVM_ENV* env, cons
   
   int64_t value = env->get_long_field(env, test_case, field_id);
   
-  return value;
+  args[0].ival = value;
+  
+  return 0;
 }
 
-float SPVM__TestCase__Extension__native_env_get_float_field(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_env_get_float_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -78,10 +88,12 @@ float SPVM__TestCase__Extension__native_env_get_float_field(SPVM_ENV* env, const
   
   float value = env->get_float_field(env, test_case, field_id);
   
-  return value;
+  args[0].fval = value;
+  
+  return 0;
 }
 
-int32_t SPVM__TestCase__Extension__native_env_get_double_field(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_env_get_double_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -91,10 +103,12 @@ int32_t SPVM__TestCase__Extension__native_env_get_double_field(SPVM_ENV* env, co
   
   double value = env->get_double_field(env, test_case, field_id);
   
-  return value;
+  args[0].ival = value;
+  
+  return 0;
 }
 
-void* SPVM__TestCase__Extension__native_env_get_object_field(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__native_env_get_object_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -104,19 +118,23 @@ void* SPVM__TestCase__Extension__native_env_get_object_field(SPVM_ENV* env, cons
   
   void* value = env->get_object_field(env, test_case, field_id);
   
-  return value;
+  args[0].oval = value;
+  
+  return 0;
 }
 
-int32_t SPVM__TestCase__Extension__sum(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__sum(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
   int32_t total = args[0].ival + args[1].ival;
   
-  return total;
+  args[0].ival = total;
+  
+  return 0;
 }
 
-void* SPVM__TestCase__Extension__add_int_array(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__add_int_array(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -138,19 +156,66 @@ void* SPVM__TestCase__Extension__add_int_array(SPVM_ENV* env, const SPVM_VALUE* 
     }
   }
   
-  return obj_nums3;
+  args[0].oval = obj_nums3;
+  
+  return 0;
 }
 
-void SPVM__TestCase__Extension__call_void_sub_exception_native(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__call_void_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
   void* exception = env->new_string(env, "Exception", 0);
   env->set_exception(env, exception);
-  return;
+  
+  return 0;
 }
 
-int8_t SPVM__TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  void* exception = env->new_string(env, "Exception", 0);
+  env->set_exception(env, exception);
+  args[0].bval = 0;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__Extension__call_short_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+
+  void* exception = env->new_string(env, "Exception", 0);
+  env->set_exception(env, exception);
+  args[0].sval = 0;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__Extension__call_int_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  void* exception = env->new_string(env, "Exception", 0);
+  env->set_exception(env, exception);
+  args[0].ival = 0;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__Extension__call_long_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  void* exception = env->new_string(env, "Exception", 0);
+  env->set_exception(env, exception);
+  args[0].lval = 0;
+  
+  return 0;
+}
+
+float SPVM__TestCase__Extension__call_float_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -159,56 +224,24 @@ int8_t SPVM__TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV* env, 
   return 0;
 }
 
-int16_t SPVM__TestCase__Extension__call_short_sub_exception_native(SPVM_ENV* env, const SPVM_VALUE* args) {
-  (void)env;
-  (void)args;
-
-  void* exception = env->new_string(env, "Exception", 0);
-  env->set_exception(env, exception);
-  return 0;
-}
-
-int32_t SPVM__TestCase__Extension__call_int_sub_exception_native(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__call_double_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
   void* exception = env->new_string(env, "Exception", 0);
   env->set_exception(env, exception);
+  args[0].dval = 0;
+  
   return 0;
 }
 
-int64_t SPVM__TestCase__Extension__call_long_sub_exception_native(SPVM_ENV* env, const SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Extension__call_object_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
   void* exception = env->new_string(env, "Exception", 0);
   env->set_exception(env, exception);
-  return 0;
-}
-
-float SPVM__TestCase__Extension__call_float_sub_exception_native(SPVM_ENV* env, const SPVM_VALUE* args) {
-  (void)env;
-  (void)args;
+  args[0].oval = NULL;
   
-  void* exception = env->new_string(env, "Exception", 0);
-  env->set_exception(env, exception);
   return 0;
-}
-
-double SPVM__TestCase__Extension__call_double_sub_exception_native(SPVM_ENV* env, const SPVM_VALUE* args) {
-  (void)env;
-  (void)args;
-  
-  void* exception = env->new_string(env, "Exception", 0);
-  env->set_exception(env, exception);
-  return 0;
-}
-
-void* SPVM__TestCase__Extension__call_object_sub_exception_native(SPVM_ENV* env, const SPVM_VALUE* args) {
-  (void)env;
-  (void)args;
-  
-  void* exception = env->new_string(env, "Exception", 0);
-  env->set_exception(env, exception);
-  return NULL;
 }

@@ -21,7 +21,11 @@ This is similar with L<Extension::C>, but L<SPVM> implement this feature by defa
     
     int32_t total = args[0].ival + args[1].ival;
     
-    return total;
+    // Return value is set to args[0]
+    args[0].ival = total;
+    
+    // If function success, return 0
+    return 0;
   }
 
 At first, you specify C<native> descripter at SPVM subroutine.
@@ -47,7 +51,11 @@ C<TestCase::Extension::sum>. C function name is C<SPVM__TestCase__Extension__sum
 
     int32_t total = args[0].ival + args[1].ival;
     
-    return total;
+    // Return value is set to args[0]
+    args[0].ival = total;
+    
+    // If function success, return 0
+    return 0;
   }
 
 First argument is C<env>. This is the pointer to C<SPVM_ENV>. Second argument is C<args>. This is array of C<SPVM_VALUE>.

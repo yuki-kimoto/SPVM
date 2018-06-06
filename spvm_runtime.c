@@ -159,53 +159,33 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALU
   env->set_exception(env, NULL);
   
   // Native address
-  void* sub_native_address = sub->native_address;
-  
+  int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub->native_address;
+  int32_t croak_flag = (*native_address)(env, args);
   if (sub_return_type_dimension == 0) {
-    if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
-      void (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub_native_address;
-      (*native_address)(env, (SPVM_VALUE*)args);
-    }
-    else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-      SPVM_VALUE_byte (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub_native_address;
-      SPVM_VALUE_byte return_value_native = (*native_address)(env, (SPVM_VALUE*)args);
-      *(SPVM_VALUE_byte*)&return_value = return_value_native;
+    if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+      *(SPVM_VALUE_byte*)&return_value = *(SPVM_VALUE_byte*)&args[0];
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-      SPVM_VALUE_short (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub_native_address;
-      SPVM_VALUE_short return_value_native = (*native_address)(env, (SPVM_VALUE*)args);
-      *(SPVM_VALUE_short*)&return_value = return_value_native;
+      *(SPVM_VALUE_short*)&return_value = *(SPVM_VALUE_short*)&args[0];
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
-      SPVM_VALUE_int (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub_native_address;
-      SPVM_VALUE_int return_value_native = (*native_address)(env, (SPVM_VALUE*)args);
-      *(SPVM_VALUE_int*)&return_value = return_value_native;
+      *(SPVM_VALUE_int*)&return_value = *(SPVM_VALUE_int*)&args[0];
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
-      SPVM_VALUE_long (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub_native_address;
-      SPVM_VALUE_long return_value_native = (*native_address)(env, (SPVM_VALUE*)args);
-      *(SPVM_VALUE_long*)&return_value = return_value_native;
+      *(SPVM_VALUE_long*)&return_value = *(SPVM_VALUE_long*)&args[0];
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-      float (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub_native_address;
-      float return_value_native = (*native_address)(env, (SPVM_VALUE*)args);
-      *(float*)&return_value = return_value_native;
+      *(SPVM_VALUE_float*)&return_value = *(SPVM_VALUE_float*)&args[0];
     }
     else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-      double (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub_native_address;
-      double return_value_native = (*native_address)(env, (SPVM_VALUE*)args);
-      *(double*)&return_value = return_value_native;
+      *(SPVM_VALUE_double*)&return_value = *(SPVM_VALUE_double*)&args[0];
     }
     else {
-      void* (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub_native_address;
-      void* return_value_native = (*native_address)(env, (SPVM_VALUE*)args);
-      *(void**)&return_value = return_value_native;
+      *(void**)&return_value = *(void**)&args[0];
     }
   }
   else {
-    void* (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub_native_address;
-    void* return_value_native = (*native_address)(env, (SPVM_VALUE*)args);
-    *(void**)&return_value = return_value_native;
+    *(void**)&return_value = *(void**)&args[0];
   }
   
   return return_value;
