@@ -21,15 +21,14 @@ lib/SPVM/Document/PerlAPI.pod
 lib/SPVM/Document/Specification.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
+lib/SPVM/Example.native/Example.c
+lib/SPVM/Example.spvm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
 lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
-lib/SPVM/Math.native/Math.c
-lib/SPVM/Math.pm
-lib/SPVM/Math.spvm
 lib/SPVM/Object.pm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
@@ -77,6 +76,8 @@ spvm_constant.c
 spvm_constant.h
 spvm_core_func.c
 spvm_core_func.h
+spvm_core_func_bind.c
+spvm_core_func_bind.h
 spvm_csource_builder.c
 spvm_csource_builder.h
 spvm_descriptor.c
@@ -159,6 +160,7 @@ t/default/constant.t
 t/default/enum.t
 t/default/exception.t
 t/default/interface.t
+t/default/lib-CORE-math.t
 t/default/lib-Extension.t
 t/default/lib-Extension2.t
 t/default/lib/TestCase.spvm
@@ -173,9 +175,11 @@ t/default/lib/TestCase/CompileError/InvalidType.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
+t/default/lib/TestCase/CoreFunc/Math.spvm
 t/default/lib/TestCase/Destructor.spvm
 t/default/lib/TestCase/Double.spvm
 t/default/lib/TestCase/Empty.spvm
+t/default/lib/TestCase/Example.spvm
 t/default/lib/TestCase/Extension.native/Extension.c
 t/default/lib/TestCase/Extension.spvm
 t/default/lib/TestCase/Extension2.native/Extension.c
@@ -190,7 +194,6 @@ t/default/lib/TestCase/Interface/ImplementInterface1.spvm
 t/default/lib/TestCase/Interface/ImplementInterface2.spvm
 t/default/lib/TestCase/Interface/Interface.spvm
 t/default/lib/TestCase/Long.spvm
-t/default/lib/TestCase/Math.spvm
 t/default/lib/TestCase/Minimal.spvm
 t/default/lib/TestCase/Private.spvm
 t/default/lib/TestCase/Short.spvm
@@ -218,6 +221,7 @@ t/precompile/constant.t
 t/precompile/enum.t
 t/precompile/exception.t
 t/precompile/interface.t
+t/precompile/lib-CORE-math.t
 t/precompile/lib-Extension.t
 t/precompile/lib-Extension2.t
 t/precompile/lib/TestCase.spvm
@@ -232,9 +236,11 @@ t/precompile/lib/TestCase/CompileError/InvalidType.spvm
 t/precompile/lib/TestCase/CompileError/New/Private.spvm
 t/precompile/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/precompile/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
+t/precompile/lib/TestCase/CoreFunc/Math.spvm
 t/precompile/lib/TestCase/Destructor.spvm
 t/precompile/lib/TestCase/Double.spvm
 t/precompile/lib/TestCase/Empty.spvm
+t/precompile/lib/TestCase/Example.spvm
 t/precompile/lib/TestCase/Extension.native/Extension.c
 t/precompile/lib/TestCase/Extension.spvm
 t/precompile/lib/TestCase/Extension2.native/Extension.c
@@ -249,7 +255,6 @@ t/precompile/lib/TestCase/Interface/ImplementInterface1.spvm
 t/precompile/lib/TestCase/Interface/ImplementInterface2.spvm
 t/precompile/lib/TestCase/Interface/Interface.spvm
 t/precompile/lib/TestCase/Long.spvm
-t/precompile/lib/TestCase/Math.spvm
 t/precompile/lib/TestCase/Minimal.spvm
 t/precompile/lib/TestCase/Private.spvm
 t/precompile/lib/TestCase/Short.spvm
