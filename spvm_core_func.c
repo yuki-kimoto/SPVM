@@ -512,3 +512,17 @@ int64_t SPVM_CORE_FUNC_INT64_MAX(SPVM_ENV* env, SPVM_VALUE* args) {
   
   return (int64_t)9223372036854775807LL;
 }
+
+double SPVM_CORE_FUNC_PI(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return 3.14159265358979323846;
+}
+
+double SPVM_CORE_FUNC_E(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  return 2.7182818284590452354;
+}
