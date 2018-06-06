@@ -4,9 +4,12 @@
 #include <stdio.h>
 
 #include "spvm_base.h"
+#include "spvm_native.h"
 
 // Parser information
 struct SPVM_compiler {
+  SPVM_VALUE* args;
+  
   // Current parsed file name
   const char* cur_file;
 
