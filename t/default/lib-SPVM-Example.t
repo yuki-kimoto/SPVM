@@ -45,9 +45,9 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase::Example->isfinitef());
   ok(TestCase::Example->isnanf());
   
-  is(SPVM::Math->INFINITYF(), $POSITIVE_INFINITY);
+  is(SPVM::Example->INFINITYF(), $POSITIVE_INFINITY);
   
-  like(SPVM::Math->NANF(), $nan_re);
+  like(SPVM::Example->NANF(), $nan_re);
 }
 
 # SPVM::Double
@@ -59,9 +59,9 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase::Example->isfinite());
   ok(TestCase::Example->isnan());
   
-  is(SPVM::Math->INFINITY(), $POSITIVE_INFINITY);
+  is(SPVM::Example->INFINITY(), $POSITIVE_INFINITY);
   
-  like(SPVM::Math->NAN(), $nan_re);
+  like(SPVM::Example->NAN(), $nan_re);
 }
 
 {
@@ -72,8 +72,8 @@ my $start_objects_count = SPVM::get_objects_count();
 
 {
   # Check not Inf or NaN in Perl value
-  like(SPVM::Math->FLT_MAX(), qr/[0-9]/);
-  like(SPVM::Math->FLT_MIN(), qr/[0-9]/);
+  like(SPVM::Example->FLT_MAX(), qr/[0-9]/);
+  like(SPVM::Example->FLT_MIN(), qr/[0-9]/);
 }
 
 # All object is freed
