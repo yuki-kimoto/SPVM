@@ -1680,9 +1680,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         // Call subroutine
         if (decl_sub_return_type_is_object) {
           croak_flag = env->call_sub(env, call_sub_id, args);
-          if (!croak_flag) {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], args[0].oval);
-          }
+          if (!croak_flag) { SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], args[0].oval); }
         }
         else {
           int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
@@ -1691,9 +1689,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             croak_flag = env->call_sub(env, call_sub_id, args);
-            if (!croak_flag) {
-              vars[opcode->operand0] = args[0];
-            }
+            if (!croak_flag) { vars[opcode->operand0] = args[0]; }
           }
         }
         
