@@ -126,6 +126,10 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase->default_return_value_object());
 }
 
+{
+  ok(TestCase->call_sub_nest());
+}
+
 # Argument convetion
 {
   ok(TestCase->call_sub_args_convertion());

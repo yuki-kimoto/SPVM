@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
   }
 
-  SPVM_VALUE args[1];
+  SPVM_VALUE* args = compiler->args;
   args[0].ival = 2;
   
   // Run

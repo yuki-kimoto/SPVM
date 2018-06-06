@@ -263,9 +263,6 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
   // Croak flag
   int32_t croak_flag = 0;
   
-  // Call sub arguments
-  SPVM_VALUE call_sub_args[255];
-  
   char tmp_string[30];
 
   register int32_t opcode_index = 0;
@@ -1712,42 +1709,42 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
         call_sub_arg_stack_top++;
-        *(SPVM_VALUE_byte*)&call_sub_args[call_sub_arg_stack_top] = *(SPVM_VALUE_byte*)&vars[opcode->operand0];
+        *(SPVM_VALUE_byte*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_byte*)&vars[opcode->operand0];
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
         call_sub_arg_stack_top++;
-        *(SPVM_VALUE_short*)&call_sub_args[call_sub_arg_stack_top] = *(SPVM_VALUE_short*)&vars[opcode->operand0];
+        *(SPVM_VALUE_short*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_short*)&vars[opcode->operand0];
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
         call_sub_arg_stack_top++;
-        *(SPVM_VALUE_int*)&call_sub_args[call_sub_arg_stack_top] = *(SPVM_VALUE_int*)&vars[opcode->operand0];
+        *(SPVM_VALUE_int*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_int*)&vars[opcode->operand0];
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
         call_sub_arg_stack_top++;
-        *(SPVM_VALUE_long*)&call_sub_args[call_sub_arg_stack_top] = *(SPVM_VALUE_long*)&vars[opcode->operand0];
+        *(SPVM_VALUE_long*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_long*)&vars[opcode->operand0];
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
         call_sub_arg_stack_top++;
-        *(SPVM_VALUE_float*)&call_sub_args[call_sub_arg_stack_top] = *(SPVM_VALUE_float*)&vars[opcode->operand0];
+        *(SPVM_VALUE_float*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_float*)&vars[opcode->operand0];
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
         call_sub_arg_stack_top++;
-        *(SPVM_VALUE_double*)&call_sub_args[call_sub_arg_stack_top] = *(SPVM_VALUE_double*)&vars[opcode->operand0];
+        *(SPVM_VALUE_double*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_double*)&vars[opcode->operand0];
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
         call_sub_arg_stack_top++;
-        *(void**)&call_sub_args[call_sub_arg_stack_top] = *(void**)&vars[opcode->operand0];
+        *(void**)&args[call_sub_arg_stack_top] = *(void**)&vars[opcode->operand0];
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
         call_sub_arg_stack_top++;
-        *(void**)&call_sub_args[call_sub_arg_stack_top] = NULL;
+        *(void**)&args[call_sub_arg_stack_top] = NULL;
         
         break;
       case SPVM_OPCODE_C_ID_CHECK_CAST: {
@@ -1804,13 +1801,13 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
         // Call subroutine
         if (decl_sub_return_return_dimension == 0) {
           if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
-            env->call_void_sub(env, call_sub_id, call_sub_args);
+            env->call_void_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-            SPVM_VALUE_byte value = env->call_byte_sub(env, call_sub_id, call_sub_args);
+            SPVM_VALUE_byte value = env->call_byte_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1819,7 +1816,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-            SPVM_VALUE_short value = env->call_short_sub(env, call_sub_id, call_sub_args);
+            SPVM_VALUE_short value = env->call_short_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1828,7 +1825,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
-            SPVM_VALUE_int value = env->call_int_sub(env, call_sub_id, call_sub_args);
+            SPVM_VALUE_int value = env->call_int_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1837,7 +1834,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
-            SPVM_VALUE_long value = env->call_long_sub(env, call_sub_id, call_sub_args);
+            SPVM_VALUE_long value = env->call_long_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1846,7 +1843,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-            SPVM_VALUE_float value = env->call_float_sub(env, call_sub_id, call_sub_args);
+            SPVM_VALUE_float value = env->call_float_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1855,7 +1852,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-            SPVM_VALUE_double value = env->call_double_sub(env, call_sub_id, call_sub_args);
+            SPVM_VALUE_double value = env->call_double_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1864,7 +1861,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else {
-            void* value = env->call_object_sub(env, call_sub_id, call_sub_args);
+            void* value = env->call_object_sub(env, call_sub_id, args);
             if (env->get_exception(env)) {
               croak_flag = 1;
             }
@@ -1874,7 +1871,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
           }
         }
         else {
-          void* value = env->call_object_sub(env, call_sub_id, call_sub_args);
+          void* value = env->call_object_sub(env, call_sub_id, args);
           if (env->get_exception(env)) {
             croak_flag = 1;
           }
