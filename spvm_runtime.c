@@ -45,16 +45,14 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
   
   int32_t croak_flag;
   if (sub->have_native_desc) {
-    croak_flag = SPVM_RUNTIME_call_sub_native(env, sub_id, args);
+    return SPVM_RUNTIME_call_sub_native(env, sub_id, args);
   }
   else if (sub->is_compiled) {
-    croak_flag = SPVM_RUNTIME_call_sub_precompile(env, sub_id, args);
+    return SPVM_RUNTIME_call_sub_precompile(env, sub_id, args);
   }
   else {
-    croak_flag = SPVM_RUNTIME_call_sub_vm(env, sub_id, args);
+    return SPVM_RUNTIME_call_sub_vm(env, sub_id, args);
   }
-  
-  return croak_flag;
 }
 
 int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
