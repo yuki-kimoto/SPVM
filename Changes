@@ -1,4 +1,4 @@
-0.0343 2018-06-06
+0.0344 2018-06-06
   - Change native function return value.
     native function return value must be set args[0], and return croak_flag.
 0.0343 2018-06-05

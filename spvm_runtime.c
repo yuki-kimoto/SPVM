@@ -44,7 +44,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   SPVM_SUB* sub = op_sub->uv.sub;
   
   if (sub->have_native_desc) {
-    return SPVM_RUNTIME_call_sub_native(env, sub_id, args);
+    int32_t croak_flag = SPVM_RUNTIME_call_sub_native(env, sub_id, args);
+    
+    return args[0];
   }
   else if (sub->is_compiled) {
     return SPVM_RUNTIME_call_sub_precompile(env, sub_id, args);
@@ -131,7 +133,7 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_
   return return_value;
 }
 
-SPVM_VALUE SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
+int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
   (void)env;
   
   // Runtime
@@ -145,50 +147,14 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALU
   // Subroutine is native
   assert(sub->have_native_desc);
 
-  // Subroutine return type
-  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
-  
-  int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
-  
-  int32_t sub_return_type_dimension = sub_return_type->dimension;
-  
-  // Return value
-  SPVM_VALUE return_value;
-
   // Set exception to NULL at start of subroutine
   env->set_exception(env, NULL);
   
   // Native address
   int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub->native_address;
   int32_t croak_flag = (*native_address)(env, args);
-  if (sub_return_type_dimension == 0) {
-    if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-      *(SPVM_VALUE_byte*)&return_value = *(SPVM_VALUE_byte*)&args[0];
-    }
-    else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-      *(SPVM_VALUE_short*)&return_value = *(SPVM_VALUE_short*)&args[0];
-    }
-    else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
-      *(SPVM_VALUE_int*)&return_value = *(SPVM_VALUE_int*)&args[0];
-    }
-    else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
-      *(SPVM_VALUE_long*)&return_value = *(SPVM_VALUE_long*)&args[0];
-    }
-    else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-      *(SPVM_VALUE_float*)&return_value = *(SPVM_VALUE_float*)&args[0];
-    }
-    else if (sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-      *(SPVM_VALUE_double*)&return_value = *(SPVM_VALUE_double*)&args[0];
-    }
-    else {
-      *(void**)&return_value = *(void**)&args[0];
-    }
-  }
-  else {
-    *(void**)&return_value = *(void**)&args[0];
-  }
   
-  return return_value;
+  return croak_flag;
 }
 
 SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
