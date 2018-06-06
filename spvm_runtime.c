@@ -1771,7 +1771,9 @@ SPVM_VALUE SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* a
             }
           }
           else if (decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
-            SPVM_VALUE_int value = env->call_int_sub(env, call_sub_id, args);
+            SPVM_VALUE tmp_value = env->call_sub(env, call_sub_id, args);
+            SPVM_VALUE_int value = tmp_value.ival;
+            
             if (env->get_exception(env)) {
               croak_flag = 1;
             }

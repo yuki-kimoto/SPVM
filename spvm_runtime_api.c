@@ -36,7 +36,6 @@
 
 
 
-
 static const void* SPVM_NATIVE_INTERFACE[]  = {
   SPVM_RUNTIME_API_get_array_length,
   SPVM_RUNTIME_API_get_byte_array_elements,
@@ -106,6 +105,7 @@ static const void* SPVM_NATIVE_INTERFACE[]  = {
   NULL, // object_dimension_byte_offset
   NULL, // object_units_length_byte_offset
   NULL, // runtime_exception_byte_offset
+  SPVM_RUNTIME_call_sub,
 };
 
 int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object) {

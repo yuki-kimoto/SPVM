@@ -32,6 +32,10 @@ typedef void* SPVM_VALUE_object;
 
 
 
+
+
+
+
 struct SPVM_env {
   int32_t (*get_array_length)(SPVM_ENV*, void*);
   int8_t* (*get_byte_array_elements)(SPVM_ENV*, void*);
@@ -100,5 +104,7 @@ struct SPVM_env {
   void* object_basic_type_id_byte_offset;
   void* object_dimension_byte_offset;
   void* object_units_length_byte_offset;
+  void* runtime_exception_byte_offset;
+  SPVM_VALUE (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
 };
 #endif
