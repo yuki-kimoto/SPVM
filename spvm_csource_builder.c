@@ -2113,30 +2113,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         
         // Call subroutine
         if ((decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID)) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    env->call_void_sub(env, call_sub_id");
-          SPVM_STRING_BUFFER_add(string_buffer, ", ");
-          if (decl_sub_args_length > 0) {
-            SPVM_STRING_BUFFER_add(string_buffer, "args");
-          }
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
-          }
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    env->call_void_sub(env, call_sub_id, args);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_exception(env)) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         }
         else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte value = env->call_byte_sub(env, call_sub_id");
-          SPVM_STRING_BUFFER_add(string_buffer, ", ");
-          if (decl_sub_args_length > 0) {
-            SPVM_STRING_BUFFER_add(string_buffer, "args");
-          }
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
-          }
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte value = env->call_byte_sub(env, call_sub_id, args);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_exception(env)) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2148,16 +2132,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  {");
-          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_short value = env->call_short_sub(env, call_sub_id");
-          SPVM_STRING_BUFFER_add(string_buffer, ", ");
-          if (decl_sub_args_length > 0) {
-            SPVM_STRING_BUFFER_add(string_buffer, "args");
-          }
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
-          }
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_short value = env->call_short_sub(env, call_sub_id, args);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_exception(env)) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2185,26 +2161,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
                 index++;
               }
             }
-            SPVM_STRING_BUFFER_add(string_buffer, "(env,");
-            if (decl_sub_args_length > 0) {
-              SPVM_STRING_BUFFER_add(string_buffer, "args");
-            }
-            else {
-              SPVM_STRING_BUFFER_add(string_buffer, "NULL");
-            }
-            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "(env, args);\n");
           }
           // Call subroutine
           else {
-            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_int value = env->call_int_sub(env, call_sub_id");
-            SPVM_STRING_BUFFER_add(string_buffer, ", ");
-            if (decl_sub_args_length > 0) {
-              SPVM_STRING_BUFFER_add(string_buffer, "args");
-            }
-            else {
-              SPVM_STRING_BUFFER_add(string_buffer, "NULL");
-            }
-            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_int value = env->call_int_sub(env, call_sub_id, args);\n");
           }
           
           SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_exception(env)) {\n");
@@ -2219,15 +2180,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         }
         else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {");
-          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_long value = env->call_long_sub(env, call_sub_id");
-          SPVM_STRING_BUFFER_add(string_buffer, ", ");
-          if (decl_sub_args_length > 0) {
-            SPVM_STRING_BUFFER_add(string_buffer, "args");
-          }
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
-          }
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_long value = env->call_long_sub(env, call_sub_id, args);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_exception(env)) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2240,15 +2193,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         }
         else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {");
-          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_float value = env->call_float_sub(env, call_sub_id");
-          SPVM_STRING_BUFFER_add(string_buffer, ", ");
-          if (decl_sub_args_length > 0) {
-            SPVM_STRING_BUFFER_add(string_buffer, "args");
-          }
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
-          }
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_float value = env->call_float_sub(env, call_sub_id, args);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_exception(env)) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2260,16 +2205,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         else if (decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  {");
-          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_double value = env->call_double_sub(env, call_sub_id");
-          SPVM_STRING_BUFFER_add(string_buffer, ", ");
-          if (decl_sub_args_length > 0) {
-            SPVM_STRING_BUFFER_add(string_buffer, "args");
-          }
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "NULL");
-          }
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_double value = env->call_double_sub(env, call_sub_id, args);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_exception(env)) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -2281,11 +2218,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         else {
-          SPVM_STRING_BUFFER_add(string_buffer, "  {");
-          SPVM_STRING_BUFFER_add(string_buffer, "    void* value = env->call_object_sub(env, call_sub_id");
-          SPVM_STRING_BUFFER_add(string_buffer, ", ");
-          SPVM_STRING_BUFFER_add(string_buffer, "args");
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    void* value = env->call_object_sub(env, call_sub_id, args);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_exception(env)) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      croak_flag = 1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
