@@ -36,7 +36,7 @@
 
 
 
-static const void* SPVM_NATIVE_INTERFACE[]  = {
+static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_get_array_length,
   SPVM_RUNTIME_API_get_byte_array_elements,
   SPVM_RUNTIME_API_get_short_array_elements,
@@ -234,7 +234,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   // Runtime memory allocator
   runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
   
-  SPVM_ENV* env = (SPVM_ENV*)SPVM_NATIVE_INTERFACE;
+  SPVM_ENV* env = (SPVM_ENV*)SPVM_ENV_RUNTIME;
   
   env->object_header_byte_size = (void*)(intptr_t)sizeof(SPVM_OBJECT);
   env->object_ref_count_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count);
