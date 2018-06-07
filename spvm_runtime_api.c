@@ -100,6 +100,10 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_call_sub,
 };
 
+SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime() {
+  return SPVM_ENV_RUNTIME;
+}
+
 int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object) {
   (void)env;
   
@@ -234,7 +238,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   // Runtime memory allocator
   runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
   
-  SPVM_ENV* env = (SPVM_ENV*)SPVM_ENV_RUNTIME;
+  SPVM_ENV* env = (SPVM_ENV*)SPVM_RUNTIME_API_get_env_runtime();
   
   runtime->env = env;
   
