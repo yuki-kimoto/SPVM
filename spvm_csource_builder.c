@@ -2040,10 +2040,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
           assert(0);
         }
         
-        /*
         // Subroutine inline expantion in same package
         if (decl_sub->op_package->uv.package->id == sub->op_package->uv.package->id && decl_sub->have_compile_desc) {
-          SPVM_STRING_BUFFER_add(string_buffer, "SPVM_BUILD_PRECOMPILE_");
+          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_BUILD_PRECOMPILE_");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
           {
             int32_t index = string_buffer->length - strlen(decl_sub->abs_name);
@@ -2059,29 +2058,26 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         }
         // Call subroutine
         else {
-          SPVM_STRING_BUFFER_add(string_buffer, "    env->call_sub(env, call_sub_id, args);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = env->call_sub(env, call_sub_id, args);\n");
         }
-        */
-        SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = env->call_sub(env, call_sub_id, args);\n");
         
         // Call subroutine
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {");
         if (decl_sub_return_type_is_object) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
+          SPVM_STRING_BUFFER_add(string_buffer, " SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
           SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, ", args[0].oval);");
         }
         else if ((decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID)) {
           SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = args[0];");
+          SPVM_STRING_BUFFER_add(string_buffer, " = args[0]; ");
         }
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "}\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "call_sub_arg_stack_top -= ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    call_sub_arg_stack_top -= ");
         SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_args_length);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
       }
