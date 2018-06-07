@@ -74,6 +74,8 @@ int main(int argc, char *argv[])
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new(compiler);
+  compiler->runtime = runtime;
+  
   SPVM_ENV* env = runtime->env;
 
   // Entry point subroutine address
@@ -108,7 +110,7 @@ int main(int argc, char *argv[])
     printf("TEST return_value: %" PRId32 "\n", args[0].ival);
   }
   
-  SPVM_RUNTIME_API_free_runtime(env, runtime);
+  SPVM_RUNTIME_free(runtime);
   
   return 0;
 }

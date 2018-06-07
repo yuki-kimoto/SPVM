@@ -219,18 +219,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_O
   return string3;
 }
 
-void SPVM_RUNTIME_API_free_runtime(SPVM_ENV* env, SPVM_RUNTIME* runtime) {
-  (void)env;
-  
-  // Free exception
-  SPVM_RUNTIME_API_set_exception(runtime->env, NULL);
-  
-  // Free runtime allocator
-  SPVM_RUNTIME_ALLOCATOR_free(runtime, runtime->allocator);
-
-  free(runtime);
-}
-
 SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime() {
   
   return SPVM_GLOBAL_RUNTIME;

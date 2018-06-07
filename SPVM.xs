@@ -1092,6 +1092,7 @@ build_runtime(...)
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new(compiler);
+  compiler->runtime = runtime;
   
   // Set API
   SPVM_ENV* env = runtime->env;
