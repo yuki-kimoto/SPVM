@@ -385,7 +385,7 @@ Use SPVM Module from Perl
   
   print $total . "\n";
 
-See also L<SPVM::Document::PerlAPI>.
+See also L<SPVM::Document::SPVMAPI>.
 
 =head2 C Extension using SPVM
 
@@ -446,7 +446,7 @@ Use Extension Module from Perl:
   
   print $total . "\n";
 
-See also L<SPVM::Document::Extension>, L<SPVM::Document::NativeAPI>.
+See also L<SPVM::Document::Extension>, L<SPVM::Document::NativeInterface>.
 
 =head1 STANDARD FUNCTIONS
 
@@ -456,20 +456,19 @@ print, warn, time
 
 =head1 STANDARD MODULES
 
-L<SPVM::CORE>, L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>,
-L<SPVM::Math>, L<SPVM::IO>
+L<SPVM::CORE>, L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>
 
-=head1 PERL API
+=head1 SPVM API
 
-L<SPVM::Document::PerlAPI>
+L<SPVM::Document::SPVMAPI>
 
-=head1 Native API
+=head1 Native Interface
 
-L<SPVM::Document::NativeAPI>
+L<SPVM::Document::NativeInterface>
 
-=head1 Specification
+=head1 Language
 
-L<SPVM::Document::Specification>
+L<SPVM::Document::Language>
 
 =head1 SUPPORT
 

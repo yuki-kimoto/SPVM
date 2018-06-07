@@ -1,8 +1,8 @@
 =head1 NAME
 
-SPVM::Document::Specification - SPVM Language Specification(BETA before 1.0)
+SPVM::Document::Language - SPVM Language
 
-=head1 SPVM Language Specification
+=head1 SPVM Language
 
 SPVM is designed to help Perl week points. Perl week points is:
 
