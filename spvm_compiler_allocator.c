@@ -5,7 +5,6 @@
 
 #include "spvm_list.h"
 #include "spvm_hash.h"
-#include "spvm_memory_pool.h"
 #include "spvm_util_allocator.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_compiler.h"
@@ -15,26 +14,26 @@ SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new(SPVM_COMPILER* compiler) {
   
   SPVM_COMPILER_ALLOCATOR* allocator = malloc(sizeof(SPVM_COMPILER_ALLOCATOR));
   
-  // Memory pool - memory pool save short strings and object, except array and hash
-  // These base_objects are created at compile time
-  allocator->memory_pool = SPVM_MEMORY_POOL_new(0);
+  // Objects
+  allocator->blocks = SPVM_LIST_new(0);
   
-  // Arrays - these arrays are created at compile time
-  allocator->arrays = SPVM_LIST_new(8);
+  // Arrays
+  allocator->lists = SPVM_LIST_new(8);
   
-  // Hashed - these hashes are created at compile time
+  // Hashes
   allocator->hashes = SPVM_LIST_new(8);
   
   return allocator;
 }
 
-void* SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(SPVM_COMPILER* compiler, int32_t size) {
+void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t byte_size) {
   (void)compiler;
   
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  void* block = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, size);
-  memset(block, 0, size);
+  void* block = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(byte_size);
+  
+  SPVM_LIST_push(allocator->blocks, block);
   
   return block;
 }
@@ -44,11 +43,11 @@ SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t c
 
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  SPVM_LIST* array = SPVM_LIST_new(capacity);
+  SPVM_LIST* list = SPVM_LIST_new(capacity);
   
-  SPVM_LIST_push(allocator->arrays, array);
+  SPVM_LIST_push(allocator->lists, list);
   
-  return array;
+  return list;
 }
 
 SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t capacity) {
@@ -63,36 +62,27 @@ SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t c
   return hash;
 }
 
-char* SPVM_COMPILER_ALLOCATOR_alloc_string(SPVM_COMPILER* compiler, int32_t length) {
-  (void)compiler;
-
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
-  
-  assert(length >= 0);
-  assert(length <= 0xFFFF);
-  
-  char* str = SPVM_MEMORY_POOL_alloc(allocator->memory_pool, length + 1);
-  
-  return str;
-}
-
 void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   (void)compiler;
-
+  
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  // Free memory pool */
-  SPVM_MEMORY_POOL_free(allocator->memory_pool);
+  // Free blocks
+  int32_t i;
+  for (i = 0; i < allocator->blocks->length; i++) {
+    void* block = SPVM_LIST_fetch(allocator->blocks, i);
+    free(block);
+  }
   
-  // Free arrays
+  // Free lists
   {
     int32_t i;
-    for (i = 0; i < allocator->arrays->length; i++) {
-      SPVM_LIST* array = SPVM_LIST_fetch(allocator->arrays, i);
-      SPVM_LIST_free(array);
+    for (i = 0; i < allocator->lists->length; i++) {
+      SPVM_LIST* list = SPVM_LIST_fetch(allocator->lists, i);
+      SPVM_LIST_free(list);
     }
   }
-  SPVM_LIST_free(allocator->arrays);
+  SPVM_LIST_free(allocator->lists);
   
   // Free hashes
   {

@@ -54,7 +54,7 @@ void SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_t b
 }
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
-  SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, sizeof(SPVM_TYPE));
+  SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_TYPE));
   
   return type;
 }

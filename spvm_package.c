@@ -8,7 +8,7 @@
 #include "spvm_type.h"
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
-  SPVM_PACKAGE* package = SPVM_COMPILER_ALLOCATOR_alloc_memory_pool(compiler, sizeof(SPVM_PACKAGE));
+  SPVM_PACKAGE* package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_PACKAGE));
   
   package->op_fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 

@@ -124,10 +124,6 @@ typedef struct SPVM_enumeration SPVM_ENUMERATION;
 struct SPVM_enumeration_value;
 typedef struct SPVM_enumeration_value SPVM_ENUMERATION_VALUE;
 
-// spvm_memory_pool.h
-struct SPVM_memory_pool;
-typedef struct SPVM_memory_pool SPVM_MEMORY_POOL;
-
 // spvm_var.h
 struct SPVM_var;
 typedef struct SPVM_var SPVM_VAR;
