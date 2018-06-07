@@ -404,25 +404,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_address_array(SPVM_ENV* env, int32_t length) {
   return object;
 }
 
-// Use only internal
-SPVM_OBJECT* SPVM_RUNTIME_API_new_call_frame_object(SPVM_ENV* env, int32_t length) {
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
-  
-  // Alloc length + 1. Last element value is 0 to use c string functions easily
-  int64_t array_byte_size = (int64_t)sizeof(SPVM_OBJECT) + ((int64_t)length + 1) * (int64_t)sizeof(SPVM_VALUE);
-  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_malloc_zero(env, allocator, array_byte_size);
-  
-  // Set array length
-  object->units_length = length;
-  
-  object->unit_byte_size = sizeof(SPVM_VALUE);
-  
-  object->category = SPVM_OBJECT_C_CATEGORY_CALL_FRAME;
-  
-  return object;
-}
-
 SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_ENV* env, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
 

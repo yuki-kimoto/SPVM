@@ -153,8 +153,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   // Subroutine stack
   // This is used Variables, mortal stack
   int32_t call_frame_length = sub->op_mys->length + 1 + sub->mortal_stack_max;
-  void* call_frame_object = SPVM_RUNTIME_API_new_call_frame_object(env, call_frame_length);
-  SPVM_VALUE* call_frame = call_frame_object + (intptr_t)env->object_header_byte_size;
+  SPVM_VALUE* call_frame = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * call_frame_length);
   
   // Variables
   SPVM_VALUE* vars = call_frame;
@@ -1898,8 +1897,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
     env->set_exception(env, NULL);
   }
   
-  // Free call stack
-  SPVM_RUNTIME_ALLOCATOR_free_object(env, runtime->allocator, call_frame_object);
+  free(call_frame);
   
   return exception_flag;
 }
