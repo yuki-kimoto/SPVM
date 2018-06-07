@@ -38,7 +38,7 @@ sub precompile {
   return $self->{precompile};
 }
 
-sub compile_spvm {
+sub build_spvm {
   my $self = shift;
   
   # Compile SPVM source code

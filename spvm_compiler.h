@@ -105,6 +105,8 @@ struct SPVM_compiler {
   SPVM_OPCODE_ARRAY* opcode_array;
   
   SPVM_RUNTIME* runtime;
+  
+  _Bool do_compile_only;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

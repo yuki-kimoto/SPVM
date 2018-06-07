@@ -68,7 +68,7 @@ sub import {
 CHECK {
   
   unless ($ENV{SPVM_NO_COMPILE}) {
-    my $compile_success = $BUILD->compile_spvm();
+    my $compile_success = $BUILD->build_spvm();
     unless ($compile_success) {
       croak("SPVM compile error");
     }
