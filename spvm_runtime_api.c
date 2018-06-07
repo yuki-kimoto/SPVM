@@ -433,7 +433,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_address_array(SPVM_ENV* env, int32_t length) {
 }
 
 // Use only internal
-SPVM_OBJECT* SPVM_RUNTIME_API_new_call_stack_object(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_call_frame_object(SPVM_ENV* env, int32_t length) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_RUNTIME_ALLOCATOR* allocator = runtime->allocator;
   
@@ -446,7 +446,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_call_stack_object(SPVM_ENV* env, int32_t lengt
   
   object->unit_byte_size = sizeof(SPVM_VALUE);
   
-  object->category = SPVM_OBJECT_C_CATEGORY_CALL_STACK;
+  object->category = SPVM_OBJECT_C_CATEGORY_CALL_FRAME;
   
   return object;
 }

@@ -93,7 +93,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_ENV* env, int32_t length);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t length);
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_call_stack_object(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_call_frame_object(SPVM_ENV* env, int32_t length);
 
 // Exception
 void SPVM_RUNTIME_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception);

@@ -126,16 +126,16 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   
   // Subroutine stack
   // This is used Variables, mortal stack
-  int32_t call_stack_length = sub->op_mys->length + 1 + sub->mortal_stack_max;
-  void* call_stack_object = SPVM_RUNTIME_API_new_call_stack_object(env, call_stack_length);
-  SPVM_VALUE* call_stack = call_stack_object + (intptr_t)env->object_header_byte_size;
+  int32_t call_frame_length = sub->op_mys->length + 1 + sub->mortal_stack_max;
+  void* call_frame_object = SPVM_RUNTIME_API_new_call_frame_object(env, call_frame_length);
+  SPVM_VALUE* call_frame = call_frame_object + (intptr_t)env->object_header_byte_size;
   
   // Variables
-  SPVM_VALUE* vars = call_stack;
+  SPVM_VALUE* vars = call_frame;
 
   // Auto decrement reference count variable index stack top
   int32_t mortal_stack_base = sub->op_mys->length + 1;
-  SPVM_VALUE* mortal_stack = &call_stack[mortal_stack_base];
+  SPVM_VALUE* mortal_stack = &call_frame[mortal_stack_base];
   int32_t mortal_stack_top = -1;
 
   // Call subroutine argument stack top
@@ -1873,7 +1873,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   }
   
   // Free call stack
-  SPVM_RUNTIME_ALLOCATOR_free_object(env, runtime->allocator, call_stack_object);
+  SPVM_RUNTIME_ALLOCATOR_free_object(env, runtime->allocator, call_frame_object);
   
   return exception_flag;
 }
