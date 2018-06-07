@@ -54,6 +54,8 @@ struct SPVM_runtime {
   // Package variables
   SPVM_VALUE* package_vars;
   
+  SPVM_VALUE* args;
+  
   int32_t objects_count;
 };
 

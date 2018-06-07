@@ -28,9 +28,6 @@
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
   
-  // Arguments
-  compiler->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * 255);
-
   // Allocator
   compiler->allocator = SPVM_COMPILER_ALLOCATOR_new(compiler);
 
@@ -167,8 +164,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
-  free(compiler->args);
-
   // Free allocator
   SPVM_COMPILER_ALLOCATOR_free(compiler);
   

@@ -1283,7 +1283,7 @@ call_sub(...)
       int32_t arg_basic_type_id = arg_type->basic_type->id;
       int32_t arg_type_dimension = arg_type->dimension;
       
-      SPVM_VALUE* args = compiler->args;
+      SPVM_VALUE* args = runtime->args;
       
       if (arg_type_dimension == 0 && arg_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && arg_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
         switch (arg_type->basic_type->id) {
@@ -1362,7 +1362,7 @@ call_sub(...)
           
   // Return count
   SV* sv_return_value = NULL;
-  SPVM_VALUE* args = compiler->args;
+  SPVM_VALUE* args = runtime->args;
   if (return_type_dimension == 0 && return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
     switch (return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {

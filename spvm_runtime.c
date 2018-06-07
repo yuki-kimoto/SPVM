@@ -50,6 +50,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
   
   // Initialize Package Variables
   runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_var_length + 1));
+
+  // Arguments
+  runtime->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * 255);
   
   return runtime;
 }
@@ -1907,6 +1910,8 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   SPVM_RUNTIME_API_set_exception(runtime->env, NULL);
   
   SPVM_RUNTIME_ALLOCATOR_free(runtime, runtime->allocator);
+
+  free(runtime->args);
   
   free(runtime->package_vars);
   
