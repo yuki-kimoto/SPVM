@@ -2,140 +2,45 @@
 
 SPVM::Document::Language - SPVM Language
 
-=head1 SPVM Language
+=head1 Package
 
-SPVM is designed to help Perl week points. Perl week points is:
-
-=over 2
-
-=item * Perl numeric and array operation is slow because Perl can't have Static Type.
-
-=item * Perl can't calcurate number correctly, for exampele, float operation, bit operation of integral type, etc.
-
-=item * Perl can't bind C/C++ library easily becuase Perl don't have type semaintics.
-
-=back
-
-SPVM provide Fast and Correct Numeric and Array operation, and C/C++ binding become much easy.
-
-SPVM Module is used from Perl directory. SPVM is not single language. You can call SPVM subroutine easily from Perl .
-
-If you use SPVM, you can create module which need numeric and array operation.
-
-For example:
-
-AI, Machine Learning, Deep Learning, Statistics, IoT, Image Recognition, Voice Recognition, 
-Signal Processing.
-
-SPVM have Numeric Type, Array Type, Package Type. Numeric Type is byte, short, int, long, float, double.
-You can calcurate number by these types. Array Type is Contiguous Area of numeric type. Package Type have, for example, x, y field.
-
-SPVM have Type Inference, GC, Memory Safety, Destructor, Interface. GC is Reference Count GC.
-
-=head1 Syntax
-
-=head2 Package Definition
-
-Package Definition is the following.
-
-  package PackageName {
+  package Point {
+    has x : int;
+    has y : int;
     
-  }
-
-C<PackageName> is package name.
-
-Package name is consist of Upper Case and Lower Case and Number and C<::>.
-Package name must start with Upper Case. Package name which start with Lower Case is forbidden.
-Package name which start with Lower Case is resolved for core.
-
-  # Legal
-  Foo
-  Foo2
-  Foo::Bar
-  Foo::Bar::Baz
-  Foo::bar
-  
-  # Illegal
-  foo
-  foo::Bar
-  2Foo
-
-Package Definition must be just under file itself.
-
-  # Legal
-  package PackageName {
-    
-  }
-  
-  # Illegal
-  sub foo : int () {
-    package PackageName {
+    sub new : Point ($x : int, $y : int) {
+      my $self = new Point;
       
+      $self->{x} = $x;
+      $self->{y} = $y;
+      
+      return $self;
     }
+    sub clear ($self : self) {
+      $self->{x} = 0;
+      $self->{y} = 0;
+    }
+  }
+  
+  package HTTP::Message::Request {
+    
   }
 
 =head2 Use Module
 
-Use Module.
-
-  use PackageName;
-
-use keyword must be just under package block.
-
-  package A {
-    use B;
-    use C;
-  }
-  
-=head2 Field Definition
-
-Field Definition is the following.
-
-  has field_name : type_name;
-
-C<filed_name> is field name. 
-Field name is consist of Upper Case and Lower Case and Number and Under Score C<_>.
-Field name must not start with Number. Under score must not continue more than one.
-
-  # Legal
-  foo
-  foo_bar
-  foo2
-  foo_bar2
-  FOO
-  
-  # Illegal
-  2foo
-  foo__bar
-
-C<type_name> is a type. Type is explained in L</"Type"> section.
-
-Field Definition must be just under Package Definition.
-
-  # Legal
-  package PackageName {
-    has field_name : type_name;
+  package Foo {
+    use Point;
+    use HTTP::Message::Request;
   }
 
-  # Illeagal
-  has field_name : type_name;
-  sub foo : int () {
-    has field_name : type_name
+=head2 Field
+
+  package Point {
+    has x : int;
+    has y : int;
   }
 
-=head3 Accessor
-
-Set accsessor;
-
-  sub set_x : void ($self : Point, $value : int) { $self->{x} = $value }
-  sub set_y : void ($self : Point, $value : int) { $self->{y} = $value }
-  
-Get accessor;
-
-  sub get_x : int ($self : Point) { return $self->{x} }
-  sub get_y : int ($self : Point) { return $self->{y} }
-
-=head2 Subroutine Decralation
+=head2 Subroutine
 
 Subroutine Definition is the following.
 
